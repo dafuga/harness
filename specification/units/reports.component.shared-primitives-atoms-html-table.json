@@ -19,13 +19,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlTable.attributes",
-				"type": "SvelteHTMLElements['table']",
-				"description": "Native table attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "HtmlTable.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native table element; native HTML content rules still apply."
 			}
 		],
@@ -36,7 +32,9 @@
 				"description": "The actual native table element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

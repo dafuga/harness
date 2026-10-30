@@ -32,12 +32,24 @@
 			{
 				"name": "recordedProjection.evidence",
 				"type": "ExplorerEvidence",
+				"required": true,
 				"description": "The entity-scoped evidence whose coverage determines which scenario states to retain."
 			},
 			{
 				"name": "recordedProjection.entityId",
 				"type": "string",
+				"required": true,
 				"description": "The exact unit identity to retain in registry details, reasons, failures, measurements, budgets and change summaries."
+			},
+			{
+				"name": "side.whole",
+				"type": "ExplorerSide",
+				"required": true
+			},
+			{
+				"name": "side.entity",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,7 +59,59 @@
 				"description": "Entity-scoped sides preserve captures, coverage, tests, judging records and the opaque source-tree hash needed to re-derive identical-tree screenshots. Unrelated units, graph edges, changed files, uncertainty lists and cache filenames are excluded. A side without detail stays unchanged. The input is not mutated."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "recordedProjection",
+				"inputs": [
+					{
+						"name": "recordedProjection.evidence",
+						"type": "ExplorerEvidence",
+						"required": true,
+						"description": "The entity-scoped evidence whose coverage determines which scenario states to retain."
+					},
+					{
+						"name": "recordedProjection.entityId",
+						"type": "string",
+						"required": true,
+						"description": "The exact unit identity to retain in registry details, reasons, failures, measurements, budgets and change summaries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedProjection",
+						"type": "ExplorerEvidence",
+						"description": "Entity-scoped sides preserve captures, coverage, tests, judging records and the opaque source-tree hash needed to re-derive identical-tree screenshots. Unrelated units, graph edges, changed files, uncertainty lists and cache filenames are excluded. A side without detail stays unchanged. The input is not mutated."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "side",
+				"inputs": [
+					{
+						"name": "side.whole",
+						"type": "ExplorerSide",
+						"required": true
+					},
+					{
+						"name": "side.entity",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "side",
+						"type": "ExplorerSide"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

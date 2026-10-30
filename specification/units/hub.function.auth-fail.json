@@ -19,11 +19,13 @@
 			{
 				"name": "AuthFailure.constructor.code",
 				"type": "AuthFailureCode",
+				"required": true,
 				"description": "Declared authentication failure code used for the error message and status."
 			},
 			{
 				"name": "authFail.code",
 				"type": "AuthFailureCode",
+				"required": true,
 				"description": "Declared authentication failure code to throw."
 			}
 		],
@@ -39,6 +41,53 @@
 				"name": "AuthFailure",
 				"type": "thrown",
 				"description": "Error named AuthFailure with code, mapped status and a generic Hub auth message rather than provider details."
+			}
+		],
+		"operations": [
+			{
+				"name": "authFail",
+				"inputs": [
+					{
+						"name": "authFail.code",
+						"type": "AuthFailureCode",
+						"required": true,
+						"description": "Declared authentication failure code to throw."
+					}
+				],
+				"outputs": [
+					{
+						"name": "authFail",
+						"type": "never",
+						"description": "Never returns; throws AuthFailure for the supplied code."
+					}
+				],
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AuthFailure.constructor",
+				"inputs": [
+					{
+						"name": "AuthFailure.constructor.code",
+						"type": "AuthFailureCode",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthFailure.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

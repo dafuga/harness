@@ -26,11 +26,13 @@
 		"inputs": [
 			{
 				"name": "createProject.input",
-				"type": "CreateProjectInput"
+				"type": "CreateProjectInput",
+				"required": true
 			},
 			{
 				"name": "renderCreateProject.result",
-				"type": "CreateProjectResult"
+				"type": "CreateProjectResult",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -48,7 +50,52 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "createProject",
+				"inputs": [
+					{
+						"name": "createProject.input",
+						"type": "CreateProjectInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createProject",
+						"type": "Promise<CreateProjectResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderCreateProject",
+				"inputs": [
+					{
+						"name": "renderCreateProject.result",
+						"type": "CreateProjectResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderCreateProject",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

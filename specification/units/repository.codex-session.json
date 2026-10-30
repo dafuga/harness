@@ -25,27 +25,33 @@
 		"inputs": [
 			{
 				"name": "CodexSessionRepository.create.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CodexSessionRepository.waitForTool.session",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"required": true
 			},
 			{
 				"name": "CodexSessionRepository.waitForTool.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CodexSessionRepository.deliver.session",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"required": true
 			},
 			{
 				"name": "CodexSessionRepository.deliver.outputs",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"required": true
 			},
 			{
 				"name": "CodexSessionRepository.cancel.session",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -71,7 +77,108 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CodexSessionRepository.create",
+				"inputs": [
+					{
+						"name": "CodexSessionRepository.create.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexSessionRepository.create",
+						"type": "GatewaySession"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexSessionRepository.waitForTool",
+				"inputs": [
+					{
+						"name": "CodexSessionRepository.waitForTool.session",
+						"type": "GatewaySession",
+						"required": true
+					},
+					{
+						"name": "CodexSessionRepository.waitForTool.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexSessionRepository.waitForTool",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexSessionRepository.deliver",
+				"inputs": [
+					{
+						"name": "CodexSessionRepository.deliver.session",
+						"type": "GatewaySession",
+						"required": true
+					},
+					{
+						"name": "CodexSessionRepository.deliver.outputs",
+						"type": "GatewayItem[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexSessionRepository.deliver",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexSessionRepository.cancel",
+				"inputs": [
+					{
+						"name": "CodexSessionRepository.cancel.session",
+						"type": "GatewaySession",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexSessionRepository.cancel",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

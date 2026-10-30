@@ -6,63 +6,53 @@
 	"responsibility": "Owns the CatalogRecord data model.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"lineage": {
+		"predecessors": ["model.catalog-record-types"]
+	},
 	"owns": {
-		"source": ["src/models/git-source-history/CatalogRecord.ts"],
+		"source": [
+			"src/models/git-source-history/CatalogRecord.ts",
+			"src/models/git-source-history/CatalogRecord.types.ts"
+		],
 		"symbols": [
 			"CatalogRecord",
 			"CatalogRecord.find",
 			"CatalogRecord.findBy",
 			"CatalogRecord.create",
 			"CatalogRecord.update",
-			"CatalogRecord.delete"
+			"CatalogRecord.delete",
+			"CatalogRecordAttributes",
+			"CatalogRecordCreateInput",
+			"CatalogRecordUpdateInput"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "CatalogRecord.find.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogRecord.id",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogRecord.find.id",
-				"type": "string"
+				"name": "CatalogRecord.commit",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogRecord.findBy.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogRecord.status",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogRecord.findBy.fields",
-				"type": "Partial<CatalogRecordAttributes>"
+				"name": "CatalogRecord.valid",
+				"type": "boolean",
+				"required": true
 			},
 			{
-				"name": "CatalogRecord.create.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogRecord.create.input",
-				"type": "CatalogRecordCreateInput"
-			},
-			{
-				"name": "CatalogRecord.update.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogRecord.update.id",
-				"type": "string"
-			},
-			{
-				"name": "CatalogRecord.update.input",
-				"type": "CatalogRecordUpdateInput"
-			},
-			{
-				"name": "CatalogRecord.delete.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogRecord.delete.id",
-				"type": "string"
+				"name": "CatalogRecord.data",
+				"type": "json",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,16 +77,184 @@
 				"type": "Promise<boolean>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogRecord.find",
+				"inputs": [
+					{
+						"name": "CatalogRecord.find.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRecord.find.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRecord.find",
+						"type": "Promise<CatalogRecordAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRecord.findBy",
+				"inputs": [
+					{
+						"name": "CatalogRecord.findBy.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRecord.findBy.fields",
+						"type": "Partial<CatalogRecordAttributes>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRecord.findBy",
+						"type": "Promise<CatalogRecordAttributes[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRecord.create",
+				"inputs": [
+					{
+						"name": "CatalogRecord.create.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRecord.create.input",
+						"type": "CatalogRecordCreateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRecord.create",
+						"type": "Promise<CatalogRecordAttributes>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRecord.update",
+				"inputs": [
+					{
+						"name": "CatalogRecord.update.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRecord.update.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogRecord.update.input",
+						"type": "CatalogRecordUpdateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRecord.update",
+						"type": "Promise<CatalogRecordAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRecord.delete",
+				"inputs": [
+					{
+						"name": "CatalogRecord.delete.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRecord.delete.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRecord.delete",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [],
+		"storage": [
+			{
+				"name": "CatalogRecord",
+				"table": "catalog_records",
+				"primaryKey": "id",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": true
+					},
+					{
+						"name": "commit",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "status",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "valid",
+						"type": "boolean",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "data",
+						"type": "json",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					}
+				]
+			}
+		]
 	},
 	"dependencies": [
 		{
-			"unit": "function.sqlite-types",
+			"unit": "function.history-index-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "model.catalog-record-types",
+			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
 		}

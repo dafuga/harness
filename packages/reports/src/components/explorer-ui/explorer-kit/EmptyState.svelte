@@ -1,0 +1,9 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+	/** Says that there is nothing to show here, and why. */
+	let { children }: { children: Snippet } = $props();
+</script>
+
+<hx-p class="ex-empty">{@render children()}</hx-p>

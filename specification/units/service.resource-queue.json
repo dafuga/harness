@@ -24,21 +24,27 @@
 			{
 				"name": "ResourceQueueService.constructor.options",
 				"type": "Dependencies",
+				"required": false,
+				"default": {},
 				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
 			},
 			{
 				"name": "ResourceQueueService.run.input",
 				"type": "ResourceRequest",
+				"required": true,
 				"description": "Requested priority, CPU cores, memory in MiB and public label for the operation."
 			},
 			{
 				"name": "ResourceQueueService.run.action",
 				"type": "(context: ResourceContext) => Promise<T>",
+				"required": true,
 				"description": "Asynchronous work executed only after admission; receives the bounded resource context."
 			},
 			{
 				"name": "ResourceQueueService.run.options",
 				"type": "RunOptions",
+				"required": false,
+				"default": {},
 				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
 			}
 		],
@@ -64,6 +70,93 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Invalid requests, unproven owners, invalid parent leases, oversize nested work and queue overflow reject."
+			}
+		],
+		"operations": [
+			{
+				"name": "ResourceQueueService.snapshot",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ResourceQueueService.snapshot",
+						"type": "Promise<ResourceSnapshot>",
+						"description": "Latest timestamped host observation, absent before the first sample."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ResourceQueueService.run",
+				"inputs": [
+					{
+						"name": "ResourceQueueService.run.input",
+						"type": "ResourceRequest",
+						"required": true,
+						"description": "Requested priority, CPU cores, memory in MiB and public label for the operation."
+					},
+					{
+						"name": "ResourceQueueService.run.action",
+						"type": "(context: ResourceContext) => Promise<T>",
+						"required": true,
+						"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+					},
+					{
+						"name": "ResourceQueueService.run.options",
+						"type": "RunOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResourceQueueService.run",
+						"type": "Promise<T>",
+						"description": "Result of the admitted action, always releasing its reservation afterward."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ResourceQueueService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ResourceQueueService.close",
+						"type": "void",
+						"description": "Closes the owned SQLite connection."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ResourceQueueService.constructor",
+				"inputs": [
+					{
+						"name": "ResourceQueueService.constructor.options",
+						"type": "Dependencies",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResourceQueueService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

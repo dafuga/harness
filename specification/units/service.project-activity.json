@@ -27,19 +27,23 @@
 		"inputs": [
 			{
 				"name": "ProjectActivityService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectActivityService.show.limit",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "ProjectActivityService.recorded.history",
-				"type": "SourceHistory"
+				"type": "SourceHistory",
+				"required": true
 			},
 			{
 				"name": "ProjectActivityService.recorded.details",
-				"type": "Map<string, RevisionDetail>"
+				"type": "Map<string, RevisionDetail>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -52,7 +56,71 @@
 				"type": "Promise<ProjectActivity>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectActivityService.show",
+				"inputs": [
+					{
+						"name": "ProjectActivityService.show.limit",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectActivityService.show",
+						"type": "Promise<{ activity: ProjectActivity; live: LiveActivity }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectActivityService.recorded",
+				"inputs": [
+					{
+						"name": "ProjectActivityService.recorded.history",
+						"type": "SourceHistory",
+						"required": true
+					},
+					{
+						"name": "ProjectActivityService.recorded.details",
+						"type": "Map<string, RevisionDetail>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectActivityService.recorded",
+						"type": "Promise<ProjectActivity>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectActivityService.constructor",
+				"inputs": [
+					{
+						"name": "ProjectActivityService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectActivityService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

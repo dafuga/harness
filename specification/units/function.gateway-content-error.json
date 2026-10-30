@@ -19,6 +19,7 @@
 			{
 				"name": "gatewayContentError.message",
 				"type": "string",
+				"required": true,
 				"description": "Human-readable explanation to place on the error."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "New Error with the supplied message and name GatewayContentError; construction does not throw it."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "gatewayContentError",
+				"inputs": [
+					{
+						"name": "gatewayContentError.message",
+						"type": "string",
+						"required": true,
+						"description": "Human-readable explanation to place on the error."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatewayContentError",
+						"type": "Error",
+						"description": "New Error with the supplied message and name GatewayContentError; construction does not throw it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

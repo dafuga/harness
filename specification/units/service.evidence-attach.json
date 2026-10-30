@@ -26,15 +26,18 @@
 		"inputs": [
 			{
 				"name": "EvidenceAttachService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceAttachService.attach.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceAttachService.attach.stored",
-				"type": "StoredRecord"
+				"type": "StoredRecord",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,6 +50,57 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "EvidenceAttachService.attach",
+				"inputs": [
+					{
+						"name": "EvidenceAttachService.attach.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "EvidenceAttachService.attach.stored",
+						"type": "StoredRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceAttachService.attach",
+						"type": "Promise<Attached>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "EvidenceAttachService.constructor",
+				"inputs": [
+					{
+						"name": "EvidenceAttachService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceAttachService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -26,11 +26,13 @@
 			{
 				"name": "revisionSummary.status",
 				"type": "Pick<CommitStatus, 'records'>",
+				"required": true,
 				"description": "Attached record status, validity and problems from history inspection."
 			},
 			{
 				"name": "revisionSummary.views",
 				"type": "Viewed[]",
+				"required": true,
 				"description": "Readable record views supplying profile, finish time and comparison base by record id."
 			}
 		],
@@ -41,7 +43,36 @@
 				"description": "Coverage, gaps and record summaries. No records is unverified; any usable passed record is verified; usable failures yield failed; only unusable records yield invalid. Unreadable metadata is unknown and invalid-record problems are named as gaps."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "revisionSummary",
+				"inputs": [
+					{
+						"name": "revisionSummary.status",
+						"type": "Pick<CommitStatus, 'records'>",
+						"required": true,
+						"description": "Attached record status, validity and problems from history inspection."
+					},
+					{
+						"name": "revisionSummary.views",
+						"type": "Viewed[]",
+						"required": true,
+						"description": "Readable record views supplying profile, finish time and comparison base by record id."
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionSummary",
+						"type": "RevisionRecords",
+						"description": "Coverage, gaps and record summaries. No records is unverified; any usable passed record is verified; usable failures yield failed; only unusable records yield invalid. Unreadable metadata is unknown and invalid-record problems are named as gaps."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

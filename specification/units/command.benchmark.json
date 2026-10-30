@@ -16,6 +16,7 @@
 			{
 				"name": "registerBenchmarkCommand.program",
 				"type": "Command",
+				"required": true,
 				"description": "Commander program receiving the benchmark subcommands."
 			}
 		],
@@ -26,7 +27,30 @@
 				"description": "Registers validate, run and results with JSON and ordering-seed flags."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "registerBenchmarkCommand",
+				"inputs": [
+					{
+						"name": "registerBenchmarkCommand.program",
+						"type": "Command",
+						"required": true,
+						"description": "Commander program receiving the benchmark subcommands."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerBenchmarkCommand",
+						"type": "void",
+						"description": "Registers validate, run and results with JSON and ordering-seed flags."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

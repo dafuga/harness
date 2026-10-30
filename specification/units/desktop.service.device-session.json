@@ -29,7 +29,8 @@
 		"inputs": [
 			{
 				"name": "DeviceSessionService.constructor.options",
-				"type": "DeviceSessionOptions"
+				"type": "DeviceSessionOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -38,7 +39,42 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeviceSessionService.end",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DeviceSessionService.end",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeviceSessionService.constructor",
+				"inputs": [
+					{
+						"name": "DeviceSessionService.constructor.options",
+						"type": "DeviceSessionOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeviceSessionService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

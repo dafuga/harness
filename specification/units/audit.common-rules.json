@@ -24,35 +24,43 @@
 		"inputs": [
 			{
 				"name": "splitLines.contents",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "auditFileLength.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "auditFileLength.lines",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "auditFileLength.limits",
-				"type": "HarnessRuleLimits"
+				"type": "HarnessRuleLimits",
+				"required": false
 			},
 			{
 				"name": "auditClassCount.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "auditClassCount.lines",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "auditClassCount.limits",
-				"type": "HarnessRuleLimits"
+				"type": "HarnessRuleLimits",
+				"required": false
 			},
 			{
 				"name": "maskTemplateLiterals.contents",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -73,7 +81,103 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "splitLines",
+				"inputs": [
+					{
+						"name": "splitLines.contents",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "splitLines",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "auditFileLength",
+				"inputs": [
+					{
+						"name": "auditFileLength.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "auditFileLength.lines",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "auditFileLength.limits",
+						"type": "HarnessRuleLimits",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditFileLength",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "auditClassCount",
+				"inputs": [
+					{
+						"name": "auditClassCount.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "auditClassCount.lines",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "auditClassCount.limits",
+						"type": "HarnessRuleLimits",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditClassCount",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "maskTemplateLiterals",
+				"inputs": [
+					{
+						"name": "maskTemplateLiterals.contents",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "maskTemplateLiterals",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

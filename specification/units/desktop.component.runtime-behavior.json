@@ -21,11 +21,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeBehavior.svelte",
-			"packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte"
-		],
-		"symbols": ["RuntimeBehavior", "RuntimeBehavior"]
+		"source": ["packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte"],
+		"symbols": ["RuntimeBehavior"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -33,16 +30,19 @@
 			{
 				"name": "RuntimeBehavior.result",
 				"type": "EntityEvidenceResult",
+				"required": true,
 				"description": "Required behavior rows, scenarios, scope and after-side record. Comparison has two sides only for commit mode with a parent."
 			},
 			{
 				"name": "RuntimeBehavior.evidence",
 				"type": "EntityEvidence",
+				"required": true,
 				"description": "Read state: undefined is pending, null is failure, populated data supplies comparison input. Refusal messages are forwarded to run panels."
 			},
 			{
 				"name": "RuntimeBehavior.unit",
 				"type": "string",
+				"required": false,
 				"description": "Optional function identifier forwarded to result rows on both sides."
 			}
 		],
@@ -53,7 +53,9 @@
 				"description": "Current or compared behavior with verdict/reasons, result groups, recorded duration and scenario outcomes. Pending reads show a reading verdict unless already fixed as not-compared or unknown with a reason. Failed reads say Behavior unknown. Missing groups or duration are explicitly marked absent."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

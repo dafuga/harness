@@ -34,51 +34,63 @@
 		"inputs": [
 			{
 				"name": "r2ScreenshotConfig.source",
-				"type": "NodeJS.ProcessEnv"
+				"type": "NodeJS.ProcessEnv",
+				"required": true
 			},
 			{
 				"name": "r2ScreenshotConfig.localFile",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "r2ObjectKey.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "r2ObjectKey.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.constructor.config",
-				"type": "R2ScreenshotStoreAdapterConfig"
+				"type": "R2ScreenshotStoreAdapterConfig",
+				"required": true
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.constructor.client",
-				"type": "S3Client"
+				"type": "S3Client",
+				"required": false
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put.bytes",
-				"type": "Buffer"
+				"type": "Buffer",
+				"required": true
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put.mime",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.get.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.get.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -111,6 +123,163 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "r2ScreenshotConfig",
+				"inputs": [
+					{
+						"name": "r2ScreenshotConfig.source",
+						"type": "NodeJS.ProcessEnv",
+						"required": true
+					},
+					{
+						"name": "r2ScreenshotConfig.localFile",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "r2ScreenshotConfig",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "r2ObjectKey",
+				"inputs": [
+					{
+						"name": "r2ObjectKey.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "r2ObjectKey.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "r2ObjectKey",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2ScreenshotStoreAdapter.fromEnvironment",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "R2ScreenshotStoreAdapter.fromEnvironment",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2ScreenshotStoreAdapter.put",
+				"inputs": [
+					{
+						"name": "R2ScreenshotStoreAdapter.put.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2ScreenshotStoreAdapter.put.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2ScreenshotStoreAdapter.put.bytes",
+						"type": "Buffer",
+						"required": true
+					},
+					{
+						"name": "R2ScreenshotStoreAdapter.put.mime",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2ScreenshotStoreAdapter.put",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2ScreenshotStoreAdapter.get",
+				"inputs": [
+					{
+						"name": "R2ScreenshotStoreAdapter.get.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2ScreenshotStoreAdapter.get.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2ScreenshotStoreAdapter.get",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "R2ScreenshotStoreAdapter.constructor",
+				"inputs": [
+					{
+						"name": "R2ScreenshotStoreAdapter.constructor.config",
+						"type": "R2ScreenshotStoreAdapterConfig",
+						"required": true
+					},
+					{
+						"name": "R2ScreenshotStoreAdapter.constructor.client",
+						"type": "S3Client",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2ScreenshotStoreAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

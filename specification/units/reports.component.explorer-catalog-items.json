@@ -17,11 +17,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/ExplorerCatalogItems.svelte",
 			"packages/reports/src/components/explorer-ui/ExplorerCatalogItems.svelte",
 			"packages/reports/src/components/explorer-ui/ExplorerCatalogItems.types.ts"
 		],
-		"symbols": ["ExplorerCatalogItems", "ExplorerCatalogItems", "Row"]
+		"symbols": ["ExplorerCatalogItems", "ExplorerCatalogItems.items", "Row"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,7 +33,7 @@
 			},
 			{
 				"name": "ExplorerCatalogItems.rows",
-				"type": "Array<CatalogRow | SupportRow>",
+				"type": "Row[]",
 				"required": true,
 				"description": "Required revision-scoped rows to render in their supplied order."
 			},
@@ -74,7 +73,6 @@
 				"name": "ExplorerCatalogItems.label",
 				"type": "string",
 				"required": false,
-				"default": "category ?? 'Other'",
 				"description": "Optional accessible name of a batched group and its View More action; defaults to the category or Other when null."
 			}
 		],
@@ -95,6 +93,28 @@
 				"name": "RangeError",
 				"type": "thrown",
 				"description": "Serializing a deeply nested function argument example can exceed the runtime stack."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerCatalogItems.items",
+				"inputs": [
+					{
+						"name": "ExplorerCatalogItems.items.rows",
+						"type": "Row[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerCatalogItems.items",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

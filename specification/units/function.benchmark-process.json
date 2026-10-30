@@ -21,6 +21,7 @@
 			{
 				"name": "benchmarkProcess.input",
 				"type": "BenchmarkProcessInput",
+				"required": true,
 				"description": "Command vector, working directory, optional text input and cancellation signal."
 			}
 		],
@@ -36,7 +37,43 @@
 				"description": "Child exit code and bounded stdout and stderr after process cleanup."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "benchmarkEnvironment",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "benchmarkEnvironment",
+						"type": "Record<string, string | undefined>",
+						"description": "Allowlisted system environment with nested Harness analytics disabled."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "benchmarkProcess",
+				"inputs": [
+					{
+						"name": "benchmarkProcess.input",
+						"type": "BenchmarkProcessInput",
+						"required": true,
+						"description": "Command vector, working directory, optional text input and cancellation signal."
+					}
+				],
+				"outputs": [
+					{
+						"name": "benchmarkProcess",
+						"type": "Promise<BenchmarkProcessResult>",
+						"description": "Child exit code and bounded stdout and stderr after process cleanup."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

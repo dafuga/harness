@@ -24,11 +24,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/DeploymentActivity.svelte",
-			"packages/desktop/src/components/development-tooling/DeploymentActivity.svelte"
-		],
-		"symbols": ["DeploymentActivity", "DeploymentActivity"]
+		"source": ["packages/desktop/src/components/development-tooling/DeploymentActivity.svelte"],
+		"symbols": ["DeploymentActivity", "DeploymentActivity.icon"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -36,6 +33,7 @@
 			{
 				"name": "DeploymentActivity.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
 			}
 		],
@@ -46,7 +44,23 @@
 				"description": "Shows the host deployment light, concurrent destination list and shared deployment detail views."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "DeploymentActivity.icon",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DeploymentActivity.icon",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

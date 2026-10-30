@@ -20,16 +20,19 @@
 			{
 				"name": "frozenBuild.source",
 				"type": "string",
+				"required": true,
 				"description": "Finished source build directory."
 			},
 			{
 				"name": "frozenBuild.target",
 				"type": "string",
+				"required": true,
 				"description": "Destination directory, removed before copying."
 			},
 			{
 				"name": "frozenBuild.copied",
 				"type": "(from: string, to: string) => Promise<void>",
+				"required": false,
 				"description": "Optional async copy operation, defaulting to recursive filesystem copy."
 			}
 		],
@@ -46,7 +49,47 @@
 				"type": "thrown",
 				"description": "Throws if the source has no build or identities differ; a mismatch removes the target. Identity, filesystem and copy failures can also reject."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "frozenBuild",
+				"inputs": [
+					{
+						"name": "frozenBuild.source",
+						"type": "string",
+						"required": true,
+						"description": "Finished source build directory."
+					},
+					{
+						"name": "frozenBuild.target",
+						"type": "string",
+						"required": true,
+						"description": "Destination directory, removed before copying."
+					},
+					{
+						"name": "frozenBuild.copied",
+						"type": "(from: string, to: string) => Promise<void>",
+						"required": false,
+						"description": "Optional async copy operation, defaulting to recursive filesystem copy."
+					}
+				],
+				"outputs": [
+					{
+						"name": "frozenBuild",
+						"type": "Promise<FrozenBuild>",
+						"description": "Target directory, source build identifier and file count after matching the source-before, source-after and copied identities."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

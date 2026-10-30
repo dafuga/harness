@@ -34,24 +34,28 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "benchMeasurement.context",
-				"type": "MeasureContext",
-				"description": "Machine profile and tested commit, or null when the run cannot be attributed to a clean revision."
-			},
-			{
-				"name": "benchMeasurement.entry",
-				"type": "Entry",
-				"description": "Target, metric, unit, method and either a numeric value or an unavailable reason; optionally workload, sample count and artifact identities."
-			},
-			{
 				"name": "sizeMeasurements.context",
 				"type": "MeasureContext",
+				"required": true,
 				"description": "Machine profile and tested commit to attach to every size entry."
 			},
 			{
 				"name": "sizeMeasurements.build",
 				"type": "KernelBuild",
+				"required": true,
 				"description": "Kernel build record containing Wasm and native artifact sizes and hashes, plus reference and crate source sizes and files."
+			},
+			{
+				"name": "benchMeasurement.context",
+				"type": "MeasureContext",
+				"required": true,
+				"description": "Machine profile and tested commit, or null when the run cannot be attributed to a clean revision."
+			},
+			{
+				"name": "benchMeasurement.entry",
+				"type": "Entry",
+				"required": true,
+				"description": "Target, metric, unit, method and either a numeric value or an unavailable reason; optionally workload, sample count and artifact identities."
 			}
 		],
 		"outputs": [
@@ -71,7 +75,62 @@
 				"description": "Seven byte measurements: unavailable module and HTTP artifact sizes, measured Wasm and process artifacts, and module, Wasm and process source sizes. Values come from the supplied build record."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "sizeMeasurements",
+				"inputs": [
+					{
+						"name": "sizeMeasurements.context",
+						"type": "MeasureContext",
+						"required": true,
+						"description": "Machine profile and tested commit to attach to every size entry."
+					},
+					{
+						"name": "sizeMeasurements.build",
+						"type": "KernelBuild",
+						"required": true,
+						"description": "Kernel build record containing Wasm and native artifact sizes and hashes, plus reference and crate source sizes and files."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sizeMeasurements",
+						"type": "BenchMeasurement[]",
+						"description": "Seven byte measurements: unavailable module and HTTP artifact sizes, measured Wasm and process artifacts, and module, Wasm and process source sizes. Values come from the supplied build record."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "benchMeasurement",
+				"inputs": [
+					{
+						"name": "benchMeasurement.context",
+						"type": "MeasureContext",
+						"required": true,
+						"description": "Machine profile and tested commit, or null when the run cannot be attributed to a clean revision."
+					},
+					{
+						"name": "benchMeasurement.entry",
+						"type": "Entry",
+						"required": true,
+						"description": "Target, metric, unit, method and either a numeric value or an unavailable reason; optionally workload, sample count and artifact identities."
+					}
+				],
+				"outputs": [
+					{
+						"name": "benchMeasurement",
+						"type": "BenchMeasurement",
+						"description": "Benchmark entry with the target owner, profile and revision; absent workload becomes null and absent artifacts become an empty array. An unavailable value becomes null with its reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

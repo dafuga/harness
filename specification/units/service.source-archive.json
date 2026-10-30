@@ -29,27 +29,57 @@
 			{
 				"name": "SourceArchiveService.constructor.root",
 				"type": "string",
+				"required": true,
 				"description": "Git repository containing the selected immutable commit."
 			},
 			{
 				"name": "SourceArchiveService.constructor.out",
 				"type": "string",
+				"required": true,
 				"description": "History output directory; existing protected media carries source text."
 			},
 			{
 				"name": "SourceArchiveService.archive.commit",
 				"type": "string",
+				"required": true,
 				"description": "Selected Git commit, never a working tree or latest-ref fallback."
 			},
 			{
 				"name": "SourceArchiveService.archive.units",
 				"type": "Unit[]",
+				"required": true,
 				"description": "Registry units to enrich; inactive units archive no source."
 			},
 			{
 				"name": "SourceArchiveService.archive.side",
-				"type": "StoredSide | undefined",
+				"type": "StoredSide",
+				"required": false,
 				"description": "Selected revision graph and authored scenarios for direct test imports and declared test coverage; absent historical graphs provide no inferred tests."
+			},
+			{
+				"name": "associatedTests.unit",
+				"type": "Unit",
+				"required": true
+			},
+			{
+				"name": "associatedTests.owned",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "associatedTests.side",
+				"type": "StoredSide",
+				"required": true
+			},
+			{
+				"name": "associatedTests.imports",
+				"type": "Map<string, string[]>",
+				"required": true
+			},
+			{
+				"name": "testImporters.side",
+				"type": "StoredSide",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -59,7 +89,117 @@
 				"description": "Adds sourceFiles and revision-bound testFiles to units. Owned folders expand to tracked files; unreadable contents retain explicit gaps. Never reads working-copy files."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "SourceArchiveService.archive",
+				"inputs": [
+					{
+						"name": "SourceArchiveService.archive.commit",
+						"type": "string",
+						"required": true,
+						"description": "Selected Git commit, never a working tree or latest-ref fallback."
+					},
+					{
+						"name": "SourceArchiveService.archive.units",
+						"type": "Unit[]",
+						"required": true,
+						"description": "Registry units to enrich; inactive units archive no source."
+					},
+					{
+						"name": "SourceArchiveService.archive.side",
+						"type": "StoredSide",
+						"required": false,
+						"description": "Selected revision graph and authored scenarios for direct test imports and declared test coverage; absent historical graphs provide no inferred tests."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceArchiveService.archive",
+						"type": "Promise<void>",
+						"description": "Adds sourceFiles and revision-bound testFiles to units. Owned folders expand to tracked files; unreadable contents retain explicit gaps. Never reads working-copy files."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "associatedTests",
+				"inputs": [
+					{
+						"name": "associatedTests.unit",
+						"type": "Unit",
+						"required": true
+					},
+					{
+						"name": "associatedTests.owned",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "associatedTests.side",
+						"type": "StoredSide",
+						"required": true
+					},
+					{
+						"name": "associatedTests.imports",
+						"type": "Map<string, string[]>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "associatedTests",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "testImporters",
+				"inputs": [
+					{
+						"name": "testImporters.side",
+						"type": "StoredSide",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "testImporters",
+						"type": "Map<string, string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SourceArchiveService.constructor",
+				"inputs": [
+					{
+						"name": "SourceArchiveService.constructor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SourceArchiveService.constructor.out",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceArchiveService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

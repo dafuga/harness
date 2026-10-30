@@ -18,7 +18,8 @@
 		"inputs": [
 			{
 				"name": "ReportCommand.run.argv",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -27,7 +28,29 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReportCommand.run",
+				"inputs": [
+					{
+						"name": "ReportCommand.run.argv",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportCommand.run",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

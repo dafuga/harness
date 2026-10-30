@@ -40,39 +40,48 @@
 		"inputs": [
 			{
 				"name": "mailerFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "helperFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "concernFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "channelFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "formFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "initializerFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "configFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "middlewareFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "resourceFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -113,7 +122,173 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "mailerFiles",
+				"inputs": [
+					{
+						"name": "mailerFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "mailerFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "helperFiles",
+				"inputs": [
+					{
+						"name": "helperFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "helperFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "concernFiles",
+				"inputs": [
+					{
+						"name": "concernFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "concernFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "channelFiles",
+				"inputs": [
+					{
+						"name": "channelFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "channelFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formFiles",
+				"inputs": [
+					{
+						"name": "formFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "initializerFiles",
+				"inputs": [
+					{
+						"name": "initializerFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "initializerFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "configFiles",
+				"inputs": [
+					{
+						"name": "configFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "configFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "middlewareFiles",
+				"inputs": [
+					{
+						"name": "middlewareFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "middlewareFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resourceFiles",
+				"inputs": [
+					{
+						"name": "resourceFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -25,11 +25,13 @@
 		"inputs": [
 			{
 				"name": "moduleCategoryFindings.structure",
-				"type": "AuditStructure"
+				"type": "AuditStructure",
+				"required": true
 			},
 			{
 				"name": "auditHarnessStructure.structure",
-				"type": "AuditStructure"
+				"type": "AuditStructure",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -42,7 +44,47 @@
 				"type": "AuditFinding[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "moduleCategoryFindings",
+				"inputs": [
+					{
+						"name": "moduleCategoryFindings.structure",
+						"type": "AuditStructure",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "moduleCategoryFindings",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "auditHarnessStructure",
+				"inputs": [
+					{
+						"name": "auditHarnessStructure.structure",
+						"type": "AuditStructure",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditHarnessStructure",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

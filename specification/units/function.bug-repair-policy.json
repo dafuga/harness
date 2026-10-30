@@ -20,7 +20,23 @@
 				"description": "Reusable repair rules covering coverage diagnosis, immutable failing/passing commits, causal naming/API corrections, selected-callable acceptance and planning boundaries. Returns a fresh list; runs no tests or agent."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "bugRepairPolicy",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "bugRepairPolicy",
+						"type": "string[]",
+						"description": "Reusable repair rules covering coverage diagnosis, immutable failing/passing commits, causal naming/API corrections, selected-callable acceptance and planning boundaries. Returns a fresh list; runs no tests or agent."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

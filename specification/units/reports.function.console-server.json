@@ -44,7 +44,36 @@
 				"description": "Lazily cached ConsoleAccess configured from owner mode, bind address and address-header settings, with local data and portable export support."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "consoleDirectory",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "consoleDirectory",
+						"type": "string | undefined",
+						"description": "Resolved history directory from the trimmed console-data environment setting, or undefined when unset."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "consoleServer",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "consoleServer",
+						"type": "ConsoleAccess",
+						"description": "Lazily cached ConsoleAccess configured from owner mode, bind address and address-header settings, with local data and portable export support."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -58,27 +87,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.function.console-export",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.function.evidence-media",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.function.report-runtime-root",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.model.harness-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.serializer.report-export",
 			"via": "import",
 			"origin": "derived"
 		},

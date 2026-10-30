@@ -30,19 +30,23 @@
 		"inputs": [
 			{
 				"name": "NativeSessionAdapter.constructor.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "NativeSessionAdapter.constructor.encryption",
-				"type": "NativeEncryption"
+				"type": "NativeEncryption",
+				"required": true
 			},
 			{
 				"name": "NativeSessionAdapter.constructor.platform",
-				"type": "NodeJS.Platform"
+				"type": "NodeJS.Platform",
+				"required": false
 			},
 			{
 				"name": "NativeSessionAdapter.save.credential",
-				"type": "NativeHostedCredential"
+				"type": "NativeHostedCredential",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -71,6 +75,115 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "NativeSessionAdapter.invalidate",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeSessionAdapter.invalidate",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "NativeSessionAdapter.available",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeSessionAdapter.available",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeSessionAdapter.read",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeSessionAdapter.read",
+						"type": "Promise<NativeHostedCredential | null>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeSessionAdapter.save",
+				"inputs": [
+					{
+						"name": "NativeSessionAdapter.save.credential",
+						"type": "NativeHostedCredential",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeSessionAdapter.save",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeSessionAdapter.clear",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeSessionAdapter.clear",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "NativeSessionAdapter.constructor",
+				"inputs": [
+					{
+						"name": "NativeSessionAdapter.constructor.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "NativeSessionAdapter.constructor.encryption",
+						"type": "NativeEncryption",
+						"required": true
+					},
+					{
+						"name": "NativeSessionAdapter.constructor.platform",
+						"type": "NodeJS.Platform",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeSessionAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

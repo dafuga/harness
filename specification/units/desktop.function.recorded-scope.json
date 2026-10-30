@@ -28,21 +28,25 @@
 			{
 				"name": "recordedTip.query",
 				"type": "Asked",
+				"required": true,
 				"description": "Entity ID, branch, commit and current-or-commit viewing mode to check."
 			},
 			{
 				"name": "recordedTip.tip",
 				"type": "string",
+				"required": true,
 				"description": "Actual tip commit of the selected branch."
 			},
 			{
 				"name": "recordedScope.query",
 				"type": "Asked",
+				"required": true,
 				"description": "Entity ID, branch, commit and viewing mode to describe."
 			},
 			{
 				"name": "recordedScope.facts",
 				"type": "ScopeFacts",
+				"required": true,
 				"description": "Branch tip, registered kind, commit metadata, judged evidence and legacy record IDs."
 			}
 		],
@@ -69,7 +73,72 @@
 				"type": "refused",
 				"description": "The supplied entity kind is absent or has no supported explorer category."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "recordedTip",
+				"inputs": [
+					{
+						"name": "recordedTip.query",
+						"type": "Asked",
+						"required": true,
+						"description": "Entity ID, branch, commit and current-or-commit viewing mode to check."
+					},
+					{
+						"name": "recordedTip.tip",
+						"type": "string",
+						"required": true,
+						"description": "Actual tip commit of the selected branch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedTip",
+						"type": "void",
+						"description": "Returns nothing when the requested current commit is still the branch tip; otherwise throws."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordedScope",
+				"inputs": [
+					{
+						"name": "recordedScope.query",
+						"type": "Asked",
+						"required": true,
+						"description": "Entity ID, branch, commit and viewing mode to describe."
+					},
+					{
+						"name": "recordedScope.facts",
+						"type": "ScopeFacts",
+						"required": true,
+						"description": "Branch tip, registered kind, commit metadata, judged evidence and legacy record IDs."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedScope",
+						"type": "ExplorerScope",
+						"description": "Scope containing the selected location, tip comparison, first parent or null and supplied evidence summary."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

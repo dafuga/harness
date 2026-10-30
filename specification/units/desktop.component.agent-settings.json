@@ -20,11 +20,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/AgentSettings.svelte",
-			"packages/desktop/src/components/agents-providers/AgentSettings.svelte"
-		],
-		"symbols": ["AgentSettings", "AgentSettings"]
+		"source": ["packages/desktop/src/components/agents-providers/AgentSettings.svelte"],
+		"symbols": ["AgentSettings"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -36,7 +33,9 @@
 				"description": "Agents section with a Design options dropdown populated from supported counts. Loads the shared device preference on mount and sends changes to its settings store. The preference applies across projects and composers. If saving fails, shows an alert that the choice resets on reload."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

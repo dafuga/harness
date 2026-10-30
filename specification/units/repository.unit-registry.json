@@ -30,27 +30,33 @@
 		"inputs": [
 			{
 				"name": "UnitRegistryRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "UnitRegistryRepository.config.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"required": true
 			},
 			{
 				"name": "UnitRegistryRepository.read.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"required": true
 			},
 			{
 				"name": "UnitRegistryRepository.write.manifests",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"required": true
 			},
 			{
 				"name": "UnitRegistryRepository.remove.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "UnitRegistryRepository.path.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -79,6 +85,124 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "UnitRegistryRepository.config",
+				"inputs": [
+					{
+						"name": "UnitRegistryRepository.config.tree",
+						"type": "SourceTree",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitRegistryRepository.config",
+						"type": "Promise<UnitsConfig>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "UnitRegistryRepository.read",
+				"inputs": [
+					{
+						"name": "UnitRegistryRepository.read.tree",
+						"type": "SourceTree",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitRegistryRepository.read",
+						"type": "Promise<RegistryRead>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "UnitRegistryRepository.write",
+				"inputs": [
+					{
+						"name": "UnitRegistryRepository.write.manifests",
+						"type": "ComponentManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitRegistryRepository.write",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "UnitRegistryRepository.remove",
+				"inputs": [
+					{
+						"name": "UnitRegistryRepository.remove.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitRegistryRepository.remove",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "UnitRegistryRepository.path",
+				"inputs": [
+					{
+						"name": "UnitRegistryRepository.path.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitRegistryRepository.path",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "UnitRegistryRepository.constructor",
+				"inputs": [
+					{
+						"name": "UnitRegistryRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitRegistryRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

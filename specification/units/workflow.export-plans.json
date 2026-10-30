@@ -25,19 +25,23 @@
 		"inputs": [
 			{
 				"name": "modelExportPlans.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "adapterExportPlan.adapter",
-				"type": "AdapterName"
+				"type": "AdapterName",
+				"required": true
 			},
 			{
 				"name": "pieceExportPlans.kind",
-				"type": "PieceKind"
+				"type": "PieceKind",
+				"required": true
 			},
 			{
 				"name": "pieceExportPlans.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,7 +58,70 @@
 				"type": "ExportPlan[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "modelExportPlans",
+				"inputs": [
+					{
+						"name": "modelExportPlans.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "modelExportPlans",
+						"type": "ExportPlan[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "adapterExportPlan",
+				"inputs": [
+					{
+						"name": "adapterExportPlan.adapter",
+						"type": "AdapterName",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adapterExportPlan",
+						"type": "ExportPlan"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pieceExportPlans",
+				"inputs": [
+					{
+						"name": "pieceExportPlans.kind",
+						"type": "PieceKind",
+						"required": true
+					},
+					{
+						"name": "pieceExportPlans.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pieceExportPlans",
+						"type": "ExportPlan[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

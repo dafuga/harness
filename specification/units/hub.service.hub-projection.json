@@ -33,115 +33,143 @@
 		"inputs": [
 			{
 				"name": "HubProjectionService.constructor.context",
-				"type": "Dependencies"
+				"type": "Dependencies",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.evidence.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.evidence.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.evidence.query",
-				"type": "EntityEvidenceQuery"
+				"type": "EntityEvidenceQuery",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.artifact.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.artifact.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.artifact.query",
-				"type": "EvidenceArtifactQuery"
+				"type": "EvidenceArtifactQuery",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.snapshot.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.snapshot.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.snapshot.query",
-				"type": "{ branch: string | null; commit: string | null }"
+				"type": "{ branch: string | null; commit: string | null }",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.registry.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.registry.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.registry.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.entity.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.entity.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.entity.query",
-				"type": "{ entityId: string; commit: string; branch: string }"
+				"type": "{ entityId: string; commit: string; branch: string }",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.history.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.history.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.history.query",
-				"type": "{ entityId: string; commit: string; page: number; branch: string }"
+				"type": "{ entityId: string; commit: string; page: number; branch: string }",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.source.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.source.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.source.query",
-				"type": "{ entityId: string; commit: string; path: string }"
+				"type": "{ entityId: string; commit: string; path: string }",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.image.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.image.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.image.query",
-				"type": "{ entityId: string; commit: string; version: string; sha256: string; }"
+				"type": "{ entityId: string; commit: string; version: string; sha256: string; }",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.messages.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.messages.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.messages.query",
-				"type": "{ entityId: string; commit: string; threadId: string }"
+				"type": "{ entityId: string; commit: string; threadId: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -182,7 +210,282 @@
 				"type": "Promise<ThreadMessage[]>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HubProjectionService.evidence",
+				"inputs": [
+					{
+						"name": "HubProjectionService.evidence.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.evidence.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.evidence.query",
+						"type": "EntityEvidenceQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.evidence",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubProjectionService.artifact",
+				"inputs": [
+					{
+						"name": "HubProjectionService.artifact.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.artifact.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.artifact.query",
+						"type": "EvidenceArtifactQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.artifact",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubProjectionService.snapshot",
+				"inputs": [
+					{
+						"name": "HubProjectionService.snapshot.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.snapshot.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.snapshot.query",
+						"type": "{ branch: string | null; commit: string | null }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.snapshot",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubProjectionService.registry",
+				"inputs": [
+					{
+						"name": "HubProjectionService.registry.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.registry.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.registry.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.registry",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubProjectionService.entity",
+				"inputs": [
+					{
+						"name": "HubProjectionService.entity.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.entity.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.entity.query",
+						"type": "{ entityId: string; commit: string; branch: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.entity",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubProjectionService.history",
+				"inputs": [
+					{
+						"name": "HubProjectionService.history.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.history.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.history.query",
+						"type": "{ entityId: string; commit: string; page: number; branch: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.history",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubProjectionService.source",
+				"inputs": [
+					{
+						"name": "HubProjectionService.source.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.source.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.source.query",
+						"type": "{ entityId: string; commit: string; path: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.source",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubProjectionService.image",
+				"inputs": [
+					{
+						"name": "HubProjectionService.image.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.image.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.image.query",
+						"type": "{ entityId: string; commit: string; version: string; sha256: string; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.image",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubProjectionService.messages",
+				"inputs": [
+					{
+						"name": "HubProjectionService.messages.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.messages.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.messages.query",
+						"type": "{ entityId: string; commit: string; threadId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.messages",
+						"type": "Promise<ThreadMessage[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HubProjectionService.constructor",
+				"inputs": [
+					{
+						"name": "HubProjectionService.constructor.context",
+						"type": "Dependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

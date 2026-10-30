@@ -20,6 +20,7 @@
 			{
 				"name": "hubMetadataPaths.entries",
 				"type": "SourceEntry[]",
+				"required": true,
 				"description": "Source tree entries with type, mode and path."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Regular/executable blob paths for unit manifests and plan/design JSON or Markdown under the six supported category folders; images, threads and implementation files are excluded."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubMetadataPaths",
+				"inputs": [
+					{
+						"name": "hubMetadataPaths.entries",
+						"type": "SourceEntry[]",
+						"required": true,
+						"description": "Source tree entries with type, mode and path."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubMetadataPaths",
+						"type": "string[]",
+						"description": "Regular/executable blob paths for unit manifests and plan/design JSON or Markdown under the six supported category folders; images, threads and implementation files are excluded."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

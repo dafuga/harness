@@ -19,6 +19,7 @@
 			{
 				"name": "hubRecords.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Parsed unit manifests after schema, filename/ID and duplicate-ID checks, using a metadata bundle when available."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubRecords",
+				"inputs": [
+					{
+						"name": "hubRecords.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubRecords",
+						"type": "unknown",
+						"description": "Parsed unit manifests after schema, filename/ID and duplicate-ID checks, using a metadata bundle when available."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

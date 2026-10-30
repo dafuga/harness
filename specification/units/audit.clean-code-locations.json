@@ -26,27 +26,33 @@
 		"inputs": [
 			{
 				"name": "planReviewLocations.code",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "planReviewLocations.assessments",
-				"type": "PrincipleAssessment[]"
+				"type": "PrincipleAssessment[]",
+				"required": true
 			},
 			{
 				"name": "applyReviewLocations.assessments",
-				"type": "PrincipleAssessment[]"
+				"type": "PrincipleAssessment[]",
+				"required": true
 			},
 			{
 				"name": "applyReviewLocations.plan",
-				"type": "LocationPlan"
+				"type": "LocationPlan",
+				"required": true
 			},
 			{
 				"name": "applyReviewLocations.result",
-				"type": "JevEvaluation | undefined"
+				"type": "JevEvaluation | undefined",
+				"required": true
 			},
 			{
 				"name": "applyReviewLocations.minConfidence",
-				"type": "number"
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -59,7 +65,67 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "planReviewLocations",
+				"inputs": [
+					{
+						"name": "planReviewLocations.code",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "planReviewLocations.assessments",
+						"type": "PrincipleAssessment[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "planReviewLocations",
+						"type": "LocationPlan"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "applyReviewLocations",
+				"inputs": [
+					{
+						"name": "applyReviewLocations.assessments",
+						"type": "PrincipleAssessment[]",
+						"required": true
+					},
+					{
+						"name": "applyReviewLocations.plan",
+						"type": "LocationPlan",
+						"required": true
+					},
+					{
+						"name": "applyReviewLocations.result",
+						"type": "JevEvaluation | undefined",
+						"required": true
+					},
+					{
+						"name": "applyReviewLocations.minConfidence",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "applyReviewLocations",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -30,11 +30,13 @@
 			{
 				"name": "cpuProcesses.value",
 				"type": "string",
+				"required": true,
 				"description": "Process-list text whose rows contain pid, parent pid, cumulative CPU time and command. Malformed rows are skipped; time may include a day prefix and fractional seconds."
 			},
 			{
 				"name": "cpuProcesses.monitorPid",
 				"type": "unknown",
+				"required": false,
 				"description": "Pid to classify as Harness regardless of its command; defaults to the current process id."
 			}
 		],
@@ -45,7 +47,36 @@
 				"description": "Parsed processes with numeric pids and CPU milliseconds, plus an optional Codex, Harness or agent role and safe label. Command strings are used only for classification and are not returned."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "cpuProcesses",
+				"inputs": [
+					{
+						"name": "cpuProcesses.value",
+						"type": "string",
+						"required": true,
+						"description": "Process-list text whose rows contain pid, parent pid, cumulative CPU time and command. Malformed rows are skipped; time may include a day prefix and fractional seconds."
+					},
+					{
+						"name": "cpuProcesses.monitorPid",
+						"type": "unknown",
+						"required": false,
+						"description": "Pid to classify as Harness regardless of its command; defaults to the current process id."
+					}
+				],
+				"outputs": [
+					{
+						"name": "cpuProcesses",
+						"type": "CpuProcess[]",
+						"description": "Parsed processes with numeric pids and CPU milliseconds, plus an optional Codex, Harness or agent role and safe label. Command strings are used only for classification and are not returned."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

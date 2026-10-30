@@ -21,11 +21,13 @@
 			{
 				"name": "gitBlobs.root",
 				"type": "string",
+				"required": true,
 				"description": "The repository directory passed to Git."
 			},
 			{
 				"name": "gitBlobs.request",
 				"type": "BlobRequest",
+				"required": true,
 				"description": "The revision and paths to read. Empty paths return an empty map without starting Git. Paths containing newline, carriage return or a null character are refused."
 			}
 		],
@@ -42,7 +44,41 @@
 				"type": "thrown",
 				"description": "Rejects unsupported paths, Git execution failures or a response with a missing header boundary or invalid size. Missing objects can produce an invalid-response error. Revision strings are passed through without separate validation."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "gitBlobs",
+				"inputs": [
+					{
+						"name": "gitBlobs.root",
+						"type": "string",
+						"required": true,
+						"description": "The repository directory passed to Git."
+					},
+					{
+						"name": "gitBlobs.request",
+						"type": "BlobRequest",
+						"required": true,
+						"description": "The revision and paths to read. Empty paths return an empty map without starting Git. Paths containing newline, carriage return or a null character are refused."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gitBlobs",
+						"type": "Promise<Map<string, Buffer>>",
+						"description": "A promise for a map from each requested path to its returned byte buffer. Duplicate paths share one map key. The Git command permits at most 64,000,000 output bytes."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

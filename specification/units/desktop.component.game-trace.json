@@ -27,11 +27,13 @@
 			{
 				"name": "GameTrace.run",
 				"type": "GameRun",
+				"required": true,
 				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
 			},
 			{
 				"name": "GameTrace.view",
 				"type": "GameView",
+				"required": true,
 				"description": "Active game view containing scene direction and executable checkpoints."
 			}
 		],
@@ -42,7 +44,9 @@
 				"description": "Show the current game view checkpoint execution trace in a collapsible list. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

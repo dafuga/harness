@@ -29,19 +29,25 @@
 		"inputs": [
 			{
 				"name": "auditPath.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "auditPath.options",
-				"type": "AuditOptions"
+				"type": "AuditOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "auditProject.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "auditProject.options",
-				"type": "AuditOptions"
+				"type": "AuditOptions",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -54,7 +60,59 @@
 				"type": "Promise<AuditResult>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "auditPath",
+				"inputs": [
+					{
+						"name": "auditPath.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "auditPath.options",
+						"type": "AuditOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditPath",
+						"type": "Promise<AuditFinding[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "auditProject",
+				"inputs": [
+					{
+						"name": "auditProject.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "auditProject.options",
+						"type": "AuditOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditProject",
+						"type": "Promise<AuditResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

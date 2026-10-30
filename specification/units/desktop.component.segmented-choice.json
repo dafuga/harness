@@ -14,11 +14,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/SegmentedChoice.svelte",
-			"packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte"
-		],
-		"symbols": ["SegmentedChoice", "SegmentedChoice"]
+		"source": ["packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte"],
+		"symbols": ["SegmentedChoice"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -26,16 +23,20 @@
 			{
 				"name": "SegmentedChoice.value",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional bindable selected string, empty by default. Click replaces it. Values outside the options leave all buttons unselected; no fallback is chosen."
 			},
 			{
 				"name": "SegmentedChoice.options",
 				"type": "string[]",
+				"required": true,
 				"description": "Required option strings in display order, serving as both labels and keys. Callers should supply unique strings. Empty renders no buttons."
 			},
 			{
 				"name": "SegmentedChoice.label",
 				"type": "string",
+				"required": true,
 				"description": "Required accessible name of the group."
 			}
 		],
@@ -46,7 +47,9 @@
 				"description": "Buttons with active styling and aria-pressed for the selected value. Selection updates the binding without submitting a form."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

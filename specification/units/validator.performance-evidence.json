@@ -25,16 +25,19 @@
 			{
 				"name": "PerformanceEvidenceValidator.required.units",
 				"type": "ComponentManifest[]",
+				"required": true,
 				"description": "Registered active candidate units at the selected source revision."
 			},
 			{
 				"name": "PerformanceEvidenceValidator.required.files",
 				"type": "Map<string, SourceFile>",
+				"required": true,
 				"description": "Inspected source files with execution classification; unread or unknown source never earns an exemption."
 			},
 			{
 				"name": "PerformanceEvidenceValidator.validate.input",
 				"type": "PerformanceEvidenceInput",
+				"required": true,
 				"description": "Selected units, inspected source, observations, exact commit and runtime profile that must agree."
 			}
 		],
@@ -50,7 +53,56 @@
 				"description": "Missing or incompatible latency/memory requirements by unit, callable and runtime target."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "PerformanceEvidenceValidator.required",
+				"inputs": [
+					{
+						"name": "PerformanceEvidenceValidator.required.units",
+						"type": "ComponentManifest[]",
+						"required": true,
+						"description": "Registered active candidate units at the selected source revision."
+					},
+					{
+						"name": "PerformanceEvidenceValidator.required.files",
+						"type": "Map<string, SourceFile>",
+						"required": true,
+						"description": "Inspected source files with execution classification; unread or unknown source never earns an exemption."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PerformanceEvidenceValidator.required",
+						"type": "ComponentManifest[]",
+						"description": "Executable active units requiring observations; declarative inspected source and CSS alone are exempt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PerformanceEvidenceValidator.validate",
+				"inputs": [
+					{
+						"name": "PerformanceEvidenceValidator.validate.input",
+						"type": "PerformanceEvidenceInput",
+						"required": true,
+						"description": "Selected units, inspected source, observations, exact commit and runtime profile that must agree."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PerformanceEvidenceValidator.validate",
+						"type": "string[]",
+						"description": "Missing or incompatible latency/memory requirements by unit, callable and runtime target."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -29,11 +29,13 @@
 			{
 				"name": "sourceBlocks.code",
 				"type": "string",
+				"required": true,
 				"description": "Original source text to divide into blocks."
 			},
 			{
 				"name": "sourceBlocks.language",
 				"type": "SourceLanguage",
+				"required": true,
 				"description": "Source family; ts scans script blocks, svelte also emits template and first style remainder, and other families produce one module remainder."
 			}
 		],
@@ -44,7 +46,36 @@
 				"description": "Blocks with name, kind, line bounds, 16-character normalized-content hash and complexity. Script fingerprints ignore masked comments and normalize whitespace; named functions start complexity at one, module decisions at zero."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "sourceBlocks",
+				"inputs": [
+					{
+						"name": "sourceBlocks.code",
+						"type": "string",
+						"required": true,
+						"description": "Original source text to divide into blocks."
+					},
+					{
+						"name": "sourceBlocks.language",
+						"type": "SourceLanguage",
+						"required": true,
+						"description": "Source family; ts scans script blocks, svelte also emits template and first style remainder, and other families produce one module remainder."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceBlocks",
+						"type": "SourceBlock[]",
+						"description": "Blocks with name, kind, line bounds, 16-character normalized-content hash and complexity. Script fingerprints ignore masked comments and normalize whitespace; named functions start complexity at one, module decisions at zero."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

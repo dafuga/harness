@@ -14,14 +14,14 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "snapshot",
+				"name": "readTreeTexts.tree",
 				"type": "Pick<SourceTree, 'read'>",
-				"description": "The readable snapshot that supplies each requested file."
+				"required": true
 			},
 			{
-				"name": "paths",
+				"name": "readTreeTexts.paths",
 				"type": "string[]",
-				"description": "Files to read, in the order their complete text must be returned. Repeated paths keep their positions."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +37,33 @@
 				"type": "Error",
 				"description": "A failed file read rejects the whole request; no file is silently omitted."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "readTreeTexts",
+				"inputs": [
+					{
+						"name": "readTreeTexts.tree",
+						"type": "Pick<SourceTree, 'read'>",
+						"required": true
+					},
+					{
+						"name": "readTreeTexts.paths",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTreeTexts",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

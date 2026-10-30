@@ -28,15 +28,19 @@
 		"inputs": [
 			{
 				"name": "runImpact.options",
-				"type": "ImpactOptions"
+				"type": "ImpactOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "runtimeKind.value",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"required": true
 			},
 			{
 				"name": "renderImpact.report",
-				"type": "ImpactReport"
+				"type": "ImpactReport",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,7 +62,71 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runImpact",
+				"inputs": [
+					{
+						"name": "runImpact.options",
+						"type": "ImpactOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "runImpact",
+						"type": "Promise<ImpactReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runtimeKind",
+				"inputs": [
+					{
+						"name": "runtimeKind.value",
+						"type": "string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runtimeKind",
+						"type": "RuntimeKind | 'default'"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderImpact",
+				"inputs": [
+					{
+						"name": "renderImpact.report",
+						"type": "ImpactReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderImpact",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -37,11 +37,13 @@
 			{
 				"name": "hubSchemas.schema",
 				"type": "z.ZodType<T>",
+				"required": true,
 				"description": "Runtime schema used to parse the value."
 			},
 			{
 				"name": "hubSchemas.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Untrusted record to validate."
 			}
 		],
@@ -72,7 +74,36 @@
 				"description": "Parsed schema result, including transformations and removal of unknown keys where the chosen schema permits; rejects unsuccessful parsing with artifact-corrupt."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubSchemas",
+				"inputs": [
+					{
+						"name": "hubSchemas.schema",
+						"type": "z.ZodType<T>",
+						"required": true,
+						"description": "Runtime schema used to parse the value."
+					},
+					{
+						"name": "hubSchemas.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Untrusted record to validate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubSchemas",
+						"type": "T",
+						"description": "Parsed schema result, including transformations and removal of unknown keys where the chosen schema permits; rejects unsuccessful parsing with artifact-corrupt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -30,48 +30,58 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "gitRead.root",
-				"type": "string",
-				"description": "The repository directory for the Git command."
-			},
-			{
-				"name": "gitRead.args",
-				"type": "string[]",
-				"description": "The Git arguments to execute directly. Callers must choose read-only arguments when a read is intended; this helper does not restrict commands."
-			},
-			{
-				"name": "gitRevision.root",
-				"type": "string",
-				"description": "The repository whose revision should be resolved."
-			},
-			{
-				"name": "gitRevision.revision",
-				"type": "unknown",
-				"description": "The revision to resolve as a commit; defaults to HEAD. Must be nonempty, at most 300 characters and contain no null character."
-			},
-			{
 				"name": "gitFiles.root",
 				"type": "string",
+				"required": true,
 				"description": "The repository whose tracked files should be listed."
 			},
 			{
 				"name": "gitFiles.revision",
 				"type": "string",
+				"required": true,
 				"description": "The revision to resolve before listing files."
+			},
+			{
+				"name": "gitRead.root",
+				"type": "string",
+				"required": true,
+				"description": "The repository directory for the Git command."
+			},
+			{
+				"name": "gitRead.args",
+				"type": "string[]",
+				"required": true,
+				"description": "The Git arguments to execute directly. Callers must choose read-only arguments when a read is intended; this helper does not restrict commands."
+			},
+			{
+				"name": "gitRevision.root",
+				"type": "string",
+				"required": true,
+				"description": "The repository whose revision should be resolved."
+			},
+			{
+				"name": "gitRevision.revision",
+				"type": "string",
+				"required": false,
+				"default": "HEAD",
+				"description": "The revision to resolve as a commit; defaults to HEAD. Must be nonempty, at most 300 characters and contain no null character."
 			},
 			{
 				"name": "gitText.root",
 				"type": "string",
+				"required": true,
 				"description": "The repository containing the requested text."
 			},
 			{
 				"name": "gitText.revision",
 				"type": "string",
+				"required": true,
 				"description": "The revision to resolve before reading the file."
 			},
 			{
 				"name": "gitText.path",
 				"type": "string",
+				"required": true,
 				"description": "The repository-relative file path. Absolute slash-prefixed paths, parent-directory segments and null characters are refused."
 			}
 		],
@@ -103,7 +113,131 @@
 				"type": "thrown",
 				"description": "Throws or rejects invalid revisions, unsafe paths, oversized source text or Git execution failures."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "gitFiles",
+				"inputs": [
+					{
+						"name": "gitFiles.root",
+						"type": "string",
+						"required": true,
+						"description": "The repository whose tracked files should be listed."
+					},
+					{
+						"name": "gitFiles.revision",
+						"type": "string",
+						"required": true,
+						"description": "The revision to resolve before listing files."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gitFiles",
+						"type": "Promise<string[]>",
+						"description": "A promise for recursively listed tracked paths, split on null separators so spaces and newlines in names are preserved."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "gitRead",
+				"inputs": [
+					{
+						"name": "gitRead.root",
+						"type": "string",
+						"required": true,
+						"description": "The repository directory for the Git command."
+					},
+					{
+						"name": "gitRead.args",
+						"type": "string[]",
+						"required": true,
+						"description": "The Git arguments to execute directly. Callers must choose read-only arguments when a read is intended; this helper does not restrict commands."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gitRead",
+						"type": "Promise<string>",
+						"description": "A promise for standard output with Git terminal prompting disabled and a 64,000,000-byte output buffer limit. Git execution failures reject."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "gitRevision",
+				"inputs": [
+					{
+						"name": "gitRevision.root",
+						"type": "string",
+						"required": true,
+						"description": "The repository whose revision should be resolved."
+					},
+					{
+						"name": "gitRevision.revision",
+						"type": "string",
+						"required": false,
+						"default": "HEAD",
+						"description": "The revision to resolve as a commit; defaults to HEAD. Must be nonempty, at most 300 characters and contain no null character."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gitRevision",
+						"type": "Promise<string>",
+						"description": "A promise for the resolved commit hash with surrounding whitespace removed."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "gitText",
+				"inputs": [
+					{
+						"name": "gitText.root",
+						"type": "string",
+						"required": true,
+						"description": "The repository containing the requested text."
+					},
+					{
+						"name": "gitText.revision",
+						"type": "string",
+						"required": true,
+						"description": "The revision to resolve before reading the file."
+					},
+					{
+						"name": "gitText.path",
+						"type": "string",
+						"required": true,
+						"description": "The repository-relative file path. Absolute slash-prefixed paths, parent-directory segments and null characters are refused."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gitText",
+						"type": "Promise<string>",
+						"description": "A promise for the file text at the resolved commit. Text exceeding 2,000,000 bytes is refused."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -16,11 +16,13 @@
 			{
 				"name": "prepareBenchmark.path",
 				"type": "string",
+				"required": true,
 				"description": "Path to the trusted benchmark definition JSON file."
 			},
 			{
 				"name": "prepareBenchmark.runners",
 				"type": "BenchmarkRunners",
+				"required": true,
 				"description": "Codex and Claude runner implementations used to preflight the named candidates."
 			}
 		],
@@ -42,7 +44,54 @@
 				"type": "thrown",
 				"description": "Rejects invalid definitions, non-root projects, unresolved revisions or unavailable runners."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "benchmarkRunners",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "benchmarkRunners",
+						"type": "BenchmarkRunners",
+						"description": "Native Codex and Claude adapters keyed by their configured runner names."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "prepareBenchmark",
+				"inputs": [
+					{
+						"name": "prepareBenchmark.path",
+						"type": "string",
+						"required": true,
+						"description": "Path to the trusted benchmark definition JSON file."
+					},
+					{
+						"name": "prepareBenchmark.runners",
+						"type": "BenchmarkRunners",
+						"required": true,
+						"description": "Codex and Claude runner implementations used to preflight the named candidates."
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareBenchmark",
+						"type": "Promise<PreparedBenchmark>",
+						"description": "Normalized definition, pinned source revision, fingerprint, runner versions and trial count."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

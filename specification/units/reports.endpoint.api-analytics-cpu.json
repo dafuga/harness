@@ -14,8 +14,9 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "GET.input",
-				"type": "{ url: URL }"
+				"name": "GET.url",
+				"type": "URL",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "Promise<Response>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.url",
+						"type": "URL",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

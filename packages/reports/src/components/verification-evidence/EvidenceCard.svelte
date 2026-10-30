@@ -4,7 +4,7 @@
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { evidenceMedia } from '../../utils/verification-evidence/evidenceMedia';
 	import { t } from '../../utils/reports-media/reportLocale';
-	import { timeAgo } from '../../utils/reports-media/reportDisplay';
+	import { timeAgo } from '../../utils/reports-media/timeAgo';
 	import AudioEvidence from './AudioEvidence.svelte';
 	import AudioComparison from '../reports-media/AudioComparison.svelte';
 	import EvidenceProvenance from './EvidenceProvenance.svelte';

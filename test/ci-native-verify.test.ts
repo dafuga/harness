@@ -75,8 +75,6 @@ test('the macOS job keeps every obligation of the verification', () => {
 		'run: rustup show',
 		'run: bun install --frozen-lockfile',
 		'run: node node_modules/@playwright/test/cli.js install chromium',
-		'reportlab==4.4.9 Pillow==12.3.0 pypdf==6.10.0',
-		'echo "PROJECT_REPORTS_PYTHON=$RUNNER_TEMP/harness-pdf/bin/python" >> "$GITHUB_ENV"',
 		'run: bun run dev -- verify run --commit "$COMMIT"',
 		'name: harness-record',
 		'path: .cache/harness/verifications/${{ env.COMMIT }}',

@@ -39,35 +39,43 @@
 		"inputs": [
 			{
 				"name": "RemoteDeviceSessionsService.constructor.options",
-				"type": "RemoteDeviceSessionsOptions"
+				"type": "RemoteDeviceSessionsOptions",
+				"required": true
 			},
 			{
 				"name": "RemoteDeviceSessionsService.connected.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteDeviceSessionsService.packet.address",
-				"type": "DeviceAddress"
+				"type": "DeviceAddress",
+				"required": true
 			},
 			{
 				"name": "RemoteDeviceSessionsService.packet.packet",
-				"type": "SecurePacket"
+				"type": "SecurePacket",
+				"required": true
 			},
 			{
 				"name": "RemoteDeviceSessionsService.close.address",
-				"type": "DeviceAddress"
+				"type": "DeviceAddress",
+				"required": true
 			},
 			{
 				"name": "RemoteDeviceSessionsService.revoke.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteDeviceSessionsService.announce.channel",
-				"type": "WireChannel"
+				"type": "WireChannel",
+				"required": true
 			},
 			{
 				"name": "RemoteDeviceSessionsService.announce.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -100,7 +108,154 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteDeviceSessionsService.connected",
+				"inputs": [
+					{
+						"name": "RemoteDeviceSessionsService.connected.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteDeviceSessionsService.connected",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteDeviceSessionsService.packet",
+				"inputs": [
+					{
+						"name": "RemoteDeviceSessionsService.packet.address",
+						"type": "DeviceAddress",
+						"required": true
+					},
+					{
+						"name": "RemoteDeviceSessionsService.packet.packet",
+						"type": "SecurePacket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteDeviceSessionsService.packet",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteDeviceSessionsService.close",
+				"inputs": [
+					{
+						"name": "RemoteDeviceSessionsService.close.address",
+						"type": "DeviceAddress",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteDeviceSessionsService.close",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteDeviceSessionsService.revoke",
+				"inputs": [
+					{
+						"name": "RemoteDeviceSessionsService.revoke.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteDeviceSessionsService.revoke",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteDeviceSessionsService.detachAll",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteDeviceSessionsService.detachAll",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteDeviceSessionsService.announce",
+				"inputs": [
+					{
+						"name": "RemoteDeviceSessionsService.announce.channel",
+						"type": "WireChannel",
+						"required": true
+					},
+					{
+						"name": "RemoteDeviceSessionsService.announce.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteDeviceSessionsService.announce",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteDeviceSessionsService.end",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteDeviceSessionsService.end",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteDeviceSessionsService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteDeviceSessionsService.constructor.options",
+						"type": "RemoteDeviceSessionsOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteDeviceSessionsService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

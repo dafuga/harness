@@ -31,11 +31,13 @@
 			{
 				"name": "nativePickerProtocol.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Unknown protocol value to retain only when it is a non-null, non-array object."
 			},
 			{
 				"name": "pickerProvider.model",
 				"type": "unknown",
+				"required": true,
 				"description": "Selected model value; exact claude-opus-5-5 uses the experimental gateway, other claude-prefixed or nonstring values are rejected."
 			}
 		],
@@ -62,7 +64,55 @@
 				"type": "thrown",
 				"description": "Thrown for a nonstring selection or any other claude-prefixed model."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "nativePickerProtocol",
+				"inputs": [
+					{
+						"name": "nativePickerProtocol.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Unknown protocol value to retain only when it is a non-null, non-array object."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativePickerProtocol",
+						"type": "PickerData",
+						"description": "Original object cast as protocol data, or a new empty object for other values."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pickerProvider",
+				"inputs": [
+					{
+						"name": "pickerProvider.model",
+						"type": "unknown",
+						"required": true,
+						"description": "Selected model value; exact claude-opus-5-5 uses the experimental gateway, other claude-prefixed or nonstring values are rejected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pickerProvider",
+						"type": "string",
+						"description": "harness-claude for claude-opus-5-5; openai for other strings not beginning claude-."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

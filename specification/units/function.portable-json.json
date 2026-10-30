@@ -23,11 +23,14 @@
 			{
 				"name": "portableJson.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Value to inspect: finite numbers, well-formed strings, booleans, null, arrays and plain/null-prototype objects are supported. Undefined object fields are ignored; unsupported values are refused."
 			},
 			{
 				"name": "portableJson.level",
-				"type": "unknown",
+				"type": "number",
+				"required": false,
+				"default": 0,
 				"description": "Current container nesting depth, default zero; recursive calls advance it."
 			}
 		],
@@ -48,7 +51,37 @@
 				"description": "Shared runtime failure with code invalid-json and message request is not valid JSON."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "portableJson",
+				"inputs": [
+					{
+						"name": "portableJson.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Value to inspect: finite numbers, well-formed strings, booleans, null, arrays and plain/null-prototype objects are supported. Undefined object fields are ignored; unsupported values are refused."
+					},
+					{
+						"name": "portableJson.level",
+						"type": "number",
+						"required": false,
+						"default": 0,
+						"description": "Current container nesting depth, default zero; recursive calls advance it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "portableJson",
+						"type": "boolean",
+						"description": "True when inspected values pass numeric, Unicode, prototype and depth checks; false otherwise. Input is checked in place rather than cloned or serialized."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

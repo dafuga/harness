@@ -28,27 +28,34 @@
 		"inputs": [
 			{
 				"name": "fileNode.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "unitNode.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "scenarioNode.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SourceGraphService.build.index",
-				"type": "SourceIndex"
+				"type": "SourceIndex",
+				"required": true
 			},
 			{
 				"name": "SourceGraphService.build.manifests",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"required": true
 			},
 			{
 				"name": "SourceGraphService.build.scenarios",
-				"type": "ScenarioManifest[]"
+				"type": "ScenarioManifest[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -69,7 +76,94 @@
 				"type": "SourceGraph"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "fileNode",
+				"inputs": [
+					{
+						"name": "fileNode.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fileNode",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "unitNode",
+				"inputs": [
+					{
+						"name": "unitNode.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitNode",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "scenarioNode",
+				"inputs": [
+					{
+						"name": "scenarioNode.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scenarioNode",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "SourceGraphService.build",
+				"inputs": [
+					{
+						"name": "SourceGraphService.build.index",
+						"type": "SourceIndex",
+						"required": true
+					},
+					{
+						"name": "SourceGraphService.build.manifests",
+						"type": "ComponentManifest[]",
+						"required": true
+					},
+					{
+						"name": "SourceGraphService.build.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceGraphService.build",
+						"type": "SourceGraph"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -50,31 +50,38 @@
 			{
 				"name": "fail.code",
 				"type": "string",
+				"required": true,
 				"description": "Machine-readable failure code attached to the thrown error."
 			},
 			{
 				"name": "parseCollaborationInput.schema",
 				"type": "z.ZodType<T>",
+				"required": true,
 				"description": "Zod schema used to validate and transform the value."
 			},
 			{
 				"name": "parseCollaborationInput.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Untrusted value to parse."
 			},
 			{
 				"name": "digest.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Bytes to hash through WebCrypto."
 			},
 			{
 				"name": "digest.algorithm",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "SHA-256",
 				"description": "WebCrypto digest algorithm; defaults to SHA-256."
 			},
 			{
 				"name": "safePath.value",
 				"type": "string",
+				"required": true,
 				"description": "Repository-relative path without empty or dot segments, backslashes or control characters."
 			}
 		],
@@ -156,7 +163,113 @@
 				"type": "thrown",
 				"description": "Parsing failures use invalid-input, unsafe paths use invalid-path, and fail uses the supplied code; WebCrypto failures can propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "fail",
+				"inputs": [
+					{
+						"name": "fail.code",
+						"type": "string",
+						"required": true,
+						"description": "Machine-readable failure code attached to the thrown error."
+					}
+				],
+				"outputs": [
+					{
+						"name": "fail",
+						"type": "never",
+						"description": "Always throws an Error carrying the supplied code."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseCollaborationInput",
+				"inputs": [
+					{
+						"name": "parseCollaborationInput.schema",
+						"type": "z.ZodType<T>",
+						"required": true,
+						"description": "Zod schema used to validate and transform the value."
+					},
+					{
+						"name": "parseCollaborationInput.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Untrusted value to parse."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseCollaborationInput",
+						"type": "T",
+						"description": "Validated and transformed value; also exported under the alias parse."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "digest",
+				"inputs": [
+					{
+						"name": "digest.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes to hash through WebCrypto."
+					},
+					{
+						"name": "digest.algorithm",
+						"type": "string",
+						"required": false,
+						"default": "SHA-256",
+						"description": "WebCrypto digest algorithm; defaults to SHA-256."
+					}
+				],
+				"outputs": [
+					{
+						"name": "digest",
+						"type": "Promise<string>",
+						"description": "Lowercase hexadecimal digest."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "safePath",
+				"inputs": [
+					{
+						"name": "safePath.value",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative path without empty or dot segments, backslashes or control characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "safePath",
+						"type": "string",
+						"description": "The unchanged path after validation."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

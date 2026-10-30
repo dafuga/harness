@@ -20,11 +20,13 @@
 			{
 				"name": "approvalMatch.entity",
 				"type": "EntityDetail",
+				"required": true,
 				"description": "The entity details, including its latest version, contract hash, last design version’s approval and threads."
 			},
 			{
 				"name": "approvalMatch.request",
 				"type": "RunRequest",
+				"required": true,
 				"description": "The requested mode, thread and approval binding. Plan requests pass without an approval check. A Change must identify the current approved version, contract, image hashes and design option."
 			}
 		],
@@ -41,7 +43,41 @@
 				"type": "thrown",
 				"description": "Refuses a missing or outdated approval, a different design or contract, different image hashes or option, a thread outside this entity, or a thread anchored to another version or option. Image hash order is ignored, but the complete sorted lists must match."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "approvalMatch",
+				"inputs": [
+					{
+						"name": "approvalMatch.entity",
+						"type": "EntityDetail",
+						"required": true,
+						"description": "The entity details, including its latest version, contract hash, last design version’s approval and threads."
+					},
+					{
+						"name": "approvalMatch.request",
+						"type": "RunRequest",
+						"required": true,
+						"description": "The requested mode, thread and approval binding. Plan requests pass without an approval check. A Change must identify the current approved version, contract, image hashes and design option."
+					}
+				],
+				"outputs": [
+					{
+						"name": "approvalMatch",
+						"type": "void",
+						"description": "No return value. Returning normally means the applicable approval and thread checks passed; it does not execute or verify a change."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

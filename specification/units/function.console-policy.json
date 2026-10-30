@@ -39,11 +39,13 @@
 			{
 				"name": "loopbackAddress.address",
 				"type": "string | undefined",
+				"required": true,
 				"description": "Possible loopback address; undefined becomes empty, then whitespace is trimmed and casing normalized."
 			},
 			{
 				"name": "consolePolicy.owner",
 				"type": "OwnerMode",
+				"required": true,
 				"description": "Owner configuration: mode must be loopback, bind must match a loopback address, and no nonblank addressHeader may be configured."
 			}
 		],
@@ -64,7 +66,63 @@
 				"description": "Policy that always returns false."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "loopbackAddress",
+				"inputs": [
+					{
+						"name": "loopbackAddress.address",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Possible loopback address; undefined becomes empty, then whitespace is trimmed and casing normalized."
+					}
+				],
+				"outputs": [
+					{
+						"name": "loopbackAddress",
+						"type": "boolean",
+						"description": "True for localhost, ::1, and supported 127.* IPv4 or IPv4-mapped forms after normalization."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "consolePolicy",
+				"inputs": [
+					{
+						"name": "consolePolicy.owner",
+						"type": "OwnerMode",
+						"required": true,
+						"description": "Owner configuration: mode must be loopback, bind must match a loopback address, and no nonblank addressHeader may be configured."
+					}
+				],
+				"outputs": [
+					{
+						"name": "consolePolicy",
+						"type": "ConsolePolicy",
+						"description": "Policy returning true only for an enabled loopback owner server whose request supplies a matching getClientAddress result. Missing or throwing address lookup denies access; client headers are ignored."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "denyAll",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "denyAll",
+						"type": "ConsolePolicy",
+						"description": "Policy that always returns false."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

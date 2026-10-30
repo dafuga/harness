@@ -43,24 +43,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "request",
-				"type": "RemoteMethod + explicit project/revision input"
-			},
-			{
-				"name": "scan",
-				"type": "Device name only; the offer is read by the camera of this phone, never handed in"
-			},
-			{
-				"name": "offer",
-				"type": "QR text of one short-lived single-use pairing offer, read by the rule of pairingOffer"
-			},
-			{
-				"name": "relay",
-				"type": "Authenticated encrypted Remote protocol v1"
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "bridge",
@@ -88,7 +71,9 @@
 				"name": "scan-ended",
 				"type": "Disconnect ends an open scan; a late camera answer begins no pairing"
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

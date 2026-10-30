@@ -20,6 +20,7 @@
 			{
 				"name": "hubEvidenceRegistry.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Revision registry built from unit/scenario records, blob identities and budget baselines. Scenario filenames must match their declared IDs."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubEvidenceRegistry",
+				"inputs": [
+					{
+						"name": "hubEvidenceRegistry.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidenceRegistry",
+						"type": "unknown",
+						"description": "Revision registry built from unit/scenario records, blob identities and budget baselines. Scenario filenames must match their declared IDs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -20,11 +20,14 @@
 			{
 				"name": "maskSource.code",
 				"type": "string",
+				"required": true,
 				"description": "Source text to scan using JavaScript-like comment, string, template and regular-expression rules."
 			},
 			{
 				"name": "maskSource.options",
 				"type": "MaskOptions",
+				"required": false,
+				"default": {},
 				"description": "Optional strings flag, default true, controlling whether literal contents are blanked as well as comments."
 			}
 		],
@@ -35,7 +38,37 @@
 				"description": "Same-length text with comments blanked, newlines preserved, literal delimiters retained and template interpolation code still visible. With strings false, literal contents remain."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "maskSource",
+				"inputs": [
+					{
+						"name": "maskSource.code",
+						"type": "string",
+						"required": true,
+						"description": "Source text to scan using JavaScript-like comment, string, template and regular-expression rules."
+					},
+					{
+						"name": "maskSource.options",
+						"type": "MaskOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional strings flag, default true, controlling whether literal contents are blanked as well as comments."
+					}
+				],
+				"outputs": [
+					{
+						"name": "maskSource",
+						"type": "string",
+						"description": "Same-length text with comments blanked, newlines preserved, literal delimiters retained and template interpolation code still visible. With strings false, literal contents remain."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

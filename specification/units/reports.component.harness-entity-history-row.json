@@ -29,32 +29,53 @@
 			{
 				"name": "EntityHistoryRow.row",
 				"type": "ExplorerHistoryRow",
+				"required": true,
 				"description": "Required commit history row with date, subject, measured size/complexity, deltas, reviews and change classification."
 			},
 			{
 				"name": "EntityHistoryRow.detail",
 				"type": "ExplorerHistoryDetail | undefined",
+				"required": true,
 				"description": "Required loaded detail or undefined. Its explanations supply summarized reasons and attempts; subject is the fallback when behavior text is absent."
 			},
 			{
 				"name": "EntityHistoryRow.timing",
 				"type": "HistoryTiming | undefined",
+				"required": true,
 				"description": "Required selected-profile timing or undefined. Displays before-to-after when before exists, otherwise after only; missing timing is Not measured."
+			},
+			{
+				"name": "EntityHistoryRow.verdict",
+				"type": "Pick<ExplorerVerdict, 'passed' | 'label'> & { reasons?: string[] }",
+				"required": false
+			},
+			{
+				"name": "EntityHistoryRow.selected",
+				"type": "boolean",
+				"required": false
 			},
 			{
 				"name": "EntityHistoryRow.viewed",
 				"type": "boolean",
+				"required": true,
 				"description": "Required flag marking this as the currently viewed commit and adding its badge."
 			},
 			{
 				"name": "EntityHistoryRow.to",
 				"type": "ExplorerLocation",
+				"required": true,
 				"description": "Required destination for opening this entity at this row’s commit."
 			},
 			{
 				"name": "EntityHistoryRow.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required navigation context passed to the revision link."
+			},
+			{
+				"name": "EntityHistoryRow.onselect",
+				"type": "(full: boolean) => void",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -64,7 +85,9 @@
 				"description": "A compact commit row: relative date with exact timestamp on hover, commit link, behavior, source size, complexity and measured latency. Long reasons use an inline disclosure; no verdict or duplicate revision control. Registry lifecycle badges are omitted because they do not establish helper introduction dates."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

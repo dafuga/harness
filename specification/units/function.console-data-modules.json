@@ -32,11 +32,13 @@
 			{
 				"name": "consoleDataModules.files",
 				"type": "IndexFile[]",
+				"required": true,
 				"description": "History-index files with relative paths and bytes. Recognized JSON records and hash-named media are converted; unrelated paths are ignored."
 			},
 			{
 				"name": "bundledSize.modules",
 				"type": "HostFile[]",
+				"required": true,
 				"description": "Generated host files whose text sizes and individually gzipped sizes should be summed."
 			}
 		],
@@ -52,7 +54,50 @@
 				"description": "File count, total contents string length and sum of gzipped byte lengths, or null for an empty list."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "consoleDataModules",
+				"inputs": [
+					{
+						"name": "consoleDataModules.files",
+						"type": "IndexFile[]",
+						"required": true,
+						"description": "History-index files with relative paths and bytes. Recognized JSON records and hash-named media are converted; unrelated paths are ignored."
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleDataModules",
+						"type": "HostFile[]",
+						"description": "Host file entries under src/lib/server/harness/data: JSON default-exports its text; media default-exports base64 and exports its extension-derived MIME type. This function does not write files."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "bundledSize",
+				"inputs": [
+					{
+						"name": "bundledSize.modules",
+						"type": "HostFile[]",
+						"required": true,
+						"description": "Generated host files whose text sizes and individually gzipped sizes should be summed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "bundledSize",
+						"type": "BundledSize | null",
+						"description": "File count, total contents string length and sum of gzipped byte lengths, or null for an empty list."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

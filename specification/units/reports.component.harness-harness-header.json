@@ -30,26 +30,33 @@
 			{
 				"name": "HarnessHeader.base",
 				"type": "string",
+				"required": true,
 				"description": "Required explorer URL prefix, passed to the navigation bar and prepended to a missing-address home link."
 			},
 			{
 				"name": "HarnessHeader.links",
 				"type": "Array<{ label: string; href: string }>",
+				"required": false,
+				"default": [],
 				"description": "Optional additional-view links, defaulting to an empty list. Used by the legacy header only."
 			},
 			{
 				"name": "HarnessHeader.problem",
 				"type": "string",
+				"required": true,
 				"description": "Required problem text. A nonempty value is displayed as an alert."
 			},
 			{
 				"name": "HarnessHeader.missing",
 				"type": "{ message: string; home: string | null } | null",
+				"required": true,
 				"description": "Required missing-address information or null. Shows its message and a newest-revision link when home is provided."
 			},
 			{
 				"name": "HarnessHeader.navbar",
 				"type": "Omit<HarnessNavbarInput, 'base'> | null",
+				"required": false,
+				"default": null,
 				"description": "Optional navigation-bar context without its base, defaulting to null. When supplied, replaces the legacy heading and links."
 			}
 		],
@@ -60,7 +67,9 @@
 				"description": "Navigation bar or legacy heading, followed by problem and missing-address alerts. It renders supplied state and performs no data fetching."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

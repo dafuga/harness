@@ -34,11 +34,13 @@
 			{
 				"name": "EntityMeasures.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "Required unit with budgets, limits and identity. Supplies performance workloads and frozen-policy declarations."
 			},
 			{
 				"name": "EntityMeasures.record",
 				"type": "HarnessRecord | null",
+				"required": true,
 				"description": "Required record or null. Measurements and findings are filtered to the unit; unprofiled values supply source/complexity/dependency metrics."
 			}
 		],
@@ -49,7 +51,9 @@
 				"description": "Measurement table including source bytes, complexity, dependencies, emitted size and declared performance budgets. Distinguishes policy from numeric limits. Missing record/performance budgets are explicit; helper-formatted values and notes remain visible without estimating data."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

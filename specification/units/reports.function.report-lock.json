@@ -19,11 +19,13 @@
 			{
 				"name": "reportLock.directory",
 				"type": "string",
+				"required": true,
 				"description": "Existing report directory where the lock file is created."
 			},
 			{
 				"name": "reportLock.operation",
 				"type": "() => Promise<T>",
+				"required": true,
 				"description": "Async operation to run after acquiring the lock."
 			}
 		],
@@ -40,7 +42,41 @@
 				"type": "thrown",
 				"description": "Rejects with Report is busy; retry this update after exhausting attempts. Other filesystem and operation errors propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "reportLock",
+				"inputs": [
+					{
+						"name": "reportLock.directory",
+						"type": "string",
+						"required": true,
+						"description": "Existing report directory where the lock file is created."
+					},
+					{
+						"name": "reportLock.operation",
+						"type": "() => Promise<T>",
+						"required": true,
+						"description": "Async operation to run after acquiring the lock."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportLock",
+						"type": "Promise<T>",
+						"description": "Promise resolving to the operation result. Tries exclusive lock creation up to 200 times, with 25-millisecond delays. An older-than-five-second lock with a valid PID is removed only if that process no longer exists. The lock is closed and removed after the operation."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -38,19 +38,28 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "byteSize.count",
-				"type": "number",
-				"description": "Byte count to format; sign is retained."
-			},
-			{
 				"name": "entityMeasure.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "Unit supplying identity, emitted targets and performance budgets."
 			},
 			{
 				"name": "entityMeasure.record",
 				"type": "HarnessRecord | null",
+				"required": true,
 				"description": "Host-selected verification record, or null when none is available."
+			},
+			{
+				"name": "entityMeasure.observations",
+				"type": "Measurement[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "byteSize.count",
+				"type": "number",
+				"required": true,
+				"description": "Byte count to format; sign is retained."
 			}
 		],
 		"outputs": [
@@ -75,7 +84,62 @@
 				"description": "Source, emitted-size and complexity rows plus separate workload/profile observations. Selected-commit source observations take precedence over missing or older record placeholders. Emitted rows retain target identity; none is inapplicable. Focused benchmarks remain distinct from full verification."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "entityMeasure",
+				"inputs": [
+					{
+						"name": "entityMeasure.unit",
+						"type": "HarnessUnit",
+						"required": true,
+						"description": "Unit supplying identity, emitted targets and performance budgets."
+					},
+					{
+						"name": "entityMeasure.record",
+						"type": "HarnessRecord | null",
+						"required": true,
+						"description": "Host-selected verification record, or null when none is available."
+					},
+					{
+						"name": "entityMeasure.observations",
+						"type": "Measurement[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityMeasure",
+						"type": "EntityMeasure",
+						"description": "Source, emitted-size and complexity rows plus separate workload/profile observations. Selected-commit source observations take precedence over missing or older record placeholders. Emitted rows retain target identity; none is inapplicable. Focused benchmarks remain distinct from full verification."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "byteSize",
+				"inputs": [
+					{
+						"name": "byteSize.count",
+						"type": "number",
+						"required": true,
+						"description": "Byte count to format; sign is retained."
+					}
+				],
+				"outputs": [
+					{
+						"name": "byteSize",
+						"type": "string",
+						"description": "Decimal B, KB or MB size, rounded to at most one decimal place using 1,000-based units."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

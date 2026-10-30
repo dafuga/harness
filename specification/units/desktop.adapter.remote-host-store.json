@@ -33,11 +33,13 @@
 		"inputs": [
 			{
 				"name": "RemoteHostStoreAdapter.constructor.config",
-				"type": "RemoteHostStoreAdapterConfig"
+				"type": "RemoteHostStoreAdapterConfig",
+				"required": true
 			},
 			{
 				"name": "RemoteHostStoreAdapter.save.state",
-				"type": "RemoteHostState"
+				"type": "RemoteHostState",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -62,6 +64,93 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteHostStoreAdapter.available",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostStoreAdapter.available",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostStoreAdapter.read",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostStoreAdapter.read",
+						"type": "Promise<RemoteHostState | null>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostStoreAdapter.save",
+				"inputs": [
+					{
+						"name": "RemoteHostStoreAdapter.save.state",
+						"type": "RemoteHostState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostStoreAdapter.save",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostStoreAdapter.clear",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostStoreAdapter.clear",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteHostStoreAdapter.constructor",
+				"inputs": [
+					{
+						"name": "RemoteHostStoreAdapter.constructor.config",
+						"type": "RemoteHostStoreAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostStoreAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

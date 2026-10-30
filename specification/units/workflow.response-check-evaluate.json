@@ -19,19 +19,23 @@
 		"inputs": [
 			{
 				"name": "assessResponse.input",
-				"type": "ResponseCheckInput"
+				"type": "ResponseCheckInput",
+				"required": true
 			},
 			{
 				"name": "assessResponse.settings",
-				"type": "ResponseCheckSettings"
+				"type": "ResponseCheckSettings",
+				"required": true
 			},
 			{
 				"name": "assessResponse.evaluate",
-				"type": "Evaluate"
+				"type": "Evaluate",
+				"required": false
 			},
 			{
 				"name": "responseStatus.checks",
-				"type": "ResponseAssessment[]"
+				"type": "ResponseAssessment[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,7 +53,57 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assessResponse",
+				"inputs": [
+					{
+						"name": "assessResponse.input",
+						"type": "ResponseCheckInput",
+						"required": true
+					},
+					{
+						"name": "assessResponse.settings",
+						"type": "ResponseCheckSettings",
+						"required": true
+					},
+					{
+						"name": "assessResponse.evaluate",
+						"type": "Evaluate",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "assessResponse",
+						"type": "Promise<Pick<ResponseCheckReport, 'checks' | 'status' | 'model' | 'usage'>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "responseStatus",
+				"inputs": [
+					{
+						"name": "responseStatus.checks",
+						"type": "ResponseAssessment[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "responseStatus",
+						"type": "ResponseCheckReport['status']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

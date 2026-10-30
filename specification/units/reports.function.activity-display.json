@@ -38,39 +38,46 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "activityDisplay.agents",
+				"type": "AgentRoster",
+				"required": true,
+				"description": "Registered agent roster with a working count or null for unknown."
+			},
+			{
 				"name": "commitHref.base",
 				"type": "string",
+				"required": true,
 				"description": "Explorer address prefix."
 			},
 			{
 				"name": "commitHref.commit",
 				"type": "string",
+				"required": true,
 				"description": "Commit to open in history."
 			},
 			{
 				"name": "commitHref.branches",
 				"type": "string[]",
+				"required": true,
 				"description": "Branch choices; uses the first or a retained-commit route when none exist."
-			},
-			{
-				"name": "activityTime.iso",
-				"type": "string",
-				"description": "Timestamp to format."
 			},
 			{
 				"name": "plural.count",
 				"type": "number",
+				"required": true,
 				"description": "Count to display."
 			},
 			{
 				"name": "plural.word",
 				"type": "string",
+				"required": true,
 				"description": "Singular word to pluralize by appending s unless the count is exactly one."
 			},
 			{
-				"name": "activityDisplay.agents",
-				"type": "AgentRoster",
-				"description": "Registered agent roster with a working count or null for unknown."
+				"name": "activityTime.iso",
+				"type": "string",
+				"required": true,
+				"description": "Timestamp to format."
 			}
 		],
 		"outputs": [
@@ -100,7 +107,108 @@
 				"description": "Sentence stating the registered working-agent count, or that it is unknown when no agent has registered. Explicitly excludes unregistered agents."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "activityDisplay",
+				"inputs": [
+					{
+						"name": "activityDisplay.agents",
+						"type": "AgentRoster",
+						"required": true,
+						"description": "Registered agent roster with a working count or null for unknown."
+					}
+				],
+				"outputs": [
+					{
+						"name": "activityDisplay",
+						"type": "string",
+						"description": "Sentence stating the registered working-agent count, or that it is unknown when no agent has registered. Explicitly excludes unregistered agents."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "commitHref",
+				"inputs": [
+					{
+						"name": "commitHref.base",
+						"type": "string",
+						"required": true,
+						"description": "Explorer address prefix."
+					},
+					{
+						"name": "commitHref.commit",
+						"type": "string",
+						"required": true,
+						"description": "Commit to open in history."
+					},
+					{
+						"name": "commitHref.branches",
+						"type": "string[]",
+						"required": true,
+						"description": "Branch choices; uses the first or a retained-commit route when none exist."
+					}
+				],
+				"outputs": [
+					{
+						"name": "commitHref",
+						"type": "string",
+						"description": "History address formed from the base and commit route."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "plural",
+				"inputs": [
+					{
+						"name": "plural.count",
+						"type": "number",
+						"required": true,
+						"description": "Count to display."
+					},
+					{
+						"name": "plural.word",
+						"type": "string",
+						"required": true,
+						"description": "Singular word to pluralize by appending s unless the count is exactly one."
+					}
+				],
+				"outputs": [
+					{
+						"name": "plural",
+						"type": "string",
+						"description": "Count followed by the word in singular or simple plural form."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "activityTime",
+				"inputs": [
+					{
+						"name": "activityTime.iso",
+						"type": "string",
+						"required": true,
+						"description": "Timestamp to format."
+					}
+				],
+				"outputs": [
+					{
+						"name": "activityTime",
+						"type": "string",
+						"description": "UTC date and minute for a valid timestamp; otherwise the original text."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -112,46 +220,6 @@
 			"unit": "function.console-route",
 			"via": "import",
 			"origin": "derived"
-		}
-	],
-	"helperContracts": [
-		{
-			"name": "plural",
-			"source": "packages/reports/src/helpers/strings/plural.ts",
-			"inputs": [
-				{
-					"name": "plural.count",
-					"type": "number"
-				},
-				{
-					"name": "plural.word",
-					"type": "string"
-				}
-			],
-			"output": "string",
-			"pure": true,
-			"examples": [
-				{
-					"name": "Keep the singular word for one item",
-					"call": "plural(1, \"task\")",
-					"input": [1, "task"],
-					"output": "1 task"
-				},
-				{
-					"name": "Add s for other counts",
-					"call": "plural(2, \"task\")",
-					"input": [2, "task"],
-					"output": "2 tasks"
-				}
-			],
-			"consumers": [
-				{
-					"unit": "reports.component.activity-loops"
-				},
-				{
-					"unit": "reports.component.activity-work"
-				}
-			]
 		}
 	],
 	"runtime": {

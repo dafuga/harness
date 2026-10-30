@@ -24,11 +24,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/CatalogView.svelte",
-			"packages/desktop/src/components/explorer-ui/CatalogView.svelte"
-		],
-		"symbols": ["CatalogView", "CatalogView"]
+		"source": ["packages/desktop/src/components/explorer-ui/CatalogView.svelte"],
+		"symbols": ["CatalogView"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -36,6 +33,7 @@
 			{
 				"name": "CatalogView.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace supplying the current category, optional project snapshot and entity-card context. A missing snapshot contributes an empty entity list. The category must be nonempty because it is used to build the heading."
 			}
 		],
@@ -46,7 +44,9 @@
 				"description": "Local search and one filter icon above the catalog. The shared modal holds filters and ordering."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

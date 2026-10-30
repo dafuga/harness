@@ -19,16 +19,19 @@
 			{
 				"name": "ModuleScaffoldService.generate.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute destination project directory."
 			},
 			{
 				"name": "ModuleScaffoldService.generate.resource",
 				"type": "ModuleResource",
+				"required": true,
 				"description": "Validated resource declaring a standard scaffold generator."
 			},
 			{
 				"name": "ModuleScaffoldService.generate.request",
 				"type": "ModuleResourceRequest",
+				"required": true,
 				"description": "Validated resource name and optional responsibility group."
 			}
 		],
@@ -45,7 +48,47 @@
 				"type": "thrown",
 				"description": "Invalid names, ineligible scaffold kinds, groups or source conflicts reject generation."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "ModuleScaffoldService.generate",
+				"inputs": [
+					{
+						"name": "ModuleScaffoldService.generate.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute destination project directory."
+					},
+					{
+						"name": "ModuleScaffoldService.generate.resource",
+						"type": "ModuleResource",
+						"required": true,
+						"description": "Validated resource declaring a standard scaffold generator."
+					},
+					{
+						"name": "ModuleScaffoldService.generate.request",
+						"type": "ModuleResourceRequest",
+						"required": true,
+						"description": "Validated resource name and optional responsibility group."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleScaffoldService.generate",
+						"type": "Promise<string[]>",
+						"description": "Relative paths processed by the existing scaffold workflow."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

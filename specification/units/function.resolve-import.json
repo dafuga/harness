@@ -25,18 +25,31 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "resolveHttpEndpoint.reference",
+				"type": "SourceReference",
+				"required": true
+			},
+			{
+				"name": "resolveHttpEndpoint.context",
+				"type": "ResolveContext",
+				"required": true
+			},
+			{
 				"name": "resolveImport.from",
 				"type": "string",
+				"required": true,
 				"description": "Repository-relative importing file path using forward slashes."
 			},
 			{
 				"name": "resolveImport.reference",
 				"type": "SourceReference",
+				"required": true,
 				"description": "Scanned reference with import kind, optional literal specifier, type-only flag and detail for computed references."
 			},
 			{
 				"name": "resolveImport.context",
 				"type": "ResolveContext",
+				"required": true,
 				"description": "Tracked path set and owning workspace root for relative and $lib resolution."
 			}
 		],
@@ -47,7 +60,65 @@
 				"description": "Resolved file path, external package/framework name or non-literal/unresolved uncertainty, retaining via and typeOnly. Tries supported extensions, index files and .js-to-.ts fallback; does not read the filesystem. Rooted HTTP requests resolve only to tracked endpoints in the owning workspace, preferring literal routes; external and ambiguous requests stay explicit."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "resolveHttpEndpoint",
+				"inputs": [
+					{
+						"name": "resolveHttpEndpoint.reference",
+						"type": "SourceReference",
+						"required": true
+					},
+					{
+						"name": "resolveHttpEndpoint.context",
+						"type": "ResolveContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveHttpEndpoint",
+						"type": "ResolvedReference"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resolveImport",
+				"inputs": [
+					{
+						"name": "resolveImport.from",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative importing file path using forward slashes."
+					},
+					{
+						"name": "resolveImport.reference",
+						"type": "SourceReference",
+						"required": true,
+						"description": "Scanned reference with import kind, optional literal specifier, type-only flag and detail for computed references."
+					},
+					{
+						"name": "resolveImport.context",
+						"type": "ResolveContext",
+						"required": true,
+						"description": "Tracked path set and owning workspace root for relative and $lib resolution."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveImport",
+						"type": "ResolvedReference",
+						"description": "Resolved file path, external package/framework name or non-literal/unresolved uncertainty, retaining via and typeOnly. Tries supported extensions, index files and .js-to-.ts fallback; does not read the filesystem. Rooted HTTP requests resolve only to tracked endpoints in the owning workspace, preferring literal routes; external and ambiguous requests stay explicit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -21,6 +21,7 @@
 			{
 				"name": "initializePreview.args",
 				"type": "string[]",
+				"required": false,
 				"description": "Launch options from the dev command.",
 				"examples": [
 					[
@@ -46,7 +47,45 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "initializePreview",
+				"inputs": [
+					{
+						"name": "initializePreview.args",
+						"type": "string[]",
+						"required": false,
+						"description": "Launch options from the dev command.",
+						"examples": [
+							[
+								"--port",
+								"5688",
+								"--config",
+								"/projects/harness/packages/reports/vite.config.ts",
+								"--host",
+								"127.0.0.1"
+							]
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "initializePreview",
+						"type": "Promise<void>",
+						"description": "Prints the running preview URL. The owning process stays alive until it is closed."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

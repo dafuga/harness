@@ -29,7 +29,8 @@
 		"inputs": [
 			{
 				"name": "isAppOnlyScaffold.kind",
-				"type": "PieceKind"
+				"type": "PieceKind",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +47,29 @@
 				"type": "boolean"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "isAppOnlyScaffold",
+				"inputs": [
+					{
+						"name": "isAppOnlyScaffold.kind",
+						"type": "PieceKind",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isAppOnlyScaffold",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

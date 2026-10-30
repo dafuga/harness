@@ -19,6 +19,7 @@
 			{
 				"name": "timeLabel.value",
 				"type": "string",
+				"required": true,
 				"description": "Text beginning with a date and hour/minute timestamp to try formatting."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Localized medium date and short time when parsing succeeds; original text otherwise."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "timeLabel",
+				"inputs": [
+					{
+						"name": "timeLabel.value",
+						"type": "string",
+						"required": true,
+						"description": "Text beginning with a date and hour/minute timestamp to try formatting."
+					}
+				],
+				"outputs": [
+					{
+						"name": "timeLabel",
+						"type": "string",
+						"description": "Localized medium date and short time when parsing succeeds; original text otherwise."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

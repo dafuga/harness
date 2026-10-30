@@ -37,59 +37,54 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ExplorerScreenProps.index",
+				"name": "ExplorerContent.index",
 				"type": "HarnessIndex",
-				"description": "The history of the repository as it was built: branches, revisions and what was measured."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.head",
+				"name": "ExplorerContent.head",
 				"type": "HarnessRevision",
-				"description": "The revision every contract, measurement and capture on the screen is bound to."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.parent",
+				"name": "ExplorerContent.parent",
 				"type": "HarnessRevision | null",
-				"description": "The first parent of a selected commit; none at the branch tip and for a first commit."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.scope",
+				"name": "ExplorerContent.scope",
 				"type": "ExplorerScope",
-				"description": "The branch and commit shown, and whether that is the branch tip or a selected commit."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.route",
+				"name": "ExplorerContent.route",
 				"type": "ExplorerLocation",
-				"description": "The address shown: category, entity, section and tab."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.entities",
+				"name": "ExplorerContent.entities",
 				"type": "ExplorerEntity[]",
-				"description": "The units of the shown revision as the explorer lists them."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.lens",
+				"name": "ExplorerContent.lens",
 				"type": "EntityLens",
-				"description": "What the host answers about an entity: relations, evidence, end-to-end results and history."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.client",
+				"name": "ExplorerContent.client",
 				"type": "Pick<HarnessClient, 'revision'>",
-				"description": "Reads a stored revision, only for the commits a history lists."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.mediaBase",
+				"name": "ExplorerContent.mediaBase",
 				"type": "string",
-				"description": "Where the protected media of recorded captures is served from."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.onroute",
+				"name": "ExplorerContent.onroute",
 				"type": "(to: ExplorerLocation) => void",
-				"description": "Goes to another address of the explorer in the same branch and revision mode."
-			},
-			{
-				"name": "ExplorerScreenProps.exportHref",
-				"type": "string",
-				"description": "Where a record is downloaded from; empty where the host serves none."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -110,7 +105,9 @@
 				"type": "stated",
 				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

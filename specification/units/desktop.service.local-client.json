@@ -33,19 +33,23 @@
 		"inputs": [
 			{
 				"name": "LocalClientService.constructor.options",
-				"type": "LocalClientOptions"
+				"type": "LocalClientOptions",
+				"required": true
 			},
 			{
 				"name": "LocalClientService.attach.socket",
-				"type": "LocalSocket"
+				"type": "LocalSocket",
+				"required": true
 			},
 			{
 				"name": "LocalClientService.emit.channel",
-				"type": "WireChannel"
+				"type": "WireChannel",
+				"required": true
 			},
 			{
 				"name": "LocalClientService.emit.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -70,7 +74,107 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LocalClientService.ended",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalClientService.ended",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalClientService.attach",
+				"inputs": [
+					{
+						"name": "LocalClientService.attach.socket",
+						"type": "LocalSocket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalClientService.attach",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalClientService.emit",
+				"inputs": [
+					{
+						"name": "LocalClientService.emit.channel",
+						"type": "WireChannel",
+						"required": true
+					},
+					{
+						"name": "LocalClientService.emit.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalClientService.emit",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalClientService.cancel",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalClientService.cancel",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalClientService.end",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalClientService.end",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LocalClientService.constructor",
+				"inputs": [
+					{
+						"name": "LocalClientService.constructor.options",
+						"type": "LocalClientOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalClientService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -31,6 +31,7 @@
 			{
 				"name": "qrSymbol.text",
 				"type": "string",
+				"required": true,
 				"description": "Nonempty text of at most 320 characters using printable ASCII from ! through ~; spaces, control characters and non-ASCII text are refused."
 			}
 		],
@@ -52,7 +53,35 @@
 				"type": "thrown",
 				"description": "Throws when text fails the allowed character/length checks or the generated symbol exceeds 77 modules. QR-library failures can also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "qrSymbol",
+				"inputs": [
+					{
+						"name": "qrSymbol.text",
+						"type": "string",
+						"required": true,
+						"description": "Nonempty text of at most 320 characters using printable ASCII from ! through ~; spaces, control characters and non-ASCII text are refused."
+					}
+				],
+				"outputs": [
+					{
+						"name": "qrSymbol",
+						"type": "QrSymbol",
+						"description": "The module count per side, quiet-margin size and SVG-style path of dark horizontal runs offset by the margin. The caller draws the symbol; no image file is written."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

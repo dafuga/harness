@@ -34,12 +34,14 @@
 			{
 				"name": "previewOwner.port",
 				"type": "number",
+				"required": true,
 				"description": "Loopback port used to reserve the one preview slot.",
 				"examples": [47840]
 			},
 			{
 				"name": "previewOwner.identity",
 				"type": "string",
+				"required": true,
 				"description": "Fingerprint of the checkout and selected history data.",
 				"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
 			}
@@ -69,7 +71,44 @@
 				"description": "Refuses an unrelated listener, a different checkout or a preview that never finishes starting.",
 				"examples": ["Preview ownership port is occupied by another application."]
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "previewOwner",
+				"inputs": [
+					{
+						"name": "previewOwner.port",
+						"type": "number",
+						"required": true,
+						"description": "Loopback port used to reserve the one preview slot.",
+						"examples": [47840]
+					},
+					{
+						"name": "previewOwner.identity",
+						"type": "string",
+						"required": true,
+						"description": "Fingerprint of the checkout and selected history data.",
+						"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "previewOwner",
+						"type": "Promise<string>",
+						"description": "Address of a matching, ready preview.",
+						"examples": ["http://127.0.0.1:5688"]
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

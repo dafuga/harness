@@ -23,10 +23,9 @@
 	},
 	"owns": {
 		"source": [
-			"packages/hub/src/components/invitation-form/InvitationForm.svelte",
 			"packages/hub/src/components/projects-sessions/invitation-form/InvitationForm.svelte"
 		],
-		"symbols": ["InvitationForm", "InvitationForm"]
+		"symbols": ["InvitationForm"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,6 +33,7 @@
 			{
 				"name": "InvitationForm.projectId",
 				"type": "string",
+				"required": true,
 				"description": "Required project identifier sent to the invitation operation. Authorization and invitation validity remain server responsibilities."
 			}
 		],
@@ -44,7 +44,9 @@
 				"description": "Email and role form, initially Commenter, also offering Viewer. Trims email and blocks empty or concurrent submissions. On success shows the invitation link, code and expiry with separate-copy actions and a reminder that no email is sent here. Errors clear the invitation and appear as alerts. Clipboard failure gives manual-copy guidance; success shows a copied status."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

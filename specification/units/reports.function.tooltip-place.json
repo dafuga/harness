@@ -20,16 +20,19 @@
 			{
 				"name": "tooltipPlace.mark",
 				"type": "TooltipMark",
+				"required": true,
 				"description": "Anchor rectangle in viewport coordinates."
 			},
 			{
 				"name": "tooltipPlace.tip",
 				"type": "TooltipSize",
+				"required": true,
 				"description": "Tooltip width and height."
 			},
 			{
 				"name": "tooltipPlace.view",
 				"type": "TooltipSize",
+				"required": true,
 				"description": "Viewport width and height."
 			}
 		],
@@ -40,7 +43,42 @@
 				"description": "Centered horizontal position constrained toward eight-pixel margins. Prefers below when it fits, otherwise above; when neither fits, uses the roomier side and supplies its available height for scrolling."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "tooltipPlace",
+				"inputs": [
+					{
+						"name": "tooltipPlace.mark",
+						"type": "TooltipMark",
+						"required": true,
+						"description": "Anchor rectangle in viewport coordinates."
+					},
+					{
+						"name": "tooltipPlace.tip",
+						"type": "TooltipSize",
+						"required": true,
+						"description": "Tooltip width and height."
+					},
+					{
+						"name": "tooltipPlace.view",
+						"type": "TooltipSize",
+						"required": true,
+						"description": "Viewport width and height."
+					}
+				],
+				"outputs": [
+					{
+						"name": "tooltipPlace",
+						"type": "{ left: number; top: number; height?: number }",
+						"description": "Centered horizontal position constrained toward eight-pixel margins. Prefers below when it fits, otherwise above; when neither fits, uses the roomier side and supplies its available height for scrolling."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

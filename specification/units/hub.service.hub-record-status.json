@@ -31,15 +31,18 @@
 		"inputs": [
 			{
 				"name": "HubRecordStatusService.constructor.context",
-				"type": "Context"
+				"type": "Context",
+				"required": true
 			},
 			{
 				"name": "HubRecordStatusService.status.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubRecordStatusService.problems.line",
-				"type": "VerificationNote"
+				"type": "VerificationNote",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -60,7 +63,90 @@
 				"type": "Promise<string[]>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HubRecordStatusService.all",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubRecordStatusService.all",
+						"type": "Promise<Map<string, ReadNote>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubRecordStatusService.verifications",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubRecordStatusService.verifications",
+						"type": "Promise<VerificationNote[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubRecordStatusService.status",
+				"inputs": [
+					{
+						"name": "HubRecordStatusService.status.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubRecordStatusService.status",
+						"type": "Promise<CommitStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubRecordStatusService.problems",
+				"inputs": [
+					{
+						"name": "HubRecordStatusService.problems.line",
+						"type": "VerificationNote",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubRecordStatusService.problems",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HubRecordStatusService.constructor",
+				"inputs": [
+					{
+						"name": "HubRecordStatusService.constructor.context",
+						"type": "Context",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubRecordStatusService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

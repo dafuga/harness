@@ -29,11 +29,13 @@
 			{
 				"name": "detectProjectKind.root",
 				"type": "string",
+				"required": true,
 				"description": "Project directory to inspect for package.json, svelte.config.js and src/index.ts."
 			},
 			{
 				"name": "detectGameDimension.root",
 				"type": "string",
+				"required": true,
 				"description": "Project root whose package.json supplies the game dimension."
 			}
 		],
@@ -49,7 +51,50 @@
 				"description": "Supported declared game dimension, or undefined when absent or invalid."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "detectProjectKind",
+				"inputs": [
+					{
+						"name": "detectProjectKind.root",
+						"type": "string",
+						"required": true,
+						"description": "Project directory to inspect for package.json, svelte.config.js and src/index.ts."
+					}
+				],
+				"outputs": [
+					{
+						"name": "detectProjectKind",
+						"type": "Promise<DetectedProjectKind>",
+						"description": "App or lib from explicit package harness.kind first; otherwise app for Svelte configuration/dependency/check script, lib for a readable package and src/index.ts, or unknown. Read/parse/access failures are treated as missing evidence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "detectGameDimension",
+				"inputs": [
+					{
+						"name": "detectGameDimension.root",
+						"type": "string",
+						"required": true,
+						"description": "Project root whose package.json supplies the game dimension."
+					}
+				],
+				"outputs": [
+					{
+						"name": "detectGameDimension",
+						"type": "Promise<'2d' | '3d' | undefined>",
+						"description": "Supported declared game dimension, or undefined when absent or invalid."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

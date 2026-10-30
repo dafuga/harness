@@ -32,35 +32,43 @@
 		"inputs": [
 			{
 				"name": "componentFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "viewFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "layoutFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "apiFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "storeFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "hookFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "e2eFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "partialFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -97,7 +105,155 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "componentFiles",
+				"inputs": [
+					{
+						"name": "componentFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "componentFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "viewFiles",
+				"inputs": [
+					{
+						"name": "viewFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "viewFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "layoutFiles",
+				"inputs": [
+					{
+						"name": "layoutFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "layoutFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "apiFiles",
+				"inputs": [
+					{
+						"name": "apiFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "storeFiles",
+				"inputs": [
+					{
+						"name": "storeFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "storeFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hookFiles",
+				"inputs": [
+					{
+						"name": "hookFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hookFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "e2eFiles",
+				"inputs": [
+					{
+						"name": "e2eFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "e2eFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "partialFiles",
+				"inputs": [
+					{
+						"name": "partialFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "partialFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "dispatchTaskAttempt.runner",
-				"type": "TaskRunner"
+				"type": "TaskRunner",
+				"required": true
 			},
 			{
 				"name": "dispatchTaskAttempt.input",
-				"type": "TaskRunInput"
+				"type": "TaskRunInput",
+				"required": true
 			},
 			{
 				"name": "dispatchTaskAttempt.executions",
-				"type": "TaskExecution[]"
+				"type": "TaskExecution[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +35,39 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "dispatchTaskAttempt",
+				"inputs": [
+					{
+						"name": "dispatchTaskAttempt.runner",
+						"type": "TaskRunner",
+						"required": true
+					},
+					{
+						"name": "dispatchTaskAttempt.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "dispatchTaskAttempt.executions",
+						"type": "TaskExecution[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dispatchTaskAttempt",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

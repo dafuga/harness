@@ -35,35 +35,43 @@
 		"inputs": [
 			{
 				"name": "loadBudgets.root",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "budgetMeasure.unit",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "budgetMeasure.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "budgetHistory.unit",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "budgetHistory.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "budgetStatus.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "budgetBench.input",
-				"type": "BenchInput"
+				"type": "BenchInput",
+				"required": true
 			},
 			{
 				"name": "budgetBench.root",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -93,7 +101,126 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "loadBudgets",
+				"inputs": [
+					{
+						"name": "loadBudgets.root",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadBudgets",
+						"type": "Promise<Loaded>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "budgetMeasure",
+				"inputs": [
+					{
+						"name": "budgetMeasure.unit",
+						"type": "string",
+						"required": false
+					},
+					{
+						"name": "budgetMeasure.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "budgetMeasure",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "budgetHistory",
+				"inputs": [
+					{
+						"name": "budgetHistory.unit",
+						"type": "string",
+						"required": false
+					},
+					{
+						"name": "budgetHistory.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "budgetHistory",
+						"type": "Promise<BudgetEvent[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "budgetStatus",
+				"inputs": [
+					{
+						"name": "budgetStatus.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "budgetStatus",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "budgetBench",
+				"inputs": [
+					{
+						"name": "budgetBench.input",
+						"type": "BenchInput",
+						"required": true
+					},
+					{
+						"name": "budgetBench.root",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "budgetBench",
+						"type": "Promise<UnitBenchmark>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

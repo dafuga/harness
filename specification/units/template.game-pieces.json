@@ -15,19 +15,23 @@
 		"inputs": [
 			{
 				"name": "gameViewFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "gameViewFiles.input",
-				"type": "PieceContext"
+				"name": "gameViewFiles.dimension",
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "mechanicFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "checkpointFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,7 +53,75 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "gameViewFiles",
+				"inputs": [
+					{
+						"name": "gameViewFiles.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "gameViewFiles.dimension",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "gameViewFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "mechanicFiles",
+				"inputs": [
+					{
+						"name": "mechanicFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "mechanicFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkpointFiles",
+				"inputs": [
+					{
+						"name": "checkpointFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkpointFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

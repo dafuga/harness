@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/SourceFileList.svelte",
-			"packages/reports/src/components/explorer-ui/SourceFileList.svelte"
-		],
-		"symbols": ["SourceFileList", "SourceFileList"]
+		"source": ["packages/reports/src/components/explorer-ui/SourceFileList.svelte"],
+		"symbols": ["SourceFileList"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -32,18 +29,6 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Actual source paths, in display order."
-			},
-			{
-				"name": "SourceFileList.href",
-				"type": "(path: string) => string | undefined",
-				"required": true,
-				"description": "Optional external GitHub destination for each path."
-			},
-			{
-				"name": "SourceFileList.children",
-				"type": "Snippet<[string]>",
-				"required": true,
-				"description": "The existing action for each source file."
 			},
 			{
 				"name": "SourceFileList.label",
@@ -65,6 +50,18 @@
 				"required": false,
 				"default": "",
 				"description": "Directory prefix omitted from matching display labels. Complete paths remain in hover text and links, and are passed to each file action."
+			},
+			{
+				"name": "SourceFileList.href",
+				"type": "(path: string) => string | undefined",
+				"required": true,
+				"description": "Optional external GitHub destination for each path."
+			},
+			{
+				"name": "SourceFileList.children",
+				"type": "Snippet<[string]>",
+				"required": true,
+				"description": "The existing action for each source file."
 			}
 		],
 		"outputs": [
@@ -74,7 +71,9 @@
 				"description": "Responsive file rows with links opening in a new tab, or plain paths when no GitHub repository is known. Empty input states that no file is recorded."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -19,16 +19,19 @@
 			{
 				"name": "revisionTime.snapshot",
 				"type": "ProjectSnapshot | null",
+				"required": true,
 				"description": "Current project revision, branch tips and commit metadata; may be absent before loading."
 			},
 			{
 				"name": "revisionTime.kind",
 				"type": "'commit' | 'branch'",
+				"required": true,
 				"description": "Chooses the selected commit timestamp or the timestamp of the branch tip."
 			},
 			{
 				"name": "displayTime.value",
 				"type": "string | null",
+				"required": true,
 				"description": "ISO timestamp to format; absent or invalid values produce the unknown-time label."
 			}
 		],
@@ -44,7 +47,56 @@
 				"description": "Localized date and time, or the explicit unknown fallback."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "revisionTime",
+				"inputs": [
+					{
+						"name": "revisionTime.snapshot",
+						"type": "ProjectSnapshot | null",
+						"required": true,
+						"description": "Current project revision, branch tips and commit metadata; may be absent before loading."
+					},
+					{
+						"name": "revisionTime.kind",
+						"type": "'commit' | 'branch'",
+						"required": true,
+						"description": "Chooses the selected commit timestamp or the timestamp of the branch tip."
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionTime",
+						"type": "string | null",
+						"description": "Authored timestamp for the requested revision, or null when metadata is unavailable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "displayTime",
+				"inputs": [
+					{
+						"name": "displayTime.value",
+						"type": "string | null",
+						"required": true,
+						"description": "ISO timestamp to format; absent or invalid values produce the unknown-time label."
+					}
+				],
+				"outputs": [
+					{
+						"name": "displayTime",
+						"type": "string",
+						"description": "Localized date and time, or the explicit unknown fallback."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

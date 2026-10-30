@@ -33,48 +33,57 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "sourceNesting.masked",
-				"type": "string",
-				"description": "Masked source whose literal/comment contents no longer contribute brackets."
-			},
-			{
-				"name": "matchingBrace.nesting",
-				"type": "SourceNesting",
-				"description": "Depth arrays previously computed from the same masked source."
-			},
-			{
-				"name": "matchingBrace.open",
-				"type": "number",
-				"description": "Offset of an opening curly brace."
-			},
-			{
 				"name": "statementEnd.masked",
 				"type": "string",
+				"required": true,
 				"description": "Masked source containing the statement."
 			},
 			{
 				"name": "statementEnd.nesting",
 				"type": "SourceNesting",
+				"required": true,
 				"description": "Matching depth arrays for the source."
 			},
 			{
 				"name": "statementEnd.start",
 				"type": "number",
+				"required": true,
 				"description": "Offset at which statement scanning begins."
+			},
+			{
+				"name": "sourceNesting.masked",
+				"type": "string",
+				"required": true,
+				"description": "Masked source whose literal/comment contents no longer contribute brackets."
+			},
+			{
+				"name": "matchingBrace.nesting",
+				"type": "SourceNesting",
+				"required": true,
+				"description": "Depth arrays previously computed from the same masked source."
+			},
+			{
+				"name": "matchingBrace.open",
+				"type": "number",
+				"required": true,
+				"description": "Offset of an opening curly brace."
 			},
 			{
 				"name": "bodyEnd.masked",
 				"type": "string",
+				"required": true,
 				"description": "Masked source containing a signature and possible body."
 			},
 			{
 				"name": "bodyEnd.nesting",
 				"type": "SourceNesting",
+				"required": true,
 				"description": "Matching depth arrays for the source."
 			},
 			{
 				"name": "bodyEnd.from",
 				"type": "number",
+				"required": true,
 				"description": "Offset after which to look for a function body."
 			}
 		],
@@ -100,7 +109,120 @@
 				"description": "Inclusive function-body end, skipping recognized return-type braces, or -1 for a bodiless/unrecognized signature."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "statementEnd",
+				"inputs": [
+					{
+						"name": "statementEnd.masked",
+						"type": "string",
+						"required": true,
+						"description": "Masked source containing the statement."
+					},
+					{
+						"name": "statementEnd.nesting",
+						"type": "SourceNesting",
+						"required": true,
+						"description": "Matching depth arrays for the source."
+					},
+					{
+						"name": "statementEnd.start",
+						"type": "number",
+						"required": true,
+						"description": "Offset at which statement scanning begins."
+					}
+				],
+				"outputs": [
+					{
+						"name": "statementEnd",
+						"type": "number",
+						"description": "Inclusive statement end at a same-depth semicolon, recognized next statement or closing brace, otherwise the final source offset."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sourceNesting",
+				"inputs": [
+					{
+						"name": "sourceNesting.masked",
+						"type": "string",
+						"required": true,
+						"description": "Masked source whose literal/comment contents no longer contribute brackets."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceNesting",
+						"type": "SourceNesting",
+						"description": "Curly and parenthesis/square-bracket depths before every character, with one trailing position."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchingBrace",
+				"inputs": [
+					{
+						"name": "matchingBrace.nesting",
+						"type": "SourceNesting",
+						"required": true,
+						"description": "Depth arrays previously computed from the same masked source."
+					},
+					{
+						"name": "matchingBrace.open",
+						"type": "number",
+						"required": true,
+						"description": "Offset of an opening curly brace."
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchingBrace",
+						"type": "number",
+						"description": "Inclusive closing-brace offset when depth returns to its opening level; last source offset if no close is found."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "bodyEnd",
+				"inputs": [
+					{
+						"name": "bodyEnd.masked",
+						"type": "string",
+						"required": true,
+						"description": "Masked source containing a signature and possible body."
+					},
+					{
+						"name": "bodyEnd.nesting",
+						"type": "SourceNesting",
+						"required": true,
+						"description": "Matching depth arrays for the source."
+					},
+					{
+						"name": "bodyEnd.from",
+						"type": "number",
+						"required": true,
+						"description": "Offset after which to look for a function body."
+					}
+				],
+				"outputs": [
+					{
+						"name": "bodyEnd",
+						"type": "number",
+						"description": "Inclusive function-body end, skipping recognized return-type braces, or -1 for a bodiless/unrecognized signature."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

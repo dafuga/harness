@@ -18,11 +18,13 @@
 		"inputs": [
 			{
 				"name": "observeIosServices.rows",
-				"type": "Map<number, SeenService> | null"
+				"type": "Map<number, SeenService> | null",
+				"required": true
 			},
 			{
 				"name": "observeIosServices.group",
-				"type": "number"
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +38,39 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "observeIosServices",
+				"inputs": [
+					{
+						"name": "observeIosServices.rows",
+						"type": "Map<number, SeenService> | null",
+						"required": true
+					},
+					{
+						"name": "observeIosServices.group",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "observeIosServices",
+						"type": "Promise<BuildObservation>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

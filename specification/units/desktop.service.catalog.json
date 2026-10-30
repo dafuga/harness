@@ -26,23 +26,28 @@
 		"inputs": [
 			{
 				"name": "CatalogService.constructor.source",
-				"type": "GitSourceAdapter"
+				"type": "GitSourceAdapter",
+				"required": true
 			},
 			{
 				"name": "CatalogService.constructor.planning",
-				"type": "PlanningPort"
+				"type": "PlanningPort",
+				"required": true
 			},
 			{
 				"name": "CatalogService.list.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CatalogService.entity.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CatalogService.entity.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -55,7 +60,76 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogService.list",
+				"inputs": [
+					{
+						"name": "CatalogService.list.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogService.list",
+						"type": "Promise<CatalogEntity[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogService.entity",
+				"inputs": [
+					{
+						"name": "CatalogService.entity.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogService.entity.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogService.entity",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CatalogService.constructor",
+				"inputs": [
+					{
+						"name": "CatalogService.constructor.source",
+						"type": "GitSourceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogService.constructor.planning",
+						"type": "PlanningPort",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -19,6 +19,7 @@
 			{
 				"name": "runContext.context",
 				"type": "RunContext",
+				"required": true,
 				"description": "Run context containing project planning access, revision, entity, thread and requested work."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Prompt with entity contract, its uses and consumers, up to 20 recent messages truncated to 2000 characters each, reference instructions and requested work. Includes the shared coverage-first bug repair rules; assembling the prompt runs no repair or test."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "runContext",
+				"inputs": [
+					{
+						"name": "runContext.context",
+						"type": "RunContext",
+						"required": true,
+						"description": "Run context containing project planning access, revision, entity, thread and requested work."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runContext",
+						"type": "Promise<string>",
+						"description": "Prompt with entity contract, its uses and consumers, up to 20 recent messages truncated to 2000 characters each, reference instructions and requested work. Includes the shared coverage-first bug repair rules; assembling the prompt runs no repair or test."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

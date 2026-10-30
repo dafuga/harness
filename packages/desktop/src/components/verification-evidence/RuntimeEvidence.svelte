@@ -10,7 +10,7 @@
 	import RuntimeAudio from '../reports-media/RuntimeAudio.svelte';
 	import RuntimeBehavior from '../execution-runtimes/RuntimeBehavior.svelte';
 	import RuntimeScreens from '../execution-runtimes/RuntimeScreens.svelte';
-	import RegressionProof from '../../../../reports/src/components/RegressionProof.svelte';
+	import RegressionProof from '../../../../reports/src/components/verification-evidence/RegressionProof.svelte';
 	let {
 		entity,
 		workspace,

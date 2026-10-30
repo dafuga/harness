@@ -15,31 +15,38 @@
 		"inputs": [
 			{
 				"name": "scopedVerify.context",
-				"type": "Base"
+				"type": "Base",
+				"required": true
 			},
 			{
 				"name": "scopedVerify.runtime",
-				"type": "ImpactReport['runtime']"
+				"type": "ImpactReport['runtime']",
+				"required": true
 			},
 			{
 				"name": "scopedVerify.options",
-				"type": "VerifyOptions"
+				"type": "VerifyOptions",
+				"required": true
 			},
 			{
 				"name": "scopedVerify.env",
-				"type": "Record<string, string | undefined>"
+				"type": "Record<string, string | undefined>",
+				"required": true
 			},
 			{
 				"name": "scopedContext.context",
-				"type": "Base"
+				"type": "Base",
+				"required": true
 			},
 			{
 				"name": "timer.entity",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"required": true
 			},
 			{
 				"name": "verifyEnv.options",
-				"type": "VerifyOptions"
+				"type": "VerifyOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -60,7 +67,98 @@
 				"type": "Record<string, string | undefined>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "scopedVerify",
+				"inputs": [
+					{
+						"name": "scopedVerify.context",
+						"type": "Base",
+						"required": true
+					},
+					{
+						"name": "scopedVerify.runtime",
+						"type": "ImpactReport['runtime']",
+						"required": true
+					},
+					{
+						"name": "scopedVerify.options",
+						"type": "VerifyOptions",
+						"required": true
+					},
+					{
+						"name": "scopedVerify.env",
+						"type": "Record<string, string | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopedVerify",
+						"type": "Promise<StoredRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scopedContext",
+				"inputs": [
+					{
+						"name": "scopedContext.context",
+						"type": "Base",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopedContext",
+						"type": "Base"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "timer",
+				"inputs": [
+					{
+						"name": "timer.entity",
+						"type": "string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "timer",
+						"type": "(step: string)"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyEnv",
+				"inputs": [
+					{
+						"name": "verifyEnv.options",
+						"type": "VerifyOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyEnv",
+						"type": "Record<string, string | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

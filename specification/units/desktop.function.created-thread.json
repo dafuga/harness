@@ -35,24 +35,28 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "rememberCreatedThread.workspace",
-				"type": "Workspace",
-				"description": "The workspace whose current project identity should be attached to the remembered selection."
-			},
-			{
-				"name": "rememberCreatedThread.created",
-				"type": "Omit<Aim, 'projectId'>",
-				"description": "The created entity identity and thread identity, or null when there is no thread. A truthy thread identity is remembered; a null one makes no change."
-			},
-			{
 				"name": "createdThread.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "The workspace from which to consume the remembered selection, using its current project identity."
 			},
 			{
 				"name": "createdThread.entity",
 				"type": "EntityDetail",
+				"required": true,
 				"description": "The displayed entity and its threads, used to find the remembered thread after matching project and entity."
+			},
+			{
+				"name": "rememberCreatedThread.workspace",
+				"type": "Workspace",
+				"required": true,
+				"description": "The workspace whose current project identity should be attached to the remembered selection."
+			},
+			{
+				"name": "rememberCreatedThread.created",
+				"type": "Omit<Aim, 'projectId'>",
+				"required": true,
+				"description": "The created entity identity and thread identity, or null when there is no thread. A truthy thread identity is remembered; a null one makes no change."
 			}
 		],
 		"outputs": [
@@ -67,7 +71,62 @@
 				"description": "The matching thread, or null if none is remembered, the project or entity differs, or the thread is absent. The remembered selection is consumed even when no match is found."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "createdThread",
+				"inputs": [
+					{
+						"name": "createdThread.workspace",
+						"type": "Workspace",
+						"required": true,
+						"description": "The workspace from which to consume the remembered selection, using its current project identity."
+					},
+					{
+						"name": "createdThread.entity",
+						"type": "EntityDetail",
+						"required": true,
+						"description": "The displayed entity and its threads, used to find the remembered thread after matching project and entity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createdThread",
+						"type": "ThreadInfo | null",
+						"description": "The matching thread, or null if none is remembered, the project or entity differs, or the thread is absent. The remembered selection is consumed even when no match is found."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "rememberCreatedThread",
+				"inputs": [
+					{
+						"name": "rememberCreatedThread.workspace",
+						"type": "Workspace",
+						"required": true,
+						"description": "The workspace whose current project identity should be attached to the remembered selection."
+					},
+					{
+						"name": "rememberCreatedThread.created",
+						"type": "Omit<Aim, 'projectId'>",
+						"required": true,
+						"description": "The created entity identity and thread identity, or null when there is no thread. A truthy thread identity is remembered; a null one makes no change."
+					}
+				],
+				"outputs": [
+					{
+						"name": "rememberCreatedThread",
+						"type": "unknown",
+						"description": "No return value. Stores the entity, thread and current project in workspace-local memory without changing the URL."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

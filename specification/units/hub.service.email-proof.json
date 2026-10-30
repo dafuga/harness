@@ -44,35 +44,43 @@
 		"inputs": [
 			{
 				"name": "EmailProofService.constructor.options",
-				"type": "EmailProofOptions"
+				"type": "EmailProofOptions",
+				"required": true
 			},
 			{
 				"name": "EmailProofService.proven.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "EmailProofService.open.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "EmailProofService.status.cookie",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			},
 			{
 				"name": "EmailProofService.start.cookie",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			},
 			{
 				"name": "EmailProofService.verify.cookie",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			},
 			{
 				"name": "EmailProofService.verify.code",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EmailProofService.cancel.cookie",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -125,7 +133,143 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "EmailProofService.proven",
+				"inputs": [
+					{
+						"name": "EmailProofService.proven.actor",
+						"type": "Actor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EmailProofService.proven",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EmailProofService.open",
+				"inputs": [
+					{
+						"name": "EmailProofService.open.actor",
+						"type": "Actor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EmailProofService.open",
+						"type": "Promise<{ cookie: string; status: EmailProofStatus }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EmailProofService.status",
+				"inputs": [
+					{
+						"name": "EmailProofService.status.cookie",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EmailProofService.status",
+						"type": "Promise<EmailProofStatus | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EmailProofService.start",
+				"inputs": [
+					{
+						"name": "EmailProofService.start.cookie",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EmailProofService.start",
+						"type": "Promise<EmailProofStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EmailProofService.verify",
+				"inputs": [
+					{
+						"name": "EmailProofService.verify.cookie",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "EmailProofService.verify.code",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EmailProofService.verify",
+						"type": "Promise<IssuedSession>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EmailProofService.cancel",
+				"inputs": [
+					{
+						"name": "EmailProofService.cancel.cookie",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EmailProofService.cancel",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "EmailProofService.constructor",
+				"inputs": [
+					{
+						"name": "EmailProofService.constructor.options",
+						"type": "EmailProofOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EmailProofService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

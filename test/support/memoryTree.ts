@@ -119,14 +119,17 @@ export function helperMoveGaps(
 		definition: string;
 		to?: string;
 		ownerSource?: string;
-	}>
+		retired?: boolean;
+	}>,
+	retiredOwners: readonly string[] = []
 ): string[] {
 	const gaps: string[] = [];
-	for (const move of moves) {
-		const current = {
-			...move,
-			...followUps.find((item) => item.unit === move.unit && item.name === move.name)
-		};
+	const currentMoves = moves.map((move) => ({
+		...move,
+		...[...followUps].reverse().find((item) => item.unit === move.unit && item.name === move.name)
+	}));
+	for (const move of currentMoves.filter((item) => !item.retired)) {
+		const current = move;
 		const location = current.to;
 		const owner = current.ownerSource;
 		const target = resolve(root, location);
@@ -136,7 +139,8 @@ export function helperMoveGaps(
 		}
 		if (posix.dirname(location) !== posix.dirname(owner))
 			gaps.push(`${move.name}: different owner folder`);
-		if (!existsSync(resolve(root, owner))) gaps.push(`${move.name}: owner source is missing`);
+		if (!retiredOwners.includes(owner) && !existsSync(resolve(root, owner)))
+			gaps.push(`${move.name}: owner source is missing`);
 		if (movedDefinition(location, move.name) !== current.definition)
 			gaps.push(`${move.name}: definition changed`);
 		const unit = JSON.parse(
@@ -153,9 +157,12 @@ export function serviceMoveGaps(services: {
 	moves: Record<string, string>;
 	files: Array<{ to: string; unit: string; definition: string }>;
 	services: Array<{ id: string; ownerFolder: string }>;
+	retiredUnits?: string[];
 }): string[] {
 	const gaps: string[] = [];
+	const retired = new Set(services.retiredUnits);
 	for (const file of services.files) {
+		if (retired.has(file.unit)) continue;
 		if (!existsSync(file.to)) {
 			gaps.push(`${file.to}: missing`);
 			continue;
@@ -168,6 +175,7 @@ export function serviceMoveGaps(services: {
 		if (!unit.owns.source.includes(file.to)) gaps.push(`${file.unit}: identity lost`);
 	}
 	for (const service of services.services) {
+		if (retired.has(service.id)) continue;
 		const unit = JSON.parse(
 			readFileSync(`specification/units/${service.id}.json`, 'utf8')
 		) as ComponentManifest;

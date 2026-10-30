@@ -22,9 +22,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlLink.attributes",
-				"type": "SvelteHTMLElements['link']",
-				"description": "Native link attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+				"name": "HtmlLink.children",
+				"type": "Snippet",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -34,7 +34,9 @@
 				"description": "The actual native link element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

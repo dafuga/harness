@@ -19,6 +19,7 @@
 			{
 				"name": "entityRemoved.evidence",
 				"type": "ExplorerEvidence",
+				"required": true,
 				"description": "Before/after evidence coverage supplied by the host."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Sentences for each removed whole scenario or removed state. Uses coverage declarations rather than inferring removals from absent captures; no before coverage yields an empty list."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "entityRemoved",
+				"inputs": [
+					{
+						"name": "entityRemoved.evidence",
+						"type": "ExplorerEvidence",
+						"required": true,
+						"description": "Before/after evidence coverage supplied by the host."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityRemoved",
+						"type": "string[]",
+						"description": "Sentences for each removed whole scenario or removed state. Uses coverage declarations rather than inferring removals from absent captures; no before coverage yields an empty list."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -20,6 +20,7 @@
 			{
 				"name": "stableJson.value",
 				"type": "unknown",
+				"required": true,
 				"description": "JSON-shaped value to render; undefined object fields are omitted, while nullish values elsewhere become null."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Formatted text with a trailing newline. Objects retain entry order; primitive arrays stay inline when they fit the 100-column layout calculation, otherwise values expand with tabs."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "stableJson",
+				"inputs": [
+					{
+						"name": "stableJson.value",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-shaped value to render; undefined object fields are omitted, while nullish values elsewhere become null."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stableJson",
+						"type": "string",
+						"description": "Formatted text with a trailing newline. Objects retain entry order; primitive arrays stay inline when they fit the 100-column layout calculation, otherwise values expand with tabs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

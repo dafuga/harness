@@ -28,7 +28,8 @@
 		"inputs": [
 			{
 				"name": "findGuide.topic",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -45,7 +46,41 @@
 				"type": "string[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "findGuide",
+				"inputs": [
+					{
+						"name": "findGuide.topic",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "findGuide",
+						"type": "Guide | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "availableGuideTopics",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "availableGuideTopics",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

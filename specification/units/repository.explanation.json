@@ -25,15 +25,18 @@
 		"inputs": [
 			{
 				"name": "ExplanationRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ExplanationRepository.constructor.file",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ExplanationRepository.append.entries",
-				"type": "Explanation[]"
+				"type": "Explanation[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -50,7 +53,77 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ExplanationRepository.all",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplanationRepository.all",
+						"type": "Promise<Explanation[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ExplanationRepository.read",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplanationRepository.read",
+						"type": "Explanation[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ExplanationRepository.append",
+				"inputs": [
+					{
+						"name": "ExplanationRepository.append.entries",
+						"type": "Explanation[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplanationRepository.append",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ExplanationRepository.constructor",
+				"inputs": [
+					{
+						"name": "ExplanationRepository.constructor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ExplanationRepository.constructor.file",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplanationRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

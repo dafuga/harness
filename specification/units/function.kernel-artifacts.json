@@ -31,6 +31,7 @@
 			{
 				"name": "kernelArtifacts.env",
 				"type": "Environment",
+				"required": false,
 				"description": "Environment map, defaulting to process.env. HARNESS_KERNEL_DIR restricts lookup to its resolved directory; otherwise known bundle/checkout locations are tried."
 			}
 		],
@@ -41,7 +42,30 @@
 				"description": "Build directory, parsed build record and paths of existing Wasm/native artifacts, or all undefined when no build.json is found."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "kernelArtifacts",
+				"inputs": [
+					{
+						"name": "kernelArtifacts.env",
+						"type": "Environment",
+						"required": false,
+						"description": "Environment map, defaulting to process.env. HARNESS_KERNEL_DIR restricts lookup to its resolved directory; otherwise known bundle/checkout locations are tried."
+					}
+				],
+				"outputs": [
+					{
+						"name": "kernelArtifacts",
+						"type": "KernelArtifacts",
+						"description": "Build directory, parsed build record and paths of existing Wasm/native artifacts, or all undefined when no build.json is found."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

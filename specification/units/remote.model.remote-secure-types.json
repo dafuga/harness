@@ -37,11 +37,34 @@
 		"inputs": [
 			{
 				"name": "SecureFailure.constructor.reason",
-				"type": "SecureFailureReason"
+				"type": "SecureFailureReason",
+				"required": true
 			}
 		],
 		"outputs": [],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [],
+		"initialization": [
+			{
+				"name": "SecureFailure.constructor",
+				"inputs": [
+					{
+						"name": "SecureFailure.constructor.reason",
+						"type": "SecureFailureReason",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecureFailure.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

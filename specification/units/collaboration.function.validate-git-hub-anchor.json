@@ -20,16 +20,19 @@
 			{
 				"name": "validateGitHubAnchor.deps",
 				"type": "{ adapter: SourceAdapter; client: GitHubTransport }",
+				"required": true,
 				"description": "Source adapter and transport used to resolve and attest source and ancestry."
 			},
 			{
 				"name": "validateGitHubAnchor.repository",
 				"type": "RepositoryIdentity",
+				"required": true,
 				"description": "Repository containing the anchored unit."
 			},
 			{
 				"name": "validateGitHubAnchor.input",
 				"type": "Anchor",
+				"required": true,
 				"description": "Anchor naming branch, exact commit and unit, with optional design version and image metadata."
 			}
 		],
@@ -46,7 +49,47 @@
 				"type": "thrown",
 				"description": "Rejects invalid or unreachable anchors, invalid source JSON, inconsistent or ambiguous unit plans, invalid design versions or images and image-integrity failures."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "validateGitHubAnchor",
+				"inputs": [
+					{
+						"name": "validateGitHubAnchor.deps",
+						"type": "{ adapter: SourceAdapter; client: GitHubTransport }",
+						"required": true,
+						"description": "Source adapter and transport used to resolve and attest source and ancestry."
+					},
+					{
+						"name": "validateGitHubAnchor.repository",
+						"type": "RepositoryIdentity",
+						"required": true,
+						"description": "Repository containing the anchored unit."
+					},
+					{
+						"name": "validateGitHubAnchor.input",
+						"type": "Anchor",
+						"required": true,
+						"description": "Anchor naming branch, exact commit and unit, with optional design version and image metadata."
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateGitHubAnchor",
+						"type": "Promise<void>",
+						"description": "Resolves without a value after validating branch ancestry, the unit or plan, and any requested design image hash."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

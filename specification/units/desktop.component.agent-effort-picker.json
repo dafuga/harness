@@ -15,11 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/AgentEffortPicker.svelte",
-			"packages/desktop/src/components/agents-providers/AgentEffortPicker.svelte"
-		],
-		"symbols": ["AgentEffortPicker", "AgentEffortPicker"]
+		"source": ["packages/desktop/src/components/agents-providers/AgentEffortPicker.svelte"],
+		"symbols": ["AgentEffortPicker", "AgentEffortPicker.icon", "AgentEffortPicker.children"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -27,11 +24,13 @@
 			{
 				"name": "AgentEffortPicker.efforts",
 				"type": "string[]",
+				"required": true,
 				"description": "Required effort names in display order. An empty list disables the picker and labels it as using the model default."
 			},
 			{
 				"name": "AgentEffortPicker.effort",
 				"type": "string",
+				"required": false,
 				"description": "Required bindable current effort. Choosing an offered effort replaces this value and closes the dialog. No fallback is selected for an invalid value."
 			}
 		],
@@ -42,7 +41,41 @@
 				"description": "Reasoning icon opening a list of effort buttons with the current choice marked. Its tooltip names the effort or model default when no efforts are listed."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "AgentEffortPicker.icon",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AgentEffortPicker.icon",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "AgentEffortPicker.children",
+				"inputs": [
+					{
+						"name": "AgentEffortPicker.children.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentEffortPicker.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -26,26 +26,32 @@
 			{
 				"name": "EntityMissing.title",
 				"type": "string",
+				"required": true,
 				"description": "Required heading."
 			},
 			{
 				"name": "EntityMissing.message",
 				"type": "string",
+				"required": true,
 				"description": "Required explanation of the missing entity at this revision."
 			},
 			{
 				"name": "EntityMissing.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required link/navigation context."
 			},
 			{
 				"name": "EntityMissing.to",
 				"type": "ExplorerLocation",
+				"required": true,
 				"description": "Required destination for recovery navigation."
 			},
 			{
 				"name": "EntityMissing.action",
 				"type": "string",
+				"required": false,
+				"default": "Back to the collection",
 				"description": "Optional action text, default Back to the collection."
 			}
 		],
@@ -56,7 +62,9 @@
 				"description": "Not shown verdict, supplied explanation, statement that another revision is not substituted, and return action."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

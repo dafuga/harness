@@ -20,6 +20,7 @@
 			{
 				"name": "publicCliEvents.value",
 				"type": "unknown",
+				"required": true,
 				"description": "The candidate CLI event. It must be an assistant event with a message object and content array to yield text."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "An ordered list of string text parts whose type is text. Non-assistant events, malformed structures, reasoning parts and tool bodies produce no text entries."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "publicCliEvents",
+				"inputs": [
+					{
+						"name": "publicCliEvents.value",
+						"type": "unknown",
+						"required": true,
+						"description": "The candidate CLI event. It must be an assistant event with a message object and content array to yield text."
+					}
+				],
+				"outputs": [
+					{
+						"name": "publicCliEvents",
+						"type": "string[]",
+						"description": "An ordered list of string text parts whose type is text. Non-assistant events, malformed structures, reasoning parts and tool bodies produce no text entries."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

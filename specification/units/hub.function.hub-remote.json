@@ -20,6 +20,7 @@
 			{
 				"name": "hubRemote.env",
 				"type": "HubEnv",
+				"required": true,
 				"description": "Environment containing relay origin, optional environment name and remote-host object binding."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Normalized origin and relay-management adapter, or null. Accepts exact HTTPS origins, plus HTTP localhost or 127.0.0.1 outside production; binding must expose idFromName and get functions."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubRemote",
+				"inputs": [
+					{
+						"name": "hubRemote.env",
+						"type": "HubEnv",
+						"required": true,
+						"description": "Environment containing relay origin, optional environment name and remote-host object binding."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubRemote",
+						"type": "HubRemoteRuntime | null",
+						"description": "Normalized origin and relay-management adapter, or null. Accepts exact HTTPS origins, plus HTTP localhost or 127.0.0.1 outside production; binding must expose idFromName and get functions."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

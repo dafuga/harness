@@ -18,16 +18,21 @@
 			{
 				"name": "hostResourceLimits.root",
 				"type": "string",
+				"required": false,
+				"default": "/sys/fs/cgroup",
 				"description": "Linux cgroup-v2 filesystem root, replaceable by a fixture directory."
 			},
 			{
 				"name": "hostResourceLimits.membership",
 				"type": "string",
+				"required": false,
+				"default": "/proc/self/cgroup",
 				"description": "Proc cgroup membership file identifying this process namespace."
 			},
 			{
 				"name": "hostResourceLimits.system",
 				"type": "string",
+				"required": false,
 				"description": "Operating system identifier; non-Linux systems have no cgroup limits."
 			}
 		],
@@ -44,7 +49,44 @@
 				"type": "thrown",
 				"description": "Missing cgroup-v2 support, unsafe membership paths, malformed quotas or unreadable diagnostics reject."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hostResourceLimits",
+				"inputs": [
+					{
+						"name": "hostResourceLimits.root",
+						"type": "string",
+						"required": false,
+						"default": "/sys/fs/cgroup",
+						"description": "Linux cgroup-v2 filesystem root, replaceable by a fixture directory."
+					},
+					{
+						"name": "hostResourceLimits.membership",
+						"type": "string",
+						"required": false,
+						"default": "/proc/self/cgroup",
+						"description": "Proc cgroup membership file identifying this process namespace."
+					},
+					{
+						"name": "hostResourceLimits.system",
+						"type": "string",
+						"required": false,
+						"description": "Operating system identifier; non-Linux systems have no cgroup limits."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostResourceLimits",
+						"type": "HostLimits",
+						"description": "Tightest applicable CPU quota, quota usage and memory limits; empty outside Linux."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

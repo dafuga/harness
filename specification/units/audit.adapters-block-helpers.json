@@ -25,31 +25,38 @@
 		"inputs": [
 			{
 				"name": "auditCurlyFunctions.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "auditCurlyFunctions.lines",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "auditCurlyFunctions.startsFunction",
-				"type": "(line: string) => boolean"
+				"type": "(line: string) => boolean",
+				"required": true
 			},
 			{
 				"name": "auditCurlyFunctions.limits",
-				"type": "HarnessRuleLimits"
+				"type": "HarnessRuleLimits",
+				"required": false
 			},
 			{
 				"name": "auditIndentedPythonBlocks.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "auditIndentedPythonBlocks.lines",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "auditIndentedPythonBlocks.limits",
-				"type": "HarnessRuleLimits"
+				"type": "HarnessRuleLimits",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -62,7 +69,72 @@
 				"type": "AuditFinding[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "auditCurlyFunctions",
+				"inputs": [
+					{
+						"name": "auditCurlyFunctions.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "auditCurlyFunctions.lines",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "auditCurlyFunctions.startsFunction",
+						"type": "(line: string) => boolean",
+						"required": true
+					},
+					{
+						"name": "auditCurlyFunctions.limits",
+						"type": "HarnessRuleLimits",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditCurlyFunctions",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "auditIndentedPythonBlocks",
+				"inputs": [
+					{
+						"name": "auditIndentedPythonBlocks.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "auditIndentedPythonBlocks.lines",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "auditIndentedPythonBlocks.limits",
+						"type": "HarnessRuleLimits",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditIndentedPythonBlocks",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

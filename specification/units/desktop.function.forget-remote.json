@@ -17,13 +17,21 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "accountView.workspace",
+				"type": "Workspace",
+				"required": true
+			},
+			{
 				"name": "forgetRemote.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "The workspace to invalidate and clear, including project list, snapshot, entity, cached-view state, capabilities, selected project and pending target."
 			},
 			{
 				"name": "forgetRemote.notice",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "The error notice to show after clearing; defaults to an empty string."
 			}
 		],
@@ -34,7 +42,55 @@
 				"description": "No return value. Invalidates pending work, empties the project list, clears displayed and selected content, disables change capabilities and sets the notice. If a browser address exists and is not the start address, replaces it with / without adding a history entry."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "accountView",
+				"inputs": [
+					{
+						"name": "accountView.workspace",
+						"type": "Workspace",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "accountView",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "forgetRemote",
+				"inputs": [
+					{
+						"name": "forgetRemote.workspace",
+						"type": "Workspace",
+						"required": true,
+						"description": "The workspace to invalidate and clear, including project list, snapshot, entity, cached-view state, capabilities, selected project and pending target."
+					},
+					{
+						"name": "forgetRemote.notice",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "The error notice to show after clearing; defaults to an empty string."
+					}
+				],
+				"outputs": [
+					{
+						"name": "forgetRemote",
+						"type": "boolean",
+						"description": "No return value. Invalidates pending work, empties the project list, clears displayed and selected content, disables change capabilities and sets the notice. If a browser address exists and is not the start address, replaces it with / without adding a history entry."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

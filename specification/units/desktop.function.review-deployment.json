@@ -19,16 +19,19 @@
 			{
 				"name": "reviewDeployment.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "reviewDeployment.input",
 				"type": "DeploymentQuery",
+				"required": true,
 				"description": "Requested environment and immutable source commit with the originating project identity."
 			},
 			{
 				"name": "reviewDeployment.options",
 				"type": "{ plugin: DeploymentPlugin; projectId: string | null; queuedChange?: boolean }",
+				"required": true,
 				"description": "Adapter and project identity, with an explicit flag for lower-environment chat-chain admission."
 			}
 		],
@@ -39,7 +42,42 @@
 				"description": "Reviewed immutable plan with expiry, target, predecessor receipt and configuration fingerprint."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reviewDeployment",
+				"inputs": [
+					{
+						"name": "reviewDeployment.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					},
+					{
+						"name": "reviewDeployment.input",
+						"type": "DeploymentQuery",
+						"required": true,
+						"description": "Requested environment and immutable source commit with the originating project identity."
+					},
+					{
+						"name": "reviewDeployment.options",
+						"type": "{ plugin: DeploymentPlugin; projectId: string | null; queuedChange?: boolean }",
+						"required": true,
+						"description": "Adapter and project identity, with an explicit flag for lower-environment chat-chain admission."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewDeployment",
+						"type": "Promise<ReviewedDeployment>",
+						"description": "Reviewed immutable plan with expiry, target, predecessor receipt and configuration fingerprint."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

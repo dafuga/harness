@@ -44,46 +44,55 @@
 			{
 				"name": "commentEntries.thread",
 				"type": "CommittedThread",
+				"required": true,
 				"description": "The committed thread whose comments should be shown, including author names, timestamps and its design-image anchor."
 			},
 			{
 				"name": "threadInfo.thread",
 				"type": "CommittedThread",
+				"required": true,
 				"description": "The committed thread to summarize as a numbered pin, with its image anchor and comments."
 			},
 			{
 				"name": "threadInfo.pin",
 				"type": "number",
+				"required": true,
 				"description": "The pin number to copy into the thread summary; this helper does not allocate or validate pin numbers."
 			},
 			{
 				"name": "pendingEntries.results",
 				"type": "HumanCommentResult[]",
+				"required": true,
 				"description": "The shared or pending comment results to inspect. Only pending drafts are included."
 			},
 			{
 				"name": "pendingEntries.entityId",
 				"type": "string",
+				"required": true,
 				"description": "The exact entity identity whose pending drafts should be shown. This filter does not additionally compare project identity."
 			},
 			{
 				"name": "pendingEntries.threads",
 				"type": "ThreadInfo[]",
+				"required": true,
 				"description": "Thread summaries used to add a thread number to a pending draft when its thread identity is found."
 			},
 			{
 				"name": "requestEntry.runId",
 				"type": "string",
+				"required": true,
 				"description": "The run identity to use for the temporary displayed request entry."
 			},
 			{
 				"name": "requestEntry.request",
 				"type": "RunDraft",
+				"required": true,
 				"description": "The request text, mode, provider and model to display as a user message."
 			},
 			{
 				"name": "requestEntry.design",
 				"type": "DesignVersion | undefined",
+				"required": true,
 				"description": "The associated design version, or undefined. Its version and first image hash are included when present."
 			}
 		],
@@ -109,7 +118,120 @@
 				"description": "A temporary user entry with the run identity, current ISO timestamp, submitted text and agent choices, plus the optional design anchor. It does not save or send the request."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "commentEntries",
+				"inputs": [
+					{
+						"name": "commentEntries.thread",
+						"type": "CommittedThread",
+						"required": true,
+						"description": "The committed thread whose comments should be shown, including author names, timestamps and its design-image anchor."
+					}
+				],
+				"outputs": [
+					{
+						"name": "commentEntries",
+						"type": "ThreadEntry[]",
+						"description": "User entries in comment order, retaining comment identity, time, author name, text and thread image anchor; agent mode, provider and model are null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "threadInfo",
+				"inputs": [
+					{
+						"name": "threadInfo.thread",
+						"type": "CommittedThread",
+						"required": true,
+						"description": "The committed thread to summarize as a numbered pin, with its image anchor and comments."
+					},
+					{
+						"name": "threadInfo.pin",
+						"type": "number",
+						"required": true,
+						"description": "The pin number to copy into the thread summary; this helper does not allocate or validate pin numbers."
+					}
+				],
+				"outputs": [
+					{
+						"name": "threadInfo",
+						"type": "ThreadInfo",
+						"description": "A thread summary with the supplied pin, the thread’s image anchor and the number of comments."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "pendingEntries",
+				"inputs": [
+					{
+						"name": "pendingEntries.results",
+						"type": "HumanCommentResult[]",
+						"required": true,
+						"description": "The shared or pending comment results to inspect. Only pending drafts are included."
+					},
+					{
+						"name": "pendingEntries.entityId",
+						"type": "string",
+						"required": true,
+						"description": "The exact entity identity whose pending drafts should be shown. This filter does not additionally compare project identity."
+					},
+					{
+						"name": "pendingEntries.threads",
+						"type": "ThreadInfo[]",
+						"required": true,
+						"description": "Thread summaries used to add a thread number to a pending draft when its thread identity is found."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingEntries",
+						"type": "ThreadEntry[]",
+						"description": "Pending entries for the requested entity, in input order, labelled as remaining on this device and not shared. Each retains the local draft identity, saved time and backend reason, plus the thread number when known."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requestEntry",
+				"inputs": [
+					{
+						"name": "requestEntry.runId",
+						"type": "string",
+						"required": true,
+						"description": "The run identity to use for the temporary displayed request entry."
+					},
+					{
+						"name": "requestEntry.request",
+						"type": "RunDraft",
+						"required": true,
+						"description": "The request text, mode, provider and model to display as a user message."
+					},
+					{
+						"name": "requestEntry.design",
+						"type": "DesignVersion | undefined",
+						"required": true,
+						"description": "The associated design version, or undefined. Its version and first image hash are included when present."
+					}
+				],
+				"outputs": [
+					{
+						"name": "requestEntry",
+						"type": "ThreadEntry",
+						"description": "A temporary user entry with the run identity, current ISO timestamp, submitted text and agent choices, plus the optional design anchor. It does not save or send the request."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

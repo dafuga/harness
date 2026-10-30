@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { fixtures } from './support/fixtures';
-import { expectRetired, reportView } from './support/portableReport';
+import { expectRetired } from './support/retiredAddress';
 
 const home = fixtures.reports;
 
@@ -32,14 +32,7 @@ test('a report recorded as running keeps that outcome when it has gone quiet', a
 	expect(found).toMatchObject({ status: 'running', state: 'active' });
 	expect(found.updatedAt).toBe('2026-10-01T09:30:00.000Z');
 
-	// The viewer says it was recorded as running and that completion is not proven.
 	await expectRetired(page, `/harness/reports/${run.id}`);
-	await page.goto(await reportView(run.id));
-	await expect(page.locator('.badge').first()).toHaveText(/Running/);
-	await expect(page.locator('.badge').first()).not.toHaveText(/Interrupted/);
-	await expect(
-		page.getByText('No updates for over 15 minutes. Completion is not proven.')
-	).toBeVisible();
-	// Neither being listed nor being viewed rewrote what was recorded.
+	// Being listed did not rewrite what was recorded.
 	expect(await readFile(manifest, 'utf8')).toBe(stored);
 });

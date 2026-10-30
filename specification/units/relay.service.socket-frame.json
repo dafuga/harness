@@ -26,27 +26,33 @@
 		"inputs": [
 			{
 				"name": "SocketFrameService.constructor.sockets",
-				"type": "HostSocketsAdapter"
+				"type": "HostSocketsAdapter",
+				"required": true
 			},
 			{
 				"name": "SocketFrameService.constructor.link",
-				"type": "HostLinkService"
+				"type": "HostLinkService",
+				"required": true
 			},
 			{
 				"name": "SocketFrameService.constructor.commands",
-				"type": "HostCommandService"
+				"type": "HostCommandService",
+				"required": true
 			},
 			{
 				"name": "SocketFrameService.message.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			},
 			{
 				"name": "SocketFrameService.message.message",
-				"type": "string | ArrayBuffer"
+				"type": "string | ArrayBuffer",
+				"required": true
 			},
 			{
 				"name": "SocketFrameService.closed.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -59,7 +65,81 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SocketFrameService.message",
+				"inputs": [
+					{
+						"name": "SocketFrameService.message.socket",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "SocketFrameService.message.message",
+						"type": "string | ArrayBuffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SocketFrameService.message",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SocketFrameService.closed",
+				"inputs": [
+					{
+						"name": "SocketFrameService.closed.socket",
+						"type": "WebSocket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SocketFrameService.closed",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SocketFrameService.constructor",
+				"inputs": [
+					{
+						"name": "SocketFrameService.constructor.sockets",
+						"type": "HostSocketsAdapter",
+						"required": true
+					},
+					{
+						"name": "SocketFrameService.constructor.link",
+						"type": "HostLinkService",
+						"required": true
+					},
+					{
+						"name": "SocketFrameService.constructor.commands",
+						"type": "HostCommandService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SocketFrameService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

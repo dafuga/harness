@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/InviteAccept.svelte",
-			"packages/hub/src/components/shared-primitives/InviteAccept.svelte"
-		],
-		"symbols": ["InviteAccept", "InviteAccept"]
+		"source": ["packages/hub/src/components/shared-primitives/InviteAccept.svelte"],
+		"symbols": ["InviteAccept"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +28,13 @@
 			{
 				"name": "InviteAccept.projectId",
 				"type": "string",
+				"required": true,
 				"description": "Required project identifier sent with acceptance and used for the destination workspace."
 			},
 			{
 				"name": "InviteAccept.invitationId",
 				"type": "string",
+				"required": true,
 				"description": "Required invitation identifier submitted alongside the trimmed code."
 			}
 		],
@@ -46,7 +45,9 @@
 				"description": "Invitation-code form showing the session email. Blocks empty or concurrent submissions, calls acceptance, then performs document navigation to the project Pages catalog. Failure displays an alert and allows retry. The code is passed as an operation argument, not inserted into the destination URL."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

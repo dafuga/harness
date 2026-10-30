@@ -5,7 +5,7 @@
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import ExplorerFrame from './ExplorerFrame.svelte';
 	import ExplorerIndex from './explorer-index/ExplorerIndex.svelte';
-	import ExplorerCatalogItems from '../ExplorerCatalogItems.svelte';
+	import ExplorerCatalogItems from './ExplorerCatalogItems.svelte';
 	let host: ExplorerScreenProps = $props();
 	let rows = $derived(entityCatalog(host.entities, 'pages', host.lens.relations));
 </script>

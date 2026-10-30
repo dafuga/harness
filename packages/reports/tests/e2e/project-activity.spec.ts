@@ -3,7 +3,7 @@ import { activityAnswer } from './support/activityAnswer';
 import { activityFixture, type ActivityFixture } from './support/activityFixture';
 import { fixtures } from './support/fixtures';
 import { seeded } from './support/harnessHistory';
-import { expectRetired } from './support/portableReport';
+import { expectRetired } from './support/retiredAddress';
 
 /**
  * The analytics page that showed what a site is doing is gone; its addresses lead into the

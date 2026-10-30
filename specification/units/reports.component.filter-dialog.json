@@ -15,7 +15,7 @@
 			"packages/reports/src/components/FilterDialog.svelte",
 			"packages/reports/src/components/shared-primitives/FilterDialog.svelte"
 		],
-		"symbols": ["FilterDialog", "FilterDialog"]
+		"symbols": ["FilterDialog", "FilterDialog", "FilterDialog.footer"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,7 +47,23 @@
 				"description": "One icon opens a Filters modal. Done, Escape and backdrop close it and restore focus to the icon. Reset invokes the supplied callback."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "FilterDialog.footer",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "FilterDialog.footer",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.harness-explorer-controls",
 			"reports.component.harness-explorer-frame",
 			"reports.component.harness-harness-icon",
@@ -41,76 +42,60 @@
 			"packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
 			"packages/reports/src/lib/styles/translations.css"
 		],
-		"symbols": ["ExplorerTranslationsScreen"]
+		"symbols": ["ExplorerTranslationsScreen", "ExplorerTranslationsScreen.children"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "index",
+				"name": "ExplorerTranslationsScreen.index",
 				"type": "HarnessIndex",
-				"required": true,
-				"description": "Available project branches and revisions used by the shared explorer frame."
+				"required": true
 			},
 			{
-				"name": "head",
+				"name": "ExplorerTranslationsScreen.head",
 				"type": "HarnessRevision",
-				"required": true,
-				"description": "Selected revision shown by the shared navigation and revision controls."
+				"required": true
 			},
 			{
-				"name": "parent",
+				"name": "ExplorerTranslationsScreen.parent",
 				"type": "HarnessRevision | null",
-				"required": true,
-				"description": "First parent for selected-commit comparisons; null at branch tip or without a parent."
+				"required": true
 			},
 			{
-				"name": "scope",
+				"name": "ExplorerTranslationsScreen.scope",
 				"type": "ExplorerScope",
-				"required": true,
-				"description": "Selected branch, commit and resolved address for scoped navigation."
+				"required": true
 			},
 			{
-				"name": "route",
+				"name": "ExplorerTranslationsScreen.route",
 				"type": "ExplorerLocation",
-				"required": true,
-				"description": "Current Translations address, including its selected branch and optional commit."
+				"required": true
 			},
 			{
-				"name": "entities",
+				"name": "ExplorerTranslationsScreen.entities",
 				"type": "ExplorerEntity[]",
-				"required": true,
-				"description": "Revision-scoped entity catalog supplied to the shared explorer frame."
+				"required": true
 			},
 			{
-				"name": "lens",
+				"name": "ExplorerTranslationsScreen.lens",
 				"type": "EntityLens",
-				"required": true,
-				"description": "Host readers for entity contracts, measurements and captured evidence."
+				"required": true
 			},
 			{
-				"name": "client",
+				"name": "ExplorerTranslationsScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
-				"required": true,
-				"description": "Loads revision data when the shared frame needs historical navigation."
+				"required": true
 			},
 			{
-				"name": "mediaBase",
+				"name": "ExplorerTranslationsScreen.mediaBase",
 				"type": "string",
-				"required": true,
-				"description": "Base URL from which the shared frame resolves captured media."
+				"required": true
 			},
 			{
-				"name": "onroute",
+				"name": "ExplorerTranslationsScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
-				"required": true,
-				"description": "Requests navigation while preserving the selected explorer scope."
-			},
-			{
-				"name": "exportHref",
-				"type": "string",
-				"required": true,
-				"description": "Project export URL; empty when the host provides no export."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -120,11 +105,38 @@
 				"description": "Compares English with the selected language, with search, paging and links to recorded consumers."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerTranslationsScreen.children",
+				"inputs": [
+					{
+						"name": "ExplorerTranslationsScreen.children.nav",
+						"type": "EntityNav",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerTranslationsScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "function.explorer-ui-translation-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -255,6 +267,11 @@
 		},
 		{
 			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

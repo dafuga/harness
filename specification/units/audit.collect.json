@@ -26,7 +26,8 @@
 		"inputs": [
 			{
 				"name": "collectAuditedFiles.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -35,7 +36,29 @@
 				"type": "Promise<CollectedFiles>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "collectAuditedFiles",
+				"inputs": [
+					{
+						"name": "collectAuditedFiles.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "collectAuditedFiles",
+						"type": "Promise<CollectedFiles>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

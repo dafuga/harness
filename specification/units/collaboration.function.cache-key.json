@@ -19,31 +19,37 @@
 			{
 				"name": "cacheKey.identity",
 				"type": "CacheIdentity",
+				"required": true,
 				"description": "Principal, project, repository and source revisions with nullable evidence, notes, artifact and profile selectors."
 			},
 			{
 				"name": "readCache.cache",
 				"type": "CollaborationCache",
+				"required": true,
 				"description": "Cache adapter from which to read or delete an entry."
 			},
 			{
 				"name": "readCache.identity",
 				"type": "CacheIdentity",
+				"required": true,
 				"description": "Expected identity for the cached bytes."
 			},
 			{
 				"name": "writeCache.cache",
 				"type": "CollaborationCache",
+				"required": true,
 				"description": "Cache adapter into which to store the entry."
 			},
 			{
 				"name": "writeCache.identity",
 				"type": "CacheIdentity",
+				"required": true,
 				"description": "Validated identity to bind to the stored bytes."
 			},
 			{
 				"name": "writeCache.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Bytes to hash and copy into the cache; must match artifactHash when supplied."
 			}
 		],
@@ -75,7 +81,98 @@
 				"type": "thrown",
 				"description": "Rejects invalid identities or an artifact hash mismatch on write."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "cacheKey",
+				"inputs": [
+					{
+						"name": "cacheKey.identity",
+						"type": "CacheIdentity",
+						"required": true,
+						"description": "Principal, project, repository and source revisions with nullable evidence, notes, artifact and profile selectors."
+					}
+				],
+				"outputs": [
+					{
+						"name": "cacheKey",
+						"type": "Promise<string>",
+						"description": "SHA-256 hex digest of the normalized identity JSON."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readCache",
+				"inputs": [
+					{
+						"name": "readCache.cache",
+						"type": "CollaborationCache",
+						"required": true,
+						"description": "Cache adapter from which to read or delete an entry."
+					},
+					{
+						"name": "readCache.identity",
+						"type": "CacheIdentity",
+						"required": true,
+						"description": "Expected identity for the cached bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readCache",
+						"type": "Promise<Uint8Array | null>",
+						"description": "A copy of verified bytes, or null for a miss or a corrupt entry that was deleted."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeCache",
+				"inputs": [
+					{
+						"name": "writeCache.cache",
+						"type": "CollaborationCache",
+						"required": true,
+						"description": "Cache adapter into which to store the entry."
+					},
+					{
+						"name": "writeCache.identity",
+						"type": "CacheIdentity",
+						"required": true,
+						"description": "Validated identity to bind to the stored bytes."
+					},
+					{
+						"name": "writeCache.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes to hash and copy into the cache; must match artifactHash when supplied."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeCache",
+						"type": "Promise<void>",
+						"description": "Stores normalized identity, SHA-256 and copied bytes; resolves without a value."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

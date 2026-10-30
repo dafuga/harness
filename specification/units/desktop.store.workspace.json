@@ -29,7 +29,23 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "createWorkspaceStore",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "createWorkspaceStore",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

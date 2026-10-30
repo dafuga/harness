@@ -23,15 +23,18 @@
 		"inputs": [
 			{
 				"name": "auditFunctionNames.file",
-				"type": "AuditFile"
+				"type": "AuditFile",
+				"required": true
 			},
 			{
 				"name": "hasNamedValueExport.lines",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "hasNamedValueExport.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,7 +47,52 @@
 				"type": "boolean"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "auditFunctionNames",
+				"inputs": [
+					{
+						"name": "auditFunctionNames.file",
+						"type": "AuditFile",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditFunctionNames",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasNamedValueExport",
+				"inputs": [
+					{
+						"name": "hasNamedValueExport.lines",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "hasNamedValueExport.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasNamedValueExport",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

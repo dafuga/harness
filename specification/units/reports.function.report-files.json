@@ -32,26 +32,31 @@
 			{
 				"name": "reportFiles.root",
 				"type": "string",
+				"required": false,
 				"description": "Optional root override; empty falls through to environment and then the user-home default."
 			},
 			{
 				"name": "safeId.id",
 				"type": "string",
+				"required": true,
 				"description": "Identifier containing only ASCII letters, digits, underscore or hyphen, from one to 100 characters."
 			},
 			{
 				"name": "readJson.path",
 				"type": "string",
+				"required": true,
 				"description": "JSON file to read."
 			},
 			{
 				"name": "atomicJson.path",
 				"type": "string",
+				"required": true,
 				"description": "Destination JSON path."
 			},
 			{
 				"name": "atomicJson.data",
 				"type": "unknown",
+				"required": true,
 				"description": "Serializable value to write."
 			}
 		],
@@ -83,7 +88,101 @@
 				"type": "thrown",
 				"description": "Invalid identifiers throw Invalid report or asset ID. Read, parse, serialization and filesystem failures propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "reportFiles",
+				"inputs": [
+					{
+						"name": "reportFiles.root",
+						"type": "string",
+						"required": false,
+						"description": "Optional root override; empty falls through to environment and then the user-home default."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportFiles",
+						"type": "unknown",
+						"description": "Explicit root, PROJECT_REPORTS_HOME, or the project-reports directory under the user’s Codex home folder."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "safeId",
+				"inputs": [
+					{
+						"name": "safeId.id",
+						"type": "string",
+						"required": true,
+						"description": "Identifier containing only ASCII letters, digits, underscore or hyphen, from one to 100 characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "safeId",
+						"type": "unknown",
+						"description": "Validated identifier unchanged."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readJson",
+				"inputs": [
+					{
+						"name": "readJson.path",
+						"type": "string",
+						"required": true,
+						"description": "JSON file to read."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readJson",
+						"type": "Promise<T>",
+						"description": "Promise resolving to parsed JSON cast to the requested type, without runtime shape validation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "atomicJson",
+				"inputs": [
+					{
+						"name": "atomicJson.path",
+						"type": "string",
+						"required": true,
+						"description": "Destination JSON path."
+					},
+					{
+						"name": "atomicJson.data",
+						"type": "unknown",
+						"required": true,
+						"description": "Serializable value to write."
+					}
+				],
+				"outputs": [
+					{
+						"name": "atomicJson",
+						"type": "unknown",
+						"description": "Promise that creates parent directories, writes formatted JSON to a UUID-suffixed temporary file and renames it over the destination."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

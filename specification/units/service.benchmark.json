@@ -16,16 +16,19 @@
 			{
 				"name": "BenchmarkService.execute.operation",
 				"type": "string",
+				"required": true,
 				"description": "Validation, execution or persisted-results operation selected by the CLI."
 			},
 			{
 				"name": "BenchmarkService.execute.target",
 				"type": "string",
+				"required": true,
 				"description": "Definition JSON path for validation or execution, or a persisted run ID for results."
 			},
 			{
 				"name": "BenchmarkService.execute.options",
 				"type": "BenchmarkOptions",
+				"required": true,
 				"description": "JSON output selection and optional reproducible trial-order seed."
 			}
 		],
@@ -42,7 +45,47 @@
 				"type": "thrown",
 				"description": "Reports an invalid operation, definition, persisted run or provider failure as a CLI error."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "BenchmarkService.execute",
+				"inputs": [
+					{
+						"name": "BenchmarkService.execute.operation",
+						"type": "string",
+						"required": true,
+						"description": "Validation, execution or persisted-results operation selected by the CLI."
+					},
+					{
+						"name": "BenchmarkService.execute.target",
+						"type": "string",
+						"required": true,
+						"description": "Definition JSON path for validation or execution, or a persisted run ID for results."
+					},
+					{
+						"name": "BenchmarkService.execute.options",
+						"type": "BenchmarkOptions",
+						"required": true,
+						"description": "JSON output selection and optional reproducible trial-order seed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "BenchmarkService.execute",
+						"type": "Promise<void>",
+						"description": "Prints the selected benchmark operation; unsuccessful runs retain a nonzero exit status."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

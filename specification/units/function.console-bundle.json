@@ -20,6 +20,7 @@
 			{
 				"name": "consoleBundle.modules",
 				"type": "ConsoleModules",
+				"required": true,
 				"description": "Maps of JSON and media module loaders. JSON modules default-export text; media modules default-export base64 and export a MIME type string. Loader paths end in the requested filename plus .ts."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Data reader with async json and media methods. Missing loaders or wrong export types yield undefined; media is decoded into original bytes with its MIME type. No module loads until requested."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "consoleBundle",
+				"inputs": [
+					{
+						"name": "consoleBundle.modules",
+						"type": "ConsoleModules",
+						"required": true,
+						"description": "Maps of JSON and media module loaders. JSON modules default-export text; media modules default-export base64 and export a MIME type string. Loader paths end in the requested filename plus .ts."
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleBundle",
+						"type": "ConsoleData",
+						"description": "Data reader with async json and media methods. Missing loaders or wrong export types yield undefined; media is decoded into original bytes with its MIME type. No module loads until requested."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -26,27 +26,33 @@
 		"inputs": [
 			{
 				"name": "parameterCount.line",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "complexityPoints.line",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "maxDepth.lines",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "count.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "count.token",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "capitalize.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -71,7 +77,106 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "parameterCount",
+				"inputs": [
+					{
+						"name": "parameterCount.line",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parameterCount",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "complexityPoints",
+				"inputs": [
+					{
+						"name": "complexityPoints.line",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "complexityPoints",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "maxDepth",
+				"inputs": [
+					{
+						"name": "maxDepth.lines",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "maxDepth",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "count",
+				"inputs": [
+					{
+						"name": "count.value",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "count.token",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "count",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "capitalize",
+				"inputs": [
+					{
+						"name": "capitalize.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "capitalize",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

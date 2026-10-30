@@ -28,21 +28,25 @@
 			{
 				"name": "GameControls.view",
 				"type": "GameView",
+				"required": true,
 				"description": "Current generated level or legacy key-door view."
 			},
 			{
 				"name": "GameControls.run",
 				"type": "GameRun",
+				"required": true,
 				"description": "Current player position and mechanics state."
 			},
 			{
 				"name": "GameControls.step",
 				"type": "(input: GameInput) => void",
+				"required": true,
 				"description": "Advance the game using the requested direction or legacy branch."
 			},
 			{
 				"name": "GameControls.reset",
 				"type": "() => void",
+				"required": true,
 				"description": "Reset the current level to its initial player state."
 			}
 		],
@@ -53,7 +57,9 @@
 				"description": "Player coordinates and touch movement controls appropriate to the current level."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

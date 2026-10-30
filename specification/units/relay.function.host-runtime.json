@@ -28,11 +28,13 @@
 			{
 				"name": "hostRuntime.state",
 				"type": "DurableObjectState",
+				"required": true,
 				"description": "Durable Object identity, storage and socket state."
 			},
 			{
 				"name": "hostRuntime.env",
 				"type": "RelayEnv",
+				"required": true,
 				"description": "Relay environment whose host namespace determines whether a requested host belongs to this object."
 			}
 		],
@@ -43,7 +45,36 @@
 				"description": "Runtime exposing HTTP controller, frame service and pairing-offer service, sharing storage, sockets, host link, rate limiter and revocation dependencies. The ownership predicate compares the namespace-derived host identity with the object identity."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hostRuntime",
+				"inputs": [
+					{
+						"name": "hostRuntime.state",
+						"type": "DurableObjectState",
+						"required": true,
+						"description": "Durable Object identity, storage and socket state."
+					},
+					{
+						"name": "hostRuntime.env",
+						"type": "RelayEnv",
+						"required": true,
+						"description": "Relay environment whose host namespace determines whether a requested host belongs to this object."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostRuntime",
+						"type": "HostRuntime",
+						"description": "Runtime exposing HTTP controller, frame service and pairing-offer service, sharing storage, sockets, host link, rate limiter and revocation dependencies. The ownership predicate compares the namespace-derived host identity with the object identity."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

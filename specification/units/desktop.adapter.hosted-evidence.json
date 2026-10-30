@@ -29,23 +29,28 @@
 		"inputs": [
 			{
 				"name": "HostedEvidenceAdapter.constructor.options",
-				"type": "RemoteHttpOptions | HostedHttpAdapter"
+				"type": "RemoteHttpOptions | HostedHttpAdapter",
+				"required": true
 			},
 			{
 				"name": "HostedEvidenceAdapter.path.operation",
-				"type": "'evidence' | 'artifact'"
+				"type": "'evidence' | 'artifact'",
+				"required": true
 			},
 			{
 				"name": "HostedEvidenceAdapter.path.query",
-				"type": "Query | (EvidenceArtifactQuery & { projectId: string })"
+				"type": "Query | (EvidenceArtifactQuery & { projectId: string })",
+				"required": true
 			},
 			{
 				"name": "HostedEvidenceAdapter.evidence.query",
-				"type": "Query"
+				"type": "Query",
+				"required": true
 			},
 			{
 				"name": "HostedEvidenceAdapter.artifact.query",
-				"type": "EvidenceArtifactQuery & { projectId: string }"
+				"type": "EvidenceArtifactQuery & { projectId: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -66,6 +71,93 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostedEvidenceAdapter.path",
+				"inputs": [
+					{
+						"name": "HostedEvidenceAdapter.path.operation",
+						"type": "'evidence' | 'artifact'",
+						"required": true
+					},
+					{
+						"name": "HostedEvidenceAdapter.path.query",
+						"type": "Query | (EvidenceArtifactQuery & { projectId: string })",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedEvidenceAdapter.path",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostedEvidenceAdapter.evidence",
+				"inputs": [
+					{
+						"name": "HostedEvidenceAdapter.evidence.query",
+						"type": "Query",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedEvidenceAdapter.evidence",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostedEvidenceAdapter.artifact",
+				"inputs": [
+					{
+						"name": "HostedEvidenceAdapter.artifact.query",
+						"type": "EvidenceArtifactQuery & { projectId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedEvidenceAdapter.artifact",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostedEvidenceAdapter.constructor",
+				"inputs": [
+					{
+						"name": "HostedEvidenceAdapter.constructor.options",
+						"type": "RemoteHttpOptions | HostedHttpAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedEvidenceAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

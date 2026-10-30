@@ -19,7 +19,23 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "lintConfigFiles",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "lintConfigFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

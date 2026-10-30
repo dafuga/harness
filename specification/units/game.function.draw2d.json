@@ -23,36 +23,43 @@
 			{
 				"name": "Canvas2dAdapter.constructor.canvas",
 				"type": "HTMLCanvasElement",
+				"required": true,
 				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 			},
 			{
 				"name": "Canvas2dAdapter.render.run",
 				"type": "GameRun",
+				"required": true,
 				"description": "Current deterministic game state, tick and checkpoint execution results."
 			},
 			{
 				"name": "Canvas2dAdapter.render.view",
 				"type": "GameView",
+				"required": true,
 				"description": "Active authored view, including dimension and checkpoint definitions."
 			},
 			{
 				"name": "create2d.canvas",
 				"type": "HTMLCanvasElement",
+				"required": true,
 				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 			},
 			{
 				"name": "draw2d.canvas",
 				"type": "HTMLCanvasElement",
+				"required": true,
 				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 			},
 			{
 				"name": "draw2d.run",
 				"type": "GameRun",
+				"required": true,
 				"description": "Current deterministic game state, tick and checkpoint execution results."
 			},
 			{
 				"name": "draw2d.view",
 				"type": "GameView",
+				"required": true,
 				"description": "Active authored view, including dimension and checkpoint definitions."
 			}
 		],
@@ -78,7 +85,120 @@
 				"description": "Paint the current game frame."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "Canvas2dAdapter.render",
+				"inputs": [
+					{
+						"name": "Canvas2dAdapter.render.run",
+						"type": "GameRun",
+						"required": true,
+						"description": "Current deterministic game state, tick and checkpoint execution results."
+					},
+					{
+						"name": "Canvas2dAdapter.render.view",
+						"type": "GameView",
+						"required": true,
+						"description": "Active authored view, including dimension and checkpoint definitions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "Canvas2dAdapter.render",
+						"type": "void",
+						"description": "Paint the current game frame."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "Canvas2dAdapter.dispose",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "Canvas2dAdapter.dispose",
+						"type": "void",
+						"description": "Release the renderer resources."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "create2d",
+				"inputs": [
+					{
+						"name": "create2d.canvas",
+						"type": "HTMLCanvasElement",
+						"required": true,
+						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+					}
+				],
+				"outputs": [
+					{
+						"name": "create2d",
+						"type": "FrameSource",
+						"description": "Canvas frame source with render and dispose operations."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "draw2d",
+				"inputs": [
+					{
+						"name": "draw2d.canvas",
+						"type": "HTMLCanvasElement",
+						"required": true,
+						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+					},
+					{
+						"name": "draw2d.run",
+						"type": "GameRun",
+						"required": true,
+						"description": "Current deterministic game state, tick and checkpoint execution results."
+					},
+					{
+						"name": "draw2d.view",
+						"type": "GameView",
+						"required": true,
+						"description": "Active authored view, including dimension and checkpoint definitions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "draw2d",
+						"type": "void",
+						"description": "Paint the current game frame."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "Canvas2dAdapter.constructor",
+				"inputs": [
+					{
+						"name": "Canvas2dAdapter.constructor.canvas",
+						"type": "HTMLCanvasElement",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "Canvas2dAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -39,47 +39,58 @@
 		"inputs": [
 			{
 				"name": "controllerFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "classFiles.folder",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "classFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "classFiles.suffix",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "repositoryFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "adapterFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "validatorFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "serializerFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "policyFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "seederFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "utilFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -120,7 +131,183 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "controllerFiles",
+				"inputs": [
+					{
+						"name": "controllerFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "controllerFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "classFiles",
+				"inputs": [
+					{
+						"name": "classFiles.folder",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "classFiles.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "classFiles.suffix",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "classFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "repositoryFiles",
+				"inputs": [
+					{
+						"name": "repositoryFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "repositoryFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "adapterFiles",
+				"inputs": [
+					{
+						"name": "adapterFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adapterFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validatorFiles",
+				"inputs": [
+					{
+						"name": "validatorFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validatorFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "serializerFiles",
+				"inputs": [
+					{
+						"name": "serializerFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "serializerFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "policyFiles",
+				"inputs": [
+					{
+						"name": "policyFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "policyFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "seederFiles",
+				"inputs": [
+					{
+						"name": "seederFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "seederFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "utilFiles",
+				"inputs": [
+					{
+						"name": "utilFiles.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "utilFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

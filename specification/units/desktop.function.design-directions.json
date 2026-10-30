@@ -20,6 +20,7 @@
 			{
 				"name": "designDirections.count",
 				"type": "number",
+				"required": true,
 				"description": "The number of directions to take from the predefined list of ten. Callers normally supply a validated count from 1 to 10; this helper applies array slicing without validating it."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "A new list beginning with the most direct reading of the proposal, followed by the selected density, spacing, action-first, split-screen, cards, list, bold, calm and narrow-screen directions. Counts above ten return at most ten."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "designDirections",
+				"inputs": [
+					{
+						"name": "designDirections.count",
+						"type": "number",
+						"required": true,
+						"description": "The number of directions to take from the predefined list of ten. Callers normally supply a validated count from 1 to 10; this helper applies array slicing without validating it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "designDirections",
+						"type": "string[]",
+						"description": "A new list beginning with the most direct reading of the proposal, followed by the selected density, spacing, action-first, split-screen, cards, list, bold, calm and narrow-screen directions. Counts above ten return at most ten."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

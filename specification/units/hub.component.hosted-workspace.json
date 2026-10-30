@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/HostedWorkspace.svelte",
-			"packages/hub/src/components/projects-sessions/HostedWorkspace.svelte"
-		],
-		"symbols": ["HostedWorkspace", "HostedWorkspace"]
+		"source": ["packages/hub/src/components/projects-sessions/HostedWorkspace.svelte"],
+		"symbols": ["HostedWorkspace", "HostedWorkspace.account"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,7 +31,23 @@
 				"description": "On mount connects the browser bridge in nonlocal mode, loads projects and opens matching workspace paths. Follows browser back/forward events and removes its listener and bridge on cleanup. Shows the workspace and project account menu when a snapshot exists, otherwise loading or project-open error content. Document title includes the loaded project name."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HostedWorkspace.account",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostedWorkspace.account",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

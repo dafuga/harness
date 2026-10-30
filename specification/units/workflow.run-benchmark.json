@@ -16,11 +16,13 @@
 			{
 				"name": "runBenchmark.input",
 				"type": "RunBenchmarkInput",
+				"required": true,
 				"description": "Definition path, explicit runners, private repository and cancellation context."
 			},
 			{
 				"name": "benchmarkSchedule.run",
 				"type": "BenchmarkRun",
+				"required": true,
 				"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
 			}
 		],
@@ -36,7 +38,50 @@
 				"description": "Seeded candidate ordering for each declared repetition."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "runBenchmark",
+				"inputs": [
+					{
+						"name": "runBenchmark.input",
+						"type": "RunBenchmarkInput",
+						"required": true,
+						"description": "Definition path, explicit runners, private repository and cancellation context."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runBenchmark",
+						"type": "Promise<BenchmarkRun>",
+						"description": "Persisted run with each completed, failed or interrupted trial outcome."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "benchmarkSchedule",
+				"inputs": [
+					{
+						"name": "benchmarkSchedule.run",
+						"type": "BenchmarkRun",
+						"required": true,
+						"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "benchmarkSchedule",
+						"type": "unknown",
+						"description": "Seeded candidate ordering for each declared repetition."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -33,55 +33,68 @@
 		"inputs": [
 			{
 				"name": "ConsoleChangeService.constructor.host",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.constructor.manifest",
-				"type": "ConsoleManifest"
+				"type": "ConsoleManifest",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.state.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.state.contents",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.replace.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.replace.contents",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.replace.change",
-				"type": "Pick<ConsoleChange, 'action' | 'reason'>"
+				"type": "Pick<ConsoleChange, 'action' | 'reason'>",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.restore.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.remove.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.write.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.write.contents",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.entryFor.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleChangeService.entryFor.owner",
-				"type": "ConsoleFileEntry['owner']"
+				"type": "ConsoleFileEntry['owner']",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -114,7 +127,168 @@
 				"type": "Promise<ConsoleFileEntry>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ConsoleChangeService.state",
+				"inputs": [
+					{
+						"name": "ConsoleChangeService.state.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ConsoleChangeService.state.contents",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleChangeService.state",
+						"type": "Promise<FileState>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleChangeService.replace",
+				"inputs": [
+					{
+						"name": "ConsoleChangeService.replace.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ConsoleChangeService.replace.contents",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "ConsoleChangeService.replace.change",
+						"type": "Pick<ConsoleChange, 'action' | 'reason'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleChangeService.replace",
+						"type": "Promise<ConsoleChange>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleChangeService.restore",
+				"inputs": [
+					{
+						"name": "ConsoleChangeService.restore.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleChangeService.restore",
+						"type": "Promise<ConsoleChange | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleChangeService.remove",
+				"inputs": [
+					{
+						"name": "ConsoleChangeService.remove.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleChangeService.remove",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleChangeService.write",
+				"inputs": [
+					{
+						"name": "ConsoleChangeService.write.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ConsoleChangeService.write.contents",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleChangeService.write",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleChangeService.entryFor",
+				"inputs": [
+					{
+						"name": "ConsoleChangeService.entryFor.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ConsoleChangeService.entryFor.owner",
+						"type": "ConsoleFileEntry['owner']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleChangeService.entryFor",
+						"type": "Promise<ConsoleFileEntry>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ConsoleChangeService.constructor",
+				"inputs": [
+					{
+						"name": "ConsoleChangeService.constructor.host",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ConsoleChangeService.constructor.manifest",
+						"type": "ConsoleManifest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleChangeService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

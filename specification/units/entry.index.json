@@ -171,7 +171,10 @@
 		"origin": "derived",
 		"inputs": [],
 		"outputs": [],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -495,17 +498,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "model.analytics-event-types",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "model.catalog-branch",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "model.catalog-branch-types",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -515,17 +508,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "model.catalog-dependency-types",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "model.catalog-entity",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "model.catalog-entity-types",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -535,17 +518,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "model.catalog-metadata-types",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "model.catalog-record",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "model.catalog-record-types",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -560,32 +533,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "model.catalog-revision-entity-types",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "model.catalog-revision-types",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "model.catalog-scenario",
 			"via": "reexport",
 			"origin": "derived"
 		},
 		{
-			"unit": "model.catalog-scenario-types",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "model.provider-switch",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "model.provider-switch-types",
 			"via": "reexport",
 			"origin": "derived"
 		},

@@ -19,13 +19,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlRt.attributes",
-				"type": "SvelteHTMLElements['rt']",
-				"description": "Native rt attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "HtmlRt.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native rt element; native HTML content rules still apply."
 			}
 		],
@@ -36,7 +32,9 @@
 				"description": "The actual native rt element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

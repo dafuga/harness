@@ -24,15 +24,19 @@
 		"inputs": [
 			{
 				"name": "HandlerRuntimeAdapter.constructor.handler",
-				"type": "RuntimeHandler"
+				"type": "RuntimeHandler",
+				"required": true
 			},
 			{
 				"name": "HandlerRuntimeAdapter.constructor.options",
-				"type": "RuntimeOptions"
+				"type": "RuntimeOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "HandlerRuntimeAdapter.invoke.request",
-				"type": "RuntimeRequest"
+				"type": "RuntimeRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -45,7 +49,66 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HandlerRuntimeAdapter.invoke",
+				"inputs": [
+					{
+						"name": "HandlerRuntimeAdapter.invoke.request",
+						"type": "RuntimeRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HandlerRuntimeAdapter.invoke",
+						"type": "Promise<RuntimeResponse>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HandlerRuntimeAdapter.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HandlerRuntimeAdapter.close",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HandlerRuntimeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "HandlerRuntimeAdapter.constructor.handler",
+						"type": "RuntimeHandler",
+						"required": true
+					},
+					{
+						"name": "HandlerRuntimeAdapter.constructor.options",
+						"type": "RuntimeOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "HandlerRuntimeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

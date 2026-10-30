@@ -26,6 +26,7 @@
 			"UnitIndexResult",
 			"Group",
 			"Registry",
+			"modelCompanions",
 			"UnitIndexService"
 		]
 	},
@@ -34,20 +35,86 @@
 		"inputs": [
 			{
 				"name": "UnitIndexService.index.index",
-				"type": "SourceIndex"
+				"type": "SourceIndex",
+				"required": true
 			},
 			{
 				"name": "UnitIndexService.index.existing",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"required": true
+			},
+			{
+				"name": "modelCompanions.index",
+				"type": "SourceIndex",
+				"required": true
+			},
+			{
+				"name": "modelCompanions.existing",
+				"type": "ComponentManifest[]",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "UnitIndexService.index",
 				"type": "UnitIndexResult"
+			},
+			{
+				"name": "modelCompanions",
+				"type": "ComponentManifest[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "UnitIndexService.index",
+				"inputs": [
+					{
+						"name": "UnitIndexService.index.index",
+						"type": "SourceIndex",
+						"required": true
+					},
+					{
+						"name": "UnitIndexService.index.existing",
+						"type": "ComponentManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitIndexService.index",
+						"type": "UnitIndexResult"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "modelCompanions",
+				"inputs": [
+					{
+						"name": "modelCompanions.index",
+						"type": "SourceIndex",
+						"required": true
+					},
+					{
+						"name": "modelCompanions.existing",
+						"type": "ComponentManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "modelCompanions",
+						"type": "ComponentManifest[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

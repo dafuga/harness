@@ -49,34 +49,41 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "requestDigest.request",
+				"type": "WireRequest",
+				"required": true,
+				"description": "Wire request whose method and deterministically serialized input identify its operation."
+			},
+			{
 				"name": "remoteIdentity.publicKey",
 				"type": "Uint8Array | string",
+				"required": true,
 				"description": "65-byte uncompressed P-256 public point as bytes or unpadded base64url."
 			},
 			{
 				"name": "credentialHash.binding",
 				"type": "CredentialBinding",
+				"required": true,
 				"description": "Host or device role, host ID, optional device ID and credential text to bind together."
 			},
 			{
 				"name": "pkceChallenge.verifier",
 				"type": "string",
+				"required": true,
 				"description": "PKCE verifier text to hash with the S256 transform."
 			},
 			{
 				"name": "randomId.bytes",
-				"type": "unknown",
+				"type": "number",
+				"required": false,
+				"default": 16,
 				"description": "Number of random bytes to encode; defaults to 16."
 			},
 			{
 				"name": "normalizeCode.value",
 				"type": "string",
+				"required": true,
 				"description": "Human-entered code to uppercase and strip of nonalphanumeric characters."
-			},
-			{
-				"name": "requestDigest.request",
-				"type": "WireRequest",
-				"description": "Wire request whose method and deterministically serialized input identify its operation."
 			}
 		],
 		"outputs": [
@@ -132,7 +139,162 @@
 				"type": "thrown",
 				"description": "Rejects malformed public-key encodings or a point without the required 65-byte uncompressed shape; byte, hash and serialization failures may propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "pairingCode",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "pairingCode",
+						"type": "string",
+						"description": "Random pairing code displayed as two groups of four characters separated by a hyphen."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requestDigest",
+				"inputs": [
+					{
+						"name": "requestDigest.request",
+						"type": "WireRequest",
+						"required": true,
+						"description": "Wire request whose method and deterministically serialized input identify its operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "requestDigest",
+						"type": "Promise<string>",
+						"description": "SHA-256 hex digest of the method and stable input JSON; excludes the request ID."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "remoteIdentity",
+				"inputs": [
+					{
+						"name": "remoteIdentity.publicKey",
+						"type": "Uint8Array | string",
+						"required": true,
+						"description": "65-byte uncompressed P-256 public point as bytes or unpadded base64url."
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteIdentity",
+						"type": "Promise<string>",
+						"description": "First 40 lowercase hex characters of the public-key SHA-256 digest."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "credentialHash",
+				"inputs": [
+					{
+						"name": "credentialHash.binding",
+						"type": "CredentialBinding",
+						"required": true,
+						"description": "Host or device role, host ID, optional device ID and credential text to bind together."
+					}
+				],
+				"outputs": [
+					{
+						"name": "credentialHash",
+						"type": "Promise<string>",
+						"description": "SHA-256 hex digest bound to role, host, device and credential using a protocol-specific prefix."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pkceChallenge",
+				"inputs": [
+					{
+						"name": "pkceChallenge.verifier",
+						"type": "string",
+						"required": true,
+						"description": "PKCE verifier text to hash with the S256 transform."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pkceChallenge",
+						"type": "Promise<string>",
+						"description": "Unpadded base64url SHA-256 digest of the UTF-8 verifier."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "randomId",
+				"inputs": [
+					{
+						"name": "randomId.bytes",
+						"type": "number",
+						"required": false,
+						"default": 16,
+						"description": "Number of random bytes to encode; defaults to 16."
+					}
+				],
+				"outputs": [
+					{
+						"name": "randomId",
+						"type": "string",
+						"description": "Random lowercase hexadecimal identifier with two characters per requested byte."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "randomCredential",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "randomCredential",
+						"type": "string",
+						"description": "43-character base64url credential generated from 32 random bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeCode",
+				"inputs": [
+					{
+						"name": "normalizeCode.value",
+						"type": "string",
+						"required": true,
+						"description": "Human-entered code to uppercase and strip of nonalphanumeric characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeCode",
+						"type": "string",
+						"description": "Uppercase alphanumeric code with punctuation and other characters removed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

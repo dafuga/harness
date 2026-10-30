@@ -31,7 +31,23 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "kernelBoundary",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "kernelBoundary",
+						"type": "Promise<BoundaryBenchmark>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

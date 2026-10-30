@@ -15,11 +15,14 @@
 		"inputs": [
 			{
 				"name": "persistReasons.options",
-				"type": "{ root?: string; commit?: string; base?: string }"
+				"type": "{ root?: string; commit?: string; base?: string }",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "renderReasons.result",
-				"type": "PersistedReasons"
+				"type": "PersistedReasons",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +35,48 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "persistReasons",
+				"inputs": [
+					{
+						"name": "persistReasons.options",
+						"type": "{ root?: string; commit?: string; base?: string }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "persistReasons",
+						"type": "Promise<PersistedReasons>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderReasons",
+				"inputs": [
+					{
+						"name": "renderReasons.result",
+						"type": "PersistedReasons",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderReasons",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

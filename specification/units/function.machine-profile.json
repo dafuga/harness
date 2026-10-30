@@ -20,7 +20,23 @@
 				"description": "Profile with platform, architecture, CPU model, logical core count, total memory and Bun/Node version, plus a 16-character SHA-256-derived id. A nonblank HARNESS_PROFILE_LABEL is included in the runtime label and therefore the identity."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "machineProfile",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "machineProfile",
+						"type": "VerificationProfile",
+						"description": "Profile with platform, architecture, CPU model, logical core count, total memory and Bun/Node version, plus a 16-character SHA-256-derived id. A nonblank HARNESS_PROFILE_LABEL is included in the runtime label and therefore the identity."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

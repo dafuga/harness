@@ -15,11 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ActivityList.svelte",
-			"packages/reports/src/components/projects-sessions/ActivityList.svelte"
-		],
-		"symbols": ["ActivityList", "ActivityList"]
+		"source": ["packages/reports/src/components/projects-sessions/ActivityList.svelte"],
+		"symbols": ["ActivityList"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -94,7 +91,9 @@
 				"type": "thrown",
 				"description": "Any value thrown by the caller-supplied row snippet propagates while rendering that item."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

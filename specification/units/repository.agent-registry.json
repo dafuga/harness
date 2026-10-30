@@ -35,39 +35,48 @@
 		"inputs": [
 			{
 				"name": "AgentRegistryRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AgentRegistryRepository.register.registration",
-				"type": "AgentRegistration"
+				"type": "AgentRegistration",
+				"required": true
 			},
 			{
 				"name": "AgentRegistryRepository.register.beat",
-				"type": "AgentBeat"
+				"type": "AgentBeat",
+				"required": true
 			},
 			{
 				"name": "AgentRegistryRepository.beat.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AgentRegistryRepository.beat.beat",
-				"type": "AgentBeat"
+				"type": "AgentBeat",
+				"required": true
 			},
 			{
 				"name": "AgentRegistryRepository.finish.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AgentRegistryRepository.finish.end",
-				"type": "AgentEnd"
+				"type": "AgentEnd",
+				"required": true
 			},
 			{
 				"name": "AgentRegistryRepository.read.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AgentRegistryRepository.remove.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -100,7 +109,159 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AgentRegistryRepository.used",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AgentRegistryRepository.used",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentRegistryRepository.register",
+				"inputs": [
+					{
+						"name": "AgentRegistryRepository.register.registration",
+						"type": "AgentRegistration",
+						"required": true
+					},
+					{
+						"name": "AgentRegistryRepository.register.beat",
+						"type": "AgentBeat",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentRegistryRepository.register",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentRegistryRepository.beat",
+				"inputs": [
+					{
+						"name": "AgentRegistryRepository.beat.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AgentRegistryRepository.beat.beat",
+						"type": "AgentBeat",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentRegistryRepository.beat",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentRegistryRepository.finish",
+				"inputs": [
+					{
+						"name": "AgentRegistryRepository.finish.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AgentRegistryRepository.finish.end",
+						"type": "AgentEnd",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentRegistryRepository.finish",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentRegistryRepository.read",
+				"inputs": [
+					{
+						"name": "AgentRegistryRepository.read.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentRegistryRepository.read",
+						"type": "Promise<StoredAgent | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentRegistryRepository.all",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AgentRegistryRepository.all",
+						"type": "Promise<{ agents: StoredAgent[]; unreadable: number }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentRegistryRepository.remove",
+				"inputs": [
+					{
+						"name": "AgentRegistryRepository.remove.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentRegistryRepository.remove",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AgentRegistryRepository.constructor",
+				"inputs": [
+					{
+						"name": "AgentRegistryRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentRegistryRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

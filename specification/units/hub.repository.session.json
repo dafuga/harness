@@ -38,27 +38,33 @@
 		"inputs": [
 			{
 				"name": "SessionRepository.constructor.options",
-				"type": "SessionRepositoryOptions"
+				"type": "SessionRepositoryOptions",
+				"required": true
 			},
 			{
 				"name": "SessionRepository.issue.grant",
-				"type": "SessionGrant"
+				"type": "SessionGrant",
+				"required": true
 			},
 			{
 				"name": "SessionRepository.find.credential",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SessionRepository.live.idHash",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SessionRepository.revoke.record",
-				"type": "SessionRecord"
+				"type": "SessionRecord",
+				"required": true
 			},
 			{
 				"name": "SessionRepository.revokeIssuedFrom.parentHash",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -91,7 +97,120 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SessionRepository.issue",
+				"inputs": [
+					{
+						"name": "SessionRepository.issue.grant",
+						"type": "SessionGrant",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionRepository.issue",
+						"type": "Promise<IssuedSession>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionRepository.find",
+				"inputs": [
+					{
+						"name": "SessionRepository.find.credential",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionRepository.find",
+						"type": "Promise<SessionRecord | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionRepository.live",
+				"inputs": [
+					{
+						"name": "SessionRepository.live.idHash",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionRepository.live",
+						"type": "Promise<SessionRecord | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionRepository.revoke",
+				"inputs": [
+					{
+						"name": "SessionRepository.revoke.record",
+						"type": "SessionRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionRepository.revoke",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionRepository.revokeIssuedFrom",
+				"inputs": [
+					{
+						"name": "SessionRepository.revokeIssuedFrom.parentHash",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionRepository.revokeIssuedFrom",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SessionRepository.constructor",
+				"inputs": [
+					{
+						"name": "SessionRepository.constructor.options",
+						"type": "SessionRepositoryOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -3,7 +3,7 @@
 	"id": "reports.component.evidence-grid",
 	"kind": "component",
 	"title": "Evidence grid",
-	"responsibility": "Filters report media and coordinates screenshot and paired-audio viewers plus optional uploads.",
+	"responsibility": "Filters report media and coordinates screenshot and paired-audio viewers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -20,18 +20,15 @@
 			"reports.component.shared-primitives-atoms-html-option",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.upload-audio",
-			"reports.component.upload-comparison"
+			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/evidence-grid/EvidenceGrid.svelte",
 			"packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
 			"packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.types.ts"
 		],
-		"symbols": ["EvidenceGrid", "EvidenceGrid", "Media"]
+		"symbols": ["EvidenceGrid", "Media"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,18 +44,6 @@
 				"type": "string",
 				"required": true,
 				"description": "Required asset prefix forwarded to cards and viewers."
-			},
-			{
-				"name": "EvidenceGrid.reportId",
-				"type": "string",
-				"required": false,
-				"description": "Optional report identifier. Upload controls appear only when both this value and onUploaded are supplied."
-			},
-			{
-				"name": "EvidenceGrid.onUploaded",
-				"type": "(report: Report) => void",
-				"required": false,
-				"description": "Optional callback receiving an updated report from upload controls. Also gates their visibility alongside reportId."
 			},
 			{
 				"name": "EvidenceGrid.idPrefix",
@@ -81,7 +66,9 @@
 				"type": "thrown",
 				"description": "Rendering throws if filtered gallery entries have duplicate evidence IDs."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -141,16 +128,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.upload-audio",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.upload-comparison",
 			"via": "import",
 			"origin": "derived"
 		},

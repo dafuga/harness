@@ -19,16 +19,19 @@
 			{
 				"name": "relayOrigin.value",
 				"type": "string | undefined",
+				"required": true,
 				"description": "Optional URL limited to HTTPS, or HTTP on localhost, 127.0.0.1 or ::1, with no credentials, nonroot path, query or fragment."
 			},
 			{
 				"name": "relaySocketUrl.origin",
 				"type": "string",
+				"required": true,
 				"description": "Relay origin accepted by relayOrigin."
 			},
 			{
 				"name": "relaySocketUrl.hostId",
 				"type": "string",
+				"required": true,
 				"description": "Host ID containing exactly 40 lowercase hex characters."
 			}
 		],
@@ -50,7 +53,61 @@
 				"type": "thrown",
 				"description": "Throws Invalid relay address when the origin or host ID is invalid."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "relayOrigin",
+				"inputs": [
+					{
+						"name": "relayOrigin.value",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Optional URL limited to HTTPS, or HTTP on localhost, 127.0.0.1 or ::1, with no credentials, nonroot path, query or fragment."
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayOrigin",
+						"type": "string | null",
+						"description": "Normalized URL origin, or null when the supplied address is missing or invalid."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "relaySocketUrl",
+				"inputs": [
+					{
+						"name": "relaySocketUrl.origin",
+						"type": "string",
+						"required": true,
+						"description": "Relay origin accepted by relayOrigin."
+					},
+					{
+						"name": "relaySocketUrl.hostId",
+						"type": "string",
+						"required": true,
+						"description": "Host ID containing exactly 40 lowercase hex characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "relaySocketUrl",
+						"type": "string",
+						"description": "Matching ws or wss URL ending in /v1/hosts/{hostId}/connect, without credentials."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

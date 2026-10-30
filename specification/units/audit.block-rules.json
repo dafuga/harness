@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "auditBlocks.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "auditBlocks.lines",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "auditBlocks.limits",
-				"type": "HarnessRuleLimits"
+				"type": "HarnessRuleLimits",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -32,7 +35,39 @@
 				"type": "AuditFinding[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "auditBlocks",
+				"inputs": [
+					{
+						"name": "auditBlocks.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "auditBlocks.lines",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "auditBlocks.limits",
+						"type": "HarnessRuleLimits",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditBlocks",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

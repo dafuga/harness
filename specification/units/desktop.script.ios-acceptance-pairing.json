@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "pairing.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "pairing",
+				"inputs": [
+					{
+						"name": "pairing.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pairing",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

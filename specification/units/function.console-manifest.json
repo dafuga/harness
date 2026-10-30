@@ -37,16 +37,19 @@
 			{
 				"name": "consoleManifest.host",
 				"type": "string",
+				"required": true,
 				"description": "Host project directory containing harness.console.json."
 			},
 			{
 				"name": "writeConsoleManifest.host",
 				"type": "string",
+				"required": true,
 				"description": "Host project directory in which harness.console.json will be written."
 			},
 			{
 				"name": "writeConsoleManifest.manifest",
 				"type": "ConsoleManifest",
+				"required": true,
 				"description": "Installation record to serialize, including file entries, ownership and changes. The files array is sorted on a copy before writing."
 			}
 		],
@@ -67,7 +70,56 @@
 				"description": "Resolves after writing tab-indented JSON with a trailing newline and files sorted by path. The target file is replaced; write failures reject."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "consoleManifest",
+				"inputs": [
+					{
+						"name": "consoleManifest.host",
+						"type": "string",
+						"required": true,
+						"description": "Host project directory containing harness.console.json."
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleManifest",
+						"type": "Promise<ConsoleManifest>",
+						"description": "Parsed installation record with schemaVersion forced to 1, missing files and changes defaulted to empty arrays, and missing file ownership defaulted to harness. Read failures return an empty record; malformed JSON still rejects."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeConsoleManifest",
+				"inputs": [
+					{
+						"name": "writeConsoleManifest.host",
+						"type": "string",
+						"required": true,
+						"description": "Host project directory in which harness.console.json will be written."
+					},
+					{
+						"name": "writeConsoleManifest.manifest",
+						"type": "ConsoleManifest",
+						"required": true,
+						"description": "Installation record to serialize, including file entries, ownership and changes. The files array is sorted on a copy before writing."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeConsoleManifest",
+						"type": "Promise<void>",
+						"description": "Resolves after writing tab-indented JSON with a trailing newline and files sorted by path. The target file is replaced; write failures reject."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

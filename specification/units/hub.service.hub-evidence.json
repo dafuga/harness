@@ -22,31 +22,38 @@
 		"inputs": [
 			{
 				"name": "HubEvidenceService.constructor.deps",
-				"type": "HubEvidenceDependencies"
+				"type": "HubEvidenceDependencies",
+				"required": true
 			},
 			{
 				"name": "HubEvidenceService.evidence.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubEvidenceService.evidence.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubEvidenceService.evidence.input",
-				"type": "EntityEvidenceQuery"
+				"type": "EntityEvidenceQuery",
+				"required": true
 			},
 			{
 				"name": "HubEvidenceService.artifact.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "HubEvidenceService.artifact.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HubEvidenceService.artifact.input",
-				"type": "EvidenceArtifactQuery"
+				"type": "EvidenceArtifactQuery",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -84,6 +91,84 @@
 				"name": "artifact-too-large",
 				"type": "refused",
 				"description": "More than 11 MiB."
+			}
+		],
+		"operations": [
+			{
+				"name": "HubEvidenceService.evidence",
+				"inputs": [
+					{
+						"name": "HubEvidenceService.evidence.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubEvidenceService.evidence.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubEvidenceService.evidence.input",
+						"type": "EntityEvidenceQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubEvidenceService.evidence",
+						"type": "Promise<EntityEvidenceResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubEvidenceService.artifact",
+				"inputs": [
+					{
+						"name": "HubEvidenceService.artifact.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubEvidenceService.artifact.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubEvidenceService.artifact.input",
+						"type": "EvidenceArtifactQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubEvidenceService.artifact",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HubEvidenceService.constructor",
+				"inputs": [
+					{
+						"name": "HubEvidenceService.constructor.deps",
+						"type": "HubEvidenceDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubEvidenceService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

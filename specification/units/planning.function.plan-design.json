@@ -30,34 +30,40 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "readImage.git",
-				"type": "Git",
-				"description": "Repository handle with root, Git directory and command runner."
-			},
-			{
-				"name": "readImage.input",
-				"type": "ReadImageInput",
-				"description": "Unit ID, version and file, with optional revision, expected hash and option; revision defaults to HEAD."
-			},
-			{
 				"name": "planDesign.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planDesign.input",
 				"type": "AddDesignInput",
+				"required": true,
 				"description": "Unit, prompt and generator with images or options, optional notes and contract, base revision and revision source; expectedLatest enforces an optional latest-version check."
 			},
 			{
 				"name": "approve.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "approve.input",
 				"type": "ApproveDesignInput",
+				"required": true,
 				"description": "Latest unit/version, reviewer, contract hash, exact image bindings, optional notes hash and option selection."
+			},
+			{
+				"name": "readImage.git",
+				"type": "Git",
+				"required": true,
+				"description": "Repository handle with root, Git directory and command runner."
+			},
+			{
+				"name": "readImage.input",
+				"type": "ReadImageInput",
+				"required": true,
+				"description": "Unit ID, version and file, with optional revision, expected hash and option; revision defaults to HEAD."
 			}
 		],
 		"outputs": [
@@ -83,7 +89,103 @@
 				"type": "thrown",
 				"description": "Rejects invalid input/images, stale versions, missing or changed artifacts, mismatched approvals and unsafe or dirty writes; Git failures propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "planDesign",
+				"inputs": [
+					{
+						"name": "planDesign.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "planDesign.input",
+						"type": "AddDesignInput",
+						"required": true,
+						"description": "Unit, prompt and generator with images or options, optional notes and contract, base revision and revision source; expectedLatest enforces an optional latest-version check."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planDesign",
+						"type": "unknown",
+						"description": "Commit metadata and the appended sequential design version. Visual units require images; functions reject images; headless versions without images require notes."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "approve",
+				"inputs": [
+					{
+						"name": "approve.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "approve.input",
+						"type": "ApproveDesignInput",
+						"required": true,
+						"description": "Latest unit/version, reviewer, contract hash, exact image bindings, optional notes hash and option selection."
+					}
+				],
+				"outputs": [
+					{
+						"name": "approve",
+						"type": "unknown",
+						"description": "Commit metadata and the saved approval marked current after matching the latest version and exact content."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readImage",
+				"inputs": [
+					{
+						"name": "readImage.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "readImage.input",
+						"type": "ReadImageInput",
+						"required": true,
+						"description": "Unit ID, version and file, with optional revision, expected hash and option; revision defaults to HEAD."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readImage",
+						"type": "unknown",
+						"description": "Verified PNG bytes and image metadata, owning option when present, and version creation commit."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

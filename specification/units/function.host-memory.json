@@ -18,21 +18,25 @@
 			{
 				"name": "macMemory.text",
 				"type": "string",
+				"required": true,
 				"description": "Platform memory diagnostic output in its native text format."
 			},
 			{
 				"name": "macMemory.pressure",
 				"type": "string",
+				"required": true,
 				"description": "macOS memory-pressure level emitted by sysctl."
 			},
 			{
 				"name": "macMemory.total",
 				"type": "number",
+				"required": true,
 				"description": "Total physical memory bytes used to bound parsed available pages."
 			},
 			{
 				"name": "linuxMemory.text",
 				"type": "string",
+				"required": true,
 				"description": "Platform memory diagnostic output in its native text format."
 			}
 		],
@@ -59,7 +63,90 @@
 				"type": "thrown",
 				"description": "Unreadable or invalid platform counters and unsupported platforms reject instead of inventing available capacity."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "macMemory",
+				"inputs": [
+					{
+						"name": "macMemory.text",
+						"type": "string",
+						"required": true,
+						"description": "Platform memory diagnostic output in its native text format."
+					},
+					{
+						"name": "macMemory.pressure",
+						"type": "string",
+						"required": true,
+						"description": "macOS memory-pressure level emitted by sysctl."
+					},
+					{
+						"name": "macMemory.total",
+						"type": "number",
+						"required": true,
+						"description": "Total physical memory bytes used to bound parsed available pages."
+					}
+				],
+				"outputs": [
+					{
+						"name": "macMemory",
+						"type": "Memory",
+						"description": "Total and available bytes plus the parsed macOS pressure level; unknown levels remain unknown."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "linuxMemory",
+				"inputs": [
+					{
+						"name": "linuxMemory.text",
+						"type": "string",
+						"required": true,
+						"description": "Platform memory diagnostic output in its native text format."
+					}
+				],
+				"outputs": [
+					{
+						"name": "linuxMemory",
+						"type": "Memory",
+						"description": "Total and available bytes with critical pressure when less than five percent remains."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hostMemory",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "hostMemory",
+						"type": "Promise<Memory>",
+						"description": "Actual platform memory observation; unsupported or unreadable probes reject."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -34,7 +34,47 @@
 				"type": "Guide"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "scaffoldGuides",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "scaffoldGuides",
+						"type": "Guide[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scaffoldsGuide",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "scaffoldsGuide",
+						"type": "Guide"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "namingGuide",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "namingGuide",
+						"type": "Guide"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -25,19 +25,27 @@
 		"inputs": [
 			{
 				"name": "CodexAppServerAdapter.constructor.command",
-				"type": "CliCommand"
+				"type": "CliCommand",
+				"required": false,
+				"default": {
+					"command": "codex",
+					"args": []
+				}
 			},
 			{
 				"name": "CodexAppServerAdapter.constructor.queue",
-				"type": "ResourceQueueService"
+				"type": "ResourceQueueService",
+				"required": false
 			},
 			{
 				"name": "CodexAppServerAdapter.run.turn",
-				"type": "AgentTurn"
+				"type": "AgentTurn",
+				"required": true
 			},
 			{
 				"name": "CodexAppServerAdapter.generateImage.request",
-				"type": "ImageRequest"
+				"type": "ImageRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,6 +66,91 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CodexAppServerAdapter.discover",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CodexAppServerAdapter.discover",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexAppServerAdapter.run",
+				"inputs": [
+					{
+						"name": "CodexAppServerAdapter.run.turn",
+						"type": "AgentTurn",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexAppServerAdapter.run",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexAppServerAdapter.generateImage",
+				"inputs": [
+					{
+						"name": "CodexAppServerAdapter.generateImage.request",
+						"type": "ImageRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexAppServerAdapter.generateImage",
+						"type": "Promise<GeneratedImage>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CodexAppServerAdapter.constructor",
+				"inputs": [
+					{
+						"name": "CodexAppServerAdapter.constructor.command",
+						"type": "CliCommand",
+						"required": false,
+						"default": {
+							"command": "codex",
+							"args": []
+						}
+					},
+					{
+						"name": "CodexAppServerAdapter.constructor.queue",
+						"type": "ResourceQueueService",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexAppServerAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

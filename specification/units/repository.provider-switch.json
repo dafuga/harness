@@ -26,19 +26,23 @@
 		"inputs": [
 			{
 				"name": "ProviderSwitchRepository.constructor.home",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProviderSwitchRepository.get.sessionId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProviderSwitchRepository.put.record",
-				"type": "SwitchRequest"
+				"type": "SwitchRequest",
+				"required": true
 			},
 			{
 				"name": "ProviderSwitchRepository.put.expectedId",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -59,7 +63,95 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProviderSwitchRepository.get",
+				"inputs": [
+					{
+						"name": "ProviderSwitchRepository.get.sessionId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSwitchRepository.get",
+						"type": "SwitchRequest | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderSwitchRepository.put",
+				"inputs": [
+					{
+						"name": "ProviderSwitchRepository.put.record",
+						"type": "SwitchRequest",
+						"required": true
+					},
+					{
+						"name": "ProviderSwitchRepository.put.expectedId",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSwitchRepository.put",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderSwitchRepository.list",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderSwitchRepository.list",
+						"type": "SwitchRequest[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderSwitchRepository.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderSwitchRepository.close",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProviderSwitchRepository.constructor",
+				"inputs": [
+					{
+						"name": "ProviderSwitchRepository.constructor.home",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSwitchRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -11,11 +11,8 @@
 		"uses": ["reports.component.harness-harness-action"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/SourceCodeAction.svelte",
-			"packages/reports/src/components/explorer-ui/SourceCodeAction.svelte"
-		],
-		"symbols": ["SourceCodeAction", "SourceCodeAction"]
+		"source": ["packages/reports/src/components/explorer-ui/SourceCodeAction.svelte"],
+		"symbols": ["SourceCodeAction"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,7 +49,9 @@
 				"description": "A file-specific View code button. Opening retains the selected commit and address; closing restores focus to this row."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

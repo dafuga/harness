@@ -23,35 +23,43 @@
 		"inputs": [
 			{
 				"name": "SqliteTableAdapter.constructor.db",
-				"type": "SqliteDatabase"
+				"type": "SqliteDatabase",
+				"required": true
 			},
 			{
 				"name": "SqliteTableAdapter.constructor.model",
-				"type": "SqliteModel"
+				"type": "SqliteModel",
+				"required": true
 			},
 			{
 				"name": "SqliteTableAdapter.find.id",
-				"type": "number | string"
+				"type": "number | string",
+				"required": true
 			},
 			{
 				"name": "SqliteTableAdapter.findBy.fields",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": true
 			},
 			{
 				"name": "SqliteTableAdapter.insert.input",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": true
 			},
 			{
 				"name": "SqliteTableAdapter.update.id",
-				"type": "number | string"
+				"type": "number | string",
+				"required": true
 			},
 			{
 				"name": "SqliteTableAdapter.update.input",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": true
 			},
 			{
 				"name": "SqliteTableAdapter.delete.id",
-				"type": "number | string"
+				"type": "number | string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -80,6 +88,134 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SqliteTableAdapter.find",
+				"inputs": [
+					{
+						"name": "SqliteTableAdapter.find.id",
+						"type": "number | string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SqliteTableAdapter.find",
+						"type": "T | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SqliteTableAdapter.findBy",
+				"inputs": [
+					{
+						"name": "SqliteTableAdapter.findBy.fields",
+						"type": "Record<string, unknown>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SqliteTableAdapter.findBy",
+						"type": "T[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SqliteTableAdapter.insert",
+				"inputs": [
+					{
+						"name": "SqliteTableAdapter.insert.input",
+						"type": "Record<string, unknown>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SqliteTableAdapter.insert",
+						"type": "T"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SqliteTableAdapter.update",
+				"inputs": [
+					{
+						"name": "SqliteTableAdapter.update.id",
+						"type": "number | string",
+						"required": true
+					},
+					{
+						"name": "SqliteTableAdapter.update.input",
+						"type": "Record<string, unknown>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SqliteTableAdapter.update",
+						"type": "T | null"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SqliteTableAdapter.delete",
+				"inputs": [
+					{
+						"name": "SqliteTableAdapter.delete.id",
+						"type": "number | string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SqliteTableAdapter.delete",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SqliteTableAdapter.constructor",
+				"inputs": [
+					{
+						"name": "SqliteTableAdapter.constructor.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "SqliteTableAdapter.constructor.model",
+						"type": "SqliteModel",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SqliteTableAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

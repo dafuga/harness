@@ -25,23 +25,28 @@
 		"inputs": [
 			{
 				"name": "HostRegistryService.constructor.store",
-				"type": "HostStorageAdapter"
+				"type": "HostStorageAdapter",
+				"required": true
 			},
 			{
 				"name": "HostRegistryService.constructor.sockets",
-				"type": "HostSocketsAdapter"
+				"type": "HostSocketsAdapter",
+				"required": true
 			},
 			{
 				"name": "HostRegistryService.constructor.link",
-				"type": "HostLinkService"
+				"type": "HostLinkService",
+				"required": true
 			},
 			{
 				"name": "HostRegistryService.register.input",
-				"type": "RelayManageRegister"
+				"type": "RelayManageRegister",
+				"required": true
 			},
 			{
 				"name": "HostRegistryService.summary.host",
-				"type": "HostRecord"
+				"type": "HostRecord",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,7 +63,88 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostRegistryService.register",
+				"inputs": [
+					{
+						"name": "HostRegistryService.register.input",
+						"type": "RelayManageRegister",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostRegistryService.register",
+						"type": "RelayRegistered | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostRegistryService.summary",
+				"inputs": [
+					{
+						"name": "HostRegistryService.summary.host",
+						"type": "HostRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostRegistryService.summary",
+						"type": "RemoteHostSummary"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostRegistryService.unregister",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostRegistryService.unregister",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostRegistryService.constructor",
+				"inputs": [
+					{
+						"name": "HostRegistryService.constructor.store",
+						"type": "HostStorageAdapter",
+						"required": true
+					},
+					{
+						"name": "HostRegistryService.constructor.sockets",
+						"type": "HostSocketsAdapter",
+						"required": true
+					},
+					{
+						"name": "HostRegistryService.constructor.link",
+						"type": "HostLinkService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostRegistryService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

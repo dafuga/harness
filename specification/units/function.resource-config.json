@@ -16,21 +16,25 @@
 			{
 				"name": "resourceHome.env",
 				"type": "Record<string, string | undefined>",
+				"required": false,
 				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
 			},
 			{
 				"name": "resourceConfig.home",
 				"type": "string",
+				"required": false,
 				"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
 			},
 			{
 				"name": "saveResourceConfig.config",
 				"type": "ResourceConfig",
+				"required": true,
 				"description": "Validated reserve floors and telemetry timing limits; lower safety thresholds are rejected."
 			},
 			{
 				"name": "saveResourceConfig.home",
 				"type": "string",
+				"required": false,
 				"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
 			}
 		],
@@ -51,7 +55,76 @@
 				"description": "Atomically replaces private configuration after validation."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "resourceHome",
+				"inputs": [
+					{
+						"name": "resourceHome.env",
+						"type": "Record<string, string | undefined>",
+						"required": false,
+						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceHome",
+						"type": "string",
+						"description": "Absolute shared resource directory from the override or the user-scoped Harness default."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resourceConfig",
+				"inputs": [
+					{
+						"name": "resourceConfig.home",
+						"type": "string",
+						"required": false,
+						"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceConfig",
+						"type": "ResourceConfig",
+						"description": "Validated persisted configuration, or validated defaults when no file exists."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "saveResourceConfig",
+				"inputs": [
+					{
+						"name": "saveResourceConfig.config",
+						"type": "ResourceConfig",
+						"required": true,
+						"description": "Validated reserve floors and telemetry timing limits; lower safety thresholds are rejected."
+					},
+					{
+						"name": "saveResourceConfig.home",
+						"type": "string",
+						"required": false,
+						"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+					}
+				],
+				"outputs": [
+					{
+						"name": "saveResourceConfig",
+						"type": "void",
+						"description": "Atomically replaces private configuration after validation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

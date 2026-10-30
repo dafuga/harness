@@ -19,11 +19,13 @@
 			{
 				"name": "designPrompt.context",
 				"type": "RunContext",
+				"required": true,
 				"description": "The entity title and requested thread identity. A matching thread supplies state, viewport and optional region; defaults are default state, desktop viewport and the whole image."
 			},
 			{
 				"name": "designPrompt.prompt",
 				"type": "string",
+				"required": true,
 				"description": "The proposal or feedback to append unchanged after the design instructions."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "A prompt describing the navy-and-gold Harness interface, control placement, entity, state and viewport. When a reference image is attached by the caller, it asks for revisions focused on the thread’s region while preserving other design decisions. The helper generates text only."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "designPrompt",
+				"inputs": [
+					{
+						"name": "designPrompt.context",
+						"type": "RunContext",
+						"required": true,
+						"description": "The entity title and requested thread identity. A matching thread supplies state, viewport and optional region; defaults are default state, desktop viewport and the whole image."
+					},
+					{
+						"name": "designPrompt.prompt",
+						"type": "string",
+						"required": true,
+						"description": "The proposal or feedback to append unchanged after the design instructions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "designPrompt",
+						"type": "string",
+						"description": "A prompt describing the navy-and-gold Harness interface, control placement, entity, state and viewport. When a reference image is attached by the caller, it asks for revisions focused on the thread’s region while preserving other design decisions. The helper generates text only."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

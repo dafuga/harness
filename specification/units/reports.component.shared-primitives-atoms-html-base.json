@@ -22,9 +22,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlBase.attributes",
-				"type": "SvelteHTMLElements['base']",
-				"description": "Native base attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+				"name": "HtmlBase.children",
+				"type": "Snippet",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -34,7 +34,9 @@
 				"description": "The actual native base element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

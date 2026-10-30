@@ -39,23 +39,29 @@
 		"inputs": [
 			{
 				"name": "wasmUnavailable.message",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.constructor.source",
-				"type": "WasmSource | WasmLoader"
+				"type": "WasmSource | WasmLoader",
+				"required": true
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.constructor.options",
-				"type": "RuntimeOptions"
+				"type": "RuntimeOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.invoke.request",
-				"type": "RuntimeRequest"
+				"type": "RuntimeRequest",
+				"required": true
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.invokeText.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -80,7 +86,114 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "wasmUnavailable",
+				"inputs": [
+					{
+						"name": "wasmUnavailable.message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "wasmUnavailable",
+						"type": "Error"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WasmModuleRuntimeAdapter.invoke",
+				"inputs": [
+					{
+						"name": "WasmModuleRuntimeAdapter.invoke.request",
+						"type": "RuntimeRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WasmModuleRuntimeAdapter.invoke",
+						"type": "Promise<RuntimeResponse>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WasmModuleRuntimeAdapter.invokeText",
+				"inputs": [
+					{
+						"name": "WasmModuleRuntimeAdapter.invokeText.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WasmModuleRuntimeAdapter.invokeText",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WasmModuleRuntimeAdapter.memoryBytes",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "WasmModuleRuntimeAdapter.memoryBytes",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WasmModuleRuntimeAdapter.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "WasmModuleRuntimeAdapter.close",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "WasmModuleRuntimeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "WasmModuleRuntimeAdapter.constructor.source",
+						"type": "WasmSource | WasmLoader",
+						"required": true
+					},
+					{
+						"name": "WasmModuleRuntimeAdapter.constructor.options",
+						"type": "RuntimeOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "WasmModuleRuntimeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

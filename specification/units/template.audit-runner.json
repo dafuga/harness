@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "auditRunnerFiles.kind",
-				"type": "ProjectKind"
+				"type": "ProjectKind",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "auditRunnerFiles",
+				"inputs": [
+					{
+						"name": "auditRunnerFiles.kind",
+						"type": "ProjectKind",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditRunnerFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -21,6 +21,7 @@
 			{
 				"name": "planReads.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			}
 		],
@@ -31,7 +32,30 @@
 				"description": "Wrapped Git handle sharing in-flight and successful recognized reads at full lowercase IDs of the repository object format. Returned buffers are copied; mutable revisions, writes, calls with input/environment overrides and failed reads are not retained."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "planReads",
+				"inputs": [
+					{
+						"name": "planReads.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planReads",
+						"type": "Git",
+						"description": "Wrapped Git handle sharing in-flight and successful recognized reads at full lowercase IDs of the repository object format. Returned buffers are copied; mutable revisions, writes, calls with input/environment overrides and failed reads are not retained."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

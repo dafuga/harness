@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "runReport.args",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runReport",
+				"inputs": [
+					{
+						"name": "runReport.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runReport",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

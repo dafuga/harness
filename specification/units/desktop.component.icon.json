@@ -14,11 +14,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/Icon.svelte",
-			"packages/desktop/src/components/shared-primitives/Icon.svelte"
-		],
-		"symbols": ["Icon", "Icon"]
+		"source": ["packages/desktop/src/components/shared-primitives/Icon.svelte"],
+		"symbols": ["Icon"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -26,11 +23,14 @@
 			{
 				"name": "Icon.name",
 				"type": "string",
+				"required": true,
 				"description": "Which icon to draw. An unrecognized name uses the page icon."
 			},
 			{
 				"name": "Icon.size",
 				"type": "number",
+				"required": false,
+				"default": 22,
 				"description": "The icon’s width and height in pixels; 22 when no size is supplied."
 			}
 		],
@@ -41,7 +41,9 @@
 				"description": "A line icon hidden from screen readers. The surrounding control supplies its accessible name."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

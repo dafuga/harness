@@ -32,63 +32,78 @@
 		"inputs": [
 			{
 				"name": "GitSourceAdapter.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.revision.query",
-				"type": "{ branch: string | null; commit: string | null }"
+				"type": "{ branch: string | null; commit: string | null }",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.commits.branch",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.units.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.changed.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.sources.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.sources.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.source.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.source.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.source.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.documentation.unit",
-				"type": "ComponentManifest | undefined"
+				"type": "ComponentManifest | undefined",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.documentation.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.size.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.size.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitSourceAdapter.contractHash.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -137,6 +152,238 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GitSourceAdapter.branches",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.branches",
+						"type": "Promise<BranchInfo[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitSourceAdapter.revision",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.revision.query",
+						"type": "{ branch: string | null; commit: string | null }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.revision",
+						"type": "Promise<Revision>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitSourceAdapter.commits",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.commits.branch",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.commits",
+						"type": "Promise<CommitInfo[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitSourceAdapter.units",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.units.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.units",
+						"type": "Promise<ComponentManifest[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitSourceAdapter.changed",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.changed.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.changed",
+						"type": "Promise<Set<string>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitSourceAdapter.sources",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.sources.unit",
+						"type": "ComponentManifest",
+						"required": true
+					},
+					{
+						"name": "GitSourceAdapter.sources.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.sources",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitSourceAdapter.source",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.source.unit",
+						"type": "ComponentManifest",
+						"required": true
+					},
+					{
+						"name": "GitSourceAdapter.source.revision",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "GitSourceAdapter.source.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.source",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitSourceAdapter.documentation",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.documentation.unit",
+						"type": "ComponentManifest | undefined",
+						"required": true
+					},
+					{
+						"name": "GitSourceAdapter.documentation.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.documentation",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitSourceAdapter.size",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.size.unit",
+						"type": "ComponentManifest",
+						"required": true
+					},
+					{
+						"name": "GitSourceAdapter.size.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.size",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitSourceAdapter.contractHash",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.contractHash.unit",
+						"type": "ComponentManifest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.contractHash",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GitSourceAdapter.constructor",
+				"inputs": [
+					{
+						"name": "GitSourceAdapter.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitSourceAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

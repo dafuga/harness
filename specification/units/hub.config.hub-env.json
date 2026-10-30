@@ -22,7 +22,8 @@
 		"inputs": [
 			{
 				"name": "hubEnvConfig.input",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -31,7 +32,29 @@
 				"type": "HubEnv"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "hubEnvConfig",
+				"inputs": [
+					{
+						"name": "hubEnvConfig.input",
+						"type": "Record<string, unknown>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEnvConfig",
+						"type": "HubEnv"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

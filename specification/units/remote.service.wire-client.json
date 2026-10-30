@@ -33,31 +33,39 @@
 		"inputs": [
 			{
 				"name": "WireClientService.constructor.options",
-				"type": "WireClientOptions"
+				"type": "WireClientOptions",
+				"required": true
 			},
 			{
 				"name": "WireClientService.bind.send",
-				"type": "(text: string) => void"
+				"type": "(text: string) => void",
+				"required": true
 			},
 			{
 				"name": "WireClientService.request.method",
-				"type": "RemoteMethod"
+				"type": "RemoteMethod",
+				"required": true
 			},
 			{
 				"name": "WireClientService.request.input",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "WireClientService.on.channel",
-				"type": "WireChannel"
+				"type": "WireChannel",
+				"required": true
 			},
 			{
 				"name": "WireClientService.on.listener",
-				"type": "Listener"
+				"type": "Listener",
+				"required": true
 			},
 			{
 				"name": "WireClientService.receive.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -90,6 +98,141 @@
 			{
 				"name": "RemoteFailure",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "WireClientService.bind",
+				"inputs": [
+					{
+						"name": "WireClientService.bind.send",
+						"type": "(text: string) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireClientService.bind",
+						"type": "Promise<RemoteAttachment>"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireClientService.unbind",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "WireClientService.unbind",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireClientService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "WireClientService.close",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireClientService.request",
+				"inputs": [
+					{
+						"name": "WireClientService.request.method",
+						"type": "RemoteMethod",
+						"required": true
+					},
+					{
+						"name": "WireClientService.request.input",
+						"type": "Record<string, unknown>",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireClientService.request",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireClientService.on",
+				"inputs": [
+					{
+						"name": "WireClientService.on.channel",
+						"type": "WireChannel",
+						"required": true
+					},
+					{
+						"name": "WireClientService.on.listener",
+						"type": "Listener",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireClientService.on",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireClientService.receive",
+				"inputs": [
+					{
+						"name": "WireClientService.receive.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireClientService.receive",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "WireClientService.constructor",
+				"inputs": [
+					{
+						"name": "WireClientService.constructor.options",
+						"type": "WireClientOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireClientService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -20,16 +20,19 @@
 			{
 				"name": "reportIngest.report",
 				"type": "Report",
+				"required": true,
 				"description": "Report object to mutate and return."
 			},
 			{
 				"name": "reportIngest.record",
 				"type": "RecordInput",
+				"required": true,
 				"description": "Record kind and payload. Summary/acceptance replace their values; check, finding, coverage and evidence records replace an existing item with the same identifier and append the new item."
 			},
 			{
 				"name": "reportIngest.directory",
 				"type": "string",
+				"required": true,
 				"description": "Report directory used when importing evidence assets."
 			}
 		],
@@ -40,7 +43,42 @@
 				"description": "Promise resolving to the same mutated report with a fresh update timestamp. Evidence uses the original source path for import, discards caller-supplied path/storage fields, and applies generated file metadata with default Evidence category and not-proven status."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reportIngest",
+				"inputs": [
+					{
+						"name": "reportIngest.report",
+						"type": "Report",
+						"required": true,
+						"description": "Report object to mutate and return."
+					},
+					{
+						"name": "reportIngest.record",
+						"type": "RecordInput",
+						"required": true,
+						"description": "Record kind and payload. Summary/acceptance replace their values; check, finding, coverage and evidence records replace an existing item with the same identifier and append the new item."
+					},
+					{
+						"name": "reportIngest.directory",
+						"type": "string",
+						"required": true,
+						"description": "Report directory used when importing evidence assets."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportIngest",
+						"type": "unknown",
+						"description": "Promise resolving to the same mutated report with a fresh update timestamp. Evidence uses the original source path for import, discards caller-supplied path/storage fields, and applies generated file metadata with default Evidence category and not-proven status."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

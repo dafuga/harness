@@ -25,12 +25,14 @@
 			{
 				"name": "PreviewWorkerService.constructor.entry",
 				"type": "string",
+				"required": true,
 				"description": "Compiled Node launcher owned by this supervisor.",
 				"examples": ["/projects/harness/packages/reports/.cache/preview-node-example/entry.mjs"]
 			},
 			{
 				"name": "PreviewWorkerService.constructor.args",
 				"type": "string[]",
+				"required": true,
 				"description": "Validated launch arguments passed unchanged to each replacement.",
 				"examples": [
 					[
@@ -46,6 +48,7 @@
 			{
 				"name": "PreviewWorkerService.constructor.url",
 				"type": "string",
+				"required": true,
 				"description": "Stable loopback URL retained across worker replacements.",
 				"examples": ["http://127.0.0.1:5688"]
 			}
@@ -75,6 +78,71 @@
 				"type": "thrown",
 				"description": "Refuses an unavailable or mismatched worker; ongoing recovery retries back off without starting overlapping workers.",
 				"examples": ["Preview worker did not become ready."]
+			}
+		],
+		"operations": [
+			{
+				"name": "PreviewWorkerService.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PreviewWorkerService.start",
+						"type": "Promise<PreviewHandle>",
+						"description": "Ready worker address and an intentional shutdown operation.",
+						"examples": [
+							{
+								"url": "http://127.0.0.1:5688",
+								"close": "[Function]"
+							}
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PreviewWorkerService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PreviewWorkerService.close",
+						"type": "Promise<void>",
+						"description": "Stops health checks and the owned child without respawning.",
+						"examples": [null]
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PreviewWorkerService.constructor",
+				"inputs": [
+					{
+						"name": "PreviewWorkerService.constructor.entry",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PreviewWorkerService.constructor.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "PreviewWorkerService.constructor.url",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PreviewWorkerService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

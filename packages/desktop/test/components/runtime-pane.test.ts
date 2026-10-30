@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { entityScreens, screenOptions, screenPick } from '../../../reports/src/utils/entityScreens';
-import RuntimePane from '../../src/components/RuntimePane.svelte';
+import RuntimePane from '../../src/components/execution-runtimes/RuntimePane.svelte';
 import { commits, drawn, ids, scopeOf, shownEvidence } from '../evidence-fixture';
 
 test('a side without a capture says so in the words of the record, and shows no image', async () => {

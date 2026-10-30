@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "registerScenariosCommand.program",
-				"type": "Command"
+				"type": "Command",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,7 +30,29 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "registerScenariosCommand",
+				"inputs": [
+					{
+						"name": "registerScenariosCommand.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerScenariosCommand",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

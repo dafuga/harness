@@ -31,27 +31,33 @@
 		"inputs": [
 			{
 				"name": "SecureChannelService.constructor.options",
-				"type": "SecureChannelOptions"
+				"type": "SecureChannelOptions",
+				"required": true
 			},
 			{
 				"name": "SecureChannelService.answer.hello",
-				"type": "SecurePacket"
+				"type": "SecurePacket",
+				"required": true
 			},
 			{
 				"name": "SecureChannelService.accept.packet",
-				"type": "SecurePacket"
+				"type": "SecurePacket",
+				"required": true
 			},
 			{
 				"name": "SecureChannelService.seal.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SecureChannelService.seal.emit",
-				"type": "(packet: SecurePacket) => void"
+				"type": "(packet: SecurePacket) => void",
+				"required": true
 			},
 			{
 				"name": "SecureChannelService.open.packet",
-				"type": "SecurePacket"
+				"type": "SecurePacket",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -88,6 +94,140 @@
 			{
 				"name": "SecureFailure",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SecureChannelService.ready",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SecureChannelService.ready",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecureChannelService.hello",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SecureChannelService.hello",
+						"type": "Promise<SecurePacket>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecureChannelService.answer",
+				"inputs": [
+					{
+						"name": "SecureChannelService.answer.hello",
+						"type": "SecurePacket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecureChannelService.answer",
+						"type": "Promise<SecurePacket>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SecureFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecureChannelService.accept",
+				"inputs": [
+					{
+						"name": "SecureChannelService.accept.packet",
+						"type": "SecurePacket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecureChannelService.accept",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SecureFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecureChannelService.seal",
+				"inputs": [
+					{
+						"name": "SecureChannelService.seal.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SecureChannelService.seal.emit",
+						"type": "(packet: SecurePacket) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecureChannelService.seal",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecureChannelService.open",
+				"inputs": [
+					{
+						"name": "SecureChannelService.open.packet",
+						"type": "SecurePacket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecureChannelService.open",
+						"type": "Promise<string | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SecureChannelService.constructor",
+				"inputs": [
+					{
+						"name": "SecureChannelService.constructor.options",
+						"type": "SecureChannelOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecureChannelService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

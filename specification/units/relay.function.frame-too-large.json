@@ -21,11 +21,13 @@
 			{
 				"name": "frameTooLarge.message",
 				"type": "string | ArrayBuffer",
+				"required": true,
 				"description": "Text frame or binary ArrayBuffer. Text is measured as UTF-8 bytes."
 			},
 			{
 				"name": "frameTooLarge.limit",
 				"type": "number",
+				"required": false,
 				"description": "Optional byte limit, defaulting to the protocol’s 262,144 bytes."
 			}
 		],
@@ -36,7 +38,36 @@
 				"description": "True only when frame bytes exceed the limit; equal size is accepted. Text-length bounds avoid encoding when the answer is already certain."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "frameTooLarge",
+				"inputs": [
+					{
+						"name": "frameTooLarge.message",
+						"type": "string | ArrayBuffer",
+						"required": true,
+						"description": "Text frame or binary ArrayBuffer. Text is measured as UTF-8 bytes."
+					},
+					{
+						"name": "frameTooLarge.limit",
+						"type": "number",
+						"required": false,
+						"description": "Optional byte limit, defaulting to the protocol’s 262,144 bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "frameTooLarge",
+						"type": "boolean",
+						"description": "True only when frame bytes exceed the limit; equal size is accepted. Text-length bounds avoid encoding when the answer is already certain."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

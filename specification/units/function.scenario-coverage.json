@@ -35,8 +35,19 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "problem.input",
+				"type": "CoverageInput",
+				"required": true
+			},
+			{
+				"name": "problem.item",
+				"type": "Gathered",
+				"required": true
+			},
+			{
 				"name": "scenarioCoverage.input",
 				"type": "CoverageInput",
+				"required": true,
 				"description": "Scenario contract, exact verified commit, gathered captures, whether the producing check failed, and optionally declared/compiled build identities."
 			}
 		],
@@ -47,7 +58,53 @@
 				"description": "Scenario states with capture statuses plus prefixed failure messages for missing/unproven requirements or invalid evidence. Screenshots require valid dimensions and revision/build provenance; audio requires valid duration/transcript and stated provenance; benchmarks must match their schema."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "problem",
+				"inputs": [
+					{
+						"name": "problem.input",
+						"type": "CoverageInput",
+						"required": true
+					},
+					{
+						"name": "problem.item",
+						"type": "Gathered",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "problem",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scenarioCoverage",
+				"inputs": [
+					{
+						"name": "scenarioCoverage.input",
+						"type": "CoverageInput",
+						"required": true,
+						"description": "Scenario contract, exact verified commit, gathered captures, whether the producing check failed, and optionally declared/compiled build identities."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scenarioCoverage",
+						"type": "CoverageResult",
+						"description": "Scenario states with capture statuses plus prefixed failure messages for missing/unproven requirements or invalid evidence. Screenshots require valid dimensions and revision/build provenance; audio requires valid duration/transcript and stated provenance; benchmarks must match their schema."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

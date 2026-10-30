@@ -30,26 +30,32 @@
 			{
 				"name": "hubJson.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Strict UTF-8 JSON bytes."
 			},
 			{
 				"name": "hubHash.value",
 				"type": "Uint8Array | string",
+				"required": true,
 				"description": "Text or bytes to hash."
 			},
 			{
 				"name": "hubContractHash.value",
 				"type": "unknown",
+				"required": true,
 				"description": "JSON-compatible contract value to serialize consistently before hashing."
 			},
 			{
 				"name": "hubFail.code",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "artifact-corrupt",
 				"description": "Failure code; defaults to artifact-corrupt."
 			},
 			{
 				"name": "hubFile.value",
 				"type": "string",
+				"required": true,
 				"description": "Artifact filename of 1 to 200 letters, digits, dots, underscores or hyphens, starting alphanumeric and containing no double dot."
 			}
 		],
@@ -80,7 +86,111 @@
 				"description": "Unchanged accepted filename; invalid names throw invalid-path."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubJson",
+				"inputs": [
+					{
+						"name": "hubJson.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Strict UTF-8 JSON bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubJson",
+						"type": "unknown",
+						"description": "Parsed JSON; malformed text or encoding throws artifact-corrupt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubHash",
+				"inputs": [
+					{
+						"name": "hubHash.value",
+						"type": "Uint8Array | string",
+						"required": true,
+						"description": "Text or bytes to hash."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubHash",
+						"type": "Promise<string>",
+						"description": "Lowercase SHA-256 hexadecimal digest."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubContractHash",
+				"inputs": [
+					{
+						"name": "hubContractHash.value",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-compatible contract value to serialize consistently before hashing."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubContractHash",
+						"type": "unknown",
+						"description": "SHA-256 of canonical contract JSON."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubFail",
+				"inputs": [
+					{
+						"name": "hubFail.code",
+						"type": "string",
+						"required": false,
+						"default": "artifact-corrupt",
+						"description": "Failure code; defaults to artifact-corrupt."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubFail",
+						"type": "never",
+						"description": "Never returns; throws a generic artifact-unavailable Error with the supplied code."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubFile",
+				"inputs": [
+					{
+						"name": "hubFile.value",
+						"type": "string",
+						"required": true,
+						"description": "Artifact filename of 1 to 200 letters, digits, dots, underscores or hyphens, starting alphanumeric and containing no double dot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubFile",
+						"type": "unknown",
+						"description": "Unchanged accepted filename; invalid names throw invalid-path."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

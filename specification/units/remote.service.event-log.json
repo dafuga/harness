@@ -31,19 +31,24 @@
 		"inputs": [
 			{
 				"name": "EventLogService.constructor.options",
-				"type": "{ epoch?: string; capacity?: number }"
+				"type": "{ epoch?: string; capacity?: number }",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "EventLogService.append.channel",
-				"type": "WireChannel"
+				"type": "WireChannel",
+				"required": true
 			},
 			{
 				"name": "EventLogService.append.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "EventLogService.since.resume",
-				"type": "RemoteResume | null"
+				"type": "RemoteResume | null",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -60,7 +65,84 @@
 				"type": "EventReplay"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "EventLogService.sequence",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EventLogService.sequence",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EventLogService.append",
+				"inputs": [
+					{
+						"name": "EventLogService.append.channel",
+						"type": "WireChannel",
+						"required": true
+					},
+					{
+						"name": "EventLogService.append.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EventLogService.append",
+						"type": "WireEvent"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EventLogService.since",
+				"inputs": [
+					{
+						"name": "EventLogService.since.resume",
+						"type": "RemoteResume | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EventLogService.since",
+						"type": "EventReplay"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "EventLogService.constructor",
+				"inputs": [
+					{
+						"name": "EventLogService.constructor.options",
+						"type": "{ epoch?: string; capacity?: number }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "EventLogService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

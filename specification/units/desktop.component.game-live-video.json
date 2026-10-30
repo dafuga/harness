@@ -24,6 +24,7 @@
 			{
 				"name": "GameLiveVideo.stream",
 				"type": "MediaStream",
+				"required": false,
 				"description": "Remote video stream explicitly provided by a running optional AI connection."
 			}
 		],
@@ -34,7 +35,9 @@
 				"description": "Attach an explicitly supplied remote video stream to its preview and clear it when replaced. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

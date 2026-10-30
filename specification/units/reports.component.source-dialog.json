@@ -11,11 +11,8 @@
 		"uses": ["reports.component.modal", "reports.component.source-content"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/SourceDialog.svelte",
-			"packages/reports/src/components/explorer-ui/SourceDialog.svelte"
-		],
-		"symbols": ["SourceDialog", "SourceDialog"]
+		"source": ["packages/reports/src/components/explorer-ui/SourceDialog.svelte"],
+		"symbols": ["SourceDialog"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,7 +67,9 @@
 				"description": "Open dialogs mount the source reader. Closed dialogs read nothing. Escape and close delegate to the host, which restores initiating focus."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

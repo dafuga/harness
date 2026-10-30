@@ -19,11 +19,13 @@
 			{
 				"name": "cloudflareSafety.config",
 				"type": "Record<string, unknown>",
+				"required": true,
 				"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
 			},
 			{
 				"name": "cloudflareSafety.targets",
 				"type": "DeploymentConfig['targets']",
+				"required": true,
 				"description": "Explicit environment targets to compare against inherited and production Worker routes."
 			}
 		],
@@ -40,7 +42,41 @@
 				"type": "thrown",
 				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "cloudflareSafety",
+				"inputs": [
+					{
+						"name": "cloudflareSafety.config",
+						"type": "Record<string, unknown>",
+						"required": true,
+						"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
+					},
+					{
+						"name": "cloudflareSafety.targets",
+						"type": "DeploymentConfig['targets']",
+						"required": true,
+						"description": "Explicit environment targets to compare against inherited and production Worker routes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "cloudflareSafety",
+						"type": "unknown",
+						"description": "Returns without a value only for distinct lower routes; throws for unsafe mappings."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

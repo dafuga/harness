@@ -30,7 +30,6 @@
 		base,
 		path,
 		navigate,
-		exportable = true,
 		content
 	}: {
 		base: string;
@@ -39,7 +38,6 @@
 		/** Goes to another page; `replace` when the address only becomes more exact. */
 		navigate: (path: string, replace: boolean) => void;
 		links?: Array<{ label: string; href: string }>;
-		exportable?: boolean;
 		/** What renders the screen. The host has no renderer of its own: whoever mounts it names one. */
 		content: ExplorerScreen;
 	} = $props();
@@ -205,7 +203,6 @@
 					{client}
 					mediaBase={base + '/media/'}
 					{onroute}
-					exportHref={exportable ? base + '/export/' + shown.scope.commit : ''}
 				/>
 			{/key}
 		{/if}

@@ -20,16 +20,19 @@
 			{
 				"name": "catalogHistory.root",
 				"type": "string",
+				"required": true,
 				"description": "The repository directory in which to read Git history."
 			},
 			{
 				"name": "catalogHistory.revision",
 				"type": "string",
+				"required": true,
 				"description": "The Git revision from which to read history, passed as supplied to Git."
 			},
 			{
 				"name": "catalogHistory.unit",
 				"type": "ComponentManifest",
+				"required": true,
 				"description": "The unit definition whose owned source paths restrict the history. No owned paths means an empty history without running Git."
 			}
 		],
@@ -40,7 +43,42 @@
 				"description": "A promise for commit history entries containing the hash, author timestamp and subject, with no design version. Each entry states that source changed and verification is recorded separately. Git read failures reject the promise."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "catalogHistory",
+				"inputs": [
+					{
+						"name": "catalogHistory.root",
+						"type": "string",
+						"required": true,
+						"description": "The repository directory in which to read Git history."
+					},
+					{
+						"name": "catalogHistory.revision",
+						"type": "string",
+						"required": true,
+						"description": "The Git revision from which to read history, passed as supplied to Git."
+					},
+					{
+						"name": "catalogHistory.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "The unit definition whose owned source paths restrict the history. No owned paths means an empty history without running Git."
+					}
+				],
+				"outputs": [
+					{
+						"name": "catalogHistory",
+						"type": "unknown",
+						"description": "A promise for commit history entries containing the hash, author timestamp and subject, with no design version. Each entry states that source changed and verification is recorded separately. Git read failures reject the promise."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -24,7 +24,23 @@
 				"description": "Authentication interface: actor resolves to null; GET status routes report disabled; other owned routes return auth-disabled with 503; unrelated routes return null. Repository authorization and token calls reject with github-disabled."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "authDisabled",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "authDisabled",
+						"type": "HubAuth",
+						"description": "Authentication interface: actor resolves to null; GET status routes report disabled; other owned routes return auth-disabled with 503; unrelated routes return null. Repository authorization and token calls reject with github-disabled."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

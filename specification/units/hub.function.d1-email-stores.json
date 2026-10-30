@@ -29,11 +29,13 @@
 			{
 				"name": "d1EmailStores.db",
 				"type": "D1Like",
+				"required": true,
 				"description": "D1-compatible database handle; queries run only when the returned store methods are called."
 			},
 			{
 				"name": "d1EmailStores.records",
 				"type": "AuthRecordValidator",
+				"required": true,
 				"description": "Validator used to turn stored database rows into typed records."
 			}
 		],
@@ -49,7 +51,36 @@
 				"description": "Proof store supports creation, lookup, live-code replacement, bounded attempts, single claimed-proof completion and removal. Ledger supports atomic interval/day-cap checks and verified-address lookup/replacement."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "d1EmailStores",
+				"inputs": [
+					{
+						"name": "d1EmailStores.db",
+						"type": "D1Like",
+						"required": true,
+						"description": "D1-compatible database handle; queries run only when the returned store methods are called."
+					},
+					{
+						"name": "d1EmailStores.records",
+						"type": "AuthRecordValidator",
+						"required": true,
+						"description": "Validator used to turn stored database rows into typed records."
+					}
+				],
+				"outputs": [
+					{
+						"name": "d1EmailStores",
+						"type": "D1EmailStores",
+						"description": "Proof store supports creation, lookup, live-code replacement, bounded attempts, single claimed-proof completion and removal. Ledger supports atomic interval/day-cap checks and verified-address lookup/replacement."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

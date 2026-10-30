@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "atomicSyntax.content",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "walkAtomicMarkup.node",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "walkAtomicMarkup.callback",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +39,52 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "atomicSyntax",
+				"inputs": [
+					{
+						"name": "atomicSyntax.content",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "atomicSyntax",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "walkAtomicMarkup",
+				"inputs": [
+					{
+						"name": "walkAtomicMarkup.node",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "walkAtomicMarkup.callback",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "walkAtomicMarkup",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

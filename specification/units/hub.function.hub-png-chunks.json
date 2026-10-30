@@ -20,6 +20,7 @@
 			{
 				"name": "hubPngChunks.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "PNG bytes from 45 bytes through 32 MiB inclusive, with positive dimensions totaling at most 32 million pixels."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Parsed state with validated header, compressed IDAT byte slices, palette/transparency information and completion flags. At most 10000 chunks are accepted; critical unknown chunks, invalid CRCs, broken ordering and trailing bytes are refused."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubPngChunks",
+				"inputs": [
+					{
+						"name": "hubPngChunks.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "PNG bytes from 45 bytes through 32 MiB inclusive, with positive dimensions totaling at most 32 million pixels."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubPngChunks",
+						"type": "State",
+						"description": "Parsed state with validated header, compressed IDAT byte slices, palette/transparency information and completion flags. At most 10000 chunks are accepted; critical unknown chunks, invalid CRCs, broken ordering and trailing bytes are refused."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

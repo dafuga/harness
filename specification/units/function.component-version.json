@@ -20,11 +20,13 @@
 			{
 				"name": "componentVersion.manifest",
 				"type": "ComponentManifest",
+				"required": true,
 				"description": "Unit manifest identifying its owned source and contract/runtime definitions."
 			},
 			{
 				"name": "componentVersion.files",
 				"type": "ReadonlyMap<string, { hash: string }>",
+				"required": true,
 				"description": "Map from repository-relative source paths to content hashes; owned paths missing a nonempty hash are omitted."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Unit id, separate SHA-256 hashes for the canonical manifest, sorted owned paths and hashes, contract and runtime, plus the sorted owned file list used for the source hash."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "componentVersion",
+				"inputs": [
+					{
+						"name": "componentVersion.manifest",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "Unit manifest identifying its owned source and contract/runtime definitions."
+					},
+					{
+						"name": "componentVersion.files",
+						"type": "ReadonlyMap<string, { hash: string }>",
+						"required": true,
+						"description": "Map from repository-relative source paths to content hashes; owned paths missing a nonempty hash are omitted."
+					}
+				],
+				"outputs": [
+					{
+						"name": "componentVersion",
+						"type": "ComponentVersion",
+						"description": "Unit id, separate SHA-256 hashes for the canonical manifest, sorted owned paths and hashes, contract and runtime, plus the sorted owned file list used for the source hash."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

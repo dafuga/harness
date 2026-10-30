@@ -45,7 +45,47 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ConsoleBridgeAdapter.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ConsoleBridgeAdapter.connect",
+						"type": "Promise<ProjectSnapshot>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleBridgeAdapter.bridge",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ConsoleBridgeAdapter.bridge",
+						"type": "DesktopBridge"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ConsoleBridgeAdapter.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ConsoleBridgeAdapter.close",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

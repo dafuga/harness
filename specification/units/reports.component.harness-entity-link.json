@@ -20,32 +20,26 @@
 			{
 				"name": "EntityLink.to",
 				"type": "ExplorerLocation",
+				"required": true,
 				"description": "Required explorer destination."
 			},
 			{
 				"name": "EntityLink.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required functions for constructing the link and navigating within the host."
 			},
 			{
 				"name": "EntityLink.label",
 				"type": "string",
+				"required": false,
 				"description": "Optional accessible name when visible content is insufficient."
 			},
 			{
 				"name": "EntityLink.children",
 				"type": "Snippet",
+				"required": true,
 				"description": "Required visible link content."
-			},
-			{
-				"name": "EntityLink.class",
-				"type": "string",
-				"description": "Optional CSS class forwarded to the anchor."
-			},
-			{
-				"name": "EntityLink.title",
-				"type": "string",
-				"description": "Optional native hover tooltip, forwarded to the link."
 			}
 		],
 		"outputs": [
@@ -55,7 +49,9 @@
 				"description": "Anchor with a real href. A plain click prevents document navigation and calls nav.go; modified/nonprimary clicks keep native behavior. Does not catch navigation errors."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

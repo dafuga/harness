@@ -22,7 +22,8 @@
 		"inputs": [
 			{
 				"name": "DesktopIntegrityAdapter.update.app",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +37,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DesktopIntegrityAdapter.update",
+				"inputs": [
+					{
+						"name": "DesktopIntegrityAdapter.update.app",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DesktopIntegrityAdapter.update",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

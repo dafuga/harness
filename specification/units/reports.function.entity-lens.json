@@ -34,19 +34,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "shortCommit.commit",
+				"type": "string",
+				"required": true,
+				"description": "Commit text to abbreviate."
+			},
+			{
 				"name": "entityLens.from",
 				"type": "ExplorerLocation",
+				"required": true,
 				"description": "Current explorer location."
 			},
 			{
 				"name": "entityLens.to",
 				"type": "Target",
+				"required": true,
 				"description": "Optional target commit, category, entity, section and tab. Omitted commit/category retain the current values; null commit explicitly selects current mode."
-			},
-			{
-				"name": "shortCommit.commit",
-				"type": "string",
-				"description": "Commit text to abbreviate."
 			}
 		],
 		"outputs": [
@@ -66,7 +69,56 @@
 				"description": "First seven characters of the supplied commit."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "shortCommit",
+				"inputs": [
+					{
+						"name": "shortCommit.commit",
+						"type": "string",
+						"required": true,
+						"description": "Commit text to abbreviate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "shortCommit",
+						"type": "string",
+						"description": "First seven characters of the supplied commit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "entityLens",
+				"inputs": [
+					{
+						"name": "entityLens.from",
+						"type": "ExplorerLocation",
+						"required": true,
+						"description": "Current explorer location."
+					},
+					{
+						"name": "entityLens.to",
+						"type": "Target",
+						"required": true,
+						"description": "Optional target commit, category, entity, section and tab. Omitted commit/category retain the current values; null commit explicitly selects current mode."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityLens",
+						"type": "ExplorerLocation",
+						"description": "Location retaining branch and revision; helper identity follows tabs and commits only within the same owning entity. Catalog and different-entity links discard it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -87,7 +139,8 @@
 			"inputs": [
 				{
 					"name": "shortCommit.commit",
-					"type": "string"
+					"type": "string",
+					"required": true
 				}
 			],
 			"output": "string",
@@ -121,9 +174,6 @@
 				},
 				{
 					"unit": "reports.component.harness-entity-behavior"
-				},
-				{
-					"unit": "reports.component.harness-entity-change"
 				},
 				{
 					"unit": "reports.component.harness-entity-config"

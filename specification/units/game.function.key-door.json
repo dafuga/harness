@@ -16,16 +16,20 @@
 			{
 				"name": "keyDoor.state",
 				"type": "Readonly<GameState>",
+				"required": true,
 				"description": "Read-only game state evaluated without modifying the supplied snapshot."
 			},
 			{
 				"name": "keyDoor.input",
 				"type": "Readonly<GameInput>",
+				"required": true,
 				"description": "Movement deltas and optional branch choice for one deterministic key-door tick."
 			},
 			{
 				"name": "exampleDocument.dimension",
 				"type": "Dimension",
+				"required": false,
+				"default": "2d",
 				"description": "Requested 2D or 3D native game example dimension."
 			}
 		],
@@ -41,7 +45,57 @@
 				"description": "Versioned game document containing the key-door scene, mechanics contract and branching checkpoints."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "keyDoor",
+				"inputs": [
+					{
+						"name": "keyDoor.state",
+						"type": "Readonly<GameState>",
+						"required": true,
+						"description": "Read-only game state evaluated without modifying the supplied snapshot."
+					},
+					{
+						"name": "keyDoor.input",
+						"type": "Readonly<GameInput>",
+						"required": true,
+						"description": "Movement deltas and optional branch choice for one deterministic key-door tick."
+					}
+				],
+				"outputs": [
+					{
+						"name": "keyDoor",
+						"type": "GameState",
+						"description": "Updated state with bounded movement, key/door collision behavior and the selected garden or vault choice."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "exampleDocument",
+				"inputs": [
+					{
+						"name": "exampleDocument.dimension",
+						"type": "Dimension",
+						"required": false,
+						"default": "2d",
+						"description": "Requested 2D or 3D native game example dimension."
+					}
+				],
+				"outputs": [
+					{
+						"name": "exampleDocument",
+						"type": "GameDocument",
+						"description": "Versioned game document containing the key-door scene, mechanics contract and branching checkpoints."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

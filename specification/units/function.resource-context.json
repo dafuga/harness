@@ -16,21 +16,25 @@
 			{
 				"name": "resourceContext.id",
 				"type": "string",
+				"required": true,
 				"description": "Lease UUID whose job or heartbeat is read or updated."
 			},
 			{
 				"name": "resourceContext.request",
 				"type": "ResourceRequest",
+				"required": true,
 				"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
 			},
 			{
 				"name": "resourceContext.env",
 				"type": "Record<string, string | undefined>",
+				"required": true,
 				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
 			},
 			{
 				"name": "resourceContext.queue",
 				"type": "ResourceQueueRepository",
+				"required": true,
 				"description": "Shared queue used to track child PID and process start identity under this lease."
 			}
 		],
@@ -41,7 +45,48 @@
 				"description": "Lease environment with bounded native threads and a callback recording child identity."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "resourceContext",
+				"inputs": [
+					{
+						"name": "resourceContext.id",
+						"type": "string",
+						"required": true,
+						"description": "Lease UUID whose job or heartbeat is read or updated."
+					},
+					{
+						"name": "resourceContext.request",
+						"type": "ResourceRequest",
+						"required": true,
+						"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+					},
+					{
+						"name": "resourceContext.env",
+						"type": "Record<string, string | undefined>",
+						"required": true,
+						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+					},
+					{
+						"name": "resourceContext.queue",
+						"type": "ResourceQueueRepository",
+						"required": true,
+						"description": "Shared queue used to track child PID and process start identity under this lease."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceContext",
+						"type": "ResourceContext",
+						"description": "Lease environment with bounded native threads and a callback recording child identity."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

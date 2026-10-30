@@ -18,15 +18,18 @@
 		"inputs": [
 			{
 				"name": "writeScaleData.from",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "writeScaleData.to",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "writeScaleData.commits",
-				"type": "{ map: string; failed: string }"
+				"type": "{ map: string; failed: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -48,7 +51,44 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "writeScaleData",
+				"inputs": [
+					{
+						"name": "writeScaleData.from",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeScaleData.to",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeScaleData.commits",
+						"type": "{ map: string; failed: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeScaleData",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

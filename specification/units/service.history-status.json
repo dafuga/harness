@@ -34,19 +34,23 @@
 		"inputs": [
 			{
 				"name": "HistoryStatusService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryStatusService.constructor.pinned",
-				"type": "PinnedHistory"
+				"type": "PinnedHistory",
+				"required": false
 			},
 			{
 				"name": "HistoryStatusService.status.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryStatusService.problems.line",
-				"type": "VerificationNote"
+				"type": "VerificationNote",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -67,7 +71,95 @@
 				"type": "Promise<string[]>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HistoryStatusService.all",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HistoryStatusService.all",
+						"type": "Promise<Map<string, ReadNote>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HistoryStatusService.verifications",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HistoryStatusService.verifications",
+						"type": "Promise<VerificationNote[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HistoryStatusService.status",
+				"inputs": [
+					{
+						"name": "HistoryStatusService.status.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryStatusService.status",
+						"type": "Promise<CommitStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HistoryStatusService.problems",
+				"inputs": [
+					{
+						"name": "HistoryStatusService.problems.line",
+						"type": "VerificationNote",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryStatusService.problems",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HistoryStatusService.constructor",
+				"inputs": [
+					{
+						"name": "HistoryStatusService.constructor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HistoryStatusService.constructor.pinned",
+						"type": "PinnedHistory",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryStatusService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

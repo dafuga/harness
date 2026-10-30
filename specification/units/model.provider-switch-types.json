@@ -5,7 +5,11 @@
 	"title": "ProviderSwitch",
 	"responsibility": "Owns the ProviderSwitch data model.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Type companion merged into model.provider-switch.",
+		"at": "working-tree"
+	},
 	"owns": {
 		"source": ["src/models/agents-providers/ProviderSwitch.types.ts"],
 		"symbols": [

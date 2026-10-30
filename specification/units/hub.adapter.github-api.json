@@ -38,55 +38,68 @@
 		"inputs": [
 			{
 				"name": "GithubApiAdapter.constructor.options",
-				"type": "GithubApiOptions"
+				"type": "GithubApiOptions",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.userToken.form",
-				"type": "Record<string, string>"
+				"type": "Record<string, string>",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.user.token",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.installations.token",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.installations.appId",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.installationRepositories.token",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.installationRepositories.installationId",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.installationRepositories.page",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.repository.token",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.repository.target",
-				"type": "{ owner: string; name: string }"
+				"type": "{ owner: string; name: string }",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.installationToken.jwt",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.installationToken.installationId",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "GithubApiAdapter.installationToken.scope",
-				"type": "InstallationScope"
+				"type": "InstallationScope",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -115,7 +128,168 @@
 				"type": "Promise<InstallationGrant | null>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GithubApiAdapter.userToken",
+				"inputs": [
+					{
+						"name": "GithubApiAdapter.userToken.form",
+						"type": "Record<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubApiAdapter.userToken",
+						"type": "Promise<GithubUserToken | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubApiAdapter.user",
+				"inputs": [
+					{
+						"name": "GithubApiAdapter.user.token",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubApiAdapter.user",
+						"type": "Promise<GithubUser | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubApiAdapter.installations",
+				"inputs": [
+					{
+						"name": "GithubApiAdapter.installations.token",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "GithubApiAdapter.installations.appId",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubApiAdapter.installations",
+						"type": "Promise<InstallationList | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubApiAdapter.installationRepositories",
+				"inputs": [
+					{
+						"name": "GithubApiAdapter.installationRepositories.token",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "GithubApiAdapter.installationRepositories.installationId",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "GithubApiAdapter.installationRepositories.page",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubApiAdapter.installationRepositories",
+						"type": "Promise<RepositoryPage | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubApiAdapter.repository",
+				"inputs": [
+					{
+						"name": "GithubApiAdapter.repository.token",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "GithubApiAdapter.repository.target",
+						"type": "{ owner: string; name: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubApiAdapter.repository",
+						"type": "Promise<GithubRepository | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubApiAdapter.installationToken",
+				"inputs": [
+					{
+						"name": "GithubApiAdapter.installationToken.jwt",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "GithubApiAdapter.installationToken.installationId",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "GithubApiAdapter.installationToken.scope",
+						"type": "InstallationScope",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubApiAdapter.installationToken",
+						"type": "Promise<InstallationGrant | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GithubApiAdapter.constructor",
+				"inputs": [
+					{
+						"name": "GithubApiAdapter.constructor.options",
+						"type": "GithubApiOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubApiAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

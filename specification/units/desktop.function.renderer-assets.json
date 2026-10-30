@@ -30,26 +30,33 @@
 			{
 				"name": "rendererPolicy.html",
 				"type": "string",
+				"required": true,
 				"description": "HTML whose inline scripts are hashed for the script policy."
 			},
 			{
 				"name": "rendererPolicy.connect",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Additional trusted connection-policy text; defaults to empty."
 			},
 			{
 				"name": "rendererAssets.root",
 				"type": "string",
+				"required": true,
 				"description": "Directory containing the built renderer."
 			},
 			{
 				"name": "rendererAssets.url",
 				"type": "string",
+				"required": true,
 				"description": "Requested URL; must use harness://app."
 			},
 			{
 				"name": "rendererAssets.connect",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Additional trusted connection-policy text; defaults to empty."
 			}
 		],
@@ -71,7 +78,75 @@
 				"type": "thrown",
 				"description": "Malformed URLs or escapes and filesystem/read failures can reject the operation."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "rendererPolicy",
+				"inputs": [
+					{
+						"name": "rendererPolicy.html",
+						"type": "string",
+						"required": true,
+						"description": "HTML whose inline scripts are hashed for the script policy."
+					},
+					{
+						"name": "rendererPolicy.connect",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "Additional trusted connection-policy text; defaults to empty."
+					}
+				],
+				"outputs": [
+					{
+						"name": "rendererPolicy",
+						"type": "string",
+						"description": "Content policy allowing local assets and the HTML inline-script hashes, with restricted frames, objects and base URLs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "rendererAssets",
+				"inputs": [
+					{
+						"name": "rendererAssets.root",
+						"type": "string",
+						"required": true,
+						"description": "Directory containing the built renderer."
+					},
+					{
+						"name": "rendererAssets.url",
+						"type": "string",
+						"required": true,
+						"description": "Requested URL; must use harness://app."
+					},
+					{
+						"name": "rendererAssets.connect",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "Additional trusted connection-policy text; defaults to empty."
+					}
+				],
+				"outputs": [
+					{
+						"name": "rendererAssets",
+						"type": "Promise<Response>",
+						"description": "Response with file bytes, media type, content policy and no-sniff header; missing files fall back to index.html, while rejected routes or escaped paths receive a refusal response."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

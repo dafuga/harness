@@ -22,13 +22,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlSlot.attributes",
-				"type": "SvelteHTMLElements['slot']",
-				"description": "Native slot attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "HtmlSlot.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native slot element; native HTML content rules still apply."
 			}
 		],
@@ -39,7 +35,9 @@
 				"description": "The actual native slot element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

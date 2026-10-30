@@ -29,27 +29,33 @@
 		"inputs": [
 			{
 				"name": "RemoteInputValidator.attach.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteInputValidator.projectId.input",
-				"type": "Fields"
+				"type": "Fields",
+				"required": true
 			},
 			{
 				"name": "RemoteInputValidator.revision.input",
-				"type": "Fields"
+				"type": "Fields",
+				"required": true
 			},
 			{
 				"name": "RemoteInputValidator.approval.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteInputValidator.pairing.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteInputValidator.device.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -83,7 +89,139 @@
 				"name": "RemoteFailure",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteInputValidator.attach",
+				"inputs": [
+					{
+						"name": "RemoteInputValidator.attach.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteInputValidator.attach",
+						"type": "AttachInput"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteInputValidator.projectId",
+				"inputs": [
+					{
+						"name": "RemoteInputValidator.projectId.input",
+						"type": "Fields",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteInputValidator.projectId",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteInputValidator.revision",
+				"inputs": [
+					{
+						"name": "RemoteInputValidator.revision.input",
+						"type": "Fields",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteInputValidator.revision",
+						"type": "RemoteRevision"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteInputValidator.approval",
+				"inputs": [
+					{
+						"name": "RemoteInputValidator.approval.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteInputValidator.approval",
+						"type": "RemoteApprovalInput"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteInputValidator.pairing",
+				"inputs": [
+					{
+						"name": "RemoteInputValidator.pairing.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteInputValidator.pairing",
+						"type": "{ pairingId: string }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteInputValidator.device",
+				"inputs": [
+					{
+						"name": "RemoteInputValidator.device.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteInputValidator.device",
+						"type": "{ deviceId: string }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

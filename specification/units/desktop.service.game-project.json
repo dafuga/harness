@@ -21,23 +21,28 @@
 		"inputs": [
 			{
 				"name": "GameProjectService.constructor.session",
-				"type": "ProjectSessionService"
+				"type": "ProjectSessionService",
+				"required": true
 			},
 			{
 				"name": "GameProjectService.constructor.projectsRoot",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "GameProjectService.create.input",
-				"type": "Parameters<NonNullable<DesktopBridge['gameCreate']>>[0]"
+				"type": "Parameters<NonNullable<DesktopBridge['gameCreate']>>[0]",
+				"required": true
 			},
 			{
 				"name": "GameProjectService.read.input",
-				"type": "Parameters<NonNullable<DesktopBridge['gameRead']>>[0]"
+				"type": "Parameters<NonNullable<DesktopBridge['gameRead']>>[0]",
+				"required": true
 			},
 			{
 				"name": "GameProjectService.save.input",
-				"type": "Parameters<NonNullable<DesktopBridge['gameSave']>>[0]"
+				"type": "Parameters<NonNullable<DesktopBridge['gameSave']>>[0]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,6 +63,98 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GameProjectService.create",
+				"inputs": [
+					{
+						"name": "GameProjectService.create.input",
+						"type": "Parameters<NonNullable<DesktopBridge['gameCreate']>>[0]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GameProjectService.create",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GameProjectService.read",
+				"inputs": [
+					{
+						"name": "GameProjectService.read.input",
+						"type": "Parameters<NonNullable<DesktopBridge['gameRead']>>[0]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GameProjectService.read",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GameProjectService.save",
+				"inputs": [
+					{
+						"name": "GameProjectService.save.input",
+						"type": "Parameters<NonNullable<DesktopBridge['gameSave']>>[0]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GameProjectService.save",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GameProjectService.constructor",
+				"inputs": [
+					{
+						"name": "GameProjectService.constructor.session",
+						"type": "ProjectSessionService",
+						"required": true
+					},
+					{
+						"name": "GameProjectService.constructor.projectsRoot",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "GameProjectService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

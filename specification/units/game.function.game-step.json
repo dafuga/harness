@@ -15,42 +15,51 @@
 		"inputs": [
 			{
 				"name": "createRun.seed",
-				"type": "unknown",
+				"type": "number",
+				"required": false,
+				"default": 1,
 				"description": "Initial deterministic random seed normalized to an unsigned 32-bit integer."
 			},
 			{
 				"name": "createRun.view",
-				"type": "GameView | undefined",
+				"type": "GameView",
+				"required": false,
 				"description": "Optional built layout whose spawn, level marker and view identity initialize the new run."
 			},
 			{
 				"name": "stepGame.run",
 				"type": "GameRun",
+				"required": true,
 				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
 			},
 			{
 				"name": "stepGame.input",
 				"type": "GameInput",
+				"required": true,
 				"description": "Finite movement deltas and optional player branch choice for this fixed tick."
 			},
 			{
 				"name": "stepGame.view",
 				"type": "GameView",
+				"required": true,
 				"description": "Active game view containing scene direction and executable checkpoints."
 			},
 			{
 				"name": "stepGame.mechanics",
 				"type": "Mechanic[]",
+				"required": false,
 				"description": "Independent mechanics to evaluate against the shared tick snapshot and merge disjoint patches."
 			},
 			{
 				"name": "enterView.run",
 				"type": "GameRun",
+				"required": true,
 				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
 			},
 			{
 				"name": "enterView.id",
 				"type": "string",
+				"required": true,
 				"description": "Destination view identity whose prior checkpoint progress is restored."
 			}
 		],
@@ -82,7 +91,106 @@
 				"type": "thrown",
 				"description": "Movement is non-finite, mechanics write conflicting or unsafe fields, or a planned level lacks a matching human approval and build."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "createRun",
+				"inputs": [
+					{
+						"name": "createRun.seed",
+						"type": "number",
+						"required": false,
+						"default": 1,
+						"description": "Initial deterministic random seed normalized to an unsigned 32-bit integer."
+					},
+					{
+						"name": "createRun.view",
+						"type": "GameView",
+						"required": false,
+						"description": "Optional built layout whose spawn, level marker and view identity initialize the new run."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createRun",
+						"type": "GameRun",
+						"description": "Fresh deterministic run with empty completion, event and trace lists; a supplied world starts at its planned spawn."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "stepGame",
+				"inputs": [
+					{
+						"name": "stepGame.run",
+						"type": "GameRun",
+						"required": true,
+						"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
+					},
+					{
+						"name": "stepGame.input",
+						"type": "GameInput",
+						"required": true,
+						"description": "Finite movement deltas and optional player branch choice for this fixed tick."
+					},
+					{
+						"name": "stepGame.view",
+						"type": "GameView",
+						"required": true,
+						"description": "Active game view containing scene direction and executable checkpoints."
+					},
+					{
+						"name": "stepGame.mechanics",
+						"type": "Mechanic[]",
+						"required": false,
+						"description": "Independent mechanics to evaluate against the shared tick snapshot and merge disjoint patches."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stepGame",
+						"type": "GameRun",
+						"description": "Next run after one fixed tick of mechanics and checkpoint evaluation, retaining view-specific progress."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "enterView",
+				"inputs": [
+					{
+						"name": "enterView.run",
+						"type": "GameRun",
+						"required": true,
+						"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
+					},
+					{
+						"name": "enterView.id",
+						"type": "string",
+						"required": true,
+						"description": "Destination view identity whose prior checkpoint progress is restored."
+					}
+				],
+				"outputs": [
+					{
+						"name": "enterView",
+						"type": "GameRun",
+						"description": "Run retaining global state and restoring the destination view checkpoint completion list."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

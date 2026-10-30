@@ -20,11 +20,13 @@
 			{
 				"name": "hostedImage.value",
 				"type": "unknown",
+				"required": true,
 				"description": "The cached image encoded as a base64 string. Other value types are refused."
 			},
 			{
 				"name": "hostedImage.sha256",
 				"type": "string",
+				"required": true,
 				"description": "The expected SHA-256 hash, compared with the decoded bytes."
 			}
 		],
@@ -41,7 +43,41 @@
 				"type": "thrown",
 				"description": "Throws when the input is not text, decoded bytes exceed the limit or the hash differs. Image-validator failures also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hostedImage",
+				"inputs": [
+					{
+						"name": "hostedImage.value",
+						"type": "unknown",
+						"required": true,
+						"description": "The cached image encoded as a base64 string. Other value types are refused."
+					},
+					{
+						"name": "hostedImage.sha256",
+						"type": "string",
+						"required": true,
+						"description": "The expected SHA-256 hash, compared with the decoded bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostedImage",
+						"type": "unknown",
+						"description": "Validated image bytes after base64 decoding and a matching hash, with decoded size at most 25,000,000 bytes. Image-format checks are delegated to the image validator."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

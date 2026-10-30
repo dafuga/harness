@@ -30,14 +30,16 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "graphTests.graph",
-				"type": "SourceGraph",
-				"description": "Source graph whose test nodes should be extracted."
-			},
-			{
 				"name": "impactReport.input",
 				"type": "Assembly",
+				"required": true,
 				"description": "Base/head snapshots, classified change seeds and kernel output to combine into a report."
+			},
+			{
+				"name": "graphTests.graph",
+				"type": "SourceGraph",
+				"required": true,
+				"description": "Source graph whose test nodes should be extracted."
 			}
 		],
 		"outputs": [
@@ -52,7 +54,50 @@
 				"description": "Report fields excluding base/head/runtime: changed files, direct/indirect/added/removed units, selected/excluded/removed tests, affected/unaffected scenarios and deduplicated uncertainty. Global, unclassified or uncovered source changes select all current tests and scenarios."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "impactReport",
+				"inputs": [
+					{
+						"name": "impactReport.input",
+						"type": "Assembly",
+						"required": true,
+						"description": "Base/head snapshots, classified change seeds and kernel output to combine into a report."
+					}
+				],
+				"outputs": [
+					{
+						"name": "impactReport",
+						"type": "Omit<ImpactReport, 'base' | 'head' | 'runtime'>",
+						"description": "Report fields excluding base/head/runtime: changed files, direct/indirect/added/removed units, selected/excluded/removed tests, affected/unaffected scenarios and deduplicated uncertainty. Global, unclassified or uncovered source changes select all current tests and scenarios."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "graphTests",
+				"inputs": [
+					{
+						"name": "graphTests.graph",
+						"type": "SourceGraph",
+						"required": true,
+						"description": "Source graph whose test nodes should be extracted."
+					}
+				],
+				"outputs": [
+					{
+						"name": "graphTests",
+						"type": "string[]",
+						"description": "Paths of graph nodes marked test and matching a supported .test or .spec JavaScript/TypeScript filename."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

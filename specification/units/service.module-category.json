@@ -24,11 +24,13 @@
 			{
 				"name": "ModuleCategoryService.load.directory",
 				"type": "string",
+				"required": true,
 				"description": "Project or workspace directory; lookup stops at the repository boundary."
 			},
 			{
 				"name": "ModuleCategoryService.at.tree",
 				"type": "Pick<SourceTree, 'read'>",
+				"required": true,
 				"description": "Readable source tree of the selected revision, never the current checkout."
 			}
 		],
@@ -50,7 +52,50 @@
 				"type": "thrown",
 				"description": "The category file is not valid JSON or has invalid or duplicate category definitions."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "ModuleCategoryService.load",
+				"inputs": [
+					{
+						"name": "ModuleCategoryService.load.directory",
+						"type": "string",
+						"required": true,
+						"description": "Project or workspace directory; lookup stops at the repository boundary."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleCategoryService.load",
+						"type": "{ root: string; config: ModuleGroupsConfig } | undefined",
+						"description": "Nearest project root and validated category data, or undefined before category adoption."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleCategoryService.at",
+				"inputs": [
+					{
+						"name": "ModuleCategoryService.at.tree",
+						"type": "Pick<SourceTree, 'read'>",
+						"required": true,
+						"description": "Readable source tree of the selected revision, never the current checkout."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleCategoryService.at",
+						"type": "Promise<ModuleGroupsConfig | undefined>",
+						"description": "Validated taxonomy stored by that revision; undefined when no category file is present."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

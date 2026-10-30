@@ -16,7 +16,7 @@
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/HarnessAction.svelte"],
-		"symbols": ["HarnessAction"]
+		"symbols": ["HarnessAction", "HarnessAction.inner"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -24,41 +24,51 @@
 			{
 				"name": "HarnessAction.href",
 				"type": "string",
+				"required": false,
 				"description": "Optional address. Nonempty and enabled renders an anchor; otherwise a button."
 			},
 			{
 				"name": "HarnessAction.onclick",
 				"type": "(event: MouseEvent) => void",
+				"required": false,
 				"description": "Optional handler. For links, only plain clicks are intercepted; other clicks remain native. Buttons invoke it directly if supplied."
 			},
 			{
 				"name": "HarnessAction.disabled",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional flag, false by default. True renders a disabled button even when href exists."
 			},
 			{
 				"name": "HarnessAction.tone",
 				"type": "'gold' | 'plain'",
+				"required": false,
+				"default": "gold",
 				"description": "Optional gold or plain styling, default gold."
 			},
 			{
 				"name": "HarnessAction.icon",
 				"type": "HarnessIconName",
+				"required": false,
 				"description": "Optional trailing icon."
 			},
 			{
 				"name": "HarnessAction.lead",
 				"type": "HarnessIconName",
+				"required": false,
 				"description": "Optional leading icon."
 			},
 			{
 				"name": "HarnessAction.label",
 				"type": "string",
+				"required": false,
 				"description": "Optional fuller accessible name."
 			},
 			{
 				"name": "HarnessAction.children",
 				"type": "Snippet",
+				"required": true,
 				"description": "Required visible action content."
 			}
 		],
@@ -69,7 +79,23 @@
 				"description": "Styled action with leading/trailing icons at size 18. Buttons have type button. Handler failures are not caught."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HarnessAction.inner",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HarnessAction.inner",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

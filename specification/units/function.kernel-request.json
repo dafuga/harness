@@ -32,11 +32,13 @@
 			{
 				"name": "kernelRequest.input",
 				"type": "unknown",
+				"required": true,
 				"description": "Unknown impact input containing base/head node-and-edge graphs and changed, uncertain and sink id arrays."
 			},
 			{
 				"name": "isObject.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Value to check for a non-null, non-array object."
 			}
 		],
@@ -52,7 +54,50 @@
 				"description": "True for any non-null object except arrays; no plain-object or prototype restriction is applied."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "kernelRequest",
+				"inputs": [
+					{
+						"name": "kernelRequest.input",
+						"type": "unknown",
+						"required": true,
+						"description": "Unknown impact input containing base/head node-and-edge graphs and changed, uncertain and sink id arrays."
+					}
+				],
+				"outputs": [
+					{
+						"name": "kernelRequest",
+						"type": "Parsed<ImpactInput>",
+						"description": "Validated impact input, or an invalid-request/invalid-graph failure. Graph fields are checked before id lists, then duplicate nodes and out-of-range edges are checked base before head."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isObject",
+				"inputs": [
+					{
+						"name": "isObject.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Value to check for a non-null, non-array object."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isObject",
+						"type": "value is Fields",
+						"description": "True for any non-null object except arrays; no plain-object or prototype restriction is applied."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -3358,7 +3358,14 @@
 			"unit": "function.console-host-files",
 			"from": "src/services/console-install-service/consoleHostFiles.ts",
 			"to": "src/cli/program/console-install-service/consoleHostFiles.ts",
-			"definition": "69cae0b4559b77a45bee65616bf1c1bd0a71d7258d70e65f34fc29448be28e3c"
+			"definition": "1090a87317a56cb7b8d682b13d8d1fd39e7f9f6a11e7efa4b9c44c5f3bba7800",
+			"relocationDefinition": "69cae0b4559b77a45bee65616bf1c1bd0a71d7258d70e65f34fc29448be28e3c",
+			"review": {
+				"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+				"path": "src/cli/program/console-install-service/consoleHostFiles.ts",
+				"definition": "1090a87317a56cb7b8d682b13d8d1fd39e7f9f6a11e7efa4b9c44c5f3bba7800",
+				"reason": "Stop generating the export route and the exporter binding for console hosts."
+			}
 		},
 		{
 			"unit": "function.installable-host",
@@ -3877,7 +3884,14 @@
 			"unit": "command.report",
 			"from": "src/commands/ReportCommand.ts",
 			"to": "src/cli/program/ReportCommand.ts",
-			"definition": "79b84b5ac94258d95bf87559ade196bbfd88d7dd2f821662c9132f02343b9d34"
+			"definition": "0f5ca8d59d716903af15567804f96bc00bda3fe953b0bddbbdd6c23b868bc6f6",
+			"relocationDefinition": "79b84b5ac94258d95bf87559ade196bbfd88d7dd2f821662c9132f02343b9d34",
+			"review": {
+				"commit": "325d2720a1bb902827c982f37fe6bc6ea17e7d44",
+				"path": "src/cli/program/ReportCommand.ts",
+				"definition": "0f5ca8d59d716903af15567804f96bc00bda3fe953b0bddbbdd6c23b868bc6f6",
+				"reason": "Describe retained evidence recording and website serving without removed export operations."
+			}
 		},
 		{
 			"unit": "function.reports-environment",
@@ -6639,5 +6653,11 @@
 			"source": ["packages/reports/src/routes/api/reports/+server.ts"]
 		}
 	],
-	"originalProof": "16ab6fdf66c235918411bf42bb02e39653653a05"
+	"originalProof": "16ab6fdf66c235918411bf42bb02e39653653a05",
+	"retiredUnits": [
+		"reports.service.report-publish",
+		"reports.function.report-pages",
+		"reports.function.report-publication",
+		"reports.function.report-publication-verify"
+	]
 }

@@ -25,16 +25,39 @@
 		"inputs": [
 			{
 				"name": "createProjectAgentStore.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "createProjectAgentStore",
-				"type": "unknown"
+				"type": "ProjectAgentState"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "createProjectAgentStore",
+				"inputs": [
+					{
+						"name": "createProjectAgentStore.workspace",
+						"type": "Workspace",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createProjectAgentStore",
+						"type": "ProjectAgentState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

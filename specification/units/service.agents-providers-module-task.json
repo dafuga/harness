@@ -36,79 +36,98 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskService.constructor.root",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ModuleTaskService.feature.input",
-				"type": "TaskFeature"
+				"type": "TaskFeature",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskService.add.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskService.show.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskService.prompt.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskService.prepare.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskService.prepare.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskService.retry.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskService.review.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskService.review.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "queuedTask.input",
-				"type": "ModuleTaskInput"
+				"type": "ModuleTaskInput",
+				"required": true
 			},
 			{
 				"name": "queuedTask.feature",
-				"type": "TaskFeature"
+				"type": "TaskFeature",
+				"required": true
 			},
 			{
 				"name": "queuedTask.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"required": true
 			},
 			{
 				"name": "queuedTask.sourceCommit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "retryableTask.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"required": true
 			},
 			{
 				"name": "retryableTask.workspace",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "moduleTaskPrompt.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"required": true
 			},
 			{
 				"name": "moduleTaskPrompt.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "taskSelection.task",
-				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>"
+				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -169,6 +188,306 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ModuleTaskService.feature",
+				"inputs": [
+					{
+						"name": "ModuleTaskService.feature.input",
+						"type": "TaskFeature",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.feature",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.add",
+				"inputs": [
+					{
+						"name": "ModuleTaskService.add.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.add",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.list",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.list",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.schema",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.schema",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.show",
+				"inputs": [
+					{
+						"name": "ModuleTaskService.show.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.show",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.prompt",
+				"inputs": [
+					{
+						"name": "ModuleTaskService.prompt.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.prompt",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.prepare",
+				"inputs": [
+					{
+						"name": "ModuleTaskService.prepare.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "ModuleTaskService.prepare.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.prepare",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.retry",
+				"inputs": [
+					{
+						"name": "ModuleTaskService.retry.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.retry",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.review",
+				"inputs": [
+					{
+						"name": "ModuleTaskService.review.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ModuleTaskService.review.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.review",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "queuedTask",
+				"inputs": [
+					{
+						"name": "queuedTask.input",
+						"type": "ModuleTaskInput",
+						"required": true
+					},
+					{
+						"name": "queuedTask.feature",
+						"type": "TaskFeature",
+						"required": true
+					},
+					{
+						"name": "queuedTask.unit",
+						"type": "ComponentManifest",
+						"required": true
+					},
+					{
+						"name": "queuedTask.sourceCommit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "queuedTask",
+						"type": "ModuleTask"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retryableTask",
+				"inputs": [
+					{
+						"name": "retryableTask.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "retryableTask.workspace",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "retryableTask",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "moduleTaskPrompt",
+				"inputs": [
+					{
+						"name": "moduleTaskPrompt.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "moduleTaskPrompt.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "moduleTaskPrompt",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "taskSelection",
+				"inputs": [
+					{
+						"name": "taskSelection.task",
+						"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskSelection",
+						"type": "TaskSelection"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ModuleTaskService.constructor",
+				"inputs": [
+					{
+						"name": "ModuleTaskService.constructor.root",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

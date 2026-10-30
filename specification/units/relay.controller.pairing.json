@@ -23,27 +23,33 @@
 		"inputs": [
 			{
 				"name": "PairingController.constructor.store",
-				"type": "HostStorageAdapter"
+				"type": "HostStorageAdapter",
+				"required": true
 			},
 			{
 				"name": "PairingController.constructor.rate",
-				"type": "RateLimitService"
+				"type": "RateLimitService",
+				"required": true
 			},
 			{
 				"name": "PairingController.constructor.access",
-				"type": "PairingAccessService"
+				"type": "PairingAccessService",
+				"required": true
 			},
 			{
 				"name": "PairingController.constructor.exchanges",
-				"type": "PairingExchangeService"
+				"type": "PairingExchangeService",
+				"required": true
 			},
 			{
 				"name": "PairingController.handle.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			},
 			{
 				"name": "PairingController.handle.route",
-				"type": "PairingRoute"
+				"type": "PairingRoute",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -52,7 +58,68 @@
 				"type": "Promise<Response>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PairingController.handle",
+				"inputs": [
+					{
+						"name": "PairingController.handle.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "PairingController.handle.route",
+						"type": "PairingRoute",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingController.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PairingController.constructor",
+				"inputs": [
+					{
+						"name": "PairingController.constructor.store",
+						"type": "HostStorageAdapter",
+						"required": true
+					},
+					{
+						"name": "PairingController.constructor.rate",
+						"type": "RateLimitService",
+						"required": true
+					},
+					{
+						"name": "PairingController.constructor.access",
+						"type": "PairingAccessService",
+						"required": true
+					},
+					{
+						"name": "PairingController.constructor.exchanges",
+						"type": "PairingExchangeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

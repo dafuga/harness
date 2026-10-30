@@ -27,23 +27,28 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskAnalyticsService.constructor.store",
-				"type": "() => TaskAnalyticsStore"
+				"type": "() => TaskAnalyticsStore",
+				"required": false
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.quote.model",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.quote.usage",
-				"type": "TaskUsage"
+				"type": "TaskUsage",
+				"required": false
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.metrics.events",
-				"type": "AnalyticsEvent[]"
+				"type": "AnalyticsEvent[]",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.sync.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -60,7 +65,89 @@
 				"type": "Promise<number>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ModuleTaskAnalyticsService.quote",
+				"inputs": [
+					{
+						"name": "ModuleTaskAnalyticsService.quote.model",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ModuleTaskAnalyticsService.quote.usage",
+						"type": "TaskUsage",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskAnalyticsService.quote",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskAnalyticsService.metrics",
+				"inputs": [
+					{
+						"name": "ModuleTaskAnalyticsService.metrics.events",
+						"type": "AnalyticsEvent[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskAnalyticsService.metrics",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskAnalyticsService.sync",
+				"inputs": [
+					{
+						"name": "ModuleTaskAnalyticsService.sync.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskAnalyticsService.sync",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ModuleTaskAnalyticsService.constructor",
+				"inputs": [
+					{
+						"name": "ModuleTaskAnalyticsService.constructor.store",
+						"type": "() => TaskAnalyticsStore",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskAnalyticsService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

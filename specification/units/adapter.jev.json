@@ -26,15 +26,18 @@
 		"inputs": [
 			{
 				"name": "JevAdapter.constructor.config",
-				"type": "JevAdapterConfig"
+				"type": "JevAdapterConfig",
+				"required": true
 			},
 			{
 				"name": "JevAdapter.evaluate.request",
-				"type": "JevRequest"
+				"type": "JevRequest",
+				"required": true
 			},
 			{
 				"name": "JevAdapter.evaluate.signal",
-				"type": "AbortSignal"
+				"type": "AbortSignal",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -47,6 +50,57 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "JevAdapter.evaluate",
+				"inputs": [
+					{
+						"name": "JevAdapter.evaluate.request",
+						"type": "JevRequest",
+						"required": true
+					},
+					{
+						"name": "JevAdapter.evaluate.signal",
+						"type": "AbortSignal",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "JevAdapter.evaluate",
+						"type": "Promise<JevEvaluation>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "JevAdapter.constructor",
+				"inputs": [
+					{
+						"name": "JevAdapter.constructor.config",
+						"type": "JevAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "JevAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

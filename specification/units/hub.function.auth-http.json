@@ -62,68 +62,94 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "authHttp.body",
-				"type": "unknown",
-				"description": "JSON-serializable response body."
-			},
-			{
-				"name": "authHttp.options",
-				"type": "AuthHttpOptions",
-				"description": "Optional HTTP status, default 200, and separate Set-Cookie values."
-			},
-			{
 				"name": "authRedirect.location",
 				"type": "string",
+				"required": true,
 				"description": "Redirect destination supplied by the caller."
 			},
 			{
 				"name": "authRedirect.cookies",
 				"type": "string[]",
+				"required": false,
+				"default": [],
 				"description": "Cookie headers to append; defaults to none."
-			},
-			{
-				"name": "authFailure.error",
-				"type": "unknown",
-				"description": "Unknown failure to turn into a public auth response."
 			},
 			{
 				"name": "sameOrigin.request",
 				"type": "Request",
+				"required": true,
 				"description": "Request whose Origin header is checked."
 			},
 			{
 				"name": "sameOrigin.origin",
 				"type": "string",
+				"required": true,
 				"description": "Expected exact Origin header value."
-			},
-			{
-				"name": "hasAuthorization.request",
-				"type": "Request",
-				"description": "Request to inspect for an Authorization header."
 			},
 			{
 				"name": "bearerToken.request",
 				"type": "Request",
+				"required": true,
 				"description": "Request to inspect for an opaque Bearer token."
+			},
+			{
+				"name": "withCookies.response",
+				"type": "Response",
+				"required": true
+			},
+			{
+				"name": "withCookies.cookies",
+				"type": "string[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "authHttp.body",
+				"type": "unknown",
+				"required": true,
+				"description": "JSON-serializable response body."
+			},
+			{
+				"name": "authHttp.options",
+				"type": "AuthHttpOptions",
+				"required": false,
+				"default": {},
+				"description": "Optional HTTP status, default 200, and separate Set-Cookie values."
+			},
+			{
+				"name": "authFailure.error",
+				"type": "unknown",
+				"required": true,
+				"description": "Unknown failure to turn into a public auth response."
+			},
+			{
+				"name": "hasAuthorization.request",
+				"type": "Request",
+				"required": true,
+				"description": "Request to inspect for an Authorization header."
 			},
 			{
 				"name": "boundedText.body",
 				"type": "ReadableStream<Uint8Array> | null",
+				"required": true,
 				"description": "Byte stream to read, or null for an empty body."
 			},
 			{
 				"name": "boundedText.limit",
 				"type": "number",
+				"required": true,
 				"description": "Maximum accumulated body size in bytes."
 			},
 			{
 				"name": "readJson.request",
 				"type": "Request",
+				"required": true,
 				"description": "Request requiring application/json and an object body of at most 16384 bytes."
 			},
 			{
 				"name": "authPath.request",
 				"type": "Request",
+				"required": true,
 				"description": "Request whose URL path is checked."
 			}
 		],
@@ -174,7 +200,240 @@
 				"description": "Path within /api/auth/ or /api/github/, otherwise null."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "authRedirect",
+				"inputs": [
+					{
+						"name": "authRedirect.location",
+						"type": "string",
+						"required": true,
+						"description": "Redirect destination supplied by the caller."
+					},
+					{
+						"name": "authRedirect.cookies",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Cookie headers to append; defaults to none."
+					}
+				],
+				"outputs": [
+					{
+						"name": "authRedirect",
+						"type": "Response",
+						"description": "303 redirect with no-store, no-sniff and no-referrer headers and optional cookies."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sameOrigin",
+				"inputs": [
+					{
+						"name": "sameOrigin.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request whose Origin header is checked."
+					},
+					{
+						"name": "sameOrigin.origin",
+						"type": "string",
+						"required": true,
+						"description": "Expected exact Origin header value."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameOrigin",
+						"type": "boolean",
+						"description": "True when the Origin header exactly equals the supplied origin."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "bearerToken",
+				"inputs": [
+					{
+						"name": "bearerToken.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request to inspect for an opaque Bearer token."
+					}
+				],
+				"outputs": [
+					{
+						"name": "bearerToken",
+						"type": "string | null",
+						"description": "Token from exact Bearer syntax with 32 to 128 allowed characters, otherwise null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withCookies",
+				"inputs": [
+					{
+						"name": "withCookies.response",
+						"type": "Response",
+						"required": true
+					},
+					{
+						"name": "withCookies.cookies",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "withCookies",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "authHttp",
+				"inputs": [
+					{
+						"name": "authHttp.body",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-serializable response body."
+					},
+					{
+						"name": "authHttp.options",
+						"type": "AuthHttpOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional HTTP status, default 200, and separate Set-Cookie values."
+					}
+				],
+				"outputs": [
+					{
+						"name": "authHttp",
+						"type": "Response",
+						"description": "JSON response with no-store and no-sniff headers and optional cookies."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "authFailure",
+				"inputs": [
+					{
+						"name": "authFailure.error",
+						"type": "unknown",
+						"required": true,
+						"description": "Unknown failure to turn into a public auth response."
+					}
+				],
+				"outputs": [
+					{
+						"name": "authFailure",
+						"type": "Response",
+						"description": "AuthFailure code/status response, or opaque auth-unavailable with status 500 for other failures."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasAuthorization",
+				"inputs": [
+					{
+						"name": "hasAuthorization.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request to inspect for an Authorization header."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasAuthorization",
+						"type": "boolean",
+						"description": "True when the Authorization header exists, even if invalid or empty."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "boundedText",
+				"inputs": [
+					{
+						"name": "boundedText.body",
+						"type": "ReadableStream<Uint8Array> | null",
+						"required": true,
+						"description": "Byte stream to read, or null for an empty body."
+					},
+					{
+						"name": "boundedText.limit",
+						"type": "number",
+						"required": true,
+						"description": "Maximum accumulated body size in bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "boundedText",
+						"type": "Promise<string | null>",
+						"description": "Strict UTF-8 text; null for oversized, invalid UTF-8 or failed streams. Oversized reads cancel the stream."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readJson",
+				"inputs": [
+					{
+						"name": "readJson.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request requiring application/json and an object body of at most 16384 bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readJson",
+						"type": "Promise<Record<string, unknown>>",
+						"description": "Parsed non-array JSON object; rejects invalid content type, body size, encoding or JSON with invalid-request."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "authPath",
+				"inputs": [
+					{
+						"name": "authPath.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request whose URL path is checked."
+					}
+				],
+				"outputs": [
+					{
+						"name": "authPath",
+						"type": "string | null",
+						"description": "Path within /api/auth/ or /api/github/, otherwise null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -38,7 +38,9 @@
 				"description": "Zod union of strict baseline and approval records. Both name a unit, verification record, reviewer, reason, time and performance baselines; baseline stores metrics, approval stores before and after limits, and either may explain unmeasured metrics."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

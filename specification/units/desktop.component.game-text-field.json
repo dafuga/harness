@@ -20,26 +20,33 @@
 			{
 				"name": "GameTextField.value",
 				"type": "string",
+				"required": true,
 				"description": "Committed display value used when the field is not focused."
 			},
 			{
 				"name": "GameTextField.change",
 				"type": "(text: string) => void",
+				"required": true,
 				"description": "Receives each raw text edit immediately, before blur or normalization."
 			},
 			{
 				"name": "GameTextField.label",
 				"type": "string",
+				"required": false,
 				"description": "Optional explicit accessible label; surrounding label content is otherwise used."
 			},
 			{
 				"name": "GameTextField.placeholder",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Hint shown when the input has no text."
 			},
 			{
 				"name": "GameTextField.readonly",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Prevent editing for immutable historical authoring views."
 			}
 		],
@@ -50,7 +57,9 @@
 				"description": "An accessible themed text input that preserves partial typed values until blur and reports edits immediately."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

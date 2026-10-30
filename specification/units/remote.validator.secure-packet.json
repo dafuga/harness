@@ -25,11 +25,13 @@
 		"inputs": [
 			{
 				"name": "SecurePacketValidator.packet.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "SecurePacketValidator.text.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,7 +49,57 @@
 				"name": "SecureFailure",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SecurePacketValidator.packet",
+				"inputs": [
+					{
+						"name": "SecurePacketValidator.packet.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecurePacketValidator.packet",
+						"type": "SecurePacket"
+					}
+				],
+				"errors": [
+					{
+						"name": "SecureFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecurePacketValidator.text",
+				"inputs": [
+					{
+						"name": "SecurePacketValidator.text.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecurePacketValidator.text",
+						"type": "SecurePacket"
+					}
+				],
+				"errors": [
+					{
+						"name": "SecureFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

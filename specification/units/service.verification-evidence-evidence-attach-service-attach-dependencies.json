@@ -15,19 +15,23 @@
 		"inputs": [
 			{
 				"name": "isScopedRecord.record",
-				"type": "Pick<DependentRecord, 'failures'>"
+				"type": "Pick<DependentRecord, 'failures'>",
+				"required": true
 			},
 			{
 				"name": "inheritedRecords.record",
-				"type": "DependentRecord"
+				"type": "DependentRecord",
+				"required": true
 			},
 			{
 				"name": "citedRecords.record",
-				"type": "DependentRecord"
+				"type": "DependentRecord",
+				"required": true
 			},
 			{
 				"name": "citedRecords.ledger",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,7 +48,70 @@
 				"type": "string[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "isScopedRecord",
+				"inputs": [
+					{
+						"name": "isScopedRecord.record",
+						"type": "Pick<DependentRecord, 'failures'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isScopedRecord",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inheritedRecords",
+				"inputs": [
+					{
+						"name": "inheritedRecords.record",
+						"type": "DependentRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inheritedRecords",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "citedRecords",
+				"inputs": [
+					{
+						"name": "citedRecords.record",
+						"type": "DependentRecord",
+						"required": true
+					},
+					{
+						"name": "citedRecords.ledger",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "citedRecords",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

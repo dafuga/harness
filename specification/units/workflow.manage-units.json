@@ -28,39 +28,51 @@
 		"inputs": [
 			{
 				"name": "indexUnits.options",
-				"type": "UnitsOptions"
+				"type": "UnitsOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "checkUnits.options",
-				"type": "UnitsOptions"
+				"type": "UnitsOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "registryErrors.loaded",
-				"type": "LoadedUnits"
+				"type": "LoadedUnits",
+				"required": true
 			},
 			{
 				"name": "retireUnit.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "retireUnit.reason",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "retireUnit.options",
-				"type": "UnitsOptions"
+				"type": "UnitsOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "renderIndex.report",
-				"type": "IndexReport"
+				"type": "IndexReport",
+				"required": true
 			},
 			{
 				"name": "renderIndex.wrote",
-				"type": "boolean"
+				"type": "boolean",
+				"required": true
 			},
 			{
 				"name": "renderCheck.report",
-				"type": "CheckReport"
+				"type": "CheckReport",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -94,7 +106,142 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "indexUnits",
+				"inputs": [
+					{
+						"name": "indexUnits.options",
+						"type": "UnitsOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "indexUnits",
+						"type": "Promise<IndexReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkUnits",
+				"inputs": [
+					{
+						"name": "checkUnits.options",
+						"type": "UnitsOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkUnits",
+						"type": "Promise<CheckReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "registryErrors",
+				"inputs": [
+					{
+						"name": "registryErrors.loaded",
+						"type": "LoadedUnits",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registryErrors",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retireUnit",
+				"inputs": [
+					{
+						"name": "retireUnit.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "retireUnit.reason",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "retireUnit.options",
+						"type": "UnitsOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "retireUnit",
+						"type": "Promise<ComponentManifest>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderIndex",
+				"inputs": [
+					{
+						"name": "renderIndex.report",
+						"type": "IndexReport",
+						"required": true
+					},
+					{
+						"name": "renderIndex.wrote",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderIndex",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderCheck",
+				"inputs": [
+					{
+						"name": "renderCheck.report",
+						"type": "CheckReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderCheck",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -114,6 +261,11 @@
 		},
 		{
 			"unit": "service.unit-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.component-manifest",
 			"via": "import",
 			"origin": "derived"
 		},

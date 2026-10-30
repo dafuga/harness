@@ -33,11 +33,13 @@
 		"inputs": [
 			{
 				"name": "evaluateLoop.input",
-				"type": "EvaluateLoopInput"
+				"type": "EvaluateLoopInput",
+				"required": true
 			},
 			{
 				"name": "renderLoopEvaluation.result",
-				"type": "LoopEvaluationResult"
+				"type": "LoopEvaluationResult",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -50,7 +52,47 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "evaluateLoop",
+				"inputs": [
+					{
+						"name": "evaluateLoop.input",
+						"type": "EvaluateLoopInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "evaluateLoop",
+						"type": "Promise<LoopEvaluationResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderLoopEvaluation",
+				"inputs": [
+					{
+						"name": "renderLoopEvaluation.result",
+						"type": "LoopEvaluationResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderLoopEvaluation",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

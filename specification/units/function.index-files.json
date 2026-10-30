@@ -16,6 +16,7 @@
 			{
 				"name": "indexFiles.directory",
 				"type": "string",
+				"required": true,
 				"description": "Directory containing index.json and the index’s files."
 			}
 		],
@@ -32,7 +33,35 @@
 				"type": "thrown",
 				"description": "Thrown when index.json is absent, with the history-build command needed to create an index."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "indexFiles",
+				"inputs": [
+					{
+						"name": "indexFiles.directory",
+						"type": "string",
+						"required": true,
+						"description": "Directory containing index.json and the index’s files."
+					}
+				],
+				"outputs": [
+					{
+						"name": "indexFiles",
+						"type": "Promise<IndexFile[]>",
+						"description": "Sorted relative forward-slash paths and original bytes of every regular file found recursively."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

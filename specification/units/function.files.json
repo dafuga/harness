@@ -35,31 +35,38 @@
 			{
 				"name": "writePlannedFiles.root",
 				"type": "string",
+				"required": true,
 				"description": "Root directory against which each planned path is joined."
 			},
 			{
 				"name": "writePlannedFiles.files",
 				"type": "PlannedFile[]",
+				"required": true,
 				"description": "Ordered relative paths and text contents to write; parent directories must already exist."
 			},
 			{
 				"name": "writePlannedFiles.options",
 				"type": "WriteFilesOptions",
+				"required": false,
+				"default": {},
 				"description": "Optional force flag, default false, permitting replacement of differing existing contents."
 			},
 			{
 				"name": "ensureParents.root",
 				"type": "string",
+				"required": true,
 				"description": "Root directory under which parent folders should be created."
 			},
 			{
 				"name": "ensureParents.files",
 				"type": "PlannedFile[]",
+				"required": true,
 				"description": "Planned files whose parent directories are created recursively."
 			},
 			{
 				"name": "renderFileList.files",
 				"type": "FileWriteResult[]",
+				"required": true,
 				"description": "File write results with created, skipped or overwritten status."
 			}
 		],
@@ -86,7 +93,89 @@
 				"type": "thrown",
 				"description": "Thrown when an existing file differs and force was not requested."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "writePlannedFiles",
+				"inputs": [
+					{
+						"name": "writePlannedFiles.root",
+						"type": "string",
+						"required": true,
+						"description": "Root directory against which each planned path is joined."
+					},
+					{
+						"name": "writePlannedFiles.files",
+						"type": "PlannedFile[]",
+						"required": true,
+						"description": "Ordered relative paths and text contents to write; parent directories must already exist."
+					},
+					{
+						"name": "writePlannedFiles.options",
+						"type": "WriteFilesOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional force flag, default false, permitting replacement of differing existing contents."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writePlannedFiles",
+						"type": "Promise<FileWriteResult[]>",
+						"description": "Resolves ordered file results. Identical files are skipped, absent files created and differing files overwritten only with force; earlier writes remain if a later file fails."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ensureParents",
+				"inputs": [
+					{
+						"name": "ensureParents.root",
+						"type": "string",
+						"required": true,
+						"description": "Root directory under which parent folders should be created."
+					},
+					{
+						"name": "ensureParents.files",
+						"type": "PlannedFile[]",
+						"required": true,
+						"description": "Planned files whose parent directories are created recursively."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ensureParents",
+						"type": "Promise<void>",
+						"description": "Resolves after ensuring each distinct parent directory exists; writes no file contents."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderFileList",
+				"inputs": [
+					{
+						"name": "renderFileList.files",
+						"type": "FileWriteResult[]",
+						"required": true,
+						"description": "File write results with created, skipped or overwritten status."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderFileList",
+						"type": "string",
+						"description": "One indented create, overwrite or skip line per file, joined by newlines."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

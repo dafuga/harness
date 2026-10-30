@@ -41,18 +41,21 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "lfsPointer.file",
-				"type": "LfsObject",
-				"description": "Original SHA-256 digest and byte count to place in the pointer text."
-			},
-			{
 				"name": "parseLfsPointer.text",
 				"type": "string",
+				"required": true,
 				"description": "Text to match against a three-line version, SHA-256 object id and decimal size pointer."
+			},
+			{
+				"name": "lfsPointer.file",
+				"type": "LfsObject",
+				"required": true,
+				"description": "Original SHA-256 digest and byte count to place in the pointer text."
 			},
 			{
 				"name": "lfsStored.path",
 				"type": "string",
+				"required": true,
 				"description": "File path whose final extension determines LFS storage, case-insensitively."
 			}
 		],
@@ -78,7 +81,83 @@
 				"description": "Git attributes lines applying LFS filtering to lowercase and uppercase forms of each supported media extension."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "lfsAttributes",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "lfsAttributes",
+						"type": "string",
+						"description": "Git attributes lines applying LFS filtering to lowercase and uppercase forms of each supported media extension."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseLfsPointer",
+				"inputs": [
+					{
+						"name": "parseLfsPointer.text",
+						"type": "string",
+						"required": true,
+						"description": "Text to match against a three-line version, SHA-256 object id and decimal size pointer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseLfsPointer",
+						"type": "LfsObject | undefined",
+						"description": "Parsed digest and numeric byte size, or undefined when the pointer shape does not match."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "lfsPointer",
+				"inputs": [
+					{
+						"name": "lfsPointer.file",
+						"type": "LfsObject",
+						"required": true,
+						"description": "Original SHA-256 digest and byte count to place in the pointer text."
+					}
+				],
+				"outputs": [
+					{
+						"name": "lfsPointer",
+						"type": "string",
+						"description": "Three-line Git LFS pointer with the standard version URL, supplied digest and size, and a final newline."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "lfsStored",
+				"inputs": [
+					{
+						"name": "lfsStored.path",
+						"type": "string",
+						"required": true,
+						"description": "File path whose final extension determines LFS storage, case-insensitively."
+					}
+				],
+				"outputs": [
+					{
+						"name": "lfsStored",
+						"type": "boolean",
+						"description": "True for png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, webm and mp4 extensions."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

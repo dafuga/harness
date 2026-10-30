@@ -19,21 +19,25 @@
 			{
 				"name": "reportProcess.command",
 				"type": "string",
+				"required": true,
 				"description": "Executable to spawn directly without a shell."
 			},
 			{
 				"name": "reportProcess.args",
 				"type": "string[]",
+				"required": true,
 				"description": "Arguments passed separately to the executable."
 			},
 			{
 				"name": "reportProcess.cwd",
 				"type": "string",
+				"required": false,
 				"description": "Optional working directory; otherwise the process inherits its current directory."
 			},
 			{
 				"name": "reportProcess.environment",
 				"type": "NodeJS.ProcessEnv",
+				"required": false,
 				"description": "Optional environment map replacing the child environment; defaults to process.env."
 			}
 		],
@@ -44,7 +48,48 @@
 				"description": "Promise resolving to exit code, combined stdout/stderr and duration in milliseconds. Keeps the last two million string characters; a null exit code becomes -1. Nonzero exit status is returned rather than thrown."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reportProcess",
+				"inputs": [
+					{
+						"name": "reportProcess.command",
+						"type": "string",
+						"required": true,
+						"description": "Executable to spawn directly without a shell."
+					},
+					{
+						"name": "reportProcess.args",
+						"type": "string[]",
+						"required": true,
+						"description": "Arguments passed separately to the executable."
+					},
+					{
+						"name": "reportProcess.cwd",
+						"type": "string",
+						"required": false,
+						"description": "Optional working directory; otherwise the process inherits its current directory."
+					},
+					{
+						"name": "reportProcess.environment",
+						"type": "NodeJS.ProcessEnv",
+						"required": false,
+						"description": "Optional environment map replacing the child environment; defaults to process.env."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportProcess",
+						"type": "unknown",
+						"description": "Promise resolving to exit code, combined stdout/stderr and duration in milliseconds. Keeps the last two million string characters; a null exit code becomes -1. Nonzero exit status is returned rather than thrown."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

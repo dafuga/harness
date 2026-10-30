@@ -49,9 +49,75 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "plugin",
-				"type": "AccountNativePlugin",
-				"description": "Native status, approval, sign-out and project-request operations. The native side supplies the fixed trusted Hub address."
+				"name": "CapacitorAccountAdapter.constructor.config",
+				"type": "CapacitorAccountAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "failure.status",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "failure.code",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "failure.message",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "refusal.cause",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "decoded.data",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "decoded.limit",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "json.reply",
+				"type": "AccountNativeReply",
+				"required": true
+			},
+			{
+				"name": "refused.reply",
+				"type": "AccountNativeReply",
+				"required": true
+			},
+			{
+				"name": "fields.query",
+				"type": "Query",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "plain.body",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "publicStatus.value",
+				"type": "AccountNativeStatus",
+				"required": true
+			},
+			{
+				"name": "accountIdentity.status",
+				"type": "NativeHostedStatus | null",
+				"required": true
+			},
+			{
+				"name": "principal.status",
+				"type": "NativeHostedStatus | null",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -66,6 +132,236 @@
 				"name": "unavailable",
 				"type": "Error & { status: number; code: string }",
 				"description": "Network, permission and decoding failures retain their public error status. No request falls back to the Mac."
+			}
+		],
+		"operations": [
+			{
+				"name": "CapacitorAccountAdapter.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CapacitorAccountAdapter.connect",
+						"type": "DesktopBridge"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "failure",
+				"inputs": [
+					{
+						"name": "failure.status",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "failure.code",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "failure.message",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "failure",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "refusal",
+				"inputs": [
+					{
+						"name": "refusal.cause",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "refusal",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "decoded",
+				"inputs": [
+					{
+						"name": "decoded.data",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "decoded.limit",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "decoded",
+						"type": "Uint8Array"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "json",
+				"inputs": [
+					{
+						"name": "json.reply",
+						"type": "AccountNativeReply",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "json",
+						"type": "T"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "refused",
+				"inputs": [
+					{
+						"name": "refused.reply",
+						"type": "AccountNativeReply",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "refused",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fields",
+				"inputs": [
+					{
+						"name": "fields.query",
+						"type": "Query",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "fields",
+						"type": "Record<string, string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "plain",
+				"inputs": [
+					{
+						"name": "plain.body",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "plain",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "publicStatus",
+				"inputs": [
+					{
+						"name": "publicStatus.value",
+						"type": "AccountNativeStatus",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "publicStatus",
+						"type": "NativeHostedStatus"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "accountIdentity",
+				"inputs": [
+					{
+						"name": "accountIdentity.status",
+						"type": "NativeHostedStatus | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "accountIdentity",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "principal",
+				"inputs": [
+					{
+						"name": "principal.status",
+						"type": "NativeHostedStatus | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "principal",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CapacitorAccountAdapter.constructor",
+				"inputs": [
+					{
+						"name": "CapacitorAccountAdapter.constructor.config",
+						"type": "CapacitorAccountAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CapacitorAccountAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -32,7 +32,23 @@
 				"type": "Promise<BrowserWindow | null>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "initializeDesktop",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "initializeDesktop",
+						"type": "Promise<BrowserWindow | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

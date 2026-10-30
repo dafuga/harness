@@ -25,9 +25,24 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "account",
+				"name": "ProjectDiscoveryService.constructor.projection",
+				"type": "SnapshotPort",
+				"required": true
+			},
+			{
+				"name": "ProjectDiscoveryService.constructor.http",
+				"type": "HostedHttpAdapter",
+				"required": true
+			},
+			{
+				"name": "ProjectDiscoveryService.constructor.reads",
+				"type": "HostedReadService",
+				"required": true
+			},
+			{
+				"name": "ProjectDiscoveryService.constructor.options",
 				"type": "HostedReadOptions",
-				"description": "Native account, exact Hub origin, optional protected cache and access-change notifications."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -51,6 +66,55 @@
 				"name": "access changed",
 				"type": "Error",
 				"description": "An account change during discovery discards the answer."
+			}
+		],
+		"operations": [
+			{
+				"name": "ProjectDiscoveryService.projects",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectDiscoveryService.projects",
+						"type": "Promise<DesktopProject[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectDiscoveryService.constructor",
+				"inputs": [
+					{
+						"name": "ProjectDiscoveryService.constructor.projection",
+						"type": "SnapshotPort",
+						"required": true
+					},
+					{
+						"name": "ProjectDiscoveryService.constructor.http",
+						"type": "HostedHttpAdapter",
+						"required": true
+					},
+					{
+						"name": "ProjectDiscoveryService.constructor.reads",
+						"type": "HostedReadService",
+						"required": true
+					},
+					{
+						"name": "ProjectDiscoveryService.constructor.options",
+						"type": "HostedReadOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectDiscoveryService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -37,41 +37,49 @@
 			{
 				"name": "hubEvidenceContext.deps",
 				"type": "HubEvidenceDependencies",
+				"required": true,
 				"description": "Collaboration API, source adapter and cache."
 			},
 			{
 				"name": "hubEvidenceContext.actor",
 				"type": "Actor",
+				"required": true,
 				"description": "Authenticated actor whose project access is checked."
 			},
 			{
 				"name": "hubEvidenceContext.query",
 				"type": "EntityEvidenceQuery",
+				"required": true,
 				"description": "Project, entity, branch, commit and current-or-commit viewing mode."
 			},
 			{
 				"name": "hubEvidencePins.base",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubEvidencePins.query",
 				"type": "Pick<EvidenceArtifactQuery, 'notesRevision' | 'evidenceRevision'>",
+				"required": true,
 				"description": "Requested notes and evidence revisions, each nullable."
 			},
 			{
 				"name": "hubEvidenceScope.base",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubEvidenceScope.query",
 				"type": "EntityEvidenceQuery",
+				"required": true,
 				"description": "Entity, branch, commit and viewing mode."
 			},
 			{
 				"name": "hubEvidenceScope.tip",
 				"type": "string",
+				"required": true,
 				"description": "Known branch tip commit."
 			}
 		],
@@ -108,7 +116,100 @@
 				"type": "refused",
 				"description": "Branch, commit facts, reachability or entity registration cannot support the requested evidence view."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hubEvidenceContext",
+				"inputs": [
+					{
+						"name": "hubEvidenceContext.deps",
+						"type": "HubEvidenceDependencies",
+						"required": true,
+						"description": "Collaboration API, source adapter and cache."
+					},
+					{
+						"name": "hubEvidenceContext.actor",
+						"type": "Actor",
+						"required": true,
+						"description": "Authenticated actor whose project access is checked."
+					},
+					{
+						"name": "hubEvidenceContext.query",
+						"type": "EntityEvidenceQuery",
+						"required": true,
+						"description": "Project, entity, branch, commit and current-or-commit viewing mode."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidenceContext",
+						"type": "unknown",
+						"description": "Authorized source context, branch tip and repository; current-mode requests require the selected commit to remain the tip."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubEvidencePins",
+				"inputs": [
+					{
+						"name": "hubEvidencePins.base",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubEvidencePins.query",
+						"type": "Pick<EvidenceArtifactQuery, 'notesRevision' | 'evidenceRevision'>",
+						"required": true,
+						"description": "Requested notes and evidence revisions, each nullable."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidencePins",
+						"type": "unknown",
+						"description": "Returns nothing after accepting identical pins or reachable older revisions and replacing the context’s notes/evidence identity with the requested pins."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubEvidenceScope",
+				"inputs": [
+					{
+						"name": "hubEvidenceScope.base",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubEvidenceScope.query",
+						"type": "EntityEvidenceQuery",
+						"required": true,
+						"description": "Entity, branch, commit and viewing mode."
+					},
+					{
+						"name": "hubEvidenceScope.tip",
+						"type": "string",
+						"required": true,
+						"description": "Known branch tip commit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidenceScope",
+						"type": "unknown",
+						"description": "Explorer scope, head and optional first-parent revision detail, plus pinned history service. Historical commits must be reachable from the branch tip."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

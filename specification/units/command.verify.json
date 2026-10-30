@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "registerVerifyCommand.program",
-				"type": "Command"
+				"type": "Command",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,7 +30,29 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "registerVerifyCommand",
+				"inputs": [
+					{
+						"name": "registerVerifyCommand.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerVerifyCommand",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

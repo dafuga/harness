@@ -33,27 +33,33 @@
 		"inputs": [
 			{
 				"name": "BuildIdentityService.declared.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "BuildIdentityService.declared.builds",
-				"type": "DeclaredBuild[]"
+				"type": "DeclaredBuild[]",
+				"required": true
 			},
 			{
 				"name": "BuildIdentityService.changed.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "BuildIdentityService.changed.builds",
-				"type": "BuiltIdentity[]"
+				"type": "BuiltIdentity[]",
+				"required": true
 			},
 			{
 				"name": "BuildIdentityService.identify.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "BuildIdentityService.stamp.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -79,7 +85,98 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "BuildIdentityService.declared",
+				"inputs": [
+					{
+						"name": "BuildIdentityService.declared.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BuildIdentityService.declared.builds",
+						"type": "DeclaredBuild[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BuildIdentityService.declared",
+						"type": "Promise<{ found: BuiltIdentity[]; failures: string[] }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BuildIdentityService.changed",
+				"inputs": [
+					{
+						"name": "BuildIdentityService.changed.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BuildIdentityService.changed.builds",
+						"type": "BuiltIdentity[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BuildIdentityService.changed",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BuildIdentityService.identify",
+				"inputs": [
+					{
+						"name": "BuildIdentityService.identify.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BuildIdentityService.identify",
+						"type": "Promise<IdentifiedBuild | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BuildIdentityService.stamp",
+				"inputs": [
+					{
+						"name": "BuildIdentityService.stamp.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BuildIdentityService.stamp",
+						"type": "Promise<IdentifiedBuild>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

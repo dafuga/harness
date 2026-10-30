@@ -24,7 +24,28 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "seedAnalyticsE2e",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "seedAnalyticsE2e",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -27,19 +27,23 @@
 		"inputs": [
 			{
 				"name": "HistoryIndexService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryIndexService.build.out",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryIndexService.build.limit",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "HistoryIndexService.build.legacy",
-				"type": "LegacyReader"
+				"type": "LegacyReader",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -48,7 +52,58 @@
 				"type": "Promise<BuiltHistory>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HistoryIndexService.build",
+				"inputs": [
+					{
+						"name": "HistoryIndexService.build.out",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HistoryIndexService.build.limit",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "HistoryIndexService.build.legacy",
+						"type": "LegacyReader",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryIndexService.build",
+						"type": "Promise<BuiltHistory>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HistoryIndexService.constructor",
+				"inputs": [
+					{
+						"name": "HistoryIndexService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryIndexService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

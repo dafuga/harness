@@ -23,15 +23,18 @@
 		"inputs": [
 			{
 				"name": "GptImageAdapter.constructor.send",
-				"type": "ImageFetch"
+				"type": "ImageFetch",
+				"required": false
 			},
 			{
 				"name": "GptImageAdapter.generate.key",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GptImageAdapter.generate.prompt",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,6 +47,57 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GptImageAdapter.generate",
+				"inputs": [
+					{
+						"name": "GptImageAdapter.generate.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "GptImageAdapter.generate.prompt",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GptImageAdapter.generate",
+						"type": "Promise<Buffer>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GptImageAdapter.constructor",
+				"inputs": [
+					{
+						"name": "GptImageAdapter.constructor.send",
+						"type": "ImageFetch",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "GptImageAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

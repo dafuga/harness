@@ -20,6 +20,7 @@
 			{
 				"name": "historyPages.pages",
 				"type": "HistoryEvent[][]",
+				"required": false,
 				"description": "The history pages supplied as separate arguments, in the order they were read."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "One list in page order, with duplicate event identities removed. The first event with each identity is retained; no timestamp sorting is performed."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "historyPages",
+				"inputs": [
+					{
+						"name": "historyPages.pages",
+						"type": "HistoryEvent[][]",
+						"required": false,
+						"description": "The history pages supplied as separate arguments, in the order they were read."
+					}
+				],
+				"outputs": [
+					{
+						"name": "historyPages",
+						"type": "HistoryEvent[]",
+						"description": "One list in page order, with duplicate event identities removed. The first event with each identity is retained; no timestamp sorting is performed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

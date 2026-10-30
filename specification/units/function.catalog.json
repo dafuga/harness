@@ -35,6 +35,7 @@
 			{
 				"name": "harnessRuleSummariesFor.limits",
 				"type": "HarnessRuleLimits",
+				"required": true,
 				"description": "Numeric limits for file, function, class and method lines, nesting, parameters, complexity and classes per file."
 			}
 		],
@@ -55,7 +56,30 @@
 				"description": "Ordered rule summaries using the supplied numeric limits together with the fixed Harness guidance; no files are inspected or changed."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "harnessRuleSummariesFor",
+				"inputs": [
+					{
+						"name": "harnessRuleSummariesFor.limits",
+						"type": "HarnessRuleLimits",
+						"required": true,
+						"description": "Numeric limits for file, function, class and method lines, nesting, parameters, complexity and classes per file."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessRuleSummariesFor",
+						"type": "string[]",
+						"description": "Ordered rule summaries using the supplied numeric limits together with the fixed Harness guidance; no files are inspected or changed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

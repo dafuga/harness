@@ -29,14 +29,16 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "isUnitId.value",
-				"type": "string",
-				"description": "The identity to check for lower-case dotted segments, each starting with a letter and otherwise containing letters, digits or hyphens, with at least two segments and at most 200 characters."
-			},
-			{
 				"name": "entityReferences.value",
 				"type": "string",
+				"required": true,
 				"description": "The text to divide into plain-text pieces and complete [[unit:identity]] markers. Invalid or unfinished markers remain ordinary text."
+			},
+			{
+				"name": "isUnitId.value",
+				"type": "string",
+				"required": true,
+				"description": "The identity to check for lower-case dotted segments, each starting with a letter and otherwise containing letters, digits or hyphens, with at least two segments and at most 200 characters."
 			}
 		],
 		"outputs": [
@@ -51,7 +53,50 @@
 				"description": "Ordered text and reference pieces whose text joins back to the original exactly. Reference pieces include the parsed identity and original marker. Empty input produces an empty list."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "entityReferences",
+				"inputs": [
+					{
+						"name": "entityReferences.value",
+						"type": "string",
+						"required": true,
+						"description": "The text to divide into plain-text pieces and complete [[unit:identity]] markers. Invalid or unfinished markers remain ordinary text."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityReferences",
+						"type": "ReferencePart[]",
+						"description": "Ordered text and reference pieces whose text joins back to the original exactly. Reference pieces include the parsed identity and original marker. Empty input produces an empty list."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isUnitId",
+				"inputs": [
+					{
+						"name": "isUnitId.value",
+						"type": "string",
+						"required": true,
+						"description": "The identity to check for lower-case dotted segments, each starting with a letter and otherwise containing letters, digits or hyphens, with at least two segments and at most 200 characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isUnitId",
+						"type": "boolean",
+						"description": "True when the identity matches the reference grammar; it does not check whether that unit is actually registered."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

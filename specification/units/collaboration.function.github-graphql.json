@@ -20,11 +20,13 @@
 			{
 				"name": "githubGraphql.options",
 				"type": "GitHubOptions",
+				"required": true,
 				"description": "Repository identity, scoped read-token callback and optional fetch implementation."
 			},
 			{
 				"name": "githubGraphql.input",
 				"type": "{ commit: string; entries: SourceEntry[] }",
+				"required": true,
 				"description": "Commit and 1–64 tree-attested regular-file entries with expected paths, Git SHAs and optional sizes."
 			}
 		],
@@ -41,7 +43,41 @@
 				"type": "thrown",
 				"description": "All failures, including invalid batches and integrity or repository mismatches, are converted to github-unavailable."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "githubGraphql",
+				"inputs": [
+					{
+						"name": "githubGraphql.options",
+						"type": "GitHubOptions",
+						"required": true,
+						"description": "Repository identity, scoped read-token callback and optional fetch implementation."
+					},
+					{
+						"name": "githubGraphql.input",
+						"type": "{ commit: string; entries: SourceEntry[] }",
+						"required": true,
+						"description": "Commit and 1–64 tree-attested regular-file entries with expected paths, Git SHAs and optional sizes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubGraphql",
+						"type": "Promise<Map<string, Uint8Array>>",
+						"description": "Map from paths to verified UTF-8 blob bytes; the response must stay below 16 MiB."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

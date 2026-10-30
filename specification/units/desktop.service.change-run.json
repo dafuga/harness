@@ -18,7 +18,8 @@
 		"inputs": [
 			{
 				"name": "ChangeRunService.run.context",
-				"type": "RunContext"
+				"type": "RunContext",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -27,7 +28,29 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ChangeRunService.run",
+				"inputs": [
+					{
+						"name": "ChangeRunService.run.context",
+						"type": "RunContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ChangeRunService.run",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

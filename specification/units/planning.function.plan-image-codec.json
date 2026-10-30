@@ -19,6 +19,7 @@
 			{
 				"name": "planImageCodec.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "PNG bytes, from 33 bytes through 32 MiB inclusive, with positive dimensions totaling at most 32 million pixels."
 			}
 		],
@@ -35,7 +36,35 @@
 				"type": "thrown",
 				"description": "invalid-image for unsupported size, invalid dimensions or failed PNG decoding."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "planImageCodec",
+				"inputs": [
+					{
+						"name": "planImageCodec.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "PNG bytes, from 33 bytes through 32 MiB inclusive, with positive dimensions totaling at most 32 million pixels."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planImageCodec",
+						"type": "{ width: number; height: number }",
+						"description": "Decoded image width and height after CRC-checked PNG decoding."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -16,11 +16,13 @@
 			{
 				"name": "gamePayload.channel",
 				"type": "string",
+				"required": true,
 				"description": "Recognized game IPC operation selecting the allowed request fields and validation rules."
 			},
 			{
 				"name": "gamePayload.input",
 				"type": "unknown",
+				"required": true,
 				"description": "Untrusted game operation payload to validate before passing to the host service."
 			}
 		],
@@ -31,7 +33,36 @@
 				"description": "Sanitized operation-specific request; invalid fields and unsupported values throw before service execution."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "gamePayload",
+				"inputs": [
+					{
+						"name": "gamePayload.channel",
+						"type": "string",
+						"required": true,
+						"description": "Recognized game IPC operation selecting the allowed request fields and validation rules."
+					},
+					{
+						"name": "gamePayload.input",
+						"type": "unknown",
+						"required": true,
+						"description": "Untrusted game operation payload to validate before passing to the host service."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gamePayload",
+						"type": "unknown",
+						"description": "Sanitized operation-specific request; invalid fields and unsupported values throw before service execution."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -31,35 +31,43 @@
 		"inputs": [
 			{
 				"name": "AuthRequestValidator.google.body",
-				"type": "Body"
+				"type": "Body",
+				"required": true
 			},
 			{
 				"name": "AuthRequestValidator.nativeStart.body",
-				"type": "Body"
+				"type": "Body",
+				"required": true
 			},
 			{
 				"name": "AuthRequestValidator.nativeApprove.body",
-				"type": "Body"
+				"type": "Body",
+				"required": true
 			},
 			{
 				"name": "AuthRequestValidator.nativePoll.body",
-				"type": "Body"
+				"type": "Body",
+				"required": true
 			},
 			{
 				"name": "AuthRequestValidator.nativeExchange.body",
-				"type": "Body"
+				"type": "Body",
+				"required": true
 			},
 			{
 				"name": "AuthRequestValidator.githubCallback.url",
-				"type": "URL"
+				"type": "URL",
+				"required": true
 			},
 			{
 				"name": "AuthRequestValidator.emailCode.body",
-				"type": "Body"
+				"type": "Body",
+				"required": true
 			},
 			{
 				"name": "AuthRequestValidator.repositoryId.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -96,7 +104,155 @@
 				"type": "number"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AuthRequestValidator.google",
+				"inputs": [
+					{
+						"name": "AuthRequestValidator.google.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRequestValidator.google",
+						"type": "GoogleSignInInput"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRequestValidator.nativeStart",
+				"inputs": [
+					{
+						"name": "AuthRequestValidator.nativeStart.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRequestValidator.nativeStart",
+						"type": "NativeStartInput"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRequestValidator.nativeApprove",
+				"inputs": [
+					{
+						"name": "AuthRequestValidator.nativeApprove.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRequestValidator.nativeApprove",
+						"type": "NativeApproveInput"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRequestValidator.nativePoll",
+				"inputs": [
+					{
+						"name": "AuthRequestValidator.nativePoll.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRequestValidator.nativePoll",
+						"type": "{ handoffId: string }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRequestValidator.nativeExchange",
+				"inputs": [
+					{
+						"name": "AuthRequestValidator.nativeExchange.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRequestValidator.nativeExchange",
+						"type": "NativeExchangeInput"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRequestValidator.githubCallback",
+				"inputs": [
+					{
+						"name": "AuthRequestValidator.githubCallback.url",
+						"type": "URL",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRequestValidator.githubCallback",
+						"type": "{ code: string; state: string } | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRequestValidator.emailCode",
+				"inputs": [
+					{
+						"name": "AuthRequestValidator.emailCode.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRequestValidator.emailCode",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRequestValidator.repositoryId",
+				"inputs": [
+					{
+						"name": "AuthRequestValidator.repositoryId.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRequestValidator.repositoryId",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

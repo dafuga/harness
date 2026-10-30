@@ -28,11 +28,13 @@
 		"inputs": [
 			{
 				"name": "RecordAssemblyService.constructor.context",
-				"type": "AssemblyContext"
+				"type": "AssemblyContext",
+				"required": true
 			},
 			{
 				"name": "RecordAssemblyService.assemble.input",
-				"type": "AssemblyInput"
+				"type": "AssemblyInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -41,7 +43,48 @@
 				"type": "Promise<VerificationRecord>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RecordAssemblyService.assemble",
+				"inputs": [
+					{
+						"name": "RecordAssemblyService.assemble.input",
+						"type": "AssemblyInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RecordAssemblyService.assemble",
+						"type": "Promise<VerificationRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RecordAssemblyService.constructor",
+				"inputs": [
+					{
+						"name": "RecordAssemblyService.constructor.context",
+						"type": "AssemblyContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RecordAssemblyService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

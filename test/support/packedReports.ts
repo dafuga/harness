@@ -48,7 +48,7 @@ export async function packedInstall(): Promise<PackedInstall> {
 }
 
 /**
- * Starts the report server of a packed install on a free port, hands it to `use`, and then
+ * Starts the website of a packed install on a free port, hands it to `use`, and then
  * stops that exact server through the command that started it, whether `use` returned or threw.
  */
 export async function withReportServer<Result>(

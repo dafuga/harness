@@ -18,11 +18,13 @@
 		"inputs": [
 			{
 				"name": "JevResponseValidator.validate.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "JevResponseValidator.validate.questions",
-				"type": "JevQuestions"
+				"type": "JevQuestions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +38,39 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "JevResponseValidator.validate",
+				"inputs": [
+					{
+						"name": "JevResponseValidator.validate.input",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "JevResponseValidator.validate.questions",
+						"type": "JevQuestions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "JevResponseValidator.validate",
+						"type": "JevEvaluation"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

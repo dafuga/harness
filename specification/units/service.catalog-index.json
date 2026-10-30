@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "CatalogIndexService.write.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CatalogIndexService.write.index",
-				"type": "HistoryIndex"
+				"type": "HistoryIndex",
+				"required": true
 			},
 			{
 				"name": "CatalogIndexService.write.snapshots",
-				"type": "CatalogSnapshot[]"
+				"type": "CatalogSnapshot[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +35,39 @@
 				"type": "Promise<string>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogIndexService.write",
+				"inputs": [
+					{
+						"name": "CatalogIndexService.write.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogIndexService.write.index",
+						"type": "HistoryIndex",
+						"required": true
+					},
+					{
+						"name": "CatalogIndexService.write.snapshots",
+						"type": "CatalogSnapshot[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogIndexService.write",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

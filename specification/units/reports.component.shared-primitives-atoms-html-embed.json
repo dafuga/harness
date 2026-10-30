@@ -19,9 +19,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlEmbed.attributes",
-				"type": "SvelteHTMLElements['embed']",
-				"description": "Native embed attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+				"name": "HtmlEmbed.children",
+				"type": "Snippet",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -31,7 +31,9 @@
 				"description": "The actual native embed element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

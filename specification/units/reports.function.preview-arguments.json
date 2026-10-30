@@ -27,6 +27,7 @@
 			{
 				"name": "previewArguments.args",
 				"type": "string[]",
+				"required": true,
 				"description": "Launch options from the dev command.",
 				"examples": [
 					[
@@ -42,6 +43,7 @@
 			{
 				"name": "previewArguments.env",
 				"type": "NodeJS.ProcessEnv",
+				"required": false,
 				"description": "Launch settings; only Harness, report storage and body-size settings affect identity.",
 				"examples": [
 					{
@@ -71,7 +73,63 @@
 				"description": "Refuses unknown or missing options, invalid ports and addresses that would expose the preview remotely.",
 				"examples": ["Harness previews bind to 127.0.0.1 only."]
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "previewArguments",
+				"inputs": [
+					{
+						"name": "previewArguments.args",
+						"type": "string[]",
+						"required": true,
+						"description": "Launch options from the dev command.",
+						"examples": [
+							[
+								"--port",
+								"5688",
+								"--config",
+								"/projects/harness/packages/reports/vite.config.ts",
+								"--host",
+								"127.0.0.1"
+							]
+						]
+					},
+					{
+						"name": "previewArguments.env",
+						"type": "NodeJS.ProcessEnv",
+						"required": false,
+						"description": "Launch settings; only Harness, report storage and body-size settings affect identity.",
+						"examples": [
+							{
+								"HARNESS_CONSOLE_DATA": "/tmp/harness-history"
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "previewArguments",
+						"type": "PreviewArguments",
+						"description": "Validated root, optional config, web port and checkout fingerprint.",
+						"examples": [
+							{
+								"root": "/projects/harness/packages/reports",
+								"port": 5688,
+								"identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							}
+						]
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

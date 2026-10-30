@@ -35,16 +35,19 @@
 			{
 				"name": "entityBehavior.behavior",
 				"type": "ExplorerBehavior",
+				"required": true,
 				"description": "Host-derived behavior comparison, rows, scenario statuses and uncertainty explanation."
 			},
 			{
 				"name": "behaviorDuration.record",
 				"type": "HarnessRecord | null",
+				"required": true,
 				"description": "Verification record to inspect, or null."
 			},
 			{
 				"name": "behaviorDuration.scenarios",
 				"type": "string[]",
+				"required": true,
 				"description": "Scenario identifiers whose end-to-end job durations should be summed."
 			}
 		],
@@ -60,7 +63,56 @@
 				"description": "Sum of durations for end-to-end jobs named with one of the scenario identifiers followed by a colon, rendered in milliseconds; null when no such jobs exist."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "entityBehavior",
+				"inputs": [
+					{
+						"name": "entityBehavior.behavior",
+						"type": "ExplorerBehavior",
+						"required": true,
+						"description": "Host-derived behavior comparison, rows, scenario statuses and uncertainty explanation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityBehavior",
+						"type": "EntityBehavior",
+						"description": "Grouped before/after result cells, label and reasons. A current result passes only when something was recorded, every shown group passed and all scenario after-statuses passed. Missing results and unknown or byte-only differences remain uncertain."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "behaviorDuration",
+				"inputs": [
+					{
+						"name": "behaviorDuration.record",
+						"type": "HarnessRecord | null",
+						"required": true,
+						"description": "Verification record to inspect, or null."
+					},
+					{
+						"name": "behaviorDuration.scenarios",
+						"type": "string[]",
+						"required": true,
+						"description": "Scenario identifiers whose end-to-end job durations should be summed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "behaviorDuration",
+						"type": "string | null",
+						"description": "Sum of durations for end-to-end jobs named with one of the scenario identifiers followed by a colon, rendered in milliseconds; null when no such jobs exist."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

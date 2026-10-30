@@ -38,7 +38,35 @@
 				"type": "URIError",
 				"description": "A report identifier containing an unpaired UTF-16 surrogate cannot be URL encoded."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "load",
+				"inputs": [
+					{
+						"name": "load.params",
+						"type": "{ id: string }",
+						"required": true,
+						"description": "The legacy report identifier to carry into the console address."
+					}
+				],
+				"outputs": [
+					{
+						"name": "load",
+						"type": "never",
+						"description": "Does not return; throws the permanent redirect to the report address in the explorer."
+					}
+				],
+				"errors": [
+					{
+						"name": "Redirect 308",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

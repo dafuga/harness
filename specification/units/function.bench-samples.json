@@ -35,58 +35,69 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "median.values",
-				"type": "number[]",
-				"description": "Numeric samples to sort on a copy; meaningful medians require a nonempty array."
-			},
-			{
-				"name": "timeCall.runtime",
-				"type": "UnitRuntime",
-				"description": "Initialized runtime whose invoke method performs the whole operation being timed."
-			},
-			{
-				"name": "timeCall.request",
-				"type": "RuntimeRequest",
-				"description": "Operation and optional input to pass unchanged to the runtime."
-			},
-			{
 				"name": "benchSamples.runtime",
 				"type": "UnitRuntime",
+				"required": true,
 				"description": "Initialized runtime used for three warm-up calls and then every measured call."
 			},
 			{
 				"name": "benchSamples.request",
 				"type": "RuntimeRequest",
+				"required": true,
 				"description": "Operation and optional input repeated for warm-up and measurement."
 			},
 			{
 				"name": "benchSamples.iterations",
 				"type": "number",
+				"required": true,
 				"description": "Number of timed calls after warm-up; callers should supply a positive integer."
+			},
+			{
+				"name": "median.values",
+				"type": "number[]",
+				"required": true,
+				"description": "Numeric samples to sort on a copy; meaningful medians require a nonempty array."
+			},
+			{
+				"name": "timeCall.runtime",
+				"type": "UnitRuntime",
+				"required": true,
+				"description": "Initialized runtime whose invoke method performs the whole operation being timed."
+			},
+			{
+				"name": "timeCall.request",
+				"type": "RuntimeRequest",
+				"required": true,
+				"description": "Operation and optional input to pass unchanged to the runtime."
 			},
 			{
 				"name": "benchRounds.runtime",
 				"type": "UnitRuntime",
+				"required": true,
 				"description": "Initialized runtime used for warm-up and all measured rounds."
 			},
 			{
 				"name": "benchRounds.request",
 				"type": "RuntimeRequest",
+				"required": true,
 				"description": "Operation and optional input repeated in every call."
 			},
 			{
 				"name": "benchRounds.shape",
 				"type": "{ rounds: number; iterations: number }",
+				"required": true,
 				"description": "Positive integer round and per-round call counts. This helper does not validate them."
 			},
 			{
 				"name": "roundMeasurements.result",
 				"type": "RoundResult",
+				"required": true,
 				"description": "Round summary containing the fastest call, median of round medians, throughput and total sample count."
 			},
 			{
 				"name": "roundMeasurements.where",
 				"type": "string",
+				"required": true,
 				"description": "Human-readable description of where calls were timed, included in each measurement method."
 			}
 		],
@@ -123,7 +134,151 @@
 				"type": "thrown",
 				"description": "Thrown when an invocation returns ok: false, naming the runtime kind and failure message. Invocation promise rejections also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "benchSamples",
+				"inputs": [
+					{
+						"name": "benchSamples.runtime",
+						"type": "UnitRuntime",
+						"required": true,
+						"description": "Initialized runtime used for three warm-up calls and then every measured call."
+					},
+					{
+						"name": "benchSamples.request",
+						"type": "RuntimeRequest",
+						"required": true,
+						"description": "Operation and optional input repeated for warm-up and measurement."
+					},
+					{
+						"name": "benchSamples.iterations",
+						"type": "number",
+						"required": true,
+						"description": "Number of timed calls after warm-up; callers should supply a positive integer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "benchSamples",
+						"type": "Promise<WarmResult>",
+						"description": "Median call latency, calls per second based on total measured duration, and the requested iteration count after three warm-up calls."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "median",
+				"inputs": [
+					{
+						"name": "median.values",
+						"type": "number[]",
+						"required": true,
+						"description": "Numeric samples to sort on a copy; meaningful medians require a nonempty array."
+					}
+				],
+				"outputs": [
+					{
+						"name": "median",
+						"type": "number",
+						"description": "Middle sorted value, or the average of the two middle values. An empty input yields NaN."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "timeCall",
+				"inputs": [
+					{
+						"name": "timeCall.runtime",
+						"type": "UnitRuntime",
+						"required": true,
+						"description": "Initialized runtime whose invoke method performs the whole operation being timed."
+					},
+					{
+						"name": "timeCall.request",
+						"type": "RuntimeRequest",
+						"required": true,
+						"description": "Operation and optional input to pass unchanged to the runtime."
+					}
+				],
+				"outputs": [
+					{
+						"name": "timeCall",
+						"type": "Promise<number>",
+						"description": "Elapsed milliseconds for one successful whole invocation, including the runtime transport work."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "benchRounds",
+				"inputs": [
+					{
+						"name": "benchRounds.runtime",
+						"type": "UnitRuntime",
+						"required": true,
+						"description": "Initialized runtime used for warm-up and all measured rounds."
+					},
+					{
+						"name": "benchRounds.request",
+						"type": "RuntimeRequest",
+						"required": true,
+						"description": "Operation and optional input repeated in every call."
+					},
+					{
+						"name": "benchRounds.shape",
+						"type": "{ rounds: number; iterations: number }",
+						"required": true,
+						"description": "Positive integer round and per-round call counts. This helper does not validate them."
+					}
+				],
+				"outputs": [
+					{
+						"name": "benchRounds",
+						"type": "Promise<RoundResult>",
+						"description": "Fastest single call, median of round medians, calls per second derived from that median, and rounds times iterations samples."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "roundMeasurements",
+				"inputs": [
+					{
+						"name": "roundMeasurements.result",
+						"type": "RoundResult",
+						"required": true,
+						"description": "Round summary containing the fastest call, median of round medians, throughput and total sample count."
+					},
+					{
+						"name": "roundMeasurements.where",
+						"type": "string",
+						"required": true,
+						"description": "Human-readable description of where calls were timed, included in each measurement method."
+					}
+				],
+				"outputs": [
+					{
+						"name": "roundMeasurements",
+						"type": "unknown",
+						"description": "Three entries for latency-floor-ms, latency-warm-ms and throughput-ops, each with its value, unit and boundary description."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -30,11 +30,18 @@
 			{
 				"name": "reportLocale",
 				"inputs": [],
-				"outputs": [],
+				"outputs": [
+					{
+						"name": "reportLocale",
+						"type": "'en'",
+						"description": "Returns en. Importing the module registers English and French report dictionaries and initializes English as fallback and initial locale."
+					}
+				],
 				"errors": [],
 				"errorStatus": "declared"
 			}
-		]
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

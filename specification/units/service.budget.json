@@ -30,19 +30,23 @@
 		"inputs": [
 			{
 				"name": "BudgetService.baselines.events",
-				"type": "BudgetEvent[]"
+				"type": "BudgetEvent[]",
+				"required": true
 			},
 			{
 				"name": "BudgetService.baselines.manifests",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"required": true
 			},
 			{
 				"name": "BudgetService.evaluate.subjects",
-				"type": "BudgetSubject[]"
+				"type": "BudgetSubject[]",
+				"required": true
 			},
 			{
 				"name": "BudgetService.evaluate.context",
-				"type": "{ measurements: Measurement[]; baselines: Map<string, UnitBaseline>; profile: string }"
+				"type": "{ measurements: Measurement[]; baselines: Map<string, UnitBaseline>; profile: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -55,7 +59,57 @@
 				"type": "BudgetReport"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "BudgetService.baselines",
+				"inputs": [
+					{
+						"name": "BudgetService.baselines.events",
+						"type": "BudgetEvent[]",
+						"required": true
+					},
+					{
+						"name": "BudgetService.baselines.manifests",
+						"type": "ComponentManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BudgetService.baselines",
+						"type": "Map<string, UnitBaseline>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BudgetService.evaluate",
+				"inputs": [
+					{
+						"name": "BudgetService.evaluate.subjects",
+						"type": "BudgetSubject[]",
+						"required": true
+					},
+					{
+						"name": "BudgetService.evaluate.context",
+						"type": "{ measurements: Measurement[]; baselines: Map<string, UnitBaseline>; profile: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BudgetService.evaluate",
+						"type": "BudgetReport"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

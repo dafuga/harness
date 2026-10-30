@@ -25,7 +25,8 @@
 		"inputs": [
 			{
 				"name": "GatewayImageValidator.parse.input",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -34,7 +35,29 @@
 				"type": "GatewayImage"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GatewayImageValidator.parse",
+				"inputs": [
+					{
+						"name": "GatewayImageValidator.parse.input",
+						"type": "Record<string, unknown>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GatewayImageValidator.parse",
+						"type": "GatewayImage"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

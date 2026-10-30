@@ -13,6 +13,8 @@
 			"src/utils/parseParameters.ts"
 		],
 		"symbols": [
+			"parameterDefault",
+			"parameterType",
 			"splitTopLevel",
 			"parseParameters",
 			"normalizeType",
@@ -25,33 +27,48 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "parameterDefault.node",
+				"type": "ts.Expression | undefined",
+				"required": true
+			},
+			{
+				"name": "parameterType.node",
+				"type": "ts.Expression | undefined",
+				"required": true
+			},
+			{
 				"name": "splitTopLevel.masked",
 				"type": "string",
+				"required": true,
 				"description": "Masked text whose top-level separator positions should be found."
 			},
 			{
 				"name": "splitTopLevel.separators",
 				"type": "string",
+				"required": true,
 				"description": "String of individual separator characters to recognize at nesting depth zero."
 			},
 			{
 				"name": "parseParameters.code",
 				"type": "string",
+				"required": true,
 				"description": "Original parameter-list or object-type text containing the type spellings to retain."
 			},
 			{
-				"name": "parseParameters.masked",
+				"name": "parseParameters._masked",
 				"type": "string",
-				"description": "Corresponding masked text with identical offsets for delimiter analysis."
+				"required": true
 			},
 			{
 				"name": "parseParameters.options",
 				"type": "{ owner: string; separators?: string }",
+				"required": true,
 				"description": "Owner prefix for field names and optional separator characters, default comma."
 			},
 			{
 				"name": "normalizeType.text",
 				"type": "string",
+				"required": true,
 				"description": "Raw type text to normalize."
 			}
 		],
@@ -72,7 +89,123 @@
 				"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "parameterDefault",
+				"inputs": [
+					{
+						"name": "parameterDefault.node",
+						"type": "ts.Expression | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parameterDefault",
+						"type": "Pick<ContractItem, 'default'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parameterType",
+				"inputs": [
+					{
+						"name": "parameterType.node",
+						"type": "ts.Expression | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parameterType",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "splitTopLevel",
+				"inputs": [
+					{
+						"name": "splitTopLevel.masked",
+						"type": "string",
+						"required": true,
+						"description": "Masked text whose top-level separator positions should be found."
+					},
+					{
+						"name": "splitTopLevel.separators",
+						"type": "string",
+						"required": true,
+						"description": "String of individual separator characters to recognize at nesting depth zero."
+					}
+				],
+				"outputs": [
+					{
+						"name": "splitTopLevel",
+						"type": "number[]",
+						"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseParameters",
+				"inputs": [
+					{
+						"name": "parseParameters.code",
+						"type": "string",
+						"required": true,
+						"description": "Original parameter-list or object-type text containing the type spellings to retain."
+					},
+					{
+						"name": "parseParameters._masked",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "parseParameters.options",
+						"type": "{ owner: string; separators?: string }",
+						"required": true,
+						"description": "Owner prefix for field names and optional separator characters, default comma."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseParameters",
+						"type": "ContractItem[]",
+						"description": "Contract items named owner.parameter with normalized explicit type or unknown when absent. Empty pieces are skipped and unrecognized/destructured names become input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeType",
+				"inputs": [
+					{
+						"name": "normalizeType.text",
+						"type": "string",
+						"required": true,
+						"description": "Raw type text to normalize."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeType",
+						"type": "string",
+						"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

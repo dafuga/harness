@@ -24,7 +24,8 @@
 		"inputs": [
 			{
 				"name": "HostCommandValidator.command.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -38,7 +39,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostCommandValidator.command",
+				"inputs": [
+					{
+						"name": "HostCommandValidator.command.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostCommandValidator.command",
+						"type": "RelayHostCommand"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

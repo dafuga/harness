@@ -18,10 +18,19 @@ const slugify = 'export function slugify(input: string): string {\n\treturn inpu
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
 test('recorded source moves retain definitions, owner-local placement and registered identity', () => {
 	const root = import.meta.dirname + '/../..';
-	const gaps = helperMoveGaps(root, migration.helpers, migration.followUps);
+	const gaps = helperMoveGaps(
+		root,
+		migration.helpers,
+		migration.followUps,
+		migration.retiredOwners
+	);
 	expect(migration.helpers).toHaveLength(411);
 	const [helper] = migration.helpers;
 	expect(helperMoveGaps(root, [helper], [{ ...helper, to: 'missing.ts' }])).not.toEqual([]);
+	// Only a helper retired by name is excused, and only that one.
+	const retirement = [{ ...helper, retired: true }];
+	expect(helperMoveGaps(root, [helper], retirement)).toEqual([]);
+	expect(helperMoveGaps(root, [{ ...helper, to: 'missing.ts' }], [])).not.toEqual([]);
 	expect(
 		gaps,
 		`owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, 12).join('; ')}`
@@ -205,6 +214,10 @@ test('recorded service moves preserve implementations and registered owner-local
 	expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0, 6).join('; ')}`).toEqual(
 		[]
 	);
+	const lost = { ...services.files[0], to: 'missing.ts', unit: 'retired.unit' };
+	const others = { moves: {}, files: [lost], services: [] };
+	expect(serviceMoveGaps(others)).toEqual(['missing.ts: missing']);
+	expect(serviceMoveGaps({ ...others, retiredUnits: ['retired.unit'] })).toEqual([]);
 	const tampered = ['corrupted pack', 'foreign commit', 'other path'];
 	expect(rejectedTampering(services), 'review history admits no tampering').toEqual(tampered);
 	const owner = services.files.find((file) => file.unit === 'service.unit-index')!.to;

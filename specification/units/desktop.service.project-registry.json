@@ -25,15 +25,18 @@
 		"inputs": [
 			{
 				"name": "ProjectRegistryService.constructor.file",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "ProjectRegistryService.register.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectRegistryService.get.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,6 +57,87 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectRegistryService.register",
+				"inputs": [
+					{
+						"name": "ProjectRegistryService.register.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectRegistryService.register",
+						"type": "Promise<DesktopProject>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectRegistryService.list",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectRegistryService.list",
+						"type": "Promise<DesktopProject[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectRegistryService.get",
+				"inputs": [
+					{
+						"name": "ProjectRegistryService.get.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectRegistryService.get",
+						"type": "Promise<DesktopProject>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectRegistryService.constructor",
+				"inputs": [
+					{
+						"name": "ProjectRegistryService.constructor.file",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectRegistryService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -5,8 +5,7 @@ import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/Exp
 import { explorerCases } from './explorer';
 import { legacyAddresses, legacyCases } from './legacy';
 import { reportCases } from './reports';
-import { activityCases, activity, activityVariant } from './activity';
-import { analyticsCases, analyticsVariant } from './analytics';
+import { activityCases } from './activity';
 import { createDesktopData } from './desktopData.svelte';
 import { desktopControls } from './desktopControls';
 import { desktopRuntime, gameCases } from './desktopRuntime';
@@ -30,19 +29,13 @@ export function previewFixture(id: string, variant = '') {
 
 	desktop.workspace.remote = { host: {} as never };
 	const legacy = {
-		...legacyCases,
-		'reports.component.harness-harness-activity': {
-			...legacyCases['reports.component.harness-harness-activity'],
-			// What a built history recorded: the same synthetic activity, read as recorded.
-			client: { activity: async () => ({ ...activity, kind: 'recorded' }) }
-		}
+		...legacyCases
 	};
 	const cases: PreviewCases = {
 		...explorerCases,
 		...legacy,
 		...reportCases,
 		...activityCases,
-		...analyticsCases,
 		...desktopCases(desktop),
 		...gameCases,
 		...remote.cases,
@@ -106,10 +99,6 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (report) return report;
 	if (id === 'reports.component.entity-search') return props;
 	if (id === 'reports.component.status-badge') return { ...props, status: variant };
-	const activityProps = activityVariant(id, variant, props);
-	if (activityProps !== props) return activityProps;
-	const analyticsProps = analyticsVariant(id, variant, props);
-	if (analyticsProps !== props) return analyticsProps;
 	const shown = modulePreview(props as unknown as ExplorerScreenProps, variant);
 	if (id.endsWith('explorer-module-resources-screen')) {
 		const route = {

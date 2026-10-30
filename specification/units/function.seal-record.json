@@ -41,49 +41,58 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "recordComponents.impact",
-				"type": "ImpactReport",
-				"description": "Impact report identifying direct, indirect, added and removed units."
-			},
-			{
-				"name": "recordComponents.sides",
-				"type": "{ base: Side; head: Side }",
-				"description": "Base and head manifests and owned source hashes used to identify the tested version, using base for removed units."
-			},
-			{
-				"name": "recordComponents.measured",
-				"type": "string[]",
-				"description": "Additional measured unit ids to include even when not reached by impact."
-			},
-			{
-				"name": "benchmarkMeasurements.gathered",
-				"type": "Gathered[]",
-				"description": "Gathered captures whose parsed benchmark payloads may supply measurements."
-			},
-			{
-				"name": "benchmarkMeasurements.context",
-				"type": "{ profile: string; commit: string }",
-				"description": "Current machine profile id and verified commit to attach to benchmark measurements."
-			},
-			{
-				"name": "referencedScenario.prior",
-				"type": "VerificationRecord",
-				"description": "Earlier verification record from which unaffected scenario evidence may be referenced."
-			},
-			{
-				"name": "referencedScenario.id",
-				"type": "string",
-				"description": "Scenario id to find in the prior record."
-			},
-			{
 				"name": "sealRecord.draft",
 				"type": "Omit<VerificationRecord, 'id'>",
+				"required": true,
 				"description": "Verification record fields except id, to hash canonically."
 			},
 			{
 				"name": "recordIntact.record",
 				"type": "VerificationRecord",
+				"required": true,
 				"description": "Record whose stored id should be compared with its current contents."
+			},
+			{
+				"name": "recordComponents.impact",
+				"type": "ImpactReport",
+				"required": true,
+				"description": "Impact report identifying direct, indirect, added and removed units."
+			},
+			{
+				"name": "recordComponents.sides",
+				"type": "{ base: Side; head: Side }",
+				"required": true,
+				"description": "Base and head manifests and owned source hashes used to identify the tested version, using base for removed units."
+			},
+			{
+				"name": "recordComponents.measured",
+				"type": "string[]",
+				"required": true,
+				"description": "Additional measured unit ids to include even when not reached by impact."
+			},
+			{
+				"name": "benchmarkMeasurements.gathered",
+				"type": "Gathered[]",
+				"required": true,
+				"description": "Gathered captures whose parsed benchmark payloads may supply measurements."
+			},
+			{
+				"name": "benchmarkMeasurements.context",
+				"type": "{ profile: string; commit: string }",
+				"required": true,
+				"description": "Current machine profile id and verified commit to attach to benchmark measurements."
+			},
+			{
+				"name": "referencedScenario.prior",
+				"type": "VerificationRecord",
+				"required": true,
+				"description": "Earlier verification record from which unaffected scenario evidence may be referenced."
+			},
+			{
+				"name": "referencedScenario.id",
+				"type": "string",
+				"required": true,
+				"description": "Scenario id to find in the prior record."
 			}
 		],
 		"outputs": [
@@ -113,7 +122,134 @@
 				"description": "True when recomputing the canonical record hash matches its id."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "sealRecord",
+				"inputs": [
+					{
+						"name": "sealRecord.draft",
+						"type": "Omit<VerificationRecord, 'id'>",
+						"required": true,
+						"description": "Verification record fields except id, to hash canonically."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealRecord",
+						"type": "VerificationRecord",
+						"description": "Record with id set to the SHA-256 of canonical draft JSON; no storage write occurs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordIntact",
+				"inputs": [
+					{
+						"name": "recordIntact.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Record whose stored id should be compared with its current contents."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordIntact",
+						"type": "boolean",
+						"description": "True when recomputing the canonical record hash matches its id."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordComponents",
+				"inputs": [
+					{
+						"name": "recordComponents.impact",
+						"type": "ImpactReport",
+						"required": true,
+						"description": "Impact report identifying direct, indirect, added and removed units."
+					},
+					{
+						"name": "recordComponents.sides",
+						"type": "{ base: Side; head: Side }",
+						"required": true,
+						"description": "Base and head manifests and owned source hashes used to identify the tested version, using base for removed units."
+					},
+					{
+						"name": "recordComponents.measured",
+						"type": "string[]",
+						"required": true,
+						"description": "Additional measured unit ids to include even when not reached by impact."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordComponents",
+						"type": "RecordedComponent[]",
+						"description": "Sorted unique tested/measured components with source, manifest, contract and runtime hashes, files, target and change classification. Missing manifests are omitted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "benchmarkMeasurements",
+				"inputs": [
+					{
+						"name": "benchmarkMeasurements.gathered",
+						"type": "Gathered[]",
+						"required": true,
+						"description": "Gathered captures whose parsed benchmark payloads may supply measurements."
+					},
+					{
+						"name": "benchmarkMeasurements.context",
+						"type": "{ profile: string; commit: string }",
+						"required": true,
+						"description": "Current machine profile id and verified commit to attach to benchmark measurements."
+					}
+				],
+				"outputs": [
+					{
+						"name": "benchmarkMeasurements",
+						"type": "Measurement[]",
+						"description": "Measurements from valid benchmark payloads, attributed to the supplied profile/commit with empty artifacts; invalid payloads contribute nothing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "referencedScenario",
+				"inputs": [
+					{
+						"name": "referencedScenario.prior",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Earlier verification record from which unaffected scenario evidence may be referenced."
+					},
+					{
+						"name": "referencedScenario.id",
+						"type": "string",
+						"required": true,
+						"description": "Scenario id to find in the prior record."
+					}
+				],
+				"outputs": [
+					{
+						"name": "referencedScenario",
+						"type": "ScenarioResult | undefined",
+						"description": "Earlier nonfailed scenario marked referenced with its original referencedRecord retained, or the prior record id; undefined for missing/failed scenarios."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

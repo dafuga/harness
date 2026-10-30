@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "holds.product",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "holds.words",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -41,7 +43,51 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "holds",
+				"inputs": [
+					{
+						"name": "holds.product",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "holds.words",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "holds",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "buildScanFixture",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "buildScanFixture",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

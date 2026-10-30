@@ -21,11 +21,13 @@
 			{
 				"name": "artifactAnswer.capture",
 				"type": "Listed",
+				"required": true,
 				"description": "The listed capture’s kind, recorded media type, SHA-256 hash, stored-media marker and optional explanation for missing bytes."
 			},
 			{
 				"name": "artifactAnswer.bytes",
 				"type": "Uint8Array | undefined",
+				"required": true,
 				"description": "The bytes held by the capture’s record, or undefined when unavailable. At most 11 MiB is accepted, including exactly 11 MiB."
 			}
 		],
@@ -52,7 +54,41 @@
 				"type": "refused",
 				"description": "Rejects when hashing the supplied bytes with SHA-256 does not reproduce the recorded hash."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "artifactAnswer",
+				"inputs": [
+					{
+						"name": "artifactAnswer.capture",
+						"type": "Listed",
+						"required": true,
+						"description": "The listed capture’s kind, recorded media type, SHA-256 hash, stored-media marker and optional explanation for missing bytes."
+					},
+					{
+						"name": "artifactAnswer.bytes",
+						"type": "Uint8Array | undefined",
+						"required": true,
+						"description": "The bytes held by the capture’s record, or undefined when unavailable. At most 11 MiB is accepted, including exactly 11 MiB."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artifactAnswer",
+						"type": "Promise<EvidenceArtifactResult>",
+						"description": "A promise for the original bytes, their checked recorded hash, and the media type selected from the capture kind and byte signatures. Unsupported media is rejected by the media checker."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

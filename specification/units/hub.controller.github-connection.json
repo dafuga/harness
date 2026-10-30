@@ -28,7 +28,8 @@
 		"inputs": [
 			{
 				"name": "GithubConnectionController.constructor.options",
-				"type": "GithubConnectionControllerOptions"
+				"type": "GithubConnectionControllerOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +38,42 @@
 				"type": "AuthRoutes"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "GithubConnectionController.routes",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "GithubConnectionController.routes",
+						"type": "AuthRoutes"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GithubConnectionController.constructor",
+				"inputs": [
+					{
+						"name": "GithubConnectionController.constructor.options",
+						"type": "GithubConnectionControllerOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubConnectionController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

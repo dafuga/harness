@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ProviderPickerCards.svelte",
-			"packages/reports/src/components/agents-providers/ProviderPickerCards.svelte"
-		],
-		"symbols": ["ProviderPickerCards", "ProviderPickerCards"]
+		"source": ["packages/reports/src/components/agents-providers/ProviderPickerCards.svelte"],
+		"symbols": ["ProviderPickerCards", "ProviderPickerCards.choice"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,6 +74,28 @@
 				"name": "cancel callback error",
 				"type": "thrown",
 				"description": "Any value thrown by the caller-supplied oncancel callback propagates when a pending switch is cancelled."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ProviderPickerCards.choice",
+				"inputs": [
+					{
+						"name": "ProviderPickerCards.choice.target",
+						"type": "ProviderSelection",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderPickerCards.choice",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

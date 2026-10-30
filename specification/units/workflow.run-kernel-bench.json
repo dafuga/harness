@@ -18,11 +18,13 @@
 		"inputs": [
 			{
 				"name": "runKernelBench.options",
-				"type": "BenchOptions"
+				"type": "BenchOptions",
+				"required": true
 			},
 			{
 				"name": "renderBench.benchmark",
-				"type": "KernelBenchmark"
+				"type": "KernelBenchmark",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,7 +42,52 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runKernelBench",
+				"inputs": [
+					{
+						"name": "runKernelBench.options",
+						"type": "BenchOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runKernelBench",
+						"type": "Promise<KernelBenchmark>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderBench",
+				"inputs": [
+					{
+						"name": "renderBench.benchmark",
+						"type": "KernelBenchmark",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderBench",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -16,11 +16,13 @@
 			{
 				"name": "newLoopState.root",
 				"type": "string",
+				"required": true,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "newLoopState.input",
 				"type": "{ name: string; goal: string; createdAt: string; from?: string; kind?: 'coding' | 'planning'; plan?: string; }",
+				"required": true,
 				"description": "Loop name, goal, creation time, optional inherited template, task kind and committed plan address."
 			}
 		],
@@ -37,7 +39,41 @@
 				"type": "thrown",
 				"description": "Invalid task kind or unavailable template is reported through the existing expected CLI error contract."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "newLoopState",
+				"inputs": [
+					{
+						"name": "newLoopState.root",
+						"type": "string",
+						"required": true,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+					},
+					{
+						"name": "newLoopState.input",
+						"type": "{ name: string; goal: string; createdAt: string; from?: string; kind?: 'coding' | 'planning'; plan?: string; }",
+						"required": true,
+						"description": "Loop name, goal, creation time, optional inherited template, task kind and committed plan address."
+					}
+				],
+				"outputs": [
+					{
+						"name": "newLoopState",
+						"type": "Promise<LoopState>",
+						"description": "Initial pending steps and template lineage; a coding or planning completion contract appears only for an explicitly supplied task kind."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -39,15 +39,18 @@
 		"inputs": [
 			{
 				"name": "RemoteHostService.constructor.options",
-				"type": "RemoteHostOptions"
+				"type": "RemoteHostOptions",
+				"required": true
 			},
 			{
 				"name": "RemoteHostService.onStatus.listener",
-				"type": "(status: RemoteHostStatus) => void"
+				"type": "(status: RemoteHostStatus) => void",
+				"required": true
 			},
 			{
 				"name": "RemoteHostService.screen.locked",
-				"type": "boolean"
+				"type": "boolean",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -112,6 +115,214 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteHostService.enabled",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.enabled",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RemoteHostService.name",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.name",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.onStatus",
+				"inputs": [
+					{
+						"name": "RemoteHostService.onStatus.listener",
+						"type": "(status: RemoteHostStatus) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostService.onStatus",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.start",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.enable",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.enable",
+						"type": "Promise<RemoteHostStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.disable",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.disable",
+						"type": "Promise<RemoteHostStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.screen",
+				"inputs": [
+					{
+						"name": "RemoteHostService.screen.locked",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostService.screen",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.suspend",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.suspend",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.resume",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.resume",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.stop",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.stop",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.status",
+						"type": "Promise<RemoteHostStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.current",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.current",
+						"type": "{ state: RemoteHostState; runtime: RemoteHostRuntimeService }"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "RemoteHostService.published",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.published",
+						"type": "Promise<RemoteHostStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.saved",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.saved",
+						"type": "Promise<RemoteHostStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteHostService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteHostService.constructor.options",
+						"type": "RemoteHostOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

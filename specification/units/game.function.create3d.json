@@ -22,26 +22,31 @@
 			{
 				"name": "ThreeSceneAdapter.constructor.canvas",
 				"type": "HTMLCanvasElement",
+				"required": true,
 				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 			},
 			{
 				"name": "ThreeSceneAdapter.constructor.context",
 				"type": "WebGL2RenderingContext",
+				"required": true,
 				"description": "WebGL2 context already selected by the renderer factory."
 			},
 			{
 				"name": "ThreeSceneAdapter.render.run",
 				"type": "GameRun",
+				"required": true,
 				"description": "Current deterministic game state, tick and checkpoint execution results."
 			},
 			{
 				"name": "ThreeSceneAdapter.render.view",
 				"type": "GameView",
+				"required": true,
 				"description": "Active authored view, including dimension and checkpoint definitions."
 			},
 			{
 				"name": "create3d.canvas",
 				"type": "HTMLCanvasElement",
+				"required": true,
 				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 			}
 		],
@@ -62,7 +67,93 @@
 				"description": "Canvas frame source with render and dispose operations."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "ThreeSceneAdapter.render",
+				"inputs": [
+					{
+						"name": "ThreeSceneAdapter.render.run",
+						"type": "GameRun",
+						"required": true,
+						"description": "Current deterministic game state, tick and checkpoint execution results."
+					},
+					{
+						"name": "ThreeSceneAdapter.render.view",
+						"type": "GameView",
+						"required": true,
+						"description": "Active authored view, including dimension and checkpoint definitions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ThreeSceneAdapter.render",
+						"type": "void",
+						"description": "Paint the current game frame."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ThreeSceneAdapter.dispose",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ThreeSceneAdapter.dispose",
+						"type": "void",
+						"description": "Release the renderer resources."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "create3d",
+				"inputs": [
+					{
+						"name": "create3d.canvas",
+						"type": "HTMLCanvasElement",
+						"required": true,
+						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+					}
+				],
+				"outputs": [
+					{
+						"name": "create3d",
+						"type": "FrameSource",
+						"description": "Canvas frame source with render and dispose operations."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ThreeSceneAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ThreeSceneAdapter.constructor.canvas",
+						"type": "HTMLCanvasElement",
+						"required": true
+					},
+					{
+						"name": "ThreeSceneAdapter.constructor.context",
+						"type": "WebGL2RenderingContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ThreeSceneAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

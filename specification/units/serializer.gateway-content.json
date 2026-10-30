@@ -23,11 +23,13 @@
 		"inputs": [
 			{
 				"name": "GatewayContentSerializer.history.input",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"required": true
 			},
 			{
 				"name": "GatewayContentSerializer.toolResult.output",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,7 +42,47 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GatewayContentSerializer.history",
+				"inputs": [
+					{
+						"name": "GatewayContentSerializer.history.input",
+						"type": "GatewayItem[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GatewayContentSerializer.history",
+						"type": "{ input: GatewayItem[]; images: GatewayImage[] }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GatewayContentSerializer.toolResult",
+				"inputs": [
+					{
+						"name": "GatewayContentSerializer.toolResult.output",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GatewayContentSerializer.toolResult",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -25,15 +25,18 @@
 		"inputs": [
 			{
 				"name": "LegacyReportRepository.constructor.store",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LegacyReportRepository.asset.run",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LegacyReportRepository.asset.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +49,65 @@
 				"type": "Promise<Buffer | undefined>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LegacyReportRepository.runs",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LegacyReportRepository.runs",
+						"type": "Promise<LegacyRun[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LegacyReportRepository.asset",
+				"inputs": [
+					{
+						"name": "LegacyReportRepository.asset.run",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "LegacyReportRepository.asset.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LegacyReportRepository.asset",
+						"type": "Promise<Buffer | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LegacyReportRepository.constructor",
+				"inputs": [
+					{
+						"name": "LegacyReportRepository.constructor.store",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LegacyReportRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

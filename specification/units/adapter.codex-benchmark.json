@@ -21,22 +21,27 @@
 		"inputs": [
 			{
 				"name": "CodexBenchmarkAdapter.constructor.executable",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "codex",
 				"description": "Native Codex executable name or path."
 			},
 			{
 				"name": "CodexBenchmarkAdapter.preflight.candidate",
 				"type": "BenchmarkCandidate",
+				"required": true,
 				"description": "Explicit runner, model, effort and tool configuration to validate."
 			},
 			{
 				"name": "CodexBenchmarkAdapter.run.input",
 				"type": "BenchmarkRunnerInput",
+				"required": true,
 				"description": "Isolated workspace, prompt, optional resumed session and abort signal."
 			},
 			{
 				"name": "CodexBenchmarkAdapter.command.input",
 				"type": "BenchmarkRunnerInput",
+				"required": true,
 				"description": "Candidate settings and session used to form the native argument vector."
 			}
 		],
@@ -62,6 +67,99 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Rejects unsupported settings, unavailable execution and incomplete or mismatched turns."
+			}
+		],
+		"operations": [
+			{
+				"name": "CodexBenchmarkAdapter.preflight",
+				"inputs": [
+					{
+						"name": "CodexBenchmarkAdapter.preflight.candidate",
+						"type": "BenchmarkCandidate",
+						"required": true,
+						"description": "Explicit runner, model, effort and tool configuration to validate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexBenchmarkAdapter.preflight",
+						"type": "Promise<string>",
+						"description": "Installed Codex CLI version after supported-setting checks."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexBenchmarkAdapter.run",
+				"inputs": [
+					{
+						"name": "CodexBenchmarkAdapter.run.input",
+						"type": "BenchmarkRunnerInput",
+						"required": true,
+						"description": "Isolated workspace, prompt, optional resumed session and abort signal."
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexBenchmarkAdapter.run",
+						"type": "Promise<BenchmarkTurn>",
+						"description": "Completed turn with session identity, matching reported model and available usage."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexBenchmarkAdapter.command",
+				"inputs": [
+					{
+						"name": "CodexBenchmarkAdapter.command.input",
+						"type": "BenchmarkRunnerInput",
+						"required": true,
+						"description": "Candidate settings and session used to form the native argument vector."
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexBenchmarkAdapter.command",
+						"type": "string[]",
+						"description": "Explicit Codex exec or resume argument vector."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CodexBenchmarkAdapter.constructor",
+				"inputs": [
+					{
+						"name": "CodexBenchmarkAdapter.constructor.executable",
+						"type": "string",
+						"required": false,
+						"default": "codex"
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexBenchmarkAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -23,19 +23,23 @@
 		"inputs": [
 			{
 				"name": "DesktopBridgeService.constructor.session",
-				"type": "ProjectSessionService"
+				"type": "ProjectSessionService",
+				"required": true
 			},
 			{
 				"name": "DesktopBridgeService.constructor.providers",
-				"type": "ProviderDiscoveryService"
+				"type": "ProviderDiscoveryService",
+				"required": true
 			},
 			{
 				"name": "DesktopBridgeService.constructor.runs",
-				"type": "DesktopRunService"
+				"type": "DesktopRunService",
+				"required": true
 			},
 			{
 				"name": "DesktopBridgeService.constructor.choose",
-				"type": "() => Promise<string | null>"
+				"type": "() => Promise<string | null>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,7 +48,57 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DesktopBridgeService.bridge",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DesktopBridgeService.bridge",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DesktopBridgeService.constructor",
+				"inputs": [
+					{
+						"name": "DesktopBridgeService.constructor.session",
+						"type": "ProjectSessionService",
+						"required": true
+					},
+					{
+						"name": "DesktopBridgeService.constructor.providers",
+						"type": "ProviderDiscoveryService",
+						"required": true
+					},
+					{
+						"name": "DesktopBridgeService.constructor.runs",
+						"type": "DesktopRunService",
+						"required": true
+					},
+					{
+						"name": "DesktopBridgeService.constructor.choose",
+						"type": "() => Promise<string | null>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DesktopBridgeService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -16,11 +16,13 @@
 			{
 				"name": "sqliteInput.model",
 				"type": "SqliteModel",
+				"required": true,
 				"description": "The table model declaring valid application properties, column names and field types."
 			},
 			{
 				"name": "sqliteInput.input",
 				"type": "Record<string, unknown>",
+				"required": true,
 				"description": "The partial record keyed by model property; keys missing from the model are rejected."
 			}
 		],
@@ -37,7 +39,36 @@
 				"type": "thrown",
 				"description": "Raised for a property not declared by the model or a value that cannot be bound."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "sqliteInput",
+				"inputs": [
+					{
+						"name": "sqliteInput.model",
+						"type": "SqliteModel",
+						"required": true,
+						"description": "The table model declaring valid application properties, column names and field types."
+					},
+					{
+						"name": "sqliteInput.input",
+						"type": "Record<string, unknown>",
+						"required": true,
+						"description": "The partial record keyed by model property; keys missing from the model are rejected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sqliteInput",
+						"type": "Array<{ column: string; value: SqliteValue }>",
+						"description": "One quoted database column and normalized SQLite binding for each input property, preserving input order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

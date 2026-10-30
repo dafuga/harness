@@ -44,53 +44,63 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "reviewChanges.review",
+				"type": "HarnessReview",
+				"required": true,
+				"description": "Budget review containing new limits and optional prior limits."
+			},
+			{
 				"name": "historyVerdict.coverage",
 				"type": "Coverage",
+				"required": true,
 				"description": "Recorded coverage status."
 			},
 			{
 				"name": "historyListed.rows",
 				"type": "ExplorerHistoryRow[]",
+				"required": true,
 				"description": "Candidate history rows in their supplied order."
 			},
 			{
 				"name": "historyListed.read",
 				"type": "Pick<Map<string, ExplorerHistoryDetail>, 'get'>",
+				"required": true,
 				"description": "Lookup of already-read revision details by commit."
 			},
 			{
 				"name": "entityHistory.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Index containing benchmark series."
 			},
 			{
 				"name": "entityHistory.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit whose benchmark series should be used."
 			},
 			{
 				"name": "entityHistory.rows",
 				"type": "ExplorerHistoryRow[]",
+				"required": true,
 				"description": "Listed commits in newest-first order; each compares only to the next listed commit in the same series."
 			},
 			{
 				"name": "historyProfiles.timings",
 				"type": "Map<string, HistoryTiming[]>",
+				"required": true,
 				"description": "Timing map whose profile identifiers should be collected."
-			},
-			{
-				"name": "reviewChanges.review",
-				"type": "HarnessReview",
-				"description": "Budget review containing new limits and optional prior limits."
 			},
 			{
 				"name": "signedBytes.delta",
 				"type": "number | null | undefined",
+				"required": true,
 				"description": "Byte difference, or null/undefined when no comparison exists."
 			},
 			{
 				"name": "signedCount.delta",
 				"type": "number | null | undefined",
+				"required": true,
 				"description": "Count difference, or null/undefined when no comparison exists."
 			}
 		],
@@ -131,7 +141,168 @@
 				"description": "Empty for a missing comparison, No change for zero, otherwise a signed count."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reviewChanges",
+				"inputs": [
+					{
+						"name": "reviewChanges.review",
+						"type": "HarnessReview",
+						"required": true,
+						"description": "Budget review containing new limits and optional prior limits."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewChanges",
+						"type": "string[]",
+						"description": "One readable sentence per new limit, including the old-to-new change when a prior value exists. Emitted-size keys receive target labels."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "historyVerdict",
+				"inputs": [
+					{
+						"name": "historyVerdict.coverage",
+						"type": "Coverage",
+						"required": true,
+						"description": "Recorded coverage status."
+					}
+				],
+				"outputs": [
+					{
+						"name": "historyVerdict",
+						"type": "{ passed: boolean; label: string }",
+						"description": "Passed only for verified coverage; other labels distinguish verification failure, unusable evidence and missing evidence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "historyListed",
+				"inputs": [
+					{
+						"name": "historyListed.rows",
+						"type": "ExplorerHistoryRow[]",
+						"required": true,
+						"description": "Candidate history rows in their supplied order."
+					},
+					{
+						"name": "historyListed.read",
+						"type": "Pick<Map<string, ExplorerHistoryDetail>, 'get'>",
+						"required": true,
+						"description": "Lookup of already-read revision details by commit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "historyListed",
+						"type": "{ listed: ExplorerHistoryRow[]; unread: ExplorerHistoryRow[] }",
+						"description": "Listed rows known to have changed the entity directly, been added or removed, plus a separate list of unknown rows whose details have not arrived."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "entityHistory",
+				"inputs": [
+					{
+						"name": "entityHistory.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index containing benchmark series."
+					},
+					{
+						"name": "entityHistory.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit whose benchmark series should be used."
+					},
+					{
+						"name": "entityHistory.rows",
+						"type": "ExplorerHistoryRow[]",
+						"required": true,
+						"description": "Listed commits in newest-first order; each compares only to the next listed commit in the same series."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityHistory",
+						"type": "Map<string, HistoryTiming[]>",
+						"description": "Map of timings at listed commits, preserving workload, metric, target and profile. A before value is included only when that same series has a point at the next listed commit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "historyProfiles",
+				"inputs": [
+					{
+						"name": "historyProfiles.timings",
+						"type": "Map<string, HistoryTiming[]>",
+						"required": true,
+						"description": "Timing map whose profile identifiers should be collected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "historyProfiles",
+						"type": "string[]",
+						"description": "Distinct profiles in first-occurrence order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "signedBytes",
+				"inputs": [
+					{
+						"name": "signedBytes.delta",
+						"type": "number | null | undefined",
+						"required": true,
+						"description": "Byte difference, or null/undefined when no comparison exists."
+					}
+				],
+				"outputs": [
+					{
+						"name": "signedBytes",
+						"type": "string",
+						"description": "Empty for a missing comparison, No change for zero, otherwise signed human-readable bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "signedCount",
+				"inputs": [
+					{
+						"name": "signedCount.delta",
+						"type": "number | null | undefined",
+						"required": true,
+						"description": "Count difference, or null/undefined when no comparison exists."
+					}
+				],
+				"outputs": [
+					{
+						"name": "signedCount",
+						"type": "string",
+						"description": "Empty for a missing comparison, No change for zero, otherwise a signed count."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

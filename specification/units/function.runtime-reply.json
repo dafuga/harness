@@ -20,16 +20,19 @@
 			{
 				"name": "runtimeReply.runtime",
 				"type": "UnitRuntime",
+				"required": true,
 				"description": "Runtime to invoke after HTTP admission."
 			},
 			{
 				"name": "runtimeReply.method",
 				"type": "string",
+				"required": true,
 				"description": "HTTP method, accepted only when exactly POST."
 			},
 			{
 				"name": "runtimeReply.read",
 				"type": "() => Promise<string>",
+				"required": true,
 				"description": "Async body-text reader, called only for POST requests."
 			}
 		],
@@ -40,7 +43,42 @@
 				"description": "405 invalid-request for other methods, 400 invalid-json for unreadable/malformed/nonportable input, otherwise 200 with the runtime’s own response, including application failure envelopes."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "runtimeReply",
+				"inputs": [
+					{
+						"name": "runtimeReply.runtime",
+						"type": "UnitRuntime",
+						"required": true,
+						"description": "Runtime to invoke after HTTP admission."
+					},
+					{
+						"name": "runtimeReply.method",
+						"type": "string",
+						"required": true,
+						"description": "HTTP method, accepted only when exactly POST."
+					},
+					{
+						"name": "runtimeReply.read",
+						"type": "() => Promise<string>",
+						"required": true,
+						"description": "Async body-text reader, called only for POST requests."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runtimeReply",
+						"type": "Promise<RuntimeReply>",
+						"description": "405 invalid-request for other methods, 400 invalid-json for unreadable/malformed/nonportable input, otherwise 200 with the runtime’s own response, including application failure envelopes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

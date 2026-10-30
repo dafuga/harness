@@ -30,7 +30,8 @@
 		"inputs": [
 			{
 				"name": "NativeAuthService.constructor.options",
-				"type": "AuthOptions"
+				"type": "AuthOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -51,6 +52,65 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "NativeAuthService.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeAuthService.connect",
+						"type": "Promise<NativeHostedStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeAuthService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeAuthService.status",
+						"type": "Promise<NativeHostedStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeAuthService.disconnect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeAuthService.disconnect",
+						"type": "Promise<NativeHostedStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "NativeAuthService.constructor",
+				"inputs": [
+					{
+						"name": "NativeAuthService.constructor.options",
+						"type": "AuthOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeAuthService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

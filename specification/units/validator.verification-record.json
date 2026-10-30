@@ -22,7 +22,8 @@
 		"inputs": [
 			{
 				"name": "VerificationRecordValidator.validate.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -31,7 +32,29 @@
 				"type": "ManifestValidation<VerificationRecord>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "VerificationRecordValidator.validate",
+				"inputs": [
+					{
+						"name": "VerificationRecordValidator.validate.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationRecordValidator.validate",
+						"type": "ManifestValidation<VerificationRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

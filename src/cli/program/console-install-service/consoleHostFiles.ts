@@ -44,7 +44,7 @@ function serverModule(options: ConsoleHostOptions): string {
 import type { ConsoleBucket, ConsoleRequest } from '@dafuga01/harness/console';`
 		: "import { consoleAccess, consoleBundle, consoleDocument } from '@dafuga01/harness/console';";
 	return `${header}${kit}
-import { consoleAssets, consoleExporter } from '@dafuga01/harness/console-ui';
+import { consoleAssets } from '@dafuga01/harness/console-ui';
 import { ${options.policyExport} as policy } from '${options.policyModule}';
 
 ${bucket ? stored(bucket) : bundled}
@@ -56,9 +56,9 @@ const host = {
 };
 
 /** Every console response goes through the host's own policy first. */
-export const harness = consoleAccess({ policy, data, exporter: consoleExporter, host });
+export const harness = consoleAccess({ policy, data, host });
 
-const html = consoleDocument(consoleAssets, { base: '${options.base}', exportable: true });
+const html = consoleDocument(consoleAssets, { base: '${options.base}' });
 
 /** The console document: the viewer only, sent once the policy has admitted the request. */
 export function consolePage(): Response {
@@ -91,16 +91,6 @@ export function GET(event: RequestEvent): Promise<Response> {
 `
 	],
 	[
-		'export/[commit]/+server.ts',
-		`${header}import type { RequestEvent } from '@sveltejs/kit';
-${access}
-export function GET(event: RequestEvent): Promise<Response> {
-	const record = event.url.searchParams.get('record');
-	return harness.report(event, event.params.commit ?? '', record);
-}
-`
-	],
-	[
 		'media/[file]/+server.ts',
 		`${header}import type { RequestEvent } from '@sveltejs/kit';
 ${access}
@@ -114,7 +104,7 @@ export function GET(event: RequestEvent): Promise<Response> {
 /**
  * The files a SvelteKit host needs to serve the console: one server-only module that binds
  * the host's policy to the data, the console document for the root and for every page path,
- * and the data, export and media endpoints. All of them answer through it and nothing else.
+ * and the data and media endpoints. All of them answer through it and nothing else.
  */
 export function consoleHostFiles(options: ConsoleHostOptions): HostFile[] {
 	return [

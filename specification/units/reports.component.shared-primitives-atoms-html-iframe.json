@@ -19,13 +19,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlIframe.attributes",
-				"type": "SvelteHTMLElements['iframe']",
-				"description": "Native iframe attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "HtmlIframe.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native iframe element; native HTML content rules still apply."
 			}
 		],
@@ -36,7 +32,9 @@
 				"description": "The actual native iframe element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

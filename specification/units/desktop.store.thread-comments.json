@@ -27,7 +27,8 @@
 		"inputs": [
 			{
 				"name": "createThreadCommentsStore.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -41,7 +42,29 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "createThreadCommentsStore",
+				"inputs": [
+					{
+						"name": "createThreadCommentsStore.workspace",
+						"type": "Workspace",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createThreadCommentsStore",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

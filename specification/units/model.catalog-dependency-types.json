@@ -5,7 +5,11 @@
 	"title": "CatalogDependency",
 	"responsibility": "Owns the CatalogDependency data model.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Type companion merged into model.catalog-dependency.",
+		"at": "working-tree"
+	},
 	"owns": {
 		"source": ["src/models/git-source-history/CatalogDependency.types.ts"],
 		"symbols": [

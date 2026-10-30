@@ -28,21 +28,25 @@
 			{
 				"name": "revisionRegistry.manifests",
 				"type": "ComponentManifest[]",
+				"required": true,
 				"description": "Unit manifests stored at the revision; entries are sorted by id without filtering status."
 			},
 			{
 				"name": "revisionRegistry.scenarios",
 				"type": "ScenarioManifest[]",
+				"required": true,
 				"description": "Scenario manifests stored at the revision; entries are sorted by id."
 			},
 			{
 				"name": "revisionRegistry.blobs",
 				"type": "Map<string, string>",
+				"required": false,
 				"description": "Optional owned-file path to blob-hash map, default empty; absent files contribute an explicit absent marker to unit versions."
 			},
 			{
 				"name": "revisionRegistry.baselines",
 				"type": "Map<string, BudgetBaseline>",
+				"required": false,
 				"description": "Optional reviewed budget baseline map by unit, default empty."
 			}
 		],
@@ -53,7 +57,48 @@
 				"description": "Registry view containing units, scenarios and declared dependency/coverage edges, with per-unit version hashes, catalog visibility and applicable reviewed limits. Available is false with a gap when there are no units."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "revisionRegistry",
+				"inputs": [
+					{
+						"name": "revisionRegistry.manifests",
+						"type": "ComponentManifest[]",
+						"required": true,
+						"description": "Unit manifests stored at the revision; entries are sorted by id without filtering status."
+					},
+					{
+						"name": "revisionRegistry.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true,
+						"description": "Scenario manifests stored at the revision; entries are sorted by id."
+					},
+					{
+						"name": "revisionRegistry.blobs",
+						"type": "Map<string, string>",
+						"required": false,
+						"description": "Optional owned-file path to blob-hash map, default empty; absent files contribute an explicit absent marker to unit versions."
+					},
+					{
+						"name": "revisionRegistry.baselines",
+						"type": "Map<string, BudgetBaseline>",
+						"required": false,
+						"description": "Optional reviewed budget baseline map by unit, default empty."
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionRegistry",
+						"type": "RevisionRegistry",
+						"description": "Registry view containing units, scenarios and declared dependency/coverage edges, with per-unit version hashes, catalog visibility and applicable reviewed limits. Available is false with a gap when there are no units."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

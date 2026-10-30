@@ -24,6 +24,7 @@
 			{
 				"name": "hostedAttestation.stated",
 				"type": "string",
+				"required": true,
 				"description": "The declared media type. Accepts PNG, JPEG, WAV, MPEG, MP4, Ogg, JSON and plain text, case-insensitively. Surrounding whitespace is ignored. Only JSON and plain text may include charset=utf-8; other parameters and aliases are refused."
 			}
 		],
@@ -45,7 +46,35 @@
 				"type": "thrown",
 				"description": "Throws for unsupported types, malformed declarations or parameters not permitted for that type."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hostedAttestation",
+				"inputs": [
+					{
+						"name": "hostedAttestation.stated",
+						"type": "string",
+						"required": true,
+						"description": "The declared media type. Accepts PNG, JPEG, WAV, MPEG, MP4, Ogg, JSON and plain text, case-insensitively. Surrounding whitespace is ignored. Only JSON and plain text may include charset=utf-8; other parameters and aliases are refused."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostedAttestation",
+						"type": "unknown",
+						"description": "An object with the normalized base media type and its category: screenshot, audio or output. This checks the declaration, not the bytes."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

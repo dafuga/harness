@@ -33,21 +33,26 @@
 			{
 				"name": "EntityAudio.evidence",
 				"type": "ExplorerEvidence",
+				"required": true,
 				"description": "Required explorer evidence from which audio gallery items are selected and grouped by comparison identity. Commit mode creates paired panes; after falls back to current."
 			},
 			{
 				"name": "EntityAudio.scope",
 				"type": "ExplorerScope",
+				"required": true,
 				"description": "Required selected commit and parent information used in pane labels."
 			},
 			{
 				"name": "EntityAudio.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "Required asset prefix passed to each audio card."
 			},
 			{
 				"name": "EntityAudio.empty",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional flag, false by default; when no clips exist, show an explicit empty state instead of rendering nothing."
 			}
 		],
@@ -58,7 +63,9 @@
 				"description": "Audio section that pairs before/after clips in commit mode and shows one current-side card otherwise. Missing sides within a pair are explicit gaps. Cards supply playback, transcript and provenance. No clips renders nothing unless empty is true, when it states that no audio was recorded at this revision."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

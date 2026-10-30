@@ -31,16 +31,19 @@
 			{
 				"name": "invitationLink.origin",
 				"type": "string",
+				"required": true,
 				"description": "Site origin to prefix; supplied text is not normalized here."
 			},
 			{
 				"name": "invitationLink.invitation",
 				"type": "Invitation",
+				"required": true,
 				"description": "Invitation carrying project and invitation IDs; its code is excluded from the link."
 			},
 			{
 				"name": "browserProjects.api",
 				"type": "BrowserApi",
+				"required": true,
 				"description": "Same-site API client."
 			}
 		],
@@ -56,7 +59,56 @@
 				"description": "Methods to list/get/create projects, list members, create/accept invitations and read GitHub status/repositories. Server-side checks determine permissions."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "invitationLink",
+				"inputs": [
+					{
+						"name": "invitationLink.origin",
+						"type": "string",
+						"required": true,
+						"description": "Site origin to prefix; supplied text is not normalized here."
+					},
+					{
+						"name": "invitationLink.invitation",
+						"type": "Invitation",
+						"required": true,
+						"description": "Invitation carrying project and invitation IDs; its code is excluded from the link."
+					}
+				],
+				"outputs": [
+					{
+						"name": "invitationLink",
+						"type": "string",
+						"description": "Invitation URL with encoded project and invitation IDs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "browserProjects",
+				"inputs": [
+					{
+						"name": "browserProjects.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "Same-site API client."
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserProjects",
+						"type": "unknown",
+						"description": "Methods to list/get/create projects, list members, create/accept invitations and read GitHub status/repositories. Server-side checks determine permissions."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

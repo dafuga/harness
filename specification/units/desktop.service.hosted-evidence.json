@@ -29,19 +29,23 @@
 		"inputs": [
 			{
 				"name": "HostedEvidenceService.constructor.transport",
-				"type": "Transport"
+				"type": "Transport",
+				"required": true
 			},
 			{
 				"name": "HostedEvidenceService.constructor.options",
-				"type": "HostedReadOptions"
+				"type": "HostedReadOptions",
+				"required": true
 			},
 			{
 				"name": "HostedEvidenceService.evidence.input",
-				"type": "Asked"
+				"type": "Asked",
+				"required": true
 			},
 			{
 				"name": "HostedEvidenceService.artifact.input",
-				"type": "EvidenceArtifactQuery & { projectId: string }"
+				"type": "EvidenceArtifactQuery & { projectId: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,7 +58,71 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostedEvidenceService.evidence",
+				"inputs": [
+					{
+						"name": "HostedEvidenceService.evidence.input",
+						"type": "Asked",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedEvidenceService.evidence",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostedEvidenceService.artifact",
+				"inputs": [
+					{
+						"name": "HostedEvidenceService.artifact.input",
+						"type": "EvidenceArtifactQuery & { projectId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedEvidenceService.artifact",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostedEvidenceService.constructor",
+				"inputs": [
+					{
+						"name": "HostedEvidenceService.constructor.transport",
+						"type": "Transport",
+						"required": true
+					},
+					{
+						"name": "HostedEvidenceService.constructor.options",
+						"type": "HostedReadOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedEvidenceService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

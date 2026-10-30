@@ -16,11 +16,13 @@
 			{
 				"name": "sqliteBinding.value",
 				"type": "unknown",
+				"required": true,
 				"description": "The application value to encode; JSON values are serialized and null is encoded for JSON fields or accepted for nullable fields."
 			},
 			{
 				"name": "sqliteBinding.field",
 				"type": "SqliteField",
+				"required": true,
 				"description": "The model field's SQLite storage type and nullability rules."
 			}
 		],
@@ -37,7 +39,41 @@
 				"type": "thrown",
 				"description": "Raised when the supplied value cannot be encoded for its declared field type."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "sqliteBinding",
+				"inputs": [
+					{
+						"name": "sqliteBinding.value",
+						"type": "unknown",
+						"required": true,
+						"description": "The application value to encode; JSON values are serialized and null is encoded for JSON fields or accepted for nullable fields."
+					},
+					{
+						"name": "sqliteBinding.field",
+						"type": "SqliteField",
+						"required": true,
+						"description": "The model field's SQLite storage type and nullability rules."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sqliteBinding",
+						"type": "SqliteValue",
+						"description": "A string, number, byte array or null suitable for a prepared-statement binding; booleans become 0 or 1 and JSON becomes text."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

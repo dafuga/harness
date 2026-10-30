@@ -32,15 +32,18 @@
 		"inputs": [
 			{
 				"name": "ConsoleInstallService.install.options",
-				"type": "ConsoleInstallOptions"
+				"type": "ConsoleInstallOptions",
+				"required": true
 			},
 			{
 				"name": "ConsoleInstallService.restore.host",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleInstallService.restore.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,7 +61,57 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ConsoleInstallService.install",
+				"inputs": [
+					{
+						"name": "ConsoleInstallService.install.options",
+						"type": "ConsoleInstallOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleInstallService.install",
+						"type": "Promise<ConsoleInstallResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleInstallService.restore",
+				"inputs": [
+					{
+						"name": "ConsoleInstallService.restore.host",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ConsoleInstallService.restore.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleInstallService.restore",
+						"type": "Promise<ConsoleChange>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -36,34 +36,40 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "humanize.name",
-				"type": "string",
-				"description": "Identifier to split into ordinary lowercase words."
-			},
-			{
 				"name": "requiredStates.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "Unit whose required states are requested."
 			},
 			{
 				"name": "requiredStates.scenarios",
 				"type": "HarnessScenario[]",
+				"required": true,
 				"description": "Scenario declarations to examine."
 			},
 			{
 				"name": "requiredStates.units",
 				"type": "HarnessUnit[]",
+				"required": true,
 				"description": "Registry units used to determine which scenario states actually show the unit."
 			},
 			{
 				"name": "entityContract.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "Unit supplying its responsibility, contract and runtime."
 			},
 			{
 				"name": "entityContract.facts",
 				"type": "ContractFacts",
+				"required": true,
 				"description": "Display category plus an optional app route."
+			},
+			{
+				"name": "humanize.name",
+				"type": "string",
+				"required": true,
+				"description": "Identifier to split into ordinary lowercase words."
 			}
 		],
 		"outputs": [
@@ -83,7 +89,88 @@
 				"description": "Category-specific rows: pages include purpose and address; configs show purpose and provided outputs; other categories show inputs, outputs and errors, with service runtime. Verification states appear only in evidence views. Field descriptions are retained, with missing descriptions stated when some fields are described. Component-self markup outputs read rendered markup."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "requiredStates",
+				"inputs": [
+					{
+						"name": "requiredStates.unit",
+						"type": "HarnessUnit",
+						"required": true,
+						"description": "Unit whose required states are requested."
+					},
+					{
+						"name": "requiredStates.scenarios",
+						"type": "HarnessScenario[]",
+						"required": true,
+						"description": "Scenario declarations to examine."
+					},
+					{
+						"name": "requiredStates.units",
+						"type": "HarnessUnit[]",
+						"required": true,
+						"description": "Registry units used to determine which scenario states actually show the unit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "requiredStates",
+						"type": "string[]",
+						"description": "Unique required state identifiers from scenarios naming the unit, narrowed through scenarioFor."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "entityContract",
+				"inputs": [
+					{
+						"name": "entityContract.unit",
+						"type": "HarnessUnit",
+						"required": true,
+						"description": "Unit supplying its responsibility, contract and runtime."
+					},
+					{
+						"name": "entityContract.facts",
+						"type": "ContractFacts",
+						"required": true,
+						"description": "Display category plus an optional app route."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityContract",
+						"type": "ContractRow[]",
+						"description": "Category-specific rows: pages include purpose and address; configs show purpose and provided outputs; other categories show inputs, outputs and errors, with service runtime. Verification states appear only in evidence views. Field descriptions are retained, with missing descriptions stated when some fields are described. Component-self markup outputs read rendered markup."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "humanize",
+				"inputs": [
+					{
+						"name": "humanize.name",
+						"type": "string",
+						"required": true,
+						"description": "Identifier to split into ordinary lowercase words."
+					}
+				],
+				"outputs": [
+					{
+						"name": "humanize",
+						"type": "string",
+						"description": "Words separated at camel-case, acronym and underscore/dot/hyphen boundaries, trimmed and lowercased."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -109,7 +196,8 @@
 			"inputs": [
 				{
 					"name": "humanize.name",
-					"type": "string"
+					"type": "string",
+					"required": true
 				}
 			],
 			"output": "string",
@@ -143,9 +231,6 @@
 			"consumers": [
 				{
 					"unit": "desktop.component.contract-panel"
-				},
-				{
-					"unit": "reports.component.harness-entity-change"
 				},
 				{
 					"unit": "reports.component.harness-entity-config"

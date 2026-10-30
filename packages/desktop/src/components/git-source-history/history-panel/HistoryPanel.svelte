@@ -9,7 +9,7 @@
 	import { historyPages } from './historyPages';
 	import { timeLabel } from '../../../utils/development-tooling/timeLabel';
 	import WorkspaceLink from '../../projects-sessions/WorkspaceLink.svelte';
-	import RegressionProof from '../../../../../reports/src/components/RegressionProof.svelte';
+	import RegressionProof from '../../../../../reports/src/components/verification-evidence/RegressionProof.svelte';
 	import type { EntityEvidence } from '../../../lib/stores/explorer-ui/entityEvidence.svelte';
 	let {
 		entity,

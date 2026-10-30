@@ -22,6 +22,7 @@
 			{
 				"name": "BenchmarkDefinitionValidator.validate.input",
 				"type": "unknown",
+				"required": true,
 				"description": "Untrusted definition before strict field, budget and duplicate checks."
 			}
 		],
@@ -43,7 +44,35 @@
 				"type": "thrown",
 				"description": "Rejects invalid schema fields, unsupported candidate settings or duplicate identifiers."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "BenchmarkDefinitionValidator.validate",
+				"inputs": [
+					{
+						"name": "BenchmarkDefinitionValidator.validate.input",
+						"type": "unknown",
+						"required": true,
+						"description": "Untrusted definition before strict field, budget and duplicate checks."
+					}
+				],
+				"outputs": [
+					{
+						"name": "BenchmarkDefinitionValidator.validate",
+						"type": "BenchmarkDefinition",
+						"description": "Normalized benchmark definition with unique paths, check IDs and candidate IDs."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

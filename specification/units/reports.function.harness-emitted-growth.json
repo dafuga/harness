@@ -30,11 +30,13 @@
 			{
 				"name": "harnessEmittedGrowth.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Index with unit growth, review ledger and newest-first revisions."
 			},
 			{
 				"name": "harnessEmittedGrowth.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit identifier."
 			}
 		],
@@ -45,7 +47,36 @@
 				"description": "Targets and oldest-first rows, with measured size, nonzero delta from the last available size, missing notes and prior-review limit. Reviews at the row’s commit are attached separately. changed compares current availability/value to the immediately preceding row; the first row is not marked changed."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "harnessEmittedGrowth",
+				"inputs": [
+					{
+						"name": "harnessEmittedGrowth.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index with unit growth, review ledger and newest-first revisions."
+					},
+					{
+						"name": "harnessEmittedGrowth.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit identifier."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessEmittedGrowth",
+						"type": "EmittedGrowth",
+						"description": "Targets and oldest-first rows, with measured size, nonzero delta from the last available size, missing notes and prior-review limit. Reviews at the row’s commit are attached separately. changed compares current availability/value to the immediately preceding row; the first row is not marked changed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

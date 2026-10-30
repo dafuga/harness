@@ -19,6 +19,7 @@
 			{
 				"name": "hostChanges.root",
 				"type": "string",
+				"required": true,
 				"description": "The project directory used to resolve relative reported paths and distinguish files inside the project."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "An observer and an asynchronous record operation. The observer remembers each qualifying absolute path once and starts its first hash read. Recording reads the final hashes, keeps observed operations even when hashes match, and appends a dated record when any exist. Missing or unreadable files have null hashes."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hostChanges",
+				"inputs": [
+					{
+						"name": "hostChanges.root",
+						"type": "string",
+						"required": true,
+						"description": "The project directory used to resolve relative reported paths and distinguish files inside the project."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostChanges",
+						"type": "unknown",
+						"description": "An observer and an asynchronous record operation. The observer remembers each qualifying absolute path once and starts its first hash read. Recording reads the final hashes, keeps observed operations even when hashes match, and appends a dated record when any exist. Missing or unreadable files have null hashes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

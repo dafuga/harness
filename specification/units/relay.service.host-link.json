@@ -27,39 +27,48 @@
 		"inputs": [
 			{
 				"name": "HostLinkService.constructor.store",
-				"type": "HostStorageAdapter"
+				"type": "HostStorageAdapter",
+				"required": true
 			},
 			{
 				"name": "HostLinkService.constructor.sockets",
-				"type": "HostSocketsAdapter"
+				"type": "HostSocketsAdapter",
+				"required": true
 			},
 			{
 				"name": "HostLinkService.toHost.frame",
-				"type": "RelayHostFrame"
+				"type": "RelayHostFrame",
+				"required": true
 			},
 			{
 				"name": "HostLinkService.notify.event",
-				"type": "RelayNotice['event']"
+				"type": "RelayNotice['event']",
+				"required": true
 			},
 			{
 				"name": "HostLinkService.drop.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			},
 			{
 				"name": "HostLinkService.drop.code",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "HostLinkService.welcome.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			},
 			{
 				"name": "HostLinkService.welcome.host",
-				"type": "HostRecord"
+				"type": "HostRecord",
+				"required": true
 			},
 			{
 				"name": "HostLinkService.seen.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -84,7 +93,135 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostLinkService.toHost",
+				"inputs": [
+					{
+						"name": "HostLinkService.toHost.frame",
+						"type": "RelayHostFrame",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostLinkService.toHost",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostLinkService.notify",
+				"inputs": [
+					{
+						"name": "HostLinkService.notify.event",
+						"type": "RelayNotice['event']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostLinkService.notify",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostLinkService.drop",
+				"inputs": [
+					{
+						"name": "HostLinkService.drop.socket",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "HostLinkService.drop.code",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostLinkService.drop",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostLinkService.welcome",
+				"inputs": [
+					{
+						"name": "HostLinkService.welcome.socket",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "HostLinkService.welcome.host",
+						"type": "HostRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostLinkService.welcome",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostLinkService.seen",
+				"inputs": [
+					{
+						"name": "HostLinkService.seen.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostLinkService.seen",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostLinkService.constructor",
+				"inputs": [
+					{
+						"name": "HostLinkService.constructor.store",
+						"type": "HostStorageAdapter",
+						"required": true
+					},
+					{
+						"name": "HostLinkService.constructor.sockets",
+						"type": "HostSocketsAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostLinkService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -23,7 +23,35 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "atomicComponentFiles",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "atomicComponentFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "atomicTypeFiles",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "atomicTypeFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

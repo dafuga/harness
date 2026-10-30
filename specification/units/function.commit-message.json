@@ -35,16 +35,20 @@
 			{
 				"name": "writtenMessage.file",
 				"type": "string",
+				"required": true,
 				"description": "Message-file contents supplied to a commit-msg hook, not a filesystem path."
 			},
 			{
 				"name": "writtenMessage.options",
 				"type": "MessageCleanup",
+				"required": false,
+				"default": {},
 				"description": "Optional Git cleanup mode and comment marker; defaults to strip and #. Verbatim preserves internal text; whitespace and scissors keep comment lines."
 			},
 			{
 				"name": "commitMessage.message",
 				"type": "string",
+				"required": true,
 				"description": "Commit message as stored, whose first line is the subject and remaining text is the body including trailers."
 			}
 		],
@@ -65,7 +69,57 @@
 				"description": "Problem messages for an empty subject, a subject over 72 characters, a missing allowed prefix followed by a space and content, or a body over 60 words or 400 characters. An empty array means all checks pass; counts trim ends and normalize line endings."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "writtenMessage",
+				"inputs": [
+					{
+						"name": "writtenMessage.file",
+						"type": "string",
+						"required": true,
+						"description": "Message-file contents supplied to a commit-msg hook, not a filesystem path."
+					},
+					{
+						"name": "writtenMessage.options",
+						"type": "MessageCleanup",
+						"required": false,
+						"default": {},
+						"description": "Optional Git cleanup mode and comment marker; defaults to strip and #. Verbatim preserves internal text; whitespace and scissors keep comment lines."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writtenMessage",
+						"type": "string",
+						"description": "Cleaned message text: trimmed ends, configured comment and whitespace cleanup, and scissors removal in non-verbatim modes. No file is read or written."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "commitMessage",
+				"inputs": [
+					{
+						"name": "commitMessage.message",
+						"type": "string",
+						"required": true,
+						"description": "Commit message as stored, whose first line is the subject and remaining text is the body including trailers."
+					}
+				],
+				"outputs": [
+					{
+						"name": "commitMessage",
+						"type": "string[]",
+						"description": "Problem messages for an empty subject, a subject over 72 characters, a missing allowed prefix followed by a space and content, or a body over 60 words or 400 characters. An empty array means all checks pass; counts trim ends and normalize line endings."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

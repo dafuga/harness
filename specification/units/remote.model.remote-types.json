@@ -82,11 +82,13 @@
 		"inputs": [
 			{
 				"name": "RemoteFailure.constructor.code",
-				"type": "RemoteErrorCode"
+				"type": "RemoteErrorCode",
+				"required": true
 			},
 			{
 				"name": "RemoteFailure.constructor.message",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -143,7 +145,34 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [],
+		"initialization": [
+			{
+				"name": "RemoteFailure.constructor",
+				"inputs": [
+					{
+						"name": "RemoteFailure.constructor.code",
+						"type": "RemoteErrorCode",
+						"required": true
+					},
+					{
+						"name": "RemoteFailure.constructor.message",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteFailure.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

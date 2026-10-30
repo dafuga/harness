@@ -29,19 +29,23 @@
 		"inputs": [
 			{
 				"name": "RemoteArtifactCacheService.constructor.reads",
-				"type": "HostedReadService"
+				"type": "HostedReadService",
+				"required": true
 			},
 			{
 				"name": "RemoteArtifactCacheService.pin.identity",
-				"type": "CacheIdentity"
+				"type": "CacheIdentity",
+				"required": true
 			},
 			{
 				"name": "RemoteArtifactCacheService.read.input",
-				"type": "{ key: string; query: Query }"
+				"type": "{ key: string; query: Query }",
+				"required": true
 			},
 			{
 				"name": "RemoteArtifactCacheService.read.load",
-				"type": "() => Promise<Media>"
+				"type": "() => Promise<Media>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,6 +62,70 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteArtifactCacheService.pin",
+				"inputs": [
+					{
+						"name": "RemoteArtifactCacheService.pin.identity",
+						"type": "CacheIdentity",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteArtifactCacheService.pin",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteArtifactCacheService.read",
+				"inputs": [
+					{
+						"name": "RemoteArtifactCacheService.read.input",
+						"type": "{ key: string; query: Query }",
+						"required": true
+					},
+					{
+						"name": "RemoteArtifactCacheService.read.load",
+						"type": "() => Promise<Media>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteArtifactCacheService.read",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteArtifactCacheService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteArtifactCacheService.constructor.reads",
+						"type": "HostedReadService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteArtifactCacheService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

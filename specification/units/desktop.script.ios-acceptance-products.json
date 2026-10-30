@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "acceptanceProducts.record",
-				"type": "AcceptanceRecord"
+				"type": "AcceptanceRecord",
+				"required": true
 			},
 			{
 				"name": "acceptanceProducts.read",
-				"type": "SourceReading"
+				"type": "SourceReading",
+				"required": true
 			},
 			{
 				"name": "normalProduct.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +39,52 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "acceptanceProducts",
+				"inputs": [
+					{
+						"name": "acceptanceProducts.record",
+						"type": "AcceptanceRecord",
+						"required": true
+					},
+					{
+						"name": "acceptanceProducts.read",
+						"type": "SourceReading",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "acceptanceProducts",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalProduct",
+				"inputs": [
+					{
+						"name": "normalProduct.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalProduct",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

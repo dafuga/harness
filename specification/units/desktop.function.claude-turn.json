@@ -20,12 +20,19 @@
 			{
 				"name": "claudeTurn.command",
 				"type": "CliCommand",
+				"required": true,
 				"description": "The Claude executable and initial arguments. The helper adds noninteractive streaming output, the requested model, bypassPermissions and disabled session persistence."
 			},
 			{
 				"name": "claudeTurn.turn",
 				"type": "AgentTurn",
+				"required": true,
 				"description": "The model, optional effort, working directory, prompt, access mode, cancellation signal and callbacks. The prompt goes to standard input. Read-only access limits available tools to Read, Glob and Grep; reported Write and Edit paths are sent to the optional file callback."
+			},
+			{
+				"name": "claudeTurn.queue",
+				"type": "ResourceQueueService",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -41,7 +48,41 @@
 				"type": "thrown",
 				"description": "Rejects if Claude reports another model, returns no completed result, marks its final result as an error, or the CLI process fails. Cancellation and process time or output limits also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "claudeTurn",
+				"inputs": [
+					{
+						"name": "claudeTurn.command",
+						"type": "CliCommand",
+						"required": true,
+						"description": "The Claude executable and initial arguments. The helper adds noninteractive streaming output, the requested model, bypassPermissions and disabled session persistence."
+					},
+					{
+						"name": "claudeTurn.turn",
+						"type": "AgentTurn",
+						"required": true,
+						"description": "The model, optional effort, working directory, prompt, access mode, cancellation signal and callbacks. The prompt goes to standard input. Read-only access limits available tools to Read, Glob and Grep; reported Write and Edit paths are sent to the optional file callback."
+					},
+					{
+						"name": "claudeTurn.queue",
+						"type": "ResourceQueueService",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "claudeTurn",
+						"type": "unknown",
+						"description": "A promise for the final public result text and the exact model reported by Claude. Public streamed events are forwarded while it runs; malformed JSON lines are ignored."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -28,24 +28,24 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "workspace",
+				"name": "recordedPreview.workspace",
 				"type": "Workspace",
-				"description": "The shown project snapshot, project context, pinned-commit setting and evidence connection. Without a snapshot or evidence reader, the preview reports that recorded screenshots cannot be read."
+				"required": true
 			},
 			{
-				"name": "entityId",
+				"name": "recordedPreview.entityId",
 				"type": "string",
-				"description": "The exact entity whose runtime screenshot is requested. The evidence answer must identify this entity and the shown commit, and must match the project when the request names one."
+				"required": true
 			},
 			{
-				"name": "thumbnail",
+				"name": "recordedPreview.thumbnail",
 				"type": "RecordedThumbnail",
-				"description": "A recorded-thumbnail selection. Supply scenario, state and viewport together, or leave all three absent. A partial selection is an error. When absent, the function looks for a recorded scenario state that explicitly names the entity and is required, preferring its desktop screenshot viewport when available."
+				"required": true
 			},
 			{
-				"name": "apply",
+				"name": "recordedPreview.apply",
 				"type": "(state: PreviewState) => void",
-				"description": "Receives loading immediately, then ready with an image URL and caption, missing with a reason, or error with a reason. Only a usable stored screenshot matching the selected scenario, state and viewport can become ready. The caption names the state and original tested commit, including whether the image was inherited. Read failures, mismatched identity, damaged bytes and media other than PNG or JPEG report error."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -55,7 +55,43 @@
 				"description": "A cleanup function to call when the preview is replaced or removed. It ignores late results and releases any image URL already created; it does not cancel the underlying request."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "recordedPreview",
+				"inputs": [
+					{
+						"name": "recordedPreview.workspace",
+						"type": "Workspace",
+						"required": true
+					},
+					{
+						"name": "recordedPreview.entityId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordedPreview.thumbnail",
+						"type": "RecordedThumbnail",
+						"required": true
+					},
+					{
+						"name": "recordedPreview.apply",
+						"type": "(state: PreviewState) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedPreview",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

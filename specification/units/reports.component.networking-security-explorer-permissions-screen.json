@@ -41,6 +41,16 @@
 		],
 		"symbols": [
 			"ExplorerPermissionsScreen",
+			"ExplorerPermissionsScreen.link",
+			"ExplorerPermissionsScreen.ref",
+			"ExplorerPermissionsScreen.heading",
+			"ExplorerPermissionsScreen.gaps",
+			"ExplorerPermissionsScreen.data",
+			"ExplorerPermissionsScreen.access",
+			"ExplorerPermissionsScreen.panel",
+			"ExplorerPermissionsScreen.index",
+			"ExplorerPermissionsScreen.detail",
+			"ExplorerPermissionsScreen.children",
 			"ExplorerPermissionsScreenProps",
 			"ProfileEntry",
 			"ProfileGrant",
@@ -113,14 +123,8 @@
 				"description": "Requests navigation while preserving the selected explorer scope."
 			},
 			{
-				"name": "ExplorerPermissionsScreen.exportHref",
-				"type": "string",
-				"required": true,
-				"description": "Project export URL; empty when the host provides no export."
-			},
-			{
 				"name": "ExplorerPermissionsScreen.endpoint",
-				"type": "string | undefined",
+				"type": "string",
 				"required": false,
 				"description": "Optional API unit ID restricting the screen to the profile grants declared for that endpoint."
 			}
@@ -142,6 +146,197 @@
 				"name": "onroute callback error",
 				"type": "thrown",
 				"description": "An error supplied by the navigation callback propagates when a permission link is activated."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerPermissionsScreen.link",
+				"inputs": [
+					{
+						"name": "ExplorerPermissionsScreen.link.to",
+						"type": "ExplorerLocation",
+						"required": true
+					},
+					{
+						"name": "ExplorerPermissionsScreen.link.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ExplorerPermissionsScreen.link.code",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.link",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPermissionsScreen.ref",
+				"inputs": [
+					{
+						"name": "ExplorerPermissionsScreen.ref.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.ref",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPermissionsScreen.heading",
+				"inputs": [
+					{
+						"name": "ExplorerPermissionsScreen.heading.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ExplorerPermissionsScreen.heading.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ExplorerPermissionsScreen.heading.top",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.heading",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPermissionsScreen.gaps",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.gaps",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPermissionsScreen.data",
+				"inputs": [
+					{
+						"name": "ExplorerPermissionsScreen.data.rows",
+						"type": "DataGrant[]",
+						"required": true
+					},
+					{
+						"name": "ExplorerPermissionsScreen.data.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.data",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPermissionsScreen.access",
+				"inputs": [
+					{
+						"name": "ExplorerPermissionsScreen.access.grant",
+						"type": "ApiGrant",
+						"required": true
+					},
+					{
+						"name": "ExplorerPermissionsScreen.access.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.access",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPermissionsScreen.panel",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.panel",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPermissionsScreen.index",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.index",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPermissionsScreen.detail",
+				"inputs": [
+					{
+						"name": "ExplorerPermissionsScreen.detail.profile",
+						"type": "ProfileEntry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.detail",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPermissionsScreen.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

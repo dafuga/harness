@@ -20,16 +20,20 @@
 			{
 				"name": "recordLineage.record",
 				"type": "VerificationRecord",
+				"required": true,
 				"description": "Verification record whose base and referenced scenario ancestry should be checked."
 			},
 			{
 				"name": "recordLineage.source",
 				"type": "LineageSource",
+				"required": true,
 				"description": "Lookup for stored records and callback reporting record identity, seal and evidence problems."
 			},
 			{
 				"name": "recordLineage.path",
 				"type": "string[]",
+				"required": false,
+				"default": [],
 				"description": "Optional ancestor id trail, default empty, used to detect cyclic inheritance."
 			}
 		],
@@ -40,7 +44,43 @@
 				"description": "Problem strings for missing, mismatched, failed, damaged or cyclic ancestry and changed inherited states. An empty list means no examined lineage violation; checks are cached per object only within this call."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "recordLineage",
+				"inputs": [
+					{
+						"name": "recordLineage.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Verification record whose base and referenced scenario ancestry should be checked."
+					},
+					{
+						"name": "recordLineage.source",
+						"type": "LineageSource",
+						"required": true,
+						"description": "Lookup for stored records and callback reporting record identity, seal and evidence problems."
+					},
+					{
+						"name": "recordLineage.path",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Optional ancestor id trail, default empty, used to detect cyclic inheritance."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordLineage",
+						"type": "string[]",
+						"description": "Problem strings for missing, mismatched, failed, damaged or cyclic ancestry and changed inherited states. An empty list means no examined lineage violation; checks are cached per object only within this call."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -44,31 +44,38 @@
 		"inputs": [
 			{
 				"name": "GithubGrantService.constructor.options",
-				"type": "GithubGrantOptions"
+				"type": "GithubGrantOptions",
+				"required": true
 			},
 			{
 				"name": "GithubGrantService.begin.session",
-				"type": "SessionRecord"
+				"type": "SessionRecord",
+				"required": true
 			},
 			{
 				"name": "GithubGrantService.complete.session",
-				"type": "SessionRecord"
+				"type": "SessionRecord",
+				"required": true
 			},
 			{
 				"name": "GithubGrantService.complete.input",
-				"type": "{ code: string; state: string }"
+				"type": "{ code: string; state: string }",
+				"required": true
 			},
 			{
 				"name": "GithubGrantService.status.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "GithubGrantService.disconnect.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "GithubGrantService.userToken.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -105,7 +112,125 @@
 				"type": "Promise<string>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GithubGrantService.begin",
+				"inputs": [
+					{
+						"name": "GithubGrantService.begin.session",
+						"type": "SessionRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubGrantService.begin",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubGrantService.complete",
+				"inputs": [
+					{
+						"name": "GithubGrantService.complete.session",
+						"type": "SessionRecord",
+						"required": true
+					},
+					{
+						"name": "GithubGrantService.complete.input",
+						"type": "{ code: string; state: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubGrantService.complete",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubGrantService.status",
+				"inputs": [
+					{
+						"name": "GithubGrantService.status.actor",
+						"type": "Actor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubGrantService.status",
+						"type": "Promise<GithubStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubGrantService.disconnect",
+				"inputs": [
+					{
+						"name": "GithubGrantService.disconnect.actor",
+						"type": "Actor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubGrantService.disconnect",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubGrantService.userToken",
+				"inputs": [
+					{
+						"name": "GithubGrantService.userToken.actor",
+						"type": "Actor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubGrantService.userToken",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GithubGrantService.constructor",
+				"inputs": [
+					{
+						"name": "GithubGrantService.constructor.options",
+						"type": "GithubGrantOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubGrantService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -23,15 +23,19 @@
 		"inputs": [
 			{
 				"name": "HostedFailureValidator.constructor.category",
-				"type": "'offline' | 'denied' | 'failed'"
+				"type": "'offline' | 'denied' | 'failed'",
+				"required": true
 			},
 			{
 				"name": "HostedFailureValidator.constructor.status",
-				"type": "unknown"
+				"type": "number",
+				"required": false,
+				"default": 0
 			},
 			{
 				"name": "HostedFailureValidator.classify.error",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,7 +44,54 @@
 				"type": "HostedFailureValidator"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostedFailureValidator.classify",
+				"inputs": [
+					{
+						"name": "HostedFailureValidator.classify.error",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedFailureValidator.classify",
+						"type": "HostedFailureValidator"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostedFailureValidator.constructor",
+				"inputs": [
+					{
+						"name": "HostedFailureValidator.constructor.category",
+						"type": "'offline' | 'denied' | 'failed'",
+						"required": true
+					},
+					{
+						"name": "HostedFailureValidator.constructor.status",
+						"type": "number",
+						"required": false,
+						"default": 0
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedFailureValidator.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

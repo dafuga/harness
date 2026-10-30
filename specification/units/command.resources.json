@@ -16,6 +16,7 @@
 			{
 				"name": "registerResourcesCommand.program",
 				"type": "Command",
+				"required": true,
 				"description": "Commander program on which the resources status, configure and run subcommands are installed."
 			}
 		],
@@ -26,7 +27,30 @@
 				"description": "Installs CLI handlers; execution and output occur when their subcommands are invoked."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "registerResourcesCommand",
+				"inputs": [
+					{
+						"name": "registerResourcesCommand.program",
+						"type": "Command",
+						"required": true,
+						"description": "Commander program on which the resources status, configure and run subcommands are installed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerResourcesCommand",
+						"type": "void",
+						"description": "Installs CLI handlers; execution and output occur when their subcommands are invoked."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

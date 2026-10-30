@@ -28,7 +28,8 @@
 		"inputs": [
 			{
 				"name": "reviewCleanCode.input",
-				"type": "ReviewCleanCodeInput"
+				"type": "ReviewCleanCodeInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -42,7 +43,29 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "reviewCleanCode",
+				"inputs": [
+					{
+						"name": "reviewCleanCode.input",
+						"type": "ReviewCleanCodeInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewCleanCode",
+						"type": "Promise<CleanCodeReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

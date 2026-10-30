@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/HubFrame.svelte",
-			"packages/hub/src/components/shared-primitives/HubFrame.svelte"
-		],
-		"symbols": ["HubFrame", "HubFrame"]
+		"source": ["packages/hub/src/components/shared-primitives/HubFrame.svelte"],
+		"symbols": ["HubFrame"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,6 +28,7 @@
 			{
 				"name": "HubFrame.children",
 				"type": "Snippet",
+				"required": true,
 				"description": "Required page-content snippet rendered in the main area."
 			}
 		],
@@ -41,7 +39,9 @@
 				"description": "Harness header linking to the project home through full document navigation, Shared projects label, account controls and supplied main content."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

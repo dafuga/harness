@@ -27,21 +27,25 @@
 			{
 				"name": "hubEvidenceQuery.request",
 				"type": "Request",
+				"required": true,
 				"description": "Request URL containing evidence query parameters."
 			},
 			{
 				"name": "hubEvidenceQuery.projectId",
 				"type": "string",
+				"required": true,
 				"description": "Authorized route project ID to use."
 			},
 			{
 				"name": "hubArtifactQuery.request",
 				"type": "Request",
+				"required": true,
 				"description": "Request URL containing artifact query parameters."
 			},
 			{
 				"name": "hubArtifactQuery.projectId",
 				"type": "string",
+				"required": true,
 				"description": "Authorized route project ID to use."
 			}
 		],
@@ -57,7 +61,62 @@
 				"description": "Validated public artifact query with the route project ID and absent viewport/notes/evidence revisions supplied as null."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubEvidenceQuery",
+				"inputs": [
+					{
+						"name": "hubEvidenceQuery.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request URL containing evidence query parameters."
+					},
+					{
+						"name": "hubEvidenceQuery.projectId",
+						"type": "string",
+						"required": true,
+						"description": "Authorized route project ID to use."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidenceQuery",
+						"type": "EntityEvidenceQuery",
+						"description": "Validated public entity-evidence query with the route project ID."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubArtifactQuery",
+				"inputs": [
+					{
+						"name": "hubArtifactQuery.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request URL containing artifact query parameters."
+					},
+					{
+						"name": "hubArtifactQuery.projectId",
+						"type": "string",
+						"required": true,
+						"description": "Authorized route project ID to use."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubArtifactQuery",
+						"type": "EvidenceArtifactQuery",
+						"description": "Validated public artifact query with the route project ID and absent viewport/notes/evidence revisions supplied as null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

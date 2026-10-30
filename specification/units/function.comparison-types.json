@@ -57,7 +57,9 @@
 				"description": "Strict Zod schema for a 64-character lowercase SHA-256 request digest, supported boundary, nonempty trimmed protocol and strict sampling counts with nonnegative warm-up and positive rounds and iterations."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

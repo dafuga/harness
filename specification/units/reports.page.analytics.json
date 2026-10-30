@@ -26,7 +26,28 @@
 				"type": "SvelteKit redirect",
 				"description": "Throws HTTP 308 to /harness."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "load",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "load",
+						"type": "never",
+						"description": "Does not return; throws the permanent redirect to the explorer."
+					}
+				],
+				"errors": [
+					{
+						"name": "Redirect 308",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

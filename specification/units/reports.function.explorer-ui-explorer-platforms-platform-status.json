@@ -21,7 +21,8 @@
 		"inputs": [
 			{
 				"name": "platformStatus.platform",
-				"type": "PlatformEntry | undefined",
+				"type": "PlatformEntry",
+				"required": false,
 				"description": "The selected revision’s platform declaration; undefined yields the Not recorded state."
 			}
 		],
@@ -42,7 +43,30 @@
 				"description": "The declaration’s status identifier and human-readable label. This describes repository configuration, not a live deployment verdict."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "platformStatus",
+				"inputs": [
+					{
+						"name": "platformStatus.platform",
+						"type": "PlatformEntry",
+						"required": false,
+						"description": "The selected revision’s platform declaration; undefined yields the Not recorded state."
+					}
+				],
+				"outputs": [
+					{
+						"name": "platformStatus",
+						"type": "{ id: \"configured\" | \"setup-required\" | \"not-configured\" | \"not-recorded\"; label: string }",
+						"description": "The declaration’s status identifier and human-readable label. This describes repository configuration, not a live deployment verdict."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

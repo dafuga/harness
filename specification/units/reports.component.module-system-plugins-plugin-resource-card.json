@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.module-system-plugins-plugin-resource-card",
+	"kind": "component",
+	"title": "Plugin resource card",
+	"responsibility": "Shows one resource type of a plugin with the steps to make one and the generate command.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-command-block",
+			"reports.component.module-system-plugins-plugin-steps",
+			"reports.component.shared-primitives-atoms-html-h3"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/module-system/plugins/PluginResourceCard.svelte"],
+		"symbols": ["PluginResourceCard"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "PluginResourceCard.entry",
+				"type": "ModuleEntry",
+				"required": true,
+				"description": "The plugin as read at this revision: its definition, source and whether it is installed."
+			},
+			{
+				"name": "PluginResourceCard.resource",
+				"type": "ModuleResource",
+				"required": true,
+				"description": "The resource type to describe."
+			},
+			{
+				"name": "PluginResourceCard.title",
+				"type": "Snippet",
+				"required": true,
+				"description": "The resource title, linked to its list when the plugin is installed."
+			}
+		],
+		"outputs": [
+			{
+				"name": "PluginResourceCard",
+				"type": "markup",
+				"description": "A card for the resource type grid."
+			}
+		],
+		"errors": [],
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-command-block",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.module-system-plugins-plugin-steps",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/module-system/plugins/PluginResourceCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/module-system/plugins/PluginResourceCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

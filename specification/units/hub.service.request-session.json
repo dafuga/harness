@@ -32,23 +32,28 @@
 		"inputs": [
 			{
 				"name": "RequestSessionService.constructor.options",
-				"type": "RequestSessionOptions"
+				"type": "RequestSessionOptions",
+				"required": true
 			},
 			{
 				"name": "RequestSessionService.resolve.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			},
 			{
 				"name": "RequestSessionService.browser.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			},
 			{
 				"name": "RequestSessionService.required.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			},
 			{
 				"name": "RequestSessionService.crossOrigin.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -69,7 +74,102 @@
 				"type": "boolean"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RequestSessionService.resolve",
+				"inputs": [
+					{
+						"name": "RequestSessionService.resolve.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RequestSessionService.resolve",
+						"type": "Promise<SessionRecord | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RequestSessionService.browser",
+				"inputs": [
+					{
+						"name": "RequestSessionService.browser.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RequestSessionService.browser",
+						"type": "Promise<SessionRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RequestSessionService.required",
+				"inputs": [
+					{
+						"name": "RequestSessionService.required.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RequestSessionService.required",
+						"type": "Promise<SessionRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RequestSessionService.crossOrigin",
+				"inputs": [
+					{
+						"name": "RequestSessionService.crossOrigin.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RequestSessionService.crossOrigin",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RequestSessionService.constructor",
+				"inputs": [
+					{
+						"name": "RequestSessionService.constructor.options",
+						"type": "RequestSessionOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RequestSessionService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

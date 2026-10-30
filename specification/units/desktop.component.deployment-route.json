@@ -11,11 +11,8 @@
 		"uses": ["reports.component.shared-primitives-atoms-html-span"]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/DeploymentRoute.svelte",
-			"packages/desktop/src/components/development-tooling/DeploymentRoute.svelte"
-		],
-		"symbols": ["DeploymentRoute", "DeploymentRoute"]
+		"source": ["packages/desktop/src/components/development-tooling/DeploymentRoute.svelte"],
+		"symbols": ["DeploymentRoute"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,6 +20,7 @@
 			{
 				"name": "DeploymentRoute.deployment",
 				"type": "Pick<DeploymentActivity, 'sourceEnvironment' | 'environment' | 'branch'>",
+				"required": true,
 				"description": "Deployment job or route whose source, destination and recorded progress are displayed."
 			}
 		],
@@ -33,7 +31,9 @@
 				"description": "Displays accessible source-to-destination labels and a directional arrow for a deployment."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

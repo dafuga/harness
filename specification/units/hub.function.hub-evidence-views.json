@@ -26,24 +26,28 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "hubEvidenceOrigin.history",
-				"type": "HubRecordStatusService",
-				"description": "Pinned record history service."
-			},
-			{
-				"name": "hubEvidenceOrigin.id",
-				"type": "string",
-				"description": "Original record ID to locate."
-			},
-			{
 				"name": "hubEvidenceViews.history",
 				"type": "HubRecordStatusService",
+				"required": true,
 				"description": "Pinned record history service."
 			},
 			{
 				"name": "hubEvidenceViews.items",
 				"type": "RecordStatus[]",
+				"required": true,
 				"description": "Record statuses, including validity and problems, to project."
+			},
+			{
+				"name": "hubEvidenceOrigin.history",
+				"type": "HubRecordStatusService",
+				"required": true,
+				"description": "Pinned record history service."
+			},
+			{
+				"name": "hubEvidenceOrigin.id",
+				"type": "string",
+				"required": true,
+				"description": "Original record ID to locate."
 			}
 		],
 		"outputs": [
@@ -58,7 +62,62 @@
 				"description": "Projected record views, retaining invalid-record problems and missing-capture gaps; attachments with no parsed record are omitted. Media references require matching validated hash and length."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubEvidenceViews",
+				"inputs": [
+					{
+						"name": "hubEvidenceViews.history",
+						"type": "HubRecordStatusService",
+						"required": true,
+						"description": "Pinned record history service."
+					},
+					{
+						"name": "hubEvidenceViews.items",
+						"type": "RecordStatus[]",
+						"required": true,
+						"description": "Record statuses, including validity and problems, to project."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidenceViews",
+						"type": "unknown",
+						"description": "Projected record views, retaining invalid-record problems and missing-capture gaps; attachments with no parsed record are omitted. Media references require matching validated hash and length."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubEvidenceOrigin",
+				"inputs": [
+					{
+						"name": "hubEvidenceOrigin.history",
+						"type": "HubRecordStatusService",
+						"required": true,
+						"description": "Pinned record history service."
+					},
+					{
+						"name": "hubEvidenceOrigin.id",
+						"type": "string",
+						"required": true,
+						"description": "Original record ID to locate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidenceOrigin",
+						"type": "unknown",
+						"description": "Loaded attachment when a verification line resolves to the requested record ID, otherwise undefined."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

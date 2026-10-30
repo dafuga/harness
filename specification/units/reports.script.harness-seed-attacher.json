@@ -25,15 +25,19 @@
 		"inputs": [
 			{
 				"name": "SeedAttacher.open.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SeedAttacher.attach.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SeedAttacher.attach.options",
-				"type": "SeedAttach"
+				"type": "SeedAttach",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -55,7 +59,75 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SeedAttacher.open",
+				"inputs": [
+					{
+						"name": "SeedAttacher.open.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SeedAttacher.open",
+						"type": "Promise<SeedAttacher>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SeedAttacher.attach",
+				"inputs": [
+					{
+						"name": "SeedAttacher.attach.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SeedAttacher.attach.options",
+						"type": "SeedAttach",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "SeedAttacher.attach",
+						"type": "Promise<Attached>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SeedAttacher.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SeedAttacher.close",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

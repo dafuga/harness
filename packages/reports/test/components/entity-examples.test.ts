@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import EntityExamples from '../../src/components/EntityExamples.svelte';
+import EntityExamples from '../../src/components/explorer-ui/EntityExamples.svelte';
 
 const draw = (examples: unknown[], setup?: string, setupTitle?: string) =>
 	render(EntityExamples, {

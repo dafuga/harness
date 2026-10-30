@@ -41,7 +41,13 @@
 			"packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.svelte",
 			"packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.types.ts"
 		],
-		"symbols": ["ExplorerPlatformDetails", "Row"]
+		"symbols": [
+			"ExplorerPlatformDetails",
+			"ExplorerPlatformDetails.table",
+			"ExplorerPlatformDetails.sections",
+			"ExplorerPlatformDetails.children",
+			"Row"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -81,6 +87,73 @@
 				"name": "URIError",
 				"type": "thrown",
 				"description": "A recorded source path with an unpaired UTF-16 surrogate cannot be encoded as a GitHub URL."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerPlatformDetails.table",
+				"inputs": [
+					{
+						"name": "ExplorerPlatformDetails.table.label",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ExplorerPlatformDetails.table.column",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ExplorerPlatformDetails.table.rows",
+						"type": "Row[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPlatformDetails.table",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPlatformDetails.sections",
+				"inputs": [
+					{
+						"name": "ExplorerPlatformDetails.sections.declared",
+						"type": "PlatformEntry",
+						"required": true
+					},
+					{
+						"name": "ExplorerPlatformDetails.sections.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPlatformDetails.sections",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPlatformDetails.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerPlatformDetails.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

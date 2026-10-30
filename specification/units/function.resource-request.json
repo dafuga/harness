@@ -16,16 +16,19 @@
 			{
 				"name": "resourceRequest.flags",
 				"type": "Record<string, string>",
+				"required": true,
 				"description": "Resources CLI priority, CPU, RAM and label fields, including supported auto sizing."
 			},
 			{
 				"name": "resourceRequest.service",
 				"type": "Pick<ResourceQueueService, 'home' | 'snapshot'> & { queue: Pick<ResourceQueueService['queue'], 'all'>; }",
+				"required": true,
 				"description": "Queue access, current telemetry and configuration directory used to resolve automatic requests."
 			},
 			{
 				"name": "resourceRequest.env",
 				"type": "Record<string, string | undefined>",
+				"required": false,
 				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
 			}
 		],
@@ -36,7 +39,42 @@
 				"description": "Validated concrete request preserving parent limits for nested automatic sizing."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "resourceRequest",
+				"inputs": [
+					{
+						"name": "resourceRequest.flags",
+						"type": "Record<string, string>",
+						"required": true,
+						"description": "Resources CLI priority, CPU, RAM and label fields, including supported auto sizing."
+					},
+					{
+						"name": "resourceRequest.service",
+						"type": "Pick<ResourceQueueService, 'home' | 'snapshot'> & { queue: Pick<ResourceQueueService['queue'], 'all'>; }",
+						"required": true,
+						"description": "Queue access, current telemetry and configuration directory used to resolve automatic requests."
+					},
+					{
+						"name": "resourceRequest.env",
+						"type": "Record<string, string | undefined>",
+						"required": false,
+						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceRequest",
+						"type": "Promise<ResourceRequest>",
+						"description": "Validated concrete request preserving parent limits for nested automatic sizing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

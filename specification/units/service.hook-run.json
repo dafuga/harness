@@ -24,11 +24,13 @@
 		"inputs": [
 			{
 				"name": "HookRunService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HookRunService.prePush.input",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +39,48 @@
 				"type": "Promise<HookOutcome>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HookRunService.prePush",
+				"inputs": [
+					{
+						"name": "HookRunService.prePush.input",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HookRunService.prePush",
+						"type": "Promise<HookOutcome>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HookRunService.constructor",
+				"inputs": [
+					{
+						"name": "HookRunService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HookRunService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

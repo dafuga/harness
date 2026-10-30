@@ -29,19 +29,23 @@
 		"inputs": [
 			{
 				"name": "SourceHistoryRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SourceHistoryRepository.read.limit",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "SourceHistoryRepository.revision.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SourceHistoryRepository.revision.branches",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,7 +58,71 @@
 				"type": "Promise<SourceRevision | undefined>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SourceHistoryRepository.read",
+				"inputs": [
+					{
+						"name": "SourceHistoryRepository.read.limit",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceHistoryRepository.read",
+						"type": "Promise<SourceHistory>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SourceHistoryRepository.revision",
+				"inputs": [
+					{
+						"name": "SourceHistoryRepository.revision.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SourceHistoryRepository.revision.branches",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceHistoryRepository.revision",
+						"type": "Promise<SourceRevision | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SourceHistoryRepository.constructor",
+				"inputs": [
+					{
+						"name": "SourceHistoryRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceHistoryRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -30,41 +30,49 @@
 			{
 				"name": "DecartStreamAdapter.constructor.canvas",
 				"type": "HTMLCanvasElement",
+				"required": true,
 				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 			},
 			{
 				"name": "DecartStreamAdapter.connect.session",
 				"type": "RenderSession",
+				"required": true,
 				"description": "Bounded ephemeral rendering session prepared by the project service."
 			},
 			{
 				"name": "DecartStreamAdapter.connect.prompt",
 				"type": "Prompt",
+				"required": true,
 				"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
 			},
 			{
 				"name": "DecartStreamAdapter.connect.onStream",
 				"type": "(stream: MediaStream) => void",
+				"required": true,
 				"description": "Callback receiving the rendered remote stream for this preview."
 			},
 			{
 				"name": "connectDecart.canvas",
 				"type": "HTMLCanvasElement",
+				"required": true,
 				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 			},
 			{
 				"name": "connectDecart.session",
 				"type": "RenderSession",
+				"required": true,
 				"description": "Bounded ephemeral rendering session prepared by the project service."
 			},
 			{
 				"name": "connectDecart.prompt",
 				"type": "Prompt",
+				"required": true,
 				"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
 			},
 			{
 				"name": "connectDecart.onStream",
 				"type": "(stream: MediaStream) => void",
+				"required": true,
 				"description": "Callback receiving the rendered remote stream for this preview."
 			}
 		],
@@ -90,6 +98,111 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Unavailable transport, cancellation or connection failure; native rendering remains independent."
+			}
+		],
+		"operations": [
+			{
+				"name": "decartTransportReady",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "decartTransportReady",
+						"type": "boolean",
+						"description": "False while no credential-safe live video transport is registered."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DecartStreamAdapter.connect",
+				"inputs": [
+					{
+						"name": "DecartStreamAdapter.connect.session",
+						"type": "RenderSession",
+						"required": true,
+						"description": "Bounded ephemeral rendering session prepared by the project service."
+					},
+					{
+						"name": "DecartStreamAdapter.connect.prompt",
+						"type": "Prompt",
+						"required": true,
+						"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
+					},
+					{
+						"name": "DecartStreamAdapter.connect.onStream",
+						"type": "(stream: MediaStream) => void",
+						"required": true,
+						"description": "Callback receiving the rendered remote stream for this preview."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DecartStreamAdapter.connect",
+						"type": "Promise<{ stop(): void; ended(): boolean; setPrompt(text: string): void }>",
+						"description": "Bounded connection controls that stop tracks and the remote connection without automatic retries."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "connectDecart",
+				"inputs": [
+					{
+						"name": "connectDecart.canvas",
+						"type": "HTMLCanvasElement",
+						"required": true,
+						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+					},
+					{
+						"name": "connectDecart.session",
+						"type": "RenderSession",
+						"required": true,
+						"description": "Bounded ephemeral rendering session prepared by the project service."
+					},
+					{
+						"name": "connectDecart.prompt",
+						"type": "Prompt",
+						"required": true,
+						"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
+					},
+					{
+						"name": "connectDecart.onStream",
+						"type": "(stream: MediaStream) => void",
+						"required": true,
+						"description": "Callback receiving the rendered remote stream for this preview."
+					}
+				],
+				"outputs": [
+					{
+						"name": "connectDecart",
+						"type": "Promise<{ stop(): void; ended(): boolean; setPrompt(text: string): void }>",
+						"description": "Bounded connection controls that stop tracks and the remote connection without automatic retries."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DecartStreamAdapter.constructor",
+				"inputs": [
+					{
+						"name": "DecartStreamAdapter.constructor.canvas",
+						"type": "HTMLCanvasElement",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DecartStreamAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

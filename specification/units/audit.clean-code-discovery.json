@@ -23,23 +23,28 @@
 		"inputs": [
 			{
 				"name": "discoverCleanCodeFiles.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "discoverCleanCodeFiles.collected",
-				"type": "CollectedFiles"
+				"type": "CollectedFiles",
+				"required": true
 			},
 			{
 				"name": "discoverCleanCodeFiles.exclusions",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "matchesExclusion.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "matchesExclusion.pattern",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -52,7 +57,62 @@
 				"type": "boolean"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "discoverCleanCodeFiles",
+				"inputs": [
+					{
+						"name": "discoverCleanCodeFiles.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "discoverCleanCodeFiles.collected",
+						"type": "CollectedFiles",
+						"required": true
+					},
+					{
+						"name": "discoverCleanCodeFiles.exclusions",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "discoverCleanCodeFiles",
+						"type": "ReviewCoverage"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchesExclusion",
+				"inputs": [
+					{
+						"name": "matchesExclusion.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "matchesExclusion.pattern",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesExclusion",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -30,51 +30,65 @@
 		"inputs": [
 			{
 				"name": "CatalogRepository.constructor.db",
-				"type": "SqliteDatabase"
+				"type": "SqliteDatabase",
+				"required": true
 			},
 			{
 				"name": "CatalogRepository.constructor.initialize",
-				"type": "unknown"
+				"type": "boolean",
+				"required": false,
+				"default": true
 			},
 			{
 				"name": "CatalogRepository.replace.index",
-				"type": "HistoryIndex"
+				"type": "HistoryIndex",
+				"required": true
 			},
 			{
 				"name": "CatalogRepository.replace.snapshots",
-				"type": "CatalogSnapshot[]"
+				"type": "CatalogSnapshot[]",
+				"required": true
 			},
 			{
 				"name": "CatalogRepository.entities.options",
-				"type": "CatalogQuery"
+				"type": "CatalogQuery",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "CatalogRepository.dependencies.unitId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CatalogRepository.dependencies.commit",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "CatalogRepository.consumers.unitId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CatalogRepository.consumers.commit",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "CatalogRepository.history.unitId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CatalogRepository.records.commit",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "CatalogRepository.scenarios.commit",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -111,6 +125,182 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogRepository.replace",
+				"inputs": [
+					{
+						"name": "CatalogRepository.replace.index",
+						"type": "HistoryIndex",
+						"required": true
+					},
+					{
+						"name": "CatalogRepository.replace.snapshots",
+						"type": "CatalogSnapshot[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRepository.replace",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRepository.entities",
+				"inputs": [
+					{
+						"name": "CatalogRepository.entities.options",
+						"type": "CatalogQuery",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRepository.entities",
+						"type": "RevisionRegistry['units']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRepository.dependencies",
+				"inputs": [
+					{
+						"name": "CatalogRepository.dependencies.unitId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogRepository.dependencies.commit",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRepository.dependencies",
+						"type": "Array<{ unit: string; via: string }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRepository.consumers",
+				"inputs": [
+					{
+						"name": "CatalogRepository.consumers.unitId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogRepository.consumers.commit",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRepository.consumers",
+						"type": "Array<{ unit: string; via: string }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRepository.history",
+				"inputs": [
+					{
+						"name": "CatalogRepository.history.unitId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRepository.history",
+						"type": "IndexedRevision[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRepository.records",
+				"inputs": [
+					{
+						"name": "CatalogRepository.records.commit",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRepository.records",
+						"type": "HistoryIndex['revisions'][number]['records']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRepository.scenarios",
+				"inputs": [
+					{
+						"name": "CatalogRepository.scenarios.commit",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRepository.scenarios",
+						"type": "RevisionRegistry['scenarios']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CatalogRepository.constructor",
+				"inputs": [
+					{
+						"name": "CatalogRepository.constructor.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "CatalogRepository.constructor.initialize",
+						"type": "boolean",
+						"required": false,
+						"default": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		]
 	},

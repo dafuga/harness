@@ -1,0 +1,13 @@
+{
+	"name": "remove-old-report-surfaces",
+	"goal": "Remove the old report UI and export pipeline while preserving explorer evidence consumers and passing registry, ownership, type, lint and unit checks.",
+	"createdAt": "2026-10-30T17:02:58.665Z",
+	"updatedAt": "2026-10-30T17:03:59.415Z",
+	"steps": [
+		{
+			"id": "verify",
+			"title": "Registry and retained surfaces pass the requested checks",
+			"status": "pending"
+		}
+	]
+}

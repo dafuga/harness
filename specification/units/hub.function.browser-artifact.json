@@ -21,11 +21,13 @@
 			{
 				"name": "browserArtifact.media",
 				"type": "{ bytes: Uint8Array; mediaType: string }",
+				"required": true,
 				"description": "Bytes and exact declared media type; only the supported evidence media-type list is accepted."
 			},
 			{
 				"name": "browserArtifact.sha256",
 				"type": "string",
+				"required": true,
 				"description": "Expected SHA-256 of the requested artifact."
 			}
 		],
@@ -42,7 +44,41 @@
 				"type": "thrown",
 				"description": "Rejects unsupported kinds, mismatched SHA-256, oversized files or failed media validation; size and unsupported-type messages are rewritten for the browser."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "browserArtifact",
+				"inputs": [
+					{
+						"name": "browserArtifact.media",
+						"type": "{ bytes: Uint8Array; mediaType: string }",
+						"required": true,
+						"description": "Bytes and exact declared media type; only the supported evidence media-type list is accepted."
+					},
+					{
+						"name": "browserArtifact.sha256",
+						"type": "string",
+						"required": true,
+						"description": "Expected SHA-256 of the requested artifact."
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserArtifact",
+						"type": "unknown",
+						"description": "Validated artifact from the hosted-artifact reader."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

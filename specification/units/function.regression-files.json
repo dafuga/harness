@@ -32,9 +32,59 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "Request",
-				"type": "Regression inputs",
-				"description": "Two committed source revisions and the selected test files"
+				"name": "testPath.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "metadata.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "regressionFiles.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "regressionFiles.commit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "regressionFiles.tests",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "regressionFixCommit.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "regressionFixCommit.commit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "regressionFixCommit.red",
+				"type": "RegressionRecord",
+				"required": true
+			},
+			{
+				"name": "regressionTestCommit.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "regressionTestCommit.commit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "regressionTestCommit.tests",
+				"type": "string[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -50,7 +100,145 @@
 				"type": "Explicit rejection or gap",
 				"description": "Refuses a product repair in the test commit, reused commits or changed test inputs."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "testPath",
+				"inputs": [
+					{
+						"name": "testPath.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "testPath",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "metadata",
+				"inputs": [
+					{
+						"name": "metadata.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "metadata",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "regressionFiles",
+				"inputs": [
+					{
+						"name": "regressionFiles.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "regressionFiles.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "regressionFiles.tests",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "regressionFiles",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "regressionFixCommit",
+				"inputs": [
+					{
+						"name": "regressionFixCommit.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "regressionFixCommit.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "regressionFixCommit.red",
+						"type": "RegressionRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "regressionFixCommit",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "regressionTestCommit",
+				"inputs": [
+					{
+						"name": "regressionTestCommit.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "regressionTestCommit.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "regressionTestCommit.tests",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "regressionTestCommit",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -12,7 +12,7 @@
 		type EntityNav
 	} from '../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
-	import ExplorerUsage from '../ExplorerUsage.svelte';
+	import ExplorerUsage from './ExplorerUsage.svelte';
 	import Modal from '../shared-primitives/Modal.svelte';
 	import ConfigValueTree, { collection } from './ConfigValueTree.svelte';
 	import EntityLink from './EntityLink.svelte';

@@ -16,6 +16,7 @@
 			{
 				"name": "runBenchmarkTrial.input",
 				"type": "BenchmarkTrialInput",
+				"required": true,
 				"description": "Run, candidate, runner, persistence callback and shared trial context."
 			}
 		],
@@ -26,7 +27,30 @@
 				"description": "Persists a bounded trial outcome and cleans its temporary workspaces."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "runBenchmarkTrial",
+				"inputs": [
+					{
+						"name": "runBenchmarkTrial.input",
+						"type": "BenchmarkTrialInput",
+						"required": true,
+						"description": "Run, candidate, runner, persistence callback and shared trial context."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runBenchmarkTrial",
+						"type": "Promise<void>",
+						"description": "Persists a bounded trial outcome and cleans its temporary workspaces."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

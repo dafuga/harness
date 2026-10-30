@@ -41,11 +41,13 @@
 			{
 				"name": "pathMatches.path",
 				"type": "string",
+				"required": true,
 				"description": "Forward-slash path to compare with a pattern."
 			},
 			{
 				"name": "pathMatches.pattern",
 				"type": "string",
+				"required": true,
 				"description": "Exact path, directory prefix ending slash, or supported wildcard pattern."
 			}
 		],
@@ -96,7 +98,36 @@
 				"description": "True for exact match, trailing-slash prefix or wildcard match; **/ can span zero or more directories and * remains within a segment."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "pathMatches",
+				"inputs": [
+					{
+						"name": "pathMatches.path",
+						"type": "string",
+						"required": true,
+						"description": "Forward-slash path to compare with a pattern."
+					},
+					{
+						"name": "pathMatches.pattern",
+						"type": "string",
+						"required": true,
+						"description": "Exact path, directory prefix ending slash, or supported wildcard pattern."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pathMatches",
+						"type": "boolean",
+						"description": "True for exact match, trailing-slash prefix or wildcard match; **/ can span zero or more directories and * remains within a segment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

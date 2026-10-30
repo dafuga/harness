@@ -20,11 +20,13 @@
 			{
 				"name": "hostedEvidencePath.input",
 				"type": "EntityEvidenceQuery & { projectId: string }",
+				"required": true,
 				"description": "The project and evidence scope; artifact operations also need the capture-binding fields at runtime. Project IDs are 1–128 characters, beginning with a letter or digit and continuing with letters, digits, dots, underscores or hyphens."
 			},
 			{
 				"name": "hostedEvidencePath.operation",
 				"type": "'evidence' | 'artifact'",
+				"required": true,
 				"description": "Choose evidence for metadata or artifact for capture bytes."
 			}
 		],
@@ -41,7 +43,41 @@
 				"type": "thrown",
 				"description": "Throws for an invalid project identity or missing or invalid evidence/artifact fields."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hostedEvidencePath",
+				"inputs": [
+					{
+						"name": "hostedEvidencePath.input",
+						"type": "EntityEvidenceQuery & { projectId: string }",
+						"required": true,
+						"description": "The project and evidence scope; artifact operations also need the capture-binding fields at runtime. Project IDs are 1–128 characters, beginning with a letter or digit and continuing with letters, digits, dots, underscores or hyphens."
+					},
+					{
+						"name": "hostedEvidencePath.operation",
+						"type": "'evidence' | 'artifact'",
+						"required": true,
+						"description": "Choose evidence for metadata or artifact for capture bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostedEvidencePath",
+						"type": "unknown",
+						"description": "A relative API URL for the encoded project and operation, with validated fields in a fixed query order. Null values are omitted and extra input fields are discarded. No network call is made."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

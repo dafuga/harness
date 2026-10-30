@@ -32,26 +32,31 @@
 			{
 				"name": "artifactDifferences.before",
 				"type": "unknown",
+				"required": true,
 				"description": "Earlier recorded value or document."
 			},
 			{
 				"name": "artifactDifferences.after",
 				"type": "unknown",
+				"required": true,
 				"description": "Later recorded value or document."
 			},
 			{
 				"name": "explorerReading.behavior",
 				"type": "ExplorerBehavior",
+				"required": true,
 				"description": "Initial behavior comparison with capture references and uncertainty state."
 			},
 			{
 				"name": "explorerReading.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "Media address prefix used to read artifacts."
 			},
 			{
 				"name": "explorerReading.fetcher",
 				"type": "ArtifactFetcher",
+				"required": false,
 				"description": "Optional artifact byte loader, forwarded to the verified artifact reader."
 			}
 		],
@@ -72,7 +77,68 @@
 				"description": "Resolves to rows carrying verified reads and content differences. Different-byte rows become changed or unchanged from their content; unverified reads become unknown. Existing not-compared or explained unknown summaries are retained. Reads within one invocation are cached by SHA-256."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "artifactDifferences",
+				"inputs": [
+					{
+						"name": "artifactDifferences.before",
+						"type": "unknown",
+						"required": true,
+						"description": "Earlier recorded value or document."
+					},
+					{
+						"name": "artifactDifferences.after",
+						"type": "unknown",
+						"required": true,
+						"description": "Later recorded value or document."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artifactDifferences",
+						"type": "string[]",
+						"description": "Paths where values differ, comparing arrays by index and objects by sorted key union. Properly typed metadata is excluded only inside a supported run declaration; undeclared times and process IDs remain behavior. Trace-entry declarations are considered when the root has a supported declaration."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explorerReading",
+				"inputs": [
+					{
+						"name": "explorerReading.behavior",
+						"type": "ExplorerBehavior",
+						"required": true,
+						"description": "Initial behavior comparison with capture references and uncertainty state."
+					},
+					{
+						"name": "explorerReading.mediaBase",
+						"type": "string",
+						"required": true,
+						"description": "Media address prefix used to read artifacts."
+					},
+					{
+						"name": "explorerReading.fetcher",
+						"type": "ArtifactFetcher",
+						"required": false,
+						"description": "Optional artifact byte loader, forwarded to the verified artifact reader."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerReading",
+						"type": "Promise<ExplorerBehavior>",
+						"description": "Resolves to rows carrying verified reads and content differences. Different-byte rows become changed or unchanged from their content; unverified reads become unknown. Existing not-compared or explained unknown summaries are retained. Reads within one invocation are cached by SHA-256."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

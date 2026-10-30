@@ -20,7 +20,23 @@
 				"description": "Supported Restyle and Lucy model selections, fast-mode flags and cost rates per minute."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "gameRenderOptions",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "gameRenderOptions",
+						"type": "unknown",
+						"description": "Supported Restyle and Lucy model selections, fast-mode flags and cost rates per minute."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

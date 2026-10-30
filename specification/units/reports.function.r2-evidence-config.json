@@ -29,7 +29,28 @@
 				"type": "thrown",
 				"description": "Throws when local-only storage is requested outside a temporary descendant directory, required R2 settings are missing, or an endpoint override is not an HTTP 127.0.0.1 server with an explicit port."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "r2EvidenceConfig",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "r2EvidenceConfig",
+						"type": "unknown",
+						"description": "Complete R2 configuration, or undefined for an allowed temporary local-only store or an unconfigured temporary test store. Reads environment and the configured adapter configuration file, except that test mode does not pass the file override."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -27,27 +27,35 @@
 		"inputs": [
 			{
 				"name": "HarnessApiService.constructor.options",
-				"type": "HarnessApiOptions"
+				"type": "HarnessApiOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "HarnessApiService.read.resource",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HarnessApiService.read.input",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "HarnessApiService.call.method",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HarnessApiService.call.input",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": true
 			},
 			{
 				"name": "HarnessApiService.call.requestId",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -72,6 +80,116 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HarnessApiService.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HarnessApiService.connect",
+						"type": "Promise<{ connected: true; server: string }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HarnessApiService.snapshot",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HarnessApiService.snapshot",
+						"type": "Promise<ApiSnapshot>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HarnessApiService.read",
+				"inputs": [
+					{
+						"name": "HarnessApiService.read.resource",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HarnessApiService.read.input",
+						"type": "Record<string, unknown>",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "HarnessApiService.read",
+						"type": "Promise<ApiResponse>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HarnessApiService.call",
+				"inputs": [
+					{
+						"name": "HarnessApiService.call.method",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HarnessApiService.call.input",
+						"type": "Record<string, unknown>",
+						"required": true
+					},
+					{
+						"name": "HarnessApiService.call.requestId",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HarnessApiService.call",
+						"type": "Promise<ApiResponse>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HarnessApiService.constructor",
+				"inputs": [
+					{
+						"name": "HarnessApiService.constructor.options",
+						"type": "HarnessApiOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "HarnessApiService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		]
 	},

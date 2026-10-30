@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimePane.svelte",
-			"packages/desktop/src/components/execution-runtimes/RuntimePane.svelte"
-		],
-		"symbols": ["RuntimePane", "RuntimePane"]
+		"source": ["packages/desktop/src/components/execution-runtimes/RuntimePane.svelte"],
+		"symbols": ["RuntimePane"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,21 +28,25 @@
 			{
 				"name": "RuntimePane.item",
 				"type": "Evidence",
+				"required": true,
 				"description": "Evidence item with file, phase, missing flag/note and display facts. Missing items are not fetched. Before phase reads before; other phases read after."
 			},
 			{
 				"name": "RuntimePane.title",
 				"type": "string",
+				"required": true,
 				"description": "Required figure heading and accessible name."
 			},
 			{
 				"name": "RuntimePane.role",
 				"type": "string",
+				"required": true,
 				"description": "Required descriptive badge such as Parent commit or Branch tip."
 			},
 			{
 				"name": "RuntimePane.evidence",
 				"type": "EntityEvidence",
+				"required": true,
 				"description": "URL-reading state. Failed promises become displayed problems; callbacks from superseded requests are ignored."
 			}
 		],
@@ -56,7 +57,9 @@
 				"description": "Figure with screenshot after URL resolution, plus standing/status. Missing capture, failed verification and loading have separate messages. Non-Fresh capture standings receive stale styling."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -25,31 +25,38 @@
 		"inputs": [
 			{
 				"name": "PairingAccessService.constructor.store",
-				"type": "HostStorageAdapter"
+				"type": "HostStorageAdapter",
+				"required": true
 			},
 			{
 				"name": "PairingAccessService.constructor.offers",
-				"type": "PairingOfferService"
+				"type": "PairingOfferService",
+				"required": true
 			},
 			{
 				"name": "PairingAccessService.constructor.link",
-				"type": "HostLinkService"
+				"type": "HostLinkService",
+				"required": true
 			},
 			{
 				"name": "PairingAccessService.info.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PairingAccessService.poll.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PairingAccessService.request.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PairingAccessService.request.request",
-				"type": "RelayPairingRequest"
+				"type": "RelayPairingRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -66,7 +73,99 @@
 				"type": "RelayPairingPoll | RelayErrorCode"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PairingAccessService.info",
+				"inputs": [
+					{
+						"name": "PairingAccessService.info.pairingId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingAccessService.info",
+						"type": "RelayPairingInfo | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PairingAccessService.poll",
+				"inputs": [
+					{
+						"name": "PairingAccessService.poll.pairingId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingAccessService.poll",
+						"type": "RelayPairingPoll | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PairingAccessService.request",
+				"inputs": [
+					{
+						"name": "PairingAccessService.request.pairingId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PairingAccessService.request.request",
+						"type": "RelayPairingRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingAccessService.request",
+						"type": "RelayPairingPoll | RelayErrorCode"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PairingAccessService.constructor",
+				"inputs": [
+					{
+						"name": "PairingAccessService.constructor.store",
+						"type": "HostStorageAdapter",
+						"required": true
+					},
+					{
+						"name": "PairingAccessService.constructor.offers",
+						"type": "PairingOfferService",
+						"required": true
+					},
+					{
+						"name": "PairingAccessService.constructor.link",
+						"type": "HostLinkService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingAccessService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

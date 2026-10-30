@@ -41,15 +41,18 @@
 		"inputs": [
 			{
 				"name": "RelayLinkService.constructor.options",
-				"type": "RelayLinkOptions"
+				"type": "RelayLinkOptions",
+				"required": true
 			},
 			{
 				"name": "RelayLinkService.send.command",
-				"type": "RelayHostCommand"
+				"type": "RelayHostCommand",
+				"required": true
 			},
 			{
 				"name": "RelayLinkService.command.input",
-				"type": "RelayCommandInput"
+				"type": "RelayCommandInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -70,7 +73,90 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RelayLinkService.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RelayLinkService.start",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayLinkService.stop",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RelayLinkService.stop",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayLinkService.send",
+				"inputs": [
+					{
+						"name": "RelayLinkService.send.command",
+						"type": "RelayHostCommand",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayLinkService.send",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayLinkService.command",
+				"inputs": [
+					{
+						"name": "RelayLinkService.command.input",
+						"type": "RelayCommandInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayLinkService.command",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RelayLinkService.constructor",
+				"inputs": [
+					{
+						"name": "RelayLinkService.constructor.options",
+						"type": "RelayLinkOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayLinkService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

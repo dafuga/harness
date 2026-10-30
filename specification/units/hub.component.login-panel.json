@@ -17,11 +17,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/accounts-access/login-panel/LoginPanel.svelte",
-			"packages/hub/src/components/login-panel/LoginPanel.svelte"
-		],
-		"symbols": ["LoginPanel", "LoginPanel"]
+		"source": ["packages/hub/src/components/accounts-access/login-panel/LoginPanel.svelte"],
+		"symbols": ["LoginPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -29,6 +26,8 @@
 			{
 				"name": "LoginPanel.reason",
 				"type": "string",
+				"required": false,
+				"default": "Sign in with Google to open the projects you own and the ones you were invited to.",
 				"description": "Optional introductory text, defaulting to guidance to sign in with Google to open invited projects. Used only in the ordinary sign-in view."
 			}
 		],
@@ -39,7 +38,9 @@
 				"description": "Shows checking/error state before session status, configuration guidance when disabled, or email confirmation when pending. Otherwise renders a Google button only when a configured client ID, no actor, no pending proof and a holder are available. Obtains a fresh challenge and ignores stale challenge completion; challenge/button failures and session errors become alerts."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

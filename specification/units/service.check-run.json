@@ -41,15 +41,18 @@
 		"inputs": [
 			{
 				"name": "CheckRunService.constructor.context",
-				"type": "RunContext"
+				"type": "RunContext",
+				"required": true
 			},
 			{
 				"name": "CheckRunService.run.check",
-				"type": "PlannedCheck"
+				"type": "PlannedCheck",
+				"required": true
 			},
 			{
 				"name": "CheckRunService.version.tool",
-				"type": "{ id: string; command: string }"
+				"type": "{ id: string; command: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -62,7 +65,66 @@
 				"type": "Promise<string | undefined>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CheckRunService.run",
+				"inputs": [
+					{
+						"name": "CheckRunService.run.check",
+						"type": "PlannedCheck",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckRunService.run",
+						"type": "Promise<CheckOutcome>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckRunService.version",
+				"inputs": [
+					{
+						"name": "CheckRunService.version.tool",
+						"type": "{ id: string; command: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckRunService.version",
+						"type": "Promise<string | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CheckRunService.constructor",
+				"inputs": [
+					{
+						"name": "CheckRunService.constructor.context",
+						"type": "RunContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckRunService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -15,19 +15,23 @@
 		"inputs": [
 			{
 				"name": "jevMetrics.events",
-				"type": "AnalyticsEvent[]"
+				"type": "AnalyticsEvent[]",
+				"required": true
 			},
 			{
 				"name": "jevMetrics.type",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "jevMetrics.author",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "jevMetrics.model",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -36,7 +40,44 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "jevMetrics",
+				"inputs": [
+					{
+						"name": "jevMetrics.events",
+						"type": "AnalyticsEvent[]",
+						"required": true
+					},
+					{
+						"name": "jevMetrics.type",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "jevMetrics.author",
+						"type": "string",
+						"required": false
+					},
+					{
+						"name": "jevMetrics.model",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "jevMetrics",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

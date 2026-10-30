@@ -20,6 +20,7 @@
 			{
 				"name": "GameNavigationGuard.active",
 				"type": "boolean",
+				"required": true,
 				"description": "True while the authoring document has unsaved changes; enables confirmation before leaving."
 			}
 		],
@@ -30,7 +31,9 @@
 				"description": "Renders no visible markup. Registers a navigation guard that confirms in-app navigation and requests host unload prevention."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

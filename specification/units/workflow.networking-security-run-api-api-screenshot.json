@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "apiScreenshot.client",
-				"type": "HarnessApiService"
+				"type": "HarnessApiService",
+				"required": true
 			},
 			{
 				"name": "apiScreenshot.entityId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "apiScreenshot.options",
-				"type": "HarnessApiOptions"
+				"type": "HarnessApiOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +40,44 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "apiScreenshot",
+				"inputs": [
+					{
+						"name": "apiScreenshot.client",
+						"type": "HarnessApiService",
+						"required": true
+					},
+					{
+						"name": "apiScreenshot.entityId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "apiScreenshot.options",
+						"type": "HarnessApiOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiScreenshot",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

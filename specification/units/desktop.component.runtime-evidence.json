@@ -22,11 +22,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeEvidence.svelte",
-			"packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte"
-		],
-		"symbols": ["RuntimeEvidence", "RuntimeEvidence"]
+		"source": ["packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte"],
+		"symbols": ["RuntimeEvidence"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,16 +31,19 @@
 			{
 				"name": "RuntimeEvidence.entity",
 				"type": "EntityDetail",
+				"required": true,
 				"description": "Entity whose kind informs notices and category chooses panels. Pages/shells/components are visual; functions have no screenshot panel and scope behavior rows by identifier."
 			},
 			{
 				"name": "RuntimeEvidence.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace supplying offline status and cache timestamp for the saved-copy warning."
 			},
 			{
 				"name": "RuntimeEvidence.evidence",
 				"type": "EntityEvidence",
+				"required": true,
 				"description": "State whose ready result feeds the panels and whose status/error feeds notices. A notice takes precedence over results."
 			}
 		],
@@ -54,7 +54,9 @@
 				"description": "Runtime section identifying current tip or commit/parent. Labels offline content as saved and not server-checked. Shows screenshots for non-functions that are visual or declare screen options; behavior for nonvisual entities or existing behavior rows; audio when appropriate. Uses recorded runtime evidence, not proposed designs."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -22,7 +22,9 @@
 			"wellFormed",
 			"schemaErrors",
 			"ManifestValidation",
-			"ManifestValidation"
+			"ManifestValidation",
+			"contractFindings",
+			"contractFailureCounts"
 		]
 	},
 	"contract": {
@@ -30,23 +32,44 @@
 		"inputs": [
 			{
 				"name": "ComponentManifestValidator.validate.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "ComponentManifestValidator.validate.file",
-				"type": "string"
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ComponentManifestValidator.validate.options",
+				"type": "{ contractQuality?: boolean }",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "wellFormed.error",
-				"type": "z.ZodError"
+				"type": "z.ZodError",
+				"required": true
 			},
 			{
 				"name": "schemaErrors.error",
-				"type": "z.ZodError"
+				"type": "z.ZodError",
+				"required": true
 			},
 			{
 				"name": "schemaErrors.label",
-				"type": "string"
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "contractFindings.unit",
+				"type": "ComponentManifest",
+				"required": true
+			},
+			{
+				"name": "contractFailureCounts.units",
+				"type": "ComponentManifest[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -61,9 +84,127 @@
 			{
 				"name": "schemaErrors",
 				"type": "string[]"
+			},
+			{
+				"name": "contractFindings",
+				"type": "string[]"
+			},
+			{
+				"name": "contractFailureCounts",
+				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ComponentManifestValidator.validate",
+				"inputs": [
+					{
+						"name": "ComponentManifestValidator.validate.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "ComponentManifestValidator.validate.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ComponentManifestValidator.validate.options",
+						"type": "{ contractQuality?: boolean }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "ComponentManifestValidator.validate",
+						"type": "ManifestValidation<ComponentManifest>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "wellFormed",
+				"inputs": [
+					{
+						"name": "wellFormed.error",
+						"type": "z.ZodError",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "wellFormed",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "schemaErrors",
+				"inputs": [
+					{
+						"name": "schemaErrors.error",
+						"type": "z.ZodError",
+						"required": true
+					},
+					{
+						"name": "schemaErrors.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "schemaErrors",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contractFindings",
+				"inputs": [
+					{
+						"name": "contractFindings.unit",
+						"type": "ComponentManifest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "contractFindings",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contractFailureCounts",
+				"inputs": [
+					{
+						"name": "contractFailureCounts.units",
+						"type": "ComponentManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "contractFailureCounts",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

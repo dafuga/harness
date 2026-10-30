@@ -26,11 +26,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/entity-cases/EntityCases.svelte",
 			"packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte",
 			"packages/reports/src/components/explorer-ui/entity-cases/EntityCases.types.ts"
 		],
-		"symbols": ["EntityCases", "EntityCases", "Row"]
+		"symbols": ["EntityCases", "Row"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,6 +39,12 @@
 				"type": "unknown",
 				"required": false,
 				"description": "Optional parsed test result. Used when no documented examples are supplied."
+			},
+			{
+				"name": "EntityCases.examples",
+				"type": "UsageExample[]",
+				"required": false,
+				"description": "Documented uses with input and one expected output or error. These are never recorded test results."
 			},
 			{
 				"name": "EntityCases.unit",
@@ -53,12 +58,6 @@
 				"required": false,
 				"default": true,
 				"description": "Optional flag, true by default. Controls wording distinguishing observed end-to-end behavior from a direct function call; false is suitable for noncallable entities."
-			},
-			{
-				"name": "EntityCases.examples",
-				"type": "UsageExample[] | undefined",
-				"required": false,
-				"description": "Documented uses with input and one expected output or error. These are never recorded test results."
 			}
 		],
 		"outputs": [
@@ -79,7 +78,9 @@
 				"type": "thrown",
 				"description": "Expanding deeply nested full values can exceed the JSON serializer stack."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

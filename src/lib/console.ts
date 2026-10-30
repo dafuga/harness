@@ -13,8 +13,6 @@ export { consoleAccess } from '../../packages/reports/src/utils/console-server/c
 export type {
 	ConsoleAccess,
 	ConsoleData,
-	ConsoleExporter,
-	ConsoleExportInput,
 	ConsoleHost,
 	ConsoleSource
 } from '../utils/explorer-ui/consoleAccess';

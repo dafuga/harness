@@ -40,7 +40,13 @@
 			"packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
 			"packages/reports/src/components/explorer-ui/ExplorerPlatforms.types.ts"
 		],
-		"symbols": ["ExplorerPlatforms", "Card"]
+		"symbols": [
+			"ExplorerPlatforms",
+			"ExplorerPlatforms.statusFilter",
+			"ExplorerPlatforms.platformCard",
+			"ExplorerPlatforms.children",
+			"Card"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -89,7 +95,7 @@
 			},
 			{
 				"name": "ExplorerPlatforms.client",
-				"type": "Pick<HarnessClient, \"revision\">",
+				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
 				"description": "Host revision loader accepted by the shared Explorer screen interface."
 			},
@@ -104,12 +110,6 @@
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
 				"description": "Client navigation callback used by links while preserving branch and commit context."
-			},
-			{
-				"name": "ExplorerPlatforms.exportHref",
-				"type": "string",
-				"required": true,
-				"description": "Host export URL, or an empty string when no export is served."
 			}
 		],
 		"outputs": [
@@ -119,21 +119,62 @@
 				"description": "The four-target catalog or selected platform details, with search, a status dialog and explicit missing-data states."
 			}
 		],
-		"errors": [
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
 			{
-				"name": "lens.href callback error",
-				"type": "thrown",
-				"description": "An error supplied by the link generation callback propagates while rendering platform links."
+				"name": "ExplorerPlatforms.statusFilter",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerPlatforms.statusFilter",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
-				"name": "onroute callback error",
-				"type": "thrown",
-				"description": "An error supplied by the navigation callback propagates when a platform link is activated."
+				"name": "ExplorerPlatforms.platformCard",
+				"inputs": [
+					{
+						"name": "ExplorerPlatforms.platformCard.card",
+						"type": "Card",
+						"required": true
+					},
+					{
+						"name": "ExplorerPlatforms.platformCard.nav",
+						"type": "EntityNav",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPlatforms.platformCard",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
-				"name": "URIError",
-				"type": "thrown",
-				"description": "A selected detail's recorded source path with an unpaired UTF-16 surrogate cannot be encoded as a GitHub URL."
+				"name": "ExplorerPlatforms.children",
+				"inputs": [
+					{
+						"name": "ExplorerPlatforms.children.nav",
+						"type": "EntityNav",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPlatforms.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

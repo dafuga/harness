@@ -37,31 +37,31 @@
 			{
 				"name": "HarnessConsole.base",
 				"type": "string",
+				"required": true,
 				"description": "Required URL prefix used for the data client, media and export addresses."
 			},
 			{
 				"name": "HarnessConsole.path",
 				"type": "string",
+				"required": true,
 				"description": "Required address within the base, including any query string. Determines the selected branch, revision and screen."
 			},
 			{
 				"name": "HarnessConsole.navigate",
 				"type": "(path: string, replace: boolean) => void",
+				"required": true,
 				"description": "Required host callback receiving the next relative address and whether to replace browser history. Corrections replace history; user navigation normally adds an entry."
 			},
 			{
 				"name": "HarnessConsole.links",
 				"type": "Array<{ label: string; href: string }>",
+				"required": false,
 				"description": "Compatibility input accepted by the prop type but not read or rendered by this component."
-			},
-			{
-				"name": "HarnessConsole.exportable",
-				"type": "boolean",
-				"description": "Optional export availability flag, defaulting to true. False supplies the screen with an empty export address."
 			},
 			{
 				"name": "HarnessConsole.content",
 				"type": "ExplorerScreen",
+				"required": true,
 				"description": "Required screen component rendered once its selected revision and parent context are ready."
 			}
 		],
@@ -72,7 +72,104 @@
 				"description": "Explorer header and selected screen, with loading, unavailable-address and missing-registry notices. Index and selected-revision failures become visible problem text; unavailable parent data becomes null."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "consoleContentKey",
+				"inputs": [
+					{
+						"name": "consoleContentKey.location",
+						"type": "ExplorerLocation | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleContentKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "consoleRelations",
+				"inputs": [
+					{
+						"name": "consoleRelations.detail",
+						"type": "HarnessRevision",
+						"required": true
+					},
+					{
+						"name": "consoleRelations.before",
+						"type": "HarnessRevision | null",
+						"required": true
+					},
+					{
+						"name": "consoleRelations.listed",
+						"type": "ExplorerEntity[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleRelations",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "consoleView",
+				"inputs": [
+					{
+						"name": "consoleView.index",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "consoleView.scope",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "consoleView.loaded",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "consoleView.entities",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "consoleView.relations",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "consoleView.answers",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "consoleView.href",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleView",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -29,11 +29,13 @@
 		"inputs": [
 			{
 				"name": "RuntimeServerService.serve.runtime",
-				"type": "UnitRuntime"
+				"type": "UnitRuntime",
+				"required": true
 			},
 			{
 				"name": "RuntimeServerService.serve.options",
-				"type": "ServeOptions"
+				"type": "ServeOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -42,7 +44,34 @@
 				"type": "Promise<ServedRuntime>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RuntimeServerService.serve",
+				"inputs": [
+					{
+						"name": "RuntimeServerService.serve.runtime",
+						"type": "UnitRuntime",
+						"required": true
+					},
+					{
+						"name": "RuntimeServerService.serve.options",
+						"type": "ServeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RuntimeServerService.serve",
+						"type": "Promise<ServedRuntime>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

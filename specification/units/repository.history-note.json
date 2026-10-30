@@ -28,31 +28,38 @@
 		"inputs": [
 			{
 				"name": "HistoryNoteRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryNoteRepository.text.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryNoteRepository.read.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryNoteRepository.append.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryNoteRepository.append.entries",
-				"type": "HistoryNote[]"
+				"type": "HistoryNote[]",
+				"required": true
 			},
 			{
 				"name": "HistoryNoteRepository.merge.other",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryNoteRepository.all.at",
-				"type": "string | null"
+				"type": "string | null",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -85,6 +92,136 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HistoryNoteRepository.text",
+				"inputs": [
+					{
+						"name": "HistoryNoteRepository.text.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryNoteRepository.text",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HistoryNoteRepository.read",
+				"inputs": [
+					{
+						"name": "HistoryNoteRepository.read.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryNoteRepository.read",
+						"type": "Promise<ReadNote>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HistoryNoteRepository.append",
+				"inputs": [
+					{
+						"name": "HistoryNoteRepository.append.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HistoryNoteRepository.append.entries",
+						"type": "HistoryNote[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryNoteRepository.append",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HistoryNoteRepository.merge",
+				"inputs": [
+					{
+						"name": "HistoryNoteRepository.merge.other",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryNoteRepository.merge",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HistoryNoteRepository.all",
+				"inputs": [
+					{
+						"name": "HistoryNoteRepository.all.at",
+						"type": "string | null",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryNoteRepository.all",
+						"type": "Promise<Map<string, ReadNote>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HistoryNoteRepository.verifications",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HistoryNoteRepository.verifications",
+						"type": "Promise<Array<Extract<HistoryNote, { kind: 'verification' }>>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HistoryNoteRepository.constructor",
+				"inputs": [
+					{
+						"name": "HistoryNoteRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryNoteRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

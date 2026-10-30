@@ -2,7 +2,7 @@ import { test, expect } from '../../../../test/support/browserTest';
 import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';
 import { fixtures } from './support/fixtures';
-import { expectRetired } from './support/portableReport';
+import { expectRetired } from './support/retiredAddress';
 
 // The form that waited for its client handlers is gone with the report page. What still decides
 // whether a selection is accepted is the upload service: it takes a complete request and no other.

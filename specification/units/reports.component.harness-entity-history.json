@@ -40,36 +40,43 @@
 			{
 				"name": "EntityHistory.entity",
 				"type": "ExplorerEntity",
+				"required": true,
 				"description": "Required entity identity/name used for revision details and navigation. Caller is expected to recreate this view for a new entity or commit."
 			},
 			{
 				"name": "EntityHistory.rows",
 				"type": "ExplorerHistoryRow[]",
+				"required": true,
 				"description": "Required newest-first history through the shown commit, including known changes and unread candidates."
 			},
 			{
 				"name": "EntityHistory.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Required index used to derive historical timings and profiles."
 			},
 			{
 				"name": "EntityHistory.scope",
 				"type": "ExplorerScope",
+				"required": true,
 				"description": "Required viewed commit used for labels and preferred initial selection."
 			},
 			{
 				"name": "EntityHistory.known",
 				"type": "HarnessRevision[]",
+				"required": true,
 				"description": "Required revisions already read, used to seed the detail map once at creation. Later prop replacements do not reseed it."
 			},
 			{
 				"name": "EntityHistory.client",
 				"type": "Pick<HarnessClient, 'revision'>",
+				"required": true,
 				"description": "Required revision reader. Failures are swallowed, leaving revision detail unknown rather than supplying false evidence."
 			},
 			{
 				"name": "EntityHistory.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required context for links to this entity at historical commits."
 			}
 		],
@@ -80,7 +87,9 @@
 				"description": "Shows changed commits with direct revision links, relative dates, source size, complexity and profile-scoped latency. Long reasons remain inline; no selected-change panel or duplicate action."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

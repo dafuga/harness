@@ -26,7 +26,8 @@
 		"inputs": [
 			{
 				"name": "modelFiles.input",
-				"type": "ModelInput"
+				"type": "ModelInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -35,7 +36,29 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "modelFiles",
+				"inputs": [
+					{
+						"name": "modelFiles.input",
+						"type": "ModelInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "modelFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -56,91 +56,113 @@
 		"inputs": [
 			{
 				"name": "generateModel.input",
-				"type": "GenerateModelInput"
+				"type": "GenerateModelInput",
+				"required": true
 			},
 			{
 				"name": "generatePiece.input",
-				"type": "GeneratePieceInput"
+				"type": "GeneratePieceInput",
+				"required": true
 			},
 			{
 				"name": "renderGenerateResult.result",
-				"type": "GenerateResult"
+				"type": "GenerateResult",
+				"required": true
 			},
 			{
 				"name": "generationGroup.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "generationGroup.input",
-				"type": "{ name: string; group?: string; responsibility?: string }"
+				"type": "{ name: string; group?: string; responsibility?: string }",
+				"required": true
 			},
 			{
 				"name": "saveGenerationGroup.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "saveGenerationGroup.selection",
-				"type": "Selection"
+				"type": "Selection",
+				"required": false
 			},
 			{
 				"name": "groupedFiles.files",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"required": true
 			},
 			{
 				"name": "groupedFiles.group",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "groupedExports.plans",
-				"type": "ExportPlan[]"
+				"type": "ExportPlan[]",
+				"required": true
 			},
 			{
 				"name": "groupedExports.paths",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			},
 			{
 				"name": "assertUniqueGroupedNames.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "assertUniqueGroupedNames.group",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"required": true
 			},
 			{
 				"name": "assertUniqueGroupedNames.files",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"required": true
 			},
 			{
 				"name": "groupedImports.contents",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "groupedImports.before",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "groupedImports.after",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "groupedImports.paths",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			},
 			{
 				"name": "groupedSpecifier.specifier",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "groupedSpecifier.before",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "groupedSpecifier.after",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "groupedSpecifier.paths",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -190,7 +212,261 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "generateModel",
+				"inputs": [
+					{
+						"name": "generateModel.input",
+						"type": "GenerateModelInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "generateModel",
+						"type": "Promise<GenerateResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "generatePiece",
+				"inputs": [
+					{
+						"name": "generatePiece.input",
+						"type": "GeneratePieceInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "generatePiece",
+						"type": "Promise<GenerateResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderGenerateResult",
+				"inputs": [
+					{
+						"name": "renderGenerateResult.result",
+						"type": "GenerateResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderGenerateResult",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "generationGroup",
+				"inputs": [
+					{
+						"name": "generationGroup.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "generationGroup.input",
+						"type": "{ name: string; group?: string; responsibility?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "generationGroup",
+						"type": "Selection | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "saveGenerationGroup",
+				"inputs": [
+					{
+						"name": "saveGenerationGroup.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "saveGenerationGroup.selection",
+						"type": "Selection",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "saveGenerationGroup",
+						"type": "Promise<FileWriteResult[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "groupedFiles",
+				"inputs": [
+					{
+						"name": "groupedFiles.files",
+						"type": "PlannedFile[]",
+						"required": true
+					},
+					{
+						"name": "groupedFiles.group",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupedFiles",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "groupedExports",
+				"inputs": [
+					{
+						"name": "groupedExports.plans",
+						"type": "ExportPlan[]",
+						"required": true
+					},
+					{
+						"name": "groupedExports.paths",
+						"type": "Map<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupedExports",
+						"type": "ExportPlan[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertUniqueGroupedNames",
+				"inputs": [
+					{
+						"name": "assertUniqueGroupedNames.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "assertUniqueGroupedNames.group",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "assertUniqueGroupedNames.files",
+						"type": "PlannedFile[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertUniqueGroupedNames",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "groupedImports",
+				"inputs": [
+					{
+						"name": "groupedImports.contents",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "groupedImports.before",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "groupedImports.after",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "groupedImports.paths",
+						"type": "Map<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupedImports",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "groupedSpecifier",
+				"inputs": [
+					{
+						"name": "groupedSpecifier.specifier",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "groupedSpecifier.before",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "groupedSpecifier.after",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "groupedSpecifier.paths",
+						"type": "Map<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupedSpecifier",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

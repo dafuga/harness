@@ -35,59 +35,73 @@
 		"inputs": [
 			{
 				"name": "builtProduct.configuration",
-				"type": "'Debug' | 'Release'"
+				"type": "'Debug' | 'Release'",
+				"required": true
 			},
 			{
 				"name": "tried.command",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "succeeded.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "succeeded.ended",
-				"type": "{ code: number; output: string }"
+				"type": "{ code: number; output: string }",
+				"required": true
 			},
 			{
 				"name": "tool.command",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "fileDigest.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "contents.folder",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "verifiedSignature.product",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "allowsLocalNetworking.product",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "inspectable.product",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "productFacts.product",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "changedCopy.source",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "changedCopy.target",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "changedCopy.change",
-				"type": "ProductChange"
+				"type": "ProductChange",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -153,7 +167,239 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "builtProduct",
+				"inputs": [
+					{
+						"name": "builtProduct.configuration",
+						"type": "'Debug' | 'Release'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "builtProduct",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "tried",
+				"inputs": [
+					{
+						"name": "tried.command",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "tried",
+						"type": "{ code: number; output: string }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "succeeded",
+				"inputs": [
+					{
+						"name": "succeeded.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "succeeded.ended",
+						"type": "{ code: number; output: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "succeeded",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "tool",
+				"inputs": [
+					{
+						"name": "tool.command",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "tool",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fileDigest",
+				"inputs": [
+					{
+						"name": "fileDigest.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fileDigest",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contents",
+				"inputs": [
+					{
+						"name": "contents.folder",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "contents",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifiedSignature",
+				"inputs": [
+					{
+						"name": "verifiedSignature.product",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifiedSignature",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "allowsLocalNetworking",
+				"inputs": [
+					{
+						"name": "allowsLocalNetworking.product",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "allowsLocalNetworking",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inspectable",
+				"inputs": [
+					{
+						"name": "inspectable.product",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectable",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "productFacts",
+				"inputs": [
+					{
+						"name": "productFacts.product",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "productFacts",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "changedCopy",
+				"inputs": [
+					{
+						"name": "changedCopy.source",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "changedCopy.target",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "changedCopy.change",
+						"type": "ProductChange",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "changedCopy",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

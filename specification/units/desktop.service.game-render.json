@@ -15,19 +15,23 @@
 		"inputs": [
 			{
 				"name": "GameRenderService.constructor.session",
-				"type": "ProjectSessionService"
+				"type": "ProjectSessionService",
+				"required": true
 			},
 			{
 				"name": "GameRenderService.constructor.transportReady",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "GameRenderService.constructor.send",
-				"type": "(url: string, options: RequestInit) => Promise<Response>"
+				"type": "(url: string, options: RequestInit) => Promise<Response>",
+				"required": false
 			},
 			{
 				"name": "GameRenderService.start.input",
-				"type": "RenderSessionRequest"
+				"type": "RenderSessionRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,6 +44,62 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GameRenderService.start",
+				"inputs": [
+					{
+						"name": "GameRenderService.start.input",
+						"type": "RenderSessionRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GameRenderService.start",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GameRenderService.constructor",
+				"inputs": [
+					{
+						"name": "GameRenderService.constructor.session",
+						"type": "ProjectSessionService",
+						"required": true
+					},
+					{
+						"name": "GameRenderService.constructor.transportReady",
+						"type": "unknown",
+						"required": false
+					},
+					{
+						"name": "GameRenderService.constructor.send",
+						"type": "(url: string, options: RequestInit) => Promise<Response>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "GameRenderService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

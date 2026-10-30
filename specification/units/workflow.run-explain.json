@@ -31,19 +31,23 @@
 		"inputs": [
 			{
 				"name": "explainReport.range",
-				"type": "RevisionRange"
+				"type": "RevisionRange",
+				"required": true
 			},
 			{
 				"name": "explainedRange.range",
-				"type": "RevisionRange"
+				"type": "RevisionRange",
+				"required": true
 			},
 			{
 				"name": "listed.report",
-				"type": "ReasonReport"
+				"type": "ReasonReport",
+				"required": true
 			},
 			{
 				"name": "explainAdd.input",
-				"type": "ExplainInput"
+				"type": "ExplainInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -69,7 +73,88 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "explainReport",
+				"inputs": [
+					{
+						"name": "explainReport.range",
+						"type": "RevisionRange",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "explainReport",
+						"type": "Promise<ReasonReport & { root: string; writing: WritingVersion | null }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explainedRange",
+				"inputs": [
+					{
+						"name": "explainedRange.range",
+						"type": "RevisionRange",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "explainedRange",
+						"type": "Promise<ReasonReport & { root: string }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "listed",
+				"inputs": [
+					{
+						"name": "listed.report",
+						"type": "ReasonReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "listed",
+						"type": "Listed[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explainAdd",
+				"inputs": [
+					{
+						"name": "explainAdd.input",
+						"type": "ExplainInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "explainAdd",
+						"type": "Promise<Explanation[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

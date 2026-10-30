@@ -21,11 +21,13 @@
 			{
 				"name": "unitLineage.unit",
 				"type": "LineageSubject",
+				"required": true,
 				"description": "Current unit id and ordered exported-symbol list."
 			},
 			{
 				"name": "unitLineage.retired",
 				"type": "ComponentManifest[]",
+				"required": true,
 				"description": "Candidate manifests to examine for retired predecessors."
 			}
 		],
@@ -36,7 +38,36 @@
 				"description": "Sorted predecessor ids, excluding the current id, whose nonempty symbols match in order or whose id is reused with a numeric suffix."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "unitLineage",
+				"inputs": [
+					{
+						"name": "unitLineage.unit",
+						"type": "LineageSubject",
+						"required": true,
+						"description": "Current unit id and ordered exported-symbol list."
+					},
+					{
+						"name": "unitLineage.retired",
+						"type": "ComponentManifest[]",
+						"required": true,
+						"description": "Candidate manifests to examine for retired predecessors."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitLineage",
+						"type": "string[]",
+						"description": "Sorted predecessor ids, excluding the current id, whose nonempty symbols match in order or whose id is reused with a numeric suffix."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

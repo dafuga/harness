@@ -31,13 +31,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "Request",
-				"type": "Regression inputs",
-				"description": "Stored regression result or paired history data"
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "Result",
@@ -51,7 +45,9 @@
 				"type": "Explicit rejection or gap",
 				"description": "Rejects missing fields, malformed hashes and unknown record fields."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

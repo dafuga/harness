@@ -18,19 +18,23 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "hubMessages.thread",
+				"type": "CommittedThread",
+				"required": true,
+				"description": "Committed thread whose comments should be displayed."
+			},
+			{
 				"name": "hubThreads.threads",
 				"type": "CommittedThread[]",
+				"required": true,
 				"description": "Committed shared threads to display."
 			},
 			{
 				"name": "hubThreads.offset",
-				"type": "unknown",
+				"type": "number",
+				"required": false,
+				"default": 0,
 				"description": "Pin-number offset; defaults to zero."
-			},
-			{
-				"name": "hubMessages.thread",
-				"type": "CommittedThread",
-				"description": "Committed thread whose comments should be displayed."
 			}
 		],
 		"outputs": [
@@ -45,7 +49,57 @@
 				"description": "Comments in supplied order as user messages, retaining author identity/name, timestamp, text and version/image anchor; agent mode/provider/model are null."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubMessages",
+				"inputs": [
+					{
+						"name": "hubMessages.thread",
+						"type": "CommittedThread",
+						"required": true,
+						"description": "Committed thread whose comments should be displayed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubMessages",
+						"type": "ThreadMessage[]",
+						"description": "Comments in supplied order as user messages, retaining author identity/name, timestamp, text and version/image anchor; agent mode/provider/model are null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubThreads",
+				"inputs": [
+					{
+						"name": "hubThreads.threads",
+						"type": "CommittedThread[]",
+						"required": true,
+						"description": "Committed shared threads to display."
+					},
+					{
+						"name": "hubThreads.offset",
+						"type": "number",
+						"required": false,
+						"default": 0,
+						"description": "Pin-number offset; defaults to zero."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubThreads",
+						"type": "ThreadInfo[]",
+						"description": "Thread summaries sorted by ID, with sequential pins starting at offset plus one, image anchors and comment counts."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

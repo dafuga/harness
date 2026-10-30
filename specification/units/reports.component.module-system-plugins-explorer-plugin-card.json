@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.module-system-plugins-explorer-plugin-card",
+	"kind": "component",
+	"title": "Plugin library card",
+	"responsibility": "Shows one plugin in the Plugins library: its linked title, state, description, resource types, and the install command when it is not installed.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-command-block",
+			"reports.component.module-system-plugins-plugin-state-pills",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/module-system/plugins/ExplorerPluginCard.svelte"],
+		"symbols": ["ExplorerPluginCard"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ExplorerPluginCard.entry",
+				"type": "ModuleEntry",
+				"required": true,
+				"description": "The plugin as read at this revision: its definition, source and whether it is installed."
+			},
+			{
+				"name": "ExplorerPluginCard.title",
+				"type": "Snippet",
+				"required": true,
+				"description": "The plugin title, rendered as a link to its page."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerPluginCard",
+				"type": "markup",
+				"description": "A card for the plugin grid."
+			}
+		],
+		"errors": [],
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-command-block",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.module-system-plugins-plugin-state-pills",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/module-system/plugins/ExplorerPluginCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/module-system/plugins/ExplorerPluginCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

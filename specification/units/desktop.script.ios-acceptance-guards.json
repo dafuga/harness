@@ -23,27 +23,33 @@
 		"inputs": [
 			{
 				"name": "localOrigin.origin",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "redacted.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "redacted.secrets",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "expiredOffer.scan",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "expiredOffer.now",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "otherVersion.scan",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -76,7 +82,93 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "localOrigin",
+				"inputs": [
+					{
+						"name": "localOrigin.origin",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "localOrigin",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "redacted",
+				"inputs": [
+					{
+						"name": "redacted.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "redacted.secrets",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "redacted",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "expiredOffer",
+				"inputs": [
+					{
+						"name": "expiredOffer.scan",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "expiredOffer.now",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "expiredOffer",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "otherVersion",
+				"inputs": [
+					{
+						"name": "otherVersion.scan",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "otherVersion",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

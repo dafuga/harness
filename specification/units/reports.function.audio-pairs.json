@@ -20,6 +20,7 @@
 			{
 				"name": "audioPairs.items",
 				"type": "Evidence[]",
+				"required": true,
 				"description": "Evidence items; only audio with a nonblank comparison name and before/after phase participate."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Map from each after-item identifier to its before item, grouped by exact comparison text and viewport. Only groups with exactly one item on each side are paired; ambiguous and incomplete groups are omitted."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "audioPairs",
+				"inputs": [
+					{
+						"name": "audioPairs.items",
+						"type": "Evidence[]",
+						"required": true,
+						"description": "Evidence items; only audio with a nonblank comparison name and before/after phase participate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "audioPairs",
+						"type": "unknown",
+						"description": "Map from each after-item identifier to its before item, grouped by exact comparison text and viewport. Only groups with exactly one item on each side are paired; ambiguous and incomplete groups are omitted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

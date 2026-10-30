@@ -15,11 +15,14 @@
 		"inputs": [
 			{
 				"name": "importReports.options",
-				"type": "ImportOptions"
+				"type": "ImportOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "renderImport.result",
-				"type": "LegacyImport"
+				"type": "LegacyImport",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +40,53 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "importReports",
+				"inputs": [
+					{
+						"name": "importReports.options",
+						"type": "ImportOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "importReports",
+						"type": "Promise<LegacyImport>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderImport",
+				"inputs": [
+					{
+						"name": "renderImport.result",
+						"type": "LegacyImport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderImport",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

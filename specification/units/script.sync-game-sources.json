@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "embeddedSource.destination",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "embeddedSource.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +39,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "embeddedSource",
+				"inputs": [
+					{
+						"name": "embeddedSource.destination",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "embeddedSource.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "embeddedSource",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

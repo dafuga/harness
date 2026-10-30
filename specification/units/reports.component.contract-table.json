@@ -11,12 +11,8 @@
 		"uses": ["reports.component.harness-harness-icon"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ContractTable.svelte",
-			"packages/reports/src/components/shared-primitives/ContractTable.svelte",
-			"packages/reports/src/components/shared-primitives/contractTableMobile.css"
-		],
-		"symbols": ["ContractTable", "ContractTable"]
+		"source": ["packages/reports/src/components/shared-primitives/ContractTable.svelte"],
+		"symbols": ["ContractTable"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,20 +41,21 @@
 			{
 				"name": "ContractTable",
 				"type": "markup",
-				"description": "A field table with keyboard-accessible details; names, types and examples stack on phones while wider layouts use columns."
+				"description": "A field table with unbroken names and types, clipped long examples and keyboard-accessible detail controls; wider tables scroll within their frame and return tables omit names."
 			}
 		],
-		"errors": [
-			{
-				"name": "onexample callback error",
-				"type": "thrown",
-				"description": "Any value thrown by the caller-supplied onexample callback propagates when the example control is activated."
-			}
-		]
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-contract-table-mobile",
 			"via": "import",
 			"origin": "derived"
 		},

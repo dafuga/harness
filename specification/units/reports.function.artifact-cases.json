@@ -30,11 +30,13 @@
 			{
 				"name": "artifactCases.document",
 				"type": "unknown",
+				"required": true,
 				"description": "Parsed artifact document of unknown shape."
 			},
 			{
 				"name": "artifactCases.unit",
 				"type": "string",
+				"required": false,
 				"description": "Optional expected unit identifier. When supplied, recorded invocations must name that unit."
 			}
 		],
@@ -50,7 +52,36 @@
 				"description": "Returns invocation cases only when every case has a nonempty bounded name, input and exactly one of output or error, with valid unit/symbol metadata. Otherwise returns a stated gap. Legacy top-level input/inputs/request plus output/outputs/response become one observation row; false, zero, null and empty values are retained."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "artifactCases",
+				"inputs": [
+					{
+						"name": "artifactCases.document",
+						"type": "unknown",
+						"required": true,
+						"description": "Parsed artifact document of unknown shape."
+					},
+					{
+						"name": "artifactCases.unit",
+						"type": "string",
+						"required": false,
+						"description": "Optional expected unit identifier. When supplied, recorded invocations must name that unit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artifactCases",
+						"type": "ExplorerArtifactCases",
+						"description": "Returns invocation cases only when every case has a nonempty bounded name, input and exactly one of output or error, with valid unit/symbol metadata. Otherwise returns a stated gap. Legacy top-level input/inputs/request plus output/outputs/response become one observation row; false, zero, null and empty values are retained."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

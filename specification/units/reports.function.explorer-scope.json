@@ -27,11 +27,13 @@
 			{
 				"name": "explorerScope.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Stored branches and revision summaries."
 			},
 			{
 				"name": "explorerScope.location",
 				"type": "ExplorerLocation",
+				"required": true,
 				"description": "Requested branch, optional selected commit and screen address."
 			}
 		],
@@ -42,7 +44,36 @@
 				"description": "Resolved scope with current/commit mode, branch tip, viewed commit, at-tip flag, first parent and summary. Returns a missing message for an unknown branch, unstored tip or commit, or a commit not recorded on the requested branch; never substitutes a different revision."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "explorerScope",
+				"inputs": [
+					{
+						"name": "explorerScope.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Stored branches and revision summaries."
+					},
+					{
+						"name": "explorerScope.location",
+						"type": "ExplorerLocation",
+						"required": true,
+						"description": "Requested branch, optional selected commit and screen address."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerScope",
+						"type": "ExplorerResolved",
+						"description": "Resolved scope with current/commit mode, branch tip, viewed commit, at-tip flag, first parent and summary. Returns a missing message for an unknown branch, unstored tip or commit, or a commit not recorded on the requested branch; never substitutes a different revision."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

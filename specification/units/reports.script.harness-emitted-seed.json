@@ -18,11 +18,18 @@
 		"inputs": [
 			{
 				"name": "seedEmitted.repo",
-				"type": "VerifyRepo"
+				"type": "VerifyRepo",
+				"required": true
 			},
 			{
-				"name": "seedEmitted.input",
-				"type": "EmittedSeed"
+				"name": "seedEmitted.verified",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "seedEmitted.explain",
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -31,7 +38,39 @@
 				"type": "Promise<Record<'emitting' | 'packed' | 'swapped' | 'repacked' | 'vanished', string>>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "seedEmitted",
+				"inputs": [
+					{
+						"name": "seedEmitted.repo",
+						"type": "VerifyRepo",
+						"required": true
+					},
+					{
+						"name": "seedEmitted.verified",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "seedEmitted.explain",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "seedEmitted",
+						"type": "Promise<Record<'emitting' | 'packed' | 'swapped' | 'repacked' | 'vanished', string>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

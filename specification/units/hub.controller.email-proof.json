@@ -26,7 +26,8 @@
 		"inputs": [
 			{
 				"name": "EmailProofController.constructor.options",
-				"type": "EmailProofControllerOptions"
+				"type": "EmailProofControllerOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -35,7 +36,42 @@
 				"type": "AuthRoutes"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "EmailProofController.routes",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EmailProofController.routes",
+						"type": "AuthRoutes"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "EmailProofController.constructor",
+				"inputs": [
+					{
+						"name": "EmailProofController.constructor.options",
+						"type": "EmailProofControllerOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EmailProofController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

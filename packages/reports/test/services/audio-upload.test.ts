@@ -49,7 +49,7 @@ test('invalid content and finalized reports never gain uploaded evidence', async
 	).rejects.toThrow();
 	expect((await store.get(run.id)).evidence).toHaveLength(0);
 	await store.seal(run.id);
-	await store.finish(run.id, { html: 'index.html', pdf: 'report.pdf', zip: 'report.zip' });
+	await store.finish(run.id);
 	await expect(service.upload(run.id, input)).rejects.toThrow(/finaliz/);
 	expect((await store.get(run.id)).evidence).toHaveLength(0);
 });
@@ -84,7 +84,7 @@ test('a bad second audio file or finalized history adds neither comparison membe
 	await expect(service.uploadComparison(run.id, comparison)).rejects.toThrow();
 	expect((await store.get(run.id)).evidence).toHaveLength(0);
 	await store.seal(run.id);
-	await store.finish(run.id, { html: 'index.html', pdf: 'report.pdf', zip: 'report.zip' });
+	await store.finish(run.id);
 	await expect(
 		service.uploadComparison(run.id, { ...comparison, after: input.audio })
 	).rejects.toThrow(/finaliz/);

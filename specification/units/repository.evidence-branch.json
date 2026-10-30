@@ -27,23 +27,28 @@
 		"inputs": [
 			{
 				"name": "EvidenceBranchRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceBranchRepository.add.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceBranchRepository.add.files",
-				"type": "TreeFile[]"
+				"type": "TreeFile[]",
+				"required": true
 			},
 			{
 				"name": "EvidenceBranchRepository.add.message",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceBranchRepository.add.key",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -60,6 +65,79 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "EvidenceBranchRepository.tip",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EvidenceBranchRepository.tip",
+						"type": "Promise<string | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EvidenceBranchRepository.add",
+				"inputs": [
+					{
+						"name": "EvidenceBranchRepository.add.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "EvidenceBranchRepository.add.files",
+						"type": "TreeFile[]",
+						"required": true
+					},
+					{
+						"name": "EvidenceBranchRepository.add.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "EvidenceBranchRepository.add.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceBranchRepository.add",
+						"type": "Promise<StoredDirectory>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "EvidenceBranchRepository.constructor",
+				"inputs": [
+					{
+						"name": "EvidenceBranchRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceBranchRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

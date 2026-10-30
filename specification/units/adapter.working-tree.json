@@ -24,11 +24,13 @@
 		"inputs": [
 			{
 				"name": "WorkingTreeAdapter.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "WorkingTreeAdapter.read.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -41,7 +43,60 @@
 				"type": "Promise<string>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "WorkingTreeAdapter.list",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "WorkingTreeAdapter.list",
+						"type": "Promise<TreeEntry[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WorkingTreeAdapter.read",
+				"inputs": [
+					{
+						"name": "WorkingTreeAdapter.read.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WorkingTreeAdapter.read",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "WorkingTreeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "WorkingTreeAdapter.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WorkingTreeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

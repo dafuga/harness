@@ -37,31 +37,41 @@
 			{
 				"name": "haltProcesses.watch",
 				"type": "Watched",
+				"required": true,
 				"description": "Tracker whose alive method returns followed identities or null when unreadable."
 			},
 			{
 				"name": "haltProcesses.context",
 				"type": "ServiceContext",
+				"required": true,
 				"description": "Command group, service authority and probes used to classify each process."
 			},
 			{
 				"name": "haltProcesses.limit",
 				"type": "{ graceMs: number; deadline: CleanupDeadline }",
+				"required": true,
 				"description": "Grace duration and shared deadline for timeout termination."
 			},
 			{
 				"name": "settleProcesses.watch",
 				"type": "Watched",
+				"required": true,
 				"description": "Tracker of the ended command and descendants to settle."
 			},
 			{
 				"name": "settleProcesses.context",
 				"type": "ServiceContext",
+				"required": true,
 				"description": "Classification context for private versus delegated/protected processes."
 			},
 			{
 				"name": "settleProcesses.timing",
 				"type": "SettleTiming",
+				"required": false,
+				"default": {
+					"settleMs": 2000,
+					"graceMs": 500
+				},
 				"description": "Optional settling/grace periods, default 2000/500 ms, and optional whole-cleanup bound; default bound adds 10000 ms slack."
 			}
 		],
@@ -77,7 +87,78 @@
 				"description": "Settlement with counted survivors, stopped/resisted totals, unknown flag and log report. Vetted delegated services are handed over; protected/unproven processes remain and fail the check; errors or deadline exhaustion return unknown."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "haltProcesses",
+				"inputs": [
+					{
+						"name": "haltProcesses.watch",
+						"type": "Watched",
+						"required": true,
+						"description": "Tracker whose alive method returns followed identities or null when unreadable."
+					},
+					{
+						"name": "haltProcesses.context",
+						"type": "ServiceContext",
+						"required": true,
+						"description": "Command group, service authority and probes used to classify each process."
+					},
+					{
+						"name": "haltProcesses.limit",
+						"type": "{ graceMs: number; deadline: CleanupDeadline }",
+						"required": true,
+						"description": "Grace duration and shared deadline for timeout termination."
+					}
+				],
+				"outputs": [
+					{
+						"name": "haltProcesses",
+						"type": "Promise<void>",
+						"description": "Resolves after bounded TERM then KILL attempts on freshly rechecked private processes only. Unreadable or expired observations cause no further signal."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "settleProcesses",
+				"inputs": [
+					{
+						"name": "settleProcesses.watch",
+						"type": "Watched",
+						"required": true,
+						"description": "Tracker of the ended command and descendants to settle."
+					},
+					{
+						"name": "settleProcesses.context",
+						"type": "ServiceContext",
+						"required": true,
+						"description": "Classification context for private versus delegated/protected processes."
+					},
+					{
+						"name": "settleProcesses.timing",
+						"type": "SettleTiming",
+						"required": false,
+						"default": {
+							"settleMs": 2000,
+							"graceMs": 500
+						},
+						"description": "Optional settling/grace periods, default 2000/500 ms, and optional whole-cleanup bound; default bound adds 10000 ms slack."
+					}
+				],
+				"outputs": [
+					{
+						"name": "settleProcesses",
+						"type": "Promise<Settlement>",
+						"description": "Settlement with counted survivors, stopped/resisted totals, unknown flag and log report. Vetted delegated services are handed over; protected/unproven processes remain and fail the check; errors or deadline exhaustion return unknown."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

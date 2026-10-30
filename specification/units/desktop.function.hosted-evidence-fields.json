@@ -23,7 +23,9 @@
 				"description": "A collection of validation schemas and builders: general strings up to 1,000,000 characters, nonempty names up to 300, lowercase 40-character commit hashes and 64-character content hashes, arrays up to 5,000 items, finite numbers, booleans and accepted mode/status values. Includes strict capture, scenario and unit objects with their contracts, ownership, runtime and budget details. These schemas check structure, not proof of execution."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

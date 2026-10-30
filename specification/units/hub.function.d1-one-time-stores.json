@@ -20,11 +20,13 @@
 			{
 				"name": "d1OneTimeStores.db",
 				"type": "D1Like",
+				"required": true,
 				"description": "D1-compatible database handle; queries run only when the returned store methods are called."
 			},
 			{
 				"name": "d1OneTimeStores.records",
 				"type": "AuthRecordValidator",
+				"required": true,
 				"description": "Validator used to turn stored database rows into typed records."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Stores that create and atomically consume unexpired challenges/GitHub states, plus native exchanges that can be found, approved with the matching code while pending, and consumed once while approved and unexpired. Unmatched claims return null and unmatched approval returns false."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "d1OneTimeStores",
+				"inputs": [
+					{
+						"name": "d1OneTimeStores.db",
+						"type": "D1Like",
+						"required": true,
+						"description": "D1-compatible database handle; queries run only when the returned store methods are called."
+					},
+					{
+						"name": "d1OneTimeStores.records",
+						"type": "AuthRecordValidator",
+						"required": true,
+						"description": "Validator used to turn stored database rows into typed records."
+					}
+				],
+				"outputs": [
+					{
+						"name": "d1OneTimeStores",
+						"type": "D1OneTimeStores",
+						"description": "Stores that create and atomically consume unexpired challenges/GitHub states, plus native exchanges that can be found, approved with the matching code while pending, and consumed once while approved and unexpired. Unmatched claims return null and unmatched approval returns false."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

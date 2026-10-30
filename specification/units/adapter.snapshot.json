@@ -30,27 +30,33 @@
 		"inputs": [
 			{
 				"name": "SnapshotAdapter.create.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SnapshotAdapter.create.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SnapshotAdapter.create.outputs",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "SnapshotAdapter.link.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SnapshotAdapter.link.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SnapshotAdapter.artifact.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -79,7 +85,116 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SnapshotAdapter.create",
+				"inputs": [
+					{
+						"name": "SnapshotAdapter.create.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SnapshotAdapter.create.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SnapshotAdapter.create.outputs",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SnapshotAdapter.create",
+						"type": "Promise<SnapshotAdapter>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SnapshotAdapter.link",
+				"inputs": [
+					{
+						"name": "SnapshotAdapter.link.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SnapshotAdapter.link.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SnapshotAdapter.link",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SnapshotAdapter.misdeclared",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SnapshotAdapter.misdeclared",
+						"type": "Array<{ output: string; file: string }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SnapshotAdapter.drift",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SnapshotAdapter.drift",
+						"type": "Promise<SnapshotDrift>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SnapshotAdapter.artifact",
+				"inputs": [
+					{
+						"name": "SnapshotAdapter.artifact.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SnapshotAdapter.artifact",
+						"type": "Promise<{ bytes: number; sha256: string } | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SnapshotAdapter.remove",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SnapshotAdapter.remove",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

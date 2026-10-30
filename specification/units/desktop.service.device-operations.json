@@ -29,11 +29,13 @@
 		"inputs": [
 			{
 				"name": "DeviceOperationsService.constructor.options",
-				"type": "DeviceOperationsOptions"
+				"type": "DeviceOperationsOptions",
+				"required": true
 			},
 			{
 				"name": "DeviceOperationsService.handle.request",
-				"type": "WireRequest"
+				"type": "WireRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -50,6 +52,64 @@
 			{
 				"name": "RemoteFailure",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeviceOperationsService.methods",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DeviceOperationsService.methods",
+						"type": "RemoteMethod[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeviceOperationsService.handle",
+				"inputs": [
+					{
+						"name": "DeviceOperationsService.handle.request",
+						"type": "WireRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeviceOperationsService.handle",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeviceOperationsService.constructor",
+				"inputs": [
+					{
+						"name": "DeviceOperationsService.constructor.options",
+						"type": "DeviceOperationsOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeviceOperationsService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

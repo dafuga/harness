@@ -20,6 +20,7 @@
 			{
 				"name": "helperContract.helper",
 				"type": "CallableContract",
+				"required": true,
 				"description": "The purity declaration and the component, service or named-function consumers recorded at this revision.",
 				"examples": [
 					{
@@ -44,7 +45,44 @@
 				"examples": [true, false]
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "helperContract",
+				"inputs": [
+					{
+						"name": "helperContract.helper",
+						"type": "CallableContract",
+						"required": true,
+						"description": "The purity declaration and the component, service or named-function consumers recorded at this revision.",
+						"examples": [
+							{
+								"pure": true,
+								"consumers": [
+									{
+										"unit": "component.summary"
+									},
+									{
+										"unit": "service.export"
+									}
+								]
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "helperContract",
+						"type": "boolean",
+						"description": "True only when the helper is explicitly pure and has two or more different consumers.",
+						"examples": [true, false]
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

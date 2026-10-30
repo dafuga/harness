@@ -29,19 +29,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "recordFiles.record",
-				"type": "VerificationRecord",
-				"description": "Verification record whose scenario captures and test logs should be listed. Captures from referenced scenarios belong to their original record and are excluded."
-			},
-			{
 				"name": "evidenceManifest.record",
 				"type": "VerificationRecord",
+				"required": true,
 				"description": "Verification record supplying id, source commit and tree, status, captures and logs for the evidence manifest."
 			},
 			{
 				"name": "evidenceManifest.recordJson",
 				"type": "Buffer",
+				"required": true,
 				"description": "Exact serialized record.json bytes to hash and count; they are not regenerated from the supplied object."
+			},
+			{
+				"name": "recordFiles.record",
+				"type": "VerificationRecord",
+				"required": true,
+				"description": "Verification record whose scenario captures and test logs should be listed. Captures from referenced scenarios belong to their original record and are excluded."
 			}
 		],
 		"outputs": [
@@ -56,7 +59,56 @@
 				"description": "Version 1 evidence manifest with record identity, source and status, followed by record.json and the run’s own files. Hash and size for record.json come from the supplied bytes; media extensions select LFS and other files use Git."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "evidenceManifest",
+				"inputs": [
+					{
+						"name": "evidenceManifest.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Verification record supplying id, source commit and tree, status, captures and logs for the evidence manifest."
+					},
+					{
+						"name": "evidenceManifest.recordJson",
+						"type": "Buffer",
+						"required": true,
+						"description": "Exact serialized record.json bytes to hash and count; they are not regenerated from the supplied object."
+					}
+				],
+				"outputs": [
+					{
+						"name": "evidenceManifest",
+						"type": "EvidenceManifest",
+						"description": "Version 1 evidence manifest with record identity, source and status, followed by record.json and the run’s own files. Hash and size for record.json come from the supplied bytes; media extensions select LFS and other files use Git."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordFiles",
+				"inputs": [
+					{
+						"name": "recordFiles.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Verification record whose scenario captures and test logs should be listed. Captures from referenced scenarios belong to their original record and are excluded."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordFiles",
+						"type": "RecordFile[]",
+						"description": "Unique file entries in capture-then-log order, retaining the first entry for each path and carrying hashes, byte sizes and capture media types."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

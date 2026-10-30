@@ -24,7 +24,8 @@
 		"inputs": [
 			{
 				"name": "HubResponsesMiddleware.handle.response",
-				"type": "Response"
+				"type": "Response",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -33,7 +34,29 @@
 				"type": "Response"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HubResponsesMiddleware.handle",
+				"inputs": [
+					{
+						"name": "HubResponsesMiddleware.handle.response",
+						"type": "Response",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubResponsesMiddleware.handle",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -40,44 +40,52 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "version.value",
+				"type": "string",
+				"required": true,
+				"description": "Design version string beginning with v followed by at least three digits."
+			},
+			{
 				"name": "text.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Nonblank string of at most one million characters."
 			},
 			{
 				"name": "slug.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Lowercase kebab-case name starting with a letter, at most 64 characters."
 			},
 			{
 				"name": "planValidate.unitId",
 				"type": "string",
+				"required": true,
 				"description": "Supported category and slug joined by a dot."
 			},
 			{
 				"name": "contractHash.contract",
 				"type": "PlanContract",
+				"required": true,
 				"description": "Contract with nonblank responsibility, named/typed input and output arrays, unique nonblank error/state/viewport lists and supported viewport names."
 			},
 			{
 				"name": "author.value",
 				"type": "PlanAuthor",
+				"required": true,
 				"description": "Person or agent author with a nonblank name."
 			},
 			{
 				"name": "region.value",
 				"type": "NormalizedRegion | null",
+				"required": true,
 				"description": "Null or a finite positive rectangle contained within normalized image coordinates from zero to one."
 			},
 			{
 				"name": "filename.value",
 				"type": "string",
+				"required": true,
 				"description": "Lowercase artifact filename using letters, digits, dots and hyphens, beginning with a letter/digit and containing no double dot."
-			},
-			{
-				"name": "version.value",
-				"type": "string",
-				"description": "Design version string beginning with v followed by at least three digits."
 			}
 		],
 		"outputs": [
@@ -133,7 +141,210 @@
 				"type": "thrown",
 				"description": "invalid-input for rejected values, unsafe-path for a filename, or invalid-region for an invalid rectangle."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "version",
+				"inputs": [
+					{
+						"name": "version.value",
+						"type": "string",
+						"required": true,
+						"description": "Design version string beginning with v followed by at least three digits."
+					}
+				],
+				"outputs": [
+					{
+						"name": "version",
+						"type": "void",
+						"description": "Returns nothing after validating the version syntax."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "text",
+				"inputs": [
+					{
+						"name": "text.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Nonblank string of at most one million characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "text",
+						"type": "asserts value is string",
+						"description": "Returns nothing after validating text; does not trim the value."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "slug",
+				"inputs": [
+					{
+						"name": "slug.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Lowercase kebab-case name starting with a letter, at most 64 characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "slug",
+						"type": "asserts value is string",
+						"description": "Returns nothing after validating the slug."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "planValidate",
+				"inputs": [
+					{
+						"name": "planValidate.unitId",
+						"type": "string",
+						"required": true,
+						"description": "Supported category and slug joined by a dot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planValidate",
+						"type": "string",
+						"description": "Category-specific relative plan folder."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contractHash",
+				"inputs": [
+					{
+						"name": "contractHash.contract",
+						"type": "PlanContract",
+						"required": true,
+						"description": "Contract with nonblank responsibility, named/typed input and output arrays, unique nonblank error/state/viewport lists and supported viewport names."
+					}
+				],
+				"outputs": [
+					{
+						"name": "contractHash",
+						"type": "string",
+						"description": "SHA-256 of the validated, consistently serialized contract."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "author",
+				"inputs": [
+					{
+						"name": "author.value",
+						"type": "PlanAuthor",
+						"required": true,
+						"description": "Person or agent author with a nonblank name."
+					}
+				],
+				"outputs": [
+					{
+						"name": "author",
+						"type": "void",
+						"description": "Returns nothing after validating author kind and name."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "region",
+				"inputs": [
+					{
+						"name": "region.value",
+						"type": "NormalizedRegion | null",
+						"required": true,
+						"description": "Null or a finite positive rectangle contained within normalized image coordinates from zero to one."
+					}
+				],
+				"outputs": [
+					{
+						"name": "region",
+						"type": "NormalizedRegion | null",
+						"description": "Null or rectangle coordinates rounded to six decimal places."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "filename",
+				"inputs": [
+					{
+						"name": "filename.value",
+						"type": "string",
+						"required": true,
+						"description": "Lowercase artifact filename using letters, digits, dots and hyphens, beginning with a letter/digit and containing no double dot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "filename",
+						"type": "void",
+						"description": "Returns nothing after validating the filename."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

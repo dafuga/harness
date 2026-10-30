@@ -30,31 +30,38 @@
 		"inputs": [
 			{
 				"name": "AcceptanceRecord.constructor.print",
-				"type": "(line: string) => void"
+				"type": "(line: string) => void",
+				"required": false
 			},
 			{
 				"name": "AcceptanceRecord.begin.phase",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AcceptanceRecord.hide.secret",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AcceptanceRecord.safe.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AcceptanceRecord.check.passed",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "AcceptanceRecord.check.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AcceptanceRecord.stopped.error",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,7 +94,149 @@
 				"type": "number"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AcceptanceRecord.begin",
+				"inputs": [
+					{
+						"name": "AcceptanceRecord.begin.phase",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AcceptanceRecord.begin",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AcceptanceRecord.hide",
+				"inputs": [
+					{
+						"name": "AcceptanceRecord.hide.secret",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AcceptanceRecord.hide",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AcceptanceRecord.safe",
+				"inputs": [
+					{
+						"name": "AcceptanceRecord.safe.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AcceptanceRecord.safe",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AcceptanceRecord.check",
+				"inputs": [
+					{
+						"name": "AcceptanceRecord.check.passed",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "AcceptanceRecord.check.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AcceptanceRecord.check",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AcceptanceRecord.stopped",
+				"inputs": [
+					{
+						"name": "AcceptanceRecord.stopped.error",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AcceptanceRecord.stopped",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AcceptanceRecord.failed",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AcceptanceRecord.failed",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AcceptanceRecord.passed",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AcceptanceRecord.passed",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AcceptanceRecord.constructor",
+				"inputs": [
+					{
+						"name": "AcceptanceRecord.constructor.print",
+						"type": "(line: string) => void",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "AcceptanceRecord.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

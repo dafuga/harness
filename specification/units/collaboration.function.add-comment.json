@@ -20,16 +20,19 @@
 			{
 				"name": "addComment.deps",
 				"type": "CollaborationDependencies",
+				"required": true,
 				"description": "Repository, source-anchor validator and optional clock used by the transaction."
 			},
 			{
 				"name": "addComment.actor",
 				"type": "Actor",
+				"required": true,
 				"description": "Verified actor who must be an owner or commenter of the project."
 			},
 			{
 				"name": "addComment.input",
 				"type": "AddCommentInput",
+				"required": true,
 				"description": "Project and request UUIDs, optional thread UUID, source anchor and trimmed comment text of 1–20,000 characters."
 			}
 		],
@@ -46,7 +49,42 @@
 				"type": "thrown",
 				"description": "Rejects invalid input, denied membership, invalid source anchors, missing threads, conflicting request or anchor reuse, and exhausted write retries."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "addComment",
+				"inputs": [
+					{
+						"name": "addComment.deps",
+						"type": "CollaborationDependencies",
+						"required": true,
+						"description": "Repository, source-anchor validator and optional clock used by the transaction."
+					},
+					{
+						"name": "addComment.actor",
+						"type": "Actor",
+						"required": true,
+						"description": "Verified actor who must be an owner or commenter of the project."
+					},
+					{
+						"name": "addComment.input",
+						"type": "AddCommentInput",
+						"required": true,
+						"description": "Project and request UUIDs, optional thread UUID, source anchor and trimmed comment text of 1–20,000 characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "addComment",
+						"type": "unknown",
+						"description": "Promise of the updated thread and committed collaboration revision; an identical repeated request returns its existing thread."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

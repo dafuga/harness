@@ -60,13 +60,76 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "configValueStructure.value",
+				"type": "ts.Expression",
+				"required": true
+			},
+			{
+				"name": "configValueStructure.bindings",
+				"type": "Bindings",
+				"required": true
+			},
+			{
+				"name": "configValueStructure.depth",
+				"type": "number",
+				"required": false,
+				"default": 0
+			},
+			{
+				"name": "configValues.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "configValues.source",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "modelDefinitions.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "modelDefinitions.source",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "modelTable.node",
+				"type": "ts.ClassDeclaration",
+				"required": true
+			},
+			{
+				"name": "modelTable.file",
+				"type": "ts.SourceFile",
+				"required": true
+			},
+			{
+				"name": "pureHelperCalls.node",
+				"type": "ts.CallExpression",
+				"required": true
+			},
+			{
+				"name": "pureHelperCalls.local",
+				"type": "Set<string>",
+				"required": true
+			},
+			{
+				"name": "pureHelpers.code",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "unitMetadata.tree",
-				"type": "Pick<SourceTree, 'read'>",
+				"type": "HelperTree",
+				"required": true,
 				"description": "Reads files from the exact Git revision being viewed."
 			},
 			{
 				"name": "unitMetadata.units",
 				"type": "Unit[]",
+				"required": true,
 				"description": "Registered entities enriched with revision-bound config values, documentation, helpers, service facts and model definitions."
 			}
 		],
@@ -77,7 +140,175 @@
 				"description": "Attaches selected-revision model methods, fields and literal database schemas alongside config structures, helper contracts and service facts. Source modules and live databases are never executed."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "configValueStructure",
+				"inputs": [
+					{
+						"name": "configValueStructure.value",
+						"type": "ts.Expression",
+						"required": true
+					},
+					{
+						"name": "configValueStructure.bindings",
+						"type": "Bindings",
+						"required": true
+					},
+					{
+						"name": "configValueStructure.depth",
+						"type": "number",
+						"required": false,
+						"default": 0
+					}
+				],
+				"outputs": [
+					{
+						"name": "configValueStructure",
+						"type": "ConfigValueNode"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "configValues",
+				"inputs": [
+					{
+						"name": "configValues.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "configValues.source",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "configValues",
+						"type": "ConfigVariable[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "modelDefinitions",
+				"inputs": [
+					{
+						"name": "modelDefinitions.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "modelDefinitions.source",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "modelDefinitions",
+						"type": "ModelDefinition[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "modelTable",
+				"inputs": [
+					{
+						"name": "modelTable.node",
+						"type": "ts.ClassDeclaration",
+						"required": true
+					},
+					{
+						"name": "modelTable.file",
+						"type": "ts.SourceFile",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "modelTable",
+						"type": "Pick<ModelDefinition, 'table' | 'tableGap'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pureHelperCalls",
+				"inputs": [
+					{
+						"name": "pureHelperCalls.node",
+						"type": "ts.CallExpression",
+						"required": true
+					},
+					{
+						"name": "pureHelperCalls.local",
+						"type": "Set<string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pureHelperCalls",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pureHelpers",
+				"inputs": [
+					{
+						"name": "pureHelpers.code",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pureHelpers",
+						"type": "Set<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unitMetadata",
+				"inputs": [
+					{
+						"name": "unitMetadata.tree",
+						"type": "HelperTree",
+						"required": true,
+						"description": "Reads files from the exact Git revision being viewed."
+					},
+					{
+						"name": "unitMetadata.units",
+						"type": "Unit[]",
+						"required": true,
+						"description": "Registered entities enriched with revision-bound config values, documentation, helpers, service facts and model definitions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitMetadata",
+						"type": "Promise<void>",
+						"description": "Attaches selected-revision model methods, fields and literal database schemas alongside config structures, helper contracts and service facts. Source modules and live databases are never executed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

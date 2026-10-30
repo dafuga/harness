@@ -15,11 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/explorer-ui/thread-links/ThreadLinks.svelte",
-			"packages/desktop/src/components/thread-links/ThreadLinks.svelte"
-		],
-		"symbols": ["ThreadLinks", "ThreadLinks"]
+		"source": ["packages/desktop/src/components/explorer-ui/thread-links/ThreadLinks.svelte"],
+		"symbols": ["ThreadLinks"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -27,21 +24,25 @@
 			{
 				"name": "ThreadLinks.threads",
 				"type": "ThreadInfo[]",
+				"required": true,
 				"description": "Required thread records, kept in supplied order within each group. Empty groups are omitted."
 			},
 			{
 				"name": "ThreadLinks.thread",
 				"type": "ThreadInfo | null",
+				"required": true,
 				"description": "Required current thread or null. Its identifier marks the matching button active and pressed."
 			},
 			{
 				"name": "ThreadLinks.aim",
 				"type": "ThreadTarget",
+				"required": true,
 				"description": "Required image/conversation target used by the same-image helper to classify threads."
 			},
 			{
 				"name": "ThreadLinks.select",
 				"type": "(thread: ThreadInfo) => void",
+				"required": true,
 				"description": "Called with the clicked thread; this component does not update the current-thread prop itself."
 			}
 		],
@@ -52,7 +53,9 @@
 				"description": "Threads on this image followed by Other threads. Buttons show the pin number and version, falling back to Initial plan. Empty input renders no groups."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

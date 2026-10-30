@@ -36,29 +36,34 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "artifactText.value",
-				"type": "unknown",
-				"description": "Recorded value to render as text."
-			},
-			{
 				"name": "artifactBehavior.document",
 				"type": "unknown",
+				"required": true,
 				"description": "Parsed document to interpret as run observations."
 			},
 			{
 				"name": "explorerArtifact.capture",
 				"type": "HarnessCapture",
+				"required": true,
 				"description": "Recorded capture with media location, expected SHA-256 and optional gap explanation."
 			},
 			{
 				"name": "explorerArtifact.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "Address prefix prepended to the capture media filename."
 			},
 			{
 				"name": "explorerArtifact.fetcher",
 				"type": "ArtifactFetcher",
+				"required": false,
 				"description": "Optional byte-fetching function, defaulting to browser fetch."
+			},
+			{
+				"name": "artifactText.value",
+				"type": "unknown",
+				"required": true,
+				"description": "Recorded value to render as text."
 			}
 		],
 		"outputs": [
@@ -78,7 +83,82 @@
 				"description": "Resolves to verified text/document/behavior when bytes match the hash. Missing media, unsuccessful HTTP responses and hash mismatches return an unverified result with a problem; mismatched bytes remain text only. Non-JSON text may still be hash-verified."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "artifactBehavior",
+				"inputs": [
+					{
+						"name": "artifactBehavior.document",
+						"type": "unknown",
+						"required": true,
+						"description": "Parsed document to interpret as run observations."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artifactBehavior",
+						"type": "ExplorerArtifactBehavior | null",
+						"description": "Structured scenario/environment/fixture, steps, input/output, assertions, trace and remaining fields, or null for a non-object or array. Uses the first recognized input and output aliases; assertions retain named status and additional details."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explorerArtifact",
+				"inputs": [
+					{
+						"name": "explorerArtifact.capture",
+						"type": "HarnessCapture",
+						"required": true,
+						"description": "Recorded capture with media location, expected SHA-256 and optional gap explanation."
+					},
+					{
+						"name": "explorerArtifact.mediaBase",
+						"type": "string",
+						"required": true,
+						"description": "Address prefix prepended to the capture media filename."
+					},
+					{
+						"name": "explorerArtifact.fetcher",
+						"type": "ArtifactFetcher",
+						"required": false,
+						"description": "Optional byte-fetching function, defaulting to browser fetch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerArtifact",
+						"type": "Promise<ExplorerArtifact>",
+						"description": "Resolves to verified text/document/behavior when bytes match the hash. Missing media, unsuccessful HTTP responses and hash mismatches return an unverified result with a problem; mismatched bytes remain text only. Non-JSON text may still be hash-verified."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "artifactText",
+				"inputs": [
+					{
+						"name": "artifactText.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Recorded value to render as text."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artifactText",
+						"type": "string",
+						"description": "Not recorded for undefined, strings unchanged, otherwise indented JSON."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -16,11 +16,13 @@
 			{
 				"name": "taskAuditRecord.root",
 				"type": "string",
+				"required": true,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "taskAuditRecord.input",
 				"type": "TaskAuditInput & { commit: string | null; checks: TaskCheck[] }",
+				"required": true,
 				"description": "Declared task, exact or unavailable commit, and the actual individual check outcomes to persist."
 			}
 		],
@@ -31,7 +33,36 @@
 				"description": "Content-addressed audit stored under the repository Git path or a project-isolated temporary fallback."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "taskAuditRecord",
+				"inputs": [
+					{
+						"name": "taskAuditRecord.root",
+						"type": "string",
+						"required": true,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+					},
+					{
+						"name": "taskAuditRecord.input",
+						"type": "TaskAuditInput & { commit: string | null; checks: TaskCheck[] }",
+						"required": true,
+						"description": "Declared task, exact or unavailable commit, and the actual individual check outcomes to persist."
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskAuditRecord",
+						"type": "Promise<TaskAudit>",
+						"description": "Content-addressed audit stored under the repository Git path or a project-isolated temporary fallback."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

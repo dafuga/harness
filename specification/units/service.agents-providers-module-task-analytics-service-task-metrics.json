@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "taskMetrics.events",
-				"type": "AnalyticsEvent[]"
+				"type": "AnalyticsEvent[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "taskMetrics",
+				"inputs": [
+					{
+						"name": "taskMetrics.events",
+						"type": "AnalyticsEvent[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskMetrics",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

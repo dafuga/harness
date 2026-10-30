@@ -32,35 +32,43 @@
 		"inputs": [
 			{
 				"name": "VerificationStoreRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VerificationStoreRepository.directoryFor.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VerificationStoreRepository.directoryFor.startedAt",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VerificationStoreRepository.save.record",
-				"type": "VerificationRecord"
+				"type": "VerificationRecord",
+				"required": true
 			},
 			{
 				"name": "VerificationStoreRepository.save.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VerificationStoreRepository.load.reference",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VerificationStoreRepository.latest.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VerificationStoreRepository.read.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -93,7 +101,154 @@
 				"type": "StoredRecord | undefined"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "VerificationStoreRepository.directoryFor",
+				"inputs": [
+					{
+						"name": "VerificationStoreRepository.directoryFor.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VerificationStoreRepository.directoryFor.startedAt",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationStoreRepository.directoryFor",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VerificationStoreRepository.save",
+				"inputs": [
+					{
+						"name": "VerificationStoreRepository.save.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "VerificationStoreRepository.save.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationStoreRepository.save",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VerificationStoreRepository.load",
+				"inputs": [
+					{
+						"name": "VerificationStoreRepository.load.reference",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationStoreRepository.load",
+						"type": "StoredRecord | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VerificationStoreRepository.latest",
+				"inputs": [
+					{
+						"name": "VerificationStoreRepository.latest.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationStoreRepository.latest",
+						"type": "StoredRecord | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VerificationStoreRepository.all",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VerificationStoreRepository.all",
+						"type": "StoredRecord[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VerificationStoreRepository.records",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VerificationStoreRepository.records",
+						"type": "IterableIterator<StoredRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VerificationStoreRepository.read",
+				"inputs": [
+					{
+						"name": "VerificationStoreRepository.read.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationStoreRepository.read",
+						"type": "StoredRecord | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VerificationStoreRepository.constructor",
+				"inputs": [
+					{
+						"name": "VerificationStoreRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationStoreRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

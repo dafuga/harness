@@ -26,7 +26,14 @@
 			{
 				"name": "deviceCapabilities.agents",
 				"type": "boolean",
+				"required": true,
 				"description": "Whether the approved device is also allowed to use agents. This value controls agent, planning and approval actions together."
+			},
+			{
+				"name": "deviceCapabilities.comments",
+				"type": "boolean",
+				"required": false,
+				"default": true
 			}
 		],
 		"outputs": [
@@ -36,7 +43,36 @@
 				"description": "Capabilities with comments enabled and local as the source. Agents, planning and approval equal the supplied flag. The reason explains read-and-comment-only access when false, or that comments remain pending on the computer until connected when true."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "deviceCapabilities",
+				"inputs": [
+					{
+						"name": "deviceCapabilities.agents",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether the approved device is also allowed to use agents. This value controls agent, planning and approval actions together."
+					},
+					{
+						"name": "deviceCapabilities.comments",
+						"type": "boolean",
+						"required": false,
+						"default": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "deviceCapabilities",
+						"type": "ProjectCapabilities",
+						"description": "Capabilities with comments enabled and local as the source. Agents, planning and approval equal the supplied flag. The reason explains read-and-comment-only access when false, or that comments remain pending on the computer until connected when true."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

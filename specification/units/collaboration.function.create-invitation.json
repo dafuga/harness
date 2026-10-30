@@ -27,31 +27,37 @@
 			{
 				"name": "createInvitation.deps",
 				"type": "CollaborationDependencies",
+				"required": true,
 				"description": "Persistence and optional clock used to store the invitation."
 			},
 			{
 				"name": "createInvitation.actor",
 				"type": "Actor",
+				"required": true,
 				"description": "Verified project owner issuing the invitation."
 			},
 			{
 				"name": "createInvitation.input",
 				"type": "Parameters<CollaborationApi['createInvitation']>[1]",
+				"required": true,
 				"description": "Project UUID, invited email and commenter or viewer role."
 			},
 			{
 				"name": "acceptInvitation.deps",
 				"type": "CollaborationDependencies",
+				"required": true,
 				"description": "Persistence and optional clock used to validate and accept the invitation."
 			},
 			{
 				"name": "acceptInvitation.actor",
 				"type": "Actor",
+				"required": true,
 				"description": "Verified actor whose normalized email must match the invitation."
 			},
 			{
 				"name": "acceptInvitation.input",
 				"type": "Parameters<CollaborationApi['acceptInvitation']>[1]",
+				"required": true,
 				"description": "Project UUID, invitation UUID and 64-character lowercase hex invitation code."
 			}
 		],
@@ -73,7 +79,74 @@
 				"type": "thrown",
 				"description": "Rejects invalid input, nonowners, invalid or expired or already accepted invitations, email or code mismatches and exhausted write retries."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "createInvitation",
+				"inputs": [
+					{
+						"name": "createInvitation.deps",
+						"type": "CollaborationDependencies",
+						"required": true,
+						"description": "Persistence and optional clock used to store the invitation."
+					},
+					{
+						"name": "createInvitation.actor",
+						"type": "Actor",
+						"required": true,
+						"description": "Verified project owner issuing the invitation."
+					},
+					{
+						"name": "createInvitation.input",
+						"type": "Parameters<CollaborationApi['createInvitation']>[1]",
+						"required": true,
+						"description": "Project UUID, invited email and commenter or viewer role."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createInvitation",
+						"type": "unknown",
+						"description": "Promise of invitation ID, project ID, expiry and plaintext code; only its hash is stored."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "acceptInvitation",
+				"inputs": [
+					{
+						"name": "acceptInvitation.deps",
+						"type": "CollaborationDependencies",
+						"required": true,
+						"description": "Persistence and optional clock used to validate and accept the invitation."
+					},
+					{
+						"name": "acceptInvitation.actor",
+						"type": "Actor",
+						"required": true,
+						"description": "Verified actor whose normalized email must match the invitation."
+					},
+					{
+						"name": "acceptInvitation.input",
+						"type": "Parameters<CollaborationApi['acceptInvitation']>[1]",
+						"required": true,
+						"description": "Project UUID, invitation UUID and 64-character lowercase hex invitation code."
+					}
+				],
+				"outputs": [
+					{
+						"name": "acceptInvitation",
+						"type": "unknown",
+						"description": "Promise of the joined project and current role; existing membership is retained and the invitation is marked accepted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

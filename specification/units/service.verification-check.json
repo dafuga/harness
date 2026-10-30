@@ -27,27 +27,33 @@
 		"inputs": [
 			{
 				"name": "VerificationCheckService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VerificationCheckService.constructor.indexer",
-				"type": "SourceIndexService"
+				"type": "SourceIndexService",
+				"required": false
 			},
 			{
 				"name": "VerificationCheckService.check.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VerificationCheckService.check.stored",
-				"type": "StoredRecord"
+				"type": "StoredRecord",
+				"required": true
 			},
 			{
 				"name": "VerificationCheckService.integrity.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VerificationCheckService.integrity.stored",
-				"type": "StoredRecord"
+				"type": "StoredRecord",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -60,7 +66,81 @@
 				"type": "Promise<string[]>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "VerificationCheckService.check",
+				"inputs": [
+					{
+						"name": "VerificationCheckService.check.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VerificationCheckService.check.stored",
+						"type": "StoredRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationCheckService.check",
+						"type": "Promise<CheckReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VerificationCheckService.integrity",
+				"inputs": [
+					{
+						"name": "VerificationCheckService.integrity.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VerificationCheckService.integrity.stored",
+						"type": "StoredRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationCheckService.integrity",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VerificationCheckService.constructor",
+				"inputs": [
+					{
+						"name": "VerificationCheckService.constructor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VerificationCheckService.constructor.indexer",
+						"type": "SourceIndexService",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "VerificationCheckService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

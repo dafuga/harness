@@ -27,6 +27,7 @@
 			{
 				"name": "ownedBySite.project",
 				"type": "{ path: string }",
+				"required": true,
 				"description": "Project path whose ownership should be checked."
 			}
 		],
@@ -42,7 +43,43 @@
 				"description": "Result of comparing the configured site root with the supplied project path through the shared same-site helper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reportSite",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "reportSite",
+						"type": "ReportSite",
+						"description": "Cached site root, primary-checkout directory name and repository identity. On first call uses trimmed HARNESS_SITE_ROOT or the current directory, resolves the Git root when available, and falls back to the requested directory."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ownedBySite",
+				"inputs": [
+					{
+						"name": "ownedBySite.project",
+						"type": "{ path: string }",
+						"required": true,
+						"description": "Project path whose ownership should be checked."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ownedBySite",
+						"type": "boolean",
+						"description": "Result of comparing the configured site root with the supplied project path through the shared same-site helper."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

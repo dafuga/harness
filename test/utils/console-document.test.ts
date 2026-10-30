@@ -10,7 +10,7 @@ test('the document carries the viewer and where its endpoints are, and nothing e
 	const html = consoleDocument(assets, { base: '/harness' });
 	expect(html.startsWith('<!doctype html>')).toBe(true);
 	expect(html).toContain('<div id="app"></div>');
-	expect(html).toContain('window.harnessConsole={"exportable":false,"base":"/harness"};');
+	expect(html).toContain('window.harnessConsole={"base":"/harness"};');
 	expect(html).toContain('<meta name="robots" content="noindex">');
 	expect(html).toContain('<title>Harness</title>');
 });

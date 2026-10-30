@@ -20,15 +20,18 @@
 		"inputs": [
 			{
 				"name": "responseCheckSettings.options",
-				"type": "ResponseCheckOptions"
+				"type": "ResponseCheckOptions",
+				"required": true
 			},
 			{
 				"name": "readResponseCheckInput.options",
-				"type": "ResponseCheckOptions"
+				"type": "ResponseCheckOptions",
+				"required": true
 			},
 			{
 				"name": "responseInputHashes.input",
-				"type": "ResponseCheckInput"
+				"type": "ResponseCheckInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,7 +57,75 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "responseCheckSettings",
+				"inputs": [
+					{
+						"name": "responseCheckSettings.options",
+						"type": "ResponseCheckOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "responseCheckSettings",
+						"type": "ResponseCheckSettings"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readResponseCheckInput",
+				"inputs": [
+					{
+						"name": "readResponseCheckInput.options",
+						"type": "ResponseCheckOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readResponseCheckInput",
+						"type": "Promise<ResponseCheckInput>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "responseInputHashes",
+				"inputs": [
+					{
+						"name": "responseInputHashes.input",
+						"type": "ResponseCheckInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "responseInputHashes",
+						"type": "Record<string, string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

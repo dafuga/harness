@@ -19,16 +19,19 @@
 			{
 				"name": "enqueueChangeDeployments.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "enqueueChangeDeployments.input",
 				"type": "{ environment: DeploymentEnvironment; commit: string; projectId: string | null }",
+				"required": true,
 				"description": "Requested environment and immutable source commit with the originating project identity."
 			},
 			{
 				"name": "enqueueChangeDeployments.runtime",
 				"type": "Required<Pick<DeploymentOptions, 'plugin'>> & DeploymentOptions & { activities: DeploymentActivityService }",
+				"required": true,
 				"description": "Deployment adapter and injected execution, health and progress callbacks."
 			}
 		],
@@ -45,7 +48,47 @@
 				"type": "thrown",
 				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "enqueueChangeDeployments",
+				"inputs": [
+					{
+						"name": "enqueueChangeDeployments.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					},
+					{
+						"name": "enqueueChangeDeployments.input",
+						"type": "{ environment: DeploymentEnvironment; commit: string; projectId: string | null }",
+						"required": true,
+						"description": "Requested environment and immutable source commit with the originating project identity."
+					},
+					{
+						"name": "enqueueChangeDeployments.runtime",
+						"type": "Required<Pick<DeploymentOptions, 'plugin'>> & DeploymentOptions & { activities: DeploymentActivityService }",
+						"required": true,
+						"description": "Deployment adapter and injected execution, health and progress callbacks."
+					}
+				],
+				"outputs": [
+					{
+						"name": "enqueueChangeDeployments",
+						"type": "unknown",
+						"description": "Ordered queued jobs; each predecessor must succeed before the next destination begins."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -36,12 +36,21 @@
 			{
 				"name": "EntitySummary.measure",
 				"type": "EntityMeasure",
+				"required": true,
 				"description": "Required prepared size and performance rows including emitted target identity, notes, environment, tolerance and over-policy flags."
 			},
 			{
 				"name": "EntitySummary.compact",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional flag, false by default. True hides inline size notes while retaining their tooltips."
+			},
+			{
+				"name": "EntitySummary.comparison",
+				"type": "MetricComparison | null",
+				"required": false,
+				"default": null
 			}
 		],
 		"outputs": [
@@ -51,7 +60,9 @@
 				"description": "One Performance profile card with equal-height label/value rows. Output-size rows with target none are omitted; real target sizes and unavailable reasons remain visible. Workload profiles stay separate and supplied tolerance flags remain visible."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

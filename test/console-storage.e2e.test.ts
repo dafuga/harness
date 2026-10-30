@@ -113,7 +113,6 @@ test('nothing that depends on the session may be kept by a shared cache', async 
 	expect(await kept(`/harness/branch/main/commit/${head}/map`)).toEqual([200, 'private, no-store']);
 	expect(await kept('/harness/data/index.json')).toEqual([200, 'no-store']);
 	expect(await kept('/harness/data/build.json')).toEqual([200, 'no-store']);
-	expect(await kept(`/harness/export/${target.commit}`)).toEqual([200, 'private, no-store']);
 	const media = await kept(`/harness/media/${target.media}`);
 	expect(media).toEqual([200, expect.stringMatching(/^private, /)]);
 	expect(await kept('/harness', {})).toEqual([403, 'no-store']);

@@ -31,21 +31,25 @@
 			{
 				"name": "providerModels.models",
 				"type": "CodexModel[]",
+				"required": true,
 				"description": "The provider’s models with identifiers, display names, hidden flags, effort choices, default effort and default-model flag."
 			},
 			{
 				"name": "validateModel.models",
 				"type": "ModelChoice[]",
+				"required": true,
 				"description": "The model choices available for selection."
 			},
 			{
 				"name": "validateModel.model",
 				"type": "string",
+				"required": true,
 				"description": "The exact model identity requested."
 			},
 			{
 				"name": "validateModel.effort",
 				"type": "string | null",
+				"required": true,
 				"description": "The optional effort to check. Null or an empty string skips effort validation."
 			}
 		],
@@ -67,7 +71,67 @@
 				"type": "thrown",
 				"description": "Throws when the requested model is absent or its requested effort is unsupported."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "providerModels",
+				"inputs": [
+					{
+						"name": "providerModels.models",
+						"type": "CodexModel[]",
+						"required": true,
+						"description": "The provider’s models with identifiers, display names, hidden flags, effort choices, default effort and default-model flag."
+					}
+				],
+				"outputs": [
+					{
+						"name": "providerModels",
+						"type": "ModelChoice[]",
+						"description": "Visible models in input order, with identifiers and effort values retained and hidden models removed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateModel",
+				"inputs": [
+					{
+						"name": "validateModel.models",
+						"type": "ModelChoice[]",
+						"required": true,
+						"description": "The model choices available for selection."
+					},
+					{
+						"name": "validateModel.model",
+						"type": "string",
+						"required": true,
+						"description": "The exact model identity requested."
+					},
+					{
+						"name": "validateModel.effort",
+						"type": "string | null",
+						"required": true,
+						"description": "The optional effort to check. Null or an empty string skips effort validation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateModel",
+						"type": "void",
+						"description": "No return value when the model exists and any nonempty requested effort is supported. No default model or effort is substituted."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

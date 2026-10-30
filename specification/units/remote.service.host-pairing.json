@@ -46,23 +46,28 @@
 		"inputs": [
 			{
 				"name": "HostPairingService.constructor.options",
-				"type": "HostPairingOptions"
+				"type": "HostPairingOptions",
+				"required": true
 			},
 			{
 				"name": "HostPairingService.receive.frame",
-				"type": "HostPairingFrame"
+				"type": "HostPairingFrame",
+				"required": true
 			},
 			{
 				"name": "HostPairingService.approve.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostPairingService.approve.approval",
-				"type": "{ hostName: string; generation: number; grant: RemoteGrant; deviceId?: string }"
+				"type": "{ hostName: string; generation: number; grant: RemoteGrant; deviceId?: string }",
+				"required": true
 			},
 			{
 				"name": "HostPairingService.deny.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -99,6 +104,141 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostPairingService.open",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostPairingService.open",
+						"type": "HostPairingOffer"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostPairingService.offer",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostPairingService.offer",
+						"type": "HostPairingOffer | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostPairingService.requests",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostPairingService.requests",
+						"type": "RemotePairingRequest[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostPairingService.receive",
+				"inputs": [
+					{
+						"name": "HostPairingService.receive.frame",
+						"type": "HostPairingFrame",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostPairingService.receive",
+						"type": "Promise<RemotePairingRequest | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostPairingService.approve",
+				"inputs": [
+					{
+						"name": "HostPairingService.approve.pairingId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HostPairingService.approve.approval",
+						"type": "{ hostName: string; generation: number; grant: RemoteGrant; deviceId?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostPairingService.approve",
+						"type": "Promise<HostPairingApproved>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostPairingService.deny",
+				"inputs": [
+					{
+						"name": "HostPairingService.deny.pairingId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostPairingService.deny",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostPairingService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostPairingService.close",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostPairingService.constructor",
+				"inputs": [
+					{
+						"name": "HostPairingService.constructor.options",
+						"type": "HostPairingOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostPairingService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

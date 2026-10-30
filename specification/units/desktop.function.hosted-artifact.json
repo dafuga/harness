@@ -21,11 +21,13 @@
 			{
 				"name": "hostedArtifact.media",
 				"type": "{ bytes: Uint8Array; mediaType: string }",
+				"required": true,
 				"description": "The received bytes and declared media type. Supported types are PNG, JPEG, WAV, MPEG audio, MP4 audio, Ogg, JSON and plain text; this helper lowercases the base type and discards parameters before checking."
 			},
 			{
 				"name": "hostedArtifact.sha256",
 				"type": "string",
+				"required": true,
 				"description": "The expected SHA-256 hash of the requested file."
 			}
 		],
@@ -42,7 +44,41 @@
 				"type": "thrown",
 				"description": "Rejects unsupported or mismatched media, a different hash or excessive size. Hash errors explain that the file differs from the requested recording; unsupported content receives the shared unsupported-kind message."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hostedArtifact",
+				"inputs": [
+					{
+						"name": "hostedArtifact.media",
+						"type": "{ bytes: Uint8Array; mediaType: string }",
+						"required": true,
+						"description": "The received bytes and declared media type. Supported types are PNG, JPEG, WAV, MPEG audio, MP4 audio, Ogg, JSON and plain text; this helper lowercases the base type and discards parameters before checking."
+					},
+					{
+						"name": "hostedArtifact.sha256",
+						"type": "string",
+						"required": true,
+						"description": "The expected SHA-256 hash of the requested file."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostedArtifact",
+						"type": "Promise<EvidenceArtifactResult>",
+						"description": "A promise for the checked bytes, hash and serving type. Bytes must be at most 11 MiB, match the hash, and identify the declared base media type. Plain text is returned with UTF-8 charset."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

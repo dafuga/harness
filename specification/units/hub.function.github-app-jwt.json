@@ -34,11 +34,13 @@
 			{
 				"name": "githubAppKey.pem",
 				"type": "string",
+				"required": true,
 				"description": "PKCS#1 or PKCS#8 PEM, accepting real or escaped newlines."
 			},
 			{
 				"name": "githubAppJwt.input",
 				"type": "GithubAppJwtInput",
+				"required": true,
 				"description": "App ID, imported signing key and current time in milliseconds."
 			}
 		],
@@ -54,7 +56,50 @@
 				"description": "RS256 JWT with app ID issuer, issued-at one minute before the supplied time and expiration nine minutes after it."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "githubAppKey",
+				"inputs": [
+					{
+						"name": "githubAppKey.pem",
+						"type": "string",
+						"required": true,
+						"description": "PKCS#1 or PKCS#8 PEM, accepting real or escaped newlines."
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubAppKey",
+						"type": "Promise<CryptoKey>",
+						"description": "Nonextractable RSA SHA-256 signing key; invalid PEM or import failure rejects with github-disabled."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "githubAppJwt",
+				"inputs": [
+					{
+						"name": "githubAppJwt.input",
+						"type": "GithubAppJwtInput",
+						"required": true,
+						"description": "App ID, imported signing key and current time in milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubAppJwt",
+						"type": "Promise<string>",
+						"description": "RS256 JWT with app ID issuer, issued-at one minute before the supplied time and expiration nine minutes after it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

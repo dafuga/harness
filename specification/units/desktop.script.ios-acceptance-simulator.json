@@ -32,51 +32,64 @@
 		"inputs": [
 			{
 				"name": "install.udid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "install.product",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "launch.udid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "launch.args",
-				"type": "string[]"
+				"type": "string[]",
+				"required": false,
+				"default": []
 			},
 			{
 				"name": "cameraAccess.udid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "cameraAccess.access",
-				"type": "'grant' | 'revoke'"
+				"type": "'grant' | 'revoke'",
+				"required": true
 			},
 			{
 				"name": "running.udid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "screenshot.udid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "screenshot.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "inspectorSocket.udid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "keychainGroups.udid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "shutdown.udid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -130,7 +143,193 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "acceptanceDevice",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "acceptanceDevice",
+						"type": "{ udid: string; runtime: string }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "install",
+				"inputs": [
+					{
+						"name": "install.udid",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "install.product",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "install",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "launch",
+				"inputs": [
+					{
+						"name": "launch.udid",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launch.args",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "launch",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cameraAccess",
+				"inputs": [
+					{
+						"name": "cameraAccess.udid",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "cameraAccess.access",
+						"type": "'grant' | 'revoke'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cameraAccess",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "running",
+				"inputs": [
+					{
+						"name": "running.udid",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "running",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "screenshot",
+				"inputs": [
+					{
+						"name": "screenshot.udid",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "screenshot.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "screenshot",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inspectorSocket",
+				"inputs": [
+					{
+						"name": "inspectorSocket.udid",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectorSocket",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "keychainGroups",
+				"inputs": [
+					{
+						"name": "keychainGroups.udid",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "keychainGroups",
+						"type": "string[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "shutdown",
+				"inputs": [
+					{
+						"name": "shutdown.udid",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "shutdown",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

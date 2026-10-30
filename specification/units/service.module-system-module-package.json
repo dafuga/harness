@@ -19,11 +19,13 @@
 			{
 				"name": "ModulePackageService.plan.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute project directory containing package.json."
 			},
 			{
 				"name": "ModulePackageService.plan.name",
 				"type": "string",
+				"required": true,
 				"description": "Registry package with an exact semantic version, including an optional scope."
 			}
 		],
@@ -40,7 +42,41 @@
 				"type": "thrown",
 				"description": "Invalid package pins, conflicting existing versions or unreadable manifests reject the plan."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "ModulePackageService.plan",
+				"inputs": [
+					{
+						"name": "ModulePackageService.plan.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute project directory containing package.json."
+					},
+					{
+						"name": "ModulePackageService.plan.name",
+						"type": "string",
+						"required": true,
+						"description": "Registry package with an exact semantic version, including an optional scope."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModulePackageService.plan",
+						"type": "Promise<PlannedFile>",
+						"description": "A package.json write plan preserving unrelated settings."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "workspace.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "savedCopies.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "reconnection.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,7 +43,65 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "workspace",
+				"inputs": [
+					{
+						"name": "workspace.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workspace",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "savedCopies",
+				"inputs": [
+					{
+						"name": "savedCopies.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "savedCopies",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reconnection",
+				"inputs": [
+					{
+						"name": "reconnection.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reconnection",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

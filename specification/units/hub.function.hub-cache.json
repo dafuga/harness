@@ -19,6 +19,7 @@
 			{
 				"name": "hubCache.bucket",
 				"type": "R2Bucket",
+				"required": false,
 				"description": "Optional R2 bucket; omission creates a fresh per-call memory cache."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Cache get/put/delete methods. R2 uses a projections prefix and stores identity/hash metadata, treating read failures as misses and swallowing put/delete failures. Memory puts clone entries and gets return the retained entry or null."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubCache",
+				"inputs": [
+					{
+						"name": "hubCache.bucket",
+						"type": "R2Bucket",
+						"required": false,
+						"description": "Optional R2 bucket; omission creates a fresh per-call memory cache."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubCache",
+						"type": "CollaborationCache",
+						"description": "Cache get/put/delete methods. R2 uses a projections prefix and stores identity/hash metadata, treating read failures as misses and swallowing put/delete failures. Memory puts clone entries and gets return the retained entry or null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

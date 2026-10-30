@@ -19,21 +19,25 @@
 			{
 				"name": "ModuleResourceService.generate.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute project directory containing the package manifest and module metadata."
 			},
 			{
 				"name": "ModuleResourceService.generate.module",
 				"type": "string",
+				"required": true,
 				"description": "Identity of the installed module that owns this resource type."
 			},
 			{
 				"name": "ModuleResourceService.generate.type",
 				"type": "string",
+				"required": true,
 				"description": "Resource type declared by the installed module."
 			},
 			{
 				"name": "ModuleResourceService.generate.requested",
-				"type": "string",
+				"type": "string | ModuleResourceRequest",
+				"required": true,
 				"description": "Resource name, or a name with its responsibility group; dependency resources require an exact package pin."
 			}
 		],
@@ -50,7 +54,53 @@
 				"type": "thrown",
 				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "ModuleResourceService.generate",
+				"inputs": [
+					{
+						"name": "ModuleResourceService.generate.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute project directory containing the package manifest and module metadata."
+					},
+					{
+						"name": "ModuleResourceService.generate.module",
+						"type": "string",
+						"required": true,
+						"description": "Identity of the installed module that owns this resource type."
+					},
+					{
+						"name": "ModuleResourceService.generate.type",
+						"type": "string",
+						"required": true,
+						"description": "Resource type declared by the installed module."
+					},
+					{
+						"name": "ModuleResourceService.generate.requested",
+						"type": "string | ModuleResourceRequest",
+						"required": true,
+						"description": "Resource name, or a name with its responsibility group; dependency resources require an exact package pin."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleResourceService.generate",
+						"type": "Promise<string[]>",
+						"description": "Relative resource and metadata paths created or updated; testing foundation preparation runs through a separate installation before resource persistence."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

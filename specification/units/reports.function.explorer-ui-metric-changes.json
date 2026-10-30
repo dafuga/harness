@@ -28,11 +28,13 @@
 			{
 				"name": "metricChanges.before",
 				"type": "EntityMeasure",
+				"required": true,
 				"description": "The earlier entity profile: source-size and complexity rows, raw values, and runtime workload, target, profile and unit context."
 			},
 			{
 				"name": "metricChanges.after",
 				"type": "EntityMeasure",
+				"required": true,
 				"description": "The later entity profile whose source-size, complexity, latency and compatible memory samples are matched with the earlier profile by metric key."
 			}
 		],
@@ -43,7 +45,36 @@
 				"description": "Ordered source-size, complexity, latency and memory display rows with before/after text and a signed delta or explicit missing/incompatible-evidence message; changed workload, target or profile context is retained."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "metricChanges",
+				"inputs": [
+					{
+						"name": "metricChanges.before",
+						"type": "EntityMeasure",
+						"required": true,
+						"description": "The earlier entity profile: source-size and complexity rows, raw values, and runtime workload, target, profile and unit context."
+					},
+					{
+						"name": "metricChanges.after",
+						"type": "EntityMeasure",
+						"required": true,
+						"description": "The later entity profile whose source-size, complexity, latency and compatible memory samples are matched with the earlier profile by metric key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "metricChanges",
+						"type": "MetricChangeRow[]",
+						"description": "Ordered source-size, complexity, latency and memory display rows with before/after text and a signed delta or explicit missing/incompatible-evidence message; changed workload, target or profile context is retained."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

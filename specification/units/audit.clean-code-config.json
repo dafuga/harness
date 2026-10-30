@@ -20,11 +20,14 @@
 		"inputs": [
 			{
 				"name": "resolveCleanCodeSettings.raw",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "resolveCleanCodeSettings.options",
-				"type": "CleanCodeOptions"
+				"type": "CleanCodeOptions",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -42,7 +45,35 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "resolveCleanCodeSettings",
+				"inputs": [
+					{
+						"name": "resolveCleanCodeSettings.raw",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "resolveCleanCodeSettings.options",
+						"type": "CleanCodeOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveCleanCodeSettings",
+						"type": "CleanCodeSettings"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

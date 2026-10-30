@@ -25,19 +25,24 @@
 		"inputs": [
 			{
 				"name": "CloudflareDeployAdapter.constructor.options",
-				"type": "Options"
+				"type": "Options",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "CloudflareDeployAdapter.discover.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CloudflareDeployAdapter.deploy.target",
-				"type": "CloudflareTarget"
+				"type": "CloudflareTarget",
+				"required": true
 			},
 			{
 				"name": "CloudflareDeployAdapter.deploy.source",
-				"type": "{ root: string; commit: string }"
+				"type": "{ root: string; commit: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,6 +59,76 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CloudflareDeployAdapter.discover",
+				"inputs": [
+					{
+						"name": "CloudflareDeployAdapter.discover.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CloudflareDeployAdapter.discover",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CloudflareDeployAdapter.deploy",
+				"inputs": [
+					{
+						"name": "CloudflareDeployAdapter.deploy.target",
+						"type": "CloudflareTarget",
+						"required": true
+					},
+					{
+						"name": "CloudflareDeployAdapter.deploy.source",
+						"type": "{ root: string; commit: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CloudflareDeployAdapter.deploy",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CloudflareDeployAdapter.constructor",
+				"inputs": [
+					{
+						"name": "CloudflareDeployAdapter.constructor.options",
+						"type": "Options",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "CloudflareDeployAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

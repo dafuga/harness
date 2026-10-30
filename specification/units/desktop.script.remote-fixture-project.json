@@ -15,11 +15,15 @@
 		"inputs": [
 			{
 				"name": "fixtureImage.size",
-				"type": "unknown"
+				"type": "number",
+				"required": false,
+				"default": 96
 			},
 			{
 				"name": "fixtureImage.variant",
-				"type": "unknown"
+				"type": "number",
+				"required": false,
+				"default": 0
 			}
 		],
 		"outputs": [
@@ -41,7 +45,60 @@
 				"name": "RunCancelled",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "fixtureImage",
+				"inputs": [
+					{
+						"name": "fixtureImage.size",
+						"type": "number",
+						"required": false,
+						"default": 96
+					},
+					{
+						"name": "fixtureImage.variant",
+						"type": "number",
+						"required": false,
+						"default": 0
+					}
+				],
+				"outputs": [
+					{
+						"name": "fixtureImage",
+						"type": "Uint8Array"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "remoteFixtureProject",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "remoteFixtureProject",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fixtureProviders",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "fixtureProviders",
+						"type": "Record<ProviderId, AgentRunner> & { generator: ImageGenerator; }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -31,26 +31,31 @@
 			{
 				"name": "signalGroup.child",
 				"type": "ChildProcess",
+				"required": true,
 				"description": "Child whose pid names the process group to signal."
 			},
 			{
 				"name": "signalGroup.signal",
 				"type": "'SIGTERM' | 'SIGKILL'",
+				"required": true,
 				"description": "SIGTERM or SIGKILL to send to the negative child pid."
 			},
 			{
 				"name": "groupTeardown.child",
 				"type": "ChildProcess",
+				"required": true,
 				"description": "Completed child whose process group is killed immediately."
 			},
 			{
 				"name": "groupTeardown.descendants",
 				"type": "Descendants",
+				"required": true,
 				"description": "Tracker providing surviving descendant identities for follow-up cleanup."
 			},
 			{
 				"name": "groupTeardown.timing",
 				"type": "GroupTiming",
+				"required": true,
 				"description": "Milliseconds allowed for natural settling and for graceful termination before escalation."
 			}
 		],
@@ -66,7 +71,68 @@
 				"description": "Resolves with descendants found after the settling period, after sending them SIGTERM, waiting the grace period and sending SIGKILL. Returns an empty array if none remain."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "signalGroup",
+				"inputs": [
+					{
+						"name": "signalGroup.child",
+						"type": "ChildProcess",
+						"required": true,
+						"description": "Child whose pid names the process group to signal."
+					},
+					{
+						"name": "signalGroup.signal",
+						"type": "'SIGTERM' | 'SIGKILL'",
+						"required": true,
+						"description": "SIGTERM or SIGKILL to send to the negative child pid."
+					}
+				],
+				"outputs": [
+					{
+						"name": "signalGroup",
+						"type": "void",
+						"description": "Returns nothing; attempts the group signal and ignores errors, including an already absent group."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "groupTeardown",
+				"inputs": [
+					{
+						"name": "groupTeardown.child",
+						"type": "ChildProcess",
+						"required": true,
+						"description": "Completed child whose process group is killed immediately."
+					},
+					{
+						"name": "groupTeardown.descendants",
+						"type": "Descendants",
+						"required": true,
+						"description": "Tracker providing surviving descendant identities for follow-up cleanup."
+					},
+					{
+						"name": "groupTeardown.timing",
+						"type": "GroupTiming",
+						"required": true,
+						"description": "Milliseconds allowed for natural settling and for graceful termination before escalation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupTeardown",
+						"type": "Promise<TrackedProcess[]>",
+						"description": "Resolves with descendants found after the settling period, after sending them SIGTERM, waiting the grace period and sending SIGKILL. Returns an empty array if none remain."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -23,10 +23,9 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/git-source-history/history-panel/HistoryPanel.svelte",
-			"packages/desktop/src/components/history-panel/HistoryPanel.svelte"
+			"packages/desktop/src/components/git-source-history/history-panel/HistoryPanel.svelte"
 		],
-		"symbols": ["HistoryPanel", "HistoryPanel"]
+		"symbols": ["HistoryPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,12 +33,19 @@
 			{
 				"name": "HistoryPanel.entity",
 				"type": "EntityDetail",
+				"required": true,
 				"description": "Initial history and optional coverage metadata. Without metadata, history is treated as complete. Changes of view or coverage reset additionally loaded pages."
 			},
 			{
 				"name": "HistoryPanel.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace supplying project/revision identity, known commits, navigation and an optional history bridge. Only event commits present in the snapshot’s commit list become links."
+			},
+			{
+				"name": "HistoryPanel.evidence",
+				"type": "EntityEvidence",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,7 +55,9 @@
 				"description": "Timeline with names, formatted dates, details and commit references, or an empty-history message. Load more requires incomplete history, a next page and bridge support and is disabled during loading. Discards responses for another view; displays current-view errors as alerts. Incomplete history without a usable next-page operation is explicitly labeled not loaded."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

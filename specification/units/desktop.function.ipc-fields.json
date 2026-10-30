@@ -40,49 +40,59 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "regionField.value",
+				"type": "unknown",
+				"required": true,
+				"description": "Either null or an image rectangle with finite x, y, width and height fractions from 0 to 1. Width and height must be positive and the rectangle must stay inside the image, allowing a 0.000001 edge tolerance."
+			},
+			{
 				"name": "ipcFields.value",
 				"type": "unknown",
+				"required": true,
 				"description": "The value expected to be a non-null object other than an array."
 			},
 			{
 				"name": "textField.value",
 				"type": "unknown",
+				"required": true,
 				"description": "The value expected to be a nonblank string."
 			},
 			{
 				"name": "textField.max",
-				"type": "unknown",
+				"type": "number",
+				"required": false,
+				"default": 300,
 				"description": "The maximum text length; defaults to 300 characters."
 			},
 			{
 				"name": "textField.pattern",
 				"type": "RegExp",
+				"required": false,
 				"description": "An optional regular expression the text must match."
 			},
 			{
 				"name": "nullableText.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Either null or a nonblank string of at most 300 characters. Undefined is not accepted as null."
 			},
 			{
 				"name": "nullableText.pattern",
 				"type": "RegExp",
+				"required": false,
 				"description": "An optional pattern for non-null text."
 			},
 			{
 				"name": "enumField.value",
 				"type": "unknown",
+				"required": true,
 				"description": "The value to select from an allowed list."
 			},
 			{
 				"name": "enumField.allowed",
 				"type": "readonly T[]",
+				"required": true,
 				"description": "The exact values permitted for the selection."
-			},
-			{
-				"name": "regionField.value",
-				"type": "unknown",
-				"description": "Either null or an image rectangle with finite x, y, width and height fractions from 0 to 1. Width and height must be positive and the rectangle must stay inside the image, allowing a 0.000001 edge tolerance."
 			}
 		],
 		"outputs": [
@@ -138,7 +148,155 @@
 				"type": "thrown",
 				"description": "Throws when an object, text field, identifier, allowed choice or image region fails its check."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "regionField",
+				"inputs": [
+					{
+						"name": "regionField.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Either null or an image rectangle with finite x, y, width and height fractions from 0 to 1. Width and height must be positive and the rectangle must stay inside the image, allowing a 0.000001 edge tolerance."
+					}
+				],
+				"outputs": [
+					{
+						"name": "regionField",
+						"type": "Region | null",
+						"description": "Null or a new rectangle containing only x, y, width and height."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ipcFields",
+				"inputs": [
+					{
+						"name": "ipcFields.value",
+						"type": "unknown",
+						"required": true,
+						"description": "The value expected to be a non-null object other than an array."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ipcFields",
+						"type": "Record<string, unknown>",
+						"description": "The original object, without filtering its keys or copying it."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "textField",
+				"inputs": [
+					{
+						"name": "textField.value",
+						"type": "unknown",
+						"required": true,
+						"description": "The value expected to be a nonblank string."
+					},
+					{
+						"name": "textField.max",
+						"type": "number",
+						"required": false,
+						"default": 300,
+						"description": "The maximum text length; defaults to 300 characters."
+					},
+					{
+						"name": "textField.pattern",
+						"type": "RegExp",
+						"required": false,
+						"description": "An optional regular expression the text must match."
+					}
+				],
+				"outputs": [
+					{
+						"name": "textField",
+						"type": "string",
+						"description": "The original accepted string, without trimming it."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nullableText",
+				"inputs": [
+					{
+						"name": "nullableText.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Either null or a nonblank string of at most 300 characters. Undefined is not accepted as null."
+					},
+					{
+						"name": "nullableText.pattern",
+						"type": "RegExp",
+						"required": false,
+						"description": "An optional pattern for non-null text."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nullableText",
+						"type": "string | null",
+						"description": "Null for null input, otherwise the accepted string."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "enumField",
+				"inputs": [
+					{
+						"name": "enumField.value",
+						"type": "unknown",
+						"required": true,
+						"description": "The value to select from an allowed list."
+					},
+					{
+						"name": "enumField.allowed",
+						"type": "readonly T[]",
+						"required": true,
+						"description": "The exact values permitted for the selection."
+					}
+				],
+				"outputs": [
+					{
+						"name": "enumField",
+						"type": "T",
+						"description": "The supplied value when it exactly matches an allowed entry."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

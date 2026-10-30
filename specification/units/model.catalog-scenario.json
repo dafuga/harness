@@ -6,63 +6,53 @@
 	"responsibility": "Owns the CatalogScenario data model.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"lineage": {
+		"predecessors": ["model.catalog-scenario-types"]
+	},
 	"owns": {
-		"source": ["src/models/git-source-history/CatalogScenario.ts"],
+		"source": [
+			"src/models/git-source-history/CatalogScenario.ts",
+			"src/models/git-source-history/CatalogScenario.types.ts"
+		],
 		"symbols": [
 			"CatalogScenario",
 			"CatalogScenario.find",
 			"CatalogScenario.findBy",
 			"CatalogScenario.create",
 			"CatalogScenario.update",
-			"CatalogScenario.delete"
+			"CatalogScenario.delete",
+			"CatalogScenarioAttributes",
+			"CatalogScenarioCreateInput",
+			"CatalogScenarioUpdateInput"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "CatalogScenario.find.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogScenario.id",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogScenario.find.id",
-				"type": "string"
+				"name": "CatalogScenario.scenarioId",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogScenario.findBy.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogScenario.commit",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogScenario.findBy.fields",
-				"type": "Partial<CatalogScenarioAttributes>"
+				"name": "CatalogScenario.title",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogScenario.create.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogScenario.create.input",
-				"type": "CatalogScenarioCreateInput"
-			},
-			{
-				"name": "CatalogScenario.update.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogScenario.update.id",
-				"type": "string"
-			},
-			{
-				"name": "CatalogScenario.update.input",
-				"type": "CatalogScenarioUpdateInput"
-			},
-			{
-				"name": "CatalogScenario.delete.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogScenario.delete.id",
-				"type": "string"
+				"name": "CatalogScenario.data",
+				"type": "json",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,16 +77,184 @@
 				"type": "Promise<boolean>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogScenario.find",
+				"inputs": [
+					{
+						"name": "CatalogScenario.find.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogScenario.find.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogScenario.find",
+						"type": "Promise<CatalogScenarioAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogScenario.findBy",
+				"inputs": [
+					{
+						"name": "CatalogScenario.findBy.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogScenario.findBy.fields",
+						"type": "Partial<CatalogScenarioAttributes>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogScenario.findBy",
+						"type": "Promise<CatalogScenarioAttributes[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogScenario.create",
+				"inputs": [
+					{
+						"name": "CatalogScenario.create.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogScenario.create.input",
+						"type": "CatalogScenarioCreateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogScenario.create",
+						"type": "Promise<CatalogScenarioAttributes>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogScenario.update",
+				"inputs": [
+					{
+						"name": "CatalogScenario.update.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogScenario.update.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogScenario.update.input",
+						"type": "CatalogScenarioUpdateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogScenario.update",
+						"type": "Promise<CatalogScenarioAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogScenario.delete",
+				"inputs": [
+					{
+						"name": "CatalogScenario.delete.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogScenario.delete.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogScenario.delete",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [],
+		"storage": [
+			{
+				"name": "CatalogScenario",
+				"table": "catalog_scenarios",
+				"primaryKey": "id",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": true
+					},
+					{
+						"name": "scenarioId",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "commit",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "title",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "data",
+						"type": "json",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					}
+				]
+			}
+		]
 	},
 	"dependencies": [
 		{
-			"unit": "function.sqlite-types",
+			"unit": "function.revision-registry",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "model.catalog-scenario-types",
+			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
 		}

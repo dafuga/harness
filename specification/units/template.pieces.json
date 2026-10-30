@@ -19,15 +19,19 @@
 		"inputs": [
 			{
 				"name": "pieceFiles.kind",
-				"type": "PieceKind"
+				"type": "PieceKind",
+				"required": true
 			},
 			{
 				"name": "pieceFiles.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "pieceFiles.context",
-				"type": "PieceContext"
+				"type": "PieceContext",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -36,7 +40,40 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "pieceFiles",
+				"inputs": [
+					{
+						"name": "pieceFiles.kind",
+						"type": "PieceKind",
+						"required": true
+					},
+					{
+						"name": "pieceFiles.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "pieceFiles.context",
+						"type": "PieceContext",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "pieceFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -16,6 +16,7 @@
 			{
 				"name": "runtimeFetch.runtime",
 				"type": "UnitRuntime",
+				"required": true,
 				"description": "Unit runtime to invoke for accepted POST requests."
 			}
 		],
@@ -26,7 +27,30 @@
 				"description": "Async Request handler returning JSON with no-store headers and the status supplied by runtimeReply. Creating the handler does not start a server or close the runtime."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "runtimeFetch",
+				"inputs": [
+					{
+						"name": "runtimeFetch.runtime",
+						"type": "UnitRuntime",
+						"required": true,
+						"description": "Unit runtime to invoke for accepted POST requests."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runtimeFetch",
+						"type": "(request: Request)",
+						"description": "Async Request handler returning JSON with no-store headers and the status supplied by runtimeReply. Creating the handler does not start a server or close the runtime."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

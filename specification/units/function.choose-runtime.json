@@ -27,6 +27,7 @@
 			{
 				"name": "chooseRuntime.input",
 				"type": "RuntimeChoiceInput",
+				"required": true,
 				"description": "Available measurements plus the exact workload and machine profile to consider. Only latency-cold-ms entries for those labels participate."
 			}
 		],
@@ -37,7 +38,30 @@
 				"description": "Chosen runtime, measured or unmeasured basis, workload and profile, selection rule, candidates and exclusions. Module, Wasm and process are considered in that order within five percent of the fastest; no winner falls back to unmeasured module. HTTP is never selected automatically."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "chooseRuntime",
+				"inputs": [
+					{
+						"name": "chooseRuntime.input",
+						"type": "RuntimeChoiceInput",
+						"required": true,
+						"description": "Available measurements plus the exact workload and machine profile to consider. Only latency-cold-ms entries for those labels participate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "chooseRuntime",
+						"type": "RuntimeChoice",
+						"description": "Chosen runtime, measured or unmeasured basis, workload and profile, selection rule, candidates and exclusions. Module, Wasm and process are considered in that order within five percent of the fastest; no winner falls back to unmeasured module. HTTP is never selected automatically."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

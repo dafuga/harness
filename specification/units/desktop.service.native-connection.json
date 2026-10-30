@@ -26,11 +26,13 @@
 		"inputs": [
 			{
 				"name": "NativeConnectionService.create.options",
-				"type": "NativeConnectionOptions"
+				"type": "NativeConnectionOptions",
+				"required": true
 			},
 			{
 				"name": "NativeConnectionService.create.encryption",
-				"type": "NativeEncryption"
+				"type": "NativeEncryption",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -39,7 +41,34 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "NativeConnectionService.create",
+				"inputs": [
+					{
+						"name": "NativeConnectionService.create.options",
+						"type": "NativeConnectionOptions",
+						"required": true
+					},
+					{
+						"name": "NativeConnectionService.create.encryption",
+						"type": "NativeEncryption",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeConnectionService.create",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "registerHistoryCommand.program",
-				"type": "Command"
+				"type": "Command",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "Command"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "registerHistoryCommand",
+				"inputs": [
+					{
+						"name": "registerHistoryCommand.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerHistoryCommand",
+						"type": "Command"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

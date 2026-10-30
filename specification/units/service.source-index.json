@@ -17,12 +17,19 @@
 			"src/services/source-index-service/SourceIndexService.ts"
 		],
 		"symbols": [
+			"ComponentPropsResolver",
+			"ComponentPropsResolver.constructor",
+			"ComponentPropsResolver.inputs",
+			"resolveComponentProps",
 			"SourceIndex",
 			"Parsed",
 			"SourceIndexService",
 			"SourceIndexService.index",
 			"SourceIndex",
 			"Parsed",
+			"importedBinding",
+			"selectedProps",
+			"scanStorage",
 			"sourceExecution",
 			"SourceIndexService"
 		]
@@ -31,37 +38,326 @@
 		"origin": "derived",
 		"inputs": [
 			{
+				"name": "ComponentPropsResolver.constructor.tree",
+				"type": "SourceTree",
+				"required": true
+			},
+			{
+				"name": "ComponentPropsResolver.constructor.files",
+				"type": "Map<string, SourceFile>",
+				"required": true
+			},
+			{
+				"name": "ComponentPropsResolver.inputs.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ComponentPropsResolver.inputs.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ComponentPropsResolver.inputs.seen",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "resolveComponentProps.tree",
+				"type": "SourceTree",
+				"required": true
+			},
+			{
+				"name": "resolveComponentProps.files",
+				"type": "Map<string, SourceFile>",
+				"required": true
+			},
+			{
 				"name": "SourceIndexService.index.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"required": true
 			},
 			{
 				"name": "SourceIndexService.index.config",
-				"type": "UnitsConfig"
+				"type": "UnitsConfig",
+				"required": true
+			},
+			{
+				"name": "importedBinding.file",
+				"type": "ts.SourceFile",
+				"required": true
+			},
+			{
+				"name": "importedBinding.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "selectedProps.items",
+				"type": "ContractItem[]",
+				"required": true
+			},
+			{
+				"name": "selectedProps.operator",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "selectedProps.keys",
+				"type": "ts.TypeNode | undefined",
+				"required": true
+			},
+			{
+				"name": "scanStorage.code",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "sourceExecution.code",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "sourceExecution.language",
-				"type": "SourceLanguage"
+				"type": "SourceLanguage",
+				"required": true
 			},
 			{
 				"name": "sourceExecution.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
+				"name": "ComponentPropsResolver.inputs",
+				"type": "Promise<ContractItem[]>"
+			},
+			{
+				"name": "resolveComponentProps",
+				"type": "Promise<void>"
+			},
+			{
 				"name": "SourceIndexService.index",
 				"type": "Promise<SourceIndex>"
+			},
+			{
+				"name": "importedBinding",
+				"type": "unknown"
+			},
+			{
+				"name": "selectedProps",
+				"type": "ContractItem[]"
+			},
+			{
+				"name": "scanStorage",
+				"type": "NonNullable<ComponentManifest['contract']['storage']>"
 			},
 			{
 				"name": "sourceExecution",
 				"type": "NonNullable<SourceFile['execution']>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ComponentPropsResolver.inputs",
+				"inputs": [
+					{
+						"name": "ComponentPropsResolver.inputs.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ComponentPropsResolver.inputs.owner",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ComponentPropsResolver.inputs.seen",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ComponentPropsResolver.inputs",
+						"type": "Promise<ContractItem[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resolveComponentProps",
+				"inputs": [
+					{
+						"name": "resolveComponentProps.tree",
+						"type": "SourceTree",
+						"required": true
+					},
+					{
+						"name": "resolveComponentProps.files",
+						"type": "Map<string, SourceFile>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveComponentProps",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SourceIndexService.index",
+				"inputs": [
+					{
+						"name": "SourceIndexService.index.tree",
+						"type": "SourceTree",
+						"required": true
+					},
+					{
+						"name": "SourceIndexService.index.config",
+						"type": "UnitsConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceIndexService.index",
+						"type": "Promise<SourceIndex>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "importedBinding",
+				"inputs": [
+					{
+						"name": "importedBinding.file",
+						"type": "ts.SourceFile",
+						"required": true
+					},
+					{
+						"name": "importedBinding.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "importedBinding",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "selectedProps",
+				"inputs": [
+					{
+						"name": "selectedProps.items",
+						"type": "ContractItem[]",
+						"required": true
+					},
+					{
+						"name": "selectedProps.operator",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "selectedProps.keys",
+						"type": "ts.TypeNode | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "selectedProps",
+						"type": "ContractItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scanStorage",
+				"inputs": [
+					{
+						"name": "scanStorage.code",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanStorage",
+						"type": "NonNullable<ComponentManifest['contract']['storage']>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sourceExecution",
+				"inputs": [
+					{
+						"name": "sourceExecution.code",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "sourceExecution.language",
+						"type": "SourceLanguage",
+						"required": true
+					},
+					{
+						"name": "sourceExecution.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceExecution",
+						"type": "NonNullable<SourceFile['execution']>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ComponentPropsResolver.constructor",
+				"inputs": [
+					{
+						"name": "ComponentPropsResolver.constructor.tree",
+						"type": "SourceTree",
+						"required": true
+					},
+					{
+						"name": "ComponentPropsResolver.constructor.files",
+						"type": "Map<string, SourceFile>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ComponentPropsResolver.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -71,6 +367,11 @@
 		},
 		{
 			"unit": "function.complexity-coverage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.parse-parameters",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -101,6 +402,11 @@
 		},
 		{
 			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
 		},

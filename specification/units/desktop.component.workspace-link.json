@@ -11,11 +11,8 @@
 		"uses": ["reports.component.shared-primitives-atoms-html-a"]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/WorkspaceLink.svelte",
-			"packages/desktop/src/components/projects-sessions/WorkspaceLink.svelte"
-		],
-		"symbols": ["WorkspaceLink", "WorkspaceLink"]
+		"source": ["packages/desktop/src/components/projects-sessions/WorkspaceLink.svelte"],
+		"symbols": ["WorkspaceLink"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,31 +20,38 @@
 			{
 				"name": "WorkspaceLink.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "The selected project and the navigation action used when the link is opened here."
 			},
 			{
 				"name": "WorkspaceLink.to",
 				"type": "string",
+				"required": true,
 				"description": "The destination address within the app. The hosting app adds its own address prefix."
 			},
 			{
 				"name": "WorkspaceLink.class",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional appearance classes for the link."
 			},
 			{
 				"name": "WorkspaceLink.label",
 				"type": "string",
+				"required": false,
 				"description": "Optional screen-reader name when the visible content does not explain the action."
 			},
 			{
 				"name": "WorkspaceLink.title",
 				"type": "string",
+				"required": false,
 				"description": "Optional short tooltip shown when the pointer rests over the link."
 			},
 			{
 				"name": "WorkspaceLink.children",
 				"type": "Snippet",
+				"required": true,
 				"description": "The visible text or icon inside the link."
 			}
 		],
@@ -58,7 +62,9 @@
 				"description": "A navigation link. Ordinary clicks open here; modified clicks keep the browser’s usual behavior."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

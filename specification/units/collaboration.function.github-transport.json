@@ -38,48 +38,57 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "githubTransport.options",
-				"type": "GitHubOptions",
-				"description": "Repository identity, scoped token callback and optional fetch implementation."
-			},
-			{
-				"name": "githubTransport.permission",
-				"type": "'read' | 'write'",
-				"description": "Contents permission requested for each token: read or write."
-			},
-			{
-				"name": "refPath.ref",
-				"type": "string",
-				"description": "Full heads, notes or tags ref with a safe path and valid ref characters."
-			},
-			{
-				"name": "readRef.client",
-				"type": "GitHubTransport",
-				"description": "Transport used to resolve the ref."
-			},
-			{
-				"name": "readRef.ref",
-				"type": "string",
-				"description": "Full ref to look up exactly, including notes refs."
-			},
-			{
 				"name": "exactRef.client",
 				"type": "GitHubTransport",
+				"required": true,
 				"description": "Transport used to require an existing exact ref."
 			},
 			{
 				"name": "exactRef.ref",
 				"type": "string",
+				"required": true,
 				"description": "Full ref that must exist."
+			},
+			{
+				"name": "githubTransport.options",
+				"type": "GitHubOptions",
+				"required": true,
+				"description": "Repository identity, scoped token callback and optional fetch implementation."
+			},
+			{
+				"name": "githubTransport.permission",
+				"type": "'read' | 'write'",
+				"required": true,
+				"description": "Contents permission requested for each token: read or write."
+			},
+			{
+				"name": "refPath.ref",
+				"type": "string",
+				"required": true,
+				"description": "Full heads, notes or tags ref with a safe path and valid ref characters."
+			},
+			{
+				"name": "readRef.client",
+				"type": "GitHubTransport",
+				"required": true,
+				"description": "Transport used to resolve the ref."
+			},
+			{
+				"name": "readRef.ref",
+				"type": "string",
+				"required": true,
+				"description": "Full ref to look up exactly, including notes refs."
 			},
 			{
 				"name": "base64.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Bytes to encode as standard base64."
 			},
 			{
 				"name": "decode64.value",
 				"type": "string",
+				"required": true,
 				"description": "Base64 text to decode; whitespace is ignored."
 			}
 		],
@@ -121,7 +130,168 @@
 				"type": "thrown",
 				"description": "Rejects invalid paths, refs or content, missing or mismatched refs, denied repository identity or privacy and unavailable GitHub requests."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "exactRef",
+				"inputs": [
+					{
+						"name": "exactRef.client",
+						"type": "GitHubTransport",
+						"required": true,
+						"description": "Transport used to require an existing exact ref."
+					},
+					{
+						"name": "exactRef.ref",
+						"type": "string",
+						"required": true,
+						"description": "Full ref that must exist."
+					}
+				],
+				"outputs": [
+					{
+						"name": "exactRef",
+						"type": "Promise<string>",
+						"description": "Exact matching ref SHA; a missing ref rejects."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "githubTransport",
+				"inputs": [
+					{
+						"name": "githubTransport.options",
+						"type": "GitHubOptions",
+						"required": true,
+						"description": "Repository identity, scoped token callback and optional fetch implementation."
+					},
+					{
+						"name": "githubTransport.permission",
+						"type": "'read' | 'write'",
+						"required": true,
+						"description": "Contents permission requested for each token: read or write."
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubTransport",
+						"type": "unknown",
+						"description": "Request and repository-check methods; requests reject redirects and can return explicitly accepted statuses with null data."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "refPath",
+				"inputs": [
+					{
+						"name": "refPath.ref",
+						"type": "string",
+						"required": true,
+						"description": "Full heads, notes or tags ref with a safe path and valid ref characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "refPath",
+						"type": "string",
+						"description": "Encoded API ref path with the refs/ prefix removed."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readRef",
+				"inputs": [
+					{
+						"name": "readRef.client",
+						"type": "GitHubTransport",
+						"required": true,
+						"description": "Transport used to resolve the ref."
+					},
+					{
+						"name": "readRef.ref",
+						"type": "string",
+						"required": true,
+						"description": "Full ref to look up exactly, including notes refs."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readRef",
+						"type": "Promise<string | null>",
+						"description": "Exact matching ref SHA, or null for a missing ref."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "base64",
+				"inputs": [
+					{
+						"name": "base64.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes to encode as standard base64."
+					}
+				],
+				"outputs": [
+					{
+						"name": "base64",
+						"type": "string",
+						"description": "Standard base64 text."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "decode64",
+				"inputs": [
+					{
+						"name": "decode64.value",
+						"type": "string",
+						"required": true,
+						"description": "Base64 text to decode; whitespace is ignored."
+					}
+				],
+				"outputs": [
+					{
+						"name": "decode64",
+						"type": "Uint8Array",
+						"description": "Decoded bytes."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

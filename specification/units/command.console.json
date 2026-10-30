@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "registerConsoleCommand.program",
-				"type": "Command"
+				"type": "Command",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "Command"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "registerConsoleCommand",
+				"inputs": [
+					{
+						"name": "registerConsoleCommand.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerConsoleCommand",
+						"type": "Command"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

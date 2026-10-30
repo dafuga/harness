@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "taskUsage.provider",
-				"type": "'claude' | 'codex'"
+				"type": "'claude' | 'codex'",
+				"required": true
 			},
 			{
 				"name": "taskUsage.events",
-				"type": "TaskPublicEvent[]"
+				"type": "TaskPublicEvent[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -28,7 +30,34 @@
 				"type": "TaskUsage"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "taskUsage",
+				"inputs": [
+					{
+						"name": "taskUsage.provider",
+						"type": "'claude' | 'codex'",
+						"required": true
+					},
+					{
+						"name": "taskUsage.events",
+						"type": "TaskPublicEvent[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskUsage",
+						"type": "TaskUsage"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

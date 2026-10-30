@@ -20,16 +20,19 @@
 			{
 				"name": "verificationNoteIdentity.record",
 				"type": "VerificationRecord",
+				"required": true,
 				"description": "Verification record whose identity fields are authoritative for comparison."
 			},
 			{
 				"name": "verificationNoteIdentity.note",
 				"type": "Note",
+				"required": true,
 				"description": "Verification history-note entry to compare with the record."
 			},
 			{
 				"name": "verificationNoteIdentity.tree",
 				"type": "string | null | undefined",
+				"required": true,
 				"description": "Actual commit tree hash, or null/undefined when unavailable."
 			}
 		],
@@ -40,7 +43,42 @@
 				"description": "All mismatch messages in fixed order for record id, source commit/tree, outcome, note tree/base, profile and finish time; empty when they agree."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "verificationNoteIdentity",
+				"inputs": [
+					{
+						"name": "verificationNoteIdentity.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Verification record whose identity fields are authoritative for comparison."
+					},
+					{
+						"name": "verificationNoteIdentity.note",
+						"type": "Note",
+						"required": true,
+						"description": "Verification history-note entry to compare with the record."
+					},
+					{
+						"name": "verificationNoteIdentity.tree",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Actual commit tree hash, or null/undefined when unavailable."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verificationNoteIdentity",
+						"type": "string[]",
+						"description": "All mismatch messages in fixed order for record id, source commit/tree, outcome, note tree/base, profile and finish time; empty when they agree."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

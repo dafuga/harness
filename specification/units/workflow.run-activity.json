@@ -40,43 +40,59 @@
 		"inputs": [
 			{
 				"name": "activityRoot.directory",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "showActivity.options",
-				"type": "{ limit?: string }"
+				"type": "{ limit?: string }",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "registerAgent.input",
-				"type": "AgentInput"
+				"type": "AgentInput",
+				"required": true
 			},
 			{
 				"name": "beatAgent.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "beatAgent.input",
-				"type": "AgentInput"
+				"type": "AgentInput",
+				"required": true
 			},
 			{
 				"name": "finishAgent.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "finishAgent.options",
-				"type": "{ failed?: boolean; outcome?: string }"
+				"type": "{ failed?: boolean; outcome?: string }",
+				"required": true
 			},
 			{
 				"name": "beatFromEnvironment.env",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "renderRoster.roster",
-				"type": "AgentRoster"
+				"type": "AgentRoster",
+				"required": true
 			},
 			{
-				"name": "renderShown.input",
-				"type": "Shown"
+				"name": "renderShown.activity",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "renderShown.live",
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -122,7 +138,188 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "activityRoot",
+				"inputs": [
+					{
+						"name": "activityRoot.directory",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "activityRoot",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "showActivity",
+				"inputs": [
+					{
+						"name": "showActivity.options",
+						"type": "{ limit?: string }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "showActivity",
+						"type": "Promise<Shown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "registerAgent",
+				"inputs": [
+					{
+						"name": "registerAgent.input",
+						"type": "AgentInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerAgent",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "beatAgent",
+				"inputs": [
+					{
+						"name": "beatAgent.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "beatAgent.input",
+						"type": "AgentInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "beatAgent",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "finishAgent",
+				"inputs": [
+					{
+						"name": "finishAgent.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "finishAgent.options",
+						"type": "{ failed?: boolean; outcome?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishAgent",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "beatFromEnvironment",
+				"inputs": [
+					{
+						"name": "beatFromEnvironment.env",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "beatFromEnvironment",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "listAgents",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "listAgents",
+						"type": "Promise<AgentRoster>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderRoster",
+				"inputs": [
+					{
+						"name": "renderRoster.roster",
+						"type": "AgentRoster",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderRoster",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderShown",
+				"inputs": [
+					{
+						"name": "renderShown.activity",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "renderShown.live",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderShown",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

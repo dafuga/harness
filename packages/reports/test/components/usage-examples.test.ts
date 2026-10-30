@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import UsageExamples from '../../src/components/usage-examples/UsageExamples.svelte';
+import UsageExamples from '../../src/components/shared-primitives/usage-examples/UsageExamples.svelte';
 import type { UsageExample } from '../../../../src/utils/unit-documentation/unitDocumentation';
 
 const draw = (examples: UsageExample[]) => render(UsageExamples, { props: { examples } }).body;

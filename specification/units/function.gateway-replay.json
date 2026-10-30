@@ -20,6 +20,7 @@
 			{
 				"name": "gatewayReplay.request",
 				"type": "GatewayRequest",
+				"required": true,
 				"description": "Complete gateway request to serialize in its existing property order."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Lowercase SHA-256 digest of JSON.stringify(request). No session or replay store is modified."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "gatewayReplay",
+				"inputs": [
+					{
+						"name": "gatewayReplay.request",
+						"type": "GatewayRequest",
+						"required": true,
+						"description": "Complete gateway request to serialize in its existing property order."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatewayReplay",
+						"type": "string",
+						"description": "Lowercase SHA-256 digest of JSON.stringify(request). No session or replay store is modified."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

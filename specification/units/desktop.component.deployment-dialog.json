@@ -28,11 +28,15 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/DeploymentDialog.svelte",
 			"packages/desktop/src/components/development-tooling/DeploymentDialog.svelte",
 			"packages/desktop/src/components/development-tooling/deployment-dialog/deploymentDialog.css"
 		],
-		"symbols": ["DeploymentDialog", "DeploymentDialog"]
+		"symbols": [
+			"DeploymentDialog",
+			"DeploymentDialog.commit",
+			"DeploymentDialog.icon",
+			"DeploymentDialog.footer"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,6 +44,7 @@
 			{
 				"name": "DeploymentDialog.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
 			}
 		],
@@ -50,7 +55,58 @@
 				"description": "Previews the verified preprod-to-production commit gap and starts promotion only after one explicit action."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "DeploymentDialog.commit",
+				"inputs": [
+					{
+						"name": "DeploymentDialog.commit.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DeploymentDialog.commit.item",
+						"type": "DeploymentReceipt | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentDialog.commit",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DeploymentDialog.icon",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DeploymentDialog.icon",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DeploymentDialog.footer",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DeploymentDialog.footer",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

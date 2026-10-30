@@ -26,16 +26,19 @@
 			{
 				"name": "explorerEvidence.scope",
 				"type": "ExplorerScope",
+				"required": true,
 				"description": "Resolved branch/current-or-commit scope and first-parent identifier."
 			},
 			{
 				"name": "explorerEvidence.revisions",
 				"type": "ExplorerRevisions",
+				"required": true,
 				"description": "Shown revision and parent state: undefined while loading, null when unavailable, or the stored parent revision."
 			},
 			{
 				"name": "explorerEvidence.unit",
 				"type": "Pick<HarnessUnit, 'id'>",
+				"required": true,
 				"description": "Unit identifier whose scenarios and captures should be selected."
 			}
 		],
@@ -46,7 +49,42 @@
 				"description": "After evidence bound to the exact shown commit, and first-parent evidence only in selected-commit mode. Each side includes the chosen verdict record, applicable coverage, captures and explicit gaps. Current captures must be usable and not inherited. Scenario/state/viewport declarations from both sides are retained; differing profiles, viewport dimensions or tests are listed as comparison limits. Retained focused screenshots remain visible for their exact unit and revision, separately labelled without granting a verification verdict."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "explorerEvidence",
+				"inputs": [
+					{
+						"name": "explorerEvidence.scope",
+						"type": "ExplorerScope",
+						"required": true,
+						"description": "Resolved branch/current-or-commit scope and first-parent identifier."
+					},
+					{
+						"name": "explorerEvidence.revisions",
+						"type": "ExplorerRevisions",
+						"required": true,
+						"description": "Shown revision and parent state: undefined while loading, null when unavailable, or the stored parent revision."
+					},
+					{
+						"name": "explorerEvidence.unit",
+						"type": "Pick<HarnessUnit, 'id'>",
+						"required": true,
+						"description": "Unit identifier whose scenarios and captures should be selected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerEvidence",
+						"type": "ExplorerEvidence",
+						"description": "After evidence bound to the exact shown commit, and first-parent evidence only in selected-commit mode. Each side includes the chosen verdict record, applicable coverage, captures and explicit gaps. Current captures must be usable and not inherited. Scenario/state/viewport declarations from both sides are retained; differing profiles, viewport dimensions or tests are listed as comparison limits. Retained focused screenshots remain visible for their exact unit and revision, separately labelled without granting a verification verdict."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

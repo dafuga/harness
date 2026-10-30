@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "ModelDependencyService.ensure.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "Promise<FileWriteResult[]>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ModelDependencyService.ensure",
+				"inputs": [
+					{
+						"name": "ModelDependencyService.ensure.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModelDependencyService.ensure",
+						"type": "Promise<FileWriteResult[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

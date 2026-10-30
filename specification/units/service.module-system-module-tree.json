@@ -19,6 +19,7 @@
 			{
 				"name": "moduleTree.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute project directory containing the package manifest and module metadata."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Filesystem-backed read and list operations restricted to module metadata."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "moduleTree",
+				"inputs": [
+					{
+						"name": "moduleTree.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute project directory containing the package manifest and module metadata."
+					}
+				],
+				"outputs": [
+					{
+						"name": "moduleTree",
+						"type": "unknown",
+						"description": "Filesystem-backed read and list operations restricted to module metadata."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

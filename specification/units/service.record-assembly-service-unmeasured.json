@@ -18,11 +18,13 @@
 			{
 				"name": "unmeasured.unit",
 				"type": "string",
+				"required": true,
 				"description": "Registered unit whose exact owned source and runtime target define this observation."
 			},
 			{
 				"name": "unmeasured.testedRevision",
 				"type": "string",
+				"required": true,
 				"description": "Exact source commit associated with these explicit unavailable measurements."
 			}
 		],
@@ -33,7 +35,36 @@
 				"description": "Two entries with null values and explicit unavailable reasons; missing memory or latency is never represented as zero."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "unmeasured",
+				"inputs": [
+					{
+						"name": "unmeasured.unit",
+						"type": "string",
+						"required": true,
+						"description": "Registered unit whose exact owned source and runtime target define this observation."
+					},
+					{
+						"name": "unmeasured.testedRevision",
+						"type": "string",
+						"required": true,
+						"description": "Exact source commit associated with these explicit unavailable measurements."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unmeasured",
+						"type": "Measurement[]",
+						"description": "Two entries with null values and explicit unavailable reasons; missing memory or latency is never represented as zero."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

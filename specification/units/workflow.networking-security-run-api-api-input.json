@@ -15,11 +15,14 @@
 		"inputs": [
 			{
 				"name": "apiInput.input",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "apiQuery.fields",
-				"type": "string[]"
+				"type": "string[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -37,7 +40,53 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "apiInput",
+				"inputs": [
+					{
+						"name": "apiInput.input",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiInput",
+						"type": "Promise<Record<string, unknown>>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "apiQuery",
+				"inputs": [
+					{
+						"name": "apiQuery.fields",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiQuery",
+						"type": "Array<[string, string]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

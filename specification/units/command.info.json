@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "registerInfoCommand.program",
-				"type": "Command"
+				"type": "Command",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,7 +30,29 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "registerInfoCommand",
+				"inputs": [
+					{
+						"name": "registerInfoCommand.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerInfoCommand",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

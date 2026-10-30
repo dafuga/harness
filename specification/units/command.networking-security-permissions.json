@@ -27,11 +27,13 @@
 			{
 				"name": "PermissionsCommand.register.program",
 				"type": "Command",
+				"required": true,
 				"description": "Commander root receiving the permissions list/show namespace."
 			},
 			{
 				"name": "PermissionsCommand.registerApi.api",
 				"type": "Command",
+				"required": true,
 				"description": "Commander API namespace receiving endpoint permission queries."
 			}
 		],
@@ -53,7 +55,50 @@
 				"type": "thrown",
 				"description": "Registered read actions reject unknown profiles and unreadable selected Git revisions."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "PermissionsCommand.register",
+				"inputs": [
+					{
+						"name": "PermissionsCommand.register.program",
+						"type": "Command",
+						"required": true,
+						"description": "Commander root receiving the permissions list/show namespace."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PermissionsCommand.register",
+						"type": "void",
+						"description": "Registers read-only JSON commands using the selected project source and optional Git revision."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PermissionsCommand.registerApi",
+				"inputs": [
+					{
+						"name": "PermissionsCommand.registerApi.api",
+						"type": "Command",
+						"required": true,
+						"description": "Commander API namespace receiving endpoint permission queries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PermissionsCommand.registerApi",
+						"type": "void",
+						"description": "Registers read-only JSON commands using the selected project source and optional Git revision."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

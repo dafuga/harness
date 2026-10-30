@@ -29,23 +29,29 @@
 		"inputs": [
 			{
 				"name": "adaptersForProfile.profile",
-				"type": "Exclude<AuditProfile, 'auto'>"
+				"type": "Exclude<AuditProfile, 'auto'>",
+				"required": true
 			},
 			{
 				"name": "adapterForExtension.extension",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "adapterForExtension.profile",
-				"type": "Exclude<AuditProfile, 'auto'>"
+				"type": "Exclude<AuditProfile, 'auto'>",
+				"required": true
 			},
 			{
 				"name": "resolveAuditProfile.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "resolveAuditProfile.profile",
-				"type": "AuditProfile"
+				"type": "AuditProfile",
+				"required": false,
+				"default": "auto"
 			}
 		],
 		"outputs": [
@@ -70,7 +76,88 @@
 				"type": "Exclude<AuditProfile, 'auto'>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "adaptersForProfile",
+				"inputs": [
+					{
+						"name": "adaptersForProfile.profile",
+						"type": "Exclude<AuditProfile, 'auto'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adaptersForProfile",
+						"type": "AuditAdapter[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "adapterForExtension",
+				"inputs": [
+					{
+						"name": "adapterForExtension.extension",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "adapterForExtension.profile",
+						"type": "Exclude<AuditProfile, 'auto'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adapterForExtension",
+						"type": "AuditAdapter | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "knownAuditExtensions",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "knownAuditExtensions",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resolveAuditProfile",
+				"inputs": [
+					{
+						"name": "resolveAuditProfile.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "resolveAuditProfile.profile",
+						"type": "AuditProfile",
+						"required": false,
+						"default": "auto"
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveAuditProfile",
+						"type": "Exclude<AuditProfile, 'auto'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

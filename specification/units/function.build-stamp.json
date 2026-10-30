@@ -25,6 +25,7 @@
 			{
 				"name": "buildStamp.slot",
 				"type": "string",
+				"required": false,
 				"description": "Optional stamp text beginning with harness-build: and followed by 64 lowercase hexadecimal characters."
 			}
 		],
@@ -50,7 +51,43 @@
 				"description": "The 64-character identity of a correctly shaped nonzero slot, or null for a missing, malformed or all-zero slot."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "emptyBuildStamp",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "emptyBuildStamp",
+						"type": "string",
+						"description": "An empty stamp slot consisting of harness-build: followed by 64 zeros."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "buildStamp",
+				"inputs": [
+					{
+						"name": "buildStamp.slot",
+						"type": "string",
+						"required": false,
+						"description": "Optional stamp text beginning with harness-build: and followed by 64 lowercase hexadecimal characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildStamp",
+						"type": "string | null",
+						"description": "The 64-character identity of a correctly shaped nonzero slot, or null for a missing, malformed or all-zero slot."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

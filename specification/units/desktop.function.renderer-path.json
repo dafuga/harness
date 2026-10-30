@@ -20,6 +20,7 @@
 			{
 				"name": "rendererPath.path",
 				"type": "string",
+				"required": true,
 				"description": "Path beginning with /harness/branch to parse; other paths use the default route."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Parsed route; defaults are pages and null branch, commit, entity and tab. Branch/entity are URI-decoded; unknown categories become pages."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "rendererPath",
+				"inputs": [
+					{
+						"name": "rendererPath.path",
+						"type": "string",
+						"required": true,
+						"description": "Path beginning with /harness/branch to parse; other paths use the default route."
+					}
+				],
+				"outputs": [
+					{
+						"name": "rendererPath",
+						"type": "RendererRoute",
+						"description": "Parsed route; defaults are pages and null branch, commit, entity and tab. Branch/entity are URI-decoded; unknown categories become pages."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

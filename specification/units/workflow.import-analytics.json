@@ -18,11 +18,14 @@
 		"inputs": [
 			{
 				"name": "importAnalytics.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "importAnalytics.historical",
-				"type": "unknown"
+				"type": "boolean",
+				"required": false,
+				"default": true
 			}
 		],
 		"outputs": [
@@ -31,7 +34,35 @@
 				"type": "Promise<number>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "importAnalytics",
+				"inputs": [
+					{
+						"name": "importAnalytics.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "importAnalytics.historical",
+						"type": "boolean",
+						"required": false,
+						"default": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "importAnalytics",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

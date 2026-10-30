@@ -40,21 +40,25 @@
 			{
 				"name": "processDescendants.root",
 				"type": "number",
+				"required": true,
 				"description": "Root command pid to begin tracking while that command has not yet been reaped."
 			},
 			{
 				"name": "processDescendants.read",
 				"type": "ProcessTable",
+				"required": false,
 				"description": "Optional process-table reader, defaulting to the system ps reader; null or rejection means unreadable."
 			},
 			{
 				"name": "signalProcesses.known",
 				"type": "TrackedProcess[]",
+				"required": true,
 				"description": "Tracked pids and start times eligible for a fresh identity check before signalling."
 			},
 			{
 				"name": "signalProcesses.signal",
 				"type": "'SIGTERM' | 'SIGKILL'",
+				"required": true,
 				"description": "SIGTERM or SIGKILL to send to still-matching identities."
 			}
 		],
@@ -75,7 +79,75 @@
 				"description": "Resolves after attempting signals only for supplied identities still present in a fresh process table. Empty/unreadable tables send no signals; kill errors are ignored."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "processTable",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "processTable",
+						"type": "Promise<Row[] | null>",
+						"description": "System process rows containing pid, parent, group and start time, or null if the bounded ps read fails or omits this process."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "processDescendants",
+				"inputs": [
+					{
+						"name": "processDescendants.root",
+						"type": "number",
+						"required": true,
+						"description": "Root command pid to begin tracking while that command has not yet been reaped."
+					},
+					{
+						"name": "processDescendants.read",
+						"type": "ProcessTable",
+						"required": false,
+						"description": "Optional process-table reader, defaulting to the system ps reader; null or rejection means unreadable."
+					}
+				],
+				"outputs": [
+					{
+						"name": "processDescendants",
+						"type": "Descendants",
+						"description": "Tracker with look, survivors, alive and closed methods. It remembers parent provenance and start times, marks unsupported group-only identities unproven, and stops treating a reused root pid as the original command."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "signalProcesses",
+				"inputs": [
+					{
+						"name": "signalProcesses.known",
+						"type": "TrackedProcess[]",
+						"required": true,
+						"description": "Tracked pids and start times eligible for a fresh identity check before signalling."
+					},
+					{
+						"name": "signalProcesses.signal",
+						"type": "'SIGTERM' | 'SIGKILL'",
+						"required": true,
+						"description": "SIGTERM or SIGKILL to send to still-matching identities."
+					}
+				],
+				"outputs": [
+					{
+						"name": "signalProcesses",
+						"type": "Promise<void>",
+						"description": "Resolves after attempting signals only for supplied identities still present in a fresh process table. Empty/unreadable tables send no signals; kill errors are ignored."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

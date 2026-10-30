@@ -35,51 +35,62 @@
 			{
 				"name": "GameCheckpointImage.checkpoint",
 				"type": "Checkpoint",
+				"required": true,
 				"description": "Selected checkpoint whose guidance, rules or saved image are being edited."
 			},
 			{
 				"name": "GameCheckpointImage.view",
 				"type": "GameView",
+				"required": true,
 				"description": "Active game view containing scene direction and executable checkpoints."
 			},
 			{
 				"name": "GameCheckpointImage.document",
 				"type": "GameDocument",
+				"required": true,
 				"description": "Complete authored game document supplying the checkpoint and view context."
 			},
 			{
 				"name": "GameCheckpointImage.projectId",
 				"type": "string | null",
+				"required": false,
 				"description": "Selected local project identity used to bind host reads and writes."
 			},
 			{
 				"name": "GameCheckpointImage.revision",
 				"type": "string",
+				"required": false,
 				"description": "Expected document hash used to reject stale image generation or saves."
 			},
 			{
 				"name": "GameCheckpointImage.commit",
 				"type": "string",
+				"required": false,
 				"description": "Optional immutable Git revision for reading historical image bytes."
 			},
 			{
 				"name": "GameCheckpointImage.readonly",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Disable editing and generation for historical or otherwise immutable views."
 			},
 			{
 				"name": "GameCheckpointImage.bridge",
 				"type": "DesktopBridge",
+				"required": false,
 				"description": "Local desktop host operations for project creation, persistence and explicit image generation."
 			},
 			{
 				"name": "GameCheckpointImage.change",
 				"type": "(patch: Partial<Checkpoint>) => void",
+				"required": true,
 				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
 			},
 			{
 				"name": "GameCheckpointImage.accept",
 				"type": "(patch: Partial<Checkpoint>) => void",
+				"required": true,
 				"description": "Adopt the chosen candidate image and guidance through the modal owner."
 			}
 		],
@@ -90,7 +101,9 @@
 				"description": "Generate and revise checkpoint image candidates; replace the confirmed reference only after explicit acceptance."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

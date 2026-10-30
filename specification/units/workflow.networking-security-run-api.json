@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "runApi.operation",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "runApi.args",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "runApi.options",
-				"type": "HarnessApiOptions"
+				"type": "HarnessApiOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +40,39 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runApi",
+				"inputs": [
+					{
+						"name": "runApi.operation",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "runApi.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "runApi.options",
+						"type": "HarnessApiOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runApi",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

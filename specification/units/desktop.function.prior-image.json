@@ -21,16 +21,19 @@
 			{
 				"name": "priorImage.versions",
 				"type": "DesignVersion[]",
+				"required": true,
 				"description": "The design versions in historical order."
 			},
 			{
 				"name": "priorImage.shown",
 				"type": "{ version: string; image: DesignImage | undefined }",
+				"required": true,
 				"description": "The displayed version identity and optional selected image."
 			},
 			{
 				"name": "priorImage.commit",
 				"type": "string | null",
+				"required": true,
 				"description": "The selected commit, or null for a branch view."
 			}
 		],
@@ -41,7 +44,42 @@
 				"description": "The prior version and image hash, or null without a selected image or matching introducing commit. Uses an explicit revised-image binding first. Without one, versions with design options are not paired; a single design falls back to the preceding version’s image with the same state and viewport."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "priorImage",
+				"inputs": [
+					{
+						"name": "priorImage.versions",
+						"type": "DesignVersion[]",
+						"required": true,
+						"description": "The design versions in historical order."
+					},
+					{
+						"name": "priorImage.shown",
+						"type": "{ version: string; image: DesignImage | undefined }",
+						"required": true,
+						"description": "The displayed version identity and optional selected image."
+					},
+					{
+						"name": "priorImage.commit",
+						"type": "string | null",
+						"required": true,
+						"description": "The selected commit, or null for a branch view."
+					}
+				],
+				"outputs": [
+					{
+						"name": "priorImage",
+						"type": "PriorImage | null",
+						"description": "The prior version and image hash, or null without a selected image or matching introducing commit. Uses an explicit revised-image binding first. Without one, versions with design options are not paired; a single design falls back to the preceding version’s image with the same state and viewport."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

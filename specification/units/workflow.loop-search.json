@@ -33,11 +33,14 @@
 		"inputs": [
 			{
 				"name": "searchLoops.input",
-				"type": "SearchLoopsInput"
+				"type": "SearchLoopsInput",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "renderLoopSearchResults.results",
-				"type": "LoopSearchResult[]"
+				"type": "LoopSearchResult[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -50,7 +53,48 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "searchLoops",
+				"inputs": [
+					{
+						"name": "searchLoops.input",
+						"type": "SearchLoopsInput",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "searchLoops",
+						"type": "Promise<LoopSearchResult[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderLoopSearchResults",
+				"inputs": [
+					{
+						"name": "renderLoopSearchResults.results",
+						"type": "LoopSearchResult[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderLoopSearchResults",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

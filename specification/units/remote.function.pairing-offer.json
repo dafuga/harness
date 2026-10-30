@@ -49,24 +49,38 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "offerEnvironment.origin",
-				"type": "string",
-				"description": "Exact relay origin with no path; supported forms are named HTTPS origins or HTTP loopback origins."
-			},
-			{
 				"name": "pairingOffer.offer",
 				"type": "PairingOffer",
+				"required": true,
 				"description": "Relay origin, host and pairing IDs, human pairing code and expiry time to serialize."
 			},
 			{
 				"name": "readPairingOffer.text",
 				"type": "string",
+				"required": true,
 				"description": "Scanned offer text in the fixed protocol field order."
 			},
 			{
 				"name": "readPairingOffer.reading",
 				"type": "OfferReading",
+				"required": true,
 				"description": "Current time in milliseconds and allowed local or production environments."
+			},
+			{
+				"name": "offerEnvironment.origin",
+				"type": "string",
+				"required": true,
+				"description": "Exact relay origin with no path; supported forms are named HTTPS origins or HTTP loopback origins."
+			},
+			{
+				"name": "written.offer",
+				"type": "PairingOffer",
+				"required": true
+			},
+			{
+				"name": "written.environment",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -97,7 +111,104 @@
 				"type": "thrown",
 				"description": "The writer throws Invalid pairing offer for an unsupported origin or malformed or oversized serialized fields."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "pairingOffer",
+				"inputs": [
+					{
+						"name": "pairingOffer.offer",
+						"type": "PairingOffer",
+						"required": true,
+						"description": "Relay origin, host and pairing IDs, human pairing code and expiry time to serialize."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pairingOffer",
+						"type": "string",
+						"description": "Canonical offer text with normalized code and expiry rounded down to whole seconds."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readPairingOffer",
+				"inputs": [
+					{
+						"name": "readPairingOffer.text",
+						"type": "string",
+						"required": true,
+						"description": "Scanned offer text in the fixed protocol field order."
+					},
+					{
+						"name": "readPairingOffer.reading",
+						"type": "OfferReading",
+						"required": true,
+						"description": "Current time in milliseconds and allowed local or production environments."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readPairingOffer",
+						"type": "OfferRead",
+						"description": "Parsed offer or invalid, unsupported, environment or expired refusal; accepted expiry must be within the pairing TTL plus clock allowance."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "offerEnvironment",
+				"inputs": [
+					{
+						"name": "offerEnvironment.origin",
+						"type": "string",
+						"required": true,
+						"description": "Exact relay origin with no path; supported forms are named HTTPS origins or HTTP loopback origins."
+					}
+				],
+				"outputs": [
+					{
+						"name": "offerEnvironment",
+						"type": "OfferEnvironment | null",
+						"description": "Production for a permitted named HTTPS origin, local for permitted HTTP loopback, otherwise null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "written",
+				"inputs": [
+					{
+						"name": "written.offer",
+						"type": "PairingOffer",
+						"required": true
+					},
+					{
+						"name": "written.environment",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "written",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -22,10 +22,9 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/browser-errors/BrowserErrors.svelte",
 			"packages/reports/src/components/shared-primitives/browser-errors/BrowserErrors.svelte"
 		],
-		"symbols": ["BrowserErrors", "BrowserErrors"]
+		"symbols": ["BrowserErrors"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -44,7 +43,9 @@
 				"description": "An unavailable or empty collection receives a neutral message without a test verdict. Otherwise an expandable Browser errors group shows the classified row count, test/file/project or browser identity and retry number. Rows show expected, unexpected or missing-expected status, message, expectation reason and available source/page/stack as escaped text. Source line and column display one-based coordinates. A supplied attempt with no rows still appears under a zero-entry summary."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

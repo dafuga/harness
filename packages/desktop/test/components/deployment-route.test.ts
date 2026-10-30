@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { render } from 'svelte/server';
-import DeploymentRoute from '../../src/components/DeploymentRoute.svelte';
+import DeploymentRoute from '../../src/components/development-tooling/DeploymentRoute.svelte';
 import { deploymentActivityFixture } from '../deployment-ui-fixture';
 
 test('routes announce the captured environment or Git branch as the source', () => {

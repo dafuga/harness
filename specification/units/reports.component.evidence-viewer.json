@@ -22,11 +22,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/EvidenceViewer.svelte",
-			"packages/reports/src/components/verification-evidence/EvidenceViewer.svelte"
-		],
-		"symbols": ["EvidenceViewer", "EvidenceViewer"]
+		"source": ["packages/reports/src/components/verification-evidence/EvidenceViewer.svelte"],
+		"symbols": ["EvidenceViewer"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -91,7 +88,9 @@
 				"type": "thrown",
 				"description": "Svelte rejects a comparison whose before and after evidence share the same id."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

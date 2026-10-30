@@ -26,37 +26,45 @@
 			{
 				"name": "explorerChange.head",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Revision whose first-parent source impact is inspected."
 			},
 			{
 				"name": "explorerChange.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit identifier to classify as changed."
 			},
 			{
 				"name": "explorerEntity.head",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Revision providing verdict and change context."
 			},
 			{
 				"name": "explorerEntity.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "Unit to convert to an explorer entity."
+			},
+			{
+				"name": "explorerEntity.includePrivate",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Explicitly resolve a private callable for an owner or retained detail address; defaults to false for collections."
 			},
 			{
 				"name": "explorerEntities.head",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Shown revision with registry and source impact."
 			},
 			{
 				"name": "explorerEntities.parent",
 				"type": "HarnessRevision | null",
+				"required": false,
 				"description": "Optional first-parent revision, used to show removed units in their last active form."
-			},
-			{
-				"name": "explorerEntity.includePrivate",
-				"type": "boolean | undefined",
-				"description": "Explicitly resolve a private callable for an owner or retained detail address; defaults to false for collections."
 			}
 		],
 		"outputs": [
@@ -76,7 +84,95 @@
 				"description": "Active head entities grouped in category order, plus units explicitly removed by head and active in the supplied parent but no longer active in head. Removed entries retain their parent contract and receive a removed/not-proven verdict."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "explorerChange",
+				"inputs": [
+					{
+						"name": "explorerChange.head",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Revision whose first-parent source impact is inspected."
+					},
+					{
+						"name": "explorerChange.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit identifier to classify as changed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerChange",
+						"type": "HarnessMark | null",
+						"description": "First matching impact mark in added, direct, indirect, removed order, or null without a match."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explorerEntity",
+				"inputs": [
+					{
+						"name": "explorerEntity.head",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Revision providing verdict and change context."
+					},
+					{
+						"name": "explorerEntity.unit",
+						"type": "HarnessUnit",
+						"required": true,
+						"description": "Unit to convert to an explorer entity."
+					},
+					{
+						"name": "explorerEntity.includePrivate",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "Explicitly resolve a private callable for an owner or retained detail address; defaults to false for collections."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerEntity",
+						"type": "ExplorerEntity | null",
+						"description": "Named entity with category, role, purpose, source unit, verdict, change and app route; null for an uncategorized unit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explorerEntities",
+				"inputs": [
+					{
+						"name": "explorerEntities.head",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Shown revision with registry and source impact."
+					},
+					{
+						"name": "explorerEntities.parent",
+						"type": "HarnessRevision | null",
+						"required": false,
+						"description": "Optional first-parent revision, used to show removed units in their last active form."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerEntities",
+						"type": "ExplorerEntity[]",
+						"description": "Active head entities grouped in category order, plus units explicitly removed by head and active in the supplied parent but no longer active in head. Removed entries retain their parent contract and receive a removed/not-proven verdict."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -18,8 +18,14 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "handle.input",
-				"type": "unknown"
+				"name": "handle.event",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "handle.resolve",
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -28,7 +34,34 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "handle",
+				"inputs": [
+					{
+						"name": "handle.event",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "handle.resolve",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "handle",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

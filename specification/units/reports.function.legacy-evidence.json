@@ -19,16 +19,19 @@
 			{
 				"name": "legacyLink.report",
 				"type": "HarnessLegacyReport",
+				"required": true,
 				"description": "Historical report with linked commit or gap."
 			},
 			{
 				"name": "legacyLink.commit",
 				"type": "string",
+				"required": true,
 				"description": "Currently viewed commit."
 			},
 			{
 				"name": "legacyEvidence.report",
 				"type": "HarnessLegacyReport",
+				"required": true,
 				"description": "Historical report and its media entries."
 			}
 		],
@@ -44,7 +47,56 @@
 				"description": "Ordered gallery items labeled legacy, with no recorded build, original report attribution and missing-media markers. Unknown statuses become not-proven; MIME types beginning with audio select audio presentation."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "legacyLink",
+				"inputs": [
+					{
+						"name": "legacyLink.report",
+						"type": "HarnessLegacyReport",
+						"required": true,
+						"description": "Historical report with linked commit or gap."
+					},
+					{
+						"name": "legacyLink.commit",
+						"type": "string",
+						"required": true,
+						"description": "Currently viewed commit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "legacyLink",
+						"type": "string",
+						"description": "Text identifying this commit, another linked commit, or the report’s missing-commit explanation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "legacyEvidence",
+				"inputs": [
+					{
+						"name": "legacyEvidence.report",
+						"type": "HarnessLegacyReport",
+						"required": true,
+						"description": "Historical report and its media entries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "legacyEvidence",
+						"type": "Evidence[]",
+						"description": "Ordered gallery items labeled legacy, with no recorded build, original report attribution and missing-media markers. Unknown statuses become not-proven; MIME types beginning with audio select audio presentation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

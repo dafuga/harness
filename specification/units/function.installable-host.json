@@ -28,16 +28,19 @@
 			{
 				"name": "installableHost.options",
 				"type": "HostRequest",
+				"required": true,
 				"description": "SvelteKit host directory, console base segment, existing $lib policy module/export, update/keep choice and optional bucket binding/prefix."
 			},
 			{
 				"name": "hostWarnings.host",
 				"type": "string",
+				"required": true,
 				"description": "Host directory whose package.json should be checked."
 			},
 			{
 				"name": "hostWarnings.compressedBytes",
 				"type": "number",
+				"required": true,
 				"description": "Compressed bundled-history size in bytes to compare with the helper’s configured Worker threshold."
 			}
 		],
@@ -59,7 +62,61 @@
 				"type": "thrown",
 				"description": "Thrown for missing SvelteKit structure, invalid base/storage options, conflicting update/keep or absent policy module/export."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "installableHost",
+				"inputs": [
+					{
+						"name": "installableHost.options",
+						"type": "HostRequest",
+						"required": true,
+						"description": "SvelteKit host directory, console base segment, existing $lib policy module/export, update/keep choice and optional bucket binding/prefix."
+					}
+				],
+				"outputs": [
+					{
+						"name": "installableHost",
+						"type": "Promise<void>",
+						"description": "Resolves with no value when host structure, base, option combinations, storage names and policy export text pass; reads files but performs no installation."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hostWarnings",
+				"inputs": [
+					{
+						"name": "hostWarnings.host",
+						"type": "string",
+						"required": true,
+						"description": "Host directory whose package.json should be checked."
+					},
+					{
+						"name": "hostWarnings.compressedBytes",
+						"type": "number",
+						"required": true,
+						"description": "Compressed bundled-history size in bytes to compare with the helper’s configured Worker threshold."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostWarnings",
+						"type": "Promise<string[]>",
+						"description": "Warnings for a missing @dafuga01/harness dependency and for compressed history above the configured 3 MiB free threshold, mentioning the configured 10 MiB paid limit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

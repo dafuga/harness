@@ -31,12 +31,19 @@
 			{
 				"name": "codexTurn.command",
 				"type": "CliCommand",
+				"required": true,
 				"description": "The executable and arguments for the Codex app-server connection."
 			},
 			{
 				"name": "codexTurn.turn",
 				"type": "TurnOptions",
+				"required": true,
 				"description": "The requested model, effort, working directory, prompt, access mode, signal and callbacks, plus an optional local reference image. Write access requests danger-full-access; read-only access requests the read-only sandbox. The thread uses OpenAI, never asks for approval, enables image generation and is ephemeral."
+			},
+			{
+				"name": "codexTurn.queue",
+				"type": "ResourceQueueService",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -57,7 +64,41 @@
 				"type": "thrown",
 				"description": "Rejects when already cancelled or when cancellation is observed during the turn. Attempts to interrupt an active turn before closing its connection."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "codexTurn",
+				"inputs": [
+					{
+						"name": "codexTurn.command",
+						"type": "CliCommand",
+						"required": true,
+						"description": "The executable and arguments for the Codex app-server connection."
+					},
+					{
+						"name": "codexTurn.turn",
+						"type": "TurnOptions",
+						"required": true,
+						"description": "The requested model, effort, working directory, prompt, access mode, signal and callbacks, plus an optional local reference image. Write access requests danger-full-access; read-only access requests the read-only sandbox. The thread uses OpenAI, never asks for approval, enables image generation and is ephemeral."
+					},
+					{
+						"name": "codexTurn.queue",
+						"type": "ResourceQueueService",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "codexTurn",
+						"type": "Promise<TurnResult>",
+						"description": "A promise for completed public message text joined with newlines, the selected model and image-generation result items. Public text, image status and reported file changes are forwarded to callbacks. The connection is disposed after success or failure."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

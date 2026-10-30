@@ -22,21 +22,25 @@
 			{
 				"name": "LevelValidator.layout.input",
 				"type": "unknown",
+				"required": true,
 				"description": "Validate finite floor bounds, objects and clear player spawn."
 			},
 			{
 				"name": "LevelValidator.planning.input",
 				"type": "unknown",
+				"required": true,
 				"description": "Validate saved brief, bounded proposal and approval identifiers."
 			},
 			{
 				"name": "LevelValidator.isCurrent.view",
 				"type": "GameView",
+				"required": true,
 				"description": "Compare generated proposal inputs with the current brief and dimension."
 			},
 			{
 				"name": "LevelValidator.isReady.view",
 				"type": "GameView",
+				"required": true,
 				"description": "Allow legacy views or an explicitly approved and built current layout."
 			}
 		],
@@ -62,7 +66,90 @@
 				"description": "Allow legacy views or an explicitly approved and built current layout."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "LevelValidator.layout",
+				"inputs": [
+					{
+						"name": "LevelValidator.layout.input",
+						"type": "unknown",
+						"required": true,
+						"description": "Validate finite floor bounds, objects and clear player spawn."
+					}
+				],
+				"outputs": [
+					{
+						"name": "LevelValidator.layout",
+						"type": "input is LevelLayout",
+						"description": "Validate finite floor bounds, objects and clear player spawn."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LevelValidator.planning",
+				"inputs": [
+					{
+						"name": "LevelValidator.planning.input",
+						"type": "unknown",
+						"required": true,
+						"description": "Validate saved brief, bounded proposal and approval identifiers."
+					}
+				],
+				"outputs": [
+					{
+						"name": "LevelValidator.planning",
+						"type": "input is LevelPlanning",
+						"description": "Validate saved brief, bounded proposal and approval identifiers."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LevelValidator.isCurrent",
+				"inputs": [
+					{
+						"name": "LevelValidator.isCurrent.view",
+						"type": "GameView",
+						"required": true,
+						"description": "Compare generated proposal inputs with the current brief and dimension."
+					}
+				],
+				"outputs": [
+					{
+						"name": "LevelValidator.isCurrent",
+						"type": "boolean",
+						"description": "Compare generated proposal inputs with the current brief and dimension."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LevelValidator.isReady",
+				"inputs": [
+					{
+						"name": "LevelValidator.isReady.view",
+						"type": "GameView",
+						"required": true,
+						"description": "Allow legacy views or an explicitly approved and built current layout."
+					}
+				],
+				"outputs": [
+					{
+						"name": "LevelValidator.isReady",
+						"type": "boolean",
+						"description": "Allow legacy views or an explicitly approved and built current layout."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

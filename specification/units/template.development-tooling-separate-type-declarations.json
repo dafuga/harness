@@ -16,6 +16,7 @@
 			{
 				"name": "separateTypeDeclarations.files",
 				"type": "PlannedFile[]",
+				"required": true,
 				"description": "Scaffold files with paths and TypeScript source; generated type declarations are self-contained or use imported types."
 			}
 		],
@@ -26,7 +27,30 @@
 				"description": "Planned implementation and sibling .types.ts files with type-only imports and compatibility exports; non-TypeScript and type-only files retain their contents."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "separateTypeDeclarations",
+				"inputs": [
+					{
+						"name": "separateTypeDeclarations.files",
+						"type": "PlannedFile[]",
+						"required": true,
+						"description": "Scaffold files with paths and TypeScript source; generated type declarations are self-contained or use imported types."
+					}
+				],
+				"outputs": [
+					{
+						"name": "separateTypeDeclarations",
+						"type": "PlannedFile[]",
+						"description": "Planned implementation and sibling .types.ts files with type-only imports and compatibility exports; non-TypeScript and type-only files retain their contents."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

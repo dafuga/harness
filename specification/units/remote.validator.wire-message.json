@@ -25,15 +25,18 @@
 		"inputs": [
 			{
 				"name": "WireMessageValidator.request.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "WireMessageValidator.request.limit",
-				"type": "number"
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "WireMessageValidator.message.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +49,52 @@
 				"type": "WireResponse | WireEvent"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "WireMessageValidator.request",
+				"inputs": [
+					{
+						"name": "WireMessageValidator.request.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "WireMessageValidator.request.limit",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireMessageValidator.request",
+						"type": "WireRequest"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireMessageValidator.message",
+				"inputs": [
+					{
+						"name": "WireMessageValidator.message.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireMessageValidator.message",
+						"type": "WireResponse | WireEvent"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

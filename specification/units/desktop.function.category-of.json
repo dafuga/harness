@@ -19,6 +19,7 @@
 			{
 				"name": "categoryOf.kind",
 				"type": "string",
+				"required": true,
 				"description": "The declared kind: page, shell, component, function, shared-function, config or service."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "The corresponding plural category. Both function and shared-function map to functions. Other ordinary kind names return null; names and source files are not consulted."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "categoryOf",
+				"inputs": [
+					{
+						"name": "categoryOf.kind",
+						"type": "string",
+						"required": true,
+						"description": "The declared kind: page, shell, component, function, shared-function, config or service."
+					}
+				],
+				"outputs": [
+					{
+						"name": "categoryOf",
+						"type": "Category | null",
+						"description": "The corresponding plural category. Both function and shared-function map to functions. Other ordinary kind names return null; names and source files are not consulted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

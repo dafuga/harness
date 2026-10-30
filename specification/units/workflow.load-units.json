@@ -30,23 +30,28 @@
 		"inputs": [
 			{
 				"name": "loadUnits.root",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "loadUnits.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"required": false
 			},
 			{
 				"name": "loadUnits.indexer",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "graphOf.loaded",
-				"type": "LoadedUnits"
+				"type": "LoadedUnits",
+				"required": true
 			},
 			{
 				"name": "graphOf.manifests",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -59,7 +64,62 @@
 				"type": "SourceGraph"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "loadUnits",
+				"inputs": [
+					{
+						"name": "loadUnits.root",
+						"type": "unknown",
+						"required": false
+					},
+					{
+						"name": "loadUnits.tree",
+						"type": "SourceTree",
+						"required": false
+					},
+					{
+						"name": "loadUnits.indexer",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadUnits",
+						"type": "Promise<LoadedUnits>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "graphOf",
+				"inputs": [
+					{
+						"name": "graphOf.loaded",
+						"type": "LoadedUnits",
+						"required": true
+					},
+					{
+						"name": "graphOf.manifests",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "graphOf",
+						"type": "SourceGraph"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

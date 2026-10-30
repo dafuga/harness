@@ -37,7 +37,7 @@
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"],
-		"symbols": ["EntitySections"]
+		"symbols": ["EntitySections", "EntitySections.verificationPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,21 +45,25 @@
 			{
 				"name": "EntitySections.host",
 				"type": "ExplorerScreenProps",
+				"required": true,
 				"description": "Everything the host gives a screen: the shown revision, address, entities and its answers."
 			},
 			{
 				"name": "EntitySections.entity",
 				"type": "ExplorerEntity",
+				"required": true,
 				"description": "The entity the screen shows."
 			},
 			{
 				"name": "EntitySections.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Where the screen is and how it reaches another address."
 			},
 			{
 				"name": "EntitySections.pane",
 				"type": "Snippet",
+				"required": true,
 				"description": "The evidence an entity of this kind is first shown with."
 			}
 		],
@@ -70,7 +74,23 @@
 				"description": "Only the selected section: overview evidence and summary, consumers in Used In for non-page entities, dependencies in Uses, component recordings in Audio, recorded test results, or source-declared model Table columns with unbroken identifiers in a contained scroll frame, primary keys, nullability, defaults and unresolved schema gaps. A page addressed with Used In shows Overview."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntitySections.verificationPanel",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EntitySections.verificationPanel",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

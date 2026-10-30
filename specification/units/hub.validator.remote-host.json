@@ -26,15 +26,18 @@
 		"inputs": [
 			{
 				"name": "RemoteHostValidator.registration.body",
-				"type": "Body"
+				"type": "Body",
+				"required": true
 			},
 			{
 				"name": "RemoteHostValidator.hostId.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteHostValidator.deviceId.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -51,7 +54,65 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteHostValidator.registration",
+				"inputs": [
+					{
+						"name": "RemoteHostValidator.registration.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostValidator.registration",
+						"type": "Promise<RemoteHostRegisterInput>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostValidator.hostId",
+				"inputs": [
+					{
+						"name": "RemoteHostValidator.hostId.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostValidator.hostId",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostValidator.deviceId",
+				"inputs": [
+					{
+						"name": "RemoteHostValidator.deviceId.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostValidator.deviceId",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

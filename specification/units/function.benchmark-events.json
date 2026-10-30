@@ -16,16 +16,19 @@
 			{
 				"name": "benchmarkEvents.stdout",
 				"type": "string",
+				"required": true,
 				"description": "Newline-delimited provider JSON event output to parse and validate."
 			},
 			{
 				"name": "codexTurn.events",
 				"type": "RunnerEvent[]",
+				"required": true,
 				"description": "Validated provider events containing session identity and a completed turn."
 			},
 			{
 				"name": "claudeTurn.events",
 				"type": "RunnerEvent[]",
+				"required": true,
 				"description": "Validated provider events containing session identity and a completed turn."
 			}
 		],
@@ -52,7 +55,80 @@
 				"type": "thrown",
 				"description": "Rejects malformed event JSON and missing or failed provider completion."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "benchmarkEvents",
+				"inputs": [
+					{
+						"name": "benchmarkEvents.stdout",
+						"type": "string",
+						"required": true,
+						"description": "Newline-delimited provider JSON event output to parse and validate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "benchmarkEvents",
+						"type": "RunnerEvent[]",
+						"description": "Validated provider events in their original order; blank lines are omitted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "codexTurn",
+				"inputs": [
+					{
+						"name": "codexTurn.events",
+						"type": "RunnerEvent[]",
+						"required": true,
+						"description": "Validated provider events containing session identity and a completed turn."
+					}
+				],
+				"outputs": [
+					{
+						"name": "codexTurn",
+						"type": "BenchmarkTurn",
+						"description": "Completed Codex session, reported model and any reported token counts."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "claudeTurn",
+				"inputs": [
+					{
+						"name": "claudeTurn.events",
+						"type": "RunnerEvent[]",
+						"required": true,
+						"description": "Validated provider events containing session identity and a completed turn."
+					}
+				],
+				"outputs": [
+					{
+						"name": "claudeTurn",
+						"type": "BenchmarkTurn",
+						"description": "Completed Claude session, reported model and any reported usage and cost."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

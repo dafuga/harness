@@ -19,26 +19,31 @@
 			{
 				"name": "deploymentState.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "saveDeployment.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "saveDeployment.receipt",
 				"type": "DeploymentReceipt",
+				"required": true,
 				"description": "Verified destination identity and immutable source to persist after a successful deployment."
 			},
 			{
 				"name": "deploymentStatus.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "deploymentStatus.plugin",
 				"type": "DeploymentPlugin",
+				"required": true,
 				"description": "Deployment adapter used to discover configured target identities."
 			}
 		],
@@ -59,7 +64,82 @@
 				"description": "Status of dev, stage, preprod and prod, including configuration availability and last receipt."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "deploymentState",
+				"inputs": [
+					{
+						"name": "deploymentState.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentState",
+						"type": "Promise<DeploymentReceipt[]>",
+						"description": "Validated verified receipts, or an empty list before the first deployment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "saveDeployment",
+				"inputs": [
+					{
+						"name": "saveDeployment.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					},
+					{
+						"name": "saveDeployment.receipt",
+						"type": "DeploymentReceipt",
+						"required": true,
+						"description": "Verified destination identity and immutable source to persist after a successful deployment."
+					}
+				],
+				"outputs": [
+					{
+						"name": "saveDeployment",
+						"type": "unknown",
+						"description": "Resolves after atomic receipt replacement; write or validation errors propagate."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "deploymentStatus",
+				"inputs": [
+					{
+						"name": "deploymentStatus.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					},
+					{
+						"name": "deploymentStatus.plugin",
+						"type": "DeploymentPlugin",
+						"required": true,
+						"description": "Deployment adapter used to discover configured target identities."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentStatus",
+						"type": "unknown",
+						"description": "Status of dev, stage, preprod and prod, including configuration availability and last receipt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

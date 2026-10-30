@@ -31,7 +31,28 @@
 				"type": "thrown",
 				"description": "Thrown with Invalid Harness report settings file for a non-ENOENT read failure or JSON parse failure."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "reportsEnvironment",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "reportsEnvironment",
+						"type": "typeof process.env",
+						"description": "Copied process environment with PROJECT_REPORTS_CONFIG_FILE and PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME filled from settings only when not already set. Reads HARNESS_REPORTS_SETTINGS_FILE or the default user report-settings.json; missing file is allowed."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

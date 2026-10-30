@@ -23,19 +23,23 @@
 		"inputs": [
 			{
 				"name": "relatedReviewPaths.target",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "relatedReviewPaths.code",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "relatedReviewPaths.files",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "reviewConventionPaths.target",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -48,7 +52,57 @@
 				"type": "string[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "relatedReviewPaths",
+				"inputs": [
+					{
+						"name": "relatedReviewPaths.target",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "relatedReviewPaths.code",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "relatedReviewPaths.files",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "relatedReviewPaths",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reviewConventionPaths",
+				"inputs": [
+					{
+						"name": "reviewConventionPaths.target",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewConventionPaths",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -17,11 +17,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/image-zoom/ImageZoom.svelte",
 			"packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.svelte",
 			"packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.types.ts"
 		],
-		"symbols": ["ImageZoom", "ImageZoom", "Point", "DragStart"]
+		"symbols": ["ImageZoom", "Point", "DragStart"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -46,7 +45,9 @@
 				"description": "An image initially fitted to its stage, with fit, actual-size and stepped zoom controls. Zoom preserves the pointer or viewport-center position; an enlarged image can be dragged with the primary mouse button. Trackpad zoom is bounded between fit and four times natural size."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -79,7 +79,9 @@
 				"description": "A native dialog when isOpen, or otherwise open, is true. It shows the title, child content and optional footer in the selected image, text or lightbox presentation. Close-button and backdrop actions invoke both supplied close callbacks; Escape also invokes them through the cancel event. The parent owns the open state."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

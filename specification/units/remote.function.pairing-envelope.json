@@ -33,36 +33,43 @@
 			{
 				"name": "pairingEnvelope.context",
 				"type": "PairingContext",
+				"required": true,
 				"description": "Host and pairing IDs, phone ephemeral public key, host public key and their ECDH secret."
 			},
 			{
 				"name": "sealPairing.key",
 				"type": "CryptoKey",
+				"required": true,
 				"description": "Single-use AES-GCM key derived for the specified message kind."
 			},
 			{
 				"name": "sealPairing.kind",
 				"type": "PairingKind",
+				"required": true,
 				"description": "Message purpose: request or approval."
 			},
 			{
 				"name": "sealPairing.value",
 				"type": "unknown",
+				"required": true,
 				"description": "JSON-serializable pairing payload."
 			},
 			{
 				"name": "openPairing.key",
 				"type": "CryptoKey",
+				"required": true,
 				"description": "Matching AES-GCM key for this message purpose."
 			},
 			{
 				"name": "openPairing.kind",
 				"type": "PairingKind",
+				"required": true,
 				"description": "Expected purpose: request or approval."
 			},
 			{
 				"name": "openPairing.sealed",
 				"type": "string",
+				"required": true,
 				"description": "Unpadded base64url ciphertext and authentication tag."
 			}
 		],
@@ -83,7 +90,94 @@
 				"description": "Parsed JSON payload after authentication and strict UTF-8 decoding."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "pairingEnvelope",
+				"inputs": [
+					{
+						"name": "pairingEnvelope.context",
+						"type": "PairingContext",
+						"required": true,
+						"description": "Host and pairing IDs, phone ephemeral public key, host public key and their ECDH secret."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pairingEnvelope",
+						"type": "Promise<PairingKeys>",
+						"description": "Separate nonextractable AES keys for request and approval, bound to the pairing identities and public keys."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealPairing",
+				"inputs": [
+					{
+						"name": "sealPairing.key",
+						"type": "CryptoKey",
+						"required": true,
+						"description": "Single-use AES-GCM key derived for the specified message kind."
+					},
+					{
+						"name": "sealPairing.kind",
+						"type": "PairingKind",
+						"required": true,
+						"description": "Message purpose: request or approval."
+					},
+					{
+						"name": "sealPairing.value",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-serializable pairing payload."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealPairing",
+						"type": "Promise<string>",
+						"description": "Base64url authenticated ciphertext of the JSON value using a zero nonce and purpose-specific associated data."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openPairing",
+				"inputs": [
+					{
+						"name": "openPairing.key",
+						"type": "CryptoKey",
+						"required": true,
+						"description": "Matching AES-GCM key for this message purpose."
+					},
+					{
+						"name": "openPairing.kind",
+						"type": "PairingKind",
+						"required": true,
+						"description": "Expected purpose: request or approval."
+					},
+					{
+						"name": "openPairing.sealed",
+						"type": "string",
+						"required": true,
+						"description": "Unpadded base64url ciphertext and authentication tag."
+					}
+				],
+				"outputs": [
+					{
+						"name": "openPairing",
+						"type": "Promise<unknown>",
+						"description": "Parsed JSON payload after authentication and strict UTF-8 decoding."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

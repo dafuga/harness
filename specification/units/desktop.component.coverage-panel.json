@@ -33,11 +33,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/CoveragePanel.svelte",
-			"packages/desktop/src/components/shared-primitives/CoveragePanel.svelte"
-		],
-		"symbols": ["CoveragePanel", "CoveragePanel"]
+		"source": ["packages/desktop/src/components/shared-primitives/CoveragePanel.svelte"],
+		"symbols": ["CoveragePanel", "CoveragePanel.diagnostics"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,12 +42,19 @@
 			{
 				"name": "CoveragePanel.entity",
 				"type": "EntityDetail",
+				"required": true,
 				"description": "Entity whose kind informs evidence notices and whose category and identifier scope the behavior display. Function entities pass their identifier to the behavior panel; other categories leave that filter unset."
 			},
 			{
 				"name": "CoveragePanel.evidence",
 				"type": "EntityEvidence",
+				"required": true,
 				"description": "Evidence state supplying loading or failure notices and, only when ready, the recorded result. Uses the result’s after side for coverage, including its commit, record, gaps, scenario and state standings, test statuses and capture slots. Coverage checks may carry browser-error diagnostics from the test attempt that produced their result."
+			},
+			{
+				"name": "CoveragePanel.workspace",
+				"type": "Workspace",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -60,7 +64,23 @@
 				"description": "Evidence panel with a runtime-capture label, recorded commit and record identifier when available, and any evidence notice. When no notice blocks it, shows coverage gaps, scenarios, states and captures from the record. Only passed coverage receives a check mark; other standings receive a cross with recorded reasons. Shows observed behavior when rows exist, otherwise explicitly says no input and observed output were recorded at that commit. Each check with recorded diagnostics also offers an expandable browser-error display with observations, expectations and test-attempt context."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "CoveragePanel.diagnostics",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CoveragePanel.diagnostics",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

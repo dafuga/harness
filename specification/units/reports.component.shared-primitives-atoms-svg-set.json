@@ -22,13 +22,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "SvgSet.attributes",
-				"type": "SvelteHTMLElements['set']",
-				"description": "Native set attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "SvgSet.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native set element; native HTML content rules still apply."
 			}
 		],
@@ -39,7 +35,9 @@
 				"description": "The actual native set element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

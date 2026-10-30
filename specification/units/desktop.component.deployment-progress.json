@@ -18,11 +18,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/DeploymentProgress.svelte",
 			"packages/desktop/src/components/development-tooling/DeploymentProgress.svelte",
 			"packages/desktop/src/components/development-tooling/DeploymentProgress.types.ts"
 		],
-		"symbols": ["DeploymentProgress", "DeploymentProgress", "Mark"]
+		"symbols": ["DeploymentProgress", "Mark"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -30,6 +29,7 @@
 			{
 				"name": "DeploymentProgress.deployment",
 				"type": "DeploymentActivity",
+				"required": true,
 				"description": "Deployment job or route whose source, destination and recorded progress are displayed."
 			}
 		],
@@ -40,7 +40,9 @@
 				"description": "Renders ordered deployment steps with completed, active, pending and failure states."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

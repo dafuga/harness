@@ -25,7 +25,7 @@
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityFrame.svelte"],
-		"symbols": ["EntityFrame"]
+		"symbols": ["EntityFrame", "EntityFrame.children", "EntityFrame.screens"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -33,11 +33,13 @@
 			{
 				"name": "EntityFrame.host",
 				"type": "ExplorerScreenProps",
+				"required": true,
 				"description": "Everything the host gives a screen: the shown revision, address, entities and its answers."
 			},
 			{
 				"name": "EntityFrame.children",
 				"type": "Snippet<[ExplorerEntity, EntityNav]>",
+				"required": true,
 				"description": "The screen of the entity the address names; it is given that entity."
 			}
 		],
@@ -58,6 +60,40 @@
 				"name": "entity-missing",
 				"type": "stated",
 				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityFrame.children",
+				"inputs": [
+					{
+						"name": "EntityFrame.children.nav",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntityFrame.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "EntityFrame.screens",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EntityFrame.screens",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

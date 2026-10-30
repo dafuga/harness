@@ -36,27 +36,33 @@
 		"inputs": [
 			{
 				"name": "PinnedHistoryAdapter.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PinnedHistoryAdapter.facts.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PinnedHistoryAdapter.revision.pins",
-				"type": "PinnedRevisions"
+				"type": "PinnedRevisions",
+				"required": true
 			},
 			{
 				"name": "PinnedHistoryAdapter.revision.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PinnedHistoryAdapter.files.pins",
-				"type": "PinnedRevisions"
+				"type": "PinnedRevisions",
+				"required": true
 			},
 			{
 				"name": "PinnedHistoryAdapter.files.record",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -77,6 +83,98 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PinnedHistoryAdapter.facts",
+				"inputs": [
+					{
+						"name": "PinnedHistoryAdapter.facts.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PinnedHistoryAdapter.facts",
+						"type": "Promise<CommitFacts>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PinnedHistoryAdapter.revision",
+				"inputs": [
+					{
+						"name": "PinnedHistoryAdapter.revision.pins",
+						"type": "PinnedRevisions",
+						"required": true
+					},
+					{
+						"name": "PinnedHistoryAdapter.revision.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PinnedHistoryAdapter.revision",
+						"type": "Promise<PinnedRevision>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PinnedHistoryAdapter.files",
+				"inputs": [
+					{
+						"name": "PinnedHistoryAdapter.files.pins",
+						"type": "PinnedRevisions",
+						"required": true
+					},
+					{
+						"name": "PinnedHistoryAdapter.files.record",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PinnedHistoryAdapter.files",
+						"type": "Promise<Map<string, Buffer> | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PinnedHistoryAdapter.constructor",
+				"inputs": [
+					{
+						"name": "PinnedHistoryAdapter.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PinnedHistoryAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

@@ -103,26 +103,15 @@
 		"hub.page.projects-project-id-harness-path",
 		"hub.page.projects-project-id-members",
 		"hub.page.root",
-		"reports.component.activity-agents",
-		"reports.component.activity-files",
 		"reports.component.activity-list",
-		"reports.component.activity-loops",
-		"reports.component.activity-work",
-		"reports.component.analytics-cpu",
-		"reports.component.analytics-filters",
-		"reports.component.analytics-history",
-		"reports.component.analytics-models",
-		"reports.component.analytics-tasks",
 		"reports.component.audio-comparison",
 		"reports.component.audio-comparison-viewer",
 		"reports.component.audio-evidence",
-		"reports.component.audio-upload-files",
 		"reports.component.brand-mark",
 		"reports.component.browser-errors",
 		"reports.component.console-chat",
 		"reports.component.contract-example",
 		"reports.component.contract-table",
-		"reports.component.coverage-list",
 		"reports.component.entity-cases",
 		"reports.component.entity-contract",
 		"reports.component.entity-examples",
@@ -135,7 +124,6 @@
 		"reports.component.evidence-viewer",
 		"reports.component.explorer-catalog-items",
 		"reports.component.explorer-dependencies-screen",
-		"reports.component.explorer-function-card",
 		"reports.component.explorer-ui-config-value-tree",
 		"reports.component.explorer-ui-explorer-module-card",
 		"reports.component.explorer-ui-explorer-platform-details",
@@ -147,12 +135,10 @@
 		"reports.component.explorer-usage-link",
 		"reports.component.filter-dialog",
 		"reports.component.floating-chat",
-		"reports.component.gameplay-replay",
 		"reports.component.harness-entity-artifact",
 		"reports.component.harness-entity-audio",
 		"reports.component.harness-entity-behavior",
 		"reports.component.harness-entity-behavior-screen",
-		"reports.component.harness-entity-change",
 		"reports.component.harness-entity-config",
 		"reports.component.harness-entity-config-screen",
 		"reports.component.harness-entity-details",
@@ -180,27 +166,16 @@
 		"reports.component.harness-explorer-controls",
 		"reports.component.harness-explorer-frame",
 		"reports.component.harness-explorer-index",
-		"reports.component.harness-explorer-page-card",
 		"reports.component.harness-explorer-pages-screen",
 		"reports.component.harness-explorer-table",
 		"reports.component.harness-harness-action",
-		"reports.component.harness-harness-activity",
-		"reports.component.harness-harness-compare",
-		"reports.component.harness-harness-compare-media",
 		"reports.component.harness-harness-console",
-		"reports.component.harness-harness-emitted-growth",
-		"reports.component.harness-harness-failures",
-		"reports.component.harness-harness-growth",
 		"reports.component.harness-harness-header",
-		"reports.component.harness-harness-history",
 		"reports.component.harness-harness-icon",
-		"reports.component.harness-harness-legacy",
-		"reports.component.harness-harness-map",
 		"reports.component.harness-harness-navbar",
 		"reports.component.harness-harness-selectors",
 		"reports.component.harness-harness-shell",
 		"reports.component.harness-harness-tabs",
-		"reports.component.harness-harness-unit",
 		"reports.component.harness-harness-verdict",
 		"reports.component.harness-screen",
 		"reports.component.image-zoom",
@@ -208,16 +183,10 @@
 		"reports.component.module-system-explorer-module-resources-screen",
 		"reports.component.module-system-explorer-modules-screen",
 		"reports.component.networking-security-explorer-permissions-screen",
-		"reports.component.project-activity",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
 		"reports.component.recorded-value",
 		"reports.component.regression-proof",
-		"reports.component.replay-controls",
-		"reports.component.report-checks",
-		"reports.component.report-findings",
-		"reports.component.report-summary",
-		"reports.component.report-view",
 		"reports.component.select",
 		"reports.component.shared-primitives-atoms-html-a",
 		"reports.component.shared-primitives-atoms-html-abbr",
@@ -349,15 +318,12 @@
 		"reports.component.shared-primitives-atoms-svg-tspan",
 		"reports.component.shared-primitives-atoms-svg-use",
 		"reports.component.shared-primitives-loading-state",
-		"reports.component.site-activity",
 		"reports.component.source-code-action",
 		"reports.component.source-content",
 		"reports.component.source-dialog",
 		"reports.component.source-file-list",
 		"reports.component.source-viewer",
 		"reports.component.status-badge",
-		"reports.component.upload-audio",
-		"reports.component.upload-comparison",
 		"reports.component.usage-examples-usage-examples",
 		"reports.layout.explorer-layout",
 		"reports.page.harness-branch-branch-at-apis",
@@ -1109,162 +1075,6 @@
 			"units": ["hub.page.root"]
 		},
 		{
-			"id": "reports-component-activity-agents",
-			"title": "Activity agents",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-unavailable",
-			"title": "Activity agents: Recorded history",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-tracking-never-used",
-			"title": "Activity agents: Tracking guidance",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-stale",
-			"title": "Activity agents: Stale roster",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-failed-read",
-			"title": "Activity agents: Refresh failure",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-unreadable",
-			"title": "Activity agents: Unreadable registrations",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-empty-roster",
-			"title": "Activity agents: No working registrations",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-gone",
-			"title": "Activity agents: Process ended",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-completed",
-			"title": "Activity agents: Finished",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-failed",
-			"title": "Activity agents: Failed",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-details-open",
-			"title": "Activity agents: Finished agent details",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-unstated",
-			"title": "Activity agents: Unstated model",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-many-units",
-			"title": "Activity agents: More assigned units",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-expanded-units",
-			"title": "Activity agents: All assigned units",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-many-agents",
-			"title": "Activity agents: More registered agents",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-agents-expanded-agents",
-			"title": "Activity agents: All registered agents",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-files",
-			"title": "Activity files",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
-			"id": "reports-component-activity-files-recorded",
-			"title": "Activity files: Recorded history",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
-			"id": "reports-component-activity-files-clean",
-			"title": "Activity files: Clean checkout",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
-			"id": "reports-component-activity-files-empty",
-			"title": "Activity files: Empty history",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
-			"id": "reports-component-activity-files-truncated",
-			"title": "Activity files: Additional changes",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
-			"id": "reports-component-activity-files-many-uncommitted",
-			"title": "Activity files: More uncommitted files available",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
-			"id": "reports-component-activity-files-expanded-uncommitted",
-			"title": "Activity files: All uncommitted files shown",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
-			"id": "reports-component-activity-files-many-committed",
-			"title": "Activity files: More committed files available",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
-			"id": "reports-component-activity-files-expanded-committed",
-			"title": "Activity files: All committed files shown",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
-			"id": "reports-component-activity-files-multiple-checkouts",
-			"title": "Activity files: Multiple changed checkouts",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
 			"id": "reports-component-activity-list",
 			"title": "Activity list",
 			"coverage": "required",
@@ -1299,186 +1109,6 @@
 			"title": "Activity list: Caller error row",
 			"coverage": "required",
 			"units": ["reports.component.activity-list"]
-		},
-		{
-			"id": "reports-component-activity-loops",
-			"title": "Activity loops",
-			"coverage": "required",
-			"units": ["reports.component.activity-loops"]
-		},
-		{
-			"id": "reports-component-activity-loops-empty",
-			"title": "Activity loops: Empty history",
-			"coverage": "required",
-			"units": ["reports.component.activity-loops"]
-		},
-		{
-			"id": "reports-component-activity-work",
-			"title": "Activity work",
-			"coverage": "required",
-			"units": ["reports.component.activity-work"]
-		},
-		{
-			"id": "reports-component-activity-work-recorded",
-			"title": "Activity work: Recorded history",
-			"coverage": "required",
-			"units": ["reports.component.activity-work"]
-		},
-		{
-			"id": "reports-component-activity-work-empty",
-			"title": "Activity work: Empty history",
-			"coverage": "required",
-			"units": ["reports.component.activity-work"]
-		},
-		{
-			"id": "reports-component-activity-work-details-open",
-			"title": "Activity work: Components and reasons open",
-			"coverage": "required",
-			"units": ["reports.component.activity-work"]
-		},
-		{
-			"id": "reports-component-activity-work-no-reason",
-			"title": "Activity work: No reason recorded",
-			"coverage": "required",
-			"units": ["reports.component.activity-work"]
-		},
-		{
-			"id": "reports-component-activity-work-truncated",
-			"title": "Activity work: Additional components and reasons",
-			"coverage": "required",
-			"units": ["reports.component.activity-work"]
-		},
-		{
-			"id": "reports-component-activity-work-many",
-			"title": "Activity work: More commits available",
-			"coverage": "required",
-			"units": ["reports.component.activity-work"]
-		},
-		{
-			"id": "reports-component-activity-work-expanded",
-			"title": "Activity work: All commits shown",
-			"coverage": "required",
-			"units": ["reports.component.activity-work"]
-		},
-		{
-			"id": "reports-component-analytics-cpu",
-			"title": "Analytics cpu",
-			"coverage": "required",
-			"units": ["reports.component.analytics-cpu"]
-		},
-		{
-			"id": "reports-component-analytics-cpu-loading",
-			"title": "Analytics cpu: Sampling",
-			"coverage": "required",
-			"units": ["reports.component.analytics-cpu"]
-		},
-		{
-			"id": "reports-component-analytics-cpu-no-agents",
-			"title": "Analytics cpu: No repository agents",
-			"coverage": "required",
-			"units": ["reports.component.analytics-cpu"]
-		},
-		{
-			"id": "reports-component-analytics-cpu-not-measured",
-			"title": "Analytics cpu: Percentages not measured",
-			"coverage": "required",
-			"units": ["reports.component.analytics-cpu"]
-		},
-		{
-			"id": "reports-component-analytics-cpu-unavailable",
-			"title": "Analytics cpu: Unavailable sample",
-			"coverage": "required",
-			"units": ["reports.component.analytics-cpu"]
-		},
-		{
-			"id": "reports-component-analytics-filters",
-			"title": "Analytics filters",
-			"coverage": "required",
-			"units": ["reports.component.analytics-filters"]
-		},
-		{
-			"id": "reports-component-analytics-filters-empty",
-			"title": "Analytics filters: No filters",
-			"coverage": "required",
-			"units": ["reports.component.analytics-filters"]
-		},
-		{
-			"id": "reports-component-analytics-filters-all-filters",
-			"title": "Analytics filters: All filters",
-			"coverage": "required",
-			"units": ["reports.component.analytics-filters"]
-		},
-		{
-			"id": "reports-component-analytics-history",
-			"title": "Analytics history",
-			"coverage": "required",
-			"units": ["reports.component.analytics-history"]
-		},
-		{
-			"id": "reports-component-analytics-history-empty",
-			"title": "Analytics history: Empty history",
-			"coverage": "required",
-			"units": ["reports.component.analytics-history"]
-		},
-		{
-			"id": "reports-component-analytics-history-active",
-			"title": "Analytics history: Active loop",
-			"coverage": "required",
-			"units": ["reports.component.analytics-history"]
-		},
-		{
-			"id": "reports-component-analytics-models",
-			"title": "Analytics models",
-			"coverage": "required",
-			"units": ["reports.component.analytics-models"]
-		},
-		{
-			"id": "reports-component-analytics-models-empty",
-			"title": "Analytics models: No recorded models",
-			"coverage": "required",
-			"units": ["reports.component.analytics-models"]
-		},
-		{
-			"id": "reports-component-analytics-models-unknown",
-			"title": "Analytics models: Unknown model names",
-			"coverage": "required",
-			"units": ["reports.component.analytics-models"]
-		},
-		{
-			"id": "reports-component-analytics-models-unassessed",
-			"title": "Analytics models: No assessed checks",
-			"coverage": "required",
-			"units": ["reports.component.analytics-models"]
-		},
-		{
-			"id": "reports-component-analytics-tasks",
-			"title": "Analytics tasks",
-			"coverage": "required",
-			"units": ["reports.component.analytics-tasks"]
-		},
-		{
-			"id": "reports-component-analytics-tasks-empty",
-			"title": "Analytics tasks: No recorded tasks",
-			"coverage": "required",
-			"units": ["reports.component.analytics-tasks"]
-		},
-		{
-			"id": "reports-component-analytics-tasks-unassessed",
-			"title": "Analytics tasks: Not assessed",
-			"coverage": "required",
-			"units": ["reports.component.analytics-tasks"]
-		},
-		{
-			"id": "reports-component-analytics-tasks-unpassed",
-			"title": "Analytics tasks: Not yet passed",
-			"coverage": "required",
-			"units": ["reports.component.analytics-tasks"]
-		},
-		{
-			"id": "reports-component-analytics-tasks-retried",
-			"title": "Analytics tasks: Passed after retries",
-			"coverage": "required",
-			"units": ["reports.component.analytics-tasks"]
 		},
 		{
 			"id": "reports-component-audio-comparison",
@@ -1799,54 +1429,6 @@
 			"units": ["reports.component.audio-evidence"]
 		},
 		{
-			"id": "reports-component-audio-upload-files",
-			"title": "Audio upload files",
-			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
-		},
-		{
-			"id": "reports-component-audio-upload-files-comparison",
-			"title": "Audio upload files: Comparison pair",
-			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
-		},
-		{
-			"id": "reports-component-audio-upload-files-uploading",
-			"title": "Audio upload files: Uploading",
-			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
-		},
-		{
-			"id": "reports-component-audio-upload-files-single-uploading",
-			"title": "Audio upload files: Single upload disabled",
-			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
-		},
-		{
-			"id": "reports-component-audio-upload-files-selected",
-			"title": "Audio upload files: Recording selected",
-			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
-		},
-		{
-			"id": "reports-component-audio-upload-files-before-selected",
-			"title": "Audio upload files: Before selected",
-			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
-		},
-		{
-			"id": "reports-component-audio-upload-files-after-selected",
-			"title": "Audio upload files: After selected",
-			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
-		},
-		{
-			"id": "reports-component-audio-upload-files-both-selected",
-			"title": "Audio upload files: Both recordings selected",
-			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
-		},
-		{
 			"id": "reports-component-brand-mark",
 			"title": "Brand mark",
 			"coverage": "required",
@@ -2115,120 +1697,6 @@
 			"title": "Contract table: example control hovered",
 			"coverage": "required",
 			"units": ["reports.component.contract-table"]
-		},
-		{
-			"id": "reports-component-coverage-list",
-			"title": "Coverage list",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-acceptance",
-			"title": "Coverage list: acceptance",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-coverage",
-			"title": "Coverage list: coverage",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-embedded",
-			"title": "Coverage list: embedded",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-embedded-acceptance",
-			"title": "Coverage list: embedded acceptance",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-embedded-coverage",
-			"title": "Coverage list: embedded coverage",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-empty",
-			"title": "Coverage list: empty",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-acceptance-empty",
-			"title": "Coverage list: acceptance empty",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-coverage-empty",
-			"title": "Coverage list: coverage empty",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-embedded-empty",
-			"title": "Coverage list: embedded empty",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-embedded-acceptance-empty",
-			"title": "Coverage list: embedded acceptance empty",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-embedded-coverage-empty",
-			"title": "Coverage list: embedded coverage empty",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-minimal",
-			"title": "Coverage list: minimal",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-running",
-			"title": "Coverage list: running",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-failed",
-			"title": "Coverage list: failed",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-blocked",
-			"title": "Coverage list: blocked",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-skipped",
-			"title": "Coverage list: skipped",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-not-proven",
-			"title": "Coverage list: not proven",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
-		},
-		{
-			"id": "reports-component-coverage-list-interrupted",
-			"title": "Coverage list: interrupted",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
 		},
 		{
 			"id": "reports-component-entity-cases",
@@ -3089,42 +2557,6 @@
 			"units": ["reports.component.explorer-dependencies-screen"]
 		},
 		{
-			"id": "reports-component-explorer-function-card",
-			"title": "Function card",
-			"coverage": "required",
-			"units": ["reports.component.explorer-function-card"]
-		},
-		{
-			"id": "reports-component-explorer-function-card-service",
-			"title": "Function card: service",
-			"coverage": "required",
-			"units": ["reports.component.explorer-function-card"]
-		},
-		{
-			"id": "reports-component-explorer-function-card-model",
-			"title": "Function card: model",
-			"coverage": "required",
-			"units": ["reports.component.explorer-function-card"]
-		},
-		{
-			"id": "reports-component-explorer-function-card-no-usage",
-			"title": "Function card: no consumers",
-			"coverage": "required",
-			"units": ["reports.component.explorer-function-card"]
-		},
-		{
-			"id": "reports-component-explorer-function-card-many-usage",
-			"title": "Function card: more consumers",
-			"coverage": "required",
-			"units": ["reports.component.explorer-function-card"]
-		},
-		{
-			"id": "reports-component-explorer-function-card-usage-open",
-			"title": "Function card: usage preview open",
-			"coverage": "required",
-			"units": ["reports.component.explorer-function-card"]
-		},
-		{
 			"id": "reports-component-explorer-ui-config-value-tree",
 			"title": "ConfigValueTree",
 			"coverage": "required",
@@ -3725,126 +3157,6 @@
 			"units": ["reports.component.floating-chat"]
 		},
 		{
-			"id": "reports-component-gameplay-replay",
-			"title": "Gameplay replay",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-live-empty",
-			"title": "Gameplay replay: Waiting for first frame",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-interrupted",
-			"title": "Gameplay replay: Interrupted run",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-live",
-			"title": "Gameplay replay: Live with frames",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-nonportable",
-			"title": "Gameplay replay: Download available",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-download-preparing",
-			"title": "Gameplay replay: Preparing download",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-loading",
-			"title": "Gameplay replay: Loading frame",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-image-error",
-			"title": "Gameplay replay: Frame failed to load",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-last-image-error",
-			"title": "Gameplay replay: Last frame failed to load",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-skipped",
-			"title": "Gameplay replay: Skipped failed frame",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-single-frame",
-			"title": "Gameplay replay: Single frame",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-scene-selected",
-			"title": "Gameplay replay: Second scene selected",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-speed-2x",
-			"title": "Gameplay replay: 2× speed selected",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-playing",
-			"title": "Gameplay replay: Playing",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-last-frame",
-			"title": "Gameplay replay: Last frame",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-ended",
-			"title": "Gameplay replay: Replay ended",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-waiting-live",
-			"title": "Gameplay replay: Waiting for next capture",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-fullscreen",
-			"title": "Gameplay replay: Fullscreen",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-speed-open",
-			"title": "Gameplay replay: Speed selector open",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
-			"id": "reports-component-gameplay-replay-scene-open",
-			"title": "Gameplay replay: Scene selector open",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
-		},
-		{
 			"id": "reports-component-harness-entity-artifact",
 			"title": "Entity artifact",
 			"coverage": "required",
@@ -3867,12 +3179,6 @@
 			"title": "EntityBehaviorScreen",
 			"coverage": "required",
 			"units": ["reports.component.harness-entity-behavior-screen"]
-		},
-		{
-			"id": "reports-component-harness-entity-change",
-			"title": "Entity change",
-			"coverage": "required",
-			"units": ["reports.component.harness-entity-change"]
 		},
 		{
 			"id": "reports-component-harness-entity-config",
@@ -4037,12 +3343,6 @@
 			"units": ["reports.component.harness-explorer-index"]
 		},
 		{
-			"id": "reports-component-harness-explorer-page-card",
-			"title": "Visual catalog card",
-			"coverage": "required",
-			"units": ["reports.component.harness-explorer-page-card"]
-		},
-		{
 			"id": "reports-component-harness-explorer-pages-screen",
 			"title": "ExplorerPagesScreen",
 			"coverage": "required",
@@ -4061,46 +3361,10 @@
 			"units": ["reports.component.harness-harness-action"]
 		},
 		{
-			"id": "reports-component-harness-harness-activity",
-			"title": "Recorded project activity",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-activity"]
-		},
-		{
-			"id": "reports-component-harness-harness-compare",
-			"title": "Revision impact comparison",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-compare"]
-		},
-		{
-			"id": "reports-component-harness-harness-compare-media",
-			"title": "Revision media comparison",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-compare-media"]
-		},
-		{
 			"id": "reports-component-harness-harness-console",
 			"title": "Explorer console",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-console"]
-		},
-		{
-			"id": "reports-component-harness-harness-emitted-growth",
-			"title": "Build output size history",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-emitted-growth"]
-		},
-		{
-			"id": "reports-component-harness-harness-failures",
-			"title": "Verification failure details",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-failures"]
-		},
-		{
-			"id": "reports-component-harness-harness-growth",
-			"title": "Unit measurement history",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-growth"]
 		},
 		{
 			"id": "reports-component-harness-harness-header",
@@ -4109,28 +3373,10 @@
 			"units": ["reports.component.harness-harness-header"]
 		},
 		{
-			"id": "reports-component-harness-harness-history",
-			"title": "Revision verification history",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-history"]
-		},
-		{
 			"id": "reports-component-harness-harness-icon",
 			"title": "Explorer icon",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-icon"]
-		},
-		{
-			"id": "reports-component-harness-harness-legacy",
-			"title": "Historical report references",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-legacy"]
-		},
-		{
-			"id": "reports-component-harness-harness-map",
-			"title": "Unit dependency map",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-map"]
 		},
 		{
 			"id": "reports-component-harness-harness-navbar",
@@ -4155,12 +3401,6 @@
 			"title": "Explorer section tabs",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-tabs"]
-		},
-		{
-			"id": "reports-component-harness-harness-unit",
-			"title": "Unit contract and evidence",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-unit"]
 		},
 		{
 			"id": "reports-component-harness-harness-verdict",
@@ -4260,7 +3500,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
+			"title": "ExplorerModuleResourcesScreen · Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -4314,13 +3554,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen \u00b7 playwright",
+			"title": "ExplorerModulesScreen · playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen \u00b7 headless-audio",
+			"title": "ExplorerModulesScreen · headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -4473,36 +3713,6 @@
 			"title": "ExplorerPermissionsScreen: focused data access",
 			"coverage": "required",
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
-		},
-		{
-			"id": "reports-component-project-activity",
-			"title": "Project activity overview",
-			"coverage": "required",
-			"units": ["reports.component.project-activity"]
-		},
-		{
-			"id": "reports-component-project-activity-recorded",
-			"title": "Project activity overview: Recorded history",
-			"coverage": "required",
-			"units": ["reports.component.project-activity"]
-		},
-		{
-			"id": "reports-component-project-activity-empty",
-			"title": "Project activity overview: No activity",
-			"coverage": "required",
-			"units": ["reports.component.project-activity"]
-		},
-		{
-			"id": "reports-component-project-activity-stale",
-			"title": "Project activity overview: Stale live reading",
-			"coverage": "required",
-			"units": ["reports.component.project-activity"]
-		},
-		{
-			"id": "reports-component-project-activity-failed-read",
-			"title": "Project activity overview: Refresh failed",
-			"coverage": "required",
-			"units": ["reports.component.project-activity"]
 		},
 		{
 			"id": "reports-component-provider-picker",
@@ -4863,504 +4073,6 @@
 			"title": "Regression proof: No recorded proof",
 			"coverage": "required",
 			"units": ["reports.component.regression-proof"]
-		},
-		{
-			"id": "reports-component-replay-controls",
-			"title": "Evidence replay controls",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-playing",
-			"title": "Evidence replay controls: Playing",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-middle-frame",
-			"title": "Evidence replay controls: Middle frame",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-final-frame",
-			"title": "Evidence replay controls: Final frame",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-single-frame",
-			"title": "Evidence replay controls: Single frame",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-no-scenes",
-			"title": "Evidence replay controls: No scenes",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-scene-unselected",
-			"title": "Evidence replay controls: No selected scene",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-fullscreen",
-			"title": "Evidence replay controls: Fullscreen",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-speed-2x",
-			"title": "Evidence replay controls: 2× speed",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-speed-open",
-			"title": "Evidence replay controls: Speed selector open",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-replay-controls-scene-open",
-			"title": "Evidence replay controls: Scene selector open",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-report-checks",
-			"title": "Recorded report checks",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-empty",
-			"title": "Report checks: Empty",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-embedded",
-			"title": "Report checks: Embedded",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-embedded-empty",
-			"title": "Report checks: Embedded empty",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-details-open",
-			"title": "Report checks: Expanded details",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-embedded-details-open",
-			"title": "Report checks: Embedded expanded details",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-minimal",
-			"title": "Report checks: Minimal check",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-command-open",
-			"title": "Report checks: Command only",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-output-open",
-			"title": "Report checks: Output only",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-multiple",
-			"title": "Report checks: Multiple checks",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-running",
-			"title": "Report checks: Running",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-failed",
-			"title": "Report checks: Failed",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-blocked",
-			"title": "Report checks: Blocked",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-skipped",
-			"title": "Report checks: Skipped",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-not-proven",
-			"title": "Report checks: Not proven",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-checks-interrupted",
-			"title": "Report checks: Interrupted",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-findings",
-			"title": "Report findings",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-findings-empty",
-			"title": "Report findings: empty",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-findings-with-evidence",
-			"title": "Report findings: with evidence",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-findings-multiple",
-			"title": "Report findings: multiple",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-findings-running",
-			"title": "Report findings: running",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-findings-failed",
-			"title": "Report findings: failed",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-findings-blocked",
-			"title": "Report findings: blocked",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-findings-skipped",
-			"title": "Report findings: skipped",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-findings-not-proven",
-			"title": "Report findings: not proven",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-findings-interrupted",
-			"title": "Report findings: interrupted",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-summary",
-			"title": "Report overview and downloads",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-run-open",
-			"title": "Report summary: Run details and downloads",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-portable-open",
-			"title": "Report summary: Portable downloads",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-active",
-			"title": "Report summary: Active run",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-active-open",
-			"title": "Report summary: Active run details",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-stale",
-			"title": "Report summary: Stale run",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-finalizing",
-			"title": "Report summary: Finalizing",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-historical",
-			"title": "Report summary: Imported run",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-gaps",
-			"title": "Report summary: Open gaps",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-no-revision",
-			"title": "Report summary: Missing revision",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-no-revision-open",
-			"title": "Report summary: Missing revision details",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-no-checks",
-			"title": "Report summary: No checks",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-suite",
-			"title": "Report summary: Full suite",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-running",
-			"title": "Report summary: Running",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-failed",
-			"title": "Report summary: Failed",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-blocked",
-			"title": "Report summary: Blocked",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-skipped",
-			"title": "Report summary: Skipped",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-not-proven",
-			"title": "Report summary: Not proven",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-summary-interrupted",
-			"title": "Report summary: Interrupted",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-view",
-			"title": "Report viewer",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-active",
-			"title": "Report viewer: Active report",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-portable",
-			"title": "Report viewer: Portable report",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-empty",
-			"title": "Report viewer: Empty report",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-run-open",
-			"title": "Report viewer: Run details open",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-portable-open",
-			"title": "Report viewer: Portable run details open",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-checks-open",
-			"title": "Report viewer: Verification details open",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-acceptance-open",
-			"title": "Report viewer: Acceptance details open",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-coverage-open",
-			"title": "Report viewer: Coverage details open",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-image-open",
-			"title": "Report viewer: Screenshot viewer open",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-audio-open",
-			"title": "Report viewer: Audio comparison open",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-audio-selected",
-			"title": "Report viewer: Audio selected",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-search-empty",
-			"title": "Report viewer: No matching evidence",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-upload-comparison-open",
-			"title": "Report viewer: Screenshot upload open",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-upload-audio-open",
-			"title": "Report viewer: Audio upload open",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-stale",
-			"title": "Report viewer: Stale active report",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-finalizing",
-			"title": "Report viewer: Finalizing report",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-historical",
-			"title": "Report viewer: Historical report",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-gaps",
-			"title": "Report viewer: Recorded gaps",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-no-revision",
-			"title": "Report viewer: Revision unavailable",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-suite",
-			"title": "Report viewer: Suite report",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-running",
-			"title": "Report viewer: Running result",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-failed",
-			"title": "Report viewer: Failed result",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-blocked",
-			"title": "Report viewer: Blocked result",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-skipped",
-			"title": "Report viewer: Skipped result",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-not-proven",
-			"title": "Report viewer: Not proven result",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
-		},
-		{
-			"id": "reports-component-report-view-interrupted",
-			"title": "Report viewer: Interrupted result",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
 		},
 		{
 			"id": "reports-component-select",
@@ -6173,30 +4885,6 @@
 			"units": ["reports.component.shared-primitives-loading-state"]
 		},
 		{
-			"id": "reports-component-site-activity",
-			"title": "Live site activity",
-			"coverage": "required",
-			"units": ["reports.component.site-activity"]
-		},
-		{
-			"id": "reports-component-site-activity-empty",
-			"title": "Live site activity: Empty repository",
-			"coverage": "required",
-			"units": ["reports.component.site-activity"]
-		},
-		{
-			"id": "reports-component-site-activity-stale",
-			"title": "Live site activity: Stale reading",
-			"coverage": "required",
-			"units": ["reports.component.site-activity"]
-		},
-		{
-			"id": "reports-component-site-activity-failed-refresh",
-			"title": "Live site activity: Failed refresh",
-			"coverage": "required",
-			"units": ["reports.component.site-activity"]
-		},
-		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
 			"coverage": "required",
@@ -6393,204 +5081,6 @@
 			"title": "Report status badge: Interrupted status",
 			"coverage": "required",
 			"units": ["reports.component.status-badge"]
-		},
-		{
-			"id": "reports-component-upload-audio",
-			"title": "Audio evidence upload",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-open",
-			"title": "Audio evidence upload: open",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-pre-mount",
-			"title": "Audio evidence upload: pre mount",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-mode-open",
-			"title": "Audio evidence upload: mode open",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-comparison",
-			"title": "Audio evidence upload: comparison",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-single-selected",
-			"title": "Audio evidence upload: single selected",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-before-selected",
-			"title": "Audio evidence upload: before selected",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-after-selected",
-			"title": "Audio evidence upload: after selected",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-both-selected",
-			"title": "Audio evidence upload: both selected",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-single-uploading",
-			"title": "Audio evidence upload: single uploading",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-comparison-uploading",
-			"title": "Audio evidence upload: comparison uploading",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-single-success",
-			"title": "Audio evidence upload: single success",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-comparison-success",
-			"title": "Audio evidence upload: comparison success",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-single-error",
-			"title": "Audio evidence upload: single error",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-comparison-error",
-			"title": "Audio evidence upload: comparison error",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-malformed-response",
-			"title": "Audio evidence upload: malformed response",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-network-error",
-			"title": "Audio evidence upload: network error",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-too-large",
-			"title": "Audio evidence upload: too large",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-before-too-large",
-			"title": "Audio evidence upload: before too large",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-audio-after-too-large",
-			"title": "Audio evidence upload: after too large",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-comparison",
-			"title": "Screenshot comparison upload",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-open",
-			"title": "Screenshot comparison upload: open",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-pre-mount",
-			"title": "Screenshot comparison upload: pre mount",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-before-selected",
-			"title": "Screenshot comparison upload: before selected",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-after-selected",
-			"title": "Screenshot comparison upload: after selected",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-both-selected",
-			"title": "Screenshot comparison upload: both selected",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-viewport-mobile",
-			"title": "Screenshot comparison upload: viewport mobile",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-viewport-tablet",
-			"title": "Screenshot comparison upload: viewport tablet",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-viewport-desktop",
-			"title": "Screenshot comparison upload: viewport desktop",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-viewport-open",
-			"title": "Screenshot comparison upload: viewport open",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-uploading",
-			"title": "Screenshot comparison upload: uploading",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-success",
-			"title": "Screenshot comparison upload: success",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
-			"id": "reports-component-upload-comparison-error",
-			"title": "Screenshot comparison upload: error",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
 		},
 		{
 			"id": "reports-component-usage-examples-usage-examples",
@@ -6976,68 +5466,12 @@
 				"hub-page-projects-project-id-harness-path",
 				"hub-page-projects-project-id-members",
 				"hub-page-root",
-				"reports-component-activity-agents",
-				"reports-component-activity-agents-unavailable",
-				"reports-component-activity-agents-tracking-never-used",
-				"reports-component-activity-agents-stale",
-				"reports-component-activity-agents-failed-read",
-				"reports-component-activity-agents-unreadable",
-				"reports-component-activity-agents-empty-roster",
-				"reports-component-activity-agents-gone",
-				"reports-component-activity-agents-completed",
-				"reports-component-activity-agents-failed",
-				"reports-component-activity-agents-details-open",
-				"reports-component-activity-agents-unstated",
-				"reports-component-activity-agents-many-units",
-				"reports-component-activity-agents-expanded-units",
-				"reports-component-activity-agents-many-agents",
-				"reports-component-activity-agents-expanded-agents",
-				"reports-component-activity-files",
-				"reports-component-activity-files-recorded",
-				"reports-component-activity-files-clean",
-				"reports-component-activity-files-empty",
-				"reports-component-activity-files-truncated",
-				"reports-component-activity-files-many-uncommitted",
-				"reports-component-activity-files-expanded-uncommitted",
-				"reports-component-activity-files-many-committed",
-				"reports-component-activity-files-expanded-committed",
-				"reports-component-activity-files-multiple-checkouts",
 				"reports-component-activity-list",
 				"reports-component-activity-list-empty",
 				"reports-component-activity-list-short",
 				"reports-component-activity-list-ordered",
 				"reports-component-activity-list-expanded",
 				"reports-component-activity-list-error",
-				"reports-component-activity-loops",
-				"reports-component-activity-loops-empty",
-				"reports-component-activity-work",
-				"reports-component-activity-work-recorded",
-				"reports-component-activity-work-empty",
-				"reports-component-activity-work-details-open",
-				"reports-component-activity-work-no-reason",
-				"reports-component-activity-work-truncated",
-				"reports-component-activity-work-many",
-				"reports-component-activity-work-expanded",
-				"reports-component-analytics-cpu",
-				"reports-component-analytics-cpu-loading",
-				"reports-component-analytics-cpu-no-agents",
-				"reports-component-analytics-cpu-not-measured",
-				"reports-component-analytics-cpu-unavailable",
-				"reports-component-analytics-filters",
-				"reports-component-analytics-filters-empty",
-				"reports-component-analytics-filters-all-filters",
-				"reports-component-analytics-history",
-				"reports-component-analytics-history-empty",
-				"reports-component-analytics-history-active",
-				"reports-component-analytics-models",
-				"reports-component-analytics-models-empty",
-				"reports-component-analytics-models-unknown",
-				"reports-component-analytics-models-unassessed",
-				"reports-component-analytics-tasks",
-				"reports-component-analytics-tasks-empty",
-				"reports-component-analytics-tasks-unassessed",
-				"reports-component-analytics-tasks-unpassed",
-				"reports-component-analytics-tasks-retried",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
 				"reports-component-audio-comparison-after-unavailable",
@@ -7091,14 +5525,6 @@
 				"reports-component-audio-evidence-phase-after",
 				"reports-component-audio-evidence-phase-current",
 				"reports-component-audio-evidence-standing",
-				"reports-component-audio-upload-files",
-				"reports-component-audio-upload-files-comparison",
-				"reports-component-audio-upload-files-uploading",
-				"reports-component-audio-upload-files-single-uploading",
-				"reports-component-audio-upload-files-selected",
-				"reports-component-audio-upload-files-before-selected",
-				"reports-component-audio-upload-files-after-selected",
-				"reports-component-audio-upload-files-both-selected",
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
 				"reports-component-browser-errors-expected-open",
@@ -7144,25 +5570,6 @@
 				"reports-component-contract-table-multiple",
 				"reports-component-contract-table-focused",
 				"reports-component-contract-table-hovered",
-				"reports-component-coverage-list",
-				"reports-component-coverage-list-acceptance",
-				"reports-component-coverage-list-coverage",
-				"reports-component-coverage-list-embedded",
-				"reports-component-coverage-list-embedded-acceptance",
-				"reports-component-coverage-list-embedded-coverage",
-				"reports-component-coverage-list-empty",
-				"reports-component-coverage-list-acceptance-empty",
-				"reports-component-coverage-list-coverage-empty",
-				"reports-component-coverage-list-embedded-empty",
-				"reports-component-coverage-list-embedded-acceptance-empty",
-				"reports-component-coverage-list-embedded-coverage-empty",
-				"reports-component-coverage-list-minimal",
-				"reports-component-coverage-list-running",
-				"reports-component-coverage-list-failed",
-				"reports-component-coverage-list-blocked",
-				"reports-component-coverage-list-skipped",
-				"reports-component-coverage-list-not-proven",
-				"reports-component-coverage-list-interrupted",
 				"reports-component-entity-cases",
 				"reports-component-entity-cases-empty",
 				"reports-component-entity-cases-expected-error",
@@ -7306,12 +5713,6 @@
 				"reports-component-explorer-dependencies-screen-unreadable",
 				"reports-component-explorer-dependencies-screen-filtered",
 				"reports-component-explorer-dependencies-screen-no-matches",
-				"reports-component-explorer-function-card",
-				"reports-component-explorer-function-card-service",
-				"reports-component-explorer-function-card-model",
-				"reports-component-explorer-function-card-no-usage",
-				"reports-component-explorer-function-card-many-usage",
-				"reports-component-explorer-function-card-usage-open",
 				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-config-value-tree-expanded",
 				"reports-component-explorer-ui-config-value-tree-object",
@@ -7412,31 +5813,10 @@
 				"reports-component-floating-chat-navigation",
 				"reports-component-floating-chat-following",
 				"reports-component-floating-chat-not-following",
-				"reports-component-gameplay-replay",
-				"reports-component-gameplay-replay-live-empty",
-				"reports-component-gameplay-replay-interrupted",
-				"reports-component-gameplay-replay-live",
-				"reports-component-gameplay-replay-nonportable",
-				"reports-component-gameplay-replay-download-preparing",
-				"reports-component-gameplay-replay-loading",
-				"reports-component-gameplay-replay-image-error",
-				"reports-component-gameplay-replay-last-image-error",
-				"reports-component-gameplay-replay-skipped",
-				"reports-component-gameplay-replay-single-frame",
-				"reports-component-gameplay-replay-scene-selected",
-				"reports-component-gameplay-replay-speed-2x",
-				"reports-component-gameplay-replay-playing",
-				"reports-component-gameplay-replay-last-frame",
-				"reports-component-gameplay-replay-ended",
-				"reports-component-gameplay-replay-waiting-live",
-				"reports-component-gameplay-replay-fullscreen",
-				"reports-component-gameplay-replay-speed-open",
-				"reports-component-gameplay-replay-scene-open",
 				"reports-component-harness-entity-artifact",
 				"reports-component-harness-entity-audio",
 				"reports-component-harness-entity-behavior",
 				"reports-component-harness-entity-behavior-screen",
-				"reports-component-harness-entity-change",
 				"reports-component-harness-entity-config",
 				"reports-component-harness-entity-config-screen",
 				"reports-component-harness-entity-details",
@@ -7464,27 +5844,16 @@
 				"reports-component-harness-explorer-controls",
 				"reports-component-harness-explorer-frame",
 				"reports-component-harness-explorer-index",
-				"reports-component-harness-explorer-page-card",
 				"reports-component-harness-explorer-pages-screen",
 				"reports-component-harness-explorer-table",
 				"reports-component-harness-harness-action",
-				"reports-component-harness-harness-activity",
-				"reports-component-harness-harness-compare",
-				"reports-component-harness-harness-compare-media",
 				"reports-component-harness-harness-console",
-				"reports-component-harness-harness-emitted-growth",
-				"reports-component-harness-harness-failures",
-				"reports-component-harness-harness-growth",
 				"reports-component-harness-harness-header",
-				"reports-component-harness-harness-history",
 				"reports-component-harness-harness-icon",
-				"reports-component-harness-harness-legacy",
-				"reports-component-harness-harness-map",
 				"reports-component-harness-harness-navbar",
 				"reports-component-harness-harness-selectors",
 				"reports-component-harness-harness-shell",
 				"reports-component-harness-harness-tabs",
-				"reports-component-harness-harness-unit",
 				"reports-component-harness-harness-verdict",
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
@@ -7537,11 +5906,6 @@
 				"reports-component-networking-security-explorer-permissions-screen-index-link-focused",
 				"reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
 				"reports-component-networking-security-explorer-permissions-screen-data-focused",
-				"reports-component-project-activity",
-				"reports-component-project-activity-recorded",
-				"reports-component-project-activity-empty",
-				"reports-component-project-activity-stale",
-				"reports-component-project-activity-failed-read",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-loading",
 				"reports-component-provider-picker-connection-error",
@@ -7602,89 +5966,6 @@
 				"reports-component-regression-proof-output-open",
 				"reports-component-regression-proof-capture-only",
 				"reports-component-regression-proof-empty",
-				"reports-component-replay-controls",
-				"reports-component-replay-controls-playing",
-				"reports-component-replay-controls-middle-frame",
-				"reports-component-replay-controls-final-frame",
-				"reports-component-replay-controls-single-frame",
-				"reports-component-replay-controls-no-scenes",
-				"reports-component-replay-controls-scene-unselected",
-				"reports-component-replay-controls-fullscreen",
-				"reports-component-replay-controls-speed-2x",
-				"reports-component-replay-controls-speed-open",
-				"reports-component-replay-controls-scene-open",
-				"reports-component-report-checks",
-				"reports-component-report-checks-empty",
-				"reports-component-report-checks-embedded",
-				"reports-component-report-checks-embedded-empty",
-				"reports-component-report-checks-details-open",
-				"reports-component-report-checks-embedded-details-open",
-				"reports-component-report-checks-minimal",
-				"reports-component-report-checks-command-open",
-				"reports-component-report-checks-output-open",
-				"reports-component-report-checks-multiple",
-				"reports-component-report-checks-running",
-				"reports-component-report-checks-failed",
-				"reports-component-report-checks-blocked",
-				"reports-component-report-checks-skipped",
-				"reports-component-report-checks-not-proven",
-				"reports-component-report-checks-interrupted",
-				"reports-component-report-findings",
-				"reports-component-report-findings-empty",
-				"reports-component-report-findings-with-evidence",
-				"reports-component-report-findings-multiple",
-				"reports-component-report-findings-running",
-				"reports-component-report-findings-failed",
-				"reports-component-report-findings-blocked",
-				"reports-component-report-findings-skipped",
-				"reports-component-report-findings-not-proven",
-				"reports-component-report-findings-interrupted",
-				"reports-component-report-summary",
-				"reports-component-report-summary-run-open",
-				"reports-component-report-summary-portable-open",
-				"reports-component-report-summary-active",
-				"reports-component-report-summary-active-open",
-				"reports-component-report-summary-stale",
-				"reports-component-report-summary-finalizing",
-				"reports-component-report-summary-historical",
-				"reports-component-report-summary-gaps",
-				"reports-component-report-summary-no-revision",
-				"reports-component-report-summary-no-revision-open",
-				"reports-component-report-summary-no-checks",
-				"reports-component-report-summary-suite",
-				"reports-component-report-summary-running",
-				"reports-component-report-summary-failed",
-				"reports-component-report-summary-blocked",
-				"reports-component-report-summary-skipped",
-				"reports-component-report-summary-not-proven",
-				"reports-component-report-summary-interrupted",
-				"reports-component-report-view",
-				"reports-component-report-view-active",
-				"reports-component-report-view-portable",
-				"reports-component-report-view-empty",
-				"reports-component-report-view-run-open",
-				"reports-component-report-view-portable-open",
-				"reports-component-report-view-checks-open",
-				"reports-component-report-view-acceptance-open",
-				"reports-component-report-view-coverage-open",
-				"reports-component-report-view-image-open",
-				"reports-component-report-view-audio-open",
-				"reports-component-report-view-audio-selected",
-				"reports-component-report-view-search-empty",
-				"reports-component-report-view-upload-comparison-open",
-				"reports-component-report-view-upload-audio-open",
-				"reports-component-report-view-stale",
-				"reports-component-report-view-finalizing",
-				"reports-component-report-view-historical",
-				"reports-component-report-view-gaps",
-				"reports-component-report-view-no-revision",
-				"reports-component-report-view-suite",
-				"reports-component-report-view-running",
-				"reports-component-report-view-failed",
-				"reports-component-report-view-blocked",
-				"reports-component-report-view-skipped",
-				"reports-component-report-view-not-proven",
-				"reports-component-report-view-interrupted",
 				"reports-component-select",
 				"reports-component-select-compact",
 				"reports-component-select-display",
@@ -7820,10 +6101,6 @@
 				"reports-component-shared-primitives-atoms-svg-tspan",
 				"reports-component-shared-primitives-atoms-svg-use",
 				"reports-component-shared-primitives-loading-state",
-				"reports-component-site-activity",
-				"reports-component-site-activity-empty",
-				"reports-component-site-activity-stale",
-				"reports-component-site-activity-failed-refresh",
 				"reports-component-source-code-action",
 				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",
@@ -7857,39 +6134,6 @@
 				"reports-component-status-badge-skipped",
 				"reports-component-status-badge-not-proven",
 				"reports-component-status-badge-interrupted",
-				"reports-component-upload-audio",
-				"reports-component-upload-audio-open",
-				"reports-component-upload-audio-pre-mount",
-				"reports-component-upload-audio-mode-open",
-				"reports-component-upload-audio-comparison",
-				"reports-component-upload-audio-single-selected",
-				"reports-component-upload-audio-before-selected",
-				"reports-component-upload-audio-after-selected",
-				"reports-component-upload-audio-both-selected",
-				"reports-component-upload-audio-single-uploading",
-				"reports-component-upload-audio-comparison-uploading",
-				"reports-component-upload-audio-single-success",
-				"reports-component-upload-audio-comparison-success",
-				"reports-component-upload-audio-single-error",
-				"reports-component-upload-audio-comparison-error",
-				"reports-component-upload-audio-malformed-response",
-				"reports-component-upload-audio-network-error",
-				"reports-component-upload-audio-too-large",
-				"reports-component-upload-audio-before-too-large",
-				"reports-component-upload-audio-after-too-large",
-				"reports-component-upload-comparison",
-				"reports-component-upload-comparison-open",
-				"reports-component-upload-comparison-pre-mount",
-				"reports-component-upload-comparison-before-selected",
-				"reports-component-upload-comparison-after-selected",
-				"reports-component-upload-comparison-both-selected",
-				"reports-component-upload-comparison-viewport-mobile",
-				"reports-component-upload-comparison-viewport-tablet",
-				"reports-component-upload-comparison-viewport-desktop",
-				"reports-component-upload-comparison-viewport-open",
-				"reports-component-upload-comparison-uploading",
-				"reports-component-upload-comparison-success",
-				"reports-component-upload-comparison-error",
 				"reports-component-usage-examples-usage-examples",
 				"reports-component-usage-examples-usage-examples-setup",
 				"reports-component-usage-examples-usage-examples-inline-setup",

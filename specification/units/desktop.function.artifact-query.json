@@ -20,21 +20,25 @@
 			{
 				"name": "artifactQuery.result",
 				"type": "EntityEvidenceResult",
+				"required": true,
 				"description": "The evidence answer containing the before and after captures, their verification records, and the notes and evidence revisions used for the read."
 			},
 			{
 				"name": "artifactQuery.scope",
 				"type": "EntityEvidenceQuery",
+				"required": true,
 				"description": "The entity, project context, branch, commit and viewing mode to carry into the byte request. The caller must supply the scope that belongs to the result; this function does not check that they match."
 			},
 			{
 				"name": "artifactQuery.side",
 				"type": "EvidenceSide",
+				"required": true,
 				"description": "Choose before or after to search only the captures listed on that side."
 			},
 			{
 				"name": "artifactQuery.file",
 				"type": "string | ExplorerCapture",
+				"required": true,
 				"description": "Either the stored filename of a capture or the exact capture object already held in the selected side. Object matching uses the same object, not a copy with equal fields. Only captures with stored media are eligible."
 			}
 		],
@@ -45,7 +49,48 @@
 				"description": "A request containing the supplied scope and the selected record, scenario, state, evidence identifier, image hash and pinned revisions. A missing viewport becomes null. Returns null if that side has no record or does not list a matching capture with stored media; it does not read the bytes or build a file address."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "artifactQuery",
+				"inputs": [
+					{
+						"name": "artifactQuery.result",
+						"type": "EntityEvidenceResult",
+						"required": true,
+						"description": "The evidence answer containing the before and after captures, their verification records, and the notes and evidence revisions used for the read."
+					},
+					{
+						"name": "artifactQuery.scope",
+						"type": "EntityEvidenceQuery",
+						"required": true,
+						"description": "The entity, project context, branch, commit and viewing mode to carry into the byte request. The caller must supply the scope that belongs to the result; this function does not check that they match."
+					},
+					{
+						"name": "artifactQuery.side",
+						"type": "EvidenceSide",
+						"required": true,
+						"description": "Choose before or after to search only the captures listed on that side."
+					},
+					{
+						"name": "artifactQuery.file",
+						"type": "string | ExplorerCapture",
+						"required": true,
+						"description": "Either the stored filename of a capture or the exact capture object already held in the selected side. Object matching uses the same object, not a copy with equal fields. Only captures with stored media are eligible."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artifactQuery",
+						"type": "EvidenceArtifactQuery | null",
+						"description": "A request containing the supplied scope and the selected record, scenario, state, evidence identifier, image hash and pinned revisions. A missing viewport becomes null. Returns null if that side has no record or does not list a matching capture with stored media; it does not read the bytes or build a file address."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

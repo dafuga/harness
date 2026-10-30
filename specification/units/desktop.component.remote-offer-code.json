@@ -20,10 +20,9 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/networking-security/remote-offer-code/RemoteOfferCode.svelte",
-			"packages/desktop/src/components/remote-offer-code/RemoteOfferCode.svelte"
+			"packages/desktop/src/components/networking-security/remote-offer-code/RemoteOfferCode.svelte"
 		],
-		"symbols": ["RemoteOfferCode", "RemoteOfferCode"]
+		"symbols": ["RemoteOfferCode"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +30,13 @@
 			{
 				"name": "RemoteOfferCode.offer",
 				"type": "RemotePairingOffer",
+				"required": true,
 				"description": "Required scan content and expiration. QR is drawn only while parsed expiration is in the future; scan content is not printed as text."
 			},
 			{
 				"name": "RemoteOfferCode.store",
 				"type": "RemoteHost",
+				"required": true,
 				"description": "Host store providing busy state and createPairing/closePairing for New code/Hide code. Busy disables these actions."
 			}
 		],
@@ -46,7 +47,9 @@
 				"description": "QR with instructions and countdown while live and drawable. Checks expiry every second and clears the timer on cleanup. Invalid/expired timestamps show expired; QR failures show cannot-show guidance. New code is always offered, Hide code only when a symbol is displayed."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -19,11 +19,14 @@
 			{
 				"name": "binaryAnswer.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "The bytes to encode. Their length and hash are calculated directly from this array."
 			},
 			{
 				"name": "binaryAnswer.mediaType",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "image/png",
 				"description": "The media type to label the answer with; defaults to image/png. The function does not inspect the bytes to verify this label."
 			}
 		],
@@ -34,7 +37,37 @@
 				"description": "An object containing base64 data, encoding set to base64, the supplied media type, byte length and calculated SHA-256 hash."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "binaryAnswer",
+				"inputs": [
+					{
+						"name": "binaryAnswer.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "The bytes to encode. Their length and hash are calculated directly from this array."
+					},
+					{
+						"name": "binaryAnswer.mediaType",
+						"type": "string",
+						"required": false,
+						"default": "image/png",
+						"description": "The media type to label the answer with; defaults to image/png. The function does not inspect the bytes to verify this label."
+					}
+				],
+				"outputs": [
+					{
+						"name": "binaryAnswer",
+						"type": "RemoteBinary",
+						"description": "An object containing base64 data, encoding set to base64, the supplied media type, byte length and calculated SHA-256 hash."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

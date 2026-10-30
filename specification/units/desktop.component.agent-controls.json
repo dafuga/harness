@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/AgentControls.svelte",
-			"packages/desktop/src/components/agents-providers/AgentControls.svelte"
-		],
-		"symbols": ["AgentControls", "AgentControls"]
+		"source": ["packages/desktop/src/components/agents-providers/AgentControls.svelte"],
+		"symbols": ["AgentControls"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,21 +28,27 @@
 			{
 				"name": "AgentControls.providers",
 				"type": "ProviderState[]",
+				"required": true,
 				"description": "Provider availability, display names, reasons, models and supported reasoning efforts. Starts with Codex selected. Compact mode switches away from an unavailable provider to the first available provider when one exists; the expanded layout does not make that switch. An empty list produces a no-provider notice."
 			},
 			{
 				"name": "AgentControls.choice",
 				"type": "AgentChoice | null",
+				"required": false,
+				"default": null,
 				"description": "Bindable selection, initially null. The component replaces it with the selected provider, model and reasoning effort when the provider is available and the model is nonempty; otherwise it sets null. An empty effort is returned as null. A supplied value does not initialize the internal pickers."
 			},
 			{
 				"name": "AgentControls.compact",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional layout switch, false by default. True uses model and effort icon pickers; false shows provider buttons and model and effort dropdowns."
 			},
 			{
 				"name": "AgentControls.action",
 				"type": "Snippet",
+				"required": true,
 				"description": "Required content supplied by the parent, rendered after the model and effort controls in either layout, such as a send button."
 			}
 		],
@@ -56,7 +59,9 @@
 				"description": "Provider, model and effort controls followed by the supplied action. Unavailable provider buttons and unusable dropdowns are disabled. Invalid model selections fall back to the provider default, then its first model, then empty; effort falls back to the model default, then its first supported effort, then empty. Shows the selected provider reason when present."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

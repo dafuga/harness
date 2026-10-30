@@ -16,6 +16,7 @@
 			{
 				"name": "commandAction.args",
 				"type": "string[]",
+				"required": true,
 				"description": "CLI arguments beginning with the command and optional subcommand; executable and script names should already be removed."
 			}
 		],
@@ -26,7 +27,30 @@
 				"description": "Known top-level action, known command plus subcommand, command plus help for an unknown subcommand, or help-or-unknown for an unrecognized top-level command."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "commandAction",
+				"inputs": [
+					{
+						"name": "commandAction.args",
+						"type": "string[]",
+						"required": true,
+						"description": "CLI arguments beginning with the command and optional subcommand; executable and script names should already be removed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "commandAction",
+						"type": "string",
+						"description": "Known top-level action, known command plus subcommand, command plus help for an unknown subcommand, or help-or-unknown for an unrecognized top-level command."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

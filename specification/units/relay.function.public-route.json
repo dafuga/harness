@@ -19,11 +19,13 @@
 			{
 				"name": "publicRoute.method",
 				"type": "string",
+				"required": true,
 				"description": "HTTP method compared exactly, including case."
 			},
 			{
 				"name": "publicRoute.pathname",
 				"type": "string",
+				"required": true,
 				"description": "URL pathname only, without query data."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "Health route for GET /v1/health; GET host connect; GET pairing information; or POST pairing request, poll and exchange. Host and pairing identifiers must match protocol patterns, and returned paths are rebuilt from those validated parts. Everything else, including management paths, returns undefined."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "publicRoute",
+				"inputs": [
+					{
+						"name": "publicRoute.method",
+						"type": "string",
+						"required": true,
+						"description": "HTTP method compared exactly, including case."
+					},
+					{
+						"name": "publicRoute.pathname",
+						"type": "string",
+						"required": true,
+						"description": "URL pathname only, without query data."
+					}
+				],
+				"outputs": [
+					{
+						"name": "publicRoute",
+						"type": "PublicRoute | undefined",
+						"description": "Health route for GET /v1/health; GET host connect; GET pairing information; or POST pairing request, poll and exchange. Host and pairing identifiers must match protocol patterns, and returned paths are rebuilt from those validated parts. Everything else, including management paths, returns undefined."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

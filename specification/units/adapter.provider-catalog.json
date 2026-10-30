@@ -23,7 +23,8 @@
 		"inputs": [
 			{
 				"name": "ProviderCatalogAdapter.constructor.paths",
-				"type": "{ openai: string; claude: string }"
+				"type": "{ openai: string; claude: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +33,42 @@
 				"type": "Promise<PickerModel[]>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProviderCatalogAdapter.list",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderCatalogAdapter.list",
+						"type": "Promise<PickerModel[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProviderCatalogAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ProviderCatalogAdapter.constructor.paths",
+						"type": "{ openai: string; claude: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderCatalogAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

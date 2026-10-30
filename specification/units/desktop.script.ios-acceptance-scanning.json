@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "scanEndings.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "cameraOnly.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "cameraOnly.product",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +39,52 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "scanEndings",
+				"inputs": [
+					{
+						"name": "scanEndings.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanEndings",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cameraOnly",
+				"inputs": [
+					{
+						"name": "cameraOnly.run",
+						"type": "Acceptance",
+						"required": true
+					},
+					{
+						"name": "cameraOnly.product",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cameraOnly",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

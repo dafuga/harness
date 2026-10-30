@@ -18,11 +18,13 @@
 			{
 				"name": "resourceCpu.previous",
 				"type": "Counters",
+				"required": true,
 				"description": "Previous CPU interval counters, quota usage and monotonic timestamp."
 			},
 			{
 				"name": "resourceCpu.current",
 				"type": "Counters",
+				"required": true,
 				"description": "Current CPU interval counters, affinity, quota usage and monotonic timestamp."
 			}
 		],
@@ -44,7 +46,54 @@
 				"type": "thrown",
 				"description": "Invalid counter intervals or changed or malformed quota counters require a fresh sample."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hostCpuCounters",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "hostCpuCounters",
+						"type": "unknown",
+						"description": "Monotonic host CPU counters, affinity and current cgroup limits for interval comparison."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resourceCpu",
+				"inputs": [
+					{
+						"name": "resourceCpu.previous",
+						"type": "Counters",
+						"required": true,
+						"description": "Previous CPU interval counters, quota usage and monotonic timestamp."
+					},
+					{
+						"name": "resourceCpu.current",
+						"type": "Counters",
+						"required": true,
+						"description": "Current CPU interval counters, affinity, quota usage and monotonic timestamp."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceCpu",
+						"type": "unknown",
+						"description": "Logical and usable cores, observed host utilization and currently available quota-aware cores."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

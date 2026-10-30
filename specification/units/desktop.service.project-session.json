@@ -31,23 +31,29 @@
 		"inputs": [
 			{
 				"name": "ProjectSessionService.constructor.options",
-				"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; arbiter?: RepositoryArbiterService; }"
+				"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; arbiter?: RepositoryArbiterService; }",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "ProjectSessionService.assertProject.projectId",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "ProjectSessionService.open.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectSessionService.snapshot.query",
-				"type": "RevisionQuery"
+				"type": "RevisionQuery",
+				"required": true
 			},
 			{
 				"name": "ProjectSessionService.atBranch.branch",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -84,6 +90,163 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectSessionService.assertProject",
+				"inputs": [
+					{
+						"name": "ProjectSessionService.assertProject.projectId",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectSessionService.assertProject",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "ProjectSessionService.selecting",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectSessionService.selecting",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectSessionService.open",
+				"inputs": [
+					{
+						"name": "ProjectSessionService.open.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectSessionService.open",
+						"type": "Promise<ProjectSnapshot>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectSessionService.snapshot",
+				"inputs": [
+					{
+						"name": "ProjectSessionService.snapshot.query",
+						"type": "RevisionQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectSessionService.snapshot",
+						"type": "Promise<ProjectSnapshot>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectSessionService.requireProject",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectSessionService.requireProject",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "ProjectSessionService.mutable",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectSessionService.mutable",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectSessionService.atBranch",
+				"inputs": [
+					{
+						"name": "ProjectSessionService.atBranch.branch",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectSessionService.atBranch",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectSessionService.constructor",
+				"inputs": [
+					{
+						"name": "ProjectSessionService.constructor.options",
+						"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; arbiter?: RepositoryArbiterService; }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectSessionService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

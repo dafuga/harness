@@ -20,11 +20,13 @@
 			{
 				"name": "hubArtifactCommit.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubArtifactCommit.path",
 				"type": "string",
+				"required": true,
 				"description": "Artifact path to inspect in the pinned history."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "The sole history commit hash when the two-entry history request is complete and contains exactly one commit; otherwise null, including adapters without history support."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubArtifactCommit",
+				"inputs": [
+					{
+						"name": "hubArtifactCommit.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubArtifactCommit.path",
+						"type": "string",
+						"required": true,
+						"description": "Artifact path to inspect in the pinned history."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubArtifactCommit",
+						"type": "Promise<string | null>",
+						"description": "The sole history commit hash when the two-entry history request is complete and contains exactly one commit; otherwise null, including adapters without history support."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

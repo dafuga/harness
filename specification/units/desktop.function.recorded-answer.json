@@ -28,6 +28,7 @@
 			{
 				"name": "recordedAnswer.input",
 				"type": "AnswerInput",
+				"required": true,
 				"description": "The history scope naming the entity, the identity of the read, and already-read and validated current/parent revision details. This helper assumes those inputs belong together."
 			}
 		],
@@ -44,7 +45,35 @@
 				"type": "refused",
 				"description": "Throws when the serialized answer exceeds the transport message limit minus 1,024 bytes reserved for its wrapper, approximately 16 MiB."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "recordedAnswer",
+				"inputs": [
+					{
+						"name": "recordedAnswer.input",
+						"type": "AnswerInput",
+						"required": true,
+						"description": "The history scope naming the entity, the identity of the read, and already-read and validated current/parent revision details. This helper assumes those inputs belong together."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedAnswer",
+						"type": "EntityEvidenceResult",
+						"description": "The supplied scope and identity with projected evidence for the named entity and behavior derived from the original evidence. Current mode yields no before comparison. The answer is serialized for size checking and is never truncated to fit."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

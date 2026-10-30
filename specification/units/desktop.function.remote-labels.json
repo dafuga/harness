@@ -78,47 +78,66 @@
 			{
 				"name": "relayName.origin",
 				"type": "string | null",
+				"required": true,
 				"description": "Relay origin to display; invalid URLs produce an empty label."
-			},
-			{
-				"name": "timeLeft.milliseconds",
-				"type": "number",
-				"description": "Remaining milliseconds; rounded up to seconds and clamped at zero."
-			},
-			{
-				"name": "keyLabel.deviceId",
-				"type": "string",
-				"description": "Device ID whose first 12 characters are grouped in fours."
-			},
-			{
-				"name": "identityLabel.deviceId",
-				"type": "string",
-				"description": "Full device ID to group in fours."
-			},
-			{
-				"name": "grantLabel.grant",
-				"type": "{ agents: boolean }",
-				"description": "Grant whose agents flag determines permission wording."
-			},
-			{
-				"name": "grantSummary.grant",
-				"type": "{ projects: unknown[]; agents: boolean }",
-				"description": "Grant containing project list and agents flag."
 			},
 			{
 				"name": "hostLine.status",
 				"type": "RemoteHostStatus",
+				"required": true,
 				"description": "Host status used for relay and connection-state wording."
 			},
 			{
 				"name": "hostSummary.status",
 				"type": "RemoteHostStatus",
+				"required": true,
 				"description": "Host status used for enabled state and approved-phone count."
+			},
+			{
+				"name": "timeLeft.milliseconds",
+				"type": "number",
+				"required": true,
+				"description": "Remaining milliseconds; rounded up to seconds and clamped at zero."
+			},
+			{
+				"name": "grantSummary.grant",
+				"type": "{ projects: unknown[]; agents: boolean }",
+				"required": true,
+				"description": "Grant containing project list and agents flag."
 			},
 			{
 				"name": "remoteLabels.status",
 				"type": "RemoteNativeStatus",
+				"required": true,
 				"description": "Mobile connection status used for heading and supporting text."
+			},
+			{
+				"name": "identityLabel.deviceId",
+				"type": "string",
+				"required": true,
+				"description": "Full device ID to group in fours."
+			},
+			{
+				"name": "plural.count",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "plural.word",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "keyLabel.deviceId",
+				"type": "string",
+				"required": true,
+				"description": "Device ID whose first 12 characters are grouped in fours."
+			},
+			{
+				"name": "grantLabel.grant",
+				"type": "{ agents: boolean; comments?: boolean }",
+				"required": true,
+				"description": "Grant whose agents flag determines permission wording."
 			}
 		],
 		"outputs": [
@@ -203,7 +222,213 @@
 				"description": "Heading and supporting text for the mobile state, using host name and lock state where available."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "relayName",
+				"inputs": [
+					{
+						"name": "relayName.origin",
+						"type": "string | null",
+						"required": true,
+						"description": "Relay origin to display; invalid URLs produce an empty label."
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayName",
+						"type": "string",
+						"description": "Relay host and optional port, or an empty string for an invalid URL."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "hostLine",
+				"inputs": [
+					{
+						"name": "hostLine.status",
+						"type": "RemoteHostStatus",
+						"required": true,
+						"description": "Host status used for relay and connection-state wording."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostLine",
+						"type": "string",
+						"description": "Phone-access-on line with relay and applicable registering, connecting or offline suffix."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hostSummary",
+				"inputs": [
+					{
+						"name": "hostSummary.status",
+						"type": "RemoteHostStatus",
+						"required": true,
+						"description": "Host status used for enabled state and approved-phone count."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostSummary",
+						"type": "string",
+						"description": "Phone access off, or the approved-phone count."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "timeLeft",
+				"inputs": [
+					{
+						"name": "timeLeft.milliseconds",
+						"type": "number",
+						"required": true,
+						"description": "Remaining milliseconds; rounded up to seconds and clamped at zero."
+					}
+				],
+				"outputs": [
+					{
+						"name": "timeLeft",
+						"type": "string",
+						"description": "Minutes and two-digit seconds remaining."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "grantSummary",
+				"inputs": [
+					{
+						"name": "grantSummary.grant",
+						"type": "{ projects: unknown[]; agents: boolean }",
+						"required": true,
+						"description": "Grant containing project list and agents flag."
+					}
+				],
+				"outputs": [
+					{
+						"name": "grantSummary",
+						"type": "string",
+						"description": "Project count followed by permission wording."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "remoteLabels",
+				"inputs": [
+					{
+						"name": "remoteLabels.status",
+						"type": "RemoteNativeStatus",
+						"required": true,
+						"description": "Mobile connection status used for heading and supporting text."
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteLabels",
+						"type": "{ title: string; detail: string }",
+						"description": "Heading and supporting text for the mobile state, using host name and lock state where available."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "identityLabel",
+				"inputs": [
+					{
+						"name": "identityLabel.deviceId",
+						"type": "string",
+						"required": true,
+						"description": "Full device ID to group in fours."
+					}
+				],
+				"outputs": [
+					{
+						"name": "identityLabel",
+						"type": "string",
+						"description": "Full grouped device identifier."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "plural",
+				"inputs": [
+					{
+						"name": "plural.count",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "plural.word",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "plural",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "keyLabel",
+				"inputs": [
+					{
+						"name": "keyLabel.deviceId",
+						"type": "string",
+						"required": true,
+						"description": "Device ID whose first 12 characters are grouped in fours."
+					}
+				],
+				"outputs": [
+					{
+						"name": "keyLabel",
+						"type": "string",
+						"description": "Short grouped device identifier."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "grantLabel",
+				"inputs": [
+					{
+						"name": "grantLabel.grant",
+						"type": "{ agents: boolean; comments?: boolean }",
+						"required": true,
+						"description": "Grant whose agents flag determines permission wording."
+					}
+				],
+				"outputs": [
+					{
+						"name": "grantLabel",
+						"type": "string",
+						"description": "Plan and Change allowed, or Read and comment only."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -219,7 +444,8 @@
 			"inputs": [
 				{
 					"name": "identityLabel.deviceId",
-					"type": "string"
+					"type": "string",
+					"required": true
 				}
 			],
 			"output": "string",
@@ -253,11 +479,13 @@
 			"inputs": [
 				{
 					"name": "plural.count",
-					"type": "number"
+					"type": "number",
+					"required": true
 				},
 				{
 					"name": "plural.word",
-					"type": "string"
+					"type": "string",
+					"required": true
 				}
 			],
 			"output": "unknown",

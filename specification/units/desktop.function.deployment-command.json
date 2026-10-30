@@ -19,6 +19,7 @@
 			{
 				"name": "deploymentCommand.command",
 				"type": "DeployCommand",
+				"required": true,
 				"description": "Executable arguments, working directory and explicitly supplied environment for one deployment step."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Captured stdout on success; rejects on spawn failure, timeout or unsuccessful exit."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "deploymentCommand",
+				"inputs": [
+					{
+						"name": "deploymentCommand.command",
+						"type": "DeployCommand",
+						"required": true,
+						"description": "Executable arguments, working directory and explicitly supplied environment for one deployment step."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentCommand",
+						"type": "Promise<string>",
+						"description": "Captured stdout on success; rejects on spawn failure, timeout or unsuccessful exit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

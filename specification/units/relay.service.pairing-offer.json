@@ -32,31 +32,38 @@
 		"inputs": [
 			{
 				"name": "PairingOfferService.constructor.store",
-				"type": "HostStorageAdapter"
+				"type": "HostStorageAdapter",
+				"required": true
 			},
 			{
 				"name": "PairingOfferService.live.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PairingOfferService.open.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PairingOfferService.open.expiresAt",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PairingOfferService.approve.approval",
-				"type": "Approval"
+				"type": "Approval",
+				"required": true
 			},
 			{
 				"name": "PairingOfferService.deny.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PairingOfferService.close.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -85,7 +92,137 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PairingOfferService.live",
+				"inputs": [
+					{
+						"name": "PairingOfferService.live.pairingId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingOfferService.live",
+						"type": "PairingRecord | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PairingOfferService.open",
+				"inputs": [
+					{
+						"name": "PairingOfferService.open.pairingId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PairingOfferService.open.expiresAt",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingOfferService.open",
+						"type": "Promise<RelayErrorCode | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PairingOfferService.approve",
+				"inputs": [
+					{
+						"name": "PairingOfferService.approve.approval",
+						"type": "Approval",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingOfferService.approve",
+						"type": "RelayErrorCode | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PairingOfferService.deny",
+				"inputs": [
+					{
+						"name": "PairingOfferService.deny.pairingId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingOfferService.deny",
+						"type": "RelayErrorCode | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PairingOfferService.close",
+				"inputs": [
+					{
+						"name": "PairingOfferService.close.pairingId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingOfferService.close",
+						"type": "Promise<undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PairingOfferService.sweep",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PairingOfferService.sweep",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PairingOfferService.constructor",
+				"inputs": [
+					{
+						"name": "PairingOfferService.constructor.store",
+						"type": "HostStorageAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingOfferService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

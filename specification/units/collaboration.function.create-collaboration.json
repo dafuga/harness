@@ -20,6 +20,7 @@
 			{
 				"name": "createCollaboration.deps",
 				"type": "CollaborationDependencies",
+				"required": true,
 				"description": "Repository, source and cache adapters, repository authorization callback and optional clock."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "API whose methods check membership, read committed records and perform project, member, invitation and comment transactions. Construction itself performs no network access."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "createCollaboration",
+				"inputs": [
+					{
+						"name": "createCollaboration.deps",
+						"type": "CollaborationDependencies",
+						"required": true,
+						"description": "Repository, source and cache adapters, repository authorization callback and optional clock."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createCollaboration",
+						"type": "CollaborationApi",
+						"description": "API whose methods check membership, read committed records and perform project, member, invitation and comment transactions. Construction itself performs no network access."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

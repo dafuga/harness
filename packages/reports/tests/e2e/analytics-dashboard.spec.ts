@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
 import { analytics, type Assessments, type Models } from './support/analyticsCli';
 import { sites } from './support/fixtures';
-import { expectRetired } from './support/portableReport';
+import { expectRetired } from './support/retiredAddress';
 import { categories as expectedCategories } from './support/explorer';
 
 test.beforeAll(() => {

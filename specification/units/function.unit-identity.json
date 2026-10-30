@@ -29,11 +29,14 @@
 			{
 				"name": "unitIdentity.path",
 				"type": "string",
+				"required": true,
 				"description": "Forward-slash path relative to its workspace, using supported src, scripts, db or crates conventions."
 			},
 			{
 				"name": "unitIdentity.workspace",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional workspace prefix, default empty."
 			}
 		],
@@ -44,7 +47,37 @@
 				"description": "Kind, kebab-case name and dotted id, or undefined for unrecognized/empty identities. Rust crate files share one kernel id; route files and conventional folder suffixes follow their specific naming rules."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "unitIdentity",
+				"inputs": [
+					{
+						"name": "unitIdentity.path",
+						"type": "string",
+						"required": true,
+						"description": "Forward-slash path relative to its workspace, using supported src, scripts, db or crates conventions."
+					},
+					{
+						"name": "unitIdentity.workspace",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "Optional workspace prefix, default empty."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitIdentity",
+						"type": "UnitIdentity | undefined",
+						"description": "Kind, kebab-case name and dotted id, or undefined for unrecognized/empty identities. Rust crate files share one kernel id; route files and conventional folder suffixes follow their specific naming rules."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -6,63 +6,38 @@
 	"responsibility": "Owns the CatalogBranch data model.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"lineage": {
+		"predecessors": ["model.catalog-branch-types"]
+	},
 	"owns": {
-		"source": ["src/models/git-source-history/CatalogBranch.ts"],
+		"source": [
+			"src/models/git-source-history/CatalogBranch.ts",
+			"src/models/git-source-history/CatalogBranch.types.ts"
+		],
 		"symbols": [
 			"CatalogBranch",
 			"CatalogBranch.find",
 			"CatalogBranch.findBy",
 			"CatalogBranch.create",
 			"CatalogBranch.update",
-			"CatalogBranch.delete"
+			"CatalogBranch.delete",
+			"CatalogBranchAttributes",
+			"CatalogBranchCreateInput",
+			"CatalogBranchUpdateInput"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "CatalogBranch.find.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogBranch.id",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogBranch.find.id",
-				"type": "string"
-			},
-			{
-				"name": "CatalogBranch.findBy.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogBranch.findBy.fields",
-				"type": "Partial<CatalogBranchAttributes>"
-			},
-			{
-				"name": "CatalogBranch.create.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogBranch.create.input",
-				"type": "CatalogBranchCreateInput"
-			},
-			{
-				"name": "CatalogBranch.update.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogBranch.update.id",
-				"type": "string"
-			},
-			{
-				"name": "CatalogBranch.update.input",
-				"type": "CatalogBranchUpdateInput"
-			},
-			{
-				"name": "CatalogBranch.delete.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogBranch.delete.id",
-				"type": "string"
+				"name": "CatalogBranch.head",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,16 +62,158 @@
 				"type": "Promise<boolean>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogBranch.find",
+				"inputs": [
+					{
+						"name": "CatalogBranch.find.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogBranch.find.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogBranch.find",
+						"type": "Promise<CatalogBranchAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogBranch.findBy",
+				"inputs": [
+					{
+						"name": "CatalogBranch.findBy.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogBranch.findBy.fields",
+						"type": "Partial<CatalogBranchAttributes>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogBranch.findBy",
+						"type": "Promise<CatalogBranchAttributes[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogBranch.create",
+				"inputs": [
+					{
+						"name": "CatalogBranch.create.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogBranch.create.input",
+						"type": "CatalogBranchCreateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogBranch.create",
+						"type": "Promise<CatalogBranchAttributes>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogBranch.update",
+				"inputs": [
+					{
+						"name": "CatalogBranch.update.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogBranch.update.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogBranch.update.input",
+						"type": "CatalogBranchUpdateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogBranch.update",
+						"type": "Promise<CatalogBranchAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogBranch.delete",
+				"inputs": [
+					{
+						"name": "CatalogBranch.delete.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogBranch.delete.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogBranch.delete",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [],
+		"storage": [
+			{
+				"name": "CatalogBranch",
+				"table": "catalog_branches",
+				"primaryKey": "id",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": true
+					},
+					{
+						"name": "head",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					}
+				]
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "function.sqlite-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "model.catalog-branch-types",
 			"via": "import",
 			"origin": "derived"
 		}

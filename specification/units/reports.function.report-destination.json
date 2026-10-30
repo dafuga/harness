@@ -20,11 +20,13 @@
 			{
 				"name": "reportDestination.index",
 				"type": "HarnessIndex | null",
+				"required": true,
 				"description": "History index or null."
 			},
 			{
 				"name": "reportDestination.report",
 				"type": "NamedReport | null",
+				"required": true,
 				"description": "Report identifier and optional recorded revision, or null."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Console-relative Pages address for the first stored match among the report revision and imported legacy linkage; otherwise canonical home. Empty when there is no index or home."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reportDestination",
+				"inputs": [
+					{
+						"name": "reportDestination.index",
+						"type": "HarnessIndex | null",
+						"required": true,
+						"description": "History index or null."
+					},
+					{
+						"name": "reportDestination.report",
+						"type": "NamedReport | null",
+						"required": true,
+						"description": "Report identifier and optional recorded revision, or null."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportDestination",
+						"type": "string",
+						"description": "Console-relative Pages address for the first stored match among the report revision and imported legacy linkage; otherwise canonical home. Empty when there is no index or home."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

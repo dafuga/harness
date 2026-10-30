@@ -22,13 +22,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "SvgFeBlend.attributes",
-				"type": "SvelteHTMLElements['feBlend']",
-				"description": "Native feBlend attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "SvgFeBlend.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native feBlend element; native HTML content rules still apply."
 			}
 		],
@@ -39,7 +35,9 @@
 				"description": "The actual native feBlend element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -28,11 +28,13 @@
 			{
 				"name": "planRegistry.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planRegistry.revision",
 				"type": "string",
+				"required": true,
 				"description": "Revision containing the existing configuration files."
 			}
 		],
@@ -54,7 +56,41 @@
 				"type": "thrown",
 				"description": "Rejects unsafe or dirty configuration paths and invalid existing registry JSON/schema; read failures propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "planRegistry",
+				"inputs": [
+					{
+						"name": "planRegistry.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "planRegistry.revision",
+						"type": "string",
+						"required": true,
+						"description": "Revision containing the existing configuration files."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planRegistry",
+						"type": "Promise<Files>",
+						"description": "Map of only the configuration files needing additions; absent configurations are not created. This helper returns proposed bytes without writing them."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

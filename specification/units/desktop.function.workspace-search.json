@@ -27,6 +27,7 @@
 			{
 				"name": "workspaceSearch.shown",
 				"type": "{ snapshot: ProjectSnapshot | null; pinned: boolean; busy: boolean; }",
+				"required": true,
 				"description": "Snapshot, busy flag and pinned flag for the view."
 			}
 		],
@@ -37,7 +38,30 @@
 				"description": "Entries with names, purpose and commit, scope wording, and routes only for exact listed entry objects with supported desktop categories; loading and unsupported categories produce no routes."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "workspaceSearch",
+				"inputs": [
+					{
+						"name": "workspaceSearch.shown",
+						"type": "{ snapshot: ProjectSnapshot | null; pinned: boolean; busy: boolean; }",
+						"required": true,
+						"description": "Snapshot, busy flag and pinned flag for the view."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workspaceSearch",
+						"type": "WorkspaceSearch",
+						"description": "Entries with names, purpose and commit, scope wording, and routes only for exact listed entry objects with supported desktop categories; loading and unsupported categories produce no routes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

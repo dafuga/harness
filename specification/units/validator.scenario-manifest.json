@@ -22,11 +22,13 @@
 		"inputs": [
 			{
 				"name": "ScenarioManifestValidator.validate.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "ScenarioManifestValidator.validate.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -35,7 +37,34 @@
 				"type": "ManifestValidation<ScenarioManifest>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ScenarioManifestValidator.validate",
+				"inputs": [
+					{
+						"name": "ScenarioManifestValidator.validate.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "ScenarioManifestValidator.validate.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScenarioManifestValidator.validate",
+						"type": "ManifestValidation<ScenarioManifest>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

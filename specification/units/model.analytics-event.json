@@ -6,63 +6,43 @@
 	"responsibility": "Owns the AnalyticsEvent data model.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"lineage": {
+		"predecessors": ["model.analytics-event-types"]
+	},
 	"owns": {
-		"source": ["src/models/reports-media/AnalyticsEvent.ts"],
+		"source": [
+			"src/models/reports-media/AnalyticsEvent.ts",
+			"src/models/reports-media/AnalyticsEvent.types.ts"
+		],
 		"symbols": [
 			"AnalyticsEvent",
 			"AnalyticsEvent.find",
 			"AnalyticsEvent.findBy",
 			"AnalyticsEvent.create",
 			"AnalyticsEvent.update",
-			"AnalyticsEvent.delete"
+			"AnalyticsEvent.delete",
+			"AnalyticsEventAttributes",
+			"AnalyticsEventCreateInput",
+			"AnalyticsEventUpdateInput"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "AnalyticsEvent.find.adapter",
-				"type": "PersistenceAdapter"
+				"name": "AnalyticsEvent.id",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "AnalyticsEvent.find.id",
-				"type": "string"
+				"name": "AnalyticsEvent.timestamp",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "AnalyticsEvent.findBy.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "AnalyticsEvent.findBy.fields",
-				"type": "Partial<AnalyticsEventAttributes>"
-			},
-			{
-				"name": "AnalyticsEvent.create.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "AnalyticsEvent.create.input",
-				"type": "AnalyticsEventCreateInput"
-			},
-			{
-				"name": "AnalyticsEvent.update.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "AnalyticsEvent.update.id",
-				"type": "string"
-			},
-			{
-				"name": "AnalyticsEvent.update.input",
-				"type": "AnalyticsEventUpdateInput"
-			},
-			{
-				"name": "AnalyticsEvent.delete.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "AnalyticsEvent.delete.id",
-				"type": "string"
+				"name": "AnalyticsEvent.data",
+				"type": "json",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,16 +67,170 @@
 				"type": "Promise<boolean>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AnalyticsEvent.find",
+				"inputs": [
+					{
+						"name": "AnalyticsEvent.find.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "AnalyticsEvent.find.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsEvent.find",
+						"type": "Promise<AnalyticsEventAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AnalyticsEvent.findBy",
+				"inputs": [
+					{
+						"name": "AnalyticsEvent.findBy.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "AnalyticsEvent.findBy.fields",
+						"type": "Partial<AnalyticsEventAttributes>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsEvent.findBy",
+						"type": "Promise<AnalyticsEventAttributes[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AnalyticsEvent.create",
+				"inputs": [
+					{
+						"name": "AnalyticsEvent.create.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "AnalyticsEvent.create.input",
+						"type": "AnalyticsEventCreateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsEvent.create",
+						"type": "Promise<AnalyticsEventAttributes>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AnalyticsEvent.update",
+				"inputs": [
+					{
+						"name": "AnalyticsEvent.update.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "AnalyticsEvent.update.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AnalyticsEvent.update.input",
+						"type": "AnalyticsEventUpdateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsEvent.update",
+						"type": "Promise<AnalyticsEventAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AnalyticsEvent.delete",
+				"inputs": [
+					{
+						"name": "AnalyticsEvent.delete.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "AnalyticsEvent.delete.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsEvent.delete",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [],
+		"storage": [
+			{
+				"name": "AnalyticsEvent",
+				"table": "events",
+				"primaryKey": "id",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": true
+					},
+					{
+						"name": "timestamp",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "data",
+						"type": "json",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					}
+				]
+			}
+		]
 	},
 	"dependencies": [
 		{
-			"unit": "function.sqlite-types",
+			"unit": "function.analytics-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "model.analytics-event-types",
+			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
 		}

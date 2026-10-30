@@ -23,11 +23,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/ProjectCreate.svelte",
-			"packages/hub/src/components/projects-sessions/ProjectCreate.svelte"
-		],
-		"symbols": ["ProjectCreate", "ProjectCreate"]
+		"source": ["packages/hub/src/components/projects-sessions/ProjectCreate.svelte"],
+		"symbols": ["ProjectCreate"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -35,6 +32,7 @@
 			{
 				"name": "ProjectCreate.created",
 				"type": "(projectId: string) => void",
+				"required": true,
 				"description": "Required callback receiving the new project identifier after creation resolves. A synchronous callback exception is caught by the same failure handler as creation."
 			}
 		],
@@ -45,7 +43,9 @@
 				"description": "Loads GitHub configuration/connection and repositories on mount. Shows setup or connection guidance until usable, then repository and project-name fields. Name is trimmed and limited to 80 characters by the input; repository selection becomes a numeric ID. Blocks missing fields or concurrent saves, reports truncated lists and errors, and invokes created after success. Server remains responsible for checking repository administration."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

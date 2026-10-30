@@ -30,19 +30,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "impactKernelText.text",
+				"type": "string",
+				"required": true,
+				"description": "Raw JSON request text to parse and pass through the normal kernel entry."
+			},
+			{
 				"name": "impactKernel.request",
 				"type": "unknown",
+				"required": true,
 				"description": "Unknown request to check for portable JSON before operation dispatch."
 			},
 			{
 				"name": "impactKernelPortable.request",
 				"type": "unknown",
+				"required": true,
 				"description": "Request whose portable JSON admission has already been established by the caller."
-			},
-			{
-				"name": "impactKernelText.text",
-				"type": "string",
-				"description": "Raw JSON request text to parse and pass through the normal kernel entry."
 			}
 		],
 		"outputs": [
@@ -62,7 +65,70 @@
 				"description": "JSON-serialized runtime response; malformed JSON text is serialized as invalid-json failure."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "impactKernelText",
+				"inputs": [
+					{
+						"name": "impactKernelText.text",
+						"type": "string",
+						"required": true,
+						"description": "Raw JSON request text to parse and pass through the normal kernel entry."
+					}
+				],
+				"outputs": [
+					{
+						"name": "impactKernelText",
+						"type": "string",
+						"description": "JSON-serialized runtime response; malformed JSON text is serialized as invalid-json failure."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "impactKernel",
+				"inputs": [
+					{
+						"name": "impactKernel.request",
+						"type": "unknown",
+						"required": true,
+						"description": "Unknown request to check for portable JSON before operation dispatch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "impactKernel",
+						"type": "RuntimeResponse",
+						"description": "Success containing the contract version or affected-node calculation, or a structured invalid-json, invalid-request, unknown-operation or invalid-graph failure."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "impactKernelPortable",
+				"inputs": [
+					{
+						"name": "impactKernelPortable.request",
+						"type": "unknown",
+						"required": true,
+						"description": "Request whose portable JSON admission has already been established by the caller."
+					}
+				],
+				"outputs": [
+					{
+						"name": "impactKernelPortable",
+						"type": "RuntimeResponse",
+						"description": "Same operation result without repeating portable JSON admission; supports version and impact only."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

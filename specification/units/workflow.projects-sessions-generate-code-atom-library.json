@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "atomLibrary.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "useAtomLibrary.files",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"required": true
 			},
 			{
 				"name": "useAtomLibrary.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -41,7 +44,57 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "atomLibrary",
+				"inputs": [
+					{
+						"name": "atomLibrary.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "atomLibrary",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "useAtomLibrary",
+				"inputs": [
+					{
+						"name": "useAtomLibrary.files",
+						"type": "PlannedFile[]",
+						"required": true
+					},
+					{
+						"name": "useAtomLibrary.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "useAtomLibrary",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

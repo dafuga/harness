@@ -29,35 +29,43 @@
 		"inputs": [
 			{
 				"name": "AgentActivityService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AgentActivityService.constructor.checkouts",
-				"type": "Checkout[]"
+				"type": "Checkout[]",
+				"required": true
 			},
 			{
 				"name": "AgentActivityService.register.input",
-				"type": "AgentInput"
+				"type": "AgentInput",
+				"required": true
 			},
 			{
 				"name": "AgentActivityService.heartbeat.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AgentActivityService.heartbeat.input",
-				"type": "AgentInput"
+				"type": "AgentInput",
+				"required": true
 			},
 			{
 				"name": "AgentActivityService.finish.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AgentActivityService.finish.failed",
-				"type": "boolean"
+				"type": "boolean",
+				"required": true
 			},
 			{
 				"name": "AgentActivityService.finish.outcome",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -82,6 +90,125 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AgentActivityService.register",
+				"inputs": [
+					{
+						"name": "AgentActivityService.register.input",
+						"type": "AgentInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentActivityService.register",
+						"type": "Promise<StoredAgent>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentActivityService.heartbeat",
+				"inputs": [
+					{
+						"name": "AgentActivityService.heartbeat.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AgentActivityService.heartbeat.input",
+						"type": "AgentInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentActivityService.heartbeat",
+						"type": "Promise<AgentBeat>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentActivityService.finish",
+				"inputs": [
+					{
+						"name": "AgentActivityService.finish.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AgentActivityService.finish.failed",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "AgentActivityService.finish.outcome",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentActivityService.finish",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentActivityService.roster",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AgentActivityService.roster",
+						"type": "Promise<AgentRoster>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AgentActivityService.constructor",
+				"inputs": [
+					{
+						"name": "AgentActivityService.constructor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AgentActivityService.constructor.checkouts",
+						"type": "Checkout[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentActivityService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

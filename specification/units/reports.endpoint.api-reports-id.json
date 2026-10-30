@@ -14,8 +14,9 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "GET.input",
-				"type": "{ params: { id: string } }"
+				"name": "GET.params",
+				"type": "{ id: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,7 +30,34 @@
 				"name": "HttpError 404",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.params",
+						"type": "{ id: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "HttpError 404",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

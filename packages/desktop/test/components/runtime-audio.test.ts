@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import RuntimeAudio from '../../src/components/RuntimeAudio.svelte';
+import RuntimeAudio from '../../src/components/reports-media/RuntimeAudio.svelte';
 import { commits, drawn, ids, scopeOf, shownEvidence } from '../evidence-fixture';
 
 const shown = async (id: string, commit: string | null = null) => {

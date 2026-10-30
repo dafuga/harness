@@ -19,18 +19,16 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlElement.attributes",
-				"type": "SvelteHTMLElements['div']",
-				"description": "Native selected-element attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "HtmlElement.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native selected element; native HTML content rules still apply."
 			},
 			{
 				"name": "HtmlElement.this",
 				"type": "string",
+				"required": false,
+				"default": "div",
 				"description": "Native element tag selected by the caller; the direct component defaults to div."
 			}
 		],
@@ -41,7 +39,9 @@
 				"description": "The actual native selected element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

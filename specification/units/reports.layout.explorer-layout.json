@@ -24,26 +24,31 @@
 			{
 				"name": "ExplorerLayout.base",
 				"type": "string",
+				"required": true,
 				"description": "URL prefix used by the shared explorer header for links and navigation."
 			},
 			{
 				"name": "ExplorerLayout.problem",
 				"type": "string",
+				"required": true,
 				"description": "Load failure to display above the page, or an empty string when there is no failure."
 			},
 			{
 				"name": "ExplorerLayout.missing",
 				"type": "{ message: string; home: string | null } | null",
+				"required": true,
 				"description": "Missing-history notice and optional return link; null keeps the notice hidden."
 			},
 			{
 				"name": "ExplorerLayout.navbar",
 				"type": "Omit<HarnessNavbarInput, 'base'>",
+				"required": true,
 				"description": "Revision-scoped navigation, branch and commit choices, repository name and search entries."
 			},
 			{
 				"name": "ExplorerLayout.children",
 				"type": "Snippet",
+				"required": true,
 				"description": "Required page content rendered in the main area below the shared navigation."
 			}
 		],
@@ -54,7 +59,9 @@
 				"description": "Shared navigation around the supplied child content, retaining header notices and responsive spacing."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

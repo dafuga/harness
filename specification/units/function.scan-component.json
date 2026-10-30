@@ -13,19 +13,98 @@
 			"src/services/source-index-service/scanComponent.ts",
 			"src/utils/scanComponent.ts"
 		],
-		"symbols": ["scanComponent", "scanComponent", "scanComponent"]
+		"symbols": [
+			"instanceScript",
+			"componentSource",
+			"propsDeclaration",
+			"propsType",
+			"localProps",
+			"propMembers",
+			"boundProps",
+			"componentSnippets",
+			"scanComponent",
+			"scanComponent",
+			"scanComponent"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "instanceScript.code",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "componentSource.code",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "propsDeclaration.file",
+				"type": "ts.SourceFile",
+				"required": true
+			},
+			{
+				"name": "propsType.node",
+				"type": "ts.VariableDeclaration",
+				"required": true
+			},
+			{
+				"name": "localProps.type",
+				"type": "ts.TypeNode | undefined",
+				"required": true
+			},
+			{
+				"name": "localProps.file",
+				"type": "ts.SourceFile",
+				"required": true
+			},
+			{
+				"name": "localProps.seen",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "propMembers.members",
+				"type": "ts.NodeArray<ts.TypeElement>",
+				"required": true
+			},
+			{
+				"name": "boundProps.items",
+				"type": "ContractItem[]",
+				"required": true
+			},
+			{
+				"name": "boundProps.node",
+				"type": "ts.VariableDeclaration",
+				"required": true
+			},
+			{
+				"name": "boundProps.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "componentSnippets.code",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "componentSnippets.owner",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "scanComponent.code",
 				"type": "string",
+				"required": true,
 				"description": "Svelte source containing script blocks and markup."
 			},
 			{
 				"name": "scanComponent.name",
 				"type": "string",
+				"required": true,
 				"description": "Component symbol name used to prefix prop inputs."
 			}
 		],
@@ -36,14 +115,207 @@
 				"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "instanceScript",
+				"inputs": [
+					{
+						"name": "instanceScript.code",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "instanceScript",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "componentSource",
+				"inputs": [
+					{
+						"name": "componentSource.code",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "componentSource",
+						"type": "ts.SourceFile"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "propsDeclaration",
+				"inputs": [
+					{
+						"name": "propsDeclaration.file",
+						"type": "ts.SourceFile",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "propsDeclaration",
+						"type": "ts.VariableDeclaration | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "propsType",
+				"inputs": [
+					{
+						"name": "propsType.node",
+						"type": "ts.VariableDeclaration",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "propsType",
+						"type": "ts.TypeNode | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "localProps",
+				"inputs": [
+					{
+						"name": "localProps.type",
+						"type": "ts.TypeNode | undefined",
+						"required": true
+					},
+					{
+						"name": "localProps.file",
+						"type": "ts.SourceFile",
+						"required": true
+					},
+					{
+						"name": "localProps.seen",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "localProps",
+						"type": "ContractItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "propMembers",
+				"inputs": [
+					{
+						"name": "propMembers.members",
+						"type": "ts.NodeArray<ts.TypeElement>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "propMembers",
+						"type": "ContractItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "boundProps",
+				"inputs": [
+					{
+						"name": "boundProps.items",
+						"type": "ContractItem[]",
+						"required": true
+					},
+					{
+						"name": "boundProps.node",
+						"type": "ts.VariableDeclaration",
+						"required": true
+					},
+					{
+						"name": "boundProps.owner",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "boundProps",
+						"type": "ContractItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "componentSnippets",
+				"inputs": [
+					{
+						"name": "componentSnippets.code",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "componentSnippets.owner",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "componentSnippets",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scanComponent",
+				"inputs": [
+					{
+						"name": "scanComponent.code",
+						"type": "string",
+						"required": true,
+						"description": "Svelte source containing script blocks and markup."
+					},
+					{
+						"name": "scanComponent.name",
+						"type": "string",
+						"required": true,
+						"description": "Component symbol name used to prefix prop inputs."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanComponent",
+						"type": "ExportScan",
+						"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
-		{
-			"unit": "function.mask-source",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "function.parse-parameters",
 			"via": "import",

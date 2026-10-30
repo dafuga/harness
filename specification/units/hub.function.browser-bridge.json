@@ -31,6 +31,7 @@
 			{
 				"name": "browserBridge.api",
 				"type": "BrowserApi",
+				"required": true,
 				"description": "Authenticated project API port. Credentials remain in the browser session or native account layer."
 			}
 		],
@@ -47,7 +48,30 @@
 				"type": "thrown",
 				"description": "Rejects missing project IDs and denied requests. Project creation stays unavailable through this bridge; other server failures propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "browserBridge",
+				"inputs": [
+					{
+						"name": "browserBridge.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "Authenticated project API port. Credentials remain in the browser session or native account layer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserBridge",
+						"type": "DesktopBridge",
+						"description": "A workspace bridge for project reads, comments and agent requests. Fresh server capabilities and the writable branch tip determine which actions are available. Refused reads notify listeners before failing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -19,26 +19,33 @@
 			{
 				"name": "writeModuleFiles.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute project directory containing the package manifest and module metadata."
 			},
 			{
 				"name": "writeModuleFiles.files",
 				"type": "PlannedFile[]",
+				"required": true,
 				"description": "Complete relative-path file plan, checked before any write."
 			},
 			{
 				"name": "writeModuleFiles.replace",
 				"type": "string[]",
+				"required": false,
+				"default": [],
 				"description": "Explicit metadata paths this transaction is permitted to update."
 			},
 			{
 				"name": "writeModuleFiles.allowIdentical",
-				"type": "unknown",
+				"type": "boolean",
+				"required": false,
+				"default": true,
 				"description": "Whether an existing byte-identical file is an idempotent setup output."
 			},
 			{
 				"name": "moduleOutputPath.path",
 				"type": "string",
+				"required": true,
 				"description": "Relative module output path that must stay within supported project code areas."
 			}
 		],
@@ -60,7 +67,80 @@
 				"type": "thrown",
 				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "writeModuleFiles",
+				"inputs": [
+					{
+						"name": "writeModuleFiles.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute project directory containing the package manifest and module metadata."
+					},
+					{
+						"name": "writeModuleFiles.files",
+						"type": "PlannedFile[]",
+						"required": true,
+						"description": "Complete relative-path file plan, checked before any write."
+					},
+					{
+						"name": "writeModuleFiles.replace",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Explicit metadata paths this transaction is permitted to update."
+					},
+					{
+						"name": "writeModuleFiles.allowIdentical",
+						"type": "boolean",
+						"required": false,
+						"default": true,
+						"description": "Whether an existing byte-identical file is an idempotent setup output."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeModuleFiles",
+						"type": "Promise<string[]>",
+						"description": "Relative paths actually created or updated by this operation."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "moduleOutputPath",
+				"inputs": [
+					{
+						"name": "moduleOutputPath.path",
+						"type": "string",
+						"required": true,
+						"description": "Relative module output path that must stay within supported project code areas."
+					}
+				],
+				"outputs": [
+					{
+						"name": "moduleOutputPath",
+						"type": "string",
+						"description": "Validated project-relative module output path."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -26,19 +26,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "templateComplexity.markup",
+				"type": "string",
+				"required": true,
+				"description": "Markup to scan for Svelte if, each and await blocks and else-if branches."
+			},
+			{
 				"name": "blockComplexity.masked",
 				"type": "string",
+				"required": true,
 				"description": "Source with comments and string contents already masked; matching keywords and operators are counted textually."
 			},
 			{
 				"name": "blockComplexity.base",
 				"type": "0 | 1",
+				"required": true,
 				"description": "Initial count: 1 for a function, or 0 when no function base is needed."
-			},
-			{
-				"name": "templateComplexity.markup",
-				"type": "string",
-				"description": "Markup to scan for Svelte if, each and await blocks and else-if branches."
 			}
 		],
 		"outputs": [
@@ -53,7 +56,56 @@
 				"description": "Number of recognized Svelte block and else-if decision markers, or zero when there are none."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "templateComplexity",
+				"inputs": [
+					{
+						"name": "templateComplexity.markup",
+						"type": "string",
+						"required": true,
+						"description": "Markup to scan for Svelte if, each and await blocks and else-if branches."
+					}
+				],
+				"outputs": [
+					{
+						"name": "templateComplexity",
+						"type": "number",
+						"description": "Number of recognized Svelte block and else-if decision markers, or zero when there are none."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "blockComplexity",
+				"inputs": [
+					{
+						"name": "blockComplexity.masked",
+						"type": "string",
+						"required": true,
+						"description": "Source with comments and string contents already masked; matching keywords and operators are counted textually."
+					},
+					{
+						"name": "blockComplexity.base",
+						"type": "0 | 1",
+						"required": true,
+						"description": "Initial count: 1 for a function, or 0 when no function base is needed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "blockComplexity",
+						"type": "number",
+						"description": "Base plus occurrences of if, for, while, case, catch, logical-and, logical-or, nullish-coalescing and recognized conditional question marks."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -30,23 +30,28 @@
 		"inputs": [
 			{
 				"name": "AudioUploadService.constructor.repository",
-				"type": "ReportRepository"
+				"type": "ReportRepository",
+				"required": true
 			},
 			{
 				"name": "AudioUploadService.upload.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AudioUploadService.upload.input",
-				"type": "AudioUploadInput"
+				"type": "AudioUploadInput",
+				"required": true
 			},
 			{
 				"name": "AudioUploadService.uploadComparison.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AudioUploadService.uploadComparison.input",
-				"type": "AudioComparisonInput"
+				"type": "AudioComparisonInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -63,6 +68,75 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AudioUploadService.upload",
+				"inputs": [
+					{
+						"name": "AudioUploadService.upload.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AudioUploadService.upload.input",
+						"type": "AudioUploadInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AudioUploadService.upload",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AudioUploadService.uploadComparison",
+				"inputs": [
+					{
+						"name": "AudioUploadService.uploadComparison.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AudioUploadService.uploadComparison.input",
+						"type": "AudioComparisonInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AudioUploadService.uploadComparison",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AudioUploadService.constructor",
+				"inputs": [
+					{
+						"name": "AudioUploadService.constructor.repository",
+						"type": "ReportRepository",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AudioUploadService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

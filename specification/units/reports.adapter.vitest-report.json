@@ -26,15 +26,18 @@
 		"inputs": [
 			{
 				"name": "VitestReportAdapter.ingest.store",
-				"type": "ReportRepository"
+				"type": "ReportRepository",
+				"required": true
 			},
 			{
 				"name": "VitestReportAdapter.ingest.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "VitestReportAdapter.ingest.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -43,7 +46,39 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "VitestReportAdapter.ingest",
+				"inputs": [
+					{
+						"name": "VitestReportAdapter.ingest.store",
+						"type": "ReportRepository",
+						"required": true
+					},
+					{
+						"name": "VitestReportAdapter.ingest.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VitestReportAdapter.ingest.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VitestReportAdapter.ingest",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

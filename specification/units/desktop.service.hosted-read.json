@@ -27,19 +27,23 @@
 		"inputs": [
 			{
 				"name": "HostedReadService.constructor.options",
-				"type": "HostedReadOptions"
+				"type": "HostedReadOptions",
+				"required": true
 			},
 			{
 				"name": "HostedReadService.read.query",
-				"type": "{ projectId: string; key: string }"
+				"type": "{ projectId: string; key: string }",
+				"required": true
 			},
 			{
 				"name": "HostedReadService.read.load",
-				"type": "() => Promise<{ value: T; identity?: CacheIdentity; principalId?: string }>"
+				"type": "() => Promise<{ value: T; identity?: CacheIdentity; principalId?: string }>",
+				"required": true
 			},
 			{
 				"name": "HostedReadService.read.validate",
-				"type": "(value: unknown) => T"
+				"type": "(value: unknown) => T",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -52,6 +56,57 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostedReadService.read",
+				"inputs": [
+					{
+						"name": "HostedReadService.read.query",
+						"type": "{ projectId: string; key: string }",
+						"required": true
+					},
+					{
+						"name": "HostedReadService.read.load",
+						"type": "() => Promise<{ value: T; identity?: CacheIdentity; principalId?: string }>",
+						"required": true
+					},
+					{
+						"name": "HostedReadService.read.validate",
+						"type": "(value: unknown) => T",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedReadService.read",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostedReadService.constructor",
+				"inputs": [
+					{
+						"name": "HostedReadService.constructor.options",
+						"type": "HostedReadOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedReadService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

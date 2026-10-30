@@ -16,11 +16,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/EnvironmentPicker.svelte",
-			"packages/desktop/src/components/development-tooling/EnvironmentPicker.svelte"
-		],
-		"symbols": ["EnvironmentPicker", "EnvironmentPicker"]
+		"source": ["packages/desktop/src/components/development-tooling/EnvironmentPicker.svelte"],
+		"symbols": ["EnvironmentPicker"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -28,11 +25,13 @@
 			{
 				"name": "EnvironmentPicker.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
 			},
 			{
 				"name": "EnvironmentPicker.children",
 				"type": "Snippet",
+				"required": false,
 				"description": "Optional action rendered beside the environment choice, such as production promotion."
 			}
 		],
@@ -43,7 +42,9 @@
 				"description": "Selects the environment scope for changes and switches the shared header summary to that environment."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

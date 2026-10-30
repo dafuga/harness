@@ -26,15 +26,18 @@
 		"inputs": [
 			{
 				"name": "AttachedRecordService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AttachedRecordService.constructor.within",
-				"type": "string | null"
+				"type": "string | null",
+				"required": false
 			},
 			{
 				"name": "AttachedRecordService.load.pointer",
-				"type": "EvidencePointer"
+				"type": "EvidencePointer",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -43,7 +46,53 @@
 				"type": "Promise<AttachedRecord>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AttachedRecordService.load",
+				"inputs": [
+					{
+						"name": "AttachedRecordService.load.pointer",
+						"type": "EvidencePointer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AttachedRecordService.load",
+						"type": "Promise<AttachedRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AttachedRecordService.constructor",
+				"inputs": [
+					{
+						"name": "AttachedRecordService.constructor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AttachedRecordService.constructor.within",
+						"type": "string | null",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "AttachedRecordService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

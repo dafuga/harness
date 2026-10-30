@@ -27,19 +27,24 @@
 		"inputs": [
 			{
 				"name": "ReportPagesRetentionAdapter.constructor.command",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ReportPagesRetentionAdapter.constructor.request",
-				"type": "( input: string | URL | Request, init?: RequestInit ) => Promise<Response>"
+				"type": "( input: string | URL | Request, init?: RequestInit ) => Promise<Response>",
+				"required": false
 			},
 			{
 				"name": "ReportPagesRetentionAdapter.purge.receipt",
-				"type": "{ run: string; url?: string }"
+				"type": "{ run: string; url?: string }",
+				"required": true
 			},
 			{
 				"name": "ReportPagesRetentionAdapter.purge.dryRun",
-				"type": "unknown"
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -52,6 +57,63 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReportPagesRetentionAdapter.purge",
+				"inputs": [
+					{
+						"name": "ReportPagesRetentionAdapter.purge.receipt",
+						"type": "{ run: string; url?: string }",
+						"required": true
+					},
+					{
+						"name": "ReportPagesRetentionAdapter.purge.dryRun",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportPagesRetentionAdapter.purge",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ReportPagesRetentionAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ReportPagesRetentionAdapter.constructor.command",
+						"type": "unknown",
+						"required": false
+					},
+					{
+						"name": "ReportPagesRetentionAdapter.constructor.request",
+						"type": "( input: string | URL | Request, init?: RequestInit ) => Promise<Response>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportPagesRetentionAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

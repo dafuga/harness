@@ -20,11 +20,13 @@
 			{
 				"name": "derivedResponsibility.kind",
 				"type": "string",
+				"required": true,
 				"description": "Unit kind used to choose a known purpose phrase; unknown kinds use the kind followed by unit."
 			},
 			{
 				"name": "derivedResponsibility.title",
 				"type": "string",
+				"required": true,
 				"description": "Unit title inserted unchanged into the placeholder sentence."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Placeholder sentence of the form Owns the title purpose. It names a kind and title only and is not a reviewed description of behavior."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "derivedResponsibility",
+				"inputs": [
+					{
+						"name": "derivedResponsibility.kind",
+						"type": "string",
+						"required": true,
+						"description": "Unit kind used to choose a known purpose phrase; unknown kinds use the kind followed by unit."
+					},
+					{
+						"name": "derivedResponsibility.title",
+						"type": "string",
+						"required": true,
+						"description": "Unit title inserted unchanged into the placeholder sentence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "derivedResponsibility",
+						"type": "string",
+						"description": "Placeholder sentence of the form Owns the title purpose. It names a kind and title only and is not a reviewed description of behavior."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

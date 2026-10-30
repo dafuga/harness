@@ -26,27 +26,33 @@
 		"inputs": [
 			{
 				"name": "NativePickerDefaultsService.constructor.rpc",
-				"type": "PickerRpc"
+				"type": "PickerRpc",
+				"required": true
 			},
 			{
 				"name": "NativePickerDefaultsService.constructor.catalogPath",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "NativePickerDefaultsService.write.params",
-				"type": "PickerData"
+				"type": "PickerData",
+				"required": true
 			},
 			{
 				"name": "NativePickerDefaultsService.write.options",
-				"type": "PickerData"
+				"type": "PickerData",
+				"required": false
 			},
 			{
 				"name": "NativePickerDefaultsService.read.params",
-				"type": "PickerData"
+				"type": "PickerData",
+				"required": true
 			},
 			{
 				"name": "NativePickerDefaultsService.read.options",
-				"type": "PickerData"
+				"type": "PickerData",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -63,6 +69,85 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "NativePickerDefaultsService.write",
+				"inputs": [
+					{
+						"name": "NativePickerDefaultsService.write.params",
+						"type": "PickerData",
+						"required": true
+					},
+					{
+						"name": "NativePickerDefaultsService.write.options",
+						"type": "PickerData",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativePickerDefaultsService.write",
+						"type": "Promise<PickerData>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativePickerDefaultsService.read",
+				"inputs": [
+					{
+						"name": "NativePickerDefaultsService.read.params",
+						"type": "PickerData",
+						"required": true
+					},
+					{
+						"name": "NativePickerDefaultsService.read.options",
+						"type": "PickerData",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativePickerDefaultsService.read",
+						"type": "Promise<PickerData>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "NativePickerDefaultsService.constructor",
+				"inputs": [
+					{
+						"name": "NativePickerDefaultsService.constructor.rpc",
+						"type": "PickerRpc",
+						"required": true
+					},
+					{
+						"name": "NativePickerDefaultsService.constructor.catalogPath",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativePickerDefaultsService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

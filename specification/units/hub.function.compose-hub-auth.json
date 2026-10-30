@@ -27,6 +27,7 @@
 			{
 				"name": "composeHubAuth.parts",
 				"type": "HubAuthParts",
+				"required": true,
 				"description": "Validated configuration, auth storage, trusted Google identity service, fetch, clock, token cache and optional email delivery adapter."
 			}
 		],
@@ -37,7 +38,30 @@
 				"description": "Detached-call-safe authentication interface for actor resolution, route handling, repository authorization and scoped token acquisition. Missing GitHub configuration makes the last two reject with github-disabled."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "composeHubAuth",
+				"inputs": [
+					{
+						"name": "composeHubAuth.parts",
+						"type": "HubAuthParts",
+						"required": true,
+						"description": "Validated configuration, auth storage, trusted Google identity service, fetch, clock, token cache and optional email delivery adapter."
+					}
+				],
+				"outputs": [
+					{
+						"name": "composeHubAuth",
+						"type": "HubAuth",
+						"description": "Detached-call-safe authentication interface for actor resolution, route handling, repository authorization and scoped token acquisition. Missing GitHub configuration makes the last two reject with github-disabled."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

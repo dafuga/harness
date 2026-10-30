@@ -19,11 +19,13 @@
 			{
 				"name": "changedUnits.paths",
 				"type": "string[]",
+				"required": true,
 				"description": "The changed file paths to look up. Paths are not included in the returned notice; repeated input paths can still increase the unowned-file count."
 			},
 			{
 				"name": "changedUnits.owners",
 				"type": "(path: string) => string[]",
+				"required": true,
 				"description": "A lookup returning owning unit identities for each path. Only identities matching the unit-reference grammar are included; an empty result counts the path as unowned."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "A notice with distinct valid unit identities sorted and written as unit references, limited to 40 named units with any remainder counted. Also counts paths with no owners. Returns an empty string when neither valid owners nor unowned paths can be reported."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "changedUnits",
+				"inputs": [
+					{
+						"name": "changedUnits.paths",
+						"type": "string[]",
+						"required": true,
+						"description": "The changed file paths to look up. Paths are not included in the returned notice; repeated input paths can still increase the unowned-file count."
+					},
+					{
+						"name": "changedUnits.owners",
+						"type": "(path: string) => string[]",
+						"required": true,
+						"description": "A lookup returning owning unit identities for each path. Only identities matching the unit-reference grammar are included; an empty result counts the path as unowned."
+					}
+				],
+				"outputs": [
+					{
+						"name": "changedUnits",
+						"type": "string",
+						"description": "A notice with distinct valid unit identities sorted and written as unit references, limited to 40 named units with any remainder counted. Also counts paths with no owners. Returns an empty string when neither valid owners nor unowned paths can be reported."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

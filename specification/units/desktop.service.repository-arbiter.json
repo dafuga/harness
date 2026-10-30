@@ -25,31 +25,38 @@
 		"inputs": [
 			{
 				"name": "RepositoryArbiterService.hold.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RepositoryArbiterService.hold.owner",
-				"type": "object"
+				"type": "object",
+				"required": true
 			},
 			{
 				"name": "RepositoryArbiterService.release.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RepositoryArbiterService.release.owner",
-				"type": "object"
+				"type": "object",
+				"required": true
 			},
 			{
 				"name": "RepositoryArbiterService.held.root",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			},
 			{
 				"name": "RepositoryArbiterService.exclusive.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RepositoryArbiterService.exclusive.work",
-				"type": "() => Promise<T>"
+				"type": "() => Promise<T>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -70,7 +77,98 @@
 				"type": "Promise<T>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RepositoryArbiterService.hold",
+				"inputs": [
+					{
+						"name": "RepositoryArbiterService.hold.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RepositoryArbiterService.hold.owner",
+						"type": "object",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RepositoryArbiterService.hold",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RepositoryArbiterService.release",
+				"inputs": [
+					{
+						"name": "RepositoryArbiterService.release.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RepositoryArbiterService.release.owner",
+						"type": "object",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RepositoryArbiterService.release",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RepositoryArbiterService.held",
+				"inputs": [
+					{
+						"name": "RepositoryArbiterService.held.root",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RepositoryArbiterService.held",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RepositoryArbiterService.exclusive",
+				"inputs": [
+					{
+						"name": "RepositoryArbiterService.exclusive.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RepositoryArbiterService.exclusive.work",
+						"type": "() => Promise<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RepositoryArbiterService.exclusive",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

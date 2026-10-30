@@ -19,6 +19,7 @@
 			{
 				"name": "hostedAddress.value",
 				"type": "string | undefined",
+				"required": true,
 				"description": "The candidate URL, or undefined. It must use HTTPS, or HTTP on localhost, 127.0.0.1 or IPv6 loopback, and have a /native/ path followed by one identifier of 1–128 letters, digits, underscores or hyphens."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "The normalized URL when accepted, otherwise null. User information, query strings, fragments, other paths and invalid URLs are rejected. No request is sent."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hostedAddress",
+				"inputs": [
+					{
+						"name": "hostedAddress.value",
+						"type": "string | undefined",
+						"required": true,
+						"description": "The candidate URL, or undefined. It must use HTTPS, or HTTP on localhost, 127.0.0.1 or IPv6 loopback, and have a /native/ path followed by one identifier of 1–128 letters, digits, underscores or hyphens."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostedAddress",
+						"type": "string | null",
+						"description": "The normalized URL when accepted, otherwise null. User information, query strings, fragments, other paths and invalid URLs are rejected. No request is sent."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -21,11 +21,14 @@
 			{
 				"name": "remoteFailureText.error",
 				"type": "unknown",
+				"required": true,
 				"description": "Failure to describe; declared RemoteFailure values retain their code and message."
 			},
 			{
 				"name": "remoteFailureText.roots",
 				"type": "string[]",
+				"required": false,
+				"default": [],
 				"description": "Project roots to hide when inspecting ordinary errors; defaults to an empty list, with the home directory also considered."
 			}
 		],
@@ -36,7 +39,37 @@
 				"description": "Declared remote failure unchanged, or code failed with an ordinary message only when short, nonempty and free of detected paths; otherwise generic failure wording."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "remoteFailureText",
+				"inputs": [
+					{
+						"name": "remoteFailureText.error",
+						"type": "unknown",
+						"required": true,
+						"description": "Failure to describe; declared RemoteFailure values retain their code and message."
+					},
+					{
+						"name": "remoteFailureText.roots",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Project roots to hide when inspecting ordinary errors; defaults to an empty list, with the home directory also considered."
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteFailureText",
+						"type": "RemoteError",
+						"description": "Declared remote failure unchanged, or code failed with an ordinary message only when short, nonempty and free of detected paths; otherwise generic failure wording."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

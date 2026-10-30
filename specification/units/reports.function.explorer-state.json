@@ -41,54 +41,65 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "reasonText.text",
-				"type": "string",
-				"description": "Recorded reason whose file-location wording should be simplified."
-			},
-			{
-				"name": "scenarioFor.declared",
-				"type": "HarnessScenario",
-				"description": "Full declared scenario."
-			},
-			{
-				"name": "scenarioFor.unit",
-				"type": "string",
-				"description": "Unit identifier whose applicable states are requested."
-			},
-			{
-				"name": "scenarioFor.units",
-				"type": "HarnessUnit[]",
-				"description": "Optional registry units, defaulting to an empty list, used to follow active consumers transitively."
-			},
-			{
-				"name": "coverageWorst.standings",
-				"type": "CoverageStanding[]",
-				"description": "Coverage standings to prioritize."
-			},
-			{
 				"name": "captureUnbound.capture",
 				"type": "HarnessCapture",
+				"required": true,
 				"description": "Capture whose recorded build binding is checked."
 			},
 			{
 				"name": "captureUnbound.commit",
 				"type": "string",
+				"required": true,
 				"description": "Commit that the capture should support."
 			},
 			{
 				"name": "explorerState.judged",
 				"type": "Judged | null",
+				"required": true,
 				"description": "Scenario declaration, result, record and bound commit, or null when there is no result to judge."
 			},
 			{
 				"name": "explorerState.declared",
 				"type": "HarnessScenario['states'][number]",
+				"required": true,
 				"description": "Declared state and coverage requirement."
 			},
 			{
 				"name": "explorerState.absent",
 				"type": "Told",
+				"required": true,
 				"description": "Fallback standing and reason tuple. The standing is used when a required state lacks a judged result; its supplied reason text is not copied by this helper."
+			},
+			{
+				"name": "reasonText.text",
+				"type": "string",
+				"required": true,
+				"description": "Recorded reason whose file-location wording should be simplified."
+			},
+			{
+				"name": "scenarioFor.declared",
+				"type": "HarnessScenario",
+				"required": true,
+				"description": "Full declared scenario."
+			},
+			{
+				"name": "scenarioFor.unit",
+				"type": "string",
+				"required": true,
+				"description": "Unit identifier whose applicable states are requested."
+			},
+			{
+				"name": "scenarioFor.units",
+				"type": "HarnessUnit[]",
+				"required": false,
+				"default": [],
+				"description": "Optional registry units, defaulting to an empty list, used to follow active consumers transitively."
+			},
+			{
+				"name": "coverageWorst.standings",
+				"type": "CoverageStanding[]",
+				"required": true,
+				"description": "Coverage standings to prioritize."
 			}
 		],
 		"outputs": [
@@ -118,7 +129,141 @@
 				"description": "State coverage with reasons and evidence slots. Inapplicable states stay exempt; other nonrequired declarations are incomplete. Required states must be recorded as required and include each declared evidence/kind/viewport slot with a passed, stored, correctly bound capture. Missing declarations and slots never count as passed."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "captureUnbound",
+				"inputs": [
+					{
+						"name": "captureUnbound.capture",
+						"type": "HarnessCapture",
+						"required": true,
+						"description": "Capture whose recorded build binding is checked."
+					},
+					{
+						"name": "captureUnbound.commit",
+						"type": "string",
+						"required": true,
+						"description": "Commit that the capture should support."
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureUnbound",
+						"type": "string | null",
+						"description": "Reason when the capture names another revision or a screenshot/actual capture has no build stamp; null otherwise."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explorerState",
+				"inputs": [
+					{
+						"name": "explorerState.judged",
+						"type": "Judged | null",
+						"required": true,
+						"description": "Scenario declaration, result, record and bound commit, or null when there is no result to judge."
+					},
+					{
+						"name": "explorerState.declared",
+						"type": "HarnessScenario['states'][number]",
+						"required": true,
+						"description": "Declared state and coverage requirement."
+					},
+					{
+						"name": "explorerState.absent",
+						"type": "Told",
+						"required": true,
+						"description": "Fallback standing and reason tuple. The standing is used when a required state lacks a judged result; its supplied reason text is not copied by this helper."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerState",
+						"type": "ExplorerStateCoverage",
+						"description": "State coverage with reasons and evidence slots. Inapplicable states stay exempt; other nonrequired declarations are incomplete. Required states must be recorded as required and include each declared evidence/kind/viewport slot with a passed, stored, correctly bound capture. Missing declarations and slots never count as passed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reasonText",
+				"inputs": [
+					{
+						"name": "reasonText.text",
+						"type": "string",
+						"required": true,
+						"description": "Recorded reason whose file-location wording should be simplified."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reasonText",
+						"type": "string",
+						"description": "Reason with matching in-file location phrases removed and other matching file paths replaced by a file."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scenarioFor",
+				"inputs": [
+					{
+						"name": "scenarioFor.declared",
+						"type": "HarnessScenario",
+						"required": true,
+						"description": "Full declared scenario."
+					},
+					{
+						"name": "scenarioFor.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit identifier whose applicable states are requested."
+					},
+					{
+						"name": "scenarioFor.units",
+						"type": "HarnessUnit[]",
+						"required": false,
+						"default": [],
+						"description": "Optional registry units, defaulting to an empty list, used to follow active consumers transitively."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scenarioFor",
+						"type": "HarnessScenario",
+						"description": "Scenario narrowed to states naming the unit directly, otherwise states naming a transitive consumer, otherwise the unchanged full scenario."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "coverageWorst",
+				"inputs": [
+					{
+						"name": "coverageWorst.standings",
+						"type": "CoverageStanding[]",
+						"required": true,
+						"description": "Coverage standings to prioritize."
+					}
+				],
+				"outputs": [
+					{
+						"name": "coverageWorst",
+						"type": "CoverageStanding",
+						"description": "Worst standing in failed, stale, missing, incomplete, passed order; inapplicable when none of those occurs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

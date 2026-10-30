@@ -29,47 +29,59 @@
 		"inputs": [
 			{
 				"name": "RemoteProjectionService.constructor.http",
-				"type": "HostedHttpAdapter"
+				"type": "HostedHttpAdapter",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectionService.constructor.options",
-				"type": "HostedReadOptions"
+				"type": "HostedReadOptions",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectionService.branch.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectionService.snapshot.input",
-				"type": "{ projectId: string; branch: string | null; commit: string | null; }"
+				"type": "{ projectId: string; branch: string | null; commit: string | null; }",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectionService.read.input",
-				"type": "{ projectId: string; commit: string; branch?: string | null }"
+				"type": "{ projectId: string; commit: string; branch?: string | null }",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectionService.read.operation",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectionService.read.validate",
-				"type": "(value: unknown) => T"
+				"type": "(value: unknown) => T",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectionService.read.load",
-				"type": "() => Promise<unknown>"
+				"type": "() => Promise<unknown>",
+				"required": false
 			},
 			{
 				"name": "RemoteProjectionService.path.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectionService.path.operation",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectionService.path.input",
-				"type": "object"
+				"type": "object",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -98,6 +110,144 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteProjectionService.branch",
+				"inputs": [
+					{
+						"name": "RemoteProjectionService.branch.projectId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectionService.branch",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectionService.snapshot",
+				"inputs": [
+					{
+						"name": "RemoteProjectionService.snapshot.input",
+						"type": "{ projectId: string; branch: string | null; commit: string | null; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectionService.snapshot",
+						"type": "Promise<ProjectSnapshot>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectionService.projects",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteProjectionService.projects",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectionService.read",
+				"inputs": [
+					{
+						"name": "RemoteProjectionService.read.input",
+						"type": "{ projectId: string; commit: string; branch?: string | null }",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectionService.read.operation",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectionService.read.validate",
+						"type": "(value: unknown) => T",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectionService.read.load",
+						"type": "() => Promise<unknown>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectionService.read",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectionService.path",
+				"inputs": [
+					{
+						"name": "RemoteProjectionService.path.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectionService.path.operation",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectionService.path.input",
+						"type": "object",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectionService.path",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteProjectionService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteProjectionService.constructor.http",
+						"type": "HostedHttpAdapter",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectionService.constructor.options",
+						"type": "HostedReadOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectionService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

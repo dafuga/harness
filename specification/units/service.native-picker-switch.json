@@ -25,19 +25,25 @@
 		"inputs": [
 			{
 				"name": "NativePickerSwitchService.constructor.rpc",
-				"type": "PickerRpc"
+				"type": "PickerRpc",
+				"required": true
 			},
 			{
 				"name": "NativePickerSwitchService.constructor.options",
-				"type": "{ timeoutMs?: number; catalogPath?: string }"
+				"type": "{ timeoutMs?: number; catalogPath?: string }",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "NativePickerSwitchService.apply.params",
-				"type": "PickerData"
+				"type": "PickerData",
+				"required": true
 			},
 			{
 				"name": "NativePickerSwitchService.apply.context",
-				"type": "PickerData"
+				"type": "PickerData",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -50,6 +56,64 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "NativePickerSwitchService.apply",
+				"inputs": [
+					{
+						"name": "NativePickerSwitchService.apply.params",
+						"type": "PickerData",
+						"required": true
+					},
+					{
+						"name": "NativePickerSwitchService.apply.context",
+						"type": "PickerData",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativePickerSwitchService.apply",
+						"type": "Promise<PickerData>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "NativePickerSwitchService.constructor",
+				"inputs": [
+					{
+						"name": "NativePickerSwitchService.constructor.rpc",
+						"type": "PickerRpc",
+						"required": true
+					},
+					{
+						"name": "NativePickerSwitchService.constructor.options",
+						"type": "{ timeoutMs?: number; catalogPath?: string }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativePickerSwitchService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -35,46 +35,60 @@
 			{
 				"name": "entityShown.host",
 				"type": "Shown",
+				"required": true,
 				"description": "Shown revision and optional parent context."
 			},
 			{
 				"name": "entityShown.entity",
 				"type": "ExplorerEntity",
+				"required": true,
 				"description": "Entity to describe, including category, unit and removal state."
+			},
+			{
+				"name": "modelTableView.unit",
+				"type": "HarnessUnit",
+				"required": true
 			},
 			{
 				"name": "entityChanged.host",
 				"type": "Pick<Shown, 'head'>",
+				"required": true,
 				"description": "Shown revision holding recorded explanations."
 			},
 			{
 				"name": "entityChanged.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit identifier used to select its explanations."
 			},
 			{
 				"name": "helperEntity.owner",
 				"type": "ExplorerEntity | undefined",
+				"required": true,
 				"description": "Owning module entity at the selected revision."
 			},
 			{
 				"name": "helperEntity.helperName",
-				"type": "string | undefined",
+				"type": "string",
+				"required": false,
 				"description": "Optional selected callable name; no matching callable returns undefined."
 			},
 			{
 				"name": "helperRelations.host",
 				"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
+				"required": true,
 				"description": "Selected revision registry and named helper route."
 			},
 			{
 				"name": "helperRelations.entity",
 				"type": "ExplorerEntity",
+				"required": true,
 				"description": "Selected callable and its real owning unit identity."
 			},
 			{
 				"name": "helperRelations.relations",
 				"type": "ExplorerRelations",
+				"required": true,
 				"description": "Existing module relationships whose Used In side remains available."
 			}
 		],
@@ -100,7 +114,137 @@
 				"description": "Selected helper callees from per-callable consumer facts; owner-module dependencies never leak into Uses. Unselected module relationships remain unchanged."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "entityShown",
+				"inputs": [
+					{
+						"name": "entityShown.host",
+						"type": "Shown",
+						"required": true,
+						"description": "Shown revision and optional parent context."
+					},
+					{
+						"name": "entityShown.entity",
+						"type": "ExplorerEntity",
+						"required": true,
+						"description": "Entity to describe, including category, unit and removal state."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityShown",
+						"type": "EntityShown",
+						"description": "Readable contract, measurements and the selected verdict record. Removed entities use parent declarations for applicable states. Source and full-record figures can be supplemented by focused observations of the same commit or identical complete source tree, retaining their tested revision without granting a full verification verdict."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "modelTableView",
+				"inputs": [
+					{
+						"name": "modelTableView.unit",
+						"type": "HarnessUnit",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "modelTableView",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "entityChanged",
+				"inputs": [
+					{
+						"name": "entityChanged.host",
+						"type": "Pick<Shown, 'head'>",
+						"required": true,
+						"description": "Shown revision holding recorded explanations."
+					},
+					{
+						"name": "entityChanged.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit identifier used to select its explanations."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityChanged",
+						"type": "EntityReasons",
+						"description": "Bounded and full explanations recorded by the head for that unit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "helperEntity",
+				"inputs": [
+					{
+						"name": "helperEntity.owner",
+						"type": "ExplorerEntity | undefined",
+						"required": true,
+						"description": "Owning module entity at the selected revision."
+					},
+					{
+						"name": "helperEntity.helperName",
+						"type": "string",
+						"required": false,
+						"description": "Optional selected callable name; no matching callable returns undefined."
+					}
+				],
+				"outputs": [
+					{
+						"name": "helperEntity",
+						"type": "ExplorerEntity | undefined",
+						"description": "One callable’s actual parameters, return, errors and source. Keeps owning unit id for module evidence; excludes sibling APIs and unscoped multi-callable documentation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "helperRelations",
+				"inputs": [
+					{
+						"name": "helperRelations.host",
+						"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
+						"required": true,
+						"description": "Selected revision registry and named helper route."
+					},
+					{
+						"name": "helperRelations.entity",
+						"type": "ExplorerEntity",
+						"required": true,
+						"description": "Selected callable and its real owning unit identity."
+					},
+					{
+						"name": "helperRelations.relations",
+						"type": "ExplorerRelations",
+						"required": true,
+						"description": "Existing module relationships whose Used In side remains available."
+					}
+				],
+				"outputs": [
+					{
+						"name": "helperRelations",
+						"type": "ExplorerRelations"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

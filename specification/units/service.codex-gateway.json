@@ -23,11 +23,13 @@
 		"inputs": [
 			{
 				"name": "CodexGatewayService.constructor.config",
-				"type": "{ token: string }"
+				"type": "{ token: string }",
+				"required": true
 			},
 			{
 				"name": "CodexGatewayService.fetch.request",
-				"type": "globalThis.Request"
+				"type": "globalThis.Request",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,6 +42,47 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CodexGatewayService.fetch",
+				"inputs": [
+					{
+						"name": "CodexGatewayService.fetch.request",
+						"type": "globalThis.Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexGatewayService.fetch",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CodexGatewayService.constructor",
+				"inputs": [
+					{
+						"name": "CodexGatewayService.constructor.config",
+						"type": "{ token: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexGatewayService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

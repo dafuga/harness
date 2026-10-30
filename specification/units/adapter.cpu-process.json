@@ -33,7 +33,28 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CpuProcessAdapter.sample",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CpuProcessAdapter.sample",
+						"type": "Promise<CpuReading>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

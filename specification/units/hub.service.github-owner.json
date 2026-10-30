@@ -30,19 +30,23 @@
 		"inputs": [
 			{
 				"name": "GithubOwnerService.constructor.options",
-				"type": "GithubOwnerOptions"
+				"type": "GithubOwnerOptions",
+				"required": true
 			},
 			{
 				"name": "GithubOwnerService.authorizeRepository.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			},
 			{
 				"name": "GithubOwnerService.authorizeRepository.repositoryId",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "GithubOwnerService.repositories.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -55,7 +59,71 @@
 				"type": "Promise<GithubRepositories>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GithubOwnerService.authorizeRepository",
+				"inputs": [
+					{
+						"name": "GithubOwnerService.authorizeRepository.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "GithubOwnerService.authorizeRepository.repositoryId",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubOwnerService.authorizeRepository",
+						"type": "Promise<RepositoryIdentity>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubOwnerService.repositories",
+				"inputs": [
+					{
+						"name": "GithubOwnerService.repositories.actor",
+						"type": "Actor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubOwnerService.repositories",
+						"type": "Promise<GithubRepositories>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GithubOwnerService.constructor",
+				"inputs": [
+					{
+						"name": "GithubOwnerService.constructor.options",
+						"type": "GithubOwnerOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubOwnerService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

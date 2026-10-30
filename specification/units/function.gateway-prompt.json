@@ -20,6 +20,7 @@
 			{
 				"name": "gatewayPrompt.request",
 				"type": "GatewayRequest",
+				"required": true,
 				"description": "Request whose input array contains the complete ordered conversation history."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Instruction text followed by JSON.stringify of request.input, asking continuation from the latest user request with role and tool context."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "gatewayPrompt",
+				"inputs": [
+					{
+						"name": "gatewayPrompt.request",
+						"type": "GatewayRequest",
+						"required": true,
+						"description": "Request whose input array contains the complete ordered conversation history."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatewayPrompt",
+						"type": "string",
+						"description": "Instruction text followed by JSON.stringify of request.input, asking continuation from the latest user request with role and tool context."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

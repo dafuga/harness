@@ -25,16 +25,19 @@
 			{
 				"name": "CatalogWriteService.constructor.adapter",
 				"type": "SqliteAdapter",
+				"required": true,
 				"description": "Transactional database adapter for replacing the derived catalog tables."
 			},
 			{
 				"name": "CatalogWriteService.replace.index",
 				"type": "HistoryIndex",
+				"required": true,
 				"description": "History branches, revisions, records and metadata to project."
 			},
 			{
 				"name": "CatalogWriteService.replace.snapshots",
 				"type": "CatalogSnapshot[]",
+				"required": true,
 				"description": "Revision registries retained verbatim; identical target and relation pairs share one query edge."
 			}
 		],
@@ -45,7 +48,55 @@
 				"description": "Replaces catalog tables atomically; repeated dependency keys do not discard raw provenance or distinct relation types."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "CatalogWriteService.replace",
+				"inputs": [
+					{
+						"name": "CatalogWriteService.replace.index",
+						"type": "HistoryIndex",
+						"required": true,
+						"description": "History branches, revisions, records and metadata to project."
+					},
+					{
+						"name": "CatalogWriteService.replace.snapshots",
+						"type": "CatalogSnapshot[]",
+						"required": true,
+						"description": "Revision registries retained verbatim; identical target and relation pairs share one query edge."
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogWriteService.replace",
+						"type": "void",
+						"description": "Replaces catalog tables atomically; repeated dependency keys do not discard raw provenance or distinct relation types."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CatalogWriteService.constructor",
+				"inputs": [
+					{
+						"name": "CatalogWriteService.constructor.adapter",
+						"type": "SqliteAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogWriteService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

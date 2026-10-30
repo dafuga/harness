@@ -29,6 +29,8 @@
 			{
 				"name": "processProbes.limits",
 				"type": "ProbeLimits",
+				"required": false,
+				"default": {},
 				"description": "Optional cancellation signal and per-tool timeout in milliseconds; default timeout is 3000."
 			}
 		],
@@ -39,7 +41,31 @@
 				"description": "Probe methods for running tools, reading process facts with ps and resolving executable paths with lsof. At most eight tools run concurrently process-wide; timeout/cancellation/failure yields not-ok, and unreadable facts or paths yield null."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "processProbes",
+				"inputs": [
+					{
+						"name": "processProbes.limits",
+						"type": "ProbeLimits",
+						"required": false,
+						"default": {},
+						"description": "Optional cancellation signal and per-tool timeout in milliseconds; default timeout is 3000."
+					}
+				],
+				"outputs": [
+					{
+						"name": "processProbes",
+						"type": "ProcessProbes",
+						"description": "Probe methods for running tools, reading process facts with ps and resolving executable paths with lsof. At most eight tools run concurrently process-wide; timeout/cancellation/failure yields not-ok, and unreadable facts or paths yield null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

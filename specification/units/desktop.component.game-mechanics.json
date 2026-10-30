@@ -35,16 +35,20 @@
 			{
 				"name": "GameMechanics.mechanics",
 				"type": "MechanicDefinition[]",
+				"required": true,
 				"description": "Authored mechanic definitions, input names, events and implementation guidance."
 			},
 			{
 				"name": "GameMechanics.change",
 				"type": "(list: MechanicDefinition[]) => void",
+				"required": true,
 				"description": "Callback publishing the replacement mechanic list."
 			},
 			{
 				"name": "GameMechanics.readonly",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Disable editing and generation for historical or otherwise immutable views."
 			}
 		],
@@ -55,7 +59,9 @@
 				"description": "Edit independent mechanic definitions, inputs and emitted events without changing checkpoints. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

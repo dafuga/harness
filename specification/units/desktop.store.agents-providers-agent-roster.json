@@ -19,6 +19,7 @@
 			{
 				"name": "createAgentRosterStore.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Selected project identity and optional read-only agent activity bridge. Responses from earlier project selections are discarded."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Reactive reading, errors, current working count, sessions, module owners and visible-page polling with cleanup."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "createAgentRosterStore",
+				"inputs": [
+					{
+						"name": "createAgentRosterStore.workspace",
+						"type": "Workspace",
+						"required": true,
+						"description": "Selected project identity and optional read-only agent activity bridge. Responses from earlier project selections are discarded."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createAgentRosterStore",
+						"type": "AgentRosterState",
+						"description": "Reactive reading, errors, current working count, sessions, module owners and visible-page polling with cleanup."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

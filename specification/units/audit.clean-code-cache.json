@@ -28,31 +28,38 @@
 		"inputs": [
 			{
 				"name": "reviewCacheKey.snapshot",
-				"type": "ReviewSnapshot"
+				"type": "ReviewSnapshot",
+				"required": true
 			},
 			{
 				"name": "reviewCacheKey.settings",
-				"type": "CleanCodeSettings"
+				"type": "CleanCodeSettings",
+				"required": true
 			},
 			{
 				"name": "readReviewCache.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "readReviewCache.key",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "writeReviewCache.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "writeReviewCache.key",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "writeReviewCache.value",
-				"type": "CachedEvaluation"
+				"type": "CachedEvaluation",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -74,7 +81,85 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "reviewCacheKey",
+				"inputs": [
+					{
+						"name": "reviewCacheKey.snapshot",
+						"type": "ReviewSnapshot",
+						"required": true
+					},
+					{
+						"name": "reviewCacheKey.settings",
+						"type": "CleanCodeSettings",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewCacheKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readReviewCache",
+				"inputs": [
+					{
+						"name": "readReviewCache.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readReviewCache.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readReviewCache",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeReviewCache",
+				"inputs": [
+					{
+						"name": "writeReviewCache.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeReviewCache.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeReviewCache.value",
+						"type": "CachedEvaluation",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeReviewCache",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

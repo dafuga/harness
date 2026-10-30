@@ -27,23 +27,28 @@
 		"inputs": [
 			{
 				"name": "RelayReplyValidator.registered.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RelayReplyValidator.registered.hostId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RelayReplyValidator.summary.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RelayReplyValidator.summary.hostId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RelayReplyValidator.done.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -60,7 +65,75 @@
 				"type": "{ ok: true }"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RelayReplyValidator.registered",
+				"inputs": [
+					{
+						"name": "RelayReplyValidator.registered.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "RelayReplyValidator.registered.hostId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayReplyValidator.registered",
+						"type": "RelayRegistered"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayReplyValidator.summary",
+				"inputs": [
+					{
+						"name": "RelayReplyValidator.summary.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "RelayReplyValidator.summary.hostId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayReplyValidator.summary",
+						"type": "RemoteHostSummary"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayReplyValidator.done",
+				"inputs": [
+					{
+						"name": "RelayReplyValidator.done.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayReplyValidator.done",
+						"type": "{ ok: true }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

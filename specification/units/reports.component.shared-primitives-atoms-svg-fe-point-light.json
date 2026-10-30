@@ -22,13 +22,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "SvgFePointLight.attributes",
-				"type": "SvelteHTMLElements['fePointLight']",
-				"description": "Native fePointLight attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "SvgFePointLight.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native fePointLight element; native HTML content rules still apply."
 			}
 		],
@@ -39,7 +35,9 @@
 				"description": "The actual native fePointLight element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

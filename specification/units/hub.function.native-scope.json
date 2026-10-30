@@ -20,11 +20,13 @@
 			{
 				"name": "nativeScope.resource",
 				"type": "string | null",
+				"required": true,
 				"description": "projects for all current/future shared projects, project: followed by an ID for one project, or null/other text."
 			},
 			{
 				"name": "nativeScope.projects",
 				"type": "Pick<BrowserProjects, 'get'>",
+				"required": true,
 				"description": "Project lookup used only for a nonempty single-project ID."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Readable scope wording: all projects, the fetched project name only, or an unavailable-project message when lookup fails. Missing or unrecognized scope is described conservatively as all projects with an ambiguity note."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "nativeScope",
+				"inputs": [
+					{
+						"name": "nativeScope.resource",
+						"type": "string | null",
+						"required": true,
+						"description": "projects for all current/future shared projects, project: followed by an ID for one project, or null/other text."
+					},
+					{
+						"name": "nativeScope.projects",
+						"type": "Pick<BrowserProjects, 'get'>",
+						"required": true,
+						"description": "Project lookup used only for a nonempty single-project ID."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeScope",
+						"type": "Promise<string>",
+						"description": "Readable scope wording: all projects, the fetched project name only, or an unavailable-project message when lookup fails. Missing or unrecognized scope is described conservatively as all projects with an ambiguity note."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

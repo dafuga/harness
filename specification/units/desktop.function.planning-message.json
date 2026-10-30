@@ -20,11 +20,13 @@
 			{
 				"name": "planningMessage.context",
 				"type": "PlanningContext",
+				"required": true,
 				"description": "The project planning API and repository context used to read the current plan and append the message."
 			},
 			{
 				"name": "planningMessage.draft",
 				"type": "MessageDraft",
+				"required": true,
 				"description": "The message’s entity, thread, author, text, mode, provider/model and optional version, image hash and Change outcome. Null mode defaults to plan. User messages use Local reviewer; other authors use the provider name or Harness."
 			}
 		],
@@ -41,7 +43,36 @@
 				"type": "thrown",
 				"description": "Rejects a Change message without a current plan approval or whose version differs from that approval. Planning read/write errors also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "planningMessage",
+				"inputs": [
+					{
+						"name": "planningMessage.context",
+						"type": "PlanningContext",
+						"required": true,
+						"description": "The project planning API and repository context used to read the current plan and append the message."
+					},
+					{
+						"name": "planningMessage.draft",
+						"type": "MessageDraft",
+						"required": true,
+						"description": "The message’s entity, thread, author, text, mode, provider/model and optional version, image hash and Change outcome. Null mode defaults to plan. User messages use Local reviewer; other authors use the provider name or Harness."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planningMessage",
+						"type": "unknown",
+						"description": "A promise for the saved display message. A matching image becomes an image reference; a notes-only function, service or config version can become a notes reference. Otherwise no artifact reference is added. Change messages retain the current approval target and default to requested status."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

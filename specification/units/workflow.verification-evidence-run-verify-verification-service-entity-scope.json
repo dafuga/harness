@@ -17,23 +17,28 @@
 		"inputs": [
 			{
 				"name": "scopeFailure.entity",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "scopedScenarios.scenarios",
-				"type": "ScenarioManifest[]"
+				"type": "ScenarioManifest[]",
+				"required": true
 			},
 			{
 				"name": "scopedScenarios.entity",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "scopedCheck.check",
-				"type": "PlannedCheck"
+				"type": "PlannedCheck",
+				"required": true
 			},
 			{
 				"name": "scopedCheck.entity",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -55,7 +60,80 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "scopeFailure",
+				"inputs": [
+					{
+						"name": "scopeFailure.entity",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopeFailure",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "scopedScenarios",
+				"inputs": [
+					{
+						"name": "scopedScenarios.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true
+					},
+					{
+						"name": "scopedScenarios.entity",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopedScenarios",
+						"type": "ScenarioManifest[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scopedCheck",
+				"inputs": [
+					{
+						"name": "scopedCheck.check",
+						"type": "PlannedCheck",
+						"required": true
+					},
+					{
+						"name": "scopedCheck.entity",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopedCheck",
+						"type": "PlannedCheck"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -18,7 +18,8 @@
 		"inputs": [
 			{
 				"name": "CodexRequestValidator.parse.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -27,7 +28,29 @@
 				"type": "GatewayRequest"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CodexRequestValidator.parse",
+				"inputs": [
+					{
+						"name": "CodexRequestValidator.parse.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexRequestValidator.parse",
+						"type": "GatewayRequest"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

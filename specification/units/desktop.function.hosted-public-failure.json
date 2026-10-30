@@ -20,6 +20,7 @@
 			{
 				"name": "hostedPublicFailure.response",
 				"type": "Response",
+				"required": true,
 				"description": "The HTTP response to inspect. At most 4,096 body bytes are read as JSON to look for a recognized public error code."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "A promise for a HostedFailureValidator error object, marked denied for status 401 or 403 and failed otherwise. A recognized code is included in the message; malformed, oversized or unrecognized bodies fall back to the HTTP status. The error object is returned, not thrown here."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hostedPublicFailure",
+				"inputs": [
+					{
+						"name": "hostedPublicFailure.response",
+						"type": "Response",
+						"required": true,
+						"description": "The HTTP response to inspect. At most 4,096 body bytes are read as JSON to look for a recognized public error code."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostedPublicFailure",
+						"type": "unknown",
+						"description": "A promise for a HostedFailureValidator error object, marked denied for status 401 or 403 and failed otherwise. A recognized code is included in the message; malformed, oversized or unrecognized bodies fall back to the HTTP status. The error object is returned, not thrown here."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

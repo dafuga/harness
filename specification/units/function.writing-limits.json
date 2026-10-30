@@ -61,48 +61,57 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "writingDeclared.config",
+				"type": "string | undefined",
+				"required": true,
+				"description": "Verification-config JSON text to check for an applicable numeric writing version."
+			},
+			{
 				"name": "writingPolicy.version",
 				"type": "WritingVersion",
+				"required": true,
 				"description": "Supported writing-policy version, 1 or 2."
 			},
 			{
 				"name": "writingHeld.config",
 				"type": "string | undefined",
+				"required": true,
 				"description": "Verification-config JSON text, or undefined when absent."
-			},
-			{
-				"name": "writingDeclared.config",
-				"type": "string | undefined",
-				"description": "Verification-config JSON text to check for an applicable numeric writing version."
 			},
 			{
 				"name": "writingCount.text",
 				"type": "string",
+				"required": true,
 				"description": "Text to trim, normalize line endings and count."
 			},
 			{
 				"name": "writingProblems.field",
 				"type": "string",
+				"required": true,
 				"description": "Field label to include in any violation message."
 			},
 			{
 				"name": "writingProblems.text",
 				"type": "string",
+				"required": true,
 				"description": "Text to measure against the supplied bounds."
 			},
 			{
 				"name": "writingProblems.limit",
 				"type": "WritingLimit",
+				"required": true,
 				"description": "Character limit and optional word limit; null word limit means no word-count cap."
 			},
 			{
 				"name": "explanationProblems.reason",
 				"type": "WrittenReason",
+				"required": true,
 				"description": "Unit/symbol reason with behavior and simplification/performance attempt text."
 			},
 			{
 				"name": "explanationProblems.version",
 				"type": "WritingVersion",
+				"required": true,
 				"description": "Policy version of the revision the reason explains."
 			}
 		],
@@ -153,7 +162,148 @@
 				"description": "Behavior and attempt violations prefixed with unit and symbol, using whole-unit naming for *."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "writingDeclared",
+				"inputs": [
+					{
+						"name": "writingDeclared.config",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Verification-config JSON text to check for an applicable numeric writing version."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writingDeclared",
+						"type": "boolean",
+						"description": "True when writingHeld finds an applicable policy."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writingPolicy",
+				"inputs": [
+					{
+						"name": "writingPolicy.version",
+						"type": "WritingVersion",
+						"required": true,
+						"description": "Supported writing-policy version, 1 or 2."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writingPolicy",
+						"type": "WritingPolicy",
+						"description": "Bounds for the requested version, reducing attempt words to 15 under version 2."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "writingHeld",
+				"inputs": [
+					{
+						"name": "writingHeld.config",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Verification-config JSON text, or undefined when absent."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writingHeld",
+						"type": "WritingVersion | null",
+						"description": "Highest supported version not above the numeric declaration, or null for absent/invalid/below-one declarations; future versions use the newest supported policy."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writingCount",
+				"inputs": [
+					{
+						"name": "writingCount.text",
+						"type": "string",
+						"required": true,
+						"description": "Text to trim, normalize line endings and count."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writingCount",
+						"type": "{ words: number; characters: number }",
+						"description": "Whitespace-delimited words and Unicode-code-point characters after trimming and CR/LF normalization."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writingProblems",
+				"inputs": [
+					{
+						"name": "writingProblems.field",
+						"type": "string",
+						"required": true,
+						"description": "Field label to include in any violation message."
+					},
+					{
+						"name": "writingProblems.text",
+						"type": "string",
+						"required": true,
+						"description": "Text to measure against the supplied bounds."
+					},
+					{
+						"name": "writingProblems.limit",
+						"type": "WritingLimit",
+						"required": true,
+						"description": "Character limit and optional word limit; null word limit means no word-count cap."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writingProblems",
+						"type": "string[]",
+						"description": "Empty-field or exceeded word/character messages, or an empty list when within bounds."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explanationProblems",
+				"inputs": [
+					{
+						"name": "explanationProblems.reason",
+						"type": "WrittenReason",
+						"required": true,
+						"description": "Unit/symbol reason with behavior and simplification/performance attempt text."
+					},
+					{
+						"name": "explanationProblems.version",
+						"type": "WritingVersion",
+						"required": true,
+						"description": "Policy version of the revision the reason explains."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explanationProblems",
+						"type": "string[]",
+						"description": "Behavior and attempt violations prefixed with unit and symbol, using whole-unit naming for *."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

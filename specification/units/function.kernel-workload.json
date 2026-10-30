@@ -37,24 +37,38 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "kernelWorkload.nodes",
-				"type": "number",
-				"description": "Requested graph node count, normally a nonnegative integer; zero produces an empty changed list."
-			},
-			{
-				"name": "kernelWorkload.seed",
-				"type": "number",
-				"description": "Numeric random seed normalized to an unsigned 32-bit state."
-			},
-			{
 				"name": "kernelMutations.request",
 				"type": "RuntimeRequest",
+				"required": true,
 				"description": "Valid impact request whose input contains graph node/edge arrays and changed ids for mutation."
 			},
 			{
 				"name": "kernelMutations.count",
 				"type": "number",
+				"required": true,
 				"description": "Number of malformed variants to generate by cycling the fixed mutation list."
+			},
+			{
+				"name": "kernelWorkload.nodes",
+				"type": "number",
+				"required": true,
+				"description": "Requested graph node count, normally a nonnegative integer; zero produces an empty changed list."
+			},
+			{
+				"name": "kernelWorkload.seed",
+				"type": "number",
+				"required": true,
+				"description": "Numeric random seed normalized to an unsigned 32-bit state."
+			},
+			{
+				"name": "edges.size",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "edges.next",
+				"type": "Random",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -74,7 +88,98 @@
 				"description": "Raw JSON text fixtures covering numeric extremes, Unicode, depth, duplicate keys and malformed/non-object JSON."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "kernelMutations",
+				"inputs": [
+					{
+						"name": "kernelMutations.request",
+						"type": "RuntimeRequest",
+						"required": true,
+						"description": "Valid impact request whose input contains graph node/edge arrays and changed ids for mutation."
+					},
+					{
+						"name": "kernelMutations.count",
+						"type": "number",
+						"required": true,
+						"description": "Number of malformed variants to generate by cycling the fixed mutation list."
+					}
+				],
+				"outputs": [
+					{
+						"name": "kernelMutations",
+						"type": "unknown[]",
+						"description": "Ordered malformed requests covering missing/wrong fields, duplicate nodes, invalid edges and unsupported operations; later cycles add a round marker."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "kernelTexts",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "kernelTexts",
+						"type": "string[]",
+						"description": "Raw JSON text fixtures covering numeric extremes, Unicode, depth, duplicate keys and malformed/non-object JSON."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "kernelWorkload",
+				"inputs": [
+					{
+						"name": "kernelWorkload.nodes",
+						"type": "number",
+						"required": true,
+						"description": "Requested graph node count, normally a nonnegative integer; zero produces an empty changed list."
+					},
+					{
+						"name": "kernelWorkload.seed",
+						"type": "number",
+						"required": true,
+						"description": "Numeric random seed normalized to an unsigned 32-bit state."
+					}
+				],
+				"outputs": [
+					{
+						"name": "kernelWorkload",
+						"type": "RuntimeRequest",
+						"description": "Impact runtime request with deterministic base/head graphs, removals/additions, changed and uncertain ids and sink selection."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "edges",
+				"inputs": [
+					{
+						"name": "edges.size",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "edges.next",
+						"type": "Random",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "edges",
+						"type": "Array<[number, number]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

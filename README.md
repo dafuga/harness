@@ -634,12 +634,12 @@ versions and dependencies stored at both, and the view says what that cannot kno
 Every capture states what it itself names: the build and revision that produced it, whether
 it is fresh, inherited, rejected or from a record that could not be validated, and the
 verification attempt it belongs to. A rejected or inherited capture is never shown as tested
-at the selected commit, in the gallery, the viewer, the audio card or a portable export.
+at the selected commit, in the gallery, the viewer or the audio card.
 
 **Who may see it.** Harness's own server has one owner. It serves only when started with
 `HARNESS_OWNER_MODE=loopback`, bound to a loopback address, and only to a peer that connects
 from loopback. `Host` and forwarding headers are never authorization, and owner mode is
-refused behind an address header. Without owner mode every page, API, data, media and export
+refused behind an address header. Without owner mode every page, API, data and media
 request is answered `403`. `harness report serve` and `bun run dev:reports` start it that
 way. The former `/`, `/reports/<id>` and `/analytics` routes redirect to `/harness/reports`,
 `/harness/reports/<id>` and `/harness/analytics`.
@@ -654,7 +654,7 @@ shallow clones are the same application; two applications started from one templ
 because shared history decides nothing. A directory that is missing, is no repository or has
 an unclear origin belongs to no site.
 
-The report list, a report page, its JSON, its screenshots, audio, video and exports, and
+Report JSON, screenshots, audio, video and
 every upload go through that one check. A report of another application is answered `404`
 like one that does not exist, whatever project a query names, and nothing can be added to
 it. Analytics count the site's own events only and ignore a `project` parameter; the CPU
@@ -677,8 +677,8 @@ export function harnessPolicy(event: ConsoleRequest): boolean {
 }
 ```
 
-`harness console install` then writes one server-only module and four endpoints under
-`/harness` (the console document, its data, its media and its exports). Each of them asks
+`harness console install` then writes one server-only module and three endpoints under
+`/harness` (the console document, its data and its media). Each of them asks
 the policy first and answers `403` unless it returns exactly `true`; a policy that throws
 denies. The bundled history lives under `$lib/server`, so it is in the server bundle only:
 not in `static/`, not in the client bundle and under no public path. The generated code uses
@@ -733,8 +733,7 @@ generated module opens the bucket bound under that name from the admitted reques
 nothing, and the deployed Worker stays near 0.3 MiB compressed. Upload the index directory
 with its paths unchanged; `harness console objects --data <index> --prefix <path> --json`
 prints the list in the form `wrangler r2 bulk put <bucket> --filename <list>` takes. A binding
-has no public address, so the guarded handlers are the only way to the objects. An export reads
-one object per media file of the record, which counts against the subrequests a Worker may make.
+has no public address, so the guarded handlers are the only way to the objects. Media requests read the registered objects through those handlers.
 
 **Removing the console.** `harness console uninstall --host <dir>` deletes the files an
 install wrote and nobody changed, with the directories they leave empty, and puts back what
@@ -890,9 +889,9 @@ not a broad accuracy guarantee.
 
 ## Analytics and media reports
 
-Harness includes the existing Project Reports website and CLI. Run `harness report serve`
-for the report gallery and open `/analytics` for loop usage, model attribution, Jev first-try rates, filters and live CPU usage. The installed package includes the
-server and portable viewer: serving and finalization do not rebuild source code.
+Harness includes the explorer website and media evidence CLI. Run `harness report serve`
+for the website and open `/harness/analytics` for loop usage, model attribution, Jev first-try rates, filters and live CPU usage. The installed package includes the
+website server: serving and finalization do not rebuild source code.
 `harness report serve` leaves its server running for you, and the report store records which
 process it started on which port. `harness report stop [--port <port>]` ends exactly that
 process and waits until it is gone: a process is signalled only when its id and start time are
@@ -901,7 +900,7 @@ this store did not start, is left alone.
 Existing `PROJECT_REPORTS_HOME` manifests and media remain compatible.
 
 Project Reports is maintained in this repository at `packages/reports`, a Bun workspace.
-The website, media CLI, tests, exports, and presentation skill live there; the separate
+The website, media CLI, tests, and presentation skill live there; the separate
 Project Reports checkout is no longer needed for development or installed report commands.
 From the Harness repository root:
 
@@ -957,8 +956,7 @@ not guess historical Jev judgments from free-form evidence.
 Analytics are stored locally in `~/.codex/harness/analytics.sqlite`. Set
 `HARNESS_ANALYTICS_HOME` to override that directory or `HARNESS_ANALYTICS_DISABLED=1`
 to disable recording. Media retention does not delete analytics. Snapshot export is
-explicit and contains the selected metadata, including project paths; ordinary
-report publication does not expose analytics.
+explicit and contains the selected metadata, including project paths.
 
 The live CPU section refreshes every five seconds and samples a one-second interval.
 It shows whole-machine CPU, disjoint Codex app/Harness/local-agent totals, and safe
@@ -969,12 +967,11 @@ automatically saved or published. The CPU API is
 localhost-only; unsupported platforms or failed samples show unavailable.
 
 Use the existing report operations under `harness report`: `begin`, `record`,
-`import`, `finalize`, `serve`, `publish`, `cleanup`, and `sync-storage`.
+`import`, `finalize`, `serve`, `stop`, `cleanup`, and `sync-storage`.
 Configure project-owned R2 settings through environment variables or an explicit
 `PROJECT_REPORTS_CONFIG_FILE`; use `PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME` for the
-report publisher's isolated Wrangler configuration. Never put credentials in the
-package. Python with reportlab is needed for PDF export; ZIP uses Python's standard
-library. Replay video encoding uses ffmpeg. See `harness info report` and the
+isolated Wrangler configuration that removes earlier Pages publications. Never put
+credentials in the package. Replay video encoding uses ffmpeg. See `harness info report` and the
 reporting workspace README for media and retention details.
 
 Optional `~/.codex/harness/report-settings.json` stores only configuration references:

@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-ui-explorer-kit-pill",
+	"kind": "component",
+	"title": "Explorer pill",
+	"responsibility": "Shows a short inline label, such as a state or a count, in the explorer pill style.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": ["reports.component.shared-primitives-atoms-html-span"]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte"],
+		"symbols": ["Pill"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "Pill.tone",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Extra class names for the owner's styling."
+			},
+			{
+				"name": "Pill.state",
+				"type": "string",
+				"required": false,
+				"description": "Optional state exposed as data-state for styling."
+			},
+			{
+				"name": "Pill.children",
+				"type": "Snippet",
+				"required": true,
+				"description": "The label."
+			}
+		],
+		"outputs": [
+			{
+				"name": "Pill",
+				"type": "markup",
+				"description": "An inline span with the shared ex-pill style."
+			}
+		],
+		"errors": [],
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

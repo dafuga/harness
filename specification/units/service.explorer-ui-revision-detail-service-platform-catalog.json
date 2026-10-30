@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "readPlatformCatalog.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,7 +30,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readPlatformCatalog",
+				"inputs": [
+					{
+						"name": "readPlatformCatalog.tree",
+						"type": "SourceTree",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readPlatformCatalog",
+						"type": "Promise<PlatformCatalog>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

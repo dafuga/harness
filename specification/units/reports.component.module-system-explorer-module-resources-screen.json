@@ -31,7 +31,14 @@
 		"source": [
 			"packages/reports/src/components/module-system/ExplorerModuleResourcesScreen.svelte"
 		],
-		"symbols": ["ExplorerModuleResourcesScreen"]
+		"symbols": [
+			"ExplorerModuleResourcesScreen",
+			"ExplorerModuleResourcesScreen.link",
+			"ExplorerModuleResourcesScreen.command",
+			"ExplorerModuleResourcesScreen.listing",
+			"ExplorerModuleResourcesScreen.unavailable",
+			"ExplorerModuleResourcesScreen.children"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -95,12 +102,6 @@
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
 				"description": "Requests navigation while preserving the selected explorer scope."
-			},
-			{
-				"name": "ExplorerModuleResourcesScreen.exportHref",
-				"type": "string",
-				"required": true,
-				"description": "Project export URL; empty when the host provides no export."
 			}
 		],
 		"outputs": [
@@ -120,6 +121,114 @@
 				"name": "onroute callback error",
 				"type": "thrown",
 				"description": "An error from the host navigation callback propagates when a breadcrumb or plugin link is activated."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerModuleResourcesScreen.link",
+				"inputs": [
+					{
+						"name": "ExplorerModuleResourcesScreen.link.to",
+						"type": "ExplorerLocation",
+						"required": true
+					},
+					{
+						"name": "ExplorerModuleResourcesScreen.link.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerModuleResourcesScreen.link",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.command",
+				"inputs": [
+					{
+						"name": "ExplorerModuleResourcesScreen.command.label",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ExplorerModuleResourcesScreen.command.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerModuleResourcesScreen.command",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.listing",
+				"inputs": [
+					{
+						"name": "ExplorerModuleResourcesScreen.listing.found",
+						"type": "ModuleEntry",
+						"required": true
+					},
+					{
+						"name": "ExplorerModuleResourcesScreen.listing.kind",
+						"type": "ModuleResource",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerModuleResourcesScreen.listing",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.unavailable",
+				"inputs": [
+					{
+						"name": "ExplorerModuleResourcesScreen.unavailable.found",
+						"type": "ModuleEntry",
+						"required": true
+					},
+					{
+						"name": "ExplorerModuleResourcesScreen.unavailable.kind",
+						"type": "ModuleResource",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerModuleResourcesScreen.unavailable",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerModuleResourcesScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

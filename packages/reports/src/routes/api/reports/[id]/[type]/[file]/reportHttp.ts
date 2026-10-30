@@ -18,20 +18,12 @@ function assetIsRemote(run: Report, file: string) {
 
 export async function reportFile(id: string, type: string, file: string, range?: string | null) {
 	const run = await repository.get(id);
-	const assets = type === 'assets';
-	if (!['assets', 'exports'].includes(type)) error(404, 'Not found');
-	const registered = assets ? [file] : Object.values(run.exports ?? {});
-	if (!registered.includes(file)) error(404, 'Not found');
-	const remote = assets && assetIsRemote(run, file);
+	if (type !== 'assets') error(404, 'Not found');
+	const remote = assetIsRemote(run, file);
 	const bytes = remote
 		? await remoteAsset(id, file, remote)
-		: await readFile(await registeredAsset(join(repository.directory(id), type), file, registered));
-	return mediaResponse(
-		bytes,
-		mediaMime(file),
-		range,
-		assets ? 'inline' : `attachment; filename="${file}"`
-	);
+		: await readFile(await registeredAsset(join(repository.directory(id), type), file, [file]));
+	return mediaResponse(bytes, mediaMime(file), range, 'inline');
 }
 
 async function remoteAsset(id: string, file: string, storage: 'r2' | 'r2-evidence') {

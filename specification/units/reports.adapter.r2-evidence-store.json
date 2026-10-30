@@ -23,8 +23,7 @@
 			"R2EvidenceStoreAdapter.put",
 			"R2EvidenceStoreAdapter.get",
 			"R2EvidenceStoreAdapter.putReplay",
-			"R2EvidenceStoreAdapter.getReplay",
-			"R2EvidenceStoreAdapter.putPublication"
+			"R2EvidenceStoreAdapter.getReplay"
 		]
 	},
 	"contract": {
@@ -32,83 +31,88 @@
 		"inputs": [
 			{
 				"name": "evidenceObjectKey.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "evidenceObjectKey.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "replayObjectKey.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "replayObjectKey.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.constructor.config",
-				"type": "R2ScreenshotStoreAdapterConfig"
+				"type": "R2ScreenshotStoreAdapterConfig",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.constructor.client",
-				"type": "S3Client"
+				"type": "S3Client",
+				"required": false
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put.bytes",
-				"type": "Buffer"
+				"type": "Buffer",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put.mime",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.get.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.get.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.putReplay.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.putReplay.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.putReplay.bytes",
-				"type": "Buffer"
+				"type": "Buffer",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay.file",
-				"type": "string"
-			},
-			{
-				"name": "R2EvidenceStoreAdapter.putPublication.reportId",
-				"type": "string"
-			},
-			{
-				"name": "R2EvidenceStoreAdapter.putPublication.version",
-				"type": "string"
-			},
-			{
-				"name": "R2EvidenceStoreAdapter.putPublication.file",
-				"type": "{ path: string; bytes: Buffer; mime: string }"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -139,16 +143,215 @@
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay",
 				"type": "unknown"
-			},
-			{
-				"name": "R2EvidenceStoreAdapter.putPublication",
-				"type": "unknown"
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "evidenceObjectKey",
+				"inputs": [
+					{
+						"name": "evidenceObjectKey.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "evidenceObjectKey.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "evidenceObjectKey",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "replayObjectKey",
+				"inputs": [
+					{
+						"name": "replayObjectKey.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "replayObjectKey.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "replayObjectKey",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.fromEnvironment",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.fromEnvironment",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.put",
+				"inputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.put.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2EvidenceStoreAdapter.put.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2EvidenceStoreAdapter.put.bytes",
+						"type": "Buffer",
+						"required": true
+					},
+					{
+						"name": "R2EvidenceStoreAdapter.put.mime",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.put",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.get",
+				"inputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.get.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2EvidenceStoreAdapter.get.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.get",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.putReplay",
+				"inputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.putReplay.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2EvidenceStoreAdapter.putReplay.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2EvidenceStoreAdapter.putReplay.bytes",
+						"type": "Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.putReplay",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2EvidenceStoreAdapter.getReplay",
+				"inputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.getReplay.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2EvidenceStoreAdapter.getReplay.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.getReplay",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "R2EvidenceStoreAdapter.constructor",
+				"inputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.constructor.config",
+						"type": "R2ScreenshotStoreAdapterConfig",
+						"required": true
+					},
+					{
+						"name": "R2EvidenceStoreAdapter.constructor.client",
+						"type": "S3Client",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2EvidenceStoreAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

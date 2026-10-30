@@ -19,9 +19,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlImg.attributes",
-				"type": "SvelteHTMLElements['img']",
-				"description": "Native img attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+				"name": "HtmlImg.children",
+				"type": "Snippet",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -31,7 +31,9 @@
 				"description": "The actual native img element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

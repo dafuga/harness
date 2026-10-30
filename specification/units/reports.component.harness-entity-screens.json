@@ -39,36 +39,43 @@
 			{
 				"name": "EntityScreens.options",
 				"type": "ScreenOption[]",
+				"required": true,
 				"description": "Available visual scenarios and viewports. Overview uses the fixed page preview, or the first declared scenario and state."
 			},
 			{
 				"name": "EntityScreens.evidence",
 				"type": "ExplorerEvidence",
+				"required": true,
 				"description": "Required captures/comparison mode and incomparability reasons."
 			},
 			{
 				"name": "EntityScreens.scope",
 				"type": "ExplorerScope",
+				"required": true,
 				"description": "Required commit/parent context for labels and links."
 			},
 			{
 				"name": "EntityScreens.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "Required prefix concatenated with screenshot files."
 			},
 			{
 				"name": "EntityScreens.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required navigation to tests or selected-commit view."
 			},
 			{
 				"name": "EntityScreens.reasons",
 				"type": "Reasons",
+				"required": true,
 				"description": "Required recorded change reasons, shown for paired comparisons with original text available."
 			},
 			{
 				"name": "EntityScreens.preview",
-				"type": "ScreenPick | undefined",
+				"type": "ScreenPick",
+				"required": false,
 				"description": "Exact optional scenario, state and initial viewport declared for this page. Viewport buttons preserve its scenario and state."
 			}
 		],
@@ -79,7 +86,9 @@
 				"description": "Captions show the revision that recorded each screenshot; a comparison retains Before/After labels with each capture's revision. Viewport buttons change only the viewport. Activating an image opens its full-size viewer with provenance. Rejected or absent captures remain explicit gaps."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

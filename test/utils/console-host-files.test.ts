@@ -14,18 +14,17 @@ test('the host gets one server-only module and its endpoints under the base rout
 		'src/routes/harness/+server.ts',
 		'src/routes/harness/[...view]/+server.ts',
 		'src/routes/harness/data/[...path]/+server.ts',
-		'src/routes/harness/export/[commit]/+server.ts',
 		'src/routes/harness/media/[file]/+server.ts'
 	]);
 	const moved = consoleHostFiles({ base: '/ops', policyModule: '$lib/p', policyExport: 'p' });
 	expect(moved[1].path).toBe('src/routes/ops/+server.ts');
-	expect(moved[0].contents).toContain("{ base: '/ops', exportable: true }");
+	expect(moved[0].contents).toContain("{ base: '/ops' }");
 });
 
 test('the server module binds the host policy, and no endpoint answers without it', () => {
 	const server = contents('src/lib/server/harness/console.ts');
 	expect(server).toContain("import { adminOnly as policy } from '$lib/server/harnessPolicy';");
-	expect(server).toContain('consoleAccess({ policy, data, exporter: consoleExporter, host })');
+	expect(server).toContain('consoleAccess({ policy, data, host })');
 	expect(server).toContain("import.meta.glob('./data/media/*.ts')");
 	for (const route of [
 		'src/routes/harness/+server.ts',
@@ -35,9 +34,6 @@ test('the server module binds the host policy, and no endpoint answers without i
 	}
 	expect(contents('src/routes/harness/data/[...path]/+server.ts')).toContain(
 		'harness.json(event, event.params.path'
-	);
-	expect(contents('src/routes/harness/export/[commit]/+server.ts')).toContain(
-		"harness.report(event, event.params.commit ?? '', record)"
 	);
 	expect(contents('src/routes/harness/media/[file]/+server.ts')).toContain(
 		'harness.media(event, event.params.file'

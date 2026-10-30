@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/DetailsPanel.svelte",
-			"packages/desktop/src/components/shared-primitives/DetailsPanel.svelte"
-		],
-		"symbols": ["DetailsPanel", "DetailsPanel"]
+		"source": ["packages/desktop/src/components/shared-primitives/DetailsPanel.svelte"],
+		"symbols": ["DetailsPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +28,13 @@
 			{
 				"name": "DetailsPanel.entity",
 				"type": "EntityDetail",
+				"required": true,
 				"description": "Entity supplying its kind, size and performance text, owned source paths and identifier. A source request is scoped to this identifier. An empty source list produces “No source files recorded.”"
 			},
 			{
 				"name": "DetailsPanel.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace supplying the source-reading bridge, snapshot revision commit and project context. These are required when a source is selected. Failures during that request, including unavailable required context, are caught and shown as text."
 			}
 		],
@@ -46,7 +45,9 @@
 				"description": "Source files for the displayed entity and revision. Choosing a file clears old text and errors, requests its contents and shows the result. A failed read displays an alert."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

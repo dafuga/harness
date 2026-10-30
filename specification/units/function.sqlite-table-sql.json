@@ -16,21 +16,25 @@
 			{
 				"name": "sqliteIdentifier.identifier",
 				"type": "string",
+				"required": true,
 				"description": "An unquoted SQLite identifier that must begin with a letter or underscore and contain only letters, digits or underscores."
 			},
 			{
 				"name": "sqliteColumn.property",
 				"type": "string",
+				"required": true,
 				"description": "An application property name whose declared column override or snake-case name is requested."
 			},
 			{
 				"name": "sqliteColumn.field",
 				"type": "SqliteField",
+				"required": true,
 				"description": "The field metadata, including an optional explicit database column name."
 			},
 			{
 				"name": "sqliteTableSql.model",
 				"type": "SqliteModel",
+				"required": true,
 				"description": "The table, primary-key and field declarations used to form the CREATE TABLE statement."
 			}
 		],
@@ -57,7 +61,86 @@
 				"type": "thrown",
 				"description": "Raised for an invalid identifier, a missing primary-key field, duplicate column names or an unsupported SQLite field type."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "sqliteIdentifier",
+				"inputs": [
+					{
+						"name": "sqliteIdentifier.identifier",
+						"type": "string",
+						"required": true,
+						"description": "An unquoted SQLite identifier that must begin with a letter or underscore and contain only letters, digits or underscores."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sqliteIdentifier",
+						"type": "string",
+						"description": "The validated identifier wrapped in SQLite double quotes."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sqliteColumn",
+				"inputs": [
+					{
+						"name": "sqliteColumn.property",
+						"type": "string",
+						"required": true,
+						"description": "An application property name whose declared column override or snake-case name is requested."
+					},
+					{
+						"name": "sqliteColumn.field",
+						"type": "SqliteField",
+						"required": true,
+						"description": "The field metadata, including an optional explicit database column name."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sqliteColumn",
+						"type": "string",
+						"description": "The explicit database column name or the property name converted to snake case."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sqliteTableSql",
+				"inputs": [
+					{
+						"name": "sqliteTableSql.model",
+						"type": "SqliteModel",
+						"required": true,
+						"description": "The table, primary-key and field declarations used to form the CREATE TABLE statement."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sqliteTableSql",
+						"type": "string",
+						"description": "A CREATE TABLE IF NOT EXISTS statement with mapped column types, nullability, primary-key and timestamp-default clauses."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

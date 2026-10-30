@@ -32,11 +32,13 @@
 		"inputs": [
 			{
 				"name": "CapacitorBridgeAdapter.constructor.config",
-				"type": "CapacitorBridgeAdapterConfig"
+				"type": "CapacitorBridgeAdapterConfig",
+				"required": true
 			},
 			{
 				"name": "CapacitorBridgeAdapter.allow.status",
-				"type": "RemoteNativeStatus | null"
+				"type": "RemoteNativeStatus | null",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -53,6 +55,59 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CapacitorBridgeAdapter.allow",
+				"inputs": [
+					{
+						"name": "CapacitorBridgeAdapter.allow.status",
+						"type": "RemoteNativeStatus | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CapacitorBridgeAdapter.allow",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CapacitorBridgeAdapter.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CapacitorBridgeAdapter.connect",
+						"type": "DesktopBridge"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CapacitorBridgeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "CapacitorBridgeAdapter.constructor.config",
+						"type": "CapacitorBridgeAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CapacitorBridgeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

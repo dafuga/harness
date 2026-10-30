@@ -41,16 +41,19 @@
 			{
 				"name": "runtimeFailure.code",
 				"type": "string",
+				"required": true,
 				"description": "Stable failure code to return unchanged."
 			},
 			{
 				"name": "runtimeFailure.message",
 				"type": "string",
+				"required": true,
 				"description": "Human-readable failure detail to return unchanged."
 			},
 			{
 				"name": "runtimeTimeout.timeoutMs",
 				"type": "number",
+				"required": true,
 				"description": "Timeout duration in milliseconds to name in the failure message."
 			}
 		],
@@ -71,7 +74,56 @@
 				"description": "Failure envelope with code runtime-timeout and a message naming the timeout duration."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "runtimeFailure",
+				"inputs": [
+					{
+						"name": "runtimeFailure.code",
+						"type": "string",
+						"required": true,
+						"description": "Stable failure code to return unchanged."
+					},
+					{
+						"name": "runtimeFailure.message",
+						"type": "string",
+						"required": true,
+						"description": "Human-readable failure detail to return unchanged."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runtimeFailure",
+						"type": "RuntimeResponse",
+						"description": "Failure envelope with ok false and the supplied code/message."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "runtimeTimeout",
+				"inputs": [
+					{
+						"name": "runtimeTimeout.timeoutMs",
+						"type": "number",
+						"required": true,
+						"description": "Timeout duration in milliseconds to name in the failure message."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runtimeTimeout",
+						"type": "RuntimeResponse",
+						"description": "Failure envelope with code runtime-timeout and a message naming the timeout duration."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

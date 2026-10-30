@@ -29,16 +29,22 @@
 			{
 				"name": "harnessBudget.found",
 				"type": "Measurement | undefined",
+				"required": true,
 				"description": "Recorded measurement or undefined."
 			},
 			{
 				"name": "harnessBudget.finding",
 				"type": "Finding",
+				"required": false,
 				"description": "Optional budget finding supplying baseline, status and measured value."
 			},
 			{
 				"name": "harnessBudget.known",
 				"type": "Reviewed",
+				"required": false,
+				"default": {
+					"declared": true
+				},
 				"description": "Optional reviewed-limit knowledge, defaulting to a declared freeze with no numeric limit."
 			}
 		],
@@ -49,7 +55,45 @@
 				"description": "Value, limit and optional partial/growth note. Prefers the finding baseline over the ledger limit; otherwise distinguishes reviewed-unmeasurable, no value, merely declared freeze and no limit. Missing measurements and null values remain explicit."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "harnessBudget",
+				"inputs": [
+					{
+						"name": "harnessBudget.found",
+						"type": "Measurement | undefined",
+						"required": true,
+						"description": "Recorded measurement or undefined."
+					},
+					{
+						"name": "harnessBudget.finding",
+						"type": "Finding",
+						"required": false,
+						"description": "Optional budget finding supplying baseline, status and measured value."
+					},
+					{
+						"name": "harnessBudget.known",
+						"type": "Reviewed",
+						"required": false,
+						"default": {
+							"declared": true
+						},
+						"description": "Optional reviewed-limit knowledge, defaulting to a declared freeze with no numeric limit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessBudget",
+						"type": "FrozenLine",
+						"description": "Value, limit and optional partial/growth note. Prefers the finding baseline over the ledger limit; otherwise distinguishes reviewed-unmeasurable, no value, merely declared freeze and no limit. Missing measurements and null values remain explicit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -22,11 +22,13 @@
 			{
 				"name": "impactSeeds.changes",
 				"type": "TreeChange[]",
+				"required": true,
 				"description": "Added, modified or removed file changes to classify; removed paths use the base side."
 			},
 			{
 				"name": "impactSeeds.sides",
 				"type": "Sides",
+				"required": true,
 				"description": "Base and head snapshots providing workspace config and active unit ownership."
 			}
 		],
@@ -37,7 +39,36 @@
 				"description": "Classified changes, graph seed ids, directly touched units and expansion reasons. Ignored paths produce no seeds; unit manifests seed their unit and owned files on both sides, scenarios seed their scenario, and global/other paths require expansion."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "impactSeeds",
+				"inputs": [
+					{
+						"name": "impactSeeds.changes",
+						"type": "TreeChange[]",
+						"required": true,
+						"description": "Added, modified or removed file changes to classify; removed paths use the base side."
+					},
+					{
+						"name": "impactSeeds.sides",
+						"type": "Sides",
+						"required": true,
+						"description": "Base and head snapshots providing workspace config and active unit ownership."
+					}
+				],
+				"outputs": [
+					{
+						"name": "impactSeeds",
+						"type": "ImpactSeeds",
+						"description": "Classified changes, graph seed ids, directly touched units and expansion reasons. Ignored paths produce no seeds; unit manifests seed their unit and owned files on both sides, scenarios seed their scenario, and global/other paths require expansion."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

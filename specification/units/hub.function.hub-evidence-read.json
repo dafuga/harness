@@ -20,11 +20,13 @@
 			{
 				"name": "hubEvidenceRead.context",
 				"type": "EvidenceRead",
+				"required": true,
 				"description": "Actor, route project ID, request and projection service."
 			},
 			{
 				"name": "hubEvidenceRead.operation",
 				"type": "string",
+				"required": true,
 				"description": "evidence selects the JSON evidence read; every other value selects the artifact path."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "405 method-denied JSON for non-GET requests, otherwise evidence JSON or artifact bytes with no-store and no-sniff headers and the attested media type."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubEvidenceRead",
+				"inputs": [
+					{
+						"name": "hubEvidenceRead.context",
+						"type": "EvidenceRead",
+						"required": true,
+						"description": "Actor, route project ID, request and projection service."
+					},
+					{
+						"name": "hubEvidenceRead.operation",
+						"type": "string",
+						"required": true,
+						"description": "evidence selects the JSON evidence read; every other value selects the artifact path."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidenceRead",
+						"type": "Promise<Response>",
+						"description": "405 method-denied JSON for non-GET requests, otherwise evidence JSON or artifact bytes with no-store and no-sniff headers and the attested media type."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

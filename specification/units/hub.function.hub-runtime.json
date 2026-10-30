@@ -20,6 +20,7 @@
 			{
 				"name": "hubRuntime.env",
 				"type": "HubEnv",
+				"required": true,
 				"description": "Hub environment with optional authentication database, cache, relay binding and collaboration repository settings."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Runtime with auth, nullable remote access and connect(). Connecting creates collaboration and projection services using configured repository identity and auth-provided tokens. Missing required repository settings throw collaboration-disabled."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubRuntime",
+				"inputs": [
+					{
+						"name": "hubRuntime.env",
+						"type": "HubEnv",
+						"required": true,
+						"description": "Hub environment with optional authentication database, cache, relay binding and collaboration repository settings."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubRuntime",
+						"type": "HubApiRuntime",
+						"description": "Runtime with auth, nullable remote access and connect(). Connecting creates collaboration and projection services using configured repository identity and auth-provided tokens. Missing required repository settings throw collaboration-disabled."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

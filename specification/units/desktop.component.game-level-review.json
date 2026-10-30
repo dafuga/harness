@@ -36,46 +36,57 @@
 			{
 				"name": "GameLevelReview.proposal",
 				"type": "LevelProposal",
+				"required": true,
 				"description": "Validated geometry and summary awaiting human review."
 			},
 			{
 				"name": "GameLevelReview.providers",
 				"type": "ProviderState[] | null",
+				"required": true,
 				"description": "Discovered labels for the provider and model that proposed this layout."
 			},
 			{
 				"name": "GameLevelReview.approved",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Whether the human approved this exact proposal."
 			},
 			{
 				"name": "GameLevelReview.built",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Whether the approved proposal has been materialized into playable geometry."
 			},
 			{
 				"name": "GameLevelReview.status",
 				"type": "LevelStatus",
+				"required": true,
 				"description": "Availability, pending request and error information."
 			},
 			{
 				"name": "GameLevelReview.regenerate",
 				"type": "(feedback: string) => void",
+				"required": true,
 				"description": "Request a replacement proposal using the entered changes."
 			},
 			{
 				"name": "GameLevelReview.approve",
 				"type": "() => void",
+				"required": true,
 				"description": "Explicitly approve this exact current proposal."
 			},
 			{
 				"name": "GameLevelReview.build",
 				"type": "() => void",
+				"required": true,
 				"description": "Build the current approved proposal, unlocking checkpoints."
 			},
 			{
 				"name": "GameLevelReview.edit",
 				"type": "() => void",
+				"required": true,
 				"description": "Return to the level brief without losing saved geometry."
 			}
 		],
@@ -86,7 +97,9 @@
 				"description": "Review generated geometry, request revisions and explicitly approve a level."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

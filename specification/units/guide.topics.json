@@ -25,15 +25,18 @@
 		"inputs": [
 			{
 				"name": "availableGuideTopics.entries",
-				"type": "TopicEntry[]"
+				"type": "TopicEntry[]",
+				"required": true
 			},
 			{
 				"name": "findGuideByTopic.guides",
-				"type": "Guide[]"
+				"type": "Guide[]",
+				"required": true
 			},
 			{
 				"name": "findGuideByTopic.topic",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +49,52 @@
 				"type": "Guide | undefined"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "availableGuideTopics",
+				"inputs": [
+					{
+						"name": "availableGuideTopics.entries",
+						"type": "TopicEntry[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "availableGuideTopics",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "findGuideByTopic",
+				"inputs": [
+					{
+						"name": "findGuideByTopic.guides",
+						"type": "Guide[]",
+						"required": true
+					},
+					{
+						"name": "findGuideByTopic.topic",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "findGuideByTopic",
+						"type": "Guide | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

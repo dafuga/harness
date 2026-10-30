@@ -31,15 +31,18 @@
 		"inputs": [
 			{
 				"name": "LoginChallengeService.constructor.options",
-				"type": "LoginChallengeOptions"
+				"type": "LoginChallengeOptions",
+				"required": true
 			},
 			{
 				"name": "LoginChallengeService.consume.cookie",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			},
 			{
 				"name": "LoginChallengeService.consume.csrf",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -56,7 +59,65 @@
 				"type": "Promise<string>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LoginChallengeService.issue",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LoginChallengeService.issue",
+						"type": "Promise<IssuedChallenge>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LoginChallengeService.consume",
+				"inputs": [
+					{
+						"name": "LoginChallengeService.consume.cookie",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "LoginChallengeService.consume.csrf",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LoginChallengeService.consume",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LoginChallengeService.constructor",
+				"inputs": [
+					{
+						"name": "LoginChallengeService.constructor.options",
+						"type": "LoginChallengeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LoginChallengeService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

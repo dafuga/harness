@@ -21,10 +21,9 @@
 	},
 	"owns": {
 		"source": [
-			"packages/hub/src/components/native-approval/NativeApproval.svelte",
 			"packages/hub/src/components/shared-primitives/native-approval/NativeApproval.svelte"
 		],
-		"symbols": ["NativeApproval", "NativeApproval"]
+		"symbols": ["NativeApproval"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -32,6 +31,7 @@
 			{
 				"name": "NativeApproval.handoffId",
 				"type": "string",
+				"required": true,
 				"description": "Required identifier used to read the native request and approve it. Loading occurs on mount; prop changes alone do not reload."
 			}
 		],
@@ -42,7 +42,9 @@
 				"description": "Names the account and requested projects, explains role-limited viewing, comments and agent changes, and accepts a device code in a POST body. Never puts the code or credential in a link."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

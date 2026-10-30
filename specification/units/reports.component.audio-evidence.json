@@ -31,11 +31,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/AudioEvidence.svelte",
 			"packages/reports/src/components/verification-evidence/AudioEvidence.svelte",
 			"packages/reports/src/components/verification-evidence/AudioEvidence.types.ts"
 		],
-		"symbols": ["AudioEvidence", "AudioEvidence", "AudioEvent"]
+		"symbols": ["AudioEvidence", "AudioEvent"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,7 +66,9 @@
 				"description": "Audio card with user-initiated controls and no preload. Playing pauses other document audio; destruction pauses its player. Missing audio exposes notes. Transcript disclosure starts open when text exists. Shows provenance/time and a sanitized download filename with phase and recognized extension. Playback metadata fills missing duration but does not change recorded status."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

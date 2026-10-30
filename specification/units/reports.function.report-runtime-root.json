@@ -23,7 +23,23 @@
 				"description": "Environment override HARNESS_REPORTS_RUNTIME_ROOT when non-nullish, otherwise the resolved directory two levels above the current module URL."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reportRuntimeRoot",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "reportRuntimeRoot",
+						"type": "unknown",
+						"description": "Environment override HARNESS_REPORTS_RUNTIME_ROOT when non-nullish, otherwise the resolved directory two levels above the current module URL."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

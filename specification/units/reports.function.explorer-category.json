@@ -26,11 +26,13 @@
 			{
 				"name": "explorerCategory.unit",
 				"type": "Classified",
+				"required": true,
 				"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
 			},
 			{
 				"name": "explorerRole.unit",
 				"type": "Classified",
+				"required": true,
 				"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
 			}
 		],
@@ -46,7 +48,50 @@
 				"description": "Page for rendering routes, Route loader for non-rendering route kinds, otherwise a known friendly role or words derived from the kind."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "explorerCategory",
+				"inputs": [
+					{
+						"name": "explorerCategory.unit",
+						"type": "Classified",
+						"required": true,
+						"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerCategory",
+						"type": "ExplorerCategory | null",
+						"description": "Rendering routes are Pages. Source-declared persisted data wrappers are Models; existing shared interface and alias modules are Types. Helpers require purity and two distinct runtime consumers. Unproven or internal modules have no collection."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explorerRole",
+				"inputs": [
+					{
+						"name": "explorerRole.unit",
+						"type": "Classified",
+						"required": true,
+						"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerRole",
+						"type": "string",
+						"description": "Page for rendering routes, Route loader for non-rendering route kinds, otherwise a known friendly role or words derived from the kind."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

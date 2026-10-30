@@ -20,16 +20,19 @@
 			{
 				"name": "projectionCachePurge.directory",
 				"type": "string",
+				"required": true,
 				"description": "The directory to scan for lookup and projection JSON cache files with 64-character hexadecimal names."
 			},
 			{
 				"name": "projectionCachePurge.principalId",
 				"type": "string",
+				"required": true,
 				"description": "The principal identity whose cache entries should be removed."
 			},
 			{
 				"name": "projectionCachePurge.projectId",
 				"type": "string",
+				"required": false,
 				"description": "Optional project identity. If omitted or empty, all matching-principal projects are selected; otherwise that project and the shared project-list entry are selected."
 			}
 		],
@@ -40,7 +43,42 @@
 				"description": "A promise completing after matching files are removed. Recognized files with missing or unparseable identity are also removed, regardless of principal. A directory-listing failure is treated as no entries; unlink failures propagate."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "projectionCachePurge",
+				"inputs": [
+					{
+						"name": "projectionCachePurge.directory",
+						"type": "string",
+						"required": true,
+						"description": "The directory to scan for lookup and projection JSON cache files with 64-character hexadecimal names."
+					},
+					{
+						"name": "projectionCachePurge.principalId",
+						"type": "string",
+						"required": true,
+						"description": "The principal identity whose cache entries should be removed."
+					},
+					{
+						"name": "projectionCachePurge.projectId",
+						"type": "string",
+						"required": false,
+						"description": "Optional project identity. If omitted or empty, all matching-principal projects are selected; otherwise that project and the shared project-list entry are selected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectionCachePurge",
+						"type": "unknown",
+						"description": "A promise completing after matching files are removed. Recognized files with missing or unparseable identity are also removed, regardless of principal. A directory-listing failure is treated as no entries; unlink failures propagate."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

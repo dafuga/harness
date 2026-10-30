@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "parseAuditProfile.profile",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,7 +30,34 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "parseAuditProfile",
+				"inputs": [
+					{
+						"name": "parseAuditProfile.profile",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseAuditProfile",
+						"type": "AuditProfile"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

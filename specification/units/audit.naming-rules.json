@@ -20,11 +20,13 @@
 		"inputs": [
 			{
 				"name": "auditTypeScriptNaming.file",
-				"type": "AuditFile"
+				"type": "AuditFile",
+				"required": true
 			},
 			{
 				"name": "auditSqlNaming.file",
-				"type": "AuditFile"
+				"type": "AuditFile",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +39,47 @@
 				"type": "AuditFinding[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "auditTypeScriptNaming",
+				"inputs": [
+					{
+						"name": "auditTypeScriptNaming.file",
+						"type": "AuditFile",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditTypeScriptNaming",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "auditSqlNaming",
+				"inputs": [
+					{
+						"name": "auditSqlNaming.file",
+						"type": "AuditFile",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditSqlNaming",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

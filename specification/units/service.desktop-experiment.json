@@ -24,23 +24,28 @@
 		"inputs": [
 			{
 				"name": "DesktopExperimentService.plan.sources",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			},
 			{
 				"name": "DesktopExperimentService.plan.options",
-				"type": "{ dataPath: string; catalogPath: string }"
+				"type": "{ dataPath: string; catalogPath: string }",
+				"required": true
 			},
 			{
 				"name": "replaceOnce.source",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "replaceOnce.anchor",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "replaceOnce.replacement",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,7 +63,67 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DesktopExperimentService.plan",
+				"inputs": [
+					{
+						"name": "DesktopExperimentService.plan.sources",
+						"type": "Map<string, string>",
+						"required": true
+					},
+					{
+						"name": "DesktopExperimentService.plan.options",
+						"type": "{ dataPath: string; catalogPath: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DesktopExperimentService.plan",
+						"type": "Map<string, string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "replaceOnce",
+				"inputs": [
+					{
+						"name": "replaceOnce.source",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "replaceOnce.anchor",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "replaceOnce.replacement",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "replaceOnce",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

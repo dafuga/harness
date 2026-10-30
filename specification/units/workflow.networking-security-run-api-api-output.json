@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "apiOutput.result",
-				"type": "ApiResponse | unknown"
+				"type": "ApiResponse | unknown",
+				"required": true
 			},
 			{
 				"name": "apiOutput.options",
-				"type": "HarnessApiOptions"
+				"type": "HarnessApiOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -33,7 +35,39 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "apiOutput",
+				"inputs": [
+					{
+						"name": "apiOutput.result",
+						"type": "ApiResponse | unknown",
+						"required": true
+					},
+					{
+						"name": "apiOutput.options",
+						"type": "HarnessApiOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiOutput",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

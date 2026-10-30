@@ -27,16 +27,19 @@
 			{
 				"name": "prepareProjectRun.preparation",
 				"type": "Preparation",
+				"required": true,
 				"description": "The project session, provider discovery, image generator and event callback."
 			},
 			{
 				"name": "prepareProjectRun.request",
 				"type": "ProjectRunRequest",
+				"required": true,
 				"description": "A creation request with create intent, plan mode, explicit project identity and chosen provider, model and effort."
 			},
 			{
 				"name": "prepareProjectRun.controller",
 				"type": "AbortController",
+				"required": true,
 				"description": "The cancellation controller whose signal will govern the run."
 			}
 		],
@@ -58,7 +61,51 @@
 				"type": "thrown",
 				"description": "Rejects when the controller is already aborted after project and provider preparation, before returning the context."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "prepareProjectRun",
+				"inputs": [
+					{
+						"name": "prepareProjectRun.preparation",
+						"type": "Preparation",
+						"required": true,
+						"description": "The project session, provider discovery, image generator and event callback."
+					},
+					{
+						"name": "prepareProjectRun.request",
+						"type": "ProjectRunRequest",
+						"required": true,
+						"description": "A creation request with create intent, plan mode, explicit project identity and chosen provider, model and effort."
+					},
+					{
+						"name": "prepareProjectRun.controller",
+						"type": "AbortController",
+						"required": true,
+						"description": "The cancellation controller whose signal will govern the run."
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareProjectRun",
+						"type": "Promise<ProjectRunContext>",
+						"description": "A promise for a fresh run identity, selected mutable project and revision, planning access, exact chosen runner and cancellation signal. No entity or design is created by this helper."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					},
+					{
+						"name": "RunCancelled",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

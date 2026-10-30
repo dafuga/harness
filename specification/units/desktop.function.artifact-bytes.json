@@ -30,11 +30,13 @@
 			{
 				"name": "artifactBytes.bridge",
 				"type": "Pick<DesktopBridge, 'artifact'>",
+				"required": true,
 				"description": "A connection with an optional artifact reader. A connection without that operation is refused."
 			},
 			{
 				"name": "artifactBytes.query",
 				"type": "EvidenceArtifactQuery",
+				"required": true,
 				"description": "The exact capture request, including its binding and expected SHA-256 hash. Passed unchanged to the artifact reader."
 			}
 		],
@@ -61,7 +63,41 @@
 				"type": "thrown",
 				"description": "Rejects if artifact reading is unavailable or the bytes have a different hash. Backend and hashing failures propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "artifactBytes",
+				"inputs": [
+					{
+						"name": "artifactBytes.bridge",
+						"type": "Pick<DesktopBridge, 'artifact'>",
+						"required": true,
+						"description": "A connection with an optional artifact reader. A connection without that operation is refused."
+					},
+					{
+						"name": "artifactBytes.query",
+						"type": "EvidenceArtifactQuery",
+						"required": true,
+						"description": "The exact capture request, including its binding and expected SHA-256 hash. Passed unchanged to the artifact reader."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artifactBytes",
+						"type": "Promise<EvidenceArtifactResult>",
+						"description": "A promise for copied bytes, the reader’s media type and the independently calculated SHA-256 hash. The bytes must match the requested hash, regardless of the hash claimed by the answer."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

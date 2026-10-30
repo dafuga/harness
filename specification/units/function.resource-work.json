@@ -16,21 +16,26 @@
 			{
 				"name": "resourceWork.request",
 				"type": "Partial<ResourceRequest>",
+				"required": true,
 				"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
 			},
 			{
 				"name": "resourceWork.action",
 				"type": "(context: ResourceContext) => Promise<T>",
+				"required": true,
 				"description": "Asynchronous work executed only after admission; receives the bounded resource context."
 			},
 			{
 				"name": "resourceWork.env",
 				"type": "Record<string, string | undefined>",
+				"required": false,
 				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
 			},
 			{
 				"name": "resourceWork.options",
 				"type": "Omit<RunOptions, 'env'>",
+				"required": false,
+				"default": {},
 				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
 			}
 		],
@@ -41,7 +46,49 @@
 				"description": "Admitted operation result, with reservation and connection released after success or failure."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "resourceWork",
+				"inputs": [
+					{
+						"name": "resourceWork.request",
+						"type": "Partial<ResourceRequest>",
+						"required": true,
+						"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+					},
+					{
+						"name": "resourceWork.action",
+						"type": "(context: ResourceContext) => Promise<T>",
+						"required": true,
+						"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+					},
+					{
+						"name": "resourceWork.env",
+						"type": "Record<string, string | undefined>",
+						"required": false,
+						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+					},
+					{
+						"name": "resourceWork.options",
+						"type": "Omit<RunOptions, 'env'>",
+						"required": false,
+						"default": {},
+						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceWork",
+						"type": "Promise<T>",
+						"description": "Admitted operation result, with reservation and connection released after success or failure."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

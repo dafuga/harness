@@ -32,11 +32,13 @@
 		"inputs": [
 			{
 				"name": "HookInstallService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HookInstallService.install.command",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -57,6 +59,71 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HookInstallService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HookInstallService.status",
+						"type": "Promise<HookStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HookInstallService.install",
+				"inputs": [
+					{
+						"name": "HookInstallService.install.command",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HookInstallService.install",
+						"type": "Promise<HookStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HookInstallService.uninstall",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HookInstallService.uninstall",
+						"type": "Promise<HookStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HookInstallService.constructor",
+				"inputs": [
+					{
+						"name": "HookInstallService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HookInstallService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -25,11 +25,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
-			"packages/desktop/src/components/thread-panel/ThreadPanel.svelte"
-		],
-		"symbols": ["ThreadPanel", "ThreadPanel"]
+		"source": ["packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte"],
+		"symbols": ["ThreadPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,36 +34,47 @@
 			{
 				"name": "ThreadPanel.entity",
 				"type": "EntityDetail",
+				"required": true,
 				"description": "Required current entity with versions, history, threads, category and latest version. Supplies identity for comments and requests. Function comments default to the function rather than an old image."
 			},
 			{
 				"name": "ThreadPanel.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace held by the run and comment stores for this view. Supplies bridge, revision, context and capabilities, which determine offered modes and approval controls. Loads comments/providers and subscribes to run events on mount."
 			},
 			{
 				"name": "ThreadPanel.thread",
 				"type": "ThreadInfo | null",
+				"required": false,
+				"default": null,
 				"description": "Optional bindable current thread, initially null. Takes precedence over target and design when choosing the conversation anchor. Selecting/opening a thread updates it; a thread on another option of the same version is cleared when that option changes."
 			},
 			{
 				"name": "ThreadPanel.target",
 				"type": "ThreadTarget | null",
+				"required": false,
+				"default": null,
 				"description": "Optional bindable image or region awaiting a thread, initially null. Used when no thread is selected. Cleared on thread selection or creation and when it belongs to a different option of the shown version."
 			},
 			{
 				"name": "ThreadPanel.version",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional bindable version, initially empty. Chooses design and approval context; history selection updates it. A handled run event may advance it to the entity latest version."
 			},
 			{
 				"name": "ThreadPanel.option",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional bindable current design option, empty by default. Determines approval and image target. Selecting a same-version thread can adopt its option."
 			},
 			{
 				"name": "ThreadPanel.close",
 				"type": "() => void",
+				"required": true,
 				"description": "Required callback for closing the conversation; invoked by its close button."
 			}
 		],
@@ -77,7 +85,9 @@
 				"description": "Conversation sidebar with history, grouped threads, saved/pending messages, streaming response, status/cancel, errors and a composer. Plan/Change opens a planning thread when necessary; Change includes recorded approval details. Human comments use the comments store without starting an agent. Shared comment success refreshes and selects the saved thread. Approval appears only for a selected design with approval capability."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

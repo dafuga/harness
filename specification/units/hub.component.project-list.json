@@ -21,11 +21,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/ProjectList.svelte",
-			"packages/hub/src/components/projects-sessions/ProjectList.svelte"
-		],
-		"symbols": ["ProjectList", "ProjectList"]
+		"source": ["packages/hub/src/components/projects-sessions/ProjectList.svelte"],
+		"symbols": ["ProjectList"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -33,6 +30,7 @@
 			{
 				"name": "ProjectList.projects",
 				"type": "ProjectSummary[]",
+				"required": true,
 				"description": "Required project summaries in display order, including identity, name, source repository and role."
 			}
 		],
@@ -43,7 +41,9 @@
 				"description": "Owned by you and Shared with you groups show project names, repositories and membership roles. Owners also get Members links. An empty list explains how projects appear across devices."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

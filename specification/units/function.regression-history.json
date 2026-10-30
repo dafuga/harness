@@ -30,9 +30,49 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "Request",
-				"type": "Regression inputs",
-				"description": "A source commit, its stored notes and an evidence reader"
+				"name": "regressionHash.bytes",
+				"type": "string | Buffer",
+				"required": true
+			},
+			{
+				"name": "regressionHistory.commit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "regressionHistory.notes",
+				"type": "Map<string, ReadNote>",
+				"required": true
+			},
+			{
+				"name": "regressionHistory.load",
+				"type": "Loader",
+				"required": true
+			},
+			{
+				"name": "regressionHistory.media",
+				"type": "MediaPlacer",
+				"required": false
+			},
+			{
+				"name": "sameRegression.red",
+				"type": "RegressionRecord",
+				"required": true
+			},
+			{
+				"name": "sameRegression.green",
+				"type": "RegressionRecord",
+				"required": true
+			},
+			{
+				"name": "readRegression.note",
+				"type": "RegressionNote",
+				"required": true
+			},
+			{
+				"name": "readRegression.read",
+				"type": "(path: string) => Promise<Buffer | undefined>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -48,7 +88,112 @@
 				"type": "Explicit rejection or gap",
 				"description": "Missing or damaged proof stays visible as a gap; it cannot become a passing result."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "regressionHash",
+				"inputs": [
+					{
+						"name": "regressionHash.bytes",
+						"type": "string | Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "regressionHash",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "regressionHistory",
+				"inputs": [
+					{
+						"name": "regressionHistory.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "regressionHistory.notes",
+						"type": "Map<string, ReadNote>",
+						"required": true
+					},
+					{
+						"name": "regressionHistory.load",
+						"type": "Loader",
+						"required": true
+					},
+					{
+						"name": "regressionHistory.media",
+						"type": "MediaPlacer",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "regressionHistory",
+						"type": "Promise<RegressionView[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sameRegression",
+				"inputs": [
+					{
+						"name": "sameRegression.red",
+						"type": "RegressionRecord",
+						"required": true
+					},
+					{
+						"name": "sameRegression.green",
+						"type": "RegressionRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameRegression",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readRegression",
+				"inputs": [
+					{
+						"name": "readRegression.note",
+						"type": "RegressionNote",
+						"required": true
+					},
+					{
+						"name": "readRegression.read",
+						"type": "(path: string) => Promise<Buffer | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readRegression",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -19,6 +19,7 @@
 			{
 				"name": "reportBuildIdentity.directory",
 				"type": "string | undefined",
+				"required": false,
 				"description": "Optional build directory, defaulting to the nearest compiled server directory found within six ancestor checks of the running module."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Cached digest of regular files and relative names in the chosen directory. Returns harness-reports-development when no directory exists or no regular files are found."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reportBuildIdentity",
+				"inputs": [
+					{
+						"name": "reportBuildIdentity.directory",
+						"type": "string | undefined",
+						"required": false,
+						"description": "Optional build directory, defaulting to the nearest compiled server directory found within six ancestor checks of the running module."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportBuildIdentity",
+						"type": "string",
+						"description": "Cached digest of regular files and relative names in the chosen directory. Returns harness-reports-development when no directory exists or no regular files are found."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

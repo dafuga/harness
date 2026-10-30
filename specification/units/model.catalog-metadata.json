@@ -6,63 +6,43 @@
 	"responsibility": "Owns the CatalogMetadata data model.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"lineage": {
+		"predecessors": ["model.catalog-metadata-types"]
+	},
 	"owns": {
-		"source": ["src/models/git-source-history/CatalogMetadata.ts"],
+		"source": [
+			"src/models/git-source-history/CatalogMetadata.ts",
+			"src/models/git-source-history/CatalogMetadata.types.ts"
+		],
 		"symbols": [
 			"CatalogMetadata",
 			"CatalogMetadata.find",
 			"CatalogMetadata.findBy",
 			"CatalogMetadata.create",
 			"CatalogMetadata.update",
-			"CatalogMetadata.delete"
+			"CatalogMetadata.delete",
+			"CatalogMetadataAttributes",
+			"CatalogMetadataCreateInput",
+			"CatalogMetadataUpdateInput"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "CatalogMetadata.find.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogMetadata.id",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogMetadata.find.id",
-				"type": "string"
+				"name": "CatalogMetadata.schemaVersion",
+				"type": "number",
+				"required": true
 			},
 			{
-				"name": "CatalogMetadata.findBy.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogMetadata.findBy.fields",
-				"type": "Partial<CatalogMetadataAttributes>"
-			},
-			{
-				"name": "CatalogMetadata.create.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogMetadata.create.input",
-				"type": "CatalogMetadataCreateInput"
-			},
-			{
-				"name": "CatalogMetadata.update.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogMetadata.update.id",
-				"type": "string"
-			},
-			{
-				"name": "CatalogMetadata.update.input",
-				"type": "CatalogMetadataUpdateInput"
-			},
-			{
-				"name": "CatalogMetadata.delete.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogMetadata.delete.id",
-				"type": "string"
+				"name": "CatalogMetadata.digest",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,16 +67,165 @@
 				"type": "Promise<boolean>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogMetadata.find",
+				"inputs": [
+					{
+						"name": "CatalogMetadata.find.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogMetadata.find.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogMetadata.find",
+						"type": "Promise<CatalogMetadataAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogMetadata.findBy",
+				"inputs": [
+					{
+						"name": "CatalogMetadata.findBy.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogMetadata.findBy.fields",
+						"type": "Partial<CatalogMetadataAttributes>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogMetadata.findBy",
+						"type": "Promise<CatalogMetadataAttributes[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogMetadata.create",
+				"inputs": [
+					{
+						"name": "CatalogMetadata.create.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogMetadata.create.input",
+						"type": "CatalogMetadataCreateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogMetadata.create",
+						"type": "Promise<CatalogMetadataAttributes>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogMetadata.update",
+				"inputs": [
+					{
+						"name": "CatalogMetadata.update.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogMetadata.update.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogMetadata.update.input",
+						"type": "CatalogMetadataUpdateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogMetadata.update",
+						"type": "Promise<CatalogMetadataAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogMetadata.delete",
+				"inputs": [
+					{
+						"name": "CatalogMetadata.delete.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogMetadata.delete.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogMetadata.delete",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [],
+		"storage": [
+			{
+				"name": "CatalogMetadata",
+				"table": "catalog_metadata",
+				"primaryKey": "id",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": true
+					},
+					{
+						"name": "schemaVersion",
+						"type": "number",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "digest",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					}
+				]
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "function.sqlite-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "model.catalog-metadata-types",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -25,27 +25,33 @@
 		"inputs": [
 			{
 				"name": "ReplayStorageService.store.report",
-				"type": "Report"
+				"type": "Report",
+				"required": true
 			},
 			{
 				"name": "ReplayStorageService.store.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReplayStorageService.store.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReplayStorageService.restore.report",
-				"type": "Report"
+				"type": "Report",
+				"required": true
 			},
 			{
 				"name": "ReplayStorageService.restore.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReplayStorageService.restore.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -63,7 +69,77 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReplayStorageService.store",
+				"inputs": [
+					{
+						"name": "ReplayStorageService.store.report",
+						"type": "Report",
+						"required": true
+					},
+					{
+						"name": "ReplayStorageService.store.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ReplayStorageService.store.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReplayStorageService.store",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReplayStorageService.restore",
+				"inputs": [
+					{
+						"name": "ReplayStorageService.restore.report",
+						"type": "Report",
+						"required": true
+					},
+					{
+						"name": "ReplayStorageService.restore.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ReplayStorageService.restore.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReplayStorageService.restore",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

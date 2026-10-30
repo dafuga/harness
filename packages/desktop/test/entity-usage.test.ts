@@ -1,6 +1,6 @@
 import type { Direction } from './entity-usage.test.types';
 import { expect, test } from 'vitest';
-import RelationshipsPanel from '../src/components/RelationshipsPanel.svelte';
+import RelationshipsPanel from '../src/components/shared-primitives/RelationshipsPanel.svelte';
 import type { Workspace } from '../src/lib/stores/workspace.svelte';
 import type { Category, Relationship } from '../src/models/Desktop.types';
 import { categories } from '../src/models/Desktop.types';

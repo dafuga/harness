@@ -19,11 +19,13 @@
 			{
 				"name": "analyticsDisplay.value",
 				"type": "number | null",
+				"required": true,
 				"description": "Fraction to display as a percentage, or null when no assessments exist."
 			},
 			{
 				"name": "analyticsCount.value",
 				"type": "number",
+				"required": true,
 				"description": "Count to format using the runtime locale."
 			}
 		],
@@ -39,7 +41,50 @@
 				"description": "Locale-formatted count."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "analyticsDisplay",
+				"inputs": [
+					{
+						"name": "analyticsDisplay.value",
+						"type": "number | null",
+						"required": true,
+						"description": "Fraction to display as a percentage, or null when no assessments exist."
+					}
+				],
+				"outputs": [
+					{
+						"name": "analyticsDisplay",
+						"type": "string",
+						"description": "Rounded whole percentage, or No assessments for null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "analyticsCount",
+				"inputs": [
+					{
+						"name": "analyticsCount.value",
+						"type": "number",
+						"required": true,
+						"description": "Count to format using the runtime locale."
+					}
+				],
+				"outputs": [
+					{
+						"name": "analyticsCount",
+						"type": "string",
+						"description": "Locale-formatted count."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

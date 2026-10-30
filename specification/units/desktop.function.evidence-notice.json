@@ -31,16 +31,19 @@
 			{
 				"name": "evidenceNotice.status",
 				"type": "EvidenceStatus",
+				"required": true,
 				"description": "The evidence state: idle, planned, unavailable, loading, ready or failed."
 			},
 			{
 				"name": "evidenceNotice.error",
 				"type": "string",
+				"required": true,
 				"description": "The backend failure text, used only for a failed read."
 			},
 			{
 				"name": "evidenceNotice.kind",
 				"type": "string",
+				"required": true,
 				"description": "The entity kind inserted into the planned-but-not-implemented notice."
 			}
 		],
@@ -61,7 +64,42 @@
 				"description": "Null for ready evidence. Otherwise a text notice with alert true only for failed reads. Planned and unavailable states have specific explanations; idle and loading use the reading notice."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "evidenceNotice",
+				"inputs": [
+					{
+						"name": "evidenceNotice.status",
+						"type": "EvidenceStatus",
+						"required": true,
+						"description": "The evidence state: idle, planned, unavailable, loading, ready or failed."
+					},
+					{
+						"name": "evidenceNotice.error",
+						"type": "string",
+						"required": true,
+						"description": "The backend failure text, used only for a failed read."
+					},
+					{
+						"name": "evidenceNotice.kind",
+						"type": "string",
+						"required": true,
+						"description": "The entity kind inserted into the planned-but-not-implemented notice."
+					}
+				],
+				"outputs": [
+					{
+						"name": "evidenceNotice",
+						"type": "EvidenceNotice | null",
+						"description": "Null for ready evidence. Otherwise a text notice with alert true only for failed reads. Planned and unavailable states have specific explanations; idle and loading use the reading notice."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

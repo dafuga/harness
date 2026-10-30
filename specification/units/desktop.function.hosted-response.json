@@ -19,11 +19,13 @@
 			{
 				"name": "hostedResponse.response",
 				"type": "Response",
+				"required": true,
 				"description": "The HTTP response whose body should be consumed. A numeric Content-Length above the limit is refused before reading."
 			},
 			{
 				"name": "hostedResponse.limit",
 				"type": "number",
+				"required": true,
 				"description": "The maximum accepted byte count. Exactly that many bytes is allowed; the caller supplies the appropriate limit."
 			}
 		],
@@ -40,7 +42,41 @@
 				"type": "thrown",
 				"description": "Rejects an oversized declared or actual body and propagates stream failures. The message names the byte limit during streaming."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hostedResponse",
+				"inputs": [
+					{
+						"name": "hostedResponse.response",
+						"type": "Response",
+						"required": true,
+						"description": "The HTTP response whose body should be consumed. A numeric Content-Length above the limit is refused before reading."
+					},
+					{
+						"name": "hostedResponse.limit",
+						"type": "number",
+						"required": true,
+						"description": "The maximum accepted byte count. Exactly that many bytes is allowed; the caller supplies the appropriate limit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostedResponse",
+						"type": "Promise<Uint8Array>",
+						"description": "A promise for all response bytes joined in order, or an empty array when no body exists. Cancels a read that fails or exceeds the limit and releases its reader lock."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

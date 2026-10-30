@@ -22,21 +22,25 @@
 			{
 				"name": "BenchmarkRepository.constructor.home",
 				"type": "unknown",
+				"required": false,
 				"description": "Directory containing the private persisted benchmark run subfolders."
 			},
 			{
 				"name": "BenchmarkRepository.directory.id",
 				"type": "string",
+				"required": true,
 				"description": "UUID-shaped persisted benchmark run identifier."
 			},
 			{
 				"name": "BenchmarkRepository.save.run",
 				"type": "BenchmarkRun",
+				"required": true,
 				"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
 			},
 			{
 				"name": "BenchmarkRepository.read.id",
 				"type": "string",
+				"required": true,
 				"description": "UUID-shaped persisted benchmark run identifier."
 			}
 		],
@@ -62,6 +66,93 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Rejects invalid run IDs or unavailable persisted records."
+			}
+		],
+		"operations": [
+			{
+				"name": "BenchmarkRepository.directory",
+				"inputs": [
+					{
+						"name": "BenchmarkRepository.directory.id",
+						"type": "string",
+						"required": true,
+						"description": "UUID-shaped persisted benchmark run identifier."
+					}
+				],
+				"outputs": [
+					{
+						"name": "BenchmarkRepository.directory",
+						"type": "string",
+						"description": "Private subdirectory for the validated run identifier."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BenchmarkRepository.save",
+				"inputs": [
+					{
+						"name": "BenchmarkRepository.save.run",
+						"type": "BenchmarkRun",
+						"required": true,
+						"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "BenchmarkRepository.save",
+						"type": "Promise<void>",
+						"description": "Atomically replaces the private run JSON record."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BenchmarkRepository.read",
+				"inputs": [
+					{
+						"name": "BenchmarkRepository.read.id",
+						"type": "string",
+						"required": true,
+						"description": "UUID-shaped persisted benchmark run identifier."
+					}
+				],
+				"outputs": [
+					{
+						"name": "BenchmarkRepository.read",
+						"type": "Promise<BenchmarkRun>",
+						"description": "Persisted run with abandoned running trials marked interrupted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "BenchmarkRepository.constructor",
+				"inputs": [
+					{
+						"name": "BenchmarkRepository.constructor.home",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "BenchmarkRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -27,31 +27,37 @@
 			{
 				"name": "createProject.deps",
 				"type": "CollaborationDependencies",
+				"required": true,
 				"description": "Persistence, repository authorization and optional clock."
 			},
 			{
 				"name": "createProject.actor",
 				"type": "Actor",
+				"required": true,
 				"description": "Verified actor who becomes the new project owner."
 			},
 			{
 				"name": "createProject.input",
 				"type": "Parameters<CollaborationApi['createProject']>[1]",
+				"required": true,
 				"description": "Trimmed project name of 1–200 characters and a positive repository ID."
 			},
 			{
 				"name": "removeMember.deps",
 				"type": "CollaborationDependencies",
+				"required": true,
 				"description": "Persistence used for the membership transaction."
 			},
 			{
 				"name": "removeMember.actor",
 				"type": "Actor",
+				"required": true,
 				"description": "Verified project owner requesting removal."
 			},
 			{
 				"name": "removeMember.input",
 				"type": "Parameters<CollaborationApi['removeMember']>[1]",
+				"required": true,
 				"description": "Project UUID and member actor ID."
 			}
 		],
@@ -73,7 +79,74 @@
 				"type": "thrown",
 				"description": "Rejects invalid input, repository authorization failures, denied membership, missing members, removal of the last owner or exhausted write retries."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "createProject",
+				"inputs": [
+					{
+						"name": "createProject.deps",
+						"type": "CollaborationDependencies",
+						"required": true,
+						"description": "Persistence, repository authorization and optional clock."
+					},
+					{
+						"name": "createProject.actor",
+						"type": "Actor",
+						"required": true,
+						"description": "Verified actor who becomes the new project owner."
+					},
+					{
+						"name": "createProject.input",
+						"type": "Parameters<CollaborationApi['createProject']>[1]",
+						"required": true,
+						"description": "Trimmed project name of 1–200 characters and a positive repository ID."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createProject",
+						"type": "unknown",
+						"description": "Promise of the created project with owner role and committed collaboration revision."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "removeMember",
+				"inputs": [
+					{
+						"name": "removeMember.deps",
+						"type": "CollaborationDependencies",
+						"required": true,
+						"description": "Persistence used for the membership transaction."
+					},
+					{
+						"name": "removeMember.actor",
+						"type": "Actor",
+						"required": true,
+						"description": "Verified project owner requesting removal."
+					},
+					{
+						"name": "removeMember.input",
+						"type": "Parameters<CollaborationApi['removeMember']>[1]",
+						"required": true,
+						"description": "Project UUID and member actor ID."
+					}
+				],
+				"outputs": [
+					{
+						"name": "removeMember",
+						"type": "unknown",
+						"description": "Removes the member and project invitations for that email; resolves without a value."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

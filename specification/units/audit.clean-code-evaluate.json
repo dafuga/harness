@@ -25,7 +25,8 @@
 		"inputs": [
 			{
 				"name": "evaluateCleanCodeFile.input",
-				"type": "EvaluationInput"
+				"type": "EvaluationInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -39,7 +40,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "evaluateCleanCodeFile",
+				"inputs": [
+					{
+						"name": "evaluateCleanCodeFile.input",
+						"type": "EvaluationInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "evaluateCleanCodeFile",
+						"type": "Promise<FileReview>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

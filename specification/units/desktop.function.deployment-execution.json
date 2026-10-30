@@ -20,11 +20,13 @@
 			{
 				"name": "deploymentExecution.reviewed",
 				"type": "ReviewedDeployment",
+				"required": true,
 				"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
 			},
 			{
 				"name": "deploymentExecution.runtime",
 				"type": "Runtime",
+				"required": true,
 				"description": "Deployment adapter and injected execution, health and progress callbacks."
 			}
 		],
@@ -41,7 +43,41 @@
 				"type": "thrown",
 				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "deploymentExecution",
+				"inputs": [
+					{
+						"name": "deploymentExecution.reviewed",
+						"type": "ReviewedDeployment",
+						"required": true,
+						"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
+					},
+					{
+						"name": "deploymentExecution.runtime",
+						"type": "Runtime",
+						"required": true,
+						"description": "Deployment adapter and injected execution, health and progress callbacks."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentExecution",
+						"type": "unknown",
+						"description": "Verified deployment receipt; failures leave the destination receipt unadvanced."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

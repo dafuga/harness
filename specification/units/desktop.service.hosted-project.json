@@ -28,15 +28,18 @@
 		"inputs": [
 			{
 				"name": "HostedProjectService.constructor.session",
-				"type": "ProjectSessionService"
+				"type": "ProjectSessionService",
+				"required": true
 			},
 			{
 				"name": "HostedProjectService.constructor.remote",
-				"type": "RemoteProjectPort"
+				"type": "RemoteProjectPort",
+				"required": true
 			},
 			{
 				"name": "HostedProjectService.wrap.local",
-				"type": "Bridge"
+				"type": "Bridge",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,6 +52,52 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "HostedProjectService.wrap",
+				"inputs": [
+					{
+						"name": "HostedProjectService.wrap.local",
+						"type": "Bridge",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedProjectService.wrap",
+						"type": "Bridge"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostedProjectService.constructor",
+				"inputs": [
+					{
+						"name": "HostedProjectService.constructor.session",
+						"type": "ProjectSessionService",
+						"required": true
+					},
+					{
+						"name": "HostedProjectService.constructor.remote",
+						"type": "RemoteProjectPort",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedProjectService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

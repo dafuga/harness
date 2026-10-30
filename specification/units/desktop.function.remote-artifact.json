@@ -38,11 +38,13 @@
 			{
 				"name": "remoteArtifact.value",
 				"type": "RemoteBinary",
+				"required": true,
 				"description": "Base64 content with media type, byte length and SHA-256 hash."
 			},
 			{
 				"name": "remoteArtifact.asked",
 				"type": "string | undefined",
+				"required": true,
 				"description": "Required hash of the requested file; undefined is refused."
 			}
 		],
@@ -84,7 +86,41 @@
 				"type": "thrown",
 				"description": "Rejects unsupported types, oversized files, absent or mismatched requested hashes, unreadable base64 or mismatched decoded length or hash."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "remoteArtifact",
+				"inputs": [
+					{
+						"name": "remoteArtifact.value",
+						"type": "RemoteBinary",
+						"required": true,
+						"description": "Base64 content with media type, byte length and SHA-256 hash."
+					},
+					{
+						"name": "remoteArtifact.asked",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Required hash of the requested file; undefined is refused."
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteArtifact",
+						"type": "Promise<EvidenceArtifactResult>",
+						"description": "Decoded bytes with their media type and verified SHA-256 hash."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

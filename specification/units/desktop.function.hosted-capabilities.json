@@ -19,11 +19,13 @@
 			{
 				"name": "hostedCapabilities.value",
 				"type": "unknown",
+				"required": true,
 				"description": "The hosted project response object, including its project identity and role."
 			},
 			{
 				"name": "hostedCapabilities.projectId",
 				"type": "string",
+				"required": true,
 				"description": "The expected project identity; the response identity must match exactly."
 			}
 		],
@@ -40,7 +42,41 @@
 				"type": "thrown",
 				"description": "Throws for an invalid response object, a different project identity or a role other than owner, commenter or viewer."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hostedCapabilities",
+				"inputs": [
+					{
+						"name": "hostedCapabilities.value",
+						"type": "unknown",
+						"required": true,
+						"description": "The hosted project response object, including its project identity and role."
+					},
+					{
+						"name": "hostedCapabilities.projectId",
+						"type": "string",
+						"required": true,
+						"description": "The expected project identity; the response identity must match exactly."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostedCapabilities",
+						"type": "ProjectCapabilities",
+						"description": "Shared-project capabilities with GitHub as source. Owners and commenters may comment; viewers may not. Agents, planning and approval are disabled, with an explanation that shared comments need server acknowledgment."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

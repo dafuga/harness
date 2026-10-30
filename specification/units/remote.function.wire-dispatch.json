@@ -27,11 +27,13 @@
 			{
 				"name": "wireDispatch.context",
 				"type": "WireDispatchContext",
+				"required": true,
 				"description": "Attachment and allowed methods, pending-request count, limits, response ledger, handler and error translator, plus optional session epoch binding."
 			},
 			{
 				"name": "wireDispatch.request",
 				"type": "WireRequest",
+				"required": true,
 				"description": "Already validated request with ID, method and input."
 			}
 		],
@@ -42,7 +44,36 @@
 				"description": "Response with the same ID, a value or null on success, or a declared failure. Mutations join ledger work by ID and input digest; timeouts do not cancel that work."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "wireDispatch",
+				"inputs": [
+					{
+						"name": "wireDispatch.context",
+						"type": "WireDispatchContext",
+						"required": true,
+						"description": "Attachment and allowed methods, pending-request count, limits, response ledger, handler and error translator, plus optional session epoch binding."
+					},
+					{
+						"name": "wireDispatch.request",
+						"type": "WireRequest",
+						"required": true,
+						"description": "Already validated request with ID, method and input."
+					}
+				],
+				"outputs": [
+					{
+						"name": "wireDispatch",
+						"type": "Promise<WireResponse>",
+						"description": "Response with the same ID, a value or null on success, or a declared failure. Mutations join ledger work by ID and input digest; timeouts do not cancel that work."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -30,15 +30,19 @@
 		"inputs": [
 			{
 				"name": "ResponseLedgerService.constructor.options",
-				"type": "LedgerOptions"
+				"type": "LedgerOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "ResponseLedgerService.run.request",
-				"type": "{ id: string; digest: string }"
+				"type": "{ id: string; digest: string }",
+				"required": true
 			},
 			{
 				"name": "ResponseLedgerService.run.execute",
-				"type": "() => Promise<unknown>"
+				"type": "() => Promise<unknown>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,7 +51,54 @@
 				"type": "Promise<unknown>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ResponseLedgerService.run",
+				"inputs": [
+					{
+						"name": "ResponseLedgerService.run.request",
+						"type": "{ id: string; digest: string }",
+						"required": true
+					},
+					{
+						"name": "ResponseLedgerService.run.execute",
+						"type": "() => Promise<unknown>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResponseLedgerService.run",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ResponseLedgerService.constructor",
+				"inputs": [
+					{
+						"name": "ResponseLedgerService.constructor.options",
+						"type": "LedgerOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResponseLedgerService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

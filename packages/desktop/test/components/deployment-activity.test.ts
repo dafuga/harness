@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { render } from 'svelte/server';
-import DeploymentActivity from '../../src/components/DeploymentActivity.svelte';
+import DeploymentActivity from '../../src/components/development-tooling/DeploymentActivity.svelte';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 import { deploymentActivityFixture } from '../deployment-ui-fixture';
 test('the activity trigger exposes work without relying only on colour', () => {

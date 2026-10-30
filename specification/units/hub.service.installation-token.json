@@ -33,19 +33,23 @@
 		"inputs": [
 			{
 				"name": "InstallationTokenService.constructor.options",
-				"type": "InstallationTokenOptions"
+				"type": "InstallationTokenOptions",
+				"required": true
 			},
 			{
 				"name": "InstallationTokenService.token.input",
-				"type": "InstallationTokenInput"
+				"type": "InstallationTokenInput",
+				"required": true
 			},
 			{
 				"name": "InstallationTokenService.resolve.installationId",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "InstallationTokenService.resolve.repositoryId",
-				"type": "number"
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,7 +62,71 @@
 				"type": "Promise<RepositoryIdentity | null>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "InstallationTokenService.token",
+				"inputs": [
+					{
+						"name": "InstallationTokenService.token.input",
+						"type": "InstallationTokenInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "InstallationTokenService.token",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "InstallationTokenService.resolve",
+				"inputs": [
+					{
+						"name": "InstallationTokenService.resolve.installationId",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "InstallationTokenService.resolve.repositoryId",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "InstallationTokenService.resolve",
+						"type": "Promise<RepositoryIdentity | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "InstallationTokenService.constructor",
+				"inputs": [
+					{
+						"name": "InstallationTokenService.constructor.options",
+						"type": "InstallationTokenOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "InstallationTokenService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

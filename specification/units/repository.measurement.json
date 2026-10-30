@@ -25,23 +25,28 @@
 		"inputs": [
 			{
 				"name": "MeasurementRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "MeasurementRepository.write.benchmark",
-				"type": "KernelBenchmark"
+				"type": "KernelBenchmark",
+				"required": true
 			},
 			{
 				"name": "MeasurementRepository.write.file",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "MeasurementRepository.read.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "MeasurementRepository.forProfile.profile",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -62,6 +67,93 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "MeasurementRepository.write",
+				"inputs": [
+					{
+						"name": "MeasurementRepository.write.benchmark",
+						"type": "KernelBenchmark",
+						"required": true
+					},
+					{
+						"name": "MeasurementRepository.write.file",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "MeasurementRepository.write",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "MeasurementRepository.read",
+				"inputs": [
+					{
+						"name": "MeasurementRepository.read.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "MeasurementRepository.read",
+						"type": "KernelBenchmark"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "MeasurementRepository.forProfile",
+				"inputs": [
+					{
+						"name": "MeasurementRepository.forProfile.profile",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "MeasurementRepository.forProfile",
+						"type": "KernelBenchmark | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "MeasurementRepository.constructor",
+				"inputs": [
+					{
+						"name": "MeasurementRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "MeasurementRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

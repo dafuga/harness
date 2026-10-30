@@ -26,16 +26,19 @@
 			{
 				"name": "GameLevelPreview.layout",
 				"type": "LevelLayout",
+				"required": true,
 				"description": "Validated floor, spawn and objects rendered for human review."
 			},
 			{
 				"name": "GameLevelPreview.dimension",
 				"type": "Dimension",
+				"required": true,
 				"description": "Select the native 2D or 3D renderer."
 			},
 			{
 				"name": "GameLevelPreview.label",
 				"type": "string",
+				"required": true,
 				"description": "Accessible name of the level preview canvas."
 			}
 		],
@@ -46,7 +49,9 @@
 				"description": "Render the generated level geometry for human review before gameplay."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

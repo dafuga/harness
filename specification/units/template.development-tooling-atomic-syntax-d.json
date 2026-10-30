@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "atomicSyntax.content",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "walkAtomicMarkup.node",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "walkAtomicMarkup.callback",
-				"type": "(node: Record<string, unknown>) => void"
+				"type": "(node: Record<string, unknown>) => void",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +39,52 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "atomicSyntax",
+				"inputs": [
+					{
+						"name": "atomicSyntax.content",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "atomicSyntax",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "walkAtomicMarkup",
+				"inputs": [
+					{
+						"name": "walkAtomicMarkup.node",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "walkAtomicMarkup.callback",
+						"type": "(node: Record<string, unknown>) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "walkAtomicMarkup",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

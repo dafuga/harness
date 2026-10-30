@@ -21,6 +21,7 @@
 			{
 				"name": "sessionKeys.input",
 				"type": "SessionKeyInput",
+				"required": true,
 				"description": "Host or device role, both identities, generation, local static and ephemeral pairs, peer public keys and both session nonces."
 			}
 		],
@@ -31,7 +32,30 @@
 				"description": "Nonextractable AES-256-GCM send and receive keys; opposite roles derive matching keys for each direction."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "sessionKeys",
+				"inputs": [
+					{
+						"name": "sessionKeys.input",
+						"type": "SessionKeyInput",
+						"required": true,
+						"description": "Host or device role, both identities, generation, local static and ephemeral pairs, peer public keys and both session nonces."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sessionKeys",
+						"type": "Promise<SessionKeys>",
+						"description": "Nonextractable AES-256-GCM send and receive keys; opposite roles derive matching keys for each direction."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

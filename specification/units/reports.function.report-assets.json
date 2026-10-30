@@ -30,53 +30,63 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "imageAsset.bytes",
-				"type": "Buffer",
-				"description": "Nonempty image bytes, at most 50,000,000 bytes."
-			},
-			{
-				"name": "imageAsset.filename",
-				"type": "string",
-				"description": "Image filename with PNG, JPG, JPEG or WebP extension matching the signature."
-			},
-			{
-				"name": "writeImageAsset.directory",
-				"type": "string",
-				"description": "Report directory under which an assets folder is created."
-			},
-			{
-				"name": "writeImageAsset.name",
-				"type": "string",
-				"description": "Destination asset filename, expected to be supplied by the trusted asset-name generator."
-			},
-			{
-				"name": "writeImageAsset.bytes",
-				"type": "Buffer",
-				"description": "Bytes to write without further validation by this helper."
-			},
-			{
 				"name": "reportAssets.directory",
 				"type": "string",
+				"required": true,
 				"description": "Report directory receiving an imported asset."
 			},
 			{
 				"name": "reportAssets.source",
 				"type": "string",
+				"required": true,
 				"description": "Local source file to import; symlinks and non-files are rejected."
+			},
+			{
+				"name": "imageAsset.bytes",
+				"type": "Buffer",
+				"required": true,
+				"description": "Nonempty image bytes, at most 50,000,000 bytes."
+			},
+			{
+				"name": "imageAsset.filename",
+				"type": "string",
+				"required": true,
+				"description": "Image filename with PNG, JPG, JPEG or WebP extension matching the signature."
+			},
+			{
+				"name": "writeImageAsset.directory",
+				"type": "string",
+				"required": true,
+				"description": "Report directory under which an assets folder is created."
+			},
+			{
+				"name": "writeImageAsset.name",
+				"type": "string",
+				"required": true,
+				"description": "Destination asset filename, expected to be supplied by the trusted asset-name generator."
+			},
+			{
+				"name": "writeImageAsset.bytes",
+				"type": "Buffer",
+				"required": true,
+				"description": "Bytes to write without further validation by this helper."
 			},
 			{
 				"name": "registeredAsset.directory",
 				"type": "string",
+				"required": true,
 				"description": "Asset directory to resolve through realpath."
 			},
 			{
 				"name": "registeredAsset.name",
 				"type": "string",
+				"required": true,
 				"description": "Requested filename, which must be registered and contain no slash or backslash."
 			},
 			{
 				"name": "registeredAsset.registered",
 				"type": "string[]",
+				"required": true,
 				"description": "Allowed asset names."
 			}
 		],
@@ -108,7 +118,141 @@
 				"type": "thrown",
 				"description": "Rejects invalid image size/type/signature, imported symlinks/non-files, unregistered names and invalid asset paths. Audio validation and filesystem errors propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "reportAssets",
+				"inputs": [
+					{
+						"name": "reportAssets.directory",
+						"type": "string",
+						"required": true,
+						"description": "Report directory receiving an imported asset."
+					},
+					{
+						"name": "reportAssets.source",
+						"type": "string",
+						"required": true,
+						"description": "Local source file to import; symlinks and non-files are rejected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportAssets",
+						"type": "unknown",
+						"description": "Promise resolving to stored audio or image metadata after validation and writing the content-addressed file."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "imageAsset",
+				"inputs": [
+					{
+						"name": "imageAsset.bytes",
+						"type": "Buffer",
+						"required": true,
+						"description": "Nonempty image bytes, at most 50,000,000 bytes."
+					},
+					{
+						"name": "imageAsset.filename",
+						"type": "string",
+						"required": true,
+						"description": "Image filename with PNG, JPG, JPEG or WebP extension matching the signature."
+					}
+				],
+				"outputs": [
+					{
+						"name": "imageAsset",
+						"type": "unknown",
+						"description": "SHA-256 filename with normalized image extension and MIME type after a lightweight signature check."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeImageAsset",
+				"inputs": [
+					{
+						"name": "writeImageAsset.directory",
+						"type": "string",
+						"required": true,
+						"description": "Report directory under which an assets folder is created."
+					},
+					{
+						"name": "writeImageAsset.name",
+						"type": "string",
+						"required": true,
+						"description": "Destination asset filename, expected to be supplied by the trusted asset-name generator."
+					},
+					{
+						"name": "writeImageAsset.bytes",
+						"type": "Buffer",
+						"required": true,
+						"description": "Bytes to write without further validation by this helper."
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeImageAsset",
+						"type": "unknown",
+						"description": "Promise that creates the asset directory and writes bytes with restrictive creation modes; no value is returned."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "registeredAsset",
+				"inputs": [
+					{
+						"name": "registeredAsset.directory",
+						"type": "string",
+						"required": true,
+						"description": "Asset directory to resolve through realpath."
+					},
+					{
+						"name": "registeredAsset.name",
+						"type": "string",
+						"required": true,
+						"description": "Requested filename, which must be registered and contain no slash or backslash."
+					},
+					{
+						"name": "registeredAsset.registered",
+						"type": "string[]",
+						"required": true,
+						"description": "Allowed asset names."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registeredAsset",
+						"type": "unknown",
+						"description": "Promise resolving to a registered regular non-symlink file whose real path remains within the resolved asset directory."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

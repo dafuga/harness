@@ -47,7 +47,23 @@
 				"description": "Standalone SVG text with gold tiles inset by ten units on a navy 52-unit rounded square."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "brandMark",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "brandMark",
+						"type": "string",
+						"description": "Standalone SVG text with gold tiles inset by ten units on a navy 52-unit rounded square."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -1,6 +1,6 @@
 import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
-import RuntimeArtifact from '../src/components/RuntimeArtifact.svelte';
+import RuntimeArtifact from '../src/components/execution-runtimes/RuntimeArtifact.svelte';
 import {
 	observed,
 	observedRows,

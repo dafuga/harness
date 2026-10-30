@@ -26,20 +26,23 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "formatDuration.seconds",
+				"type": "number",
+				"required": false,
+				"description": "Optional duration in seconds.",
+				"examples": [90]
+			},
+			{
 				"name": "mediaMime.file",
 				"type": "string",
+				"required": true,
 				"description": "Filename whose final extension is checked case-insensitively."
 			},
 			{
 				"name": "evidenceMedia.item",
 				"type": "Pick<Evidence, 'mediaType' | 'file'>",
+				"required": true,
 				"description": "Evidence with optional explicit media type and file address."
-			},
-			{
-				"name": "formatDuration.seconds",
-				"type": "number",
-				"description": "Optional duration in seconds.",
-				"examples": [90]
 			}
 		],
 		"outputs": [
@@ -59,7 +62,71 @@
 				"description": "Floored duration as minutes:seconds or hours:minutes:seconds. Empty for absent, negative or nonfinite values."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "formatDuration",
+				"inputs": [
+					{
+						"name": "formatDuration.seconds",
+						"type": "number",
+						"required": false,
+						"description": "Optional duration in seconds.",
+						"examples": [90]
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatDuration",
+						"type": "string",
+						"description": "Floored duration as minutes:seconds or hours:minutes:seconds. Empty for absent, negative or nonfinite values."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "mediaMime",
+				"inputs": [
+					{
+						"name": "mediaMime.file",
+						"type": "string",
+						"required": true,
+						"description": "Filename whose final extension is checked case-insensitively."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mediaMime",
+						"type": "unknown",
+						"description": "Known MIME type for supported image, audio, video and document extensions, otherwise application/octet-stream."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "evidenceMedia",
+				"inputs": [
+					{
+						"name": "evidenceMedia.item",
+						"type": "Pick<Evidence, 'mediaType' | 'file'>",
+						"required": true,
+						"description": "Evidence with optional explicit media type and file address."
+					}
+				],
+				"outputs": [
+					{
+						"name": "evidenceMedia",
+						"type": "'image' | 'audio'",
+						"description": "Explicit media type when present; otherwise audio for an audio extension or data:audio/ URL, and image for everything else."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{
@@ -75,7 +142,8 @@
 			"inputs": [
 				{
 					"name": "formatDuration.seconds",
-					"type": "number"
+					"type": "number",
+					"required": false
 				}
 			],
 			"output": "string",
@@ -106,9 +174,6 @@
 				},
 				{
 					"unit": "reports.component.audio-evidence"
-				},
-				{
-					"unit": "reports.component.replay-controls"
 				}
 			]
 		}

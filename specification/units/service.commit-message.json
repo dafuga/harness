@@ -25,35 +25,43 @@
 		"inputs": [
 			{
 				"name": "CommitMessageService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CommitMessageService.written.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CommitMessageService.written.edited",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "CommitMessageService.stored.base",
-				"type": "string | null | undefined"
+				"type": "string | null | undefined",
+				"required": true
 			},
 			{
 				"name": "CommitMessageService.stored.head",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CommitMessageService.reported.report",
-				"type": "Report"
+				"type": "Report",
+				"required": true
 			},
 			{
 				"name": "CommitMessageService.reported.base",
-				"type": "string | null | undefined"
+				"type": "string | null | undefined",
+				"required": true
 			},
 			{
 				"name": "CommitMessageService.reported.head",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -70,7 +78,104 @@
 				"type": "Promise<Report>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CommitMessageService.written",
+				"inputs": [
+					{
+						"name": "CommitMessageService.written.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CommitMessageService.written.edited",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "CommitMessageService.written",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CommitMessageService.stored",
+				"inputs": [
+					{
+						"name": "CommitMessageService.stored.base",
+						"type": "string | null | undefined",
+						"required": true
+					},
+					{
+						"name": "CommitMessageService.stored.head",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CommitMessageService.stored",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CommitMessageService.reported",
+				"inputs": [
+					{
+						"name": "CommitMessageService.reported.report",
+						"type": "Report",
+						"required": true
+					},
+					{
+						"name": "CommitMessageService.reported.base",
+						"type": "string | null | undefined",
+						"required": true
+					},
+					{
+						"name": "CommitMessageService.reported.head",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CommitMessageService.reported",
+						"type": "Promise<Report>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CommitMessageService.constructor",
+				"inputs": [
+					{
+						"name": "CommitMessageService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CommitMessageService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

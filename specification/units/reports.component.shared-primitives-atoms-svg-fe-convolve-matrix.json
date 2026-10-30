@@ -24,13 +24,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "SvgFeConvolveMatrix.attributes",
-				"type": "SvelteHTMLElements['feConvolveMatrix']",
-				"description": "Native feConvolveMatrix attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "SvgFeConvolveMatrix.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native feConvolveMatrix element; native HTML content rules still apply."
 			}
 		],
@@ -41,7 +37,9 @@
 				"description": "The actual native feConvolveMatrix element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

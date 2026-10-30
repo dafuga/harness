@@ -31,35 +31,43 @@
 		"inputs": [
 			{
 				"name": "AuthRecordValidator.challenge.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "AuthRecordValidator.session.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "AuthRecordValidator.githubState.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "AuthRecordValidator.grant.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "AuthRecordValidator.emailProof.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "AuthRecordValidator.verifiedEmail.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "AuthRecordValidator.grantState.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "AuthRecordValidator.exchange.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -101,7 +109,155 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AuthRecordValidator.challenge",
+				"inputs": [
+					{
+						"name": "AuthRecordValidator.challenge.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRecordValidator.challenge",
+						"type": "ChallengeRecord"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRecordValidator.session",
+				"inputs": [
+					{
+						"name": "AuthRecordValidator.session.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRecordValidator.session",
+						"type": "SessionRecord"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRecordValidator.githubState",
+				"inputs": [
+					{
+						"name": "AuthRecordValidator.githubState.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRecordValidator.githubState",
+						"type": "GithubStateRecord"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRecordValidator.grant",
+				"inputs": [
+					{
+						"name": "AuthRecordValidator.grant.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRecordValidator.grant",
+						"type": "GithubGrantRecord"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRecordValidator.emailProof",
+				"inputs": [
+					{
+						"name": "AuthRecordValidator.emailProof.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRecordValidator.emailProof",
+						"type": "EmailProofRecord"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRecordValidator.verifiedEmail",
+				"inputs": [
+					{
+						"name": "AuthRecordValidator.verifiedEmail.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRecordValidator.verifiedEmail",
+						"type": "VerifiedEmailRecord"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRecordValidator.grantState",
+				"inputs": [
+					{
+						"name": "AuthRecordValidator.grantState.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRecordValidator.grantState",
+						"type": "GrantState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AuthRecordValidator.exchange",
+				"inputs": [
+					{
+						"name": "AuthRecordValidator.exchange.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRecordValidator.exchange",
+						"type": "NativeExchangeRecord"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

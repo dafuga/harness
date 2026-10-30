@@ -27,11 +27,14 @@
 			{
 				"name": "consoleStore.bucket",
 				"type": "ConsoleBucket",
+				"required": true,
 				"description": "Object-store binding providing asynchronous get calls that return text/byte readers or null for absent objects."
 			},
 			{
 				"name": "consoleStore.prefix",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional object-key prefix, defaulting to empty; trailing slashes are removed when constructing a prefixed key."
 			}
 		],
@@ -42,7 +45,37 @@
 				"description": "Async JSON and media readers. JSON reads the requested relative key; media reads media/name and derives its MIME type from the extension, defaulting to application/octet-stream. Missing objects yield undefined."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "consoleStore",
+				"inputs": [
+					{
+						"name": "consoleStore.bucket",
+						"type": "ConsoleBucket",
+						"required": true,
+						"description": "Object-store binding providing asynchronous get calls that return text/byte readers or null for absent objects."
+					},
+					{
+						"name": "consoleStore.prefix",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "Optional object-key prefix, defaulting to empty; trailing slashes are removed when constructing a prefixed key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleStore",
+						"type": "ConsoleData",
+						"description": "Async JSON and media readers. JSON reads the requested relative key; media reads media/name and derives its MIME type from the extension, defaulting to application/octet-stream. Missing objects yield undefined."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

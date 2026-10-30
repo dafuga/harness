@@ -20,11 +20,13 @@
 			{
 				"name": "codexState.command",
 				"type": "CliCommand",
+				"required": true,
 				"description": "The Codex executable and initial arguments used for a version check with a ten-second timeout."
 			},
 			{
 				"name": "codexState.server",
 				"type": "CliCommand",
+				"required": true,
 				"description": "The app-server executable and arguments used to query the account, first model-list page and provider capabilities."
 			}
 		],
@@ -41,7 +43,41 @@
 				"type": "thrown",
 				"description": "The ChatGPT sign-in requirement can produce an Error internally, but discovery errors are caught and their message is returned as the unavailable reason."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "codexState",
+				"inputs": [
+					{
+						"name": "codexState.command",
+						"type": "CliCommand",
+						"required": true,
+						"description": "The Codex executable and initial arguments used for a version check with a ten-second timeout."
+					},
+					{
+						"name": "codexState.server",
+						"type": "CliCommand",
+						"required": true,
+						"description": "The app-server executable and arguments used to query the account, first model-list page and provider capabilities."
+					}
+				],
+				"outputs": [
+					{
+						"name": "codexState",
+						"type": "Promise<ProviderState>",
+						"description": "A promise for Codex availability, version, model choices and image-generation support. Requires a ChatGPT account; account reading does not request token refresh. Successful discovery reports the server’s model list and image-generation capability. Failure returns unavailable with a reason and no models; the connection is disposed."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

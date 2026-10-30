@@ -15,7 +15,9 @@
 		"inputs": [
 			{
 				"name": "generateElements.input",
-				"type": "{ root?: string; force?: boolean }"
+				"type": "{ root?: string; force?: boolean }",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -29,7 +31,35 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "generateElements",
+				"inputs": [
+					{
+						"name": "generateElements.input",
+						"type": "{ root?: string; force?: boolean }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "generateElements",
+						"type": "Promise<GenerateResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

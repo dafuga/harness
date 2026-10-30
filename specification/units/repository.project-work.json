@@ -31,23 +31,28 @@
 		"inputs": [
 			{
 				"name": "ProjectWorkRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectWorkRepository.changes.commits",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "ProjectWorkRepository.uncommitted.checkout",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectWorkRepository.uncommitted.limit",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "ProjectWorkRepository.loops.commit",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -68,7 +73,101 @@
 				"type": "Promise<LoopState[]>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectWorkRepository.checkouts",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectWorkRepository.checkouts",
+						"type": "Promise<Checkout[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectWorkRepository.changes",
+				"inputs": [
+					{
+						"name": "ProjectWorkRepository.changes.commits",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectWorkRepository.changes",
+						"type": "Promise<Map<string, PathChange[]>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectWorkRepository.uncommitted",
+				"inputs": [
+					{
+						"name": "ProjectWorkRepository.uncommitted.checkout",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ProjectWorkRepository.uncommitted.limit",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectWorkRepository.uncommitted",
+						"type": "Promise<{ changes: PathChange[]; truncated: boolean }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectWorkRepository.loops",
+				"inputs": [
+					{
+						"name": "ProjectWorkRepository.loops.commit",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectWorkRepository.loops",
+						"type": "Promise<LoopState[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectWorkRepository.constructor",
+				"inputs": [
+					{
+						"name": "ProjectWorkRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectWorkRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

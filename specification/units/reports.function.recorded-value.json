@@ -31,7 +31,23 @@
 			{
 				"name": "recordedValue.value",
 				"type": "unknown",
+				"required": true,
 				"description": "A value already parsed from a verified JSON recording."
+			},
+			{
+				"name": "read.value",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "read.depth",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "read.budget",
+				"type": "{ left: number }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -41,7 +57,58 @@
 				"description": "Typed fields, list items or table cells, limited to four levels and twelve items per collection."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "recordedValue",
+				"inputs": [
+					{
+						"name": "recordedValue.value",
+						"type": "unknown",
+						"required": true,
+						"description": "A value already parsed from a verified JSON recording."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedValue",
+						"type": "RecordedNode",
+						"description": "Typed fields, list items or table cells, limited to four levels and twelve items per collection."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "read",
+				"inputs": [
+					{
+						"name": "read.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "read.depth",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "read.budget",
+						"type": "{ left: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "read",
+						"type": "RecordedNode"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

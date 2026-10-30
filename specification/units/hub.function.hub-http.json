@@ -33,29 +33,35 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "hubHttp.value",
-				"type": "unknown",
-				"description": "JSON response value."
-			},
-			{
-				"name": "hubHttp.status",
-				"type": "unknown",
-				"description": "HTTP status; defaults to 200."
-			},
-			{
 				"name": "hubQuery.request",
 				"type": "Request",
+				"required": true,
 				"description": "Request URL containing entity and commit selections."
-			},
-			{
-				"name": "hubBody.request",
-				"type": "Request",
-				"description": "Request with a JSON object body of at most 20000 bytes."
 			},
 			{
 				"name": "hubHttpFailure.error",
 				"type": "unknown",
+				"required": true,
 				"description": "Unknown error whose code may be safe to expose."
+			},
+			{
+				"name": "hubHttp.value",
+				"type": "unknown",
+				"required": true,
+				"description": "JSON response value."
+			},
+			{
+				"name": "hubHttp.status",
+				"type": "number",
+				"required": false,
+				"default": 200,
+				"description": "HTTP status; defaults to 200."
+			},
+			{
+				"name": "hubBody.request",
+				"type": "Request",
+				"required": true,
+				"description": "Request with a JSON object body of at most 20000 bytes."
 			}
 		],
 		"outputs": [
@@ -80,7 +86,97 @@
 				"description": "Known public code and mapped status, or unavailable with 503 for unknown failures."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubQuery",
+				"inputs": [
+					{
+						"name": "hubQuery.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request URL containing entity and commit selections."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubQuery",
+						"type": "unknown",
+						"description": "Query with a dotted unit ID and exactly 40 lowercase hexadecimal commit characters; other known selections default to empty strings."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubHttpFailure",
+				"inputs": [
+					{
+						"name": "hubHttpFailure.error",
+						"type": "unknown",
+						"required": true,
+						"description": "Unknown error whose code may be safe to expose."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubHttpFailure",
+						"type": "unknown",
+						"description": "Known public code and mapped status, or unavailable with 503 for unknown failures."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubHttp",
+				"inputs": [
+					{
+						"name": "hubHttp.value",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON response value."
+					},
+					{
+						"name": "hubHttp.status",
+						"type": "number",
+						"required": false,
+						"default": 200,
+						"description": "HTTP status; defaults to 200."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubHttp",
+						"type": "unknown",
+						"description": "JSON response with no-store, no-referrer and no-sniff headers."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubBody",
+				"inputs": [
+					{
+						"name": "hubBody.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request with a JSON object body of at most 20000 bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubBody",
+						"type": "Promise<Record<string, unknown>>",
+						"description": "Parsed non-array object; rejects missing/oversized body, invalid UTF-8/JSON or unacceptable content-type prefix with invalid-input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

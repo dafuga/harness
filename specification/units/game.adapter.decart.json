@@ -25,27 +25,33 @@
 		"inputs": [
 			{
 				"name": "DecartAdapter.constructor.tokens",
-				"type": "Pick<TokenClient, 'create'>"
+				"type": "Pick<TokenClient, 'create'>",
+				"required": true
 			},
 			{
 				"name": "DecartAdapter.constructor.now",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "DecartAdapter.start.input",
-				"type": "RenderSessionRequest"
+				"type": "RenderSessionRequest",
+				"required": true
 			},
 			{
 				"name": "renderRate.model",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "renderRate.fast",
-				"type": "boolean"
+				"type": "boolean",
+				"required": true
 			},
 			{
 				"name": "validateSession.input",
-				"type": "RenderSessionRequest"
+				"type": "RenderSessionRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -66,6 +72,103 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DecartAdapter.start",
+				"inputs": [
+					{
+						"name": "DecartAdapter.start.input",
+						"type": "RenderSessionRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DecartAdapter.start",
+						"type": "Promise<RenderSession>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderRate",
+				"inputs": [
+					{
+						"name": "renderRate.model",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "renderRate.fast",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderRate",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "validateSession",
+				"inputs": [
+					{
+						"name": "validateSession.input",
+						"type": "RenderSessionRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateSession",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DecartAdapter.constructor",
+				"inputs": [
+					{
+						"name": "DecartAdapter.constructor.tokens",
+						"type": "Pick<TokenClient, 'create'>",
+						"required": true
+					},
+					{
+						"name": "DecartAdapter.constructor.now",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "DecartAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

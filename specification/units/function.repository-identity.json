@@ -30,26 +30,31 @@
 			{
 				"name": "repositoryIdentity.directory",
 				"type": "string",
+				"required": true,
 				"description": "Checkout directory to identify through Git metadata and upstream addresses."
 			},
 			{
 				"name": "sameRepository.left",
 				"type": "string",
+				"required": true,
 				"description": "First checkout directory to compare."
 			},
 			{
 				"name": "sameRepository.right",
 				"type": "string",
+				"required": true,
 				"description": "Second checkout directory to compare."
 			},
 			{
 				"name": "sameSite.site",
 				"type": "string",
+				"required": true,
 				"description": "Hosted site directory whose repository or plain-directory identity defines ownership."
 			},
 			{
 				"name": "sameSite.directory",
 				"type": "string",
+				"required": true,
 				"description": "Candidate directory whose membership in the site should be checked."
 			}
 		],
@@ -70,7 +75,82 @@
 				"description": "True for another checkout of a known site repository, or the exact canonical directory of a site outside Git. Unknown-origin repositories do not fall back to path equality."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "repositoryIdentity",
+				"inputs": [
+					{
+						"name": "repositoryIdentity.directory",
+						"type": "string",
+						"required": true,
+						"description": "Checkout directory to identify through Git metadata and upstream addresses."
+					}
+				],
+				"outputs": [
+					{
+						"name": "repositoryIdentity",
+						"type": "string | null",
+						"description": "Cached SHA-256 identity from a normalized network remote or canonical local Git store, following local clone origins up to the hop limit; null for missing or ambiguous origins."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sameRepository",
+				"inputs": [
+					{
+						"name": "sameRepository.left",
+						"type": "string",
+						"required": true,
+						"description": "First checkout directory to compare."
+					},
+					{
+						"name": "sameRepository.right",
+						"type": "string",
+						"required": true,
+						"description": "Second checkout directory to compare."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameRepository",
+						"type": "boolean",
+						"description": "True only when both directories have the same non-null repository identity. Shared template history alone does not establish identity."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sameSite",
+				"inputs": [
+					{
+						"name": "sameSite.site",
+						"type": "string",
+						"required": true,
+						"description": "Hosted site directory whose repository or plain-directory identity defines ownership."
+					},
+					{
+						"name": "sameSite.directory",
+						"type": "string",
+						"required": true,
+						"description": "Candidate directory whose membership in the site should be checked."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameSite",
+						"type": "boolean",
+						"description": "True for another checkout of a known site repository, or the exact canonical directory of a site outside Git. Unknown-origin repositories do not fall back to path equality."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

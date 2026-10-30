@@ -31,11 +31,13 @@
 			{
 				"name": "hubEvidenceFile.base",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubEvidenceFile.input",
 				"type": "Input",
+				"required": true,
 				"description": "Evidence pointer path and file declaration with path, storage, hash and byte length."
 			}
 		],
@@ -62,7 +64,36 @@
 				"type": "refused",
 				"description": "Materialized Git LFS bytes do not match the pointer’s declared content."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hubEvidenceFile",
+				"inputs": [
+					{
+						"name": "hubEvidenceFile.base",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubEvidenceFile.input",
+						"type": "Input",
+						"required": true,
+						"description": "Evidence pointer path and file declaration with path, storage, hash and byte length."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidenceFile",
+						"type": "unknown",
+						"description": "Bytes and an immutable file fact when intact, or explicit problem text for missing/mismatched declarations. A fact includes the verified storage blob ID."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

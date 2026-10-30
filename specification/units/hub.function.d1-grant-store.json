@@ -30,11 +30,13 @@
 			{
 				"name": "d1GrantStore.db",
 				"type": "D1Like",
+				"required": true,
 				"description": "D1-compatible database handle; queries run only when the returned store methods are called."
 			},
 			{
 				"name": "d1GrantStore.records",
 				"type": "AuthRecordValidator",
+				"required": true,
 				"description": "Validator used to turn stored database rows into typed records."
 			}
 		],
@@ -50,7 +52,36 @@
 				"description": "Store for reading grant state, connecting at an expected generation, leasing refresh, rotating held tokens and revoking grants. Conditional mutations return whether a row matched. Missing records read as generation zero with no grant or lease."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "d1GrantStore",
+				"inputs": [
+					{
+						"name": "d1GrantStore.db",
+						"type": "D1Like",
+						"required": true,
+						"description": "D1-compatible database handle; queries run only when the returned store methods are called."
+					},
+					{
+						"name": "d1GrantStore.records",
+						"type": "AuthRecordValidator",
+						"required": true,
+						"description": "Validator used to turn stored database rows into typed records."
+					}
+				],
+				"outputs": [
+					{
+						"name": "d1GrantStore",
+						"type": "GrantStore",
+						"description": "Store for reading grant state, connecting at an expected generation, leasing refresh, rotating held tokens and revoking grants. Conditional mutations return whether a row matched. Missing records read as generation zero with no grant or lease."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

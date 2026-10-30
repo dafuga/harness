@@ -17,19 +17,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "auditTypePlacement.file",
+				"type": "AuditFile",
+				"required": true,
+				"description": "Source contents, extension and repository path; Svelte script blocks are inspected together."
+			},
+			{
 				"name": "auditArchitecture.path",
 				"type": "string",
+				"required": true,
 				"description": "Repository-relative path whose directional imports are checked."
 			},
 			{
 				"name": "auditArchitecture.lines",
 				"type": "string[]",
+				"required": true,
 				"description": "Structural source lines used to inspect import boundaries."
-			},
-			{
-				"name": "auditTypePlacement.file",
-				"type": "AuditFile",
-				"description": "Source contents, extension and repository path; Svelte script blocks are inspected together."
 			}
 		],
 		"outputs": [
@@ -44,7 +47,56 @@
 				"description": "Findings for named interfaces or type aliases mixed with executable declarations; separate type modules and declaration files are accepted."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "auditTypePlacement",
+				"inputs": [
+					{
+						"name": "auditTypePlacement.file",
+						"type": "AuditFile",
+						"required": true,
+						"description": "Source contents, extension and repository path; Svelte script blocks are inspected together."
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditTypePlacement",
+						"type": "AuditFinding[]",
+						"description": "Findings for named interfaces or type aliases mixed with executable declarations; separate type modules and declaration files are accepted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "auditArchitecture",
+				"inputs": [
+					{
+						"name": "auditArchitecture.path",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative path whose directional imports are checked."
+					},
+					{
+						"name": "auditArchitecture.lines",
+						"type": "string[]",
+						"required": true,
+						"description": "Structural source lines used to inspect import boundaries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditArchitecture",
+						"type": "AuditFinding[]",
+						"description": "Import-boundary violations for core, templates and thin command modules."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

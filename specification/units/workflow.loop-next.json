@@ -30,11 +30,13 @@
 		"inputs": [
 			{
 				"name": "nextLoopStep.input",
-				"type": "NextLoopStepInput"
+				"type": "NextLoopStepInput",
+				"required": true
 			},
 			{
 				"name": "renderNextLoopStep.result",
-				"type": "NextLoopStepResult"
+				"type": "NextLoopStepResult",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,7 +49,47 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "nextLoopStep",
+				"inputs": [
+					{
+						"name": "nextLoopStep.input",
+						"type": "NextLoopStepInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextLoopStep",
+						"type": "Promise<NextLoopStepResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderNextLoopStep",
+				"inputs": [
+					{
+						"name": "renderNextLoopStep.result",
+						"type": "NextLoopStepResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderNextLoopStep",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

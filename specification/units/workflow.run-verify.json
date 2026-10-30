@@ -32,23 +32,30 @@
 		"inputs": [
 			{
 				"name": "verifyRun.options",
-				"type": "VerifyOptions"
+				"type": "VerifyOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "verifyCheck.options",
-				"type": "VerifyOptions"
+				"type": "VerifyOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "verifyIdentity.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "verifyStamp.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "renderVerify.stored",
-				"type": "StoredRecord"
+				"type": "StoredRecord",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -78,7 +85,118 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "verifyRun",
+				"inputs": [
+					{
+						"name": "verifyRun.options",
+						"type": "VerifyOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyRun",
+						"type": "Promise<StoredRecord>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyCheck",
+				"inputs": [
+					{
+						"name": "verifyCheck.options",
+						"type": "VerifyOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyCheck",
+						"type": "Promise<CheckReport>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyIdentity",
+				"inputs": [
+					{
+						"name": "verifyIdentity.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyIdentity",
+						"type": "Promise<IdentifiedBuild & { directory: string }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyStamp",
+				"inputs": [
+					{
+						"name": "verifyStamp.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyStamp",
+						"type": "Promise<IdentifiedBuild & { directory: string }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderVerify",
+				"inputs": [
+					{
+						"name": "renderVerify.stored",
+						"type": "StoredRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderVerify",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

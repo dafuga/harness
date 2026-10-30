@@ -19,16 +19,19 @@
 			{
 				"name": "moduleResourceLocation.scope",
 				"type": "Pick<ExplorerLocation, 'branch' | 'commit'>",
+				"required": true,
 				"description": "Selected branch and commit; unrelated entity context is discarded."
 			},
 			{
 				"name": "moduleResourceLocation.module",
 				"type": "string",
+				"required": true,
 				"description": "Identity of the module declaring this resource."
 			},
 			{
 				"name": "moduleResourceLocation.resource",
 				"type": "ModuleResource",
+				"required": true,
 				"description": "Resource declaration with an optional existing catalog destination."
 			}
 		],
@@ -39,7 +42,42 @@
 				"description": "A fresh catalog or module-resource location in the supplied branch and commit."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "moduleResourceLocation",
+				"inputs": [
+					{
+						"name": "moduleResourceLocation.scope",
+						"type": "Pick<ExplorerLocation, 'branch' | 'commit'>",
+						"required": true,
+						"description": "Selected branch and commit; unrelated entity context is discarded."
+					},
+					{
+						"name": "moduleResourceLocation.module",
+						"type": "string",
+						"required": true,
+						"description": "Identity of the module declaring this resource."
+					},
+					{
+						"name": "moduleResourceLocation.resource",
+						"type": "ModuleResource",
+						"required": true,
+						"description": "Resource declaration with an optional existing catalog destination."
+					}
+				],
+				"outputs": [
+					{
+						"name": "moduleResourceLocation",
+						"type": "ExplorerLocation",
+						"description": "A fresh catalog or module-resource location in the supplied branch and commit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

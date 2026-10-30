@@ -59,12 +59,6 @@
 				"description": "Optional disabled state, defaulting to false."
 			},
 			{
-				"name": "Select.children",
-				"type": "Snippet",
-				"required": true,
-				"description": "Required snippet supplying the option markup."
-			},
-			{
 				"name": "Select.compact",
 				"type": "boolean",
 				"required": false,
@@ -82,6 +76,12 @@
 				"type": "string",
 				"required": false,
 				"description": "Optional hover text. Defaults to the full display label."
+			},
+			{
+				"name": "Select.children",
+				"type": "Snippet",
+				"required": true,
+				"description": "Required snippet supplying the option markup."
 			}
 		],
 		"outputs": [
@@ -91,7 +91,9 @@
 				"description": "Native select with a decorative arrow. Binding updates its selected value; disabled and required behavior follow the browser. Forced-color mode restores the native appearance."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

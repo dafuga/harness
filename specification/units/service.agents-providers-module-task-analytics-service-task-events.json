@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "taskEvents.tasks",
-				"type": "ModuleTask[]"
+				"type": "ModuleTask[]",
+				"required": true
 			},
 			{
 				"name": "taskEvents.project",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -28,7 +30,34 @@
 				"type": "AnalyticsEvent[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "taskEvents",
+				"inputs": [
+					{
+						"name": "taskEvents.tasks",
+						"type": "ModuleTask[]",
+						"required": true
+					},
+					{
+						"name": "taskEvents.project",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskEvents",
+						"type": "AnalyticsEvent[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

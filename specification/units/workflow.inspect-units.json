@@ -33,23 +33,31 @@
 		"inputs": [
 			{
 				"name": "unitSchema.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "listUnits.options",
-				"type": "UnitsOptions & { kind?: string }"
+				"type": "UnitsOptions & { kind?: string }",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "unitsGraph.options",
-				"type": "UnitsOptions"
+				"type": "UnitsOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "showUnit.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "showUnit.options",
-				"type": "UnitsOptions"
+				"type": "UnitsOptions",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -75,7 +83,101 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "unitSchema",
+				"inputs": [
+					{
+						"name": "unitSchema.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitSchema",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "listUnits",
+				"inputs": [
+					{
+						"name": "listUnits.options",
+						"type": "UnitsOptions & { kind?: string }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "listUnits",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unitsGraph",
+				"inputs": [
+					{
+						"name": "unitsGraph.options",
+						"type": "UnitsOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitsGraph",
+						"type": "Promise<SourceGraph>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "showUnit",
+				"inputs": [
+					{
+						"name": "showUnit.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "showUnit.options",
+						"type": "UnitsOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "showUnit",
+						"type": "Promise<UnitDetail>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

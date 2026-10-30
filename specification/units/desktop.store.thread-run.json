@@ -25,7 +25,8 @@
 		"inputs": [
 			{
 				"name": "createThreadRunStore.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -34,7 +35,29 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "createThreadRunStore",
+				"inputs": [
+					{
+						"name": "createThreadRunStore.workspace",
+						"type": "Workspace",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createThreadRunStore",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

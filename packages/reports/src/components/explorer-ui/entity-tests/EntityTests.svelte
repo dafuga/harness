@@ -23,8 +23,7 @@
 		evidence,
 		behavior,
 		nav,
-		mediaBase,
-		exportHref = ''
+		mediaBase
 	}: {
 		entity: ExplorerEntity;
 		scope: ExplorerScope;
@@ -32,7 +31,6 @@
 		behavior: ExplorerBehavior;
 		nav: EntityNav;
 		mediaBase: string;
-		exportHref?: string;
 	} = $props();
 	let coverage = $derived(evidence.after.coverage);
 	let record = $derived(evidence.after.record);
@@ -88,10 +86,6 @@
 		{/if}
 		{#if !record}
 			<hx-p class="ex-soft">No usable verification record judges this revision.</hx-p>
-		{:else if exportHref}
-			<hx-p>
-				<hx-a class="ex-link" href={`${exportHref}?record=${record.id}`}>Download this record</hx-a>
-			</hx-p>
 		{/if}
 	</hx-section>
 	{#if coverage.length === 0}

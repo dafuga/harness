@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "runAudit.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "runAudit.options",
-				"type": "AuditCommandOptions"
+				"type": "AuditCommandOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -28,7 +30,34 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runAudit",
+				"inputs": [
+					{
+						"name": "runAudit.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "runAudit.options",
+						"type": "AuditCommandOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runAudit",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

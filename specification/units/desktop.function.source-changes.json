@@ -19,11 +19,13 @@
 			{
 				"name": "sourceChanges.before",
 				"type": "SourceSnapshot",
+				"required": true,
 				"description": "Earlier map of paths to content hashes or link markers."
 			},
 			{
 				"name": "sourceChanges.after",
 				"type": "SourceSnapshot",
+				"required": true,
 				"description": "Later map of paths to content hashes or link markers."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "Changes sorted by path across both maps; equal values are omitted."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "sourceChanges",
+				"inputs": [
+					{
+						"name": "sourceChanges.before",
+						"type": "SourceSnapshot",
+						"required": true,
+						"description": "Earlier map of paths to content hashes or link markers."
+					},
+					{
+						"name": "sourceChanges.after",
+						"type": "SourceSnapshot",
+						"required": true,
+						"description": "Later map of paths to content hashes or link markers."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceChanges",
+						"type": "SourceChange[]",
+						"description": "Changes sorted by path across both maps; equal values are omitted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -23,15 +23,18 @@
 		"inputs": [
 			{
 				"name": "ImpactService.constructor.runtime",
-				"type": "UnitRuntime"
+				"type": "UnitRuntime",
+				"required": true
 			},
 			{
 				"name": "ImpactService.compute.base",
-				"type": "ImpactSide"
+				"type": "ImpactSide",
+				"required": true
 			},
 			{
 				"name": "ImpactService.compute.head",
-				"type": "ImpactSide"
+				"type": "ImpactSide",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,6 +47,57 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ImpactService.compute",
+				"inputs": [
+					{
+						"name": "ImpactService.compute.base",
+						"type": "ImpactSide",
+						"required": true
+					},
+					{
+						"name": "ImpactService.compute.head",
+						"type": "ImpactSide",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ImpactService.compute",
+						"type": "Promise<ImpactReport>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ImpactService.constructor",
+				"inputs": [
+					{
+						"name": "ImpactService.constructor.runtime",
+						"type": "UnitRuntime",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ImpactService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

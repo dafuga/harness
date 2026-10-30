@@ -20,11 +20,13 @@
 			{
 				"name": "githubLfs.options",
 				"type": "GitHubOptions",
+				"required": true,
 				"description": "Repository identity, scoped read-token callback and optional fetch implementation."
 			},
 			{
 				"name": "githubLfs.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Raw blob bytes; ordinary blobs pass through, while recognized LFS pointers must use the exact supported v1 format."
 			}
 		],
@@ -41,7 +43,41 @@
 				"type": "thrown",
 				"description": "Malformed pointers and oversized declarations fail directly; download, location, response and integrity failures become lfs-unavailable."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "githubLfs",
+				"inputs": [
+					{
+						"name": "githubLfs.options",
+						"type": "GitHubOptions",
+						"required": true,
+						"description": "Repository identity, scoped read-token callback and optional fetch implementation."
+					},
+					{
+						"name": "githubLfs.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Raw blob bytes; ordinary blobs pass through, while recognized LFS pointers must use the exact supported v1 format."
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubLfs",
+						"type": "Promise<Uint8Array>",
+						"description": "Original bytes for ordinary blobs, or downloaded bytes matching the pointer’s SHA-256 and declared size of at most 50,000,000 bytes."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

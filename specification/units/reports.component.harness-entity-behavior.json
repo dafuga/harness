@@ -36,41 +36,50 @@
 			{
 				"name": "EntityBehavior.behavior",
 				"type": "ExplorerBehavior",
+				"required": true,
 				"description": "Required metadata for recorded rows before their contents are read. Row before/after hashes form the identity used to retain a completed reading."
 			},
 			{
 				"name": "EntityBehavior.read",
 				"type": "ExplorerBehavior | null",
+				"required": false,
+				"default": null,
 				"description": "Optional already-read behavior, default null. Non-null bypasses local reading; null means no preloaded result and does not itself indicate failure."
 			},
 			{
 				"name": "EntityBehavior.scope",
 				"type": "ExplorerScope",
+				"required": true,
 				"description": "Required mode, commit and parent context. Paired panes require commit behavior with a parent."
 			},
 			{
 				"name": "EntityBehavior.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "Required base used by the artifact-reading helper and passed to run panels."
 			},
 			{
 				"name": "EntityBehavior.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required route context and navigation callbacks for full tests and selected-commit links."
 			},
 			{
 				"name": "EntityBehavior.reasons",
 				"type": "Reasons",
+				"required": false,
 				"description": "Optional entity change reasons, displayed separately from test observations. Their behavior summary takes precedence over derived comparison explanation."
 			},
 			{
 				"name": "EntityBehavior.duration",
 				"type": "string",
+				"required": false,
 				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it."
 			},
 			{
 				"name": "EntityBehavior.unit",
 				"type": "string",
+				"required": false,
 				"description": "Optional function identifier passed to run/artifact case rendering."
 			}
 		],
@@ -81,7 +90,9 @@
 				"description": "Current or before/after test panel. Reads artifacts when not supplied, ignores completion whose row-hash signature no longer matches, and shows pending or unknown rather than premature comparison. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict is shown only when the helper also reports passing results."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

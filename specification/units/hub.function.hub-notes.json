@@ -20,11 +20,13 @@
 			{
 				"name": "hubNotes.base",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubNotes.pinned",
 				"type": "string | null",
+				"required": true,
 				"description": "Exact notes revision, or null for no notes."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Map from 40-character commit IDs to parsed note lines; null pin yields an empty map. Reads for the same context and pin share a promise."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubNotes",
+				"inputs": [
+					{
+						"name": "hubNotes.base",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubNotes.pinned",
+						"type": "string | null",
+						"required": true,
+						"description": "Exact notes revision, or null for no notes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubNotes",
+						"type": "Promise<Map<string, ReadNote>>",
+						"description": "Map from 40-character commit IDs to parsed note lines; null pin yields an empty map. Reads for the same context and pin share a promise."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

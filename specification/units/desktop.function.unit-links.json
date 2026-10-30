@@ -22,12 +22,21 @@
 			{
 				"name": "unitLinks.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace with snapshot, selected entity, busy state and pinning state."
 			},
 			{
 				"name": "unitLinks.current",
 				"type": "CatalogEntity | null",
+				"required": false,
+				"default": null,
 				"description": "Optional current entity detail; defaults to null and is used only for the entity actually selected."
+			},
+			{
+				"name": "unitLinks.options",
+				"type": "{ history?: boolean }",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -37,7 +46,43 @@
 				"description": "Resolver returning unit name, category and route, or null for invalid IDs, absent units, busy state or changed project/revision scope. Pinned views keep their commit in the route."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "unitLinks",
+				"inputs": [
+					{
+						"name": "unitLinks.workspace",
+						"type": "Workspace",
+						"required": true,
+						"description": "Workspace with snapshot, selected entity, busy state and pinning state."
+					},
+					{
+						"name": "unitLinks.current",
+						"type": "CatalogEntity | null",
+						"required": false,
+						"default": null,
+						"description": "Optional current entity detail; defaults to null and is used only for the entity actually selected."
+					},
+					{
+						"name": "unitLinks.options",
+						"type": "{ history?: boolean }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitLinks",
+						"type": "(id: string)",
+						"description": "Resolver returning unit name, category and route, or null for invalid IDs, absent units, busy state or changed project/revision scope. Pinned views keep their commit in the route."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

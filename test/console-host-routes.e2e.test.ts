@@ -167,17 +167,10 @@ test('the installed console shows recorded media and exports a record, for the a
 	await expect
 		.poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth))
 		.toBeGreaterThan(0);
-	// The export its tests link to opens as a complete report with the same provenance.
+	// The tests of an entity no longer offer a record to download.
 	await page.goto(`${worker.url}${entity}?tab=tests`);
 	await page.getByText('Verification details', { exact: true }).click();
-	const link = page.getByRole('link', { name: 'Download this record' }).first();
-	const address = new URL((await link.getAttribute('href')) ?? '', worker.url);
-	expect(address.pathname).toBe(`/harness/export/${target.commit}`);
-	const viewer = await page.context().newPage();
-	await viewer.setContent(await (await page.request.get(address.href)).text());
-	await viewer.locator('.evidence-card').first().waitFor();
-	expect(await viewer.locator('.evidence-card:not(.audio-card)').count()).toBe(6);
-	expect(await viewer.locator('.evidence-card').first().innerText()).toContain('Fresh capture');
+	expect(await page.getByRole('link', { name: 'Download this record' }).count()).toBe(0);
 	const directory = process.env.HARNESS_CAPTURE_DIR;
 	if (directory) {
 		await mkdir(directory, { recursive: true });

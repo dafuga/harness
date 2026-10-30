@@ -26,23 +26,30 @@
 		"inputs": [
 			{
 				"name": "R2ReportRetentionAdapter.purge.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "R2ReportRetentionAdapter.purge.dryRun",
-				"type": "unknown"
+				"type": "boolean",
+				"required": false,
+				"default": false
 			},
 			{
 				"name": "R2ReportRetentionAdapter.orphans.known",
-				"type": "Set<string>"
+				"type": "Set<string>",
+				"required": true
 			},
 			{
 				"name": "R2ReportRetentionAdapter.orphans.cutoff",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "R2ReportRetentionAdapter.orphans.dryRun",
-				"type": "unknown"
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -64,7 +71,76 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "R2ReportRetentionAdapter.fromEnvironment",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "R2ReportRetentionAdapter.fromEnvironment",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2ReportRetentionAdapter.purge",
+				"inputs": [
+					{
+						"name": "R2ReportRetentionAdapter.purge.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "R2ReportRetentionAdapter.purge.dryRun",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2ReportRetentionAdapter.purge",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "R2ReportRetentionAdapter.orphans",
+				"inputs": [
+					{
+						"name": "R2ReportRetentionAdapter.orphans.known",
+						"type": "Set<string>",
+						"required": true
+					},
+					{
+						"name": "R2ReportRetentionAdapter.orphans.cutoff",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "R2ReportRetentionAdapter.orphans.dryRun",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "R2ReportRetentionAdapter.orphans",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

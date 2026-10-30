@@ -38,17 +38,25 @@
 			{
 				"name": "isWorkspacePath.path",
 				"type": "string",
+				"required": true,
 				"description": "The path to check for a /harness address or a /projects/{project}/harness address. This recognition step does not validate the category or commit."
 			},
 			{
 				"name": "workspaceRoute.path",
 				"type": "string",
+				"required": true,
 				"description": "The workspace path to read, optionally naming a project, encoded branch, commit, category, entity and section. A named commit must contain exactly 40 lowercase hexadecimal characters. The category defaults to pages when absent."
 			},
 			{
 				"name": "workspacePath.target",
 				"type": "WorkspaceTarget",
+				"required": true,
 				"description": "The category to link to, plus optional project, branch, commit, entity and section. Project, branch and entity names are URL-encoded. A section is included only when an entity is supplied. This builder does not validate a supplied commit."
+			},
+			{
+				"name": "workspaceGameViews.workspace",
+				"type": "Pick<Workspace, 'snapshot' | 'projectId' | 'local' | 'bridge'>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -79,7 +87,93 @@
 				"type": "thrown",
 				"description": "Reading fails for a non-workspace address, a commit other than a full 40-character lowercase hexadecimal hash, or an unknown catalog category. Invalid URL escapes in decoded names can also throw; recognition can encounter that decoding error for project names."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "isWorkspacePath",
+				"inputs": [
+					{
+						"name": "isWorkspacePath.path",
+						"type": "string",
+						"required": true,
+						"description": "The path to check for a /harness address or a /projects/{project}/harness address. This recognition step does not validate the category or commit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isWorkspacePath",
+						"type": "boolean",
+						"description": "True when the path has a recognized workspace prefix, otherwise false. A true result alone does not mean the full path can be read successfully."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workspaceRoute",
+				"inputs": [
+					{
+						"name": "workspaceRoute.path",
+						"type": "string",
+						"required": true,
+						"description": "The workspace path to read, optionally naming a project, encoded branch, commit, category, entity and section. A named commit must contain exactly 40 lowercase hexadecimal characters. The category defaults to pages when absent."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workspaceRoute",
+						"type": "WorkspaceRoute",
+						"description": "The decoded project, branch and entity, the commit, category and recognized section. Missing selections are null, except the default pages category. An unknown section is treated as no section."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workspacePath",
+				"inputs": [
+					{
+						"name": "workspacePath.target",
+						"type": "WorkspaceTarget",
+						"required": true,
+						"description": "The category to link to, plus optional project, branch, commit, entity and section. Project, branch and entity names are URL-encoded. A section is included only when an entity is supplied. This builder does not validate a supplied commit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workspacePath",
+						"type": "string",
+						"description": "A workspace path carrying the supplied selections. A missing project creates a legacy /harness link; absent branch and commit leave the revision unspecified."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workspaceGameViews",
+				"inputs": [
+					{
+						"name": "workspaceGameViews.workspace",
+						"type": "Pick<Workspace, 'snapshot' | 'projectId' | 'local' | 'bridge'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workspaceGameViews",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

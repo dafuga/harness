@@ -36,16 +36,20 @@
 			{
 				"name": "GameCheckpointEditor.checkpoint",
 				"type": "Checkpoint | null",
+				"required": true,
 				"description": "Selected checkpoint whose guidance, rules or saved image are being edited."
 			},
 			{
 				"name": "GameCheckpointEditor.change",
 				"type": "(node: Checkpoint) => void",
+				"required": true,
 				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
 			},
 			{
 				"name": "GameCheckpointEditor.readonly",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Disable editing and generation for historical or otherwise immutable views."
 			}
 		],
@@ -56,7 +60,9 @@
 				"description": "Edit advanced checkpoint prerequisites, repeatability, conditions and actions without changing independent mechanics."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -20,11 +20,13 @@
 			{
 				"name": "planningArtifactPaths.root",
 				"type": "string | undefined",
+				"required": true,
 				"description": "Repository root used to read plan and optional unit manifests; undefined returns an empty set."
 			},
 			{
 				"name": "planningArtifactPaths.files",
 				"type": "string[]",
+				"required": true,
 				"description": "Repository-relative paths to examine for supported plan, design, approval and thread artifacts."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Set of accepted artifact paths and ancestor directory paths ending in slash. Invalid plans, mismatched locations/hashes and unrelated files contribute nothing; no files are changed."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "planningArtifactPaths",
+				"inputs": [
+					{
+						"name": "planningArtifactPaths.root",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Repository root used to read plan and optional unit manifests; undefined returns an empty set."
+					},
+					{
+						"name": "planningArtifactPaths.files",
+						"type": "string[]",
+						"required": true,
+						"description": "Repository-relative paths to examine for supported plan, design, approval and thread artifacts."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planningArtifactPaths",
+						"type": "Set<string>",
+						"description": "Set of accepted artifact paths and ancestor directory paths ending in slash. Invalid plans, mismatched locations/hashes and unrelated files contribute nothing; no files are changed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

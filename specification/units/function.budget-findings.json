@@ -42,28 +42,33 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "isFrozen.metric",
-				"type": "string",
-				"description": "Metric name to test for a frozen size, complexity, dependency or emitted-artifact limit."
-			},
-			{
 				"name": "budgetFindings.input",
 				"type": "BudgetInput",
+				"required": true,
 				"description": "Unit, current profile, default target, performance budgets and measurements, optional reviewed baseline, and whether source size and complexity should be checked."
+			},
+			{
+				"name": "isFrozen.metric",
+				"type": "string",
+				"required": true,
+				"description": "Metric name to test for a frozen size, complexity, dependency or emitted-artifact limit."
 			},
 			{
 				"name": "performanceLimit.metric",
 				"type": "string",
+				"required": true,
 				"description": "Metric whose worse direction determines the tolerated limit; only throughput-ops treats larger values as better."
 			},
 			{
 				"name": "performanceLimit.baseline",
 				"type": "number",
+				"required": true,
 				"description": "Reviewed numeric value in the same unit as the measurement."
 			},
 			{
 				"name": "performanceLimit.tolerance",
 				"type": "number",
+				"required": true,
 				"description": "Allowed fractional regression, such as 0.05 for five percent."
 			}
 		],
@@ -89,7 +94,82 @@
 				"description": "Baseline decreased by tolerance for throughput, otherwise increased by tolerance, rounded to twelve significant digits. A value exactly at the limit remains acceptable."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "budgetFindings",
+				"inputs": [
+					{
+						"name": "budgetFindings.input",
+						"type": "BudgetInput",
+						"required": true,
+						"description": "Unit, current profile, default target, performance budgets and measurements, optional reviewed baseline, and whether source size and complexity should be checked."
+					}
+				],
+				"outputs": [
+					{
+						"name": "budgetFindings",
+						"type": "BudgetFinding[]",
+						"description": "Findings for requested source checks, measured emitted targets and each performance budget. Each reports passed, exceeded, missing-baseline, missing-measurement, unavailable, incomplete or incompatible as supported by the evidence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isFrozen",
+				"inputs": [
+					{
+						"name": "isFrozen.metric",
+						"type": "string",
+						"required": true,
+						"description": "Metric name to test for a frozen size, complexity, dependency or emitted-artifact limit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isFrozen",
+						"type": "boolean",
+						"description": "True for those source metrics or any metric beginning with artifact-bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "performanceLimit",
+				"inputs": [
+					{
+						"name": "performanceLimit.metric",
+						"type": "string",
+						"required": true,
+						"description": "Metric whose worse direction determines the tolerated limit; only throughput-ops treats larger values as better."
+					},
+					{
+						"name": "performanceLimit.baseline",
+						"type": "number",
+						"required": true,
+						"description": "Reviewed numeric value in the same unit as the measurement."
+					},
+					{
+						"name": "performanceLimit.tolerance",
+						"type": "number",
+						"required": true,
+						"description": "Allowed fractional regression, such as 0.05 for five percent."
+					}
+				],
+				"outputs": [
+					{
+						"name": "performanceLimit",
+						"type": "number",
+						"description": "Baseline decreased by tolerance for throughput, otherwise increased by tolerance, rounded to twelve significant digits. A value exactly at the limit remains acceptable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

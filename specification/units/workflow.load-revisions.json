@@ -32,23 +32,28 @@
 		"inputs": [
 			{
 				"name": "loadSide.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "loadSide.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"required": true
 			},
 			{
 				"name": "loadSide.indexer",
-				"type": "SourceIndexService"
+				"type": "SourceIndexService",
+				"required": true
 			},
 			{
 				"name": "openRange.range",
-				"type": "RevisionRange"
+				"type": "RevisionRange",
+				"required": true
 			},
 			{
 				"name": "commitLoader.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -74,7 +79,92 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "loadSide",
+				"inputs": [
+					{
+						"name": "loadSide.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "loadSide.tree",
+						"type": "SourceTree",
+						"required": true
+					},
+					{
+						"name": "loadSide.indexer",
+						"type": "SourceIndexService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadSide",
+						"type": "Promise<RevisionSide>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "emptySide",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "emptySide",
+						"type": "RevisionSide"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "openRange",
+				"inputs": [
+					{
+						"name": "openRange.range",
+						"type": "RevisionRange",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openRange",
+						"type": "Promise<{ root: string; base: RevisionSide; head: RevisionSide }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "commitLoader",
+				"inputs": [
+					{
+						"name": "commitLoader.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "commitLoader",
+						"type": "(commit: string)"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

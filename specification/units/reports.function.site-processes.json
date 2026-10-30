@@ -19,11 +19,13 @@
 			{
 				"name": "siteProcesses.snapshot",
 				"type": "CpuSnapshot",
+				"required": true,
 				"description": "CPU sample with machine totals, groups and optional agent entries."
 			},
 			{
 				"name": "siteProcesses.directoryOf",
 				"type": "(pid: number) => string | undefined",
+				"required": false,
 				"description": "Optional PID-to-working-directory lookup. Defaults to reading the process directory, falling back to lsof; unknown directories exclude the agent."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "Snapshot preserving machine data and non-agent groups, with only site-owned agents, recalculated agent totals and recalculated tracked percentage unless it was null. Samples lacking agents or groups are returned unchanged."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "siteProcesses",
+				"inputs": [
+					{
+						"name": "siteProcesses.snapshot",
+						"type": "CpuSnapshot",
+						"required": true,
+						"description": "CPU sample with machine totals, groups and optional agent entries."
+					},
+					{
+						"name": "siteProcesses.directoryOf",
+						"type": "(pid: number) => string | undefined",
+						"required": false,
+						"description": "Optional PID-to-working-directory lookup. Defaults to reading the process directory, falling back to lsof; unknown directories exclude the agent."
+					}
+				],
+				"outputs": [
+					{
+						"name": "siteProcesses",
+						"type": "CpuSnapshot",
+						"description": "Snapshot preserving machine data and non-agent groups, with only site-owned agents, recalculated agent totals and recalculated tracked percentage unless it was null. Samples lacking agents or groups are returned unchanged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

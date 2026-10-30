@@ -34,16 +34,19 @@
 			{
 				"name": "mapColumns.count",
 				"type": "number",
+				"required": true,
 				"description": "Unit count used to choose a row width."
 			},
 			{
 				"name": "harnessLayout.units",
 				"type": "HarnessUnit[]",
+				"required": true,
 				"description": "Units and their declared dependencies to lay out."
 			},
 			{
 				"name": "harnessLayout.perRow",
 				"type": "unknown",
+				"required": false,
 				"description": "Optional units per row, defaulting to mapColumns for the supplied count."
 			}
 		],
@@ -64,7 +67,56 @@
 				"description": "Nodes grouped by dependency depth and sorted by identifier within layers, wrapped into rows, with dimensions and one edge per known dependency pair. Cycle traversal is bounded and missing dependency nodes are ignored."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "mapColumns",
+				"inputs": [
+					{
+						"name": "mapColumns.count",
+						"type": "number",
+						"required": true,
+						"description": "Unit count used to choose a row width."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mapColumns",
+						"type": "number",
+						"description": "Ceiling of the square root of 0.75 times count, clamped between six and 24."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "harnessLayout",
+				"inputs": [
+					{
+						"name": "harnessLayout.units",
+						"type": "HarnessUnit[]",
+						"required": true,
+						"description": "Units and their declared dependencies to lay out."
+					},
+					{
+						"name": "harnessLayout.perRow",
+						"type": "unknown",
+						"required": false,
+						"description": "Optional units per row, defaulting to mapColumns for the supplied count."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessLayout",
+						"type": "HarnessLayout",
+						"description": "Nodes grouped by dependency depth and sorted by identifier within layers, wrapped into rows, with dimensions and one edge per known dependency pair. Cycle traversal is bounded and missing dependency nodes are ignored."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -25,11 +25,13 @@
 		"inputs": [
 			{
 				"name": "ProjectImageCacheService.constructor.session",
-				"type": "ProjectSessionService"
+				"type": "ProjectSessionService",
+				"required": true
 			},
 			{
 				"name": "ProjectImageCacheService.read.input",
-				"type": "ImageQuery"
+				"type": "ImageQuery",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -42,6 +44,52 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectImageCacheService.read",
+				"inputs": [
+					{
+						"name": "ProjectImageCacheService.read.input",
+						"type": "ImageQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectImageCacheService.read",
+						"type": "Promise<Uint8Array>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectImageCacheService.constructor",
+				"inputs": [
+					{
+						"name": "ProjectImageCacheService.constructor.session",
+						"type": "ProjectSessionService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectImageCacheService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

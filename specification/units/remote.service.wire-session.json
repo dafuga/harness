@@ -32,23 +32,28 @@
 		"inputs": [
 			{
 				"name": "WireSessionService.constructor.options",
-				"type": "WireSessionOptions"
+				"type": "WireSessionOptions",
+				"required": true
 			},
 			{
 				"name": "WireSessionService.connect.send",
-				"type": "(text: string) => void"
+				"type": "(text: string) => void",
+				"required": true
 			},
 			{
 				"name": "WireSessionService.connect.violation",
-				"type": "() => void"
+				"type": "() => void",
+				"required": false
 			},
 			{
 				"name": "WireSessionService.emit.channel",
-				"type": "WireChannel"
+				"type": "WireChannel",
+				"required": true
 			},
 			{
 				"name": "WireSessionService.emit.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -69,7 +74,100 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "WireSessionService.ended",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "WireSessionService.ended",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireSessionService.connect",
+				"inputs": [
+					{
+						"name": "WireSessionService.connect.send",
+						"type": "(text: string) => void",
+						"required": true
+					},
+					{
+						"name": "WireSessionService.connect.violation",
+						"type": "() => void",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireSessionService.connect",
+						"type": "WireLink"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "WireSessionService.emit",
+				"inputs": [
+					{
+						"name": "WireSessionService.emit.channel",
+						"type": "WireChannel",
+						"required": true
+					},
+					{
+						"name": "WireSessionService.emit.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireSessionService.emit",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireSessionService.end",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "WireSessionService.end",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "WireSessionService.constructor",
+				"inputs": [
+					{
+						"name": "WireSessionService.constructor.options",
+						"type": "WireSessionOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireSessionService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

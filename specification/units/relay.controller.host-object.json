@@ -25,23 +25,28 @@
 		"inputs": [
 			{
 				"name": "HostObjectController.constructor.scope",
-				"type": "HostScope"
+				"type": "HostScope",
+				"required": true
 			},
 			{
 				"name": "HostObjectController.constructor.manage",
-				"type": "ManageController"
+				"type": "ManageController",
+				"required": true
 			},
 			{
 				"name": "HostObjectController.constructor.pairing",
-				"type": "PairingController"
+				"type": "PairingController",
+				"required": true
 			},
 			{
 				"name": "HostObjectController.constructor.sockets",
-				"type": "SocketAcceptService"
+				"type": "SocketAcceptService",
+				"required": true
 			},
 			{
 				"name": "HostObjectController.handle.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -50,7 +55,63 @@
 				"type": "Promise<Response>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostObjectController.handle",
+				"inputs": [
+					{
+						"name": "HostObjectController.handle.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostObjectController.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostObjectController.constructor",
+				"inputs": [
+					{
+						"name": "HostObjectController.constructor.scope",
+						"type": "HostScope",
+						"required": true
+					},
+					{
+						"name": "HostObjectController.constructor.manage",
+						"type": "ManageController",
+						"required": true
+					},
+					{
+						"name": "HostObjectController.constructor.pairing",
+						"type": "PairingController",
+						"required": true
+					},
+					{
+						"name": "HostObjectController.constructor.sockets",
+						"type": "SocketAcceptService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostObjectController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

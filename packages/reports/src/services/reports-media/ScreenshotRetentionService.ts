@@ -1,7 +1,6 @@
-import { lstat, mkdir, rm } from 'node:fs/promises';
+import { lstat, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../repositories/reports-media/report-repository/ReportRepository';
-import { ReportExportService } from './report-export-service/ReportExportService';
 import { atomicJson } from '../../utils/reports-media/reportFiles';
 import { reportLock } from '../../utils/reports-media/reportLock';
 import { resultStatus } from '../../utils/reports-media/reportState';
@@ -29,28 +28,22 @@ export class ScreenshotRetentionService {
 	}
 	private async expireReport(id: string, cutoff: number, now: Date) {
 		const directory = this.repository.directory(id);
-		const exportLock = join(directory, 'export-lock');
-		await mkdir(exportLock, { recursive: true, mode: 0o700 });
-		return reportLock(exportLock, () =>
-			reportLock(directory, async () => {
-				const report = await this.repository.get(id);
-				const stale = report.evidence.filter((item) => expired(item, report, cutoff));
-				if (!stale.length) return 0;
-				for (const item of stale) r2ObjectKey(id, item.file);
-				await this.purgeCopies(directory, report, stale);
-				for (const item of stale) {
-					item.missing = true;
-					item.status = 'not-proven';
-					item.note = `${item.note || ''} Screenshot expired after 30 days.`.trim();
-				}
-				if (report.state === 'finalized') report.status = resultStatus(report);
-				report.updatedAt = now.toISOString();
-				await atomicJson(join(directory, 'manifest.json'), report);
-				if (report.state === 'finalized')
-					await new ReportExportService(this.repository).rebuildAfterRetention(report, directory);
-				return stale.length;
-			})
-		);
+		return reportLock(directory, async () => {
+			const report = await this.repository.get(id);
+			const stale = report.evidence.filter((item) => expired(item, report, cutoff));
+			if (!stale.length) return 0;
+			for (const item of stale) r2ObjectKey(id, item.file);
+			await this.purgeCopies(directory, report, stale);
+			for (const item of stale) {
+				item.missing = true;
+				item.status = 'not-proven';
+				item.note = `${item.note || ''} Screenshot expired after 30 days.`.trim();
+			}
+			if (report.state === 'finalized') report.status = resultStatus(report);
+			report.updatedAt = now.toISOString();
+			await atomicJson(join(directory, 'manifest.json'), report);
+			return stale.length;
+		});
 	}
 	private async purgeCopies(directory: string, report: Report, stale: Evidence[]) {
 		const assets = join(directory, 'assets');
@@ -58,12 +51,7 @@ export class ScreenshotRetentionService {
 		if (info?.isSymbolicLink()) throw new Error('Invalid report assets directory');
 		const exportDirectory = join(directory, 'exports');
 		const exportAssets = join(exportDirectory, 'assets');
-		if (report.exports) {
-			for (const path of [exportDirectory, exportAssets]) {
-				if ((await lstat(path).catch(() => undefined))?.isSymbolicLink())
-					throw new Error('Invalid report exports directory');
-			}
-		}
+		if (report.exports) await this.purgeExports(exportDirectory, exportAssets);
 		for (const file of new Set(stale.map((item) => item.file))) {
 			const retained = report.evidence.some(
 				(item) => item.file === file && !item.missing && !stale.includes(item)
@@ -73,5 +61,14 @@ export class ScreenshotRetentionService {
 				if (report.exports) await rm(join(exportAssets, file), { force: true });
 			}
 		}
+	}
+	private async purgeExports(directory: string, assets: string) {
+		for (const path of [directory, assets]) {
+			if ((await lstat(path).catch(() => undefined))?.isSymbolicLink())
+				throw new Error('Invalid report exports directory');
+		}
+		// Older finalized runs inlined their media into these files.
+		for (const name of ['index.html', 'report.pdf', 'report.zip'])
+			await rm(join(directory, name), { force: true });
 	}
 }

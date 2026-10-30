@@ -26,7 +26,8 @@
 		"inputs": [
 			{
 				"name": "createRemotePhoneStore.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -35,7 +36,29 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "createRemotePhoneStore",
+				"inputs": [
+					{
+						"name": "createRemotePhoneStore.workspace",
+						"type": "Workspace",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createRemotePhoneStore",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

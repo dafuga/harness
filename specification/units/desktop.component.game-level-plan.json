@@ -29,17 +29,20 @@
 		"inputs": [
 			{
 				"name": "GameLevelPlan.context",
-				"type": "GameLevelPlanProps[\"context\"]",
+				"type": "{\n\t\tview: GameView;\n\t\t/** The document as it stands, sent whole with a generation request. */\n\t\tdocument: GameDocument;\n\t\tprojectId?: string | null;\n\t\trevision?: string;\n\t\tcommit?: string;\n\t\tbridge?: DesktopBridge;\n\t\t/** History or a game that cannot be saved: nothing is generated, edited or approved. */\n\t\treadonly: boolean;\n\t}",
+				"required": true,
 				"description": "Current level, full authoring document, selected project revision, writable/history mode and local generation bridge."
 			},
 			{
 				"name": "GameLevelPlan.run",
 				"type": "GameRun",
+				"required": false,
 				"description": "Current preview run, reset to the generated spawn on build."
 			},
 			{
 				"name": "GameLevelPlan.change",
 				"type": "(patch: Partial<GameView>) => void",
+				"required": true,
 				"description": "Publish an edited brief, accepted proposal, approval or built geometry to the workspace."
 			}
 		],
@@ -50,7 +53,9 @@
 				"description": "Guide concept, brief, generation and human approval before building a level."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

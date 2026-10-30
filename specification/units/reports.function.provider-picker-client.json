@@ -27,6 +27,7 @@
 			{
 				"name": "providerPickerClient.receive",
 				"type": "(data: PickerSnapshot) => void",
+				"required": true,
 				"description": "Callback receiving picker snapshots from preview initialization or qualifying host tool results."
 			}
 		],
@@ -43,7 +44,30 @@
 				"type": "thrown",
 				"description": "Rejects preview HTTP failures and MCP tool error results with guidance; connection, request and JSON errors can also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "providerPickerClient",
+				"inputs": [
+					{
+						"name": "providerPickerClient.receive",
+						"type": "(data: PickerSnapshot) => void",
+						"required": true,
+						"description": "Callback receiving picker snapshots from preview initialization or qualifying host tool results."
+					}
+				],
+				"outputs": [
+					{
+						"name": "providerPickerClient",
+						"type": "Promise<PickerClient>",
+						"description": "Client with preview flag, async tool call and close. Standalone preview requires both the body marker and a top-level window, posts JSON to /tools and loads open_model_picker immediately. Otherwise connects an MCP App and forwards structured results."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

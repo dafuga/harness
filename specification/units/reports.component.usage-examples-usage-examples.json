@@ -22,18 +22,9 @@
 			"packages/reports/src/components/shared-primitives/usage-examples/UsageExamples.svelte",
 			"packages/reports/src/components/shared-primitives/usage-examples/usageExamples.ts",
 			"packages/reports/src/components/shared-primitives/usage-examples/usageExamples.types.ts",
-			"packages/reports/src/components/usage-examples/UsageExamples.svelte",
 			"packages/reports/src/components/usage-examples/usageExamples.ts"
 		],
-		"symbols": [
-			"UsageExamples",
-			"compact",
-			"usageExamples",
-			"Fields",
-			"UsageExamples",
-			"compact",
-			"usageExamples"
-		]
+		"symbols": ["UsageExamples", "compact", "usageExamples", "Fields", "compact", "usageExamples"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -46,33 +37,15 @@
 			},
 			{
 				"name": "UsageExamples.setup",
-				"type": "string | undefined",
+				"type": "string",
 				"required": false,
 				"description": "Optional legacy setup included inside each code block without executing it."
 			},
 			{
 				"name": "UsageExamples.setupTitle",
-				"type": "string | undefined",
+				"type": "string",
 				"required": false,
 				"description": "Optional heading for setup rendered once before the example snippets."
-			},
-			{
-				"name": "compact.value",
-				"type": "unknown",
-				"required": true,
-				"description": "A documented JSON value to format without removing falsy values or empty collections."
-			},
-			{
-				"name": "usageExamples.examples",
-				"type": "UsageExample[]",
-				"required": true,
-				"description": "Authored examples formatted as code snippets with expected output comments."
-			},
-			{
-				"name": "usageExamples.setup",
-				"type": "string | undefined",
-				"required": false,
-				"description": "Optional setup code prepended to each snippet."
 			}
 		],
 		"outputs": [
@@ -112,8 +85,20 @@
 		"operations": [
 			{
 				"name": "compact",
-				"inputs": [],
-				"outputs": [],
+				"inputs": [
+					{
+						"name": "compact.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "compact",
+						"type": "string",
+						"description": "Compact JSON text with whitespace that permits line wrapping."
+					}
+				],
 				"errors": [
 					{
 						"name": "TypeError",
@@ -135,8 +120,25 @@
 			},
 			{
 				"name": "usageExamples",
-				"inputs": [],
-				"outputs": [],
+				"inputs": [
+					{
+						"name": "usageExamples.examples",
+						"type": "UsageExample[]",
+						"required": true
+					},
+					{
+						"name": "usageExamples.setup",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "usageExamples",
+						"type": "string[]",
+						"description": "Literal code snippets followed by expected output or throws comments."
+					}
+				],
 				"errors": [
 					{
 						"name": "TypeError",
@@ -156,7 +158,8 @@
 				],
 				"errorStatus": "declared"
 			}
-		]
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

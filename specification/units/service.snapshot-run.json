@@ -28,15 +28,19 @@
 		"inputs": [
 			{
 				"name": "SnapshotRunService.constructor.run",
-				"type": "SnapshotRun"
+				"type": "SnapshotRun",
+				"required": true
 			},
 			{
 				"name": "SnapshotRunService.execute.plan",
-				"type": "PlannedCheck[]"
+				"type": "PlannedCheck[]",
+				"required": true
 			},
 			{
 				"name": "SnapshotRunService.execute.artifactPaths",
-				"type": "string[]"
+				"type": "string[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -45,7 +49,54 @@
 				"type": "Promise<Executed>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SnapshotRunService.execute",
+				"inputs": [
+					{
+						"name": "SnapshotRunService.execute.plan",
+						"type": "PlannedCheck[]",
+						"required": true
+					},
+					{
+						"name": "SnapshotRunService.execute.artifactPaths",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "SnapshotRunService.execute",
+						"type": "Promise<Executed>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SnapshotRunService.constructor",
+				"inputs": [
+					{
+						"name": "SnapshotRunService.constructor.run",
+						"type": "SnapshotRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SnapshotRunService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

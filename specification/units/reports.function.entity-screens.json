@@ -39,41 +39,43 @@
 			{
 				"name": "screenOptions.scenarios",
 				"type": "HarnessScenario[]",
+				"required": true,
 				"description": "Scenario declarations; only those with viewports become screenshot choices."
 			},
 			{
 				"name": "screenPick.options",
 				"type": "ScreenOption[]",
+				"required": true,
 				"description": "Available scenario/state/viewport options."
 			},
 			{
 				"name": "screenPick.wanted",
 				"type": "Partial<ScreenPick>",
+				"required": true,
 				"description": "Partial requested selection; unknown choices fall back to the first available choice at each level."
 			},
 			{
 				"name": "entityScreens.evidence",
 				"type": "ExplorerEvidence",
+				"required": true,
 				"description": "Host-selected evidence for the current revision or compared revisions."
 			},
 			{
 				"name": "entityScreens.pick",
 				"type": "ScreenPick | null",
+				"required": true,
 				"description": "Selected scenario, state and viewport, or null when there is no visual scenario."
-			},
-			{
-				"name": "galleryItems.evidence",
-				"type": "ExplorerEvidence",
-				"description": "Evidence whose screenshot and audio captures should become gallery items."
 			},
 			{
 				"name": "catalogShot.evidence",
 				"type": "ExplorerEvidence",
+				"required": true,
 				"description": "The host-selected evidence for one entity at the shown revision. Captures from other states or entities must already be excluded by its declared coverage."
 			},
 			{
 				"name": "catalogShot.preview",
-				"type": "ScreenPick | undefined",
+				"type": "ScreenPick",
+				"required": false,
 				"description": "Optional exact scenario, state and viewport for the catalog image. If absent, choose usable evidence with fresh captures first. If specified but missing, return no image.",
 				"examples": [
 					{
@@ -82,6 +84,18 @@
 						"viewport": "desktop"
 					}
 				]
+			},
+			{
+				"name": "catalogShot.allowFocusedDefault",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "galleryItems.evidence",
+				"type": "ExplorerEvidence",
+				"required": true,
+				"description": "Evidence whose screenshot and audio captures should become gallery items."
 			}
 		],
 		"outputs": [
@@ -111,7 +125,141 @@
 				"description": "A usable screenshot of the shown version, preferring a fresh capture. Validated unchanged evidence keeps its original captured commit, standing and explanation. Returns null for missing, rejected, unvalidated, wrong-build or unrelated evidence; never borrows from the parent."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "screenOptions",
+				"inputs": [
+					{
+						"name": "screenOptions.scenarios",
+						"type": "HarnessScenario[]",
+						"required": true,
+						"description": "Scenario declarations; only those with viewports become screenshot choices."
+					}
+				],
+				"outputs": [
+					{
+						"name": "screenOptions",
+						"type": "ScreenOption[]",
+						"description": "Scenario choices with required states and labeled viewport dimensions."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "screenPick",
+				"inputs": [
+					{
+						"name": "screenPick.options",
+						"type": "ScreenOption[]",
+						"required": true,
+						"description": "Available scenario/state/viewport options."
+					},
+					{
+						"name": "screenPick.wanted",
+						"type": "Partial<ScreenPick>",
+						"required": true,
+						"description": "Partial requested selection; unknown choices fall back to the first available choice at each level."
+					}
+				],
+				"outputs": [
+					{
+						"name": "screenPick",
+						"type": "ScreenPick | null",
+						"description": "Resolved choice, or null when no scenarios exist. Missing state or viewport choices become an empty string."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "entityScreens",
+				"inputs": [
+					{
+						"name": "entityScreens.evidence",
+						"type": "ExplorerEvidence",
+						"required": true,
+						"description": "Host-selected evidence for the current revision or compared revisions."
+					},
+					{
+						"name": "entityScreens.pick",
+						"type": "ScreenPick | null",
+						"required": true,
+						"description": "Selected scenario, state and viewport, or null when there is no visual scenario."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityScreens",
+						"type": "EntityScreens",
+						"description": "Matching after screenshot or gap, plus before at a selected commit. Validated unchanged captures remain visible with their origin and fresh=false; rejected, unvalidated or unavailable captures remain gaps. Matching scenario, state and viewport is required."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "catalogShot",
+				"inputs": [
+					{
+						"name": "catalogShot.evidence",
+						"type": "ExplorerEvidence",
+						"required": true,
+						"description": "The host-selected evidence for one entity at the shown revision. Captures from other states or entities must already be excluded by its declared coverage."
+					},
+					{
+						"name": "catalogShot.preview",
+						"type": "ScreenPick",
+						"required": false,
+						"description": "Optional exact scenario, state and viewport for the catalog image. If absent, choose usable evidence with fresh captures first. If specified but missing, return no image.",
+						"examples": [
+							{
+								"scenario": "agent-settings",
+								"state": "settings",
+								"viewport": "desktop"
+							}
+						]
+					},
+					{
+						"name": "catalogShot.allowFocusedDefault",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "catalogShot",
+						"type": "Evidence | null",
+						"description": "A usable screenshot of the shown version, preferring a fresh capture. Validated unchanged evidence keeps its original captured commit, standing and explanation. Returns null for missing, rejected, unvalidated, wrong-build or unrelated evidence; never borrows from the parent."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "galleryItems",
+				"inputs": [
+					{
+						"name": "galleryItems.evidence",
+						"type": "ExplorerEvidence",
+						"required": true,
+						"description": "Evidence whose screenshot and audio captures should become gallery items."
+					}
+				],
+				"outputs": [
+					{
+						"name": "galleryItems",
+						"type": "Evidence[]",
+						"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes recorded screenshot/audio items even when unusable or inherited, retaining their labels. Source identifies the capture build revision, never the target of inherited proof."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

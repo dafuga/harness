@@ -15,11 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/ChoiceDialog.svelte",
-			"packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte"
-		],
-		"symbols": ["ChoiceDialog", "ChoiceDialog"]
+		"source": ["packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte"],
+		"symbols": ["ChoiceDialog"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -27,56 +24,69 @@
 			{
 				"name": "ChoiceDialog.label",
 				"type": "string",
+				"required": true,
 				"description": "Required accessible name for the trigger and dialog."
 			},
 			{
 				"name": "ChoiceDialog.title",
 				"type": "string",
+				"required": true,
 				"description": "Required tooltip on the opening button."
 			},
 			{
 				"name": "ChoiceDialog.disabled",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional flag, false by default, disabling the trigger. Does not close an already-open dialog."
 			},
 			{
 				"name": "ChoiceDialog.activeCount",
 				"type": "number",
+				"required": false,
 				"description": "Number of active jobs to show in the deployment dialog heading."
 			},
 			{
 				"name": "ChoiceDialog.width",
 				"type": "number",
+				"required": true,
 				"description": "Required preferred width in pixels, capped at viewport width minus 24 pixels."
 			},
 			{
 				"name": "ChoiceDialog.maxHeight",
 				"type": "number",
+				"required": true,
 				"description": "Required maximum height in pixels, capped at dynamic viewport height minus 24 pixels; overflow scrolls."
 			},
 			{
 				"name": "ChoiceDialog.gap",
 				"type": "number",
+				"required": false,
+				"default": 6,
 				"description": "Optional gap between dialog-grid children in pixels; defaults to 6."
 			},
 			{
 				"name": "ChoiceDialog.icon",
 				"type": "Snippet",
+				"required": true,
 				"description": "Required content rendered inside the trigger button."
 			},
 			{
 				"name": "ChoiceDialog.onopen",
 				"type": "() => void",
+				"required": false,
 				"description": "Callback invoked when the dialog opens so its latest contents can be loaded."
 			},
 			{
 				"name": "ChoiceDialog.children",
 				"type": "Snippet<[close: () => void]>",
+				"required": true,
 				"description": "Required content function receiving a close callback for dismissing the dialog after selection."
 			},
 			{
 				"name": "ChoiceDialog.footer",
 				"type": "Snippet<[close: () => void]>",
+				"required": false,
 				"description": "Optional action row kept at the bottom of the dialog while the body scrolls; receives the same close callback."
 			}
 		],
@@ -87,7 +97,9 @@
 				"description": "Trigger and modal. Opening focuses an enabled aria-pressed=true choice when present. Escape closes this dialog and stops propagation; backdrop click also closes it. Closing returns focus to the trigger."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

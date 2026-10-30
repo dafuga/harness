@@ -25,19 +25,23 @@
 		"inputs": [
 			{
 				"name": "MiraReportAdapter.ingest.store",
-				"type": "ReportRepository"
+				"type": "ReportRepository",
+				"required": true
 			},
 			{
 				"name": "MiraReportAdapter.ingest.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "MiraReportAdapter.ingest.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "MiraReportAdapter.ingest.findingsFile",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -46,7 +50,44 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "MiraReportAdapter.ingest",
+				"inputs": [
+					{
+						"name": "MiraReportAdapter.ingest.store",
+						"type": "ReportRepository",
+						"required": true
+					},
+					{
+						"name": "MiraReportAdapter.ingest.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "MiraReportAdapter.ingest.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "MiraReportAdapter.ingest.findingsFile",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "MiraReportAdapter.ingest",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

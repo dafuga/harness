@@ -21,6 +21,7 @@
 			{
 				"name": "remoteGrant.status",
 				"type": "RemoteNativeStatus | null",
+				"required": true,
 				"description": "Native status or null; a grant and connecting, online or offline state are required."
 			}
 		],
@@ -31,7 +32,30 @@
 				"description": "Set of allowed attached methods, or grant-derived read/comment methods and optional agent methods when no explicit list exists; otherwise an empty set."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "remoteGrant",
+				"inputs": [
+					{
+						"name": "remoteGrant.status",
+						"type": "RemoteNativeStatus | null",
+						"required": true,
+						"description": "Native status or null; a grant and connecting, online or offline state are required."
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteGrant",
+						"type": "Set<string>",
+						"description": "Set of allowed attached methods, or grant-derived read/comment methods and optional agent methods when no explicit list exists; otherwise an empty set."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

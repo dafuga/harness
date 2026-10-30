@@ -19,21 +19,26 @@
 			{
 				"name": "mediaResponse.bytes",
 				"type": "Buffer",
+				"required": true,
 				"description": "Complete media bytes."
 			},
 			{
 				"name": "mediaResponse.mime",
 				"type": "string",
+				"required": true,
 				"description": "Content MIME type."
 			},
 			{
 				"name": "mediaResponse.range",
 				"type": "string | null",
+				"required": false,
 				"description": "Optional Range header, null or empty for a full response."
 			},
 			{
 				"name": "mediaResponse.disposition",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "inline",
 				"description": "Optional Content-Disposition header, defaulting to inline."
 			}
 		],
@@ -44,7 +49,49 @@
 				"description": "Response with no-store, nosniff and byte-range support. No range returns all bytes with 200; valid single closed, open-ended or suffix ranges return 206 and matching length/range headers. Malformed or unsatisfiable ranges return 416 with total length."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "mediaResponse",
+				"inputs": [
+					{
+						"name": "mediaResponse.bytes",
+						"type": "Buffer",
+						"required": true,
+						"description": "Complete media bytes."
+					},
+					{
+						"name": "mediaResponse.mime",
+						"type": "string",
+						"required": true,
+						"description": "Content MIME type."
+					},
+					{
+						"name": "mediaResponse.range",
+						"type": "string | null",
+						"required": false,
+						"description": "Optional Range header, null or empty for a full response."
+					},
+					{
+						"name": "mediaResponse.disposition",
+						"type": "string",
+						"required": false,
+						"default": "inline",
+						"description": "Optional Content-Disposition header, defaulting to inline."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mediaResponse",
+						"type": "unknown",
+						"description": "Response with no-store, nosniff and byte-range support. No range returns all bytes with 200; valid single closed, open-ended or suffix ranges return 206 and matching length/range headers. Malformed or unsatisfiable ranges return 416 with total length."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

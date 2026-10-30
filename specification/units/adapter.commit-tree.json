@@ -24,15 +24,18 @@
 		"inputs": [
 			{
 				"name": "CommitTreeAdapter.open.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CommitTreeAdapter.open.reference",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CommitTreeAdapter.read.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,7 +61,74 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CommitTreeAdapter.open",
+				"inputs": [
+					{
+						"name": "CommitTreeAdapter.open.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CommitTreeAdapter.open.reference",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CommitTreeAdapter.open",
+						"type": "Promise<CommitTreeAdapter>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CommitTreeAdapter.list",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CommitTreeAdapter.list",
+						"type": "Promise<TreeEntry[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CommitTreeAdapter.read",
+				"inputs": [
+					{
+						"name": "CommitTreeAdapter.read.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CommitTreeAdapter.read",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

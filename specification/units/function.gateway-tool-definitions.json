@@ -19,6 +19,7 @@
 			{
 				"name": "gatewayToolDefinitions.definitions",
 				"type": "GatewayItem[]",
+				"required": true,
 				"description": "Tool definitions containing function/custom entries or namespace entries with a tools array."
 			}
 		],
@@ -35,7 +36,30 @@
 				"type": "thrown",
 				"description": "Thrown when namespace.tools is not an array or a tool type is neither function nor custom."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "gatewayToolDefinitions",
+				"inputs": [
+					{
+						"name": "gatewayToolDefinitions.definitions",
+						"type": "GatewayItem[]",
+						"required": true,
+						"description": "Tool definitions containing function/custom entries or namespace entries with a tools array."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatewayToolDefinitions",
+						"type": "GatewayItem[]",
+						"description": "Flattened function/custom tool entries with enclosing namespace names attached; direct supported entries are returned unchanged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

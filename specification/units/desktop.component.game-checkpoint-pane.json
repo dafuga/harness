@@ -25,39 +25,47 @@
 			"packages/desktop/src/components/game-authoring/GameCheckpointPane.svelte",
 			"packages/desktop/src/components/game-authoring/game-checkpoint-pane/gameCheckpointPane.css"
 		],
-		"symbols": ["GameCheckpointPane"]
+		"symbols": ["GameCheckpointPane", "GameCheckpointPane.footer"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameCheckpointPane.context",
-				"type": "{ checkpoint: Checkpoint; view: GameView; document: GameDocument; projectId?: string | null; revision?: string; commit?: string; bridge?: DesktopBridge; }",
+				"type": "{\n\t\t\tcheckpoint: Checkpoint;\n\t\t\tview: GameView;\n\t\t\tdocument: GameDocument;\n\t\t\tprojectId?: string | null;\n\t\t\trevision?: string;\n\t\t\tcommit?: string;\n\t\t\tbridge?: DesktopBridge;\n\t\t}",
+				"required": true,
 				"description": "Selected checkpoint, view, document, project identity, revision and host bridge used by both editors."
+			},
+			{
+				"name": "GameCheckpointPane.adding",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Present the new-checkpoint title and focus its description."
 			},
 			{
 				"name": "GameCheckpointPane.readonly",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Disable editing and generation for historical or otherwise immutable views."
 			},
 			{
 				"name": "GameCheckpointPane.change",
 				"type": "(node: Checkpoint) => void",
+				"required": true,
 				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
-			},
-			{
-				"name": "GameCheckpointPane.adding",
-				"type": "boolean",
-				"description": "Present the new-checkpoint title and focus its description."
 			},
 			{
 				"name": "GameCheckpointPane.close",
 				"type": "() => void",
+				"required": true,
 				"description": "Close the modal while preserving intentional edits and discarding untouched additions."
 			},
 			{
 				"name": "GameCheckpointPane.remove",
 				"type": "() => void",
+				"required": true,
 				"description": "Delete the selected checkpoint through its document owner."
 			}
 		],
@@ -68,7 +76,23 @@
 				"description": "Describe and edit one checkpoint in a shared modal, with image approval and advanced executable rules."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "GameCheckpointPane.footer",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "GameCheckpointPane.footer",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

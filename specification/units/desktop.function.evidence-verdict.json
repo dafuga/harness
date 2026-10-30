@@ -30,16 +30,19 @@
 			{
 				"name": "evidenceVerdict.read",
 				"type": "EvidenceRead",
+				"required": true,
 				"description": "The evidence read state, optional result and failure text. Idle and planned states use the catalog judgment; loading, unavailable and failed reads produce an unknown judgment with an explanation."
 			},
 			{
 				"name": "evidenceVerdict.entity",
 				"type": "Judged",
+				"required": true,
 				"description": "The entity identity and kind, plus its catalog verification status and note. The identity selects the unit within the evidence; the catalog status is used only before an evidence judgment is available."
 			},
 			{
 				"name": "evidenceVerdict.commit",
 				"type": "string",
+				"required": true,
 				"description": "The displayed commit to compare with the after side of the evidence. Evidence for another commit produces an unknown judgment."
 			}
 		],
@@ -50,7 +53,42 @@
 				"description": "A status and readable reason. Idle or planned reads repeat the catalog status and note. Otherwise missing, unreadable, mismatched or unrecorded evidence is unknown. A matching side with the entity and a verification record uses the reports verdict: verified when it passes, failed otherwise, with its reasons."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "evidenceVerdict",
+				"inputs": [
+					{
+						"name": "evidenceVerdict.read",
+						"type": "EvidenceRead",
+						"required": true,
+						"description": "The evidence read state, optional result and failure text. Idle and planned states use the catalog judgment; loading, unavailable and failed reads produce an unknown judgment with an explanation."
+					},
+					{
+						"name": "evidenceVerdict.entity",
+						"type": "Judged",
+						"required": true,
+						"description": "The entity identity and kind, plus its catalog verification status and note. The identity selects the unit within the evidence; the catalog status is used only before an evidence judgment is available."
+					},
+					{
+						"name": "evidenceVerdict.commit",
+						"type": "string",
+						"required": true,
+						"description": "The displayed commit to compare with the after side of the evidence. Evidence for another commit produces an unknown judgment."
+					}
+				],
+				"outputs": [
+					{
+						"name": "evidenceVerdict",
+						"type": "EntityVerdict",
+						"description": "A status and readable reason. Idle or planned reads repeat the catalog status and note. Otherwise missing, unreadable, mismatched or unrecorded evidence is unknown. A matching side with the entity and a verification record uses the reports verdict: verified when it passes, failed otherwise, with its reasons."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

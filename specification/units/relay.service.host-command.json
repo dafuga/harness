@@ -26,27 +26,33 @@
 		"inputs": [
 			{
 				"name": "HostCommandService.constructor.sockets",
-				"type": "HostSocketsAdapter"
+				"type": "HostSocketsAdapter",
+				"required": true
 			},
 			{
 				"name": "HostCommandService.constructor.link",
-				"type": "HostLinkService"
+				"type": "HostLinkService",
+				"required": true
 			},
 			{
 				"name": "HostCommandService.constructor.offers",
-				"type": "PairingOfferService"
+				"type": "PairingOfferService",
+				"required": true
 			},
 			{
 				"name": "HostCommandService.constructor.revocation",
-				"type": "DeviceRevocationService"
+				"type": "DeviceRevocationService",
+				"required": true
 			},
 			{
 				"name": "HostCommandService.handle.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			},
 			{
 				"name": "HostCommandService.handle.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -55,7 +61,68 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostCommandService.handle",
+				"inputs": [
+					{
+						"name": "HostCommandService.handle.socket",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "HostCommandService.handle.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostCommandService.handle",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostCommandService.constructor",
+				"inputs": [
+					{
+						"name": "HostCommandService.constructor.sockets",
+						"type": "HostSocketsAdapter",
+						"required": true
+					},
+					{
+						"name": "HostCommandService.constructor.link",
+						"type": "HostLinkService",
+						"required": true
+					},
+					{
+						"name": "HostCommandService.constructor.offers",
+						"type": "PairingOfferService",
+						"required": true
+					},
+					{
+						"name": "HostCommandService.constructor.revocation",
+						"type": "DeviceRevocationService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostCommandService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

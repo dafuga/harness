@@ -18,11 +18,13 @@
 		"inputs": [
 			{
 				"name": "remoteFixtureControl.port",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "remoteFixtureControl.actions",
-				"type": "Record<string, FixtureAction>"
+				"type": "Record<string, FixtureAction>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +38,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "remoteFixtureControl",
+				"inputs": [
+					{
+						"name": "remoteFixtureControl.port",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "remoteFixtureControl.actions",
+						"type": "Record<string, FixtureAction>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteFixtureControl",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

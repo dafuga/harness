@@ -20,6 +20,7 @@
 			{
 				"name": "scrubEnvironment.env",
 				"type": "NodeJS.ProcessEnv",
+				"required": false,
 				"description": "Environment map; defaults to process.env."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "New map excluding case-sensitive OPENAI_ and ANTHROPIC_ prefixes and ELECTRON_RUN_AS_NODE; other entries are retained."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "scrubEnvironment",
+				"inputs": [
+					{
+						"name": "scrubEnvironment.env",
+						"type": "NodeJS.ProcessEnv",
+						"required": false,
+						"description": "Environment map; defaults to process.env."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scrubEnvironment",
+						"type": "NodeJS.ProcessEnv",
+						"description": "New map excluding case-sensitive OPENAI_ and ANTHROPIC_ prefixes and ELECTRON_RUN_AS_NODE; other entries are retained."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

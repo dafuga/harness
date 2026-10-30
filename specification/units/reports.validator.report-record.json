@@ -18,7 +18,8 @@
 		"inputs": [
 			{
 				"name": "ReportRecordValidator.validate.record",
-				"type": "RecordInput"
+				"type": "RecordInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +33,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReportRecordValidator.validate",
+				"inputs": [
+					{
+						"name": "ReportRecordValidator.validate.record",
+						"type": "RecordInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRecordValidator.validate",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

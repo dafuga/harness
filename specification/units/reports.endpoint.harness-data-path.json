@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "GET.event",
-				"type": "RequestEvent"
+				"type": "RequestEvent",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.event",
+						"type": "RequestEvent",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

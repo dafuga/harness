@@ -19,11 +19,13 @@
 		"inputs": [
 			{
 				"name": "LegacyHistoryService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LegacyHistoryService.entries.media",
-				"type": "HistoryMediaService"
+				"type": "HistoryMediaService",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +34,48 @@
 				"type": "Promise<LegacyEntry[]>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LegacyHistoryService.entries",
+				"inputs": [
+					{
+						"name": "LegacyHistoryService.entries.media",
+						"type": "HistoryMediaService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LegacyHistoryService.entries",
+						"type": "Promise<LegacyEntry[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LegacyHistoryService.constructor",
+				"inputs": [
+					{
+						"name": "LegacyHistoryService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LegacyHistoryService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -28,6 +28,7 @@
 			{
 				"name": "revisionReasons.sources",
 				"type": "ReasonSources",
+				"required": true,
 				"description": "First parent, optional own required changes, noted explanations and intact-record explanations with each record’s comparison base."
 			}
 		],
@@ -38,7 +39,30 @@
 				"description": "Unique explanations in stable canonical order plus a count of held reasons belonging only to other changes/ranges. Exact-base record reasons are retained; known own changes are matched by fingerprints, otherwise notes not held solely by longer records are kept."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "revisionReasons",
+				"inputs": [
+					{
+						"name": "revisionReasons.sources",
+						"type": "ReasonSources",
+						"required": true,
+						"description": "First parent, optional own required changes, noted explanations and intact-record explanations with each record’s comparison base."
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionReasons",
+						"type": "RevisionReasons",
+						"description": "Unique explanations in stable canonical order plus a count of held reasons belonging only to other changes/ranges. Exact-base record reasons are retained; known own changes are matched by fingerprints, otherwise notes not held solely by longer records are kept."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

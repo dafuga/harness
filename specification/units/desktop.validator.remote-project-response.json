@@ -30,55 +30,68 @@
 		"inputs": [
 			{
 				"name": "responseRecord.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.actor.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.actor.principalId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.projects.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.snapshot.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.snapshot.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.entity.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.entity.entityId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.messages.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.history.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment.input",
-				"type": "AddCommentInput"
+				"type": "AddCommentInput",
+				"required": true
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment.principalId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -120,7 +133,220 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "responseRecord",
+				"inputs": [
+					{
+						"name": "responseRecord.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "responseRecord",
+						"type": "Record<string, unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectResponseValidator.actor",
+				"inputs": [
+					{
+						"name": "RemoteProjectResponseValidator.actor.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectResponseValidator.actor.principalId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectResponseValidator.actor",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectResponseValidator.projects",
+				"inputs": [
+					{
+						"name": "RemoteProjectResponseValidator.projects.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectResponseValidator.projects",
+						"type": "DesktopProject[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectResponseValidator.snapshot",
+				"inputs": [
+					{
+						"name": "RemoteProjectResponseValidator.snapshot.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectResponseValidator.snapshot.projectId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectResponseValidator.snapshot",
+						"type": "ProjectSnapshot"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectResponseValidator.entity",
+				"inputs": [
+					{
+						"name": "RemoteProjectResponseValidator.entity.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectResponseValidator.entity.entityId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectResponseValidator.entity",
+						"type": "EntityDetail"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectResponseValidator.messages",
+				"inputs": [
+					{
+						"name": "RemoteProjectResponseValidator.messages.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectResponseValidator.messages",
+						"type": "ThreadMessage[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectResponseValidator.history",
+				"inputs": [
+					{
+						"name": "RemoteProjectResponseValidator.history.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectResponseValidator.history",
+						"type": "{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteProjectResponseValidator.comment",
+				"inputs": [
+					{
+						"name": "RemoteProjectResponseValidator.comment.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectResponseValidator.comment.input",
+						"type": "AddCommentInput",
+						"required": true
+					},
+					{
+						"name": "RemoteProjectResponseValidator.comment.principalId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteProjectResponseValidator.comment",
+						"type": "CommittedThread"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

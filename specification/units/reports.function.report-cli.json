@@ -35,21 +35,25 @@
 			{
 				"name": "reportCli.argv",
 				"type": "string[]",
+				"required": true,
 				"description": "Arguments beginning with the operation, followed by flags and positionals."
 			},
 			{
 				"name": "inputData.flags",
 				"type": "Record<string, string | boolean>",
+				"required": true,
 				"description": "Parsed flags; a truthy file takes precedence over inline data."
 			},
 			{
 				"name": "required.flags",
 				"type": "Record<string, string | boolean>",
+				"required": true,
 				"description": "Flags to inspect for a required string."
 			},
 			{
 				"name": "required.name",
 				"type": "string",
+				"required": true,
 				"description": "Required flag name without leading dashes."
 			}
 		],
@@ -76,7 +80,86 @@
 				"type": "thrown",
 				"description": "Throws when JSON input is absent or a required option is missing/non-string/blank. Argument-parser, file-read and JSON errors also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "reportCli",
+				"inputs": [
+					{
+						"name": "reportCli.argv",
+						"type": "string[]",
+						"required": true,
+						"description": "Arguments beginning with the operation, followed by flags and positionals."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportCli",
+						"type": "CliOptions",
+						"description": "Operation or empty string, parsed flags and remaining positionals. Uses permissive argument parsing with declared string and boolean options."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inputData",
+				"inputs": [
+					{
+						"name": "inputData.flags",
+						"type": "Record<string, string | boolean>",
+						"required": true,
+						"description": "Parsed flags; a truthy file takes precedence over inline data."
+					}
+				],
+				"outputs": [
+					{
+						"name": "inputData",
+						"type": "unknown",
+						"description": "Promise resolving to parsed file or inline JSON. The result is cast as an object without checking its shape."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "required",
+				"inputs": [
+					{
+						"name": "required.flags",
+						"type": "Record<string, string | boolean>",
+						"required": true,
+						"description": "Flags to inspect for a required string."
+					},
+					{
+						"name": "required.name",
+						"type": "string",
+						"required": true,
+						"description": "Required flag name without leading dashes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "required",
+						"type": "unknown",
+						"description": "Original nonblank string value, retaining its surrounding whitespace."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

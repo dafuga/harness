@@ -21,11 +21,13 @@
 			{
 				"name": "trustedSender.event",
 				"type": "Pick<IpcMainInvokeEvent, 'sender' | 'senderFrame'>",
+				"required": true,
 				"description": "IPC event with sender and sender frame."
 			},
 			{
 				"name": "trustedSender.window",
 				"type": "BrowserWindow",
+				"required": true,
 				"description": "Expected window and its web contents."
 			}
 		],
@@ -36,7 +38,36 @@
 				"description": "True only when sender and frame are the exact window objects and the frame URL passes navigation validation."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "trustedSender",
+				"inputs": [
+					{
+						"name": "trustedSender.event",
+						"type": "Pick<IpcMainInvokeEvent, 'sender' | 'senderFrame'>",
+						"required": true,
+						"description": "IPC event with sender and sender frame."
+					},
+					{
+						"name": "trustedSender.window",
+						"type": "BrowserWindow",
+						"required": true,
+						"description": "Expected window and its web contents."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trustedSender",
+						"type": "boolean",
+						"description": "True only when sender and frame are the exact window objects and the frame URL passes navigation validation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

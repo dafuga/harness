@@ -19,16 +19,19 @@
 			{
 				"name": "hubProjectionCache.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubProjectionCache.projection",
 				"type": "{ profile: string; accept: (value: unknown) => T }",
+				"required": true,
 				"description": "Profile name separating projection variants and accept callback that validates or converts candidate values."
 			},
 			{
 				"name": "hubProjectionCache.load",
 				"type": "() => Promise<T>",
+				"required": true,
 				"description": "Asynchronous loader called when no usable cached projection exists."
 			}
 		],
@@ -39,7 +42,42 @@
 				"description": "Accepted cached or newly loaded value. Cached JSON/validation failures delete the entry before loading; fresh values are accepted before serialization and storage."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubProjectionCache",
+				"inputs": [
+					{
+						"name": "hubProjectionCache.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubProjectionCache.projection",
+						"type": "{ profile: string; accept: (value: unknown) => T }",
+						"required": true,
+						"description": "Profile name separating projection variants and accept callback that validates or converts candidate values."
+					},
+					{
+						"name": "hubProjectionCache.load",
+						"type": "() => Promise<T>",
+						"required": true,
+						"description": "Asynchronous loader called when no usable cached projection exists."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubProjectionCache",
+						"type": "Promise<T>",
+						"description": "Accepted cached or newly loaded value. Cached JSON/validation failures delete the entry before loading; fresh values are accepted before serialization and storage."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

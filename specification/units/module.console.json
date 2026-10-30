@@ -18,8 +18,6 @@
 			"consoleAccess",
 			"ConsoleAccess",
 			"ConsoleData",
-			"ConsoleExporter",
-			"ConsoleExportInput",
 			"ConsoleHost",
 			"ConsoleSource",
 			"consoleStore",
@@ -62,7 +60,10 @@
 		"origin": "derived",
 		"inputs": [],
 		"outputs": [],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -31,6 +31,7 @@
 			{
 				"name": "parseFields.rawFields",
 				"type": "string[]",
+				"required": true,
 				"description": "Field strings in name:type form; omitted type defaults to string. Supported types are string, text, number, boolean, date and json."
 			}
 		],
@@ -47,7 +48,35 @@
 				"type": "thrown",
 				"description": "Thrown for malformed field syntax, invalid field names, unsupported types or duplicate normalized names."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "parseFields",
+				"inputs": [
+					{
+						"name": "parseFields.rawFields",
+						"type": "string[]",
+						"required": true,
+						"description": "Field strings in name:type form; omitted type defaults to string. Supported types are string, text, number, boolean, date and json."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseFields",
+						"type": "Field[]",
+						"description": "Fields in input order with camelCase name, snake_case column, normalized type and TypeScript/SQL types. String/text/date use TEXT, number/boolean use INTEGER, and json uses Record<string, unknown> stored as TEXT."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

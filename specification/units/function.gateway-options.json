@@ -20,6 +20,7 @@
 			{
 				"name": "gatewayOptions.session",
 				"type": "GatewaySession",
+				"required": true,
 				"description": "Session whose abort controller should control the SDK request."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "SDK options using a copied environment with Anthropic and Claude provider overrides removed, no built-in tools or setting sources, no persistent session, Opus 5.5 with xhigh effort, dontAsk mode and /tmp working directory. The executable comes from HARNESS_CLAUDE_EXECUTABLE or the home-local Claude binary."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "gatewayOptions",
+				"inputs": [
+					{
+						"name": "gatewayOptions.session",
+						"type": "GatewaySession",
+						"required": true,
+						"description": "Session whose abort controller should control the SDK request."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatewayOptions",
+						"type": "Options",
+						"description": "SDK options using a copied environment with Anthropic and Claude provider overrides removed, no built-in tools or setting sources, no persistent session, Opus 5.5 with xhigh effort, dontAsk mode and /tmp working directory. The executable comes from HARNESS_CLAUDE_EXECUTABLE or the home-local Claude binary."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

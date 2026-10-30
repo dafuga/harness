@@ -19,21 +19,26 @@
 			{
 				"name": "TestingPluginService.run.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute project directory whose declared test script will run."
 			},
 			{
 				"name": "TestingPluginService.run.id",
 				"type": "string",
+				"required": true,
 				"description": "Installed testing plugin identity; capability and internal modules are rejected."
 			},
 			{
 				"name": "TestingPluginService.run.args",
 				"type": "string[]",
+				"required": false,
+				"default": [],
 				"description": "Additional runner arguments; headed, debug, UI and alternate config switches are rejected."
 			},
 			{
 				"name": "TestingPluginService.run.signal",
 				"type": "AbortSignal",
+				"required": false,
 				"description": "Optional cancellation signal for queued admission and the owned runner process tree."
 			}
 		],
@@ -50,7 +55,54 @@
 				"type": "thrown",
 				"description": "Invalid catalog, missing testing installation, headed options, unsafe setup conflicts or process admission prevent execution."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "TestingPluginService.run",
+				"inputs": [
+					{
+						"name": "TestingPluginService.run.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute project directory whose declared test script will run."
+					},
+					{
+						"name": "TestingPluginService.run.id",
+						"type": "string",
+						"required": true,
+						"description": "Installed testing plugin identity; capability and internal modules are rejected."
+					},
+					{
+						"name": "TestingPluginService.run.args",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Additional runner arguments; headed, debug, UI and alternate config switches are rejected."
+					},
+					{
+						"name": "TestingPluginService.run.signal",
+						"type": "AbortSignal",
+						"required": false,
+						"description": "Optional cancellation signal for queued admission and the owned runner process tree."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TestingPluginService.run",
+						"type": "Promise<number>",
+						"description": "Zero for a passing runner; a nonzero runner status or cleanup failure otherwise."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

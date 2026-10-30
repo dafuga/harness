@@ -21,32 +21,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "request.operation",
-				"type": "\"impact\" | \"version\""
-			},
-			{
-				"name": "impact.base",
-				"type": "KernelGraph"
-			},
-			{
-				"name": "impact.head",
-				"type": "KernelGraph"
-			},
-			{
-				"name": "impact.changed",
-				"type": "string[]"
-			},
-			{
-				"name": "impact.uncertain",
-				"type": "string[]"
-			},
-			{
-				"name": "impact.sinks",
-				"type": "string[]"
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "impact",
@@ -74,7 +49,9 @@
 				"name": "unknown-operation",
 				"type": "refused"
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

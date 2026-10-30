@@ -36,26 +36,31 @@
 			{
 				"name": "harnessGrowth.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Index holding unit growth and revision order."
 			},
 			{
 				"name": "harnessGrowth.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit whose growth is requested."
 			},
 			{
 				"name": "unitTimings.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Index containing benchmark series."
 			},
 			{
 				"name": "unitTimings.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit whose benchmark entries are requested."
 			},
 			{
 				"name": "signed.delta",
 				"type": "number | undefined",
+				"required": true,
 				"description": "Optional numeric difference to format."
 			}
 		],
@@ -81,7 +86,82 @@
 				"description": "Empty for zero, undefined or other falsy numeric values; a plus sign for positive differences, otherwise the numeric string."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "harnessGrowth",
+				"inputs": [
+					{
+						"name": "harnessGrowth.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index holding unit growth and revision order."
+					},
+					{
+						"name": "harnessGrowth.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit whose growth is requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessGrowth",
+						"type": "GrowthRow[]",
+						"description": "Oldest-first growth rows with values, notes and differences from the immediately preceding growth point when both values exist. Missing metrics stay undefined; changed is true only for a nonzero numeric delta."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unitTimings",
+				"inputs": [
+					{
+						"name": "unitTimings.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index containing benchmark series."
+					},
+					{
+						"name": "unitTimings.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit whose benchmark entries are requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitTimings",
+						"type": "HarnessBenchmark[]",
+						"description": "Matching benchmark entries unchanged, preserving their independent series."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "signed",
+				"inputs": [
+					{
+						"name": "signed.delta",
+						"type": "number | undefined",
+						"required": true,
+						"description": "Optional numeric difference to format."
+					}
+				],
+				"outputs": [
+					{
+						"name": "signed",
+						"type": "string",
+						"description": "Empty for zero, undefined or other falsy numeric values; a plus sign for positive differences, otherwise the numeric string."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

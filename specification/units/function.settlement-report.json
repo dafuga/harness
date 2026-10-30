@@ -33,24 +33,28 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "unknownSettlement.why",
-				"type": "string",
-				"description": "Reason cleanup could not establish what remains."
-			},
-			{
 				"name": "settlementReport.asked",
 				"type": "Judged[]",
+				"required": true,
 				"description": "Judged processes asked to end during the final settling step."
 			},
 			{
 				"name": "settlementReport.last",
 				"type": "Judged[]",
+				"required": true,
 				"description": "Judged processes present at the final observation."
 			},
 			{
 				"name": "settlementReport.signalled",
 				"type": "(item: TrackedProcess) => boolean",
+				"required": false,
 				"description": "Optional predicate identifying every process signalled during cleanup; defaults to membership in asked."
+			},
+			{
+				"name": "unknownSettlement.why",
+				"type": "string",
+				"required": true,
+				"description": "Reason cleanup could not establish what remains."
 			}
 		],
 		"outputs": [
@@ -65,7 +69,62 @@
 				"description": "Settlement counting asked-but-absent processes as stopped and final nondelegated processes as running; survivors includes both because either counts against the command. Reports delegated, signalled-running, untouched-running and stopped outcomes."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "settlementReport",
+				"inputs": [
+					{
+						"name": "settlementReport.asked",
+						"type": "Judged[]",
+						"required": true,
+						"description": "Judged processes asked to end during the final settling step."
+					},
+					{
+						"name": "settlementReport.last",
+						"type": "Judged[]",
+						"required": true,
+						"description": "Judged processes present at the final observation."
+					},
+					{
+						"name": "settlementReport.signalled",
+						"type": "(item: TrackedProcess) => boolean",
+						"required": false,
+						"description": "Optional predicate identifying every process signalled during cleanup; defaults to membership in asked."
+					}
+				],
+				"outputs": [
+					{
+						"name": "settlementReport",
+						"type": "Settlement",
+						"description": "Settlement counting asked-but-absent processes as stopped and final nondelegated processes as running; survivors includes both because either counts against the command. Reports delegated, signalled-running, untouched-running and stopped outcomes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unknownSettlement",
+				"inputs": [
+					{
+						"name": "unknownSettlement.why",
+						"type": "string",
+						"required": true,
+						"description": "Reason cleanup could not establish what remains."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unknownSettlement",
+						"type": "Settlement",
+						"description": "Unknown settlement with no asserted survivors, zero stopped/resisted, unknown true and a report explaining that the check fails."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -28,6 +28,7 @@
 			{
 				"name": "readBrowserDiagnostics.directory",
 				"type": "string",
+				"required": true,
 				"description": "Directory for this check attempt; only its browser-errors.ndjson file is read."
 			}
 		],
@@ -38,7 +39,30 @@
 				"description": "Parsed browserErrors when the file contains valid nonblank JSON lines. Returns an empty object for a missing or empty file, or a failure message for a nonregular file, a file over 2000000 bytes, read failure or any invalid line; partial results are not returned."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "readBrowserDiagnostics",
+				"inputs": [
+					{
+						"name": "readBrowserDiagnostics.directory",
+						"type": "string",
+						"required": true,
+						"description": "Directory for this check attempt; only its browser-errors.ndjson file is read."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readBrowserDiagnostics",
+						"type": "Read",
+						"description": "Parsed browserErrors when the file contains valid nonblank JSON lines. Returns an empty object for a missing or empty file, or a failure message for a nonregular file, a file over 2000000 bytes, read failure or any invalid line; partial results are not returned."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -30,11 +30,13 @@
 			{
 				"name": "PermissionCatalogService.load.root",
 				"type": "string",
+				"required": true,
 				"description": "Project directory containing profile declarations."
 			},
 			{
 				"name": "PermissionCatalogService.at.tree",
 				"type": "PermissionSourceTree",
+				"required": true,
 				"description": "Selected source tree providing JSON profile files."
 			}
 		],
@@ -55,7 +57,55 @@
 				"description": "Profiles with source paths and explicit gaps for invalid or unreadable declarations."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "PermissionCatalogService.load",
+				"inputs": [
+					{
+						"name": "PermissionCatalogService.load.root",
+						"type": "string",
+						"required": true,
+						"description": "Project directory containing profile declarations."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PermissionCatalogService.load",
+						"type": "Promise<PermissionCatalog>",
+						"description": "Profiles with source paths and explicit gaps for invalid or unreadable declarations."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PermissionCatalogService.at",
+				"inputs": [
+					{
+						"name": "PermissionCatalogService.at.tree",
+						"type": "PermissionSourceTree",
+						"required": true,
+						"description": "Selected source tree providing JSON profile files."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PermissionCatalogService.at",
+						"type": "Promise<PermissionCatalog>",
+						"description": "Profiles with source paths and explicit gaps for invalid or unreadable declarations."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

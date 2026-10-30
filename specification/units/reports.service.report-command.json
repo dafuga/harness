@@ -23,11 +23,13 @@
 		"inputs": [
 			{
 				"name": "ReportCommandService.constructor.repository",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ReportCommandService.execute.argv",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,6 +42,52 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReportCommandService.execute",
+				"inputs": [
+					{
+						"name": "ReportCommandService.execute.argv",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportCommandService.execute",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ReportCommandService.constructor",
+				"inputs": [
+					{
+						"name": "ReportCommandService.constructor.repository",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportCommandService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},
@@ -60,17 +108,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.service.report-export",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.service.report-import",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.service.report-publish",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "SiteReportRepository.get.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,7 +30,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SiteReportRepository.get",
+				"inputs": [
+					{
+						"name": "SiteReportRepository.get.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SiteReportRepository.get",
+						"type": "Promise<Report>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

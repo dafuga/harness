@@ -31,16 +31,19 @@
 			{
 				"name": "EntityConfig.entity",
 				"type": "ExplorerEntity",
+				"required": true,
 				"description": "Required entity whose contract outputs supply setting names and declared types. Labels use the readable final name segment."
 			},
 			{
 				"name": "EntityConfig.scope",
 				"type": "ExplorerScope",
+				"required": true,
 				"description": "Required current/commit context, selecting heading and displayed commit."
 			},
 			{
 				"name": "EntityConfig.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required navigation context used to open this config at its recorded commit from current view."
 			}
 		],
@@ -51,7 +54,9 @@
 				"description": "Configuration card listing declared outputs, with types over 48 characters labeled structured value. Empty outputs are explicitly described. Current mode offers View commit changes. Explains that config cost is measured through consuming entities; the panel does not display resolved configuration values."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

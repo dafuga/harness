@@ -6,63 +6,63 @@
 	"responsibility": "Owns the CatalogEntity data model.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"lineage": {
+		"predecessors": ["model.catalog-entity-types"]
+	},
 	"owns": {
-		"source": ["src/models/git-source-history/CatalogEntity.ts"],
+		"source": [
+			"src/models/git-source-history/CatalogEntity.ts",
+			"src/models/git-source-history/CatalogEntity.types.ts"
+		],
 		"symbols": [
 			"CatalogEntity",
 			"CatalogEntity.find",
 			"CatalogEntity.findBy",
 			"CatalogEntity.create",
 			"CatalogEntity.update",
-			"CatalogEntity.delete"
+			"CatalogEntity.delete",
+			"CatalogEntityAttributes",
+			"CatalogEntityCreateInput",
+			"CatalogEntityUpdateInput"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "CatalogEntity.find.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogEntity.id",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogEntity.find.id",
-				"type": "string"
+				"name": "CatalogEntity.unitId",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogEntity.findBy.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogEntity.version",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogEntity.findBy.fields",
-				"type": "Partial<CatalogEntityAttributes>"
+				"name": "CatalogEntity.kind",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogEntity.create.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogEntity.title",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogEntity.create.input",
-				"type": "CatalogEntityCreateInput"
+				"name": "CatalogEntity.responsibility",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogEntity.update.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogEntity.update.id",
-				"type": "string"
-			},
-			{
-				"name": "CatalogEntity.update.input",
-				"type": "CatalogEntityUpdateInput"
-			},
-			{
-				"name": "CatalogEntity.delete.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogEntity.delete.id",
-				"type": "string"
+				"name": "CatalogEntity.data",
+				"type": "json",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,16 +87,198 @@
 				"type": "Promise<boolean>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogEntity.find",
+				"inputs": [
+					{
+						"name": "CatalogEntity.find.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogEntity.find.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogEntity.find",
+						"type": "Promise<CatalogEntityAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogEntity.findBy",
+				"inputs": [
+					{
+						"name": "CatalogEntity.findBy.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogEntity.findBy.fields",
+						"type": "Partial<CatalogEntityAttributes>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogEntity.findBy",
+						"type": "Promise<CatalogEntityAttributes[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogEntity.create",
+				"inputs": [
+					{
+						"name": "CatalogEntity.create.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogEntity.create.input",
+						"type": "CatalogEntityCreateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogEntity.create",
+						"type": "Promise<CatalogEntityAttributes>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogEntity.update",
+				"inputs": [
+					{
+						"name": "CatalogEntity.update.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogEntity.update.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogEntity.update.input",
+						"type": "CatalogEntityUpdateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogEntity.update",
+						"type": "Promise<CatalogEntityAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogEntity.delete",
+				"inputs": [
+					{
+						"name": "CatalogEntity.delete.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogEntity.delete.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogEntity.delete",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [],
+		"storage": [
+			{
+				"name": "CatalogEntity",
+				"table": "catalog_entities",
+				"primaryKey": "id",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": true
+					},
+					{
+						"name": "unitId",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "version",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "kind",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "title",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "responsibility",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "data",
+						"type": "json",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					}
+				]
+			}
+		]
 	},
 	"dependencies": [
 		{
-			"unit": "function.sqlite-types",
+			"unit": "function.revision-registry",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "model.catalog-entity-types",
+			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
 		}

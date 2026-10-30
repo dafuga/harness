@@ -29,15 +29,18 @@
 		"inputs": [
 			{
 				"name": "PlaywrightReportAdapter.ingest.store",
-				"type": "ReportRepository"
+				"type": "ReportRepository",
+				"required": true
 			},
 			{
 				"name": "PlaywrightReportAdapter.ingest.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PlaywrightReportAdapter.ingest.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +49,39 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PlaywrightReportAdapter.ingest",
+				"inputs": [
+					{
+						"name": "PlaywrightReportAdapter.ingest.store",
+						"type": "ReportRepository",
+						"required": true
+					},
+					{
+						"name": "PlaywrightReportAdapter.ingest.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PlaywrightReportAdapter.ingest.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlaywrightReportAdapter.ingest",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -19,7 +19,23 @@
 				"type": "Command"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "buildProgram",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "buildProgram",
+						"type": "Command"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

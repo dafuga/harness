@@ -20,11 +20,13 @@
 			{
 				"name": "reportCleanupLog.root",
 				"type": "string",
+				"required": true,
 				"description": "Report store root containing the retention log."
 			},
 			{
 				"name": "reportCleanupLog.result",
 				"type": "unknown",
+				"required": true,
 				"description": "JSON-serializable cleanup result to record."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Promise that rewrites the log with parseable entries newer than the retention cutoff and a timestamped new result, keeping only the latest 300 lines. Missing log files start empty; no value is returned."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reportCleanupLog",
+				"inputs": [
+					{
+						"name": "reportCleanupLog.root",
+						"type": "string",
+						"required": true,
+						"description": "Report store root containing the retention log."
+					},
+					{
+						"name": "reportCleanupLog.result",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-serializable cleanup result to record."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportCleanupLog",
+						"type": "unknown",
+						"description": "Promise that rewrites the log with parseable entries newer than the retention cutoff and a timestamped new result, keeping only the latest 300 lines. Missing log files start empty; no value is returned."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

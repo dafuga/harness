@@ -38,15 +38,18 @@
 		"inputs": [
 			{
 				"name": "GoogleIdentityService.constructor.options",
-				"type": "GoogleIdentityOptions"
+				"type": "GoogleIdentityOptions",
+				"required": true
 			},
 			{
 				"name": "GoogleIdentityService.verify.credential",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GoogleIdentityService.verify.nonce",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -63,7 +66,53 @@
 				"type": "Promise<GoogleIdentity>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GoogleIdentityService.verify",
+				"inputs": [
+					{
+						"name": "GoogleIdentityService.verify.credential",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "GoogleIdentityService.verify.nonce",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GoogleIdentityService.verify",
+						"type": "Promise<GoogleIdentity>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GoogleIdentityService.constructor",
+				"inputs": [
+					{
+						"name": "GoogleIdentityService.constructor.options",
+						"type": "GoogleIdentityOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GoogleIdentityService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

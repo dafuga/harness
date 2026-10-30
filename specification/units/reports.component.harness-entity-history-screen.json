@@ -16,55 +16,60 @@
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityHistoryScreen.svelte"],
-		"symbols": ["EntityHistoryScreen"]
+		"symbols": ["EntityHistoryScreen", "EntityHistoryScreen.children"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ExplorerScreenProps.index",
+				"name": "EntityHistoryScreen.index",
 				"type": "HarnessIndex",
-				"description": "The history of the repository as it was built: branches, revisions and what was measured."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.route",
-				"type": "ExplorerLocation",
-				"description": "The address shown: category, entity, section and tab."
-			},
-			{
-				"name": "ExplorerScreenProps.scope",
-				"type": "ExplorerScope",
-				"description": "The branch and commit shown, and whether that is the branch tip or a selected commit."
-			},
-			{
-				"name": "ExplorerScreenProps.head",
+				"name": "EntityHistoryScreen.head",
 				"type": "HarnessRevision",
-				"description": "The revision every contract, measurement and capture on the screen is bound to."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.parent",
+				"name": "EntityHistoryScreen.parent",
 				"type": "HarnessRevision | null",
-				"description": "The first parent of a selected commit; none at the branch tip and for a first commit."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.entities",
+				"name": "EntityHistoryScreen.scope",
+				"type": "ExplorerScope",
+				"required": true
+			},
+			{
+				"name": "EntityHistoryScreen.route",
+				"type": "ExplorerLocation",
+				"required": true
+			},
+			{
+				"name": "EntityHistoryScreen.entities",
 				"type": "ExplorerEntity[]",
-				"description": "The units of the shown revision as the explorer lists them."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.lens",
+				"name": "EntityHistoryScreen.lens",
 				"type": "EntityLens",
-				"description": "What the host answers about an entity: relations, evidence, end-to-end results and history."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.client",
+				"name": "EntityHistoryScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
-				"description": "Reads a stored revision, only for the commits a history lists."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.onroute",
+				"name": "EntityHistoryScreen.mediaBase",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "EntityHistoryScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
-				"description": "Goes to another address of the explorer in the same branch and revision mode."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -84,6 +89,33 @@
 				"name": "entity-missing",
 				"type": "stated",
 				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityHistoryScreen.children",
+				"inputs": [
+					{
+						"name": "EntityHistoryScreen.children.entity",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "EntityHistoryScreen.children.nav",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntityHistoryScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

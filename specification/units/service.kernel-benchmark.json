@@ -29,27 +29,33 @@
 		"inputs": [
 			{
 				"name": "KernelBenchmarkService.constructor.plan",
-				"type": "BenchPlan"
+				"type": "BenchPlan",
+				"required": true
 			},
 			{
 				"name": "KernelBenchmarkService.constructor.context",
-				"type": "MeasureContext"
+				"type": "MeasureContext",
+				"required": true
 			},
 			{
 				"name": "KernelBenchmarkService.measure.run",
-				"type": "WorkloadRun"
+				"type": "WorkloadRun",
+				"required": true
 			},
 			{
 				"name": "KernelBenchmarkService.measure.url",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "KernelBenchmarkService.describe.run",
-				"type": "WorkloadRun"
+				"type": "WorkloadRun",
+				"required": true
 			},
 			{
 				"name": "serveKernel.cli",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -70,6 +76,93 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "KernelBenchmarkService.measure",
+				"inputs": [
+					{
+						"name": "KernelBenchmarkService.measure.run",
+						"type": "WorkloadRun",
+						"required": true
+					},
+					{
+						"name": "KernelBenchmarkService.measure.url",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "KernelBenchmarkService.measure",
+						"type": "Promise<BenchMeasurement[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "KernelBenchmarkService.describe",
+				"inputs": [
+					{
+						"name": "KernelBenchmarkService.describe.run",
+						"type": "WorkloadRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "KernelBenchmarkService.describe",
+						"type": "Workload"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "serveKernel",
+				"inputs": [
+					{
+						"name": "serveKernel.cli",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "serveKernel",
+						"type": "Promise<{ url: string; stop(): void }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "KernelBenchmarkService.constructor",
+				"inputs": [
+					{
+						"name": "KernelBenchmarkService.constructor.plan",
+						"type": "BenchPlan",
+						"required": true
+					},
+					{
+						"name": "KernelBenchmarkService.constructor.context",
+						"type": "MeasureContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "KernelBenchmarkService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

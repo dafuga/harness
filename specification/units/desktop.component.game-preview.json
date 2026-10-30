@@ -29,9 +29,35 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "GamePreview.props",
-				"type": "Props",
-				"description": "Current view, initial run, local project bridge, read-only state and run-update callback."
+				"name": "GamePreview.view",
+				"type": "GameView",
+				"required": true
+			},
+			{
+				"name": "GamePreview.initialRun",
+				"type": "GameRun",
+				"required": false
+			},
+			{
+				"name": "GamePreview.projectId",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "GamePreview.readonly",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "GamePreview.onRun",
+				"type": "(run: GameRun) => void",
+				"required": true
+			},
+			{
+				"name": "GamePreview.bridge",
+				"type": "DesktopBridge",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -41,7 +67,9 @@
 				"description": "Run native key-door gameplay and preserve progress while keeping optional AI video disabled by default. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

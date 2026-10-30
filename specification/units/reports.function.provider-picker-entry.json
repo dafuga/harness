@@ -23,7 +23,23 @@
 				"description": "Svelte mount result for the picker in the element named app. The module also invokes this function immediately on import."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "providerPickerEntry",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "providerPickerEntry",
+						"type": "unknown",
+						"description": "Svelte mount result for the picker in the element named app. The module also invokes this function immediately on import."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import CoveragePanel from '../../src/components/CoveragePanel.svelte';
+import CoveragePanel from '../../src/components/shared-primitives/CoveragePanel.svelte';
 import { createEntityEvidenceStore } from '../../src/lib/stores/entityEvidence.svelte';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import { unavailableEvidence } from '../../src/utils/evidenceNotice';

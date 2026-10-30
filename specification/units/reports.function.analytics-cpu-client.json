@@ -27,6 +27,7 @@
 			{
 				"name": "analyticsCpuClient.update",
 				"type": "(sample: CpuState) => void",
+				"required": true,
 				"description": "Callback receiving a parsed CPU snapshot, or null when an active request fails."
 			}
 		],
@@ -43,7 +44,30 @@
 				"type": "thrown",
 				"description": "A non-success HTTP response creates CPU sample unavailable. internally; refresh catches failures and delivers null while active."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "analyticsCpuClient",
+				"inputs": [
+					{
+						"name": "analyticsCpuClient.update",
+						"type": "(sample: CpuState) => void",
+						"required": true,
+						"description": "Callback receiving a parsed CPU snapshot, or null when an active request fails."
+					}
+				],
+				"outputs": [
+					{
+						"name": "analyticsCpuClient",
+						"type": "unknown",
+						"description": "Returns refresh and stop. Starts one request immediately and polls every five seconds while visible; overlapping requests are skipped. Stop cancels the timer and aborts the request, suppressing subsequent delivery."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

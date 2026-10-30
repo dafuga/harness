@@ -27,19 +27,23 @@
 		"inputs": [
 			{
 				"name": "CodexResponsesSerializer.constructor.model",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CodexResponsesSerializer.text.delta",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "CodexResponsesSerializer.call.call",
-				"type": "GatewayCall"
+				"type": "GatewayCall",
+				"required": true
 			},
 			{
 				"name": "CodexResponsesSerializer.fail.message",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -68,6 +72,107 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CodexResponsesSerializer.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CodexResponsesSerializer.start",
+						"type": "GatewayItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexResponsesSerializer.text",
+				"inputs": [
+					{
+						"name": "CodexResponsesSerializer.text.delta",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexResponsesSerializer.text",
+						"type": "GatewayItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexResponsesSerializer.call",
+				"inputs": [
+					{
+						"name": "CodexResponsesSerializer.call.call",
+						"type": "GatewayCall",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexResponsesSerializer.call",
+						"type": "GatewayItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexResponsesSerializer.finish",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CodexResponsesSerializer.finish",
+						"type": "GatewayItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CodexResponsesSerializer.fail",
+				"inputs": [
+					{
+						"name": "CodexResponsesSerializer.fail.message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexResponsesSerializer.fail",
+						"type": "GatewayItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CodexResponsesSerializer.constructor",
+				"inputs": [
+					{
+						"name": "CodexResponsesSerializer.constructor.model",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexResponsesSerializer.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -31,6 +31,7 @@
 			{
 				"name": "revisionChanges.input",
 				"type": "ChangesInput",
+				"required": true,
 				"description": "Stored impact or null, current registry, optional parent registry and fallback parent commit. Registry comparison requires both registries to be available."
 			}
 		],
@@ -41,7 +42,30 @@
 				"description": "Sorted direct, added and removed unit ids with the parent commit, or null when neither impact nor comparable registries exist. Indirect dependents are excluded; added/removed ids are removed from direct."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "revisionChanges",
+				"inputs": [
+					{
+						"name": "revisionChanges.input",
+						"type": "ChangesInput",
+						"required": true,
+						"description": "Stored impact or null, current registry, optional parent registry and fallback parent commit. Registry comparison requires both registries to be available."
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionChanges",
+						"type": "RevisionChanges | null",
+						"description": "Sorted direct, added and removed unit ids with the parent commit, or null when neither impact nor comparable registries exist. Indirect dependents are excluded; added/removed ids are removed from direct."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

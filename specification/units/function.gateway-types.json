@@ -30,6 +30,7 @@
 			{
 				"name": "gatewayTypes.id",
 				"type": "string",
+				"required": true,
 				"description": "Session identifier copied unchanged into the new state."
 			}
 		],
@@ -40,7 +41,30 @@
 				"description": "Fresh session with an AbortController, empty pending-tool map, delivered-id set and replay map, running false and no event emitter."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "gatewayTypes",
+				"inputs": [
+					{
+						"name": "gatewayTypes.id",
+						"type": "string",
+						"required": true,
+						"description": "Session identifier copied unchanged into the new state."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatewayTypes",
+						"type": "GatewaySession",
+						"description": "Fresh session with an AbortController, empty pending-tool map, delivered-id set and replay map, running false and no event emitter."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -19,11 +19,13 @@
 			{
 				"name": "planAudit.proposal",
 				"type": "string",
+				"required": true,
 				"description": "Substantive Markdown proposal to inspect structurally without implementing its planned behavior."
 			},
 			{
 				"name": "planAudit.goal",
 				"type": "string",
+				"required": true,
 				"description": "User-facing task goal used for the committed contract and explicit word-overlap heuristic."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "Individual structural heuristic checks; a passing result does not prove arbitrary semantic fulfillment."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "planAudit",
+				"inputs": [
+					{
+						"name": "planAudit.proposal",
+						"type": "string",
+						"required": true,
+						"description": "Substantive Markdown proposal to inspect structurally without implementing its planned behavior."
+					},
+					{
+						"name": "planAudit.goal",
+						"type": "string",
+						"required": true,
+						"description": "User-facing task goal used for the committed contract and explicit word-overlap heuristic."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planAudit",
+						"type": "TaskCheck[]",
+						"description": "Individual structural heuristic checks; a passing result does not prove arbitrary semantic fulfillment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -33,7 +33,8 @@
 		"inputs": [
 			{
 				"name": "RemoteHostSwitchService.constructor.options",
-				"type": "RemoteHostSwitchOptions"
+				"type": "RemoteHostSwitchOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,7 +55,78 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteHostSwitchService.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostSwitchService.start",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostSwitchService.enable",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostSwitchService.enable",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostSwitchService.disable",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostSwitchService.disable",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostSwitchService.stop",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostSwitchService.stop",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteHostSwitchService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteHostSwitchService.constructor.options",
+						"type": "RemoteHostSwitchOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostSwitchService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -20,6 +20,7 @@
 			{
 				"name": "hubPng.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "PNG bytes satisfying chunk validation, legal color/depth combinations and positive dimensions; both input and expected decompressed scanlines are capped at 32 MiB."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Image width and height after complete deflate data, scanline lengths and filter bytes are checked, including interlaced passes."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubPng",
+				"inputs": [
+					{
+						"name": "hubPng.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "PNG bytes satisfying chunk validation, legal color/depth combinations and positive dimensions; both input and expected decompressed scanlines are capped at 32 MiB."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubPng",
+						"type": "Promise<{ width: number; height: number }>",
+						"description": "Image width and height after complete deflate data, scanline lengths and filter bytes are checked, including interlaced passes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

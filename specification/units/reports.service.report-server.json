@@ -24,15 +24,20 @@
 		"inputs": [
 			{
 				"name": "ReportServerService.constructor.repository",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ReportServerService.serve.preferred",
-				"type": "unknown"
+				"type": "number",
+				"required": false,
+				"default": 5588
 			},
 			{
 				"name": "ReportServerService.stop.port",
-				"type": "unknown"
+				"type": "number",
+				"required": false,
+				"default": 5588
 			}
 		],
 		"outputs": [
@@ -49,6 +54,72 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReportServerService.serve",
+				"inputs": [
+					{
+						"name": "ReportServerService.serve.preferred",
+						"type": "number",
+						"required": false,
+						"default": 5588
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportServerService.serve",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReportServerService.stop",
+				"inputs": [
+					{
+						"name": "ReportServerService.stop.port",
+						"type": "number",
+						"required": false,
+						"default": 5588
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportServerService.stop",
+						"type": "Promise<StoppedServer>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ReportServerService.constructor",
+				"inputs": [
+					{
+						"name": "ReportServerService.constructor.repository",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportServerService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

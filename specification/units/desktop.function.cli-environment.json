@@ -24,7 +24,23 @@
 				"description": "A new environment based on scrubEnvironment, with PATH entries deduplicated in order and common user, Bun, Homebrew and system executable directories appended. It does not change the parent process environment."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "cliEnvironment",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "cliEnvironment",
+						"type": "NodeJS.ProcessEnv",
+						"description": "A new environment based on scrubEnvironment, with PATH entries deduplicated in order and common user, Bun, Homebrew and system executable directories appended. It does not change the parent process environment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

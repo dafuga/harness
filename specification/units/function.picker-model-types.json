@@ -29,16 +29,19 @@
 			{
 				"name": "sameSelection.a",
 				"type": "ProviderSelection",
+				"required": true,
 				"description": "First provider, model and effort selection to compare."
 			},
 			{
 				"name": "sameSelection.b",
 				"type": "ProviderSelection",
+				"required": true,
 				"description": "Second selection to compare without normalization."
 			},
 			{
 				"name": "validateSessionId.value",
 				"type": "string",
+				"required": true,
 				"description": "Explicit session id beginning with an ASCII letter/digit, followed by letters, digits, underscores or hyphens, at most 128 characters total."
 			}
 		],
@@ -60,7 +63,61 @@
 				"type": "thrown",
 				"description": "Thrown when the session id is empty, too long or contains an unsupported character."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "sameSelection",
+				"inputs": [
+					{
+						"name": "sameSelection.a",
+						"type": "ProviderSelection",
+						"required": true,
+						"description": "First provider, model and effort selection to compare."
+					},
+					{
+						"name": "sameSelection.b",
+						"type": "ProviderSelection",
+						"required": true,
+						"description": "Second selection to compare without normalization."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameSelection",
+						"type": "boolean",
+						"description": "True only when provider, model and effort all match exactly."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "validateSessionId",
+				"inputs": [
+					{
+						"name": "validateSessionId.value",
+						"type": "string",
+						"required": true,
+						"description": "Explicit session id beginning with an ASCII letter/digit, followed by letters, digits, underscores or hyphens, at most 128 characters total."
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateSessionId",
+						"type": "string",
+						"description": "The original session id when it matches the required shape."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

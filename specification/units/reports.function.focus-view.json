@@ -44,89 +44,106 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "wholeView.layout",
-				"type": "HarnessLayout",
-				"description": "Layout to fit."
-			},
-			{
 				"name": "focusView.layout",
 				"type": "HarnessLayout",
+				"required": true,
 				"description": "Layout containing requested nodes."
 			},
 			{
 				"name": "focusView.ids",
 				"type": "Set<string>",
+				"required": true,
 				"description": "Node identifiers to focus."
 			},
 			{
 				"name": "focusOn.layout",
 				"type": "HarnessLayout",
+				"required": true,
 				"description": "Layout to consider for automatic focus."
 			},
 			{
 				"name": "focusOn.ids",
 				"type": "Set<string>",
+				"required": true,
 				"description": "Requested node identifiers."
 			},
 			{
 				"name": "zoomView.view",
 				"type": "MapView",
+				"required": true,
 				"description": "Current viewport."
 			},
 			{
 				"name": "zoomView.factor",
 				"type": "number",
+				"required": true,
 				"description": "Zoom factor dividing the viewport width."
 			},
 			{
 				"name": "zoomView.whole",
 				"type": "MapView",
+				"required": true,
 				"description": "Whole-map bounds used for the maximum zoom-out width."
 			},
 			{
 				"name": "panView.view",
 				"type": "MapView",
+				"required": true,
 				"description": "Current viewport to move."
 			},
 			{
 				"name": "panView.dx",
 				"type": "number",
+				"required": true,
 				"description": "Horizontal shift in map units."
 			},
 			{
 				"name": "panView.dy",
 				"type": "number",
+				"required": true,
 				"description": "Vertical shift in map units."
 			},
 			{
 				"name": "drawnEdges.layout",
 				"type": "HarnessLayout",
+				"required": true,
 				"description": "Layout whose edges may be drawn."
 			},
 			{
 				"name": "drawnEdges.selected",
 				"type": "string | null",
+				"required": true,
 				"description": "Selected node or null."
 			},
 			{
 				"name": "nextNode.layout",
 				"type": "HarnessLayout",
+				"required": true,
 				"description": "Layout supplying node positions."
 			},
 			{
 				"name": "nextNode.from",
 				"type": "string",
+				"required": true,
 				"description": "Current node identifier."
 			},
 			{
 				"name": "nextNode.key",
 				"type": "string",
+				"required": true,
 				"description": "Arrow key specifying direction."
 			},
 			{
 				"name": "nextNode.shown",
 				"type": "Set<string>",
+				"required": true,
 				"description": "Identifiers eligible for keyboard navigation."
+			},
+			{
+				"name": "wholeView.layout",
+				"type": "HarnessLayout",
+				"required": true,
+				"description": "Layout to fit."
 			}
 		],
 		"outputs": [
@@ -166,7 +183,210 @@
 				"description": "Nearest eligible node ahead, minimizing along-axis distance plus four times sideways distance; stays at the current node when none is ahead, and returns undefined for an unknown origin or non-arrow key."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "focusView",
+				"inputs": [
+					{
+						"name": "focusView.layout",
+						"type": "HarnessLayout",
+						"required": true,
+						"description": "Layout containing requested nodes."
+					},
+					{
+						"name": "focusView.ids",
+						"type": "Set<string>",
+						"required": true,
+						"description": "Node identifiers to focus."
+					}
+				],
+				"outputs": [
+					{
+						"name": "focusView",
+						"type": "MapView",
+						"description": "Bounds of requested nodes with at least about four cells of context in each dimension; returns the whole view for none or all of the nodes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "focusOn",
+				"inputs": [
+					{
+						"name": "focusOn.layout",
+						"type": "HarnessLayout",
+						"required": true,
+						"description": "Layout to consider for automatic focus."
+					},
+					{
+						"name": "focusOn.ids",
+						"type": "Set<string>",
+						"required": true,
+						"description": "Requested node identifiers."
+					}
+				],
+				"outputs": [
+					{
+						"name": "focusOn",
+						"type": "MapView | null",
+						"description": "Focused bounds only for maps above 60 nodes; otherwise null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "zoomView",
+				"inputs": [
+					{
+						"name": "zoomView.view",
+						"type": "MapView",
+						"required": true,
+						"description": "Current viewport."
+					},
+					{
+						"name": "zoomView.factor",
+						"type": "number",
+						"required": true,
+						"description": "Zoom factor dividing the viewport width."
+					},
+					{
+						"name": "zoomView.whole",
+						"type": "MapView",
+						"required": true,
+						"description": "Whole-map bounds used for the maximum zoom-out width."
+					}
+				],
+				"outputs": [
+					{
+						"name": "zoomView",
+						"type": "MapView",
+						"description": "Centered zoom preserving aspect ratio, clamped between two node widths and 1.5 whole-map widths."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "panView",
+				"inputs": [
+					{
+						"name": "panView.view",
+						"type": "MapView",
+						"required": true,
+						"description": "Current viewport to move."
+					},
+					{
+						"name": "panView.dx",
+						"type": "number",
+						"required": true,
+						"description": "Horizontal shift in map units."
+					},
+					{
+						"name": "panView.dy",
+						"type": "number",
+						"required": true,
+						"description": "Vertical shift in map units."
+					}
+				],
+				"outputs": [
+					{
+						"name": "panView",
+						"type": "MapView",
+						"description": "Viewport translated by the supplied offsets without changing size."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "drawnEdges",
+				"inputs": [
+					{
+						"name": "drawnEdges.layout",
+						"type": "HarnessLayout",
+						"required": true,
+						"description": "Layout whose edges may be drawn."
+					},
+					{
+						"name": "drawnEdges.selected",
+						"type": "string | null",
+						"required": true,
+						"description": "Selected node or null."
+					}
+				],
+				"outputs": [
+					{
+						"name": "drawnEdges",
+						"type": "HarnessLayout['edges']",
+						"description": "All edges for at most 60 nodes; otherwise only edges touching the selection."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nextNode",
+				"inputs": [
+					{
+						"name": "nextNode.layout",
+						"type": "HarnessLayout",
+						"required": true,
+						"description": "Layout supplying node positions."
+					},
+					{
+						"name": "nextNode.from",
+						"type": "string",
+						"required": true,
+						"description": "Current node identifier."
+					},
+					{
+						"name": "nextNode.key",
+						"type": "string",
+						"required": true,
+						"description": "Arrow key specifying direction."
+					},
+					{
+						"name": "nextNode.shown",
+						"type": "Set<string>",
+						"required": true,
+						"description": "Identifiers eligible for keyboard navigation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextNode",
+						"type": "string | undefined",
+						"description": "Nearest eligible node ahead, minimizing along-axis distance plus four times sideways distance; stays at the current node when none is ahead, and returns undefined for an unknown origin or non-arrow key."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "wholeView",
+				"inputs": [
+					{
+						"name": "wholeView.layout",
+						"type": "HarnessLayout",
+						"required": true,
+						"description": "Layout to fit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "wholeView",
+						"type": "MapView",
+						"description": "Whole layout with 24 units of padding on every side."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

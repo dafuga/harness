@@ -15,11 +15,14 @@
 		"inputs": [
 			{
 				"name": "buildHistory.options",
-				"type": "BuildOptions"
+				"type": "BuildOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "renderBuild.built",
-				"type": "BuiltHistory"
+				"type": "BuiltHistory",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +40,53 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "buildHistory",
+				"inputs": [
+					{
+						"name": "buildHistory.options",
+						"type": "BuildOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildHistory",
+						"type": "Promise<BuiltHistory>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderBuild",
+				"inputs": [
+					{
+						"name": "renderBuild.built",
+						"type": "BuiltHistory",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderBuild",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

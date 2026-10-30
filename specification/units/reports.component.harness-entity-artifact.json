@@ -29,7 +29,7 @@
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityArtifact.svelte"],
-		"symbols": ["EntityArtifact"]
+		"symbols": ["EntityArtifact", "EntityArtifact.recorded"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,26 +37,32 @@
 			{
 				"name": "EntityArtifact.cell",
 				"type": "BehaviorCell",
+				"required": true,
 				"description": "Required result cell with capture and read state. Missing capture or null media produces a gap; details require a verified read."
 			},
 			{
 				"name": "EntityArtifact.label",
 				"type": "string",
+				"required": true,
 				"description": "Required accessible group name, also naming the original-file link."
 			},
 			{
 				"name": "EntityArtifact.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "Required prefix joined with the capture’s media path for the original-file link."
 			},
 			{
 				"name": "EntityArtifact.lost",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional flag, false by default. True turns an absent read into an unverified state instead of pending."
 			},
 			{
 				"name": "EntityArtifact.unit",
 				"type": "string",
+				"required": false,
 				"description": "Optional function identifier limiting direct-call rows; absent uses general recorded-case presentation."
 			}
 		],
@@ -67,7 +73,29 @@
 				"description": "Recorded cases plus expandable assertions, facts, steps, trace and other content after verification. Unknown assertions stay Not stated. Formatted values are shortened after 12,000 characters with a file-opening reminder. Raw JSON is inserted only while expanded. A stored capture always gets an original-file link, including while pending or unverified."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityArtifact.recorded",
+				"inputs": [
+					{
+						"name": "EntityArtifact.recorded.run",
+						"type": "ExplorerArtifactBehavior",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntityArtifact.recorded",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

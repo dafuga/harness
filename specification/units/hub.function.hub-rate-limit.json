@@ -19,6 +19,7 @@
 			{
 				"name": "hubRateLimit.input",
 				"type": "{ request: Request; db?: D1Database; secret?: string; ip?: string; now?: number; }",
+				"required": true,
 				"description": "Request plus optional database, secret, client IP and epoch-millisecond clock. Missing database/secret bypasses limiting; absent IP uses local and absent time uses Date.now()."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Null for unlisted/non-POST routes or requests within the cap; otherwise 429 rate-limited with Retry-After 60. Counts are updated using a keyed hash of IP and path, never the raw IP. Caps are 5 for email sends, 20 for Google sign-in, 60 for native polling and 10 for other listed auth/host-registration routes."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubRateLimit",
+				"inputs": [
+					{
+						"name": "hubRateLimit.input",
+						"type": "{ request: Request; db?: D1Database; secret?: string; ip?: string; now?: number; }",
+						"required": true,
+						"description": "Request plus optional database, secret, client IP and epoch-millisecond clock. Missing database/secret bypasses limiting; absent IP uses local and absent time uses Date.now()."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubRateLimit",
+						"type": "Promise<Response | null>",
+						"description": "Null for unlisted/non-POST routes or requests within the cap; otherwise 429 rate-limited with Retry-After 60. Counts are updated using a keyed hash of IP and path, never the raw IP. Caps are 5 for email sends, 20 for Google sign-in, 60 for native polling and 10 for other listed auth/host-registration routes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

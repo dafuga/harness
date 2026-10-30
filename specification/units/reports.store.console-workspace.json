@@ -23,7 +23,8 @@
 		"inputs": [
 			{
 				"name": "createConsoleWorkspaceStore.navigate",
-				"type": "(path: string, replace: boolean) => void"
+				"type": "(path: string, replace: boolean) => void",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +33,29 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "createConsoleWorkspaceStore",
+				"inputs": [
+					{
+						"name": "createConsoleWorkspaceStore.navigate",
+						"type": "(path: string, replace: boolean) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createConsoleWorkspaceStore",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

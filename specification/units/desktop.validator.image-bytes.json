@@ -18,7 +18,8 @@
 		"inputs": [
 			{
 				"name": "ImageBytesValidator.validate.value",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +33,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ImageBytesValidator.validate",
+				"inputs": [
+					{
+						"name": "ImageBytesValidator.validate.value",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ImageBytesValidator.validate",
+						"type": "Uint8Array"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -23,11 +23,13 @@
 			{
 				"name": "fail.message",
 				"type": "string",
+				"required": true,
 				"description": "Human-readable failure message to attach to the expected CLI error."
 			},
 			{
 				"name": "isExpectedCliError.error",
 				"type": "unknown",
+				"required": true,
 				"description": "Any value to test for membership in the ExpectedCliError class."
 			}
 		],
@@ -49,7 +51,55 @@
 				"type": "thrown",
 				"description": "The Error subclass thrown by fail, with its name set to ExpectedCliError."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "fail",
+				"inputs": [
+					{
+						"name": "fail.message",
+						"type": "string",
+						"required": true,
+						"description": "Human-readable failure message to attach to the expected CLI error."
+					}
+				],
+				"outputs": [
+					{
+						"name": "fail",
+						"type": "never",
+						"description": "Never returns: immediately throws a new ExpectedCliError containing the supplied message."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "isExpectedCliError",
+				"inputs": [
+					{
+						"name": "isExpectedCliError.error",
+						"type": "unknown",
+						"required": true,
+						"description": "Any value to test for membership in the ExpectedCliError class."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isExpectedCliError",
+						"type": "error is ExpectedCliError",
+						"description": "True only when the value is an instance of ExpectedCliError, narrowing its TypeScript type."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

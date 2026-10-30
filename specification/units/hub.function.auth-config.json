@@ -29,6 +29,7 @@
 			{
 				"name": "authConfig.env",
 				"type": "AuthEnv",
+				"required": true,
 				"description": "Environment settings for Google sign-in, session secret, public origin, deployment environment and optional GitHub App."
 			}
 		],
@@ -39,7 +40,30 @@
 				"description": "Configuration when client ID is valid, secret has at least 32 characters and environment is local, staging or production; otherwise null. Origin must be HTTPS, or loopback HTTP in local mode, without credentials, path, query or fragment. GitHub and collaboration settings are independently nullable."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "authConfig",
+				"inputs": [
+					{
+						"name": "authConfig.env",
+						"type": "AuthEnv",
+						"required": true,
+						"description": "Environment settings for Google sign-in, session secret, public origin, deployment environment and optional GitHub App."
+					}
+				],
+				"outputs": [
+					{
+						"name": "authConfig",
+						"type": "AuthConfig | null",
+						"description": "Configuration when client ID is valid, secret has at least 32 characters and environment is local, staging or production; otherwise null. Origin must be HTTPS, or loopback HTTP in local mode, without credentials, path, query or fragment. GitHub and collaboration settings are independently nullable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

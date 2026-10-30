@@ -18,7 +18,8 @@
 		"inputs": [
 			{
 				"name": "NavigationValidator.validate.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -27,7 +28,29 @@
 				"type": "boolean"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "NavigationValidator.validate",
+				"inputs": [
+					{
+						"name": "NavigationValidator.validate.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NavigationValidator.validate",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

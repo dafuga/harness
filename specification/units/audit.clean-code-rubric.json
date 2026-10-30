@@ -40,7 +40,23 @@
 				"type": "JevQuestions"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "cleanCodeQuestions",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "cleanCodeQuestions",
+						"type": "JevQuestions"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

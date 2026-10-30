@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "analyticsHtml.snapshot",
-				"type": "ReturnType<typeof analyticsSnapshot>"
+				"type": "ReturnType<typeof analyticsSnapshot>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "analyticsHtml",
+				"inputs": [
+					{
+						"name": "analyticsHtml.snapshot",
+						"type": "ReturnType<typeof analyticsSnapshot>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "analyticsHtml",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

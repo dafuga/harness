@@ -22,43 +22,54 @@
 		"inputs": [
 			{
 				"name": "manageHooks.action",
-				"type": "Action"
+				"type": "Action",
+				"required": true
 			},
 			{
 				"name": "manageHooks.command",
-				"type": "unknown"
+				"type": "string",
+				"required": false,
+				"default": "harness"
 			},
 			{
 				"name": "manageHooks.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "runHook.stage",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "runHook.input",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "runHook.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "checkMessage.file",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"required": true
 			},
 			{
 				"name": "checkMessage.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "renderHooks.status",
-				"type": "HookStatus"
+				"type": "HookStatus",
+				"required": true
 			},
 			{
 				"name": "renderHookOutcome.outcome",
-				"type": "HookOutcome"
+				"type": "HookOutcome",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -88,7 +99,137 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "manageHooks",
+				"inputs": [
+					{
+						"name": "manageHooks.action",
+						"type": "Action",
+						"required": true
+					},
+					{
+						"name": "manageHooks.command",
+						"type": "string",
+						"required": false,
+						"default": "harness"
+					},
+					{
+						"name": "manageHooks.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "manageHooks",
+						"type": "Promise<HookStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runHook",
+				"inputs": [
+					{
+						"name": "runHook.stage",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "runHook.input",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "runHook.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "runHook",
+						"type": "Promise<HookOutcome>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkMessage",
+				"inputs": [
+					{
+						"name": "checkMessage.file",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "checkMessage.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkMessage",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderHooks",
+				"inputs": [
+					{
+						"name": "renderHooks.status",
+						"type": "HookStatus",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderHooks",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderHookOutcome",
+				"inputs": [
+					{
+						"name": "renderHookOutcome.outcome",
+						"type": "HookOutcome",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderHookOutcome",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

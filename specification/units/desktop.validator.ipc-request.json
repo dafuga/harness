@@ -18,11 +18,13 @@
 		"inputs": [
 			{
 				"name": "IpcRequestValidator.parse.channel",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "IpcRequestValidator.parse.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +38,39 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "IpcRequestValidator.parse",
+				"inputs": [
+					{
+						"name": "IpcRequestValidator.parse.channel",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "IpcRequestValidator.parse.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "IpcRequestValidator.parse",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

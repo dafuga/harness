@@ -26,11 +26,14 @@
 		"inputs": [
 			{
 				"name": "ReportStorageSyncService.constructor.repository",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ReportStorageSyncService.run.options",
-				"type": "StorageSyncOptions"
+				"type": "StorageSyncOptions",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -43,6 +46,48 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReportStorageSyncService.run",
+				"inputs": [
+					{
+						"name": "ReportStorageSyncService.run.options",
+						"type": "StorageSyncOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportStorageSyncService.run",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ReportStorageSyncService.constructor",
+				"inputs": [
+					{
+						"name": "ReportStorageSyncService.constructor.repository",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportStorageSyncService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

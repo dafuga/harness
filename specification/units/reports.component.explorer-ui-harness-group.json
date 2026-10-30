@@ -31,17 +31,53 @@
 			{
 				"name": "HarnessGroup.title",
 				"type": "string",
+				"required": true,
 				"description": "Visible group heading, with count beside it."
 			},
 			{
-				"name": "HarnessGroup.children",
-				"type": "Snippet",
-				"description": "Group contents retained while hidden."
+				"name": "HarnessGroup.count",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "HarnessGroup.icon",
+				"type": "HarnessIconName",
+				"required": false
+			},
+			{
+				"name": "HarnessGroup.source",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "HarnessGroup.description",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "HarnessGroup.level",
+				"type": "2 | 3",
+				"required": false,
+				"default": 2
+			},
+			{
+				"name": "HarnessGroup.variant",
+				"type": "'catalog' | 'relation' | 'styles'",
+				"required": false,
+				"default": "catalog"
 			},
 			{
 				"name": "HarnessGroup.resetKey",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Revision or filter scope whose changes reveal the group."
+			},
+			{
+				"name": "HarnessGroup.children",
+				"type": "Snippet",
+				"required": true,
+				"description": "Group contents retained while hidden."
 			}
 		],
 		"outputs": [
@@ -51,7 +87,9 @@
 				"description": "Heading button with expanded state and unique controlled content; keyboard and pointer toggle."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

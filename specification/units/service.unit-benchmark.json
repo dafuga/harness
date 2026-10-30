@@ -26,19 +26,23 @@
 		"inputs": [
 			{
 				"name": "UnitBenchmarkService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "UnitBenchmarkService.measure.manifest",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"required": true
 			},
 			{
 				"name": "UnitBenchmarkService.measure.workload",
-				"type": "Workload"
+				"type": "Workload",
+				"required": true
 			},
 			{
 				"name": "UnitBenchmarkService.measure.kind",
-				"type": "RuntimeKind"
+				"type": "RuntimeKind",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -51,6 +55,62 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "UnitBenchmarkService.measure",
+				"inputs": [
+					{
+						"name": "UnitBenchmarkService.measure.manifest",
+						"type": "ComponentManifest",
+						"required": true
+					},
+					{
+						"name": "UnitBenchmarkService.measure.workload",
+						"type": "Workload",
+						"required": true
+					},
+					{
+						"name": "UnitBenchmarkService.measure.kind",
+						"type": "RuntimeKind",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitBenchmarkService.measure",
+						"type": "Promise<UnitBenchmark>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "UnitBenchmarkService.constructor",
+				"inputs": [
+					{
+						"name": "UnitBenchmarkService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitBenchmarkService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

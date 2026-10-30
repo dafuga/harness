@@ -20,7 +20,17 @@
 			{
 				"name": "codexRpc.command",
 				"type": "CliCommand",
+				"required": false,
+				"default": {
+					"command": "codex",
+					"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
+				},
 				"description": "The executable and arguments to start. By default starts Codex app-server over standard input and output with the OpenAI provider selected."
+			},
+			{
+				"name": "codexRpc.resources",
+				"type": "ResourceContext",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -36,7 +46,39 @@
 				"type": "thrown",
 				"description": "Initialization failure rejects and disposes the connection. Process failure, closure or an oversized message rejects pending requests. Sending after closure fails. The message reader has a 96,000,000-byte limit."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "codexRpc",
+				"inputs": [
+					{
+						"name": "codexRpc.command",
+						"type": "CliCommand",
+						"required": false,
+						"default": {
+							"command": "codex",
+							"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
+						},
+						"description": "The executable and arguments to start. By default starts Codex app-server over standard input and output with the OpenAI provider selected."
+					},
+					{
+						"name": "codexRpc.resources",
+						"type": "ResourceContext",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "codexRpc",
+						"type": "unknown",
+						"description": "A promise for an initialized connection with send, request, subscribe and dispose operations. Requests use incrementing IDs and a default thirty-second timeout; subscriptions return an unsubscribe function. Disposing terminates the owned process and rejects pending requests."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

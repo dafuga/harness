@@ -26,7 +26,8 @@
 		"inputs": [
 			{
 				"name": "EvidenceRestoreService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -35,7 +36,42 @@
 				"type": "Promise<Restored>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "EvidenceRestoreService.restore",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EvidenceRestoreService.restore",
+						"type": "Promise<Restored>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "EvidenceRestoreService.constructor",
+				"inputs": [
+					{
+						"name": "EvidenceRestoreService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceRestoreService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

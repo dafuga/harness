@@ -22,11 +22,13 @@
 		"inputs": [
 			{
 				"name": "HostedArtifactValidator.artifact.media",
-				"type": "{ bytes: Uint8Array; mediaType: string }"
+				"type": "{ bytes: Uint8Array; mediaType: string }",
+				"required": true
 			},
 			{
 				"name": "HostedArtifactValidator.artifact.sha256",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,7 +42,39 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostedArtifactValidator.artifact",
+				"inputs": [
+					{
+						"name": "HostedArtifactValidator.artifact.media",
+						"type": "{ bytes: Uint8Array; mediaType: string }",
+						"required": true
+					},
+					{
+						"name": "HostedArtifactValidator.artifact.sha256",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedArtifactValidator.artifact",
+						"type": "EvidenceArtifactResult"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

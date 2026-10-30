@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "generateUnit.input",
-				"type": "GenerateUnitInput"
+				"type": "GenerateUnitInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,7 +30,34 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "generateUnit",
+				"inputs": [
+					{
+						"name": "generateUnit.input",
+						"type": "GenerateUnitInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "generateUnit",
+						"type": "Promise<GenerateResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -27,7 +27,8 @@
 		"inputs": [
 			{
 				"name": "ProjectRunService.run.context",
-				"type": "ProjectRunContext"
+				"type": "ProjectRunContext",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,7 +50,29 @@
 				"name": "RunCancelled",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectRunService.run",
+				"inputs": [
+					{
+						"name": "ProjectRunService.run.context",
+						"type": "ProjectRunContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectRunService.run",
+						"type": "Promise<{ summary: string; created: CreatedEntity }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

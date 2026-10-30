@@ -19,6 +19,7 @@
 			{
 				"name": "connectClaims.headers",
 				"type": "Headers",
+				"required": true,
 				"description": "Headers containing Bearer authorization and the protocol role/device headers. The Bearer scheme is case-insensitive; the credential must match the protocol pattern."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "Host claims with an empty device identifier, or device claims with a valid protocol device identifier. Returns undefined for missing/malformed credential, unknown role or invalid device identity."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "connectClaims",
+				"inputs": [
+					{
+						"name": "connectClaims.headers",
+						"type": "Headers",
+						"required": true,
+						"description": "Headers containing Bearer authorization and the protocol role/device headers. The Bearer scheme is case-insensitive; the credential must match the protocol pattern."
+					}
+				],
+				"outputs": [
+					{
+						"name": "connectClaims",
+						"type": "ConnectClaims | undefined",
+						"description": "Host claims with an empty device identifier, or device claims with a valid protocol device identifier. Returns undefined for missing/malformed credential, unknown role or invalid device identity."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

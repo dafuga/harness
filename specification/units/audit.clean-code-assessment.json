@@ -25,19 +25,23 @@
 		"inputs": [
 			{
 				"name": "assessCleanCode.result",
-				"type": "JevEvaluation"
+				"type": "JevEvaluation",
+				"required": true
 			},
 			{
 				"name": "assessCleanCode.minConfidence",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "fileReviewStatus.assessments",
-				"type": "PrincipleAssessment[]"
+				"type": "PrincipleAssessment[]",
+				"required": true
 			},
 			{
 				"name": "reportReviewStatus.files",
-				"type": "FileReview[]"
+				"type": "FileReview[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,7 +58,70 @@
 				"type": "ReviewStatus | 'not-applicable'"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assessCleanCode",
+				"inputs": [
+					{
+						"name": "assessCleanCode.result",
+						"type": "JevEvaluation",
+						"required": true
+					},
+					{
+						"name": "assessCleanCode.minConfidence",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assessCleanCode",
+						"type": "PrincipleAssessment[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fileReviewStatus",
+				"inputs": [
+					{
+						"name": "fileReviewStatus.assessments",
+						"type": "PrincipleAssessment[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fileReviewStatus",
+						"type": "ReviewStatus"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reportReviewStatus",
+				"inputs": [
+					{
+						"name": "reportReviewStatus.files",
+						"type": "FileReview[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportReviewStatus",
+						"type": "ReviewStatus | 'not-applicable'"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

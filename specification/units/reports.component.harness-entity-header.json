@@ -36,26 +36,32 @@
 			{
 				"name": "EntityHeader.entity",
 				"type": "ExplorerEntity",
+				"required": true,
 				"description": "Required identity, category, role, purpose and verdict. Page headers keep identity concise; purpose and app route remain in Contract."
+			},
+			{
+				"name": "EntityHeader.owner",
+				"type": "ExplorerEntity",
+				"required": false,
+				"description": "Sole recorded consumer for a private function breadcrumb; absent when ownership is unknown or not unique."
 			},
 			{
 				"name": "EntityHeader.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "The branch, commit and selected tab, with functions for links and navigation."
 			},
 			{
 				"name": "EntityHeader.preview",
 				"type": "Snippet",
+				"required": false,
 				"description": "Optional component screenshot shown above every tab."
 			},
 			{
-				"name": "EntityHeader.owner",
-				"type": "ExplorerEntity | undefined",
-				"description": "Sole recorded consumer for a private function breadcrumb; absent when ownership is unknown or not unique."
-			},
-			{
 				"name": "EntityHeader.usesAvailable",
-				"type": "boolean | undefined",
+				"type": "boolean",
+				"required": false,
+				"default": true,
 				"description": "Optional Uses visibility; false for a selected helper with no recorded helper callees."
 			}
 		],
@@ -66,7 +72,9 @@
 				"description": "Entity identity, verification and one tab bar. Pages omit Used In, purpose prose and route metadata. Models expose a Table tab after Contract. Component screenshots remain above tabs, and component recordings open in Audio. Private function breadcrumbs identify their recorded owner and never link to Helpers. Grouped catalog entities include the selected revision’s responsibility folder between collection and entity in every tab breadcrumb."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

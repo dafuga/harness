@@ -1,7 +1,6 @@
-import { children, noop, text, example, picker, image } from './shared';
+import { children, noop, text, example, picker } from './shared';
 import type { PreviewCases } from './shared';
 import {
-	report,
 	picture,
 	cardPicture,
 	audio,
@@ -12,20 +11,14 @@ import {
 	viewerRelease
 } from './reportData';
 import { evidenceGridItems } from './evidenceGridData';
-import { reportCheck } from './reportChecksVariants';
 import { recordedValueFixture } from './recordedValueVariants';
-import { reportSummaryFixture } from './reportSummaryVariants';
-import { coverageListFixture } from './coverageListVariants';
 import { evidenceViewerProps } from './evidenceViewerVariants';
-import { reportViewFixture } from './reportViewVariants';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
 import { contractPreviewUnit } from './reportEntityContractVariants';
 import { resolveStateImage } from './reportEntityStatesVariants';
-import { gameplayReplayFixture } from './gameplayReplayFixture';
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
-const gameplayReport = gameplayReplayFixture(report, picture);
 export const reportCases: PreviewCases = {
 	'reports.component.audio-comparison': {
 		before: baselineNarration,
@@ -39,7 +32,6 @@ export const reportCases: PreviewCases = {
 		onclose: noop
 	},
 	'reports.component.audio-evidence': { item: audio, assetBase: '/media/' },
-	'reports.component.audio-upload-files': { mode: 'single', uploading: false },
 	'reports.component.brand-mark': { size: 56, label: 'Harness' },
 	'reports.component.browser-errors': {
 		diagnostics: [
@@ -72,7 +64,6 @@ export const reportCases: PreviewCases = {
 	},
 	'reports.component.contract-example': { field: group.fields[0] },
 	'reports.component.contract-table': { group, onexample: noop },
-	'reports.component.coverage-list': { report: coverageListFixture },
 	'reports.component.entity-cases': { examples: [example] },
 	'reports.component.entity-contract': {
 		unit: contractPreviewUnit(d.entity.unit),
@@ -117,12 +108,6 @@ export const reportCases: PreviewCases = {
 		}
 	},
 	'reports.component.evidence-viewer': evidenceViewerProps,
-	'reports.component.explorer-function-card': {
-		row: d.helperRows[0],
-		nav: d.navigation,
-		lens: d.reading,
-		mediaBase: '/media/'
-	},
 	'reports.component.filter-dialog': {
 		children: text('<label>Verification<select><option>Any result</option></select></label>'),
 		onreset: noop,
@@ -134,11 +119,6 @@ export const reportCases: PreviewCases = {
 		panelLabel: 'Project chat',
 		title: 'Project chat',
 		children
-	},
-	'reports.component.gameplay-replay': {
-		report: gameplayReport,
-		assetBase: '',
-		portable: true
 	},
 	'reports.component.image-zoom': { src: '/media/' + cardPicture.file, alt: cardPicture.title },
 	'reports.component.modal': {
@@ -178,30 +158,6 @@ export const reportCases: PreviewCases = {
 			}
 		]
 	},
-	'reports.component.replay-controls': {
-		playing: false,
-		index: 0,
-		count: 3,
-		elapsed: 0,
-		total: 15,
-		title: 'Courtyard checkpoint',
-		scene: 1,
-		scenes: [1, 2],
-		fullscreen: false,
-		ontoggle: noop,
-		onseek: noop,
-		onscene: noop,
-		onfullscreen: noop
-	},
-	'reports.component.report-checks': { checks: [reportCheck] },
-	'reports.component.report-findings': { findings: report.findings },
-	'reports.component.report-summary': { report: reportSummaryFixture, downloadBase: '/exports/' },
-	'reports.component.report-view': {
-		report: reportViewFixture,
-		assetBase: '/media/',
-		downloadBase: '/exports/',
-		onUploaded: noop
-	},
 	// A raw snippet renders one element, so the synthetic options come in one group.
 	'reports.component.select': {
 		value: 'desktop',
@@ -211,7 +167,5 @@ export const reportCases: PreviewCases = {
 		)
 	},
 	'reports.component.status-badge': { status: 'passed' },
-	'reports.component.upload-audio': { reportId: 'preview-report', onUploaded: noop },
-	'reports.component.upload-comparison': { reportId: 'preview-report', onUploaded: noop },
 	'reports.component.usage-examples-usage-examples': { examples: [example] }
 };

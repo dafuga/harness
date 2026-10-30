@@ -26,21 +26,26 @@
 			{
 				"name": "reportLocalCleanup.root",
 				"type": "string",
+				"required": true,
 				"description": "Report store root, which must not itself be a symlink."
 			},
 			{
 				"name": "reportLocalCleanup.cutoff",
 				"type": "number",
+				"required": true,
 				"description": "Finite modification-time cutoff in epoch milliseconds; files at or before it are eligible."
 			},
 			{
 				"name": "reportLocalCleanup.dryRun",
-				"type": "unknown",
+				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional dry-run flag, defaulting to false. True counts eligible files without deleting them."
 			},
 			{
 				"name": "reportLocalCleanup.knownRuns",
 				"type": "unknown",
+				"required": false,
 				"description": "Optional set of known run identifiers, defaulting to empty; known run directories are skipped."
 			}
 		],
@@ -57,7 +62,54 @@
 				"type": "thrown",
 				"description": "Rejects a nonfinite cutoff or symlinked root/runs directory. Filesystem inspection and deletion errors propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "reportLocalCleanup",
+				"inputs": [
+					{
+						"name": "reportLocalCleanup.root",
+						"type": "string",
+						"required": true,
+						"description": "Report store root, which must not itself be a symlink."
+					},
+					{
+						"name": "reportLocalCleanup.cutoff",
+						"type": "number",
+						"required": true,
+						"description": "Finite modification-time cutoff in epoch milliseconds; files at or before it are eligible."
+					},
+					{
+						"name": "reportLocalCleanup.dryRun",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "Optional dry-run flag, defaulting to false. True counts eligible files without deleting them."
+					},
+					{
+						"name": "reportLocalCleanup.knownRuns",
+						"type": "unknown",
+						"required": false,
+						"description": "Optional set of known run identifiers, defaulting to empty; known run directories are skipped."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportLocalCleanup",
+						"type": "unknown",
+						"description": "Promise resolving to the number of eligible files removed or counted. Skips root dot entries and reserved metadata, traverses other directories and orphan runs, skips symlinks and removes empty old directories during a real cleanup."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -23,11 +23,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/ProjectAgent.svelte",
 			"packages/desktop/src/components/agents-providers/ProjectAgent.svelte",
 			"packages/desktop/src/components/agents-providers/project-agent/projectAgent.css"
 		],
-		"symbols": ["ProjectAgent", "ProjectAgent"]
+		"symbols": ["ProjectAgent", "ProjectAgent.line", "ProjectAgent.tab", "ProjectAgent.navigation"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -35,7 +34,14 @@
 			{
 				"name": "ProjectAgent.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "The selected project, revision, permissions, bridge and navigation. Conversation state stays with this project as its screens change."
+			},
+			{
+				"name": "ProjectAgent.open",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -193,7 +199,69 @@
 				]
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ProjectAgent.line",
+				"inputs": [
+					{
+						"name": "ProjectAgent.line.author",
+						"type": "'user' | 'agent'",
+						"required": true
+					},
+					{
+						"name": "ProjectAgent.line.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectAgent.line",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ProjectAgent.tab",
+				"inputs": [
+					{
+						"name": "ProjectAgent.tab.name",
+						"type": "'chat' | 'agents'",
+						"required": true
+					},
+					{
+						"name": "ProjectAgent.tab.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectAgent.tab",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ProjectAgent.navigation",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectAgent.navigation",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

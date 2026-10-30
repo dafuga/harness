@@ -21,11 +21,13 @@
 			{
 				"name": "treeChanges.base",
 				"type": "TreeEntry[]",
+				"required": true,
 				"description": "Earlier path/hash tree listing."
 			},
 			{
 				"name": "treeChanges.head",
 				"type": "TreeEntry[]",
+				"required": true,
 				"description": "Later path/hash tree listing."
 			}
 		],
@@ -36,7 +38,36 @@
 				"description": "Changes sorted by path. Equal hashes at equal paths are unchanged; renames appear as removal plus addition. Duplicate paths within a listing use the last hash."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "treeChanges",
+				"inputs": [
+					{
+						"name": "treeChanges.base",
+						"type": "TreeEntry[]",
+						"required": true,
+						"description": "Earlier path/hash tree listing."
+					},
+					{
+						"name": "treeChanges.head",
+						"type": "TreeEntry[]",
+						"required": true,
+						"description": "Later path/hash tree listing."
+					}
+				],
+				"outputs": [
+					{
+						"name": "treeChanges",
+						"type": "TreeChange[]",
+						"description": "Changes sorted by path. Equal hashes at equal paths are unchanged; renames appear as removal plus addition. Duplicate paths within a listing use the last hash."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

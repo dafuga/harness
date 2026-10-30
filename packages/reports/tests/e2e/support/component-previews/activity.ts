@@ -1,7 +1,5 @@
 import type { PreviewCases } from './shared';
-import { noop, stamp, row } from './shared';
-import { activityWorkPreview } from './activityWorkVariants';
-import { activityFilesPreview } from './activityFileVariants';
+import { stamp, row } from './shared';
 const activityCommit = 'b04e19f52a61c374d8f090b8a3e67c12451fd903';
 const agent = {
 	id: 'preview-agent',
@@ -85,13 +83,6 @@ export const live = {
 	agents: { tracking: 'available', working: 1, unreadable: 0, roster: [agent] }
 };
 export const activityCases: PreviewCases = {
-	'reports.component.activity-agents': { agents: live.agents, sampledAt: stamp },
-	'reports.component.activity-files': {
-		files: activityFilesPreview(activity.files),
-		worktrees: live.worktrees,
-		href: () => '/history',
-		registry: 'Current checkout'
-	},
 	'reports.component.activity-list': {
 		items: [
 			{ title: 'Review component states' },
@@ -103,49 +94,5 @@ export const activityCases: PreviewCases = {
 		noun: 'activities',
 		preview: 3,
 		row
-	},
-	'reports.component.activity-loops': { loops: activity.loops },
-	'reports.component.activity-work': {
-		work: activityWorkPreview(activity.work),
-		href: () => '/history'
-	},
-	'reports.component.project-activity': { activity, live, base: '/harness' },
-	'reports.component.site-activity': { shown: { activity, live } }
+	}
 };
-
-const agentStates: Record<string, () => PreviewCases[string]> = {
-	unavailable: () => ({ agents: null, sampledAt: stamp }),
-	'tracking-never-used': () => ({
-		agents: { tracking: 'never-used', working: null, unreadable: 0, roster: [] },
-		sampledAt: stamp
-	}),
-	'failed-read': () => ({
-		agents: live.agents,
-		sampledAt: stamp,
-		reading: { now: Date.parse(stamp), failed: true, refresh: noop }
-	}),
-	unreadable: () => ({
-		agents: { ...live.agents, unreadable: 2 },
-		sampledAt: stamp
-	})
-};
-
-const loopStates: Record<string, () => PreviewCases[string]> = {
-	empty: () => ({ loops: { total: 0, types: [] } })
-};
-
-const projectActivityStates: Record<string, () => PreviewCases[string]> = {
-	recorded: () => ({ activity: { ...activity, kind: 'recorded' }, live: null, base: '/harness' })
-};
-
-export function activityVariant(id: string, variant: string, props: PreviewCases[string]) {
-	const states =
-		id === 'reports.component.activity-agents'
-			? agentStates
-			: id === 'reports.component.activity-loops'
-				? loopStates
-				: id === 'reports.component.project-activity'
-					? projectActivityStates
-					: undefined;
-	return states?.[variant]?.() ?? props;
-}

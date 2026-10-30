@@ -15,19 +15,23 @@
 		"inputs": [
 			{
 				"name": "atomicProjectFiles.files",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"required": true
 			},
 			{
 				"name": "atomicMarkup.source",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "atomicMarkup.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "atomicMarkup.level",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,7 +44,57 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "atomicProjectFiles",
+				"inputs": [
+					{
+						"name": "atomicProjectFiles.files",
+						"type": "PlannedFile[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "atomicProjectFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "atomicMarkup",
+				"inputs": [
+					{
+						"name": "atomicMarkup.source",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "atomicMarkup.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "atomicMarkup.level",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "atomicMarkup",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

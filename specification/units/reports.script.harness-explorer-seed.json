@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "seedExplorer.repo",
-				"type": "VerifyRepo"
+				"type": "VerifyRepo",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +33,29 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "seedExplorer",
+				"inputs": [
+					{
+						"name": "seedExplorer.repo",
+						"type": "VerifyRepo",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "seedExplorer",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -31,26 +31,32 @@
 			{
 				"name": "declaredOutput.path",
 				"type": "string",
+				"required": true,
 				"description": "Snapshot-relative file or directory path to test against output patterns."
 			},
 			{
 				"name": "declaredOutput.outputs",
 				"type": "string[]",
+				"required": true,
 				"description": "Declared output glob patterns."
 			},
 			{
 				"name": "snapshotAdditions.directory",
 				"type": "string",
+				"required": true,
 				"description": "Snapshot root directory to walk recursively."
 			},
 			{
 				"name": "snapshotAdditions.bounds",
 				"type": "SnapshotBounds",
+				"required": true,
 				"description": "Tracked paths, declared output patterns and shared-link paths that are allowed."
 			},
 			{
 				"name": "snapshotAdditions.prefix",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional relative subtree prefix ending in slash when nonempty; defaults to empty."
 			}
 		],
@@ -66,7 +72,69 @@
 				"description": "Sorted paths of untracked non-directory entries outside allowed outputs/links. Allowed directories are not entered; filesystem errors reject."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "declaredOutput",
+				"inputs": [
+					{
+						"name": "declaredOutput.path",
+						"type": "string",
+						"required": true,
+						"description": "Snapshot-relative file or directory path to test against output patterns."
+					},
+					{
+						"name": "declaredOutput.outputs",
+						"type": "string[]",
+						"required": true,
+						"description": "Declared output glob patterns."
+					}
+				],
+				"outputs": [
+					{
+						"name": "declaredOutput",
+						"type": "boolean",
+						"description": "True when a pattern matches the path or its directory form with a trailing slash."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "snapshotAdditions",
+				"inputs": [
+					{
+						"name": "snapshotAdditions.directory",
+						"type": "string",
+						"required": true,
+						"description": "Snapshot root directory to walk recursively."
+					},
+					{
+						"name": "snapshotAdditions.bounds",
+						"type": "SnapshotBounds",
+						"required": true,
+						"description": "Tracked paths, declared output patterns and shared-link paths that are allowed."
+					},
+					{
+						"name": "snapshotAdditions.prefix",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "Optional relative subtree prefix ending in slash when nonempty; defaults to empty."
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotAdditions",
+						"type": "Promise<string[]>",
+						"description": "Sorted paths of untracked non-directory entries outside allowed outputs/links. Allowed directories are not entered; filesystem errors reject."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

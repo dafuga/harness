@@ -41,18 +41,21 @@
 			{
 				"name": "previewHealth.token",
 				"type": "string",
+				"required": true,
 				"description": "Per-worker probe secret shared only through the child environment and request header.",
 				"examples": ["example-worker-token"]
 			},
 			{
 				"name": "readPreviewHealth.url",
 				"type": "string",
+				"required": true,
 				"description": "Exact loopback address of the worker spawned by the supervisor.",
 				"examples": ["http://127.0.0.1:5688"]
 			},
 			{
 				"name": "readPreviewHealth.token",
 				"type": "string",
+				"required": true,
 				"description": "Probe secret for this worker generation.",
 				"examples": ["example-worker-token"]
 			}
@@ -96,7 +99,92 @@
 				"description": "Rejects a failed or unexpected health response; network errors and probe timeouts propagate to the supervisor.",
 				"examples": ["Worker not ready."]
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "closePreviewSessions",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "closePreviewSessions",
+						"type": "void",
+						"description": "Cancels the current worker’s owned project requests before normal shutdown.",
+						"examples": [null]
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "previewHealth",
+				"inputs": [
+					{
+						"name": "previewHealth.token",
+						"type": "string",
+						"required": true,
+						"description": "Per-worker probe secret shared only through the child environment and request header.",
+						"examples": ["example-worker-token"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "previewHealth",
+						"type": "Plugin",
+						"description": "Vite middleware exposing authenticated health and counting server failures.",
+						"examples": [
+							{
+								"name": "harness-preview-health",
+								"enforce": "pre"
+							}
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "readPreviewHealth",
+				"inputs": [
+					{
+						"name": "readPreviewHealth.url",
+						"type": "string",
+						"required": true,
+						"description": "Exact loopback address of the worker spawned by the supervisor.",
+						"examples": ["http://127.0.0.1:5688"]
+					},
+					{
+						"name": "readPreviewHealth.token",
+						"type": "string",
+						"required": true,
+						"description": "Probe secret for this worker generation.",
+						"examples": ["example-worker-token"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "readPreviewHealth",
+						"type": "Promise<PreviewHealth>",
+						"description": "Worker identity, recent error count and active-agent flag.",
+						"examples": [
+							{
+								"protocol": "harness-worker-v1",
+								"pid": 1234,
+								"errors": 0,
+								"busy": false
+							}
+						]
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

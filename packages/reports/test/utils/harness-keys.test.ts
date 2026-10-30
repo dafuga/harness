@@ -64,7 +64,7 @@ test('console lists are keyed only by what cannot repeat, never by recorded text
 			keyed.push([file, block[1].trim()]);
 		}
 	}
-	expect(keyed.length).toBeGreaterThan(30);
+	expect(keyed.length).toBeGreaterThan(15);
 	// A key built from a symbol, a behaviour, a failure or a path repeats as soon as two
 	// records say the same thing, and one repeated key stops the whole view from rendering.
 	expect(keyed.filter(([, key]) => !unique.has(key))).toEqual([]);

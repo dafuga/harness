@@ -21,23 +21,29 @@
 		"inputs": [
 			{
 				"name": "SimulatorPage.constructor.simulator",
-				"type": "{ socketPath: string; runtime: string }"
+				"type": "{ socketPath: string; runtime: string }",
+				"required": true
 			},
 			{
 				"name": "SimulatorPage.evaluate.expression",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SimulatorPage.until.expression",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SimulatorPage.until.wanted",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SimulatorPage.until.seconds",
-				"type": "unknown"
+				"type": "number",
+				"required": false,
+				"default": 60
 			}
 		],
 		"outputs": [
@@ -58,6 +64,98 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SimulatorPage.evaluate",
+				"inputs": [
+					{
+						"name": "SimulatorPage.evaluate.expression",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SimulatorPage.evaluate",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SimulatorPage.until",
+				"inputs": [
+					{
+						"name": "SimulatorPage.until.expression",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SimulatorPage.until.wanted",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SimulatorPage.until.seconds",
+						"type": "number",
+						"required": false,
+						"default": 60
+					}
+				],
+				"outputs": [
+					{
+						"name": "SimulatorPage.until",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SimulatorPage.reset",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SimulatorPage.reset",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SimulatorPage.constructor",
+				"inputs": [
+					{
+						"name": "SimulatorPage.constructor.simulator",
+						"type": "{ socketPath: string; runtime: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SimulatorPage.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

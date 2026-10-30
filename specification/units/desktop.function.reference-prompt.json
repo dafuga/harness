@@ -19,7 +19,14 @@
 			{
 				"name": "referencePrompt.ids",
 				"type": "string[]",
+				"required": true,
 				"description": "Candidate IDs; invalid grammar and duplicates are removed, preserving the first occurrence, up to 120 IDs."
+			},
+			{
+				"name": "referencePrompt.discover",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -29,7 +36,36 @@
 				"description": "Instructions to use registered unit references, followed by the accepted IDs or none."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "referencePrompt",
+				"inputs": [
+					{
+						"name": "referencePrompt.ids",
+						"type": "string[]",
+						"required": true,
+						"description": "Candidate IDs; invalid grammar and duplicates are removed, preserving the first occurrence, up to 120 IDs."
+					},
+					{
+						"name": "referencePrompt.discover",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "referencePrompt",
+						"type": "string",
+						"description": "Instructions to use registered unit references, followed by the accepted IDs or none."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

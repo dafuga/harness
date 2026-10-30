@@ -22,13 +22,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlTemplate.attributes",
-				"type": "SvelteHTMLElements['template']",
-				"description": "Native template attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "HtmlTemplate.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native template element; native HTML content rules still apply."
 			}
 		],
@@ -39,7 +35,9 @@
 				"description": "The actual native template element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

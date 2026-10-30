@@ -17,55 +17,60 @@
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityConfigScreen.svelte"],
-		"symbols": ["EntityConfigScreen"]
+		"symbols": ["EntityConfigScreen", "EntityConfigScreen.children", "EntityConfigScreen.pane"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ExplorerScreenProps.route",
-				"type": "ExplorerLocation",
-				"description": "The address shown: category, entity, section and tab."
+				"name": "EntityConfigScreen.index",
+				"type": "HarnessIndex",
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.scope",
-				"type": "ExplorerScope",
-				"description": "The branch and commit shown, and whether that is the branch tip or a selected commit."
-			},
-			{
-				"name": "ExplorerScreenProps.head",
+				"name": "EntityConfigScreen.head",
 				"type": "HarnessRevision",
-				"description": "The revision every contract, measurement and capture on the screen is bound to."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.parent",
+				"name": "EntityConfigScreen.parent",
 				"type": "HarnessRevision | null",
-				"description": "The first parent of a selected commit; none at the branch tip and for a first commit."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.entities",
+				"name": "EntityConfigScreen.scope",
+				"type": "ExplorerScope",
+				"required": true
+			},
+			{
+				"name": "EntityConfigScreen.route",
+				"type": "ExplorerLocation",
+				"required": true
+			},
+			{
+				"name": "EntityConfigScreen.entities",
 				"type": "ExplorerEntity[]",
-				"description": "The units of the shown revision as the explorer lists them."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.lens",
+				"name": "EntityConfigScreen.lens",
 				"type": "EntityLens",
-				"description": "What the host answers about an entity: relations, evidence, end-to-end results and history."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.mediaBase",
+				"name": "EntityConfigScreen.client",
+				"type": "Pick<HarnessClient, 'revision'>",
+				"required": true
+			},
+			{
+				"name": "EntityConfigScreen.mediaBase",
 				"type": "string",
-				"description": "Where the protected media of recorded captures is served from."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.onroute",
+				"name": "EntityConfigScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
-				"description": "Goes to another address of the explorer in the same branch and revision mode."
-			},
-			{
-				"name": "ExplorerScreenProps.exportHref",
-				"type": "string",
-				"description": "Where a record is downloaded from; empty where the host serves none."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -85,6 +90,45 @@
 				"name": "entity-missing",
 				"type": "stated",
 				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityConfigScreen.children",
+				"inputs": [
+					{
+						"name": "EntityConfigScreen.children.entity",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "EntityConfigScreen.children.nav",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntityConfigScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "EntityConfigScreen.pane",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EntityConfigScreen.pane",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

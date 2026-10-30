@@ -30,35 +30,43 @@
 		"inputs": [
 			{
 				"name": "fileName.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "typeScriptStem.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "fileNameFinding.file",
-				"type": "AuditFile"
+				"type": "AuditFile",
+				"required": true
 			},
 			{
 				"name": "fileNameFinding.message",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "isPascalCase.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "isCamelCase.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "isKebabCase.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "escapeRegExp.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -91,7 +99,142 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "fileName",
+				"inputs": [
+					{
+						"name": "fileName.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fileName",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "typeScriptStem",
+				"inputs": [
+					{
+						"name": "typeScriptStem.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "typeScriptStem",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fileNameFinding",
+				"inputs": [
+					{
+						"name": "fileNameFinding.file",
+						"type": "AuditFile",
+						"required": true
+					},
+					{
+						"name": "fileNameFinding.message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fileNameFinding",
+						"type": "AuditFinding"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "isPascalCase",
+				"inputs": [
+					{
+						"name": "isPascalCase.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isPascalCase",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isCamelCase",
+				"inputs": [
+					{
+						"name": "isCamelCase.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isCamelCase",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isKebabCase",
+				"inputs": [
+					{
+						"name": "isKebabCase.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isKebabCase",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "escapeRegExp",
+				"inputs": [
+					{
+						"name": "escapeRegExp.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "escapeRegExp",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -16,11 +16,13 @@
 			{
 				"name": "sqliteRow.model",
 				"type": "SqliteModel",
+				"required": true,
 				"description": "The table model that maps stored columns back to application properties and types."
 			},
 			{
 				"name": "sqliteRow.row",
 				"type": "unknown",
+				"required": true,
 				"description": "A row returned by SQLite, or null or undefined when no row was found."
 			}
 		],
@@ -37,7 +39,36 @@
 				"type": "thrown",
 				"description": "A malformed stored JSON value cannot be decoded and raises a parse error."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "sqliteRow",
+				"inputs": [
+					{
+						"name": "sqliteRow.model",
+						"type": "SqliteModel",
+						"required": true,
+						"description": "The table model that maps stored columns back to application properties and types."
+					},
+					{
+						"name": "sqliteRow.row",
+						"type": "unknown",
+						"required": true,
+						"description": "A row returned by SQLite, or null or undefined when no row was found."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sqliteRow",
+						"type": "T | null",
+						"description": "A record keyed by model properties with JSON and boolean columns decoded, or null for an absent row."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

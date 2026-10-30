@@ -20,11 +20,13 @@
 			{
 				"name": "evidenceQuery.view",
 				"type": "EvidenceView",
+				"required": true,
 				"description": "The displayed snapshot, whether the address pins a commit, and the optional project identity. Pinning remains true even when the selected commit happens to be the branch tip."
 			},
 			{
 				"name": "evidenceQuery.entityId",
 				"type": "string",
+				"required": true,
 				"description": "The entity identity to include unchanged in the request."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "A request with the entity, displayed commit and branch, and project context; null when no snapshot revision is available. A pinned view uses commit mode, which asks for comparison with the first parent. An unpinned view uses current mode for the shown branch view."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "evidenceQuery",
+				"inputs": [
+					{
+						"name": "evidenceQuery.view",
+						"type": "EvidenceView",
+						"required": true,
+						"description": "The displayed snapshot, whether the address pins a commit, and the optional project identity. Pinning remains true even when the selected commit happens to be the branch tip."
+					},
+					{
+						"name": "evidenceQuery.entityId",
+						"type": "string",
+						"required": true,
+						"description": "The entity identity to include unchanged in the request."
+					}
+				],
+				"outputs": [
+					{
+						"name": "evidenceQuery",
+						"type": "EntityEvidenceQuery | null",
+						"description": "A request with the entity, displayed commit and branch, and project context; null when no snapshot revision is available. A pinned view uses commit mode, which asks for comparison with the first parent. An unpinned view uses current mode for the shown branch view."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

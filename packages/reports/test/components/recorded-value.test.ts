@@ -1,7 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import RecordedValue from '../../src/components/recorded-value/RecordedValue.svelte';
-import ContractExample from '../../src/components/ContractExample.svelte';
+import RecordedValue from '../../src/components/shared-primitives/recorded-value/RecordedValue.svelte';
+import ContractExample from '../../src/components/shared-primitives/ContractExample.svelte';
 
 const draw = (value: unknown) => render(RecordedValue, { props: { value } }).body;
 

@@ -29,15 +29,18 @@
 		"inputs": [
 			{
 				"name": "RateLimitService.constructor.store",
-				"type": "RateStore"
+				"type": "RateStore",
+				"required": true
 			},
 			{
 				"name": "RateLimitService.hit.bucket",
-				"type": "RateBucket"
+				"type": "RateBucket",
+				"required": true
 			},
 			{
 				"name": "RateLimitService.hit.limit",
-				"type": "number"
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +49,53 @@
 				"type": "boolean"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RateLimitService.hit",
+				"inputs": [
+					{
+						"name": "RateLimitService.hit.bucket",
+						"type": "RateBucket",
+						"required": true
+					},
+					{
+						"name": "RateLimitService.hit.limit",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RateLimitService.hit",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RateLimitService.constructor",
+				"inputs": [
+					{
+						"name": "RateLimitService.constructor.store",
+						"type": "RateStore",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RateLimitService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

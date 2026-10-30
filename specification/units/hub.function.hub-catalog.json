@@ -31,43 +31,51 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "hubCatalog.context",
-				"type": "HubSourceContext",
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
-			},
-			{
-				"name": "hubAttestPlan.plan",
-				"type": "HubPlan",
-				"description": "Plan to attest against a registered unit or draft identity."
-			},
-			{
-				"name": "hubAttestPlan.unit",
-				"type": "ComponentManifest | undefined",
-				"description": "Matching manifest, or undefined for an unregistered draft."
-			},
-			{
 				"name": "hubRelationships.unit",
 				"type": "ComponentManifest",
+				"required": true,
 				"description": "Unit whose dependencies are shown."
 			},
 			{
 				"name": "hubRelationships.units",
 				"type": "ComponentManifest[]",
+				"required": true,
 				"description": "Candidate unit manifests."
 			},
 			{
 				"name": "hubRelationships.items",
 				"type": "CatalogEntity[]",
+				"required": true,
 				"description": "Catalog entries supplying related plan and verification status."
+			},
+			{
+				"name": "hubCatalog.context",
+				"type": "HubSourceContext",
+				"required": true,
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+			},
+			{
+				"name": "hubAttestPlan.plan",
+				"type": "HubPlan",
+				"required": true,
+				"description": "Plan to attest against a registered unit or draft identity."
+			},
+			{
+				"name": "hubAttestPlan.unit",
+				"type": "ComponentManifest | undefined",
+				"required": true,
+				"description": "Matching manifest, or undefined for an unregistered draft."
 			},
 			{
 				"name": "hubOwnedPaths.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubOwnedPaths.unit",
 				"type": "ComponentManifest",
+				"required": true,
 				"description": "Manifest declaring source paths."
 			}
 		],
@@ -93,7 +101,114 @@
 				"description": "Blob paths equal to or beneath the unit’s declared source paths."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubRelationships",
+				"inputs": [
+					{
+						"name": "hubRelationships.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "Unit whose dependencies are shown."
+					},
+					{
+						"name": "hubRelationships.units",
+						"type": "ComponentManifest[]",
+						"required": true,
+						"description": "Candidate unit manifests."
+					},
+					{
+						"name": "hubRelationships.items",
+						"type": "CatalogEntity[]",
+						"required": true,
+						"description": "Catalog entries supplying related plan and verification status."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubRelationships",
+						"type": "Relationship[]",
+						"description": "Related units with uses/used-by direction, category, plan presence and verification; a reciprocal dependency is shown as used-by."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubCatalog",
+				"inputs": [
+					{
+						"name": "hubCatalog.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubCatalog",
+						"type": "unknown",
+						"description": "Combined title-sorted items, listed entries, units, plans and plan records, with changed paths reflected in catalog metadata."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubAttestPlan",
+				"inputs": [
+					{
+						"name": "hubAttestPlan.plan",
+						"type": "HubPlan",
+						"required": true,
+						"description": "Plan to attest against a registered unit or draft identity."
+					},
+					{
+						"name": "hubAttestPlan.unit",
+						"type": "ComponentManifest | undefined",
+						"required": true,
+						"description": "Matching manifest, or undefined for an unregistered draft."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubAttestPlan",
+						"type": "unknown",
+						"description": "Returns nothing when kinds match, or when an unregistered plan uses category.slug; otherwise rejects as artifact-corrupt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubOwnedPaths",
+				"inputs": [
+					{
+						"name": "hubOwnedPaths.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubOwnedPaths.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "Manifest declaring source paths."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubOwnedPaths",
+						"type": "unknown",
+						"description": "Blob paths equal to or beneath the unit’s declared source paths."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

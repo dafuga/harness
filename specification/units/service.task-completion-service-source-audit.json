@@ -16,11 +16,13 @@
 			{
 				"name": "sourceAudit.root",
 				"type": "string",
+				"required": true,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "sourceAudit.input",
 				"type": "TaskAuditInput",
+				"required": true,
 				"description": "Declared task or observation metadata appropriate to the named operation."
 			}
 		],
@@ -37,7 +39,41 @@
 				"type": "thrown",
 				"description": "Invalid or uncommitted task source, dirty unrelated files or a changed declared contract rejects."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "sourceAudit",
+				"inputs": [
+					{
+						"name": "sourceAudit.root",
+						"type": "string",
+						"required": true,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+					},
+					{
+						"name": "sourceAudit.input",
+						"type": "TaskAuditInput",
+						"required": true,
+						"description": "Declared task or observation metadata appropriate to the named operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceAudit",
+						"type": "Promise<string>",
+						"description": "Current committed source ID after rejecting unrelated writes or changes to the committed task contract."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

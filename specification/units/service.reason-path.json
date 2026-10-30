@@ -28,19 +28,23 @@
 		"inputs": [
 			{
 				"name": "ReasonPathService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReasonPathService.constructor.load",
-				"type": "SideLoader"
+				"type": "SideLoader",
+				"required": true
 			},
 			{
 				"name": "ReasonPathService.report.range",
-				"type": "ReasonRange"
+				"type": "ReasonRange",
+				"required": true
 			},
 			{
 				"name": "ReasonPathService.report.known",
-				"type": "Explanation[]"
+				"type": "Explanation[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,7 +53,58 @@
 				"type": "Promise<ReasonReport>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReasonPathService.report",
+				"inputs": [
+					{
+						"name": "ReasonPathService.report.range",
+						"type": "ReasonRange",
+						"required": true
+					},
+					{
+						"name": "ReasonPathService.report.known",
+						"type": "Explanation[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReasonPathService.report",
+						"type": "Promise<ReasonReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ReasonPathService.constructor",
+				"inputs": [
+					{
+						"name": "ReasonPathService.constructor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ReasonPathService.constructor.load",
+						"type": "SideLoader",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReasonPathService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

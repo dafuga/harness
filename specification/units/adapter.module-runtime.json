@@ -18,15 +18,19 @@
 		"inputs": [
 			{
 				"name": "ModuleRuntimeAdapter.load.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleRuntimeAdapter.load.handlerName",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleRuntimeAdapter.load.options",
-				"type": "RuntimeOptions & { label?: string }"
+				"type": "RuntimeOptions & { label?: string }",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -35,7 +39,40 @@
 				"type": "ModuleRuntimeAdapter"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "ModuleRuntimeAdapter.load",
+				"inputs": [
+					{
+						"name": "ModuleRuntimeAdapter.load.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ModuleRuntimeAdapter.load.handlerName",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ModuleRuntimeAdapter.load.options",
+						"type": "RuntimeOptions & { label?: string }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleRuntimeAdapter.load",
+						"type": "ModuleRuntimeAdapter"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

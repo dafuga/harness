@@ -30,9 +30,70 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "Request",
-				"type": "Regression inputs",
-				"description": "An observed result, output bytes and exact commit identity"
+				"name": "RegressionProofRepository.constructor.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "RegressionProofRepository.constructor.within",
+				"type": "string | null",
+				"required": false
+			},
+			{
+				"name": "RegressionProofRepository.history.commit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "RegressionProofRepository.history.notes",
+				"type": "Map<string, ReadNote>",
+				"required": true
+			},
+			{
+				"name": "RegressionProofRepository.history.media",
+				"type": "MediaPlacer",
+				"required": true
+			},
+			{
+				"name": "RegressionProofRepository.save.record",
+				"type": "RegressionRecord",
+				"required": true
+			},
+			{
+				"name": "RegressionProofRepository.save.output",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "RegressionProofRepository.save.files",
+				"type": "Array<{ path: string; bytes: Buffer }>",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "RegressionProofRepository.load.note",
+				"type": "RegressionNote",
+				"required": true
+			},
+			{
+				"name": "RegressionProofRepository.latest.loop",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "RegressionProofRepository.latest.phase",
+				"type": "'red' | 'green'",
+				"required": true
+			},
+			{
+				"name": "RegressionProofRepository.latest.commit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "regressionNotes.notes",
+				"type": "Map<string, ReadNote>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,6 +108,159 @@
 				"name": "Invalid proof",
 				"type": "Explicit rejection or gap",
 				"description": "Rejects copied records, changed hashes or evidence outside the pinned history."
+			}
+		],
+		"operations": [
+			{
+				"name": "RegressionProofRepository.history",
+				"inputs": [
+					{
+						"name": "RegressionProofRepository.history.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RegressionProofRepository.history.notes",
+						"type": "Map<string, ReadNote>",
+						"required": true
+					},
+					{
+						"name": "RegressionProofRepository.history.media",
+						"type": "MediaPlacer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RegressionProofRepository.history",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RegressionProofRepository.save",
+				"inputs": [
+					{
+						"name": "RegressionProofRepository.save.record",
+						"type": "RegressionRecord",
+						"required": true
+					},
+					{
+						"name": "RegressionProofRepository.save.output",
+						"type": "Buffer",
+						"required": true
+					},
+					{
+						"name": "RegressionProofRepository.save.files",
+						"type": "Array<{ path: string; bytes: Buffer }>",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "RegressionProofRepository.save",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RegressionProofRepository.load",
+				"inputs": [
+					{
+						"name": "RegressionProofRepository.load.note",
+						"type": "RegressionNote",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RegressionProofRepository.load",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RegressionProofRepository.latest",
+				"inputs": [
+					{
+						"name": "RegressionProofRepository.latest.loop",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RegressionProofRepository.latest.phase",
+						"type": "'red' | 'green'",
+						"required": true
+					},
+					{
+						"name": "RegressionProofRepository.latest.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RegressionProofRepository.latest",
+						"type": "Promise<RegressionNote | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "regressionNotes",
+				"inputs": [
+					{
+						"name": "regressionNotes.notes",
+						"type": "Map<string, ReadNote>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "regressionNotes",
+						"type": "RegressionNote[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RegressionProofRepository.constructor",
+				"inputs": [
+					{
+						"name": "RegressionProofRepository.constructor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RegressionProofRepository.constructor.within",
+						"type": "string | null",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "RegressionProofRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

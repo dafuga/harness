@@ -18,27 +18,33 @@
 		"inputs": [
 			{
 				"name": "recordResponse.report",
-				"type": "ResponseCheckReport"
+				"type": "ResponseCheckReport",
+				"required": true
 			},
 			{
 				"name": "recordResponse.context",
-				"type": "AnalyticsContext"
+				"type": "AnalyticsContext",
+				"required": true
 			},
 			{
 				"name": "recordResponse.durationMs",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "recordCleanCode.report",
-				"type": "CleanCodeReport"
+				"type": "CleanCodeReport",
+				"required": true
 			},
 			{
 				"name": "recordCleanCode.context",
-				"type": "AnalyticsContext"
+				"type": "AnalyticsContext",
+				"required": true
 			},
 			{
 				"name": "recordCleanCode.timing",
-				"type": "{ root: string; durationMs: number }"
+				"type": "{ root: string; durationMs: number }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -51,7 +57,67 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "recordResponse",
+				"inputs": [
+					{
+						"name": "recordResponse.report",
+						"type": "ResponseCheckReport",
+						"required": true
+					},
+					{
+						"name": "recordResponse.context",
+						"type": "AnalyticsContext",
+						"required": true
+					},
+					{
+						"name": "recordResponse.durationMs",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordResponse",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordCleanCode",
+				"inputs": [
+					{
+						"name": "recordCleanCode.report",
+						"type": "CleanCodeReport",
+						"required": true
+					},
+					{
+						"name": "recordCleanCode.context",
+						"type": "AnalyticsContext",
+						"required": true
+					},
+					{
+						"name": "recordCleanCode.timing",
+						"type": "{ root: string; durationMs: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCleanCode",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

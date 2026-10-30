@@ -35,59 +35,73 @@
 		"inputs": [
 			{
 				"name": "EvidenceTreeAdapter.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.tip.ref",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.contains.descendant",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.contains.ancestor",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.exists.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.read.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.read.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.readMany.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.readMany.paths",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.list.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.commit.input",
-				"type": "TreeCommit"
+				"type": "TreeCommit",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.advance.ref",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.advance.next",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceTreeAdapter.advance.expected",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -128,6 +142,198 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "EvidenceTreeAdapter.tip",
+				"inputs": [
+					{
+						"name": "EvidenceTreeAdapter.tip.ref",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceTreeAdapter.tip",
+						"type": "Promise<string | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EvidenceTreeAdapter.contains",
+				"inputs": [
+					{
+						"name": "EvidenceTreeAdapter.contains.descendant",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "EvidenceTreeAdapter.contains.ancestor",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceTreeAdapter.contains",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EvidenceTreeAdapter.exists",
+				"inputs": [
+					{
+						"name": "EvidenceTreeAdapter.exists.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceTreeAdapter.exists",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EvidenceTreeAdapter.read",
+				"inputs": [
+					{
+						"name": "EvidenceTreeAdapter.read.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "EvidenceTreeAdapter.read.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceTreeAdapter.read",
+						"type": "Promise<Buffer | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EvidenceTreeAdapter.readMany",
+				"inputs": [
+					{
+						"name": "EvidenceTreeAdapter.readMany.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "EvidenceTreeAdapter.readMany.paths",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceTreeAdapter.readMany",
+						"type": "Promise<Map<string, Buffer>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EvidenceTreeAdapter.list",
+				"inputs": [
+					{
+						"name": "EvidenceTreeAdapter.list.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceTreeAdapter.list",
+						"type": "Promise<Map<string, string>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EvidenceTreeAdapter.commit",
+				"inputs": [
+					{
+						"name": "EvidenceTreeAdapter.commit.input",
+						"type": "TreeCommit",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceTreeAdapter.commit",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EvidenceTreeAdapter.advance",
+				"inputs": [
+					{
+						"name": "EvidenceTreeAdapter.advance.ref",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "EvidenceTreeAdapter.advance.next",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "EvidenceTreeAdapter.advance.expected",
+						"type": "string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceTreeAdapter.advance",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "EvidenceTreeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "EvidenceTreeAdapter.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceTreeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

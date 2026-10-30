@@ -16,6 +16,7 @@
 			{
 				"name": "resourceDatabase.home",
 				"type": "string",
+				"required": true,
 				"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
 			}
 		],
@@ -32,7 +33,35 @@
 				"type": "thrown",
 				"description": "Unsupported database versions and filesystem or SQLite errors reject without resetting the existing queue."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "resourceDatabase",
+				"inputs": [
+					{
+						"name": "resourceDatabase.home",
+						"type": "string",
+						"required": true,
+						"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceDatabase",
+						"type": "ResourceDatabase",
+						"description": "Open database implementing the common transaction and statement protocol."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

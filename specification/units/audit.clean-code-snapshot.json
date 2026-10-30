@@ -28,7 +28,8 @@
 		"inputs": [
 			{
 				"name": "snapshotCleanCodeFile.input",
-				"type": "SnapshotInput"
+				"type": "SnapshotInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +47,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "snapshotCleanCodeFile",
+				"inputs": [
+					{
+						"name": "snapshotCleanCodeFile.input",
+						"type": "SnapshotInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotCleanCodeFile",
+						"type": "Promise<ReviewSnapshot>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

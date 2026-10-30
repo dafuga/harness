@@ -30,47 +30,53 @@
 		"inputs": [
 			{
 				"name": "ReportRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "ReportRepository.directory.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReportRepository.begin.input",
-				"type": "BeginInput"
+				"type": "BeginInput",
+				"required": true
 			},
 			{
 				"name": "ReportRepository.get.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReportRepository.record.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReportRepository.record.record",
-				"type": "RecordInput"
+				"type": "RecordInput",
+				"required": true
 			},
 			{
 				"name": "ReportRepository.mutateActive.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReportRepository.mutateActive.update",
-				"type": "(run: Report, directory: string) => Promise<void>"
+				"type": "(run: Report, directory: string) => Promise<void>",
+				"required": true
 			},
 			{
 				"name": "ReportRepository.seal.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReportRepository.finish.id",
-				"type": "string"
-			},
-			{
-				"name": "ReportRepository.finish.exports",
-				"type": "Exports"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -111,6 +117,182 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReportRepository.directory",
+				"inputs": [
+					{
+						"name": "ReportRepository.directory.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRepository.directory",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReportRepository.begin",
+				"inputs": [
+					{
+						"name": "ReportRepository.begin.input",
+						"type": "BeginInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRepository.begin",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReportRepository.get",
+				"inputs": [
+					{
+						"name": "ReportRepository.get.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRepository.get",
+						"type": "Promise<Report>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReportRepository.list",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ReportRepository.list",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReportRepository.record",
+				"inputs": [
+					{
+						"name": "ReportRepository.record.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ReportRepository.record.record",
+						"type": "RecordInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRepository.record",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReportRepository.mutateActive",
+				"inputs": [
+					{
+						"name": "ReportRepository.mutateActive.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ReportRepository.mutateActive.update",
+						"type": "(run: Report, directory: string) => Promise<void>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRepository.mutateActive",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReportRepository.seal",
+				"inputs": [
+					{
+						"name": "ReportRepository.seal.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRepository.seal",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReportRepository.finish",
+				"inputs": [
+					{
+						"name": "ReportRepository.finish.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRepository.finish",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ReportRepository.constructor",
+				"inputs": [
+					{
+						"name": "ReportRepository.constructor.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

@@ -19,6 +19,7 @@
 			{
 				"name": "binaryArtifact.value",
 				"type": "RemoteBinary",
+				"required": true,
 				"description": "A transported binary answer with base64 data, encoding, byte length, hash and a string media type."
 			}
 		],
@@ -35,7 +36,35 @@
 				"type": "thrown",
 				"description": "Rejects a non-string media type, unsupported encoding or unreadable base64, and bytes whose length or SHA-256 differs from the supplied values."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "binaryArtifact",
+				"inputs": [
+					{
+						"name": "binaryArtifact.value",
+						"type": "RemoteBinary",
+						"required": true,
+						"description": "A transported binary answer with base64 data, encoding, byte length, hash and a string media type."
+					}
+				],
+				"outputs": [
+					{
+						"name": "binaryArtifact",
+						"type": "Promise<EvidenceArtifactResult>",
+						"description": "A promise for decoded bytes with the supplied media type and hash after the transport checks pass. The media label is retained, not independently inferred from the bytes."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

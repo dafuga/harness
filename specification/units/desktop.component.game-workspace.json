@@ -38,9 +38,26 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "GameWorkspace.props",
-				"type": "Props",
-				"description": "Local project identity, optional historical commit, read-only state and host bridge for document ownership."
+				"name": "GameWorkspace.projectId",
+				"type": "string | null",
+				"required": false,
+				"default": null
+			},
+			{
+				"name": "GameWorkspace.commit",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "GameWorkspace.readonly",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "GameWorkspace.bridge",
+				"type": "DesktopBridge",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -50,7 +67,9 @@
 				"description": "Own game documents, optimistic saves, runtime progress and checkpoint modal lifecycle."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

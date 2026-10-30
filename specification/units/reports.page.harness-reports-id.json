@@ -14,8 +14,9 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "load.input",
-				"type": "{ params: { id: string } }"
+				"name": "load.params",
+				"type": "{ id: string }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,34 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "load",
+				"inputs": [
+					{
+						"name": "load.params",
+						"type": "{ id: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "load",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Redirect 307",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

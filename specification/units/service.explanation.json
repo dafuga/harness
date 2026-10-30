@@ -28,19 +28,24 @@
 		"inputs": [
 			{
 				"name": "ExplanationService.report.required",
-				"type": "RequiredReason[]"
+				"type": "RequiredReason[]",
+				"required": true
 			},
 			{
 				"name": "ExplanationService.report.explanations",
-				"type": "Explanation[]"
+				"type": "Explanation[]",
+				"required": true
 			},
 			{
 				"name": "ExplanationService.report.writing",
-				"type": "WritingVersion | null"
+				"type": "WritingVersion | null",
+				"required": false,
+				"default": null
 			},
 			{
 				"name": "describe.status",
-				"type": "ReasonStatus"
+				"type": "ReasonStatus",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -53,7 +58,58 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ExplanationService.report",
+				"inputs": [
+					{
+						"name": "ExplanationService.report.required",
+						"type": "RequiredReason[]",
+						"required": true
+					},
+					{
+						"name": "ExplanationService.report.explanations",
+						"type": "Explanation[]",
+						"required": true
+					},
+					{
+						"name": "ExplanationService.report.writing",
+						"type": "WritingVersion | null",
+						"required": false,
+						"default": null
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplanationService.report",
+						"type": "ReasonReport"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "describe",
+				"inputs": [
+					{
+						"name": "describe.status",
+						"type": "ReasonStatus",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "describe",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

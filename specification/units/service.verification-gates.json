@@ -28,19 +28,23 @@
 		"inputs": [
 			{
 				"name": "registryGate.base",
-				"type": "Registry"
+				"type": "Registry",
+				"required": true
 			},
 			{
 				"name": "registryGate.head",
-				"type": "Registry"
+				"type": "Registry",
+				"required": true
 			},
 			{
 				"name": "ledgerGate.ledger",
-				"type": "{ base: LedgerRead; head: LedgerRead }"
+				"type": "{ base: LedgerRead; head: LedgerRead }",
+				"required": true
 			},
 			{
 				"name": "ledgerGate.store",
-				"type": "VerificationStoreRepository"
+				"type": "VerificationStoreRepository",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -53,7 +57,57 @@
 				"type": "string[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "registryGate",
+				"inputs": [
+					{
+						"name": "registryGate.base",
+						"type": "Registry",
+						"required": true
+					},
+					{
+						"name": "registryGate.head",
+						"type": "Registry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registryGate",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ledgerGate",
+				"inputs": [
+					{
+						"name": "ledgerGate.ledger",
+						"type": "{ base: LedgerRead; head: LedgerRead }",
+						"required": true
+					},
+					{
+						"name": "ledgerGate.store",
+						"type": "VerificationStoreRepository",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ledgerGate",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

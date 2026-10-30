@@ -40,63 +40,78 @@
 		"inputs": [
 			{
 				"name": "RemoteHttpProjectAdapter.constructor.options",
-				"type": "HostedReadOptions"
+				"type": "HostedReadOptions",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.evidence.input",
-				"type": "EntityEvidenceQuery & { projectId: string }"
+				"type": "EntityEvidenceQuery & { projectId: string }",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.artifact.input",
-				"type": "EvidenceArtifactQuery & { projectId: string }"
+				"type": "EvidenceArtifactQuery & { projectId: string }",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.agent.method",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.agent.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.agent.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.onRunEvent.listener",
-				"type": "Parameters<AgentHttpAdapter['listen']>[0]"
+				"type": "Parameters<AgentHttpAdapter['listen']>[0]",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.snapshot.input",
-				"type": "{ projectId: string; branch: string | null; commit: string | null }"
+				"type": "{ projectId: string; branch: string | null; commit: string | null }",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.entity.input",
-				"type": "EntityQuery & { projectId: string }"
+				"type": "EntityQuery & { projectId: string }",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.source.input",
-				"type": "SourceQuery & { projectId: string }"
+				"type": "SourceQuery & { projectId: string }",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.image.input",
-				"type": "ImageQuery & { projectId: string }"
+				"type": "ImageQuery & { projectId: string }",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.messages.input",
-				"type": "ThreadQuery & { projectId: string }"
+				"type": "ThreadQuery & { projectId: string }",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.history.input",
-				"type": "EntityQuery & { projectId: string; page: number; branch?: string }"
+				"type": "EntityQuery & { projectId: string; page: number; branch?: string }",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.capabilities.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.addComment.input",
-				"type": "AddCommentInput"
+				"type": "AddCommentInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -161,6 +176,279 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteHttpProjectAdapter.evidence",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.evidence.input",
+						"type": "EntityEvidenceQuery & { projectId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.evidence",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.artifact",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.artifact.input",
+						"type": "EvidenceArtifactQuery & { projectId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.artifact",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.agent",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.agent.method",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RemoteHttpProjectAdapter.agent.input",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "RemoteHttpProjectAdapter.agent.projectId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.agent",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.onRunEvent",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.onRunEvent.listener",
+						"type": "Parameters<AgentHttpAdapter['listen']>[0]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.onRunEvent",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.available",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.available",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.listProjects",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.listProjects",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.snapshot",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.snapshot.input",
+						"type": "{ projectId: string; branch: string | null; commit: string | null }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.snapshot",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.entity",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.entity.input",
+						"type": "EntityQuery & { projectId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.entity",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.source",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.source.input",
+						"type": "SourceQuery & { projectId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.source",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.image",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.image.input",
+						"type": "ImageQuery & { projectId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.image",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.messages",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.messages.input",
+						"type": "ThreadQuery & { projectId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.messages",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.history",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.history.input",
+						"type": "EntityQuery & { projectId: string; page: number; branch?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.history",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.capabilities",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.capabilities.projectId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.capabilities",
+						"type": "Promise<ProjectCapabilities>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHttpProjectAdapter.addComment",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.addComment.input",
+						"type": "AddCommentInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.addComment",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteHttpProjectAdapter.constructor",
+				"inputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.constructor.options",
+						"type": "HostedReadOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHttpProjectAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

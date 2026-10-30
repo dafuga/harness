@@ -32,9 +32,34 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "Request",
-				"type": "Regression inputs",
-				"description": "A committed revision, frozen test command and expected failure"
+				"name": "RegressionProofService.constructor.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "RegressionProofService.run.input",
+				"type": "RegressionRun",
+				"required": true
+			},
+			{
+				"name": "environmentProfile.source",
+				"type": "Record<string, string | undefined>",
+				"required": false
+			},
+			{
+				"name": "focusedScreens.gathered",
+				"type": "Gathered[]",
+				"required": true
+			},
+			{
+				"name": "focusedScreens.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "focusedScreens.context",
+				"type": "{ commit: string; scenarios: ScenarioManifest[]; knownUnits?: string[] }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,6 +74,102 @@
 				"name": "Invalid proof",
 				"type": "Explicit rejection or gap",
 				"description": "Rejects timeouts, missing commands, snapshot drift and unfinished processes."
+			}
+		],
+		"operations": [
+			{
+				"name": "RegressionProofService.run",
+				"inputs": [
+					{
+						"name": "RegressionProofService.run.input",
+						"type": "RegressionRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RegressionProofService.run",
+						"type": "Promise<RegressionRecord>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "environmentProfile",
+				"inputs": [
+					{
+						"name": "environmentProfile.source",
+						"type": "Record<string, string | undefined>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "environmentProfile",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "focusedScreens",
+				"inputs": [
+					{
+						"name": "focusedScreens.gathered",
+						"type": "Gathered[]",
+						"required": true
+					},
+					{
+						"name": "focusedScreens.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "focusedScreens.context",
+						"type": "{ commit: string; scenarios: ScenarioManifest[]; knownUnits?: string[] }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "focusedScreens",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RegressionProofService.constructor",
+				"inputs": [
+					{
+						"name": "RegressionProofService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RegressionProofService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -16,21 +16,26 @@
 			{
 				"name": "resourceCommand.args",
 				"type": "string[]",
+				"required": true,
 				"description": "Executable followed by its arguments; the command must be nonempty."
 			},
 			{
 				"name": "resourceCommand.context",
 				"type": "ResourceContext",
+				"required": true,
 				"description": "Admitted lease, bounded environment and process-tracking callback passed to the owned command."
 			},
 			{
 				"name": "resourceCommand.signal",
 				"type": "AbortSignal",
+				"required": false,
 				"description": "Optional cancellation signal; cancellation preserves cleanup and rejects the operation."
 			},
 			{
 				"name": "resourceCommand.timeoutMs",
 				"type": "number",
+				"required": false,
+				"default": 21600000,
 				"description": "Positive command execution limit in milliseconds, bounded by the native timer range."
 			}
 		],
@@ -47,7 +52,54 @@
 				"type": "thrown",
 				"description": "Invalid timeout or command, cancellation and owned-runner failures reject or preserve a nonzero result."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "resourceCommand",
+				"inputs": [
+					{
+						"name": "resourceCommand.args",
+						"type": "string[]",
+						"required": true,
+						"description": "Executable followed by its arguments; the command must be nonempty."
+					},
+					{
+						"name": "resourceCommand.context",
+						"type": "ResourceContext",
+						"required": true,
+						"description": "Admitted lease, bounded environment and process-tracking callback passed to the owned command."
+					},
+					{
+						"name": "resourceCommand.signal",
+						"type": "AbortSignal",
+						"required": false,
+						"description": "Optional cancellation signal; cancellation preserves cleanup and rejects the operation."
+					},
+					{
+						"name": "resourceCommand.timeoutMs",
+						"type": "number",
+						"required": false,
+						"default": 21600000,
+						"description": "Positive command execution limit in milliseconds, bounded by the native timer range."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceCommand",
+						"type": "Promise<number>",
+						"description": "Command exit status; failed cleanup or timeout never becomes a successful zero."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

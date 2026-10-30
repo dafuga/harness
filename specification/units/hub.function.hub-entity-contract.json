@@ -20,11 +20,13 @@
 			{
 				"name": "hubEntityContract.unit",
 				"type": "Pick<ComponentManifest, 'contract'>",
+				"required": false,
 				"description": "Optional unit contract."
 			},
 			{
 				"name": "hubEntityContract.plan",
 				"type": "Pick<PlanRecord, 'contract'>",
+				"required": false,
 				"description": "Optional plan contract, which takes precedence."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Plan contract unchanged, or unit contract with a computed hash; when neither exists, empty input/output/error lists with hash null."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubEntityContract",
+				"inputs": [
+					{
+						"name": "hubEntityContract.unit",
+						"type": "Pick<ComponentManifest, 'contract'>",
+						"required": false,
+						"description": "Optional unit contract."
+					},
+					{
+						"name": "hubEntityContract.plan",
+						"type": "Pick<PlanRecord, 'contract'>",
+						"required": false,
+						"description": "Optional plan contract, which takes precedence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEntityContract",
+						"type": "unknown",
+						"description": "Plan contract unchanged, or unit contract with a computed hash; when neither exists, empty input/output/error lists with hash null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

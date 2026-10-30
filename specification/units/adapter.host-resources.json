@@ -22,7 +22,23 @@
 				"description": "Current host sample, or an explicit unavailable sample and reason when any probe fails."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "HostResourcesAdapter.sample",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostResourcesAdapter.sample",
+						"type": "Promise<ResourceSnapshot>",
+						"description": "Current host sample, or an explicit unavailable sample and reason when any probe fails."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

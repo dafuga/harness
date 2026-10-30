@@ -27,11 +27,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/EvidenceCard.svelte",
-			"packages/reports/src/components/verification-evidence/EvidenceCard.svelte"
-		],
-		"symbols": ["EvidenceCard", "EvidenceCard"]
+		"source": ["packages/reports/src/components/verification-evidence/EvidenceCard.svelte"],
+		"symbols": ["EvidenceCard"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,18 +52,18 @@
 				"description": "Required prefix concatenated with screenshot files or passed to audio playback."
 			},
 			{
-				"name": "EvidenceCard.onopen",
-				"type": "() => void",
-				"required": true,
-				"description": "Required callback invoked by screenshot or paired-audio opening controls. Individual audio playback uses its own controls."
-			},
-			{
 				"name": "EvidenceCard.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
 				"description": "Optional screenshot presentation: false by default. True keeps provenance in a Capture details disclosure beneath the image. Audio rendering is unchanged.",
 				"examples": [true]
+			},
+			{
+				"name": "EvidenceCard.onopen",
+				"type": "() => void",
+				"required": true,
+				"description": "Required callback invoked by screenshot or paired-audio opening controls. Individual audio playback uses its own controls."
 			}
 		],
 		"outputs": [
@@ -82,7 +79,9 @@
 				"type": "thrown",
 				"description": "An error thrown by onopen propagates when a screenshot or paired audio is opened."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

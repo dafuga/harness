@@ -32,35 +32,45 @@
 		"inputs": [
 			{
 				"name": "HostedHttpAdapter.constructor.options",
-				"type": "RemoteHttpOptions"
+				"type": "RemoteHttpOptions",
+				"required": true
 			},
 			{
 				"name": "HostedHttpAdapter.publicJson.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostedHttpAdapter.publicJson.body",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "HostedHttpAdapter.json.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostedHttpAdapter.request.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostedHttpAdapter.request.credential",
-				"type": "NativeHostedCredential"
+				"type": "NativeHostedCredential",
+				"required": true
 			},
 			{
 				"name": "HostedHttpAdapter.request.init",
-				"type": "RequestInit"
+				"type": "RequestInit",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "HostedHttpAdapter.request.publicFailure",
-				"type": "unknown"
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -89,6 +99,139 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostedHttpAdapter.publicStatus",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostedHttpAdapter.publicStatus",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostedHttpAdapter.publicJson",
+				"inputs": [
+					{
+						"name": "HostedHttpAdapter.publicJson.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HostedHttpAdapter.publicJson.body",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedHttpAdapter.publicJson",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostedHttpAdapter.authorize",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostedHttpAdapter.authorize",
+						"type": "Promise<NativeHostedCredential>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostedHttpAdapter.json",
+				"inputs": [
+					{
+						"name": "HostedHttpAdapter.json.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedHttpAdapter.json",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostedHttpAdapter.request",
+				"inputs": [
+					{
+						"name": "HostedHttpAdapter.request.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HostedHttpAdapter.request.credential",
+						"type": "NativeHostedCredential",
+						"required": true
+					},
+					{
+						"name": "HostedHttpAdapter.request.init",
+						"type": "RequestInit",
+						"required": false,
+						"default": {}
+					},
+					{
+						"name": "HostedHttpAdapter.request.publicFailure",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedHttpAdapter.request",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostedHttpAdapter.constructor",
+				"inputs": [
+					{
+						"name": "HostedHttpAdapter.constructor.options",
+						"type": "RemoteHttpOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedHttpAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

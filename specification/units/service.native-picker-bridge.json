@@ -25,23 +25,28 @@
 		"inputs": [
 			{
 				"name": "NativePickerBridgeService.constructor.rpc",
-				"type": "PickerRpc"
+				"type": "PickerRpc",
+				"required": true
 			},
 			{
 				"name": "NativePickerBridgeService.constructor.catalogPath",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "NativePickerBridgeService.send.method",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "NativePickerBridgeService.send.params",
-				"type": "PickerData"
+				"type": "PickerData",
+				"required": true
 			},
 			{
 				"name": "NativePickerBridgeService.send.options",
-				"type": "PickerData"
+				"type": "PickerData",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -54,6 +59,62 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "NativePickerBridgeService.send",
+				"inputs": [
+					{
+						"name": "NativePickerBridgeService.send.method",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "NativePickerBridgeService.send.params",
+						"type": "PickerData",
+						"required": true
+					},
+					{
+						"name": "NativePickerBridgeService.send.options",
+						"type": "PickerData",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativePickerBridgeService.send",
+						"type": "Promise<PickerData>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "NativePickerBridgeService.constructor",
+				"inputs": [
+					{
+						"name": "NativePickerBridgeService.constructor.rpc",
+						"type": "PickerRpc",
+						"required": true
+					},
+					{
+						"name": "NativePickerBridgeService.constructor.catalogPath",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativePickerBridgeService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

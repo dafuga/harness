@@ -26,6 +26,7 @@
 			{
 				"name": "harnessFailures.failures",
 				"type": "string[]",
+				"required": true,
 				"description": "Recorded failure strings. Subject-prefixed messages with shared text can become one cause."
 			}
 		],
@@ -36,7 +37,30 @@
 				"description": "Total failures, whether at most five allow plain display, ordered causes and omitted-cause count. Shared causes list up to three subjects; longer summaries show at most five causes."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "harnessFailures",
+				"inputs": [
+					{
+						"name": "harnessFailures.failures",
+						"type": "string[]",
+						"required": true,
+						"description": "Recorded failure strings. Subject-prefixed messages with shared text can become one cause."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessFailures",
+						"type": "FailureSummary",
+						"description": "Total failures, whether at most five allow plain display, ordered causes and omitted-cause count. Shared causes list up to three subjects; longer summaries show at most five causes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

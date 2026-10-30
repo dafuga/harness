@@ -15,19 +15,23 @@
 		"inputs": [
 			{
 				"name": "apiRegistry.client",
-				"type": "HarnessApiService"
+				"type": "HarnessApiService",
+				"required": true
 			},
 			{
 				"name": "apiRegistry.snapshot",
-				"type": "ApiSnapshot"
+				"type": "ApiSnapshot",
+				"required": true
 			},
 			{
 				"name": "apiRegistry.resource",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "apiRegistry.id",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -41,7 +45,49 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "apiRegistry",
+				"inputs": [
+					{
+						"name": "apiRegistry.client",
+						"type": "HarnessApiService",
+						"required": true
+					},
+					{
+						"name": "apiRegistry.snapshot",
+						"type": "ApiSnapshot",
+						"required": true
+					},
+					{
+						"name": "apiRegistry.resource",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "apiRegistry.id",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiRegistry",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -18,11 +18,13 @@
 		"inputs": [
 			{
 				"name": "topLayout.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "scrolledLayout.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -35,7 +37,47 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "topLayout",
+				"inputs": [
+					{
+						"name": "topLayout.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "topLayout",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scrolledLayout",
+				"inputs": [
+					{
+						"name": "scrolledLayout.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scrolledLayout",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

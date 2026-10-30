@@ -30,26 +30,31 @@
 			{
 				"name": "TaskCompletionService.constructor.root",
 				"type": "string",
+				"required": true,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "TaskCompletionService.check.input",
 				"type": "TaskAuditInput",
+				"required": true,
 				"description": "Declared task or observation metadata appropriate to the named operation."
 			},
 			{
 				"name": "TaskCompletionService.requirePlan.proposal",
 				"type": "string",
+				"required": true,
 				"description": "Substantive Markdown proposal to inspect structurally without implementing its planned behavior."
 			},
 			{
 				"name": "TaskCompletionService.requirePlan.goal",
 				"type": "string",
+				"required": true,
 				"description": "User-facing task goal used for the committed contract and explicit word-overlap heuristic."
 			},
 			{
 				"name": "TaskCompletionService.require.input",
 				"type": "TaskAuditInput",
+				"required": true,
 				"description": "Declared task or observation metadata appropriate to the named operation."
 			}
 		],
@@ -80,6 +85,122 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Incomplete proposals, missing verification, stale source or insufficient runtime evidence reject a required completion audit."
+			}
+		],
+		"operations": [
+			{
+				"name": "TaskCompletionService.check",
+				"inputs": [
+					{
+						"name": "TaskCompletionService.check.input",
+						"type": "TaskAuditInput",
+						"required": true,
+						"description": "Declared task or observation metadata appropriate to the named operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TaskCompletionService.check",
+						"type": "Promise<TaskAudit>",
+						"description": "Persisted audit with explicit failed checks when source, verification, profiling or proposal evidence is unavailable."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TaskCompletionService.requirePlan",
+				"inputs": [
+					{
+						"name": "TaskCompletionService.requirePlan.proposal",
+						"type": "string",
+						"required": true,
+						"description": "Substantive Markdown proposal to inspect structurally without implementing its planned behavior."
+					},
+					{
+						"name": "TaskCompletionService.requirePlan.goal",
+						"type": "string",
+						"required": true,
+						"description": "User-facing task goal used for the committed contract and explicit word-overlap heuristic."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TaskCompletionService.requirePlan",
+						"type": "void",
+						"description": "Accepts structurally complete, relevant proposal content; otherwise throws a completion-audit error."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TaskCompletionService.require",
+				"inputs": [
+					{
+						"name": "TaskCompletionService.require.input",
+						"type": "TaskAuditInput",
+						"required": true,
+						"description": "Declared task or observation metadata appropriate to the named operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TaskCompletionService.require",
+						"type": "Promise<TaskAudit>",
+						"description": "Passed persisted audit; any failed check rejects completion with its recorded details."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "taskCompletionInstructions",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "taskCompletionInstructions",
+						"type": "string[]",
+						"description": "Coding and planning guidance that distinguishes evidence gates from semantic acceptance and hypothetical performance plans."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TaskCompletionService.constructor",
+				"inputs": [
+					{
+						"name": "TaskCompletionService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TaskCompletionService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

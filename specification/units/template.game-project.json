@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "gameFiles.input",
-				"type": "ProjectTemplateInput"
+				"type": "ProjectTemplateInput",
+				"required": true
 			},
 			{
 				"name": "gameFiles.app",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -28,7 +30,34 @@
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "gameFiles",
+				"inputs": [
+					{
+						"name": "gameFiles.input",
+						"type": "ProjectTemplateInput",
+						"required": true
+					},
+					{
+						"name": "gameFiles.app",
+						"type": "PlannedFile[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "gameFiles",
+						"type": "PlannedFile[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

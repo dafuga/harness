@@ -38,27 +38,33 @@
 		"inputs": [
 			{
 				"name": "NativeHandoffService.constructor.options",
-				"type": "NativeHandoffOptions"
+				"type": "NativeHandoffOptions",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffService.start.input",
-				"type": "NativeStartInput"
+				"type": "NativeStartInput",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffService.approve.session",
-				"type": "SessionRecord"
+				"type": "SessionRecord",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffService.approve.input",
-				"type": "NativeApproveInput"
+				"type": "NativeApproveInput",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffService.poll.handoffId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffService.exchange.input",
-				"type": "NativeExchangeInput"
+				"type": "NativeExchangeInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,7 +93,107 @@
 				"type": "Promise<NativeAuthorization>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "NativeHandoffService.start",
+				"inputs": [
+					{
+						"name": "NativeHandoffService.start.input",
+						"type": "NativeStartInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeHandoffService.start",
+						"type": "Promise<NativeStartResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeHandoffService.approve",
+				"inputs": [
+					{
+						"name": "NativeHandoffService.approve.session",
+						"type": "SessionRecord",
+						"required": true
+					},
+					{
+						"name": "NativeHandoffService.approve.input",
+						"type": "NativeApproveInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeHandoffService.approve",
+						"type": "Promise<{ approved: true; resource: string }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeHandoffService.poll",
+				"inputs": [
+					{
+						"name": "NativeHandoffService.poll.handoffId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeHandoffService.poll",
+						"type": "Promise<NativePollResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeHandoffService.exchange",
+				"inputs": [
+					{
+						"name": "NativeHandoffService.exchange.input",
+						"type": "NativeExchangeInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeHandoffService.exchange",
+						"type": "Promise<NativeAuthorization>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "NativeHandoffService.constructor",
+				"inputs": [
+					{
+						"name": "NativeHandoffService.constructor.options",
+						"type": "NativeHandoffOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeHandoffService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

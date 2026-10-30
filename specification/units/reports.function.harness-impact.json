@@ -31,31 +31,37 @@
 			{
 				"name": "harnessImpact.base",
 				"type": "HarnessRevision | undefined",
+				"required": true,
 				"description": "Earlier revision, or undefined when no base is selected."
 			},
 			{
 				"name": "harnessImpact.head",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Later revision containing recorded comparison and source impact."
 			},
 			{
 				"name": "harnessImpact.compared",
 				"type": "ComparedSides | null",
+				"required": false,
 				"description": "Optional precomputed source-side comparison, used only when its commit pair matches."
 			},
 			{
 				"name": "comparedSides.client",
 				"type": "HarnessClient",
+				"required": true,
 				"description": "Client able to load stored source sides."
 			},
 			{
 				"name": "comparedSides.base",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Earlier revision naming its stored side."
 			},
 			{
 				"name": "comparedSides.head",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Later revision naming its stored side."
 			}
 		],
@@ -71,7 +77,74 @@
 				"description": "Loads both stored sides and delegates their comparison, returning the commit pair and impact; undefined if either side reference is absent."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "harnessImpact",
+				"inputs": [
+					{
+						"name": "harnessImpact.base",
+						"type": "HarnessRevision | undefined",
+						"required": true,
+						"description": "Earlier revision, or undefined when no base is selected."
+					},
+					{
+						"name": "harnessImpact.head",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Later revision containing recorded comparison and source impact."
+					},
+					{
+						"name": "harnessImpact.compared",
+						"type": "ComparedSides | null",
+						"required": false,
+						"description": "Optional precomputed source-side comparison, used only when its commit pair matches."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessImpact",
+						"type": "HarnessImpact",
+						"description": "Impact groups, scenarios, uncertainty and marks. Prefers a record comparing the exact base, then matching source impact, then version changes and transitive consumers across both active registries. Marks prioritize removed over added, direct and indirect."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "comparedSides",
+				"inputs": [
+					{
+						"name": "comparedSides.client",
+						"type": "HarnessClient",
+						"required": true,
+						"description": "Client able to load stored source sides."
+					},
+					{
+						"name": "comparedSides.base",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Earlier revision naming its stored side."
+					},
+					{
+						"name": "comparedSides.head",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Later revision naming its stored side."
+					}
+				],
+				"outputs": [
+					{
+						"name": "comparedSides",
+						"type": "Promise<ComparedSides | undefined>",
+						"description": "Loads both stored sides and delegates their comparison, returning the commit pair and impact; undefined if either side reference is absent."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

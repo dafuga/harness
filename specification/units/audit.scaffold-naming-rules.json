@@ -23,7 +23,8 @@
 		"inputs": [
 			{
 				"name": "auditScaffoldTypeScriptNaming.file",
-				"type": "AuditFile"
+				"type": "AuditFile",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +33,29 @@
 				"type": "AuditFinding[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "auditScaffoldTypeScriptNaming",
+				"inputs": [
+					{
+						"name": "auditScaffoldTypeScriptNaming.file",
+						"type": "AuditFile",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditScaffoldTypeScriptNaming",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

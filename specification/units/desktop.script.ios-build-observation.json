@@ -18,15 +18,18 @@
 		"inputs": [
 			{
 				"name": "buildObservation.read",
-				"type": "(signal: AbortSignal) => Promise<boolean>"
+				"type": "(signal: AbortSignal) => Promise<boolean>",
+				"required": true
 			},
 			{
 				"name": "finishObservation.settle",
-				"type": "() => Promise<string | null>"
+				"type": "() => Promise<string | null>",
+				"required": true
 			},
 			{
 				"name": "finishObservation.reads",
-				"type": "BuildObservation[]"
+				"type": "BuildObservation[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -39,7 +42,52 @@
 				"type": "Promise<string | null>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "buildObservation",
+				"inputs": [
+					{
+						"name": "buildObservation.read",
+						"type": "(signal: AbortSignal) => Promise<boolean>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildObservation",
+						"type": "BuildObservation"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "finishObservation",
+				"inputs": [
+					{
+						"name": "finishObservation.settle",
+						"type": "() => Promise<string | null>",
+						"required": true
+					},
+					{
+						"name": "finishObservation.reads",
+						"type": "BuildObservation[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishObservation",
+						"type": "Promise<string | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

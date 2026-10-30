@@ -30,6 +30,7 @@
 			{
 				"name": "verifyPlan.input",
 				"type": "PlanInput",
+				"required": true,
 				"description": "Selected paths, scenario manifests, verification and workspace configuration, and optional test-timeout override."
 			}
 		],
@@ -40,7 +41,30 @@
 				"description": "Planned checks with ids, runners, targets, workspace cwd, commands and timeouts. Scenario-covered paths are omitted from file checks; per-file/scenario overrides beat defaults, .spec files select Playwright and other files select Vitest. No commands run here."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "verifyPlan",
+				"inputs": [
+					{
+						"name": "verifyPlan.input",
+						"type": "PlanInput",
+						"required": true,
+						"description": "Selected paths, scenario manifests, verification and workspace configuration, and optional test-timeout override."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyPlan",
+						"type": "PlannedCheck[]",
+						"description": "Planned checks with ids, runners, targets, workspace cwd, commands and timeouts. Scenario-covered paths are omitted from file checks; per-file/scenario overrides beat defaults, .spec files select Playwright and other files select Vitest. No commands run here."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

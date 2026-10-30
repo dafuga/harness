@@ -20,21 +20,25 @@
 			{
 				"name": "prepareChangeEnvironment.session",
 				"type": "ProjectSessionService",
+				"required": true,
 				"description": "Project session used to identify the active source repository and configured branch."
 			},
 			{
 				"name": "prepareChangeEnvironment.request",
 				"type": "| Pick<RunRequest, 'mode' | 'environment'> | { mode: 'ask' | 'change'; environment?: RunRequest['environment'] }",
+				"required": true,
 				"description": "Run mode and optional selected environment; unscoped or read-only requests do not promote."
 			},
 			{
 				"name": "promoteChange.context",
 				"type": "PromotionContext",
+				"required": true,
 				"description": "Repository-locked run context with source revision, cancellation signal and status emitter."
 			},
 			{
 				"name": "promoteChange.before",
 				"type": "SourceSnapshot",
+				"required": true,
 				"description": "Source snapshot taken before the agent writes; only observed changes are staged."
 			}
 		],
@@ -56,7 +60,72 @@
 				"type": "thrown",
 				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "prepareChangeEnvironment",
+				"inputs": [
+					{
+						"name": "prepareChangeEnvironment.session",
+						"type": "ProjectSessionService",
+						"required": true,
+						"description": "Project session used to identify the active source repository and configured branch."
+					},
+					{
+						"name": "prepareChangeEnvironment.request",
+						"type": "| Pick<RunRequest, 'mode' | 'environment'> | { mode: 'ask' | 'change'; environment?: RunRequest['environment'] }",
+						"required": true,
+						"description": "Run mode and optional selected environment; unscoped or read-only requests do not promote."
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareChangeEnvironment",
+						"type": "unknown",
+						"description": "Resolves when admission is safe or the request is unscoped; rejects invalid mappings or source state."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "promoteChange",
+				"inputs": [
+					{
+						"name": "promoteChange.context",
+						"type": "PromotionContext",
+						"required": true,
+						"description": "Repository-locked run context with source revision, cancellation signal and status emitter."
+					},
+					{
+						"name": "promoteChange.before",
+						"type": "SourceSnapshot",
+						"required": true,
+						"description": "Source snapshot taken before the agent writes; only observed changes are staged."
+					}
+				],
+				"outputs": [
+					{
+						"name": "promoteChange",
+						"type": "Promise<string>",
+						"description": "Public summary naming the queued lower boundary and the separate production action when needed."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

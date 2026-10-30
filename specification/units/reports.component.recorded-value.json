@@ -27,10 +27,9 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/recorded-value/RecordedValue.svelte",
 			"packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte"
 		],
-		"symbols": ["RecordedValue", "RecordedValue"]
+		"symbols": ["RecordedValue", "RecordedValue.present"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -43,14 +42,14 @@
 			},
 			{
 				"name": "RecordedValue.fullValuesLabel",
-				"type": "string | undefined",
+				"type": "string",
 				"required": false,
 				"default": "Full recorded values",
 				"description": "Name of the disclosure containing complete values; defaults to Full recorded values."
 			},
 			{
 				"name": "RecordedValue.rowsLabel",
-				"type": "string | undefined",
+				"type": "string",
 				"required": false,
 				"default": "Recorded rows",
 				"description": "Accessible name for nested rows, distinguishing authored examples from recorded data."
@@ -68,6 +67,28 @@
 				"name": "Getter, proxy or conversion error",
 				"type": "thrown",
 				"description": "Propagates errors thrown by supplied property getters, proxy traps or string conversion while presenting a value."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "RecordedValue.present",
+				"inputs": [
+					{
+						"name": "RecordedValue.present.node",
+						"type": "RecordedNode",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RecordedValue.present",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-ui-explorer-kit-command-block",
+	"kind": "component",
+	"title": "Command block",
+	"responsibility": "Shows a labelled CLI command for the reader to copy and run.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-code",
+			"reports.component.shared-primitives-atoms-html-figcaption",
+			"reports.component.shared-primitives-atoms-html-figure",
+			"reports.component.shared-primitives-atoms-html-pre"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/explorer-ui/explorer-kit/CommandBlock.svelte"],
+		"symbols": ["CommandBlock"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "CommandBlock.label",
+				"type": "string",
+				"required": true,
+				"description": "Caption naming what the command does."
+			},
+			{
+				"name": "CommandBlock.command",
+				"type": "string",
+				"required": true,
+				"description": "The command text, shown verbatim and wrapped when long."
+			}
+		],
+		"outputs": [
+			{
+				"name": "CommandBlock",
+				"type": "markup",
+				"description": "A figure with the caption and a preformatted command."
+			}
+		],
+		"errors": [],
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figcaption",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-pre",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/explorer-kit/CommandBlock.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/explorer-kit/CommandBlock.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

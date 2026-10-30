@@ -50,23 +50,28 @@
 		"inputs": [
 			{
 				"name": "createLoop.input",
-				"type": "CreateLoopInput"
+				"type": "CreateLoopInput",
+				"required": true
 			},
 			{
 				"name": "addLoopStep.input",
-				"type": "AddLoopStepInput"
+				"type": "AddLoopStepInput",
+				"required": true
 			},
 			{
 				"name": "completeLoopStep.input",
-				"type": "CompleteLoopStepInput"
+				"type": "CompleteLoopStepInput",
+				"required": true
 			},
 			{
 				"name": "readLoopStatus.input",
-				"type": "ReadLoopInput"
+				"type": "ReadLoopInput",
+				"required": true
 			},
 			{
 				"name": "renderLoopStatus.status",
-				"type": "LoopStatus"
+				"type": "LoopStatus",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -96,7 +101,111 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "createLoop",
+				"inputs": [
+					{
+						"name": "createLoop.input",
+						"type": "CreateLoopInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createLoop",
+						"type": "Promise<LoopStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "addLoopStep",
+				"inputs": [
+					{
+						"name": "addLoopStep.input",
+						"type": "AddLoopStepInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "addLoopStep",
+						"type": "Promise<LoopStatus>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "completeLoopStep",
+				"inputs": [
+					{
+						"name": "completeLoopStep.input",
+						"type": "CompleteLoopStepInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "completeLoopStep",
+						"type": "Promise<LoopStatus>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readLoopStatus",
+				"inputs": [
+					{
+						"name": "readLoopStatus.input",
+						"type": "ReadLoopInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readLoopStatus",
+						"type": "Promise<LoopStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderLoopStatus",
+				"inputs": [
+					{
+						"name": "renderLoopStatus.status",
+						"type": "LoopStatus",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderLoopStatus",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

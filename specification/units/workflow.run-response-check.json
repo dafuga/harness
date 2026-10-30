@@ -24,19 +24,23 @@
 		"inputs": [
 			{
 				"name": "checkResponse.options",
-				"type": "ResponseCheckOptions"
+				"type": "ResponseCheckOptions",
+				"required": true
 			},
 			{
 				"name": "responseCheckExitCode.report",
-				"type": "ResponseCheckReport"
+				"type": "ResponseCheckReport",
+				"required": true
 			},
 			{
 				"name": "renderResponseCheck.report",
-				"type": "ResponseCheckReport"
+				"type": "ResponseCheckReport",
+				"required": true
 			},
 			{
 				"name": "runResponseCheck.options",
-				"type": "ResponseCheckOptions"
+				"type": "ResponseCheckOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -57,7 +61,83 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "checkResponse",
+				"inputs": [
+					{
+						"name": "checkResponse.options",
+						"type": "ResponseCheckOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkResponse",
+						"type": "Promise<ResponseCheckReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "responseCheckExitCode",
+				"inputs": [
+					{
+						"name": "responseCheckExitCode.report",
+						"type": "ResponseCheckReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "responseCheckExitCode",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "renderResponseCheck",
+				"inputs": [
+					{
+						"name": "renderResponseCheck.report",
+						"type": "ResponseCheckReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderResponseCheck",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runResponseCheck",
+				"inputs": [
+					{
+						"name": "runResponseCheck.options",
+						"type": "ResponseCheckOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runResponseCheck",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

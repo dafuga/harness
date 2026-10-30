@@ -20,7 +20,23 @@
 				"description": "Returns nothing and replaces global console.log with a formatter that writes one newline-terminated string to process.stdout."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "pipedOutput",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "pipedOutput",
+						"type": "void",
+						"description": "Returns nothing and replaces global console.log with a formatter that writes one newline-terminated string to process.stdout."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

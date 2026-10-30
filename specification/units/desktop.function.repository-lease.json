@@ -20,6 +20,7 @@
 			{
 				"name": "repositoryLease.root",
 				"type": "string",
+				"required": true,
 				"description": "Canonical local repository root to reserve across Harness app processes.",
 				"examples": ["/projects/atlas"]
 			}
@@ -39,7 +40,32 @@
 				"description": "Refuses unsupported platforms, unreadable lock owners or filesystem failures instead of running without a lock.",
 				"examples": ["Cross-app repository locking is not supported on this platform."]
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "repositoryLease",
+				"inputs": [
+					{
+						"name": "repositoryLease.root",
+						"type": "string",
+						"required": true,
+						"description": "Canonical local repository root to reserve across Harness app processes.",
+						"examples": ["/projects/atlas"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "repositoryLease",
+						"type": "Promise<RepositoryLease | null>",
+						"description": "An async release callback with an abort signal, or null while another owner holds the repository. Always release in finally.",
+						"examples": [null]
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

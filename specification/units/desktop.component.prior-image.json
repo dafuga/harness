@@ -16,11 +16,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/PriorImage.svelte",
-			"packages/desktop/src/components/shared-primitives/PriorImage.svelte"
-		],
-		"symbols": ["PriorImage", "PriorImage"]
+		"source": ["packages/desktop/src/components/shared-primitives/PriorImage.svelte"],
+		"symbols": ["PriorImage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -28,26 +25,31 @@
 			{
 				"name": "PriorImage.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace used by the image-URL helper to load the earlier image."
 			},
 			{
 				"name": "PriorImage.entityId",
 				"type": "string",
+				"required": true,
 				"description": "Required entity identifier for the image request."
 			},
 			{
 				"name": "PriorImage.version",
 				"type": "string",
+				"required": true,
 				"description": "Required earlier version, used in the request and Before caption."
 			},
 			{
 				"name": "PriorImage.sha256",
 				"type": "string",
+				"required": true,
 				"description": "Required image hash for the request; the component does not choose which image is earlier."
 			},
 			{
 				"name": "PriorImage.title",
 				"type": "string",
+				"required": true,
 				"description": "Required alternative text for the image."
 			}
 		],
@@ -58,7 +60,9 @@
 				"description": "Figure labeled Before and the supplied version. Shows the returned image or Loading earlier image. Ignores the helper’s error argument, so a failure can remain indistinguishable from loading."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

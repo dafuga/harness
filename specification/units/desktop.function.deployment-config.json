@@ -19,16 +19,19 @@
 			{
 				"name": "deploymentPath.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "deploymentPath.path",
 				"type": "string",
+				"required": true,
 				"description": "Project-relative configuration path; absolute paths and repository escapes are rejected."
 			},
 			{
 				"name": "deploymentConfig.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			}
 		],
@@ -50,7 +53,66 @@
 				"type": "thrown",
 				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "deploymentPath",
+				"inputs": [
+					{
+						"name": "deploymentPath.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					},
+					{
+						"name": "deploymentPath.path",
+						"type": "string",
+						"required": true,
+						"description": "Project-relative configuration path; absolute paths and repository escapes are rejected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentPath",
+						"type": "string",
+						"description": "Resolved path inside the repository; invalid paths throw."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "deploymentConfig",
+				"inputs": [
+					{
+						"name": "deploymentConfig.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentConfig",
+						"type": "Promise<DeploymentConfig>",
+						"description": "Validated adapter configuration with source branch and explicitly isolated targets."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

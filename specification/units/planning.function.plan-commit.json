@@ -33,39 +33,46 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "stageFiles.git",
-				"type": "Git",
-				"description": "Repository handle with root, Git directory and command runner."
-			},
-			{
-				"name": "stageFiles.files",
-				"type": "Files",
-				"description": "Map of repository-relative paths to text or bytes."
-			},
-			{
-				"name": "stageFiles.index",
-				"type": "string",
-				"description": "Temporary index path to update."
-			},
-			{
 				"name": "planCommit.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planCommit.files",
 				"type": "Files",
+				"required": true,
 				"description": "Map of files to materialize and stage."
 			},
 			{
 				"name": "planCommit.context",
 				"type": "CommitContext",
+				"required": true,
 				"description": "Expected parent and branch, prepared commit and temporary directory."
 			},
 			{
 				"name": "requireLfsFilters.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
+			},
+			{
+				"name": "stageFiles.git",
+				"type": "Git",
+				"required": true,
+				"description": "Repository handle with root, Git directory and command runner."
+			},
+			{
+				"name": "stageFiles.files",
+				"type": "Files",
+				"required": true,
+				"description": "Map of repository-relative paths to text or bytes."
+			},
+			{
+				"name": "stageFiles.index",
+				"type": "string",
+				"required": true,
+				"description": "Temporary index path to update."
 			}
 		],
 		"outputs": [
@@ -96,7 +103,108 @@
 				"type": "thrown",
 				"description": "Coded failures include repository-busy, conflict, unsafe-path and git-failed when required LFS filters are unavailable or ineffective."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "planCommit",
+				"inputs": [
+					{
+						"name": "planCommit.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "planCommit.files",
+						"type": "Files",
+						"required": true,
+						"description": "Map of files to materialize and stage."
+					},
+					{
+						"name": "planCommit.context",
+						"type": "CommitContext",
+						"required": true,
+						"description": "Expected parent and branch, prepared commit and temporary directory."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planCommit",
+						"type": "Promise<void>",
+						"description": "Updates files, branch reference and real index after locking; attempts to restore files and the old reference on failure."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requireLfsFilters",
+				"inputs": [
+					{
+						"name": "requireLfsFilters.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					}
+				],
+				"outputs": [
+					{
+						"name": "requireLfsFilters",
+						"type": "Promise<void>",
+						"description": "Checks Git LFS availability and configured filters using an isolated PNG probe."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "stageFiles",
+				"inputs": [
+					{
+						"name": "stageFiles.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "stageFiles.files",
+						"type": "Files",
+						"required": true,
+						"description": "Map of repository-relative paths to text or bytes."
+					},
+					{
+						"name": "stageFiles.index",
+						"type": "string",
+						"required": true,
+						"description": "Temporary index path to update."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stageFiles",
+						"type": "Promise<void>",
+						"description": "Stages safe files in the supplied index, applying Git LFS cleaning to PNG files."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

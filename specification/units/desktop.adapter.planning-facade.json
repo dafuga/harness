@@ -34,59 +34,73 @@
 		"inputs": [
 			{
 				"name": "PlanningFacadeAdapter.open.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.plans.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.createPlan.draft",
-				"type": "PlanDraft"
+				"type": "PlanDraft",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.ensurePlan.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.addDesign.draft",
-				"type": "DesignDraft"
+				"type": "DesignDraft",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.openThread.draft",
-				"type": "ThreadDraft"
+				"type": "ThreadDraft",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages.entityId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages.threadId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.appendMessage.draft",
-				"type": "MessageDraft"
+				"type": "MessageDraft",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.approve.draft",
-				"type": "ApprovalDraft"
+				"type": "ApprovalDraft",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.image.query",
-				"type": "PlanImageQuery"
+				"type": "PlanImageQuery",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.history.entityId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.history.revision",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -135,7 +149,224 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PlanningFacadeAdapter.open",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.open.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.open",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.plans",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.plans.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.plans",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.createPlan",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.createPlan.draft",
+						"type": "PlanDraft",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.createPlan",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.ensurePlan",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.ensurePlan.unit",
+						"type": "ComponentManifest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.ensurePlan",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.addDesign",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.addDesign.draft",
+						"type": "DesignDraft",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.addDesign",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.openThread",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.openThread.draft",
+						"type": "ThreadDraft",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.openThread",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.messages",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.messages.entityId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PlanningFacadeAdapter.messages.threadId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PlanningFacadeAdapter.messages.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.messages",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.appendMessage",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.appendMessage.draft",
+						"type": "MessageDraft",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.appendMessage",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.approve",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.approve.draft",
+						"type": "ApprovalDraft",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.approve",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.image",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.image.query",
+						"type": "PlanImageQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.image",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PlanningFacadeAdapter.history",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.history.entityId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PlanningFacadeAdapter.history.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.history",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

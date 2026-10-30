@@ -26,7 +26,7 @@
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/agents-providers/ChatAgents.svelte"],
-		"symbols": ["ChatAgents"]
+		"symbols": ["ChatAgents", "ChatAgents.sessionRow"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,6 +34,7 @@
 			{
 				"name": "ChatAgents.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "The selected project, revision, catalog and bridge used to read live registrations and resolve module links."
 			}
 		],
@@ -44,7 +45,29 @@
 				"description": "Main session tasks and statuses plus modules grouped by current declared owners. Missing tracking remains unknown; stale readings lose current ownership claims."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ChatAgents.sessionRow",
+				"inputs": [
+					{
+						"name": "ChatAgents.sessionRow.item",
+						"type": "{ agent: AgentEntry; label: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ChatAgents.sessionRow",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

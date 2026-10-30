@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "cleanCodeExitCode.result",
-				"type": "AuditResult"
+				"type": "AuditResult",
+				"required": true
 			},
 			{
 				"name": "renderCleanCode.report",
-				"type": "CleanCodeReport"
+				"type": "CleanCodeReport",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +34,47 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "cleanCodeExitCode",
+				"inputs": [
+					{
+						"name": "cleanCodeExitCode.result",
+						"type": "AuditResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cleanCodeExitCode",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderCleanCode",
+				"inputs": [
+					{
+						"name": "renderCleanCode.report",
+						"type": "CleanCodeReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderCleanCode",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

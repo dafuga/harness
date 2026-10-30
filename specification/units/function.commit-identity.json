@@ -16,6 +16,7 @@
 			{
 				"name": "commitIdentity.git",
 				"type": "GitAdapter",
+				"required": true,
 				"description": "Git adapter for the repository whose user.name and user.email should be read."
 			}
 		],
@@ -26,7 +27,30 @@
 				"description": "Author and committer name/email environment entries. Missing or empty settings fall back to Harness and harness@localhost."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "commitIdentity",
+				"inputs": [
+					{
+						"name": "commitIdentity.git",
+						"type": "GitAdapter",
+						"required": true,
+						"description": "Git adapter for the repository whose user.name and user.email should be read."
+					}
+				],
+				"outputs": [
+					{
+						"name": "commitIdentity",
+						"type": "Promise<Record<string, string>>",
+						"description": "Author and committer name/email environment entries. Missing or empty settings fall back to Harness and harness@localhost."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

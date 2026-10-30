@@ -10,6 +10,7 @@
 	import HarnessIcon from './HarnessIcon.svelte';
 	import Select from '../shared-primitives/Select.svelte';
 	import '../../lib/styles/translations.css';
+	import EmptyState from './explorer-kit/EmptyState.svelte';
 	let host: ExplorerScreenProps = $props();
 	let filter = $state<CatalogFilter>({
 		search: '',
@@ -79,7 +80,7 @@
 				{/if}
 			</hx-div>
 			{#if !catalog}
-				<hx-p class="ex-empty">No translation catalog is recorded at this revision.</hx-p>
+				<EmptyState>No translation catalog is recorded at this revision.</EmptyState>
 			{:else}
 				<hx-p class="ex-note" role="status">{rows.length} of {catalog.rows.length} strings</hx-p>
 				{#if !locales.length}
@@ -163,7 +164,7 @@
 							class="ex-button ex-translations-more"
 							onclick={() => (limit += 50)}>View More</hx-button
 						>{/if}
-				{:else}<hx-p class="ex-empty">No translations match this search.</hx-p>{/if}
+				{:else}<EmptyState>No translations match this search.</EmptyState>{/if}
 			{/if}
 		</hx-section>
 	{/snippet}

@@ -35,7 +35,9 @@
 		"inputs": [
 			{
 				"name": "CapacitorEnvironmentAdapter.constructor.config",
-				"type": "CapacitorEnvironmentAdapterConfig"
+				"type": "CapacitorEnvironmentAdapterConfig",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -52,7 +54,43 @@
 				"type": "Environment"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CapacitorEnvironmentAdapter.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CapacitorEnvironmentAdapter.connect",
+						"type": "Environment"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CapacitorEnvironmentAdapter.constructor",
+				"inputs": [
+					{
+						"name": "CapacitorEnvironmentAdapter.constructor.config",
+						"type": "CapacitorEnvironmentAdapterConfig",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "CapacitorEnvironmentAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

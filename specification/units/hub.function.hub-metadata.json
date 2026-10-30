@@ -20,6 +20,7 @@
 			{
 				"name": "hubMetadata.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Returns nothing after populating context.metadata; concurrent calls share metadataPending. Does nothing when metadata exists or the adapter lacks rawMany. Invalid cache bundles are deleted and refetched, and failed loads clear the pending promise."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubMetadata",
+				"inputs": [
+					{
+						"name": "hubMetadata.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubMetadata",
+						"type": "Promise<void>",
+						"description": "Returns nothing after populating context.metadata; concurrent calls share metadataPending. Does nothing when metadata exists or the adapter lacks rawMany. Invalid cache bundles are deleted and refetched, and failed loads clear the pending promise."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

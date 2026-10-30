@@ -22,7 +22,8 @@
 		"inputs": [
 			{
 				"name": "ResponseCheckInputValidator.validateCriteria.raw",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +37,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ResponseCheckInputValidator.validateCriteria",
+				"inputs": [
+					{
+						"name": "ResponseCheckInputValidator.validateCriteria.raw",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResponseCheckInputValidator.validateCriteria",
+						"type": "ResponseCriterion[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -38,31 +38,38 @@
 		"inputs": [
 			{
 				"name": "revisionSources.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RevisionDetailService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RevisionDetailService.constructor.history",
-				"type": "HistoryStatusService"
+				"type": "HistoryStatusService",
+				"required": true
 			},
 			{
 				"name": "RevisionDetailService.constructor.kept",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "RevisionDetailService.build.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RevisionDetailService.build.media",
-				"type": "MediaPlacer"
+				"type": "MediaPlacer",
+				"required": true
 			},
 			{
 				"name": "projectDependencies.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -79,7 +86,99 @@
 				"type": "Promise<ProjectDependencies>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "revisionSources",
+				"inputs": [
+					{
+						"name": "revisionSources.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionSources",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RevisionDetailService.build",
+				"inputs": [
+					{
+						"name": "RevisionDetailService.build.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RevisionDetailService.build.media",
+						"type": "MediaPlacer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RevisionDetailService.build",
+						"type": "Promise<BuiltRevision>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "projectDependencies",
+				"inputs": [
+					{
+						"name": "projectDependencies.tree",
+						"type": "SourceTree",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectDependencies",
+						"type": "Promise<ProjectDependencies>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RevisionDetailService.constructor",
+				"inputs": [
+					{
+						"name": "RevisionDetailService.constructor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RevisionDetailService.constructor.history",
+						"type": "HistoryStatusService",
+						"required": true
+					},
+					{
+						"name": "RevisionDetailService.constructor.kept",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "RevisionDetailService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

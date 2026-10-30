@@ -15,7 +15,9 @@
 		"inputs": [
 			{
 				"name": "atomicComponents.options",
-				"type": "unknown"
+				"type": "object",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -29,7 +31,30 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "atomicComponents",
+				"inputs": [
+					{
+						"name": "atomicComponents.options",
+						"type": "object",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "atomicComponents",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

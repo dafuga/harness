@@ -19,26 +19,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "Hub origin",
-				"type": "HTTPS origin | unset",
-				"description": "Public address fixed by the HarnessHubOrigin build setting; an unset or invalid address disables account access.",
-				"examples": ["https://harness.example.invalid"]
-			},
-			{
-				"name": "project request",
-				"type": "HubAccountCall",
-				"description": "Allowed project API method, path and fields; contains no bearer token or arbitrary host.",
-				"examples": [
-					{
-						"method": "GET",
-						"path": "/api/projects",
-						"query": {}
-					}
-				]
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "account status",
@@ -68,7 +49,9 @@
 				"type": "HubAccountFailure",
 				"description": "A revoked or mismatched account invalidates old requests and removes the device credential."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

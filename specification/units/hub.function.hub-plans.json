@@ -26,19 +26,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "hubPlans.context",
-				"type": "HubSourceContext",
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
-			},
-			{
 				"name": "hubPlanRecord.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubPlanRecord.plan",
 				"type": "HubPlan",
+				"required": true,
 				"description": "Validated plan whose design versions and current contract are needed."
+			},
+			{
+				"name": "hubPlans.context",
+				"type": "HubSourceContext",
+				"required": true,
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			}
 		],
 		"outputs": [
@@ -53,7 +56,56 @@
 				"description": "Plan record with versions, latest contract fields/hash, empty local threads and draft/review/approved lifecycle determined by its latest design and current approval."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubPlanRecord",
+				"inputs": [
+					{
+						"name": "hubPlanRecord.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubPlanRecord.plan",
+						"type": "HubPlan",
+						"required": true,
+						"description": "Validated plan whose design versions and current contract are needed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubPlanRecord",
+						"type": "Promise<PlanRecord>",
+						"description": "Plan record with versions, latest contract fields/hash, empty local threads and draft/review/approved lifecycle determined by its latest design and current approval."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubPlans",
+				"inputs": [
+					{
+						"name": "hubPlans.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubPlans",
+						"type": "Promise<HubPlan[]>",
+						"description": "Plans from the supported category folders after schema, path, contract-hash and duplicate-identity checks."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

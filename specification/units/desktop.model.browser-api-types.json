@@ -15,13 +15,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "request",
-				"type": "string, Query, unknown",
-				"description": "API path, optional text query and optional JSON body. The transport supplies the current account session."
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "BrowserApi",
@@ -34,7 +28,9 @@
 				"description": "A failed request with an HTTP status and public error code."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -27,11 +27,13 @@
 			{
 				"name": "fileHash.path",
 				"type": "string",
+				"required": true,
 				"description": "Filesystem path to inspect."
 			},
 			{
 				"name": "sourceSnapshot.root",
 				"type": "string",
+				"required": true,
 				"description": "Repository root used to list working source paths."
 			}
 		],
@@ -47,7 +49,50 @@
 				"description": "Map of Git-listed paths to current file hashes or link markers, omitting paths with no file value."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "fileHash",
+				"inputs": [
+					{
+						"name": "fileHash.path",
+						"type": "string",
+						"required": true,
+						"description": "Filesystem path to inspect."
+					}
+				],
+				"outputs": [
+					{
+						"name": "fileHash",
+						"type": "Promise<string | null>",
+						"description": "SHA-256 for a regular file, link: plus target for a symbolic link, or null for missing/nonfile paths."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sourceSnapshot",
+				"inputs": [
+					{
+						"name": "sourceSnapshot.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository root used to list working source paths."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceSnapshot",
+						"type": "Promise<SourceSnapshot>",
+						"description": "Map of Git-listed paths to current file hashes or link markers, omitting paths with no file value."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

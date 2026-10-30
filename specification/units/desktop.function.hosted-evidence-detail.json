@@ -23,7 +23,9 @@
 				"description": "A strict validation schema for a 40-character commit hash; registry availability, units, scenarios and graph; nullable comparison; optional source impact and side; verification records; explanations; and optional range-reason count. Uses the shared field limits and rejects undeclared keys. It defines structure only and performs no read by itself."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

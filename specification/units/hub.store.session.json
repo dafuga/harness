@@ -19,7 +19,8 @@
 		"inputs": [
 			{
 				"name": "createSessionStore.auth",
-				"type": "BrowserAuth"
+				"type": "BrowserAuth",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -28,7 +29,29 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "createSessionStore",
+				"inputs": [
+					{
+						"name": "createSessionStore.auth",
+						"type": "BrowserAuth",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createSessionStore",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

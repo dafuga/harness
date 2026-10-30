@@ -32,11 +32,13 @@
 			{
 				"name": "recordView.record",
 				"type": "VerificationRecord",
+				"required": true,
 				"description": "Stored verification record to project without changing its results. Optional browser diagnostics on its tests are retained."
 			},
 			{
 				"name": "recordView.context",
 				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => DiagnosticTest[] | undefined; }",
+				"required": true,
 				"description": "Validity and problems supplied by the caller, a media resolver, and optional lookup for origin-record test summaries and browser diagnostics."
 			}
 		],
@@ -47,7 +49,36 @@
 				"description": "Record view retaining source, timings, gates, measurements, budgets and reason status, with concise tests and captures augmented by resolved media/gaps. Inherited scenarios name their actual origin and scoped origin tests when available. Current test summaries and available scenario-scoped origin tests retain their optional browser diagnostics, without substituting current-run diagnostics for inherited evidence."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "recordView",
+				"inputs": [
+					{
+						"name": "recordView.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Stored verification record to project without changing its results. Optional browser diagnostics on its tests are retained."
+					},
+					{
+						"name": "recordView.context",
+						"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => DiagnosticTest[] | undefined; }",
+						"required": true,
+						"description": "Validity and problems supplied by the caller, a media resolver, and optional lookup for origin-record test summaries and browser diagnostics."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordView",
+						"type": "RecordView",
+						"description": "Record view retaining source, timings, gates, measurements, budgets and reason status, with concise tests and captures augmented by resolved media/gaps. Inherited scenarios name their actual origin and scoped origin tests when available. Current test summaries and available scenario-scoped origin tests retain their optional browser diagnostics, without substituting current-run diagnostics for inherited evidence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

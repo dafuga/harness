@@ -34,39 +34,50 @@
 		"inputs": [
 			{
 				"name": "DeploymentService.constructor.session",
-				"type": "ProjectSessionService"
+				"type": "ProjectSessionService",
+				"required": true
 			},
 			{
 				"name": "DeploymentService.constructor.options",
-				"type": "DeploymentOptions"
+				"type": "DeploymentOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "DeploymentService.status.input",
-				"type": "ProjectContext"
+				"type": "ProjectContext",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "DeploymentService.plan.input",
-				"type": "DeploymentQuery"
+				"type": "DeploymentQuery",
+				"required": true
 			},
 			{
 				"name": "DeploymentService.start.input",
-				"type": "DeployInput"
+				"type": "DeployInput",
+				"required": true
 			},
 			{
 				"name": "DeploymentService.deploy.input",
-				"type": "DeployInput"
+				"type": "DeployInput",
+				"required": true
 			},
 			{
 				"name": "DeploymentService.automatic.input",
-				"type": "DeploymentQuery"
+				"type": "DeploymentQuery",
+				"required": true
 			},
 			{
 				"name": "DeploymentService.enqueue.input",
-				"type": "DeploymentQuery"
+				"type": "DeploymentQuery",
+				"required": true
 			},
 			{
 				"name": "DeploymentService.progress.input",
-				"type": "DeployInput"
+				"type": "DeployInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -107,6 +118,184 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeploymentService.status",
+				"inputs": [
+					{
+						"name": "DeploymentService.status.input",
+						"type": "ProjectContext",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentService.status",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentService.activities",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DeploymentService.activities",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentService.plan",
+				"inputs": [
+					{
+						"name": "DeploymentService.plan.input",
+						"type": "DeploymentQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentService.plan",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentService.start",
+				"inputs": [
+					{
+						"name": "DeploymentService.start.input",
+						"type": "DeployInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentService.start",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentService.deploy",
+				"inputs": [
+					{
+						"name": "DeploymentService.deploy.input",
+						"type": "DeployInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentService.deploy",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentService.automatic",
+				"inputs": [
+					{
+						"name": "DeploymentService.automatic.input",
+						"type": "DeploymentQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentService.automatic",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentService.enqueue",
+				"inputs": [
+					{
+						"name": "DeploymentService.enqueue.input",
+						"type": "DeploymentQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentService.enqueue",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentService.progress",
+				"inputs": [
+					{
+						"name": "DeploymentService.progress.input",
+						"type": "DeployInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentService.progress",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeploymentService.constructor",
+				"inputs": [
+					{
+						"name": "DeploymentService.constructor.session",
+						"type": "ProjectSessionService",
+						"required": true
+					},
+					{
+						"name": "DeploymentService.constructor.options",
+						"type": "DeploymentOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

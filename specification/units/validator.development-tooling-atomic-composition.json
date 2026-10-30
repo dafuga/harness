@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "compositionFindings.units",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "string[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "compositionFindings",
+				"inputs": [
+					{
+						"name": "compositionFindings.units",
+						"type": "ComponentManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "compositionFindings",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -20,11 +20,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/entity-search/EntitySearch.svelte",
-			"packages/reports/src/components/explorer-ui/entity-search/EntitySearch.svelte"
-		],
-		"symbols": ["EntitySearch", "EntitySearch"]
+		"source": ["packages/reports/src/components/explorer-ui/entity-search/EntitySearch.svelte"],
+		"symbols": ["EntitySearch", "EntitySearch.glass"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -71,6 +68,28 @@
 				"name": "open callback error",
 				"type": "thrown",
 				"description": "Any value thrown by the caller-supplied open callback propagates when a result is chosen."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntitySearch.glass",
+				"inputs": [
+					{
+						"name": "EntitySearch.glass.size",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntitySearch.glass",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

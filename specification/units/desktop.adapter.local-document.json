@@ -24,15 +24,18 @@
 		"inputs": [
 			{
 				"name": "LocalDocumentAdapter.constructor.file",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"required": true
 			},
 			{
 				"name": "LocalDocumentAdapter.constructor.empty",
-				"type": "() => T"
+				"type": "() => T",
+				"required": true
 			},
 			{
 				"name": "LocalDocumentAdapter.update.change",
-				"type": "(value: T) => R"
+				"type": "(value: T) => R",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -45,7 +48,65 @@
 				"type": "Promise<R>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LocalDocumentAdapter.read",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalDocumentAdapter.read",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalDocumentAdapter.update",
+				"inputs": [
+					{
+						"name": "LocalDocumentAdapter.update.change",
+						"type": "(value: T) => R",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalDocumentAdapter.update",
+						"type": "Promise<R>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LocalDocumentAdapter.constructor",
+				"inputs": [
+					{
+						"name": "LocalDocumentAdapter.constructor.file",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "LocalDocumentAdapter.constructor.empty",
+						"type": "() => T",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalDocumentAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

@@ -22,9 +22,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlTrack.attributes",
-				"type": "SvelteHTMLElements['track']",
-				"description": "Native track attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+				"name": "HtmlTrack.children",
+				"type": "Snippet",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -34,7 +34,9 @@
 				"description": "The actual native track element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

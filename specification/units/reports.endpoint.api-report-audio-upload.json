@@ -14,8 +14,14 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "POST.input",
-				"type": "RequestEvent"
+				"name": "POST.request",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "POST.url",
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,7 +35,39 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "POST",
+				"inputs": [
+					{
+						"name": "POST.request",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "POST.url",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "POST",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

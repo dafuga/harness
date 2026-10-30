@@ -41,31 +41,38 @@
 		"inputs": [
 			{
 				"name": "GithubResponseValidator.userToken.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "GithubResponseValidator.user.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "GithubResponseValidator.repository.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "GithubResponseValidator.installations.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "GithubResponseValidator.installations.appId",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "GithubResponseValidator.repositories.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "GithubResponseValidator.installationGrant.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -94,7 +101,124 @@
 				"type": "InstallationGrant | null"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GithubResponseValidator.userToken",
+				"inputs": [
+					{
+						"name": "GithubResponseValidator.userToken.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubResponseValidator.userToken",
+						"type": "GithubUserToken | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubResponseValidator.user",
+				"inputs": [
+					{
+						"name": "GithubResponseValidator.user.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubResponseValidator.user",
+						"type": "GithubUser | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubResponseValidator.repository",
+				"inputs": [
+					{
+						"name": "GithubResponseValidator.repository.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubResponseValidator.repository",
+						"type": "GithubRepository | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubResponseValidator.installations",
+				"inputs": [
+					{
+						"name": "GithubResponseValidator.installations.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "GithubResponseValidator.installations.appId",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubResponseValidator.installations",
+						"type": "InstallationList | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubResponseValidator.repositories",
+				"inputs": [
+					{
+						"name": "GithubResponseValidator.repositories.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubResponseValidator.repositories",
+						"type": "RepositoryPage | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GithubResponseValidator.installationGrant",
+				"inputs": [
+					{
+						"name": "GithubResponseValidator.installationGrant.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GithubResponseValidator.installationGrant",
+						"type": "InstallationGrant | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

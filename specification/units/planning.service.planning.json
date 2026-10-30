@@ -19,7 +19,8 @@
 		"inputs": [
 			{
 				"name": "planningService.base",
-				"type": "Git"
+				"type": "Git",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -33,7 +34,29 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "planningService",
+				"inputs": [
+					{
+						"name": "planningService.base",
+						"type": "Git",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "planningService",
+						"type": "PlanningApi"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

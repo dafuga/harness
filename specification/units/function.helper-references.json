@@ -30,6 +30,7 @@
 			{
 				"name": "helperReferences.code",
 				"type": "string",
+				"required": true,
 				"description": "TypeScript or JavaScript source text to inspect for actual runtime references and export forwarding.",
 				"examples": [
 					"import { slugify } from './slugify'; export function title() { return slugify('Hello'); }"
@@ -37,7 +38,9 @@
 			},
 			{
 				"name": "helperReferences.svelte",
-				"type": "unknown",
+				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Whether code is a Svelte component. When true, inspect its script blocks and real template expressions; defaults to false."
 			}
 		],
@@ -48,7 +51,40 @@
 				"description": "Runtime references and forwarding bindings, with actual new-expression flags and named class declarations, public instance methods and base-class bindings. Types and unused imports are not runtime references."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "helperReferences",
+				"inputs": [
+					{
+						"name": "helperReferences.code",
+						"type": "string",
+						"required": true,
+						"description": "TypeScript or JavaScript source text to inspect for actual runtime references and export forwarding.",
+						"examples": [
+							"import { slugify } from './slugify'; export function title() { return slugify('Hello'); }"
+						]
+					},
+					{
+						"name": "helperReferences.svelte",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "Whether code is a Svelte component. When true, inspect its script blocks and real template expressions; defaults to false."
+					}
+				],
+				"outputs": [
+					{
+						"name": "helperReferences",
+						"type": "HelperFacts",
+						"description": "Runtime references and forwarding bindings, with actual new-expression flags and named class declarations, public instance methods and base-class bindings. Types and unused imports are not runtime references."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

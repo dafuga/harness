@@ -30,23 +30,31 @@
 		"inputs": [
 			{
 				"name": "sourceCommit.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "sourceCommit.reference",
-				"type": "unknown"
+				"type": "string",
+				"required": false,
+				"default": "HEAD"
 			},
 			{
 				"name": "historyAttach.options",
-				"type": "HistoryOptions"
+				"type": "HistoryOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "historyStatus.options",
-				"type": "HistoryOptions"
+				"type": "HistoryOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "renderStatus.status",
-				"type": "CommitStatus"
+				"type": "CommitStatus",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -72,7 +80,101 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sourceCommit",
+				"inputs": [
+					{
+						"name": "sourceCommit.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "sourceCommit.reference",
+						"type": "string",
+						"required": false,
+						"default": "HEAD"
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceCommit",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "historyAttach",
+				"inputs": [
+					{
+						"name": "historyAttach.options",
+						"type": "HistoryOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "historyAttach",
+						"type": "Promise<Attached>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "historyStatus",
+				"inputs": [
+					{
+						"name": "historyStatus.options",
+						"type": "HistoryOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "historyStatus",
+						"type": "Promise<CommitStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderStatus",
+				"inputs": [
+					{
+						"name": "renderStatus.status",
+						"type": "CommitStatus",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderStatus",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

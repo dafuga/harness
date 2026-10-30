@@ -27,9 +27,39 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "Request",
-				"type": "Regression inputs",
-				"description": "Loop, phase, committed revision and test inputs"
+				"name": "recordRegression.input",
+				"type": "RecordRegressionInput",
+				"required": true
+			},
+			{
+				"name": "requireRegressionProof.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "requireRegressionProof.loop",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "requireRegressionProof.step",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "enforceRegressionStep.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "enforceRegressionStep.state",
+				"type": "LoopState",
+				"required": true
+			},
+			{
+				"name": "enforceRegressionStep.step",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -45,7 +75,94 @@
 				"type": "Explicit rejection or gap",
 				"description": "Refuses mixed product/test commits, changed tests, invalid phases or unsuccessful proof."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "recordRegression",
+				"inputs": [
+					{
+						"name": "recordRegression.input",
+						"type": "RecordRegressionInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordRegression",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requireRegressionProof",
+				"inputs": [
+					{
+						"name": "requireRegressionProof.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "requireRegressionProof.loop",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "requireRegressionProof.step",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requireRegressionProof",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "enforceRegressionStep",
+				"inputs": [
+					{
+						"name": "enforceRegressionStep.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "enforceRegressionStep.state",
+						"type": "LoopState",
+						"required": true
+					},
+					{
+						"name": "enforceRegressionStep.step",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "enforceRegressionStep",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

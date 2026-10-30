@@ -32,11 +32,13 @@
 			{
 				"name": "GameCreate.bridge",
 				"type": "DesktopBridge",
+				"required": false,
 				"description": "Local desktop host operations for project creation, persistence and explicit image generation."
 			},
 			{
 				"name": "GameCreate.created",
 				"type": "(snapshot: ProjectSnapshot) => void",
+				"required": false,
 				"description": "Optional callback receiving the created project snapshot instead of full-page navigation."
 			}
 		],
@@ -53,7 +55,9 @@
 				"type": "thrown",
 				"description": "Creation or navigation cannot continue when the created game snapshot lacks its project identity."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

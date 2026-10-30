@@ -30,36 +30,44 @@
 			{
 				"name": "EntityRun.shown",
 				"type": "EntityBehavior",
+				"required": true,
 				"description": "Required grouped behavior/scenario data. Overall passes only with at least one group and every selected-side group passing."
 			},
 			{
 				"name": "EntityRun.side",
 				"type": "'before' | 'after'",
+				"required": true,
 				"description": "Required before or after, selecting each group/line outcome. After alone displays difference paths."
 			},
 			{
 				"name": "EntityRun.title",
 				"type": "string",
+				"required": true,
 				"description": "Required pane heading and accessible name."
 			},
 			{
 				"name": "EntityRun.role",
 				"type": "string",
+				"required": true,
 				"description": "Required descriptive side badge."
 			},
 			{
 				"name": "EntityRun.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "Required artifact URL base passed to result viewers."
 			},
 			{
 				"name": "EntityRun.lost",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional flag, false by default, telling artifacts that reading failed rather than remains pending."
 			},
 			{
 				"name": "EntityRun.unit",
 				"type": "string",
+				"required": false,
 				"description": "Optional function identifier passed through to callable case rows."
 			}
 		],
@@ -70,7 +78,9 @@
 				"description": "Run pane with overall/state verdicts, scenario/state names, result kinds and Passed/Failed/Not recorded labels. Shows supplied artifacts and after-side differences without calculating new verification."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

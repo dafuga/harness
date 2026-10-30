@@ -28,16 +28,19 @@
 			{
 				"name": "comparisonDifferences.metric",
 				"type": "string",
+				"required": true,
 				"description": "Metric name used to enforce the expected unit for known latency, throughput and memory metrics; custom metrics require matching units."
 			},
 			{
 				"name": "comparisonDifferences.measured",
 				"type": "MeasuredDefinition",
+				"required": true,
 				"description": "Current measurement’s unit, method description and comparison context; missing or invalid metadata is reported as incomplete."
 			},
 			{
 				"name": "comparisonDifferences.baseline",
 				"type": "MeasuredDefinition",
+				"required": true,
 				"description": "Reviewed baseline’s unit, method description and comparison context."
 			}
 		],
@@ -48,7 +51,42 @@
 				"description": "Comparable with no differences when definitions match; incomplete when metadata is missing or invalid; otherwise incompatible with ordered differences for unit, request, boundary, protocol, sampling and method."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "comparisonDifferences",
+				"inputs": [
+					{
+						"name": "comparisonDifferences.metric",
+						"type": "string",
+						"required": true,
+						"description": "Metric name used to enforce the expected unit for known latency, throughput and memory metrics; custom metrics require matching units."
+					},
+					{
+						"name": "comparisonDifferences.measured",
+						"type": "MeasuredDefinition",
+						"required": true,
+						"description": "Current measurement’s unit, method description and comparison context; missing or invalid metadata is reported as incomplete."
+					},
+					{
+						"name": "comparisonDifferences.baseline",
+						"type": "MeasuredDefinition",
+						"required": true,
+						"description": "Reviewed baseline’s unit, method description and comparison context."
+					}
+				],
+				"outputs": [
+					{
+						"name": "comparisonDifferences",
+						"type": "ComparisonVerdict",
+						"description": "Comparable with no differences when definitions match; incomplete when metadata is missing or invalid; otherwise incompatible with ordered differences for unit, request, boundary, protocol, sampling and method."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

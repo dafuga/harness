@@ -29,29 +29,49 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "hubDesigns.context",
-				"type": "HubSourceContext",
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
-			},
-			{
-				"name": "hubDesigns.plan",
-				"type": "HubPlan",
-				"description": "Plan identity and path whose versions are read."
-			},
-			{
 				"name": "hubDesignImage.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubDesignImage.plan",
 				"type": "HubPlan",
+				"required": true,
 				"description": "Plan owning the requested image."
 			},
 			{
 				"name": "hubDesignImage.input",
 				"type": "{ version: string; sha256: string }",
+				"required": true,
 				"description": "Version and expected image SHA-256."
+			},
+			{
+				"name": "hubDesigns.context",
+				"type": "HubSourceContext",
+				"required": true,
+				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+			},
+			{
+				"name": "hubDesigns.plan",
+				"type": "HubPlan",
+				"required": true,
+				"description": "Plan identity and path whose versions are read."
+			},
+			{
+				"name": "design.context",
+				"type": "HubSourceContext",
+				"required": true
+			},
+			{
+				"name": "design.plan",
+				"type": "HubPlan",
+				"required": true
+			},
+			{
+				"name": "design.path",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -66,7 +86,96 @@
 				"description": "PNG bytes for the matching hash after content hash, length and dimensions are checked."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubDesignImage",
+				"inputs": [
+					{
+						"name": "hubDesignImage.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubDesignImage.plan",
+						"type": "HubPlan",
+						"required": true,
+						"description": "Plan owning the requested image."
+					},
+					{
+						"name": "hubDesignImage.input",
+						"type": "{ version: string; sha256: string }",
+						"required": true,
+						"description": "Version and expected image SHA-256."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubDesignImage",
+						"type": "unknown",
+						"description": "PNG bytes for the matching hash after content hash, length and dimensions are checked."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubDesigns",
+				"inputs": [
+					{
+						"name": "hubDesigns.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubDesigns.plan",
+						"type": "HubPlan",
+						"required": true,
+						"description": "Plan identity and path whose versions are read."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubDesigns",
+						"type": "unknown",
+						"description": "Sequentially numbered versions with prompt/notes, images, option metadata and matching approvals; only the latest version’s approval is marked current, and creation commit is initially null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "design",
+				"inputs": [
+					{
+						"name": "design.context",
+						"type": "HubSourceContext",
+						"required": true
+					},
+					{
+						"name": "design.plan",
+						"type": "HubPlan",
+						"required": true
+					},
+					{
+						"name": "design.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "design",
+						"type": "Promise<HubDesign>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -84,7 +84,9 @@
 				"description": "Strict version 1 complete record schema joining source/base, profile/tools, times/outcome, components, measurements, impact, tests, scenarios/builds, budgets, reasons, gates and failures. Each test may also include browser diagnostics with observed console errors or uncaught exceptions and declared expectations; omission remains valid for older records."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

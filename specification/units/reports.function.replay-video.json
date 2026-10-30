@@ -18,19 +18,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "replayVideoKey.report",
-				"type": "Report",
-				"description": "Report whose ordered replay frame identifiers and filenames determine the cache key."
-			},
-			{
 				"name": "replayVideo.report",
 				"type": "Report",
+				"required": true,
 				"description": "Report providing screenshots and registered evidence files."
 			},
 			{
 				"name": "replayVideo.directory",
 				"type": "string",
+				"required": true,
 				"description": "Report directory containing assets and the replay cache."
+			},
+			{
+				"name": "replayVideoKey.report",
+				"type": "Report",
+				"required": true,
+				"description": "Report whose ordered replay frame identifiers and filenames determine the cache key."
 			}
 		],
 		"outputs": [
@@ -51,7 +54,61 @@
 				"type": "thrown",
 				"description": "Rejects zero or over 500 frames, symlinked replay cache/artifact, screenshot conversion failure and encoding failure. Asset validation, subprocess and filesystem failures may also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "replayVideo",
+				"inputs": [
+					{
+						"name": "replayVideo.report",
+						"type": "Report",
+						"required": true,
+						"description": "Report providing screenshots and registered evidence files."
+					},
+					{
+						"name": "replayVideo.directory",
+						"type": "string",
+						"required": true,
+						"description": "Report directory containing assets and the replay cache."
+					}
+				],
+				"outputs": [
+					{
+						"name": "replayVideo",
+						"type": "unknown",
+						"description": "Promise resolving to an existing regular cached MP4 or a newly encoded file. Frames are rendered in batches of four, fitted/padded to 1280 by 720, then encoded at ten frames per second with three seconds per screenshot. Temporary encoding files are removed in finally."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "replayVideoKey",
+				"inputs": [
+					{
+						"name": "replayVideoKey.report",
+						"type": "Report",
+						"required": true,
+						"description": "Report whose ordered replay frame identifiers and filenames determine the cache key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "replayVideoKey",
+						"type": "unknown",
+						"description": "SHA-256 key of ordered frame identifiers/filenames and the fixed three-second, 1280-by-720 versioned encoding recipe."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

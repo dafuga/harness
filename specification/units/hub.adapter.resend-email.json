@@ -32,19 +32,23 @@
 		"inputs": [
 			{
 				"name": "ResendEmailAdapter.constructor.config",
-				"type": "ResendEmailAdapterConfig"
+				"type": "ResendEmailAdapterConfig",
+				"required": true
 			},
 			{
 				"name": "ResendEmailAdapter.send.message",
-				"type": "EmailProofMessage"
+				"type": "EmailProofMessage",
+				"required": true
 			},
 			{
 				"name": "createResendDelivery.env",
-				"type": "AuthEnv"
+				"type": "AuthEnv",
+				"required": true
 			},
 			{
 				"name": "createResendDelivery.fetcher",
-				"type": "typeof fetch"
+				"type": "typeof fetch",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -57,7 +61,71 @@
 				"type": "EmailProofDelivery | null"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ResendEmailAdapter.send",
+				"inputs": [
+					{
+						"name": "ResendEmailAdapter.send.message",
+						"type": "EmailProofMessage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResendEmailAdapter.send",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createResendDelivery",
+				"inputs": [
+					{
+						"name": "createResendDelivery.env",
+						"type": "AuthEnv",
+						"required": true
+					},
+					{
+						"name": "createResendDelivery.fetcher",
+						"type": "typeof fetch",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "createResendDelivery",
+						"type": "EmailProofDelivery | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ResendEmailAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ResendEmailAdapter.constructor.config",
+						"type": "ResendEmailAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResendEmailAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

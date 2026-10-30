@@ -19,26 +19,31 @@
 			{
 				"name": "captureDeploymentTarget.reviewed",
 				"type": "ReviewedDeployment",
+				"required": true,
 				"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
 			},
 			{
 				"name": "captureDeploymentTarget.plugin",
 				"type": "DeploymentPlugin",
+				"required": true,
 				"description": "Deployment adapter used to discover configured target identities."
 			},
 			{
 				"name": "verifyDeploymentSnapshot.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "verifyDeploymentSnapshot.reviewed",
 				"type": "ReviewedDeployment",
+				"required": true,
 				"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
 			},
 			{
 				"name": "verifyDeploymentSnapshot.guard",
 				"type": "{ plugin: DeploymentPlugin; destination: DeploymentReceipt | null }",
+				"required": true,
 				"description": "Reviewed configuration or destination proof that must still match before the next step."
 			}
 		],
@@ -60,7 +65,78 @@
 				"type": "thrown",
 				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "captureDeploymentTarget",
+				"inputs": [
+					{
+						"name": "captureDeploymentTarget.reviewed",
+						"type": "ReviewedDeployment",
+						"required": true,
+						"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
+					},
+					{
+						"name": "captureDeploymentTarget.plugin",
+						"type": "DeploymentPlugin",
+						"required": true,
+						"description": "Deployment adapter used to discover configured target identities."
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureDeploymentTarget",
+						"type": "unknown",
+						"description": "Configured target and captured destination receipt, or an admission error."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyDeploymentSnapshot",
+				"inputs": [
+					{
+						"name": "verifyDeploymentSnapshot.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					},
+					{
+						"name": "verifyDeploymentSnapshot.reviewed",
+						"type": "ReviewedDeployment",
+						"required": true,
+						"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
+					},
+					{
+						"name": "verifyDeploymentSnapshot.guard",
+						"type": "{ plugin: DeploymentPlugin; destination: DeploymentReceipt | null }",
+						"required": true,
+						"description": "Reviewed configuration or destination proof that must still match before the next step."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyDeploymentSnapshot",
+						"type": "unknown",
+						"description": "Resolves only while the source, mapping and captured destination remain valid."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

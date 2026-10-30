@@ -23,11 +23,13 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskCommand.constructor.service",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ModuleTaskCommand.register.task",
-				"type": "Command"
+				"type": "Command",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,6 +42,47 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ModuleTaskCommand.register",
+				"inputs": [
+					{
+						"name": "ModuleTaskCommand.register.task",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskCommand.register",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ModuleTaskCommand.constructor",
+				"inputs": [
+					{
+						"name": "ModuleTaskCommand.constructor.service",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskCommand.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

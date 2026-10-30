@@ -28,15 +28,18 @@
 		"inputs": [
 			{
 				"name": "AnalyticsService.execute.operation",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AnalyticsService.execute.options",
-				"type": "AnalyticsOptions"
+				"type": "AnalyticsOptions",
+				"required": true
 			},
 			{
 				"name": "normalizeFilter.options",
-				"type": "AnalyticsFilter"
+				"type": "AnalyticsFilter",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,7 +57,62 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AnalyticsService.execute",
+				"inputs": [
+					{
+						"name": "AnalyticsService.execute.operation",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AnalyticsService.execute.options",
+						"type": "AnalyticsOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsService.execute",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeFilter",
+				"inputs": [
+					{
+						"name": "normalizeFilter.options",
+						"type": "AnalyticsFilter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeFilter",
+						"type": "Promise<AnalyticsFilter>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

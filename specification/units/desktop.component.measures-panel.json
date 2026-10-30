@@ -17,11 +17,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/MeasuresPanel.svelte",
-			"packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte"
-		],
-		"symbols": ["MeasuresPanel", "MeasuresPanel"]
+		"source": ["packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte"],
+		"symbols": ["MeasuresPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -29,11 +26,13 @@
 			{
 				"name": "MeasuresPanel.size",
 				"type": "Measure",
+				"required": true,
 				"description": "Required measure whose nonempty text is displayed, otherwise Not measured. Its available flag controls measured styling."
 			},
 			{
 				"name": "MeasuresPanel.performance",
 				"type": "Measure",
+				"required": true,
 				"description": "Required performance measure with the same text fallback; available controls measured styling."
 			}
 		],
@@ -44,7 +43,9 @@
 				"description": "Size & performance panel with the two supplied values. Does not calculate measurements or infer availability from displayed text."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

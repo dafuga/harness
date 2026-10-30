@@ -28,15 +28,18 @@
 		"inputs": [
 			{
 				"name": "ProcessRuntimeAdapter.constructor.config",
-				"type": "ProcessRuntimeConfig"
+				"type": "ProcessRuntimeConfig",
+				"required": true
 			},
 			{
 				"name": "ProcessRuntimeAdapter.invoke.request",
-				"type": "RuntimeRequest"
+				"type": "RuntimeRequest",
+				"required": true
 			},
 			{
 				"name": "ProcessRuntimeAdapter.invokeText.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -53,7 +56,78 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProcessRuntimeAdapter.invoke",
+				"inputs": [
+					{
+						"name": "ProcessRuntimeAdapter.invoke.request",
+						"type": "RuntimeRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProcessRuntimeAdapter.invoke",
+						"type": "Promise<RuntimeResponse>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProcessRuntimeAdapter.invokeText",
+				"inputs": [
+					{
+						"name": "ProcessRuntimeAdapter.invokeText.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProcessRuntimeAdapter.invokeText",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProcessRuntimeAdapter.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProcessRuntimeAdapter.close",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProcessRuntimeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ProcessRuntimeAdapter.constructor.config",
+						"type": "ProcessRuntimeConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProcessRuntimeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

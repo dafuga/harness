@@ -15,23 +15,29 @@
 		"inputs": [
 			{
 				"name": "syncHistory.action",
-				"type": "SyncAction"
+				"type": "SyncAction",
+				"required": true
 			},
 			{
 				"name": "syncHistory.remote",
-				"type": "unknown"
+				"type": "string",
+				"required": false,
+				"default": "origin"
 			},
 			{
 				"name": "syncHistory.root",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "renderSync.action",
-				"type": "SyncAction"
+				"type": "SyncAction",
+				"required": true
 			},
 			{
 				"name": "renderSync.result",
-				"type": "Synced"
+				"type": "Synced",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,7 +55,68 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "syncHistory",
+				"inputs": [
+					{
+						"name": "syncHistory.action",
+						"type": "SyncAction",
+						"required": true
+					},
+					{
+						"name": "syncHistory.remote",
+						"type": "string",
+						"required": false,
+						"default": "origin"
+					},
+					{
+						"name": "syncHistory.root",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "syncHistory",
+						"type": "Promise<Synced>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderSync",
+				"inputs": [
+					{
+						"name": "renderSync.action",
+						"type": "SyncAction",
+						"required": true
+					},
+					{
+						"name": "renderSync.result",
+						"type": "Synced",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderSync",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

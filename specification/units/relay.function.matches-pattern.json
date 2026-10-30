@@ -19,11 +19,13 @@
 			{
 				"name": "matchesPattern.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Unknown candidate value; non-strings return false."
 			},
 			{
 				"name": "matchesPattern.pattern",
 				"type": "RegExp",
+				"required": true,
 				"description": "Regular expression to test. For string inputs, lastIndex is reset to zero before and after the test."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "Whether the string matches, with a string type guard on success."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "matchesPattern",
+				"inputs": [
+					{
+						"name": "matchesPattern.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Unknown candidate value; non-strings return false."
+					},
+					{
+						"name": "matchesPattern.pattern",
+						"type": "RegExp",
+						"required": true,
+						"description": "Regular expression to test. For string inputs, lastIndex is reset to zero before and after the test."
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesPattern",
+						"type": "value is string",
+						"description": "Whether the string matches, with a string type guard on success."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

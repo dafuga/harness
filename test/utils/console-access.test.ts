@@ -68,48 +68,6 @@ test('consoleAccess answers byte ranges so audio can seek', async () => {
 	expect((await open.media(event('/x', { range: 'bytes=9-' }), image)).status).toBe(416);
 });
 
-test('a portable report is built only for an admitted request, from the data the host holds', async () => {
-	const asked: Array<{ commit: string; record: string | null; index: string; detail: string }> = [];
-	const exporting = (policy: () => boolean) =>
-		consoleAccess({
-			policy,
-			data,
-			exporter: async (input) => {
-				asked.push({ ...input });
-				const shot = await input.media(image);
-				return input.record === 'none' ? undefined : `<html>${shot?.type}</html>`;
-			}
-		});
-	const denied = await exporting(() => false).report(event('/x'), commit, null);
-	expect([denied.status, asked]).toEqual([403, []]);
-
-	const served = await exporting(() => true).report(event('/x'), commit, 'r1');
-	expect(served.status).toBe(200);
-	expect(await served.text()).toBe('<html>image/png</html>');
-	expect(served.headers.get('content-type')).toBe('text/html; charset=utf-8');
-	expect(served.headers.get('cache-control')).toBe('private, no-store');
-	expect(served.headers.get('content-disposition')).toBe(
-		`attachment; filename="harness-${commit.slice(0, 12)}.html"`
-	);
-	expect(asked).toEqual([
-		{
-			commit,
-			record: 'r1',
-			index: '{"schemaVersion":1}',
-			detail: '{"commit":"x"}',
-			media: expect.any(Function)
-		}
-	]);
-	const admitted = exporting(() => true);
-	const missing = [
-		await admitted.report(event('/x'), 'c'.repeat(40), null),
-		await admitted.report(event('/x'), '../index', null),
-		await admitted.report(event('/x'), commit, 'none'),
-		await open.report(event('/x'), commit, null)
-	];
-	expect(missing.map((response) => response.status)).toEqual([404, 404, 404, 404]);
-});
-
 test('the root and the earlier query form are redirected into the explorer, after the policy', async () => {
 	const head = 'd'.repeat(40);
 	const history = consoleBundle({

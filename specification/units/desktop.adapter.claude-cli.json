@@ -24,15 +24,22 @@
 		"inputs": [
 			{
 				"name": "ClaudeCliAdapter.constructor.command",
-				"type": "CliCommand"
+				"type": "CliCommand",
+				"required": false,
+				"default": {
+					"command": "claude",
+					"args": []
+				}
 			},
 			{
 				"name": "ClaudeCliAdapter.constructor.queue",
-				"type": "ResourceQueueService"
+				"type": "ResourceQueueService",
+				"required": false
 			},
 			{
 				"name": "ClaudeCliAdapter.run.turn",
-				"type": "AgentTurn"
+				"type": "AgentTurn",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -45,7 +52,69 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ClaudeCliAdapter.discover",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ClaudeCliAdapter.discover",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ClaudeCliAdapter.run",
+				"inputs": [
+					{
+						"name": "ClaudeCliAdapter.run.turn",
+						"type": "AgentTurn",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeCliAdapter.run",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ClaudeCliAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ClaudeCliAdapter.constructor.command",
+						"type": "CliCommand",
+						"required": false,
+						"default": {
+							"command": "claude",
+							"args": []
+						}
+					},
+					{
+						"name": "ClaudeCliAdapter.constructor.queue",
+						"type": "ResourceQueueService",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeCliAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

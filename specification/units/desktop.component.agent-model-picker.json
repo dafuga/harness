@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/AgentModelPicker.svelte",
-			"packages/desktop/src/components/agents-providers/AgentModelPicker.svelte"
-		],
-		"symbols": ["AgentModelPicker", "AgentModelPicker"]
+		"source": ["packages/desktop/src/components/agents-providers/AgentModelPicker.svelte"],
+		"symbols": ["AgentModelPicker", "AgentModelPicker.icon", "AgentModelPicker.children"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -30,16 +27,19 @@
 			{
 				"name": "AgentModelPicker.providers",
 				"type": "ProviderState[]",
+				"required": true,
 				"description": "Required providers with labels, models, availability and reasons. Unavailable providers stay visible with disabled model buttons; an available provider with no models gets an explicit empty message."
 			},
 			{
 				"name": "AgentModelPicker.provider",
 				"type": "ProviderId",
+				"required": false,
 				"description": "Required bindable provider identifier. Selecting a model stores its provider identifier unchanged. Together with model, determines the selected button and tooltip."
 			},
 			{
 				"name": "AgentModelPicker.model",
 				"type": "string",
+				"required": false,
 				"description": "Required bindable model identifier. Selecting a model stores its identifier unchanged and closes the picker. Does not choose a default model."
 			}
 		],
@@ -50,7 +50,41 @@
 				"description": "Model icon and provider-grouped dialog with reasons, selected state and empty-provider messages. An enabled choice updates provider and model together."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "AgentModelPicker.icon",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AgentModelPicker.icon",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "AgentModelPicker.children",
+				"inputs": [
+					{
+						"name": "AgentModelPicker.children.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentModelPicker.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

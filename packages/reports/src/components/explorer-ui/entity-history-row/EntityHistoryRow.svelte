@@ -17,7 +17,7 @@
 	import { shortCommit } from '../../../helpers/strings/shortCommit';
 	import { byteSize, notMeasured } from '../../../utils/explorer-ui/entityMeasure';
 	import { boundedText, entityReasons } from '../../../utils/explorer-ui/entityReasons';
-	import { timeAgo } from '../../../utils/reports-media/reportDisplay';
+	import { timeAgo } from '../../../utils/reports-media/timeAgo';
 	import EntityReasons from '../entity-reasons/EntityReasons.svelte';
 	import EntityLink from '../EntityLink.svelte';
 	let {

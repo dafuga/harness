@@ -32,31 +32,38 @@
 		"inputs": [
 			{
 				"name": "parityProblems.report",
-				"type": "ParityReport"
+				"type": "ParityReport",
+				"required": true
 			},
 			{
 				"name": "kernelDefault.measurements",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "renderDefault.report",
-				"type": "DefaultReport"
+				"type": "DefaultReport",
+				"required": true
 			},
 			{
 				"name": "runtimeKind.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "serveKernelRuntime.runtime",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "serveKernelRuntime.port",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "kernelSample.options",
-				"type": "{ runtime: string; nodes: number; seed: number; url?: string; }"
+				"type": "{ runtime: string; nodes: number; seed: number; url?: string; }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -94,7 +101,141 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "kernelParity",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "kernelParity",
+						"type": "Promise<ParityReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parityProblems",
+				"inputs": [
+					{
+						"name": "parityProblems.report",
+						"type": "ParityReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parityProblems",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "kernelDefault",
+				"inputs": [
+					{
+						"name": "kernelDefault.measurements",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "kernelDefault",
+						"type": "DefaultReport"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderDefault",
+				"inputs": [
+					{
+						"name": "renderDefault.report",
+						"type": "DefaultReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderDefault",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "runtimeKind",
+				"inputs": [
+					{
+						"name": "runtimeKind.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runtimeKind",
+						"type": "RuntimeKind"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "serveKernelRuntime",
+				"inputs": [
+					{
+						"name": "serveKernelRuntime.runtime",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "serveKernelRuntime.port",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "serveKernelRuntime",
+						"type": "Promise<ServedRuntime>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "kernelSample",
+				"inputs": [
+					{
+						"name": "kernelSample.options",
+						"type": "{ runtime: string; nodes: number; seed: number; url?: string; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "kernelSample",
+						"type": "Promise<{ elapsedMs: number }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

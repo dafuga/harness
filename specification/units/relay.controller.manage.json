@@ -23,27 +23,33 @@
 		"inputs": [
 			{
 				"name": "ManageController.constructor.scope",
-				"type": "HostScope"
+				"type": "HostScope",
+				"required": true
 			},
 			{
 				"name": "ManageController.constructor.store",
-				"type": "HostStorageAdapter"
+				"type": "HostStorageAdapter",
+				"required": true
 			},
 			{
 				"name": "ManageController.constructor.registry",
-				"type": "HostRegistryService"
+				"type": "HostRegistryService",
+				"required": true
 			},
 			{
 				"name": "ManageController.constructor.revocation",
-				"type": "DeviceRevocationService"
+				"type": "DeviceRevocationService",
+				"required": true
 			},
 			{
 				"name": "ManageController.handle.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			},
 			{
 				"name": "ManageController.handle.operation",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -52,7 +58,68 @@
 				"type": "Promise<Response>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ManageController.handle",
+				"inputs": [
+					{
+						"name": "ManageController.handle.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "ManageController.handle.operation",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ManageController.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ManageController.constructor",
+				"inputs": [
+					{
+						"name": "ManageController.constructor.scope",
+						"type": "HostScope",
+						"required": true
+					},
+					{
+						"name": "ManageController.constructor.store",
+						"type": "HostStorageAdapter",
+						"required": true
+					},
+					{
+						"name": "ManageController.constructor.registry",
+						"type": "HostRegistryService",
+						"required": true
+					},
+					{
+						"name": "ManageController.constructor.revocation",
+						"type": "DeviceRevocationService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ManageController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

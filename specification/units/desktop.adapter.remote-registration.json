@@ -29,11 +29,13 @@
 		"inputs": [
 			{
 				"name": "RemoteRegistrationAdapter.constructor.config",
-				"type": "RemoteRegistrationAdapterConfig"
+				"type": "RemoteRegistrationAdapterConfig",
+				"required": true
 			},
 			{
 				"name": "RemoteRegistrationAdapter.register.input",
-				"type": "RemoteHostRegisterInput"
+				"type": "RemoteHostRegisterInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,6 +48,47 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteRegistrationAdapter.register",
+				"inputs": [
+					{
+						"name": "RemoteRegistrationAdapter.register.input",
+						"type": "RemoteHostRegisterInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteRegistrationAdapter.register",
+						"type": "Promise<RemoteHostRegistration>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteRegistrationAdapter.constructor",
+				"inputs": [
+					{
+						"name": "RemoteRegistrationAdapter.constructor.config",
+						"type": "RemoteRegistrationAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteRegistrationAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

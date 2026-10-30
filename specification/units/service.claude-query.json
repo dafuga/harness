@@ -23,15 +23,18 @@
 		"inputs": [
 			{
 				"name": "ClaudeQueryService.constructor.repository",
-				"type": "CodexSessionRepository"
+				"type": "CodexSessionRepository",
+				"required": true
 			},
 			{
 				"name": "ClaudeQueryService.run.request",
-				"type": "GatewayRequest"
+				"type": "GatewayRequest",
+				"required": true
 			},
 			{
 				"name": "ClaudeQueryService.run.session",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,6 +47,52 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ClaudeQueryService.run",
+				"inputs": [
+					{
+						"name": "ClaudeQueryService.run.request",
+						"type": "GatewayRequest",
+						"required": true
+					},
+					{
+						"name": "ClaudeQueryService.run.session",
+						"type": "GatewaySession",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeQueryService.run",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ClaudeQueryService.constructor",
+				"inputs": [
+					{
+						"name": "ClaudeQueryService.constructor.repository",
+						"type": "CodexSessionRepository",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeQueryService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

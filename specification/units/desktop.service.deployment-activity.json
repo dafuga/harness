@@ -30,31 +30,39 @@
 		"inputs": [
 			{
 				"name": "DeploymentActivityService.progress.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "DeploymentActivityService.progress.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "DeploymentActivityService.wait.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "DeploymentActivityService.ensureCapacity.count",
-				"type": "unknown"
+				"type": "number",
+				"required": false,
+				"default": 1
 			},
 			{
 				"name": "DeploymentActivityService.schedule.reviewed",
-				"type": "ReviewedDeployment"
+				"type": "ReviewedDeployment",
+				"required": true
 			},
 			{
 				"name": "DeploymentActivityService.schedule.work",
-				"type": "Work"
+				"type": "Work",
+				"required": true
 			},
 			{
 				"name": "DeploymentActivityService.schedule.dependency",
-				"type": "Promise<DeploymentReceipt>"
+				"type": "Promise<DeploymentReceipt>",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -92,7 +100,133 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeploymentActivityService.list",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DeploymentActivityService.list",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentActivityService.progress",
+				"inputs": [
+					{
+						"name": "DeploymentActivityService.progress.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DeploymentActivityService.progress.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentActivityService.progress",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentActivityService.wait",
+				"inputs": [
+					{
+						"name": "DeploymentActivityService.wait.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentActivityService.wait",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentActivityService.idle",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DeploymentActivityService.idle",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentActivityService.ensureCapacity",
+				"inputs": [
+					{
+						"name": "DeploymentActivityService.ensureCapacity.count",
+						"type": "number",
+						"required": false,
+						"default": 1
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentActivityService.ensureCapacity",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeploymentActivityService.schedule",
+				"inputs": [
+					{
+						"name": "DeploymentActivityService.schedule.reviewed",
+						"type": "ReviewedDeployment",
+						"required": true
+					},
+					{
+						"name": "DeploymentActivityService.schedule.work",
+						"type": "Work",
+						"required": true
+					},
+					{
+						"name": "DeploymentActivityService.schedule.dependency",
+						"type": "Promise<DeploymentReceipt>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentActivityService.schedule",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

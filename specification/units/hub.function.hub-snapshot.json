@@ -19,11 +19,13 @@
 			{
 				"name": "hubSnapshot.input",
 				"type": "{ actor: Actor; source: SourceHistoryAdapter; cache: CollaborationCache; project: ProjectSummary; }",
+				"required": true,
 				"description": "Authenticated actor, source adapter, cache and already-authorized project summary with role."
 			},
 			{
 				"name": "hubSnapshot.query",
 				"type": "{ branch: string | null; commit: string | null }",
+				"required": true,
 				"description": "Optional branch and commit. Missing branch prefers main, otherwise the first listed branch; missing commit selects that branch tip."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "Snapshot with project, revision, branch/commit lists, listed catalog entities and cache identity. Source editing, agents, planning and approval are off; comments are enabled unless role is viewer."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubSnapshot",
+				"inputs": [
+					{
+						"name": "hubSnapshot.input",
+						"type": "{ actor: Actor; source: SourceHistoryAdapter; cache: CollaborationCache; project: ProjectSummary; }",
+						"required": true,
+						"description": "Authenticated actor, source adapter, cache and already-authorized project summary with role."
+					},
+					{
+						"name": "hubSnapshot.query",
+						"type": "{ branch: string | null; commit: string | null }",
+						"required": true,
+						"description": "Optional branch and commit. Missing branch prefers main, otherwise the first listed branch; missing commit selects that branch tip."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubSnapshot",
+						"type": "Promise<ProjectSnapshot>",
+						"description": "Snapshot with project, revision, branch/commit lists, listed catalog entities and cache identity. Source editing, agents, planning and approval are off; comments are enabled unless role is viewer."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

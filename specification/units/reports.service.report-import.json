@@ -25,23 +25,28 @@
 		"inputs": [
 			{
 				"name": "ReportImportService.constructor.repository",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ReportImportService.ingest.format",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReportImportService.ingest.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReportImportService.ingest.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ReportImportService.ingest.findings",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -54,6 +59,67 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReportImportService.ingest",
+				"inputs": [
+					{
+						"name": "ReportImportService.ingest.format",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ReportImportService.ingest.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ReportImportService.ingest.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ReportImportService.ingest.findings",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportImportService.ingest",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ReportImportService.constructor",
+				"inputs": [
+					{
+						"name": "ReportImportService.constructor.repository",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportImportService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -35,11 +35,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/entity-view/EntityView.svelte",
 			"packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
 			"packages/desktop/src/components/explorer-ui/entity-view/EntityView.types.ts"
 		],
-		"symbols": ["EntityView", "EntityView", "Section"]
+		"symbols": ["EntityView", "Section"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,6 +46,7 @@
 			{
 				"name": "EntityView.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Loaded workspace with an entity, navigation context, capabilities, revision and bridge operations. The entity must exist before rendering. The URL suffix selects a section, with unknown suffixes falling back to Overview and an old designs suffix opening Plan for a function. Agent-backed annotation requires agent capability and a writable snapshot; comment capability also permits annotations."
 			}
 		],
@@ -57,7 +57,9 @@
 				"description": "Entity identity, verification and the selected tab, with optional Source and conversation. Components keep their runtime screenshot above every tab; existing evidence and annotation rules remain in force."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

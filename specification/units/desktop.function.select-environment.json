@@ -20,6 +20,7 @@
 			{
 				"name": "selectEnvironment.host",
 				"type": "EnvironmentHost",
+				"required": true,
 				"description": "Host providing Capacitor detection and an optional desktop bridge."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Mobile environment when Capacitor reports native, else desktop when the bridge exists, else web with no bridge and local false."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "selectEnvironment",
+				"inputs": [
+					{
+						"name": "selectEnvironment.host",
+						"type": "EnvironmentHost",
+						"required": true,
+						"description": "Host providing Capacitor detection and an optional desktop bridge."
+					}
+				],
+				"outputs": [
+					{
+						"name": "selectEnvironment",
+						"type": "Environment",
+						"description": "Mobile environment when Capacitor reports native, else desktop when the bridge exists, else web with no bridge and local false."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

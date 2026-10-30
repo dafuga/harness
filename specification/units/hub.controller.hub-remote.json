@@ -24,15 +24,18 @@
 		"inputs": [
 			{
 				"name": "HubRemoteController.constructor.remote",
-				"type": "HubRemoteRuntime | null"
+				"type": "HubRemoteRuntime | null",
+				"required": false
 			},
 			{
 				"name": "HubRemoteController.handle.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			},
 			{
 				"name": "HubRemoteController.handle.actor",
-				"type": "Actor"
+				"type": "Actor",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -41,7 +44,53 @@
 				"type": "Promise<Response>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HubRemoteController.handle",
+				"inputs": [
+					{
+						"name": "HubRemoteController.handle.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "HubRemoteController.handle.actor",
+						"type": "Actor",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubRemoteController.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HubRemoteController.constructor",
+				"inputs": [
+					{
+						"name": "HubRemoteController.constructor.remote",
+						"type": "HubRemoteRuntime | null",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubRemoteController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -26,29 +26,34 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ensureAncestry.client",
-				"type": "GitHubTransport",
-				"description": "Transport used to compare the requested commit with the branch tip."
-			},
-			{
-				"name": "ensureAncestry.commit",
-				"type": "string",
-				"description": "Commit that must equal the tip or be its ancestor."
-			},
-			{
-				"name": "ensureAncestry.tip",
-				"type": "string",
-				"description": "Branch-tip commit to compare against."
-			},
-			{
 				"name": "githubHistory.adapter",
 				"type": "SourceAdapter",
+				"required": true,
 				"description": "Source adapter for resolving refs and reading immutable trees."
 			},
 			{
 				"name": "githubHistory.options",
 				"type": "Omit<GitHubOptions, 'repository'>",
+				"required": true,
 				"description": "Scoped token callback and optional fetch implementation."
+			},
+			{
+				"name": "ensureAncestry.client",
+				"type": "GitHubTransport",
+				"required": true,
+				"description": "Transport used to compare the requested commit with the branch tip."
+			},
+			{
+				"name": "ensureAncestry.commit",
+				"type": "string",
+				"required": true,
+				"description": "Commit that must equal the tip or be its ancestor."
+			},
+			{
+				"name": "ensureAncestry.tip",
+				"type": "string",
+				"required": true,
+				"description": "Branch-tip commit to compare against."
 			}
 		],
 		"outputs": [
@@ -69,7 +74,73 @@
 				"type": "thrown",
 				"description": "Rejects unreachable anchors, invalid input or source data, unavailable GitHub and histories exceeding 100 pages of 100 records."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "githubHistory",
+				"inputs": [
+					{
+						"name": "githubHistory.adapter",
+						"type": "SourceAdapter",
+						"required": true,
+						"description": "Source adapter for resolving refs and reading immutable trees."
+					},
+					{
+						"name": "githubHistory.options",
+						"type": "Omit<GitHubOptions, 'repository'>",
+						"required": true,
+						"description": "Scoped token callback and optional fetch implementation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubHistory",
+						"type": "Omit<SourceHistoryAdapter, keyof SourceAdapter | 'raw' | 'rawMany'>",
+						"description": "History methods that list branches and commits, compare each commit to its first parent, resolve optional refs, read facts and test reachability."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ensureAncestry",
+				"inputs": [
+					{
+						"name": "ensureAncestry.client",
+						"type": "GitHubTransport",
+						"required": true,
+						"description": "Transport used to compare the requested commit with the branch tip."
+					},
+					{
+						"name": "ensureAncestry.commit",
+						"type": "string",
+						"required": true,
+						"description": "Commit that must equal the tip or be its ancestor."
+					},
+					{
+						"name": "ensureAncestry.tip",
+						"type": "string",
+						"required": true,
+						"description": "Branch-tip commit to compare against."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ensureAncestry",
+						"type": "Promise<void>",
+						"description": "Resolves without a value when the commits match or GitHub confirms the requested ancestor."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

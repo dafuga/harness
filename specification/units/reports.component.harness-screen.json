@@ -11,11 +11,8 @@
 		"uses": ["reports.component.harness-harness-console"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/HarnessScreen.svelte",
-			"packages/reports/src/components/explorer-ui/HarnessScreen.svelte"
-		],
-		"symbols": ["HarnessScreen", "HarnessScreen"]
+		"source": ["packages/reports/src/components/explorer-ui/HarnessScreen.svelte"],
+		"symbols": ["HarnessScreen"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,11 +20,13 @@
 			{
 				"name": "HarnessScreen.title",
 				"type": "string",
+				"required": true,
 				"description": "Required page title, followed by the Harness name in the document title."
 			},
 			{
 				"name": "HarnessScreen.content",
 				"type": "ExplorerScreen",
+				"required": true,
 				"description": "Required explorer screen component to render through the console."
 			}
 		],
@@ -38,7 +37,9 @@
 				"description": "Explorer console bound to the current route and query beneath /harness. Navigation uses the framework router with the requested history replacement while preserving focus and avoiding automatic page scrolling."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

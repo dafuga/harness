@@ -22,8 +22,19 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "GameLevelService.constructor.session",
+				"type": "ProjectSessionService",
+				"required": true
+			},
+			{
+				"name": "GameLevelService.constructor.providers",
+				"type": "ProviderDiscoveryService",
+				"required": true
+			},
+			{
 				"name": "GameLevelService.generate.input",
 				"type": "LevelRequest",
+				"required": true,
 				"description": "Selected project, unsaved level brief, document revision and exact local provider/model for one read-only generation."
 			}
 		],
@@ -39,6 +50,58 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Reject unavailable models, malformed layouts, stale revisions, concurrent generation, project changes and read-only history."
+			}
+		],
+		"operations": [
+			{
+				"name": "GameLevelService.generate",
+				"inputs": [
+					{
+						"name": "GameLevelService.generate.input",
+						"type": "LevelRequest",
+						"required": true,
+						"description": "Selected project, unsaved level brief, document revision and exact local provider/model for one read-only generation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "GameLevelService.generate",
+						"type": "Promise<{ proposal: LevelProposal }>",
+						"description": "Validated final layout proposal tied to the input brief, dimension and reported model; does not save, approve or build."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GameLevelService.constructor",
+				"inputs": [
+					{
+						"name": "GameLevelService.constructor.session",
+						"type": "ProjectSessionService",
+						"required": true
+					},
+					{
+						"name": "GameLevelService.constructor.providers",
+						"type": "ProviderDiscoveryService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GameLevelService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

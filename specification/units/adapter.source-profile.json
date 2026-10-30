@@ -54,107 +54,121 @@
 			{
 				"name": "SourceProfileAdapter.constructor.config",
 				"type": "SourceProfileAdapterConfig",
+				"required": true,
 				"description": "Project root and registered unit manifests used to attribute a source file to one unambiguous active owner."
 			},
 			{
 				"name": "SourceProfileAdapter.transform.source",
 				"type": "string",
+				"required": true,
 				"description": "Original source text to inspect; transformations preserve authored bodies and evaluation count."
 			},
 			{
 				"name": "SourceProfileAdapter.transform.id",
 				"type": "string",
+				"required": true,
 				"description": "Runner module address, including supported filesystem URLs and query suffixes."
 			},
 			{
 				"name": "instrumentSource.source",
 				"type": "string",
+				"required": true,
 				"description": "Original source text to inspect; transformations preserve authored bodies and evaluation count."
 			},
 			{
 				"name": "instrumentSource.path",
 				"type": "string",
+				"required": true,
 				"description": "Source filename used to parse syntax and resolve the owning runtime boundary."
 			},
 			{
 				"name": "instrumentSource.unit",
 				"type": "ComponentManifest",
+				"required": true,
 				"description": "Registered unit whose exact owned source and runtime target define this observation."
 			},
 			{
 				"name": "initializationEdits.file",
 				"type": "ts.SourceFile",
+				"required": true,
 				"description": "Parsed TypeScript source file whose module initialization can be observed without moving declarations into a callback."
 			},
 			{
 				"name": "initializationEdits.unit",
 				"type": "ComponentManifest",
+				"required": true,
 				"description": "Registered unit whose exact owned source and runtime target define this observation."
 			},
 			{
 				"name": "initializationEdits.watch",
 				"type": "string",
+				"required": true,
 				"description": "Unique generated local identifier for the source observer import."
 			},
 			{
 				"name": "beginSourceScope.boundary",
 				"type": "Boundary",
+				"required": true,
 				"description": "Registered unit, operation name and async boundary metadata; argument values and results are never captured."
+			},
+			{
+				"name": "watchOperation.args",
+				"type": "never[]",
+				"required": false
 			},
 			{
 				"name": "watchMethod.owner",
 				"type": "object",
+				"required": true,
 				"description": "Object or prototype whose own method descriptor will be observed."
 			},
 			{
 				"name": "watchMethod.name",
 				"type": "string",
+				"required": true,
 				"description": "Method property name selected on the supplied owner."
 			},
 			{
 				"name": "watchMethod.boundary",
 				"type": "Boundary",
+				"required": true,
 				"description": "Registered unit, operation name and async boundary metadata; argument values and results are never captured."
 			},
 			{
 				"name": "sourceProfilePlugin.root",
 				"type": "string",
+				"required": true,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "runnerConfiguration.environment",
 				"type": "{ profileRoot: string }",
+				"required": true,
 				"description": "Runner test configuration context, including the project root; ordinary production builds do not install the observer."
 			},
 			{
 				"name": "nativeProfilePlugins.root",
 				"type": "unknown",
+				"required": true,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "profileSelection.root",
 				"type": "string",
+				"required": true,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "profileEnvironment.root",
 				"type": "string",
+				"required": true,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "profileEnvironment.directory",
 				"type": "string",
+				"required": true,
 				"description": "Evidence destination for immutable runtime capture chunks and native preload context."
-			},
-			{
-				"name": "watchOperation.operation",
-				"type": "T",
-				"description": "Actual operation supplied by the caller; one-pass observers preserve its result, receiver, effects and rejection behavior."
-			},
-			{
-				"name": "watchOperation.boundary",
-				"type": "Boundary",
-				"description": "Registered unit, operation name and async boundary metadata; argument values and results are never captured."
 			}
 		],
 		"outputs": [
@@ -224,6 +238,313 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Invalid registry data, unsupported runner bootstrap or unavailable source configuration rejects rather than inventing observations."
+			}
+		],
+		"operations": [
+			{
+				"name": "SourceProfileAdapter.transform",
+				"inputs": [
+					{
+						"name": "SourceProfileAdapter.transform.source",
+						"type": "string",
+						"required": true,
+						"description": "Original source text to inspect; transformations preserve authored bodies and evaluation count."
+					},
+					{
+						"name": "SourceProfileAdapter.transform.id",
+						"type": "string",
+						"required": true,
+						"description": "Runner module address, including supported filesystem URLs and query suffixes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceProfileAdapter.transform",
+						"type": "string | null",
+						"description": "Instrumented source for one eligible owned module, or null when attribution, syntax or scope is unsupported."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "instrumentSource",
+				"inputs": [
+					{
+						"name": "instrumentSource.source",
+						"type": "string",
+						"required": true,
+						"description": "Original source text to inspect; transformations preserve authored bodies and evaluation count."
+					},
+					{
+						"name": "instrumentSource.path",
+						"type": "string",
+						"required": true,
+						"description": "Source filename used to parse syntax and resolve the owning runtime boundary."
+					},
+					{
+						"name": "instrumentSource.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "Registered unit whose exact owned source and runtime target define this observation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "instrumentSource",
+						"type": "string | null",
+						"description": "Source edits that observe supported call or initialization boundaries, or null when none is safe."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "initializationEdits",
+				"inputs": [
+					{
+						"name": "initializationEdits.file",
+						"type": "ts.SourceFile",
+						"required": true,
+						"description": "Parsed TypeScript source file whose module initialization can be observed without moving declarations into a callback."
+					},
+					{
+						"name": "initializationEdits.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "Registered unit whose exact owned source and runtime target define this observation."
+					},
+					{
+						"name": "initializationEdits.watch",
+						"type": "string",
+						"required": true,
+						"description": "Unique generated local identifier for the source observer import."
+					}
+				],
+				"outputs": [
+					{
+						"name": "initializationEdits",
+						"type": "unknown",
+						"description": "Ordered text edits around a completed module scope, preserving import and export declarations."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "beginSourceScope",
+				"inputs": [
+					{
+						"name": "beginSourceScope.boundary",
+						"type": "Boundary",
+						"required": true,
+						"description": "Registered unit, operation name and async boundary metadata; argument values and results are never captured."
+					}
+				],
+				"outputs": [
+					{
+						"name": "beginSourceScope",
+						"type": "()",
+						"description": "Idempotent finishing callback; a scope that never completes emits no successful observation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchOperation",
+				"inputs": [
+					{
+						"name": "watchOperation.args",
+						"type": "never[]",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchOperation",
+						"type": "unknown",
+						"description": "Proxy preserving the actual receiver, arguments, return value and unsupported promise identity while collecting bounded successful samples."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchMethod",
+				"inputs": [
+					{
+						"name": "watchMethod.owner",
+						"type": "object",
+						"required": true,
+						"description": "Object or prototype whose own method descriptor will be observed."
+					},
+					{
+						"name": "watchMethod.name",
+						"type": "string",
+						"required": true,
+						"description": "Method property name selected on the supplied owner."
+					},
+					{
+						"name": "watchMethod.boundary",
+						"type": "Boundary",
+						"required": true,
+						"description": "Registered unit, operation name and async boundary metadata; argument values and results are never captured."
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchMethod",
+						"type": "void",
+						"description": "Installs observation on the selected own method descriptor without changing its public receiver behavior."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "flushSourceProfiles",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "flushSourceProfiles",
+						"type": "void",
+						"description": "Flushes completed observations as immutable capture chunks without recursively profiling the collector."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sourceProfilePlugin",
+				"inputs": [
+					{
+						"name": "sourceProfilePlugin.root",
+						"type": "string",
+						"required": true,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceProfilePlugin",
+						"type": "unknown",
+						"description": "Test-only runner plugin; it neither rewrites source files nor instruments ordinary production builds."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "runnerConfiguration",
+				"inputs": [
+					{
+						"name": "runnerConfiguration.environment",
+						"type": "{ profileRoot: string }",
+						"required": true,
+						"description": "Runner test configuration context, including the project root; ordinary production builds do not install the observer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runnerConfiguration",
+						"type": "unknown",
+						"description": "Vite-loadable configuration containing only the test source observer plugin."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeProfilePlugins",
+				"inputs": [
+					{
+						"name": "nativeProfilePlugins.root",
+						"type": "unknown",
+						"required": true,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeProfilePlugins",
+						"type": "unknown",
+						"description": "Native-startup-safe loader result; collection-only discovery returns no plugins."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "profileSelection",
+				"inputs": [
+					{
+						"name": "profileSelection.root",
+						"type": "string",
+						"required": true,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "profileSelection",
+						"type": "unknown",
+						"description": "Canonical project root, destination and registry, or null outside an eligible evidence run or inside an explicit benchmark boundary."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "profileEnvironment",
+				"inputs": [
+					{
+						"name": "profileEnvironment.root",
+						"type": "string",
+						"required": true,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+					},
+					{
+						"name": "profileEnvironment.directory",
+						"type": "string",
+						"required": true,
+						"description": "Evidence destination for immutable runtime capture chunks and native preload context."
+					}
+				],
+				"outputs": [
+					{
+						"name": "profileEnvironment",
+						"type": "unknown",
+						"description": "Bounded source-profile context and a deduplicated Bun preload option for native children."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SourceProfileAdapter.constructor",
+				"inputs": [
+					{
+						"name": "SourceProfileAdapter.constructor.config",
+						"type": "SourceProfileAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceProfileAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

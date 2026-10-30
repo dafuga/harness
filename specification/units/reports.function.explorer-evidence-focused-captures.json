@@ -25,21 +25,35 @@
 			{
 				"name": "focusedCaptures.detail",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Stored revision with exact-commit captures or validated whole-tree identity. Entity projections carry an opaque sourceTree hash; raw prepared history may use its legacy side locator. A different tree is rejected."
 			},
 			{
 				"name": "focusedCaptures.unit",
 				"type": "string",
+				"required": true,
 				"description": "Registered unit identifier; another unit cannot supply a missing screenshot."
+			},
+			{
+				"name": "withoutViewportSuffix.state",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "withoutViewportSuffix.viewport",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "focusedScenario.sides",
 				"type": "Array<ExplorerSide | null>",
+				"required": true,
 				"description": "Selected commit and first-parent evidence, retaining the union of their focused states and viewport declarations."
 			},
 			{
 				"name": "focusedScenario.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit whose focused gallery is described independently of full-verification scenario coverage."
 			}
 		],
@@ -55,7 +69,85 @@
 				"description": "Focused gallery declarations with its captured states and viewports; empty when neither side has a usable focused image."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "focusedCaptures",
+				"inputs": [
+					{
+						"name": "focusedCaptures.detail",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Stored revision with exact-commit captures or validated whole-tree identity. Entity projections carry an opaque sourceTree hash; raw prepared history may use its legacy side locator. A different tree is rejected."
+					},
+					{
+						"name": "focusedCaptures.unit",
+						"type": "string",
+						"required": true,
+						"description": "Registered unit identifier; another unit cannot supply a missing screenshot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "focusedCaptures",
+						"type": "ExplorerCapture[]",
+						"description": "Newest screenshot per state and viewport, bound to this unit, served build and original revision. Identical-tree reuse retains that original source and focused status; it grants no full verdict."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withoutViewportSuffix",
+				"inputs": [
+					{
+						"name": "withoutViewportSuffix.state",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "withoutViewportSuffix.viewport",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withoutViewportSuffix",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "focusedScenario",
+				"inputs": [
+					{
+						"name": "focusedScenario.sides",
+						"type": "Array<ExplorerSide | null>",
+						"required": true,
+						"description": "Selected commit and first-parent evidence, retaining the union of their focused states and viewport declarations."
+					},
+					{
+						"name": "focusedScenario.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit whose focused gallery is described independently of full-verification scenario coverage."
+					}
+				],
+				"outputs": [
+					{
+						"name": "focusedScenario",
+						"type": "HarnessScenario[]",
+						"description": "Focused gallery declarations with its captured states and viewports; empty when neither side has a usable focused image."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

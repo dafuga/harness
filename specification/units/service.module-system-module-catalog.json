@@ -21,21 +21,25 @@
 			{
 				"name": "ModuleCatalogService.load.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute project directory containing the package manifest and module metadata."
 			},
 			{
 				"name": "ModuleCatalogService.at.tree",
 				"type": "Pick<SourceTree, 'read'> & { list(): Promise<Array<{ path: string }>> }",
+				"required": true,
 				"description": "Source reader for exactly the selected project revision."
 			},
 			{
 				"name": "ModuleCatalogService.state.tree",
 				"type": "Pick<SourceTree, 'read'>",
+				"required": true,
 				"description": "Source reader for exactly the selected project revision."
 			},
 			{
 				"name": "ModuleCatalogService.state.gaps",
 				"type": "string[]",
+				"required": false,
 				"description": "Optional collection of readable catalog errors; omitted for strict mutation admission."
 			}
 		],
@@ -62,7 +66,81 @@
 				"type": "thrown",
 				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "ModuleCatalogService.load",
+				"inputs": [
+					{
+						"name": "ModuleCatalogService.load.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute project directory containing the package manifest and module metadata."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleCatalogService.load",
+						"type": "Promise<ModuleCatalog>",
+						"description": "Validated definitions, installed flags, generated instances and explicit discovery gaps."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleCatalogService.at",
+				"inputs": [
+					{
+						"name": "ModuleCatalogService.at.tree",
+						"type": "Pick<SourceTree, 'read'> & { list(): Promise<Array<{ path: string }>> }",
+						"required": true,
+						"description": "Source reader for exactly the selected project revision."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleCatalogService.at",
+						"type": "Promise<ModuleCatalog>",
+						"description": "Validated definitions, installed flags, generated instances and explicit discovery gaps."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleCatalogService.state",
+				"inputs": [
+					{
+						"name": "ModuleCatalogService.state.tree",
+						"type": "Pick<SourceTree, 'read'>",
+						"required": true,
+						"description": "Source reader for exactly the selected project revision."
+					},
+					{
+						"name": "ModuleCatalogService.state.gaps",
+						"type": "string[]",
+						"required": false,
+						"description": "Optional collection of readable catalog errors; omitted for strict mutation admission."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleCatalogService.state",
+						"type": "Promise<ModuleState>",
+						"description": "Persisted module snapshots and generated resource records; absent state is empty."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

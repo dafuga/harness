@@ -23,15 +23,18 @@
 		"inputs": [
 			{
 				"name": "ProviderSwitchApplyService.constructor.store",
-				"type": "SwitchStore"
+				"type": "SwitchStore",
+				"required": true
 			},
 			{
 				"name": "ProviderSwitchApplyService.constructor.control",
-				"type": "SessionControl"
+				"type": "SessionControl",
+				"required": true
 			},
 			{
 				"name": "ProviderSwitchApplyService.apply.sessionId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,6 +47,57 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProviderSwitchApplyService.apply",
+				"inputs": [
+					{
+						"name": "ProviderSwitchApplyService.apply.sessionId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSwitchApplyService.apply",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProviderSwitchApplyService.constructor",
+				"inputs": [
+					{
+						"name": "ProviderSwitchApplyService.constructor.store",
+						"type": "SwitchStore",
+						"required": true
+					},
+					{
+						"name": "ProviderSwitchApplyService.constructor.control",
+						"type": "SessionControl",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSwitchApplyService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

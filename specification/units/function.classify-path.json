@@ -28,11 +28,13 @@
 			{
 				"name": "classifyPath.path",
 				"type": "string",
+				"required": true,
 				"description": "Repository-relative path using forward slashes, to compare with workspace roots and configured patterns."
 			},
 			{
 				"name": "classifyPath.config",
 				"type": "UnitsConfig",
+				"required": true,
 				"description": "Workspace roots and ignored, global and test patterns used for classification."
 			}
 		],
@@ -43,7 +45,36 @@
 				"description": "Classification, workspace name and root, workspace-relative path, and source identity when recognized. The deepest matching workspace wins; registry, ignored, global, test and source checks run in that order."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "classifyPath",
+				"inputs": [
+					{
+						"name": "classifyPath.path",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative path using forward slashes, to compare with workspace roots and configured patterns."
+					},
+					{
+						"name": "classifyPath.config",
+						"type": "UnitsConfig",
+						"required": true,
+						"description": "Workspace roots and ignored, global and test patterns used for classification."
+					}
+				],
+				"outputs": [
+					{
+						"name": "classifyPath",
+						"type": "PathClass",
+						"description": "Classification, workspace name and root, workspace-relative path, and source identity when recognized. The deepest matching workspace wins; registry, ignored, global, test and source checks run in that order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

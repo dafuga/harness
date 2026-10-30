@@ -25,16 +25,19 @@
 			{
 				"name": "pickerMcpTools.service",
 				"type": "ProviderSwitchService",
+				"required": true,
 				"description": "Provider-switch service exposing catalog, observed sessions, status, request and cancellation operations."
 			},
 			{
 				"name": "pickerMcpTools.name",
 				"type": "string",
+				"required": true,
 				"description": "Operation name: list_models, list_observed_sessions, request_model_switch, cancel_model_switch, open_model_picker or get_provider_status."
 			},
 			{
 				"name": "pickerMcpTools.input",
 				"type": "unknown",
+				"required": true,
 				"description": "Operation arguments, validated against the applicable strict schema for status, switch or cancel. List operations ignore input."
 			}
 		],
@@ -66,7 +69,47 @@
 				"type": "thrown",
 				"description": "Thrown for an unknown operation; schema parse and service failures may also reject."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "pickerMcpTools",
+				"inputs": [
+					{
+						"name": "pickerMcpTools.service",
+						"type": "ProviderSwitchService",
+						"required": true,
+						"description": "Provider-switch service exposing catalog, observed sessions, status, request and cancellation operations."
+					},
+					{
+						"name": "pickerMcpTools.name",
+						"type": "string",
+						"required": true,
+						"description": "Operation name: list_models, list_observed_sessions, request_model_switch, cancel_model_switch, open_model_picker or get_provider_status."
+					},
+					{
+						"name": "pickerMcpTools.input",
+						"type": "unknown",
+						"required": true,
+						"description": "Operation arguments, validated against the applicable strict schema for status, switch or cancel. List operations ignore input."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pickerMcpTools",
+						"type": "unknown",
+						"description": "Promise of the service result: model/session lists, switch request, cancellation or status. Missing session for status becomes null; this dispatcher does not itself launch a UI."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

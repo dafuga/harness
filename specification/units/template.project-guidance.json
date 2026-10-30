@@ -18,11 +18,13 @@
 		"inputs": [
 			{
 				"name": "agentRules.projectType",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "skillRules.projectType",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +38,47 @@
 				"description": "Project skill with mandatory selected-commit static measurements, representative runtime observations for changed executable units, and explicit measurement blockers."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "agentRules",
+				"inputs": [
+					{
+						"name": "agentRules.projectType",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "agentRules",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "skillRules",
+				"inputs": [
+					{
+						"name": "skillRules.projectType",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "skillRules",
+						"type": "string",
+						"description": "Project skill with mandatory selected-commit static measurements, representative runtime observations for changed executable units, and explicit measurement blockers."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

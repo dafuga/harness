@@ -52,67 +52,83 @@
 		"inputs": [
 			{
 				"name": "loopRoot.input",
-				"type": "LoopInput"
+				"type": "LoopInput",
+				"required": false
 			},
 			{
 				"name": "loopPaths.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "loopPaths.loop",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "writeNewLoop.paths",
-				"type": "LoopPaths"
+				"type": "LoopPaths",
+				"required": true
 			},
 			{
 				"name": "writeNewLoop.state",
-				"type": "LoopState"
+				"type": "LoopState",
+				"required": true
 			},
 			{
 				"name": "readLoop.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "writeLoop.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "writeLoop.state",
-				"type": "LoopState"
+				"type": "LoopState",
+				"required": true
 			},
 			{
 				"name": "appendTrace.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "appendTrace.event",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": true
 			},
 			{
 				"name": "validateLoopId.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "validateLoopId.label",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "validateRequiredText.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "validateRequiredText.label",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "timestamp.now",
-				"type": "(() => string) | undefined"
+				"type": "(() => string) | undefined",
+				"required": true
 			},
 			{
 				"name": "isMissingFile.error",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -162,7 +178,231 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "loopRoot",
+				"inputs": [
+					{
+						"name": "loopRoot.input",
+						"type": "LoopInput",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "loopRoot",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "loopPaths",
+				"inputs": [
+					{
+						"name": "loopPaths.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "loopPaths.loop",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "loopPaths",
+						"type": "LoopPaths"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeNewLoop",
+				"inputs": [
+					{
+						"name": "writeNewLoop.paths",
+						"type": "LoopPaths",
+						"required": true
+					},
+					{
+						"name": "writeNewLoop.state",
+						"type": "LoopState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeNewLoop",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readLoop",
+				"inputs": [
+					{
+						"name": "readLoop.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readLoop",
+						"type": "Promise<LoopState>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeLoop",
+				"inputs": [
+					{
+						"name": "writeLoop.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeLoop.state",
+						"type": "LoopState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeLoop",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "appendTrace",
+				"inputs": [
+					{
+						"name": "appendTrace.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "appendTrace.event",
+						"type": "Record<string, unknown>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "appendTrace",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateLoopId",
+				"inputs": [
+					{
+						"name": "validateLoopId.value",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "validateLoopId.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateLoopId",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateRequiredText",
+				"inputs": [
+					{
+						"name": "validateRequiredText.value",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "validateRequiredText.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateRequiredText",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "timestamp",
+				"inputs": [
+					{
+						"name": "timestamp.now",
+						"type": "(() => string) | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "timestamp",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isMissingFile",
+				"inputs": [
+					{
+						"name": "isMissingFile.error",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isMissingFile",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

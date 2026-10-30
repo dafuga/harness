@@ -20,6 +20,7 @@
 			{
 				"name": "projectAgentEvents.agent",
 				"type": "ProjectAgent",
+				"required": true,
 				"description": "The project conversation that owns the active run and its visible messages.",
 				"examples": [
 					{
@@ -35,6 +36,7 @@
 			{
 				"name": "projectAgentEvents.value",
 				"type": "RunEvent",
+				"required": true,
 				"description": "Public progress, answer text, changes or terminal result from a specific run.",
 				"examples": [
 					{
@@ -53,7 +55,54 @@
 				"examples": [null]
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "projectAgentEvents",
+				"inputs": [
+					{
+						"name": "projectAgentEvents.agent",
+						"type": "ProjectAgent",
+						"required": true,
+						"description": "The project conversation that owns the active run and its visible messages.",
+						"examples": [
+							{
+								"workspace": {
+									"projectId": "local-demo"
+								},
+								"runId": "run-1",
+								"messages": [],
+								"said": ""
+							}
+						]
+					},
+					{
+						"name": "projectAgentEvents.value",
+						"type": "RunEvent",
+						"required": true,
+						"description": "Public progress, answer text, changes or terminal result from a specific run.",
+						"examples": [
+							{
+								"runId": "run-1",
+								"kind": "text",
+								"text": "See [[unit:app.component.toolbar]]"
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectAgentEvents",
+						"type": "Promise<void>",
+						"description": "Updates only the matching conversation, keeps terminal text and refreshes its project. Resolves without a return value.",
+						"examples": [null]
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -29,15 +29,19 @@
 		"inputs": [
 			{
 				"name": "RelaySocketAdapter.constructor.config",
-				"type": "RelaySocketAdapterConfig"
+				"type": "RelaySocketAdapterConfig",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "RelaySocketAdapter.open.url",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RelaySocketAdapter.open.headers",
-				"type": "Record<string, string>"
+				"type": "Record<string, string>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +50,54 @@
 				"type": "RemoteSocket"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RelaySocketAdapter.open",
+				"inputs": [
+					{
+						"name": "RelaySocketAdapter.open.url",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RelaySocketAdapter.open.headers",
+						"type": "Record<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelaySocketAdapter.open",
+						"type": "RemoteSocket"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RelaySocketAdapter.constructor",
+				"inputs": [
+					{
+						"name": "RelaySocketAdapter.constructor.config",
+						"type": "RelaySocketAdapterConfig",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelaySocketAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

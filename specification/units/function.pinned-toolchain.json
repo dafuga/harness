@@ -28,11 +28,14 @@
 			{
 				"name": "pinnedToolchain.tool",
 				"type": "string",
+				"required": true,
 				"description": "Lowercase Rust tool name beginning with a letter and containing only letters, digits and hyphens."
 			},
 			{
 				"name": "pinnedToolchain.options",
 				"type": "PinnedOptions",
+				"required": false,
+				"default": {},
 				"description": "Optional working directory, environment and command runner. Defaults use the current directory, process environment and synchronous subprocess execution."
 			}
 		],
@@ -49,7 +52,42 @@
 				"type": "thrown",
 				"description": "Thrown for an invalid tool name, absent/malformed nearest rust-toolchain.toml, invalid starting directory, unavailable rustup or unsuccessful/empty tool resolution."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "pinnedToolchain",
+				"inputs": [
+					{
+						"name": "pinnedToolchain.tool",
+						"type": "string",
+						"required": true,
+						"description": "Lowercase Rust tool name beginning with a letter and containing only letters, digits and hyphens."
+					},
+					{
+						"name": "pinnedToolchain.options",
+						"type": "PinnedOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional working directory, environment and command runner. Defaults use the current directory, process environment and synchronous subprocess execution."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pinnedToolchain",
+						"type": "PinnedTool",
+						"description": "Resolved executable and copied child environment with the pinned RUSTUP_TOOLCHAIN, matching rustc path, cleared wrappers and toolchain directories prepended to PATH and library search paths."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

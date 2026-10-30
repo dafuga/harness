@@ -16,6 +16,7 @@
 			{
 				"name": "benchmarkMetrics.run",
 				"type": "BenchmarkRun",
+				"required": true,
 				"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
 			}
 		],
@@ -26,7 +27,30 @@
 				"description": "Per-candidate correctness, repair, duration and usage summaries with unknown values retained."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "benchmarkMetrics",
+				"inputs": [
+					{
+						"name": "benchmarkMetrics.run",
+						"type": "BenchmarkRun",
+						"required": true,
+						"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "benchmarkMetrics",
+						"type": "unknown",
+						"description": "Per-candidate correctness, repair, duration and usage summaries with unknown values retained."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

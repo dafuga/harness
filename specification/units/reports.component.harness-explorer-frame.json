@@ -27,17 +27,21 @@
 			{
 				"name": "ExplorerFrame.host",
 				"type": "ExplorerScreenProps",
+				"required": true,
 				"description": "Everything the host gives a screen: the shown revision, address, entities and its answers."
+			},
+			{
+				"name": "ExplorerFrame.registryRequired",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "Defaults to true. Platform configuration can be read without a unit registry."
 			},
 			{
 				"name": "ExplorerFrame.children",
 				"type": "Snippet<[EntityNav]>",
+				"required": true,
 				"description": "The screen to draw inside."
-			},
-			{
-				"name": "ExplorerFrame.registryRequired",
-				"type": "boolean | undefined",
-				"description": "Defaults to true. Platform configuration can be read without a unit registry."
 			}
 		],
 		"outputs": [
@@ -53,7 +57,9 @@
 				"type": "stated",
 				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

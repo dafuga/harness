@@ -19,11 +19,13 @@
 			{
 				"name": "sanitize.value",
 				"type": "string",
+				"required": true,
 				"description": "Text to sanitize."
 			},
 			{
 				"name": "cleanData.input",
 				"type": "T",
+				"required": true,
 				"description": "Value to recursively clean."
 			}
 		],
@@ -39,7 +41,50 @@
 				"description": "Strings sanitized recursively through arrays and enumerable object fields, with matching sensitive keys replaced entirely by a redaction marker. Other primitive values remain unchanged."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "sanitize",
+				"inputs": [
+					{
+						"name": "sanitize.value",
+						"type": "string",
+						"required": true,
+						"description": "Text to sanitize."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sanitize",
+						"type": "string",
+						"description": "Text with recognized authorization tokens, secret assignments and key/token patterns replaced by redaction markers. HTTP(S) URLs lose user information, query and fragment; Stripe checkout URLs also lose their path."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cleanData",
+				"inputs": [
+					{
+						"name": "cleanData.input",
+						"type": "T",
+						"required": true,
+						"description": "Value to recursively clean."
+					}
+				],
+				"outputs": [
+					{
+						"name": "cleanData",
+						"type": "T",
+						"description": "Strings sanitized recursively through arrays and enumerable object fields, with matching sensitive keys replaced entirely by a redaction marker. Other primitive values remain unchanged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

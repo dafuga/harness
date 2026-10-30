@@ -29,36 +29,44 @@
 			{
 				"name": "coverageAffected.detail",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Revision with record-specific comparison and first-parent source impact."
 			},
 			{
 				"name": "coverageAffected.record",
 				"type": "HarnessRecord",
+				"required": true,
 				"description": "Record whose applicable impact should be inspected."
 			},
 			{
 				"name": "coverageAffected.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit identifier to look for in direct, indirect or added impact."
 			},
 			{
 				"name": "explorerCoverage.detail",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Revision supplying registry units and comparison evidence."
 			},
 			{
 				"name": "explorerCoverage.record",
 				"type": "HarnessRecord | null",
+				"required": true,
 				"description": "Selected record, or null for absent evidence. Current tests and inherited origin-test summaries may include browser diagnostics."
 			},
 			{
 				"name": "explorerCoverage.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit whose applicable scenario states should be judged."
 			},
 			{
 				"name": "explorerCoverage.absent",
 				"type": "Told",
+				"required": false,
+				"default": ["missing", "No verification record is attached to this commit."],
 				"description": "Optional absent-record standing and reason, defaulting to missing with no verification record attached."
 			}
 		],
@@ -74,7 +82,81 @@
 				"description": "Returns a scenario-evaluation function. It narrows states to the unit, checks declarations, test outcomes, result lineage and required captures, then returns tests, state details, inheritance and worst standing. Inherited results require a bound origin and recorded proof that the unit was unaffected; missing origin test evidence stays incomplete. Each listed check retains optional diagnostics from the record where it ran: the current record for fresh results and the origin-test summary for inherited results. Diagnostics are carried for display; this helper judges check outcomes from their recorded status."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "coverageAffected",
+				"inputs": [
+					{
+						"name": "coverageAffected.detail",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Revision with record-specific comparison and first-parent source impact."
+					},
+					{
+						"name": "coverageAffected.record",
+						"type": "HarnessRecord",
+						"required": true,
+						"description": "Record whose applicable impact should be inspected."
+					},
+					{
+						"name": "coverageAffected.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit identifier to look for in direct, indirect or added impact."
+					}
+				],
+				"outputs": [
+					{
+						"name": "coverageAffected",
+						"type": "boolean | null",
+						"description": "True when applicable impact includes the unit, false when that impact exists and excludes it, or null when no applicable impact is recorded. Prefers comparison for this record, otherwise source impact with the record’s base."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explorerCoverage",
+				"inputs": [
+					{
+						"name": "explorerCoverage.detail",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Revision supplying registry units and comparison evidence."
+					},
+					{
+						"name": "explorerCoverage.record",
+						"type": "HarnessRecord | null",
+						"required": true,
+						"description": "Selected record, or null for absent evidence. Current tests and inherited origin-test summaries may include browser diagnostics."
+					},
+					{
+						"name": "explorerCoverage.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit whose applicable scenario states should be judged."
+					},
+					{
+						"name": "explorerCoverage.absent",
+						"type": "Told",
+						"required": false,
+						"default": ["missing", "No verification record is attached to this commit."],
+						"description": "Optional absent-record standing and reason, defaulting to missing with no verification record attached."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerCoverage",
+						"type": "unknown",
+						"description": "Returns a scenario-evaluation function. It narrows states to the unit, checks declarations, test outcomes, result lineage and required captures, then returns tests, state details, inheritance and worst standing. Inherited results require a bound origin and recorded proof that the unit was unaffected; missing origin test evidence stays incomplete. Each listed check retains optional diagnostics from the record where it ran: the current record for fresh results and the origin-test summary for inherited results. Diagnostics are carried for display; this helper judges check outcomes from their recorded status."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

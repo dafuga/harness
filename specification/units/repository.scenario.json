@@ -27,15 +27,18 @@
 		"inputs": [
 			{
 				"name": "ScenarioRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ScenarioRepository.read.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"required": true
 			},
 			{
 				"name": "ScenarioRepository.write.manifest",
-				"type": "ScenarioManifest"
+				"type": "ScenarioManifest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -48,7 +51,66 @@
 				"type": "Promise<string>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ScenarioRepository.read",
+				"inputs": [
+					{
+						"name": "ScenarioRepository.read.tree",
+						"type": "SourceTree",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScenarioRepository.read",
+						"type": "Promise<ScenarioRead>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ScenarioRepository.write",
+				"inputs": [
+					{
+						"name": "ScenarioRepository.write.manifest",
+						"type": "ScenarioManifest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScenarioRepository.write",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ScenarioRepository.constructor",
+				"inputs": [
+					{
+						"name": "ScenarioRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScenarioRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -20,16 +20,19 @@
 			{
 				"name": "gatewayStream.session",
 				"type": "GatewaySession",
+				"required": true,
 				"description": "Mutable session receiving the event emitter and completed replay snapshot."
 			},
 			{
 				"name": "gatewayStream.repository",
 				"type": "CodexSessionRepository",
+				"required": true,
 				"description": "Session repository used to cancel unfinished work on request abort or stream cancellation."
 			},
 			{
 				"name": "gatewayStream.context",
 				"type": "{ key: string; signal: globalThis.AbortSignal }",
+				"required": false,
 				"description": "Optional replay key and abort signal associated with this request."
 			}
 		],
@@ -46,7 +49,42 @@
 				"type": "thrown",
 				"description": "No direct ExpectedCliError throw appears in this implementation; repository cancellation or serialization may propagate errors."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "gatewayStream",
+				"inputs": [
+					{
+						"name": "gatewayStream.session",
+						"type": "GatewaySession",
+						"required": true,
+						"description": "Mutable session receiving the event emitter and completed replay snapshot."
+					},
+					{
+						"name": "gatewayStream.repository",
+						"type": "CodexSessionRepository",
+						"required": true,
+						"description": "Session repository used to cancel unfinished work on request abort or stream cancellation."
+					},
+					{
+						"name": "gatewayStream.context",
+						"type": "{ key: string; signal: globalThis.AbortSignal }",
+						"required": false,
+						"description": "Optional replay key and abort signal associated with this request."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatewayStream",
+						"type": "Response",
+						"description": "No-store text/event-stream response. Startup, text and calls are serialized; done/error closes the stream, clears the emitter and optionally stores the complete replay. Client cancellation clears the emitter and cancels unfinished work."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

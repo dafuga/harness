@@ -51,74 +51,88 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "stableJson.value",
+				"type": "unknown",
+				"required": true,
+				"description": "JSON-like value to serialize with recursively sorted object keys."
+			},
+			{
 				"name": "cryptoSource.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Byte array to expose to WebCrypto without copying."
 			},
 			{
 				"name": "remoteBytes.text",
 				"type": "string",
+				"required": true,
 				"description": "Text to encode as UTF-8."
 			},
 			{
 				"name": "bytesText.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Bytes to decode as strict UTF-8."
 			},
 			{
 				"name": "toBase64.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Bytes to encode as padded standard base64."
 			},
 			{
 				"name": "fromBase64.text",
 				"type": "string",
+				"required": true,
 				"description": "Strict standard base64 with valid padding and no whitespace."
 			},
 			{
 				"name": "toBase64Url.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Bytes to encode as unpadded URL-safe base64."
 			},
 			{
 				"name": "fromBase64Url.text",
 				"type": "string",
+				"required": true,
 				"description": "Unpadded URL-safe base64 text; a length congruent to one modulo four is rejected."
 			},
 			{
 				"name": "toHex.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Bytes to encode as lowercase hexadecimal."
 			},
 			{
 				"name": "concatBytes.parts",
 				"type": "Uint8Array[]",
+				"required": false,
 				"description": "Byte arrays to concatenate in argument order."
 			},
 			{
 				"name": "sha256.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Bytes whose SHA-256 digest is requested."
 			},
 			{
 				"name": "randomBytes.length",
 				"type": "number",
+				"required": true,
 				"description": "Requested byte-array length, subject to typed-array and WebCrypto limits."
 			},
 			{
 				"name": "safeEqual.left",
 				"type": "string",
+				"required": true,
 				"description": "First string to compare."
 			},
 			{
 				"name": "safeEqual.right",
 				"type": "string",
+				"required": true,
 				"description": "Second string to compare."
-			},
-			{
-				"name": "stableJson.value",
-				"type": "unknown",
-				"description": "JSON-like value to serialize with recursively sorted object keys."
 			}
 		],
 		"outputs": [
@@ -194,7 +208,286 @@
 				"type": "thrown",
 				"description": "Rejects malformed encodings or UTF-8; invalid random lengths, unsupported JSON values such as BigInt, circular structures and WebCrypto failures may also throw."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "stableJson",
+				"inputs": [
+					{
+						"name": "stableJson.value",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-like value to serialize with recursively sorted object keys."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stableJson",
+						"type": "string",
+						"description": "JSON text with sorted object keys and undefined object properties omitted; unsupported primitive values become null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cryptoSource",
+				"inputs": [
+					{
+						"name": "cryptoSource.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Byte array to expose to WebCrypto without copying."
+					}
+				],
+				"outputs": [
+					{
+						"name": "cryptoSource",
+						"type": "CryptoSource",
+						"description": "The same byte array with a WebCrypto-compatible type."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "remoteBytes",
+				"inputs": [
+					{
+						"name": "remoteBytes.text",
+						"type": "string",
+						"required": true,
+						"description": "Text to encode as UTF-8."
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteBytes",
+						"type": "Uint8Array",
+						"description": "New UTF-8 byte array."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "bytesText",
+				"inputs": [
+					{
+						"name": "bytesText.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes to decode as strict UTF-8."
+					}
+				],
+				"outputs": [
+					{
+						"name": "bytesText",
+						"type": "string",
+						"description": "Decoded text; malformed UTF-8 rejects."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "toBase64",
+				"inputs": [
+					{
+						"name": "toBase64.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes to encode as padded standard base64."
+					}
+				],
+				"outputs": [
+					{
+						"name": "toBase64",
+						"type": "string",
+						"description": "Padded standard base64 text."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fromBase64",
+				"inputs": [
+					{
+						"name": "fromBase64.text",
+						"type": "string",
+						"required": true,
+						"description": "Strict standard base64 with valid padding and no whitespace."
+					}
+				],
+				"outputs": [
+					{
+						"name": "fromBase64",
+						"type": "Uint8Array",
+						"description": "Decoded byte array."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "toBase64Url",
+				"inputs": [
+					{
+						"name": "toBase64Url.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes to encode as unpadded URL-safe base64."
+					}
+				],
+				"outputs": [
+					{
+						"name": "toBase64Url",
+						"type": "string",
+						"description": "URL-safe base64 without padding."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fromBase64Url",
+				"inputs": [
+					{
+						"name": "fromBase64Url.text",
+						"type": "string",
+						"required": true,
+						"description": "Unpadded URL-safe base64 text; a length congruent to one modulo four is rejected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "fromBase64Url",
+						"type": "Uint8Array",
+						"description": "Decoded byte array."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "toHex",
+				"inputs": [
+					{
+						"name": "toHex.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes to encode as lowercase hexadecimal."
+					}
+				],
+				"outputs": [
+					{
+						"name": "toHex",
+						"type": "string",
+						"description": "Two lowercase hexadecimal characters per byte."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "concatBytes",
+				"inputs": [
+					{
+						"name": "concatBytes.parts",
+						"type": "Uint8Array[]",
+						"required": false,
+						"description": "Byte arrays to concatenate in argument order."
+					}
+				],
+				"outputs": [
+					{
+						"name": "concatBytes",
+						"type": "Uint8Array",
+						"description": "New array containing all supplied parts in order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sha256",
+				"inputs": [
+					{
+						"name": "sha256.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes whose SHA-256 digest is requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sha256",
+						"type": "Promise<Uint8Array>",
+						"description": "32-byte SHA-256 digest."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "randomBytes",
+				"inputs": [
+					{
+						"name": "randomBytes.length",
+						"type": "number",
+						"required": true,
+						"description": "Requested byte-array length, subject to typed-array and WebCrypto limits."
+					}
+				],
+				"outputs": [
+					{
+						"name": "randomBytes",
+						"type": "Uint8Array",
+						"description": "New byte array filled with cryptographic random values."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "safeEqual",
+				"inputs": [
+					{
+						"name": "safeEqual.left",
+						"type": "string",
+						"required": true,
+						"description": "First string to compare."
+					},
+					{
+						"name": "safeEqual.right",
+						"type": "string",
+						"required": true,
+						"description": "Second string to compare."
+					}
+				],
+				"outputs": [
+					{
+						"name": "safeEqual",
+						"type": "boolean",
+						"description": "True only for equal strings; unequal lengths return early, while equal lengths compare every character."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

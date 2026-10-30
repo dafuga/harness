@@ -21,19 +21,23 @@
 		"inputs": [
 			{
 				"name": "HistoryMediaService.constructor.out",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HistoryMediaService.place.bytes",
-				"type": "Buffer | undefined"
+				"type": "Buffer | undefined",
+				"required": true
 			},
 			{
 				"name": "HistoryMediaService.place.file",
-				"type": "MediaFile"
+				"type": "MediaFile",
+				"required": true
 			},
 			{
 				"name": "HistoryMediaService.place.gap",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -42,7 +46,58 @@
 				"type": "Promise<ResolvedMedia>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HistoryMediaService.place",
+				"inputs": [
+					{
+						"name": "HistoryMediaService.place.bytes",
+						"type": "Buffer | undefined",
+						"required": true
+					},
+					{
+						"name": "HistoryMediaService.place.file",
+						"type": "MediaFile",
+						"required": true
+					},
+					{
+						"name": "HistoryMediaService.place.gap",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryMediaService.place",
+						"type": "Promise<ResolvedMedia>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HistoryMediaService.constructor",
+				"inputs": [
+					{
+						"name": "HistoryMediaService.constructor.out",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HistoryMediaService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

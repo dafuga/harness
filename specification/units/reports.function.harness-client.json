@@ -20,11 +20,13 @@
 			{
 				"name": "harnessClient.base",
 				"type": "string",
+				"required": true,
 				"description": "Console mount prefix used before /data/."
 			},
 			{
 				"name": "harnessClient.fetcher",
 				"type": "typeof fetch",
+				"required": false,
 				"description": "Optional fetch implementation. Supplying one creates an independent client; otherwise clients are shared by base."
 			}
 		],
@@ -41,7 +43,36 @@
 				"type": "thrown",
 				"description": "Non-success HTTP responses reject with the resource path and status. Fetch and JSON errors also propagate to the caller."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "harnessClient",
+				"inputs": [
+					{
+						"name": "harnessClient.base",
+						"type": "string",
+						"required": true,
+						"description": "Console mount prefix used before /data/."
+					},
+					{
+						"name": "harnessClient.fetcher",
+						"type": "typeof fetch",
+						"required": false,
+						"description": "Optional fetch implementation. Supplying one creates an independent client; otherwise clients are shared by base."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessClient",
+						"type": "HarnessClient",
+						"description": "Client with index, revision, stored-side and activity readers. Each path caches its promise, including successful responses; rejected reads are evicted so later calls retry. Construction makes no request."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

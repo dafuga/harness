@@ -26,7 +26,8 @@
 		"inputs": [
 			{
 				"name": "NativeHandoffController.constructor.options",
-				"type": "NativeHandoffControllerOptions"
+				"type": "NativeHandoffControllerOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -35,7 +36,42 @@
 				"type": "AuthRoutes"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "NativeHandoffController.routes",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeHandoffController.routes",
+						"type": "AuthRoutes"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "NativeHandoffController.constructor",
+				"inputs": [
+					{
+						"name": "NativeHandoffController.constructor.options",
+						"type": "NativeHandoffControllerOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeHandoffController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

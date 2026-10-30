@@ -21,6 +21,7 @@
 			{
 				"name": "helperTemplates.code",
 				"type": "string",
+				"required": true,
 				"description": "Svelte component source to parse. Plain markup and string contents do not become helper calls.",
 				"examples": ["<script>const title = 'Orders';</script><h1>{title}</h1>"]
 			}
@@ -32,7 +33,31 @@
 				"description": "Script code and isolated template-expression wrappers, with template-bound names represented as local parameters so shadowing remains visible."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "helperTemplates",
+				"inputs": [
+					{
+						"name": "helperTemplates.code",
+						"type": "string",
+						"required": true,
+						"description": "Svelte component source to parse. Plain markup and string contents do not become helper calls.",
+						"examples": ["<script>const title = 'Orders';</script><h1>{title}</h1>"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "helperTemplates",
+						"type": "string",
+						"description": "Script code and isolated template-expression wrappers, with template-bound names represented as local parameters so shadowing remains visible."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

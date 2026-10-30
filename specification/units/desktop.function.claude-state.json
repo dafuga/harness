@@ -20,6 +20,7 @@
 			{
 				"name": "claudeState.command",
 				"type": "CliCommand",
+				"required": true,
 				"description": "The executable and initial arguments for Claude CLI. The helper appends version and JSON authentication-status commands, each with a ten-second timeout."
 			}
 		],
@@ -36,7 +37,35 @@
 				"type": "thrown",
 				"description": "The subscription requirement can produce an Error internally, but this function catches it and reports its message in the returned unavailable state. Normal discovery errors are not rethrown."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "claudeState",
+				"inputs": [
+					{
+						"name": "claudeState.command",
+						"type": "CliCommand",
+						"required": true,
+						"description": "The executable and initial arguments for Claude CLI. The helper appends version and JSON authentication-status commands, each with a ten-second timeout."
+					}
+				],
+				"outputs": [
+					{
+						"name": "claudeState",
+						"type": "Promise<ProviderState>",
+						"description": "A promise for Claude availability, version, reason and model choices. A logged-in claude.ai subscription enables the configured Claude Opus 5.5 choice with low through max effort and xhigh as default. Image generation remains false. Discovery failures return unavailable with a reason and no models."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

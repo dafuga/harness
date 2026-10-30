@@ -27,23 +27,28 @@
 		"inputs": [
 			{
 				"name": "AnalyticsRepository.constructor.home",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical.project",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "AnalyticsRepository.record.event",
-				"type": "AnalyticsEvent"
+				"type": "AnalyticsEvent",
+				"required": true
 			},
 			{
 				"name": "AnalyticsRepository.recordImported.event",
-				"type": "AnalyticsEvent"
+				"type": "AnalyticsEvent",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -72,6 +77,112 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AnalyticsRepository.reconcileHistorical",
+				"inputs": [
+					{
+						"name": "AnalyticsRepository.reconcileHistorical.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "AnalyticsRepository.reconcileHistorical.project",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsRepository.reconcileHistorical",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AnalyticsRepository.record",
+				"inputs": [
+					{
+						"name": "AnalyticsRepository.record.event",
+						"type": "AnalyticsEvent",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsRepository.record",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AnalyticsRepository.recordImported",
+				"inputs": [
+					{
+						"name": "AnalyticsRepository.recordImported.event",
+						"type": "AnalyticsEvent",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsRepository.recordImported",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AnalyticsRepository.events",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AnalyticsRepository.events",
+						"type": "AnalyticsEvent[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AnalyticsRepository.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AnalyticsRepository.close",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AnalyticsRepository.constructor",
+				"inputs": [
+					{
+						"name": "AnalyticsRepository.constructor.home",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},

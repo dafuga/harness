@@ -43,16 +43,19 @@
 			{
 				"name": "scanFailure.cause",
 				"type": "unknown",
+				"required": true,
 				"description": "Unknown value to inspect for a recognized scan failure code."
 			},
 			{
 				"name": "scanNotice.cause",
 				"type": "unknown",
+				"required": true,
 				"description": "Failure to describe; unknown failures fall back to String(cause)."
 			},
 			{
 				"name": "phoneName.value",
 				"type": "string",
+				"required": true,
 				"description": "Phone name to trim and validate."
 			}
 		],
@@ -88,7 +91,70 @@
 				"description": "Trimmed name when nonempty and at most 80 characters; otherwise null."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "scanFailure",
+				"inputs": [
+					{
+						"name": "scanFailure.cause",
+						"type": "unknown",
+						"required": true,
+						"description": "Unknown value to inspect for a recognized scan failure code."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanFailure",
+						"type": "RemoteScanFailure | null",
+						"description": "Recognized failure code or null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scanNotice",
+				"inputs": [
+					{
+						"name": "scanNotice.cause",
+						"type": "unknown",
+						"required": true,
+						"description": "Failure to describe; unknown failures fall back to String(cause)."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanNotice",
+						"type": "string",
+						"description": "Known failure notice or string conversion of the unknown cause."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "phoneName",
+				"inputs": [
+					{
+						"name": "phoneName.value",
+						"type": "string",
+						"required": true,
+						"description": "Phone name to trim and validate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "phoneName",
+						"type": "string | null",
+						"description": "Trimmed name when nonempty and at most 80 characters; otherwise null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

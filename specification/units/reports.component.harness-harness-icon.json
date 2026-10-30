@@ -23,16 +23,20 @@
 			{
 				"name": "HarnessIcon.name",
 				"type": "HarnessIconName",
+				"required": true,
 				"description": "Required icon-catalog name selecting its path and whether it uses solid styling."
 			},
 			{
 				"name": "HarnessIcon.size",
 				"type": "number",
+				"required": false,
+				"default": 20,
 				"description": "Optional square size in pixels, defaulting to 20."
 			},
 			{
 				"name": "HarnessIcon.label",
 				"type": "string",
+				"required": false,
 				"description": "Optional accessible label. A nonempty label makes the SVG an image; otherwise it is hidden from assistive technology."
 			}
 		],
@@ -43,7 +47,9 @@
 				"description": "An unfocusable SVG with a 24-unit view box and the selected catalog path."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

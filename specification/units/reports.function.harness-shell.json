@@ -37,14 +37,16 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "plainClick.event",
-				"type": "MouseEvent",
-				"description": "Mouse event to test for application-handled navigation."
-			},
-			{
 				"name": "harnessShell.input",
 				"type": "HarnessNavbarInput",
+				"required": true,
 				"description": "Navigation context with base, optional resolved scope/index, commits and address builder."
+			},
+			{
+				"name": "plainClick.event",
+				"type": "MouseEvent",
+				"required": true,
+				"description": "Mouse event to test for application-handled navigation."
 			}
 		],
 		"outputs": [
@@ -59,7 +61,50 @@
 				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "harnessShell",
+				"inputs": [
+					{
+						"name": "harnessShell.input",
+						"type": "HarnessNavbarInput",
+						"required": true,
+						"description": "Navigation context with base, optional resolved scope/index, commits and address builder."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessShell",
+						"type": "HarnessShellView",
+						"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "plainClick",
+				"inputs": [
+					{
+						"name": "plainClick.event",
+						"type": "MouseEvent",
+						"required": true,
+						"description": "Mouse event to test for application-handled navigation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "plainClick",
+						"type": "boolean",
+						"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

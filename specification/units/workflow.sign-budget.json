@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "budgetEstablish.input",
-				"type": "SignedInput"
+				"type": "SignedInput",
+				"required": true
 			},
 			{
 				"name": "budgetApprove.input",
-				"type": "SignedInput"
+				"type": "SignedInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +39,52 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "budgetEstablish",
+				"inputs": [
+					{
+						"name": "budgetEstablish.input",
+						"type": "SignedInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "budgetEstablish",
+						"type": "Promise<BudgetEvent[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "budgetApprove",
+				"inputs": [
+					{
+						"name": "budgetApprove.input",
+						"type": "SignedInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "budgetApprove",
+						"type": "Promise<BudgetEvent[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

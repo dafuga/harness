@@ -32,15 +32,18 @@
 		"inputs": [
 			{
 				"name": "D1AuthStoreAdapter.constructor.db",
-				"type": "D1Like"
+				"type": "D1Like",
+				"required": true
 			},
 			{
 				"name": "D1AuthStoreAdapter.purge.now",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "createD1AuthStore.db",
-				"type": "D1Like"
+				"type": "D1Like",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -53,7 +56,66 @@
 				"type": "AuthStore"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "D1AuthStoreAdapter.purge",
+				"inputs": [
+					{
+						"name": "D1AuthStoreAdapter.purge.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "D1AuthStoreAdapter.purge",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createD1AuthStore",
+				"inputs": [
+					{
+						"name": "createD1AuthStore.db",
+						"type": "D1Like",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createD1AuthStore",
+						"type": "AuthStore"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "D1AuthStoreAdapter.constructor",
+				"inputs": [
+					{
+						"name": "D1AuthStoreAdapter.constructor.db",
+						"type": "D1Like",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "D1AuthStoreAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

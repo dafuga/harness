@@ -25,19 +25,24 @@
 		"inputs": [
 			{
 				"name": "HarnessHttpAdapter.constructor.config",
-				"type": "HarnessHttpAdapterConfig"
+				"type": "HarnessHttpAdapterConfig",
+				"required": true
 			},
 			{
 				"name": "HarnessHttpAdapter.request.method",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HarnessHttpAdapter.request.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HarnessHttpAdapter.request.request",
-				"type": "ApiRequest"
+				"type": "ApiRequest",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -50,6 +55,68 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HarnessHttpAdapter.request",
+				"inputs": [
+					{
+						"name": "HarnessHttpAdapter.request.method",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HarnessHttpAdapter.request.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HarnessHttpAdapter.request.request",
+						"type": "ApiRequest",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "HarnessHttpAdapter.request",
+						"type": "Promise<ApiResponse>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HarnessHttpAdapter.constructor",
+				"inputs": [
+					{
+						"name": "HarnessHttpAdapter.constructor.config",
+						"type": "HarnessHttpAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HarnessHttpAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		]
 	},

@@ -24,9 +24,14 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "credential",
+				"name": "NativeAccountStatusService.constructor.options",
+				"type": "StatusOptions",
+				"required": true
+			},
+			{
+				"name": "NativeAccountStatusService.read.credential",
 				"type": "NativeHostedCredential",
-				"description": "Credential read from the native encrypted store; it never enters renderer status."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,6 +52,51 @@
 				"name": "temporary failure",
 				"type": "HostedFailureValidator",
 				"description": "Network or service failure preserves the saved credential and reports failure."
+			}
+		],
+		"operations": [
+			{
+				"name": "NativeAccountStatusService.read",
+				"inputs": [
+					{
+						"name": "NativeAccountStatusService.read.credential",
+						"type": "NativeHostedCredential",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeAccountStatusService.read",
+						"type": "Promise<NativeHostedStatus>"
+					}
+				],
+				"errors": [
+					{
+						"name": "HostedFailureValidator",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "NativeAccountStatusService.constructor",
+				"inputs": [
+					{
+						"name": "NativeAccountStatusService.constructor.options",
+						"type": "StatusOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeAccountStatusService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

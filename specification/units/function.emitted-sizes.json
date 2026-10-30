@@ -28,11 +28,13 @@
 			{
 				"name": "emittedKey.target",
 				"type": "string",
+				"required": true,
 				"description": "Target name to append to the artifact-bytes ledger key."
 			},
 			{
 				"name": "emittedSizes.measurements",
 				"type": "Item[]",
+				"required": true,
 				"description": "Measurements with metric and optional target, profile and workload fields; the helper filters without changing entries."
 			}
 		],
@@ -53,7 +55,50 @@
 				"description": "Entries whose metric is artifact-bytes, target is defined, and profile and workload are both absent or empty. Benchmark sizes with a profile or workload are excluded; original order and objects are preserved."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "emittedKey",
+				"inputs": [
+					{
+						"name": "emittedKey.target",
+						"type": "string",
+						"required": true,
+						"description": "Target name to append to the artifact-bytes ledger key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "emittedKey",
+						"type": "string",
+						"description": "Ledger key artifact-bytes: followed by the supplied target."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "emittedSizes",
+				"inputs": [
+					{
+						"name": "emittedSizes.measurements",
+						"type": "Item[]",
+						"required": true,
+						"description": "Measurements with metric and optional target, profile and workload fields; the helper filters without changing entries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "emittedSizes",
+						"type": "Array<Item & { target: RuntimeKind }>",
+						"description": "Entries whose metric is artifact-bytes, target is defined, and profile and workload are both absent or empty. Benchmark sizes with a profile or workload are excluded; original order and objects are preserved."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

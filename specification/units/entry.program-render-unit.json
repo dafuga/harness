@@ -13,25 +13,101 @@
 			"src/cli/program/renderUnit.ts",
 			"src/cli/program/renderUnit.types.ts"
 		],
-		"symbols": ["renderContract", "groupTests", "renderUnit"]
+		"symbols": [
+			"indent",
+			"fields",
+			"errorRows",
+			"operationRows",
+			"storageRows",
+			"renderContract",
+			"renderContract",
+			"groupTests",
+			"renderUnit",
+			"Field"
+		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
+				"name": "indent.lines",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "indent.depth",
+				"type": "number",
+				"required": false,
+				"default": 1
+			},
+			{
+				"name": "fields.list",
+				"type": "Field[]",
+				"required": true
+			},
+			{
+				"name": "fields.componentProps",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "errorRows.errors",
+				"type": "Field[]",
+				"required": true
+			},
+			{
+				"name": "errorRows.status",
+				"type": "ComponentManifest['contract']['errorStatus']",
+				"required": true
+			},
+			{
+				"name": "operationRows.operations",
+				"type": "NonNullable<ComponentManifest['contract']['operations']>",
+				"required": true
+			},
+			{
+				"name": "storageRows.models",
+				"type": "NonNullable<ComponentManifest['contract']['storage']>",
+				"required": true
+			},
+			{
 				"name": "renderContract.manifest",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"required": true
 			},
 			{
 				"name": "groupTests.tests",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "renderUnit.detail",
-				"type": "UnitDetail"
+				"type": "UnitDetail",
+				"required": true
 			}
 		],
 		"outputs": [
+			{
+				"name": "indent",
+				"type": "unknown"
+			},
+			{
+				"name": "fields",
+				"type": "string[]"
+			},
+			{
+				"name": "errorRows",
+				"type": "string[]"
+			},
+			{
+				"name": "operationRows",
+				"type": "string[]"
+			},
+			{
+				"name": "storageRows",
+				"type": "string[]"
+			},
 			{
 				"name": "renderContract",
 				"type": "string[]"
@@ -45,7 +121,172 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "indent",
+				"inputs": [
+					{
+						"name": "indent.lines",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "indent.depth",
+						"type": "number",
+						"required": false,
+						"default": 1
+					}
+				],
+				"outputs": [
+					{
+						"name": "indent",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fields",
+				"inputs": [
+					{
+						"name": "fields.list",
+						"type": "Field[]",
+						"required": true
+					},
+					{
+						"name": "fields.componentProps",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "fields",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "errorRows",
+				"inputs": [
+					{
+						"name": "errorRows.errors",
+						"type": "Field[]",
+						"required": true
+					},
+					{
+						"name": "errorRows.status",
+						"type": "ComponentManifest['contract']['errorStatus']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "errorRows",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "operationRows",
+				"inputs": [
+					{
+						"name": "operationRows.operations",
+						"type": "NonNullable<ComponentManifest['contract']['operations']>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "operationRows",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "storageRows",
+				"inputs": [
+					{
+						"name": "storageRows.models",
+						"type": "NonNullable<ComponentManifest['contract']['storage']>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "storageRows",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderContract",
+				"inputs": [
+					{
+						"name": "renderContract.manifest",
+						"type": "ComponentManifest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderContract",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "groupTests",
+				"inputs": [
+					{
+						"name": "groupTests.tests",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupTests",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderUnit",
+				"inputs": [
+					{
+						"name": "renderUnit.detail",
+						"type": "UnitDetail",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderUnit",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

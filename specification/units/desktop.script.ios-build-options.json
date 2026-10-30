@@ -25,7 +25,8 @@
 		"inputs": [
 			{
 				"name": "iosBuildPlan.args",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +47,29 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "iosBuildPlan",
+				"inputs": [
+					{
+						"name": "iosBuildPlan.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "iosBuildPlan",
+						"type": "IosBuildPlan | { error: string }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

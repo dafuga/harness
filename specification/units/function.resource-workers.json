@@ -16,16 +16,19 @@
 			{
 				"name": "resourceWorkers.env",
 				"type": "Record<string, string | undefined>",
+				"required": false,
 				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
 			},
 			{
 				"name": "resourceWorkers.maximumWorkers",
 				"type": "number",
+				"required": false,
 				"description": "Optional caller ceiling of at least one worker; the default keeps the reservation-derived limit. Memory is divided by the actual capped worker count."
 			},
 			{
 				"name": "resourceThreads.env",
 				"type": "Record<string, string | undefined>",
+				"required": true,
 				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
 			}
 		],
@@ -47,7 +50,61 @@
 				"type": "thrown",
 				"description": "Rejects an invalid caller worker ceiling instead of returning an unusable worker configuration."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "resourceWorkers",
+				"inputs": [
+					{
+						"name": "resourceWorkers.env",
+						"type": "Record<string, string | undefined>",
+						"required": false,
+						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+					},
+					{
+						"name": "resourceWorkers.maximumWorkers",
+						"type": "number",
+						"required": false,
+						"description": "Optional caller ceiling of at least one worker; the default keeps the reservation-derived limit. Memory is divided by the actual capped worker count."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceWorkers",
+						"type": "{ maxWorkers?: number; minWorkers?: number; env?: Record<string, string>; }",
+						"description": "Vitest worker limits and child CPU, memory and native-thread environment; empty without a valid reservation."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resourceThreads",
+				"inputs": [
+					{
+						"name": "resourceThreads.env",
+						"type": "Record<string, string | undefined>",
+						"required": true,
+						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceThreads",
+						"type": "Record<string, string>",
+						"description": "Native thread variables capped by the CPU reservation while retaining stricter caller values."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

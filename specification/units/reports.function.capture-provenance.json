@@ -30,21 +30,25 @@
 			{
 				"name": "captureProvenance.record",
 				"type": "HarnessRecord",
+				"required": true,
 				"description": "Record supplying validity, outcome and target revision."
 			},
 			{
 				"name": "captureProvenance.scenario",
 				"type": "Scenario",
+				"required": true,
 				"description": "Scenario supplying tested revision, inheritance and original record."
 			},
 			{
 				"name": "captureProvenance.capture",
 				"type": "HarnessCapture",
+				"required": true,
 				"description": "Capture supplying status, source build and optional provenance."
 			},
 			{
 				"name": "scenarioOrigin.scenario",
 				"type": "Scenario",
+				"required": true,
 				"description": "Scenario whose result origin should be summarized."
 			}
 		],
@@ -60,7 +64,62 @@
 				"description": "Inherited origin, tested revision for a passed scenario, or failed-attempt revision plus distinct other capture revisions when present."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "captureProvenance",
+				"inputs": [
+					{
+						"name": "captureProvenance.record",
+						"type": "HarnessRecord",
+						"required": true,
+						"description": "Record supplying validity, outcome and target revision."
+					},
+					{
+						"name": "captureProvenance.scenario",
+						"type": "Scenario",
+						"required": true,
+						"description": "Scenario supplying tested revision, inheritance and original record."
+					},
+					{
+						"name": "captureProvenance.capture",
+						"type": "HarnessCapture",
+						"required": true,
+						"description": "Capture supplying status, source build and optional provenance."
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureProvenance",
+						"type": "CaptureProvenance",
+						"description": "Standing, label, facts and full-revision note. Invalid records take precedence over failed captures; otherwise captures are rejected, inherited or fresh. Rejection labels distinguish a different recorded build from a required build stamp that is missing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scenarioOrigin",
+				"inputs": [
+					{
+						"name": "scenarioOrigin.scenario",
+						"type": "Scenario",
+						"required": true,
+						"description": "Scenario whose result origin should be summarized."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scenarioOrigin",
+						"type": "string",
+						"description": "Inherited origin, tested revision for a passed scenario, or failed-attempt revision plus distinct other capture revisions when present."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

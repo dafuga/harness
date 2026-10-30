@@ -18,11 +18,13 @@
 		"inputs": [
 			{
 				"name": "UnitRegistryValidator.validate.manifests",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"required": true
 			},
 			{
 				"name": "UnitRegistryValidator.validate.files",
-				"type": "ReadonlySet<string>"
+				"type": "ReadonlySet<string>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -31,7 +33,34 @@
 				"type": "string[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "UnitRegistryValidator.validate",
+				"inputs": [
+					{
+						"name": "UnitRegistryValidator.validate.manifests",
+						"type": "ComponentManifest[]",
+						"required": true
+					},
+					{
+						"name": "UnitRegistryValidator.validate.files",
+						"type": "ReadonlySet<string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "UnitRegistryValidator.validate",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

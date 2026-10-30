@@ -21,22 +21,27 @@
 		"inputs": [
 			{
 				"name": "ClaudeBenchmarkAdapter.constructor.executable",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "claude",
 				"description": "Provider CLI executable name or path; defaults to the adapter provider."
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.preflight._candidate",
 				"type": "BenchmarkCandidate",
+				"required": true,
 				"description": "Candidate configuration retained by the shared runner preflight interface."
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.run.input",
 				"type": "BenchmarkRunnerInput",
+				"required": true,
 				"description": "Candidate, isolated workspace, prompt, optional session and shared abort signal."
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.command.input",
 				"type": "BenchmarkRunnerInput",
+				"required": true,
 				"description": "Candidate, isolated workspace, prompt, optional session and shared abort signal."
 			}
 		],
@@ -62,6 +67,99 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Rejects unavailable provider execution, unsupported settings or a missing or mismatched completed turn."
+			}
+		],
+		"operations": [
+			{
+				"name": "ClaudeBenchmarkAdapter.preflight",
+				"inputs": [
+					{
+						"name": "ClaudeBenchmarkAdapter.preflight._candidate",
+						"type": "BenchmarkCandidate",
+						"required": true,
+						"description": "Candidate configuration retained by the shared runner preflight interface."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeBenchmarkAdapter.preflight",
+						"type": "Promise<string>",
+						"description": "Installed provider CLI version after checking supported configuration."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ClaudeBenchmarkAdapter.run",
+				"inputs": [
+					{
+						"name": "ClaudeBenchmarkAdapter.run.input",
+						"type": "BenchmarkRunnerInput",
+						"required": true,
+						"description": "Candidate, isolated workspace, prompt, optional session and shared abort signal."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeBenchmarkAdapter.run",
+						"type": "Promise<BenchmarkTurn>",
+						"description": "Completed provider turn with a valid session and matching reported model."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ClaudeBenchmarkAdapter.command",
+				"inputs": [
+					{
+						"name": "ClaudeBenchmarkAdapter.command.input",
+						"type": "BenchmarkRunnerInput",
+						"required": true,
+						"description": "Candidate, isolated workspace, prompt, optional session and shared abort signal."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeBenchmarkAdapter.command",
+						"type": "string[]",
+						"description": "Explicit native CLI argument vector without launching a provider."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ClaudeBenchmarkAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ClaudeBenchmarkAdapter.constructor.executable",
+						"type": "string",
+						"required": false,
+						"default": "claude"
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeBenchmarkAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

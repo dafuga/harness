@@ -28,27 +28,33 @@
 		"inputs": [
 			{
 				"name": "SourceImpactService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SourceImpactService.of.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SourceImpactService.reasons.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SourceImpactService.parent.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SourceImpactService.stored.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SourceImpactService.measurements.commit",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -73,7 +79,120 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SourceImpactService.of",
+				"inputs": [
+					{
+						"name": "SourceImpactService.of.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceImpactService.of",
+						"type": "Promise<SourceImpact | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SourceImpactService.reasons",
+				"inputs": [
+					{
+						"name": "SourceImpactService.reasons.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceImpactService.reasons",
+						"type": "Promise<RequiredReason[] | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SourceImpactService.parent",
+				"inputs": [
+					{
+						"name": "SourceImpactService.parent.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceImpactService.parent",
+						"type": "Promise<string | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SourceImpactService.stored",
+				"inputs": [
+					{
+						"name": "SourceImpactService.stored.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceImpactService.stored",
+						"type": "Promise<StoredSide | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SourceImpactService.measurements",
+				"inputs": [
+					{
+						"name": "SourceImpactService.measurements.commit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceImpactService.measurements",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SourceImpactService.constructor",
+				"inputs": [
+					{
+						"name": "SourceImpactService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceImpactService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

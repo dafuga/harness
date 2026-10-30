@@ -30,8 +30,7 @@ export function hostProps(
 		lens: lens(shown, history),
 		client: { revision: () => Promise.reject(new Error('not read in a test')) },
 		mediaBase: '/harness/media/',
-		onroute: () => {},
-		exportHref: ''
+		onroute: () => {}
 	};
 }
 

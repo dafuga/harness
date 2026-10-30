@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeAudio.svelte",
-			"packages/desktop/src/components/reports-media/RuntimeAudio.svelte"
-		],
-		"symbols": ["RuntimeAudio", "RuntimeAudio"]
+		"source": ["packages/desktop/src/components/reports-media/RuntimeAudio.svelte"],
+		"symbols": ["RuntimeAudio"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -30,11 +27,13 @@
 			{
 				"name": "RuntimeAudio.result",
 				"type": "EntityEvidenceResult",
+				"required": true,
 				"description": "Required evidence result with audio entries, declarations, comparison mode and commit scope. Groups clips by comparison identity; after falls back to current."
 			},
 			{
 				"name": "RuntimeAudio.evidence",
 				"type": "EntityEvidence",
+				"required": true,
 				"description": "Evidence state providing a URL for side and file. Promise failures are caught and shown as unverified."
 			}
 		],
@@ -45,7 +44,9 @@
 				"description": "Audio panel when clips exist or audio is declared. Commit mode pairs before/after; other modes show current. Includes playback controls, transcript when present, standing/status and reading/error states. Missing sides and declared-but-absent clips are explicit gaps."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

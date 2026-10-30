@@ -29,23 +29,28 @@
 		"inputs": [
 			{
 				"name": "HubAttachedService.constructor.context",
-				"type": "Context"
+				"type": "Context",
+				"required": true
 			},
 			{
 				"name": "HubAttachedService.load.pointer",
-				"type": "EvidencePointer"
+				"type": "EvidencePointer",
+				"required": true
 			},
 			{
 				"name": "HubAttachedService.regression.note",
-				"type": "RegressionNote"
+				"type": "RegressionNote",
+				"required": true
 			},
 			{
 				"name": "HubAttachedService.readFile.pointer",
-				"type": "EvidencePointer"
+				"type": "EvidencePointer",
+				"required": true
 			},
 			{
 				"name": "HubAttachedService.readFile.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -62,7 +67,89 @@
 				"type": "Promise<Uint8Array>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HubAttachedService.load",
+				"inputs": [
+					{
+						"name": "HubAttachedService.load.pointer",
+						"type": "EvidencePointer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubAttachedService.load",
+						"type": "Promise<HubAttachedRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubAttachedService.regression",
+				"inputs": [
+					{
+						"name": "HubAttachedService.regression.note",
+						"type": "RegressionNote",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubAttachedService.regression",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HubAttachedService.readFile",
+				"inputs": [
+					{
+						"name": "HubAttachedService.readFile.pointer",
+						"type": "EvidencePointer",
+						"required": true
+					},
+					{
+						"name": "HubAttachedService.readFile.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubAttachedService.readFile",
+						"type": "Promise<Uint8Array>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HubAttachedService.constructor",
+				"inputs": [
+					{
+						"name": "HubAttachedService.constructor.context",
+						"type": "Context",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubAttachedService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

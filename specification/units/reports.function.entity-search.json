@@ -29,16 +29,20 @@
 			{
 				"name": "entitySearch.entries",
 				"type": "SearchEntry[]",
+				"required": true,
 				"description": "Searchable entities retaining their category and commit."
 			},
 			{
 				"name": "entitySearch.query",
 				"type": "string",
+				"required": true,
 				"description": "Whitespace-separated query words, matched case-insensitively. Every word must match an entry."
 			},
 			{
 				"name": "entitySearch.limit",
-				"type": "unknown",
+				"type": "number",
+				"required": false,
+				"default": 20,
 				"description": "Maximum returned results, defaulting to 20; applied with array slicing."
 			}
 		],
@@ -49,7 +53,43 @@
 				"description": "Matching entries ranked by exact name/id, name prefix, id-part prefix, name-word prefix, name/id substring, purpose and contract-term matches. Ties use category order then name. Blank queries return no results."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "entitySearch",
+				"inputs": [
+					{
+						"name": "entitySearch.entries",
+						"type": "SearchEntry[]",
+						"required": true,
+						"description": "Searchable entities retaining their category and commit."
+					},
+					{
+						"name": "entitySearch.query",
+						"type": "string",
+						"required": true,
+						"description": "Whitespace-separated query words, matched case-insensitively. Every word must match an entry."
+					},
+					{
+						"name": "entitySearch.limit",
+						"type": "number",
+						"required": false,
+						"default": 20,
+						"description": "Maximum returned results, defaulting to 20; applied with array slicing."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entitySearch",
+						"type": "SearchEntry[]",
+						"description": "Matching entries ranked by exact name/id, name prefix, id-part prefix, name-word prefix, name/id substring, purpose and contract-term matches. Ties use category order then name. Blank queries return no results."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

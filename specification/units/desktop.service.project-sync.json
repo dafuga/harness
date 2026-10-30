@@ -27,15 +27,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "refresh",
-				"type": "() => Promise<unknown>",
-				"description": "Reads the current account and its projects. The caller reports any failure."
-			},
-			{
-				"name": "interval",
-				"type": "number | undefined",
-				"description": "Time between visible-page refreshes in milliseconds; defaults to 30000.",
-				"examples": [30000]
+				"name": "ProjectSyncService.constructor.options",
+				"type": "ProjectSyncOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -45,7 +39,65 @@
 				"description": "Coalesces repeated requests into at most one follow-up read. Stopping releases listeners and timers."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "ProjectSyncService.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectSyncService.start",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectSyncService.stop",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectSyncService.stop",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectSyncService.sync",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectSyncService.sync",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectSyncService.constructor",
+				"inputs": [
+					{
+						"name": "ProjectSyncService.constructor.options",
+						"type": "ProjectSyncOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectSyncService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

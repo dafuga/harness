@@ -33,6 +33,7 @@
 			{
 				"name": "consoleHostFiles.options",
 				"type": "ConsoleHostOptions",
+				"required": true,
 				"description": "Console base route, policy module and export name, and optionally a bucket binding and prefix. These values are inserted into generated source and should already be validated by the caller."
 			}
 		],
@@ -48,7 +49,30 @@
 				"description": "Six path/content entries: server module, root and catch-all document routes, and JSON, export and media endpoints. All endpoints use protected console access; no filesystem writes occur here."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "consoleHostFiles",
+				"inputs": [
+					{
+						"name": "consoleHostFiles.options",
+						"type": "ConsoleHostOptions",
+						"required": true,
+						"description": "Console base route, policy module and export name, and optionally a bucket binding and prefix. These values are inserted into generated source and should already be validated by the caller."
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleHostFiles",
+						"type": "HostFile[]",
+						"description": "Six path/content entries: server module, root and catch-all document routes, and JSON, export and media endpoints. All endpoints use protected console access; no filesystem writes occur here."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

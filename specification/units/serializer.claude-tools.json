@@ -25,15 +25,18 @@
 		"inputs": [
 			{
 				"name": "ClaudeToolsSerializer.constructor.repository",
-				"type": "CodexSessionRepository"
+				"type": "CodexSessionRepository",
+				"required": true
 			},
 			{
 				"name": "ClaudeToolsSerializer.server.definitions",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"required": true
 			},
 			{
 				"name": "ClaudeToolsSerializer.server.session",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,6 +49,52 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ClaudeToolsSerializer.server",
+				"inputs": [
+					{
+						"name": "ClaudeToolsSerializer.server.definitions",
+						"type": "GatewayItem[]",
+						"required": true
+					},
+					{
+						"name": "ClaudeToolsSerializer.server.session",
+						"type": "GatewaySession",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeToolsSerializer.server",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ClaudeToolsSerializer.constructor",
+				"inputs": [
+					{
+						"name": "ClaudeToolsSerializer.constructor.repository",
+						"type": "CodexSessionRepository",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeToolsSerializer.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

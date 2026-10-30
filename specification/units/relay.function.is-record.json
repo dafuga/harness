@@ -19,6 +19,7 @@
 			{
 				"name": "isRecord.value",
 				"type": "unknown",
+				"required": true,
 				"description": "Unknown value to inspect."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "True for a non-null object that is not an array, narrowing its static type to a string-keyed record."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "isRecord",
+				"inputs": [
+					{
+						"name": "isRecord.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Unknown value to inspect."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isRecord",
+						"type": "value is Record<string, unknown>",
+						"description": "True for a non-null object that is not an array, narrowing its static type to a string-keyed record."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

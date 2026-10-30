@@ -27,27 +27,35 @@
 		"inputs": [
 			{
 				"name": "ProjectOperationsService.constructor.session",
-				"type": "ProjectSessionService"
+				"type": "ProjectSessionService",
+				"required": true
 			},
 			{
 				"name": "ProjectOperationsService.constructor.outbox",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ProjectOperationsService.selectProject.input",
-				"type": "{ projectId: string }"
+				"type": "{ projectId: string }",
+				"required": true
 			},
 			{
 				"name": "ProjectOperationsService.capabilities.input",
-				"type": "ProjectContext"
+				"type": "ProjectContext",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "ProjectOperationsService.addComment.input",
-				"type": "HumanCommentDraft"
+				"type": "HumanCommentDraft",
+				"required": true
 			},
 			{
 				"name": "ProjectOperationsService.pendingComments.input",
-				"type": "ProjectContext"
+				"type": "ProjectContext",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -76,6 +84,125 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectOperationsService.listProjects",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectOperationsService.listProjects",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectOperationsService.selectProject",
+				"inputs": [
+					{
+						"name": "ProjectOperationsService.selectProject.input",
+						"type": "{ projectId: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOperationsService.selectProject",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectOperationsService.capabilities",
+				"inputs": [
+					{
+						"name": "ProjectOperationsService.capabilities.input",
+						"type": "ProjectContext",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOperationsService.capabilities",
+						"type": "Promise<ProjectCapabilities>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectOperationsService.addComment",
+				"inputs": [
+					{
+						"name": "ProjectOperationsService.addComment.input",
+						"type": "HumanCommentDraft",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOperationsService.addComment",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectOperationsService.pendingComments",
+				"inputs": [
+					{
+						"name": "ProjectOperationsService.pendingComments.input",
+						"type": "ProjectContext",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOperationsService.pendingComments",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectOperationsService.constructor",
+				"inputs": [
+					{
+						"name": "ProjectOperationsService.constructor.session",
+						"type": "ProjectSessionService",
+						"required": true
+					},
+					{
+						"name": "ProjectOperationsService.constructor.outbox",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOperationsService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

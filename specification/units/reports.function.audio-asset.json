@@ -20,11 +20,13 @@
 			{
 				"name": "audioAsset.bytes",
 				"type": "Buffer",
+				"required": true,
 				"description": "Nonempty audio bytes, limited to 50,000,000 bytes."
 			},
 			{
 				"name": "audioAsset.filename",
 				"type": "string",
+				"required": true,
 				"description": "Original filename whose lowercase extension selects the format."
 			}
 		],
@@ -41,7 +43,41 @@
 				"type": "thrown",
 				"description": "Rejects empty/oversized data, unsupported formats and content that fails the selected format check. WAV parser failures propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "audioAsset",
+				"inputs": [
+					{
+						"name": "audioAsset.bytes",
+						"type": "Buffer",
+						"required": true,
+						"description": "Nonempty audio bytes, limited to 50,000,000 bytes."
+					},
+					{
+						"name": "audioAsset.filename",
+						"type": "string",
+						"required": true,
+						"description": "Original filename whose lowercase extension selects the format."
+					}
+				],
+				"outputs": [
+					{
+						"name": "audioAsset",
+						"type": "unknown",
+						"description": "SHA-256 filename with the original lowercase extension, audio MIME type and media kind, plus WAV metadata when applicable. MP3, Ogg and M4A undergo header/container checks; no file is written."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

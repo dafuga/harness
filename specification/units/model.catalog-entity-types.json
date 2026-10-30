@@ -5,7 +5,11 @@
 	"title": "CatalogEntity",
 	"responsibility": "Owns the CatalogEntity data model.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Type companion merged into model.catalog-entity.",
+		"at": "working-tree"
+	},
 	"owns": {
 		"source": ["src/models/git-source-history/CatalogEntity.types.ts"],
 		"symbols": ["CatalogEntityAttributes", "CatalogEntityCreateInput", "CatalogEntityUpdateInput"]

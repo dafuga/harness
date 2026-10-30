@@ -24,31 +24,38 @@
 		"inputs": [
 			{
 				"name": "RemoteHostObject.constructor.state",
-				"type": "DurableObjectState"
+				"type": "DurableObjectState",
+				"required": true
 			},
 			{
 				"name": "RemoteHostObject.constructor.env",
-				"type": "RelayEnv"
+				"type": "RelayEnv",
+				"required": true
 			},
 			{
 				"name": "RemoteHostObject.fetch.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			},
 			{
 				"name": "RemoteHostObject.webSocketMessage.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			},
 			{
 				"name": "RemoteHostObject.webSocketMessage.message",
-				"type": "string | ArrayBuffer"
+				"type": "string | ArrayBuffer",
+				"required": true
 			},
 			{
 				"name": "RemoteHostObject.webSocketClose.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			},
 			{
 				"name": "RemoteHostObject.webSocketError.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -73,7 +80,124 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteHostObject.fetch",
+				"inputs": [
+					{
+						"name": "RemoteHostObject.fetch.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostObject.fetch",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostObject.webSocketMessage",
+				"inputs": [
+					{
+						"name": "RemoteHostObject.webSocketMessage.socket",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "RemoteHostObject.webSocketMessage.message",
+						"type": "string | ArrayBuffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostObject.webSocketMessage",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostObject.webSocketClose",
+				"inputs": [
+					{
+						"name": "RemoteHostObject.webSocketClose.socket",
+						"type": "WebSocket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostObject.webSocketClose",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostObject.webSocketError",
+				"inputs": [
+					{
+						"name": "RemoteHostObject.webSocketError.socket",
+						"type": "WebSocket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostObject.webSocketError",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostObject.alarm",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostObject.alarm",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteHostObject.constructor",
+				"inputs": [
+					{
+						"name": "RemoteHostObject.constructor.state",
+						"type": "DurableObjectState",
+						"required": true
+					},
+					{
+						"name": "RemoteHostObject.constructor.env",
+						"type": "RelayEnv",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostObject.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

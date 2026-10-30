@@ -31,39 +31,48 @@
 		"inputs": [
 			{
 				"name": "HostSocketsAdapter.constructor.state",
-				"type": "DurableObjectState"
+				"type": "DurableObjectState",
+				"required": true
 			},
 			{
 				"name": "HostSocketsAdapter.open.attachment",
-				"type": "SocketAttachment"
+				"type": "SocketAttachment",
+				"required": true
 			},
 			{
 				"name": "HostSocketsAdapter.attachment.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			},
 			{
 				"name": "HostSocketsAdapter.device.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostSocketsAdapter.connection.connectionId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostSocketsAdapter.send.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			},
 			{
 				"name": "HostSocketsAdapter.send.frame",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "HostSocketsAdapter.close.socket",
-				"type": "WebSocket"
+				"type": "WebSocket",
+				"required": true
 			},
 			{
 				"name": "HostSocketsAdapter.close.code",
-				"type": "number"
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -104,7 +113,184 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostSocketsAdapter.open",
+				"inputs": [
+					{
+						"name": "HostSocketsAdapter.open.attachment",
+						"type": "SocketAttachment",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.open",
+						"type": "{ client: WebSocket; server: WebSocket }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostSocketsAdapter.attachment",
+				"inputs": [
+					{
+						"name": "HostSocketsAdapter.attachment.socket",
+						"type": "WebSocket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.attachment",
+						"type": "SocketAttachment | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostSocketsAdapter.host",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.host",
+						"type": "WebSocket | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostSocketsAdapter.devices",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.devices",
+						"type": "WebSocket[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostSocketsAdapter.device",
+				"inputs": [
+					{
+						"name": "HostSocketsAdapter.device.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.device",
+						"type": "WebSocket[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostSocketsAdapter.connection",
+				"inputs": [
+					{
+						"name": "HostSocketsAdapter.connection.connectionId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.connection",
+						"type": "WebSocket | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostSocketsAdapter.all",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.all",
+						"type": "WebSocket[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostSocketsAdapter.send",
+				"inputs": [
+					{
+						"name": "HostSocketsAdapter.send.socket",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "HostSocketsAdapter.send.frame",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.send",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostSocketsAdapter.close",
+				"inputs": [
+					{
+						"name": "HostSocketsAdapter.close.socket",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "HostSocketsAdapter.close.code",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.close",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostSocketsAdapter.constructor",
+				"inputs": [
+					{
+						"name": "HostSocketsAdapter.constructor.state",
+						"type": "DurableObjectState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostSocketsAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

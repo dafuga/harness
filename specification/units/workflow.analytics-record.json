@@ -29,31 +29,38 @@
 		"inputs": [
 			{
 				"name": "projectIdentity.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "resolvedContext.context",
-				"type": "AnalyticsContext"
+				"type": "AnalyticsContext",
+				"required": true
 			},
 			{
 				"name": "resolvedContext.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "recordAnalytics.event",
-				"type": "Omit<AnalyticsEvent, 'id' | 'timestamp' | 'project'>"
+				"type": "Omit<AnalyticsEvent, 'id' | 'timestamp' | 'project'>",
+				"required": true
 			},
 			{
 				"name": "recordAnalytics.root",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "fingerprint.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "validateReport.context",
-				"type": "AnalyticsContext"
+				"type": "AnalyticsContext",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -83,7 +90,121 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "projectIdentity",
+				"inputs": [
+					{
+						"name": "projectIdentity.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectIdentity",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resolvedContext",
+				"inputs": [
+					{
+						"name": "resolvedContext.context",
+						"type": "AnalyticsContext",
+						"required": true
+					},
+					{
+						"name": "resolvedContext.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolvedContext",
+						"type": "Promise<AnalyticsContext>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordAnalytics",
+				"inputs": [
+					{
+						"name": "recordAnalytics.event",
+						"type": "Omit<AnalyticsEvent, 'id' | 'timestamp' | 'project'>",
+						"required": true
+					},
+					{
+						"name": "recordAnalytics.root",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordAnalytics",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fingerprint",
+				"inputs": [
+					{
+						"name": "fingerprint.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fingerprint",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateReport",
+				"inputs": [
+					{
+						"name": "validateReport.context",
+						"type": "AnalyticsContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateReport",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -19,31 +19,39 @@
 			{
 				"name": "relayResponse.status",
 				"type": "number",
+				"required": true,
 				"description": "HTTP response status."
 			},
 			{
 				"name": "relayResponse.body",
 				"type": "unknown",
+				"required": true,
 				"description": "JSON-serializable response body."
 			},
 			{
 				"name": "relayResponse.headers",
 				"type": "Record<string, string>",
+				"required": false,
+				"default": {},
 				"description": "Optional additional headers, defaulting to empty; supplied keys override the default headers."
 			},
 			{
 				"name": "relayError.status",
 				"type": "number",
+				"required": true,
 				"description": "HTTP failure status."
 			},
 			{
 				"name": "relayError.error",
 				"type": "RelayErrorCode",
+				"required": true,
 				"description": "Typed relay error code, serialized as the only body field."
 			},
 			{
 				"name": "relayError.headers",
 				"type": "Record<string, string>",
+				"required": false,
+				"default": {},
 				"description": "Optional additional failure-response headers, defaulting to empty."
 			}
 		],
@@ -59,7 +67,76 @@
 				"description": "Response containing only the error code object, using the same response/header construction."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "relayResponse",
+				"inputs": [
+					{
+						"name": "relayResponse.status",
+						"type": "number",
+						"required": true,
+						"description": "HTTP response status."
+					},
+					{
+						"name": "relayResponse.body",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-serializable response body."
+					},
+					{
+						"name": "relayResponse.headers",
+						"type": "Record<string, string>",
+						"required": false,
+						"default": {},
+						"description": "Optional additional headers, defaulting to empty; supplied keys override the default headers."
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayResponse",
+						"type": "Response",
+						"description": "Response containing JSON with default application/json, no-store and nosniff headers."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "relayError",
+				"inputs": [
+					{
+						"name": "relayError.status",
+						"type": "number",
+						"required": true,
+						"description": "HTTP failure status."
+					},
+					{
+						"name": "relayError.error",
+						"type": "RelayErrorCode",
+						"required": true,
+						"description": "Typed relay error code, serialized as the only body field."
+					},
+					{
+						"name": "relayError.headers",
+						"type": "Record<string, string>",
+						"required": false,
+						"default": {},
+						"description": "Optional additional failure-response headers, defaulting to empty."
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayError",
+						"type": "Response",
+						"description": "Response containing only the error code object, using the same response/header construction."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

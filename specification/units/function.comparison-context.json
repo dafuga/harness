@@ -27,16 +27,19 @@
 			{
 				"name": "requestDigest.request",
 				"type": "unknown",
+				"required": true,
 				"description": "Complete JSON-shaped request, including operation and input, to fingerprint with canonical serialization."
 			},
 			{
 				"name": "comparisonContext.request",
 				"type": "unknown",
+				"required": true,
 				"description": "Complete JSON-shaped request actually sent by the benchmark."
 			},
 			{
 				"name": "comparisonContext.sampling",
 				"type": "{ rounds: number; iterations: number }",
+				"required": true,
 				"description": "Round count and calls per round used by the benchmark; this helper copies rather than validates them."
 			}
 		],
@@ -52,7 +55,56 @@
 				"description": "Context containing the request digest, public-invocation boundary, harness-rounds/1 protocol and sampling with three warm-up calls."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "requestDigest",
+				"inputs": [
+					{
+						"name": "requestDigest.request",
+						"type": "unknown",
+						"required": true,
+						"description": "Complete JSON-shaped request, including operation and input, to fingerprint with canonical serialization."
+					}
+				],
+				"outputs": [
+					{
+						"name": "requestDigest",
+						"type": "string",
+						"description": "Lowercase SHA-256 digest of canonical request JSON, independent of object-key order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "comparisonContext",
+				"inputs": [
+					{
+						"name": "comparisonContext.request",
+						"type": "unknown",
+						"required": true,
+						"description": "Complete JSON-shaped request actually sent by the benchmark."
+					},
+					{
+						"name": "comparisonContext.sampling",
+						"type": "{ rounds: number; iterations: number }",
+						"required": true,
+						"description": "Round count and calls per round used by the benchmark; this helper copies rather than validates them."
+					}
+				],
+				"outputs": [
+					{
+						"name": "comparisonContext",
+						"type": "Comparison",
+						"description": "Context containing the request digest, public-invocation boundary, harness-rounds/1 protocol and sampling with three warm-up calls."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -18,14 +18,14 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "unit",
+				"name": "previewBinding.unit",
 				"type": "PreviewUnit",
-				"description": "A visual unit and its optional preview binding."
+				"required": true
 			},
 			{
-				"name": "scenarios",
+				"name": "previewBinding.scenarios",
 				"type": "ScenarioManifest[]",
-				"description": "The scenario contracts stored at the same revision."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -35,7 +35,33 @@
 				"description": "Empty when no preview is declared or its own required screenshot state and viewport exist; otherwise readable validation problems."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "previewBinding",
+				"inputs": [
+					{
+						"name": "previewBinding.unit",
+						"type": "PreviewUnit",
+						"required": true
+					},
+					{
+						"name": "previewBinding.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "previewBinding",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

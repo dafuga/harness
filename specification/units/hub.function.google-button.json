@@ -33,11 +33,13 @@
 			{
 				"name": "googleButton.element",
 				"type": "HTMLElement",
+				"required": true,
 				"description": "DOM element that will receive the button."
 			},
 			{
 				"name": "googleButton.options",
 				"type": "GoogleButton",
+				"required": true,
 				"description": "Client ID, fresh challenge nonce and callback receiving the signed credential."
 			}
 		],
@@ -53,7 +55,36 @@
 				"description": "Promise resolving after initialization and button rendering; inserts the script once per shared loading promise and forwards credentials to the callback without retaining them."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "googleButton",
+				"inputs": [
+					{
+						"name": "googleButton.element",
+						"type": "HTMLElement",
+						"required": true,
+						"description": "DOM element that will receive the button."
+					},
+					{
+						"name": "googleButton.options",
+						"type": "GoogleButton",
+						"required": true,
+						"description": "Client ID, fresh challenge nonce and callback receiving the signed credential."
+					}
+				],
+				"outputs": [
+					{
+						"name": "googleButton",
+						"type": "Promise<void>",
+						"description": "Promise resolving after initialization and button rendering; inserts the script once per shared loading promise and forwards credentials to the callback without retaining them."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

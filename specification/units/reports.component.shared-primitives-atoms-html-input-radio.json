@@ -19,9 +19,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HtmlInputRadio.attributes",
-				"type": "SvelteHTMLElements['input']",
-				"description": "Native input attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+				"name": "HtmlInputRadio.children",
+				"type": "Snippet",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -31,7 +31,9 @@
 				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

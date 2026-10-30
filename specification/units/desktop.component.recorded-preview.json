@@ -19,37 +19,38 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/recorded-preview/RecordedPreview.svelte",
 			"packages/desktop/src/components/shared-primitives/recorded-preview/RecordedPreview.svelte"
 		],
-		"symbols": ["RecordedPreview", "RecordedPreview"]
+		"symbols": ["RecordedPreview"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "workspace",
+				"name": "RecordedPreview.workspace",
 				"type": "Workspace",
-				"description": "The selected project and commit, and its evidence connection."
+				"required": true
 			},
 			{
-				"name": "entityId",
+				"name": "RecordedPreview.entityId",
 				"type": "string",
-				"description": "The page or component to preview."
+				"required": true
 			},
 			{
-				"name": "title",
+				"name": "RecordedPreview.title",
 				"type": "string",
-				"description": "The readable name used for the screenshot description."
+				"required": true
 			},
 			{
-				"name": "thumbnail",
+				"name": "RecordedPreview.thumbnail",
 				"type": "RecordedThumbnail",
-				"description": "The recorded scenario, state and viewport; older pages may name their state in the recorded contract."
+				"required": true
 			},
 			{
 				"name": "RecordedPreview.compact",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Defaults to false. Hide the caption for minimal page cards; keep capture origin and missing-image details available on hover.",
 				"examples": [true, false]
 			}
@@ -61,7 +62,9 @@
 				"description": "A checked screenshot with its state and tested commit, or an explicit loading or unavailable state."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

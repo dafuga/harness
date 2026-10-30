@@ -30,11 +30,14 @@
 		"inputs": [
 			{
 				"name": "AgentSettingsAdapter.constructor.config",
-				"type": "AgentSettingsAdapterConfig"
+				"type": "AgentSettingsAdapterConfig",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "AgentSettingsAdapter.write.designOptions",
-				"type": "number"
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,7 +50,61 @@
 				"type": "boolean"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AgentSettingsAdapter.read",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AgentSettingsAdapter.read",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AgentSettingsAdapter.write",
+				"inputs": [
+					{
+						"name": "AgentSettingsAdapter.write.designOptions",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentSettingsAdapter.write",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AgentSettingsAdapter.constructor",
+				"inputs": [
+					{
+						"name": "AgentSettingsAdapter.constructor.config",
+						"type": "AgentSettingsAdapterConfig",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentSettingsAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -40,39 +40,49 @@
 		"inputs": [
 			{
 				"name": "installConsole.flags",
-				"type": "ConsoleInstallFlags"
+				"type": "ConsoleInstallFlags",
+				"required": true
 			},
 			{
 				"name": "consoleObjects.data",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "consoleObjects.prefix",
-				"type": "unknown"
+				"type": "string",
+				"required": false,
+				"default": ""
 			},
 			{
 				"name": "uninstallConsole.flags",
-				"type": "Pick<ConsoleInstallFlags, 'host' | 'update' | 'keep'>"
+				"type": "Pick<ConsoleInstallFlags, 'host' | 'update' | 'keep'>",
+				"required": true
 			},
 			{
 				"name": "renderConsoleUninstall.result",
-				"type": "ConsoleUninstallResult"
+				"type": "ConsoleUninstallResult",
+				"required": true
 			},
 			{
 				"name": "restoreConsoleFile.host",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "restoreConsoleFile.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "renderConsoleChange.change",
-				"type": "ConsoleChange"
+				"type": "ConsoleChange",
+				"required": true
 			},
 			{
 				"name": "renderConsoleInstall.result",
-				"type": "ConsoleInstallResult"
+				"type": "ConsoleInstallResult",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -110,7 +120,158 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "installConsole",
+				"inputs": [
+					{
+						"name": "installConsole.flags",
+						"type": "ConsoleInstallFlags",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "installConsole",
+						"type": "Promise<ConsoleInstallResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "consoleObjects",
+				"inputs": [
+					{
+						"name": "consoleObjects.data",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "consoleObjects.prefix",
+						"type": "string",
+						"required": false,
+						"default": ""
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleObjects",
+						"type": "Promise<ConsoleObjectEntry[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "uninstallConsole",
+				"inputs": [
+					{
+						"name": "uninstallConsole.flags",
+						"type": "Pick<ConsoleInstallFlags, 'host' | 'update' | 'keep'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "uninstallConsole",
+						"type": "Promise<ConsoleUninstallResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderConsoleUninstall",
+				"inputs": [
+					{
+						"name": "renderConsoleUninstall.result",
+						"type": "ConsoleUninstallResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderConsoleUninstall",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "restoreConsoleFile",
+				"inputs": [
+					{
+						"name": "restoreConsoleFile.host",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "restoreConsoleFile.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "restoreConsoleFile",
+						"type": "Promise<ConsoleChange>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderConsoleChange",
+				"inputs": [
+					{
+						"name": "renderConsoleChange.change",
+						"type": "ConsoleChange",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderConsoleChange",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderConsoleInstall",
+				"inputs": [
+					{
+						"name": "renderConsoleInstall.result",
+						"type": "ConsoleInstallResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderConsoleInstall",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

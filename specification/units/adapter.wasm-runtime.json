@@ -24,15 +24,46 @@
 		"inputs": [
 			{
 				"name": "WasmRuntimeAdapter.constructor.file",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "WasmRuntimeAdapter.constructor.options",
-				"type": "RuntimeOptions"
+				"type": "RuntimeOptions",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [],
+		"initialization": [
+			{
+				"name": "WasmRuntimeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "WasmRuntimeAdapter.constructor.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "WasmRuntimeAdapter.constructor.options",
+						"type": "RuntimeOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "WasmRuntimeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

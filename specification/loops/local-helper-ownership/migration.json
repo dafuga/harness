@@ -4776,9 +4776,9 @@
 		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
-			"commit": "aeadc55b9de2d7165ce4a79de5ce2ad404093b68",
-			"reason": "Derive grouped source contracts from the registered runtime entry, preserving declared explanations and canonical manifest ordering.",
-			"definition": "35afcf9e0f712bdd61e62752e9835e65fdc8e9cc8ec38897f48832683412c6f0",
+			"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
+			"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit.",
+			"definition": "d10d760ab19c3631fceef91b103cd06c02f1fee7ac06ce32918b0c90287dd022",
 			"previousReviews": [
 				{
 					"unit": "function.derive-manifest",
@@ -4793,13 +4793,6 @@
 					"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
 					"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
 					"definition": "3c6ad72e19d9861a00cb263693f3514f7bb1e05866d993c51bcdea909c3fc225"
-				},
-				{
-					"unit": "function.derive-manifest",
-					"name": "deriveManifest",
-					"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
-					"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit.",
-					"definition": "d10d760ab19c3631fceef91b103cd06c02f1fee7ac06ce32918b0c90287dd022"
 				}
 			]
 		},
@@ -5470,18 +5463,132 @@
 			"definition": "77fb4e594e25fc7458e591cdd99335d9289431cbab1f4bf222735d2b3d10eaab"
 		},
 		{
-			"unit": "function.scan-component",
-			"name": "scanComponent",
-			"commit": "fbcfd0bfc775bd965dff261f4503a954436dd764",
-			"definition": "f65112a7deea343c60bfb6c86ad22ad7f714ef0aed5f7f5726ede4bde9e13030",
-			"reason": "Read instance props separately from script exports and snippets, with optional flags and literal defaults."
+			"unit": "function.console-access",
+			"name": "consoleAccess",
+			"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+			"reason": "Drop the report exporter and its report handler with the export route.",
+			"definition": "be135d7873463b29ac28500a724718e09b46ae777986f989536b0d8f2dbfc06e"
 		},
 		{
-			"unit": "reports.function.activity-display",
-			"name": "activityDisplay",
-			"commit": "2b750c5dd0f1e8c0a6933ef4dc348ba9cfeca3fb",
-			"definition": "010445fa19c69439c1a3a1d485a73fc8296befffb736991eca733ab66115b1e2",
-			"reason": "Record main’s intentional removal of the repeated agent count from the displayed activity sentence."
+			"unit": "reports.function.report-http",
+			"name": "reportFile",
+			"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+			"reason": "Answer report assets only; stored export files are no longer served.",
+			"definition": "11f1a56270805ea51241b34d81f50dce01e85bc182ae06055dee0b0a892390de"
+		},
+		{
+			"unit": "reports.function.console-export",
+			"name": "consoleExport",
+			"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+			"reason": "Removed with the report export route.",
+			"definition": "6b829634f3fea222003376ac7bdf7299acac863039ecd41f9d6449c7fa243504",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.harness-evidence",
+			"name": "harnessReport",
+			"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+			"reason": "Removed with the report export route.",
+			"definition": "b69f96c479b9512d17f8a33bb65d51cc129787bf4b6d96a6a9b2156171aa2593",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.portable-page",
+			"name": "portablePage",
+			"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+			"reason": "Removed with the report export route.",
+			"definition": "9d979493619d1b4e0a3da9d2c2f2b9c56670358f3d44a285e75c453e7cf0c02d",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.report-pages",
+			"name": "reportPages",
+			"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+			"reason": "Removed with report publication.",
+			"definition": "40891a5ce279c5d95e68ecd76aa44789d2e4416339e910a9b4df489e937d091b",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.report-publication",
+			"name": "reportPublication",
+			"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+			"reason": "Removed with report publication.",
+			"definition": "1ecb96c4e1bc346787ef9fd1866ab529f15a7e1777bd6dceb9724f811cd0ecb1",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.report-publication-verify",
+			"name": "reportPublicationVerify",
+			"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+			"reason": "Removed with report publication.",
+			"definition": "9ba84bca0be83a593e53d0391c342975ce7a65ed495d17c1557c87fba4a757b9",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.report-pdf",
+			"name": "reportPdf",
+			"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+			"reason": "Removed with the PDF export.",
+			"definition": "2f5b03abbab57a72f392c2b9bfef3f53e61b6d6c0ebb63d2d888ce27a6fcc0fd",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.replay-frames",
+			"name": "replayStart",
+			"commit": "c75ae56d64d983c45bd127bd5a04ad181fb8642e",
+			"reason": "Removed with GameplayReplay, its only consumer.",
+			"definition": "1bfe394670957b14a3f64aff27e2ab2f8d531ea52714a337507680f39c9aaa1c",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.replay-locale",
+			"name": "replayLocale",
+			"commit": "c75ae56d64d983c45bd127bd5a04ad181fb8642e",
+			"reason": "Removed with GameplayReplay, its only consumer.",
+			"definition": "ebec93d7ccb3d5337ddb0f817ea0f5c503a9647f32ba57cc81df9fc5d411fd7e",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.report-display",
+			"name": "reportDisplay",
+			"commit": "c75ae56d64d983c45bd127bd5a04ad181fb8642e",
+			"reason": "Removed with GameplayReplay and ReportSummary, its only consumers.",
+			"definition": "832237dc05481ef4aa0dba115f708b131a367cee3025eb98b2640238f7aa6104",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.report-display",
+			"name": "dateLabel",
+			"commit": "c75ae56d64d983c45bd127bd5a04ad181fb8642e",
+			"reason": "Removed with ReportSummary, its only consumer.",
+			"definition": "3cc0dda8e2772a8c6431b5cdfbdecc9cec16f6da9e81a99310f22f319479f8ec",
+			"retired": true
 		}
+	],
+	"retiredOwners": [
+		"packages/reports/src/components/explorer-ui/entity-change/EntityChange.svelte",
+		"packages/reports/src/components/explorer-ui/harness-compare-media/HarnessCompareMedia.svelte",
+		"packages/reports/src/components/explorer-ui/harness-compare/HarnessCompare.svelte",
+		"packages/reports/src/components/explorer-ui/harness-failures/HarnessFailures.svelte",
+		"packages/reports/src/components/explorer-ui/harness-growth/HarnessGrowth.svelte",
+		"packages/reports/src/components/explorer-ui/harness-legacy/HarnessLegacy.svelte",
+		"packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+		"packages/reports/src/components/projects-sessions/activity-agents/ActivityAgents.svelte",
+		"packages/reports/src/components/projects-sessions/project-activity/ProjectActivity.svelte",
+		"packages/reports/src/components/projects-sessions/site-activity/SiteActivity.svelte",
+		"packages/reports/src/components/reports-media/analytics-cpu/AnalyticsCpu.svelte",
+		"packages/reports/src/components/reports-media/AudioUploadFiles.svelte",
+		"packages/reports/src/components/reports-media/ReplayControls.svelte",
+		"packages/reports/src/components/reports-media/ReportFindings.svelte",
+		"packages/reports/src/components/reports-media/ReportView.svelte",
+		"packages/reports/src/components/reports-media/UploadAudio.svelte",
+		"packages/reports/src/components/reports-media/gameplay-replay/GameplayReplay.svelte",
+		"packages/reports/src/components/reports-media/report-summary/ReportSummary.svelte",
+		"packages/reports/src/components/shared-primitives/CoverageList.svelte",
+		"packages/reports/src/components/shared-primitives/UploadComparison.svelte",
+		"packages/reports/src/components/verification-evidence/ReportChecks.svelte",
+		"packages/reports/src/services/reports-media/report-export-service/ReportExportService.ts",
+		"packages/reports/src/services/reports-media/report-command-service/report-publish-service/ReportPublishService.ts",
+		"packages/reports/src/utils/explorer-ui/console-server/consoleExport.ts"
 	]
 }

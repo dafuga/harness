@@ -26,19 +26,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "hubEvidencePath.path",
+				"type": "string",
+				"required": true,
+				"description": "Repository-relative path to check."
+			},
+			{
 				"name": "hubPinnedSource.base",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubPinnedSource.commit",
 				"type": "string",
+				"required": true,
 				"description": "Full 40-character lowercase hexadecimal commit ID that the source must resolve unchanged."
-			},
-			{
-				"name": "hubEvidencePath.path",
-				"type": "string",
-				"description": "Repository-relative path to check."
 			}
 		],
 		"outputs": [
@@ -59,7 +62,56 @@
 				"type": "refused",
 				"description": "Commit format is invalid or the source resolves it to a different commit."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "hubEvidencePath",
+				"inputs": [
+					{
+						"name": "hubEvidencePath.path",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative path to check."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEvidencePath",
+						"type": "boolean",
+						"description": "True for a nonempty slash-separated path with no empty, dot or parent segments, backslashes or control/delete characters."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubPinnedSource",
+				"inputs": [
+					{
+						"name": "hubPinnedSource.base",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubPinnedSource.commit",
+						"type": "string",
+						"required": true,
+						"description": "Full 40-character lowercase hexadecimal commit ID that the source must resolve unchanged."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubPinnedSource",
+						"type": "Promise<HubSourceContext>",
+						"description": "New context for the exact commit/tree, sharing source/cache and retaining the original authorization identity while changing requestedRef."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

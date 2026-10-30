@@ -36,21 +36,25 @@
 			{
 				"name": "presentUnits.side",
 				"type": "ReasonSide",
+				"required": true,
 				"description": "Revision source index and unit manifests to filter for active units with present owned source."
 			},
 			{
 				"name": "requiredReasons.base",
 				"type": "ReasonSide",
+				"required": true,
 				"description": "Earlier revision’s source blocks and manifests."
 			},
 			{
 				"name": "requiredReasons.head",
 				"type": "ReasonSide",
+				"required": true,
 				"description": "Later revision’s source blocks and manifests."
 			},
 			{
 				"name": "reasonDeclarationHash.unit",
 				"type": "ReasonManifest",
+				"required": true,
 				"description": "Full or compact manifest whose declared facts need a fingerprint."
 			}
 		],
@@ -71,7 +75,76 @@
 				"description": "Sixteen-character SHA-256 prefix for declared fields, or the stored fingerprint of a compact manifest."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "presentUnits",
+				"inputs": [
+					{
+						"name": "presentUnits.side",
+						"type": "ReasonSide",
+						"required": true,
+						"description": "Revision source index and unit manifests to filter for active units with present owned source."
+					}
+				],
+				"outputs": [
+					{
+						"name": "presentUnits",
+						"type": "Map<string, ReasonManifest>",
+						"description": "Map of active manifests with at least one owned path present in the source index."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requiredReasons",
+				"inputs": [
+					{
+						"name": "requiredReasons.base",
+						"type": "ReasonSide",
+						"required": true,
+						"description": "Earlier revision’s source blocks and manifests."
+					},
+					{
+						"name": "requiredReasons.head",
+						"type": "ReasonSide",
+						"required": true,
+						"description": "Later revision’s source blocks and manifests."
+					}
+				],
+				"outputs": [
+					{
+						"name": "requiredReasons",
+						"type": "RequiredReason[]",
+						"description": "Sorted required reasons with unit/symbol, change kind and before/after fingerprints. Identical named blocks can move files unchanged; whole-unit changes use *, and declared-manifest changes use <manifest> only when no symbol changes already require reasons."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reasonDeclarationHash",
+				"inputs": [
+					{
+						"name": "reasonDeclarationHash.unit",
+						"type": "ReasonManifest",
+						"required": true,
+						"description": "Full or compact manifest whose declared facts need a fingerprint."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reasonDeclarationHash",
+						"type": "string",
+						"description": "Sixteen-character SHA-256 prefix for declared fields, or the stored fingerprint of a compact manifest."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

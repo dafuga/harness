@@ -40,54 +40,64 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "harnessAncestry.index",
-				"type": "HarnessIndex",
-				"description": "Index with recorded parent links."
-			},
-			{
-				"name": "harnessAncestry.commit",
-				"type": "string",
-				"description": "Commit whose ancestors are requested."
-			},
-			{
-				"name": "branchNames.index",
-				"type": "HarnessIndex",
-				"description": "Index whose usable branch names are requested."
-			},
-			{
-				"name": "defaultCommit.index",
-				"type": "HarnessIndex",
-				"description": "Index holding possible initial revisions."
-			},
-			{
-				"name": "defaultCommit.asked",
-				"type": "string",
-				"description": "Requested commit, honored only if stored."
-			},
-			{
 				"name": "branchCommits.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Index whose revision order is retained."
 			},
 			{
 				"name": "branchCommits.branch",
 				"type": "string",
+				"required": true,
 				"description": "Branch name or the Retained commits pseudo-branch."
+			},
+			{
+				"name": "revisionLabel.item",
+				"type": "HarnessRevisionSummary",
+				"required": true,
+				"description": "Revision summary to label."
+			},
+			{
+				"name": "harnessAncestry.index",
+				"type": "HarnessIndex",
+				"required": true,
+				"description": "Index with recorded parent links."
+			},
+			{
+				"name": "harnessAncestry.commit",
+				"type": "string",
+				"required": true,
+				"description": "Commit whose ancestors are requested."
+			},
+			{
+				"name": "branchNames.index",
+				"type": "HarnessIndex",
+				"required": true,
+				"description": "Index whose usable branch names are requested."
+			},
+			{
+				"name": "defaultCommit.index",
+				"type": "HarnessIndex",
+				"required": true,
+				"description": "Index holding possible initial revisions."
+			},
+			{
+				"name": "defaultCommit.asked",
+				"type": "string",
+				"required": true,
+				"description": "Requested commit, honored only if stored."
 			},
 			{
 				"name": "branchOf.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Index used to choose a branch for a commit."
 			},
 			{
 				"name": "branchOf.commit",
 				"type": "string",
+				"required": true,
 				"description": "Commit to locate."
-			},
-			{
-				"name": "revisionLabel.item",
-				"type": "HarnessRevisionSummary",
-				"description": "Revision summary to label."
 			}
 		],
 		"outputs": [
@@ -127,7 +137,154 @@
 				"description": "Short commit, subject and readable coverage status."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "branchCommits",
+				"inputs": [
+					{
+						"name": "branchCommits.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index whose revision order is retained."
+					},
+					{
+						"name": "branchCommits.branch",
+						"type": "string",
+						"required": true,
+						"description": "Branch name or the Retained commits pseudo-branch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "branchCommits",
+						"type": "HarnessRevisionSummary[]",
+						"description": "Revisions belonging to the branch, or retained revisions, in index order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "revisionLabel",
+				"inputs": [
+					{
+						"name": "revisionLabel.item",
+						"type": "HarnessRevisionSummary",
+						"required": true,
+						"description": "Revision summary to label."
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionLabel",
+						"type": "string",
+						"description": "Short commit, subject and readable coverage status."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "harnessAncestry",
+				"inputs": [
+					{
+						"name": "harnessAncestry.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index with recorded parent links."
+					},
+					{
+						"name": "harnessAncestry.commit",
+						"type": "string",
+						"required": true,
+						"description": "Commit whose ancestors are requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessAncestry",
+						"type": "Set<string>",
+						"description": "Set reached through recorded parent links, normally excluding the starting commit; includes named parents even when their own details are not indexed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "branchNames",
+				"inputs": [
+					{
+						"name": "branchNames.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index whose usable branch names are requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "branchNames",
+						"type": "string[]",
+						"description": "Source branches with indexed members, plus Retained commits when any retained revision exists."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "defaultCommit",
+				"inputs": [
+					{
+						"name": "defaultCommit.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index holding possible initial revisions."
+					},
+					{
+						"name": "defaultCommit.asked",
+						"type": "string",
+						"required": true,
+						"description": "Requested commit, honored only if stored."
+					}
+				],
+				"outputs": [
+					{
+						"name": "defaultCommit",
+						"type": "string",
+						"description": "Requested stored commit, else first stored branch head, else first indexed revision, else an empty string."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "branchOf",
+				"inputs": [
+					{
+						"name": "branchOf.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index used to choose a branch for a commit."
+					},
+					{
+						"name": "branchOf.commit",
+						"type": "string",
+						"required": true,
+						"description": "Commit to locate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "branchOf",
+						"type": "string",
+						"description": "Retained commits for a retained revision, otherwise its first branch, first offered branch, or an empty string."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

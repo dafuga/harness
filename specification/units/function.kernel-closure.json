@@ -21,6 +21,7 @@
 			{
 				"name": "kernelClosure.input",
 				"type": "ImpactInput",
+				"required": true,
 				"description": "The dependency graphs before and after a change, changed or uncertain units, and the tests or scenarios that can verify them. Each edge means the first node depends on the second."
 			}
 		],
@@ -31,7 +32,29 @@
 				"description": "Affected units and their fewest dependency steps from a changed or uncertain unit. Also lists changed units with no covering test, and changed units absent from both graphs."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "kernelClosure",
+				"inputs": [
+					{
+						"name": "kernelClosure.input",
+						"type": "ImpactInput",
+						"required": true,
+						"description": "The dependency graphs before and after a change, changed or uncertain units, and the tests or scenarios that can verify them. Each edge means the first node depends on the second."
+					}
+				],
+				"outputs": [
+					{
+						"name": "kernelClosure",
+						"type": "ImpactOutput"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -20,11 +20,13 @@
 			{
 				"name": "githubCommitFacts.client",
 				"type": "GitHubTransport",
+				"required": true,
 				"description": "Repository transport used for access checks and the commit request."
 			},
 			{
 				"name": "githubCommitFacts.commit",
 				"type": "string",
+				"required": true,
 				"description": "Exact 40-character lowercase hex commit SHA."
 			}
 		],
@@ -41,7 +43,41 @@
 				"type": "thrown",
 				"description": "Rejects invalid input, denied repository access, a mismatched returned SHA or unavailable GitHub data."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "githubCommitFacts",
+				"inputs": [
+					{
+						"name": "githubCommitFacts.client",
+						"type": "GitHubTransport",
+						"required": true,
+						"description": "Repository transport used for access checks and the commit request."
+					},
+					{
+						"name": "githubCommitFacts.commit",
+						"type": "string",
+						"required": true,
+						"description": "Exact 40-character lowercase hex commit SHA."
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubCommitFacts",
+						"type": "Promise<SourceCommitFacts | null>",
+						"description": "Verified commit facts, or null when GitHub returns 404; the subject is the first paragraph with line breaks collapsed."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

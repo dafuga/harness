@@ -26,11 +26,13 @@
 			{
 				"name": "reportRetention.report",
 				"type": "Pick<Report, 'startedAt'>",
+				"required": true,
 				"description": "Report start timestamp; later updates do not extend this calculation."
 			},
 			{
 				"name": "reportRetention.now",
 				"type": "unknown",
+				"required": false,
 				"description": "Optional current time in epoch milliseconds, defaulting to Date.now()."
 			}
 		],
@@ -57,7 +59,41 @@
 				"type": "thrown",
 				"description": "Throws Invalid report retention timestamp when the start date or current time is not finite."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "reportRetention",
+				"inputs": [
+					{
+						"name": "reportRetention.report",
+						"type": "Pick<Report, 'startedAt'>",
+						"required": true,
+						"description": "Report start timestamp; later updates do not extend this calculation."
+					},
+					{
+						"name": "reportRetention.now",
+						"type": "unknown",
+						"required": false,
+						"description": "Optional current time in epoch milliseconds, defaulting to Date.now()."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportRetention",
+						"type": "unknown",
+						"description": "True once the start time plus thirty days is at or before now; false before that boundary."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -28,11 +28,13 @@
 			{
 				"name": "browserEvidenceReads.api",
 				"type": "BrowserApi",
+				"required": true,
 				"description": "API client used for JSON evidence and bounded media reads."
 			},
 			{
 				"name": "browserEvidenceReads.guard",
 				"type": "Guard",
+				"required": true,
 				"description": "Guard that resolves the project base path and handles permission failures."
 			}
 		],
@@ -43,7 +45,36 @@
 				"description": "evidence and artifact bridge methods using public evidence fields; artifact additionally validates returned media against the requested hash."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "browserEvidenceReads",
+				"inputs": [
+					{
+						"name": "browserEvidenceReads.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "API client used for JSON evidence and bounded media reads."
+					},
+					{
+						"name": "browserEvidenceReads.guard",
+						"type": "Guard",
+						"required": true,
+						"description": "Guard that resolves the project base path and handles permission failures."
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserEvidenceReads",
+						"type": "Pick<DesktopBridge, 'evidence' | 'artifact'>",
+						"description": "evidence and artifact bridge methods using public evidence fields; artifact additionally validates returned media against the requested hash."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

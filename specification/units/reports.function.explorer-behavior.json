@@ -26,11 +26,13 @@
 			{
 				"name": "behaviorSummary.found",
 				"type": "ExplorerBehaviorRow[]",
+				"required": true,
 				"description": "Aligned behavior rows to summarize."
 			},
 			{
 				"name": "explorerBehavior.evidence",
 				"type": "ExplorerEvidence",
+				"required": true,
 				"description": "Host-selected before/after evidence and scenario context."
 			}
 		],
@@ -51,7 +53,50 @@
 				"description": "Union of result rows matched by scenario, state, evidence and kind, with after-side order first and before-only rows afterward. Unusable captures become absent cells and unknown changes. Equal hashes are provisionally unchanged; different hashes only differ until read. No before side yields not-compared, while missing records or incompatibility prevent comparison."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "behaviorSummary",
+				"inputs": [
+					{
+						"name": "behaviorSummary.found",
+						"type": "ExplorerBehaviorRow[]",
+						"required": true,
+						"description": "Aligned behavior rows to summarize."
+					}
+				],
+				"outputs": [
+					{
+						"name": "behaviorSummary",
+						"type": "[ExplorerChange, string | null]",
+						"description": "Summary and optional reason, with unknown taking precedence over unread byte differences. Empty rows are unknown; all unchanged rows are unchanged; other resolved differences are changed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explorerBehavior",
+				"inputs": [
+					{
+						"name": "explorerBehavior.evidence",
+						"type": "ExplorerEvidence",
+						"required": true,
+						"description": "Host-selected before/after evidence and scenario context."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerBehavior",
+						"type": "ExplorerBehavior",
+						"description": "Union of result rows matched by scenario, state, evidence and kind, with after-side order first and before-only rows afterward. Unusable captures become absent cells and unknown changes. Equal hashes are provisionally unchanged; different hashes only differ until read. No before side yields not-compared, while missing records or incompatibility prevent comparison."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

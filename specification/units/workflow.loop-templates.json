@@ -36,15 +36,18 @@
 		"inputs": [
 			{
 				"name": "listLoopTemplates.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "resolveLoopTemplate.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "resolveLoopTemplate.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -62,7 +65,52 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "listLoopTemplates",
+				"inputs": [
+					{
+						"name": "listLoopTemplates.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "listLoopTemplates",
+						"type": "Promise<LoopTemplate[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resolveLoopTemplate",
+				"inputs": [
+					{
+						"name": "resolveLoopTemplate.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "resolveLoopTemplate.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveLoopTemplate",
+						"type": "Promise<ResolvedLoopTemplate>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -27,23 +27,28 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskRunnerAdapter.constructor.execute",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.command.selection",
-				"type": "TaskSelection"
+				"type": "TaskSelection",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run.input",
-				"type": "TaskRunInput"
+				"type": "TaskRunInput",
+				"required": true
 			},
 			{
 				"name": "taskProcess.command",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "taskProcess.input",
-				"type": "TaskRunInput"
+				"type": "TaskRunInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -64,6 +69,88 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ModuleTaskRunnerAdapter.command",
+				"inputs": [
+					{
+						"name": "ModuleTaskRunnerAdapter.command.selection",
+						"type": "TaskSelection",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskRunnerAdapter.command",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskRunnerAdapter.run",
+				"inputs": [
+					{
+						"name": "ModuleTaskRunnerAdapter.run.input",
+						"type": "TaskRunInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskRunnerAdapter.run",
+						"type": "Promise<TaskRunResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "taskProcess",
+				"inputs": [
+					{
+						"name": "taskProcess.command",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "taskProcess.input",
+						"type": "TaskRunInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskProcess",
+						"type": "Promise<TaskProcessResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ModuleTaskRunnerAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ModuleTaskRunnerAdapter.constructor.execute",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskRunnerAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

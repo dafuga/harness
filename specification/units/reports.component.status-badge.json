@@ -11,11 +11,8 @@
 		"uses": []
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/StatusBadge.svelte",
-			"packages/reports/src/components/shared-primitives/StatusBadge.svelte"
-		],
-		"symbols": ["StatusBadge", "StatusBadge"]
+		"source": ["packages/reports/src/components/shared-primitives/StatusBadge.svelte"],
+		"symbols": ["StatusBadge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,6 +20,7 @@
 			{
 				"name": "StatusBadge.status",
 				"type": "Status",
+				"required": true,
 				"description": "Required report status, used for the CSS class and translation key."
 			}
 		],
@@ -33,7 +31,9 @@
 				"description": "Inline status badge with translated text and a decorative dot hidden from assistive technology."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

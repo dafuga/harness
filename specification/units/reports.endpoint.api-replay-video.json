@@ -14,8 +14,14 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "GET.input",
-				"type": "RequestEvent"
+				"name": "GET.url",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "GET.request",
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -33,7 +39,39 @@
 				"name": "HttpError 404",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.url",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "GET.request",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "HttpError 400",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

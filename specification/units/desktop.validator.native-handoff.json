@@ -23,27 +23,33 @@
 		"inputs": [
 			{
 				"name": "NativeHandoffValidator.start.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffValidator.start.origin",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffValidator.start.now",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffValidator.exchange.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffValidator.exchange.expected",
-				"type": "{ origin: string; nonce: string; resource: string }"
+				"type": "{ origin: string; nonce: string; resource: string }",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffValidator.exchange.now",
-				"type": "number"
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -61,7 +67,77 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "NativeHandoffValidator.start",
+				"inputs": [
+					{
+						"name": "NativeHandoffValidator.start.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "NativeHandoffValidator.start.origin",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "NativeHandoffValidator.start.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeHandoffValidator.start",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeHandoffValidator.exchange",
+				"inputs": [
+					{
+						"name": "NativeHandoffValidator.exchange.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "NativeHandoffValidator.exchange.expected",
+						"type": "{ origin: string; nonce: string; resource: string }",
+						"required": true
+					},
+					{
+						"name": "NativeHandoffValidator.exchange.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeHandoffValidator.exchange",
+						"type": "{ credential: NativeHostedCredential; status: NativeHostedStatus }"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

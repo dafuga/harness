@@ -19,18 +19,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "branch",
-				"type": "string",
-				"description": "The selected project branch, preserved in Styles navigation."
-			},
-			{
-				"name": "commit",
-				"type": "40-character hash | absent",
-				"description": "The selected revision, or the branch tip when absent."
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
@@ -38,7 +27,9 @@
 				"description": "The Styles design-token catalog under the selected branch and revision."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

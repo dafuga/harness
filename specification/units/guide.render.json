@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "renderGuide.guide",
-				"type": "Guide"
+				"type": "Guide",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "renderGuide",
+				"inputs": [
+					{
+						"name": "renderGuide.guide",
+						"type": "Guide",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderGuide",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

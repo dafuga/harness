@@ -25,41 +25,49 @@
 			{
 				"name": "deploymentProof.config",
 				"type": "DeploymentConfig",
+				"required": true,
 				"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
 			},
 			{
 				"name": "deploymentBlockers.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "deploymentBlockers.query",
 				"type": "{ commit: string; environment: DeploymentEnvironment }",
+				"required": true,
 				"description": "Requested immutable source commit and destination environment."
 			},
 			{
 				"name": "deploymentBlockers.config",
 				"type": "DeploymentConfig",
+				"required": true,
 				"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
 			},
 			{
 				"name": "deploymentHealth.target",
 				"type": "CloudflareTarget",
+				"required": true,
 				"description": "Configured destination identity and health URL; credentials are never exposed in the UI."
 			},
 			{
 				"name": "deploymentCurrent.root",
 				"type": "string",
+				"required": true,
 				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
 			},
 			{
 				"name": "deploymentCurrent.plan",
 				"type": "DeploymentPlan",
+				"required": true,
 				"description": "Reviewed immutable source and destination with expiry and blocking conditions."
 			},
 			{
 				"name": "deploymentCurrent.guard",
 				"type": "{ plugin: DeploymentPlugin; fingerprint: string; phase?: string }",
+				"required": true,
 				"description": "Reviewed configuration or destination proof that must still match before the next step."
 			}
 		],
@@ -91,7 +99,119 @@
 				"type": "thrown",
 				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "deploymentProof",
+				"inputs": [
+					{
+						"name": "deploymentProof.config",
+						"type": "DeploymentConfig",
+						"required": true,
+						"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentProof",
+						"type": "string",
+						"description": "SHA-256 digest of the serialized deployment configuration."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "deploymentBlockers",
+				"inputs": [
+					{
+						"name": "deploymentBlockers.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					},
+					{
+						"name": "deploymentBlockers.query",
+						"type": "{ commit: string; environment: DeploymentEnvironment }",
+						"required": true,
+						"description": "Requested immutable source commit and destination environment."
+					},
+					{
+						"name": "deploymentBlockers.config",
+						"type": "DeploymentConfig",
+						"required": true,
+						"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentBlockers",
+						"type": "unknown",
+						"description": "Blocking reasons, source branch and, for production, preprod/production comparison."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "deploymentHealth",
+				"inputs": [
+					{
+						"name": "deploymentHealth.target",
+						"type": "CloudflareTarget",
+						"required": true,
+						"description": "Configured destination identity and health URL; credentials are never exposed in the UI."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentHealth",
+						"type": "Promise<boolean>",
+						"description": "True only when the health endpoint returns a successful response without redirects."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "deploymentCurrent",
+				"inputs": [
+					{
+						"name": "deploymentCurrent.root",
+						"type": "string",
+						"required": true,
+						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+					},
+					{
+						"name": "deploymentCurrent.plan",
+						"type": "DeploymentPlan",
+						"required": true,
+						"description": "Reviewed immutable source and destination with expiry and blocking conditions."
+					},
+					{
+						"name": "deploymentCurrent.guard",
+						"type": "{ plugin: DeploymentPlugin; fingerprint: string; phase?: string }",
+						"required": true,
+						"description": "Reviewed configuration or destination proof that must still match before the next step."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentCurrent",
+						"type": "unknown",
+						"description": "Current validated configuration; rejects if source, configuration or promotion changed."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

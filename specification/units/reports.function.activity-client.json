@@ -20,11 +20,13 @@
 			{
 				"name": "activityClient.arrived",
 				"type": "(shown: Shown) => void",
+				"required": true,
 				"description": "Callback receiving parsed activity after a successful request while the client remains active."
 			},
 			{
 				"name": "activityClient.missed",
 				"type": "() => void",
+				"required": true,
 				"description": "Callback invoked when an active request fails, including an HTTP or JSON failure."
 			}
 		],
@@ -41,7 +43,36 @@
 				"type": "thrown",
 				"description": "A non-success HTTP status creates Activity unavailable. internally, but refresh catches it and calls missed while active."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "activityClient",
+				"inputs": [
+					{
+						"name": "activityClient.arrived",
+						"type": "(shown: Shown) => void",
+						"required": true,
+						"description": "Callback receiving parsed activity after a successful request while the client remains active."
+					},
+					{
+						"name": "activityClient.missed",
+						"type": "() => void",
+						"required": true,
+						"description": "Callback invoked when an active request fails, including an HTTP or JSON failure."
+					}
+				],
+				"outputs": [
+					{
+						"name": "activityClient",
+						"type": "unknown",
+						"description": "Returns refresh and stop methods. Refresh skips overlapping or stopped requests and uses a no-cache activity request. Polls every 15 seconds while visible and when visibility changes to visible; it does not request immediately on construction. Stop removes the timer/listener and aborts the request."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

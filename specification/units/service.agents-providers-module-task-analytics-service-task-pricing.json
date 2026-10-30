@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "taskApiCost.model",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "taskApiCost.usage",
-				"type": "TaskUsage"
+				"type": "TaskUsage",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -28,7 +30,34 @@
 				"type": "TaskApiCost"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "taskApiCost",
+				"inputs": [
+					{
+						"name": "taskApiCost.model",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "taskApiCost.usage",
+						"type": "TaskUsage",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskApiCost",
+						"type": "TaskApiCost"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

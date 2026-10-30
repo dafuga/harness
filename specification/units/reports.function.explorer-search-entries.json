@@ -19,11 +19,13 @@
 			{
 				"name": "explorerSearchEntries.entities",
 				"type": "ExplorerEntity[]",
+				"required": true,
 				"description": "Explorer entities from the displayed revision. Removed entities are omitted."
 			},
 			{
 				"name": "explorerSearchEntries.commit",
 				"type": "string",
+				"required": true,
 				"description": "Commit identifier attached to every search entry."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "Search entries containing identifier, category, display name, purpose and contract field names, with the supplied commit. No owned source paths are added."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "explorerSearchEntries",
+				"inputs": [
+					{
+						"name": "explorerSearchEntries.entities",
+						"type": "ExplorerEntity[]",
+						"required": true,
+						"description": "Explorer entities from the displayed revision. Removed entities are omitted."
+					},
+					{
+						"name": "explorerSearchEntries.commit",
+						"type": "string",
+						"required": true,
+						"description": "Commit identifier attached to every search entry."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerSearchEntries",
+						"type": "SearchEntry[]",
+						"description": "Search entries containing identifier, category, display name, purpose and contract field names, with the supplied commit. No owned source paths are added."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

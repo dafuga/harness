@@ -20,11 +20,13 @@
 			{
 				"name": "browserError.code",
 				"type": "string",
+				"required": true,
 				"description": "Server error code to look up."
 			},
 			{
 				"name": "browserError.status",
 				"type": "number",
+				"required": true,
 				"description": "HTTP status, or zero for an unreachable server."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "Known code wording; otherwise a generic failure containing a nonzero status, or server-unreachable wording for zero."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "browserError",
+				"inputs": [
+					{
+						"name": "browserError.code",
+						"type": "string",
+						"required": true,
+						"description": "Server error code to look up."
+					},
+					{
+						"name": "browserError.status",
+						"type": "number",
+						"required": true,
+						"description": "HTTP status, or zero for an unreachable server."
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserError",
+						"type": "string",
+						"description": "Known code wording; otherwise a generic failure containing a nonzero status, or server-unreachable wording for zero."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

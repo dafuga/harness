@@ -19,11 +19,13 @@
 			{
 				"name": "hubEntity.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubEntity.query",
 				"type": "{ entityId: string; commit: string; branch: string; shared: CommittedThread[] }",
+				"required": true,
 				"description": "Entity ID, commit, branch and already-authorized shared threads."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "Entity detail with source sizes, relationships, design introduction commits, shared-thread count and history coverage; performance is explicitly not measured."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubEntity",
+				"inputs": [
+					{
+						"name": "hubEntity.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubEntity.query",
+						"type": "{ entityId: string; commit: string; branch: string; shared: CommittedThread[] }",
+						"required": true,
+						"description": "Entity ID, commit, branch and already-authorized shared threads."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubEntity",
+						"type": "Promise<EntityDetail>",
+						"description": "Entity detail with source sizes, relationships, design introduction commits, shared-thread count and history coverage; performance is explicitly not measured."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

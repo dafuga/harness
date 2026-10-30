@@ -27,6 +27,7 @@
 			{
 				"name": "scenarioRequirements.scenario",
 				"type": "ScenarioManifest",
+				"required": true,
 				"description": "Scenario manifest containing state coverage, evidence requirements and named viewports."
 			}
 		],
@@ -37,7 +38,30 @@
 				"description": "Required capture combinations only for required evidence on required states, plus unproven missing states and excluded inapplicable states with reasons. Evidence without viewports produces one requirement per state."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "scenarioRequirements",
+				"inputs": [
+					{
+						"name": "scenarioRequirements.scenario",
+						"type": "ScenarioManifest",
+						"required": true,
+						"description": "Scenario manifest containing state coverage, evidence requirements and named viewports."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scenarioRequirements",
+						"type": "ScenarioRequirements",
+						"description": "Required capture combinations only for required evidence on required states, plus unproven missing states and excluded inapplicable states with reasons. Evidence without viewports produces one requirement per state."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

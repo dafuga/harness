@@ -27,26 +27,31 @@
 			{
 				"name": "approvalMatches.record",
 				"type": "ApprovalRecord",
+				"required": true,
 				"description": "Approval record whose version, contract, notes and image bindings are compared."
 			},
 			{
 				"name": "approvalMatches.latest",
 				"type": "DesignVersion | undefined",
+				"required": true,
 				"description": "Latest design version, or undefined."
 			},
 			{
 				"name": "planRead.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planRead.rev",
 				"type": "string",
+				"required": true,
 				"description": "Revision to read."
 			},
 			{
 				"name": "planRead.unitId",
 				"type": "string",
+				"required": true,
 				"description": "Unit ID whose plan is required."
 			}
 		],
@@ -68,7 +73,73 @@
 				"type": "thrown",
 				"description": "Rejects missing, corrupt, changed or mismatched artifacts, broken design sequences and rewritten message chains/history."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "approvalMatches",
+				"inputs": [
+					{
+						"name": "approvalMatches.record",
+						"type": "ApprovalRecord",
+						"required": true,
+						"description": "Approval record whose version, contract, notes and image bindings are compared."
+					},
+					{
+						"name": "approvalMatches.latest",
+						"type": "DesignVersion | undefined",
+						"required": true,
+						"description": "Latest design version, or undefined."
+					}
+				],
+				"outputs": [
+					{
+						"name": "approvalMatches",
+						"type": "boolean",
+						"description": "True when the approval exactly matches the latest version and selected option content; false when no matching version or option exists."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "planRead",
+				"inputs": [
+					{
+						"name": "planRead.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "planRead.rev",
+						"type": "string",
+						"required": true,
+						"description": "Revision to read."
+					},
+					{
+						"name": "planRead.unitId",
+						"type": "string",
+						"required": true,
+						"description": "Unit ID whose plan is required."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planRead",
+						"type": "Promise<PlanDetail>",
+						"description": "Plan detail with numerically ordered versions, approvals marked current, pinned-order threads, derived draft/review/approved lifecycle and counts; verified remains false."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

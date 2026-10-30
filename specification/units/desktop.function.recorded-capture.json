@@ -27,11 +27,13 @@
 			{
 				"name": "recordedCapture.evidence",
 				"type": "ExplorerEvidence",
+				"required": true,
 				"description": "The entity’s before/after evidence, already read at the intended revisions."
 			},
 			{
 				"name": "recordedCapture.binding",
 				"type": "CaptureBinding",
+				"required": true,
 				"description": "The requested side, judging-record identity, scenario, state, evidence identifier, nullable viewport and SHA-256 hash. Every field must match the selected evidence."
 			}
 		],
@@ -48,7 +50,41 @@
 				"type": "refused",
 				"description": "Throws when the chosen side or judging record is absent, no capture matches the entire binding, or that record has no matching scenario."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "recordedCapture",
+				"inputs": [
+					{
+						"name": "recordedCapture.evidence",
+						"type": "ExplorerEvidence",
+						"required": true,
+						"description": "The entity’s before/after evidence, already read at the intended revisions."
+					},
+					{
+						"name": "recordedCapture.binding",
+						"type": "CaptureBinding",
+						"required": true,
+						"description": "The requested side, judging-record identity, scenario, state, evidence identifier, nullable viewport and SHA-256 hash. Every field must match the selected evidence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedCapture",
+						"type": "ListedCapture",
+						"description": "The listed capture and its scenario’s origin-record identity. Inherited captures therefore point to the record that originally stored them. The helper selects a record; it does not read or hash bytes."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

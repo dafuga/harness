@@ -32,46 +32,55 @@
 			{
 				"name": "sharedSecret.privateKey",
 				"type": "CryptoKey",
+				"required": true,
 				"description": "Local P-256 private key authorized for key agreement."
 			},
 			{
 				"name": "sharedSecret.publicKey",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Peer 65-byte uncompressed P-256 public point."
 			},
 			{
 				"name": "importRemoteKeys.stored",
 				"type": "StoredRemoteKeys",
+				"required": true,
 				"description": "Base64url private scalar and public point to import and cross-check."
 			},
 			{
 				"name": "exportRemoteKeys.pair",
 				"type": "RemoteKeyPair",
+				"required": true,
 				"description": "Key pair with an exportable private key and its public bytes."
 			},
 			{
 				"name": "deriveBytes.ikm",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Input key material for HKDF-SHA256."
 			},
 			{
 				"name": "deriveBytes.salt",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "HKDF salt bytes."
 			},
 			{
 				"name": "deriveBytes.info",
 				"type": "Uint8Array | string",
+				"required": true,
 				"description": "HKDF context bytes or text encoded as UTF-8."
 			},
 			{
 				"name": "deriveBytes.length",
 				"type": "number",
+				"required": true,
 				"description": "Requested output length in bytes."
 			},
 			{
 				"name": "aesKey.bytes",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Raw AES key bytes to import."
 			}
 		],
@@ -113,7 +122,157 @@
 				"type": "thrown",
 				"description": "Rejects malformed or mismatched key pairs, unexportable private keys and unsupported cryptographic inputs or lengths."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "remoteKeys",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "remoteKeys",
+						"type": "Promise<RemoteKeyPair>",
+						"description": "Fresh P-256 public bytes and extractable private CryptoKey."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sharedSecret",
+				"inputs": [
+					{
+						"name": "sharedSecret.privateKey",
+						"type": "CryptoKey",
+						"required": true,
+						"description": "Local P-256 private key authorized for key agreement."
+					},
+					{
+						"name": "sharedSecret.publicKey",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Peer 65-byte uncompressed P-256 public point."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sharedSecret",
+						"type": "Promise<Uint8Array>",
+						"description": "32-byte ECDH shared secret."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "importRemoteKeys",
+				"inputs": [
+					{
+						"name": "importRemoteKeys.stored",
+						"type": "StoredRemoteKeys",
+						"required": true,
+						"description": "Base64url private scalar and public point to import and cross-check."
+					}
+				],
+				"outputs": [
+					{
+						"name": "importRemoteKeys",
+						"type": "Promise<RemoteKeyPair>",
+						"description": "Imported key pair after a fresh probe confirms the public and private halves agree."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "exportRemoteKeys",
+				"inputs": [
+					{
+						"name": "exportRemoteKeys.pair",
+						"type": "RemoteKeyPair",
+						"required": true,
+						"description": "Key pair with an exportable private key and its public bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "exportRemoteKeys",
+						"type": "Promise<StoredRemoteKeys>",
+						"description": "Private scalar and public point encoded as base64url; this helper does not persist them."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "deriveBytes",
+				"inputs": [
+					{
+						"name": "deriveBytes.ikm",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Input key material for HKDF-SHA256."
+					},
+					{
+						"name": "deriveBytes.salt",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "HKDF salt bytes."
+					},
+					{
+						"name": "deriveBytes.info",
+						"type": "Uint8Array | string",
+						"required": true,
+						"description": "HKDF context bytes or text encoded as UTF-8."
+					},
+					{
+						"name": "deriveBytes.length",
+						"type": "number",
+						"required": true,
+						"description": "Requested output length in bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deriveBytes",
+						"type": "Promise<Uint8Array>",
+						"description": "HKDF-SHA256 output of the requested byte length."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "aesKey",
+				"inputs": [
+					{
+						"name": "aesKey.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Raw AES key bytes to import."
+					}
+				],
+				"outputs": [
+					{
+						"name": "aesKey",
+						"type": "Promise<CryptoKey>",
+						"description": "Nonextractable AES-GCM key with encrypt and decrypt usages."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

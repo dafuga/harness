@@ -30,11 +30,13 @@
 			{
 				"name": "gatherCaptures.directory",
 				"type": "string",
+				"required": true,
 				"description": "Evidence directory containing the capture index and files it names."
 			},
 			{
 				"name": "gatherCaptures.recordPath",
 				"type": "string",
+				"required": true,
 				"description": "Record-relative prefix prepended to each captured filename."
 			}
 		],
@@ -45,7 +47,36 @@
 				"description": "Gathered captures with SHA-256, byte size, current timestamp and initial passed status, plus media facts or parsed benchmark data. Malformed index lines and missing files are returned as failures; no index yields empty arrays."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "gatherCaptures",
+				"inputs": [
+					{
+						"name": "gatherCaptures.directory",
+						"type": "string",
+						"required": true,
+						"description": "Evidence directory containing the capture index and files it names."
+					},
+					{
+						"name": "gatherCaptures.recordPath",
+						"type": "string",
+						"required": true,
+						"description": "Record-relative prefix prepended to each captured filename."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gatherCaptures",
+						"type": "GatherResult",
+						"description": "Gathered captures with SHA-256, byte size, current timestamp and initial passed status, plus media facts or parsed benchmark data. Malformed index lines and missing files are returned as failures; no index yields empty arrays."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -48,35 +48,43 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskRepository.update.change",
-				"type": "(data: ModuleTaskQueue) => T"
+				"type": "(data: ModuleTaskQueue) => T",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskRepository.update.source",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "ModuleTaskRepository.sync.remote",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "syncTaskQueue.git",
-				"type": "GitAdapter"
+				"type": "GitAdapter",
+				"required": true
 			},
 			{
 				"name": "syncTaskQueue.ref",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "syncTaskQueue.remote",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "taskOwner.git",
-				"type": "GitAdapter"
+				"type": "GitAdapter",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -129,6 +137,155 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ModuleTaskRepository.read",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ModuleTaskRepository.read",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskRepository.update",
+				"inputs": [
+					{
+						"name": "ModuleTaskRepository.update.change",
+						"type": "(data: ModuleTaskQueue) => T",
+						"required": true
+					},
+					{
+						"name": "ModuleTaskRepository.update.source",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskRepository.update",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskRepository.sync",
+				"inputs": [
+					{
+						"name": "ModuleTaskRepository.sync.remote",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskRepository.sync",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ModuleTaskRepository.owner",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ModuleTaskRepository.owner",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "syncTaskQueue",
+				"inputs": [
+					{
+						"name": "syncTaskQueue.git",
+						"type": "GitAdapter",
+						"required": true
+					},
+					{
+						"name": "syncTaskQueue.ref",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "syncTaskQueue.remote",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "syncTaskQueue",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "taskOwner",
+				"inputs": [
+					{
+						"name": "taskOwner.git",
+						"type": "GitAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskOwner",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ModuleTaskRepository.constructor",
+				"inputs": [
+					{
+						"name": "ModuleTaskRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

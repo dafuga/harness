@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "atomicComponents.options",
-				"type": "{ aliases?: Record<string, string> }"
+				"type": "{ aliases?: Record<string, string> }",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "PreprocessorGroup"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "atomicComponents",
+				"inputs": [
+					{
+						"name": "atomicComponents.options",
+						"type": "{ aliases?: Record<string, string> }",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "atomicComponents",
+						"type": "PreprocessorGroup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

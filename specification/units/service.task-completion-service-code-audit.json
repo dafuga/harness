@@ -16,16 +16,20 @@
 			{
 				"name": "codeAudit.root",
 				"type": "string",
+				"required": true,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "codeAudit.commit",
 				"type": "string",
+				"required": true,
 				"description": "Exact Git source commit whose verification and measurements must agree."
 			},
 			{
 				"name": "codeAudit.requested",
 				"type": "string[]",
+				"required": false,
+				"default": [],
 				"description": "Additional registered unit IDs that must exist and satisfy the same evidence rules."
 			}
 		],
@@ -42,7 +46,48 @@
 				"type": "thrown",
 				"description": "Missing, failed, tampered or stale verification rejects before the task can claim completion."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "codeAudit",
+				"inputs": [
+					{
+						"name": "codeAudit.root",
+						"type": "string",
+						"required": true,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+					},
+					{
+						"name": "codeAudit.commit",
+						"type": "string",
+						"required": true,
+						"description": "Exact Git source commit whose verification and measurements must agree."
+					},
+					{
+						"name": "codeAudit.requested",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Additional registered unit IDs that must exist and satisfy the same evidence rules."
+					}
+				],
+				"outputs": [
+					{
+						"name": "codeAudit",
+						"type": "Promise<TaskCheck[]>",
+						"description": "Checks for intact exact-commit verification, declared unit scope and matching representative runtime evidence."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

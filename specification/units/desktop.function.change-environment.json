@@ -19,6 +19,7 @@
 			{
 				"name": "changeEnvironment.environment",
 				"type": "DeploymentEnvironment",
+				"required": true,
 				"description": "Selected environment; automatic promotion is limited to dev, stage and preprod."
 			}
 		],
@@ -35,7 +36,35 @@
 				"type": "thrown",
 				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "changeEnvironment",
+				"inputs": [
+					{
+						"name": "changeEnvironment.environment",
+						"type": "DeploymentEnvironment",
+						"required": true,
+						"description": "Selected environment; automatic promotion is limited to dev, stage and preprod."
+					}
+				],
+				"outputs": [
+					{
+						"name": "changeEnvironment",
+						"type": "DeploymentEnvironment[]",
+						"description": "Ordered lower destinations; prod selection returns dev, stage and preprod."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

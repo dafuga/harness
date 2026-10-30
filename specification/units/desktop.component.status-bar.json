@@ -16,11 +16,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/StatusBar.svelte",
-			"packages/desktop/src/components/shared-primitives/StatusBar.svelte"
-		],
-		"symbols": ["StatusBar", "StatusBar"]
+		"source": ["packages/desktop/src/components/shared-primitives/StatusBar.svelte"],
+		"symbols": ["StatusBar"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -28,6 +25,7 @@
 			{
 				"name": "StatusBar.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace providing busy/snapshot, revision, source/comment capabilities, pinned/offline state, cache and connection context. It supplies the facts; the view does not verify publication or connectivity."
 			}
 		],
@@ -38,7 +36,9 @@
 				"description": "Footer with loading, offline, local/shared, historical and access-limited status. Offline copies are read-only and not server-checked, with save time when available; local unpublished revisions are named accordingly. Includes compact hosted/remote controls and seven-character commit."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

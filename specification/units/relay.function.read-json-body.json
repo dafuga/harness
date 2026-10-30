@@ -19,11 +19,14 @@
 			{
 				"name": "readJsonBody.request",
 				"type": "Request",
+				"required": true,
 				"description": "Request supplying headers and a byte stream."
 			},
 			{
 				"name": "readJsonBody.typed",
-				"type": "unknown",
+				"type": "boolean",
+				"required": false,
+				"default": true,
 				"description": "Optional content-type requirement, defaulting to true. False skips only the application/json check for internal callers."
 			}
 		],
@@ -34,7 +37,37 @@
 				"description": "Promise resolving to a non-null JSON object, or undefined for a missing body, wrong content type, declared/actual body over 16 KiB, malformed JSON or non-object result. Reads chunks incrementally and cancels at the first byte above the limit."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "readJsonBody",
+				"inputs": [
+					{
+						"name": "readJsonBody.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request supplying headers and a byte stream."
+					},
+					{
+						"name": "readJsonBody.typed",
+						"type": "boolean",
+						"required": false,
+						"default": true,
+						"description": "Optional content-type requirement, defaulting to true. False skips only the application/json check for internal callers."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readJsonBody",
+						"type": "Promise<Record<string, unknown> | undefined>",
+						"description": "Promise resolving to a non-null JSON object, or undefined for a missing body, wrong content type, declared/actual body over 16 KiB, malformed JSON or non-object result. Reads chunks incrementally and cancels at the first byte above the limit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

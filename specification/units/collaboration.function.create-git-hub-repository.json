@@ -26,6 +26,7 @@
 			{
 				"name": "createGitHubRepository.options",
 				"type": "GitHubRepositoryOptions",
+				"required": true,
 				"description": "Private repository identity, scoped token callback, optional fetch, refs/heads branch and safe records-file path."
 			}
 		],
@@ -42,7 +43,35 @@
 				"type": "thrown",
 				"description": "Rejects nonprivate storage, invalid paths or refs, denied repository access, invalid records, unavailable GitHub or unconfirmed writes."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "createGitHubRepository",
+				"inputs": [
+					{
+						"name": "createGitHubRepository.options",
+						"type": "GitHubRepositoryOptions",
+						"required": true,
+						"description": "Private repository identity, scoped token callback, optional fetch, refs/heads branch and safe records-file path."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createGitHubRepository",
+						"type": "CollaborationRepository",
+						"description": "Read and compareAndSwap methods; missing branch uses the zero revision, stale writes return null, and successful writes return the confirmed commit SHA."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -24,15 +24,19 @@
 		"inputs": [
 			{
 				"name": "HttpRuntimeAdapter.constructor.url",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HttpRuntimeAdapter.constructor.options",
-				"type": "RuntimeOptions"
+				"type": "RuntimeOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "HttpRuntimeAdapter.invoke.request",
-				"type": "RuntimeRequest"
+				"type": "RuntimeRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -45,7 +49,66 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HttpRuntimeAdapter.invoke",
+				"inputs": [
+					{
+						"name": "HttpRuntimeAdapter.invoke.request",
+						"type": "RuntimeRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HttpRuntimeAdapter.invoke",
+						"type": "Promise<RuntimeResponse>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HttpRuntimeAdapter.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HttpRuntimeAdapter.close",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HttpRuntimeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "HttpRuntimeAdapter.constructor.url",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HttpRuntimeAdapter.constructor.options",
+						"type": "RuntimeOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "HttpRuntimeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

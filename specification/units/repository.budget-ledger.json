@@ -27,15 +27,18 @@
 		"inputs": [
 			{
 				"name": "BudgetLedgerRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "BudgetLedgerRepository.read.tree",
-				"type": "SourceTree | undefined"
+				"type": "SourceTree | undefined",
+				"required": true
 			},
 			{
 				"name": "BudgetLedgerRepository.append.events",
-				"type": "BudgetEvent[]"
+				"type": "BudgetEvent[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -48,7 +51,66 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "BudgetLedgerRepository.read",
+				"inputs": [
+					{
+						"name": "BudgetLedgerRepository.read.tree",
+						"type": "SourceTree | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BudgetLedgerRepository.read",
+						"type": "Promise<LedgerRead>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BudgetLedgerRepository.append",
+				"inputs": [
+					{
+						"name": "BudgetLedgerRepository.append.events",
+						"type": "BudgetEvent[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BudgetLedgerRepository.append",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "BudgetLedgerRepository.constructor",
+				"inputs": [
+					{
+						"name": "BudgetLedgerRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BudgetLedgerRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

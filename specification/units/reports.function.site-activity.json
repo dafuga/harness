@@ -23,7 +23,23 @@
 				"description": "Promise resolving to the site’s activity and live observations from the activity service, requesting twenty commits; undefined when any part of the read fails. Undefined means unavailable, not an empty activity result."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "siteActivity",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "siteActivity",
+						"type": "Promise<Shown | undefined>",
+						"description": "Promise resolving to the site’s activity and live observations from the activity service, requesting twenty commits; undefined when any part of the read fails. Undefined means unavailable, not an empty activity result."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

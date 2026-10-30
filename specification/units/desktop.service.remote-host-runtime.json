@@ -35,11 +35,13 @@
 		"inputs": [
 			{
 				"name": "RemoteHostRuntimeService.constructor.options",
-				"type": "RemoteHostRuntimeOptions"
+				"type": "RemoteHostRuntimeOptions",
+				"required": true
 			},
 			{
 				"name": "RemoteHostRuntimeService.online.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -60,7 +62,84 @@
 				"type": "boolean"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteHostRuntimeService.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostRuntimeService.start",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostRuntimeService.stop",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostRuntimeService.stop",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostRuntimeService.end",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostRuntimeService.end",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostRuntimeService.online",
+				"inputs": [
+					{
+						"name": "RemoteHostRuntimeService.online.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostRuntimeService.online",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteHostRuntimeService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteHostRuntimeService.constructor.options",
+						"type": "RemoteHostRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostRuntimeService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

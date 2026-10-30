@@ -22,11 +22,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/FloatingChat.svelte",
 			"packages/reports/src/components/planning-collaboration/FloatingChat.svelte",
 			"packages/reports/src/components/planning-collaboration/floating-chat/floatingChat.css"
 		],
-		"symbols": ["FloatingChat", "FloatingChat"]
+		"symbols": ["FloatingChat", "FloatingChat.chat"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,7 +69,7 @@
 			},
 			{
 				"name": "FloatingChat.navigation",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
 				"required": false,
 				"description": "Optional navigation rendered below the header, outside the scrolling conversation body."
 			},
@@ -102,6 +101,22 @@
 				"name": "snippet error",
 				"type": "thrown",
 				"description": "Errors thrown by the caller-supplied children or navigation snippet propagate while it renders."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "FloatingChat.chat",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "FloatingChat.chat",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

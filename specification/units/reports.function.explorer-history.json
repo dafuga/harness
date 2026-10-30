@@ -28,29 +28,34 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "explorerHistory.index",
-				"type": "HarnessIndex",
-				"description": "History index with revision summaries, unit growth and reviews."
-			},
-			{
-				"name": "explorerHistory.scope",
-				"type": "ExplorerScope",
-				"description": "Resolved scope whose commit bounds the ancestry search."
-			},
-			{
-				"name": "explorerHistory.unit",
-				"type": "string",
-				"description": "Unit identifier whose direct changes are listed."
-			},
-			{
 				"name": "historyDetail.detail",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Stored revision to inspect for this entity."
 			},
 			{
 				"name": "historyDetail.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit identifier to inspect in that revision."
+			},
+			{
+				"name": "explorerHistory.index",
+				"type": "HarnessIndex",
+				"required": true,
+				"description": "History index with revision summaries, unit growth and reviews."
+			},
+			{
+				"name": "explorerHistory.scope",
+				"type": "ExplorerScope",
+				"required": true,
+				"description": "Resolved scope whose commit bounds the ancestry search."
+			},
+			{
+				"name": "explorerHistory.unit",
+				"type": "string",
+				"required": true,
+				"description": "Unit identifier whose direct changes are listed."
 			}
 		],
 		"outputs": [
@@ -65,7 +70,68 @@
 				"description": "Whether registry/impact information is available, active presence, change mark, version, matching explanations and the entity verdict when present."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "historyDetail",
+				"inputs": [
+					{
+						"name": "historyDetail.detail",
+						"type": "HarnessRevision",
+						"required": true,
+						"description": "Stored revision to inspect for this entity."
+					},
+					{
+						"name": "historyDetail.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit identifier to inspect in that revision."
+					}
+				],
+				"outputs": [
+					{
+						"name": "historyDetail",
+						"type": "ExplorerHistoryDetail",
+						"description": "Whether registry/impact information is available, active presence, change mark, version, matching explanations and the entity verdict when present."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "explorerHistory",
+				"inputs": [
+					{
+						"name": "explorerHistory.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "History index with revision summaries, unit growth and reviews."
+					},
+					{
+						"name": "explorerHistory.scope",
+						"type": "ExplorerScope",
+						"required": true,
+						"description": "Resolved scope whose commit bounds the ancestry search."
+					},
+					{
+						"name": "explorerHistory.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit identifier whose direct changes are listed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerHistory",
+						"type": "ExplorerHistoryRow[]",
+						"description": "Newest-first rows for the shown commit and known ancestors that directly changed, added or removed the entity, plus rows whose change status is unknown. Each retains first-parent identity, measured values, changes from the preceding retained measurement and reviews at that commit. Known unchanged or indirectly affected commits are omitted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

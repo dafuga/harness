@@ -26,16 +26,19 @@
 			{
 				"name": "Software3dAdapter.constructor.canvas",
 				"type": "HTMLCanvasElement",
+				"required": true,
 				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 			},
 			{
 				"name": "Software3dAdapter.render.run",
 				"type": "GameRun",
+				"required": true,
 				"description": "Current deterministic game state, tick and checkpoint execution results."
 			},
 			{
 				"name": "Software3dAdapter.render._view",
 				"type": "GameView",
+				"required": true,
 				"description": "Input to the renderer or transport operation named by this contract."
 			}
 		],
@@ -56,6 +59,72 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Unavailable transport, cancellation or connection failure; native rendering remains independent."
+			}
+		],
+		"operations": [
+			{
+				"name": "Software3dAdapter.render",
+				"inputs": [
+					{
+						"name": "Software3dAdapter.render.run",
+						"type": "GameRun",
+						"required": true,
+						"description": "Current deterministic game state, tick and checkpoint execution results."
+					},
+					{
+						"name": "Software3dAdapter.render._view",
+						"type": "GameView",
+						"required": true,
+						"description": "Input to the renderer or transport operation named by this contract."
+					}
+				],
+				"outputs": [
+					{
+						"name": "Software3dAdapter.render",
+						"type": "void",
+						"description": "Paint the current game frame."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "Software3dAdapter.dispose",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "Software3dAdapter.dispose",
+						"type": "void",
+						"description": "Release the renderer resources."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "Software3dAdapter.constructor",
+				"inputs": [
+					{
+						"name": "Software3dAdapter.constructor.canvas",
+						"type": "HTMLCanvasElement",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "Software3dAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		]
 	},

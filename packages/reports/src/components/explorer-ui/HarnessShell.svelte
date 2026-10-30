@@ -5,12 +5,10 @@
 	import HarnessConsole from './HarnessConsole.svelte';
 	let {
 		base,
-		links = [],
-		exportable = true
+		links = []
 	}: {
 		base: string;
 		links?: Array<{ label: string; href: string }>;
-		exportable?: boolean;
 	} = $props();
 	// This host stands alone, so it names the screen itself: the generic content, which renders
 	// whatever the address asks for. The console has no screen of its own.
@@ -26,4 +24,4 @@
 </script>
 
 <svelte:window onpopstate={() => (path = current())} />
-<HarnessConsole {base} {path} {navigate} {links} {exportable} content={ExplorerContent} />
+<HarnessConsole {base} {path} {navigate} {links} content={ExplorerContent} />

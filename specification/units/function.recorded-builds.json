@@ -28,6 +28,7 @@
 			{
 				"name": "recordedBuilds.observed",
 				"type": "RecordedBuild[]",
+				"required": false,
 				"description": "Optional observed build entries; undefined means the project declared no build."
 			}
 		],
@@ -38,7 +39,30 @@
 				"description": "Empty object when observations are undefined, otherwise builds containing only id, directory, buildId and files. An explicitly empty array remains builds: []."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "recordedBuilds",
+				"inputs": [
+					{
+						"name": "recordedBuilds.observed",
+						"type": "RecordedBuild[]",
+						"required": false,
+						"description": "Optional observed build entries; undefined means the project declared no build."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedBuilds",
+						"type": "Pick<VerificationRecord, 'builds'>",
+						"description": "Empty object when observations are undefined, otherwise builds containing only id, directory, buildId and files. An explicitly empty array remains builds: []."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

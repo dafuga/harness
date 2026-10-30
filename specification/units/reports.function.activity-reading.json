@@ -32,16 +32,19 @@
 			{
 				"name": "activityReading.agents",
 				"type": "AgentRoster",
+				"required": true,
 				"description": "Roster and its reported working count."
 			},
 			{
 				"name": "activityReading.sampledAt",
 				"type": "string",
+				"required": true,
 				"description": "Time the roster was sampled."
 			},
 			{
 				"name": "activityReading.now",
 				"type": "number",
+				"required": true,
 				"description": "Current time in milliseconds since the epoch."
 			}
 		],
@@ -58,7 +61,42 @@
 				"description": "Returns whether the reading is at most one minute old, a working count reduced by expired working entries or null when unknown/old, and a labeling function. Finished states retain their labels; old working observations become Not confirmed and individually expired ones become Stale."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "activityReading",
+				"inputs": [
+					{
+						"name": "activityReading.agents",
+						"type": "AgentRoster",
+						"required": true,
+						"description": "Roster and its reported working count."
+					},
+					{
+						"name": "activityReading.sampledAt",
+						"type": "string",
+						"required": true,
+						"description": "Time the roster was sampled."
+					},
+					{
+						"name": "activityReading.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds since the epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "activityReading",
+						"type": "ActivityReading",
+						"description": "Returns whether the reading is at most one minute old, a working count reduced by expired working entries or null when unknown/old, and a labeling function. Finished states retain their labels; old working observations become Not confirmed and individually expired ones become Stale."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

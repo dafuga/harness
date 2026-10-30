@@ -23,6 +23,7 @@
 			{
 				"name": "+layout.children",
 				"type": "Snippet",
+				"required": true,
 				"description": "Page content rendered through the layout children snippet."
 			}
 		],
@@ -38,7 +39,9 @@
 				"description": "Disables server rendering for the browser workspace."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

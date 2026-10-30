@@ -6,10 +6,7 @@ import {
 	type ConsoleAccess,
 	type ConsoleData
 } from '../../../../../../src/lib/console';
-import { ReportExportSerializer } from '../../../serializers/reports-media/ReportExportSerializer';
-import { consoleExport } from './consoleExport';
 import { mediaMime } from '../../verification-evidence/evidenceMedia';
-import { reportRuntimeRoot } from '../../reports-media/reportRuntimeRoot';
 import { SourceImpactService } from '../../../../../../src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService';
 import type { Measurement } from '../../../../../../src/core/verification-evidence/verificationTypes';
 import type { HarnessRevision } from '../../../models/explorer-ui/Harness.types';
@@ -109,10 +106,7 @@ export function consoleServer(): ConsoleAccess {
 			bind: process.env.HARNESS_BIND ?? process.env.HOST,
 			addressHeader: process.env.ADDRESS_HEADER
 		}),
-		data: consoleData,
-		// The portable page is built with the viewer this server compiled.
-		exporter: async (input) =>
-			consoleExport(input, await new ReportExportSerializer(reportRuntimeRoot()).assets())
+		data: consoleData
 	});
 	return access;
 }

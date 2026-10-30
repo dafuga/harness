@@ -23,17 +23,15 @@
 			{
 				"name": "HarnessShell.base",
 				"type": "string",
+				"required": true,
 				"description": "Required explorer URL prefix, removed from the current browser path to initialize the relative route and added back for navigation."
 			},
 			{
 				"name": "HarnessShell.links",
 				"type": "Array<{ label: string; href: string }>",
+				"required": false,
+				"default": [],
 				"description": "Optional compatibility links, defaulting to an empty list. Forwarded to the console, which currently does not render them."
-			},
-			{
-				"name": "HarnessShell.exportable",
-				"type": "boolean",
-				"description": "Optional export flag, defaulting to true, forwarded to the console."
 			}
 		],
 		"outputs": [
@@ -43,7 +41,9 @@
 				"description": "The generic explorer screen inside the console. Browser back and forward update the relative path; console navigation pushes or replaces browser history."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -13,7 +13,15 @@
 			"src/utils/development-tooling/scanSymbolErrors.ts",
 			"src/utils/scanExports.ts"
 		],
-		"symbols": ["scanExports", "ExportScan", "ExportScan", "Source", "Located", "scanExports"]
+		"symbols": [
+			"scanExports",
+			"ExportScan",
+			"ExportScan",
+			"Source",
+			"Located",
+			"scanSymbolErrors",
+			"scanExports"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -21,7 +29,18 @@
 			{
 				"name": "scanExports.code",
 				"type": "string",
+				"required": true,
 				"description": "JavaScript/TypeScript source text to scan after masking comments and literal contents."
+			},
+			{
+				"name": "scanSymbolErrors.code",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "scanSymbolErrors.symbols",
+				"type": "ExportedSymbol[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -31,7 +50,53 @@
 				"description": "Source-ordered symbols with inputs and explicit return/type text where readable, otherwise unknown; sorted unique thrown-error, fail-call and HTTP-error names. Type declarations remain type symbols rather than runtime calls."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "scanExports",
+				"inputs": [
+					{
+						"name": "scanExports.code",
+						"type": "string",
+						"required": true,
+						"description": "JavaScript/TypeScript source text to scan after masking comments and literal contents."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanExports",
+						"type": "ExportScan",
+						"description": "Source-ordered symbols with inputs and explicit return/type text where readable, otherwise unknown; sorted unique thrown-error, fail-call and HTTP-error names. Type declarations remain type symbols rather than runtime calls."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scanSymbolErrors",
+				"inputs": [
+					{
+						"name": "scanSymbolErrors.code",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "scanSymbolErrors.symbols",
+						"type": "ExportedSymbol[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanSymbolErrors",
+						"type": "ExportedSymbol[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

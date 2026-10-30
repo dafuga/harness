@@ -31,51 +31,62 @@
 			{
 				"name": "HarnessSelectors.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Required repository index supplying branch choices."
 			},
 			{
 				"name": "HarnessSelectors.branch",
 				"type": "string",
+				"required": true,
 				"description": "Required selected branch name."
 			},
 			{
 				"name": "HarnessSelectors.commit",
 				"type": "string",
+				"required": true,
 				"description": "Required selected viewed commit."
 			},
 			{
 				"name": "HarnessSelectors.commits",
 				"type": "HarnessRevisionSummary[]",
+				"required": true,
 				"description": "Required available viewed revisions, shown with their abbreviated commits and descriptions."
 			},
 			{
 				"name": "HarnessSelectors.bases",
 				"type": "HarnessRevisionSummary[] | null",
+				"required": true,
 				"description": "Required comparison revisions or null. Null hides the base selector; an empty list leaves it with no revision choices."
 			},
 			{
 				"name": "HarnessSelectors.from",
 				"type": "string",
+				"required": true,
 				"description": "Required selected comparison-base commit."
 			},
 			{
 				"name": "HarnessSelectors.onbranch",
 				"type": "(name: string) => void",
+				"required": true,
 				"description": "Required callback receiving the selected branch name."
 			},
 			{
 				"name": "HarnessSelectors.oncommit",
 				"type": "(commit: string) => void",
+				"required": true,
 				"description": "Required callback receiving the selected viewed commit."
 			},
 			{
 				"name": "HarnessSelectors.onbase",
 				"type": "(commit: string) => void",
+				"required": true,
 				"description": "Required callback receiving the selected comparison-base commit."
 			},
 			{
 				"name": "HarnessSelectors.tip",
 				"type": "{ note: string; viewed: string; href: string | null; onfollow: () => void } | null",
+				"required": false,
+				"default": null,
 				"description": "Optional branch-tip notice, defaulting to null. Supplies its note, viewed commit, destination and follow callback; the tip action is disabled without a destination."
 			}
 		],
@@ -86,7 +97,9 @@
 				"description": "Native branch, commit and optional base selectors. In the navbar they form one compact row with middle-shortened names, short hashes and full hover details. Selecting a value invokes its matching callback."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

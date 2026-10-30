@@ -23,23 +23,28 @@
 		"inputs": [
 			{
 				"name": "PairingExchangeService.constructor.store",
-				"type": "HostStorageAdapter"
+				"type": "HostStorageAdapter",
+				"required": true
 			},
 			{
 				"name": "PairingExchangeService.constructor.sockets",
-				"type": "HostSocketsAdapter"
+				"type": "HostSocketsAdapter",
+				"required": true
 			},
 			{
 				"name": "PairingExchangeService.constructor.link",
-				"type": "HostLinkService"
+				"type": "HostLinkService",
+				"required": true
 			},
 			{
 				"name": "PairingExchangeService.exchange.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "PairingExchangeService.exchange.verifier",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -48,7 +53,63 @@
 				"type": "Promise<RelayPairingExchange | undefined>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PairingExchangeService.exchange",
+				"inputs": [
+					{
+						"name": "PairingExchangeService.exchange.pairingId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PairingExchangeService.exchange.verifier",
+						"type": "string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingExchangeService.exchange",
+						"type": "Promise<RelayPairingExchange | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PairingExchangeService.constructor",
+				"inputs": [
+					{
+						"name": "PairingExchangeService.constructor.store",
+						"type": "HostStorageAdapter",
+						"required": true
+					},
+					{
+						"name": "PairingExchangeService.constructor.sockets",
+						"type": "HostSocketsAdapter",
+						"required": true
+					},
+					{
+						"name": "PairingExchangeService.constructor.link",
+						"type": "HostLinkService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingExchangeService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

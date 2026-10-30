@@ -30,11 +30,13 @@
 			{
 				"name": "sourceBranches.refs",
 				"type": "ListedRef[]",
+				"required": true,
 				"description": "Listed Git refs with heads and optional symbolic targets."
 			},
 			{
 				"name": "sourceBranches.remotes",
 				"type": "string[]",
+				"required": true,
 				"description": "Configured remote names, used to disambiguate tracking prefixes by longest match."
 			}
 		],
@@ -45,7 +47,36 @@
 				"description": "Branches sorted by name. Local branches keep their tips; a remote-only agreed tip keeps the plain branch name, while conflicting tips use remote:branch. Evidence, notes, archives, tags and remote HEAD/symbolic refs are excluded."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "sourceBranches",
+				"inputs": [
+					{
+						"name": "sourceBranches.refs",
+						"type": "ListedRef[]",
+						"required": true,
+						"description": "Listed Git refs with heads and optional symbolic targets."
+					},
+					{
+						"name": "sourceBranches.remotes",
+						"type": "string[]",
+						"required": true,
+						"description": "Configured remote names, used to disambiguate tracking prefixes by longest match."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceBranches",
+						"type": "SourceBranch[]",
+						"description": "Branches sorted by name. Local branches keep their tips; a remote-only agreed tip keeps the plain branch name, while conflicting tips use remote:branch. Evidence, notes, archives, tags and remote HEAD/symbolic refs are excluded."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

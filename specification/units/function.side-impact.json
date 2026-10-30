@@ -35,29 +35,34 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "storedSide.side",
-				"type": "ImpactSide",
-				"description": "Impact-side snapshot containing tracked files, manifests, scenarios and dependency graph."
-			},
-			{
-				"name": "impactView.report",
-				"type": "ImpactReport",
-				"description": "Computed impact report to reduce to history-facing source impact."
-			},
-			{
-				"name": "impactView.base",
-				"type": "string | null",
-				"description": "Compared-from commit, or null for the initial state."
-			},
-			{
 				"name": "sideImpact.base",
 				"type": "{ commit: string; side: StoredSide } | null",
+				"required": true,
 				"description": "Stored earlier commit/side, or null to represent the state before the first commit."
 			},
 			{
 				"name": "sideImpact.head",
 				"type": "{ commit: string; side: StoredSide }",
+				"required": true,
 				"description": "Stored later commit/side to compare against."
+			},
+			{
+				"name": "storedSide.side",
+				"type": "ImpactSide",
+				"required": true,
+				"description": "Impact-side snapshot containing tracked files, manifests, scenarios and dependency graph."
+			},
+			{
+				"name": "impactView.report",
+				"type": "ImpactReport",
+				"required": true,
+				"description": "Computed impact report to reduce to history-facing source impact."
+			},
+			{
+				"name": "impactView.base",
+				"type": "string | null",
+				"required": true,
+				"description": "Compared-from commit, or null for the initial state."
 			}
 		],
 		"outputs": [
@@ -77,7 +82,82 @@
 				"description": "Computed source impact using the normal ImpactService and TypeScript kernel against the supplied stored sides. No repository reads are required."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "sideImpact",
+				"inputs": [
+					{
+						"name": "sideImpact.base",
+						"type": "{ commit: string; side: StoredSide } | null",
+						"required": true,
+						"description": "Stored earlier commit/side, or null to represent the state before the first commit."
+					},
+					{
+						"name": "sideImpact.head",
+						"type": "{ commit: string; side: StoredSide }",
+						"required": true,
+						"description": "Stored later commit/side to compare against."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sideImpact",
+						"type": "Promise<SourceImpact>",
+						"description": "Computed source impact using the normal ImpactService and TypeScript kernel against the supplied stored sides. No repository reads are required."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "storedSide",
+				"inputs": [
+					{
+						"name": "storedSide.side",
+						"type": "ImpactSide",
+						"required": true,
+						"description": "Impact-side snapshot containing tracked files, manifests, scenarios and dependency graph."
+					}
+				],
+				"outputs": [
+					{
+						"name": "storedSide",
+						"type": "StoredSide",
+						"description": "Version 1 compact side with path/hash files, unit ownership, scenarios, node ids/kinds and numeric edge indexes. Edges with missing endpoints are omitted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "impactView",
+				"inputs": [
+					{
+						"name": "impactView.report",
+						"type": "ImpactReport",
+						"required": true,
+						"description": "Computed impact report to reduce to history-facing source impact."
+					},
+					{
+						"name": "impactView.base",
+						"type": "string | null",
+						"required": true,
+						"description": "Compared-from commit, or null for the initial state."
+					}
+				],
+				"outputs": [
+					{
+						"name": "impactView",
+						"type": "SourceImpact",
+						"description": "Source impact containing base, expansion, units, affected scenarios, uncertainty and changed paths."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -35,6 +35,7 @@
 			{
 				"name": "switchRevision.record",
 				"type": "SwitchRequest | null",
+				"required": true,
 				"description": "Switch request whose id and status identify the revision, or null when no request exists."
 			}
 		],
@@ -50,7 +51,30 @@
 				"description": "Request id followed by a colon and its current status, or null for no request."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "switchRevision",
+				"inputs": [
+					{
+						"name": "switchRevision.record",
+						"type": "SwitchRequest | null",
+						"required": true,
+						"description": "Switch request whose id and status identify the revision, or null when no request exists."
+					}
+				],
+				"outputs": [
+					{
+						"name": "switchRevision",
+						"type": "string | null",
+						"description": "Request id followed by a colon and its current status, or null for no request."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

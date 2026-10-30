@@ -15,19 +15,23 @@
 		"inputs": [
 			{
 				"name": "listScenarios.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "showScenario.id",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "showScenario.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "checkScenarios.root",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -49,7 +53,75 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "listScenarios",
+				"inputs": [
+					{
+						"name": "listScenarios.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "listScenarios",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "showScenario",
+				"inputs": [
+					{
+						"name": "showScenario.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "showScenario.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "showScenario",
+						"type": "Promise<ScenarioRequirements & { scenario: ScenarioManifest }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkScenarios",
+				"inputs": [
+					{
+						"name": "checkScenarios.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkScenarios",
+						"type": "Promise<{ scenarios: number; errors: string[] }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

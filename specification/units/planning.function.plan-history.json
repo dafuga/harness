@@ -28,44 +28,53 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "commits.git",
-				"type": "Git",
-				"description": "Repository handle with root, Git directory and command runner."
-			},
-			{
-				"name": "commits.rev",
-				"type": "string",
-				"description": "Revision from which to list history."
-			},
-			{
-				"name": "commits.limit",
-				"type": "unknown",
-				"description": "Integer from 1 to 500; defaults to 50."
-			},
-			{
-				"name": "commits.path",
-				"type": "string",
-				"description": "Optional repository path filter."
-			},
-			{
-				"name": "revisionInfo.git",
-				"type": "Git",
-				"description": "Repository handle with root, Git directory and command runner."
-			},
-			{
-				"name": "revisionInfo.requested",
-				"type": "string",
-				"description": "Requested branch, tag or commit; omitted means HEAD."
-			},
-			{
 				"name": "planHistory.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planHistory.input",
 				"type": "{ unitId: string; revision?: string; limit?: number }",
+				"required": true,
 				"description": "Unit ID, optional revision and limit from 1 to 500; history limit defaults to 100."
+			},
+			{
+				"name": "commits.git",
+				"type": "Git",
+				"required": true,
+				"description": "Repository handle with root, Git directory and command runner."
+			},
+			{
+				"name": "commits.rev",
+				"type": "string",
+				"required": true,
+				"description": "Revision from which to list history."
+			},
+			{
+				"name": "commits.limit",
+				"type": "number",
+				"required": false,
+				"default": 50,
+				"description": "Integer from 1 to 500; defaults to 50."
+			},
+			{
+				"name": "commits.path",
+				"type": "string",
+				"required": false,
+				"description": "Optional repository path filter."
+			},
+			{
+				"name": "revisionInfo.git",
+				"type": "Git",
+				"required": true,
+				"description": "Repository handle with root, Git directory and command runner."
+			},
+			{
+				"name": "revisionInfo.requested",
+				"type": "string",
+				"required": false,
+				"description": "Requested branch, tag or commit; omitted means HEAD."
 			}
 		],
 		"outputs": [
@@ -91,7 +100,106 @@
 				"type": "thrown",
 				"description": "Rejects invalid limits, unresolved revisions and unavailable plans; underlying Git and artifact errors propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "planHistory",
+				"inputs": [
+					{
+						"name": "planHistory.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "planHistory.input",
+						"type": "{ unitId: string; revision?: string; limit?: number }",
+						"required": true,
+						"description": "Unit ID, optional revision and limit from 1 to 500; history limit defaults to 100."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planHistory",
+						"type": "unknown",
+						"description": "Unit ID, resolved revision and newest-first history entries with classified plan, design, approval, thread and message events."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "commits",
+				"inputs": [
+					{
+						"name": "commits.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "commits.rev",
+						"type": "string",
+						"required": true,
+						"description": "Revision from which to list history."
+					},
+					{
+						"name": "commits.limit",
+						"type": "number",
+						"required": false,
+						"default": 50,
+						"description": "Integer from 1 to 500; defaults to 50."
+					},
+					{
+						"name": "commits.path",
+						"type": "string",
+						"required": false,
+						"description": "Optional repository path filter."
+					}
+				],
+				"outputs": [
+					{
+						"name": "commits",
+						"type": "Promise<CommitInfo[]>",
+						"description": "Commit records with parents, author, commit time and subject."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "revisionInfo",
+				"inputs": [
+					{
+						"name": "revisionInfo.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "revisionInfo.requested",
+						"type": "string",
+						"required": false,
+						"description": "Requested branch, tag or commit; omitted means HEAD."
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionInfo",
+						"type": "Promise<RevisionInfo>",
+						"description": "Resolved commit and metadata, original request, whether it equals HEAD and current branch when applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

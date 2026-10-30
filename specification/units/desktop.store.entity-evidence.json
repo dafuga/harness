@@ -35,7 +35,23 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "createEntityEvidenceStore",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "createEntityEvidenceStore",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

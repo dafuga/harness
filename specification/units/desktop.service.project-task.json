@@ -18,7 +18,8 @@
 		"inputs": [
 			{
 				"name": "ProjectTaskService.run.context",
-				"type": "ProjectTaskContext"
+				"type": "ProjectTaskContext",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -36,7 +37,34 @@
 				"name": "RunCancelled",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectTaskService.run",
+				"inputs": [
+					{
+						"name": "ProjectTaskService.run.context",
+						"type": "ProjectTaskContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectTaskService.run",
+						"type": "Promise<{ summary: string }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "RunCancelled",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

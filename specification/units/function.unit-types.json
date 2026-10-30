@@ -14,6 +14,7 @@
 			"src/core/unitTypes.ts"
 		],
 		"symbols": [
+			"sourceContractSchema",
 			"unitIdPattern",
 			"dependencyVias",
 			"runtimeKinds",
@@ -55,7 +56,13 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "sourceContractSchema.item",
+				"type": "typeof contractItemSchema",
+				"required": true
+			}
+		],
 		"outputs": [
 			{
 				"name": "unitIdPattern",
@@ -113,7 +120,28 @@
 				"description": "Strict version 1 scenario schema for UI/headless/audio cases, units, state coverage, viewports, tests and evidence requirements."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "sourceContractSchema",
+				"inputs": [
+					{
+						"name": "sourceContractSchema.item",
+						"type": "typeof contractItemSchema",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceContractSchema",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

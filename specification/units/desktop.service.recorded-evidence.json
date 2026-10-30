@@ -29,15 +29,18 @@
 		"inputs": [
 			{
 				"name": "RecordedEvidenceService.constructor.session",
-				"type": "ProjectSessionService"
+				"type": "ProjectSessionService",
+				"required": true
 			},
 			{
 				"name": "RecordedEvidenceService.evidence.query",
-				"type": "EntityEvidenceQuery"
+				"type": "EntityEvidenceQuery",
+				"required": true
 			},
 			{
 				"name": "RecordedEvidenceService.artifact.query",
-				"type": "EvidenceArtifactQuery"
+				"type": "EvidenceArtifactQuery",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -75,6 +78,64 @@
 				"name": "bytes-refused",
 				"type": "refused",
 				"description": "Bytes over 11 MiB, of another SHA-256, or of a media type that is not attested."
+			}
+		],
+		"operations": [
+			{
+				"name": "RecordedEvidenceService.evidence",
+				"inputs": [
+					{
+						"name": "RecordedEvidenceService.evidence.query",
+						"type": "EntityEvidenceQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RecordedEvidenceService.evidence",
+						"type": "Promise<EntityEvidenceResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RecordedEvidenceService.artifact",
+				"inputs": [
+					{
+						"name": "RecordedEvidenceService.artifact.query",
+						"type": "EvidenceArtifactQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RecordedEvidenceService.artifact",
+						"type": "Promise<EvidenceArtifactResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RecordedEvidenceService.constructor",
+				"inputs": [
+					{
+						"name": "RecordedEvidenceService.constructor.session",
+						"type": "ProjectSessionService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RecordedEvidenceService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

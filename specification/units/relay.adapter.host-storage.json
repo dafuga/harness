@@ -36,51 +36,63 @@
 		"inputs": [
 			{
 				"name": "HostStorageAdapter.constructor.storage",
-				"type": "DurableObjectStorage"
+				"type": "DurableObjectStorage",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.saveHost.record",
-				"type": "HostRecord"
+				"type": "HostRecord",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.device.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.saveDevice.record",
-				"type": "DeviceRecord"
+				"type": "DeviceRecord",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.removeDevice.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.pairing.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.savePairing.record",
-				"type": "PairingRecord"
+				"type": "PairingRecord",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.removePairing.pairingId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.rate.bucket",
-				"type": "RateBucket"
+				"type": "RateBucket",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.saveRate.bucket",
-				"type": "RateBucket"
+				"type": "RateBucket",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.saveRate.record",
-				"type": "RateRecord"
+				"type": "RateRecord",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.alarmAt.time",
-				"type": "number | undefined"
+				"type": "number | undefined",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -141,7 +153,263 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostStorageAdapter.host",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.host",
+						"type": "HostRecord | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.saveHost",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.saveHost.record",
+						"type": "HostRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.saveHost",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.device",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.device.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.device",
+						"type": "DeviceRecord | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.devices",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.devices",
+						"type": "DeviceRecord[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.saveDevice",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.saveDevice.record",
+						"type": "DeviceRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.saveDevice",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.removeDevice",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.removeDevice.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.removeDevice",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.pairing",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.pairing.pairingId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.pairing",
+						"type": "PairingRecord | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.pairings",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.pairings",
+						"type": "PairingRecord[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.savePairing",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.savePairing.record",
+						"type": "PairingRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.savePairing",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.removePairing",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.removePairing.pairingId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.removePairing",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.rate",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.rate.bucket",
+						"type": "RateBucket",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.rate",
+						"type": "RateRecord | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.saveRate",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.saveRate.bucket",
+						"type": "RateBucket",
+						"required": true
+					},
+					{
+						"name": "HostStorageAdapter.saveRate.record",
+						"type": "RateRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.saveRate",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.alarmAt",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.alarmAt.time",
+						"type": "number | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.alarmAt",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.clear",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.clear",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HostStorageAdapter.constructor",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.constructor.storage",
+						"type": "DurableObjectStorage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

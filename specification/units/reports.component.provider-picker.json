@@ -28,10 +28,9 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/agents-providers/provider-picker/ProviderPicker.svelte",
-			"packages/reports/src/components/provider-picker/ProviderPicker.svelte"
+			"packages/reports/src/components/agents-providers/provider-picker/ProviderPicker.svelte"
 		],
-		"symbols": ["ProviderPicker", "ProviderPicker"]
+		"symbols": ["ProviderPicker"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -51,7 +50,9 @@
 				"description": "Connects to the picker client on mount and closes that connection on destruction. Displays session status and active/queued selections, allows binding a trimmed session identifier, refreshes state, and queues supported model/effort selections. Queuing does not immediately change the observed active model or global defaults. Operation failures appear as error text and controls lock while an operation runs."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

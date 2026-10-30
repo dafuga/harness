@@ -34,26 +34,31 @@
 			{
 				"name": "comparisonChoices.base",
 				"type": "ComparedSide",
+				"required": true,
 				"description": "Earlier revision and its selected record, which may be null."
 			},
 			{
 				"name": "comparisonChoices.head",
 				"type": "ComparedSide",
+				"required": true,
 				"description": "Later revision and its selected record, which may be null."
 			},
 			{
 				"name": "harnessComparison.base",
 				"type": "ComparedSide",
+				"required": true,
 				"description": "Earlier revision and selected record."
 			},
 			{
 				"name": "harnessComparison.head",
 				"type": "ComparedSide",
+				"required": true,
 				"description": "Later revision and selected record."
 			},
 			{
 				"name": "harnessComparison.choice",
 				"type": "StateChoice",
+				"required": true,
 				"description": "Scenario plus optional empty state/viewport selectors; empty state or viewport includes all matching choices."
 			}
 		],
@@ -69,7 +74,68 @@
 				"description": "Gallery items paired by scenario, state, evidence and viewport-or-kind, plus readable aligned-state summaries. Missing sides receive explicit gaps. Captures keep their own provenance, and no other revision fills a gap."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "comparisonChoices",
+				"inputs": [
+					{
+						"name": "comparisonChoices.base",
+						"type": "ComparedSide",
+						"required": true,
+						"description": "Earlier revision and its selected record, which may be null."
+					},
+					{
+						"name": "comparisonChoices.head",
+						"type": "ComparedSide",
+						"required": true,
+						"description": "Later revision and its selected record, which may be null."
+					}
+				],
+				"outputs": [
+					{
+						"name": "comparisonChoices",
+						"type": "unknown",
+						"description": "Sorted unique scenario, state and viewport choices from scenarios containing screenshot or audio media on either side."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "harnessComparison",
+				"inputs": [
+					{
+						"name": "harnessComparison.base",
+						"type": "ComparedSide",
+						"required": true,
+						"description": "Earlier revision and selected record."
+					},
+					{
+						"name": "harnessComparison.head",
+						"type": "ComparedSide",
+						"required": true,
+						"description": "Later revision and selected record."
+					},
+					{
+						"name": "harnessComparison.choice",
+						"type": "StateChoice",
+						"required": true,
+						"description": "Scenario plus optional empty state/viewport selectors; empty state or viewport includes all matching choices."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessComparison",
+						"type": "unknown",
+						"description": "Gallery items paired by scenario, state, evidence and viewport-or-kind, plus readable aligned-state summaries. Missing sides receive explicit gaps. Captures keep their own provenance, and no other revision fills a gap."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

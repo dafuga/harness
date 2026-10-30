@@ -15,15 +15,18 @@
 		"inputs": [
 			{
 				"name": "apiResource.client",
-				"type": "HarnessApiService"
+				"type": "HarnessApiService",
+				"required": true
 			},
 			{
 				"name": "apiResource.resource",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "apiResource.id",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -41,7 +44,44 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "apiResource",
+				"inputs": [
+					{
+						"name": "apiResource.client",
+						"type": "HarnessApiService",
+						"required": true
+					},
+					{
+						"name": "apiResource.resource",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "apiResource.id",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiResource",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -22,11 +22,13 @@
 		"inputs": [
 			{
 				"name": "HostedEvidenceValidator.evidence.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "HostedEvidenceValidator.evidence.query",
-				"type": "EntityEvidenceQuery"
+				"type": "EntityEvidenceQuery",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,7 +42,39 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HostedEvidenceValidator.evidence",
+				"inputs": [
+					{
+						"name": "HostedEvidenceValidator.evidence.value",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "HostedEvidenceValidator.evidence.query",
+						"type": "EntityEvidenceQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostedEvidenceValidator.evidence",
+						"type": "EntityEvidenceResult"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

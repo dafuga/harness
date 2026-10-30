@@ -26,67 +26,84 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskWorkerService.constructor.root",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ModuleTaskWorkerService.constructor.runner",
-				"type": "TaskRunner"
+				"type": "TaskRunner",
+				"required": false
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.worker",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.modules",
-				"type": "string[]"
+				"type": "string[]",
+				"required": false,
+				"default": []
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.signal",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "pendingTaskResult.selection",
-				"type": "TaskSelection"
+				"type": "TaskSelection",
+				"required": true
 			},
 			{
 				"name": "pendingTaskResult.worktree",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "claimedTask.queue",
-				"type": "ModuleTaskQueue"
+				"type": "ModuleTaskQueue",
+				"required": true
 			},
 			{
 				"name": "claimedTask.worker",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "claimedTask.modules",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "claimedTask.owner",
-				"type": "NonNullable<ModuleTask['claim']>['owner']"
+				"type": "NonNullable<ModuleTask['claim']>['owner']",
+				"required": true
 			},
 			{
 				"name": "finishTask.queue",
-				"type": "ModuleTaskQueue"
+				"type": "ModuleTaskQueue",
+				"required": true
 			},
 			{
 				"name": "finishTask.claimed",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"required": true
 			},
 			{
 				"name": "finishTask.result",
-				"type": "ModuleTask['result']"
+				"type": "ModuleTask['result']",
+				"required": true
 			},
 			{
 				"name": "taskWrites.git",
-				"type": "GitAdapter"
+				"type": "GitAdapter",
+				"required": true
 			},
 			{
 				"name": "taskWrites.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -115,6 +132,185 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ModuleTaskWorkerService.once",
+				"inputs": [
+					{
+						"name": "ModuleTaskWorkerService.once.worker",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ModuleTaskWorkerService.once.modules",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					},
+					{
+						"name": "ModuleTaskWorkerService.once.signal",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskWorkerService.once",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pendingTaskResult",
+				"inputs": [
+					{
+						"name": "pendingTaskResult.selection",
+						"type": "TaskSelection",
+						"required": true
+					},
+					{
+						"name": "pendingTaskResult.worktree",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingTaskResult",
+						"type": "NonNullable<ModuleTask['result']>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "claimedTask",
+				"inputs": [
+					{
+						"name": "claimedTask.queue",
+						"type": "ModuleTaskQueue",
+						"required": true
+					},
+					{
+						"name": "claimedTask.worker",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "claimedTask.modules",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "claimedTask.owner",
+						"type": "NonNullable<ModuleTask['claim']>['owner']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "claimedTask",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "finishTask",
+				"inputs": [
+					{
+						"name": "finishTask.queue",
+						"type": "ModuleTaskQueue",
+						"required": true
+					},
+					{
+						"name": "finishTask.claimed",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "finishTask.result",
+						"type": "ModuleTask['result']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishTask",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "taskWrites",
+				"inputs": [
+					{
+						"name": "taskWrites.git",
+						"type": "GitAdapter",
+						"required": true
+					},
+					{
+						"name": "taskWrites.task",
+						"type": "ModuleTask",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskWrites",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ModuleTaskWorkerService.constructor",
+				"inputs": [
+					{
+						"name": "ModuleTaskWorkerService.constructor.root",
+						"type": "unknown",
+						"required": false
+					},
+					{
+						"name": "ModuleTaskWorkerService.constructor.runner",
+						"type": "TaskRunner",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleTaskWorkerService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

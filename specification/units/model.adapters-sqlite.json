@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "createSqliteAdapter.db",
-				"type": "SqliteDatabase"
+				"type": "SqliteDatabase",
+				"required": true
 			},
 			{
 				"name": "createSqliteAdapter.models",
-				"type": "readonly SqliteModel[]"
+				"type": "readonly SqliteModel[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -28,7 +30,34 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "createSqliteAdapter",
+				"inputs": [
+					{
+						"name": "createSqliteAdapter.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "createSqliteAdapter.models",
+						"type": "readonly SqliteModel[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createSqliteAdapter",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

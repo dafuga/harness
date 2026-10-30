@@ -28,23 +28,28 @@
 		"inputs": [
 			{
 				"name": "reviewHash.value",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "readReviewInput.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "readReviewInput.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "reviewInputsCurrent.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "reviewInputsCurrent.inputs",
-				"type": "ReviewInputFile[]"
+				"type": "ReviewInputFile[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -66,7 +71,80 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "reviewHash",
+				"inputs": [
+					{
+						"name": "reviewHash.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewHash",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readReviewInput",
+				"inputs": [
+					{
+						"name": "readReviewInput.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readReviewInput.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readReviewInput",
+						"type": "Promise<ReviewInputFile>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reviewInputsCurrent",
+				"inputs": [
+					{
+						"name": "reviewInputsCurrent.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "reviewInputsCurrent.inputs",
+						"type": "ReviewInputFile[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewInputsCurrent",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

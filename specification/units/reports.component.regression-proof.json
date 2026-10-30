@@ -29,11 +29,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/RegressionProof.svelte",
 			"packages/reports/src/components/verification-evidence/RegressionProof.svelte",
 			"packages/reports/src/components/verification-evidence/regression-proof/regressionProof.css"
 		],
-		"symbols": ["RegressionProof", "RegressionProof"]
+		"symbols": ["RegressionProof"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,7 +81,9 @@
 				"type": "thrown",
 				"description": "An error thrown by follow propagates when an unmodified primary click opens a commit."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

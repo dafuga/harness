@@ -22,10 +22,9 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/project-switcher/ProjectSwitcher.svelte",
 			"packages/desktop/src/components/projects-sessions/project-switcher/ProjectSwitcher.svelte"
 		],
-		"symbols": ["ProjectSwitcher", "ProjectSwitcher"]
+		"symbols": ["ProjectSwitcher", "ProjectSwitcher.icon", "ProjectSwitcher.children"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -33,6 +32,7 @@
 			{
 				"name": "ProjectSwitcher.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace supplying current project, project list, snapshot and navigation operations. After switchProject resolves, the dropdown resets to the resulting workspace project identifier."
 			}
 		],
@@ -43,7 +43,41 @@
 				"description": "Dropdown grouped into local-device/connected-computer projects and Shared projects. Shows Add local project only for a local workspace with a bridge and disables it while busy. Selection changes call switchProject. This component does not catch rejected promises or display switching errors."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ProjectSwitcher.icon",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectSwitcher.icon",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ProjectSwitcher.children",
+				"inputs": [
+					{
+						"name": "ProjectSwitcher.children.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectSwitcher.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

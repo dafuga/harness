@@ -20,6 +20,7 @@
 			{
 				"name": "explorerLegacy.route",
 				"type": "ConsoleRoute",
+				"required": true,
 				"description": "Legacy route with branch, commit, view and optional unit."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Explorer location preserving branch and commit. No unit opens Pages; a selected unit opens its kind category, defaulting to functions, with history section for history or growth views."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "explorerLegacy",
+				"inputs": [
+					{
+						"name": "explorerLegacy.route",
+						"type": "ConsoleRoute",
+						"required": true,
+						"description": "Legacy route with branch, commit, view and optional unit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "explorerLegacy",
+						"type": "ExplorerLocation",
+						"description": "Explorer location preserving branch and commit. No unit opens Pages; a selected unit opens its kind category, defaulting to functions, with history section for history or growth views."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

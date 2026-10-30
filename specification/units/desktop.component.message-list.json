@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/MessageList.svelte",
-			"packages/desktop/src/components/shared-primitives/MessageList.svelte"
-		],
-		"symbols": ["MessageList", "MessageList"]
+		"source": ["packages/desktop/src/components/shared-primitives/MessageList.svelte"],
+		"symbols": ["MessageList"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -30,16 +27,20 @@
 			{
 				"name": "MessageList.messages",
 				"type": "ThreadEntry[]",
+				"required": true,
 				"description": "Required entries in display order. User names fall back to You; other authors display their provider followed by CLI, or Harness. Optional pending state, note, detail and version are displayed."
 			},
 			{
 				"name": "MessageList.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace for resolving references within the shown project and revision."
 			},
 			{
 				"name": "MessageList.entity",
 				"type": "CatalogEntity | null",
+				"required": false,
+				"default": null,
 				"description": "Optional viewed entity for reference resolution before the catalog lists it; defaults to null."
 			}
 		],
@@ -50,7 +51,9 @@
 				"description": "Polite live list with author badges, formatted timestamps and reference-aware text. Shows pending styling and optional note/detail/design version. Empty lists prompt a conversation about the design."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -31,19 +31,23 @@
 		"inputs": [
 			{
 				"name": "ConsoleAgentService.call.method",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ConsoleAgentService.call.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "ConsoleAgentService.call.requestId",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "consoleAgent.input",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -77,7 +81,115 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ConsoleAgentService.open",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ConsoleAgentService.open",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleAgentService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ConsoleAgentService.close",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleAgentService.busy",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ConsoleAgentService.busy",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleAgentService.expired",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ConsoleAgentService.expired",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConsoleAgentService.call",
+				"inputs": [
+					{
+						"name": "ConsoleAgentService.call.method",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ConsoleAgentService.call.input",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "ConsoleAgentService.call.requestId",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleAgentService.call",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "consoleAgent",
+				"inputs": [
+					{
+						"name": "consoleAgent.input",
+						"type": "Record<string, unknown>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleAgent",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

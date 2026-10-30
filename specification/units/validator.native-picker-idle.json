@@ -25,11 +25,13 @@
 		"inputs": [
 			{
 				"name": "NativePickerIdleValidator.validate.input",
-				"type": "PickerData"
+				"type": "PickerData",
+				"required": true
 			},
 			{
 				"name": "NativePickerIdleValidator.validate.rpc",
-				"type": "PickerRpc"
+				"type": "PickerRpc",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -38,7 +40,34 @@
 				"type": "Promise<NativePickerIdleValidatorResult>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "NativePickerIdleValidator.validate",
+				"inputs": [
+					{
+						"name": "NativePickerIdleValidator.validate.input",
+						"type": "PickerData",
+						"required": true
+					},
+					{
+						"name": "NativePickerIdleValidator.validate.rpc",
+						"type": "PickerRpc",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativePickerIdleValidator.validate",
+						"type": "Promise<NativePickerIdleValidatorResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

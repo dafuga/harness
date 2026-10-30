@@ -24,35 +24,43 @@
 		"inputs": [
 			{
 				"name": "LfsAdapter.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LfsAdapter.path.oid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LfsAdapter.read.oid",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LfsAdapter.store.bytes",
-				"type": "Buffer"
+				"type": "Buffer",
+				"required": true
 			},
 			{
 				"name": "LfsAdapter.push.remote",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LfsAdapter.push.ref",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LfsAdapter.fetch.remote",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LfsAdapter.fetch.ref",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -77,7 +85,130 @@
 				"type": "Promise<string | undefined>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LfsAdapter.path",
+				"inputs": [
+					{
+						"name": "LfsAdapter.path.oid",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LfsAdapter.path",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LfsAdapter.read",
+				"inputs": [
+					{
+						"name": "LfsAdapter.read.oid",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LfsAdapter.read",
+						"type": "Promise<Buffer | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LfsAdapter.store",
+				"inputs": [
+					{
+						"name": "LfsAdapter.store.bytes",
+						"type": "Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LfsAdapter.store",
+						"type": "Promise<LfsObject>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LfsAdapter.push",
+				"inputs": [
+					{
+						"name": "LfsAdapter.push.remote",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "LfsAdapter.push.ref",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LfsAdapter.push",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LfsAdapter.fetch",
+				"inputs": [
+					{
+						"name": "LfsAdapter.fetch.remote",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "LfsAdapter.fetch.ref",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LfsAdapter.fetch",
+						"type": "Promise<string | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LfsAdapter.constructor",
+				"inputs": [
+					{
+						"name": "LfsAdapter.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LfsAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

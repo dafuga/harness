@@ -19,11 +19,13 @@
 			{
 				"name": "evidencePayload.channel",
 				"type": "string",
+				"required": true,
 				"description": "The channel name. Exactly evidence:artifact requires capture-binding fields; every other channel value uses only the evidence scope."
 			},
 			{
 				"name": "evidencePayload.x",
 				"type": "Record<string, unknown>",
+				"required": true,
 				"description": "The request object. Scope needs a valid entity identifier up to 120 characters, a 40-character lowercase hexadecimal commit, a nonblank branch up to 255 characters and current or commit mode. Artifact reads additionally require before or after, a 64-character lowercase hexadecimal record hash, scenario/state/evidence identifiers, nullable viewport, 64-character SHA-256 and nullable 40-character notes and evidence revisions. Identifier segments use lowercase letters or digits separated by dots or hyphens."
 			}
 		],
@@ -34,7 +36,36 @@
 				"description": "A fresh object containing only validated scope fields and, for artifact reads, the capture binding. Extra fields, including project identity, paths and addresses, are omitted here. Invalid, missing, blank, oversized or wrongly formatted fields throw a validation error; nullable fields accept null, not omission."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "evidencePayload",
+				"inputs": [
+					{
+						"name": "evidencePayload.channel",
+						"type": "string",
+						"required": true,
+						"description": "The channel name. Exactly evidence:artifact requires capture-binding fields; every other channel value uses only the evidence scope."
+					},
+					{
+						"name": "evidencePayload.x",
+						"type": "Record<string, unknown>",
+						"required": true,
+						"description": "The request object. Scope needs a valid entity identifier up to 120 characters, a 40-character lowercase hexadecimal commit, a nonblank branch up to 255 characters and current or commit mode. Artifact reads additionally require before or after, a 64-character lowercase hexadecimal record hash, scenario/state/evidence identifiers, nullable viewport, 64-character SHA-256 and nullable 40-character notes and evidence revisions. Identifier segments use lowercase letters or digits separated by dots or hyphens."
+					}
+				],
+				"outputs": [
+					{
+						"name": "evidencePayload",
+						"type": "unknown",
+						"description": "A fresh object containing only validated scope fields and, for artifact reads, the capture binding. Extra fields, including project identity, paths and addresses, are omitted here. Invalid, missing, blank, oversized or wrongly formatted fields throw a validation error; nullable fields accept null, not omission."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

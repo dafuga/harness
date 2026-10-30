@@ -17,40 +17,64 @@
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/ExplorerCatalogScreen.svelte"],
-		"symbols": ["ExplorerCatalogScreen"]
+		"symbols": [
+			"ExplorerCatalogScreen",
+			"ExplorerCatalogScreen.children",
+			"ExplorerCatalogScreen.list"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ExplorerScreenProps.route",
-				"type": "ExplorerLocation",
-				"description": "The address shown: category, entity, section and tab."
+				"name": "ExplorerCatalogScreen.index",
+				"type": "HarnessIndex",
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.scope",
-				"type": "ExplorerScope",
-				"description": "The branch and commit shown, and whether that is the branch tip or a selected commit."
-			},
-			{
-				"name": "ExplorerScreenProps.head",
+				"name": "ExplorerCatalogScreen.head",
 				"type": "HarnessRevision",
-				"description": "The revision every contract, measurement and capture on the screen is bound to."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.entities",
+				"name": "ExplorerCatalogScreen.parent",
+				"type": "HarnessRevision | null",
+				"required": true
+			},
+			{
+				"name": "ExplorerCatalogScreen.scope",
+				"type": "ExplorerScope",
+				"required": true
+			},
+			{
+				"name": "ExplorerCatalogScreen.route",
+				"type": "ExplorerLocation",
+				"required": true
+			},
+			{
+				"name": "ExplorerCatalogScreen.entities",
 				"type": "ExplorerEntity[]",
-				"description": "The units of the shown revision as the explorer lists them."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.lens",
+				"name": "ExplorerCatalogScreen.lens",
 				"type": "EntityLens",
-				"description": "What the host answers about an entity: relations, evidence, end-to-end results and history."
+				"required": true
 			},
 			{
-				"name": "ExplorerScreenProps.onroute",
+				"name": "ExplorerCatalogScreen.client",
+				"type": "Pick<HarnessClient, 'revision'>",
+				"required": true
+			},
+			{
+				"name": "ExplorerCatalogScreen.mediaBase",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ExplorerCatalogScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
-				"description": "Goes to another address of the explorer in the same branch and revision mode."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -65,6 +89,46 @@
 				"name": "no-registry",
 				"type": "stated",
 				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerCatalogScreen.children",
+				"inputs": [
+					{
+						"name": "ExplorerCatalogScreen.children.nav",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerCatalogScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerCatalogScreen.list",
+				"inputs": [
+					{
+						"name": "ExplorerCatalogScreen.list.listed",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerCatalogScreen.list",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

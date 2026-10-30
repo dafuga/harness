@@ -25,26 +25,31 @@
 			{
 				"name": "modulePath.path",
 				"type": "string",
+				"required": true,
 				"description": "Workspace-relative module source path, optionally prefixed by its package path."
 			},
 			{
 				"name": "moduleGroup.paths",
 				"type": "string[]",
+				"required": true,
 				"description": "Owned source paths at the selected revision, including supported forwarding entries."
 			},
 			{
 				"name": "moduleGroup.groups",
 				"type": "ModuleGroup[]",
+				"required": true,
 				"description": "Validated project category definitions, including optional framework route-folder aliases."
 			},
 			{
 				"name": "matchingGroups.text",
 				"type": "string",
+				"required": true,
 				"description": "Code name and optional declared responsibility used for whole-word category matching."
 			},
 			{
 				"name": "matchingGroups.groups",
 				"type": "ModuleGroup[]",
+				"required": true,
 				"description": "Available project categories and the domain words each category matches."
 			}
 		],
@@ -70,7 +75,82 @@
 				"description": "All categories tied for the best nonzero whole-word match; an empty array means no category matched."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "modulePath",
+				"inputs": [
+					{
+						"name": "modulePath.path",
+						"type": "string",
+						"required": true,
+						"description": "Workspace-relative module source path, optionally prefixed by its package path."
+					}
+				],
+				"outputs": [
+					{
+						"name": "modulePath",
+						"type": "{ root: string; parts: string[] } | undefined",
+						"description": "Scaffold root and remaining category/owner segments, or undefined outside supported module shapes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "moduleGroup",
+				"inputs": [
+					{
+						"name": "moduleGroup.paths",
+						"type": "string[]",
+						"required": true,
+						"description": "Owned source paths at the selected revision, including supported forwarding entries."
+					},
+					{
+						"name": "moduleGroup.groups",
+						"type": "ModuleGroup[]",
+						"required": true,
+						"description": "Validated project category definitions, including optional framework route-folder aliases."
+					}
+				],
+				"outputs": [
+					{
+						"name": "moduleGroup",
+						"type": "Pick<ModuleGroup, 'id' | 'title'> | undefined",
+						"description": "One category id and title from source folders or framework aliases; undefined when absent or conflicting."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchingGroups",
+				"inputs": [
+					{
+						"name": "matchingGroups.text",
+						"type": "string",
+						"required": true,
+						"description": "Code name and optional declared responsibility used for whole-word category matching."
+					},
+					{
+						"name": "matchingGroups.groups",
+						"type": "ModuleGroup[]",
+						"required": true,
+						"description": "Available project categories and the domain words each category matches."
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchingGroups",
+						"type": "ModuleGroup[]",
+						"description": "All categories tied for the best nonzero whole-word match; an empty array means no category matched."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

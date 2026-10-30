@@ -41,19 +41,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "stageFile.stage",
-				"type": "string",
-				"description": "Hook stage; pre-push retains the original opt-in filename, other names receive a suffix."
-			},
-			{
 				"name": "hookScript.stage",
 				"type": "string",
+				"required": true,
 				"description": "Stage to render, normally pre-push or commit-msg. Only commit-msg uses the no-stdin message-file handoff."
 			},
 			{
 				"name": "managedHook.text",
 				"type": "string",
+				"required": true,
 				"description": "Hook file text to search for the Harness marker."
+			},
+			{
+				"name": "stageFile.stage",
+				"type": "string",
+				"required": true,
+				"description": "Hook stage; pre-push retains the original opt-in filename, other names receive a suffix."
 			}
 		],
 		"outputs": [
@@ -93,7 +96,70 @@
 				"description": "True when the text contains the managed marker anywhere."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hookScript",
+				"inputs": [
+					{
+						"name": "hookScript.stage",
+						"type": "string",
+						"required": true,
+						"description": "Stage to render, normally pre-push or commit-msg. Only commit-msg uses the no-stdin message-file handoff."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hookScript",
+						"type": "string",
+						"description": "Shell script text that runs an executable chained hook first, preserves its failure, then reads the stage-specific worktree opt-in command and invokes Harness. Producing text does not install or run the hook."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "managedHook",
+				"inputs": [
+					{
+						"name": "managedHook.text",
+						"type": "string",
+						"required": true,
+						"description": "Hook file text to search for the Harness marker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "managedHook",
+						"type": "boolean",
+						"description": "True when the text contains the managed marker anywhere."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "stageFile",
+				"inputs": [
+					{
+						"name": "stageFile.stage",
+						"type": "string",
+						"required": true,
+						"description": "Hook stage; pre-push retains the original opt-in filename, other names receive a suffix."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stageFile",
+						"type": "string",
+						"description": "harness-hooks for pre-push; otherwise harness-hooks- followed by the stage."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -6,63 +6,43 @@
 	"responsibility": "Owns the CatalogRevisionEntity data model.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"lineage": {
+		"predecessors": ["model.catalog-revision-entity-types"]
+	},
 	"owns": {
-		"source": ["src/models/git-source-history/CatalogRevisionEntity.ts"],
+		"source": [
+			"src/models/git-source-history/CatalogRevisionEntity.ts",
+			"src/models/git-source-history/CatalogRevisionEntity.types.ts"
+		],
 		"symbols": [
 			"CatalogRevisionEntity",
 			"CatalogRevisionEntity.find",
 			"CatalogRevisionEntity.findBy",
 			"CatalogRevisionEntity.create",
 			"CatalogRevisionEntity.update",
-			"CatalogRevisionEntity.delete"
+			"CatalogRevisionEntity.delete",
+			"CatalogRevisionEntityAttributes",
+			"CatalogRevisionEntityCreateInput",
+			"CatalogRevisionEntityUpdateInput"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "CatalogRevisionEntity.find.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogRevisionEntity.id",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogRevisionEntity.find.id",
-				"type": "string"
+				"name": "CatalogRevisionEntity.commit",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogRevisionEntity.findBy.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogRevisionEntity.findBy.fields",
-				"type": "Partial<CatalogRevisionEntityAttributes>"
-			},
-			{
-				"name": "CatalogRevisionEntity.create.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogRevisionEntity.create.input",
-				"type": "CatalogRevisionEntityCreateInput"
-			},
-			{
-				"name": "CatalogRevisionEntity.update.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogRevisionEntity.update.id",
-				"type": "string"
-			},
-			{
-				"name": "CatalogRevisionEntity.update.input",
-				"type": "CatalogRevisionEntityUpdateInput"
-			},
-			{
-				"name": "CatalogRevisionEntity.delete.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogRevisionEntity.delete.id",
-				"type": "string"
+				"name": "CatalogRevisionEntity.entityId",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,16 +67,165 @@
 				"type": "Promise<boolean>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogRevisionEntity.find",
+				"inputs": [
+					{
+						"name": "CatalogRevisionEntity.find.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRevisionEntity.find.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRevisionEntity.find",
+						"type": "Promise<CatalogRevisionEntityAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRevisionEntity.findBy",
+				"inputs": [
+					{
+						"name": "CatalogRevisionEntity.findBy.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRevisionEntity.findBy.fields",
+						"type": "Partial<CatalogRevisionEntityAttributes>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRevisionEntity.findBy",
+						"type": "Promise<CatalogRevisionEntityAttributes[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRevisionEntity.create",
+				"inputs": [
+					{
+						"name": "CatalogRevisionEntity.create.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRevisionEntity.create.input",
+						"type": "CatalogRevisionEntityCreateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRevisionEntity.create",
+						"type": "Promise<CatalogRevisionEntityAttributes>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRevisionEntity.update",
+				"inputs": [
+					{
+						"name": "CatalogRevisionEntity.update.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRevisionEntity.update.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogRevisionEntity.update.input",
+						"type": "CatalogRevisionEntityUpdateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRevisionEntity.update",
+						"type": "Promise<CatalogRevisionEntityAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogRevisionEntity.delete",
+				"inputs": [
+					{
+						"name": "CatalogRevisionEntity.delete.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogRevisionEntity.delete.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogRevisionEntity.delete",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [],
+		"storage": [
+			{
+				"name": "CatalogRevisionEntity",
+				"table": "catalog_revision_entities",
+				"primaryKey": "id",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": true
+					},
+					{
+						"name": "commit",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "entityId",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					}
+				]
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "function.sqlite-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "model.catalog-revision-entity-types",
 			"via": "import",
 			"origin": "derived"
 		}

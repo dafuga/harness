@@ -28,7 +28,9 @@
 				"description": "Strict version-1 records schema for projects, members, invitations and threads; rejects duplicate identities or request IDs, unbound records and projects without an owner."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

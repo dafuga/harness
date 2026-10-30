@@ -16,6 +16,7 @@
 			{
 				"name": "canonicalJson.value",
 				"type": "unknown",
+				"required": true,
 				"description": "JSON-shaped value to serialize. Undefined object properties are omitted; arrays retain order. Objects are read through enumerable own keys rather than a custom JSON serializer."
 			}
 		],
@@ -26,7 +27,30 @@
 				"description": "Compact JSON text with recursively sorted object keys and unchanged array order for JSON-serializable input."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "canonicalJson",
+				"inputs": [
+					{
+						"name": "canonicalJson.value",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-shaped value to serialize. Undefined object properties are omitted; arrays retain order. Objects are read through enumerable own keys rather than a custom JSON serializer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "canonicalJson",
+						"type": "string",
+						"description": "Compact JSON text with recursively sorted object keys and unchanged array order for JSON-serializable input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

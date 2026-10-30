@@ -16,16 +16,19 @@
 			{
 				"name": "managedAgentTurn.turn",
 				"type": "AgentTurn",
+				"required": true,
 				"description": "Requested provider turn with model, access, status callback and cancellation signal."
 			},
 			{
 				"name": "managedAgentTurn.action",
 				"type": "(context: ResourceContext) => Promise<T>",
+				"required": true,
 				"description": "Asynchronous work executed only after admission; receives the bounded resource context."
 			},
 			{
 				"name": "managedAgentTurn.queue",
 				"type": "ResourceQueueService",
+				"required": false,
 				"description": "Shared queue used to track child PID and process start identity under this lease."
 			}
 		],
@@ -42,7 +45,47 @@
 				"type": "thrown",
 				"description": "Maps queued cancellation to the provider cancellation contract and preserves genuine provider failures."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "managedAgentTurn",
+				"inputs": [
+					{
+						"name": "managedAgentTurn.turn",
+						"type": "AgentTurn",
+						"required": true,
+						"description": "Requested provider turn with model, access, status callback and cancellation signal."
+					},
+					{
+						"name": "managedAgentTurn.action",
+						"type": "(context: ResourceContext) => Promise<T>",
+						"required": true,
+						"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+					},
+					{
+						"name": "managedAgentTurn.queue",
+						"type": "ResourceQueueService",
+						"required": false,
+						"description": "Shared queue used to track child PID and process start identity under this lease."
+					}
+				],
+				"outputs": [
+					{
+						"name": "managedAgentTurn",
+						"type": "Promise<T>",
+						"description": "Result of the admitted provider operation; queued cancellation launches no provider."
+					}
+				],
+				"errors": [
+					{
+						"name": "RunCancelled",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

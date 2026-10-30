@@ -27,21 +27,26 @@
 			{
 				"name": "hubSource.input",
 				"type": "{ source: SourceHistoryAdapter; cache: CollaborationCache; actor: Actor; project: Project & { collaborationCommit?: string }; ref: string; }",
+				"required": true,
 				"description": "Source adapter, cache, actor, authorized project and requested ref; optional collaboration commit joins the cache identity."
 			},
 			{
 				"name": "hubRead.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubRead.path",
 				"type": "string",
+				"required": true,
 				"description": "Exact repository path of a regular or executable blob in the context tree."
 			},
 			{
 				"name": "hubRead.hash",
 				"type": "string | null",
+				"required": false,
+				"default": null,
 				"description": "Expected SHA-256, or null by default."
 			}
 		],
@@ -57,7 +62,63 @@
 				"description": "Verified raw file bytes or materialized Git LFS bytes. Missing regular paths are refused; raw blob identity, requested hash and LFS length are checked, with cache helpers enforcing the LFS content hash."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubSource",
+				"inputs": [
+					{
+						"name": "hubSource.input",
+						"type": "{ source: SourceHistoryAdapter; cache: CollaborationCache; actor: Actor; project: Project & { collaborationCommit?: string }; ref: string; }",
+						"required": true,
+						"description": "Source adapter, cache, actor, authorized project and requested ref; optional collaboration commit joins the cache identity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubSource",
+						"type": "Promise<HubSourceContext>",
+						"description": "Context containing resolved commit/tree, source entries and an identity binding actor, project, repository, requested ref, collaboration revision and optional notes/evidence pins."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubRead",
+				"inputs": [
+					{
+						"name": "hubRead.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubRead.path",
+						"type": "string",
+						"required": true,
+						"description": "Exact repository path of a regular or executable blob in the context tree."
+					},
+					{
+						"name": "hubRead.hash",
+						"type": "string | null",
+						"required": false,
+						"default": null,
+						"description": "Expected SHA-256, or null by default."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubRead",
+						"type": "Promise<Uint8Array>",
+						"description": "Verified raw file bytes or materialized Git LFS bytes. Missing regular paths are refused; raw blob identity, requested hash and LFS length are checked, with cache helpers enforcing the LFS content hash."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

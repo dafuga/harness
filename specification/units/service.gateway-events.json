@@ -24,7 +24,8 @@
 		"inputs": [
 			{
 				"name": "GatewayEventsService.finishToolBatch.session",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -33,7 +34,29 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GatewayEventsService.finishToolBatch",
+				"inputs": [
+					{
+						"name": "GatewayEventsService.finishToolBatch.session",
+						"type": "GatewaySession",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GatewayEventsService.finishToolBatch",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

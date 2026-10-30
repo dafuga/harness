@@ -26,11 +26,13 @@
 		"inputs": [
 			{
 				"name": "HubAuthController.constructor.options",
-				"type": "HubAuthControllerOptions"
+				"type": "HubAuthControllerOptions",
+				"required": true
 			},
 			{
 				"name": "HubAuthController.handle.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -39,7 +41,48 @@
 				"type": "Promise<Response | null>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HubAuthController.handle",
+				"inputs": [
+					{
+						"name": "HubAuthController.handle.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubAuthController.handle",
+						"type": "Promise<Response | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HubAuthController.constructor",
+				"inputs": [
+					{
+						"name": "HubAuthController.constructor.options",
+						"type": "HubAuthControllerOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubAuthController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

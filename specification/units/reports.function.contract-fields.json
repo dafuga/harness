@@ -52,37 +52,84 @@
 			{
 				"name": "typeLabel.type",
 				"type": "string",
+				"required": true,
 				"description": "A public type expression that may contain an inferred module import."
+			},
+			{
+				"name": "fieldOf.item",
+				"type": "Item",
+				"required": true
+			},
+			{
+				"name": "fieldOf.unit",
+				"type": "HarnessUnit",
+				"required": true
 			},
 			{
 				"name": "contractFields.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "The entity whose contract fields and declared JSON examples will be displayed."
 			},
 			{
 				"name": "contractFields.category",
 				"type": "ExplorerCategory",
+				"required": true,
 				"description": "The entity category; configs provide values and Types show source-declared interfaces and aliases."
 			},
 			{
 				"name": "contractFacts.rows",
 				"type": "ContractRow[]",
+				"required": true,
 				"description": "Prepared readable contract rows, including facts beyond individual fields."
 			},
 			{
 				"name": "contractFacts.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "The entity whose execution targets may be listed as contract facts."
 			},
 			{
 				"name": "contractFacts.category",
 				"type": "ExplorerCategory",
+				"required": true,
 				"description": "The entity category; functions also expose execution targets."
 			},
 			{
 				"name": "callableContracts.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "Source-derived callable metadata and declared examples at the selected revision."
+			},
+			{
+				"name": "returnField.declared",
+				"type": "Item | undefined",
+				"required": true
+			},
+			{
+				"name": "returnField.type",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "returnField.callable",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "returnField.unit",
+				"type": "HarnessUnit",
+				"required": true
+			},
+			{
+				"name": "guess.type",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "guess.depth",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -107,7 +154,187 @@
 				"description": "Callable signatures and Parameters/Returns groups with literal parameter names and declared return value names; a Throws table appears only when errors are declared."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "typeLabel",
+				"inputs": [
+					{
+						"name": "typeLabel.type",
+						"type": "string",
+						"required": true,
+						"description": "A public type expression that may contain an inferred module import."
+					}
+				],
+				"outputs": [
+					{
+						"name": "typeLabel",
+						"type": "string",
+						"description": "The type expression with inferred import paths removed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fieldOf",
+				"inputs": [
+					{
+						"name": "fieldOf.item",
+						"type": "Item",
+						"required": true
+					},
+					{
+						"name": "fieldOf.unit",
+						"type": "HarnessUnit",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fieldOf",
+						"type": "ContractField"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contractFields",
+				"inputs": [
+					{
+						"name": "contractFields.unit",
+						"type": "HarnessUnit",
+						"required": true,
+						"description": "The entity whose contract fields and declared JSON examples will be displayed."
+					},
+					{
+						"name": "contractFields.category",
+						"type": "ExplorerCategory",
+						"required": true,
+						"description": "The entity category; configs provide values and Types show source-declared interfaces and aliases."
+					}
+				],
+				"outputs": [
+					{
+						"name": "contractFields",
+						"type": "ContractGroup[]",
+						"description": "Input, output and declared-error groups, or source-declared type groups. Type fields retain exact names and types without invented examples or runtime behavior."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contractFacts",
+				"inputs": [
+					{
+						"name": "contractFacts.rows",
+						"type": "ContractRow[]",
+						"required": true,
+						"description": "Prepared readable contract rows, including facts beyond individual fields."
+					},
+					{
+						"name": "contractFacts.unit",
+						"type": "HarnessUnit",
+						"required": true,
+						"description": "The entity whose execution targets may be listed as contract facts."
+					},
+					{
+						"name": "contractFacts.category",
+						"type": "ExplorerCategory",
+						"required": true,
+						"description": "The entity category; functions also expose execution targets."
+					}
+				],
+				"outputs": [
+					{
+						"name": "contractFacts",
+						"type": "ContractRow[]",
+						"description": "Whole-contract facts without duplicate field summaries, plus execution targets for functions."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "callableContracts",
+				"inputs": [
+					{
+						"name": "callableContracts.unit",
+						"type": "HarnessUnit",
+						"required": true,
+						"description": "Source-derived callable metadata and declared examples at the selected revision."
+					}
+				],
+				"outputs": [
+					{
+						"name": "callableContracts",
+						"type": "CallableContract[]",
+						"description": "Callable signatures and Parameters/Returns groups with literal parameter names and declared return value names; a Throws table appears only when errors are declared."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "returnField",
+				"inputs": [
+					{
+						"name": "returnField.declared",
+						"type": "Item | undefined",
+						"required": true
+					},
+					{
+						"name": "returnField.type",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "returnField.callable",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "returnField.unit",
+						"type": "HarnessUnit",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "returnField",
+						"type": "ContractField"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "guess",
+				"inputs": [
+					{
+						"name": "guess.type",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "guess.depth",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "guess",
+						"type": "Guess"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

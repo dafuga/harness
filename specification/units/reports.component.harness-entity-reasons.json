@@ -30,16 +30,20 @@
 			{
 				"name": "EntityReasons.reasons",
 				"type": "EntityReasons",
+				"required": true,
 				"description": "Required prepared reasons containing long flag, original notes and attempts with subjects/outcomes."
 			},
 			{
 				"name": "EntityReasons.open",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional bindable disclosure state, false by default."
 			},
 			{
 				"name": "EntityReasons.id",
 				"type": "string",
+				"required": false,
 				"description": "Optional ID for the disclosure, allowing callers to focus or link it."
 			}
 		],
@@ -50,7 +54,9 @@
 				"description": "Full reasons disclosure only when long is true, with counts and original behavior/attempt text grouped by usage. Otherwise renders nothing; it does not regenerate or shorten originals."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

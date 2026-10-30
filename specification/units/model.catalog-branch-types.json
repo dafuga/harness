@@ -5,7 +5,11 @@
 	"title": "CatalogBranch",
 	"responsibility": "Owns the CatalogBranch data model.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Type companion merged into model.catalog-branch.",
+		"at": "working-tree"
+	},
 	"owns": {
 		"source": ["src/models/git-source-history/CatalogBranch.types.ts"],
 		"symbols": ["CatalogBranchAttributes", "CatalogBranchCreateInput", "CatalogBranchUpdateInput"]

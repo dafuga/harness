@@ -32,17 +32,26 @@
 			{
 				"name": "unitGrowth.records",
 				"type": "VerificationRecord[]",
+				"required": true,
 				"description": "Verification records in the order growth points should first appear."
 			},
 			{
 				"name": "unitGrowth.reviews",
 				"type": "Map<string, BudgetReview[]>",
+				"required": false,
 				"description": "Optional map of reviewed budget histories by unit; defaults to an empty map."
 			},
 			{
 				"name": "historySeries.records",
-				"type": "VerificationRecord[]",
+				"type": "Array<Pick<VerificationRecord, 'id' | 'measurements'>>",
+				"required": true,
 				"description": "Verification records containing benchmark measurements to group."
+			},
+			{
+				"name": "historySeries.focused",
+				"type": "RegressionView[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -57,7 +66,62 @@
 				"description": "Benchmark groups by unit, workload, metric and target, with separate lines for different profiles, units, methods or comparison contexts. Only numeric values with workload and profile participate; multiple lines mark a group incompatible."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "unitGrowth",
+				"inputs": [
+					{
+						"name": "unitGrowth.records",
+						"type": "VerificationRecord[]",
+						"required": true,
+						"description": "Verification records in the order growth points should first appear."
+					},
+					{
+						"name": "unitGrowth.reviews",
+						"type": "Map<string, BudgetReview[]>",
+						"required": false,
+						"description": "Optional map of reviewed budget histories by unit; defaults to an empty map."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitGrowth",
+						"type": "Growth",
+						"description": "Units sorted by id, each with one growth point per tested commit, measured source metrics and target sizes, unavailable/partial notes and any supplied reviews. Benchmark-specific size measurements are excluded."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "historySeries",
+				"inputs": [
+					{
+						"name": "historySeries.records",
+						"type": "Array<Pick<VerificationRecord, 'id' | 'measurements'>>",
+						"required": true,
+						"description": "Verification records containing benchmark measurements to group."
+					},
+					{
+						"name": "historySeries.focused",
+						"type": "RegressionView[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "historySeries",
+						"type": "BenchmarkSeries[]",
+						"description": "Benchmark groups by unit, workload, metric and target, with separate lines for different profiles, units, methods or comparison contexts. Only numeric values with workload and profile participate; multiple lines mark a group incompatible."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

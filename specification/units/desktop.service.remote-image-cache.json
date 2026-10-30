@@ -23,15 +23,18 @@
 		"inputs": [
 			{
 				"name": "RemoteImageCacheService.constructor.cache",
-				"type": "ProjectionCacheService"
+				"type": "ProjectionCacheService",
+				"required": true
 			},
 			{
 				"name": "RemoteImageCacheService.read.context",
-				"type": "{ identity: CacheIdentity; principalId: string; query: ImageQuery & { projectId: string }; }"
+				"type": "{ identity: CacheIdentity; principalId: string; query: ImageQuery & { projectId: string }; }",
+				"required": true
 			},
 			{
 				"name": "RemoteImageCacheService.read.load",
-				"type": "() => Promise<Uint8Array>"
+				"type": "() => Promise<Uint8Array>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,6 +47,57 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteImageCacheService.read",
+				"inputs": [
+					{
+						"name": "RemoteImageCacheService.read.context",
+						"type": "{ identity: CacheIdentity; principalId: string; query: ImageQuery & { projectId: string }; }",
+						"required": true
+					},
+					{
+						"name": "RemoteImageCacheService.read.load",
+						"type": "() => Promise<Uint8Array>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteImageCacheService.read",
+						"type": "Promise<Uint8Array>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteImageCacheService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteImageCacheService.constructor.cache",
+						"type": "ProjectionCacheService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteImageCacheService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

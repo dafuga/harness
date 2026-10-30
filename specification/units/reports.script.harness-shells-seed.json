@@ -18,15 +18,23 @@
 		"inputs": [
 			{
 				"name": "seedShells.repo",
-				"type": "VerifyRepo"
+				"type": "VerifyRepo",
+				"required": true
 			},
 			{
-				"name": "seedShells.input",
-				"type": "ShellsSeed"
+				"name": "seedShells.verified",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "seedShells.explain",
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "seedShells.from",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -43,7 +51,44 @@
 				"type": "Promise<Record<'framed' | 'framedBaseline' | 'shelled' | 'shellRetained', string>>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "seedShells",
+				"inputs": [
+					{
+						"name": "seedShells.repo",
+						"type": "VerifyRepo",
+						"required": true
+					},
+					{
+						"name": "seedShells.verified",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "seedShells.explain",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "seedShells.from",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "seedShells",
+						"type": "Promise<Record<'framed' | 'framedBaseline' | 'shelled' | 'shellRetained', string>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

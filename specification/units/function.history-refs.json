@@ -31,11 +31,13 @@
 			{
 				"name": "sourceArchiveRef.commit",
 				"type": "string",
+				"required": true,
 				"description": "Tested commit id to append to the source archive prefix; shape is not validated here."
 			},
 			{
 				"name": "refKind.ref",
 				"type": "string",
+				"required": true,
 				"description": "Full Git reference name to classify by exact evidence/notes names and known prefixes."
 			}
 		],
@@ -56,7 +58,63 @@
 				"description": "Evidence and notes refs plus the source archive wildcard used to select Harness history."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "historyRefs",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "historyRefs",
+						"type": "{ evidence: string; notes: string; archives: string }",
+						"description": "Evidence and notes refs plus the source archive wildcard used to select Harness history."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "sourceArchiveRef",
+				"inputs": [
+					{
+						"name": "sourceArchiveRef.commit",
+						"type": "string",
+						"required": true,
+						"description": "Tested commit id to append to the source archive prefix; shape is not validated here."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceArchiveRef",
+						"type": "string",
+						"description": "Reference refs/harness/source/ followed by the supplied commit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "refKind",
+				"inputs": [
+					{
+						"name": "refKind.ref",
+						"type": "string",
+						"required": true,
+						"description": "Full Git reference name to classify by exact evidence/notes names and known prefixes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "refKind",
+						"type": "RefKind",
+						"description": "Source, evidence, notes, archive, internal, tag, remote or other classification. Evidence is recognized before the general branch prefix."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -29,11 +29,13 @@
 			{
 				"name": "cpuMetrics.before",
 				"type": "CpuReading",
+				"required": true,
 				"description": "Earlier timestamp, cumulative machine counters and process CPU totals in milliseconds."
 			},
 			{
 				"name": "cpuMetrics.after",
 				"type": "CpuReading",
+				"required": true,
 				"description": "Later timestamp, machine counters, logical core count and current process list used to attribute interval CPU."
 			}
 		],
@@ -44,7 +46,36 @@
 				"description": "Available snapshot with current sampling time, elapsed interval, machine utilization or null when counters do not advance, Codex/Harness/agent group totals and agents sorted by core utilization. New processes and counter decreases contribute zero elapsed CPU."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "cpuMetrics",
+				"inputs": [
+					{
+						"name": "cpuMetrics.before",
+						"type": "CpuReading",
+						"required": true,
+						"description": "Earlier timestamp, cumulative machine counters and process CPU totals in milliseconds."
+					},
+					{
+						"name": "cpuMetrics.after",
+						"type": "CpuReading",
+						"required": true,
+						"description": "Later timestamp, machine counters, logical core count and current process list used to attribute interval CPU."
+					}
+				],
+				"outputs": [
+					{
+						"name": "cpuMetrics",
+						"type": "CpuSnapshot",
+						"description": "Available snapshot with current sampling time, elapsed interval, machine utilization or null when counters do not advance, Codex/Harness/agent group totals and agents sorted by core utilization. New processes and counter decreases contribute zero elapsed CPU."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

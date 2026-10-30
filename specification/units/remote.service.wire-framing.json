@@ -30,19 +30,24 @@
 		"inputs": [
 			{
 				"name": "WireFramingService.constructor.options",
-				"type": "WireFramingOptions"
+				"type": "WireFramingOptions",
+				"required": true
 			},
 			{
 				"name": "WireFramingService.send.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "WireFramingService.send.ordered",
-				"type": "unknown"
+				"type": "boolean",
+				"required": false,
+				"default": false
 			},
 			{
 				"name": "WireFramingService.accept.frame",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -67,6 +72,93 @@
 			{
 				"name": "RemoteFailure",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "WireFramingService.send",
+				"inputs": [
+					{
+						"name": "WireFramingService.send.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "WireFramingService.send.ordered",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireFramingService.send",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireFramingService.accept",
+				"inputs": [
+					{
+						"name": "WireFramingService.accept.frame",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireFramingService.accept",
+						"type": "string | null"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WireFramingService.reset",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "WireFramingService.reset",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "WireFramingService.constructor",
+				"inputs": [
+					{
+						"name": "WireFramingService.constructor.options",
+						"type": "WireFramingOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WireFramingService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

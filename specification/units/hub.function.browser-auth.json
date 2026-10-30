@@ -29,6 +29,7 @@
 			{
 				"name": "browserAuth.api",
 				"type": "BrowserApi",
+				"required": true,
 				"description": "API client carrying same-site requests and failures."
 			}
 		],
@@ -39,7 +40,30 @@
 				"description": "Methods for status, login challenge, Google credential submission, email code send/verification, logout and native handoff polling/approval. Credentials and typed codes travel in request bodies; the server determines identity."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "browserAuth",
+				"inputs": [
+					{
+						"name": "browserAuth.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "API client carrying same-site requests and failures."
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserAuth",
+						"type": "unknown",
+						"description": "Methods for status, login challenge, Google credential submission, email code send/verification, logout and native handoff polling/approval. Credentials and typed codes travel in request bodies; the server determines identity."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

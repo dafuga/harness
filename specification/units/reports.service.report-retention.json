@@ -23,11 +23,14 @@
 		"inputs": [
 			{
 				"name": "ReportRetentionService.constructor.repository",
-				"type": "unknown"
+				"type": "unknown",
+				"required": false
 			},
 			{
 				"name": "ReportRetentionService.run.options",
-				"type": "StorageSyncOptions"
+				"type": "StorageSyncOptions",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -40,6 +43,48 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ReportRetentionService.run",
+				"inputs": [
+					{
+						"name": "ReportRetentionService.run.options",
+						"type": "StorageSyncOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRetentionService.run",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ReportRetentionService.constructor",
+				"inputs": [
+					{
+						"name": "ReportRetentionService.constructor.repository",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReportRetentionService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

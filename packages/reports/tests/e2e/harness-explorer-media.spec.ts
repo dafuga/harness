@@ -100,28 +100,6 @@ test('rejected audio stays to be heard with its transcript, and fails the servic
 	await expect(content(page).getByText('Synthetic test tone. No speech.').first()).toBeVisible();
 });
 
-test('the portable export keeps what each capture really came from', async ({ page }) => {
-	const stale = revision(commits.reordered).records.find((record) =>
-		record.failures.some((text) => /was produced by revision/.test(text))
-	);
-	if (!stale) throw new Error('the seeded history has no record with a stale capture');
-	const download = await page.request.get(
-		`/harness/export/${commits.reordered}?record=${stale.id}`
-	);
-	expect(download.status()).toBe(200);
-	await page.setContent(await download.text());
-	const cards = page.locator('.evidence-card:not(.audio-card)').filter({ hasText: 'titles-page' });
-	await expect(cards).toHaveCount(6);
-	for (const card of await cards.all()) {
-		await expect(card).toContainText('Rejected capture from another revision');
-		await expect(card).toContainText(`build fixture-build of ${brief(commits.baseline)}`);
-		await expect(card).toContainText(
-			`record ${brief(stale.id)} (failed) targeting ${brief(commits.reordered)}`
-		);
-		await expect(card).not.toContainText('Tested at');
-	}
-});
-
 test('a link to an earlier report opens the explorer at the commit that report recorded', async ({
 	page
 }) => {

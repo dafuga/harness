@@ -30,6 +30,9 @@
 		],
 		"symbols": [
 			"ExplorerStylesScreen",
+			"ExplorerStylesScreen.specimen",
+			"ExplorerStylesScreen.card",
+			"ExplorerStylesScreen.children",
 			"StyleGroupName",
 			"UnclassifiedGroupName",
 			"StyleSpecimen",
@@ -43,59 +46,54 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "index",
+				"name": "ExplorerStylesScreen.index",
 				"type": "HarnessIndex",
-				"description": "Available project branches and revisions used by the shared explorer frame."
+				"required": true
 			},
 			{
-				"name": "head",
+				"name": "ExplorerStylesScreen.head",
 				"type": "HarnessRevision",
-				"description": "Selected revision shown by the shared navigation and revision controls."
+				"required": true
 			},
 			{
-				"name": "parent",
+				"name": "ExplorerStylesScreen.parent",
 				"type": "HarnessRevision | null",
-				"description": "First parent for selected-commit comparisons; null at branch tip or without a parent."
+				"required": true
 			},
 			{
-				"name": "scope",
+				"name": "ExplorerStylesScreen.scope",
 				"type": "ExplorerScope",
-				"description": "Selected branch, commit and resolved address for scoped navigation."
+				"required": true
 			},
 			{
-				"name": "route",
+				"name": "ExplorerStylesScreen.route",
 				"type": "ExplorerLocation",
-				"description": "Current Styles address, including its selected branch and optional commit."
+				"required": true
 			},
 			{
-				"name": "entities",
+				"name": "ExplorerStylesScreen.entities",
 				"type": "ExplorerEntity[]",
-				"description": "Revision-scoped entity catalog supplied to the shared explorer frame."
+				"required": true
 			},
 			{
-				"name": "lens",
+				"name": "ExplorerStylesScreen.lens",
 				"type": "EntityLens",
-				"description": "Host readers for entity contracts, measurements and captured evidence."
+				"required": true
 			},
 			{
-				"name": "client",
+				"name": "ExplorerStylesScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
-				"description": "Loads revision data when the shared frame needs historical navigation."
+				"required": true
 			},
 			{
-				"name": "mediaBase",
+				"name": "ExplorerStylesScreen.mediaBase",
 				"type": "string",
-				"description": "Base URL from which the shared frame resolves captured media."
+				"required": true
 			},
 			{
-				"name": "onroute",
+				"name": "ExplorerStylesScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
-				"description": "Requests navigation while preserving the selected explorer scope."
-			},
-			{
-				"name": "exportHref",
-				"type": "string",
-				"description": "Project export URL; empty when the host provides no export."
+				"required": true
 			}
 		],
 		"outputs": [
@@ -105,7 +103,70 @@
 				"description": "Each semantic color, typography and spacing role shows its variable, resolved assignment, specimen and usage; supported foundation tokens appear exactly once and legacy aliases are omitted."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerStylesScreen.specimen",
+				"inputs": [
+					{
+						"name": "ExplorerStylesScreen.specimen.token",
+						"type": "StyleToken",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerStylesScreen.specimen",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerStylesScreen.card",
+				"inputs": [
+					{
+						"name": "ExplorerStylesScreen.card.group",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ExplorerStylesScreen.card.role",
+						"type": "StyleRoleCard",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerStylesScreen.card",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerStylesScreen.children",
+				"inputs": [
+					{
+						"name": "ExplorerStylesScreen.children._nav",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerStylesScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

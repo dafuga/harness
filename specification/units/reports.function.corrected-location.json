@@ -19,21 +19,25 @@
 			{
 				"name": "correctedLocation.at",
 				"type": "ExplorerLocation",
+				"required": true,
 				"description": "The address that was asked for."
 			},
 			{
 				"name": "correctedLocation.entities",
-				"type": "Pick<ExplorerEntity, 'id' | 'category'>[]",
+				"type": "Array<Pick<ExplorerEntity, 'id' | 'category'> & Partial<Pick<ExplorerEntity, 'unit'>>>",
+				"required": true,
 				"description": "The entities of the shown revision, each with the category its manifest declares there."
 			},
 			{
 				"name": "compactHelperLocation.at",
 				"type": "ExplorerLocation",
+				"required": true,
 				"description": "A resolved callable location to shorten without losing its identity."
 			},
 			{
 				"name": "compactHelperLocation.entities",
 				"type": "ExplorerEntity[]",
+				"required": true,
 				"description": "Public entities of the target revision."
 			}
 		],
@@ -49,7 +53,62 @@
 				"description": "Owner-free helper location only when one matching owner is proven; otherwise the original location."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "correctedLocation",
+				"inputs": [
+					{
+						"name": "correctedLocation.at",
+						"type": "ExplorerLocation",
+						"required": true,
+						"description": "The address that was asked for."
+					},
+					{
+						"name": "correctedLocation.entities",
+						"type": "Array<Pick<ExplorerEntity, 'id' | 'category'> & Partial<Pick<ExplorerEntity, 'unit'>>>",
+						"required": true,
+						"description": "The entities of the shown revision, each with the category its manifest declares there."
+					}
+				],
+				"outputs": [
+					{
+						"name": "correctedLocation",
+						"type": "ExplorerLocation | null",
+						"description": "Corrected category or the sole helper owner at the selected revision; null when unchanged, unknown or ambiguous."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "compactHelperLocation",
+				"inputs": [
+					{
+						"name": "compactHelperLocation.at",
+						"type": "ExplorerLocation",
+						"required": true,
+						"description": "A resolved callable location to shorten without losing its identity."
+					},
+					{
+						"name": "compactHelperLocation.entities",
+						"type": "ExplorerEntity[]",
+						"required": true,
+						"description": "Public entities of the target revision."
+					}
+				],
+				"outputs": [
+					{
+						"name": "compactHelperLocation",
+						"type": "ExplorerLocation",
+						"description": "Owner-free helper location only when one matching owner is proven; otherwise the original location."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

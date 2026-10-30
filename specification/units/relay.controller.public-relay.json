@@ -25,11 +25,13 @@
 		"inputs": [
 			{
 				"name": "PublicRelayController.constructor.env",
-				"type": "RelayEnv"
+				"type": "RelayEnv",
+				"required": true
 			},
 			{
 				"name": "PublicRelayController.handle.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -38,7 +40,48 @@
 				"type": "Promise<Response>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PublicRelayController.handle",
+				"inputs": [
+					{
+						"name": "PublicRelayController.handle.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PublicRelayController.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PublicRelayController.constructor",
+				"inputs": [
+					{
+						"name": "PublicRelayController.constructor.env",
+						"type": "RelayEnv",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PublicRelayController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

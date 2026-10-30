@@ -16,6 +16,7 @@
 			{
 				"name": "planPayload.input",
 				"type": "Record<string, unknown>",
+				"required": true,
 				"description": "Untrusted createPlan fields: category, title, goal and an optional proposed contract."
 			}
 		],
@@ -32,7 +33,30 @@
 				"type": "thrown",
 				"description": "Rejects invalid categories, text, contract fields, oversized lists and duplicate error names."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "planPayload",
+				"inputs": [
+					{
+						"name": "planPayload.input",
+						"type": "Record<string, unknown>",
+						"required": true,
+						"description": "Untrusted createPlan fields: category, title, goal and an optional proposed contract."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planPayload",
+						"type": "PlanDraft",
+						"description": "Bounded plan fields, retaining the authored contract without adding states or viewports."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

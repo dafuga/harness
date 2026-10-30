@@ -35,55 +35,70 @@
 		"inputs": [
 			{
 				"name": "pause.milliseconds",
-				"type": "number"
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "control.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "control.path",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "control.body",
-				"type": "object"
+				"type": "object",
+				"required": false
 			},
 			{
 				"name": "offered.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "restart.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "restart.fixture",
-				"type": "unknown"
+				"type": "boolean",
+				"required": false,
+				"default": true
 			},
 			{
 				"name": "restart.scans",
-				"type": "string[]"
+				"type": "string[]",
+				"required": false,
+				"default": []
 			},
 			{
 				"name": "scanPressed.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "scanPressed.name",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "shot.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			},
 			{
 				"name": "shot.name",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "openDesign.run",
-				"type": "Acceptance"
+				"type": "Acceptance",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -133,7 +148,174 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "pause",
+				"inputs": [
+					{
+						"name": "pause.milliseconds",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pause",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "control",
+				"inputs": [
+					{
+						"name": "control.run",
+						"type": "Acceptance",
+						"required": true
+					},
+					{
+						"name": "control.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "control.body",
+						"type": "object",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "control",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "offered",
+				"inputs": [
+					{
+						"name": "offered.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "offered",
+						"type": "Promise<PairingOffer>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "restart",
+				"inputs": [
+					{
+						"name": "restart.run",
+						"type": "Acceptance",
+						"required": true
+					},
+					{
+						"name": "restart.fixture",
+						"type": "boolean",
+						"required": false,
+						"default": true
+					},
+					{
+						"name": "restart.scans",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "restart",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scanPressed",
+				"inputs": [
+					{
+						"name": "scanPressed.run",
+						"type": "Acceptance",
+						"required": true
+					},
+					{
+						"name": "scanPressed.name",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanPressed",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "shot",
+				"inputs": [
+					{
+						"name": "shot.run",
+						"type": "Acceptance",
+						"required": true
+					},
+					{
+						"name": "shot.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "shot",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openDesign",
+				"inputs": [
+					{
+						"name": "openDesign.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openDesign",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

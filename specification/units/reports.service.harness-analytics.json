@@ -25,7 +25,8 @@
 		"inputs": [
 			{
 				"name": "HarnessAnalyticsService.snapshot.params",
-				"type": "URLSearchParams"
+				"type": "URLSearchParams",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -34,7 +35,29 @@
 				"type": "Promise<AnalyticsSnapshot>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HarnessAnalyticsService.snapshot",
+				"inputs": [
+					{
+						"name": "HarnessAnalyticsService.snapshot.params",
+						"type": "URLSearchParams",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HarnessAnalyticsService.snapshot",
+						"type": "Promise<AnalyticsSnapshot>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

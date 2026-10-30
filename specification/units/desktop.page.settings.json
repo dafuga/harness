@@ -22,13 +22,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "from",
-				"type": "string | null",
-				"description": "An internal workspace return path; other values return to the app root."
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
@@ -36,7 +30,9 @@
 				"description": "Shared Settings UI for the renderer; no agent execution or project mutation."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

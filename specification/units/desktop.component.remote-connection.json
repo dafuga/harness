@@ -11,11 +11,8 @@
 		"uses": ["desktop.component.remote-host-panel", "desktop.component.remote-phone-panel"]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RemoteConnection.svelte",
-			"packages/desktop/src/components/networking-security/RemoteConnection.svelte"
-		],
-		"symbols": ["RemoteConnection", "RemoteConnection"]
+		"source": ["packages/desktop/src/components/networking-security/RemoteConnection.svelte"],
+		"symbols": ["RemoteConnection"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,11 +20,14 @@
 			{
 				"name": "RemoteConnection.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace whose remote.host or remote.phone selects the panel; host takes precedence if both are set."
 			},
 			{
 				"name": "RemoteConnection.compact",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional compact flag, false by default, forwarded to the chosen panel."
 			}
 		],
@@ -38,7 +38,9 @@
 				"description": "Host panel or phone panel when matching remote mode and context stores exist; otherwise nothing. Does not initiate pairing itself."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

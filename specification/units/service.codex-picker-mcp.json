@@ -25,11 +25,13 @@
 		"inputs": [
 			{
 				"name": "CodexPickerMcpService.constructor.service",
-				"type": "ProviderSwitchService"
+				"type": "ProviderSwitchService",
+				"required": true
 			},
 			{
 				"name": "CodexPickerMcpService.constructor.html",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -42,7 +44,47 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CodexPickerMcpService.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CodexPickerMcpService.connect",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CodexPickerMcpService.constructor",
+				"inputs": [
+					{
+						"name": "CodexPickerMcpService.constructor.service",
+						"type": "ProviderSwitchService",
+						"required": true
+					},
+					{
+						"name": "CodexPickerMcpService.constructor.html",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CodexPickerMcpService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -37,7 +37,8 @@
 		"inputs": [
 			{
 				"name": "RemoteLifecycleService.constructor.options",
-				"type": "RemoteLifecycleOptions"
+				"type": "RemoteLifecycleOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -54,7 +55,66 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteLifecycleService.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteLifecycleService.start",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteLifecycleService.windowsClosed",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteLifecycleService.windowsClosed",
+						"type": "'keep' | 'quit'"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteLifecycleService.quit",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteLifecycleService.quit",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteLifecycleService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteLifecycleService.constructor.options",
+						"type": "RemoteLifecycleOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteLifecycleService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

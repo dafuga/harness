@@ -32,31 +32,37 @@
 			{
 				"name": "planData.value",
 				"type": "unknown",
+				"required": true,
 				"description": "JSON-compatible value to serialize recursively."
 			},
 			{
 				"name": "hash.value",
 				"type": "string | Uint8Array",
+				"required": true,
 				"description": "Text or bytes to hash with SHA-256."
 			},
 			{
 				"name": "fail.code",
 				"type": "PlanningErrorCode",
+				"required": true,
 				"description": "Planning failure code to attach."
 			},
 			{
 				"name": "fail.message",
 				"type": "string",
+				"required": true,
 				"description": "Human-readable failure message."
 			},
 			{
 				"name": "json.value",
 				"type": "unknown",
+				"required": true,
 				"description": "JSON-compatible value to serialize with a trailing newline."
 			},
 			{
 				"name": "parse.value",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Buffer containing JSON text."
 			}
 		],
@@ -98,7 +104,134 @@
 				"type": "thrown",
 				"description": "parse reports artifact-corrupt for invalid JSON; fail throws the supplied code and message."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "planData",
+				"inputs": [
+					{
+						"name": "planData.value",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-compatible value to serialize recursively."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planData",
+						"type": "string",
+						"description": "Serialized value with sorted object keys, omitted undefined object properties and preserved array order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hash",
+				"inputs": [
+					{
+						"name": "hash.value",
+						"type": "string | Uint8Array",
+						"required": true,
+						"description": "Text or bytes to hash with SHA-256."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hash",
+						"type": "unknown",
+						"description": "Lowercase SHA-256 hexadecimal digest."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fail",
+				"inputs": [
+					{
+						"name": "fail.code",
+						"type": "PlanningErrorCode",
+						"required": true,
+						"description": "Planning failure code to attach."
+					},
+					{
+						"name": "fail.message",
+						"type": "string",
+						"required": true,
+						"description": "Human-readable failure message."
+					}
+				],
+				"outputs": [
+					{
+						"name": "fail",
+						"type": "never",
+						"description": "Never returns; throws an Error carrying code and path null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "json",
+				"inputs": [
+					{
+						"name": "json.value",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-compatible value to serialize with a trailing newline."
+					}
+				],
+				"outputs": [
+					{
+						"name": "json",
+						"type": "unknown",
+						"description": "Serialized record followed by a newline."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "now",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "now",
+						"type": "unknown",
+						"description": "Current time as an ISO timestamp."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parse",
+				"inputs": [
+					{
+						"name": "parse.value",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Buffer containing JSON text."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parse",
+						"type": "T",
+						"description": "Parsed JSON cast to the requested type; no schema validation is performed."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

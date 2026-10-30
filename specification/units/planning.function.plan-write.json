@@ -39,46 +39,55 @@
 			{
 				"name": "planWrite.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "planWrite.work",
 				"type": "() => Promise<T>",
+				"required": true,
 				"description": "Asynchronous operation to run under the repository planning lock."
 			},
 			{
 				"name": "clean.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "clean.unitPath",
 				"type": "string",
+				"required": true,
 				"description": "Plan folder whose metadata, designs, threads and attributes must be clean."
 			},
 			{
 				"name": "assertClean.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "assertClean.artifactPaths",
 				"type": "string[]",
+				"required": true,
 				"description": "Repository-relative artifact paths to inspect, including ignored and untracked files."
 			},
 			{
 				"name": "commitFiles.git",
 				"type": "Git",
+				"required": true,
 				"description": "Repository handle with root, Git directory and command runner."
 			},
 			{
 				"name": "commitFiles.files",
 				"type": "Files",
+				"required": true,
 				"description": "Map of repository-relative paths to text or bytes to commit."
 			},
 			{
 				"name": "commitFiles.message",
 				"type": "string",
+				"required": true,
 				"description": "Git commit message."
 			}
 		],
@@ -110,7 +119,130 @@
 				"type": "thrown",
 				"description": "Rejects a busy repository, unsafe or dirty artifact paths, changed transaction HEAD, unavailable branch or ineffective PNG LFS filters; Git/filesystem failures propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "planWrite",
+				"inputs": [
+					{
+						"name": "planWrite.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "planWrite.work",
+						"type": "() => Promise<T>",
+						"required": true,
+						"description": "Asynchronous operation to run under the repository planning lock."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planWrite",
+						"type": "Promise<T>",
+						"description": "Result of the queued operation; records the starting HEAD and releases the planning lock afterward, including after failure."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "clean",
+				"inputs": [
+					{
+						"name": "clean.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "clean.unitPath",
+						"type": "string",
+						"required": true,
+						"description": "Plan folder whose metadata, designs, threads and attributes must be clean."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clean",
+						"type": "Promise<void>",
+						"description": "Returns nothing when the plan artifact paths are safe and clean."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertClean",
+				"inputs": [
+					{
+						"name": "assertClean.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "assertClean.artifactPaths",
+						"type": "string[]",
+						"required": true,
+						"description": "Repository-relative artifact paths to inspect, including ignored and untracked files."
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertClean",
+						"type": "Promise<void>",
+						"description": "Returns nothing when all supplied paths are safe and Git reports no changes there."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "commitFiles",
+				"inputs": [
+					{
+						"name": "commitFiles.git",
+						"type": "Git",
+						"required": true,
+						"description": "Repository handle with root, Git directory and command runner."
+					},
+					{
+						"name": "commitFiles.files",
+						"type": "Files",
+						"required": true,
+						"description": "Map of repository-relative paths to text or bytes to commit."
+					},
+					{
+						"name": "commitFiles.message",
+						"type": "string",
+						"required": true,
+						"description": "Git commit message."
+					}
+				],
+				"outputs": [
+					{
+						"name": "commitFiles",
+						"type": "Promise<Omit<Committed<never>, 'value'>>",
+						"description": "Commit ID, parent, branch and prepared file paths after staging through a temporary index and installing the commit."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

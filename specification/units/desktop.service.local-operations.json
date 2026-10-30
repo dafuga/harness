@@ -35,11 +35,13 @@
 		"inputs": [
 			{
 				"name": "LocalOperationsService.constructor.options",
-				"type": "LocalOperationsOptions"
+				"type": "LocalOperationsOptions",
+				"required": true
 			},
 			{
 				"name": "LocalOperationsService.handle.request",
-				"type": "WireRequest"
+				"type": "WireRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -56,6 +58,64 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LocalOperationsService.methods",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalOperationsService.methods",
+						"type": "RemoteMethod[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "LocalOperationsService.handle",
+				"inputs": [
+					{
+						"name": "LocalOperationsService.handle.request",
+						"type": "WireRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalOperationsService.handle",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LocalOperationsService.constructor",
+				"inputs": [
+					{
+						"name": "LocalOperationsService.constructor.options",
+						"type": "LocalOperationsOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalOperationsService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

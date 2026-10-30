@@ -31,12 +31,24 @@
 			{
 				"name": "proposalUnits.listed",
 				"type": "CatalogEntity[]",
+				"required": true,
 				"description": "The catalog entries available to the proposal. Planned-only entries are excluded."
 			},
 			{
 				"name": "proposalUnits.request",
 				"type": "Pick<ProjectRunRequest, 'category' | 'text'>",
+				"required": true,
 				"description": "The request text and category hint. Recognized registered identities mentioned in the text receive priority."
+			},
+			{
+				"name": "taskUnits.units",
+				"type": "ComponentManifest[]",
+				"required": true
+			},
+			{
+				"name": "taskUnits.text",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +58,59 @@
 				"description": "Distinct existing unit identities, ordered first by mentions in the request, then by the requested category, then the remaining catalog categories. Each category otherwise keeps input order. No maximum list length is imposed here."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "proposalUnits",
+				"inputs": [
+					{
+						"name": "proposalUnits.listed",
+						"type": "CatalogEntity[]",
+						"required": true,
+						"description": "The catalog entries available to the proposal. Planned-only entries are excluded."
+					},
+					{
+						"name": "proposalUnits.request",
+						"type": "Pick<ProjectRunRequest, 'category' | 'text'>",
+						"required": true,
+						"description": "The request text and category hint. Recognized registered identities mentioned in the text receive priority."
+					}
+				],
+				"outputs": [
+					{
+						"name": "proposalUnits",
+						"type": "string[]",
+						"description": "Distinct existing unit identities, ordered first by mentions in the request, then by the requested category, then the remaining catalog categories. Each category otherwise keeps input order. No maximum list length is imposed here."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "taskUnits",
+				"inputs": [
+					{
+						"name": "taskUnits.units",
+						"type": "ComponentManifest[]",
+						"required": true
+					},
+					{
+						"name": "taskUnits.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskUnits",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

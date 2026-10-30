@@ -22,6 +22,7 @@
 			{
 				"name": "relayFrame.text",
 				"type": "string",
+				"required": true,
 				"description": "JSON text; text longer than the configured frame allowance plus 4096 characters is refused."
 			}
 		],
@@ -32,7 +33,30 @@
 				"description": "The parsed ready, device-open, device-close, packet, pairing-request, device-revoked or ack frame; null for invalid JSON or failed checks."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "relayFrame",
+				"inputs": [
+					{
+						"name": "relayFrame.text",
+						"type": "string",
+						"required": true,
+						"description": "JSON text; text longer than the configured frame allowance plus 4096 characters is refused."
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayFrame",
+						"type": "RelayHostFrame | null",
+						"description": "The parsed ready, device-open, device-close, packet, pairing-request, device-revoked or ack frame; null for invalid JSON or failed checks."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

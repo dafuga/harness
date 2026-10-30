@@ -20,11 +20,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/SourceViewer.svelte",
-			"packages/reports/src/components/explorer-ui/SourceViewer.svelte"
-		],
-		"symbols": ["SourceViewer", "SourceViewer"]
+		"source": ["packages/reports/src/components/explorer-ui/SourceViewer.svelte"],
+		"symbols": ["SourceViewer"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +59,9 @@
 				"description": "Escaped, unmodified file text in a scrolling code block. Empty files remain valid; unavailable code never displays previous contents."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

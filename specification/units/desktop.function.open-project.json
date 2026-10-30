@@ -19,6 +19,7 @@
 			{
 				"name": "openProject.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "The workspace to update, including its desktop connection, selected-project record, navigation and project-list operations. Without a connection this does nothing. With one, it marks the workspace busy and clears the previous error before opening."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "A promise that finishes without a return value. A chosen project updates the selection, navigates to its pages at the returned branch, then refreshes the project list. Cancelling the picker skips those steps. Caught failures are stored as text in workspace.error, and the busy flag is cleared when the attempt finishes."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "openProject",
+				"inputs": [
+					{
+						"name": "openProject.workspace",
+						"type": "Workspace",
+						"required": true,
+						"description": "The workspace to update, including its desktop connection, selected-project record, navigation and project-list operations. Without a connection this does nothing. With one, it marks the workspace busy and clears the previous error before opening."
+					}
+				],
+				"outputs": [
+					{
+						"name": "openProject",
+						"type": "Promise<void>",
+						"description": "A promise that finishes without a return value. A chosen project updates the selection, navigates to its pages at the returned branch, then refreshes the project list. Cancelling the picker skips those steps. Caught failures are stored as text in workspace.error, and the busy flag is cleared when the attempt finishes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

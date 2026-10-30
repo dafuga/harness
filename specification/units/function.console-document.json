@@ -27,12 +27,14 @@
 			{
 				"name": "consoleDocument.assets",
 				"type": "ConsoleAssets",
+				"required": true,
 				"description": "Compiled JavaScript and CSS text to inline in the HTML document."
 			},
 			{
 				"name": "consoleDocument.options",
 				"type": "ConsoleDocumentOptions",
-				"description": "Console base path with optional title, export availability and navigation links. Title defaults to Harness and exportable defaults to false."
+				"required": true,
+				"description": "Console base path with optional title and navigation links. Title defaults to Harness."
 			}
 		],
 		"outputs": [
@@ -42,7 +44,36 @@
 				"description": "Complete HTML string with escaped title, serialized settings and inline assets protected against closing their elements. It contains the viewer shell, not history data, and does not enforce access policy itself."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "consoleDocument",
+				"inputs": [
+					{
+						"name": "consoleDocument.assets",
+						"type": "ConsoleAssets",
+						"required": true,
+						"description": "Compiled JavaScript and CSS text to inline in the HTML document."
+					},
+					{
+						"name": "consoleDocument.options",
+						"type": "ConsoleDocumentOptions",
+						"required": true,
+						"description": "Console base path with optional title and navigation links. Title defaults to Harness."
+					}
+				],
+				"outputs": [
+					{
+						"name": "consoleDocument",
+						"type": "string",
+						"description": "Complete HTML string with escaped title, serialized settings and inline assets protected against closing their elements. It contains the viewer shell, not history data, and does not enforce access policy itself."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

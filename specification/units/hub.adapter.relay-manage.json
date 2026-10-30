@@ -31,23 +31,28 @@
 		"inputs": [
 			{
 				"name": "RelayManageAdapter.constructor.config",
-				"type": "RelayManageAdapterConfig"
+				"type": "RelayManageAdapterConfig",
+				"required": true
 			},
 			{
 				"name": "RelayManageAdapter.register.input",
-				"type": "RelayManageRegister"
+				"type": "RelayManageRegister",
+				"required": true
 			},
 			{
 				"name": "RelayManageAdapter.summary.input",
-				"type": "RelayManageOwner"
+				"type": "RelayManageOwner",
+				"required": true
 			},
 			{
 				"name": "RelayManageAdapter.revokeDevice.input",
-				"type": "RelayManageDevice"
+				"type": "RelayManageDevice",
+				"required": true
 			},
 			{
 				"name": "RelayManageAdapter.unregister.input",
-				"type": "RelayManageOwner"
+				"type": "RelayManageOwner",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -68,7 +73,102 @@
 				"type": "Promise<{ ok: true }>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RelayManageAdapter.register",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.register.input",
+						"type": "RelayManageRegister",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.register",
+						"type": "Promise<RelayRegistered>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayManageAdapter.summary",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.summary.input",
+						"type": "RelayManageOwner",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.summary",
+						"type": "Promise<RemoteHostSummary>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayManageAdapter.revokeDevice",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.revokeDevice.input",
+						"type": "RelayManageDevice",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.revokeDevice",
+						"type": "Promise<{ ok: true }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayManageAdapter.unregister",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.unregister.input",
+						"type": "RelayManageOwner",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.unregister",
+						"type": "Promise<{ ok: true }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RelayManageAdapter.constructor",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.constructor.config",
+						"type": "RelayManageAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -20,11 +20,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/EmailProofPanel.svelte",
-			"packages/hub/src/components/verification-evidence/EmailProofPanel.svelte"
-		],
-		"symbols": ["EmailProofPanel", "EmailProofPanel"]
+		"source": ["packages/hub/src/components/verification-evidence/EmailProofPanel.svelte"],
+		"symbols": ["EmailProofPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -32,6 +29,7 @@
 			{
 				"name": "EmailProofPanel.proof",
 				"type": "EmailProofStatus",
+				"required": true,
 				"description": "Required email-proof status with target email, sent flag and optional expiry. Input is disabled until sent; the sent flag also chooses Send or Resend wording."
 			}
 		],
@@ -42,7 +40,9 @@
 				"description": "Email confirmation form with send/resend, numeric code entry, Verify and Cancel. Verify requires exactly the configured number of digits and a nonbusy session, and clears code on reported success. Cancel clears code then signs out. Session errors are shown; successful verification does not itself assume a signed-in actor."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

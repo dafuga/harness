@@ -32,14 +32,16 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "hubRecordJson.bytes",
-				"type": "Uint8Array",
-				"description": "Bytes expected to contain strict UTF-8 JSON."
-			},
-			{
 				"name": "hubAttachedRecord.result",
 				"type": "HubAttachedRecord",
+				"required": true,
 				"description": "Attached result with manifest, retained record.json bytes, validated file facts and existing problems."
+			},
+			{
+				"name": "hubRecordJson.bytes",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Bytes expected to contain strict UTF-8 JSON."
 			}
 		],
 		"outputs": [
@@ -54,7 +56,50 @@
 				"description": "Copied result with validated record when available and accumulated problems for invalid record structure, seal mismatch, identity mismatch or undeclared/mismatched files."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubAttachedRecord",
+				"inputs": [
+					{
+						"name": "hubAttachedRecord.result",
+						"type": "HubAttachedRecord",
+						"required": true,
+						"description": "Attached result with manifest, retained record.json bytes, validated file facts and existing problems."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubAttachedRecord",
+						"type": "HubAttachedRecord",
+						"description": "Copied result with validated record when available and accumulated problems for invalid record structure, seal mismatch, identity mismatch or undeclared/mismatched files."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubRecordJson",
+				"inputs": [
+					{
+						"name": "hubRecordJson.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes expected to contain strict UTF-8 JSON."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubRecordJson",
+						"type": "unknown",
+						"description": "Parsed JSON value, or undefined for invalid encoding/JSON."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

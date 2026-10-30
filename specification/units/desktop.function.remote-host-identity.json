@@ -34,16 +34,19 @@
 			{
 				"name": "registerRemoteHost.state",
 				"type": "RemoteHostState",
+				"required": true,
 				"description": "Existing host state; successful registration updates enabled, origin and generation in this object."
 			},
 			{
 				"name": "registerRemoteHost.name",
 				"type": "string",
+				"required": true,
 				"description": "Computer name sent with the registration."
 			},
 			{
 				"name": "registerRemoteHost.register",
 				"type": "RegisterRemoteHost",
+				"required": true,
 				"description": "Callback receiving host ID, public key, credential hash and name and returning registration details."
 			}
 		],
@@ -65,7 +68,60 @@
 				"type": "thrown",
 				"description": "Rejects invalid relay registration; key generation/import and registration failures also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "remoteHostIdentity",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "remoteHostIdentity",
+						"type": "Promise<RemoteHostState>",
+						"description": "New disabled state with generated keys, host ID and credential, no origin, generation zero and empty device/revocation lists."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "registerRemoteHost",
+				"inputs": [
+					{
+						"name": "registerRemoteHost.state",
+						"type": "RemoteHostState",
+						"required": true,
+						"description": "Existing host state; successful registration updates enabled, origin and generation in this object."
+					},
+					{
+						"name": "registerRemoteHost.name",
+						"type": "string",
+						"required": true,
+						"description": "Computer name sent with the registration."
+					},
+					{
+						"name": "registerRemoteHost.register",
+						"type": "RegisterRemoteHost",
+						"required": true,
+						"description": "Callback receiving host ID, public key, credential hash and name and returning registration details."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerRemoteHost",
+						"type": "Promise<RemoteKeyPair>",
+						"description": "Imported key pair after accepting a matching host ID and valid relay origin."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

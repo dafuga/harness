@@ -31,31 +31,37 @@
 			{
 				"name": "remoteAuthority.status",
 				"type": "RemoteMobileStatus",
+				"required": true,
 				"description": "Remote status containing optional host, device and access grant."
 			},
 			{
 				"name": "authorityChange.known",
 				"type": "Authority",
+				"required": true,
 				"description": "Previously remembered holder and serialized grant."
 			},
 			{
 				"name": "authorityChange.next",
 				"type": "Authority",
+				"required": true,
 				"description": "New holder and serialized grant."
 			},
 			{
 				"name": "authorityChange.steady",
 				"type": "boolean",
+				"required": true,
 				"description": "Whether the connection remained steady between these observations."
 			},
 			{
 				"name": "excludes.status",
 				"type": "RemoteMobileStatus",
+				"required": true,
 				"description": "Status whose project grant is checked."
 			},
 			{
 				"name": "excludes.projectId",
 				"type": "string | null",
+				"required": true,
 				"description": "Project ID to check, or null for no selected project."
 			}
 		],
@@ -81,7 +87,88 @@
 				"description": "True when a non-null project is absent from the grant; false when no project is selected."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "remoteAuthority",
+				"inputs": [
+					{
+						"name": "remoteAuthority.status",
+						"type": "RemoteMobileStatus",
+						"required": true,
+						"description": "Remote status containing optional host, device and access grant."
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteAuthority",
+						"type": "Authority",
+						"description": "Combined host/device identity and JSON serialization of the grant."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "authorityChange",
+				"inputs": [
+					{
+						"name": "authorityChange.known",
+						"type": "Authority",
+						"required": true,
+						"description": "Previously remembered holder and serialized grant."
+					},
+					{
+						"name": "authorityChange.next",
+						"type": "Authority",
+						"required": true,
+						"description": "New holder and serialized grant."
+					},
+					{
+						"name": "authorityChange.steady",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether the connection remained steady between these observations."
+					}
+				],
+				"outputs": [
+					{
+						"name": "authorityChange",
+						"type": "unknown",
+						"description": "none for identical steady access; holder for a changed known holder; grant otherwise, including reconnection."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "excludes",
+				"inputs": [
+					{
+						"name": "excludes.status",
+						"type": "RemoteMobileStatus",
+						"required": true,
+						"description": "Status whose project grant is checked."
+					},
+					{
+						"name": "excludes.projectId",
+						"type": "string | null",
+						"required": true,
+						"description": "Project ID to check, or null for no selected project."
+					}
+				],
+				"outputs": [
+					{
+						"name": "excludes",
+						"type": "boolean",
+						"description": "True when a non-null project is absent from the grant; false when no project is selected."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -33,7 +33,10 @@
 			"collection",
 			"valueMark",
 			"ConfigCollection",
-			"ConfigValueMark"
+			"ConfigValueMark",
+			"ConfigValueTree.shape",
+			"ConfigValueTree.contents",
+			"ConfigValueTree.item"
 		]
 	},
 	"contract": {
@@ -44,24 +47,6 @@
 				"type": "ConfigValueNode",
 				"required": true,
 				"description": "Committed source expression or collection node to inspect. Object and array entries preserve exact keys; unknown counts stay omitted. No source is executed."
-			},
-			{
-				"name": "collection.node",
-				"type": "ConfigValueNode",
-				"required": false,
-				"description": "Optional source node. Returns its collection form only for object or array nodes; undefined and expressions have no inspectable collection."
-			},
-			{
-				"name": "valueMark.node",
-				"type": "ConfigValueNode | undefined",
-				"required": true,
-				"description": "Static object/array structure or undefined, supplying its shape, schema flag and exact known count."
-			},
-			{
-				"name": "valueMark.text",
-				"type": "string",
-				"required": true,
-				"description": "Original committed expression text. Opaque values longer than 48 characters or one line receive an inspection icon with source size."
 			}
 		],
 		"outputs": [
@@ -91,8 +76,20 @@
 		"operations": [
 			{
 				"name": "collection",
-				"inputs": [],
-				"outputs": [],
+				"inputs": [
+					{
+						"name": "collection.node",
+						"type": "ConfigValueNode",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "collection",
+						"type": "ConfigCollection | undefined",
+						"description": "The supplied object or array collection node, or undefined for an absent or expression node."
+					}
+				],
 				"errors": [
 					{
 						"name": "Property access error",
@@ -104,8 +101,25 @@
 			},
 			{
 				"name": "valueMark",
-				"inputs": [],
-				"outputs": [],
+				"inputs": [
+					{
+						"name": "valueMark.node",
+						"type": "ConfigValueNode | undefined",
+						"required": true
+					},
+					{
+						"name": "valueMark.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "valueMark",
+						"type": "ConfigValueMark | undefined",
+						"description": "Icon name and count/size label for an inspectable value, or undefined for a short unstructured expression."
+					}
+				],
 				"errors": [
 					{
 						"name": "Property access error",
@@ -114,6 +128,68 @@
 					}
 				],
 				"errorStatus": "declared"
+			}
+		],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ConfigValueTree.shape",
+				"inputs": [
+					{
+						"name": "ConfigValueTree.shape.held",
+						"type": "ConfigCollection",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConfigValueTree.shape",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ConfigValueTree.contents",
+				"inputs": [
+					{
+						"name": "ConfigValueTree.contents.value",
+						"type": "ConfigValueNode",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConfigValueTree.contents",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ConfigValueTree.item",
+				"inputs": [
+					{
+						"name": "ConfigValueTree.item.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ConfigValueTree.item.value",
+						"type": "ConfigValueNode",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConfigValueTree.item",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

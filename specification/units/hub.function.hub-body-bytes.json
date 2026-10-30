@@ -20,6 +20,7 @@
 			{
 				"name": "hubBodyBytes.request",
 				"type": "Request",
+				"required": true,
 				"description": "Request with a body stream."
 			}
 		],
@@ -30,7 +31,30 @@
 				"description": "Combined bytes; an empty supplied stream is accepted. Missing bodies or bodies over 20000 bytes reject with invalid-input, and oversized streams are cancelled."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubBodyBytes",
+				"inputs": [
+					{
+						"name": "hubBodyBytes.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request with a body stream."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubBodyBytes",
+						"type": "Promise<Uint8Array>",
+						"description": "Combined bytes; an empty supplied stream is accepted. Missing bodies or bodies over 20000 bytes reject with invalid-input, and oversized streams are cancelled."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

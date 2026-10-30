@@ -35,35 +35,44 @@
 		"inputs": [
 			{
 				"name": "DevicePairingService.constructor.options",
-				"type": "{ fetch?: typeof fetch }"
+				"type": "{ fetch?: typeof fetch }",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "DevicePairingService.scanned.text",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "DevicePairingService.scanned.device",
-				"type": "ScanningDevice"
+				"type": "ScanningDevice",
+				"required": true
 			},
 			{
 				"name": "DevicePairingService.scanned.reading",
-				"type": "OfferReading"
+				"type": "OfferReading",
+				"required": true
 			},
 			{
 				"name": "DevicePairingService.request.input",
-				"type": "DevicePairingInput"
+				"type": "DevicePairingInput",
+				"required": true
 			},
 			{
 				"name": "DevicePairingService.request.keys",
-				"type": "RemoteKeyPair"
+				"type": "RemoteKeyPair",
+				"required": false
 			},
 			{
 				"name": "DevicePairingService.poll.pending",
-				"type": "PendingPairing"
+				"type": "PendingPairing",
+				"required": true
 			},
 			{
 				"name": "DevicePairingService.exchange.pending",
-				"type": "PendingPairing"
+				"type": "PendingPairing",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -88,6 +97,127 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DevicePairingService.scanned",
+				"inputs": [
+					{
+						"name": "DevicePairingService.scanned.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DevicePairingService.scanned.device",
+						"type": "ScanningDevice",
+						"required": true
+					},
+					{
+						"name": "DevicePairingService.scanned.reading",
+						"type": "OfferReading",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DevicePairingService.scanned",
+						"type": "Promise<PendingPairing>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DevicePairingService.request",
+				"inputs": [
+					{
+						"name": "DevicePairingService.request.input",
+						"type": "DevicePairingInput",
+						"required": true
+					},
+					{
+						"name": "DevicePairingService.request.keys",
+						"type": "RemoteKeyPair",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "DevicePairingService.request",
+						"type": "Promise<PendingPairing>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DevicePairingService.poll",
+				"inputs": [
+					{
+						"name": "DevicePairingService.poll.pending",
+						"type": "PendingPairing",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DevicePairingService.poll",
+						"type": "Promise<RelayPairingState>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DevicePairingService.exchange",
+				"inputs": [
+					{
+						"name": "DevicePairingService.exchange.pending",
+						"type": "PendingPairing",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DevicePairingService.exchange",
+						"type": "Promise<DeviceCredentials>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DevicePairingService.constructor",
+				"inputs": [
+					{
+						"name": "DevicePairingService.constructor.options",
+						"type": "{ fetch?: typeof fetch }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "DevicePairingService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

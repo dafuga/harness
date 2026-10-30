@@ -37,15 +37,18 @@
 		"inputs": [
 			{
 				"name": "createPlanning.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "handlePlanningRequest.api",
-				"type": "PlanningApi"
+				"type": "PlanningApi",
+				"required": true
 			},
 			{
 				"name": "handlePlanningRequest.request",
-				"type": "PlanningRequest"
+				"type": "PlanningRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,7 +61,52 @@
 				"type": "Promise<PlanningResult<unknown>>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "createPlanning",
+				"inputs": [
+					{
+						"name": "createPlanning.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createPlanning",
+						"type": "Promise<PlanningApi>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "handlePlanningRequest",
+				"inputs": [
+					{
+						"name": "handlePlanningRequest.api",
+						"type": "PlanningApi",
+						"required": true
+					},
+					{
+						"name": "handlePlanningRequest.request",
+						"type": "PlanningRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "handlePlanningRequest",
+						"type": "Promise<PlanningResult<unknown>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

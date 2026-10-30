@@ -43,15 +43,19 @@
 		"inputs": [
 			{
 				"name": "LocalTransportService.constructor.options",
-				"type": "LocalTransportOptions"
+				"type": "LocalTransportOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "LocalTransportService.bootstrap.target",
-				"type": "LocalTransportTarget"
+				"type": "LocalTransportTarget",
+				"required": true
 			},
 			{
 				"name": "LocalTransportService.forget.target",
-				"type": "LocalTransportTarget"
+				"type": "LocalTransportTarget",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -88,6 +92,126 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LocalTransportService.port",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalTransportService.port",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalTransportService.address",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalTransportService.address",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalTransportService.connections",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalTransportService.connections",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalTransportService.listen",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalTransportService.listen",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalTransportService.bootstrap",
+				"inputs": [
+					{
+						"name": "LocalTransportService.bootstrap.target",
+						"type": "LocalTransportTarget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalTransportService.bootstrap",
+						"type": "LocalBootstrap"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalTransportService.forget",
+				"inputs": [
+					{
+						"name": "LocalTransportService.forget.target",
+						"type": "LocalTransportTarget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalTransportService.forget",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "LocalTransportService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LocalTransportService.close",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LocalTransportService.constructor",
+				"inputs": [
+					{
+						"name": "LocalTransportService.constructor.options",
+						"type": "LocalTransportOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "LocalTransportService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

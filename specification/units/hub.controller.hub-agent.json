@@ -28,7 +28,8 @@
 		"inputs": [
 			{
 				"name": "HubAgentController.constructor.context",
-				"type": "Context"
+				"type": "Context",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -37,7 +38,42 @@
 				"type": "Promise<Response>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HubAgentController.handle",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubAgentController.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HubAgentController.constructor",
+				"inputs": [
+					{
+						"name": "HubAgentController.constructor.context",
+						"type": "Context",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubAgentController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -34,26 +34,31 @@
 			{
 				"name": "rpcMessages.state",
 				"type": "RpcState",
+				"required": true,
 				"description": "Pending-request map, notification listeners and sender."
 			},
 			{
 				"name": "rpcMessages.line",
 				"type": "string",
+				"required": true,
 				"description": "One JSON message line; invalid JSON is ignored."
 			},
 			{
 				"name": "rpcRequest.state",
 				"type": "RpcState",
+				"required": true,
 				"description": "Pending-request map and sender used for the new request."
 			},
 			{
 				"name": "rpcRequest.frame",
 				"type": "{ id: number; method: string; params: unknown }",
+				"required": true,
 				"description": "Request ID, method and parameters to send."
 			},
 			{
 				"name": "rpcRequest.timeoutMs",
 				"type": "number",
+				"required": true,
 				"description": "Milliseconds before the pending request is rejected as timed out."
 			}
 		],
@@ -69,7 +74,68 @@
 				"description": "Reply result, or rejection from the remote error, send failure or timeout."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "rpcMessages",
+				"inputs": [
+					{
+						"name": "rpcMessages.state",
+						"type": "RpcState",
+						"required": true,
+						"description": "Pending-request map, notification listeners and sender."
+					},
+					{
+						"name": "rpcMessages.line",
+						"type": "string",
+						"required": true,
+						"description": "One JSON message line; invalid JSON is ignored."
+					}
+				],
+				"outputs": [
+					{
+						"name": "rpcMessages",
+						"type": "void",
+						"description": "Settles matching requests, dispatches notifications or rejects incoming interactive requests as unavailable; returns nothing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "rpcRequest",
+				"inputs": [
+					{
+						"name": "rpcRequest.state",
+						"type": "RpcState",
+						"required": true,
+						"description": "Pending-request map and sender used for the new request."
+					},
+					{
+						"name": "rpcRequest.frame",
+						"type": "{ id: number; method: string; params: unknown }",
+						"required": true,
+						"description": "Request ID, method and parameters to send."
+					},
+					{
+						"name": "rpcRequest.timeoutMs",
+						"type": "number",
+						"required": true,
+						"description": "Milliseconds before the pending request is rejected as timed out."
+					}
+				],
+				"outputs": [
+					{
+						"name": "rpcRequest",
+						"type": "Promise<unknown>",
+						"description": "Reply result, or rejection from the remote error, send failure or timeout."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

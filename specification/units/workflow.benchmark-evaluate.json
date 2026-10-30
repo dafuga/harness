@@ -20,21 +20,25 @@
 			{
 				"name": "evaluateBenchmarkSubmission.input",
 				"type": "BenchmarkEvaluationInput",
+				"required": true,
 				"description": "Pinned baseline, trial changes, protected files and shared abort signal."
 			},
 			{
 				"name": "setupBenchmarkWorkspace.cwd",
 				"type": "string",
+				"required": true,
 				"description": "Working directory in which the trusted command runs."
 			},
 			{
 				"name": "setupBenchmarkWorkspace.definition",
 				"type": "BenchmarkDefinition",
+				"required": true,
 				"description": "Validated benchmark contract, setup commands and acceptance checks."
 			},
 			{
 				"name": "setupBenchmarkWorkspace.signal",
 				"type": "AbortSignal",
+				"required": true,
 				"description": "Abort signal sharing the trial deadline and user cancellation."
 			}
 		],
@@ -56,7 +60,67 @@
 				"type": "thrown",
 				"description": "Rejects cancelled evaluation or failed setup commands."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "evaluateBenchmarkSubmission",
+				"inputs": [
+					{
+						"name": "evaluateBenchmarkSubmission.input",
+						"type": "BenchmarkEvaluationInput",
+						"required": true,
+						"description": "Pinned baseline, trial changes, protected files and shared abort signal."
+					}
+				],
+				"outputs": [
+					{
+						"name": "evaluateBenchmarkSubmission",
+						"type": "Promise<BenchmarkSubmission>",
+						"description": "Protected-file violations, acceptance outcomes and the evaluated implementation patch."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "setupBenchmarkWorkspace",
+				"inputs": [
+					{
+						"name": "setupBenchmarkWorkspace.cwd",
+						"type": "string",
+						"required": true,
+						"description": "Working directory in which the trusted command runs."
+					},
+					{
+						"name": "setupBenchmarkWorkspace.definition",
+						"type": "BenchmarkDefinition",
+						"required": true,
+						"description": "Validated benchmark contract, setup commands and acceptance checks."
+					},
+					{
+						"name": "setupBenchmarkWorkspace.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Abort signal sharing the trial deadline and user cancellation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "setupBenchmarkWorkspace",
+						"type": "Promise<void>",
+						"description": "Completes trusted setup commands or rejects the failed setup."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

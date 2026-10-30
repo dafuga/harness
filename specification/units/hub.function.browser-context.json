@@ -40,7 +40,36 @@
 				"description": "Services previously provided in the current component context."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "provideBrowser",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "provideBrowser",
+						"type": "HostedBrowser",
+						"description": "New services stored in the current Svelte context; a 401 refreshes the session when an actor was known."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "browserContext",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "browserContext",
+						"type": "HostedBrowser",
+						"description": "Services previously provided in the current component context."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

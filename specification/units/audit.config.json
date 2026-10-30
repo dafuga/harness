@@ -26,15 +26,18 @@
 		"inputs": [
 			{
 				"name": "readAuditConfig.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "filterIgnoredFindings.findings",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"required": true
 			},
 			{
 				"name": "filterIgnoredFindings.config",
-				"type": "ResolvedAuditConfig"
+				"type": "ResolvedAuditConfig",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -52,7 +55,52 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readAuditConfig",
+				"inputs": [
+					{
+						"name": "readAuditConfig.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readAuditConfig",
+						"type": "ResolvedAuditConfig"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "filterIgnoredFindings",
+				"inputs": [
+					{
+						"name": "filterIgnoredFindings.findings",
+						"type": "AuditFinding[]",
+						"required": true
+					},
+					{
+						"name": "filterIgnoredFindings.config",
+						"type": "ResolvedAuditConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "filterIgnoredFindings",
+						"type": "{ activeFindings: AuditFinding[]; ignoredFindings: AuditFinding[] }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

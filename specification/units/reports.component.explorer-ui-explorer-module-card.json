@@ -23,7 +23,7 @@
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte"],
-		"symbols": ["ExplorerModuleCard"]
+		"symbols": ["ExplorerModuleCard", "ExplorerModuleCard.picture", "ExplorerModuleCard.usage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,16 +53,16 @@
 				"description": "URL prefix for the selected evidence assets."
 			},
 			{
-				"name": "ExplorerModuleCard.shot",
-				"type": "Evidence | null",
-				"required": false,
-				"description": "Optional own visual capture. Nonvisual modules omit the image region; missing visual captures remain explicit."
-			},
-			{
 				"name": "ExplorerModuleCard.category",
 				"type": "ExplorerCategory | null",
 				"required": false,
 				"description": "Module category, defaulting to the row category. Visual and nonvisual cards share this renderer."
+			},
+			{
+				"name": "ExplorerModuleCard.shot",
+				"type": "Evidence | null",
+				"required": false,
+				"description": "Optional own visual capture. Nonvisual modules omit the image region; missing visual captures remain explicit."
 			}
 		],
 		"outputs": [
@@ -107,6 +107,34 @@
 				"name": "lens.evidence callback error",
 				"type": "thrown",
 				"description": "An evidence callback error propagates while resolving the card image or opening a visual consumer preview."
+			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerModuleCard.picture",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerModuleCard.picture",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModuleCard.usage",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerModuleCard.usage",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

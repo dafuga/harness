@@ -31,18 +31,21 @@
 			{
 				"name": "PreviewServerService.constructor.port",
 				"type": "number",
+				"required": false,
 				"description": "Loopback port used to reserve the one preview slot.",
 				"examples": [47840]
 			},
 			{
 				"name": "PreviewServerService.run.identity",
 				"type": "string",
+				"required": true,
 				"description": "Fingerprint of the checkout and selected history data.",
 				"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
 			},
 			{
 				"name": "PreviewServerService.run.start",
 				"type": "() => Promise<PreviewHandle>",
+				"required": true,
 				"description": "Starts the preview only after this process owns the slot; returns its URL and cleanup function."
 			}
 		],
@@ -64,7 +67,75 @@
 				"description": "Releases only this process’s preview and ownership listener; a reusing process leaves the owner running."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "PreviewServerService.run",
+				"inputs": [
+					{
+						"name": "PreviewServerService.run.identity",
+						"type": "string",
+						"required": true,
+						"description": "Fingerprint of the checkout and selected history data.",
+						"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+					},
+					{
+						"name": "PreviewServerService.run.start",
+						"type": "() => Promise<PreviewHandle>",
+						"required": true,
+						"description": "Starts the preview only after this process owns the slot; returns its URL and cleanup function."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PreviewServerService.run",
+						"type": "Promise<PreviewResult>",
+						"description": "The preview address and whether another process already owned it.",
+						"examples": [
+							{
+								"url": "http://127.0.0.1:5688",
+								"reused": true
+							}
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PreviewServerService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PreviewServerService.close",
+						"type": "Promise<void>",
+						"description": "Releases only this process’s preview and ownership listener; a reusing process leaves the owner running."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PreviewServerService.constructor",
+				"inputs": [
+					{
+						"name": "PreviewServerService.constructor.port",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "PreviewServerService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

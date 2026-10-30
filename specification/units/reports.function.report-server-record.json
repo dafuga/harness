@@ -35,29 +35,34 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "processStarted.pid",
-				"type": "number",
-				"description": "Process identifier whose system start time is requested."
-			},
-			{
-				"name": "reportServerRecord.root",
-				"type": "string",
-				"description": "Report store root used for server records."
-			},
-			{
-				"name": "reportServerRecord.port",
-				"type": "number",
-				"description": "Port naming the server record."
-			},
-			{
 				"name": "stopReportServer.root",
 				"type": "string",
+				"required": true,
 				"description": "Report store root whose recorded server should be stopped."
 			},
 			{
 				"name": "stopReportServer.port",
 				"type": "number",
+				"required": true,
 				"description": "Port identifying the recorded server to stop."
+			},
+			{
+				"name": "processStarted.pid",
+				"type": "number",
+				"required": true,
+				"description": "Process identifier whose system start time is requested."
+			},
+			{
+				"name": "reportServerRecord.root",
+				"type": "string",
+				"required": true,
+				"description": "Report store root used for server records."
+			},
+			{
+				"name": "reportServerRecord.port",
+				"type": "number",
+				"required": true,
+				"description": "Port naming the server record."
 			}
 		],
 		"outputs": [
@@ -77,7 +82,82 @@
 				"description": "Loads the record, compares PID and start time, sends SIGTERM only to a match, waits in roughly 100-millisecond intervals for up to five seconds, then sends SIGKILL if the same process remains. Removes the record and reports whether a matching process was initially found."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "stopReportServer",
+				"inputs": [
+					{
+						"name": "stopReportServer.root",
+						"type": "string",
+						"required": true,
+						"description": "Report store root whose recorded server should be stopped."
+					},
+					{
+						"name": "stopReportServer.port",
+						"type": "number",
+						"required": true,
+						"description": "Port identifying the recorded server to stop."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stopReportServer",
+						"type": "Promise<StoppedServer>",
+						"description": "Loads the record, compares PID and start time, sends SIGTERM only to a match, waits in roughly 100-millisecond intervals for up to five seconds, then sends SIGKILL if the same process remains. Removes the record and reports whether a matching process was initially found."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "processStarted",
+				"inputs": [
+					{
+						"name": "processStarted.pid",
+						"type": "number",
+						"required": true,
+						"description": "Process identifier whose system start time is requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "processStarted",
+						"type": "Promise<string | undefined>",
+						"description": "Trimmed system start-time text from ps for that PID, or undefined when the command fails or returns no value."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "reportServerRecord",
+				"inputs": [
+					{
+						"name": "reportServerRecord.root",
+						"type": "string",
+						"required": true,
+						"description": "Report store root used for server records."
+					},
+					{
+						"name": "reportServerRecord.port",
+						"type": "number",
+						"required": true,
+						"description": "Port naming the server record."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportServerRecord",
+						"type": "unknown",
+						"description": "Record file path plus async read, write and remove methods. Reads suppress filesystem failures as absence, but malformed JSON rejects; writes create the server-record directory."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

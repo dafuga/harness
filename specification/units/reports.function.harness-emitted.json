@@ -48,49 +48,78 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "emittedBytes.count",
-				"type": "number",
-				"description": "Number of bytes to format."
-			},
-			{
-				"name": "emittedLabel.target",
-				"type": "string",
-				"description": "Target kind to label."
-			},
-			{
-				"name": "emittedKey.target",
-				"type": "string",
-				"description": "Target kind for the ledger key."
-			},
-			{
-				"name": "harnessEmitted.unit",
-				"type": "HarnessUnit",
-				"description": "Unit with declared execution targets and emitted limits."
-			},
-			{
-				"name": "harnessEmitted.record",
-				"type": "HarnessRecord | null",
-				"description": "Record whose unprofiled, workload-free build measurement is used, or null."
-			},
-			{
 				"name": "emittedChange.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit identifier to compare."
 			},
 			{
 				"name": "emittedChange.sides",
 				"type": "Array<{ units: HarnessUnit[]; record: HarnessRecord | null }>",
+				"required": true,
 				"description": "Comparison sides in before/after order; targets are gathered from supplied unit definitions."
 			},
 			{
 				"name": "emittedTargets.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Index with emitted growth values and notes."
 			},
 			{
 				"name": "emittedTargets.unit",
 				"type": "string",
+				"required": true,
 				"description": "Unit identifier whose targets are requested."
+			},
+			{
+				"name": "emittedBytes.count",
+				"type": "number",
+				"required": true,
+				"description": "Number of bytes to format."
+			},
+			{
+				"name": "emittedLabel.target",
+				"type": "string",
+				"required": true,
+				"description": "Target kind to label."
+			},
+			{
+				"name": "emittedKey.target",
+				"type": "string",
+				"required": true,
+				"description": "Target kind for the ledger key."
+			},
+			{
+				"name": "built.record",
+				"type": "HarnessRecord | null",
+				"required": true
+			},
+			{
+				"name": "built.unit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "built.target",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "targetsOf.unit",
+				"type": "HarnessUnit",
+				"required": true
+			},
+			{
+				"name": "harnessEmitted.unit",
+				"type": "HarnessUnit",
+				"required": true,
+				"description": "Unit with declared execution targets and emitted limits."
+			},
+			{
+				"name": "harnessEmitted.record",
+				"type": "HarnessRecord | null",
+				"required": true,
+				"description": "Record whose unprofiled, workload-free build measurement is used, or null."
 			}
 		],
 		"outputs": [
@@ -125,7 +154,194 @@
 				"description": "Process/Wasm targets found in growth values or notes, in fixed target order."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "emittedChange",
+				"inputs": [
+					{
+						"name": "emittedChange.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit identifier to compare."
+					},
+					{
+						"name": "emittedChange.sides",
+						"type": "Array<{ units: HarnessUnit[]; record: HarnessRecord | null }>",
+						"required": true,
+						"description": "Comparison sides in before/after order; targets are gathered from supplied unit definitions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "emittedChange",
+						"type": "EmittedChange[]",
+						"description": "Before and after numeric sizes or null, separately for process and Wasm targets declared on either side."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "emittedTargets",
+				"inputs": [
+					{
+						"name": "emittedTargets.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Index with emitted growth values and notes."
+					},
+					{
+						"name": "emittedTargets.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit identifier whose targets are requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "emittedTargets",
+						"type": "string[]",
+						"description": "Process/Wasm targets found in growth values or notes, in fixed target order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "emittedBytes",
+				"inputs": [
+					{
+						"name": "emittedBytes.count",
+						"type": "number",
+						"required": true,
+						"description": "Number of bytes to format."
+					}
+				],
+				"outputs": [
+					{
+						"name": "emittedBytes",
+						"type": "string",
+						"description": "Count followed by byte for one, otherwise bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "emittedLabel",
+				"inputs": [
+					{
+						"name": "emittedLabel.target",
+						"type": "string",
+						"required": true,
+						"description": "Target kind to label."
+					}
+				],
+				"outputs": [
+					{
+						"name": "emittedLabel",
+						"type": "string",
+						"description": "Friendly native-process or Wasm label, otherwise the original target."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "emittedKey",
+				"inputs": [
+					{
+						"name": "emittedKey.target",
+						"type": "string",
+						"required": true,
+						"description": "Target kind for the ledger key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "emittedKey",
+						"type": "string",
+						"description": "artifact-bytes followed by a colon and target kind."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "built",
+				"inputs": [
+					{
+						"name": "built.record",
+						"type": "HarnessRecord | null",
+						"required": true
+					},
+					{
+						"name": "built.unit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "built.target",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "built",
+						"type": "Measurement | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "targetsOf",
+				"inputs": [
+					{
+						"name": "targetsOf.unit",
+						"type": "HarnessUnit",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "targetsOf",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "harnessEmitted",
+				"inputs": [
+					{
+						"name": "harnessEmitted.unit",
+						"type": "HarnessUnit",
+						"required": true,
+						"description": "Unit with declared execution targets and emitted limits."
+					},
+					{
+						"name": "harnessEmitted.record",
+						"type": "HarnessRecord | null",
+						"required": true,
+						"description": "Record whose unprofiled, workload-free build measurement is used, or null."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessEmitted",
+						"type": "EmittedLine[]",
+						"description": "One line per declared process/Wasm target with size, limit and findings. Units declaring neither receive an explicit no-output line. Missing measurements remain unavailable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -27,16 +27,20 @@
 			{
 				"name": "killOwnedProcess.pid",
 				"type": "number | undefined",
+				"required": true,
 				"description": "The owned process ID to terminate, or undefined to do nothing. On Windows it targets that process; elsewhere it targets the process group with that ID."
 			},
 			{
 				"name": "cliProcess.command",
 				"type": "CliCommand",
+				"required": true,
 				"description": "The executable and arguments to spawn directly with the prepared CLI environment and piped input and output."
 			},
 			{
 				"name": "cliProcess.options",
 				"type": "ProcessOptions",
+				"required": false,
+				"default": {},
 				"description": "Optional working directory, input text, cancellation signal, output-line callback and limits. Defaults are empty input, ten minutes and 16,000,000 output bytes. An already-aborted signal prevents the process from starting."
 			}
 		],
@@ -58,7 +62,62 @@
 				"type": "thrown",
 				"description": "Rejects with RunCancelled when the supplied signal is already aborted or is aborted while the process runs. Active cancellation also sends termination to the owned process or process group."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "killOwnedProcess",
+				"inputs": [
+					{
+						"name": "killOwnedProcess.pid",
+						"type": "number | undefined",
+						"required": true,
+						"description": "The owned process ID to terminate, or undefined to do nothing. On Windows it targets that process; elsewhere it targets the process group with that ID."
+					}
+				],
+				"outputs": [
+					{
+						"name": "killOwnedProcess",
+						"type": "void",
+						"description": "No return value. Sends SIGTERM to the owned target; termination errors, including an already-exited process, are ignored."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cliProcess",
+				"inputs": [
+					{
+						"name": "cliProcess.command",
+						"type": "CliCommand",
+						"required": true,
+						"description": "The executable and arguments to spawn directly with the prepared CLI environment and piped input and output."
+					},
+					{
+						"name": "cliProcess.options",
+						"type": "ProcessOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional working directory, input text, cancellation signal, output-line callback and limits. Defaults are empty input, ten minutes and 16,000,000 output bytes. An already-aborted signal prevents the process from starting."
+					}
+				],
+				"outputs": [
+					{
+						"name": "cliProcess",
+						"type": "Promise<string>",
+						"description": "A promise for UTF-8 standard output when the process exits with code zero. Rejects for startup failures, cancellation, timeout, excessive output or nonzero exit. Nonzero-exit messages include up to the last 2,000 characters of standard error."
+					}
+				],
+				"errors": [
+					{
+						"name": "RunCancelled",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

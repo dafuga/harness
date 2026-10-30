@@ -25,26 +25,33 @@
 			{
 				"name": "HarnessVerdict.passed",
 				"type": "boolean",
+				"required": true,
 				"description": "Required verdict. Only the literal value true is treated as proven."
 			},
 			{
 				"name": "HarnessVerdict.label",
 				"type": "string",
+				"required": false,
 				"description": "Optional displayed verdict text. When omitted or null, uses Full coverage passed or Verification failed according to passed; an empty string is retained."
 			},
 			{
 				"name": "HarnessVerdict.reasons",
 				"type": "string[]",
+				"required": false,
+				"default": [],
 				"description": "Optional failure explanations, defaulting to an empty list. Suppressed for a proven verdict."
 			},
 			{
 				"name": "HarnessVerdict.framed",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional outlined presentation, defaulting to false."
 			},
 			{
 				"name": "HarnessVerdict.bare",
 				"type": "boolean",
+				"required": false,
 				"description": "Accepted compatibility prop that is not read and has no effect."
 			}
 		],
@@ -55,7 +62,9 @@
 				"description": "Verdict icon and tooltip. Hover or keyboard focus reveals the explanation; clicking pins it, while Escape, blur or an outside pointer action closes it. The tooltip stays within the viewport and supports keyboard scrolling when its content overflows."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

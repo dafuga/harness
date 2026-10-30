@@ -22,12 +22,7 @@
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [
-			{
-				"name": "load.input",
-				"type": "ServerLoadEvent"
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "load",
@@ -38,7 +33,34 @@
 				"type": "markup"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "load",
+				"inputs": [
+					{
+						"name": "load.url",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "load",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Redirect 308",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

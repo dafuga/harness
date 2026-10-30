@@ -23,19 +23,23 @@
 		"inputs": [
 			{
 				"name": "DeviceRevocationService.constructor.store",
-				"type": "HostStorageAdapter"
+				"type": "HostStorageAdapter",
+				"required": true
 			},
 			{
 				"name": "DeviceRevocationService.constructor.sockets",
-				"type": "HostSocketsAdapter"
+				"type": "HostSocketsAdapter",
+				"required": true
 			},
 			{
 				"name": "DeviceRevocationService.constructor.link",
-				"type": "HostLinkService"
+				"type": "HostLinkService",
+				"required": true
 			},
 			{
 				"name": "DeviceRevocationService.revoke.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,7 +48,58 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeviceRevocationService.revoke",
+				"inputs": [
+					{
+						"name": "DeviceRevocationService.revoke.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeviceRevocationService.revoke",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeviceRevocationService.constructor",
+				"inputs": [
+					{
+						"name": "DeviceRevocationService.constructor.store",
+						"type": "HostStorageAdapter",
+						"required": true
+					},
+					{
+						"name": "DeviceRevocationService.constructor.sockets",
+						"type": "HostSocketsAdapter",
+						"required": true
+					},
+					{
+						"name": "DeviceRevocationService.constructor.link",
+						"type": "HostLinkService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeviceRevocationService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

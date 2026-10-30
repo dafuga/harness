@@ -39,11 +39,13 @@
 		"inputs": [
 			{
 				"name": "EvidenceRefsAdapter.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "EvidenceRefsAdapter.pinned.wanted",
-				"type": "PinnedRevisions"
+				"type": "PinnedRevisions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -69,6 +71,58 @@
 				"name": "pin-not-held",
 				"type": "refused",
 				"description": "A repeated notes or evidence revision that its ref never held."
+			}
+		],
+		"operations": [
+			{
+				"name": "EvidenceRefsAdapter.current",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EvidenceRefsAdapter.current",
+						"type": "Promise<CurrentRefs>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "EvidenceRefsAdapter.pinned",
+				"inputs": [
+					{
+						"name": "EvidenceRefsAdapter.pinned.wanted",
+						"type": "PinnedRevisions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceRefsAdapter.pinned",
+						"type": "Promise<PinnedRevisions>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "EvidenceRefsAdapter.constructor",
+				"inputs": [
+					{
+						"name": "EvidenceRefsAdapter.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceRefsAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

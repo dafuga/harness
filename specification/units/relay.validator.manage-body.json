@@ -24,15 +24,18 @@
 		"inputs": [
 			{
 				"name": "ManageBodyValidator.owner.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "ManageBodyValidator.register.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "ManageBodyValidator.device.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,7 +52,65 @@
 				"type": "RelayManageDevice | undefined"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ManageBodyValidator.owner",
+				"inputs": [
+					{
+						"name": "ManageBodyValidator.owner.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ManageBodyValidator.owner",
+						"type": "RelayManageOwner | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ManageBodyValidator.register",
+				"inputs": [
+					{
+						"name": "ManageBodyValidator.register.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ManageBodyValidator.register",
+						"type": "RelayManageRegister | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ManageBodyValidator.device",
+				"inputs": [
+					{
+						"name": "ManageBodyValidator.device.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ManageBodyValidator.device",
+						"type": "RelayManageDevice | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

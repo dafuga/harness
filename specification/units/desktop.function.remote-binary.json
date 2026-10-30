@@ -26,6 +26,7 @@
 			{
 				"name": "remoteBinary.value",
 				"type": "RemoteBinary",
+				"required": true,
 				"description": "Base64 data with encoding, declared byte length and SHA-256 hash."
 			}
 		],
@@ -52,7 +53,35 @@
 				"type": "thrown",
 				"description": "Rejects unreadable content or a length/hash mismatch; underlying digest failures can also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "remoteBinary",
+				"inputs": [
+					{
+						"name": "remoteBinary.value",
+						"type": "RemoteBinary",
+						"required": true,
+						"description": "Base64 data with encoding, declared byte length and SHA-256 hash."
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteBinary",
+						"type": "Promise<Uint8Array>",
+						"description": "Decoded bytes after length and hash verification."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

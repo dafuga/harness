@@ -29,21 +29,25 @@
 			{
 				"name": "evidenceRequested.env",
 				"type": "Environment",
+				"required": false,
 				"description": "Environment to check, default process.env; HARNESS_EVIDENCE_DIR must be nonempty and TAKE_SCREENSHOT exactly 1."
 			},
 			{
 				"name": "recordCapture.line",
 				"type": "CaptureLine",
+				"required": true,
 				"description": "Capture metadata whose file names the output under the evidence directory."
 			},
 			{
 				"name": "recordCapture.bytes",
 				"type": "Uint8Array | string",
+				"required": true,
 				"description": "Raw bytes or text to write as the capture."
 			},
 			{
 				"name": "recordCapture.env",
 				"type": "Environment",
+				"required": false,
 				"description": "Optional environment supplying the evidence directory and opt-in flag."
 			}
 		],
@@ -59,7 +63,62 @@
 				"description": "False with no writes when evidence is not requested; otherwise creates the evidence directory, writes the file, appends its JSON index line and returns true."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "evidenceRequested",
+				"inputs": [
+					{
+						"name": "evidenceRequested.env",
+						"type": "Environment",
+						"required": false,
+						"description": "Environment to check, default process.env; HARNESS_EVIDENCE_DIR must be nonempty and TAKE_SCREENSHOT exactly 1."
+					}
+				],
+				"outputs": [
+					{
+						"name": "evidenceRequested",
+						"type": "boolean",
+						"description": "True only when both evidence directory and screenshot flag request evidence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordCapture",
+				"inputs": [
+					{
+						"name": "recordCapture.line",
+						"type": "CaptureLine",
+						"required": true,
+						"description": "Capture metadata whose file names the output under the evidence directory."
+					},
+					{
+						"name": "recordCapture.bytes",
+						"type": "Uint8Array | string",
+						"required": true,
+						"description": "Raw bytes or text to write as the capture."
+					},
+					{
+						"name": "recordCapture.env",
+						"type": "Environment",
+						"required": false,
+						"description": "Optional environment supplying the evidence directory and opt-in flag."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCapture",
+						"type": "boolean",
+						"description": "False with no writes when evidence is not requested; otherwise creates the evidence directory, writes the file, appends its JSON index line and returns true."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

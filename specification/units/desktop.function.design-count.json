@@ -18,7 +18,8 @@
 		"inputs": [
 			{
 				"name": "designCount.request",
-				"type": "RunRequest | ProjectRunRequest",
+				"type": "RunRequest | ProjectRunRequest | ProjectTaskRequest",
+				"required": true,
 				"description": "A Plan or Change request with an optional designOptions count. An explicit count is allowed only on Plan and must be an integer from 1 to 10."
 			}
 		],
@@ -40,7 +41,35 @@
 				"type": "thrown",
 				"description": "Throws if a Change explicitly supplies a count, or a Plan count is not a whole number from 1 to 10."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "designCount",
+				"inputs": [
+					{
+						"name": "designCount.request",
+						"type": "RunRequest | ProjectRunRequest | ProjectTaskRequest",
+						"required": true,
+						"description": "A Plan or Change request with an optional designOptions count. An explicit count is allowed only on Plan and must be an integer from 1 to 10."
+					}
+				],
+				"outputs": [
+					{
+						"name": "designCount",
+						"type": "number",
+						"description": "The supplied valid count, or 3 when omitted. The omitted-count default is returned even for Change; this helper does not itself generate designs."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

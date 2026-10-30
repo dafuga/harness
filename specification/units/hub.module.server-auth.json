@@ -29,15 +29,18 @@
 		"inputs": [
 			{
 				"name": "createHubAuth.env",
-				"type": "AuthEnv"
+				"type": "AuthEnv",
+				"required": true
 			},
 			{
 				"name": "createHubAuth.store",
-				"type": "AuthStore | null"
+				"type": "AuthStore | null",
+				"required": true
 			},
 			{
 				"name": "createHubAuth.delivery",
-				"type": "EmailProofDelivery | null"
+				"type": "EmailProofDelivery | null",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -46,7 +49,39 @@
 				"type": "HubAuth"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "createHubAuth",
+				"inputs": [
+					{
+						"name": "createHubAuth.env",
+						"type": "AuthEnv",
+						"required": true
+					},
+					{
+						"name": "createHubAuth.store",
+						"type": "AuthStore | null",
+						"required": true
+					},
+					{
+						"name": "createHubAuth.delivery",
+						"type": "EmailProofDelivery | null",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "createHubAuth",
+						"type": "HubAuth"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

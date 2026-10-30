@@ -21,6 +21,7 @@
 			{
 				"name": "githubRawMany.context",
 				"type": "Context",
+				"required": true,
 				"description": "Source adapter, token and fetch options, shared raw-byte promise cache and repository/ref cache-key function."
 			}
 		],
@@ -37,7 +38,30 @@
 				"type": "thrown",
 				"description": "Rejects invalid commits or paths, missing regular blobs and failed batch integrity checks; failed cached promises are removed."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "githubRawMany",
+				"inputs": [
+					{
+						"name": "githubRawMany.context",
+						"type": "Context",
+						"required": true,
+						"description": "Source adapter, token and fetch options, shared raw-byte promise cache and repository/ref cache-key function."
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubRawMany",
+						"type": "NonNullable<SourceHistoryAdapter['rawMany']>",
+						"description": "Reader that validates an exact commit and safe regular-file paths, deduplicates paths, loads batches of at most 64 and returns copied raw bytes without LFS expansion."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

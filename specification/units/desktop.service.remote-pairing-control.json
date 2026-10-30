@@ -36,31 +36,38 @@
 		"inputs": [
 			{
 				"name": "RemotePairingControlService.constructor.host",
-				"type": "RemoteHostAccess"
+				"type": "RemoteHostAccess",
+				"required": true
 			},
 			{
 				"name": "RemotePairingControlService.constructor.registry",
-				"type": "Pick<ProjectRegistryService, 'list'>"
+				"type": "Pick<ProjectRegistryService, 'list'>",
+				"required": true
 			},
 			{
 				"name": "RemotePairingControlService.approvePairing.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemotePairingControlService.denyPairing.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemotePairingControlService.revokeDevice.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "RemotePairingControlService.dropped.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemotePairingControlService.seen.deviceId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -101,6 +108,170 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemotePairingControlService.createPairing",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.createPairing",
+						"type": "Promise<RemotePairingOffer>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemotePairingControlService.closePairing",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.closePairing",
+						"type": "Promise<RemoteHostStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemotePairingControlService.approvePairing",
+				"inputs": [
+					{
+						"name": "RemotePairingControlService.approvePairing.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.approvePairing",
+						"type": "Promise<RemoteHostStatus>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemotePairingControlService.denyPairing",
+				"inputs": [
+					{
+						"name": "RemotePairingControlService.denyPairing.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.denyPairing",
+						"type": "Promise<RemoteHostStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemotePairingControlService.revokeDevice",
+				"inputs": [
+					{
+						"name": "RemotePairingControlService.revokeDevice.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.revokeDevice",
+						"type": "Promise<RemoteHostStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemotePairingControlService.dropped",
+				"inputs": [
+					{
+						"name": "RemotePairingControlService.dropped.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.dropped",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemotePairingControlService.seen",
+				"inputs": [
+					{
+						"name": "RemotePairingControlService.seen.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.seen",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemotePairingControlService.flush",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.flush",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemotePairingControlService.constructor",
+				"inputs": [
+					{
+						"name": "RemotePairingControlService.constructor.host",
+						"type": "RemoteHostAccess",
+						"required": true
+					},
+					{
+						"name": "RemotePairingControlService.constructor.registry",
+						"type": "Pick<ProjectRegistryService, 'list'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

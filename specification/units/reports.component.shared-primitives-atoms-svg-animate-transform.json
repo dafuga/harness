@@ -24,13 +24,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "SvgAnimateTransform.attributes",
-				"type": "SvelteHTMLElements['animateTransform']",
-				"description": "Native animateTransform attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
-			},
-			{
 				"name": "SvgAnimateTransform.children",
-				"type": "Snippet | undefined",
+				"type": "Snippet",
+				"required": false,
 				"description": "Optional content within the native animateTransform element; native HTML content rules still apply."
 			}
 		],
@@ -41,7 +37,9 @@
 				"description": "The actual native animateTransform element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -15,27 +15,34 @@
 		"inputs": [
 			{
 				"name": "apiAgent.client",
-				"type": "HarnessApiService"
+				"type": "HarnessApiService",
+				"required": true
 			},
 			{
 				"name": "apiAgent.operation",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "apiAgent.method",
-				"type": "string"
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "apiEventCursor.text",
-				"type": "unknown"
+				"type": "string",
+				"required": false,
+				"default": "0"
 			},
 			{
 				"name": "apiEvents.client",
-				"type": "HarnessApiService"
+				"type": "HarnessApiService",
+				"required": true
 			},
 			{
 				"name": "apiEvents.runId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -57,7 +64,96 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "apiAgent",
+				"inputs": [
+					{
+						"name": "apiAgent.client",
+						"type": "HarnessApiService",
+						"required": true
+					},
+					{
+						"name": "apiAgent.operation",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "apiAgent.method",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiAgent",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "apiEventCursor",
+				"inputs": [
+					{
+						"name": "apiEventCursor.text",
+						"type": "string",
+						"required": false,
+						"default": "0"
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiEventCursor",
+						"type": "number"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "apiEvents",
+				"inputs": [
+					{
+						"name": "apiEvents.client",
+						"type": "HarnessApiService",
+						"required": true
+					},
+					{
+						"name": "apiEvents.runId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "apiEvents",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -20,16 +20,19 @@
 			{
 				"name": "hubApproval.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubApproval.plan",
 				"type": "HubPlan",
+				"required": true,
 				"description": "Plan identity and folder containing the approvals."
 			},
 			{
 				"name": "hubApproval.value",
 				"type": "HubDesign",
+				"required": true,
 				"description": "Design version, contract hash, notes hash and image/option bindings to match."
 			}
 		],
@@ -40,7 +43,42 @@
 				"description": "Most recently timestamped matching approval, or undefined. Matching requires unit, version, contract, notes and the exact selected-option or single-design images."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubApproval",
+				"inputs": [
+					{
+						"name": "hubApproval.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubApproval.plan",
+						"type": "HubPlan",
+						"required": true,
+						"description": "Plan identity and folder containing the approvals."
+					},
+					{
+						"name": "hubApproval.value",
+						"type": "HubDesign",
+						"required": true,
+						"description": "Design version, contract hash, notes hash and image/option bindings to match."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubApproval",
+						"type": "unknown",
+						"description": "Most recently timestamped matching approval, or undefined. Matching requires unit, version, contract, notes and the exact selected-option or single-design images."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

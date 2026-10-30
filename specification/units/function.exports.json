@@ -28,21 +28,25 @@
 			{
 				"name": "applyExports.root",
 				"type": "string",
+				"required": true,
 				"description": "Project directory containing src/index.ts."
 			},
 			{
 				"name": "applyExports.plans",
 				"type": "ExportPlan[]",
+				"required": true,
 				"description": "Source-module export plans with optional named and type export names. An empty list avoids reading the entry file."
 			},
 			{
 				"name": "appendMissingExports.contents",
 				"type": "string",
+				"required": true,
 				"description": "Existing entry-file text to extend."
 			},
 			{
 				"name": "appendMissingExports.plans",
 				"type": "ExportPlan[]",
+				"required": true,
 				"description": "Export plans to render as complete export lines; presence is checked by exact substring."
 			}
 		],
@@ -58,7 +62,62 @@
 				"description": "Existing text unchanged when all lines are present, otherwise text with missing lines appended and a final newline."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "applyExports",
+				"inputs": [
+					{
+						"name": "applyExports.root",
+						"type": "string",
+						"required": true,
+						"description": "Project directory containing src/index.ts."
+					},
+					{
+						"name": "applyExports.plans",
+						"type": "ExportPlan[]",
+						"required": true,
+						"description": "Source-module export plans with optional named and type export names. An empty list avoids reading the entry file."
+					}
+				],
+				"outputs": [
+					{
+						"name": "applyExports",
+						"type": "Promise<boolean>",
+						"description": "Resolves true after writing changed src/index.ts, or false when no additions are needed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "appendMissingExports",
+				"inputs": [
+					{
+						"name": "appendMissingExports.contents",
+						"type": "string",
+						"required": true,
+						"description": "Existing entry-file text to extend."
+					},
+					{
+						"name": "appendMissingExports.plans",
+						"type": "ExportPlan[]",
+						"required": true,
+						"description": "Export plans to render as complete export lines; presence is checked by exact substring."
+					}
+				],
+				"outputs": [
+					{
+						"name": "appendMissingExports",
+						"type": "string",
+						"description": "Existing text unchanged when all lines are present, otherwise text with missing lines appended and a final newline."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

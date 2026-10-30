@@ -26,15 +26,18 @@
 		"inputs": [
 			{
 				"name": "TrustedBaseService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "TrustedBaseService.nearest.from",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			},
 			{
 				"name": "TrustedBaseService.nearestRecord.from",
-				"type": "string | null"
+				"type": "string | null",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,7 +50,66 @@
 				"type": "Promise<{ commit: string; record: string } | null>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrustedBaseService.nearest",
+				"inputs": [
+					{
+						"name": "TrustedBaseService.nearest.from",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrustedBaseService.nearest",
+						"type": "Promise<string | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrustedBaseService.nearestRecord",
+				"inputs": [
+					{
+						"name": "TrustedBaseService.nearestRecord.from",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrustedBaseService.nearestRecord",
+						"type": "Promise<{ commit: string; record: string } | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrustedBaseService.constructor",
+				"inputs": [
+					{
+						"name": "TrustedBaseService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrustedBaseService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

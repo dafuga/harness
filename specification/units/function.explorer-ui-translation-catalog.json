@@ -29,14 +29,31 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "tree",
+				"name": "translationCatalog.tree",
 				"type": "SourceTree",
-				"description": "Repository files at the selected commit."
+				"required": true
 			},
 			{
-				"name": "units",
+				"name": "translationCatalog.units",
 				"type": "RevisionRegistry['units']",
-				"description": "Registered source owners used to link verified message callers."
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "flattenMessages.input",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "flattenMessages.prefix",
+				"type": "string",
+				"required": false,
+				"default": ""
+			},
+			{
+				"name": "translationMessages.text",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,7 +63,81 @@
 				"description": "Static language values, literal caller links and unreadable source gaps from that revision."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "translationCatalog",
+				"inputs": [
+					{
+						"name": "translationCatalog.tree",
+						"type": "SourceTree",
+						"required": true
+					},
+					{
+						"name": "translationCatalog.units",
+						"type": "RevisionRegistry['units']",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "translationCatalog",
+						"type": "Promise<TranslationCatalog>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "flattenMessages",
+				"inputs": [
+					{
+						"name": "flattenMessages.input",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "flattenMessages.prefix",
+						"type": "string",
+						"required": false,
+						"default": ""
+					}
+				],
+				"outputs": [
+					{
+						"name": "flattenMessages",
+						"type": "Record<string, string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "translationMessages",
+				"inputs": [
+					{
+						"name": "translationMessages.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "translationMessages",
+						"type": "TranslationSource"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

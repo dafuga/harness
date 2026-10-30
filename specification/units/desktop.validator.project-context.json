@@ -24,19 +24,23 @@
 		"inputs": [
 			{
 				"name": "ProjectContextValidator.operation.channel",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectContextValidator.operation.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "ProjectContextValidator.context.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "ProjectContextValidator.comment.input",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,7 +62,75 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectContextValidator.operation",
+				"inputs": [
+					{
+						"name": "ProjectContextValidator.operation.channel",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ProjectContextValidator.operation.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectContextValidator.operation",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectContextValidator.context",
+				"inputs": [
+					{
+						"name": "ProjectContextValidator.context.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectContextValidator.context",
+						"type": "{ projectId?: string }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectContextValidator.comment",
+				"inputs": [
+					{
+						"name": "ProjectContextValidator.comment.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectContextValidator.comment",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

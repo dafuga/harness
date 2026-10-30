@@ -30,7 +30,8 @@
 		"inputs": [
 			{
 				"name": "ConsoleUninstallService.uninstall.options",
-				"type": "ConsoleUninstallOptions"
+				"type": "ConsoleUninstallOptions",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -44,7 +45,34 @@
 				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ConsoleUninstallService.uninstall",
+				"inputs": [
+					{
+						"name": "ConsoleUninstallService.uninstall.options",
+						"type": "ConsoleUninstallOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConsoleUninstallService.uninstall",
+						"type": "Promise<ConsoleUninstallResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

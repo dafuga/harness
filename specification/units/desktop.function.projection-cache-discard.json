@@ -20,11 +20,13 @@
 			{
 				"name": "projectionCacheDiscard.directory",
 				"type": "string",
+				"required": true,
 				"description": "The directory containing the cached lookup and projection files."
 			},
 			{
 				"name": "projectionCacheDiscard.scope",
 				"type": "string",
+				"required": true,
 				"description": "The exact scope string whose hash selects the lookup."
 			}
 		],
@@ -35,7 +37,36 @@
 				"description": "A promise completing after attempts to remove the lookup and, when its identity can be read, its named projection. Missing, unreadable or malformed lookup files and unlink failures are swallowed; completion does not prove every file was removed."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "projectionCacheDiscard",
+				"inputs": [
+					{
+						"name": "projectionCacheDiscard.directory",
+						"type": "string",
+						"required": true,
+						"description": "The directory containing the cached lookup and projection files."
+					},
+					{
+						"name": "projectionCacheDiscard.scope",
+						"type": "string",
+						"required": true,
+						"description": "The exact scope string whose hash selects the lookup."
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectionCacheDiscard",
+						"type": "unknown",
+						"description": "A promise completing after attempts to remove the lookup and, when its identity can be read, its named projection. Missing, unreadable or malformed lookup files and unlink failures are swallowed; completion does not prove every file was removed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

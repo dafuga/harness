@@ -28,6 +28,7 @@
 			{
 				"name": "projectActivity.source",
 				"type": "ActivitySource",
+				"required": true,
 				"description": "Repository identity and kind, newest-first revisions, callbacks for reasons/changes/owners, loop states and limits for work, files, reasons and units."
 			}
 		],
@@ -38,7 +39,30 @@
 				"description": "Version 1 activity with newest commit or null, loop summaries, bounded work entries and each path once at its latest listed change. Reasons and unit ids are deduplicated; owned files are preferred within a commit."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "projectActivity",
+				"inputs": [
+					{
+						"name": "projectActivity.source",
+						"type": "ActivitySource",
+						"required": true,
+						"description": "Repository identity and kind, newest-first revisions, callbacks for reasons/changes/owners, loop states and limits for work, files, reasons and units."
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectActivity",
+						"type": "ProjectActivity",
+						"description": "Version 1 activity with newest commit or null, loop summaries, bounded work entries and each path once at its latest listed change. Reasons and unit ids are deduplicated; owned files are preferred within a commit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

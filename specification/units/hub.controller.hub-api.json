@@ -25,11 +25,13 @@
 		"inputs": [
 			{
 				"name": "HubApiController.constructor.runtime",
-				"type": "HubApiRuntime"
+				"type": "HubApiRuntime",
+				"required": true
 			},
 			{
 				"name": "HubApiController.handle.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -38,7 +40,48 @@
 				"type": "Promise<Response>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HubApiController.handle",
+				"inputs": [
+					{
+						"name": "HubApiController.handle.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubApiController.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HubApiController.constructor",
+				"inputs": [
+					{
+						"name": "HubApiController.constructor.runtime",
+						"type": "HubApiRuntime",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubApiController.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

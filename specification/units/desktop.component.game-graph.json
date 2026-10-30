@@ -32,37 +32,45 @@
 			{
 				"name": "GameGraph.checkpoints",
 				"type": "Checkpoint[]",
+				"required": true,
 				"description": "Authoritative checkpoint nodes and prerequisite relationships for this view."
 			},
 			{
 				"name": "GameGraph.run",
 				"type": "GameRun",
+				"required": true,
 				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
 			},
 			{
 				"name": "GameGraph.selected",
 				"type": "string | null",
+				"required": true,
 				"description": "Identity of the checkpoint currently selected in the graph."
 			},
 			{
 				"name": "GameGraph.select",
 				"type": "(id: string) => void",
+				"required": true,
 				"description": "Callback selecting the requested view or checkpoint identity without saving the document."
+			},
+			{
+				"name": "GameGraph.create",
+				"type": "(node: Checkpoint) => void",
+				"required": true,
+				"description": "Open the new checkpoint in the owning workspace modal."
 			},
 			{
 				"name": "GameGraph.change",
 				"type": "(nodes: Checkpoint[]) => void",
+				"required": true,
 				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
 			},
 			{
 				"name": "GameGraph.readonly",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Disable editing and generation for historical or otherwise immutable views."
-			},
-			{
-				"name": "GameGraph.create",
-				"type": "(node: Checkpoint) => void",
-				"description": "Open the new checkpoint in the owning workspace modal."
 			}
 		],
 		"outputs": [
@@ -72,7 +80,9 @@
 				"description": "Display checkpoint dependencies and progress; edit connections and positions, and open checkpoint creation or inspection."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

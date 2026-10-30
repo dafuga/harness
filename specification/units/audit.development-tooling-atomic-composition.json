@@ -15,7 +15,8 @@
 		"inputs": [
 			{
 				"name": "auditAtomicComposition.file",
-				"type": "AuditFile"
+				"type": "AuditFile",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -24,7 +25,29 @@
 				"type": "AuditFinding[]"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "auditAtomicComposition",
+				"inputs": [
+					{
+						"name": "auditAtomicComposition.file",
+						"type": "AuditFile",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "auditAtomicComposition",
+						"type": "AuditFinding[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

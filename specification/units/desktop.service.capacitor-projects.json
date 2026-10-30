@@ -28,14 +28,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "cloud",
-				"type": "DesktopBridge",
-				"description": "The phone’s own Google account connection."
-			},
-			{
-				"name": "mac",
-				"type": "DesktopBridge",
-				"description": "The paired Mac connection, limited to its explicit grant."
+				"name": "CapacitorProjectsService.constructor.config",
+				"type": "CapacitorProjectsServiceConfig",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -55,6 +50,40 @@
 				"name": "refused",
 				"type": "Error",
 				"description": "A refused operation is reported from its original connection and never retried with another authority."
+			}
+		],
+		"operations": [
+			{
+				"name": "CapacitorProjectsService.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CapacitorProjectsService.connect",
+						"type": "DesktopBridge"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CapacitorProjectsService.constructor",
+				"inputs": [
+					{
+						"name": "CapacitorProjectsService.constructor.config",
+						"type": "CapacitorProjectsServiceConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CapacitorProjectsService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

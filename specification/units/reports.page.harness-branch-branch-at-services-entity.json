@@ -18,28 +18,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "branch",
-				"type": "string",
-				"description": "The branch, as one encoded path segment. Its tip is shown unless a commit is named."
-			},
-			{
-				"name": "commit",
-				"type": "40-character hash | absent",
-				"description": "After /commit/: the selected commit, compared with its first parent. Absent, the tip is shown alone."
-			},
-			{
-				"name": "entity",
-				"type": "string",
-				"description": "The id of the service, as one encoded path segment."
-			},
-			{
-				"name": "tab",
-				"type": "\"relationships\" | \"tests\" | absent",
-				"description": "Query: the tab shown in place of the overview."
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
@@ -78,7 +57,9 @@
 				"type": "403",
 				"description": "A request the owner policy does not admit is refused before any history is read."
 			}
-		]
+		],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

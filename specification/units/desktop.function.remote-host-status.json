@@ -28,6 +28,7 @@
 			{
 				"name": "remoteHostStatus.input",
 				"type": "RemoteHostStatusInput",
+				"required": true,
 				"description": "Support flag, persisted state, runtime, phase, reason, display name and available project IDs/names."
 			}
 		],
@@ -38,7 +39,30 @@
 				"description": "Public status with enabled state, connection phase, host, pairing offer and requests, approved device summaries and projects; private keys and credentials are omitted."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "remoteHostStatus",
+				"inputs": [
+					{
+						"name": "remoteHostStatus.input",
+						"type": "RemoteHostStatusInput",
+						"required": true,
+						"description": "Support flag, persisted state, runtime, phase, reason, display name and available project IDs/names."
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteHostStatus",
+						"type": "RemoteHostStatus",
+						"description": "Public status with enabled state, connection phase, host, pairing offer and requests, approved device summaries and projects; private keys and credentials are omitted."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -27,19 +27,23 @@
 		"inputs": [
 			{
 				"name": "ScreenshotUploadService.constructor.repository",
-				"type": "ReportRepository"
+				"type": "ReportRepository",
+				"required": true
 			},
 			{
 				"name": "ScreenshotUploadService.constructor.storage",
-				"type": "Pick<R2ScreenshotStoreAdapter, 'put'>"
+				"type": "Pick<R2ScreenshotStoreAdapter, 'put'>",
+				"required": true
 			},
 			{
 				"name": "ScreenshotUploadService.upload.reportId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ScreenshotUploadService.upload.input",
-				"type": "ScreenshotUploadInput"
+				"type": "ScreenshotUploadInput",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -52,6 +56,62 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ScreenshotUploadService.upload",
+				"inputs": [
+					{
+						"name": "ScreenshotUploadService.upload.reportId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ScreenshotUploadService.upload.input",
+						"type": "ScreenshotUploadInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScreenshotUploadService.upload",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ScreenshotUploadService.constructor",
+				"inputs": [
+					{
+						"name": "ScreenshotUploadService.constructor.repository",
+						"type": "ReportRepository",
+						"required": true
+					},
+					{
+						"name": "ScreenshotUploadService.constructor.storage",
+						"type": "Pick<R2ScreenshotStoreAdapter, 'put'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScreenshotUploadService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -31,21 +31,26 @@
 			{
 				"name": "homePath.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "History index used to find the canonical home."
 			},
 			{
 				"name": "harnessPage.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "History index used for canonicalization and scope resolution."
 			},
 			{
 				"name": "harnessPage.path",
 				"type": "string",
+				"required": true,
 				"description": "Console-relative path."
 			},
 			{
 				"name": "harnessPage.search",
-				"type": "unknown",
+				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional query string, defaulting to empty."
 			}
 		],
@@ -61,7 +66,63 @@
 				"description": "Redirect for a canonical alternative; page with validated scope for a stored branch/commit; otherwise missing message and optional home link. Root with no history and invalid explorer addresses remain missing."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "homePath",
+				"inputs": [
+					{
+						"name": "homePath.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "History index used to find the canonical home."
+					}
+				],
+				"outputs": [
+					{
+						"name": "homePath",
+						"type": "string | null",
+						"description": "Canonical home route or null when no home can be resolved."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "harnessPage",
+				"inputs": [
+					{
+						"name": "harnessPage.index",
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "History index used for canonicalization and scope resolution."
+					},
+					{
+						"name": "harnessPage.path",
+						"type": "string",
+						"required": true,
+						"description": "Console-relative path."
+					},
+					{
+						"name": "harnessPage.search",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "Optional query string, defaulting to empty."
+					}
+				],
+				"outputs": [
+					{
+						"name": "harnessPage",
+						"type": "HarnessPage",
+						"description": "Redirect for a canonical alternative; page with validated scope for a stored branch/commit; otherwise missing message and optional home link. Root with no history and invalid explorer addresses remain missing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -15,19 +15,24 @@
 		"inputs": [
 			{
 				"name": "analyticsSnapshot.events",
-				"type": "AnalyticsEvent[]"
+				"type": "AnalyticsEvent[]",
+				"required": true
 			},
 			{
 				"name": "analyticsSnapshot.filter",
-				"type": "AnalyticsFilter"
+				"type": "AnalyticsFilter",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "counts.items",
-				"type": "T[]"
+				"type": "T[]",
+				"required": true
 			},
 			{
 				"name": "counts.key",
-				"type": "(item: T) => string"
+				"type": "(item: T) => string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,7 +45,58 @@
 				"type": "Record<string, number>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "analyticsSnapshot",
+				"inputs": [
+					{
+						"name": "analyticsSnapshot.events",
+						"type": "AnalyticsEvent[]",
+						"required": true
+					},
+					{
+						"name": "analyticsSnapshot.filter",
+						"type": "AnalyticsFilter",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "analyticsSnapshot",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "counts",
+				"inputs": [
+					{
+						"name": "counts.items",
+						"type": "T[]",
+						"required": true
+					},
+					{
+						"name": "counts.key",
+						"type": "(item: T) => string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "counts",
+						"type": "Record<string, number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

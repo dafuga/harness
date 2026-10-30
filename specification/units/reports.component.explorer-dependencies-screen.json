@@ -9,6 +9,8 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-explorer-controls",
 			"reports.component.harness-explorer-frame",
 			"reports.component.harness-harness-icon",
@@ -35,7 +37,13 @@
 			"packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
 			"packages/reports/src/components/explorer-ui/explorer-dependencies-screen/explorerDependenciesScreen.css"
 		],
-		"symbols": ["ExplorerDependenciesScreen"]
+		"symbols": [
+			"ExplorerDependenciesScreen",
+			"ExplorerDependenciesScreen.gapNotice",
+			"ExplorerDependenciesScreen.inventory",
+			"ExplorerDependenciesScreen.declared",
+			"ExplorerDependenciesScreen.children"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -99,12 +107,6 @@
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
 				"description": "Requests navigation while preserving the selected explorer scope."
-			},
-			{
-				"name": "ExplorerDependenciesScreen.exportHref",
-				"type": "string",
-				"required": true,
-				"description": "Project export URL; empty when the host provides no export."
 			}
 		],
 		"outputs": [
@@ -114,9 +116,89 @@
 				"description": "Searchable direct package declarations grouped by ecosystem, with version requirements, dependency types, declaring workspaces and explicit unavailable-data messages."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerDependenciesScreen.gapNotice",
+				"inputs": [
+					{
+						"name": "ExplorerDependenciesScreen.gapNotice.gaps",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerDependenciesScreen.gapNotice",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerDependenciesScreen.inventory",
+				"inputs": [
+					{
+						"name": "ExplorerDependenciesScreen.inventory.table",
+						"type": "(typeof tables)[number]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerDependenciesScreen.inventory",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerDependenciesScreen.declared",
+				"inputs": [
+					{
+						"name": "ExplorerDependenciesScreen.declared.found",
+						"type": "ProjectDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerDependenciesScreen.declared",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerDependenciesScreen.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerDependenciesScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-explorer-controls",
 			"via": "import",

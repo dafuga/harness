@@ -6,63 +6,48 @@
 	"responsibility": "Owns the CatalogDependency data model.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"lineage": {
+		"predecessors": ["model.catalog-dependency-types"]
+	},
 	"owns": {
-		"source": ["src/models/git-source-history/CatalogDependency.ts"],
+		"source": [
+			"src/models/git-source-history/CatalogDependency.ts",
+			"src/models/git-source-history/CatalogDependency.types.ts"
+		],
 		"symbols": [
 			"CatalogDependency",
 			"CatalogDependency.find",
 			"CatalogDependency.findBy",
 			"CatalogDependency.create",
 			"CatalogDependency.update",
-			"CatalogDependency.delete"
+			"CatalogDependency.delete",
+			"CatalogDependencyAttributes",
+			"CatalogDependencyCreateInput",
+			"CatalogDependencyUpdateInput"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "CatalogDependency.find.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogDependency.id",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogDependency.find.id",
-				"type": "string"
+				"name": "CatalogDependency.entityId",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogDependency.findBy.adapter",
-				"type": "PersistenceAdapter"
+				"name": "CatalogDependency.targetId",
+				"type": "string",
+				"required": true
 			},
 			{
-				"name": "CatalogDependency.findBy.fields",
-				"type": "Partial<CatalogDependencyAttributes>"
-			},
-			{
-				"name": "CatalogDependency.create.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogDependency.create.input",
-				"type": "CatalogDependencyCreateInput"
-			},
-			{
-				"name": "CatalogDependency.update.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogDependency.update.id",
-				"type": "string"
-			},
-			{
-				"name": "CatalogDependency.update.input",
-				"type": "CatalogDependencyUpdateInput"
-			},
-			{
-				"name": "CatalogDependency.delete.adapter",
-				"type": "PersistenceAdapter"
-			},
-			{
-				"name": "CatalogDependency.delete.id",
-				"type": "string"
+				"name": "CatalogDependency.via",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -87,16 +72,172 @@
 				"type": "Promise<boolean>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CatalogDependency.find",
+				"inputs": [
+					{
+						"name": "CatalogDependency.find.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogDependency.find.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogDependency.find",
+						"type": "Promise<CatalogDependencyAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogDependency.findBy",
+				"inputs": [
+					{
+						"name": "CatalogDependency.findBy.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogDependency.findBy.fields",
+						"type": "Partial<CatalogDependencyAttributes>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogDependency.findBy",
+						"type": "Promise<CatalogDependencyAttributes[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogDependency.create",
+				"inputs": [
+					{
+						"name": "CatalogDependency.create.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogDependency.create.input",
+						"type": "CatalogDependencyCreateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogDependency.create",
+						"type": "Promise<CatalogDependencyAttributes>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogDependency.update",
+				"inputs": [
+					{
+						"name": "CatalogDependency.update.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogDependency.update.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CatalogDependency.update.input",
+						"type": "CatalogDependencyUpdateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogDependency.update",
+						"type": "Promise<CatalogDependencyAttributes | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CatalogDependency.delete",
+				"inputs": [
+					{
+						"name": "CatalogDependency.delete.adapter",
+						"type": "PersistenceAdapter",
+						"required": true
+					},
+					{
+						"name": "CatalogDependency.delete.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CatalogDependency.delete",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [],
+		"storage": [
+			{
+				"name": "CatalogDependency",
+				"table": "catalog_dependencies",
+				"primaryKey": "id",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": true
+					},
+					{
+						"name": "entityId",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "targetId",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					},
+					{
+						"name": "via",
+						"type": "string",
+						"required": true,
+						"nullable": false,
+						"primaryKey": false
+					}
+				]
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "function.sqlite-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "model.catalog-dependency-types",
 			"via": "import",
 			"origin": "derived"
 		}

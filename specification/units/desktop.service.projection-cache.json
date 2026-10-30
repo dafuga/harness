@@ -31,55 +31,68 @@
 		"inputs": [
 			{
 				"name": "ProjectionCacheService.constructor.directory",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.get.identity",
-				"type": "CacheIdentity"
+				"type": "CacheIdentity",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.get.expectedHash",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.put.identity",
-				"type": "CacheIdentity"
+				"type": "CacheIdentity",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.put.bytes",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.put.expectedHash",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.remember.scope",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.remember.identity",
-				"type": "CacheIdentity"
+				"type": "CacheIdentity",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.remember.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.lookup.scope",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.discard.scope",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.purge.principalId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "ProjectionCacheService.purge.projectId",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -116,6 +129,184 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectionCacheService.get",
+				"inputs": [
+					{
+						"name": "ProjectionCacheService.get.identity",
+						"type": "CacheIdentity",
+						"required": true
+					},
+					{
+						"name": "ProjectionCacheService.get.expectedHash",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectionCacheService.get",
+						"type": "Promise<Uint8Array | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectionCacheService.put",
+				"inputs": [
+					{
+						"name": "ProjectionCacheService.put.identity",
+						"type": "CacheIdentity",
+						"required": true
+					},
+					{
+						"name": "ProjectionCacheService.put.bytes",
+						"type": "Uint8Array",
+						"required": true
+					},
+					{
+						"name": "ProjectionCacheService.put.expectedHash",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectionCacheService.put",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectionCacheService.remember",
+				"inputs": [
+					{
+						"name": "ProjectionCacheService.remember.scope",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ProjectionCacheService.remember.identity",
+						"type": "CacheIdentity",
+						"required": true
+					},
+					{
+						"name": "ProjectionCacheService.remember.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectionCacheService.remember",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectionCacheService.lookup",
+				"inputs": [
+					{
+						"name": "ProjectionCacheService.lookup.scope",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectionCacheService.lookup",
+						"type": "Promise<{ value: unknown; identity: CacheIdentity; cachedAt: string; } | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectionCacheService.discard",
+				"inputs": [
+					{
+						"name": "ProjectionCacheService.discard.scope",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectionCacheService.discard",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectionCacheService.purge",
+				"inputs": [
+					{
+						"name": "ProjectionCacheService.purge.principalId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ProjectionCacheService.purge.projectId",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectionCacheService.purge",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectionCacheService.clear",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectionCacheService.clear",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectionCacheService.constructor",
+				"inputs": [
+					{
+						"name": "ProjectionCacheService.constructor.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectionCacheService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

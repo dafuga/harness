@@ -35,31 +35,37 @@
 			{
 				"name": "lineProcess.command",
 				"type": "string",
+				"required": true,
 				"description": "Executable to spawn on the first exchange or after the previous child stops."
 			},
 			{
 				"name": "lineProcess.args",
 				"type": "string[]",
+				"required": true,
 				"description": "Arguments passed directly to the child process with piped standard streams."
 			},
 			{
 				"name": "unavailable.command",
 				"type": "string",
+				"required": true,
 				"description": "Executable name to identify in a startup-failure message."
 			},
 			{
 				"name": "unavailable.error",
 				"type": "Error",
+				"required": true,
 				"description": "Startup error whose message should be included."
 			},
 			{
 				"name": "exited.code",
 				"type": "number | null",
+				"required": true,
 				"description": "Exit status, or null when no numeric status is known."
 			},
 			{
 				"name": "exited.stderr",
 				"type": "string",
+				"required": true,
 				"description": "Error-output text to trim and include up to its last 200 characters."
 			}
 		],
@@ -80,7 +86,88 @@
 				"description": "Runtime failure with code runtime-failed, exit status and optional trimmed stderr detail."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "lineProcess",
+				"inputs": [
+					{
+						"name": "lineProcess.command",
+						"type": "string",
+						"required": true,
+						"description": "Executable to spawn on the first exchange or after the previous child stops."
+					},
+					{
+						"name": "lineProcess.args",
+						"type": "string[]",
+						"required": true,
+						"description": "Arguments passed directly to the child process with piped standard streams."
+					}
+				],
+				"outputs": [
+					{
+						"name": "lineProcess",
+						"type": "LineProcess",
+						"description": "Handle with exchange and close methods. Exchange writes one normalized line and waits for a response line or timeout; close kills the child with SIGKILL and clears its buffer."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "unavailable",
+				"inputs": [
+					{
+						"name": "unavailable.command",
+						"type": "string",
+						"required": true,
+						"description": "Executable name to identify in a startup-failure message."
+					},
+					{
+						"name": "unavailable.error",
+						"type": "Error",
+						"required": true,
+						"description": "Startup error whose message should be included."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unavailable",
+						"type": "RuntimeResponse",
+						"description": "Runtime failure with code runtime-unavailable and the command/startup error message."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "exited",
+				"inputs": [
+					{
+						"name": "exited.code",
+						"type": "number | null",
+						"required": true,
+						"description": "Exit status, or null when no numeric status is known."
+					},
+					{
+						"name": "exited.stderr",
+						"type": "string",
+						"required": true,
+						"description": "Error-output text to trim and include up to its last 200 characters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "exited",
+						"type": "RuntimeResponse",
+						"description": "Runtime failure with code runtime-failed, exit status and optional trimmed stderr detail."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

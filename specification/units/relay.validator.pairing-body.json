@@ -23,11 +23,13 @@
 		"inputs": [
 			{
 				"name": "PairingBodyValidator.request.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "PairingBodyValidator.verifier.value",
-				"type": "unknown"
+				"type": "unknown",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -40,7 +42,47 @@
 				"type": "string | undefined"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PairingBodyValidator.request",
+				"inputs": [
+					{
+						"name": "PairingBodyValidator.request.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingBodyValidator.request",
+						"type": "RelayPairingRequest | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PairingBodyValidator.verifier",
+				"inputs": [
+					{
+						"name": "PairingBodyValidator.verifier.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingBodyValidator.verifier",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

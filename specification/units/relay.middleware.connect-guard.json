@@ -26,15 +26,18 @@
 		"inputs": [
 			{
 				"name": "ConnectGuardMiddleware.constructor.env",
-				"type": "Partial<RelayEnv>"
+				"type": "Partial<RelayEnv>",
+				"required": true
 			},
 			{
 				"name": "ConnectGuardMiddleware.transport.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			},
 			{
 				"name": "ConnectGuardMiddleware.handle.request",
-				"type": "Request"
+				"type": "Request",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,7 +50,66 @@
 				"type": "Response | undefined"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ConnectGuardMiddleware.transport",
+				"inputs": [
+					{
+						"name": "ConnectGuardMiddleware.transport.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConnectGuardMiddleware.transport",
+						"type": "Response | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ConnectGuardMiddleware.handle",
+				"inputs": [
+					{
+						"name": "ConnectGuardMiddleware.handle.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConnectGuardMiddleware.handle",
+						"type": "Response | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ConnectGuardMiddleware.constructor",
+				"inputs": [
+					{
+						"name": "ConnectGuardMiddleware.constructor.env",
+						"type": "Partial<RelayEnv>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ConnectGuardMiddleware.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

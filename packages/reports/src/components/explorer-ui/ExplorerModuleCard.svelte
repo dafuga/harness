@@ -9,7 +9,7 @@
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
-	import ExplorerUsage from '../ExplorerUsage.svelte';
+	import ExplorerUsage from './ExplorerUsage.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	let {

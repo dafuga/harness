@@ -4,7 +4,7 @@
 	import { onMount, tick } from 'svelte';
 	import type { Workspace } from '../../lib/stores/workspace.svelte';
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
-	import ChoiceDialog from '../ChoiceDialog.svelte';
+	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';
 	import DeploymentDetails from './DeploymentDetails.svelte';
 	import DeploymentRoute from './DeploymentRoute.svelte';
 	/**

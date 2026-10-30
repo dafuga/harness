@@ -24,21 +24,25 @@
 			{
 				"name": "TaskCommand.constructor.root",
 				"type": "unknown",
+				"required": false,
 				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 			},
 			{
 				"name": "TaskCommand.run.flags",
 				"type": "Flags",
+				"required": true,
 				"description": "Task kind, goal, plan, loop and optional registered-unit selection supplied by the CLI."
 			},
 			{
 				"name": "registerTaskCommand.program",
 				"type": "Command",
+				"required": true,
 				"description": "Commander program on which the task check subcommand is registered."
 			},
 			{
 				"name": "renderTaskAudit.audit",
 				"type": "TaskAudit",
+				"required": true,
 				"description": "Persisted task checks and semantic limitation to render as human-readable CLI output."
 			}
 		],
@@ -59,7 +63,89 @@
 				"description": "Human-readable outcome with every check, the semantic limitation and audit ID."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "TaskCommand.run",
+				"inputs": [
+					{
+						"name": "TaskCommand.run.flags",
+						"type": "Flags",
+						"required": true,
+						"description": "Task kind, goal, plan, loop and optional registered-unit selection supplied by the CLI."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TaskCommand.run",
+						"type": "Promise<TaskAudit>",
+						"description": "Stored audit of the selected committed loop contract or explicit task flags."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "registerTaskCommand",
+				"inputs": [
+					{
+						"name": "registerTaskCommand.program",
+						"type": "Command",
+						"required": true,
+						"description": "Commander program on which the task check subcommand is registered."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerTaskCommand",
+						"type": "void",
+						"description": "Registers CLI handlers; running a failed audit sets a nonzero process exit status."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderTaskAudit",
+				"inputs": [
+					{
+						"name": "renderTaskAudit.audit",
+						"type": "TaskAudit",
+						"required": true,
+						"description": "Persisted task checks and semantic limitation to render as human-readable CLI output."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderTaskAudit",
+						"type": "string",
+						"description": "Human-readable outcome with every check, the semantic limitation and audit ID."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TaskCommand.constructor",
+				"inputs": [
+					{
+						"name": "TaskCommand.constructor.root",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TaskCommand.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

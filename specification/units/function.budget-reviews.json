@@ -39,21 +39,25 @@
 			{
 				"name": "budgetReviews.ledgers",
 				"type": "BudgetEvent[][]",
+				"required": true,
 				"description": "Budget ledgers from one or more revisions; identical events are deduplicated by canonical JSON."
 			},
 			{
 				"name": "frozenLimits.baseline",
 				"type": "BudgetBaseline | undefined",
+				"required": true,
 				"description": "Reviewed baseline containing frozen metrics and optional unavailable reasons, or undefined when none exists."
 			},
 			{
 				"name": "emittedLimits.unit",
 				"type": "ComponentManifest",
+				"required": true,
 				"description": "Unit manifest whose execution targets determine which emitted limits are relevant."
 			},
 			{
 				"name": "emittedLimits.baseline",
 				"type": "BudgetBaseline | undefined",
+				"required": true,
 				"description": "Reviewed baseline to read target-specific limits and unavailable reasons from; may be undefined."
 			}
 		],
@@ -74,7 +78,76 @@
 				"description": "Limits and unavailable reasons keyed by emitted runtime kind; undefined when the unit emits nothing, and an empty limits map when targets exist without reviewed limits."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "budgetReviews",
+				"inputs": [
+					{
+						"name": "budgetReviews.ledgers",
+						"type": "BudgetEvent[][]",
+						"required": true,
+						"description": "Budget ledgers from one or more revisions; identical events are deduplicated by canonical JSON."
+					}
+				],
+				"outputs": [
+					{
+						"name": "budgetReviews",
+						"type": "Map<string, BudgetReview[]>",
+						"description": "Map from unit id to unique reviews sorted by their at timestamp, including the measured commit, reviewer, reason and before/after limits."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "frozenLimits",
+				"inputs": [
+					{
+						"name": "frozenLimits.baseline",
+						"type": "BudgetBaseline | undefined",
+						"required": true,
+						"description": "Reviewed baseline containing frozen metrics and optional unavailable reasons, or undefined when none exists."
+					}
+				],
+				"outputs": [
+					{
+						"name": "frozenLimits",
+						"type": "FrozenLimits | undefined",
+						"description": "Only source-bytes, complexity and dependencies limits and their unavailable reasons; undefined when the baseline is absent."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "emittedLimits",
+				"inputs": [
+					{
+						"name": "emittedLimits.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "Unit manifest whose execution targets determine which emitted limits are relevant."
+					},
+					{
+						"name": "emittedLimits.baseline",
+						"type": "BudgetBaseline | undefined",
+						"required": true,
+						"description": "Reviewed baseline to read target-specific limits and unavailable reasons from; may be undefined."
+					}
+				],
+				"outputs": [
+					{
+						"name": "emittedLimits",
+						"type": "EmittedLimits | undefined",
+						"description": "Limits and unavailable reasons keyed by emitted runtime kind; undefined when the unit emits nothing, and an empty limits map when targets exist without reviewed limits."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

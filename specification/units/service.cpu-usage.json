@@ -23,7 +23,8 @@
 		"inputs": [
 			{
 				"name": "CpuUsageService.constructor.adapter",
-				"type": "{ sample(): Promise<CpuReading> }"
+				"type": "{ sample(): Promise<CpuReading> }",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -32,7 +33,42 @@
 				"type": "Promise<CpuSnapshot>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "CpuUsageService.snapshot",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CpuUsageService.snapshot",
+						"type": "Promise<CpuSnapshot>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "CpuUsageService.constructor",
+				"inputs": [
+					{
+						"name": "CpuUsageService.constructor.adapter",
+						"type": "{ sample(): Promise<CpuReading> }",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "CpuUsageService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

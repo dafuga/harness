@@ -9,30 +9,38 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-command-block",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-explorer-frame",
+			"reports.component.module-system-plugins-explorer-plugin-card",
+			"reports.component.module-system-plugins-plugin-resource-card",
+			"reports.component.module-system-plugins-plugin-state-pills",
+			"reports.component.module-system-plugins-plugin-steps",
 			"reports.component.shared-primitives-atoms-html-a",
-			"reports.component.shared-primitives-atoms-html-article",
-			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-figcaption",
-			"reports.component.shared-primitives-atoms-html-figure",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-h2",
-			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-header",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-nav",
 			"reports.component.shared-primitives-atoms-html-ol",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-pre",
-			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-section"
 		]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/module-system/ExplorerModulesScreen.svelte"],
-		"symbols": ["ExplorerModulesScreen"]
+		"symbols": [
+			"ExplorerModulesScreen",
+			"ExplorerModulesScreen.link",
+			"ExplorerModulesScreen.library",
+			"ExplorerModulesScreen.title",
+			"ExplorerModulesScreen.detail",
+			"ExplorerModulesScreen.title",
+			"ExplorerModulesScreen.children"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -96,12 +104,6 @@
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
 				"description": "Requests navigation while preserving the selected explorer scope."
-			},
-			{
-				"name": "ExplorerModulesScreen.exportHref",
-				"type": "string",
-				"required": true,
-				"description": "Project export URL; empty when the host provides no export."
 			}
 		],
 		"outputs": [
@@ -122,6 +124,99 @@
 				"type": "thrown",
 				"description": "An error supplied by the navigation callback propagates when a plugin link is activated."
 			}
+		],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerModulesScreen.link",
+				"inputs": [
+					{
+						"name": "ExplorerModulesScreen.link.to",
+						"type": "ExplorerLocation",
+						"required": true
+					},
+					{
+						"name": "ExplorerModulesScreen.link.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerModulesScreen.link",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModulesScreen.library",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerModulesScreen.library",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModulesScreen.title",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerModulesScreen.title",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModulesScreen.detail",
+				"inputs": [
+					{
+						"name": "ExplorerModulesScreen.detail.entry",
+						"type": "ModuleEntry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerModulesScreen.detail",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModulesScreen.title",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerModulesScreen.title",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerModulesScreen.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerModulesScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
 		]
 	},
 	"dependencies": [
@@ -131,7 +226,47 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-command-block",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-explorer-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.module-system-plugins-explorer-plugin-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.module-system-plugins-plugin-resource-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.module-system-plugins-plugin-state-pills",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.module-system-plugins-plugin-steps",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -141,27 +276,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-article",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-code",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-figcaption",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-figure",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -172,11 +287,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-h2",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-h3",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -206,22 +316,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-pre",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-span",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
 		},

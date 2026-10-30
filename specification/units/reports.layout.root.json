@@ -23,6 +23,7 @@
 			{
 				"name": "+layout.children",
 				"type": "import('svelte').Snippet",
+				"required": true,
 				"description": "Page content rendered through the layout children snippet."
 			}
 		],
@@ -33,7 +34,9 @@
 				"description": "Rendered child page with the shared styles and session context."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

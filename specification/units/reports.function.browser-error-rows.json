@@ -30,6 +30,7 @@
 			{
 				"name": "browserErrorRows.diagnostic",
 				"type": "BrowserDiagnostic",
+				"required": true,
 				"description": "One attempt’s observed errors and declared expectations. Each expectation matches exact type and message and, when specified, exact source."
 			}
 		],
@@ -40,7 +41,30 @@
 				"description": "Rows in observation order marked Expected or Unexpected, followed by unused expectations marked Missing expected error. Each expectation accounts for one occurrence; matching rows retain diagnostic context and add the expectation reason. Inputs are not modified."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "browserErrorRows",
+				"inputs": [
+					{
+						"name": "browserErrorRows.diagnostic",
+						"type": "BrowserDiagnostic",
+						"required": true,
+						"description": "One attempt’s observed errors and declared expectations. Each expectation matches exact type and message and, when specified, exact source."
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserErrorRows",
+						"type": "BrowserErrorRow[]",
+						"description": "Rows in observation order marked Expected or Unexpected, followed by unused expectations marked Missing expected error. Each expectation accounts for one occurrence; matching rows retain diagnostic context and add the expectation reason. Inputs are not modified."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

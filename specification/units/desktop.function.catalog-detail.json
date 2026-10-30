@@ -21,11 +21,13 @@
 			{
 				"name": "catalogDetail.context",
 				"type": "DetailContext",
+				"required": true,
 				"description": "The source adapter and planning reader used to obtain history, source details, size and contract hashes."
 			},
 			{
 				"name": "catalogDetail.data",
 				"type": "DetailData",
+				"required": true,
 				"description": "The requested identity and revision, catalog entries, unit definitions and optional plan from that revision. The identity must appear in the supplied catalog entries."
 			}
 		],
@@ -42,7 +44,41 @@
 				"type": "thrown",
 				"description": "Rejects when the requested identity is absent from the supplied catalog entries. Failures from history, source or size readers also propagate."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "catalogDetail",
+				"inputs": [
+					{
+						"name": "catalogDetail.context",
+						"type": "DetailContext",
+						"required": true,
+						"description": "The source adapter and planning reader used to obtain history, source details, size and contract hashes."
+					},
+					{
+						"name": "catalogDetail.data",
+						"type": "DetailData",
+						"required": true,
+						"description": "The requested identity and revision, catalog entries, unit definitions and optional plan from that revision. The identity must appear in the supplied catalog entries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "catalogDetail",
+						"type": "Promise<EntityDetail>",
+						"description": "A promise for the catalog entry enriched with a plan contract when present, otherwise the unit contract and hash; relationships; design versions and threads; source details; and merged history deduplicated by identity and sorted newest first. Design-only entries have no source files or size measurement. Performance is reported as not measured."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

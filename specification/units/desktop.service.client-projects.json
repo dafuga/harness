@@ -35,11 +35,13 @@
 		"inputs": [
 			{
 				"name": "ClientProjectsService.constructor.options",
-				"type": "ClientProjectsOptions"
+				"type": "ClientProjectsOptions",
+				"required": true
 			},
 			{
 				"name": "ClientProjectsService.use.projectId",
-				"type": "string"
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -64,6 +66,83 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ClientProjectsService.roots",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ClientProjectsService.roots",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ClientProjectsService.use",
+				"inputs": [
+					{
+						"name": "ClientProjectsService.use.projectId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClientProjectsService.use",
+						"type": "Promise<ClientProject>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ClientProjectsService.ended",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ClientProjectsService.ended",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ClientProjectsService.end",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ClientProjectsService.end",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ClientProjectsService.constructor",
+				"inputs": [
+					{
+						"name": "ClientProjectsService.constructor.options",
+						"type": "ClientProjectsOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClientProjectsService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

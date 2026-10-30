@@ -3,7 +3,7 @@
 <script lang="ts">
 	import { entityCatalog } from '../../utils/explorer-ui/entityCatalog';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
-	import ExplorerCatalogItems from '../ExplorerCatalogItems.svelte';
+	import ExplorerCatalogItems from './ExplorerCatalogItems.svelte';
 	import ExplorerFrame from './ExplorerFrame.svelte';
 	import ExplorerIndex from './explorer-index/ExplorerIndex.svelte';
 	let host: ExplorerScreenProps = $props();

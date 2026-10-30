@@ -34,16 +34,19 @@
 			{
 				"name": "pngChecksum.bytes",
 				"type": "Buffer",
+				"required": true,
 				"description": "Bytes over which to compute the PNG-style CRC-32."
 			},
 			{
 				"name": "mediaFacts.bytes",
 				"type": "Buffer",
+				"required": true,
 				"description": "Original image or audio bytes to inspect."
 			},
 			{
 				"name": "mediaFacts.mediaType",
 				"type": "string",
+				"required": true,
 				"description": "Declared MIME type: image/png, audio/wav or audio/x-wav are supported."
 			}
 		],
@@ -59,7 +62,56 @@
 				"description": "Image width/height or audio duration in seconds rounded to six decimals; otherwise an error description for unsupported type, damaged container, checksum, compressed pixels or audio format."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "pngChecksum",
+				"inputs": [
+					{
+						"name": "pngChecksum.bytes",
+						"type": "Buffer",
+						"required": true,
+						"description": "Bytes over which to compute the PNG-style CRC-32."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pngChecksum",
+						"type": "number",
+						"description": "Unsigned CRC-32 checksum of the supplied bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "mediaFacts",
+				"inputs": [
+					{
+						"name": "mediaFacts.bytes",
+						"type": "Buffer",
+						"required": true,
+						"description": "Original image or audio bytes to inspect."
+					},
+					{
+						"name": "mediaFacts.mediaType",
+						"type": "string",
+						"required": true,
+						"description": "Declared MIME type: image/png, audio/wav or audio/x-wav are supported."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mediaFacts",
+						"type": "MediaFacts",
+						"description": "Image width/height or audio duration in seconds rounded to six decimals; otherwise an error description for unsupported type, damaged container, checksum, compressed pixels or audio format."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

@@ -32,21 +32,25 @@
 			{
 				"name": "planningConvert.plan",
 				"type": "PlanDetail",
+				"required": true,
 				"description": "The stored plan with its contract fields and contract hash."
 			},
 			{
 				"name": "approvalInfo.record",
 				"type": "ApprovalRecord",
+				"required": true,
 				"description": "The stored approval, including image records, version, contract hash, reviewer timestamp, current flag and optional design option."
 			},
 			{
 				"name": "threadInfo.thread",
 				"type": "PlanThread",
+				"required": true,
 				"description": "The stored thread with its pin, optional image anchor and messages."
 			},
 			{
 				"name": "messageInfo.message",
 				"type": "StoredMessage",
+				"required": true,
 				"description": "The stored message, its author, text, mode, optional agent metadata and artifact references."
 			}
 		],
@@ -72,7 +76,90 @@
 				"description": "A display message whose person author becomes user and other authors become agent. Version comes from the first image reference, then notes, then a Change target; image hash comes from the first image reference. Missing agent details become null."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "planningConvert",
+				"inputs": [
+					{
+						"name": "planningConvert.plan",
+						"type": "PlanDetail",
+						"required": true,
+						"description": "The stored plan with its contract fields and contract hash."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planningConvert",
+						"type": "EntityContract",
+						"description": "An entity contract retaining inputs, outputs and hash, and converting each error name into a field of type error."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "approvalInfo",
+				"inputs": [
+					{
+						"name": "approvalInfo.record",
+						"type": "ApprovalRecord",
+						"required": true,
+						"description": "The stored approval, including image records, version, contract hash, reviewer timestamp, current flag and optional design option."
+					}
+				],
+				"outputs": [
+					{
+						"name": "approvalInfo",
+						"type": "ApprovalInfo",
+						"description": "An approval summary with image hashes, version, contract hash, timestamp, current status and optional option."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "threadInfo",
+				"inputs": [
+					{
+						"name": "threadInfo.thread",
+						"type": "PlanThread",
+						"required": true,
+						"description": "The stored thread with its pin, optional image anchor and messages."
+					}
+				],
+				"outputs": [
+					{
+						"name": "threadInfo",
+						"type": "ThreadInfo",
+						"description": "A thread summary with its anchor and message count. Missing anchors become null image fields."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "messageInfo",
+				"inputs": [
+					{
+						"name": "messageInfo.message",
+						"type": "StoredMessage",
+						"required": true,
+						"description": "The stored message, its author, text, mode, optional agent metadata and artifact references."
+					}
+				],
+				"outputs": [
+					{
+						"name": "messageInfo",
+						"type": "ThreadMessage",
+						"description": "A display message whose person author becomes user and other authors become agent. Version comes from the first image reference, then notes, then a Change target; image hash comes from the first image reference. Missing agent details become null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

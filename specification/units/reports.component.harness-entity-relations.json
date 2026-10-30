@@ -23,7 +23,7 @@
 		"source": [
 			"packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte"
 		],
-		"symbols": ["EntityRelations"]
+		"symbols": ["EntityRelations", "EntityRelations.cards"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,27 +31,34 @@
 			{
 				"name": "EntityRelations.relations",
 				"type": "ExplorerRelations",
+				"required": true,
 				"description": "Required relationship data organized by the usage helper."
+			},
+			{
+				"name": "EntityRelations.host",
+				"type": "ExplorerScreenProps",
+				"required": true,
+				"description": "Selected revision lens, known consumers and media base used by shared catalog items."
 			},
 			{
 				"name": "EntityRelations.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required route context for related-entity links."
 			},
 			{
 				"name": "EntityRelations.show",
-				"type": "'both' | 'used-in' | 'uses'",
+				"type": "'both' | 'used-in' | 'uses' | 'models' | 'apis'",
+				"required": false,
+				"default": "both",
 				"description": "Optional both, used-in or uses, default both. Selects which sections appear."
 			},
 			{
 				"name": "EntityRelations.removed",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional flag, false by default, changing empty-state wording to explain removal at this commit."
-			},
-			{
-				"name": "EntityRelations.host",
-				"type": "ExplorerScreenProps",
-				"description": "Selected revision lens, known consumers and media base used by shared catalog items."
 			}
 		],
 		"outputs": [
@@ -61,7 +68,34 @@
 				"description": "Counted Uses and Used In groups render every dependency through shared module cards, including private callables, config modules and unclassified support. Cards omit verification marks and retain scoped navigation."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityRelations.cards",
+				"inputs": [
+					{
+						"name": "EntityRelations.cards.items",
+						"type": "ExplorerEntity[]",
+						"required": true
+					},
+					{
+						"name": "EntityRelations.cards.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntityRelations.cards",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

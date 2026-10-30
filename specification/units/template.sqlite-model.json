@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "sqliteModelDefinition.table",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "sqliteModelDefinition.fields",
-				"type": "Field[]"
+				"type": "Field[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -28,7 +30,34 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sqliteModelDefinition",
+				"inputs": [
+					{
+						"name": "sqliteModelDefinition.table",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "sqliteModelDefinition.fields",
+						"type": "Field[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sqliteModelDefinition",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -27,11 +27,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/nav-bar/NavBar.svelte",
 			"packages/desktop/src/components/projects-sessions/nav-bar/NavBar.svelte",
 			"packages/desktop/src/components/projects-sessions/nav-bar/nav-bar/navBar.css"
 		],
-		"symbols": ["NavBar", "NavBar"]
+		"symbols": ["NavBar"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -39,11 +38,13 @@
 			{
 				"name": "NavBar.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace supplying category links, project and revision pickers, search context and navigation. Settings is offered only when agent capability is enabled and includes the current workspace path as its return location. Search navigation uses only entries accepted by the current search context."
 			},
 			{
 				"name": "NavBar.account",
 				"type": "Snippet",
+				"required": false,
 				"description": "Optional content supplied by the host for account controls, such as the signed-in identity. When omitted, no account container is rendered; this component does not supply sign-in or sign-out behavior itself."
 			}
 		],
@@ -54,7 +55,9 @@
 				"description": "Top bar with project and revision controls, category navigation, search, optional Settings and account content. On phones all category icon-and-text labels fit in two rows, with search controls in the spare cell. Search uses the current workspace context; desktop navigation behavior is preserved."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -21,6 +21,7 @@
 			{
 				"name": "legacyReport.manifest",
 				"type": "unknown",
+				"required": true,
 				"description": "Unknown legacy manifest containing report identity, project, title, mode, environment, state, status and timestamps, with optional summary, checks and evidence."
 			}
 		],
@@ -31,7 +32,30 @@
 				"description": "Project identity and normalized version 1 legacy record, or undefined when validation fails. Original status/times remain; revision is trimmed or null, checks omit extra details, and media starts with null hash/size plus legacy provenance."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "legacyReport",
+				"inputs": [
+					{
+						"name": "legacyReport.manifest",
+						"type": "unknown",
+						"required": true,
+						"description": "Unknown legacy manifest containing report identity, project, title, mode, environment, state, status and timestamps, with optional summary, checks and evidence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "legacyReport",
+						"type": "LegacyReport | undefined",
+						"description": "Project identity and normalized version 1 legacy record, or undefined when validation fails. Original status/times remain; revision is trimmed or null, checks omit extra details, and media starts with null hash/size plus legacy provenance."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

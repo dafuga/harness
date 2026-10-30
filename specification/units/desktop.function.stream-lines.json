@@ -19,6 +19,7 @@
 			{
 				"name": "streamLines.options",
 				"type": "{ onLine: (line: string) => void; maxBytes: number; onOverflow: () => void; }",
+				"required": true,
 				"description": "Line and overflow callbacks plus maximum buffered byte count."
 			}
 		],
@@ -29,7 +30,30 @@
 				"description": "write accepts byte chunks and emits newline-delimited strings; end flushes any remaining text. Oversized buffered text invokes the overflow callback and clears the buffer."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "streamLines",
+				"inputs": [
+					{
+						"name": "streamLines.options",
+						"type": "{ onLine: (line: string) => void; maxBytes: number; onOverflow: () => void; }",
+						"required": true,
+						"description": "Line and overflow callbacks plus maximum buffered byte count."
+					}
+				],
+				"outputs": [
+					{
+						"name": "streamLines",
+						"type": "unknown",
+						"description": "write accepts byte chunks and emits newline-delimited strings; end flushes any remaining text. Oversized buffered text invokes the overflow callback and clears the buffer."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [],
 	"runtime": {

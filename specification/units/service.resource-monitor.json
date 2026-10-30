@@ -24,26 +24,31 @@
 			{
 				"name": "ResourceMonitorService.constructor.options",
 				"type": "MonitorOptions",
+				"required": true,
 				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
 			},
 			{
 				"name": "ResourceMonitorService.heartbeat.id",
 				"type": "string",
+				"required": true,
 				"description": "Lease UUID whose job or heartbeat is read or updated."
 			},
 			{
 				"name": "ResourceMonitorService.wait.id",
 				"type": "string",
+				"required": true,
 				"description": "Lease UUID whose job or heartbeat is read or updated."
 			},
 			{
 				"name": "ResourceMonitorService.wait.request",
 				"type": "ResourceRequest",
+				"required": true,
 				"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
 			},
 			{
 				"name": "ResourceMonitorService.wait.options",
 				"type": "RunOptions",
+				"required": true,
 				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
 			}
 		],
@@ -74,6 +79,111 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Cancelled, expired, impossible, disappeared or orphaned queued reservations reject before executing work. Timeouts include the last available waiting reason and resource snapshot."
+			}
+		],
+		"operations": [
+			{
+				"name": "ResourceMonitorService.snapshot",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ResourceMonitorService.snapshot",
+						"type": "Promise<ResourceSnapshot>",
+						"description": "Latest timestamped host observation, absent before the first sample."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ResourceMonitorService.heartbeat",
+				"inputs": [
+					{
+						"name": "ResourceMonitorService.heartbeat.id",
+						"type": "string",
+						"required": true,
+						"description": "Lease UUID whose job or heartbeat is read or updated."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResourceMonitorService.heartbeat",
+						"type": "Promise<void>",
+						"description": "Refreshes the running lease and pressure notice without interrupting its work."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ResourceMonitorService.sweep",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ResourceMonitorService.sweep",
+						"type": "Promise<void>",
+						"description": "Removes only stale leases with owners and tracked workers proven absent."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ResourceMonitorService.wait",
+				"inputs": [
+					{
+						"name": "ResourceMonitorService.wait.id",
+						"type": "string",
+						"required": true,
+						"description": "Lease UUID whose job or heartbeat is read or updated."
+					},
+					{
+						"name": "ResourceMonitorService.wait.request",
+						"type": "ResourceRequest",
+						"required": true,
+						"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+					},
+					{
+						"name": "ResourceMonitorService.wait.options",
+						"type": "RunOptions",
+						"required": true,
+						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResourceMonitorService.wait",
+						"type": "Promise<void>",
+						"description": "Resolves after admission; cancellation, expiry and invalid parent state reject."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ResourceMonitorService.constructor",
+				"inputs": [
+					{
+						"name": "ResourceMonitorService.constructor.options",
+						"type": "MonitorOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ResourceMonitorService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

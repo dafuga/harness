@@ -24,15 +24,18 @@
 		"inputs": [
 			{
 				"name": "LegacyImportService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LegacyImportService.import.store",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "LegacyImportService.import.project",
-				"type": "string"
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -41,7 +44,53 @@
 				"type": "Promise<LegacyImport>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "LegacyImportService.import",
+				"inputs": [
+					{
+						"name": "LegacyImportService.import.store",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "LegacyImportService.import.project",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "LegacyImportService.import",
+						"type": "Promise<LegacyImport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "LegacyImportService.constructor",
+				"inputs": [
+					{
+						"name": "LegacyImportService.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "LegacyImportService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

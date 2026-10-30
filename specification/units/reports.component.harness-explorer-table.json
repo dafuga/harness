@@ -48,32 +48,39 @@
 			{
 				"name": "ExplorerTable.category",
 				"type": "Kind",
+				"required": true,
 				"description": "Required category other than pages and components: shells, functions, configs, services or models. Determines columns and labels; only a shell is described under its name."
 			},
 			{
 				"name": "ExplorerTable.rows",
 				"type": "CatalogRow[]",
+				"required": true,
 				"description": "Required rows in display order. A config table receives one source file with committed expressions, decoded literals and static collection structures."
 			},
 			{
 				"name": "ExplorerTable.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required navigation context for entity links and actions."
-			},
-			{
-				"name": "ExplorerTable.verification",
-				"type": "boolean",
-				"description": "Defaults to true for module catalogs. Configs always show only Variable and Value columns; relationship tabs omit verification indicators."
 			},
 			{
 				"name": "ExplorerTable.lens",
 				"type": "EntityLens",
+				"required": true,
 				"description": "Revision-scoped screenshot evidence for linked consumers."
 			},
 			{
 				"name": "ExplorerTable.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "URL prefix resolving consumer screenshots."
+			},
+			{
+				"name": "ExplorerTable.verification",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "Defaults to true for module catalogs. Configs always show only Variable and Value columns; relationship tabs omit verification indicators."
 			}
 		],
 		"outputs": [
@@ -83,7 +90,9 @@
 				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

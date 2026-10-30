@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import ProjectAgent from '../../src/components/ProjectAgent.svelte';
+import ProjectAgent from '../../src/components/agents-providers/ProjectAgent.svelte';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 
 const drawn = (change: object = {}) => {

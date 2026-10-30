@@ -28,11 +28,13 @@
 		"inputs": [
 			{
 				"name": "responseCheckDefinitions.criteria",
-				"type": "ResponseCriterion[]"
+				"type": "ResponseCriterion[]",
+				"required": true
 			},
 			{
 				"name": "responseCheckQuestions.definitions",
-				"type": "ResponseCheckDefinition[]"
+				"type": "ResponseCheckDefinition[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -49,7 +51,47 @@
 				"type": "JevQuestions"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "responseCheckDefinitions",
+				"inputs": [
+					{
+						"name": "responseCheckDefinitions.criteria",
+						"type": "ResponseCriterion[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "responseCheckDefinitions",
+						"type": "ResponseCheckDefinition[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "responseCheckQuestions",
+				"inputs": [
+					{
+						"name": "responseCheckQuestions.definitions",
+						"type": "ResponseCheckDefinition[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "responseCheckQuestions",
+						"type": "JevQuestions"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

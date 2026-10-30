@@ -34,43 +34,53 @@
 		"inputs": [
 			{
 				"name": "sourceFiles.paths",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "tree.folder",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "treeDigest.files",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			},
 			{
 				"name": "missing.from",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			},
 			{
 				"name": "missing.held",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			},
 			{
 				"name": "moved.before",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			},
 			{
 				"name": "moved.after",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			},
 			{
 				"name": "named.files",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"required": true
 			},
 			{
 				"name": "movedSources.before",
-				"type": "SourceReading"
+				"type": "SourceReading",
+				"required": true
 			},
 			{
 				"name": "movedSources.after",
-				"type": "SourceReading"
+				"type": "SourceReading",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -127,7 +137,188 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sourceFiles",
+				"inputs": [
+					{
+						"name": "sourceFiles.paths",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceFiles",
+						"type": "Map<string, string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "tree",
+				"inputs": [
+					{
+						"name": "tree.folder",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "tree",
+						"type": "Map<string, string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "treeDigest",
+				"inputs": [
+					{
+						"name": "treeDigest.files",
+						"type": "Map<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "treeDigest",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "missing",
+				"inputs": [
+					{
+						"name": "missing.from",
+						"type": "Map<string, string>",
+						"required": true
+					},
+					{
+						"name": "missing.held",
+						"type": "Map<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "missing",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "moved",
+				"inputs": [
+					{
+						"name": "moved.before",
+						"type": "Map<string, string>",
+						"required": true
+					},
+					{
+						"name": "moved.after",
+						"type": "Map<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "moved",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "named",
+				"inputs": [
+					{
+						"name": "named.files",
+						"type": "Map<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "named",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readSources",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "readSources",
+						"type": "SourceReading"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "movedSources",
+				"inputs": [
+					{
+						"name": "movedSources.before",
+						"type": "SourceReading",
+						"required": true
+					},
+					{
+						"name": "movedSources.after",
+						"type": "SourceReading",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "movedSources",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "revision",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "revision",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "toolsProof",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "toolsProof",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

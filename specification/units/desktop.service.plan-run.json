@@ -18,7 +18,8 @@
 		"inputs": [
 			{
 				"name": "PlanRunService.run.context",
-				"type": "RunContext"
+				"type": "RunContext",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +33,34 @@
 				"name": "Error",
 				"type": "thrown"
 			}
-		]
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PlanRunService.run",
+				"inputs": [
+					{
+						"name": "PlanRunService.run.context",
+						"type": "RunContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanRunService.run",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

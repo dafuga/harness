@@ -33,58 +33,69 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "imageModel.preparation",
-				"type": "Preparation",
-				"description": "The preparation services used to discover an image-capable Codex provider."
-			},
-			{
-				"name": "imageModel.request",
-				"type": "Pick<RunRequest, 'mode'>",
-				"description": "The requested mode; only a Plan can require an image model."
-			},
-			{
-				"name": "imageModel.category",
-				"type": "string",
-				"description": "The entity category. Pages, shells and components require image orchestration for Plan."
-			},
-			{
 				"name": "prepareRun.preparation",
 				"type": "Preparation",
+				"required": true,
 				"description": "The session, provider discovery, generator and event callback used for preparation."
 			},
 			{
 				"name": "prepareRun.request",
 				"type": "RunRequest",
+				"required": true,
 				"description": "The entity request with thread, mode, provider, model, effort, text and optional approval."
 			},
 			{
 				"name": "prepareRun.controller",
 				"type": "AbortController",
+				"required": true,
 				"description": "The cancellation controller whose signal is passed into the prepared run."
+			},
+			{
+				"name": "imageModel.preparation",
+				"type": "Preparation",
+				"required": true,
+				"description": "The preparation services used to discover an image-capable Codex provider."
+			},
+			{
+				"name": "imageModel.request",
+				"type": "Pick<RunRequest, 'mode'>",
+				"required": true,
+				"description": "The requested mode; only a Plan can require an image model."
+			},
+			{
+				"name": "imageModel.category",
+				"type": "string",
+				"required": true,
+				"description": "The entity category. Pages, shells and components require image orchestration for Plan."
 			},
 			{
 				"name": "messageFor.context",
 				"type": "Pick<RunContext, 'request'>",
+				"required": true,
 				"description": "The request whose entity, thread, mode, provider, model and approval anchor should be copied into a message."
 			},
 			{
 				"name": "messageFor.author",
 				"type": "'user' | 'agent'",
+				"required": true,
 				"description": "Whether the message is written by the user or agent."
 			},
 			{
 				"name": "messageFor.text",
 				"type": "string",
+				"required": true,
 				"description": "The exact text to put in the message."
 			},
 			{
 				"name": "recordRunFailure.context",
 				"type": "Omit<RunContext, 'entity'>",
+				"required": true,
 				"description": "The failed run’s request, planning/session access, revision, cancellation signal and optional failureRecorded flag."
 			},
 			{
 				"name": "recordRunFailure.error",
 				"type": "unknown",
+				"required": true,
 				"description": "The error to report; Error messages are kept up to 200 characters, with a generic message for other values."
 			}
 		],
@@ -121,7 +132,146 @@
 				"type": "thrown",
 				"description": "Rejects if cancellation is observed after preparing the context and before appending the request."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "prepareRun",
+				"inputs": [
+					{
+						"name": "prepareRun.preparation",
+						"type": "Preparation",
+						"required": true,
+						"description": "The session, provider discovery, generator and event callback used for preparation."
+					},
+					{
+						"name": "prepareRun.request",
+						"type": "RunRequest",
+						"required": true,
+						"description": "The entity request with thread, mode, provider, model, effort, text and optional approval."
+					},
+					{
+						"name": "prepareRun.controller",
+						"type": "AbortController",
+						"required": true,
+						"description": "The cancellation controller whose signal is passed into the prepared run."
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareRun",
+						"type": "Promise<RunContext>",
+						"description": "A promise for the prepared run context with a new identity. Checks thread membership and Change approval, selects image support if needed, checks cancellation, then appends the user request. It does not launch the runner."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					},
+					{
+						"name": "RunCancelled",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "imageModel",
+				"inputs": [
+					{
+						"name": "imageModel.preparation",
+						"type": "Preparation",
+						"required": true,
+						"description": "The preparation services used to discover an image-capable Codex provider."
+					},
+					{
+						"name": "imageModel.request",
+						"type": "Pick<RunRequest, 'mode'>",
+						"required": true,
+						"description": "The requested mode; only a Plan can require an image model."
+					},
+					{
+						"name": "imageModel.category",
+						"type": "string",
+						"required": true,
+						"description": "The entity category. Pages, shells and components require image orchestration for Plan."
+					}
+				],
+				"outputs": [
+					{
+						"name": "imageModel",
+						"type": "unknown",
+						"description": "A promise for the default listed Codex image-orchestration model for a visual Plan; an empty string for other cases."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "messageFor",
+				"inputs": [
+					{
+						"name": "messageFor.context",
+						"type": "Pick<RunContext, 'request'>",
+						"required": true,
+						"description": "The request whose entity, thread, mode, provider, model and approval anchor should be copied into a message."
+					},
+					{
+						"name": "messageFor.author",
+						"type": "'user' | 'agent'",
+						"required": true,
+						"description": "Whether the message is written by the user or agent."
+					},
+					{
+						"name": "messageFor.text",
+						"type": "string",
+						"required": true,
+						"description": "The exact text to put in the message."
+					}
+				],
+				"outputs": [
+					{
+						"name": "messageFor",
+						"type": "unknown",
+						"description": "A message draft retaining request metadata and the approved version and first approved image hash when present; absent approval produces null anchors."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "recordRunFailure",
+				"inputs": [
+					{
+						"name": "recordRunFailure.context",
+						"type": "Omit<RunContext, 'entity'>",
+						"required": true,
+						"description": "The failed run’s request, planning/session access, revision, cancellation signal and optional failureRecorded flag."
+					},
+					{
+						"name": "recordRunFailure.error",
+						"type": "unknown",
+						"required": true,
+						"description": "The error to report; Error messages are kept up to 200 characters, with a generic message for other values."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordRunFailure",
+						"type": "unknown",
+						"description": "A promise completing after an agent failure message is appended, or immediately if failureRecorded is true. Change failures include failed or cancelled status and up to 600 characters of error detail."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

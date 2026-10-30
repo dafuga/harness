@@ -34,19 +34,23 @@
 		"inputs": [
 			{
 				"name": "RemoteHostRecordService.constructor.store",
-				"type": "RemoteHostStoreAdapter"
+				"type": "RemoteHostStoreAdapter",
+				"required": true
 			},
 			{
 				"name": "RemoteHostRecordService.enrol.state",
-				"type": "RemoteHostState"
+				"type": "RemoteHostState",
+				"required": true
 			},
 			{
 				"name": "RemoteHostRecordService.enrol.registered",
-				"type": "RemoteHostEnrolment"
+				"type": "RemoteHostEnrolment",
+				"required": true
 			},
 			{
 				"name": "RemoteHostRecordService.enrol.wanted",
-				"type": "() => boolean"
+				"type": "() => boolean",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -75,7 +79,118 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteHostRecordService.available",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostRecordService.available",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostRecordService.load",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostRecordService.load",
+						"type": "Promise<RemoteHostState | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostRecordService.save",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostRecordService.save",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostRecordService.off",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostRecordService.off",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostRecordService.enrol",
+				"inputs": [
+					{
+						"name": "RemoteHostRecordService.enrol.state",
+						"type": "RemoteHostState",
+						"required": true
+					},
+					{
+						"name": "RemoteHostRecordService.enrol.registered",
+						"type": "RemoteHostEnrolment",
+						"required": true
+					},
+					{
+						"name": "RemoteHostRecordService.enrol.wanted",
+						"type": "() => boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostRecordService.enrol",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostRecordService.settled",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostRecordService.settled",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteHostRecordService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteHostRecordService.constructor.store",
+						"type": "RemoteHostStoreAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostRecordService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

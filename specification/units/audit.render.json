@@ -15,11 +15,13 @@
 		"inputs": [
 			{
 				"name": "renderAudit.findings",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"required": true
 			},
 			{
 				"name": "renderAuditCoverage.result",
-				"type": "AuditResult"
+				"type": "AuditResult",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -32,7 +34,47 @@
 				"type": "string"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "renderAudit",
+				"inputs": [
+					{
+						"name": "renderAudit.findings",
+						"type": "AuditFinding[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderAudit",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderAuditCoverage",
+				"inputs": [
+					{
+						"name": "renderAuditCoverage.result",
+						"type": "AuditResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderAuditCoverage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

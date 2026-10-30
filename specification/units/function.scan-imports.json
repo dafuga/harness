@@ -38,18 +38,26 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "httpReferences.code",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "scanImports.code",
 				"type": "string",
+				"required": true,
 				"description": "Source text to scan for module references."
 			},
 			{
 				"name": "scanImports.language",
 				"type": "SourceLanguage",
+				"required": true,
 				"description": "Source family: ts scans scripts, svelte scans its script blocks, css scans quoted @import references, and other returns no references."
 			},
 			{
 				"name": "svelteScripts.code",
 				"type": "string",
+				"required": true,
 				"description": "Svelte source from which script-block contents should be extracted."
 			}
 		],
@@ -65,7 +73,74 @@
 				"description": "Contents of matched script blocks in source order, excluding tags."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "httpReferences",
+				"inputs": [
+					{
+						"name": "httpReferences.code",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "httpReferences",
+						"type": "Found[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scanImports",
+				"inputs": [
+					{
+						"name": "scanImports.code",
+						"type": "string",
+						"required": true,
+						"description": "Source text to scan for module references."
+					},
+					{
+						"name": "scanImports.language",
+						"type": "SourceLanguage",
+						"required": true,
+						"description": "Source family: ts scans scripts, svelte scans its script blocks, css scans quoted @import references, and other returns no references."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanImports",
+						"type": "SourceReference[]",
+						"description": "Source-ordered references with specifier or null, via and typeOnly, plus details for computed calls. Platform fetch URLs become HTTP references; interpolated segments stay unknown. Module member calls are excluded."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "svelteScripts",
+				"inputs": [
+					{
+						"name": "svelteScripts.code",
+						"type": "string",
+						"required": true,
+						"description": "Svelte source from which script-block contents should be extracted."
+					}
+				],
+				"outputs": [
+					{
+						"name": "svelteScripts",
+						"type": "string[]",
+						"description": "Contents of matched script blocks in source order, excluding tags."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

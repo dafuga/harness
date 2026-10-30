@@ -19,6 +19,7 @@
 			{
 				"name": "ModuleCommand.register.program",
 				"type": "Command",
+				"required": true,
 				"description": "Commander program that receives the module subcommands."
 			}
 		],
@@ -35,7 +36,30 @@
 				"type": "thrown",
 				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "ModuleCommand.register",
+				"inputs": [
+					{
+						"name": "ModuleCommand.register.program",
+						"type": "Command",
+						"required": true,
+						"description": "Commander program that receives the module subcommands."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ModuleCommand.register",
+						"type": "void",
+						"description": "Registers compatible module commands and external plugin list, info, add, generate and test commands; test execution preserves the child exit status."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

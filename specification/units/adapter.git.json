@@ -32,39 +32,52 @@
 		"inputs": [
 			{
 				"name": "GitAdapter.constructor.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "GitAdapter.run.args",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "GitAdapter.run.options",
-				"type": "GitRunOptions"
+				"type": "GitRunOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "GitAdapter.bytes.args",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "GitAdapter.bytes.options",
-				"type": "GitRunOptions"
+				"type": "GitRunOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "GitAdapter.attempt.args",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "GitAdapter.attempt.options",
-				"type": "GitRunOptions"
+				"type": "GitRunOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "GitAdapter.exec.args",
-				"type": "string[]"
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "GitAdapter.exec.options",
-				"type": "GitRunOptions"
+				"type": "GitRunOptions",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -93,6 +106,142 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GitAdapter.run",
+				"inputs": [
+					{
+						"name": "GitAdapter.run.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "GitAdapter.run.options",
+						"type": "GitRunOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitAdapter.run",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitAdapter.bytes",
+				"inputs": [
+					{
+						"name": "GitAdapter.bytes.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "GitAdapter.bytes.options",
+						"type": "GitRunOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitAdapter.bytes",
+						"type": "Promise<Buffer>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitAdapter.attempt",
+				"inputs": [
+					{
+						"name": "GitAdapter.attempt.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "GitAdapter.attempt.options",
+						"type": "GitRunOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitAdapter.attempt",
+						"type": "Promise<string | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitAdapter.exec",
+				"inputs": [
+					{
+						"name": "GitAdapter.exec.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "GitAdapter.exec.options",
+						"type": "GitRunOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitAdapter.exec",
+						"type": "Promise<GitResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitAdapter.isRepository",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "GitAdapter.isRepository",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GitAdapter.constructor",
+				"inputs": [
+					{
+						"name": "GitAdapter.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

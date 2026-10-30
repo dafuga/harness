@@ -34,43 +34,51 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "entityUsage.relations",
-				"type": "ExplorerRelations",
-				"description": "Host-derived pages, consumers, categorized dependencies and support units."
-			},
-			{
 				"name": "usageGroups.items",
 				"type": "ExplorerEntity[]",
+				"required": true,
 				"description": "Resolved revision-scoped consumers with declared module categories."
+			},
+			{
+				"name": "entityUsage.relations",
+				"type": "ExplorerRelations",
+				"required": true,
+				"description": "Host-derived pages, consumers, categorized dependencies and support units."
 			},
 			{
 				"name": "usageOwners.entities",
 				"type": "ExplorerEntity[]",
+				"required": true,
 				"description": "Already resolved collection owners used when no full revision is supplied."
 			},
 			{
 				"name": "usageOwners.revision",
-				"type": "HarnessRevision | absent",
+				"type": "HarnessRevision",
+				"required": false,
 				"description": "Selected source revision containing active private and public runtime owners."
 			},
 			{
 				"name": "helperConsumers.helper",
-				"type": "HarnessUnit.helpers[number]",
+				"type": "NonNullable<ExplorerEntity['unit']['helpers']>[number]",
+				"required": true,
 				"description": "One callable with source-derived runtime consumer references."
 			},
 			{
 				"name": "helperConsumers.owners",
 				"type": "Map<string, ExplorerEntity>",
+				"required": true,
 				"description": "Revision-scoped active owner projections, independent of public catalog admission."
 			},
 			{
 				"name": "helperConsumers.ownerId",
 				"type": "string",
+				"required": true,
 				"description": "Actual owner unit identifier used to exclude the callable itself."
 			},
 			{
 				"name": "usageIdentity.entity",
 				"type": "ExplorerEntity",
+				"required": true,
 				"description": "Resolved consumer with optional recorded caller symbol."
 			}
 		],
@@ -101,7 +109,128 @@
 				"description": "Actual unit identity plus callable identity when recorded."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "usageGroups",
+				"inputs": [
+					{
+						"name": "usageGroups.items",
+						"type": "ExplorerEntity[]",
+						"required": true,
+						"description": "Resolved revision-scoped consumers with declared module categories."
+					}
+				],
+				"outputs": [
+					{
+						"name": "usageGroups",
+						"type": "UsageGroup[]",
+						"description": "Nonempty navigation-ordered groups with distinct entity identifiers within each category."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "entityUsage",
+				"inputs": [
+					{
+						"name": "entityUsage.relations",
+						"type": "ExplorerRelations",
+						"required": true,
+						"description": "Host-derived pages, consumers, categorized dependencies and support units."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityUsage",
+						"type": "EntityUsage",
+						"description": "Deduplicated users, nonempty consumer and dependency groups with icons, support units and total dependency count."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "usageOwners",
+				"inputs": [
+					{
+						"name": "usageOwners.entities",
+						"type": "ExplorerEntity[]",
+						"required": true,
+						"description": "Already resolved collection owners used when no full revision is supplied."
+					},
+					{
+						"name": "usageOwners.revision",
+						"type": "HarnessRevision",
+						"required": false,
+						"description": "Selected source revision containing active private and public runtime owners."
+					}
+				],
+				"outputs": [
+					{
+						"name": "usageOwners",
+						"type": "Map<string, ExplorerEntity>",
+						"description": "Active runtime owners; unsupported owners open source without an invented entity page."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "helperConsumers",
+				"inputs": [
+					{
+						"name": "helperConsumers.helper",
+						"type": "NonNullable<ExplorerEntity['unit']['helpers']>[number]",
+						"required": true,
+						"description": "One callable with source-derived runtime consumer references."
+					},
+					{
+						"name": "helperConsumers.owners",
+						"type": "Map<string, ExplorerEntity>",
+						"required": true,
+						"description": "Revision-scoped active owner projections, independent of public catalog admission."
+					},
+					{
+						"name": "helperConsumers.ownerId",
+						"type": "string",
+						"required": true,
+						"description": "Actual owner unit identifier used to exclude the callable itself."
+					}
+				],
+				"outputs": [
+					{
+						"name": "helperConsumers",
+						"type": "ExplorerEntity[]",
+						"description": "Distinct active owner/callable consumers, excluding missing owners and true self references."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "usageIdentity",
+				"inputs": [
+					{
+						"name": "usageIdentity.entity",
+						"type": "ExplorerEntity",
+						"required": true,
+						"description": "Resolved consumer with optional recorded caller symbol."
+					}
+				],
+				"outputs": [
+					{
+						"name": "usageIdentity",
+						"type": "string",
+						"description": "Actual unit identity plus callable identity when recorded."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

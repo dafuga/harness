@@ -15,27 +15,33 @@
 		"inputs": [
 			{
 				"name": "taskWorkspace.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "taskWorkspace.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"required": true
 			},
 			{
 				"name": "taskWorkspace.selection",
-				"type": "TaskSelection"
+				"type": "TaskSelection",
+				"required": true
 			},
 			{
 				"name": "snapshotTaskWork.root",
-				"type": "string"
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "snapshotTaskWork.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"required": true
 			},
 			{
 				"name": "snapshotTaskWork.result",
-				"type": "NonNullable<ModuleTask['result']>"
+				"type": "NonNullable<ModuleTask['result']>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -48,7 +54,67 @@
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "taskWorkspace",
+				"inputs": [
+					{
+						"name": "taskWorkspace.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "taskWorkspace.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "taskWorkspace.selection",
+						"type": "TaskSelection",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskWorkspace",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "snapshotTaskWork",
+				"inputs": [
+					{
+						"name": "snapshotTaskWork.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "snapshotTaskWork.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "snapshotTaskWork.result",
+						"type": "NonNullable<ModuleTask['result']>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotTaskWork",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

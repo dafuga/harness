@@ -26,19 +26,22 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "listedProjects.bridge",
-				"type": "DesktopBridge",
-				"description": "The desktop connection, optionally offering a project-list operation. An older connection without that operation is accepted."
-			},
-			{
 				"name": "projectList.projects",
 				"type": "DesktopProject[]",
+				"required": true,
 				"description": "The projects already listed, in display order. Existing entries are kept as supplied, including their names and any duplicates."
 			},
 			{
 				"name": "projectList.snapshot",
 				"type": "ProjectSnapshot | null",
+				"required": true,
 				"description": "The shown project snapshot, or null when no project is shown. Its identity is used to avoid appending it again; an absent identity is represented by an empty string."
+			},
+			{
+				"name": "listedProjects.bridge",
+				"type": "DesktopBridge",
+				"required": true,
+				"description": "The desktop connection, optionally offering a project-list operation. An older connection without that operation is accepted."
 			}
 		],
 		"outputs": [
@@ -53,7 +56,56 @@
 				"description": "The original list when there is no snapshot or its project identity is already present. Otherwise a new list appends the shown project with its name and identity. A GitHub-backed snapshot is marked shared; all other snapshots are marked local."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "projectList",
+				"inputs": [
+					{
+						"name": "projectList.projects",
+						"type": "DesktopProject[]",
+						"required": true,
+						"description": "The projects already listed, in display order. Existing entries are kept as supplied, including their names and any duplicates."
+					},
+					{
+						"name": "projectList.snapshot",
+						"type": "ProjectSnapshot | null",
+						"required": true,
+						"description": "The shown project snapshot, or null when no project is shown. Its identity is used to avoid appending it again; an absent identity is represented by an empty string."
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectList",
+						"type": "DesktopProject[]",
+						"description": "The original list when there is no snapshot or its project identity is already present. Otherwise a new list appends the shown project with its name and identity. A GitHub-backed snapshot is marked shared; all other snapshots are marked local."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "listedProjects",
+				"inputs": [
+					{
+						"name": "listedProjects.bridge",
+						"type": "DesktopBridge",
+						"required": true,
+						"description": "The desktop connection, optionally offering a project-list operation. An older connection without that operation is accepted."
+					}
+				],
+				"outputs": [
+					{
+						"name": "listedProjects",
+						"type": "Promise<DesktopProject[]>",
+						"description": "A promise for the connection’s listed projects, or an empty list when the operation is absent. A failure from the listing operation is passed back as a rejected promise."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

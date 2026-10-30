@@ -24,23 +24,28 @@
 		"inputs": [
 			{
 				"name": "ClaudeGatewayAdapter.constructor.repository",
-				"type": "CodexSessionRepository"
+				"type": "CodexSessionRepository",
+				"required": true
 			},
 			{
 				"name": "ClaudeGatewayAdapter.validate.request",
-				"type": "GatewayRequest"
+				"type": "GatewayRequest",
+				"required": true
 			},
 			{
 				"name": "ClaudeGatewayAdapter.validate.session",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"required": true
 			},
 			{
 				"name": "ClaudeGatewayAdapter.start.request",
-				"type": "GatewayRequest"
+				"type": "GatewayRequest",
+				"required": true
 			},
 			{
 				"name": "ClaudeGatewayAdapter.start.session",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -57,6 +62,80 @@
 			{
 				"name": "Error",
 				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ClaudeGatewayAdapter.validate",
+				"inputs": [
+					{
+						"name": "ClaudeGatewayAdapter.validate.request",
+						"type": "GatewayRequest",
+						"required": true
+					},
+					{
+						"name": "ClaudeGatewayAdapter.validate.session",
+						"type": "GatewaySession",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeGatewayAdapter.validate",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ClaudeGatewayAdapter.start",
+				"inputs": [
+					{
+						"name": "ClaudeGatewayAdapter.start.request",
+						"type": "GatewayRequest",
+						"required": true
+					},
+					{
+						"name": "ClaudeGatewayAdapter.start.session",
+						"type": "GatewaySession",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeGatewayAdapter.start",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ClaudeGatewayAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ClaudeGatewayAdapter.constructor.repository",
+						"type": "CodexSessionRepository",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ClaudeGatewayAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},

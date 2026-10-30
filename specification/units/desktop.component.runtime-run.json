@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeRun.svelte",
-			"packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte"
-		],
-		"symbols": ["RuntimeRun", "RuntimeRun"]
+		"source": ["packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte"],
+		"symbols": ["RuntimeRun"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,36 +28,43 @@
 			{
 				"name": "RuntimeRun.shown",
 				"type": "EntityBehavior",
+				"required": true,
 				"description": "Grouped results and scenario titles. Overall passes only when groups exist and every group passes on the chosen side."
 			},
 			{
 				"name": "RuntimeRun.side",
 				"type": "'before' | 'after'",
+				"required": true,
 				"description": "Required before or after, selecting outcomes and cells. Only after displays difference paths."
 			},
 			{
 				"name": "RuntimeRun.title",
 				"type": "string",
+				"required": true,
 				"description": "Required heading and accessible name."
 			},
 			{
 				"name": "RuntimeRun.role",
 				"type": "string",
+				"required": true,
 				"description": "Required descriptive badge for this side."
 			},
 			{
 				"name": "RuntimeRun.lost",
 				"type": "boolean",
+				"required": true,
 				"description": "Required failure flag forwarded so unread artifacts are not left pending."
 			},
 			{
 				"name": "RuntimeRun.refusals",
 				"type": "Record<string, string>",
+				"required": true,
 				"description": "Required hash-to-refusal map. Each artifact uses its capture hash or the empty-string key when no hash exists."
 			},
 			{
 				"name": "RuntimeRun.unit",
 				"type": "string",
+				"required": false,
 				"description": "Optional function identifier forwarded to artifact case rendering."
 			}
 		],
@@ -71,7 +75,9 @@
 				"description": "Run status, state headings and result artifacts with Passed/Failed/Not recorded labels. After-side results list differences. Empty groups do not count as passing."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -22,11 +22,17 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RevisionPicker.svelte",
-			"packages/desktop/src/components/shared-primitives/RevisionPicker.svelte"
-		],
-		"symbols": ["RevisionPicker", "RevisionPicker"]
+		"source": ["packages/desktop/src/components/shared-primitives/RevisionPicker.svelte"],
+		"symbols": [
+			"RevisionPicker",
+			"RevisionPicker.when",
+			"RevisionPicker.icon",
+			"RevisionPicker.children",
+			"RevisionPicker.footer",
+			"RevisionPicker.icon",
+			"RevisionPicker.children",
+			"RevisionPicker.footer"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,6 +40,7 @@
 			{
 				"name": "RevisionPicker.workspace",
 				"type": "Workspace",
+				"required": true,
 				"description": "Workspace supplying snapshot, revision, branch/commit lists, pinned state and navigation. Values follow the displayed revision. Branch navigation supplies only branch; commit navigation includes both."
 			}
 		],
@@ -44,7 +51,130 @@
 				"description": "One summary line names the branch or explicit short commit hash with its timestamp. For an environment scope, it reads Updated at and the deployment date and time; the selector already names the environment. Icon dialogs select revisions and Go to tip exits a pinned revision."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "RevisionPicker.when",
+				"inputs": [
+					{
+						"name": "RevisionPicker.when.label",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RevisionPicker.when.value",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RevisionPicker.when",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RevisionPicker.icon",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RevisionPicker.icon",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RevisionPicker.children",
+				"inputs": [
+					{
+						"name": "RevisionPicker.children.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RevisionPicker.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RevisionPicker.footer",
+				"inputs": [
+					{
+						"name": "RevisionPicker.footer.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RevisionPicker.footer",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RevisionPicker.icon",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RevisionPicker.icon",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RevisionPicker.children",
+				"inputs": [
+					{
+						"name": "RevisionPicker.children.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RevisionPicker.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RevisionPicker.footer",
+				"inputs": [
+					{
+						"name": "RevisionPicker.footer.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RevisionPicker.footer",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

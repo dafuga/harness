@@ -16,11 +16,13 @@
 			{
 				"name": "browserApi.fetcher",
 				"type": "typeof fetch",
+				"required": false,
 				"description": "Fetch implementation; defaults to the global fetch."
 			},
 			{
 				"name": "browserApi.failed",
 				"type": "(failure: ApiFailure) => void",
+				"required": false,
 				"description": "Callback for non-success HTTP responses; defaults to a no-op. Network failures do not call it."
 			}
 		],
@@ -37,7 +39,36 @@
 				"type": "thrown",
 				"description": "Rejects non-API paths, coded HTTP failures, network/timeouts, invalid response JSON and media read failures. HTTP failures include status/code and readable wording."
 			}
-		]
+		],
+		"operations": [
+			{
+				"name": "browserApi",
+				"inputs": [
+					{
+						"name": "browserApi.fetcher",
+						"type": "typeof fetch",
+						"required": false,
+						"description": "Fetch implementation; defaults to the global fetch."
+					},
+					{
+						"name": "browserApi.failed",
+						"type": "(failure: ApiFailure) => void",
+						"required": false,
+						"description": "Callback for non-success HTTP responses; defaults to a no-op. Network failures do not call it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserApi",
+						"type": "BrowserApi",
+						"description": "get/send return parsed JSON, bytes returns raw bytes, and media returns bounded bytes plus Content-Type. Calls require /api/ paths, omit empty query values, disable caching and use a 30-second abort signal. Writes send JSON."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{

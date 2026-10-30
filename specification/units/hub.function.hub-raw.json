@@ -26,36 +26,43 @@
 			{
 				"name": "hubRaw.context",
 				"type": "HubSourceContext",
+				"required": true,
 				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
 			},
 			{
 				"name": "hubRaw.entry",
 				"type": "SourceEntry",
+				"required": true,
 				"description": "Tree entry naming the path and expected Git blob hash."
 			},
 			{
 				"name": "hubMaterializedHash.raw",
 				"type": "Uint8Array",
+				"required": true,
 				"description": "Raw Git blob bytes, possibly containing a Git LFS pointer."
 			},
 			{
 				"name": "hubMaterializedHash.expected",
 				"type": "string | null",
+				"required": true,
 				"description": "Optional expected SHA-256; null skips that comparison."
 			},
 			{
 				"name": "hubBlobProfile.kind",
 				"type": "string",
+				"required": true,
 				"description": "Caller-supplied profile kind."
 			},
 			{
 				"name": "hubBlobProfile.path",
 				"type": "string",
+				"required": true,
 				"description": "File path to hash into the profile name."
 			},
 			{
 				"name": "hubBlobProfile.sha",
 				"type": "string",
+				"required": true,
 				"description": "Git blob identity to append to the profile name."
 			}
 		],
@@ -76,7 +83,94 @@
 				"description": "Profile string combining kind, SHA-256 of path and supplied blob ID."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "hubRaw",
+				"inputs": [
+					{
+						"name": "hubRaw.context",
+						"type": "HubSourceContext",
+						"required": true,
+						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+					},
+					{
+						"name": "hubRaw.entry",
+						"type": "SourceEntry",
+						"required": true,
+						"description": "Tree entry naming the path and expected Git blob hash."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubRaw",
+						"type": "Promise<Uint8Array>",
+						"description": "Verified raw bytes from prefetched metadata, cache or source; compares the Git SHA-1 blob hash before returning."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubMaterializedHash",
+				"inputs": [
+					{
+						"name": "hubMaterializedHash.raw",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Raw Git blob bytes, possibly containing a Git LFS pointer."
+					},
+					{
+						"name": "hubMaterializedHash.expected",
+						"type": "string | null",
+						"required": true,
+						"description": "Optional expected SHA-256; null skips that comparison."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubMaterializedHash",
+						"type": "unknown",
+						"description": "Content SHA-256, byte size and lfs flag. Ordinary bytes are hashed directly; LFS requires the exact supported pointer format and a safe integer size no greater than 50000000."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubBlobProfile",
+				"inputs": [
+					{
+						"name": "hubBlobProfile.kind",
+						"type": "string",
+						"required": true,
+						"description": "Caller-supplied profile kind."
+					},
+					{
+						"name": "hubBlobProfile.path",
+						"type": "string",
+						"required": true,
+						"description": "File path to hash into the profile name."
+					},
+					{
+						"name": "hubBlobProfile.sha",
+						"type": "string",
+						"required": true,
+						"description": "Git blob identity to append to the profile name."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubBlobProfile",
+						"type": "unknown",
+						"description": "Profile string combining kind, SHA-256 of path and supplied blob ID."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
 	},
 	"dependencies": [
 		{
