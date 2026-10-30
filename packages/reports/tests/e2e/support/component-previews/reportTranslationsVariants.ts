@@ -6,6 +6,14 @@ import { ids } from './explorerData';
 /** A translation catalog records its own revision's source gaps and literal values. */
 export function translationsVariant(props: PreviewCases[string], variant: string) {
 	const host = props as unknown as ExplorerScreenProps;
+	if (variant === 'language-open')
+		return {
+			...props,
+			head: {
+				...host.head,
+				translations: { ...translationData, rows: translationData.rows.slice(0, 2) }
+			}
+		};
 	if (variant === 'unindexed') return { ...props, head: { ...host.head, translations: undefined } };
 	if (variant === 'empty')
 		return { ...props, head: { ...host.head, translations: { ...translationData, rows: [] } } };

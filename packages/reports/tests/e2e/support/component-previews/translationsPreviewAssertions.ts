@@ -9,6 +9,11 @@ export async function prepareTranslations(component: Locator, variant: string) {
 			.fill(variant === 'search' ? 'Écouter' : 'no-such-translation');
 	if (variant === 'german')
 		await component.getByRole('combobox', { name: 'Language' }).selectOption('de');
+	if (variant === 'language-open') {
+		const language = component.getByRole('combobox', { name: 'Language' });
+		await language.click();
+		await expect.poll(() => language.evaluate((node) => node.matches(':open'))).toBe(true);
+	}
 	if (variant === 'more') await component.getByRole('button', { name: 'View More' }).click();
 }
 
