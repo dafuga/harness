@@ -1,0 +1,5 @@
+{"event":"loop.created","timestamp":"2026-10-30T08:25:24.797Z","name":"permission-panel-context","goal":"Render permission panels with their Explorer styles","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T08:25:25.678Z","loop":"permission-panel-context","step":"spec","evidence":"At 6d79a756 endpoint panel captures omit Explorer card and table styling."}
+{"event":"step.completed","timestamp":"2026-10-30T08:25:26.374Z","loop":"permission-panel-context","step":"coverage","evidence":"The catalog asserted text and table reachability but did not check the real Explorer parent style context."}
+{"event":"step.completed","timestamp":"2026-10-30T08:32:42.589Z","loop":"permission-panel-context","step":"red","evidence":"At 2fbb394c endpoint previews failed the existing catalog styling assertion."}
+{"event":"step.completed","timestamp":"2026-10-30T08:32:43.440Z","loop":"permission-panel-context","step":"implement","evidence":"At 5c021fae endpoint previews receive their actual Explorer content context."}
