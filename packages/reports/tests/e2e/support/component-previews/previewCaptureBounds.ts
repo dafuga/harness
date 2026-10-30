@@ -4,8 +4,12 @@ import type { Page } from '@playwright/test';
 export async function previewCaptureBounds(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	const dialog = content.locator('dialog[open], [role="dialog"]:visible').last();
+	const chatPicker =
+		id === 'reports.component.console-chat' && ['model-open', 'effort-open'].includes(variant);
 	const modal =
-		(await content.getAttribute('data-preview-frame')) !== 'full' && (await dialog.count());
+		!chatPicker &&
+		(await content.getAttribute('data-preview-frame')) !== 'full' &&
+		(await dialog.count());
 	const projectAgent = id === 'desktop.component.project-agent';
 	const compactTarget =
 		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;

@@ -2,7 +2,7 @@
 	"name": "console-chat-picker-frame",
 	"goal": "Keep the console chat visible when its model and effort pickers are open",
 	"createdAt": "2026-10-30T03:53:09.513Z",
-	"updatedAt": "2026-10-30T03:53:27.855Z",
+	"updatedAt": "2026-10-30T03:57:47.599Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T03:57:38.701Z",
+			"evidence": "At b04edffba31a the desktop model-open catalog test failed because its capture bounds excluded the chat panel."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T03:57:47.599Z",
+			"evidence": "Frame both fixed chat surfaces when a console model or effort picker is open."
 		},
 		{
 			"id": "green",
