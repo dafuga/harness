@@ -8,7 +8,12 @@ import { routeCpuFixture } from './analyticsCpuActions';
 import { siteActivityVariant } from './projectActivityVariants';
 import { activity, live } from './activity';
 import { image, layoutImage, ordersPageImage } from './shared';
-import { checkoutConfirmation, checkoutMobile, checkoutTablet } from './evidenceCardMedia';
+import {
+	checkoutBefore,
+	checkoutConfirmation,
+	checkoutMobile,
+	checkoutTablet
+} from './evidenceCardMedia';
 import { pickerFixture } from './providerPickerApi';
 import { consoleProviders } from './consoleProviders';
 import { audioFixture } from '../../../../test/audioFixture';
@@ -161,6 +166,8 @@ async function media(route: Route, path: string) {
 		return route.fulfill({ contentType: 'audio/wav', body: 'Invalid audio fixture.' });
 	if (file === 'checkout-confirmation.svg')
 		return route.fulfill({ contentType: 'image/svg+xml', body: checkoutConfirmation });
+	if (file === 'checkout-before.svg')
+		return route.fulfill({ contentType: 'image/svg+xml', body: checkoutBefore });
 	if (file === 'checkout-mobile.svg')
 		return route.fulfill({ contentType: 'image/svg+xml', body: checkoutMobile });
 	if (file === 'checkout-tablet.svg')

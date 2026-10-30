@@ -9,6 +9,9 @@ export const entityStatesCatalogVariants: Record<string, string[]> = {
 		'incomparable',
 		'loading',
 		'load-error',
+		'scenario-open',
+		'scenario-selected',
+		'viewport-open',
 		'viewport-mobile',
 		'viewer-open'
 	]

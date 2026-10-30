@@ -73,3 +73,14 @@ test('loading and an empty search are said, with no result offered', () => {
 	expect(text(drawn({ found: [], loading: true }))).toContain('Loading entities…');
 	expect(text(drawn({ found: [], query: 'zzz' }))).toContain('No entity matches “zzz”');
 });
+
+test('a caller error while resolving a result link propagates', () => {
+	const failure = new Error('Result address unavailable');
+	expect(() =>
+		drawn({
+			href: () => {
+				throw failure;
+			}
+		})
+	).toThrow(failure);
+});
