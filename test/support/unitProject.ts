@@ -1,6 +1,5 @@
 import type { UnitProject } from './unitProject.types';
 import type { CheckReport } from '../../src/cli/program/manageUnits.types';
-import { expect } from 'vitest';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -78,6 +77,7 @@ export const utcDateExamples = [
 
 /** The app scaffold's JavaScript tools remain readable but fail the stricter contract gate. */
 export async function checkGeneratedAppContracts(project: UnitProject): Promise<void> {
+	const { expect } = await import('vitest');
 	const checked = await project.harness(['units', 'check', '--json'], false);
 	expect(checked.exitCode).toBe(1);
 	const report = JSON.parse(checked.stdout) as CheckReport;
