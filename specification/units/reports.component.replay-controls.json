@@ -123,7 +123,13 @@
 				"description": "Playback toolbar, frame timeline, elapsed/total time, speed and optional scene selection. It requests actions from the host and does not run its own playback timer."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "callback error",
+				"type": "thrown",
+				"description": "Errors thrown by ontoggle, onseek, onscene or onfullscreen propagate from the invoked callback."
+			}
+		]
 	},
 	"dependencies": [
 		{

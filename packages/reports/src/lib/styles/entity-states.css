@@ -111,6 +111,25 @@
 	background: var(--hx-color-scrim-strong);
 	font-size: var(--hx-type-size-xs);
 }
+/* Supported browsers keep native select semantics while rendering the picker in the page. */
+@supports (appearance: base-select) {
+	.states-gallery .state-controls .report-select select,
+	.states-gallery .state-controls .report-select select::picker(select) {
+		appearance: base-select;
+	}
+	.states-gallery .state-controls .report-select select::picker(select) {
+		color: var(--hx-color-text);
+		background: var(--hx-color-surface);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
+		border-radius: var(--hx-radius);
+	}
+	.states-gallery .state-controls .report-select select::picker-icon {
+		display: none;
+	}
+	.states-gallery .state-controls option {
+		padding: var(--hx-space-2) var(--hx-space-4);
+	}
+}
 @media (max-width: 680px) {
 	.states-gallery .state-grid,
 	.states-gallery .paired .state-panes {

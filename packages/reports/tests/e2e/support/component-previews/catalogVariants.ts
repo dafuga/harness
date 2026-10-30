@@ -39,7 +39,9 @@ const variants: Record<string, string[]> = {
 		'change',
 		'comment',
 		'model-open',
-		'effort-open'
+		'model-selected',
+		'effort-open',
+		'effort-selected'
 	],
 	// Floating chat exposes its launcher, notice, navigation and conversation-follow modes.
 	'reports.component.floating-chat': [

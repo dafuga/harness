@@ -23,7 +23,9 @@ import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explore
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
 import { contractPreviewUnit } from './reportEntityContractVariants';
 import { resolveStateImage } from './reportEntityStatesVariants';
+import { gameplayReplayFixture } from './gameplayReplayFixture';
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
+const gameplayReport = gameplayReplayFixture(report, picture);
 export const reportCases: PreviewCases = {
 	'reports.component.audio-comparison': {
 		before: baselineNarration,
@@ -134,8 +136,8 @@ export const reportCases: PreviewCases = {
 		children
 	},
 	'reports.component.gameplay-replay': {
-		report: { ...report, evidence: [picture] },
-		assetBase: '/media/',
+		report: gameplayReport,
+		assetBase: '',
 		portable: true
 	},
 	'reports.component.image-zoom': { src: '/media/' + cardPicture.file, alt: cardPicture.title },
@@ -182,7 +184,7 @@ export const reportCases: PreviewCases = {
 		count: 3,
 		elapsed: 0,
 		total: 15,
-		title: 'Activity list',
+		title: 'Courtyard checkpoint',
 		scene: 1,
 		scenes: [1, 2],
 		fullscreen: false,

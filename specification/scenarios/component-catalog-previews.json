@@ -1961,8 +1961,20 @@
 			"units": ["reports.component.console-chat"]
 		},
 		{
+			"id": "reports-component-console-chat-model-selected",
+			"title": "Local web project chat: Model selected",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
 			"id": "reports-component-console-chat-effort-open",
 			"title": "Local web project chat: Reasoning picker",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-effort-selected",
+			"title": "Local web project chat: Reasoning effort selected",
 			"coverage": "required",
 			"units": ["reports.component.console-chat"]
 		},
@@ -2489,6 +2501,12 @@
 			"units": ["reports.component.entity-states"]
 		},
 		{
+			"id": "reports-component-entity-states-initial",
+			"title": "Supported states: first revision",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
 			"id": "reports-component-entity-states-missing",
 			"title": "Supported states: captures missing",
 			"coverage": "required",
@@ -2503,6 +2521,12 @@
 		{
 			"id": "reports-component-entity-states-inapplicable",
 			"title": "Supported states: inapplicable",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-coverage-gap",
+			"title": "Supported states: missing coverage declaration",
 			"coverage": "required",
 			"units": ["reports.component.entity-states"]
 		},
@@ -2525,8 +2549,38 @@
 			"units": ["reports.component.entity-states"]
 		},
 		{
+			"id": "reports-component-entity-states-image-error",
+			"title": "Supported states: screenshot decode error",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-scenario-open",
+			"title": "Supported states: scenario menu open",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-scenario-selected",
+			"title": "Supported states: another scenario selected",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-viewport-open",
+			"title": "Supported states: viewport menu open",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
 			"id": "reports-component-entity-states-viewport-mobile",
 			"title": "Supported states: mobile viewport",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-capture-details-open",
+			"title": "Supported states: capture details open",
 			"coverage": "required",
 			"units": ["reports.component.entity-states"]
 		},
@@ -3539,6 +3593,78 @@
 			"units": ["reports.component.gameplay-replay"]
 		},
 		{
+			"id": "reports-component-gameplay-replay-live",
+			"title": "Gameplay replay: Live with frames",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-nonportable",
+			"title": "Gameplay replay: Download available",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-download-preparing",
+			"title": "Gameplay replay: Preparing download",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-loading",
+			"title": "Gameplay replay: Loading frame",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-image-error",
+			"title": "Gameplay replay: Frame failed to load",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-playing",
+			"title": "Gameplay replay: Playing",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-last-frame",
+			"title": "Gameplay replay: Last frame",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-ended",
+			"title": "Gameplay replay: Replay ended",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-waiting-live",
+			"title": "Gameplay replay: Waiting for next capture",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-fullscreen",
+			"title": "Gameplay replay: Fullscreen",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-speed-open",
+			"title": "Gameplay replay: Speed selector open",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-scene-open",
+			"title": "Gameplay replay: Scene selector open",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
 			"id": "reports-component-harness-entity-artifact",
 			"title": "Entity artifact",
 			"coverage": "required",
@@ -4529,6 +4655,12 @@
 			"units": ["reports.component.replay-controls"]
 		},
 		{
+			"id": "reports-component-replay-controls-middle-frame",
+			"title": "Evidence replay controls: Middle frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
 			"id": "reports-component-replay-controls-final-frame",
 			"title": "Evidence replay controls: Final frame",
 			"coverage": "required",
@@ -4537,6 +4669,12 @@
 		{
 			"id": "reports-component-replay-controls-single-frame",
 			"title": "Evidence replay controls: Single frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-no-scenes",
+			"title": "Evidence replay controls: No scenes",
 			"coverage": "required",
 			"units": ["reports.component.replay-controls"]
 		},
@@ -4555,6 +4693,18 @@
 		{
 			"id": "reports-component-replay-controls-speed-2x",
 			"title": "Evidence replay controls: 2× speed",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-speed-open",
+			"title": "Evidence replay controls: Speed selector open",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-scene-open",
+			"title": "Evidence replay controls: Scene selector open",
 			"coverage": "required",
 			"units": ["reports.component.replay-controls"]
 		},
@@ -6740,7 +6890,9 @@
 				"reports-component-console-chat-change",
 				"reports-component-console-chat-comment",
 				"reports-component-console-chat-model-open",
+				"reports-component-console-chat-model-selected",
 				"reports-component-console-chat-effort-open",
+				"reports-component-console-chat-effort-selected",
 				"reports-component-contract-example",
 				"reports-component-contract-example-illustrative",
 				"reports-component-contract-example-missing",
@@ -6828,13 +6980,20 @@
 				"reports-component-entity-states",
 				"reports-component-entity-states-empty",
 				"reports-component-entity-states-current",
+				"reports-component-entity-states-initial",
 				"reports-component-entity-states-missing",
 				"reports-component-entity-states-rejected",
 				"reports-component-entity-states-inapplicable",
+				"reports-component-entity-states-coverage-gap",
 				"reports-component-entity-states-incomparable",
 				"reports-component-entity-states-loading",
 				"reports-component-entity-states-load-error",
+				"reports-component-entity-states-image-error",
+				"reports-component-entity-states-scenario-open",
+				"reports-component-entity-states-scenario-selected",
+				"reports-component-entity-states-viewport-open",
 				"reports-component-entity-states-viewport-mobile",
+				"reports-component-entity-states-capture-details-open",
 				"reports-component-entity-states-viewer-open",
 				"reports-component-evidence-card",
 				"reports-component-evidence-card-missing",
@@ -7003,6 +7162,18 @@
 				"reports-component-gameplay-replay",
 				"reports-component-gameplay-replay-live-empty",
 				"reports-component-gameplay-replay-interrupted",
+				"reports-component-gameplay-replay-live",
+				"reports-component-gameplay-replay-nonportable",
+				"reports-component-gameplay-replay-download-preparing",
+				"reports-component-gameplay-replay-loading",
+				"reports-component-gameplay-replay-image-error",
+				"reports-component-gameplay-replay-playing",
+				"reports-component-gameplay-replay-last-frame",
+				"reports-component-gameplay-replay-ended",
+				"reports-component-gameplay-replay-waiting-live",
+				"reports-component-gameplay-replay-fullscreen",
+				"reports-component-gameplay-replay-speed-open",
+				"reports-component-gameplay-replay-scene-open",
 				"reports-component-harness-entity-artifact",
 				"reports-component-harness-entity-audio",
 				"reports-component-harness-entity-behavior",
@@ -7168,11 +7339,15 @@
 				"reports-component-regression-proof-empty",
 				"reports-component-replay-controls",
 				"reports-component-replay-controls-playing",
+				"reports-component-replay-controls-middle-frame",
 				"reports-component-replay-controls-final-frame",
 				"reports-component-replay-controls-single-frame",
+				"reports-component-replay-controls-no-scenes",
 				"reports-component-replay-controls-scene-unselected",
 				"reports-component-replay-controls-fullscreen",
 				"reports-component-replay-controls-speed-2x",
+				"reports-component-replay-controls-speed-open",
+				"reports-component-replay-controls-scene-open",
 				"reports-component-report-checks",
 				"reports-component-report-checks-empty",
 				"reports-component-report-checks-embedded",

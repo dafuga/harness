@@ -29,6 +29,7 @@ import { coverageListVariant } from './coverageListVariants';
 import { providerPickerCardVariant } from './providerPickerCardVariants';
 import { providerPickerVariant } from './providerPickerVariants';
 import { browserErrorsVariant } from './browserErrorsVariants';
+import { gameplayReplayVariant } from './gameplayReplayVariants';
 import { reportViewVariant } from './reportViewVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
@@ -81,6 +82,10 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);
 	if (id === 'reports.component.replay-controls') return replayControlsVariant(props, variant);
 	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);
+	return audioVariant(id, props, variant);
+}
+
+function audioVariant(id: string, props: PreviewCases[string], variant: string) {
 	if (
 		!['reports.component.audio-comparison', 'reports.component.audio-comparison-viewer'].includes(
 			id
@@ -154,15 +159,6 @@ function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
 	)
 		return { ...props, mode: 'comparison', uploading: variant === 'uploading' };
 	return null;
-}
-
-function gameplayReplayVariant(props: PreviewCases[string], variant: string) {
-	const report = props.report as Record<string, unknown>;
-	if (variant === 'live-empty')
-		return { ...props, report: { ...report, state: 'active', status: 'running', evidence: [] } };
-	return variant === 'interrupted'
-		? { ...props, report: { ...report, state: 'finalized', status: 'interrupted' } }
-		: null;
 }
 
 function regressionProofVariant(props: PreviewCases[string], variant: string) {

@@ -17,6 +17,7 @@ import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { uploadComparisonPreMount } from './uploadComparisonPreMount';
 import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
+import { routeGameplayLoading } from './gameplayReplayActions';
 import {
 	assertPreviewLoading,
 	assertPreviewMessages,
@@ -46,6 +47,7 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 					: '';
 	await page.route('**/*', (route) => servePreview(route, home, markup));
 	await routeLoadingZoom(page, id, variant);
+	await routeGameplayLoading(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.
@@ -68,8 +70,8 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
-	if (id === 'reports.component.evidence-card' && variant === 'image-error')
-		await expect(content.locator('.image-button')).toBeDisabled();
+	if (isBrokenPreviewImage(id, variant))
+		await expect(content.locator('.image-button').first()).toBeDisabled();
 	await applyActivityPreviewContext(page, content, id);
 	await readyRoute(page, id);
 	const dialog = {
@@ -121,6 +123,13 @@ async function readyRoute(page: Page, id: string) {
 	if (id === 'hub.page.root')
 		await expect(page.getByRole('region', { name: 'Owned by you', exact: true })).toBeVisible();
 }
+function isBrokenPreviewImage(id: string, variant: string) {
+	return (
+		variant === 'image-error' &&
+		['reports.component.evidence-card', 'reports.component.entity-states'].includes(id)
+	);
+}
+
 export async function capturePreview(
 	page: Page,
 	home: string,
@@ -171,15 +180,18 @@ export async function capturePreview(
 	return { clip, bytes };
 }
 
+const nativePopups: Record<string, string[]> = {
+	'reports.component.select': ['open'],
+	'reports.component.replay-controls': ['speed-open', 'scene-open'],
+	'reports.component.gameplay-replay': ['fullscreen'],
+	'reports.component.evidence-grid': ['status-open'],
+	'reports.component.upload-comparison': ['viewport-open'],
+	'reports.component.upload-audio': ['mode-open'],
+	'reports.component.explorer-ui-explorer-translations-screen': ['language-open']
+};
+
 function usesNativePopup(id: string, variant: string) {
-	return (
-		(id === 'reports.component.select' && variant === 'open') ||
-		(id === 'reports.component.evidence-grid' && variant === 'status-open') ||
-		(id === 'reports.component.upload-comparison' && variant === 'viewport-open') ||
-		(id === 'reports.component.upload-audio' && variant === 'mode-open') ||
-		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
-			variant === 'language-open')
-	);
+	return nativePopups[id]?.includes(variant) ?? false;
 }
 
 function previewCaptureNote(id: string, variant: string) {

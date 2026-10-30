@@ -1,0 +1,62 @@
+{
+	"name": "console-chat-populated-visibility",
+	"goal": "Keep the latest chat message visible above its composer",
+	"createdAt": "2026-10-30T04:49:42.758Z",
+	"updatedAt": "2026-10-30T04:58:48.788Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-30T04:49:43.639Z",
+			"evidence": "At desktop height a saved comment is present but scrolls above the chat body, leaving only the composer in the screenshot."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-30T04:49:44.287Z",
+			"evidence": "The component catalog asserted DOM visibility only, which did not detect clipping by the scroll container and sticky composer."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-30T04:52:02.338Z",
+			"evidence": "At 504245b4bf the saved message was outside the visible area above the composer in the desktop preview."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-30T04:52:40.340Z",
+			"evidence": "Keep the compact composer shorter and give its mode buttons room beside the agent controls."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-30T04:58:48.788Z",
+			"evidence": "The unchanged desktop populated-state bounds assertion passed at c30d761f53 on harbor-mbp-2."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

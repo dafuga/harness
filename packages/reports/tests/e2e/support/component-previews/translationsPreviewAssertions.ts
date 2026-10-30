@@ -1,5 +1,21 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
+const pickerNames: Record<string, Record<string, string>> = {
+	'reports.component.explorer-ui-explorer-translations-screen': { 'language-open': 'Language' },
+	'reports.component.entity-states': { 'scenario-open': 'Scenario', 'viewport-open': 'Viewport' },
+	'reports.component.evidence-grid': { 'status-open': 'Status' },
+	'reports.component.upload-comparison': { 'viewport-open': 'Viewport' },
+	'reports.component.upload-audio': { 'mode-open': 'Audio upload mode' },
+	'reports.component.replay-controls': {
+		'speed-open': 'Playback speed',
+		'scene-open': 'Jump to scene'
+	},
+	'reports.component.gameplay-replay': {
+		'speed-open': 'Playback speed',
+		'scene-open': 'Jump to scene'
+	}
+};
+
 /** A native picker can be open while its popup is absent from captured pixels. */
 export async function assertOpenPickerPixels(
 	page: Page,
@@ -7,30 +23,23 @@ export async function assertOpenPickerPixels(
 	variant: string,
 	capture?: { clip: { x: number; y: number; width: number; height: number }; bytes: Buffer }
 ) {
-	const language =
-		id === 'reports.component.explorer-ui-explorer-translations-screen' &&
-		variant === 'language-open';
-	const status = id === 'reports.component.evidence-grid' && variant === 'status-open';
-	const viewport = id === 'reports.component.upload-comparison' && variant === 'viewport-open';
-	const audioMode = id === 'reports.component.upload-audio' && variant === 'mode-open';
-	if (!capture || (!language && !status && !viewport && !audioMode)) return;
+	const name = pickerNames[id]?.[variant];
+	if (!capture || !name) return;
 	const { clip, bytes: opened } = capture;
-	const selector = page.getByRole('combobox', {
-		name: language ? 'Language' : status ? 'Status' : audioMode ? 'Audio upload mode' : 'Viewport'
-	});
+	const selector = page.getByRole('combobox', { name });
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(true);
 	const control = (await selector.boundingBox())!;
 	await page.mouse.click(1, 1);
 	await selector.focus();
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(false);
 	const closed = await page.screenshot({
-		fullPage: false,
+		fullPage: ['reports.component.entity-states', 'reports.component.gameplay-replay'].includes(id),
 		clip,
 		animations: 'disabled',
 		caret: 'hide'
 	});
 	const changed = await pickerPixelsChanged(page, { opened, closed, clip, control });
-	const message = `The open ${language ? 'language' : status ? 'status' : audioMode ? 'audio mode' : 'viewport'} menu must change pixels outside its control`;
+	const message = `The open ${name.toLowerCase()} menu must change pixels outside its control`;
 	expect(changed, message).toBeGreaterThan(100);
 	await selector.click();
 }

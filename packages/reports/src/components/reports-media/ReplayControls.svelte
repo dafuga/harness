@@ -131,3 +131,25 @@
 		</hx-div>
 	</hx-div>
 </hx-div>
+
+<style>
+	/* Preserve native selection while letting supported browsers paint its popup in-page. */
+	@supports (appearance: base-select) {
+		.replay-controls :global(.report-select select),
+		.replay-controls :global(.report-select select::picker(select)) {
+			appearance: base-select;
+		}
+		.replay-controls :global(.report-select select::picker(select)) {
+			color: var(--hx-color-text);
+			background: var(--hx-color-surface);
+			border: var(--hx-border-thin) solid var(--hx-color-border);
+			border-radius: var(--hx-radius);
+		}
+		.replay-controls :global(.report-select select::picker-icon) {
+			display: none;
+		}
+		.replay-controls :global(.report-select option) {
+			padding: var(--hx-space-2) var(--hx-space-4);
+		}
+	}
+</style>

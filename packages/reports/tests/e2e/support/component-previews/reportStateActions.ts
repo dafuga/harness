@@ -15,6 +15,7 @@ import { prepareUploadAudio } from './uploadAudioActions';
 import { prepareEvidenceProvenance } from './evidenceProvenanceActions';
 import { prepareBrowserErrors } from './browserErrorsActions';
 import { prepareEvidenceViewer } from './evidenceViewerActions';
+import { prepareGameplayReplay } from './gameplayReplayActions';
 import { prepareReportView } from './reportViewActions';
 
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
@@ -39,6 +40,8 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.report-findings': prepareReportFindings,
 	'reports.component.evidence-provenance': prepareEvidenceProvenance,
 	'reports.component.browser-errors': prepareBrowserErrors,
+	'reports.component.replay-controls': prepareReplayControls,
+	'reports.component.gameplay-replay': prepareGameplayReplay,
 	'reports.component.evidence-viewer': prepareEvidenceViewer,
 	'reports.component.report-view': prepareReportView,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
@@ -51,6 +54,15 @@ export async function prepareReportState(component: Locator, id: string, variant
 	if (!action) return false;
 	await action(component, variant);
 	return true;
+}
+
+async function prepareReplayControls(component: Locator, variant: string) {
+	if (!['speed-open', 'scene-open'].includes(variant)) return;
+	const select = component.getByRole('combobox', {
+		name: variant === 'speed-open' ? 'Playback speed' : 'Jump to scene'
+	});
+	await select.click();
+	await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 }
 
 async function prepareActivityList(component: Locator, variant: string) {
