@@ -5,6 +5,7 @@ import { evidenceCatalogVariants } from './evidenceCatalogVariants';
 import { explorerCatalogVariants } from './explorerCatalogVariants';
 import { entityStatesCatalogVariants } from './entityStatesCatalogVariants';
 import { configValueCatalogVariants } from './configValueTreeVariants';
+import { usageExampleCatalogVariants } from './usageExamplesVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
@@ -13,6 +14,7 @@ const variants: Record<string, string[]> = {
 	...explorerCatalogVariants,
 	...entityStatesCatalogVariants,
 	...configValueCatalogVariants,
+	...usageExampleCatalogVariants,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
@@ -45,16 +47,6 @@ const variants: Record<string, string[]> = {
 		'failed',
 		'cancelled',
 		'locked'
-	],
-	// Single and paired file controls expose their selected and uploading states separately.
-	'reports.component.audio-upload-files': [
-		'comparison',
-		'uploading',
-		'single-uploading',
-		'selected',
-		'before-selected',
-		'after-selected',
-		'both-selected'
 	],
 	// Examples distinguish provenance, value shape and the expanded full JSON.
 	'reports.component.contract-example': [

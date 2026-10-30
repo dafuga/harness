@@ -4517,6 +4517,48 @@
 			"units": ["reports.component.usage-examples-usage-examples"]
 		},
 		{
+			"id": "reports-component-usage-examples-usage-examples-setup",
+			"title": "UsageExamples: separate setup",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-inline-setup",
+			"title": "UsageExamples: inline setup",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-setup-only",
+			"title": "UsageExamples: setup without examples",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-multiple",
+			"title": "UsageExamples: multiple calls",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-missing-call",
+			"title": "UsageExamples: call not documented",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-error",
+			"title": "UsageExamples: expected error",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-void",
+			"title": "UsageExamples: no return value",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
 			"id": "reports-layout-explorer-layout",
 			"coverage": "required",
 			"units": ["reports.layout.explorer-layout"],
@@ -5414,6 +5456,13 @@
 				"reports-component-upload-audio",
 				"reports-component-upload-comparison",
 				"reports-component-usage-examples-usage-examples",
+				"reports-component-usage-examples-usage-examples-setup",
+				"reports-component-usage-examples-usage-examples-inline-setup",
+				"reports-component-usage-examples-usage-examples-setup-only",
+				"reports-component-usage-examples-usage-examples-multiple",
+				"reports-component-usage-examples-usage-examples-missing-call",
+				"reports-component-usage-examples-usage-examples-error",
+				"reports-component-usage-examples-usage-examples-void",
 				"reports-layout-explorer-layout",
 				"reports-page-harness-branch-branch-at-apis",
 				"reports-page-harness-branch-branch-at-apis-entity",
