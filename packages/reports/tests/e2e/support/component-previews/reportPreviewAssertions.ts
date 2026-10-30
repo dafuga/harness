@@ -5,6 +5,10 @@ import { assertEntityStates } from './entityStatesPreviewAssertions';
 
 /** Check that each additional report preview actually renders its distinct state. */
 export async function assertReportPreviewState(component: Locator, id: string, variant = '') {
+	if (id === 'reports.component.regression-proof' && ['gap', 'pending'].includes(variant))
+		await expect(component.locator('.footnote')).not.toContainText(
+			'These results prove the regression.'
+		);
 	if (id === 'reports.component.explorer-function-card')
 		return assertFunctionCardState(component, variant);
 	if (id === 'reports.component.explorer-usage')
