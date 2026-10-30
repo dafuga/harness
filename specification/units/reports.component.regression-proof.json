@@ -71,7 +71,18 @@
 				"description": "Matching regression evidence with commit links and recorded output, or an unavailable message when no matching views are supplied."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "href callback error",
+				"type": "thrown",
+				"description": "An error thrown by href propagates while rendering recorded commit links."
+			},
+			{
+				"name": "follow callback error",
+				"type": "thrown",
+				"description": "An error thrown by follow propagates when an unmodified primary click opens a commit."
+			}
+		]
 	},
 	"dependencies": [
 		{

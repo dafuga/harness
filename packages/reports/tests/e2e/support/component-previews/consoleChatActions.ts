@@ -42,15 +42,43 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 	}
 	const pickers: Record<string, string> = {
 		'model-open': 'Choose model',
-		'effort-open': 'Reasoning effort'
+		'model-selected': 'Choose model',
+		'effort-open': 'Reasoning effort',
+		'effort-selected': 'Reasoning effort'
 	};
-	if (pickers[variant]) {
-		await component.getByRole('button', { name: pickers[variant], exact: true }).click();
-		await expect(
-			component.getByRole('dialog', { name: pickers[variant], exact: true })
-		).toBeVisible();
-		await assertChatFrame(component, variant);
+	if (pickers[variant]) await openPicker(component, variant, pickers[variant]);
+}
+
+async function openPicker(component: Locator, variant: string, name: string) {
+	const trigger = component.getByRole('button', { name, exact: true });
+	const dialog = component.getByRole('dialog', { name, exact: true });
+	await trigger.click();
+	await expect(dialog).toBeVisible();
+	if (variant.endsWith('-selected')) {
+		const choice = variant === 'model-selected' ? 'GPT 6.1 Terra' : 'medium';
+		await dialog.getByRole('button', { name: choice, exact: true }).click();
+		await trigger.click();
+		await expect(dialog.getByRole('button', { name: choice, exact: true })).toHaveAttribute(
+			'aria-pressed',
+			'true'
+		);
 	}
+	await assertPickerSelection(dialog);
+	await assertChatFrame(component, variant);
+}
+
+async function assertPickerSelection(dialog: Locator) {
+	const selected = dialog.locator('button[aria-pressed="true"]');
+	const other = dialog.locator('button[aria-pressed="false"]').first();
+	const message = 'Picker selection is visibly distinct';
+	expect(await selected.count(), message).toBe(1);
+	expect(await other.count(), message).toBe(1);
+	const style = (button: Locator) =>
+		button.evaluate((node) => {
+			const value = getComputedStyle(node);
+			return [value.borderColor, value.backgroundColor, value.color];
+		});
+	expect(await style(selected), message).not.toEqual(await style(other));
 }
 
 async function populateConversation(component: Locator, message: Locator) {
