@@ -42,17 +42,19 @@ export function watchOperation<T extends (...args: never[]) => unknown>(
 			pending++;
 			try {
 				if (boundary.asynchronous)
-					return collector().observeAsync(input, call).then(
-						(value) => {
-							pending--;
-							completed++;
-							return value;
-						},
-						(error) => {
-							pending--;
-							throw error;
-						}
-					);
+					return collector()
+						.observeAsync(input, call)
+						.then(
+							(value) => {
+								pending--;
+								completed++;
+								return value;
+							},
+							(error) => {
+								pending--;
+								throw error;
+							}
+						);
 				const result = collector().observe(input, call);
 				pending--;
 				if (types.isPromise(result)) unsupported = true;
