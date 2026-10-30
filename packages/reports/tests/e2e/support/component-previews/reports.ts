@@ -17,6 +17,7 @@ import { recordedValueFixture } from './recordedValueVariants';
 import { reportSummaryFixture } from './reportSummaryVariants';
 import { coverageListFixture } from './coverageListVariants';
 import { evidenceViewerProps } from './evidenceViewerVariants';
+import { reportViewFixture } from './reportViewVariants';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
@@ -194,10 +195,10 @@ export const reportCases: PreviewCases = {
 	'reports.component.report-findings': { findings: report.findings },
 	'reports.component.report-summary': { report: reportSummaryFixture, downloadBase: '/exports/' },
 	'reports.component.report-view': {
-		report,
+		report: reportViewFixture,
 		assetBase: '/media/',
 		downloadBase: '/exports/',
-		portable: true
+		onUploaded: noop
 	},
 	// A raw snippet renders one element, so the synthetic options come in one group.
 	'reports.component.select': {
