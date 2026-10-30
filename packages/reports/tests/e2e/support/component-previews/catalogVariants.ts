@@ -38,8 +38,16 @@ const variants: Record<string, string[]> = {
 		'cancelled',
 		'locked'
 	],
-	// A single recording, comparison pair and disabled upload each have distinct input layouts.
-	'reports.component.audio-upload-files': ['comparison', 'uploading'],
+	// Single and paired file controls expose their selected and uploading states separately.
+	'reports.component.audio-upload-files': [
+		'comparison',
+		'uploading',
+		'single-uploading',
+		'selected',
+		'before-selected',
+		'after-selected',
+		'both-selected'
+	],
 	// Image, missing, compact provenance and paired-audio branches each render different evidence.
 	'reports.component.evidence-card': ['missing', 'compact', 'paired-audio'],
 	// Media filtering, empty results, upload controls and a lightbox are separate gallery states.

@@ -1625,6 +1625,36 @@
 			"units": ["reports.component.audio-upload-files"]
 		},
 		{
+			"id": "reports-component-audio-upload-files-single-uploading",
+			"title": "Audio upload files: Single upload disabled",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-selected",
+			"title": "Audio upload files: Recording selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-before-selected",
+			"title": "Audio upload files: Before selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-after-selected",
+			"title": "Audio upload files: After selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-both-selected",
+			"title": "Audio upload files: Both recordings selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
 			"id": "reports-component-brand-mark",
 			"title": "Brand mark",
 			"coverage": "required",
@@ -4392,6 +4422,11 @@
 				"reports-component-audio-upload-files",
 				"reports-component-audio-upload-files-comparison",
 				"reports-component-audio-upload-files-uploading",
+				"reports-component-audio-upload-files-single-uploading",
+				"reports-component-audio-upload-files-selected",
+				"reports-component-audio-upload-files-before-selected",
+				"reports-component-audio-upload-files-after-selected",
+				"reports-component-audio-upload-files-both-selected",
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
 				"reports-component-console-chat",

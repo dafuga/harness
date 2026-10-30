@@ -111,8 +111,15 @@ function extendedSourceViewerVariant(props: PreviewCases[string], variant: strin
 }
 
 function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
-	if (variant === 'comparison') return { ...props, mode: 'comparison' };
-	return variant === 'uploading' ? { ...props, mode: 'comparison', uploading: true } : null;
+	if (variant === 'selected') return props;
+	if (variant === 'single-uploading') return { ...props, uploading: true };
+	if (
+		['comparison', 'uploading', 'before-selected', 'after-selected', 'both-selected'].includes(
+			variant
+		)
+	)
+		return { ...props, mode: 'comparison', uploading: variant === 'uploading' };
+	return null;
 }
 
 function evidenceCardVariant(props: PreviewCases[string], variant: string) {

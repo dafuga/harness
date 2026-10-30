@@ -3,6 +3,7 @@ import { prepareConsoleChatState } from './consoleChatActions';
 import { assertProviderPickerCardState } from './providerPickerCardActions';
 import { prepareProviderPickerState } from './providerPickerActions';
 import { prepareAudioEvidence } from './audioEvidenceActions';
+import { prepareAudioUploadFiles } from './audioUploadFilesActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -143,6 +144,8 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 		return assertProviderPickerCardState(component, variant);
 	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
 	if (id === 'reports.component.audio-evidence') return prepareAudioEvidence(component, variant);
+	if (id === 'reports.component.audio-upload-files')
+		return prepareAudioUploadFiles(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);
 	if (id === 'reports.component.audio-comparison-viewer')
