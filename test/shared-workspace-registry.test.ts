@@ -2,6 +2,7 @@ import {
 	previewVariants,
 	previewState
 } from '../packages/reports/tests/e2e/support/component-previews/catalogVariants';
+import { catalogVisual } from '../packages/reports/tests/e2e/support/component-previews/visualUnits';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
@@ -157,12 +158,21 @@ function assertNoNestedHarnessSources() {
 
 test('every active visual module has its own required capture state', () => {
 	assertNoNestedHarnessSources();
+	const stylesheet = loaded.stored.find(
+		(unit) => unit.id === 'reports.component.shared-primitives-contract-table-mobile'
+	)!;
+	const component = loaded.stored.find((unit) => unit.id === 'reports.component.contract-table')!;
+	expect(catalogVisual(stylesheet), 'A stylesheet has no independently rendered surface').toBe(
+		false
+	);
+	expect(catalogVisual(component), 'The component using that stylesheet remains visual').toBe(true);
 	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
 	const visual = loaded.stored
 		.filter((unit) => {
 			if (unit.status !== 'active') return false;
 			if (internalAtom(unit)) return false;
-			if (['component', 'shell'].includes(unit.kind)) return true;
+			if (['component', 'shell'].includes(unit.kind))
+				return [unit.runtime.entry, ...unit.owns.source].some((path) => path.endsWith('.svelte'));
 			const sources = unit.owns.source;
 			if (unit.kind === 'layout')
 				return (

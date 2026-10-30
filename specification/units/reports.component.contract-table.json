@@ -44,7 +44,13 @@
 				"description": "A field table with unbroken names and types, clipped long examples and keyboard-accessible detail controls; wider tables scroll within their frame and return tables omit names."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "onexample callback error",
+				"type": "thrown",
+				"description": "An error from the example callback propagates when a field's example button is activated."
+			}
+		],
 		"operations": [],
 		"initialization": []
 	},
