@@ -44,7 +44,6 @@
 		const helper = entry.helper?.name;
 		return entityLens(nav.route, { category: kind, entity: entry.entity.id, helper, tab });
 	});
-	// The entity's own capture at the shown revision, or null for its gap; never another's.
 	let capture = $derived.by(() => {
 		if (shot !== undefined || !visual || !entry) return shot ?? null;
 		return catalogShot(lens.evidence(entry.entity.unit), entry.entity.unit.preview, true);
@@ -107,7 +106,11 @@
 			{#if kind}
 				<HarnessIcon name={categoryIcon[kind]} size={28} />
 			{/if}
-			<hx-span>No screenshot is recorded at this revision</hx-span>
+			<hx-span>
+				{file && failed === file
+					? 'Screenshot could not be loaded.'
+					: 'No screenshot is recorded at this revision'}
+			</hx-span>
 		</hx-span>
 	{/if}
 {/snippet}
@@ -116,7 +119,6 @@
 	<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
 {/snippet}
 
-<!-- Every module card: its name, its own screenshot when it has one, and one Used In footer. -->
 <hx-article
 	class:ex-page-card={visual}
 	class:ex-page-minimal={page}

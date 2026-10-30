@@ -1,6 +1,28 @@
 import { expect, type Locator } from '@playwright/test';
 import { previewCaptureBounds } from './previewCaptureBounds';
 
+/** Open a real Used In preview and include its visible image in the component capture. */
+export async function prepareUsagePopover(component: Locator, variant: string) {
+	if (variant !== 'usage-open') return;
+	const link = component.getByRole('group', { name: 'Used In' }).getByRole('link').first();
+	await link.focus();
+	const tip = component.getByRole('tooltip');
+	await expect(tip).toBeVisible();
+	const image = tip.locator('img');
+	await expect
+		.poll(() => image.evaluate((node: HTMLImageElement) => node.naturalWidth))
+		.toBeGreaterThan(0);
+	await image.evaluate((node: HTMLImageElement) => node.decode());
+	const id = (await component.getAttribute('data-preview-unit'))!;
+	const clip = await previewCaptureBounds(component.page(), id, variant);
+	const box = (await tip.boundingBox())!;
+	const offset = await component.page().evaluate(() => ({ x: scrollX, y: scrollY }));
+	expect(clip.x).toBeLessThanOrEqual(box.x + offset.x);
+	expect(clip.y).toBeLessThanOrEqual(box.y + offset.y);
+	expect(clip.x + clip.width).toBeGreaterThanOrEqual(box.x + offset.x + box.width);
+	expect(clip.y + clip.height).toBeGreaterThanOrEqual(box.y + offset.y + box.height);
+}
+
 /** Use the link's own focus and touch handling to reach its preview states. */
 export async function prepareUsageLink(component: Locator, variant: string) {
 	if (variant === 'touch') {

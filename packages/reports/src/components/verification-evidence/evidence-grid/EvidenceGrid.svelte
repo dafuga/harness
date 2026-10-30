@@ -199,3 +199,21 @@
 		{assetBase}
 		onclose={() => (selectedPair = null)}
 	/>{/if}
+
+<style>
+	@supports (appearance: base-select) {
+		:global(.gallery-filters .report-select select),
+		:global(.gallery-filters .report-select select::picker(select)) {
+			appearance: base-select;
+		}
+		:global(.gallery-filters .report-select select::picker(select)) {
+			color: var(--hx-color-text);
+			background: var(--hx-color-surface);
+			border: var(--hx-border-thin) solid var(--hx-color-border);
+			border-radius: var(--hx-radius);
+		}
+		:global(.gallery-filters .report-select select::picker-icon) {
+			display: none;
+		}
+	}
+</style>
