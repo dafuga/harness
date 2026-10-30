@@ -1,13 +1,13 @@
 import type { PreviewCases } from './shared';
 import { noop, stamp, row } from './shared';
-import { commits } from '../../../../test/entityUnits';
 import { activityWorkPreview } from './activityWorkVariants';
 import { activityFilesPreview } from './activityFileVariants';
+const activityCommit = 'b04e19f52a61c374d8f090b8a3e67c12451fd903';
 const agent = {
 	id: 'preview-agent',
 	label: 'Preview agent',
 	provider: 'openai',
-	model: 'gpt-5.6-terra',
+	model: 'gpt-6.1-terra',
 	worktree: 'Preview checkout',
 	branch: 'main',
 	task: 'Capture component states',
@@ -23,8 +23,8 @@ const agent = {
 export const activity = {
 	schemaVersion: 1,
 	kind: 'live',
-	repository: { name: 'Preview project', branch: 'main', head: commits.middle },
-	asOf: { commit: commits.middle, committedAt: stamp },
+	repository: { name: 'Preview project', branch: 'main', head: activityCommit },
+	asOf: { commit: activityCommit, committedAt: stamp },
 	loops: {
 		total: 1,
 		types: [
@@ -40,7 +40,7 @@ export const activity = {
 	},
 	work: [
 		{
-			commit: commits.middle,
+			commit: activityCommit,
 			subject: 'feat: component previews',
 			author: 'Fixture',
 			committedAt: stamp,
@@ -58,7 +58,7 @@ export const activity = {
 		{
 			path: 'src/components/ActivityList.svelte',
 			status: 'modified',
-			commit: commits.middle,
+			commit: activityCommit,
 			committedAt: stamp,
 			units: ['reports.component.activity-list']
 		}
@@ -70,7 +70,7 @@ export const live = {
 		{
 			name: 'Preview checkout',
 			branch: 'main',
-			head: commits.middle,
+			head: activityCommit,
 			primary: true,
 			changes: [
 				{

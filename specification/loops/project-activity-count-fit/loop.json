@@ -2,7 +2,7 @@
 	"name": "project-activity-count-fit",
 	"goal": "Keep the activity count readable at tablet width.",
 	"createdAt": "2026-10-29T23:27:35.356Z",
-	"updatedAt": "2026-10-30T01:33:46.105Z",
+	"updatedAt": "2026-10-30T01:35:35.643Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T01:35:35.643Z",
+			"evidence": "The unchanged stale tablet regression passed on harbor-mbp-2."
 		},
 		{
 			"id": "verify",
