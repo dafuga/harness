@@ -26,15 +26,19 @@ export async function prepareEvidenceViewer(component: Locator, variant: string)
 			.toBe(true);
 		await image.evaluate((node: HTMLImageElement) => node.decode());
 	}
-	if (
-		dialog.page().viewportSize()?.width === 920 &&
-		['', 'before', 'no-pair', 'no-navigation'].includes(variant)
-	) {
-		const caption = await dialog.locator('figcaption').first().boundingBox();
-		const frame = await dialog.boundingBox();
-		expect(caption!.y + caption!.height, 'Desktop caption fits the viewer').toBeLessThanOrEqual(
-			frame!.y + frame!.height
-		);
+	await assertViewerImagesFit(dialog, variant);
+}
+
+/** Capture every image, its zoom controls, original link and caption inside the lightbox. */
+async function assertViewerImagesFit(dialog: Locator, variant: string) {
+	const figures = dialog.locator('.viewer-images figure');
+	await expect(figures).toHaveCount(variant === 'compare' ? 2 : 1);
+	for (const figure of await figures.all()) {
+		await expect(figure.locator('figcaption')).toBeInViewport({ ratio: 1 });
+		if (await figure.locator('.zoom').count()) {
+			await expect(figure.locator('.zoom')).toBeInViewport({ ratio: 1 });
+			await expect(figure.locator('a')).toBeInViewport({ ratio: 1 });
+		}
 	}
 }
 
