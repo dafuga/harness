@@ -40,13 +40,13 @@ for (const viewport of scenario.viewports) {
 			await page.evaluate(() => scrollTo(0, 0));
 			const bounds = await page.getByTestId('activity-list-capture').boundingBox();
 			if (!bounds) throw new Error('Activity List has no capture bounds.');
-			const x = Math.floor(bounds.x);
-			const y = Math.floor(bounds.y);
+			const x = Math.max(0, Math.floor(bounds.x) - 8);
+			const y = Math.max(0, Math.floor(bounds.y) - 8);
 			const clip = {
 				x,
 				y,
-				width: Math.ceil(bounds.x + bounds.width) - x,
-				height: Math.ceil(bounds.y + bounds.height) - y
+				width: Math.min(viewport.width, Math.ceil(bounds.x + bounds.width) + 8) - x,
+				height: Math.ceil(bounds.y + bounds.height) + 8 - y
 			};
 			await captureShell(page, home, { state: state.id, viewport: viewport.id, clip });
 		});
