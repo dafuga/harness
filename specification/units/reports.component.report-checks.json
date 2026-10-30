@@ -55,7 +55,18 @@
 				"description": "Check list with statuses, available count values and expandable diagnostic details, or an explicit empty state. It displays recorded checks without executing commands."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Rendering throws if multiple checks have the same ID."
+			},
+			{
+				"name": "counts access error",
+				"type": "thrown",
+				"description": "An error from enumerating or reading a check's counts object propagates."
+			}
+		]
 	},
 	"dependencies": [
 		{
