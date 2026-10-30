@@ -2,7 +2,7 @@
 	"name": "evidence-viewer-unselected",
 	"goal": "Give the standalone image viewer a truthful unselected state while galleries close quietly.",
 	"createdAt": "2026-10-30T08:32:13.636Z",
-	"updatedAt": "2026-10-30T08:32:14.983Z",
+	"updatedAt": "2026-10-30T08:39:21.905Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T08:39:19.586Z",
+			"evidence": "Red record 2211ad05b3cb: after the close action the unselected message was absent."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T08:39:20.464Z",
+			"evidence": "Render a localized unselected message and let the two galleries unmount their viewer on close."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T08:39:21.905Z",
+			"evidence": "Green record 2a2487b96eca: the same browser command and inputs pass at the fix commit."
 		},
 		{
 			"id": "verify",
