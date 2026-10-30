@@ -67,7 +67,36 @@
 				"description": "Replay when frames exist or the run is live. Starts paused at the helper-selected frame with speed 1. Offers playback, seeking, scenes and native/fullscreen fallback controls. Playback waits during image loading, can retry or skip errors, and waits at the end of live runs but stops for finished runs. Nonportable download links to an export endpoint and shows preparation text for eight seconds. Failed images and empty live recordings have explicit overlays."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "replayScenes",
+				"inputs": [],
+				"outputs": [],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "replayCursorIndex",
+				"inputs": [],
+				"outputs": [],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "replayNotice",
+				"inputs": [],
+				"outputs": [],
+				"errors": [
+					{
+						"name": "translate callback error",
+						"type": "thrown",
+						"description": "Propagates any error thrown by the supplied translate callback; the helper itself throws nothing."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		]
 	},
 	"dependencies": [
 		{
