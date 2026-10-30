@@ -26,6 +26,14 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 	const evidence = props.evidence as ExplorerEvidence;
 	if (variant === 'scenario-open' || variant === 'scenario-selected')
 		return { ...props, evidence: withArchivedScenario(evidence) };
+	if (variant === 'image-error')
+		return {
+			...props,
+			resolveImage: async (item: Evidence) =>
+				item.title === 'Default · Before'
+					? '/media/preview-invalid-image.svg'
+					: orderListImage(item.title.startsWith('Empty'))
+		};
 	if (variant === 'viewer-open')
 		return {
 			...props,

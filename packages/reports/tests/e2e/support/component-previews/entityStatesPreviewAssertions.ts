@@ -2,6 +2,11 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Reach the viewport and image viewer through the gallery's real controls. */
 export async function prepareEntityStates(component: Locator, variant: string) {
+	if (variant === 'image-error') {
+		const button = component.locator('.state-card .image-button').first();
+		await expect(button).toBeDisabled();
+		await expect(button).toContainText('Image unavailable');
+	}
 	if (variant === 'scenario-selected')
 		await component.getByRole('combobox', { name: 'Scenario' }).selectOption('archived-orders');
 	if (variant === 'scenario-open' || variant === 'viewport-open') {

@@ -2537,6 +2537,12 @@
 			"units": ["reports.component.entity-states"]
 		},
 		{
+			"id": "reports-component-entity-states-image-error",
+			"title": "Supported states: screenshot decode error",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
 			"id": "reports-component-entity-states-scenario-open",
 			"title": "Supported states: scenario menu open",
 			"coverage": "required",
@@ -6740,6 +6746,7 @@
 				"reports-component-entity-states-incomparable",
 				"reports-component-entity-states-loading",
 				"reports-component-entity-states-load-error",
+				"reports-component-entity-states-image-error",
 				"reports-component-entity-states-scenario-open",
 				"reports-component-entity-states-scenario-selected",
 				"reports-component-entity-states-viewport-open",
