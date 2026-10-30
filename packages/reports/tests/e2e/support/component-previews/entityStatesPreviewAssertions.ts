@@ -20,8 +20,13 @@ export async function prepareEntityStates(component: Locator, variant: string) {
 		await expect(details).toHaveAttribute('open', '');
 	}
 	if (variant === 'viewer-open') {
-		await component.locator('.state-card .image-button').first().click();
-		await expect(component.getByRole('dialog')).toBeVisible();
+		await component.locator('.state-card .image-button').nth(1).click();
+		const viewer = component.getByRole('dialog');
+		await expect(viewer.getByRole('heading', { name: 'Default · After' })).toBeVisible();
+		await expect(
+			viewer.getByRole('button', { name: 'View after screenshot', exact: true })
+		).toHaveClass(/active/);
+		await expect(viewer.locator('figcaption')).toBeInViewport({ ratio: 1 });
 	}
 }
 

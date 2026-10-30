@@ -3,11 +3,12 @@ import type { Evidence } from '../../../../src/models/reports-media/Report.types
 import type { PreviewCases } from './shared';
 
 /** Synthetic, visibly labelled fixture images show the matching populated or empty order list. */
-export function orderListImage(empty: boolean) {
+export function orderListImage(empty: boolean, compact = false) {
 	const body = empty
 		? '<text x="52" y="230" fill="#d8e4ee" font-size="24">No matching orders</text>'
 		: '<text x="52" y="230" fill="#d8e4ee" font-size="24">Order A-1048 · Ready to ship</text><text x="52" y="290" fill="#d8e4ee" font-size="24">Order A-1047 · Delivered</text>';
-	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560"><rect width="920" height="560" fill="#0e1c29"/><g font-family="sans-serif"><text x="52" y="60" fill="#f3c33b" font-size="20">SYNTHETIC ORDER LIST</text><text x="52" y="125" fill="#f4f7fb" font-size="36">Orders</text>${body}</g></svg>`;
+	const height = compact ? 360 : 560;
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="${height}" viewBox="0 0 920 ${height}"><rect width="920" height="${height}" fill="#0e1c29"/><g font-family="sans-serif"><text x="52" y="60" fill="#f3c33b" font-size="20">SYNTHETIC ORDER LIST</text><text x="52" y="125" fill="#f4f7fb" font-size="36">Orders</text>${body}</g></svg>`;
 	return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 
@@ -21,6 +22,11 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 	const evidence = props.evidence as ExplorerEvidence;
 	if (variant === 'scenario-open' || variant === 'scenario-selected')
 		return { ...props, evidence: withArchivedScenario(evidence) };
+	if (variant === 'viewer-open')
+		return {
+			...props,
+			resolveImage: async (item: Evidence) => orderListImage(item.title.startsWith('Empty'), true)
+		};
 	const changed = galleryEvidence(evidence, variant);
 	if (changed) return { ...props, evidence: changed };
 	if (variant === 'loading') return { ...props, resolveImage: () => new Promise<string>(() => {}) };
@@ -31,8 +37,7 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 				throw new Error('Recorded capture could not be loaded.');
 			}
 		};
-	if (['viewport-mobile', 'viewport-open', 'capture-details-open', 'viewer-open'].includes(variant))
-		return props;
+	if (['viewport-mobile', 'viewport-open', 'capture-details-open'].includes(variant)) return props;
 	return null;
 }
 
