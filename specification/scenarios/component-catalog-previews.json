@@ -2657,6 +2657,54 @@
 			"units": ["reports.component.explorer-ui-explorer-platform-details"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-ios",
+			"title": "ExplorerPlatformDetails: iOS setup",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-android",
+			"title": "ExplorerPlatformDetails: Android not configured",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-desktop",
+			"title": "ExplorerPlatformDetails: desktop",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-unrecorded",
+			"title": "ExplorerPlatformDetails: not recorded",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-unindexed",
+			"title": "ExplorerPlatformDetails: revision not indexed",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-gap",
+			"title": "ExplorerPlatformDetails: manifest unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-not-found",
+			"title": "ExplorerPlatformDetails: platform not found",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-source-unavailable",
+			"title": "ExplorerPlatformDetails: source links unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-platforms",
 			"title": "ExplorerPlatforms",
 			"coverage": "required",
@@ -5212,6 +5260,14 @@
 				"reports-component-explorer-ui-explorer-module-card-page-missing",
 				"reports-component-explorer-ui-explorer-module-card-unlinked",
 				"reports-component-explorer-ui-explorer-platform-details",
+				"reports-component-explorer-ui-explorer-platform-details-ios",
+				"reports-component-explorer-ui-explorer-platform-details-android",
+				"reports-component-explorer-ui-explorer-platform-details-desktop",
+				"reports-component-explorer-ui-explorer-platform-details-unrecorded",
+				"reports-component-explorer-ui-explorer-platform-details-unindexed",
+				"reports-component-explorer-ui-explorer-platform-details-gap",
+				"reports-component-explorer-ui-explorer-platform-details-not-found",
+				"reports-component-explorer-ui-explorer-platform-details-source-unavailable",
 				"reports-component-explorer-ui-explorer-platforms",
 				"reports-component-explorer-ui-explorer-translations-screen",
 				"reports-component-explorer-ui-harness-explorer-styles-screen",

@@ -8,6 +8,7 @@ import { assertCatalogItems } from './catalogItemsPreviewAssertions';
 import { assertUsageExamples } from './usageExamplesPreviewAssertions';
 import { assertDependenciesState } from './dependenciesPreviewAssertions';
 import { assertRegressionProofState } from './regressionProofPreviewAssertions';
+import { assertPlatformDetails } from './platformDetailsPreviewAssertions';
 
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.analytics-filters': assertAnalyticsFilters,
@@ -19,7 +20,8 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 	'reports.component.explorer-ui-config-value-tree': assertConfigValueTree,
 	'reports.component.explorer-catalog-items': assertCatalogItems,
 	'reports.component.usage-examples-usage-examples': assertUsageExamples,
-	'reports.component.explorer-dependencies-screen': assertDependenciesState
+	'reports.component.explorer-dependencies-screen': assertDependenciesState,
+	'reports.component.explorer-ui-explorer-platform-details': assertPlatformDetails
 };
 
 /** Run only the checks belonging to this report preview. */
