@@ -38,7 +38,7 @@
 	]);
 </script>
 
-<hx-section class="analytics-section" data-harness-component="analytics-history">
+<hx-section class="analytics-section analytics-history" data-harness-component="analytics-history">
 	<hx-div class="analytics-heading">
 		<hx-h2>Loop history</hx-h2>
 		<hx-p class="analytics-note">{analyticsCount(loops.length)} shown · times in UTC</hx-p>
@@ -46,7 +46,7 @@
 	<hx-div class="panel">
 		{#if loops.length}
 			<hx-div class="analytics-scroll">
-				<hx-table class="analytics-table">
+				<hx-table class="analytics-table analytics-history-table">
 					<hx-thead>
 						<hx-tr>
 							<hx-th>Loop</hx-th>
@@ -63,16 +63,20 @@
 						{#each loops as loop}
 							{@const done = loop.status === 'complete'}
 							<hx-tr>
-								<hx-td class="analytics-wrap">
+								<hx-td class="analytics-wrap" data-label="Loop">
 									<hx-strong>{loop.name}</hx-strong>
 								</hx-td>
-								<hx-td>{loop.template ?? '—'}</hx-td>
-								<hx-td>{loop.agentModel}</hx-td>
-								<hx-td><hx-span class="badge" class:passed={done}>{loop.status}</hx-span></hx-td>
-								<hx-td>{stamp(loop.createdAt)}</hx-td>
-								<hx-td>{stamp(loop.completedAt)}</hx-td>
-								<hx-td class="analytics-num">{duration(loop.durationMs)}</hx-td>
-								<hx-td class="analytics-num">{loop.evaluations}</hx-td>
+								<hx-td data-label="Template">{loop.template ?? '—'}</hx-td>
+								<hx-td data-label="Agent model">{loop.agentModel}</hx-td>
+								<hx-td data-label="Status"
+									><hx-span class="badge" class:passed={done}>{loop.status}</hx-span></hx-td
+								>
+								<hx-td data-label="Created">{stamp(loop.createdAt)}</hx-td>
+								<hx-td data-label="Completed">{stamp(loop.completedAt)}</hx-td>
+								<hx-td class="analytics-num" data-label="Duration"
+									>{duration(loop.durationMs)}</hx-td
+								>
+								<hx-td class="analytics-num" data-label="Evaluations">{loop.evaluations}</hx-td>
 							</hx-tr>
 						{/each}
 					</hx-tbody>
@@ -110,3 +114,51 @@
 		{/each}
 	</hx-div>
 </hx-section>
+
+<style>
+	.analytics-history :global(.analytics-history-table) {
+		table-layout: fixed;
+	}
+	.analytics-history :global(.analytics-history-table th),
+	.analytics-history :global(.analytics-history-table td) {
+		white-space: normal;
+		overflow-wrap: anywhere;
+	}
+	.analytics-history :global(.analytics-history-table .analytics-wrap) {
+		min-width: 0;
+	}
+	@media (max-width: 42rem) {
+		.analytics-history :global(.analytics-history-table),
+		.analytics-history :global(.analytics-history-table tbody),
+		.analytics-history :global(.analytics-history-table tr),
+		.analytics-history :global(.analytics-history-table td) {
+			display: block;
+		}
+		.analytics-history :global(.analytics-history-table thead) {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip: rect(0 0 0 0);
+		}
+		.analytics-history :global(.analytics-history-table tr) {
+			padding: var(--hx-space-8) 0;
+		}
+		.analytics-history :global(.analytics-history-table td) {
+			display: grid;
+			grid-template-columns: minmax(8rem, 40%) minmax(0, 1fr);
+			gap: var(--hx-space-8);
+			padding: var(--hx-space-6) 0;
+			border: 0;
+			text-align: left;
+		}
+		.analytics-history :global(.analytics-history-table td::before) {
+			content: attr(data-label);
+			color: var(--hx-color-text-muted);
+			font-size: var(--hx-type-size-2xs);
+			font-weight: var(--hx-style-weight-semibold);
+			letter-spacing: var(--hx-style-tracking-caps);
+			text-transform: uppercase;
+		}
+	}
+</style>
