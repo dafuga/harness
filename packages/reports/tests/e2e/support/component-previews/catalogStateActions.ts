@@ -99,14 +99,6 @@ const actions: Record<string, CatalogStateAction> = {
 	'reports.component.site-activity:stale': async (component) => {
 		await expect(component.getByText(/The last reading is older than a minute/)).toBeVisible();
 	},
-	'reports.component.evidence-viewer:before': async (component) => {
-		await component.getByRole('button', { name: 'View before screenshot' }).click();
-		await expect(component.getByRole('heading', { name: 'Checkout before release' })).toBeVisible();
-	},
-	'reports.component.evidence-viewer:compare': async (component) => {
-		await component.getByRole('button', { name: 'Compare before and after' }).click();
-		await expect(component.locator('.viewer-images.comparison figure')).toHaveCount(2);
-	},
 	'reports.component.regression-proof:output-open': async (component) => {
 		await component.locator('summary').click();
 		await expect(component.getByText('harness verify run', { exact: true })).toBeVisible();

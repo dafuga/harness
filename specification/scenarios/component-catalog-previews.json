@@ -2837,6 +2837,60 @@
 			"units": ["reports.component.evidence-viewer"]
 		},
 		{
+			"id": "reports-component-evidence-viewer-no-pair",
+			"title": "Evidence viewer: No comparison partner",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-no-provenance",
+			"title": "Evidence viewer: No provenance",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-no-navigation",
+			"title": "Evidence viewer: No navigable evidence",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-viewport-mobile",
+			"title": "Evidence viewer: Mobile screenshot selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-viewport-tablet",
+			"title": "Evidence viewer: Tablet screenshot selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-next",
+			"title": "Evidence viewer: Next screenshot",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-previous",
+			"title": "Evidence viewer: Previous screenshot",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-zoomed",
+			"title": "Evidence viewer: Zoomed image",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-actual-size",
+			"title": "Evidence viewer: Actual image size",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
 			"id": "reports-component-explorer-catalog-items",
 			"title": "ExplorerCatalogItems",
 			"coverage": "required",
@@ -6712,6 +6766,15 @@
 				"reports-component-evidence-viewer-before",
 				"reports-component-evidence-viewer-compare",
 				"reports-component-evidence-viewer-unavailable",
+				"reports-component-evidence-viewer-no-pair",
+				"reports-component-evidence-viewer-no-provenance",
+				"reports-component-evidence-viewer-no-navigation",
+				"reports-component-evidence-viewer-viewport-mobile",
+				"reports-component-evidence-viewer-viewport-tablet",
+				"reports-component-evidence-viewer-next",
+				"reports-component-evidence-viewer-previous",
+				"reports-component-evidence-viewer-zoomed",
+				"reports-component-evidence-viewer-actual-size",
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-catalog-items-multiple",
 				"reports-component-explorer-catalog-items-batched",

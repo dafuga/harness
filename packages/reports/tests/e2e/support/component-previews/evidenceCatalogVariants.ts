@@ -47,7 +47,20 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 		'empty',
 		'absent'
 	],
-	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
+	'reports.component.evidence-viewer': [
+		'before',
+		'compare',
+		'unavailable',
+		'no-pair',
+		'no-provenance',
+		'no-navigation',
+		'viewport-mobile',
+		'viewport-tablet',
+		'next',
+		'previous',
+		'zoomed',
+		'actual-size'
+	],
 	'reports.component.upload-comparison': [
 		'open',
 		'pre-mount',
