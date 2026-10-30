@@ -2,9 +2,11 @@
 	"name": "project-activity-count-fit",
 	"goal": "Keep the activity count readable at tablet width.",
 	"createdAt": "2026-10-29T23:27:35.356Z",
-	"updatedAt": "2026-10-29T23:27:40.880Z",
+	"updatedAt": "2026-10-30T01:33:46.105Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T01:33:14.193Z",
+			"evidence": "Regression b9d816876a8d reproduced the split stale count on harbor-mbp-2."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T01:33:46.105Z",
+			"evidence": "Keep the count from shrinking at every viewport before the description wraps."
 		},
 		{
 			"id": "green",

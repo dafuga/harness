@@ -175,6 +175,7 @@
 		margin: var(--hx-space-10) 0 0;
 	}
 	.project-activity :global(.pa-count strong) {
+		flex: none;
 		font-size: var(--hx-type-size-3xl);
 	}
 	.project-activity :global(.pa-reason) {
@@ -208,9 +209,6 @@
 		}
 		.project-activity :global(.pa-count) {
 			flex-wrap: wrap;
-		}
-		.project-activity :global(.pa-count strong) {
-			flex: none;
 		}
 	}
 </style>
