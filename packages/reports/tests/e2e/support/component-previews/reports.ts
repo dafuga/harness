@@ -9,9 +9,9 @@ import {
 	baselineNarration,
 	releaseNarration,
 	viewerBaseline,
-	viewerRelease,
-	galleryItems
+	viewerRelease
 } from './reportData';
+import { evidenceGridItems } from './evidenceGridData';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
@@ -99,7 +99,7 @@ export const reportCases: PreviewCases = {
 		resolveImage: resolveStateImage
 	},
 	'reports.component.evidence-card': { item: cardPicture, assetBase: '/media/', onopen: noop },
-	'reports.component.evidence-grid': { items: galleryItems, assetBase: '/media/' },
+	'reports.component.evidence-grid': { items: evidenceGridItems, assetBase: '/media/' },
 	'reports.component.evidence-provenance': {
 		item: {
 			...picture,

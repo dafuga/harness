@@ -17,3 +17,31 @@ export const checkoutConfirmation = `<svg xmlns="http://www.w3.org/2000/svg" wid
 <text x="132" y="370" fill="#18253a" font-family="sans-serif" font-size="20">Delivery estimate: 3–5 business days</text>
 <text x="132" y="409" fill="#526174" font-family="sans-serif" font-size="17">A confirmation has been sent to your email.</text>
 </svg>`;
+
+/** Fictional responsive checkout screens used as gallery inputs. */
+export const checkoutMobile = `<svg xmlns="http://www.w3.org/2000/svg" width="390" height="680" viewBox="0 0 390 680">
+<rect width="390" height="680" fill="#f3f5f8"/><rect width="390" height="64" fill="#fff"/>
+<text x="24" y="40" fill="#18253a" font-family="sans-serif" font-size="19" font-weight="700">Northstar Store</text>
+<rect x="20" y="88" width="350" height="442" rx="14" fill="#fff" stroke="#dbe2eb"/>
+<circle cx="60" cy="130" r="17" fill="#d9f3e6"/><path d="M52 130l6 6 10-12" fill="none" stroke="#198754" stroke-width="4"/>
+<text x="88" y="137" fill="#18253a" font-family="sans-serif" font-size="20" font-weight="700">Order confirmed</text>
+<text x="40" y="190" fill="#526174" font-family="sans-serif" font-size="15">Thanks, Alex. Your order is being prepared.</text>
+<path d="M40 218h310" stroke="#e5eaf0"/><text x="40" y="260" fill="#526174" font-family="sans-serif" font-size="13">ORDER NUMBER</text>
+<text x="40" y="286" fill="#18253a" font-family="sans-serif" font-size="18" font-weight="700">#1048</text>
+<text x="40" y="334" fill="#526174" font-family="sans-serif" font-size="13">TOTAL</text><text x="40" y="360" fill="#18253a" font-family="sans-serif" font-size="18" font-weight="700">$128.00</text>
+<text x="40" y="424" fill="#18253a" font-family="sans-serif" font-size="15">Delivery estimate: 3–5 business days</text>
+<text x="40" y="459" fill="#526174" font-family="sans-serif" font-size="13">A confirmation has been sent to your email.</text></svg>`;
+
+export const checkoutTablet = `<svg xmlns="http://www.w3.org/2000/svg" width="768" height="650" viewBox="0 0 768 650">
+<rect width="768" height="650" fill="#f3f5f8"/><rect width="768" height="68" fill="#fff"/>
+<text x="38" y="43" fill="#18253a" font-family="sans-serif" font-size="22" font-weight="700">Northstar Store</text>
+<text x="570" y="43" fill="#526174" font-family="sans-serif" font-size="16">Orders · Account</text>
+<rect x="60" y="102" width="648" height="420" rx="16" fill="#fff" stroke="#dbe2eb"/>
+<circle cx="116" cy="160" r="22" fill="#d9f3e6"/><path d="M106 160l7 7 13-15" fill="none" stroke="#198754" stroke-width="5"/>
+<text x="155" y="157" fill="#18253a" font-family="sans-serif" font-size="25" font-weight="700">Order confirmed</text>
+<text x="155" y="187" fill="#526174" font-family="sans-serif" font-size="16">Thanks, Alex. Your order is being prepared.</text>
+<path d="M96 228h576" stroke="#e5eaf0"/><text x="96" y="274" fill="#526174" font-family="sans-serif" font-size="14">ORDER NUMBER</text>
+<text x="96" y="302" fill="#18253a" font-family="sans-serif" font-size="20" font-weight="700">#1048</text>
+<text x="400" y="274" fill="#526174" font-family="sans-serif" font-size="14">TOTAL</text><text x="400" y="302" fill="#18253a" font-family="sans-serif" font-size="20" font-weight="700">$128.00</text>
+<text x="96" y="382" fill="#18253a" font-family="sans-serif" font-size="17">Delivery estimate: 3–5 business days</text>
+<text x="96" y="420" fill="#526174" font-family="sans-serif" font-size="15">A confirmation has been sent to your email.</text></svg>`;

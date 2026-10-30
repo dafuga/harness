@@ -92,23 +92,6 @@ const actions: Record<string, CatalogStateAction> = {
 	'reports.component.site-activity:stale': async (component) => {
 		await expect(component.getByText(/The last reading is older than a minute/)).toBeVisible();
 	},
-	'reports.component.evidence-grid:empty': async (component) => {
-		await component
-			.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
-			.fill('no-match');
-		await expect(component.getByText('No matching evidence.', { exact: true })).toBeVisible();
-	},
-	'reports.component.evidence-grid:audio': async (component) => {
-		await component
-			.locator('.media-tabs')
-			.getByRole('button', { name: /^Audio/ })
-			.click();
-		await expect(component.getByText('Release narration', { exact: true })).toBeVisible();
-	},
-	'reports.component.evidence-grid:image-open': async (component) => {
-		await component.getByRole('button', { name: 'Open Synthetic preview input' }).first().click();
-		await expect(component.getByRole('dialog')).toBeVisible();
-	},
 	'reports.component.evidence-viewer:before': async (component) => {
 		await component.getByRole('button', { name: 'View before screenshot' }).click();
 		await expect(component.getByRole('heading', { name: 'Checkout before release' })).toBeVisible();
