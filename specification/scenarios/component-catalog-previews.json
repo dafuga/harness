@@ -3089,6 +3089,12 @@
 			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-english-only",
+			"title": "ExplorerTranslationsScreen: no comparison languages",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-translations-screen-gaps",
 			"title": "ExplorerTranslationsScreen: source gaps",
 			"coverage": "required",
@@ -6292,6 +6298,7 @@
 				"reports-component-explorer-ui-explorer-translations-screen",
 				"reports-component-explorer-ui-explorer-translations-screen-unindexed",
 				"reports-component-explorer-ui-explorer-translations-screen-empty",
+				"reports-component-explorer-ui-explorer-translations-screen-english-only",
 				"reports-component-explorer-ui-explorer-translations-screen-gaps",
 				"reports-component-explorer-ui-explorer-translations-screen-gaps-open",
 				"reports-component-explorer-ui-explorer-translations-screen-search",

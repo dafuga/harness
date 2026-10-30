@@ -16,6 +16,7 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 	'reports.component.explorer-ui-explorer-translations-screen': [
 		'unindexed',
 		'empty',
+		'english-only',
 		'gaps',
 		'gaps-open',
 		'search',
