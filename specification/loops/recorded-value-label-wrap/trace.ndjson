@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T02:11:07.005Z","name":"recorded-value-label-wrap","goal":"Keep the recorded value type label readable beside long text.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T02:11:18.794Z","loop":"recorded-value-label-wrap","step":"spec","evidence":"The long-text desktop and tablet API captures show the Text label broken across lines; it should remain readable on one line."}
+{"event":"step.completed","timestamp":"2026-10-30T02:11:19.422Z","loop":"recorded-value-label-wrap","step":"coverage","evidence":"component-catalog-previews has the long-text fixture but only checked the shortening notice, so it did not assert the type label layout."}

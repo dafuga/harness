@@ -119,6 +119,7 @@
 		overflow-wrap: anywhere;
 	}
 	.value-type {
+		flex-shrink: 0;
 		font-size: var(--hx-type-size-2xs);
 		font-weight: var(--hx-style-weight-medium);
 		color: var(--hx-color-text-muted);
