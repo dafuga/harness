@@ -3,8 +3,8 @@
 	"id": "model.catalog-branch",
 	"kind": "model",
 	"title": "CatalogBranch",
-	"responsibility": "Owns the CatalogBranch data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Stores Git branch heads in catalog_branches through a supplied persistence adapter.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"lineage": {
 		"predecessors": ["model.catalog-branch-types"]
@@ -27,43 +27,56 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogBranch.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stored row identity; the model passes it to the adapter without generating a key."
 			},
 			{
 				"name": "CatalogBranch.head",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit at the recorded branch head."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogBranch.find",
-				"type": "Promise<CatalogBranchAttributes | null>"
+				"type": "Promise<CatalogBranchAttributes | null>",
+				"description": "Promise of the matching catalog_branches row, or null according to the adapter lookup result."
 			},
 			{
 				"name": "CatalogBranch.findBy",
-				"type": "Promise<CatalogBranchAttributes[]>"
+				"type": "Promise<CatalogBranchAttributes[]>",
+				"description": "Promise of catalog_branches rows matching the supplied attribute filters."
 			},
 			{
 				"name": "CatalogBranch.create",
-				"type": "Promise<CatalogBranchAttributes>"
+				"type": "Promise<CatalogBranchAttributes>",
+				"description": "Promise of the catalog_branches row returned by the adapter after creation."
 			},
 			{
 				"name": "CatalogBranch.update",
-				"type": "Promise<CatalogBranchAttributes | null>"
+				"type": "Promise<CatalogBranchAttributes | null>",
+				"description": "Promise of the updated catalog_branches row, or null according to the adapter update result."
 			},
 			{
 				"name": "CatalogBranch.delete",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Promise of the adapter deletion result for the requested catalog_branches row."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Persistence operation failure",
+				"type": "propagated",
+				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CatalogBranch.find",
@@ -71,22 +84,31 @@
 					{
 						"name": "CatalogBranch.find.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.find.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.find",
-						"type": "Promise<CatalogBranchAttributes | null>"
+						"type": "Promise<CatalogBranchAttributes | null>",
+						"description": "Promise of the matching catalog_branches row, or null according to the adapter lookup result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogBranch.findBy",
@@ -94,22 +116,31 @@
 					{
 						"name": "CatalogBranch.findBy.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.findBy.fields",
 						"type": "Partial<CatalogBranchAttributes>",
-						"required": true
+						"required": true,
+						"description": "Partial stored attributes used as equality filters for catalog_branches."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.findBy",
-						"type": "Promise<CatalogBranchAttributes[]>"
+						"type": "Promise<CatalogBranchAttributes[]>",
+						"description": "Promise of catalog_branches rows matching the supplied attribute filters."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogBranch.create",
@@ -117,22 +148,31 @@
 					{
 						"name": "CatalogBranch.create.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.create.input",
 						"type": "CatalogBranchCreateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_branches; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.create",
-						"type": "Promise<CatalogBranchAttributes>"
+						"type": "Promise<CatalogBranchAttributes>",
+						"description": "Promise of the catalog_branches row returned by the adapter after creation."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogBranch.update",
@@ -140,27 +180,37 @@
 					{
 						"name": "CatalogBranch.update.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.update.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					},
 					{
 						"name": "CatalogBranch.update.input",
 						"type": "CatalogBranchUpdateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_branches; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.update",
-						"type": "Promise<CatalogBranchAttributes | null>"
+						"type": "Promise<CatalogBranchAttributes | null>",
+						"description": "Promise of the updated catalog_branches row, or null according to the adapter update result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogBranch.delete",
@@ -168,22 +218,31 @@
 					{
 						"name": "CatalogBranch.delete.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_branches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogBranch.delete.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogBranch.delete",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Promise of the adapter deletion result for the requested catalog_branches row."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [],

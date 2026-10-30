@@ -41,6 +41,14 @@ export function renderUnit(detail: UnitDetail): string {
 	const retired = manifest.lineage?.predecessors ?? [];
 	const rows: Array<[string, string[]]> = [
 		['Source', manifest.owns.source],
+		...(detail.declarations
+			? [
+					[
+						'Declarations',
+						detail.declarations.map((item) => `${item.name}: ${item.role} (${item.source})`)
+					] as [string, string[]]
+				]
+			: []),
 		...runtimeRows(manifest),
 		[
 			'Version',

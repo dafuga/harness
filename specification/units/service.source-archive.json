@@ -182,12 +182,14 @@
 					{
 						"name": "SourceArchiveService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git repository containing the selected immutable commit."
 					},
 					{
 						"name": "SourceArchiveService.constructor.out",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "History output directory; existing protected media carries source text."
 					}
 				],
 				"outputs": [

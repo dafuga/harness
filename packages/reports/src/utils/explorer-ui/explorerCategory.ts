@@ -1,4 +1,5 @@
 import type { Classified } from './explorerCategory.types';
+import { declarationRole } from '../../../../../src/services/explorer-ui/revision-detail-service/declarationRole';
 import { helperContract } from '../../../../../src/utils/helperContract';
 import {
 	explorerKindCategory,
@@ -41,9 +42,11 @@ function modelCategory(unit: Classified): 'models' | 'types' | null {
 	const definitions = (unit.modelDefinitions ?? []).filter((item) =>
 		unit.owns.source.includes(item.source)
 	);
-	if (definitions.some((item) => item.kind === 'class' && (item.table || item.tableGap)))
-		return 'models';
-	return definitions.some((item) => item.kind !== 'class') ? 'types' : null;
+	const roles = definitions.map((item) =>
+		declarationRole(item.kind, Boolean(item.table || item.tableGap))
+	);
+	if (roles.includes('persisted-model')) return 'models';
+	return roles.includes('type') ? 'types' : null;
 }
 
 const unlisted = (unit: Classified) =>

@@ -3,7 +3,7 @@
 	"id": "model.provider-switch",
 	"kind": "model",
 	"title": "ProviderSwitch",
-	"responsibility": "Wraps the switches table for storing and retrieving provider-switch records.",
+	"responsibility": "Wraps provider-switch records in switches and delegates queries and mutations to a supplied persistence adapter.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"lineage": {
@@ -33,49 +33,56 @@
 				"name": "ProviderSwitch.session",
 				"type": "string",
 				"required": true,
-				"description": "Session identifier partitioning persisted provider-switch records."
+				"description": "Session key identifying the provider-switch record."
 			},
 			{
 				"name": "ProviderSwitch.id",
 				"type": "string",
 				"required": true,
-				"description": "Unique switch identifier within the session."
+				"description": "Stored row identity; the model passes it to the adapter without generating a key."
 			},
 			{
 				"name": "ProviderSwitch.data",
 				"type": "json",
 				"required": true,
-				"description": "JSON document retaining the provider-switch request, state and result."
+				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderSwitch.find",
 				"type": "Promise<ProviderSwitchAttributes | null>",
-				"description": "Matching provider-switch record returned by the adapter, or null when absent."
+				"description": "Promise of the matching switches row, or null according to the adapter lookup result."
 			},
 			{
 				"name": "ProviderSwitch.findBy",
 				"type": "Promise<ProviderSwitchAttributes[]>",
-				"description": "Provider-switch records returned by the adapter for the supplied conditions."
+				"description": "Promise of switches rows matching the supplied attribute filters."
 			},
 			{
 				"name": "ProviderSwitch.create",
 				"type": "Promise<ProviderSwitchAttributes>",
-				"description": "Created provider-switch record returned by the persistence adapter."
+				"description": "Promise of the switches row returned by the adapter after creation."
 			},
 			{
 				"name": "ProviderSwitch.update",
 				"type": "Promise<ProviderSwitchAttributes | null>",
-				"description": "Updated provider-switch record returned by the adapter, or null when absent."
+				"description": "Promise of the updated switches row, or null according to the adapter update result."
 			},
 			{
 				"name": "ProviderSwitch.delete",
 				"type": "Promise<boolean>",
-				"description": "Whether the persistence adapter removed a matching provider-switch record."
+				"description": "Promise of the adapter deletion result for the requested switches row."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Persistence operation failure",
+				"type": "propagated",
+				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProviderSwitch.find",
@@ -83,23 +90,31 @@
 					{
 						"name": "ProviderSwitch.find.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.find.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.find",
 						"type": "Promise<ProviderSwitchAttributes | null>",
-						"description": "Matching provider-switch record returned by the adapter, or null when absent."
+						"description": "Promise of the matching switches row, or null according to the adapter lookup result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderSwitch.findBy",
@@ -107,23 +122,31 @@
 					{
 						"name": "ProviderSwitch.findBy.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.findBy.fields",
 						"type": "Partial<ProviderSwitchAttributes>",
-						"required": true
+						"required": true,
+						"description": "Partial stored attributes used as equality filters for switches."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.findBy",
 						"type": "Promise<ProviderSwitchAttributes[]>",
-						"description": "Provider-switch records returned by the adapter for the supplied conditions."
+						"description": "Promise of switches rows matching the supplied attribute filters."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderSwitch.create",
@@ -131,23 +154,31 @@
 					{
 						"name": "ProviderSwitch.create.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.create.input",
 						"type": "ProviderSwitchCreateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to switches; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.create",
 						"type": "Promise<ProviderSwitchAttributes>",
-						"description": "Created provider-switch record returned by the persistence adapter."
+						"description": "Promise of the switches row returned by the adapter after creation."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderSwitch.update",
@@ -155,28 +186,37 @@
 					{
 						"name": "ProviderSwitch.update.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.update.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					},
 					{
 						"name": "ProviderSwitch.update.input",
 						"type": "ProviderSwitchUpdateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to switches; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.update",
 						"type": "Promise<ProviderSwitchAttributes | null>",
-						"description": "Updated provider-switch record returned by the adapter, or null when absent."
+						"description": "Promise of the updated switches row, or null according to the adapter update result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderSwitch.delete",
@@ -184,23 +224,31 @@
 					{
 						"name": "ProviderSwitch.delete.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the switches table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "ProviderSwitch.delete.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitch.delete",
 						"type": "Promise<boolean>",
-						"description": "Whether the persistence adapter removed a matching provider-switch record."
+						"description": "Promise of the adapter deletion result for the requested switches row."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [],

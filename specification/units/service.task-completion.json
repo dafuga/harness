@@ -190,7 +190,8 @@
 					{
 						"name": "TaskCompletionService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 					}
 				],
 				"outputs": [

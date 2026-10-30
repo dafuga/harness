@@ -534,7 +534,8 @@
 					{
 						"name": "SourceProfileAdapter.constructor.config",
 						"type": "SourceProfileAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "Project root and registered unit manifests used to attribute a source file to one unambiguous active owner."
 					}
 				],
 				"outputs": [

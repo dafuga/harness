@@ -2605,12 +2605,12 @@
 			"unit": "workflow.inspect-units",
 			"from": "src/workflows/inspectUnits.ts",
 			"to": "src/cli/program/inspectUnits.ts",
-			"definition": "eb80288aed9bf5ff106fc51af3ce394f7cb46b935af393b96457a1e772f9e55e",
+			"definition": "0a4f6e51899b4689f425875698b3f2b8416c071d1f3f6635a67df836d47cd0e4",
 			"relocationDefinition": "072cf1293671393fd361ca319d41b7dbb0a77de9cc57be8e81f46013d9296019",
 			"review": {
-				"commit": "5e62302402069c6d623486998da1142b882ba39e",
+				"commit": "e0a2756a5f0354dc6c6408084c018bfd25460446",
 				"path": "src/cli/program/inspectUnits.ts",
-				"definition": "eb80288aed9bf5ff106fc51af3ce394f7cb46b935af393b96457a1e772f9e55e",
+				"definition": "0a4f6e51899b4689f425875698b3f2b8416c071d1f3f6635a67df836d47cd0e4",
 				"reason": "Review canonical source boundaries and additive inspection facts while preserving public entry behavior."
 			},
 			"previousReviews": [
@@ -2625,6 +2625,12 @@
 					"path": "src/cli/program/inspectUnits.ts",
 					"definition": "f72c910d280fe0609a276d10532561a6227b83c233c33618af346a405b38eb21",
 					"reason": "Inspect freshly derived contracts and dependency facts without requiring a registry rewrite."
+				},
+				{
+					"commit": "5e62302402069c6d623486998da1142b882ba39e",
+					"path": "src/cli/program/inspectUnits.ts",
+					"definition": "eb80288aed9bf5ff106fc51af3ce394f7cb46b935af393b96457a1e772f9e55e",
+					"reason": "Review canonical source boundaries and additive inspection facts while preserving public entry behavior."
 				}
 			]
 		},

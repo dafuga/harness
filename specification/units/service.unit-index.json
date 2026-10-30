@@ -3,8 +3,8 @@
 	"id": "service.unit-index",
 	"kind": "service",
 	"title": "UnitIndexService",
-	"responsibility": "Owns the UnitIndexService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Reconciles indexed source with registered ownership, contracts and lineage, retaining existing IDs and reporting additions, moves, revivals and orphaned units.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -31,41 +31,53 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "UnitIndexService.index.index",
 				"type": "SourceIndex",
-				"required": true
+				"required": true,
+				"description": "Source facts and conventional identities for one revision; the source map is not reordered."
 			},
 			{
 				"name": "UnitIndexService.index.existing",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "Existing active and retired registry records whose stable identities and authored declarations must survive reconciliation."
 			},
 			{
 				"name": "modelCompanions.index",
 				"type": "SourceIndex",
-				"required": true
+				"required": true,
+				"description": "Indexed storage declarations used to identify persisted-model companions."
 			},
 			{
 				"name": "modelCompanions.existing",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "Prior registry records; matching persisted companions retain retired identities and predecessor lineage."
 			}
 		],
 		"outputs": [
 			{
 				"name": "UnitIndexService.index",
-				"type": "UnitIndexResult"
+				"type": "UnitIndexResult",
+				"description": "Reconciled manifests plus explicit added, updated, moved, revived and orphaned ID lists; does not write the registry."
 			},
 			{
 				"name": "modelCompanions",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"description": "Registry projection that folds persisted-model companion ownership and redirects dependencies while retaining tombstones."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Input access failure",
+				"type": "propagated",
+				"description": "Schema validation, caller-provided getters, iterators or serialization can throw; this value operation does not perform filesystem I/O."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "UnitIndexService.index",
@@ -73,22 +85,31 @@
 					{
 						"name": "UnitIndexService.index.index",
 						"type": "SourceIndex",
-						"required": true
+						"required": true,
+						"description": "Source facts and conventional identities for one revision; the source map is not reordered."
 					},
 					{
 						"name": "UnitIndexService.index.existing",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "Existing active and retired registry records whose stable identities and authored declarations must survive reconciliation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitIndexService.index",
-						"type": "UnitIndexResult"
+						"type": "UnitIndexResult",
+						"description": "Reconciled manifests plus explicit added, updated, moved, revived and orphaned ID lists; does not write the registry."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Input access failure",
+						"type": "propagated",
+						"description": "Schema validation, caller-provided getters, iterators or serialization can throw; this value operation does not perform filesystem I/O."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "modelCompanions",
@@ -96,22 +117,31 @@
 					{
 						"name": "modelCompanions.index",
 						"type": "SourceIndex",
-						"required": true
+						"required": true,
+						"description": "Indexed storage declarations used to identify persisted-model companions."
 					},
 					{
 						"name": "modelCompanions.existing",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "Prior registry records; matching persisted companions retain retired identities and predecessor lineage."
 					}
 				],
 				"outputs": [
 					{
 						"name": "modelCompanions",
-						"type": "ComponentManifest[]"
+						"type": "ComponentManifest[]",
+						"description": "Registry projection that folds persisted-model companion ownership and redirects dependencies while retaining tombstones."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Input access failure",
+						"type": "propagated",
+						"description": "Schema validation, caller-provided getters, iterators or serialization can throw; this value operation does not perform filesystem I/O."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

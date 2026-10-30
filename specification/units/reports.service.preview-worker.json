@@ -122,17 +122,32 @@
 					{
 						"name": "PreviewWorkerService.constructor.entry",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Compiled Node launcher owned by this supervisor.",
+						"examples": ["/projects/harness/packages/reports/.cache/preview-node-example/entry.mjs"]
 					},
 					{
 						"name": "PreviewWorkerService.constructor.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Validated launch arguments passed unchanged to each replacement.",
+						"examples": [
+							[
+								"--port",
+								"5688",
+								"--config",
+								"/projects/harness/packages/reports/vite.config.ts",
+								"--host",
+								"127.0.0.1"
+							]
+						]
 					},
 					{
 						"name": "PreviewWorkerService.constructor.url",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stable loopback URL retained across worker replacements.",
+						"examples": ["http://127.0.0.1:5688"]
 					}
 				],
 				"outputs": [

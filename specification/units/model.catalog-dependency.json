@@ -3,8 +3,8 @@
 	"id": "model.catalog-dependency",
 	"kind": "model",
 	"title": "CatalogDependency",
-	"responsibility": "Owns the CatalogDependency data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Stores directed unit relationships in catalog_dependencies through a supplied persistence adapter.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"lineage": {
 		"predecessors": ["model.catalog-dependency-types"]
@@ -27,53 +27,68 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogDependency.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stored row identity; the model passes it to the adapter without generating a key."
 			},
 			{
 				"name": "CatalogDependency.entityId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stored entity identity referenced by this membership or relationship."
 			},
 			{
 				"name": "CatalogDependency.targetId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stable target unit ID of the directed relationship."
 			},
 			{
 				"name": "CatalogDependency.via",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Declared or indexed relationship kind."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogDependency.find",
-				"type": "Promise<CatalogDependencyAttributes | null>"
+				"type": "Promise<CatalogDependencyAttributes | null>",
+				"description": "Promise of the matching catalog_dependencies row, or null according to the adapter lookup result."
 			},
 			{
 				"name": "CatalogDependency.findBy",
-				"type": "Promise<CatalogDependencyAttributes[]>"
+				"type": "Promise<CatalogDependencyAttributes[]>",
+				"description": "Promise of catalog_dependencies rows matching the supplied attribute filters."
 			},
 			{
 				"name": "CatalogDependency.create",
-				"type": "Promise<CatalogDependencyAttributes>"
+				"type": "Promise<CatalogDependencyAttributes>",
+				"description": "Promise of the catalog_dependencies row returned by the adapter after creation."
 			},
 			{
 				"name": "CatalogDependency.update",
-				"type": "Promise<CatalogDependencyAttributes | null>"
+				"type": "Promise<CatalogDependencyAttributes | null>",
+				"description": "Promise of the updated catalog_dependencies row, or null according to the adapter update result."
 			},
 			{
 				"name": "CatalogDependency.delete",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Promise of the adapter deletion result for the requested catalog_dependencies row."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Persistence operation failure",
+				"type": "propagated",
+				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CatalogDependency.find",
@@ -81,22 +96,31 @@
 					{
 						"name": "CatalogDependency.find.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogDependency.find.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.find",
-						"type": "Promise<CatalogDependencyAttributes | null>"
+						"type": "Promise<CatalogDependencyAttributes | null>",
+						"description": "Promise of the matching catalog_dependencies row, or null according to the adapter lookup result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogDependency.findBy",
@@ -104,22 +128,31 @@
 					{
 						"name": "CatalogDependency.findBy.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogDependency.findBy.fields",
 						"type": "Partial<CatalogDependencyAttributes>",
-						"required": true
+						"required": true,
+						"description": "Partial stored attributes used as equality filters for catalog_dependencies."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.findBy",
-						"type": "Promise<CatalogDependencyAttributes[]>"
+						"type": "Promise<CatalogDependencyAttributes[]>",
+						"description": "Promise of catalog_dependencies rows matching the supplied attribute filters."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogDependency.create",
@@ -127,22 +160,31 @@
 					{
 						"name": "CatalogDependency.create.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogDependency.create.input",
 						"type": "CatalogDependencyCreateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_dependencies; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.create",
-						"type": "Promise<CatalogDependencyAttributes>"
+						"type": "Promise<CatalogDependencyAttributes>",
+						"description": "Promise of the catalog_dependencies row returned by the adapter after creation."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogDependency.update",
@@ -150,27 +192,37 @@
 					{
 						"name": "CatalogDependency.update.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogDependency.update.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					},
 					{
 						"name": "CatalogDependency.update.input",
 						"type": "CatalogDependencyUpdateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_dependencies; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.update",
-						"type": "Promise<CatalogDependencyAttributes | null>"
+						"type": "Promise<CatalogDependencyAttributes | null>",
+						"description": "Promise of the updated catalog_dependencies row, or null according to the adapter update result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogDependency.delete",
@@ -178,22 +230,31 @@
 					{
 						"name": "CatalogDependency.delete.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogDependency.delete.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.delete",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Promise of the adapter deletion result for the requested catalog_dependencies row."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [],

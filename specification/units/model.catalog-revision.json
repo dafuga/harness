@@ -3,8 +3,8 @@
 	"id": "model.catalog-revision",
 	"kind": "model",
 	"title": "CatalogRevision",
-	"responsibility": "Owns the CatalogRevision data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Stores Git revision metadata and verification summaries in catalog_revisions through a supplied persistence adapter.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"lineage": {
 		"predecessors": ["model.catalog-revision-types"]
@@ -27,63 +27,80 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogRevision.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stored row identity; the model passes it to the adapter without generating a key."
 			},
 			{
 				"name": "CatalogRevision.subject",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit subject."
 			},
 			{
 				"name": "CatalogRevision.committedAt",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit timestamp."
 			},
 			{
 				"name": "CatalogRevision.coverage",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Recorded revision coverage classification."
 			},
 			{
 				"name": "CatalogRevision.registryAvailable",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether this revision supplies a readable unit registry."
 			},
 			{
 				"name": "CatalogRevision.data",
 				"type": "json",
-				"required": true
+				"required": true,
+				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogRevision.find",
-				"type": "Promise<CatalogRevisionAttributes | null>"
+				"type": "Promise<CatalogRevisionAttributes | null>",
+				"description": "Promise of the matching catalog_revisions row, or null according to the adapter lookup result."
 			},
 			{
 				"name": "CatalogRevision.findBy",
-				"type": "Promise<CatalogRevisionAttributes[]>"
+				"type": "Promise<CatalogRevisionAttributes[]>",
+				"description": "Promise of catalog_revisions rows matching the supplied attribute filters."
 			},
 			{
 				"name": "CatalogRevision.create",
-				"type": "Promise<CatalogRevisionAttributes>"
+				"type": "Promise<CatalogRevisionAttributes>",
+				"description": "Promise of the catalog_revisions row returned by the adapter after creation."
 			},
 			{
 				"name": "CatalogRevision.update",
-				"type": "Promise<CatalogRevisionAttributes | null>"
+				"type": "Promise<CatalogRevisionAttributes | null>",
+				"description": "Promise of the updated catalog_revisions row, or null according to the adapter update result."
 			},
 			{
 				"name": "CatalogRevision.delete",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Promise of the adapter deletion result for the requested catalog_revisions row."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Persistence operation failure",
+				"type": "propagated",
+				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CatalogRevision.find",
@@ -91,22 +108,31 @@
 					{
 						"name": "CatalogRevision.find.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_revisions table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRevision.find.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevision.find",
-						"type": "Promise<CatalogRevisionAttributes | null>"
+						"type": "Promise<CatalogRevisionAttributes | null>",
+						"description": "Promise of the matching catalog_revisions row, or null according to the adapter lookup result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRevision.findBy",
@@ -114,22 +140,31 @@
 					{
 						"name": "CatalogRevision.findBy.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_revisions table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRevision.findBy.fields",
 						"type": "Partial<CatalogRevisionAttributes>",
-						"required": true
+						"required": true,
+						"description": "Partial stored attributes used as equality filters for catalog_revisions."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevision.findBy",
-						"type": "Promise<CatalogRevisionAttributes[]>"
+						"type": "Promise<CatalogRevisionAttributes[]>",
+						"description": "Promise of catalog_revisions rows matching the supplied attribute filters."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRevision.create",
@@ -137,22 +172,31 @@
 					{
 						"name": "CatalogRevision.create.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_revisions table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRevision.create.input",
 						"type": "CatalogRevisionCreateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_revisions; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevision.create",
-						"type": "Promise<CatalogRevisionAttributes>"
+						"type": "Promise<CatalogRevisionAttributes>",
+						"description": "Promise of the catalog_revisions row returned by the adapter after creation."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRevision.update",
@@ -160,27 +204,37 @@
 					{
 						"name": "CatalogRevision.update.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_revisions table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRevision.update.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					},
 					{
 						"name": "CatalogRevision.update.input",
 						"type": "CatalogRevisionUpdateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_revisions; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevision.update",
-						"type": "Promise<CatalogRevisionAttributes | null>"
+						"type": "Promise<CatalogRevisionAttributes | null>",
+						"description": "Promise of the updated catalog_revisions row, or null according to the adapter update result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRevision.delete",
@@ -188,22 +242,31 @@
 					{
 						"name": "CatalogRevision.delete.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_revisions table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRevision.delete.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevision.delete",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Promise of the adapter deletion result for the requested catalog_revisions row."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [],

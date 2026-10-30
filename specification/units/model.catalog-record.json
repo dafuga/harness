@@ -3,8 +3,8 @@
 	"id": "model.catalog-record",
 	"kind": "model",
 	"title": "CatalogRecord",
-	"responsibility": "Owns the CatalogRecord data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Stores revision-bound verification records in catalog_records through a supplied persistence adapter.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"lineage": {
 		"predecessors": ["model.catalog-record-types"]
@@ -27,58 +27,74 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogRecord.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stored row identity; the model passes it to the adapter without generating a key."
 			},
 			{
 				"name": "CatalogRecord.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit to which this stored record belongs."
 			},
 			{
 				"name": "CatalogRecord.status",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Recorded verification outcome."
 			},
 			{
 				"name": "CatalogRecord.valid",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Recorded verification validity flag."
 			},
 			{
 				"name": "CatalogRecord.data",
 				"type": "json",
-				"required": true
+				"required": true,
+				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogRecord.find",
-				"type": "Promise<CatalogRecordAttributes | null>"
+				"type": "Promise<CatalogRecordAttributes | null>",
+				"description": "Promise of the matching catalog_records row, or null according to the adapter lookup result."
 			},
 			{
 				"name": "CatalogRecord.findBy",
-				"type": "Promise<CatalogRecordAttributes[]>"
+				"type": "Promise<CatalogRecordAttributes[]>",
+				"description": "Promise of catalog_records rows matching the supplied attribute filters."
 			},
 			{
 				"name": "CatalogRecord.create",
-				"type": "Promise<CatalogRecordAttributes>"
+				"type": "Promise<CatalogRecordAttributes>",
+				"description": "Promise of the catalog_records row returned by the adapter after creation."
 			},
 			{
 				"name": "CatalogRecord.update",
-				"type": "Promise<CatalogRecordAttributes | null>"
+				"type": "Promise<CatalogRecordAttributes | null>",
+				"description": "Promise of the updated catalog_records row, or null according to the adapter update result."
 			},
 			{
 				"name": "CatalogRecord.delete",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Promise of the adapter deletion result for the requested catalog_records row."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Persistence operation failure",
+				"type": "propagated",
+				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CatalogRecord.find",
@@ -86,22 +102,31 @@
 					{
 						"name": "CatalogRecord.find.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.find.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.find",
-						"type": "Promise<CatalogRecordAttributes | null>"
+						"type": "Promise<CatalogRecordAttributes | null>",
+						"description": "Promise of the matching catalog_records row, or null according to the adapter lookup result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRecord.findBy",
@@ -109,22 +134,31 @@
 					{
 						"name": "CatalogRecord.findBy.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.findBy.fields",
 						"type": "Partial<CatalogRecordAttributes>",
-						"required": true
+						"required": true,
+						"description": "Partial stored attributes used as equality filters for catalog_records."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.findBy",
-						"type": "Promise<CatalogRecordAttributes[]>"
+						"type": "Promise<CatalogRecordAttributes[]>",
+						"description": "Promise of catalog_records rows matching the supplied attribute filters."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRecord.create",
@@ -132,22 +166,31 @@
 					{
 						"name": "CatalogRecord.create.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.create.input",
 						"type": "CatalogRecordCreateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_records; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.create",
-						"type": "Promise<CatalogRecordAttributes>"
+						"type": "Promise<CatalogRecordAttributes>",
+						"description": "Promise of the catalog_records row returned by the adapter after creation."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRecord.update",
@@ -155,27 +198,37 @@
 					{
 						"name": "CatalogRecord.update.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.update.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					},
 					{
 						"name": "CatalogRecord.update.input",
 						"type": "CatalogRecordUpdateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_records; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.update",
-						"type": "Promise<CatalogRecordAttributes | null>"
+						"type": "Promise<CatalogRecordAttributes | null>",
+						"description": "Promise of the updated catalog_records row, or null according to the adapter update result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRecord.delete",
@@ -183,22 +236,31 @@
 					{
 						"name": "CatalogRecord.delete.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.delete.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.delete",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Promise of the adapter deletion result for the requested catalog_records row."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [],

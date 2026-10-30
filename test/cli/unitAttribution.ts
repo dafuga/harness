@@ -5,6 +5,16 @@ import { scenarioManifestSchema } from '../../src/core/unitTypes';
 import { renderUnit } from '../../src/cli/program/renderUnit';
 import { measureWorkload } from '../support/measureWorkload';
 
+export async function assertInspectionRows(unit: UnitDetail): Promise<void> {
+	await measureWorkload('entry.program-render-unit', 'inspect-declaration-and-impact-rows', () => {
+		unit.declarations = [{ name: 'BadgeProps', source: 'src/Badge.types.ts', role: 'type' }];
+		const text = renderUnit(unit);
+		expect(text).not.toMatch(/Targets|Continues|Execution targets/);
+		expect(text).toMatch(/Runtime\s+module src\/Badge.svelte/);
+		expect(text).toContain('BadgeProps: type (src/Badge.types.ts)');
+	});
+}
+
 export async function assertTestAttribution(unit: UnitDetail): Promise<void> {
 	await measureWorkload(
 		'workflow.inspect-units',

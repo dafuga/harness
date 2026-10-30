@@ -84,7 +84,8 @@
 					{
 						"name": "CatalogWriteService.constructor.adapter",
 						"type": "SqliteAdapter",
-						"required": true
+						"required": true,
+						"description": "Transactional database adapter for replacing the derived catalog tables."
 					}
 				],
 				"outputs": [

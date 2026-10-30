@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { componentManifestSchema } from '../src/core/unitTypes';
+import { componentManifestSchema, type ComponentManifest } from '../src/core/unitTypes';
 
 const described = (value: string | undefined) =>
 	Boolean(value?.trim()) && !/^(No description|TODO|TBD)\b/i.test(value ?? '');
@@ -62,3 +62,52 @@ test('SQLite catalog functions and persisted models publish declared human-reada
 		`SQLite catalog units require declared readable contracts: ${gaps.slice(0, 12).join('; ')}`
 	).toEqual([]);
 });
+
+test('reviewed architecture units describe method inputs, defaults, outputs and failures', () => {
+	const ids = [
+		'service.source-graph',
+		'service.source-index',
+		'service.unit-index',
+		'workflow.generate-code',
+		'service.agents-providers-module-task-analytics-service-task-metrics',
+		'model.catalog-branch',
+		'model.catalog-revision',
+		'model.catalog-scenario',
+		'model.analytics-event',
+		'model.catalog-record',
+		'model.catalog-entity',
+		'model.catalog-dependency',
+		'model.provider-switch',
+		'model.catalog-revision-entity',
+		'model.catalog-metadata',
+		'model.adapters-types',
+		'model.adapters-sqlite'
+	];
+	for (const id of ids) {
+		const unit = componentManifestSchema.parse(
+			JSON.parse(
+				readFileSync(resolve(import.meta.dirname, `../specification/units/${id}.json`), 'utf8')
+			)
+		);
+		expect(unit.responsibilityOrigin, id).toBe('declared');
+		expect(unit.responsibility, id).not.toMatch(/^Owns the\b/);
+		expect(unit.contract.origin, id).toBe('declared');
+		const contracts = [
+			unit.contract,
+			...(unit.contract.operations ?? []),
+			...(unit.contract.initialization ?? [])
+		];
+		for (const contract of contracts) assertContractFields(id, contract);
+	}
+});
+
+function assertContractFields(
+	id: string,
+	contract: Pick<ComponentManifest['contract'], 'inputs' | 'outputs' | 'errors'>
+): void {
+	for (const group of ['inputs', 'outputs', 'errors'] as const)
+		for (const field of contract[group]) {
+			expect(described(field.description), `${id}: ${group}.${field.name}`).toBe(true);
+			if (group === 'inputs') expect(typeof field.required, `${id}: ${field.name}`).toBe('boolean');
+		}
+}
