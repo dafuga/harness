@@ -5,31 +5,50 @@ import { noop } from './shared';
 /** Show an empty repository or retain a live observation that fails or grows stale. */
 export function projectActivityVariant(props: PreviewCases[string], variant: string) {
 	const live = props.live as LiveActivity;
-	if (variant === 'empty') {
-		const activity = props.activity as ProjectActivity;
-		return {
-			...props,
-			activity: {
-				...activity,
-				repository: { ...activity.repository, head: null },
-				asOf: null,
-				work: [],
-				files: [],
-				loops: { total: 0, types: [] }
-			},
-			live: {
-				...live,
-				worktrees: [],
-				agents: { tracking: 'never-used', working: null, unreadable: 0, roster: [] }
-			}
-		};
-	}
+	if (variant === 'empty')
+		return { ...props, ...emptyActivity({ activity: props.activity as ProjectActivity, live }) };
 	return {
 		...props,
 		reading: {
 			now: Date.parse(live.sampledAt) + (variant === 'stale' ? 61_000 : 0),
 			failed: variant === 'failed-read',
 			refresh: noop
+		}
+	};
+}
+
+/** Feed the live site the same empty or stale snapshot before and after its first refresh. */
+export function siteActivityVariant(props: PreviewCases[string], variant: string) {
+	const shown = props.shown as { activity: ProjectActivity; live: LiveActivity };
+	if (variant === 'empty') return { ...props, shown: emptyActivity(shown) };
+	if (variant === 'stale')
+		return {
+			...props,
+			shown: {
+				...shown,
+				live: {
+					...shown.live,
+					sampledAt: new Date(Date.parse(shown.live.sampledAt) - 120_000).toISOString()
+				}
+			}
+		};
+	return variant === 'failed-refresh' ? props : null;
+}
+
+function emptyActivity(shown: { activity: ProjectActivity; live: LiveActivity }) {
+	return {
+		activity: {
+			...shown.activity,
+			repository: { ...shown.activity.repository, head: null },
+			asOf: null,
+			work: [],
+			files: [],
+			loops: { total: 0, types: [] }
+		},
+		live: {
+			...shown.live,
+			worktrees: [],
+			agents: { tracking: 'never-used', working: null, unreadable: 0, roster: [] }
 		}
 	};
 }

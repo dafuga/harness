@@ -5,6 +5,7 @@ import { buildData } from './buildData';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
 import { routeCpuFixture } from './analyticsCpuActions';
+import { siteActivityVariant } from './projectActivityVariants';
 import { activity, live } from './activity';
 import { image, layoutImage, ordersPageImage } from './shared';
 import { checkoutConfirmation } from './evidenceCardMedia';
@@ -128,9 +129,14 @@ async function consoleAgentFixture(route: Route) {
 }
 
 function activityFixture(route: Route) {
-	const variant = new URL(route.request().frame().page().url()).searchParams.get('variant');
+	const query = new URL(route.request().frame().page().url()).searchParams;
+	const variant = query.get('variant') ?? '';
 	if (variant === 'failed-refresh')
 		return route.fulfill({ contentType: 'application/json', body: 'Activity unavailable.' });
+	if (query.get('unit') === 'reports.component.site-activity') {
+		const props = siteActivityVariant({ shown: { activity, live } }, variant);
+		return route.fulfill({ json: props?.shown ?? { activity, live } });
+	}
 	return route.fulfill({ json: { activity, live } });
 }
 

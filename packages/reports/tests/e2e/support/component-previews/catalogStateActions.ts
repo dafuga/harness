@@ -85,6 +85,13 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.getByRole('button', { name: 'Refresh activity' }).click();
 		await expect(component.getByRole('status')).toContainText('Activity could not be read again');
 	},
+	'reports.component.site-activity:empty': async (component) => {
+		await expect(component.locator('.pa-identity')).toContainText('no commit');
+		await expect(component).toContainText('No commit is in this history yet.');
+	},
+	'reports.component.site-activity:stale': async (component) => {
+		await expect(component.getByText(/The last reading is older than a minute/)).toBeVisible();
+	},
 	'reports.component.evidence-grid:empty': async (component) => {
 		await component
 			.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })

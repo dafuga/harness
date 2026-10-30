@@ -34,8 +34,8 @@ export const activityCatalogVariants: Record<string, string[]> = {
 	],
 	// Project activity keeps recorded, empty, stale and failed live readings distinct.
 	'reports.component.project-activity': ['recorded', 'empty', 'stale', 'failed-read'],
-	// Site activity's refresh failure preserves the last known live observation with a warning.
-	'reports.component.site-activity': ['failed-refresh'],
+	// Site activity shows an empty repository, stale reading and failed refresh independently.
+	'reports.component.site-activity': ['empty', 'stale', 'failed-refresh'],
 	// History filters show focused, empty and fully populated forms.
 	'reports.component.analytics-filters': ['empty', 'all-filters'],
 	// CPU distinguishes pending, idle, unmeasured and unavailable local samples.

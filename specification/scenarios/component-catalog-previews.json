@@ -4673,6 +4673,18 @@
 			"units": ["reports.component.site-activity"]
 		},
 		{
+			"id": "reports-component-site-activity-empty",
+			"title": "Live site activity: Empty repository",
+			"coverage": "required",
+			"units": ["reports.component.site-activity"]
+		},
+		{
+			"id": "reports-component-site-activity-stale",
+			"title": "Live site activity: Stale reading",
+			"coverage": "required",
+			"units": ["reports.component.site-activity"]
+		},
+		{
 			"id": "reports-component-site-activity-failed-refresh",
 			"title": "Live site activity: Failed refresh",
 			"coverage": "required",
@@ -5860,6 +5872,8 @@
 				"reports-component-shared-primitives-atoms-svg-use",
 				"reports-component-shared-primitives-loading-state",
 				"reports-component-site-activity",
+				"reports-component-site-activity-empty",
+				"reports-component-site-activity-stale",
 				"reports-component-site-activity-failed-refresh",
 				"reports-component-source-code-action",
 				"reports-component-source-code-action-unavailable",
