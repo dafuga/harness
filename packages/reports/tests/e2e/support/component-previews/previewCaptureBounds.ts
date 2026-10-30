@@ -58,7 +58,8 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 async function previewTarget(content: Locator, id: string, variant: string) {
 	const dialog = content.locator('dialog[open], [role="dialog"]:visible').last();
 	const chatPicker =
-		id === 'reports.component.console-chat' && ['model-open', 'effort-open'].includes(variant);
+		id === 'reports.component.console-chat' &&
+		['model-open', 'model-selected', 'effort-open', 'effort-selected'].includes(variant);
 	const modal = await previewModal(content, dialog, chatPicker);
 	const projectAgent = id === 'desktop.component.project-agent';
 	const compactTarget =

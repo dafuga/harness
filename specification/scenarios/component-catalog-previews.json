@@ -1925,8 +1925,20 @@
 			"units": ["reports.component.console-chat"]
 		},
 		{
+			"id": "reports-component-console-chat-model-selected",
+			"title": "Local web project chat: Model selected",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
 			"id": "reports-component-console-chat-effort-open",
 			"title": "Local web project chat: Reasoning picker",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-effort-selected",
+			"title": "Local web project chat: Reasoning effort selected",
 			"coverage": "required",
 			"units": ["reports.component.console-chat"]
 		},
@@ -6488,7 +6500,9 @@
 				"reports-component-console-chat-change",
 				"reports-component-console-chat-comment",
 				"reports-component-console-chat-model-open",
+				"reports-component-console-chat-model-selected",
 				"reports-component-console-chat-effort-open",
+				"reports-component-console-chat-effort-selected",
 				"reports-component-contract-example",
 				"reports-component-contract-example-illustrative",
 				"reports-component-contract-example-missing",
