@@ -12,7 +12,8 @@ let parentCss: string | undefined;
 
 /** Render standalone cards with the same stylesheet their Project Activity parent provides. */
 export async function applyActivityPreviewContext(page: Page, content: Locator, id: string) {
-	if (!activityCards.has(id)) return;
+	const list = id === 'reports.component.activity-list';
+	if (!activityCards.has(id) && !list) return;
 	if (!(await page.locator('style[data-activity-preview]').count())) {
 		const style = await page.addStyleTag({ content: projectActivityCss() });
 		await style.evaluate((node) =>
@@ -20,6 +21,7 @@ export async function applyActivityPreviewContext(page: Page, content: Locator, 
 		);
 	}
 	await content.evaluate((node) => node.classList.add('project-activity', 'activity-preview'));
+	if (list) return;
 	const card = content.locator('.pa-card');
 	await expect(card).toHaveCSS('border-top-style', 'solid');
 	if (id === 'reports.component.activity-loops' && (await card.locator('.pa-row').count()))

@@ -12,6 +12,7 @@ import { prepareImageZoom } from './imageZoomActions';
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.entity-states': prepareEntityStates,
 	'reports.component.analytics-history': prepareAnalyticsHistory,
+	'reports.component.activity-list': prepareActivityList,
 	'reports.component.explorer-usage-link': prepareUsageLink,
 	'reports.component.explorer-ui-config-value-tree': prepareConfigValueTree,
 	'reports.component.explorer-catalog-items': prepareCatalogItems,
@@ -31,6 +32,22 @@ export async function prepareReportState(component: Locator, id: string, variant
 	if (!action) return false;
 	await action(component, variant);
 	return true;
+}
+
+async function prepareActivityList(component: Locator, variant: string) {
+	const list = component.getByRole('list', { name: 'Recent activity', exact: true });
+	if (variant === 'empty') {
+		await expect(component.getByRole('status')).toHaveText('No activities.');
+		await expect(list.locator('li')).toHaveCount(0);
+		return;
+	}
+	if (variant === 'expanded') {
+		await component.getByRole('button', { name: 'Show all 4 activities' }).click();
+		await expect(component.getByRole('button', { name: 'Show fewer activities' })).toBeVisible();
+	}
+	if (variant === 'short') await expect(list.locator('li:visible')).toHaveCount(2);
+	if (variant === 'ordered') expect(await list.evaluate((node) => node.tagName)).toBe('OL');
+	if (variant === 'error') await expect(list.getByRole('alert')).toContainText('Please try again.');
 }
 
 async function prepareAnalyticsHistory(component: Locator, variant: string) {

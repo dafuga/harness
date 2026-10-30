@@ -4,6 +4,7 @@ import { projectActivityVariant, siteActivityVariant } from './projectActivityVa
 import { activityWorkVariant } from './activityWorkVariants';
 import { activityFileVariant } from './activityFileVariants';
 import { activityAgentVariant } from './activityAgentVariants';
+import { activityListVariant } from './activityListVariants';
 import type { Models } from '../../../../src/components/reports-media/AnalyticsModels.types';
 
 /** Route activity and analytics inputs to their component-specific fixtures. */
@@ -21,6 +22,7 @@ export function activityReportVariant(id: string, props: PreviewCases[string], v
 		};
 	if (id === 'reports.component.activity-files') return activityFileVariant(props, variant);
 	if (id === 'reports.component.activity-agents') return activityAgentVariant(props, variant);
+	if (id === 'reports.component.activity-list') return activityListVariant(props, variant);
 	if (id === 'reports.component.analytics-models' && variant !== 'empty')
 		return analyticsModelVariant(props, variant);
 	if (id === 'reports.component.analytics-history' && variant === 'active') {

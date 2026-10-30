@@ -87,13 +87,23 @@ export async function openShellPage(
 export async function captureShell(
 	page: Page,
 	home: string,
-	shown: { state: string; viewport: string; slot?: string }
+	shown: {
+		state: string;
+		viewport: string;
+		slot?: string;
+		clip?: { x: number; y: number; width: number; height: number };
+	}
 ): Promise<void> {
 	if (!evidenceRequested()) return;
 	const served = await new BuildIdentityService().identify(home);
 	const revision = process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40);
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
-	const bytes = await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' });
+	const bytes = await page.screenshot({
+		fullPage: true,
+		clip: shown.clip,
+		animations: 'disabled',
+		caret: 'hide'
+	});
 	const { state, viewport, slot = 'screens' } = shown;
 	recordCapture(
 		{
@@ -104,6 +114,7 @@ export async function captureShell(
 			file: `${shown.state}-${shown.viewport}.png`,
 			mediaType: 'image/png',
 			provenance: 'actual-capture',
+			...(shown.clip ? { clip: shown.clip } : {}),
 			server: { buildId: served?.buildId ?? 'not-built', revision }
 		},
 		bytes

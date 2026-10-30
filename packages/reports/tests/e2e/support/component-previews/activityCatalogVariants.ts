@@ -30,6 +30,8 @@ export const activityCatalogVariants: Record<string, string[]> = {
 		'expanded-committed',
 		'multiple-checkouts'
 	],
+	// The list preserves its empty, short, ordered, expanded and caller-error presentations.
+	'reports.component.activity-list': ['empty', 'short', 'ordered', 'expanded', 'error'],
 	// Loop history either lists known templates or explains that none has been recorded.
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.

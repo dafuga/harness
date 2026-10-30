@@ -29,6 +29,9 @@
 		<hx-li hidden={!open && position >= preview}>{@render row(item)}</hx-li>
 	{/each}
 </hx-element>
+{#if !items.length}
+	<hx-element this="p" class="pa-empty" role="status">No {noun}.</hx-element>
+{/if}
 {#if items.length > preview}
 	<hx-button
 		type="button"
