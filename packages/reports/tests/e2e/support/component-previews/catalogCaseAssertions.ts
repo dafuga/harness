@@ -48,7 +48,7 @@ export async function assertCatalogDetails(component: Locator, id: string, varia
 		await expect(component.getByRole('link', { name: 'OrderList', exact: true })).toBeVisible();
 		await expect(component.getByRole('link', { name: 'OrderStore', exact: true })).toBeVisible();
 	}
-	if (id === 'reports.component.usage-examples-usage-examples')
+	if (id === 'reports.component.usage-examples-usage-examples' && !variant)
 		await expect(component.locator('code')).toHaveText('formatDuration(90)\n// => "1:30"');
 	if (id === 'reports.component.harness-entity-history-row') {
 		await expect(component.locator('table.ex-history tbody > tr')).toHaveCount(1);

@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { expect, type Locator } from '@playwright/test';
 import { prepareConsoleChatState } from './consoleChatActions';
 import { assertProviderPickerCardState } from './providerPickerCardActions';
 import { prepareProviderPickerState } from './providerPickerActions';
@@ -9,7 +9,7 @@ import { prepareAudioUploadFiles } from './audioUploadFilesActions';
 import { prepareEntitySearchState } from './entitySearchPreviewActions';
 import { assertCpuState } from './analyticsCpuActions';
 import { prepareEvidenceCard } from './evidenceCardActions';
-import { prepareEntityStates } from './entityStatesPreviewAssertions';
+import { prepareReportState } from './reportStateActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -144,7 +144,7 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 	if (id === 'reports.component.activity-files') await prepareActivityFileState(component, variant);
 	if (id === 'reports.component.activity-work' && variant !== 'recorded')
 		await prepareActivityWorkState(component, variant);
-	if (id === 'reports.component.entity-states') return prepareEntityStates(component, variant);
+	if (await prepareReportState(component, id, variant)) return;
 	if (id === 'reports.component.entity-search' && variant)
 		return prepareEntitySearchState(component, variant);
 	if (id === 'reports.component.provider-picker')
@@ -198,17 +198,4 @@ async function assertAudioComparisonViewer(component: Locator, variant: string) 
 	}
 	if (['running', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'].includes(variant))
 		await expect(sides.nth(1).locator('.badge')).toHaveClass(new RegExp(variant));
-}
-
-/** Assert the complete comparison after its screenshot is recorded. */
-export async function assertAudioViewerCapture(page: Page, id: string, viewport: string) {
-	if (id !== 'reports.component.audio-comparison-viewer' || viewport !== 'mobile') return;
-	const component = page.locator(`[data-preview-unit="${id}"]`);
-	const sides = component.locator('.audio-comparison-side');
-	if ((await sides.count()) !== 2) return;
-	const dialog = await component.locator('dialog[open]').boundingBox();
-	const last = await sides.last().boundingBox();
-	expect(last!.y + last!.height, 'Both recordings fit in the mobile capture').toBeLessThanOrEqual(
-		dialog!.y + dialog!.height
-	);
 }

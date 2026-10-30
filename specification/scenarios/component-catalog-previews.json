@@ -2429,8 +2429,98 @@
 			"units": ["reports.component.explorer-catalog-items"]
 		},
 		{
+			"id": "reports-component-explorer-catalog-items-multiple",
+			"title": "ExplorerCatalogItems: multiple components",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-batched",
+			"title": "ExplorerCatalogItems: batched components",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-more",
+			"title": "ExplorerCatalogItems: more components",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-functions",
+			"title": "ExplorerCatalogItems: functions",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-pages",
+			"title": "ExplorerCatalogItems: pages",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-configs",
+			"title": "ExplorerCatalogItems: config variables",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-configs-open",
+			"title": "ExplorerCatalogItems: open config value",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-empty-configs",
+			"title": "ExplorerCatalogItems: empty config table",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-unlinked",
+			"title": "ExplorerCatalogItems: unlinked dependency",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
 			"id": "reports-component-explorer-dependencies-screen",
 			"title": "ExplorerDependenciesScreen",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-unindexed",
+			"title": "ExplorerDependenciesScreen: not indexed",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-empty",
+			"title": "ExplorerDependenciesScreen: no declarations",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-partial",
+			"title": "ExplorerDependenciesScreen: partial manifests",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-unreadable",
+			"title": "ExplorerDependenciesScreen: unreadable manifests",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-filtered",
+			"title": "ExplorerDependenciesScreen: filtered declarations",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-no-matches",
+			"title": "ExplorerDependenciesScreen: no matches",
 			"coverage": "required",
 			"units": ["reports.component.explorer-dependencies-screen"]
 		},
@@ -2467,6 +2557,60 @@
 		{
 			"id": "reports-component-explorer-ui-config-value-tree",
 			"title": "ConfigValueTree",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-expanded",
+			"title": "ConfigValueTree: expanded nested values",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-object",
+			"title": "ConfigValueTree: object",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-object-expanded",
+			"title": "ConfigValueTree: expanded object",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-empty-array",
+			"title": "ConfigValueTree: empty array",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-empty-object",
+			"title": "ConfigValueTree: empty object",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-unknown-array",
+			"title": "ConfigValueTree: array contents unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-schema-array",
+			"title": "ConfigValueTree: array schema",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-expression",
+			"title": "ConfigValueTree: source expression",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-long-expression",
+			"title": "ConfigValueTree: multiline expression",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-config-value-tree"]
 		},
@@ -2509,6 +2653,54 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-platform-details",
 			"title": "ExplorerPlatformDetails",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-ios",
+			"title": "ExplorerPlatformDetails: iOS setup",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-android",
+			"title": "ExplorerPlatformDetails: Android not configured",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-desktop",
+			"title": "ExplorerPlatformDetails: desktop",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-unrecorded",
+			"title": "ExplorerPlatformDetails: not recorded",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-unindexed",
+			"title": "ExplorerPlatformDetails: revision not indexed",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-gap",
+			"title": "ExplorerPlatformDetails: manifest unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-not-found",
+			"title": "ExplorerPlatformDetails: platform not found",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-source-unavailable",
+			"title": "ExplorerPlatformDetails: source links unavailable",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-platform-details"]
 		},
@@ -2575,6 +2767,42 @@
 		{
 			"id": "reports-component-explorer-usage-link",
 			"title": "ExplorerUsageLink",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link-visual-open",
+			"title": "ExplorerUsageLink: visual preview",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link-missing-open",
+			"title": "ExplorerUsageLink: missing visual preview",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link-function-open",
+			"title": "ExplorerUsageLink: function preview",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link-source-enabled",
+			"title": "ExplorerUsageLink: source available",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link-source-disabled",
+			"title": "ExplorerUsageLink: source unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link-touch",
+			"title": "ExplorerUsageLink: touch without preview",
 			"coverage": "required",
 			"units": ["reports.component.explorer-usage-link"]
 		},
@@ -3283,6 +3511,18 @@
 		{
 			"id": "reports-component-regression-proof-output-open",
 			"title": "Regression proof: Recorded output",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-capture-only",
+			"title": "Regression proof: Focused capture without failing test",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-empty",
+			"title": "Regression proof: No recorded proof",
 			"coverage": "required",
 			"units": ["reports.component.regression-proof"]
 		},
@@ -4391,6 +4631,48 @@
 			"units": ["reports.component.usage-examples-usage-examples"]
 		},
 		{
+			"id": "reports-component-usage-examples-usage-examples-setup",
+			"title": "UsageExamples: separate setup",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-inline-setup",
+			"title": "UsageExamples: inline setup",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-setup-only",
+			"title": "UsageExamples: setup without examples",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-multiple",
+			"title": "UsageExamples: multiple calls",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-missing-call",
+			"title": "UsageExamples: call not documented",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-error",
+			"title": "UsageExamples: expected error",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-component-usage-examples-usage-examples-void",
+			"title": "UsageExamples: no return value",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
 			"id": "reports-layout-explorer-layout",
 			"coverage": "required",
 			"units": ["reports.layout.explorer-layout"],
@@ -4940,13 +5222,37 @@
 				"reports-component-evidence-viewer-compare",
 				"reports-component-evidence-viewer-unavailable",
 				"reports-component-explorer-catalog-items",
+				"reports-component-explorer-catalog-items-multiple",
+				"reports-component-explorer-catalog-items-batched",
+				"reports-component-explorer-catalog-items-more",
+				"reports-component-explorer-catalog-items-functions",
+				"reports-component-explorer-catalog-items-pages",
+				"reports-component-explorer-catalog-items-configs",
+				"reports-component-explorer-catalog-items-configs-open",
+				"reports-component-explorer-catalog-items-empty-configs",
+				"reports-component-explorer-catalog-items-unlinked",
 				"reports-component-explorer-dependencies-screen",
+				"reports-component-explorer-dependencies-screen-unindexed",
+				"reports-component-explorer-dependencies-screen-empty",
+				"reports-component-explorer-dependencies-screen-partial",
+				"reports-component-explorer-dependencies-screen-unreadable",
+				"reports-component-explorer-dependencies-screen-filtered",
+				"reports-component-explorer-dependencies-screen-no-matches",
 				"reports-component-explorer-function-card",
 				"reports-component-explorer-function-card-service",
 				"reports-component-explorer-function-card-model",
 				"reports-component-explorer-function-card-no-usage",
 				"reports-component-explorer-function-card-many-usage",
 				"reports-component-explorer-ui-config-value-tree",
+				"reports-component-explorer-ui-config-value-tree-expanded",
+				"reports-component-explorer-ui-config-value-tree-object",
+				"reports-component-explorer-ui-config-value-tree-object-expanded",
+				"reports-component-explorer-ui-config-value-tree-empty-array",
+				"reports-component-explorer-ui-config-value-tree-empty-object",
+				"reports-component-explorer-ui-config-value-tree-unknown-array",
+				"reports-component-explorer-ui-config-value-tree-schema-array",
+				"reports-component-explorer-ui-config-value-tree-expression",
+				"reports-component-explorer-ui-config-value-tree-long-expression",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
 				"reports-component-explorer-ui-explorer-module-card-function",
@@ -4954,6 +5260,14 @@
 				"reports-component-explorer-ui-explorer-module-card-page-missing",
 				"reports-component-explorer-ui-explorer-module-card-unlinked",
 				"reports-component-explorer-ui-explorer-platform-details",
+				"reports-component-explorer-ui-explorer-platform-details-ios",
+				"reports-component-explorer-ui-explorer-platform-details-android",
+				"reports-component-explorer-ui-explorer-platform-details-desktop",
+				"reports-component-explorer-ui-explorer-platform-details-unrecorded",
+				"reports-component-explorer-ui-explorer-platform-details-unindexed",
+				"reports-component-explorer-ui-explorer-platform-details-gap",
+				"reports-component-explorer-ui-explorer-platform-details-not-found",
+				"reports-component-explorer-ui-explorer-platform-details-source-unavailable",
 				"reports-component-explorer-ui-explorer-platforms",
 				"reports-component-explorer-ui-explorer-translations-screen",
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
@@ -4965,6 +5279,12 @@
 				"reports-component-explorer-usage-limit-zero",
 				"reports-component-explorer-usage-duplicates",
 				"reports-component-explorer-usage-link",
+				"reports-component-explorer-usage-link-visual-open",
+				"reports-component-explorer-usage-link-missing-open",
+				"reports-component-explorer-usage-link-function-open",
+				"reports-component-explorer-usage-link-source-enabled",
+				"reports-component-explorer-usage-link-source-disabled",
+				"reports-component-explorer-usage-link-touch",
 				"reports-component-filter-dialog",
 				"reports-component-filter-dialog-active",
 				"reports-component-filter-dialog-open",
@@ -5083,6 +5403,8 @@
 				"reports-component-regression-proof-pending",
 				"reports-component-regression-proof-gap",
 				"reports-component-regression-proof-output-open",
+				"reports-component-regression-proof-capture-only",
+				"reports-component-regression-proof-empty",
 				"reports-component-replay-controls",
 				"reports-component-replay-controls-playing",
 				"reports-component-replay-controls-final-frame",
@@ -5267,6 +5589,13 @@
 				"reports-component-upload-audio",
 				"reports-component-upload-comparison",
 				"reports-component-usage-examples-usage-examples",
+				"reports-component-usage-examples-usage-examples-setup",
+				"reports-component-usage-examples-usage-examples-inline-setup",
+				"reports-component-usage-examples-usage-examples-setup-only",
+				"reports-component-usage-examples-usage-examples-multiple",
+				"reports-component-usage-examples-usage-examples-missing-call",
+				"reports-component-usage-examples-usage-examples-error",
+				"reports-component-usage-examples-usage-examples-void",
 				"reports-layout-explorer-layout",
 				"reports-page-harness-branch-branch-at-apis",
 				"reports-page-harness-branch-branch-at-apis-entity",

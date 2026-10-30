@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T01:00:24.320Z","name":"terra-2-regression-proof-empty","goal":"Empty regression proof explains that no evidence was recorded.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T01:00:24.906Z","loop":"terra-2-regression-proof-empty","step":"spec","evidence":"An empty or filtered-out regression list renders no section, leaving the component state blank."}
+{"event":"step.completed","timestamp":"2026-10-30T01:00:25.480Z","loop":"terra-2-regression-proof-empty","step":"coverage","evidence":"The component-catalog-previews scenario has no empty regression example; add the state and assert its explanation in the standard catalog test."}

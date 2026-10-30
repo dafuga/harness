@@ -1,25 +1,9 @@
 import { expect, type Locator } from '@playwright/test';
-import { assertFunctionCardState } from './functionCardPreviewAssertions';
-import { assertExplorerUsageState } from './explorerUsagePreviewAssertions';
-import { assertEntityStates } from './entityStatesPreviewAssertions';
+import { assertSpecialReportState } from './reportSpecialAssertions';
 
 /** Check that each additional report preview actually renders its distinct state. */
 export async function assertReportPreviewState(component: Locator, id: string, variant = '') {
-	if (id === 'reports.component.analytics-filters') {
-		const expected =
-			variant === 'empty'
-				? ['', '', '', '', '']
-				: variant === 'all-filters'
-					? ['release-check', 'verify', 'GPT 6.1', '2026-10-20', '2026-10-26']
-					: ['release-check', '', '', '2026-10-20', ''];
-		for (const [index, name] of ['loop', 'task', 'model', 'since', 'until'].entries())
-			await expect(component.locator(`input[name="${name}"]`)).toHaveValue(expected[index]);
-	}
-	if (id === 'reports.component.explorer-function-card')
-		return assertFunctionCardState(component, variant);
-	if (id === 'reports.component.explorer-usage')
-		return assertExplorerUsageState(component, variant);
-	if (id === 'reports.component.entity-states') return assertEntityStates(component, variant);
+	if (await assertSpecialReportState(component, id, variant)) return;
 	if (id === 'reports.component.modal' && variant === 'image') {
 		const dialog = component.getByRole('dialog', { name: 'Order card evidence' });
 		await expect(dialog).toBeVisible();
@@ -27,6 +11,10 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 		await expect(dialog.getByRole('img', { name: 'Synthetic order card evidence' })).toBeVisible();
 	}
 	if (!id.startsWith('reports.component.source-')) return;
+	return assertSourcePreviewState(component, id, variant);
+}
+
+async function assertSourcePreviewState(component: Locator, id: string, variant: string) {
 	if (id === 'reports.component.source-file-list' && variant !== 'empty')
 		await expect(component.getByRole('button', { name: 'View code', exact: true })).toHaveCount(2, {
 			timeout: 1_000

@@ -19,8 +19,8 @@ test('dependency inventory groups identical declarations but retains distinct re
 	expect(body).toContain('^3.0.0');
 	expect(body).toContain('typescript');
 	expect(body).toContain('serde');
-	expect(body.match(/<tbody>/g)).toHaveLength(2);
-	expect(body.match(/<tr>/g)).toHaveLength(6);
+	expect(body.match(/<tbody(?:\s[^>]*)?>/g)).toHaveLength(2);
+	expect(body.match(/<tr(?:\s[^>]*)?>/g)).toHaveLength(6);
 	expect(body).toContain('packages/api/package.json');
 	expect(body).toContain('packages/web/package.json');
 	expect(body).toContain('Development');
