@@ -1,10 +1,16 @@
 import { activityCatalogVariants } from './activityCatalogVariants';
 import { providerPickerStates } from './providerPickerVariants';
 import { audioCatalogVariants } from './audioCatalogVariants';
+import { evidenceCatalogVariants } from './evidenceCatalogVariants';
+import { explorerUsageCatalogVariants } from './explorerUsageCatalogVariants';
+import { entityStatesCatalogVariants } from './entityStatesCatalogVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
 	...audioCatalogVariants,
+	...evidenceCatalogVariants,
+	...explorerUsageCatalogVariants,
+	...entityStatesCatalogVariants,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
@@ -38,10 +44,16 @@ const variants: Record<string, string[]> = {
 		'cancelled',
 		'locked'
 	],
-	// A single recording, comparison pair and disabled upload each have distinct input layouts.
-	'reports.component.audio-upload-files': ['comparison', 'uploading'],
-	// Image, missing, compact provenance and paired-audio branches each render different evidence.
-	'reports.component.evidence-card': ['missing', 'compact', 'paired-audio'],
+	// Single and paired file controls expose their selected and uploading states separately.
+	'reports.component.audio-upload-files': [
+		'comparison',
+		'uploading',
+		'single-uploading',
+		'selected',
+		'before-selected',
+		'after-selected',
+		'both-selected'
+	],
 	// Media filtering, empty results, upload controls and a lightbox are separate gallery states.
 	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
 	// The default shows two facts; this state proves a fuller recorded provenance set remains legible.
@@ -129,6 +141,7 @@ const variants: Record<string, string[]> = {
 		'none-selected',
 		'no-purpose'
 	],
+	'reports.component.explorer-function-card': ['service', 'model', 'no-usage', 'many-usage'],
 	// Visual, page, function and unlinked dependency cards each have their own treatment.
 	'reports.component.explorer-ui-explorer-module-card': [
 		'missing',
