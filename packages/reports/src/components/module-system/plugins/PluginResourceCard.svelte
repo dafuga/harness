@@ -2,16 +2,16 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { ModuleEntry, ModuleResource } from '../../../../../../src/services/module-system/moduleDefinition.types';
+	import type {
+		ModuleEntry,
+		ModuleResource
+	} from '../../../../../../src/services/module-system/moduleDefinition.types';
 	import Card from '../../explorer-ui/explorer-kit/Card.svelte';
 	import CommandBlock from '../../explorer-ui/explorer-kit/CommandBlock.svelte';
 	import PluginSteps from './PluginSteps.svelte';
 	/** One resource type of a plugin: its title, how to make one, and the generate command. */
-	let {
-		entry,
-		resource,
-		title
-	}: { entry: ModuleEntry; resource: ModuleResource; title: Snippet } = $props();
+	let { entry, resource, title }: { entry: ModuleEntry; resource: ModuleResource; title: Snippet } =
+		$props();
 </script>
 
 <Card tone="mod-card">

@@ -10,4 +10,6 @@
 	}: { tone?: string; state?: string; children: Snippet } = $props();
 </script>
 
-<hx-span class={tone ? `ex-pill ${tone}` : 'ex-pill'} data-state={state}>{@render children()}</hx-span>
+<hx-span class={tone ? `ex-pill ${tone}` : 'ex-pill'} data-state={state}
+	>{@render children()}</hx-span
+>
