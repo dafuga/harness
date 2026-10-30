@@ -13,6 +13,7 @@
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-pre"
 		]
 	},
@@ -78,7 +79,7 @@
 			{
 				"name": "UsageExamples",
 				"type": "markup",
-				"description": "Short titles and code blocks only, without tables, comparison panels or disclosures."
+				"description": "Short titles and code blocks, or an explicit message when no usage examples are recorded."
 			},
 			{
 				"name": "compact",
@@ -180,6 +181,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},
