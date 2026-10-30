@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T04:16:21.155Z","name":"report-findings-empty","goal":"Show when a report has no recorded findings","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T04:16:51.621Z","loop":"report-findings-empty","step":"spec","evidence":"An empty findings list should say no findings were recorded instead of rendering no section."}
+{"event":"step.completed","timestamp":"2026-10-30T04:16:52.210Z","loop":"report-findings-empty","step":"coverage","evidence":"The component catalog only supplies a nonempty findings array, so no empty-state message is asserted or captured."}
