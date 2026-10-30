@@ -14,11 +14,13 @@ import { audioEvidenceVariant } from './audioEvidenceVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { analyticsTaskVariant } from './analyticsTaskVariants';
 import { projectActivityVariant } from './projectActivityVariants';
+import { activityWorkVariant } from './activityWorkVariants';
 import { providerPickerCardVariant } from './providerPickerCardVariants';
 import { providerPickerVariant } from './providerPickerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.activity-work') return activityWorkVariant(props, variant);
 	if (id === 'reports.component.analytics-tasks' && variant !== 'empty')
 		return analyticsTaskVariant(props, variant);
 	if (id === 'reports.component.project-activity' && ['stale', 'failed-read'].includes(variant))

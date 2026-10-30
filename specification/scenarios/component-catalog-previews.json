@@ -1211,6 +1211,36 @@
 			"units": ["reports.component.activity-work"]
 		},
 		{
+			"id": "reports-component-activity-work-details-open",
+			"title": "Activity work: Components and reasons open",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-no-reason",
+			"title": "Activity work: No reason recorded",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-truncated",
+			"title": "Activity work: Additional components and reasons",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-many",
+			"title": "Activity work: More commits available",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-expanded",
+			"title": "Activity work: All commits shown",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
 			"id": "reports-component-analytics-cpu",
 			"title": "Analytics cpu",
 			"coverage": "required",
@@ -4281,6 +4311,11 @@
 				"reports-component-activity-work",
 				"reports-component-activity-work-recorded",
 				"reports-component-activity-work-empty",
+				"reports-component-activity-work-details-open",
+				"reports-component-activity-work-no-reason",
+				"reports-component-activity-work-truncated",
+				"reports-component-activity-work-many",
+				"reports-component-activity-work-expanded",
 				"reports-component-analytics-cpu",
 				"reports-component-analytics-cpu-no-agents",
 				"reports-component-analytics-cpu-unavailable",
