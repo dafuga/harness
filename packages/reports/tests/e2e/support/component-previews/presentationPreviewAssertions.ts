@@ -8,6 +8,7 @@ const prefix = 'reports.component.shared-primitives-';
 /** The normal catalog owns focus, scrolling and inspection states for presentation primitives. */
 export async function preparePresentationState(component: Locator, id: string, variant: string) {
 	await prepareCompatibilityState(component, id, variant);
+	await prepareConfigInspection(component, id, variant);
 	if (id === `${prefix}data-table` && variant === 'focused')
 		await component.getByRole('region', { name: 'Contract fields' }).focus();
 	if (id === `${prefix}code-line` && variant === 'action-focused')
@@ -35,6 +36,7 @@ async function table(component: Locator, variant: string) {
 	await expect(region.getByRole('table', { name: 'Contract fields' })).toBeVisible();
 	await expect(component.locator('thead th')).toHaveText(['Name', 'Type']);
 	if (variant === 'empty') await expect(component).toContainText('No fields recorded.');
+	if (variant === 'empty-unprovided') await expect(component.locator('tbody tr')).toHaveCount(0);
 	if (variant === 'focused') await expect(region).toBeFocused();
 	if (variant !== 'long') return;
 	expect(await region.evaluate((node) => node.scrollWidth > node.clientWidth)).toBe(true);
@@ -62,6 +64,11 @@ async function code(component: Locator, variant: string) {
 }
 
 async function details(component: Locator, variant: string) {
+	if (variant === 'empty-unprovided') {
+		await expect(component.locator('dl')).toHaveCount(1);
+		await expect(component.locator('dt, dd')).toHaveCount(0);
+		return;
+	}
 	if (variant === 'empty') {
 		await expect(component).toContainText('No details provided.');
 		await expect(component.locator('dl')).toHaveCount(0);
@@ -90,4 +97,22 @@ async function explorer(component: Locator, variant: string) {
 	if (!variant || variant === 'empty')
 		await expect(table.locator('thead th')).toHaveText(['Variable', 'Value']);
 	if (variant === 'empty') await expect(table.locator('tbody tr')).toHaveCount(0);
+	if (['long-string', 'multiline-string', 'expression', 'long-expression'].includes(variant)) {
+		const code = table.locator('.code-line code');
+		await expect(code).toHaveAttribute('title', (await code.textContent()) ?? '');
+		await expect(code).toHaveCSS('white-space', 'nowrap');
+	}
+	if (variant !== 'value-open') return;
+	const dialog = component.getByRole('dialog');
+	await expect(dialog).toBeVisible();
+	await expect(dialog).toContainText('false');
+	await expect(dialog).toContainText('0');
+	await dialog.press('Escape');
+	await expect(dialog).toBeHidden();
+	await expect(component.getByRole('button', { name: /View value for/ })).toBeFocused();
+}
+
+async function prepareConfigInspection(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.harness-explorer-table' && variant === 'value-open')
+		await component.getByRole('button', { name: /View value for/ }).click();
 }

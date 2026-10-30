@@ -16,6 +16,7 @@
 	let source = $derived(sources[variant] ?? 'src/components/OrderCard.svelte');
 	const factStates: Record<string, Array<{ key: string; label: string; value: unknown }>> = {
 		empty: [],
+		'empty-unprovided': [],
 		values: [
 			{ key: 'absent', label: 'Absent', value: undefined },
 			{ key: 'disabled', label: 'Disabled', value: false },
@@ -41,11 +42,18 @@
 	}
 </script>
 
+{#snippet emptyRows()}<tr><td colspan="2">No fields recorded.</td></tr>{/snippet}
+{#snippet emptyDetails()}<EmptyState>No details provided.</EmptyState>{/snippet}
 <div class="ex-content presentation-preview">
 	{#if id.endsWith('data-table')}
-		<DataTable label="Contract fields" tableClass="ex-table" isEmpty={variant === 'empty'}>
+		<DataTable
+			label="Contract fields"
+			tableClass="ex-table"
+			isEmpty={['empty', 'empty-unprovided'].includes(variant)}
+			empty={variant === 'empty-unprovided' ? undefined : emptyRows}
+		>
 			{#snippet header()}<tr><th scope="col">Name</th><th scope="col">Type</th></tr>{/snippet}
-			{#snippet empty()}<tr><td colspan="2">No fields recorded.</td></tr>{/snippet}
+
 			{#snippet children()}
 				<tr><th scope="row">{variant === 'long' ? longName : 'active'}</th><td>boolean</td></tr>
 				<tr><th scope="row">attempts</th><td>number</td></tr>
@@ -72,10 +80,13 @@
 			<CodeLine text={source} mode="wrap" />
 		</Modal>
 	{:else}
-		<DetailList rows={facts} rowKey={(fact) => fact.key}>
+		<DetailList
+			rows={facts}
+			rowKey={(fact) => fact.key}
+			empty={variant === 'empty-unprovided' ? undefined : emptyDetails}
+		>
 			{#snippet label(fact)}{fact.label}{/snippet}
 			{#snippet children(fact)}{shown(fact.value)}{/snippet}
-			{#snippet empty()}<EmptyState>No details provided.</EmptyState>{/snippet}
 		</DetailList>
 	{/if}
 </div>

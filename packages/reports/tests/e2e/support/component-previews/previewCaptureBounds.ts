@@ -7,6 +7,11 @@ const tooltipUnits = new Set([
 	'reports.component.explorer-ui-explorer-module-card'
 ]);
 
+const emptyStates: Record<string, string> = {
+	'reports.component.module-system-plugins-plugin-steps:empty': '.mod-steps',
+	'reports.component.shared-primitives-detail-list:empty-unprovided': '.detail-list'
+};
+
 /** Frame rendered UI roots, including fragments and fixed surfaces, with a small edge allowance. */
 export async function previewCaptureBounds(page: Page, id: string, variant = '') {
 	if (isPlatformPicker(id, variant)) return platformPickerBounds(page);
@@ -16,8 +21,8 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 		return { x: 0, y: 0, ...viewport };
 	}
 	const content = page.locator(`[data-preview-unit="${id}"]`);
-	if (id === 'reports.component.module-system-plugins-plugin-steps' && variant === 'empty')
-		return emptyStepsBounds(content);
+	const empty = emptyStates[`${id}:${variant}`];
+	if (empty) return emptyContentBounds(content, empty);
 	const selected = await previewTarget(content, id, variant);
 	const bounds = await measuredBounds(id, selected);
 	if (id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
@@ -30,8 +35,8 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 }
 
 /** An empty list has zero content height; retain its real boundary and the normal edge allowance. */
-async function emptyStepsBounds(content: Locator) {
-	return content.locator('.mod-steps').evaluate((node) => {
+async function emptyContentBounds(content: Locator, selector: string) {
+	return content.locator(selector).evaluate((node) => {
 		const box = node.getBoundingClientRect();
 		const x = Math.max(0, Math.floor(box.left + scrollX) - 8);
 		const y = Math.max(0, Math.floor(box.top + scrollY) - 8);
