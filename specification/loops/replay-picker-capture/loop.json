@@ -2,7 +2,7 @@
 	"name": "replay-picker-capture",
 	"goal": "Show open replay speed and scene options in component captures",
 	"createdAt": "2026-10-30T05:29:44.657Z",
-	"updatedAt": "2026-10-30T05:29:59.108Z",
+	"updatedAt": "2026-10-30T05:40:30.446Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T05:40:28.090Z",
+			"evidence": "At 2f0485f38c both open selectors had zero changed pixels outside the control on harbor-mbp-2."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T05:40:29.172Z",
+			"evidence": "At e62ffee430 Replay Controls enables supported in-page pickers and declares callback errors."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T05:40:30.446Z",
+			"evidence": "The same desktop selector tests passed at e62ffee430 on harbor-mbp-2."
 		},
 		{
 			"id": "verify",
