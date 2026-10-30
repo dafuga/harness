@@ -2,7 +2,7 @@
 	"name": "contract-table-tablet-actions",
 	"goal": "Keep contract example buttons visible beside long fields on tablet.",
 	"createdAt": "2026-10-30T06:29:53.150Z",
-	"updatedAt": "2026-10-30T06:32:03.976Z",
+	"updatedAt": "2026-10-30T06:54:52.886Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T06:54:50.409Z",
+			"evidence": "Tablet long and multiple cases failed at d07fa27e; red record 6c7c7e758514."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T06:54:51.442Z",
+			"evidence": "At ed9ee369 the example yields space to actions while mobile values wrap."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T06:54:52.886Z",
+			"evidence": "The unchanged command passed at ed9ee369 in the same environment; green record 291012d3ef67."
 		},
 		{
 			"id": "verify",
