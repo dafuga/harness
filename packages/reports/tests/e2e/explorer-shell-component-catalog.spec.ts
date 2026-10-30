@@ -141,7 +141,10 @@ for (const viewport of catalogViewports) {
 				await expect(component.getByText('Testing', { exact: true })).toHaveCount(2);
 			}
 			await assertModulePreview(component, unit.id, variant);
-			if (unit.id === 'reports.component.networking-security-explorer-permissions-screen')
+			if (
+				unit.id === 'reports.component.networking-security-explorer-permissions-screen' &&
+				['', 'admin', 'gap', 'endpoint'].includes(variant)
+			)
 				await assertPermissionTable(component, page, viewport.id === 'mobile');
 			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
 			if (

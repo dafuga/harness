@@ -162,7 +162,7 @@ export async function assertTranslationControls(component: Locator) {
 
 /** Module previews must show the actual library and generated-resource content. */
 export async function assertModulePreview(component: Locator, id: string, variant = '') {
-	if (id === 'reports.component.networking-security-explorer-permissions-screen') {
+	if (id === 'reports.component.networking-security-explorer-permissions-screen' && !variant) {
 		for (const text of [
 			'Member',
 			'app.endpoint.orders',

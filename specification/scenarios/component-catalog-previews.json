@@ -3461,6 +3461,72 @@
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
 		},
 		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-index",
+			"title": "ExplorerPermissionsScreen: profiles",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-guest",
+			"title": "ExplorerPermissionsScreen: guest access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-admin",
+			"title": "ExplorerPermissionsScreen: administrator access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-empty",
+			"title": "ExplorerPermissionsScreen: no profiles",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-unindexed",
+			"title": "ExplorerPermissionsScreen: catalog not indexed",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-not-found",
+			"title": "ExplorerPermissionsScreen: profile not found",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-gap",
+			"title": "ExplorerPermissionsScreen: incomplete policy",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-empty-data",
+			"title": "ExplorerPermissionsScreen: no data access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-endpoint",
+			"title": "ExplorerPermissionsScreen: endpoint grants",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
+			"title": "ExplorerPermissionsScreen: endpoint without grants",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
+			"title": "ExplorerPermissionsScreen: endpoint policy not indexed",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
 			"id": "reports-component-project-activity",
 			"title": "Project activity overview",
 			"coverage": "required",
@@ -5586,6 +5652,17 @@
 				"reports-component-module-system-explorer-modules-screen-not-found",
 				"reports-component-module-system-explorer-modules-screen-detail-unindexed",
 				"reports-component-networking-security-explorer-permissions-screen",
+				"reports-component-networking-security-explorer-permissions-screen-index",
+				"reports-component-networking-security-explorer-permissions-screen-guest",
+				"reports-component-networking-security-explorer-permissions-screen-admin",
+				"reports-component-networking-security-explorer-permissions-screen-empty",
+				"reports-component-networking-security-explorer-permissions-screen-unindexed",
+				"reports-component-networking-security-explorer-permissions-screen-not-found",
+				"reports-component-networking-security-explorer-permissions-screen-gap",
+				"reports-component-networking-security-explorer-permissions-screen-empty-data",
+				"reports-component-networking-security-explorer-permissions-screen-endpoint",
+				"reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
+				"reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
 				"reports-component-project-activity",
 				"reports-component-project-activity-recorded",
 				"reports-component-project-activity-empty",

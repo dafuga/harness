@@ -10,6 +10,7 @@ import { platformDetailsVariant } from './reportPlatformDetailsVariants';
 import { platformsVariant } from './reportPlatformsVariants';
 import { translationsVariant } from './reportTranslationsVariants';
 import { moduleVariant } from './reportModuleVariants';
+import { permissionsVariant } from './reportPermissionsVariants';
 
 /** Explorer fixtures keep each screen, card and relationship presentation separate. */
 export function explorerVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -30,5 +31,7 @@ export function explorerVariantProps(id: string, props: PreviewCases[string], va
 		return translationsVariant(props, variant);
 	if (id.startsWith('reports.component.module-system-explorer-module'))
 		return moduleVariant(id, props, variant);
+	if (id === 'reports.component.networking-security-explorer-permissions-screen')
+		return permissionsVariant(props, variant);
 	return null;
 }

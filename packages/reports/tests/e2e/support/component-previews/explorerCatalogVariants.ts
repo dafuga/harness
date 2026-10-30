@@ -1,5 +1,18 @@
 /** Explorer collections and usage links each expose their distinct presentations. */
 export const explorerCatalogVariants: Record<string, string[]> = {
+	'reports.component.networking-security-explorer-permissions-screen': [
+		'index',
+		'guest',
+		'admin',
+		'empty',
+		'unindexed',
+		'not-found',
+		'gap',
+		'empty-data',
+		'endpoint',
+		'endpoint-empty',
+		'endpoint-unindexed'
+	],
 	'reports.component.explorer-ui-explorer-translations-screen': [
 		'unindexed',
 		'empty',
