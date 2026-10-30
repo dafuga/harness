@@ -10,6 +10,6 @@ export async function assertRegressionProofState(component: Locator, variant: st
 		await expect(component).toContainText('No failing-test checkpoint is recorded.');
 	if (variant === 'empty')
 		await expect(
-			component.getByText('No regression proof has been recorded for this unit.')
+			component.getByText('No regression proof is available for this unit.')
 		).toBeVisible();
 }
