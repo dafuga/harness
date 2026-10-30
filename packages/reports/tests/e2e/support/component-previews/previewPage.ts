@@ -168,17 +168,17 @@ export async function capturePreview(
 	return { clip, bytes };
 }
 
+const nativePopups: Record<string, string[]> = {
+	'reports.component.select': ['open'],
+	'reports.component.replay-controls': ['speed-open', 'scene-open'],
+	'reports.component.evidence-grid': ['status-open'],
+	'reports.component.upload-comparison': ['viewport-open'],
+	'reports.component.upload-audio': ['mode-open'],
+	'reports.component.explorer-ui-explorer-translations-screen': ['language-open']
+};
+
 function usesNativePopup(id: string, variant: string) {
-	return (
-		(id === 'reports.component.select' && variant === 'open') ||
-		(id === 'reports.component.replay-controls' &&
-			['speed-open', 'scene-open'].includes(variant)) ||
-		(id === 'reports.component.evidence-grid' && variant === 'status-open') ||
-		(id === 'reports.component.upload-comparison' && variant === 'viewport-open') ||
-		(id === 'reports.component.upload-audio' && variant === 'mode-open') ||
-		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
-			variant === 'language-open')
-	);
+	return nativePopups[id]?.includes(variant) ?? false;
 }
 
 function previewCaptureNote(id: string, variant: string) {

@@ -2,6 +2,16 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Reach the viewport and image viewer through the gallery's real controls. */
 export async function prepareEntityStates(component: Locator, variant: string) {
+	if (variant === 'scenario-selected')
+		await component.getByRole('combobox', { name: 'Scenario' }).selectOption('archived-orders');
+	if (variant === 'scenario-open' || variant === 'viewport-open') {
+		const name = variant === 'scenario-open' ? 'Scenario' : 'Viewport';
+		const select = component.getByRole('combobox', { name });
+		const second = select.locator('option').nth(1);
+		await expect(second).toHaveText(variant === 'scenario-open' ? 'Archived orders' : /Mobile/);
+		await select.click();
+		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
+	}
 	if (variant === 'viewport-mobile')
 		await component.getByRole('combobox', { name: 'Viewport' }).selectOption('mobile');
 	if (variant === 'viewer-open') {
@@ -27,6 +37,8 @@ export async function assertEntityStates(component: Locator, variant: string) {
 		await expect(component.locator('.state-panes .state-gap').first()).toHaveText(
 			'Loading recorded capture…'
 		);
+	if (variant === 'scenario-selected')
+		await expect(component.getByRole('heading', { name: 'Archived', exact: true })).toBeVisible();
 	if (variant === 'viewport-mobile')
 		await expect(component.locator('.state-heading small').first()).toHaveText('390 × 844');
 	if (variant === 'viewer-open') await expect(component.getByRole('dialog')).toBeVisible();

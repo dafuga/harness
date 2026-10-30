@@ -84,7 +84,18 @@
 				"description": "A scrollable list of ranked entity links, their categories and purposes, with loading or no-match feedback. Modified clicks preserve normal browser link behavior."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "href callback error",
+				"type": "thrown",
+				"description": "Any value thrown by the caller-supplied href callback propagates when a result link renders."
+			},
+			{
+				"name": "choose callback error",
+				"type": "thrown",
+				"description": "Any value thrown by the caller-supplied choose callback propagates on an ordinary result click."
+			}
+		]
 	},
 	"dependencies": [
 		{
