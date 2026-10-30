@@ -143,10 +143,15 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-	.console-chat :global(button.active),
-	.console-chat :global(button[aria-pressed='true']),
-	.console-chat :global(button[aria-checked='true']),
-	.console-chat :global(button[aria-selected='true']) {
+	.console-chat
+		:global(
+			button:not(.floating-chat-bubble):not(.floating-chat-close):is(
+					.active,
+					[aria-pressed='true'],
+					[aria-checked='true'],
+					[aria-selected='true']
+				)
+		) {
 		border-color: var(--hx-color-primary);
 		background: color-mix(in srgb, var(--hx-color-primary) 14%, var(--hx-color-surface));
 		color: var(--hx-color-primary);
