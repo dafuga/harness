@@ -2,11 +2,15 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Each card branch retains its real name, destination and own visual evidence. */
 export async function assertModuleCardPreview(component: Locator, variant: string) {
-	if (['missing', 'page-missing', 'image-error'].includes(variant)) {
+	if (['missing', 'page-missing'].includes(variant)) {
 		await expect(component.getByText('No screenshot is recorded at this revision')).toBeVisible();
 		await expect(component.locator('img')).toHaveCount(0);
 	}
-	if (variant === 'function' || variant === 'unlinked') {
+	if (variant === 'image-error') {
+		await expect(component.getByText('Screenshot could not be loaded.')).toBeVisible();
+		await expect(component.locator('img')).toHaveCount(0);
+	}
+	if (['function', 'unlinked'].includes(variant)) {
 		await expect(component.locator('.ex-function-call')).toBeVisible();
 		await expect(component.locator('img')).toHaveCount(0);
 	}

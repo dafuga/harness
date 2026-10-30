@@ -14,7 +14,7 @@ import {
 } from './support/component-previews/previewCaptureAssertions';
 import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
 import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
-import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
+import { assertModuleCardPreview as assertCard } from './support/component-previews/moduleCardPreviewAssertions';
 import { assertOpenLanguagePixels } from './support/component-previews/translationsPreviewAssertions';
 import * as caseAssertions from './support/component-previews/catalogCaseAssertions';
 import { assertProjectAgentState } from './support/component-previews/projectAgentStateAssertions';
@@ -125,7 +125,7 @@ for (const viewport of catalogViewports) {
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
 				await assertMobileContractFields(component);
 			if (unit.id === 'reports.component.explorer-ui-explorer-module-card')
-				await assertModuleCardPreview(component, variant);
+				await test.step('Module card', () => assertCard(component, variant));
 			await test.step('Report state', () => assertReportPreviewState(component, unit.id, variant));
 			if (isProjectAgent) {
 				const panel = component.locator('.floating-chat-panel');
