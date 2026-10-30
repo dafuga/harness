@@ -3,6 +3,7 @@ import type { PreviewCases } from './shared';
 
 /** A permission view uses only the selected revision's fictional profile declarations. */
 export function permissionsVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'data-focused') return props;
 	const host = props as unknown as ExplorerPermissionsScreenProps;
 	const catalog = host.head.permissions!;
 	if (variant.startsWith('index')) return { ...props, route: { ...host.route, entity: undefined } };
