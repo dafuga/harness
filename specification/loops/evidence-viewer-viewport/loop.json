@@ -2,7 +2,7 @@
 	"name": "evidence-viewer-viewport",
 	"goal": "Keep image controls, content and captions visible in the evidence viewer viewport.",
 	"createdAt": "2026-10-30T07:35:25.596Z",
-	"updatedAt": "2026-10-30T07:36:02.647Z",
+	"updatedAt": "2026-10-30T07:44:07.877Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T07:44:04.785Z",
+			"evidence": "Red record 99822a07baf4: the existing catalog test failed toBeInViewport for mobile compare and tall images and tablet actual size."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T07:44:05.832Z",
+			"evidence": "Fit the zoom stage into the remaining lightbox space and keep comparison panels side by side."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T07:44:07.877Z",
+			"evidence": "Green record e6448ff90acb: the same catalog command, fixtures and test inputs pass at the repair commit."
 		},
 		{
 			"id": "verify",

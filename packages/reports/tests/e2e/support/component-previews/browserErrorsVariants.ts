@@ -7,7 +7,9 @@ export const browserErrorsStates = [
 	'exception',
 	'missing-expected',
 	'multiple',
-	'zero-entries'
+	'zero-entries',
+	'unavailable',
+	'empty'
 ];
 
 const unexpected: BrowserDiagnostic = {
@@ -45,6 +47,8 @@ const exception: BrowserDiagnostic = {
 /** Supply recorded attempts for each visible diagnostic classification. */
 export function browserErrorsVariant(props: PreviewCases[string], variant: string) {
 	const expected = (props.diagnostics as BrowserDiagnostic[])[0];
+	if (variant === 'unavailable') return { ...props, diagnostics: undefined };
+	if (variant === 'empty') return { ...props, diagnostics: [] };
 	if (variant === 'unexpected') return { ...props, diagnostics: [unexpected] };
 	if (variant === 'exception') return { ...props, diagnostics: [exception] };
 	if (variant === 'missing-expected')

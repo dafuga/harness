@@ -35,6 +35,8 @@ test('tests show the verdict, each scenario with its states, and the checks that
 	expect(verdicts(row(body, 'denied'))).toEqual([]);
 	expect(disclosed(body)).toContain('orders-browser passed e2e · 900 ms');
 	expect(words(body)).not.toMatch(/src\/|\.ts\b/);
+	expect(words(body)).not.toContain('Browser diagnostics are unavailable for this record.');
+	expect(words(body)).not.toContain('No browser diagnostic entries were recorded.');
 });
 
 test('the reasons a verdict failed are listed where a person looks for them', () => {
