@@ -8,6 +8,7 @@ import { prepareEvidenceGrid } from './evidenceGridActions';
 import { preparePlatforms } from './platformsPreviewAssertions';
 import { prepareTranslations } from './translationsPreviewAssertions';
 import { prepareImageZoom } from './imageZoomActions';
+import { prepareCoverageList } from './coverageListActions';
 
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.entity-states': prepareEntityStates,
@@ -22,6 +23,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.recorded-value': prepareRecordedValue,
 	'reports.component.report-summary': prepareReportSummary,
 	'reports.component.image-zoom': prepareImageZoom,
+	'reports.component.coverage-list': prepareCoverageList,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations
 };

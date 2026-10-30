@@ -4,11 +4,7 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
 import { pictured } from './support/sharedSelect';
 import { catalogCases, catalogViewports } from './support/component-previews/catalogUnits';
-import {
-	openPreview,
-	readyPreview,
-	capturePreview
-} from './support/component-previews/previewPage';
+import * as preview from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
 import {
 	assertComponentCapture,
@@ -20,10 +16,7 @@ import { assertPermissionTable } from './support/component-previews/permissionPr
 import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
 import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
 import { assertOpenLanguagePixels } from './support/component-previews/translationsPreviewAssertions';
-import {
-	assertCatalogLayout,
-	assertCatalogDetails
-} from './support/component-previews/catalogCaseAssertions';
+import * as caseAssertions from './support/component-previews/catalogCaseAssertions';
 import { assertProjectAgentState } from './support/component-previews/projectAgentStateAssertions';
 import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
 import { prepareCatalogState } from './support/component-previews/catalogStateActions';
@@ -44,8 +37,8 @@ for (const viewport of catalogViewports) {
 		test(`console data loading: ${stage} at ${viewport.id}`, async ({ page }) => {
 			const unit = 'reports.component.harness-harness-console';
 			await page.setViewportSize(viewport);
-			await openPreview(page, home, unit);
-			await readyPreview(page, unit);
+			await preview.openPreview(page, home, unit);
+			await preview.readyPreview(page, unit);
 			let release!: () => void;
 			const held = new Promise<void>((resolve) => (release = resolve));
 			const path = stage === 'history' ? '**/data/index.json' : '**/data/revisions/*.json';
@@ -79,7 +72,7 @@ for (const viewport of catalogViewports) {
 			} finally {
 				release();
 			}
-			await readyPreview(page, unit);
+			await preview.readyPreview(page, unit);
 			await expect(status).toHaveCount(0);
 			await expect(page.getByRole('heading', { level: 1, name: 'Components' })).toBeVisible();
 		});
@@ -118,9 +111,15 @@ for (const viewport of catalogViewports) {
 				});
 			}
 			await page.setViewportSize(viewport);
-			await openPreview(page, home, unit.id, variant);
+			await preview.openPreview(page, home, unit.id, variant);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
-			const component = await readyPreview(page, unit.id, variant);
+			const component = await preview.readyPreview(page, unit.id, variant);
+			const target = { viewport: viewport.id, variant };
+			const early = unit.id === 'reports.component.coverage-list' && variant === 'empty';
+			if (early) {
+				await expect(component.getByRole('heading', { name: 'Acceptance' })).toBeVisible();
+				await preview.capturePreview(page, home, unit.id, target);
+			}
 			await prepareCatalogState(component, unit.id, variant);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
@@ -136,7 +135,7 @@ for (const viewport of catalogViewports) {
 				} else await expect(panel).toBeVisible();
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
-			const capture = await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
 			await assertOpenLanguagePixels(page, unit.id, variant, capture);
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
@@ -176,8 +175,8 @@ for (const viewport of catalogViewports) {
 					field,
 					'Only the compact value is painted in a closed revision field'
 				).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
-			await assertCatalogLayout(component, unit, viewport);
-			await assertCatalogDetails(component, unit.id, variant);
+			await caseAssertions.assertCatalogLayout(component, unit, viewport);
+			await caseAssertions.assertCatalogDetails(component, unit.id, variant);
 			if (
 				['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 					(name) => unit.id === `desktop.component.${name}`
