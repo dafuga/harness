@@ -22,12 +22,8 @@
 		'reports.component.audio-comparison'
 	].includes(id);
 	const Component = previewComponent(unit.source);
-	// A layout frames a page, so it is given the marked child slot below and never a real page.
 	const layout = unit.kind === 'layout';
-	// It is drawn in the Reports root its pages are drawn in, so the chat that root keeps across them
-	// is drawn with it; no other preview loads that root.
 	const Root = layout ? previewComponent('packages/reports/src/routes/+layout.svelte') : null;
-	// A route module draws a whole screen of its application, as the screen components do.
 	const fullFrame =
 		reportView ||
 		layout ||
@@ -35,7 +31,6 @@
 		/(?:harness-(navbar|header|console|shell)|harness-screen|workspace-shell|hosted-workspace)$/.test(
 			id
 		);
-	// What the explorer draws inside its content, as it is drawn there.
 	const explorer =
 		(id === 'reports.component.networking-security-explorer-permissions-screen' &&
 			variant.startsWith('endpoint')) ||
@@ -156,13 +151,18 @@
 	.preview-content {
 		min-width: 0;
 	}
+	.preview-content[data-preview-unit$='explorer-kit-pill'],
+	.preview-content[data-preview-unit$='plugins-plugin-state-pills'] {
+		display: flex;
+		align-items: center;
+		gap: var(--hx-space-6);
+	}
 	.preview-content :global(img) {
 		max-width: 100%;
 	}
 	.flow-host {
 		height: 380px;
 	}
-	/* The slot a layout draws its page in: a dashed frame in the theme, as tall as a short page. */
 	.preview-child {
 		display: grid;
 		place-content: center;
