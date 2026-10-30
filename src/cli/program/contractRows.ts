@@ -28,7 +28,7 @@ export function fields(list: Field[], componentProps = false): string[] {
 	const width = Math.max(...rows.map(([name]) => name.length));
 	return rows.flatMap(([name, type], index) => [
 		type === 'thrown' ? name : `${name.padEnd(width)}  ${type}`,
-		...(list[index].description?.split('\n').map((line) => `  ${line}`) ?? [])
+		...(list[index].description?.split(/\r?\n/).map((line) => `  ${line}`) ?? [])
 	]);
 }
 
