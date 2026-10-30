@@ -1,6 +1,6 @@
 import type { PreviewCases } from './shared';
 import { chatVariantProps } from './chatVariants';
-import { image, noop, text } from './shared';
+import { image, text } from './shared';
 import { sourceVariant } from './reportSourceVariants';
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
@@ -16,6 +16,7 @@ import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
 import { audioEvidenceVariant } from './audioEvidenceVariants';
 import { evidenceCardVariant } from './evidenceCardVariants';
+import { evidenceGridVariant } from './evidenceGridVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { analyticsTaskVariant } from './analyticsTaskVariants';
 import { projectActivityVariant, siteActivityVariant } from './projectActivityVariants';
@@ -156,12 +157,6 @@ function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
 	)
 		return { ...props, mode: 'comparison', uploading: variant === 'uploading' };
 	return null;
-}
-
-function evidenceGridVariant(props: PreviewCases[string], variant: string) {
-	return variant === 'uploads'
-		? { ...props, reportId: 'preview-report', onUploaded: noop, idPrefix: 'upload-' }
-		: props;
 }
 
 function evidenceProvenanceVariant(props: PreviewCases[string], variant: string) {

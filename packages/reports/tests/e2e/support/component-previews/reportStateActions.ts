@@ -4,6 +4,7 @@ import { prepareUsageLink } from './usageLinkPreviewAssertions';
 import { prepareConfigValueTree } from './configValueTreePreviewAssertions';
 import { prepareCatalogItems } from './catalogItemsPreviewAssertions';
 import { prepareDependencies } from './dependenciesPreviewAssertions';
+import { prepareEvidenceGrid } from './evidenceGridActions';
 import { preparePlatforms } from './platformsPreviewAssertions';
 import { prepareTranslations } from './translationsPreviewAssertions';
 
@@ -13,6 +14,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.explorer-ui-config-value-tree': prepareConfigValueTree,
 	'reports.component.explorer-catalog-items': prepareCatalogItems,
 	'reports.component.explorer-dependencies-screen': prepareDependencies,
+	'reports.component.evidence-grid': prepareEvidenceGrid,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations
 };

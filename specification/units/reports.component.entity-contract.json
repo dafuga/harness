@@ -67,7 +67,13 @@
 				"description": "Component fields and callable contracts with concise colored method and parameter names. Types remain in the tables; declared errors appear once and info controls open full examples."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Contract field examples cannot serialize BigInt or circular values."
+			}
+		]
 	},
 	"dependencies": [
 		{

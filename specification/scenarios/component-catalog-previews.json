@@ -2393,6 +2393,84 @@
 			"units": ["reports.component.evidence-grid"]
 		},
 		{
+			"id": "reports-component-evidence-grid-no-items",
+			"title": "Evidence grid: No evidence",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-screenshot-only",
+			"title": "Evidence grid: Screenshot-only gallery",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-screenshots",
+			"title": "Evidence grid: Screenshots selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-viewport-mobile",
+			"title": "Evidence grid: Mobile screenshots selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-viewport-tablet",
+			"title": "Evidence grid: Tablet screenshots selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-viewport-desktop",
+			"title": "Evidence grid: Desktop screenshots selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-category",
+			"title": "Evidence grid: Category selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-status",
+			"title": "Evidence grid: Status selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-status-open",
+			"title": "Evidence grid: Status menu open",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-search",
+			"title": "Evidence grid: Search results",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-audio-open",
+			"title": "Evidence grid: Audio comparison open",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-upload-comparison-open",
+			"title": "Evidence grid: Screenshot upload open",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-upload-audio-open",
+			"title": "Evidence grid: Audio upload open",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
 			"id": "reports-component-evidence-provenance",
 			"title": "Evidence provenance",
 			"coverage": "required",
@@ -5492,6 +5570,19 @@
 				"reports-component-evidence-grid-audio",
 				"reports-component-evidence-grid-uploads",
 				"reports-component-evidence-grid-image-open",
+				"reports-component-evidence-grid-no-items",
+				"reports-component-evidence-grid-screenshot-only",
+				"reports-component-evidence-grid-screenshots",
+				"reports-component-evidence-grid-viewport-mobile",
+				"reports-component-evidence-grid-viewport-tablet",
+				"reports-component-evidence-grid-viewport-desktop",
+				"reports-component-evidence-grid-category",
+				"reports-component-evidence-grid-status",
+				"reports-component-evidence-grid-status-open",
+				"reports-component-evidence-grid-search",
+				"reports-component-evidence-grid-audio-open",
+				"reports-component-evidence-grid-upload-comparison-open",
+				"reports-component-evidence-grid-upload-audio-open",
 				"reports-component-evidence-provenance",
 				"reports-component-evidence-provenance-extended",
 				"reports-component-evidence-viewer",
