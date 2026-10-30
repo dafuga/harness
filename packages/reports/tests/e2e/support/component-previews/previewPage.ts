@@ -170,7 +170,6 @@ export async function capturePreview(
 
 const nativePopups: Record<string, string[]> = {
 	'reports.component.select': ['open'],
-	'reports.component.entity-states': ['scenario-open', 'viewport-open'],
 	'reports.component.evidence-grid': ['status-open'],
 	'reports.component.upload-comparison': ['viewport-open'],
 	'reports.component.upload-audio': ['mode-open'],

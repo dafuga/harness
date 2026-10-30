@@ -25,7 +25,7 @@ export async function assertOpenPickerPixels(
 	await selector.focus();
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(false);
 	const closed = await page.screenshot({
-		fullPage: false,
+		fullPage: id === 'reports.component.entity-states',
 		clip,
 		animations: 'disabled',
 		caret: 'hide'
