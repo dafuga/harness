@@ -46,6 +46,13 @@ export const audioCatalogVariants: Record<string, string[]> = {
 		'blocked',
 		'skipped',
 		'not-proven',
-		'interrupted'
+		'interrupted',
+		'notes-transcript-closed',
+		'minimal',
+		'duration-loaded',
+		'phase-before',
+		'phase-after',
+		'phase-current',
+		'standing'
 	]
 };

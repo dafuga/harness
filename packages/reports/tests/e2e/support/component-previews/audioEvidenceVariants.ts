@@ -22,14 +22,20 @@ export function audioEvidenceVariant(props: PreviewCases[string], variant: strin
 				note: 'Timing and diction were reviewed before approval.'
 			}
 		};
-	if (variant === 'notes-transcript')
+	if (['notes-transcript', 'notes-transcript-closed'].includes(variant))
 		return {
 			...props,
 			item: { ...item, note: 'Timing and diction were reviewed before approval.' }
 		};
 	if (variant === 'no-details')
 		return { ...props, item: { ...item, transcript: undefined, note: undefined } };
-	if (variant === 'no-duration') return { ...props, item: { ...item, durationSeconds: undefined } };
+	if (variant === 'minimal') return { ...props, item: minimalRecording(item) };
+	if (['no-duration', 'duration-loaded'].includes(variant))
+		return { ...props, item: { ...item, durationSeconds: undefined } };
+	if (variant.startsWith('phase-'))
+		return { ...props, item: { ...item, phase: variant.slice('phase-'.length) } };
+	if (variant === 'standing')
+		return { ...props, item: { ...item, standing: 'Baseline recording' } };
 	if (variant === 'audio-error')
 		return {
 			...props,
@@ -47,4 +53,16 @@ export function audioEvidenceVariant(props: PreviewCases[string], variant: strin
 		};
 	const transcript = statusTranscripts[variant];
 	return transcript ? { ...props, item: { ...item, status: variant, transcript } } : null;
+}
+
+function minimalRecording(item: Record<string, unknown>) {
+	return {
+		...item,
+		source: undefined,
+		capturedAt: undefined,
+		provenance: undefined,
+		transcript: undefined,
+		note: undefined,
+		durationSeconds: undefined
+	};
 }
