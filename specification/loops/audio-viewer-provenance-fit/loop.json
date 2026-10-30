@@ -2,7 +2,7 @@
 	"name": "audio-viewer-provenance-fit",
 	"goal": "Keep both mobile audio recordings visible after provenance changes",
 	"createdAt": "2026-10-30T06:23:44.339Z",
-	"updatedAt": "2026-10-30T06:24:01.389Z",
+	"updatedAt": "2026-10-30T06:38:35.616Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,27 +27,37 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T06:38:29.624Z",
+			"evidence": "Record 62bc66d695e8 failed the mobile bounds guard with provenance visible."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T06:38:30.515Z",
+			"evidence": "Keep provenance visible and compact the existing mobile viewer spacing; retain the bounds guard."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T06:38:31.656Z",
+			"evidence": "Commit a02fb2e799 tightens mobile spacing with existing design tokens."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T06:38:33.652Z",
+			"evidence": "Record 3a1dfb6afd63 passed the same unchanged guard."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T06:38:35.616Z",
+			"evidence": "Restoring old CSS failed the guard; restoring a02fb2e799 passed it on harbor-mbp-2."
 		},
 		{
 			"id": "verify",
