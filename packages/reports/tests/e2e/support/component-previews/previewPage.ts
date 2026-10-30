@@ -19,7 +19,10 @@ const pageUnitIds = new Set(
 		.map((unit) => unit.id)
 );
 export async function openPreview(page: Page, home: string, id: string, variant = '') {
-	if (id === 'reports.component.entity-search-results' && page.viewportSize()?.width === 390) {
+	if (
+		['reports.component.entity-search', 'reports.component.entity-search-results'].includes(id) &&
+		page.viewportSize()?.width === 390
+	) {
 		const cdp = await page.context().newCDPSession(page);
 		await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
 	}

@@ -50,6 +50,29 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
 	// Paired results, pending repair, explicit gaps and expanded output are distinct proof states.
 	'reports.component.regression-proof': ['pending', 'gap', 'output-open'],
+	// Examples distinguish provenance, value shape and the expanded full JSON.
+	'reports.component.contract-example': [
+		'illustrative',
+		'missing',
+		'no-description',
+		'structure',
+		'structure-open',
+		'rows',
+		'markup',
+		'multiple'
+	],
+	// Contract tables retain empty, compact, unnamed and long-value presentations.
+	'reports.component.contract-table': [
+		'plain',
+		'empty',
+		'empty-kept',
+		'plain-empty',
+		'hide-names',
+		'illustrative',
+		'missing',
+		'long',
+		'multiple'
+	],
 	// Documented and observed cases retain failures, gaps and their expanded source values.
 	'reports.component.entity-cases': [
 		'empty',
@@ -88,8 +111,15 @@ const variants: Record<string, string[]> = {
 		'missing-call',
 		'void'
 	],
-	// The trigger is a default state; this variant shows its populated search dialog.
-	'reports.component.entity-search': ['open'],
+	// Search opens with empty, loading, filtered, selected and revision-pinned presentations.
+	'reports.component.entity-search': [
+		'open',
+		'open-initial',
+		'open-loading',
+		'open-no-matches',
+		'open-second-selected',
+		'open-pinned'
+	],
 	// Search results distinguish typing, loading, no matches and selection changes.
 	'reports.component.entity-search-results': [
 		'initial',
