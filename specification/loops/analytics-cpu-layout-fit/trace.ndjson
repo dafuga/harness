@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T01:05:01.433Z","name":"analytics-cpu-layout-fit","goal":"Keep CPU readings visible and readable at every viewport.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T01:05:16.957Z","loop":"analytics-cpu-layout-fit","step":"spec","evidence":"Mobile hides CPU table columns; tablet breaks measured. All readings and words must remain visible."}
+{"event":"step.completed","timestamp":"2026-10-30T01:05:23.410Z","loop":"analytics-cpu-layout-fit","step":"coverage","evidence":"The catalog checked CPU values but not column bounds or word wrapping; it now asserts both layouts."}
