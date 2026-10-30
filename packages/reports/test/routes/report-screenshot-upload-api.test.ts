@@ -1,13 +1,14 @@
+import { assertUploadAdmission } from './uploadAdmissionCases';
 import { expect, test, vi } from 'vitest';
 import { POST } from '../../src/routes/api/report-screenshot-upload/+server';
 
 test('upload endpoint rejects cross-origin requests before reading files', async () => {
-	const request = new Request('http://127.0.0.1:5588/api/report-screenshot-upload', {
-		method: 'POST',
-		headers: { Origin: 'https://example.com', 'Content-Type': 'multipart/form-data' }
-	});
-	const response = await POST({ request, url: new URL(request.url) } as Parameters<typeof POST>[0]);
-	expect(response.status).toBe(403);
+	await assertUploadAdmission(
+		(event) => POST(event as Parameters<typeof POST>[0]),
+		101000000,
+		'Cloudflare upload failed; no evidence was added',
+		'screenshot-upload'
+	);
 });
 
 test('upload endpoint reports missing R2 configuration clearly', async () => {
