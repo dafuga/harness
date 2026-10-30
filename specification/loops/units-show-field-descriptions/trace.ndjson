@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T22:07:43.978Z","name":"units-show-field-descriptions","goal":"Show documented input behavior including conditional defaults in units show.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T22:07:44.576Z","loop":"units-show-field-descriptions","step":"spec","evidence":"ExplorerCatalogItems.label defaults to category or Other, but plain units show omits its documented behavior."}
+{"event":"step.completed","timestamp":"2026-10-30T22:07:45.160Z","loop":"units-show-field-descriptions","step":"coverage","evidence":"The standard render-unit test checks literal defaults but no field description, so a conditional default can disappear."}

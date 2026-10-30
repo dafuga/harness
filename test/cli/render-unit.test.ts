@@ -35,12 +35,20 @@ function detail(kind: string): UnitDetail {
 describe('units show rendering', () => {
 	test('a component contract lists aligned props and errors, never outputs', () => {
 		const manifest = detail('component').manifest;
+		manifest.contract.inputs.push(
+			field('Badge.label', 'string', {
+				required: false,
+				description: 'Defaults to the category or Other when null.'
+			})
+		);
 		manifest.contract.inputs = [...manifest.contract.inputs, ...manifest.contract.inputs];
 		expect(renderContract(manifest)).toEqual([
 			'Contract (declared)',
 			'  Props',
 			'    status  Status  (required)',
 			'    size    number  (optional; default 16)',
+			'    label   string  (optional)',
+			'      Defaults to the category or Other when null.',
 			'  Errors',
 			'    ExpectedCliError'
 		]);
