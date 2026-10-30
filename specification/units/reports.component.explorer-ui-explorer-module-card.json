@@ -72,7 +72,13 @@
 				"description": "One name or helper invocation, its own image for visual modules, and at most three distinct Used In links followed by an ellipsis when more exist. Unsupported dependencies have no invented detail link."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Function-card argument examples cannot serialize BigInt or circular values."
+			}
+		]
 	},
 	"dependencies": [
 		{
