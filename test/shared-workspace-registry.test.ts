@@ -162,7 +162,9 @@ test('every active visual module has its own required capture state', () => {
 		(unit) => unit.id === 'reports.component.shared-primitives-contract-table-mobile'
 	)!;
 	const component = loaded.stored.find((unit) => unit.id === 'reports.component.contract-table')!;
-	expect(catalogVisual(stylesheet), 'A stylesheet has no independently rendered surface').toBe(false);
+	expect(catalogVisual(stylesheet), 'A stylesheet has no independently rendered surface').toBe(
+		false
+	);
 	expect(catalogVisual(component), 'The component using that stylesheet remains visual').toBe(true);
 	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
 	const visual = loaded.stored
