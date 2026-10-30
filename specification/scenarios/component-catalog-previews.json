@@ -1565,6 +1565,48 @@
 			"units": ["reports.component.audio-evidence"]
 		},
 		{
+			"id": "reports-component-audio-evidence-notes-transcript-closed",
+			"title": "Audio evidence: Transcript and notes closed",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-minimal",
+			"title": "Audio evidence: Minimal recording",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-duration-loaded",
+			"title": "Audio evidence: Duration from playback",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-phase-before",
+			"title": "Audio evidence: Before recording",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-phase-after",
+			"title": "Audio evidence: After recording",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-phase-current",
+			"title": "Audio evidence: Current recording",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-standing",
+			"title": "Audio evidence: Recording standing",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
 			"id": "reports-component-audio-upload-files",
 			"title": "Audio upload files",
 			"coverage": "required",
@@ -4472,6 +4514,13 @@
 				"reports-component-audio-evidence-skipped",
 				"reports-component-audio-evidence-not-proven",
 				"reports-component-audio-evidence-interrupted",
+				"reports-component-audio-evidence-notes-transcript-closed",
+				"reports-component-audio-evidence-minimal",
+				"reports-component-audio-evidence-duration-loaded",
+				"reports-component-audio-evidence-phase-before",
+				"reports-component-audio-evidence-phase-after",
+				"reports-component-audio-evidence-phase-current",
+				"reports-component-audio-evidence-standing",
 				"reports-component-audio-upload-files",
 				"reports-component-audio-upload-files-comparison",
 				"reports-component-audio-upload-files-uploading",
