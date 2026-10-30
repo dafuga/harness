@@ -1,6 +1,13 @@
 import type { PreviewCases } from './shared';
 
-const statuses = ['running', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'];
+const statusTranscripts: Record<string, string> = {
+	running: 'The accessibility readback is still in progress; sign-off is pending.',
+	failed: 'The review found an unlabeled control in the audio player.',
+	blocked: 'The readback is blocked until the playback issue is resolved.',
+	skipped: 'The accessibility readback was skipped for this release.',
+	'not-proven': 'The review could not establish a complete readback result.',
+	interrupted: 'The recording ended before the accessibility review was complete.'
+};
 
 /** Present playback, optional details, failures and status from one recording at a time. */
 export function audioEvidenceVariant(props: PreviewCases[string], variant: string) {
@@ -38,5 +45,6 @@ export function audioEvidenceVariant(props: PreviewCases[string], variant: strin
 				note: 'The original recording was not retained with this evidence.'
 			}
 		};
-	return statuses.includes(variant) ? { ...props, item: { ...item, status: variant } } : null;
+	const transcript = statusTranscripts[variant];
+	return transcript ? { ...props, item: { ...item, status: variant, transcript } } : null;
 }
