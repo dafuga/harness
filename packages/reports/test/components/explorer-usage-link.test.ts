@@ -4,6 +4,25 @@ import ExplorerUsageLink from '../../src/components/ExplorerUsageLink.svelte';
 import { hostProps, words } from '../entityRender';
 import { ids } from '../entityUnits';
 
+test('navigation address errors propagate from a consumer link', () => {
+	const host = hostProps('commit');
+	const entity = host.entities.find((item) => item.id === ids.list)!;
+	const error = new Error('address unavailable');
+	const nav = {
+		route: host.route,
+		href: () => {
+			throw error;
+		},
+		go: host.onroute
+	};
+	expect(
+		() =>
+			render(ExplorerUsageLink, {
+				props: { entity, lens: host.lens, mediaBase: host.mediaBase, nav }
+			}).body
+	).toThrow(error);
+});
+
 test('preview triggers are real entity links without eager screenshot payloads', () => {
 	const host = hostProps('commit');
 	const entity = host.entities.find((item) => item.id === ids.list)!;

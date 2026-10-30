@@ -58,7 +58,28 @@
 				"description": "A normal entity link with a viewport-bounded hover/focus preview, screenshot provenance and explicit missing-image fallback. Escape dismisses the preview; touch and Enter navigate."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "nav.href callback error",
+				"type": "thrown",
+				"description": "An error from the address callback propagates while rendering an entity link."
+			},
+			{
+				"name": "nav.go callback error",
+				"type": "thrown",
+				"description": "An error from the navigation callback propagates when a link is activated."
+			},
+			{
+				"name": "nav.source callback error",
+				"type": "thrown",
+				"description": "An error from the source-opening callback propagates when its button is activated."
+			},
+			{
+				"name": "lens.evidence callback error",
+				"type": "thrown",
+				"description": "An error from the evidence callback propagates when a visual consumer preview opens."
+			}
+		]
 	},
 	"dependencies": [
 		{
