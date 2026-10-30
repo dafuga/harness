@@ -1667,6 +1667,54 @@
 			"units": ["reports.component.contract-example"]
 		},
 		{
+			"id": "reports-component-contract-example-illustrative",
+			"title": "Contract example: illustrative",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-missing",
+			"title": "Contract example: missing",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-no-description",
+			"title": "Contract example: no description",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-structure",
+			"title": "Contract example: structured value",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-structure-open",
+			"title": "Contract example: full JSON open",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-rows",
+			"title": "Contract example: structured rows",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-markup",
+			"title": "Contract example: markup",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-multiple",
+			"title": "Contract example: multiple values",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
 			"id": "reports-component-contract-table",
 			"title": "Contract field table",
 			"coverage": "required",
@@ -4387,6 +4435,14 @@
 				"reports-component-console-chat-model-open",
 				"reports-component-console-chat-effort-open",
 				"reports-component-contract-example",
+				"reports-component-contract-example-illustrative",
+				"reports-component-contract-example-missing",
+				"reports-component-contract-example-no-description",
+				"reports-component-contract-example-structure",
+				"reports-component-contract-example-structure-open",
+				"reports-component-contract-example-rows",
+				"reports-component-contract-example-markup",
+				"reports-component-contract-example-multiple",
 				"reports-component-contract-table",
 				"reports-component-coverage-list",
 				"reports-component-entity-cases",

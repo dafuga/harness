@@ -50,6 +50,17 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
 	// Paired results, pending repair, explicit gaps and expanded output are distinct proof states.
 	'reports.component.regression-proof': ['pending', 'gap', 'output-open'],
+	// Examples distinguish provenance, value shape and the expanded full JSON.
+	'reports.component.contract-example': [
+		'illustrative',
+		'missing',
+		'no-description',
+		'structure',
+		'structure-open',
+		'rows',
+		'markup',
+		'multiple'
+	],
 	// Documented and observed cases retain failures, gaps and their expanded source values.
 	'reports.component.entity-cases': [
 		'empty',

@@ -8,6 +8,7 @@ import { assertEntityExamplesState } from './entityExamplesPreviewAssertions';
 import { assertEntityContractState } from './entityContractPreviewAssertions';
 import { assertSearchResultsState } from './searchResultsPreviewAssertions';
 import { assertEntitySearchState } from './entitySearchPreviewActions';
+import { assertContractExampleState } from './contractExamplePreviewAssertions';
 import { assertActivityCountFits } from './projectActivityAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
@@ -78,6 +79,8 @@ export async function assertCatalogState(
 		await assertEntityContractState(component, variant);
 	if (id === 'reports.component.entity-search-results')
 		await assertSearchResultsState(component, variant, viewport);
+	if (id === 'reports.component.contract-example')
+		await assertContractExampleState(component, variant);
 	if (id === 'reports.component.filter-dialog' && variant === 'active') {
 		const trigger = component.getByRole('button', { name: 'Filters', exact: true });
 		await expect(trigger).toHaveClass(/active/);

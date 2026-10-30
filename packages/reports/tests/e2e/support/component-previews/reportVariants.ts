@@ -9,6 +9,7 @@ import { entityExamplesVariant } from './reportEntityExamplesVariants';
 import { entityContractVariant } from './reportEntityContractVariants';
 import { searchResultsVariant } from './reportSearchResultsVariants';
 import { entitySearchVariant } from './reportEntitySearchVariants';
+import { contractExampleVariant } from './reportContractExampleVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
 import { audioEvidenceVariant } from './audioEvidenceVariants';
@@ -30,6 +31,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.select') return selectVariant(props, variant);
 	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
+	if (id === 'reports.component.contract-example') return contractExampleVariant(props, variant);
 	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
 	if (id === 'reports.component.entity-contract') return entityContractVariant(props, variant);
 	if (id === 'reports.component.entity-examples') return entityExamplesVariant(props, variant);

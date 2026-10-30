@@ -116,6 +116,10 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.getByRole('button', { name: 'View example for Orders' }).click();
 		await expect(component.getByRole('dialog', { name: 'Example for Orders' })).toBeVisible();
 	},
+	'reports.component.contract-example:structure-open': async (component) => {
+		await component.getByText('Full example as JSON', { exact: true }).click();
+		await expect(component.locator('details[open] pre')).toContainText('A-1048');
+	},
 	'reports.component.filter-dialog:open': async (component) => {
 		await component.getByRole('button', { name: 'Filters', exact: true }).click();
 		await expect(component.getByRole('dialog', { name: 'Filters', exact: true })).toBeVisible();
