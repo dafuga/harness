@@ -31,5 +31,12 @@ export function reportFindingsVariant(props: PreviewCases[string], variant: stri
 			]
 		};
 	const detail = descriptions[variant as Status];
-	return detail ? { ...props, findings: [{ ...base, status: variant as Status, detail }] } : props;
+	return detail
+		? {
+				...props,
+				findings: [
+					{ ...base, title: 'Keyboard navigation review', status: variant as Status, detail }
+				]
+			}
+		: props;
 }

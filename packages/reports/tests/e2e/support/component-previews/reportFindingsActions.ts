@@ -7,7 +7,9 @@ export async function prepareReportFindings(component: Locator, variant: string)
 		await expect(component.locator('article')).toHaveCount(0);
 		return;
 	}
-	await expect(component.getByRole('heading', { name: 'Findings', exact: true })).toBeVisible();
+	await expect(
+		component.getByRole('heading', { name: 'Findings and remaining issues', exact: true })
+	).toBeVisible();
 	await expect(component.locator('article')).toHaveCount(variant === 'multiple' ? 2 : 1);
 	if (variant === 'with-evidence' || variant === 'multiple')
 		await expect(
