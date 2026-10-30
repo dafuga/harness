@@ -14,6 +14,6 @@ export async function assertContractExampleState(component: Locator, variant: st
 	};
 	if (labels[variant])
 		await expect(component.getByText(labels[variant], { exact: false })).toBeVisible();
-	if (variant === 'rows') await expect(component.getByText('A-1047')).toBeVisible();
+	if (variant === 'rows') await expect(component.getByText('A-1047', { exact: true })).toBeVisible();
 	if (variant === 'multiple') await expect(component.locator('.examples > ul > li')).toHaveCount(2);
 }

@@ -2195,6 +2195,66 @@
 			"units": ["reports.component.entity-states"]
 		},
 		{
+			"id": "reports-component-entity-states-empty",
+			"title": "Supported states: none declared",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-current",
+			"title": "Supported states: current",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-missing",
+			"title": "Supported states: captures missing",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-rejected",
+			"title": "Supported states: capture rejected",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-inapplicable",
+			"title": "Supported states: inapplicable",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-incomparable",
+			"title": "Supported states: incomparable revisions",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-loading",
+			"title": "Supported states: loading capture",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-load-error",
+			"title": "Supported states: capture load error",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-viewport-mobile",
+			"title": "Supported states: mobile viewport",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-viewer-open",
+			"title": "Supported states: viewer open",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
 			"id": "reports-component-evidence-card",
 			"title": "Evidence card",
 			"coverage": "required",
@@ -2363,6 +2423,30 @@
 			"units": ["reports.component.explorer-function-card"]
 		},
 		{
+			"id": "reports-component-explorer-function-card-service",
+			"title": "Function card: service",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
+			"id": "reports-component-explorer-function-card-model",
+			"title": "Function card: model",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
+			"id": "reports-component-explorer-function-card-no-usage",
+			"title": "Function card: no consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
+			"id": "reports-component-explorer-function-card-many-usage",
+			"title": "Function card: more consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-config-value-tree",
 			"title": "ConfigValueTree",
 			"coverage": "required",
@@ -2437,6 +2521,36 @@
 		{
 			"id": "reports-component-explorer-usage",
 			"title": "ExplorerUsage",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-empty",
+			"title": "ExplorerUsage: no consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-many",
+			"title": "ExplorerUsage: more consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-limited",
+			"title": "ExplorerUsage: one shown",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-limit-zero",
+			"title": "ExplorerUsage: none shown",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-duplicates",
+			"title": "ExplorerUsage: duplicate consumers",
 			"coverage": "required",
 			"units": ["reports.component.explorer-usage"]
 		},
@@ -4769,6 +4883,16 @@
 				"reports-component-entity-search-results-none-selected",
 				"reports-component-entity-search-results-no-purpose",
 				"reports-component-entity-states",
+				"reports-component-entity-states-empty",
+				"reports-component-entity-states-current",
+				"reports-component-entity-states-missing",
+				"reports-component-entity-states-rejected",
+				"reports-component-entity-states-inapplicable",
+				"reports-component-entity-states-incomparable",
+				"reports-component-entity-states-loading",
+				"reports-component-entity-states-load-error",
+				"reports-component-entity-states-viewport-mobile",
+				"reports-component-entity-states-viewer-open",
 				"reports-component-evidence-card",
 				"reports-component-evidence-card-missing",
 				"reports-component-evidence-card-compact",
@@ -4797,6 +4921,10 @@
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-dependencies-screen",
 				"reports-component-explorer-function-card",
+				"reports-component-explorer-function-card-service",
+				"reports-component-explorer-function-card-model",
+				"reports-component-explorer-function-card-no-usage",
+				"reports-component-explorer-function-card-many-usage",
 				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
@@ -4810,6 +4938,11 @@
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
 				"reports-component-explorer-ui-harness-group",
 				"reports-component-explorer-usage",
+				"reports-component-explorer-usage-empty",
+				"reports-component-explorer-usage-many",
+				"reports-component-explorer-usage-limited",
+				"reports-component-explorer-usage-limit-zero",
+				"reports-component-explorer-usage-duplicates",
 				"reports-component-explorer-usage-link",
 				"reports-component-filter-dialog",
 				"reports-component-filter-dialog-active",

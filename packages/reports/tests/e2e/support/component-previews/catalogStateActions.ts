@@ -8,6 +8,7 @@ import { prepareAudioEvidence } from './audioEvidenceActions';
 import { prepareAudioUploadFiles } from './audioUploadFilesActions';
 import { prepareEntitySearchState } from './entitySearchPreviewActions';
 import { prepareEvidenceCard } from './evidenceCardActions';
+import { prepareEntityStates } from './entityStatesPreviewAssertions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -141,6 +142,7 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 	if (id === 'reports.component.activity-files') await prepareActivityFileState(component, variant);
 	if (id === 'reports.component.activity-work' && variant !== 'recorded')
 		await prepareActivityWorkState(component, variant);
+	if (id === 'reports.component.entity-states') return prepareEntityStates(component, variant);
 	if (id === 'reports.component.entity-search' && variant)
 		return prepareEntitySearchState(component, variant);
 	if (id === 'reports.component.provider-picker')

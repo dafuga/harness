@@ -16,6 +16,7 @@ import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
 import { contractPreviewUnit } from './reportEntityContractVariants';
+import { resolveStateImage } from './reportEntityStatesVariants';
 const field = group.fields[0];
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
 export const reportCases: PreviewCases = {
@@ -91,10 +92,11 @@ export const reportCases: PreviewCases = {
 		choose: noop
 	},
 	'reports.component.entity-states': {
-		name: 'Activity list',
+		name: 'OrderList',
 		evidence: d.evidence,
 		scope: d.shown.scope,
-		mediaBase: '/media/'
+		mediaBase: '/media/',
+		resolveImage: resolveStateImage
 	},
 	'reports.component.evidence-card': { item: cardPicture, assetBase: '/media/', onopen: noop },
 	'reports.component.evidence-grid': { items: galleryItems, assetBase: '/media/' },
