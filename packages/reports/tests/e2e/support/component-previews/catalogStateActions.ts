@@ -7,8 +7,9 @@ import { prepareActivityFileState } from './activityFileActions';
 import { prepareAudioEvidence } from './audioEvidenceActions';
 import { prepareAudioUploadFiles } from './audioUploadFilesActions';
 import { prepareEntitySearchState } from './entitySearchPreviewActions';
+import { assertCpuState } from './analyticsCpuActions';
 import { prepareEvidenceCard } from './evidenceCardActions';
-import { prepareEntityStates } from './entityStatesPreviewAssertions';
+import { prepareReportState } from './reportStateActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -139,10 +140,11 @@ const actions: Record<string, CatalogStateAction> = {
 
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.analytics-cpu') await assertCpuState(component, variant);
 	if (id === 'reports.component.activity-files') await prepareActivityFileState(component, variant);
 	if (id === 'reports.component.activity-work' && variant !== 'recorded')
 		await prepareActivityWorkState(component, variant);
-	if (id === 'reports.component.entity-states') return prepareEntityStates(component, variant);
+	if (await prepareReportState(component, id, variant)) return;
 	if (id === 'reports.component.entity-search' && variant)
 		return prepareEntitySearchState(component, variant);
 	if (id === 'reports.component.provider-picker')

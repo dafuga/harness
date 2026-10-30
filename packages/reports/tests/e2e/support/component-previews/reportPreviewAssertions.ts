@@ -3,9 +3,24 @@ import { assertFunctionCardState } from './functionCardPreviewAssertions';
 import { assertExplorerUsageState } from './explorerUsagePreviewAssertions';
 import { assertEntityStates } from './entityStatesPreviewAssertions';
 import { assertRegressionProofState } from './regressionProofPreviewAssertions';
+import { assertUsageLink } from './usageLinkPreviewAssertions';
+import { assertConfigValueTree } from './configValueTreePreviewAssertions';
+import { assertCatalogItems } from './catalogItemsPreviewAssertions';
+import { assertUsageExamples } from './usageExamplesPreviewAssertions';
+import { assertDependenciesState } from './dependenciesPreviewAssertions';
 
 /** Check that each additional report preview actually renders its distinct state. */
 export async function assertReportPreviewState(component: Locator, id: string, variant = '') {
+	if (id === 'reports.component.analytics-filters') {
+		const expected =
+			variant === 'empty'
+				? ['', '', '', '', '']
+				: variant === 'all-filters'
+					? ['release-check', 'verify', 'GPT 6.1', '2026-10-20', '2026-10-26']
+					: ['release-check', '', '', '2026-10-20', ''];
+		for (const [index, name] of ['loop', 'task', 'model', 'since', 'until'].entries())
+			await expect(component.locator(`input[name="${name}"]`)).toHaveValue(expected[index]);
+	}
 	if (id === 'reports.component.regression-proof')
 		return assertRegressionProofState(component, variant);
 	if (id === 'reports.component.explorer-function-card')
@@ -13,6 +28,15 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 	if (id === 'reports.component.explorer-usage')
 		return assertExplorerUsageState(component, variant);
 	if (id === 'reports.component.entity-states') return assertEntityStates(component, variant);
+	if (id === 'reports.component.explorer-usage-link') return assertUsageLink(component, variant);
+	if (id === 'reports.component.explorer-ui-config-value-tree')
+		return assertConfigValueTree(component, variant);
+	if (id === 'reports.component.explorer-catalog-items')
+		return assertCatalogItems(component, variant);
+	if (id === 'reports.component.usage-examples-usage-examples')
+		return assertUsageExamples(component, variant);
+	if (id === 'reports.component.explorer-dependencies-screen')
+		return assertDependenciesState(component, variant);
 	if (id === 'reports.component.modal' && variant === 'image') {
 		const dialog = component.getByRole('dialog', { name: 'Order card evidence' });
 		await expect(dialog).toBeVisible();

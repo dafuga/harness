@@ -10,9 +10,8 @@ import { searchResultsVariant } from './reportSearchResultsVariants';
 import { entitySearchVariant } from './reportEntitySearchVariants';
 import { contractExampleVariant } from './reportContractExampleVariants';
 import { contractTableVariant } from './reportContractTableVariants';
-import { functionCardVariant } from './reportFunctionCardVariants';
-import { explorerUsageVariant } from './reportExplorerUsageVariants';
-import { entityStatesVariant } from './reportEntityStatesVariants';
+import { explorerVariantProps } from './reportExplorerVariants';
+import { usageExamplesVariant } from './usageExamplesVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
 import { audioEvidenceVariant } from './audioEvidenceVariants';
@@ -27,6 +26,17 @@ import { providerPickerVariant } from './providerPickerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.analytics-cpu') return { ...props };
+	if (id === 'reports.component.analytics-filters' && variant === 'all-filters')
+		return {
+			filters: {
+				loop: 'release-check',
+				task: 'verify',
+				model: 'GPT 6.1',
+				since: '2026-10-20',
+				until: '2026-10-26'
+			}
+		};
 	if (id === 'reports.component.activity-files') return activityFileVariant(props, variant);
 	if (id === 'reports.component.site-activity' && variant === 'failed-refresh') return { ...props };
 	if (id === 'reports.component.activity-work') return activityWorkVariant(props, variant);
@@ -42,14 +52,15 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
 	if (id === 'reports.component.contract-example') return contractExampleVariant(props, variant);
 	if (id === 'reports.component.contract-table') return contractTableVariant(props, variant);
-	if (id === 'reports.component.explorer-function-card') return functionCardVariant(props, variant);
-	if (id === 'reports.component.explorer-usage') return explorerUsageVariant(props, variant);
+	const explorer = explorerVariantProps(id, props, variant);
+	if (explorer) return explorer;
 	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
 	if (id === 'reports.component.entity-contract') return entityContractVariant(props, variant);
 	if (id === 'reports.component.entity-examples') return entityExamplesVariant(props, variant);
 	if (id === 'reports.component.entity-search') return entitySearchVariant(props, variant);
 	if (id === 'reports.component.entity-search-results') return searchResultsVariant(props, variant);
-	if (id === 'reports.component.entity-states') return entityStatesVariant(props, variant);
+	if (id === 'reports.component.usage-examples-usage-examples')
+		return usageExamplesVariant(props, variant);
 	if (id === 'reports.component.explorer-ui-explorer-module-card')
 		return moduleCardVariant(props, variant);
 	if (id === 'reports.component.source-viewer') {

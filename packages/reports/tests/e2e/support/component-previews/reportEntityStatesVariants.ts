@@ -3,7 +3,7 @@ import type { Evidence } from '../../../../src/models/reports-media/Report.types
 import type { PreviewCases } from './shared';
 
 /** Synthetic, visibly labelled fixture images show the matching populated or empty order list. */
-function orderListImage(empty: boolean) {
+export function orderListImage(empty: boolean) {
 	const body = empty
 		? '<text x="52" y="230" fill="#d8e4ee" font-size="24">No matching orders</text>'
 		: '<text x="52" y="230" fill="#d8e4ee" font-size="24">Order A-1048 · Ready to ship</text><text x="52" y="290" fill="#d8e4ee" font-size="24">Order A-1047 · Delivered</text>';

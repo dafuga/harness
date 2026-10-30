@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { buildData } from './buildData';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
-import { cpu } from './analytics';
+import { routeCpuFixture } from './analyticsCpuActions';
 import { activity, live } from './activity';
 import { image, layoutImage, ordersPageImage } from './shared';
 import { checkoutConfirmation } from './evidenceCardMedia';
@@ -36,11 +36,11 @@ export async function servePreview(route: Route, home: string) {
 		});
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
+	if (url.pathname === '/api/analytics-cpu') return routeCpuFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
 	if (url.pathname === '/tools') return pickerFixture(route);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
-		'/api/analytics-cpu': cpuFixture(route),
 		'/harness/data/index.json': shown.index,
 		'/harness/data/activity.json': activity
 	};
@@ -134,21 +134,6 @@ function activityFixture(route: Route) {
 	return route.fulfill({ json: { activity, live } });
 }
 
-function cpuFixture(route: Route) {
-	const variant = new URL(route.request().frame().page().url()).searchParams.get('variant');
-	if (variant === 'no-agents') return { ...cpu, agents: [] };
-	if (variant !== 'unavailable') return cpu;
-	return {
-		...cpu,
-		status: 'unavailable',
-		logicalCores: 0,
-		intervalMs: 0,
-		machinePercent: null,
-		trackedPercent: null,
-		groups: [],
-		agents: []
-	};
-}
 /**
  * The history a page reads: a route module reads the route history, where every category has an
  * entity, and any other preview the orders fixture it has always read.

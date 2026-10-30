@@ -3,13 +3,7 @@ import { dependencyTables } from './support/shellChecks';
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
 import { pictured } from './support/sharedSelect';
-import {
-	catalogUnits,
-	catalogCases,
-	catalogViewports,
-	catalogScenario,
-	previewState
-} from './support/component-previews/catalogUnits';
+import { catalogCases, catalogViewports } from './support/component-previews/catalogUnits';
 import {
 	openPreview,
 	readyPreview,
@@ -34,16 +28,8 @@ import type { ProjectAgentState } from './support/component-previews/projectAgen
 import { prepareCatalogState } from './support/component-previews/catalogStateActions';
 import { assertReportPreviewState } from './support/component-previews/reportPreviewAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
+import { assertCatalogRegistry } from './support/component-previews/catalogRegistryAssertions';
 let home = '';
-function assertCatalogRegistry() {
-	const expected = catalogUnits.map((unit) => unit.id);
-	expect([...catalogScenario.units].sort()).toEqual(expected);
-	expect(catalogScenario.states, 'Catalog preview states follow canonical unit order').toEqual(
-		catalogCases.map(({ unit, variant }) =>
-			expect.objectContaining({ id: previewState(unit.id, variant), units: [unit.id] })
-		)
-	);
-}
 test.beforeAll(async () => {
 	test.setTimeout(180_000);
 	assertCatalogRegistry();
@@ -159,7 +145,7 @@ for (const viewport of catalogViewports) {
 				await assertPermissionTable(component, page, viewport.id === 'mobile');
 			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
 			if (
-				unit.id === 'reports.component.explorer-dependencies-screen' ||
+				(unit.id === 'reports.component.explorer-dependencies-screen' && !variant) ||
 				unit.id.endsWith('at-dependencies')
 			) {
 				await dependencyTables(component, page, viewport.width, viewport.id === 'mobile');
