@@ -37,6 +37,8 @@
 		);
 	// What the explorer draws inside its content, as it is drawn there.
 	const explorer =
+		(id === 'reports.component.networking-security-explorer-permissions-screen' &&
+			variant.startsWith('endpoint')) ||
 		Boolean(unit.source?.includes('/components/explorer-ui/')) ||
 		[
 			'explorer-catalog-items',
