@@ -2453,6 +2453,60 @@
 			"units": ["reports.component.explorer-ui-config-value-tree"]
 		},
 		{
+			"id": "reports-component-explorer-ui-config-value-tree-expanded",
+			"title": "ConfigValueTree: expanded nested values",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-object",
+			"title": "ConfigValueTree: object",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-object-expanded",
+			"title": "ConfigValueTree: expanded object",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-empty-array",
+			"title": "ConfigValueTree: empty array",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-empty-object",
+			"title": "ConfigValueTree: empty object",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-unknown-array",
+			"title": "ConfigValueTree: array contents unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-schema-array",
+			"title": "ConfigValueTree: array schema",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-expression",
+			"title": "ConfigValueTree: source expression",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-long-expression",
+			"title": "ConfigValueTree: multiline expression",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-module-card",
 			"title": "ExplorerModuleCard",
 			"coverage": "required",
@@ -4962,6 +5016,15 @@
 				"reports-component-explorer-function-card-no-usage",
 				"reports-component-explorer-function-card-many-usage",
 				"reports-component-explorer-ui-config-value-tree",
+				"reports-component-explorer-ui-config-value-tree-expanded",
+				"reports-component-explorer-ui-config-value-tree-object",
+				"reports-component-explorer-ui-config-value-tree-object-expanded",
+				"reports-component-explorer-ui-config-value-tree-empty-array",
+				"reports-component-explorer-ui-config-value-tree-empty-object",
+				"reports-component-explorer-ui-config-value-tree-unknown-array",
+				"reports-component-explorer-ui-config-value-tree-schema-array",
+				"reports-component-explorer-ui-config-value-tree-expression",
+				"reports-component-explorer-ui-config-value-tree-long-expression",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
 				"reports-component-explorer-ui-explorer-module-card-function",

@@ -14,6 +14,7 @@ import { functionCardVariant } from './reportFunctionCardVariants';
 import { explorerUsageVariant } from './reportExplorerUsageVariants';
 import { usageLinkVariant } from './reportUsageLinkVariants';
 import { entityStatesVariant } from './reportEntityStatesVariants';
+import { configValueVariant } from './configValueTreeVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
 import { audioEvidenceVariant } from './audioEvidenceVariants';
@@ -52,6 +53,8 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.entity-search') return entitySearchVariant(props, variant);
 	if (id === 'reports.component.entity-search-results') return searchResultsVariant(props, variant);
 	if (id === 'reports.component.entity-states') return entityStatesVariant(props, variant);
+	if (id === 'reports.component.explorer-ui-config-value-tree')
+		return configValueVariant(props, variant);
 	if (id === 'reports.component.explorer-ui-explorer-module-card')
 		return moduleCardVariant(props, variant);
 	if (id === 'reports.component.source-viewer') {

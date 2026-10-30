@@ -10,6 +10,7 @@ import { prepareEntitySearchState } from './entitySearchPreviewActions';
 import { prepareEvidenceCard } from './evidenceCardActions';
 import { prepareEntityStates } from './entityStatesPreviewAssertions';
 import { prepareUsageLink } from './usageLinkPreviewAssertions';
+import { prepareConfigValueTree } from './configValueTreePreviewAssertions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -145,6 +146,8 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 		await prepareActivityWorkState(component, variant);
 	if (id === 'reports.component.entity-states') return prepareEntityStates(component, variant);
 	if (id === 'reports.component.explorer-usage-link') return prepareUsageLink(component, variant);
+	if (id === 'reports.component.explorer-ui-config-value-tree')
+		return prepareConfigValueTree(component, variant);
 	if (id === 'reports.component.entity-search' && variant)
 		return prepareEntitySearchState(component, variant);
 	if (id === 'reports.component.provider-picker')
