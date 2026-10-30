@@ -95,13 +95,15 @@
 			{
 				"name": "withCookies.response",
 				"type": "Response",
-				"required": true
+				"required": true,
+				"description": "Response whose headers receive the supplied Set-Cookie values."
 			},
 			{
 				"name": "withCookies.cookies",
 				"type": "string[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Optional individual cookie header values to append; defaults to an empty list."
 			},
 			{
 				"name": "authHttp.body",
@@ -281,13 +283,15 @@
 					{
 						"name": "withCookies.response",
 						"type": "Response",
-						"required": true
+						"required": true,
+						"description": "Response whose headers receive the supplied Set-Cookie values."
 					},
 					{
 						"name": "withCookies.cookies",
 						"type": "string[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Optional individual cookie header values to append; defaults to an empty list."
 					}
 				],
 				"outputs": [

@@ -56,7 +56,8 @@
 			{
 				"name": "workspaceGameViews.workspace",
 				"type": "Pick<Workspace, 'snapshot' | 'projectId' | 'local' | 'bridge'>",
-				"required": true
+				"required": true,
+				"description": "Project snapshot, identity, local availability and bridge capabilities used to decide whether a Game Views link is supported."
 			}
 		],
 		"outputs": [
@@ -160,7 +161,8 @@
 					{
 						"name": "workspaceGameViews.workspace",
 						"type": "Pick<Workspace, 'snapshot' | 'projectId' | 'local' | 'bridge'>",
-						"required": true
+						"required": true,
+						"description": "Project snapshot, identity, local availability and bridge capabilities used to decide whether a Game Views link is supported."
 					}
 				],
 				"outputs": [

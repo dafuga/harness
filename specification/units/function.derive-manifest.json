@@ -33,27 +33,32 @@
 			{
 				"name": "deriveContract.files",
 				"type": "SourceFile[]",
-				"required": true
+				"required": true,
+				"description": "Source facts for every file owned by the unit, including exports, errors and storage declarations."
 			},
 			{
 				"name": "deriveContract.entry",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional runtime entry used to select the primary component props when several components share an owner."
 			},
 			{
 				"name": "declaredContract.declared",
 				"type": "ComponentManifest['contract']",
-				"required": true
+				"required": true,
+				"description": "Previously authored contract explanations, error declarations and metadata to preserve."
 			},
 			{
 				"name": "declaredContract.source",
 				"type": "ComponentManifest['contract']",
-				"required": true
+				"required": true,
+				"description": "Fresh source-derived signatures, literal defaults, operations and storage facts."
 			},
 			{
 				"name": "operationContract.symbol",
 				"type": "ExportedSymbol",
-				"required": true
+				"required": true,
+				"description": "Scanned callable or method whose inputs, return and observed errors form one operation contract."
 			},
 			{
 				"name": "deriveManifest.input",
@@ -77,12 +82,14 @@
 					{
 						"name": "deriveContract.files",
 						"type": "SourceFile[]",
-						"required": true
+						"required": true,
+						"description": "Source facts for every file owned by the unit, including exports, errors and storage declarations."
 					},
 					{
 						"name": "deriveContract.entry",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Optional runtime entry used to select the primary component props when several components share an owner."
 					}
 				],
 				"outputs": [
@@ -100,12 +107,14 @@
 					{
 						"name": "declaredContract.declared",
 						"type": "ComponentManifest['contract']",
-						"required": true
+						"required": true,
+						"description": "Previously authored contract explanations, error declarations and metadata to preserve."
 					},
 					{
 						"name": "declaredContract.source",
 						"type": "ComponentManifest['contract']",
-						"required": true
+						"required": true,
+						"description": "Fresh source-derived signatures, literal defaults, operations and storage facts."
 					}
 				],
 				"outputs": [
@@ -123,7 +132,8 @@
 					{
 						"name": "operationContract.symbol",
 						"type": "ExportedSymbol",
-						"required": true
+						"required": true,
+						"description": "Scanned callable or method whose inputs, return and observed errors form one operation contract."
 					}
 				],
 				"outputs": [

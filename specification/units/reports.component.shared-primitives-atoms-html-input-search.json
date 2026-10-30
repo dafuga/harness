@@ -21,7 +21,8 @@
 			{
 				"name": "HtmlInputSearch.children",
 				"type": "Snippet",
-				"required": false
+				"required": false,
+				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
 			}
 		],
 		"outputs": [

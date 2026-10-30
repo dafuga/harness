@@ -41,7 +41,8 @@
 				"name": "ProjectAgent.open",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Optional bindable visibility of the project conversation panel; defaults to false."
 			}
 		],
 		"outputs": [

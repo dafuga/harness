@@ -53,7 +53,8 @@
 				"name": "entityMeasure.observations",
 				"type": "Measurement[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Optional focused runtime observations to show alongside the selected record, keeping their original profiles; defaults to an empty list."
 			},
 			{
 				"name": "byteSize.count",
@@ -105,7 +106,8 @@
 						"name": "entityMeasure.observations",
 						"type": "Measurement[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Optional focused runtime observations to show alongside the selected record, keeping their original profiles; defaults to an empty list."
 					}
 				],
 				"outputs": [

@@ -31,33 +31,39 @@
 			{
 				"name": "GamePreview.view",
 				"type": "GameView",
-				"required": true
+				"required": true,
+				"description": "Game view defining geometry, checkpoints, rendering dimension and visual style."
 			},
 			{
 				"name": "GamePreview.initialRun",
 				"type": "GameRun",
-				"required": false
+				"required": false,
+				"description": "Optional saved gameplay state; without it a fresh run starts at the view spawn."
 			},
 			{
 				"name": "GamePreview.projectId",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Project identifier for rendering requests, or null when no project is open."
 			},
 			{
 				"name": "GamePreview.readonly",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Disables gameplay edits and AI rendering when true; defaults to false."
 			},
 			{
 				"name": "GamePreview.onRun",
 				"type": "(run: GameRun) => void",
-				"required": true
+				"required": true,
+				"description": "Receives each updated gameplay state so the workspace can retain progress."
 			},
 			{
 				"name": "GamePreview.bridge",
 				"type": "DesktopBridge",
-				"required": false
+				"required": false,
+				"description": "Optional native bridge providing the authorized game rendering operation."
 			}
 		],
 		"outputs": [

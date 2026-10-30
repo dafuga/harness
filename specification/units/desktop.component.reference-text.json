@@ -40,7 +40,8 @@
 				"name": "ReferenceText.history",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Opens recognized unit references at their commit history when true; defaults to false."
 			}
 		],
 		"outputs": [

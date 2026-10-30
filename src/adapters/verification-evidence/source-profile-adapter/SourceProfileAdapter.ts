@@ -31,7 +31,14 @@ export class SourceProfileAdapter {
 function eligibleUnit(unit: ComponentManifest): boolean {
 	return (
 		unit.status === 'active' &&
-		!['adapter.source-profile', 'service.performance-profile'].includes(unit.id) &&
+		// The collector validates through these schemas; observing their bootstrap calls recurses.
+		![
+			'adapter.source-profile',
+			'service.performance-profile',
+			'function.unit-types',
+			'function.verify-types',
+			'function.comparison-types'
+		].includes(unit.id) &&
 		!['component', 'page', 'shell', 'layout'].includes(unit.kind) &&
 		unit.runtime.targets.some((target) => target.kind === 'module')
 	);

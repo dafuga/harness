@@ -30,7 +30,8 @@
 			{
 				"name": "codexRpc.resources",
 				"type": "ResourceContext",
-				"required": false
+				"required": false,
+				"description": "Optional inherited resource reservation for the Codex app-server process."
 			}
 		],
 		"outputs": [
@@ -64,7 +65,8 @@
 					{
 						"name": "codexRpc.resources",
 						"type": "ResourceContext",
-						"required": false
+						"required": false,
+						"description": "Optional inherited resource reservation for the Codex app-server process."
 					}
 				],
 				"outputs": [

@@ -76,12 +76,14 @@
 			{
 				"name": "byName.left",
 				"type": "CatalogRow",
-				"required": true
+				"required": true,
+				"description": "First catalog row compared by its canonical display name."
 			},
 			{
 				"name": "byName.right",
 				"type": "CatalogRow",
-				"required": true
+				"required": true,
+				"description": "Second catalog row compared case-insensitively with the first."
 			},
 			{
 				"name": "entityCatalog.entities",
@@ -239,12 +241,14 @@
 					{
 						"name": "byName.left",
 						"type": "CatalogRow",
-						"required": true
+						"required": true,
+						"description": "First catalog row compared by its canonical display name."
 					},
 					{
 						"name": "byName.right",
 						"type": "CatalogRow",
-						"required": true
+						"required": true,
+						"description": "Second catalog row compared case-insensitively with the first."
 					}
 				],
 				"outputs": [

@@ -29,37 +29,44 @@
 			{
 				"name": "recordRegression.input",
 				"type": "RecordRegressionInput",
-				"required": true
+				"required": true,
+				"description": "Loop, evidence phase, committed revision, tests and optional command, assertion, units and timeout to record."
 			},
 			{
 				"name": "requireRegressionProof.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository whose retained Git evidence contains the required regression checkpoint."
 			},
 			{
 				"name": "requireRegressionProof.loop",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Loop identifier whose red or paired green proof is required."
 			},
 			{
 				"name": "requireRegressionProof.step",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Loop step being completed; determines the required proof phase and tested revision."
 			},
 			{
 				"name": "enforceRegressionStep.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository containing the loop state and retained regression evidence."
 			},
 			{
 				"name": "enforceRegressionStep.state",
 				"type": "LoopState",
-				"required": true
+				"required": true,
+				"description": "Loop state to validate and opt into committed regression enforcement when red begins."
 			},
 			{
 				"name": "enforceRegressionStep.step",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Step being advanced, used to require the appropriate recorded checkpoint."
 			}
 		],
 		"outputs": [
@@ -83,7 +90,8 @@
 					{
 						"name": "recordRegression.input",
 						"type": "RecordRegressionInput",
-						"required": true
+						"required": true,
+						"description": "Loop, evidence phase, committed revision, tests and optional command, assertion, units and timeout to record."
 					}
 				],
 				"outputs": [
@@ -106,17 +114,20 @@
 					{
 						"name": "requireRegressionProof.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository whose retained Git evidence contains the required regression checkpoint."
 					},
 					{
 						"name": "requireRegressionProof.loop",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Loop identifier whose red or paired green proof is required."
 					},
 					{
 						"name": "requireRegressionProof.step",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Loop step being completed; determines the required proof phase and tested revision."
 					}
 				],
 				"outputs": [
@@ -139,17 +150,20 @@
 					{
 						"name": "enforceRegressionStep.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository containing the loop state and retained regression evidence."
 					},
 					{
 						"name": "enforceRegressionStep.state",
 						"type": "LoopState",
-						"required": true
+						"required": true,
+						"description": "Loop state to validate and opt into committed regression enforcement when red begins."
 					},
 					{
 						"name": "enforceRegressionStep.step",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Step being advanced, used to require the appropriate recorded checkpoint."
 					}
 				],
 				"outputs": [

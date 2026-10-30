@@ -44,12 +44,14 @@
 			{
 				"name": "side.whole",
 				"type": "ExplorerSide",
-				"required": true
+				"required": true,
+				"description": "Complete evidence side whose revision and record metadata must be preserved."
 			},
 			{
 				"name": "side.entity",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Registered entity identifier used to restrict the projected detail and records."
 			}
 		],
 		"outputs": [
@@ -93,12 +95,14 @@
 					{
 						"name": "side.whole",
 						"type": "ExplorerSide",
-						"required": true
+						"required": true,
+						"description": "Complete evidence side whose revision and record metadata must be preserved."
 					},
 					{
 						"name": "side.entity",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Registered entity identifier used to restrict the projected detail and records."
 					}
 				],
 				"outputs": [

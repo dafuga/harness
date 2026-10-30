@@ -37,12 +37,14 @@
 			{
 				"name": "problem.input",
 				"type": "CoverageInput",
-				"required": true
+				"required": true,
+				"description": "Scenario requirements, selected revision, declared builds and capture context used to validate evidence."
 			},
 			{
 				"name": "problem.item",
 				"type": "Gathered",
-				"required": true
+				"required": true,
+				"description": "Gathered capture and its bytes to check against the declared evidence slot."
 			},
 			{
 				"name": "scenarioCoverage.input",
@@ -66,12 +68,14 @@
 					{
 						"name": "problem.input",
 						"type": "CoverageInput",
-						"required": true
+						"required": true,
+						"description": "Scenario requirements, selected revision, declared builds and capture context used to validate evidence."
 					},
 					{
 						"name": "problem.item",
 						"type": "Gathered",
-						"required": true
+						"required": true,
+						"description": "Gathered capture and its bytes to check against the declared evidence slot."
 					}
 				],
 				"outputs": [

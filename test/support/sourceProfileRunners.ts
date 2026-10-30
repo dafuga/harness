@@ -151,13 +151,25 @@ test:{include:['subject.test.ts'],minWorkers:1,maxWorkers:1} });\n`;
 /** Exercise the real transitive schema graph in a fresh profiled runtime. */
 export function assertProjectBootstrap(environment: Record<string, string>) {
 	const root = repository;
+	for (const first of [
+		"import {unitIdPattern} from './src/core/unitTypes';",
+		"import {PerformanceProfileService} from './src/services/verification-evidence/PerformanceProfileService';"
+	])
+		assertColdBootstrap(root, environment, first);
+}
+
+function assertColdBootstrap(root: string, environment: Record<string, string>, first: string) {
 	const cold = spawnSync(
 		'bun',
 		[
 			'--preload',
 			preload,
 			'-e',
-			"import {unitIdPattern} from './src/core/unitTypes'; console.log(unitIdPattern.test('function.real'));"
+			`${first}
+import {componentManifestSchema} from './src/core/unitTypes';
+import {PerformanceProfileService as Profiler} from './src/services/verification-evidence/PerformanceProfileService';
+const profiler = new Profiler();
+console.log(profiler.observe({unit:'function.real',workload:'cold-bootstrap'},()=>componentManifestSchema.safeParse({}).success === false));`
 		],
 		{
 			cwd: root,

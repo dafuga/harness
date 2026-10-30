@@ -120,12 +120,14 @@
 			{
 				"name": "plural.count",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Quantity displayed before the word and used to choose its singular or plural form."
 			},
 			{
 				"name": "plural.word",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Singular label; an s is appended whenever count is not one."
 			},
 			{
 				"name": "keyLabel.deviceId",
@@ -370,12 +372,14 @@
 					{
 						"name": "plural.count",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Quantity displayed before the word and used to choose its singular or plural form."
 					},
 					{
 						"name": "plural.word",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Singular label; an s is appended whenever count is not one."
 					}
 				],
 				"outputs": [

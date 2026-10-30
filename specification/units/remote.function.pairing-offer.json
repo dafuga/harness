@@ -75,12 +75,14 @@
 			{
 				"name": "written.offer",
 				"type": "PairingOffer",
-				"required": true
+				"required": true,
+				"description": "Validated pairing offer containing host, origin, pairing id, code and expiry."
 			},
 			{
 				"name": "written.environment",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Environment identifier embedded in the QR offer audience boundary."
 			}
 		],
 		"outputs": [
@@ -190,12 +192,14 @@
 					{
 						"name": "written.offer",
 						"type": "PairingOffer",
-						"required": true
+						"required": true,
+						"description": "Validated pairing offer containing host, origin, pairing id, code and expiry."
 					},
 					{
 						"name": "written.environment",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Environment identifier embedded in the QR offer audience boundary."
 					}
 				],
 				"outputs": [

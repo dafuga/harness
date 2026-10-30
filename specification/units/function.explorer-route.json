@@ -67,12 +67,14 @@
 			{
 				"name": "tabOf.location",
 				"type": "ExplorerLocation",
-				"required": true
+				"required": true,
+				"description": "Parsed explorer address whose category, entity and section determine the allowed tabs."
 			},
 			{
 				"name": "tabOf.search",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "URL search string containing an optional legacy tab selection."
 			},
 			{
 				"name": "explorerRoute.path",
@@ -90,7 +92,8 @@
 			{
 				"name": "canonicalExplorerLocation.location",
 				"type": "ExplorerLocation",
-				"required": true
+				"required": true,
+				"description": "Explorer location to normalize from compatibility Details aliases to the canonical section and tab."
 			},
 			{
 				"name": "explorerRoutePath.location",
@@ -159,12 +162,14 @@
 					{
 						"name": "tabOf.location",
 						"type": "ExplorerLocation",
-						"required": true
+						"required": true,
+						"description": "Parsed explorer address whose category, entity and section determine the allowed tabs."
 					},
 					{
 						"name": "tabOf.search",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "URL search string containing an optional legacy tab selection."
 					}
 				],
 				"outputs": [
@@ -209,7 +214,8 @@
 					{
 						"name": "canonicalExplorerLocation.location",
 						"type": "ExplorerLocation",
-						"required": true
+						"required": true,
+						"description": "Explorer location to normalize from compatibility Details aliases to the canonical section and tab."
 					}
 				],
 				"outputs": [

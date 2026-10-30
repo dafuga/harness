@@ -45,7 +45,8 @@
 			{
 				"name": "HistoryPanel.evidence",
 				"type": "EntityEvidence",
-				"required": true
+				"required": true,
+				"description": "Loading state and recorded evidence for the selected entity, including retained regression proofs."
 			}
 		],
 		"outputs": [

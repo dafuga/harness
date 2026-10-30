@@ -53,17 +53,20 @@
 			{
 				"name": "serviceClasses.units",
 				"type": "Unit[]",
-				"required": true
+				"required": true,
+				"description": "Selected-revision units to annotate with proven service classes and concrete consumer counts."
 			},
 			{
 				"name": "serviceClasses.facts",
 				"type": "Facts",
-				"required": true
+				"required": true,
+				"description": "Resolved export, construction and runtime-reference facts for the selected source revision."
 			},
 			{
 				"name": "serviceClasses.lookup",
 				"type": "Lookup",
-				"required": true
+				"required": true,
+				"description": "Source declaration lookup used to follow exported classes and inheritance."
 			}
 		],
 		"outputs": [
@@ -107,17 +110,20 @@
 					{
 						"name": "serviceClasses.units",
 						"type": "Unit[]",
-						"required": true
+						"required": true,
+						"description": "Selected-revision units to annotate with proven service classes and concrete consumer counts."
 					},
 					{
 						"name": "serviceClasses.facts",
 						"type": "Facts",
-						"required": true
+						"required": true,
+						"description": "Resolved export, construction and runtime-reference facts for the selected source revision."
 					},
 					{
 						"name": "serviceClasses.lookup",
 						"type": "Lookup",
-						"required": true
+						"required": true,
+						"description": "Source declaration lookup used to follow exported classes and inheritance."
 					}
 				],
 				"outputs": [

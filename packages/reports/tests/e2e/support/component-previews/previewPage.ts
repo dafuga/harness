@@ -17,7 +17,7 @@ import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { uploadComparisonPreMount } from './uploadComparisonPreMount';
 import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
-import { routeGameplayLoading } from './gameplayReplayActions';
+
 import {
 	assertPreviewLoading,
 	assertPreviewMessages,
@@ -47,7 +47,6 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 					: '';
 	await page.route('**/*', (route) => servePreview(route, home, markup));
 	await routeLoadingZoom(page, id, variant);
-	await routeGameplayLoading(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.
@@ -182,11 +181,9 @@ export async function capturePreview(
 
 const nativePopups: Record<string, string[]> = {
 	'reports.component.select': ['open'],
-	'reports.component.replay-controls': ['speed-open', 'scene-open'],
-	'reports.component.gameplay-replay': ['fullscreen'],
+
 	'reports.component.evidence-grid': ['status-open'],
-	'reports.component.upload-comparison': ['viewport-open'],
-	'reports.component.upload-audio': ['mode-open'],
+
 	'reports.component.explorer-ui-explorer-platforms': ['status-options-open'],
 	'reports.component.explorer-ui-explorer-translations-screen': ['language-open']
 };
