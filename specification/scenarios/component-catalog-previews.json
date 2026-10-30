@@ -2315,6 +2315,36 @@
 			"units": ["reports.component.explorer-usage"]
 		},
 		{
+			"id": "reports-component-explorer-usage-empty",
+			"title": "ExplorerUsage: no consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-many",
+			"title": "ExplorerUsage: more consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-limited",
+			"title": "ExplorerUsage: one shown",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-limit-zero",
+			"title": "ExplorerUsage: none shown",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-duplicates",
+			"title": "ExplorerUsage: duplicate consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
 			"id": "reports-component-explorer-usage-link",
 			"title": "ExplorerUsageLink",
 			"coverage": "required",
@@ -4663,6 +4693,11 @@
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
 				"reports-component-explorer-ui-harness-group",
 				"reports-component-explorer-usage",
+				"reports-component-explorer-usage-empty",
+				"reports-component-explorer-usage-many",
+				"reports-component-explorer-usage-limited",
+				"reports-component-explorer-usage-limit-zero",
+				"reports-component-explorer-usage-duplicates",
 				"reports-component-explorer-usage-link",
 				"reports-component-filter-dialog",
 				"reports-component-filter-dialog-active",

@@ -1,10 +1,12 @@
 import { activityCatalogVariants } from './activityCatalogVariants';
 import { providerPickerStates } from './providerPickerVariants';
 import { audioCatalogVariants } from './audioCatalogVariants';
+import { explorerUsageCatalogVariants } from './explorerUsageCatalogVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
 	...audioCatalogVariants,
+	...explorerUsageCatalogVariants,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
