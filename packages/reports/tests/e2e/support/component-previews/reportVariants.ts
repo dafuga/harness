@@ -1,7 +1,7 @@
 import type { PreviewCases } from './shared';
 import { chatVariantProps } from './chatVariants';
 import { image, text } from './shared';
-import { sourceVariant } from './reportSourceVariants';
+
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
 import { entityExamplesVariant } from './reportEntityExamplesVariants';
@@ -12,7 +12,7 @@ import { contractExampleVariant } from './reportContractExampleVariants';
 import { contractTableVariant } from './reportContractTableVariants';
 import { explorerVariantProps } from './reportExplorerVariants';
 import { usageExamplesVariant } from './usageExamplesVariants';
-import { replayControlsVariant } from './replayControlsVariants';
+
 import { audioComparisonVariant } from './audioComparisonVariants';
 import { audioEvidenceVariant } from './audioEvidenceVariants';
 import { evidenceCardVariant } from './evidenceCardVariants';
@@ -20,17 +20,14 @@ import { evidenceGridVariant } from './evidenceGridVariants';
 import { evidenceProvenanceVariant } from './evidenceProvenanceVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { activityReportVariant } from './activityReportVariants';
-import { reportChecksVariant } from './reportChecksVariants';
-import { reportFindingsVariant } from './reportFindingsVariants';
+
 import { recordedValueVariant } from './recordedValueVariants';
-import { reportSummaryVariant } from './reportSummaryVariants';
+
 import { imageZoomVariant } from './imageZoomVariants';
-import { coverageListVariant } from './coverageListVariants';
+
 import { providerPickerCardVariant } from './providerPickerCardVariants';
 import { providerPickerVariant } from './providerPickerVariants';
 import { browserErrorsVariant } from './browserErrorsVariants';
-import { gameplayReplayVariant } from './gameplayReplayVariants';
-import { reportViewVariant } from './reportViewVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -59,28 +56,24 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		const viewer = extendedSourceViewerVariant(props, variant);
 		if (viewer) return viewer;
 	}
-	if (id.startsWith('reports.component.source-')) return sourceVariant(props, id, variant);
+
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
-	if (id === 'reports.component.audio-upload-files') return audioUploadFilesVariant(props, variant);
+
 	if (id === 'reports.component.evidence-card') return evidenceCardVariant(props, variant);
 	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
 	if (id === 'reports.component.evidence-provenance')
 		return evidenceProvenanceVariant(props, variant);
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
-	if (id === 'reports.component.report-checks') return reportChecksVariant(props, variant);
-	if (id === 'reports.component.report-findings') return reportFindingsVariant(props, variant);
+
 	if (id === 'reports.component.recorded-value') return recordedValueVariant(props, variant);
-	if (id === 'reports.component.report-summary') return reportSummaryVariant(props, variant);
-	if (id === 'reports.component.report-view') return reportViewVariant(props, variant);
+
 	if (id === 'reports.component.image-zoom') return imageZoomVariant(props, variant);
-	if (id === 'reports.component.coverage-list') return coverageListVariant(props, variant);
+
 	if (id === 'reports.component.browser-errors') return browserErrorsVariant(props, variant);
-	if (id === 'reports.component.upload-comparison') return props;
-	if (id === 'reports.component.upload-audio') return props;
+
 	if (id === 'reports.component.console-chat' || id === 'reports.component.floating-chat')
 		return chatVariantProps(id, props, variant);
-	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);
-	if (id === 'reports.component.replay-controls') return replayControlsVariant(props, variant);
+
 	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);
 	return audioVariant(id, props, variant);
 }
@@ -147,18 +140,6 @@ function extendedSourceViewerVariant(props: PreviewCases[string], variant: strin
 			}
 		};
 	return variant === 'empty-file' ? { ...props, state: { ...state, text: '' } } : null;
-}
-
-function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
-	if (variant === 'selected') return props;
-	if (variant === 'single-uploading') return { ...props, uploading: true };
-	if (
-		['comparison', 'uploading', 'before-selected', 'after-selected', 'both-selected'].includes(
-			variant
-		)
-	)
-		return { ...props, mode: 'comparison', uploading: variant === 'uploading' };
-	return null;
 }
 
 function regressionProofVariant(props: PreviewCases[string], variant: string) {
