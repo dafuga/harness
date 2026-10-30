@@ -14,6 +14,7 @@ import {
 import { evidenceGridItems } from './evidenceGridData';
 import { reportCheck } from './reportChecksVariants';
 import { recordedValueFixture } from './recordedValueVariants';
+import { reportSummaryFixture } from './reportSummaryVariants';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
@@ -197,7 +198,7 @@ export const reportCases: PreviewCases = {
 	},
 	'reports.component.report-checks': { checks: [reportCheck] },
 	'reports.component.report-findings': { findings: report.findings },
-	'reports.component.report-summary': { report, downloadBase: '/exports/', portable: true },
+	'reports.component.report-summary': { report: reportSummaryFixture, downloadBase: '/exports/' },
 	'reports.component.report-view': {
 		report,
 		assetBase: '/media/',

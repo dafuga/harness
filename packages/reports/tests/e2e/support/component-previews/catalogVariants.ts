@@ -8,6 +8,7 @@ import { configValueCatalogVariants } from './configValueTreeVariants';
 import { usageExampleCatalogVariants } from './usageExamplesVariants';
 import { moduleCatalogVariants } from './reportModuleVariants';
 import { recordedValueStates } from './recordedValueVariants';
+import { reportSummaryStates } from './reportSummaryVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
@@ -19,6 +20,7 @@ const variants: Record<string, string[]> = {
 	...usageExampleCatalogVariants,
 	...moduleCatalogVariants,
 	'reports.component.recorded-value': recordedValueStates,
+	'reports.component.report-summary': reportSummaryStates,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',

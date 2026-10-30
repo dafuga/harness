@@ -17,6 +17,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.evidence-grid': prepareEvidenceGrid,
 	'reports.component.report-checks': prepareReportChecks,
 	'reports.component.recorded-value': prepareRecordedValue,
+	'reports.component.report-summary': prepareReportSummary,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations
 };
@@ -59,4 +60,22 @@ async function prepareRecordedValue(component: Locator, variant: string) {
 		await expect(component.getByRole('region', { name: 'Recorded rows' })).toBeVisible();
 	if (variant === 'long-text' || variant === 'custom-label')
 		await expect(component.getByText(/Preview shortened/)).toBeVisible();
+}
+
+async function prepareReportSummary(component: Locator, variant: string) {
+	await expect(
+		component.getByRole('heading', { name: 'Checkout release verification' })
+	).toBeVisible();
+	if (variant.endsWith('open')) {
+		const details = component.locator('details.run-details');
+		await details.locator('summary').click();
+		await expect(details).toHaveAttribute('open', '');
+		if (variant === 'run-open')
+			await expect(details.getByRole('link', { name: /Download everything/ })).toBeVisible();
+		if (variant === 'portable-open')
+			await expect(details.getByRole('link', { name: /Download everything/ })).toHaveCount(0);
+	}
+	if (variant === 'stale')
+		await expect(component.getByText(/No updates for over 15 minutes/)).toBeVisible();
+	if (variant === 'gaps') await expect(component.locator('.gap-count')).toContainText('2 gaps');
 }
