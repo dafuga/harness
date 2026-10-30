@@ -29,6 +29,7 @@ export async function pickerFixture(route: Route) {
 function pickerSnapshot(variant: string) {
 	if (variant === 'unbound') return { ...picker, sessionId: null, active: null, request: null };
 	if (variant === 'unobserved') return { ...picker, active: null, request: null };
+	if (variant === 'queue-empty') return { ...picker, request: null };
 	if (variant === 'control-unavailable')
 		return {
 			...picker,

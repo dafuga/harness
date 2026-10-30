@@ -32,6 +32,8 @@ export async function prepareProviderPickerState(component: Locator, variant: st
 		);
 	}
 	if (['queue-empty', 'queue-populated', 'queue-error'].includes(variant)) {
+		if (variant === 'queue-empty')
+			await expect(component.getByText('Nothing is queued for this session.')).toBeVisible();
 		await component.getByRole('button', { name: 'Show queued sessions' }).click();
 		if (variant === 'queue-error')
 			return expect(component.getByRole('alert')).toHaveText('Queued sessions could not be read.');
