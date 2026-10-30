@@ -1,6 +1,8 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import ConfigValueTree, { valueMark } from '../../../src/components/explorer-ui/ConfigValueTree.svelte';
+import ConfigValueTree, {
+	valueMark
+} from '../../../src/components/explorer-ui/ConfigValueTree.svelte';
 import type { ConfigValueMark } from '../../../src/components/explorer-ui/ConfigValueTree.svelte';
 import type { ConfigValueNode } from '../../../../../src/utils/explorer-ui/unitMetadata';
 import { measureWorkload } from '../../../../../test/support/measureWorkload';
