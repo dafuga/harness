@@ -50,6 +50,8 @@ export async function assertEntityStates(component: Locator, variant: string) {
 	};
 	if (words[variant])
 		await expect(component.getByText(words[variant], { exact: false }).first()).toBeVisible();
+	if (variant === 'initial')
+		await expect(component.locator('.state-card figcaption code').first()).toHaveText('');
 	if (variant === 'loading')
 		await expect(component.locator('.state-panes .state-gap').first()).toHaveText(
 			'Loading recorded capture…'

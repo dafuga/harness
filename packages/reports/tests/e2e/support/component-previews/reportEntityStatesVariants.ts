@@ -1,4 +1,7 @@
-import type { ExplorerEvidence } from '../../../../src/models/explorer-ui/Explorer.types';
+import type {
+	ExplorerEvidence,
+	ExplorerScope
+} from '../../../../src/models/explorer-ui/Explorer.types';
 import type { Evidence } from '../../../../src/models/reports-media/Report.types';
 import type { PreviewCases } from './shared';
 
@@ -39,6 +42,14 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 			...props,
 			resolveImage: async (item: Evidence) => orderListImage(item.title.startsWith('Empty'), true)
 		};
+	if (variant === 'initial') {
+		const scope = props.scope as ExplorerScope;
+		return {
+			...props,
+			evidence: galleryEvidence(evidence, variant),
+			scope: { ...scope, parent: null, summary: { ...scope.summary, parents: [] } }
+		};
+	}
 	const changed = galleryEvidence(evidence, variant);
 	if (changed) return { ...props, evidence: changed };
 	if (variant === 'loading') return { ...props, resolveImage: () => new Promise<string>(() => {}) };

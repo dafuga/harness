@@ -34,7 +34,13 @@
 				"description": "Readable examples with safe markup text and structured values. Missing examples stay explicit; this is documentation, not a test result."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Getter, proxy or conversion error",
+				"type": "thrown",
+				"description": "Propagates errors thrown by supplied structured example values while reading their getters, proxy traps or string conversions."
+			}
+		]
 	},
 	"dependencies": [
 		{
