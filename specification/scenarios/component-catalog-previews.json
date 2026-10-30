@@ -2651,6 +2651,12 @@
 			"units": ["reports.component.evidence-grid"]
 		},
 		{
+			"id": "reports-component-evidence-grid-category-audio",
+			"title": "Evidence grid: category audio",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
 			"id": "reports-component-evidence-grid-status",
 			"title": "Evidence grid: Status selected",
 			"coverage": "required",
@@ -2659,12 +2665,6 @@
 		{
 			"id": "reports-component-evidence-grid-status-open",
 			"title": "Evidence grid: Status menu open",
-			"coverage": "required",
-			"units": ["reports.component.evidence-grid"]
-		},
-		{
-			"id": "reports-component-evidence-grid-category-audio",
-			"title": "Evidence grid: category audio",
 			"coverage": "required",
 			"units": ["reports.component.evidence-grid"]
 		},
@@ -6255,9 +6255,9 @@
 				"reports-component-evidence-grid-viewport-tablet",
 				"reports-component-evidence-grid-viewport-desktop",
 				"reports-component-evidence-grid-category",
+				"reports-component-evidence-grid-category-audio",
 				"reports-component-evidence-grid-status",
 				"reports-component-evidence-grid-status-open",
-				"reports-component-evidence-grid-category-audio",
 				"reports-component-evidence-grid-status-failed",
 				"reports-component-evidence-grid-status-blocked",
 				"reports-component-evidence-grid-status-skipped",
