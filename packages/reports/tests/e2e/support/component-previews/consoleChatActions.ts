@@ -59,10 +59,10 @@ async function assertChatFrame(component: Locator, variant: string) {
 		variant
 	);
 	const offset = await component.page().evaluate(() => ({ x: scrollX, y: scrollY }));
-	for (const selector of ['.floating-chat-panel', '.floating-chat-bubble']) {
+	for (const selector of ['.floating-chat-panel', '.floating-chat-bubble', '[role="dialog"]']) {
 		const box = await component.locator(selector).boundingBox();
 		expect(box).not.toBeNull();
-		const message = 'Console chat capture includes its panel and launcher';
+		const message = 'Console chat capture includes its panel, launcher and dialog';
 		expect(clip.x, message).toBeLessThanOrEqual(box!.x + offset.x);
 		expect(clip.y, message).toBeLessThanOrEqual(box!.y + offset.y);
 		expect(clip.x + clip.width, message).toBeGreaterThanOrEqual(box!.x + offset.x + box!.width);
