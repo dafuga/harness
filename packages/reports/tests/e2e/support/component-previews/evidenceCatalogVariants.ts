@@ -39,7 +39,14 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 		'upload-comparison-open',
 		'upload-audio-open'
 	],
-	'reports.component.evidence-provenance': ['extended', 'single', 'long', 'empty', 'absent'],
+	'reports.component.evidence-provenance': [
+		'extended',
+		'single',
+		'long',
+		'duplicate-labels',
+		'empty',
+		'absent'
+	],
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
 	'reports.component.upload-comparison': [
 		'open',

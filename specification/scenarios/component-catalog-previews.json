@@ -2747,6 +2747,12 @@
 			"units": ["reports.component.evidence-provenance"]
 		},
 		{
+			"id": "reports-component-evidence-provenance-duplicate-labels",
+			"title": "Evidence provenance: repeated labels",
+			"coverage": "required",
+			"units": ["reports.component.evidence-provenance"]
+		},
+		{
 			"id": "reports-component-evidence-provenance-empty",
 			"title": "Evidence provenance: empty",
 			"coverage": "required",
@@ -6619,6 +6625,7 @@
 				"reports-component-evidence-provenance-extended",
 				"reports-component-evidence-provenance-single",
 				"reports-component-evidence-provenance-long",
+				"reports-component-evidence-provenance-duplicate-labels",
 				"reports-component-evidence-provenance-empty",
 				"reports-component-evidence-provenance-absent",
 				"reports-component-evidence-viewer",

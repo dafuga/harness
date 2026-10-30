@@ -19,6 +19,10 @@ export function evidenceProvenanceVariant(props: PreviewCases[string], variant: 
 			},
 			{ label: 'Revision', value: '7c4a8d09e1b236fa7532cb8e462d1f975abc0031' }
 		],
+		'duplicate-labels': [
+			{ label: 'Source', value: 'Chromium capture' },
+			{ label: 'Source', value: 'Checkout release review' }
+		],
 		empty: [],
 		absent: undefined
 	};

@@ -121,7 +121,7 @@ for (const viewport of catalogViewports) {
 				await expect(component.getByRole('heading', { name: 'Acceptance' })).toBeVisible();
 				await preview.capturePreview(page, home, unit.id, target);
 			}
-			await test.step('Component state', () => prepareCatalogState(component, unit.id, variant));
+			await test.step('Prepare state', () => prepareCatalogState(component, unit.id, variant));
 			await assertCatalogState(component, unit.id, variant, viewport.id);
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
 				await assertMobileContractFields(component);
