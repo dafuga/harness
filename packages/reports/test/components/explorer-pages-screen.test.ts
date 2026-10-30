@@ -64,6 +64,11 @@ test('every dedicated visual catalog capture can appear in its registered catalo
 			expect(
 				evidence.after.captures.filter((entry) => entry.state.startsWith('loading-'))
 			).toHaveLength(6);
+		if (state.id === 'reports-component-explorer-ui-explorer-platform-details-desktop')
+			expect(
+				catalogShot(evidence, { scenario: catalog.id, state: state.id, viewport: 'desktop' })?.file,
+				'A state named desktop keeps its own desktop capture'
+			).toBe('ccccccc-default-desktop.png');
 		const choice = { scenario: catalog.id, state: state.id, viewport: 'desktop' };
 		for (const viewport of ['desktop', 'tablet', 'mobile'])
 			if (!catalogShot(evidence, { ...choice, viewport })?.file)
