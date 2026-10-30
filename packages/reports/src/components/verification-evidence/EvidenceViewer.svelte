@@ -152,6 +152,36 @@
 </Modal>
 
 <style>
+	/* Give recorded images the space left after the viewer's controls and provenance. */
+	:global(.viewer-dialog.lightbox:has(.viewer-images) .viewer-content) {
+		display: flex;
+		flex-direction: column;
+	}
+	:global(.viewer-dialog.lightbox:has(.viewer-images) .viewer-content > :not(.viewer-images)) {
+		flex: none;
+	}
+	:global(.viewer-dialog.lightbox .viewer-images) {
+		flex: 1 1 0;
+		min-height: 0;
+	}
+	:global(.viewer-dialog.lightbox .viewer-images.comparison) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	:global(.viewer-dialog.lightbox .viewer-images figure),
+	:global(.viewer-dialog.lightbox .viewer-images .zoom) {
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+	}
+	:global(.viewer-dialog.lightbox .viewer-images .zoom),
+	:global(.viewer-dialog.lightbox .viewer-images .stage) {
+		flex: 1 1 0;
+		min-height: 0;
+	}
+	:global(.viewer-dialog.lightbox .viewer-images .stage:not(.zoomed) img) {
+		max-height: 100%;
+		object-fit: contain;
+	}
 	.viewer-provenance {
 		max-width: 80ch;
 		margin: 0 auto var(--hx-space-12);
