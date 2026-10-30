@@ -72,7 +72,13 @@
 				"description": "Separate active-session and switch-request cards. A pending request has a cancel action; no request receives an explicit empty state. The cards do not perform the cancellation themselves."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "cancel callback error",
+				"type": "thrown",
+				"description": "Any value thrown by the caller-supplied oncancel callback propagates when a pending switch is cancelled."
+			}
+		]
 	},
 	"dependencies": [
 		{
