@@ -13,6 +13,7 @@ import { previewNavigation } from './previewNavigation';
 import { previewCaptureBounds } from './previewCaptureBounds';
 import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 import { applyActivityPreviewContext } from './activityPreviewContext';
+import { audioComparisonPreMount } from './audioComparisonPreMount';
 const pageUnitIds = new Set(
 	catalogUnits
 		.filter((unit) => unit.owns.source.some((path) => path.endsWith('/+page.svelte')))
@@ -26,7 +27,11 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 		const cdp = await page.context().newCDPSession(page);
 		await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
 	}
-	await page.route('**/*', (route) => servePreview(route, home));
+	const markup =
+		id === 'reports.component.audio-comparison' && variant === 'pre-mount'
+			? await audioComparisonPreMount()
+			: '';
+	await page.route('**/*', (route) => servePreview(route, home, markup));
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.

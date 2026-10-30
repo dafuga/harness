@@ -1445,6 +1445,12 @@
 			"units": ["reports.component.audio-comparison"]
 		},
 		{
+			"id": "reports-component-audio-comparison-pre-mount",
+			"title": "Audio comparison: Before mount",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
 			"id": "reports-component-audio-comparison-viewer",
 			"title": "Audio comparison viewer",
 			"coverage": "required",
@@ -5058,6 +5064,7 @@
 				"reports-component-audio-comparison-skipped",
 				"reports-component-audio-comparison-not-proven",
 				"reports-component-audio-comparison-interrupted",
+				"reports-component-audio-comparison-pre-mount",
 				"reports-component-audio-comparison-viewer",
 				"reports-component-audio-comparison-viewer-before",
 				"reports-component-audio-comparison-viewer-after",
