@@ -1,19 +1,9 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 /** Frame rendered UI roots, including fragments and fixed surfaces, with a small edge allowance. */
 export async function previewCaptureBounds(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
-	const dialog = content.locator('dialog[open], [role="dialog"]:visible').last();
-	const modal =
-		(await content.getAttribute('data-preview-frame')) !== 'full' && (await dialog.count());
-	const projectAgent = id === 'desktop.component.project-agent';
-	const compactTarget =
-		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
-	let target = modal ? dialog : (compactTarget ?? content);
-	if (projectAgent)
-		target = content.locator(
-			variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel'
-		);
+	const { target, modal, captureElement } = await previewTarget(content, id, variant);
 	const bounds = await target.evaluate(
 		(node, { captureElement, includeUsageTooltip, edge }) => {
 			const boxes: DOMRect[] = [];
@@ -45,8 +35,11 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			return { x: left, y: top, width: right - left, height: bottom - top };
 		},
 		{
-			captureElement: Boolean(modal) || projectAgent || Boolean(compactTarget),
-			includeUsageTooltip: id === 'reports.component.explorer-usage-link',
+			captureElement,
+			includeUsageTooltip: [
+				'reports.component.explorer-usage-link',
+				'reports.component.explorer-ui-explorer-module-card'
+			].includes(id),
 			edge: id === 'reports.component.evidence-grid' && modal ? 0 : 8
 		}
 	);
@@ -55,4 +48,23 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + 180) };
 	}
 	return bounds;
+}
+
+async function previewTarget(content: Locator, id: string, variant: string) {
+	const dialog = content.locator('dialog[open], [role="dialog"]:visible').last();
+	const modal =
+		(await content.getAttribute('data-preview-frame')) !== 'full' && (await dialog.count());
+	const projectAgent = id === 'desktop.component.project-agent';
+	const compactTarget =
+		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
+	let target = modal ? dialog : (compactTarget ?? content);
+	if (projectAgent)
+		target = content.locator(
+			variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel'
+		);
+	return {
+		target,
+		modal,
+		captureElement: Boolean(modal) || projectAgent || Boolean(compactTarget)
+	};
 }

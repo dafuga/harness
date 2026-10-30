@@ -2993,6 +2993,18 @@
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-module-card-layout",
+			"title": "ExplorerModuleCard: layout",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-layout-missing",
+			"title": "ExplorerModuleCard: layout without a screenshot",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-module-card-unlinked",
 			"title": "ExplorerModuleCard: unlinked dependency",
 			"coverage": "required",
@@ -3007,6 +3019,12 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-module-card-many-usage",
 			"title": "ExplorerModuleCard: more usages",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-usage-open",
+			"title": "ExplorerModuleCard: usage preview open",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
@@ -6342,9 +6360,12 @@
 				"reports-component-explorer-ui-explorer-module-card-api-no-methods",
 				"reports-component-explorer-ui-explorer-module-card-page",
 				"reports-component-explorer-ui-explorer-module-card-page-missing",
+				"reports-component-explorer-ui-explorer-module-card-layout",
+				"reports-component-explorer-ui-explorer-module-card-layout-missing",
 				"reports-component-explorer-ui-explorer-module-card-unlinked",
 				"reports-component-explorer-ui-explorer-module-card-no-usage",
 				"reports-component-explorer-ui-explorer-module-card-many-usage",
+				"reports-component-explorer-ui-explorer-module-card-usage-open",
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platform-details-ios",
 				"reports-component-explorer-ui-explorer-platform-details-android",

@@ -29,7 +29,9 @@ export async function assertPreviewMessages(content: Locator, id: string, varian
 	await expect(content).not.toContainText(
 		/This project could not be opened|Loading projects?…|Design preview unavailable|Preview unavailable|Screenshot unavailable|not listed by the evidence|Not verified|Reading the clip…|TypeError:|ReferenceError:|Checking the GitHub connection…/
 	);
-	if (!(moduleCard && ['missing', 'page-missing', 'image-error'].includes(variant)))
+	if (
+		!(moduleCard && ['missing', 'page-missing', 'layout-missing', 'image-error'].includes(variant))
+	)
 		await expect(content).not.toContainText(/No screenshot (?:is )?recorded/);
 	const expected: Record<string, string[]> = {
 		'reports.component.activity-agents': ['failed-read', 'unreadable'],
