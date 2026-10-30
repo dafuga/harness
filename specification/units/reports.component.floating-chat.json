@@ -97,7 +97,13 @@
 				"examples": ["<button aria-expanded=\"false\" aria-label=\"Work with agent\">…</button>"]
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "snippet error",
+				"type": "thrown",
+				"description": "Errors thrown by the caller-supplied children or navigation snippet propagate while it renders."
+			}
+		]
 	},
 	"dependencies": [
 		{

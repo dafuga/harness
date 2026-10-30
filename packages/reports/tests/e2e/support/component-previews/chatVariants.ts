@@ -1,7 +1,7 @@
 import type { PreviewCases } from './shared';
 import { text } from './shared';
 
-const conversation = text(`<div>
+const conversation = text(`<div style="padding-bottom: 10px">
 	<p>You: Please review the activity panel.</p>
 	<p>Agent: I will check the recorded states and their screenshots.</p>
 	<p>You: Include desktop, tablet and mobile.</p>
@@ -13,7 +13,7 @@ const conversation = text(`<div>
 	<p>You: Confirm the labels remain readable.</p>
 	<p>Agent: The fields fit and the labels are visible.</p>
 	<p>You: Check the recorded history as well.</p>
-	<p>Agent: The history is available for the selected revision.</p>
+	<p>Agent: History is ready for this revision.</p>
 	<p>You: Keep the earlier reading if refresh fails.</p>
 	<p>Agent: The warning explains that the last reading is retained.</p>
 	<p>You: Summarize the result when finished.</p>
