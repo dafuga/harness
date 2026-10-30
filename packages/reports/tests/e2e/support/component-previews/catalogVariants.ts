@@ -1,43 +1,10 @@
 import { activityCatalogVariants } from './activityCatalogVariants';
 import { providerPickerStates } from './providerPickerVariants';
+import { audioCatalogVariants } from './audioCatalogVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
-	// Each side can be unavailable, have no duration or carry an independent result.
-	'reports.component.audio-comparison': [
-		'unavailable',
-		'after-unavailable',
-		'both-unavailable',
-		'no-duration',
-		'mixed',
-		'running',
-		'failed',
-		'blocked',
-		'skipped',
-		'not-proven',
-		'interrupted'
-	],
-	// Selection, playback, disclosures, availability and independent results are visible states.
-	'reports.component.audio-comparison-viewer': [
-		'before',
-		'after',
-		'unavailable',
-		'after-unavailable',
-		'both-unavailable',
-		'no-duration',
-		'mixed',
-		'running',
-		'failed',
-		'blocked',
-		'skipped',
-		'not-proven',
-		'interrupted',
-		'transcript-closed',
-		'playing-before',
-		'playing-after'
-	],
-	// A recorded clip exposes both its available notes and unavailable fallback separately.
-	'reports.component.audio-evidence': ['notes', 'unavailable'],
+	...audioCatalogVariants,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',

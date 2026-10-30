@@ -2,6 +2,7 @@ import { expect, type Locator, type Page } from '@playwright/test';
 import { prepareConsoleChatState } from './consoleChatActions';
 import { assertProviderPickerCardState } from './providerPickerCardActions';
 import { prepareProviderPickerState } from './providerPickerActions';
+import { prepareAudioEvidence } from './audioEvidenceActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -73,12 +74,6 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.getByRole('button', { name: 'Refresh activity' }).click();
 		await expect(component.getByRole('status')).toContainText('Activity could not be read again');
 	},
-	'reports.component.audio-evidence:notes': async (component) => {
-		await component.locator('.audio-details summary').click();
-		await expect(
-			component.getByText('Timing and diction were reviewed before approval.', { exact: true })
-		).toBeVisible();
-	},
 	'reports.component.evidence-card:compact': async (component) => {
 		await component.locator('summary').click();
 		await expect(component.getByText('Browser capture', { exact: true })).toBeVisible();
@@ -147,6 +142,7 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 	if (id === 'reports.component.provider-picker-cards' && variant)
 		return assertProviderPickerCardState(component, variant);
 	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
+	if (id === 'reports.component.audio-evidence') return prepareAudioEvidence(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);
 	if (id === 'reports.component.audio-comparison-viewer')
