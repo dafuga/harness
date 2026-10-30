@@ -3,6 +3,11 @@ import { assertFunctionCardState } from './functionCardPreviewAssertions';
 import { assertExplorerUsageState } from './explorerUsagePreviewAssertions';
 import { assertEntityStates } from './entityStatesPreviewAssertions';
 import { assertRegressionProofState } from './regressionProofPreviewAssertions';
+import { assertUsageLink } from './usageLinkPreviewAssertions';
+import { assertConfigValueTree } from './configValueTreePreviewAssertions';
+import { assertCatalogItems } from './catalogItemsPreviewAssertions';
+import { assertUsageExamples } from './usageExamplesPreviewAssertions';
+import { assertDependenciesState } from './dependenciesPreviewAssertions';
 
 /** Check that each additional report preview actually renders its distinct state. */
 export async function assertReportPreviewState(component: Locator, id: string, variant = '') {
@@ -23,6 +28,15 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 	if (id === 'reports.component.explorer-usage')
 		return assertExplorerUsageState(component, variant);
 	if (id === 'reports.component.entity-states') return assertEntityStates(component, variant);
+	if (id === 'reports.component.explorer-usage-link') return assertUsageLink(component, variant);
+	if (id === 'reports.component.explorer-ui-config-value-tree')
+		return assertConfigValueTree(component, variant);
+	if (id === 'reports.component.explorer-catalog-items')
+		return assertCatalogItems(component, variant);
+	if (id === 'reports.component.usage-examples-usage-examples')
+		return assertUsageExamples(component, variant);
+	if (id === 'reports.component.explorer-dependencies-screen')
+		return assertDependenciesState(component, variant);
 	if (id === 'reports.component.modal' && variant === 'image') {
 		const dialog = component.getByRole('dialog', { name: 'Order card evidence' });
 		await expect(dialog).toBeVisible();

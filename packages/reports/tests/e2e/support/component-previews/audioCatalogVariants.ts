@@ -1,5 +1,14 @@
 /** Distinct playback, selection, availability and recorded-result examples. */
 export const audioCatalogVariants: Record<string, string[]> = {
+	'reports.component.audio-upload-files': [
+		'comparison',
+		'uploading',
+		'single-uploading',
+		'selected',
+		'before-selected',
+		'after-selected',
+		'both-selected'
+	],
 	'reports.component.audio-comparison': [
 		'unavailable',
 		'after-unavailable',
