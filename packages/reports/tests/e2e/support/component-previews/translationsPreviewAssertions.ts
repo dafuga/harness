@@ -1,25 +1,24 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
 /** A native picker can be open while its popup is absent from captured pixels. */
-export async function assertOpenLanguagePixels(
+export async function assertOpenPickerPixels(
 	page: Page,
 	id: string,
 	variant: string,
 	capture?: { clip: { x: number; y: number; width: number; height: number }; bytes: Buffer }
 ) {
-	if (
-		!capture ||
-		id !== 'reports.component.explorer-ui-explorer-translations-screen' ||
-		variant !== 'language-open'
-	)
-		return;
+	const language =
+		id === 'reports.component.explorer-ui-explorer-translations-screen' &&
+		variant === 'language-open';
+	const status = id === 'reports.component.evidence-grid' && variant === 'status-open';
+	if (!capture || (!language && !status)) return;
 	const { clip, bytes: opened } = capture;
-	const language = page.getByRole('combobox', { name: 'Language' });
-	await expect.poll(() => language.evaluate((node) => node.matches(':open'))).toBe(true);
-	const control = (await language.boundingBox())!;
+	const selector = page.getByRole('combobox', { name: language ? 'Language' : 'Status' });
+	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(true);
+	const control = (await selector.boundingBox())!;
 	await page.mouse.click(1, 1);
-	await language.focus();
-	await expect.poll(() => language.evaluate((node) => node.matches(':open'))).toBe(false);
+	await selector.focus();
+	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(false);
 	const closed = await page.screenshot({
 		fullPage: false,
 		clip,
@@ -27,10 +26,9 @@ export async function assertOpenLanguagePixels(
 		caret: 'hide'
 	});
 	const changed = await pickerPixelsChanged(page, { opened, closed, clip, control });
-	expect(changed, 'The open language menu must change pixels outside its control').toBeGreaterThan(
-		100
-	);
-	await language.click();
+	const message = `The open ${language ? 'language' : 'status'} menu must change pixels outside its control`;
+	expect(changed, message).toBeGreaterThan(100);
+	await selector.click();
 }
 
 /** Compare the captured images outside the selector, excluding focus or arrow changes. */
