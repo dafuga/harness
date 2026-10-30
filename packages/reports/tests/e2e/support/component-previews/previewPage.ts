@@ -187,6 +187,7 @@ const nativePopups: Record<string, string[]> = {
 	'reports.component.evidence-grid': ['status-open'],
 	'reports.component.upload-comparison': ['viewport-open'],
 	'reports.component.upload-audio': ['mode-open'],
+	'reports.component.explorer-ui-explorer-platforms': ['status-options-open'],
 	'reports.component.explorer-ui-explorer-translations-screen': ['language-open']
 };
 

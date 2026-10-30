@@ -3431,6 +3431,36 @@
 			"units": ["reports.component.explorer-ui-explorer-platforms"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-platforms-search-focused",
+			"title": "ExplorerPlatforms: focused search",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-card-focused",
+			"title": "ExplorerPlatforms: focused platform",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-card-hovered",
+			"title": "ExplorerPlatforms: hovered platform",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-filter-active-open",
+			"title": "ExplorerPlatforms: active filter open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-status-options-open",
+			"title": "ExplorerPlatforms: status choices open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-translations-screen",
 			"units": ["reports.component.explorer-ui-explorer-translations-screen"],
 			"coverage": "required",
@@ -7261,6 +7291,11 @@
 				"reports-component-explorer-ui-explorer-platforms-status-not-configured",
 				"reports-component-explorer-ui-explorer-platforms-status-not-recorded",
 				"reports-component-explorer-ui-explorer-platforms-detail-web",
+				"reports-component-explorer-ui-explorer-platforms-search-focused",
+				"reports-component-explorer-ui-explorer-platforms-card-focused",
+				"reports-component-explorer-ui-explorer-platforms-card-hovered",
+				"reports-component-explorer-ui-explorer-platforms-filter-active-open",
+				"reports-component-explorer-ui-explorer-platforms-status-options-open",
 				"reports-component-explorer-ui-explorer-translations-screen",
 				"reports-component-explorer-ui-explorer-translations-screen-unindexed",
 				"reports-component-explorer-ui-explorer-translations-screen-empty",

@@ -1,15 +1,47 @@
 import type { Locator, Page } from '@playwright/test';
 
+const tooltipUnits = new Set([
+	'reports.component.explorer-usage-link',
+	'reports.component.explorer-usage',
+	'reports.component.explorer-function-card',
+	'reports.component.explorer-ui-explorer-module-card'
+]);
+
 /** Frame rendered UI roots, including fragments and fixed surfaces, with a small edge allowance. */
 export async function previewCaptureBounds(page: Page, id: string, variant = '') {
+	if (isPlatformPicker(id, variant)) {
+		const viewport = page.viewportSize();
+		if (!viewport) throw new Error('Platform status capture requires a viewport.');
+		return { x: 0, y: 0, ...viewport };
+	}
 	if (await reportViewDialog(page, id)) {
 		const viewport = page.viewportSize();
 		if (!viewport) throw new Error('Report dialog capture requires a viewport.');
 		return { x: 0, y: 0, ...viewport };
 	}
 	const content = page.locator(`[data-preview-unit="${id}"]`);
-	const { target, modal, captureElement, chatPicker } = await previewTarget(content, id, variant);
-	const bounds = await target.evaluate(
+	const selected = await previewTarget(content, id, variant);
+	const bounds = await measuredBounds(id, selected);
+	if (id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
+		return replayPickerBounds(page, bounds, variant);
+	if (id === 'reports.component.select' && variant === 'open') {
+		const height = await page.evaluate(() => document.documentElement.scrollHeight);
+		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + 180) };
+	}
+	return bounds;
+}
+
+function isPlatformPicker(id: string, variant: string) {
+	return (
+		id === 'reports.component.explorer-ui-explorer-platforms' && variant === 'status-options-open'
+	);
+}
+
+async function measuredBounds(
+	id: string,
+	{ target, modal, captureElement, chatPicker }: Awaited<ReturnType<typeof previewTarget>>
+) {
+	return target.evaluate(
 		(node, { captureElement, includeUsageTooltip, chatPicker, edge }) => {
 			const boxes: DOMRect[] = [];
 			function collect(element: Element) {
@@ -44,22 +76,10 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 		{
 			captureElement,
 			chatPicker,
-			includeUsageTooltip: [
-				'reports.component.explorer-usage-link',
-				'reports.component.explorer-usage',
-				'reports.component.explorer-function-card',
-				'reports.component.explorer-ui-explorer-module-card'
-			].includes(id),
+			includeUsageTooltip: tooltipUnits.has(id),
 			edge: id === 'reports.component.evidence-grid' && modal ? 0 : 8
 		}
 	);
-	if (id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
-		return replayPickerBounds(page, bounds, variant);
-	if (id === 'reports.component.select' && variant === 'open') {
-		const height = await page.evaluate(() => document.documentElement.scrollHeight);
-		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + 180) };
-	}
-	return bounds;
 }
 
 /** Full-frame report dialogs must be captured in the visible viewport. */
@@ -101,18 +121,35 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 	const replayFull = id === 'reports.component.gameplay-replay' && variant === 'fullscreen';
 	const compactTarget =
 		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
-	let target = modal ? dialog : (compactTarget ?? content);
-	if (projectAgent)
-		target = content.locator(
-			variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel'
-		);
-	if (replayFull) target = content.locator('.replay-player.full');
+	const target = previewTargetElement(content, dialog, { id, variant, modal, compactTarget });
 	return {
 		target,
 		modal,
 		chatPicker,
 		captureElement: Boolean(modal) || projectAgent || replayFull || Boolean(compactTarget)
 	};
+}
+
+function previewTargetElement(
+	content: Locator,
+	dialog: Locator,
+	{
+		id,
+		variant,
+		modal,
+		compactTarget
+	}: {
+		id: string;
+		variant: string;
+		modal: boolean;
+		compactTarget?: Locator;
+	}
+) {
+	if (id === 'desktop.component.project-agent')
+		return content.locator(variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel');
+	if (id === 'reports.component.gameplay-replay' && variant === 'fullscreen')
+		return content.locator('.replay-player.full');
+	return modal ? dialog : (compactTarget ?? content);
 }
 
 async function previewModal(content: Locator, dialog: Locator, chatPicker: boolean) {
