@@ -4,6 +4,7 @@ import { assertProviderPickerCardState } from './providerPickerCardActions';
 import { prepareProviderPickerState } from './providerPickerActions';
 import { prepareAudioEvidence } from './audioEvidenceActions';
 import { prepareAudioUploadFiles } from './audioUploadFilesActions';
+import { prepareEntitySearchState } from './entitySearchPreviewActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -116,16 +117,18 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.getByRole('button', { name: 'View example for Orders' }).click();
 		await expect(component.getByRole('dialog', { name: 'Example for Orders' })).toBeVisible();
 	},
-	'reports.component.entity-search:open': async (component) => {
-		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
-		const dialog = component.getByRole('dialog', { name: 'Search project' });
-		await expect(dialog).toBeVisible();
-		await dialog.getByRole('combobox', { name: 'Search entities' }).fill('order');
-		await expect(dialog.getByRole('option').first()).toBeVisible();
+	'reports.component.contract-example:structure-open': async (component) => {
+		await component.getByText('Full example as JSON', { exact: true }).click();
+		await expect(component.locator('details[open] pre')).toContainText('A-1048');
 	},
 	'reports.component.filter-dialog:open': async (component) => {
 		await component.getByRole('button', { name: 'Filters', exact: true }).click();
 		await expect(component.getByRole('dialog', { name: 'Filters', exact: true })).toBeVisible();
+	},
+	'reports.component.select:display': async (component) => {
+		const label = component.locator('.report-select-value');
+		await expect(label).toHaveText('releas…proval');
+		expect(await label.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
 	},
 	'reports.component.select:open': async (component) => {
 		const select = component.getByRole('combobox', { name: 'Viewport', exact: true });
@@ -136,6 +139,8 @@ const actions: Record<string, CatalogStateAction> = {
 
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.entity-search' && variant)
+		return prepareEntitySearchState(component, variant);
 	if (id === 'reports.component.provider-picker')
 		return prepareProviderPickerState(component, variant);
 	if (id === 'reports.component.console-chat' && variant)

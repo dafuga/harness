@@ -1739,8 +1739,110 @@
 			"units": ["reports.component.contract-example"]
 		},
 		{
+			"id": "reports-component-contract-example-illustrative",
+			"title": "Contract example: illustrative",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-missing",
+			"title": "Contract example: missing",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-no-description",
+			"title": "Contract example: no description",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-structure",
+			"title": "Contract example: structured value",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-structure-open",
+			"title": "Contract example: full JSON open",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-rows",
+			"title": "Contract example: structured rows",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-markup",
+			"title": "Contract example: markup",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
+			"id": "reports-component-contract-example-multiple",
+			"title": "Contract example: multiple values",
+			"coverage": "required",
+			"units": ["reports.component.contract-example"]
+		},
+		{
 			"id": "reports-component-contract-table",
 			"title": "Contract field table",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-plain",
+			"title": "Contract table: plain label",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-empty",
+			"title": "Contract table: empty",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-empty-kept",
+			"title": "Contract table: empty table kept",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-plain-empty",
+			"title": "Contract table: plain empty",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-hide-names",
+			"title": "Contract table: unnamed returns",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-illustrative",
+			"title": "Contract table: illustrative example",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-missing",
+			"title": "Contract table: missing example",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-long",
+			"title": "Contract table: long field and type",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-multiple",
+			"title": "Contract table: multiple fields",
 			"coverage": "required",
 			"units": ["reports.component.contract-table"]
 		},
@@ -1951,6 +2053,36 @@
 		{
 			"id": "reports-component-entity-search-open",
 			"title": "Open entity search",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
+			"id": "reports-component-entity-search-open-initial",
+			"title": "Entity search: open without a query",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
+			"id": "reports-component-entity-search-open-loading",
+			"title": "Entity search: loading",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
+			"id": "reports-component-entity-search-open-no-matches",
+			"title": "Entity search: no matches",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
+			"id": "reports-component-entity-search-open-second-selected",
+			"title": "Entity search: second result selected",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
+			"id": "reports-component-entity-search-open-pinned",
+			"title": "Entity search: pinned revision",
 			"coverage": "required",
 			"units": ["reports.component.entity-search"]
 		},
@@ -4441,7 +4573,24 @@
 				"reports-component-console-chat-model-open",
 				"reports-component-console-chat-effort-open",
 				"reports-component-contract-example",
+				"reports-component-contract-example-illustrative",
+				"reports-component-contract-example-missing",
+				"reports-component-contract-example-no-description",
+				"reports-component-contract-example-structure",
+				"reports-component-contract-example-structure-open",
+				"reports-component-contract-example-rows",
+				"reports-component-contract-example-markup",
+				"reports-component-contract-example-multiple",
 				"reports-component-contract-table",
+				"reports-component-contract-table-plain",
+				"reports-component-contract-table-empty",
+				"reports-component-contract-table-empty-kept",
+				"reports-component-contract-table-plain-empty",
+				"reports-component-contract-table-hide-names",
+				"reports-component-contract-table-illustrative",
+				"reports-component-contract-table-missing",
+				"reports-component-contract-table-long",
+				"reports-component-contract-table-multiple",
 				"reports-component-coverage-list",
 				"reports-component-entity-cases",
 				"reports-component-entity-cases-empty",
@@ -4477,6 +4626,11 @@
 				"reports-component-entity-examples-void",
 				"reports-component-entity-search",
 				"reports-component-entity-search-open",
+				"reports-component-entity-search-open-initial",
+				"reports-component-entity-search-open-loading",
+				"reports-component-entity-search-open-no-matches",
+				"reports-component-entity-search-open-second-selected",
+				"reports-component-entity-search-open-pinned",
 				"reports-component-entity-search-results",
 				"reports-component-entity-search-results-initial",
 				"reports-component-entity-search-results-loading",

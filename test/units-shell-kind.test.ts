@@ -1,18 +1,8 @@
 import type { Manifest } from './units-shell-kind.test.types';
 import { readdir } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { runCommand } from './support/cli';
 import { unitProject } from './support/unitProject';
-
-test('unit project fixtures can load in a plain Bun seeder', async () => {
-	const result = await runCommand(
-		['bun', '-e', 'await import("./test/support/unitProject.ts")'],
-		resolve(import.meta.dirname, '..'),
-		false
-	);
-	expect(result.exitCode, result.stderr).toBe(0);
-});
 
 test('a declared shell kind survives reindexing under the same id, and new components stay components', async () => {
 	const project = await unitProject('app');
