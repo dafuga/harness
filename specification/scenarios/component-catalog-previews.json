@@ -1685,6 +1685,36 @@
 			"units": ["reports.component.audio-upload-files"]
 		},
 		{
+			"id": "reports-component-audio-upload-files-single-uploading",
+			"title": "Audio upload files: Single upload disabled",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-selected",
+			"title": "Audio upload files: Recording selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-before-selected",
+			"title": "Audio upload files: Before selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-after-selected",
+			"title": "Audio upload files: After selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-both-selected",
+			"title": "Audio upload files: Both recordings selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
 			"id": "reports-component-brand-mark",
 			"title": "Brand mark",
 			"coverage": "required",
@@ -2185,6 +2215,66 @@
 		{
 			"id": "reports-component-evidence-card-paired-audio",
 			"title": "Evidence card: Paired audio",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-compact-closed",
+			"title": "Evidence card: Compact details closed",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-image-error",
+			"title": "Evidence card: Image decode error",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-single-audio",
+			"title": "Evidence card: Single audio",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-minimal",
+			"title": "Evidence card: Minimal metadata",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-running",
+			"title": "Evidence card: Running",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-failed",
+			"title": "Evidence card: Failed",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-blocked",
+			"title": "Evidence card: Blocked",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-skipped",
+			"title": "Evidence card: Skipped",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-not-proven",
+			"title": "Evidence card: Not proven",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-interrupted",
+			"title": "Evidence card: Interrupted",
 			"coverage": "required",
 			"units": ["reports.component.evidence-card"]
 		},
@@ -4594,6 +4684,11 @@
 				"reports-component-audio-upload-files",
 				"reports-component-audio-upload-files-comparison",
 				"reports-component-audio-upload-files-uploading",
+				"reports-component-audio-upload-files-single-uploading",
+				"reports-component-audio-upload-files-selected",
+				"reports-component-audio-upload-files-before-selected",
+				"reports-component-audio-upload-files-after-selected",
+				"reports-component-audio-upload-files-both-selected",
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
 				"reports-component-console-chat",
@@ -4678,6 +4773,16 @@
 				"reports-component-evidence-card-missing",
 				"reports-component-evidence-card-compact",
 				"reports-component-evidence-card-paired-audio",
+				"reports-component-evidence-card-compact-closed",
+				"reports-component-evidence-card-image-error",
+				"reports-component-evidence-card-single-audio",
+				"reports-component-evidence-card-minimal",
+				"reports-component-evidence-card-running",
+				"reports-component-evidence-card-failed",
+				"reports-component-evidence-card-blocked",
+				"reports-component-evidence-card-skipped",
+				"reports-component-evidence-card-not-proven",
+				"reports-component-evidence-card-interrupted",
 				"reports-component-evidence-grid",
 				"reports-component-evidence-grid-empty",
 				"reports-component-evidence-grid-audio",

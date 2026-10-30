@@ -46,6 +46,8 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
+	if (id === 'reports.component.evidence-card' && variant === 'image-error')
+		await expect(content.locator('.image-button')).toBeDisabled();
 	await applyActivityPreviewContext(page, content, id);
 	await readyRoute(page, id);
 	const dialog = {

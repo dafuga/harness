@@ -7,6 +7,7 @@ import { commits } from '../../../../test/entityUnits';
 import { cpu } from './analytics';
 import { activity, live } from './activity';
 import { image, layoutImage, ordersPageImage } from './shared';
+import { checkoutConfirmation } from './evidenceCardMedia';
 import { pickerFixture } from './providerPickerApi';
 import { audioFixture } from '../../../../test/audioFixture';
 import { routeIndex, routeRevision } from './routeHistory';
@@ -174,6 +175,10 @@ async function media(route: Route, path: string) {
 		return route.fulfill({ contentType: 'audio/wav', body: audioFixture(42) });
 	if (file === 'preview-corrupt.wav')
 		return route.fulfill({ contentType: 'audio/wav', body: 'Invalid audio fixture.' });
+	if (file === 'checkout-confirmation.svg')
+		return route.fulfill({ contentType: 'image/svg+xml', body: checkoutConfirmation });
+	if (file === 'preview-invalid-image.svg')
+		return route.fulfill({ contentType: 'image/svg+xml', body: 'Invalid image fixture.' });
 	if (file === 'synthetic-layout-input.svg')
 		return route.fulfill({ contentType: 'image/svg+xml', body: layoutImage });
 	if (file === 'synthetic-orders-page-input.svg')
