@@ -17,6 +17,7 @@ import { audioComparisonVariant } from './audioComparisonVariants';
 import { audioEvidenceVariant } from './audioEvidenceVariants';
 import { evidenceCardVariant } from './evidenceCardVariants';
 import { evidenceGridVariant } from './evidenceGridVariants';
+import { evidenceProvenanceVariant } from './evidenceProvenanceVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { activityReportVariant } from './activityReportVariants';
 import { reportChecksVariant } from './reportChecksVariants';
@@ -149,23 +150,6 @@ function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
 	)
 		return { ...props, mode: 'comparison', uploading: variant === 'uploading' };
 	return null;
-}
-
-function evidenceProvenanceVariant(props: PreviewCases[string], variant: string) {
-	if (variant !== 'extended') return null;
-	const item = props.item as Record<string, unknown>;
-	return {
-		...props,
-		item: {
-			...item,
-			provenance: [
-				{ label: 'Viewport', value: 'Desktop' },
-				{ label: 'Browser', value: 'Chromium 142' },
-				{ label: 'Capture', value: 'Playwright catalog fixture' },
-				{ label: 'Revision', value: 'b8e942614a57' }
-			]
-		}
-	};
 }
 
 function gameplayReplayVariant(props: PreviewCases[string], variant: string) {

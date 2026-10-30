@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T04:40:48.439Z","name":"evidence-provenance-empty","goal":"Show when evidence has no provenance facts","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T04:41:14.133Z","loop":"evidence-provenance-empty","step":"spec","evidence":"Missing or empty provenance should explicitly say no provenance was recorded."}
+{"event":"step.completed","timestamp":"2026-10-30T04:41:14.844Z","loop":"evidence-provenance-empty","step":"coverage","evidence":"The catalog only supplies nonempty provenance facts, so no empty input or message is asserted."}

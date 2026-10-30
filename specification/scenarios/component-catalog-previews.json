@@ -2735,6 +2735,30 @@
 			"units": ["reports.component.evidence-provenance"]
 		},
 		{
+			"id": "reports-component-evidence-provenance-single",
+			"title": "Evidence provenance: single",
+			"coverage": "required",
+			"units": ["reports.component.evidence-provenance"]
+		},
+		{
+			"id": "reports-component-evidence-provenance-long",
+			"title": "Evidence provenance: long",
+			"coverage": "required",
+			"units": ["reports.component.evidence-provenance"]
+		},
+		{
+			"id": "reports-component-evidence-provenance-empty",
+			"title": "Evidence provenance: empty",
+			"coverage": "required",
+			"units": ["reports.component.evidence-provenance"]
+		},
+		{
+			"id": "reports-component-evidence-provenance-absent",
+			"title": "Evidence provenance: absent",
+			"coverage": "required",
+			"units": ["reports.component.evidence-provenance"]
+		},
+		{
 			"id": "reports-component-evidence-viewer",
 			"title": "Evidence viewer",
 			"coverage": "required",
@@ -6593,6 +6617,10 @@
 				"reports-component-evidence-grid-upload-audio-open",
 				"reports-component-evidence-provenance",
 				"reports-component-evidence-provenance-extended",
+				"reports-component-evidence-provenance-single",
+				"reports-component-evidence-provenance-long",
+				"reports-component-evidence-provenance-empty",
+				"reports-component-evidence-provenance-absent",
 				"reports-component-evidence-viewer",
 				"reports-component-evidence-viewer-before",
 				"reports-component-evidence-viewer-compare",
