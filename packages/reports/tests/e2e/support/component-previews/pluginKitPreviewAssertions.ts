@@ -19,6 +19,26 @@ export async function assertPluginKitPreview(component: Locator, id: string, var
 	await checks[id]?.(component, variant);
 }
 
+/** Standalone inline labels retain their content width, as they do inside plugin cards. */
+export async function assertInlinePluginKitCapture(component: Locator, id: string) {
+	if (![`${kit}pill`, `${plugins}plugin-state-pills`].includes(id)) return;
+	for (const pill of await component.locator('.ex-pill').all()) {
+		const excess = await pill.evaluate((node) => {
+			const range = document.createRange();
+			range.selectNodeContents(node);
+			const style = getComputedStyle(node);
+			const edges = ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth']
+				.map((key) => Number.parseFloat(style[key as keyof CSSStyleDeclaration] as string))
+				.reduce((sum, value) => sum + value, 0);
+			return node.getBoundingClientRect().width - range.getBoundingClientRect().width - edges;
+		});
+		expect(
+			excess,
+			'An inline badge must fit its label rather than stretch across the fixture'
+		).toBeLessThanOrEqual(2);
+	}
+}
+
 async function card(component: Locator, variant: string) {
 	const tag = variant === 'section' ? 'section' : 'article';
 	const root = component.locator(`${tag}.ex-card`);

@@ -1,4 +1,7 @@
-import { assertPluginKitPreview } from './support/component-previews/pluginKitPreviewAssertions';
+import {
+	assertInlinePluginKitCapture,
+	assertPluginKitPreview
+} from './support/component-previews/pluginKitPreviewAssertions';
 import { assertCompositionFilter } from './support/component-previews/atomicCatalog';
 import { dependencyTables } from './support/shellChecks';
 import { expect, test } from '../../../../test/support/browserTest';
@@ -159,6 +162,7 @@ for (const viewport of catalogViewports) {
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
+			await assertInlinePluginKitCapture(component, unit.id);
 			await assertRecordedValueCapture(component, unit.id, variant);
 			if (unit.id === 'reports.component.module-system-explorer-modules-screen' && !variant) {
 				await expect(component.locator('article')).toHaveCount(6);
