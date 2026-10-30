@@ -4337,6 +4337,18 @@
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
+			"id": "reports-component-module-system-explorer-modules-screen-link-focused",
+			"title": "ExplorerModulesScreen: focused plugin link",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-link-hovered",
+			"title": "ExplorerModulesScreen: hovered plugin link",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
 			"id": "reports-component-networking-security-explorer-permissions-screen",
 			"title": "User profile with scoped endpoint and data access",
 			"coverage": "required",
@@ -7442,6 +7454,8 @@
 				"reports-component-module-system-explorer-modules-screen-gaps",
 				"reports-component-module-system-explorer-modules-screen-not-found",
 				"reports-component-module-system-explorer-modules-screen-detail-unindexed",
+				"reports-component-module-system-explorer-modules-screen-link-focused",
+				"reports-component-module-system-explorer-modules-screen-link-hovered",
 				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-networking-security-explorer-permissions-screen-index",
 				"reports-component-networking-security-explorer-permissions-screen-guest",

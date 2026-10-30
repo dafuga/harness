@@ -21,7 +21,9 @@ export const moduleCatalogVariants: Record<string, string[]> = {
 		'empty',
 		'gaps',
 		'not-found',
-		'detail-unindexed'
+		'detail-unindexed',
+		'link-focused',
+		'link-hovered'
 	]
 };
 
