@@ -2891,6 +2891,12 @@
 			"units": ["reports.component.explorer-function-card"]
 		},
 		{
+			"id": "reports-component-explorer-function-card-usage-open",
+			"title": "Function card: usage preview open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-config-value-tree",
 			"title": "ConfigValueTree",
 			"coverage": "required",
@@ -3271,6 +3277,12 @@
 		{
 			"id": "reports-component-explorer-usage-duplicates",
 			"title": "ExplorerUsage: duplicate consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-usage-open",
+			"title": "ExplorerUsage: consumer preview open",
 			"coverage": "required",
 			"units": ["reports.component.explorer-usage"]
 		},
@@ -6421,6 +6433,7 @@
 				"reports-component-explorer-function-card-model",
 				"reports-component-explorer-function-card-no-usage",
 				"reports-component-explorer-function-card-many-usage",
+				"reports-component-explorer-function-card-usage-open",
 				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-config-value-tree-expanded",
 				"reports-component-explorer-ui-config-value-tree-object",
@@ -6485,6 +6498,7 @@
 				"reports-component-explorer-usage-limited",
 				"reports-component-explorer-usage-limit-zero",
 				"reports-component-explorer-usage-duplicates",
+				"reports-component-explorer-usage-usage-open",
 				"reports-component-explorer-usage-link",
 				"reports-component-explorer-usage-link-visual-open",
 				"reports-component-explorer-usage-link-missing-open",
