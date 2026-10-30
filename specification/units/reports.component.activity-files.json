@@ -64,7 +64,13 @@
 				"description": "Uncommitted and committed lists with paths, status, ownership chips and commit links. Shows six entries initially in each list, with expansion controls. Counts changed files and checkouts, mentions truncation and distinguishes unavailable live state from empty lists. The data is displayed without querying Git."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "href callback error",
+				"type": "thrown",
+				"description": "Any value thrown by the caller-supplied href callback propagates while a committed file is rendered."
+			}
+		]
 	},
 	"dependencies": [
 		{
