@@ -17,6 +17,7 @@ import { recordedValueFixture } from './recordedValueVariants';
 import { reportSummaryFixture } from './reportSummaryVariants';
 import { coverageListFixture } from './coverageListVariants';
 import { evidenceViewerProps } from './evidenceViewerVariants';
+import { reportViewFixture } from './reportViewVariants';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
@@ -24,11 +25,7 @@ import { contractPreviewUnit } from './reportEntityContractVariants';
 import { resolveStateImage } from './reportEntityStatesVariants';
 import { gameplayReplayFixture } from './gameplayReplayFixture';
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
-const gameplayReport =
-	typeof location !== 'undefined' &&
-	new URLSearchParams(location.search).get('unit') === 'reports.component.gameplay-replay'
-		? gameplayReplayFixture(report, picture)
-		: report;
+const gameplayReport = gameplayReplayFixture(report, picture);
 export const reportCases: PreviewCases = {
 	'reports.component.audio-comparison': {
 		before: baselineNarration,
@@ -200,10 +197,10 @@ export const reportCases: PreviewCases = {
 	'reports.component.report-findings': { findings: report.findings },
 	'reports.component.report-summary': { report: reportSummaryFixture, downloadBase: '/exports/' },
 	'reports.component.report-view': {
-		report,
+		report: reportViewFixture,
 		assetBase: '/media/',
 		downloadBase: '/exports/',
-		portable: true
+		onUploaded: noop
 	},
 	// A raw snippet renders one element, so the synthetic options come in one group.
 	'reports.component.select': {

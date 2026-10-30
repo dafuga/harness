@@ -70,8 +70,8 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
-	if (id === 'reports.component.evidence-card' && variant === 'image-error')
-		await expect(content.locator('.image-button')).toBeDisabled();
+	if (isBrokenPreviewImage(id, variant))
+		await expect(content.locator('.image-button').first()).toBeDisabled();
 	await applyActivityPreviewContext(page, content, id);
 	await readyRoute(page, id);
 	const dialog = {
@@ -123,6 +123,13 @@ async function readyRoute(page: Page, id: string) {
 	if (id === 'hub.page.root')
 		await expect(page.getByRole('region', { name: 'Owned by you', exact: true })).toBeVisible();
 }
+function isBrokenPreviewImage(id: string, variant: string) {
+	return (
+		variant === 'image-error' &&
+		['reports.component.evidence-card', 'reports.component.entity-states'].includes(id)
+	);
+}
+
 export async function capturePreview(
 	page: Page,
 	home: string,

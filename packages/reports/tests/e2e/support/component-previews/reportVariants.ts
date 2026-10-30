@@ -30,6 +30,7 @@ import { providerPickerCardVariant } from './providerPickerCardVariants';
 import { providerPickerVariant } from './providerPickerVariants';
 import { browserErrorsVariant } from './browserErrorsVariants';
 import { gameplayReplayVariant } from './gameplayReplayVariants';
+import { reportViewVariant } from './reportViewVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -70,6 +71,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.report-findings') return reportFindingsVariant(props, variant);
 	if (id === 'reports.component.recorded-value') return recordedValueVariant(props, variant);
 	if (id === 'reports.component.report-summary') return reportSummaryVariant(props, variant);
+	if (id === 'reports.component.report-view') return reportViewVariant(props, variant);
 	if (id === 'reports.component.image-zoom') return imageZoomVariant(props, variant);
 	if (id === 'reports.component.coverage-list') return coverageListVariant(props, variant);
 	if (id === 'reports.component.browser-errors') return browserErrorsVariant(props, variant);

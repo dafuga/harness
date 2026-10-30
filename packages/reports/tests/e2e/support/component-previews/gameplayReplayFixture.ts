@@ -5,6 +5,11 @@ import type { Evidence, Report } from '../../../../src/models/reports-media/Repo
 
 /** Render a short synthetic key-and-door run with the actual game fallback renderer. */
 export function gameplayReplayFixture(report: Report, picture: Evidence): Report {
+	if (
+		typeof location === 'undefined' ||
+		new URLSearchParams(location.search).get('unit') !== 'reports.component.gameplay-replay'
+	)
+		return report;
 	const view = exampleDocument('3d').views[0];
 	const canvas = document.createElement('canvas');
 	canvas.width = 920;
