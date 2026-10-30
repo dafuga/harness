@@ -101,6 +101,59 @@
 				"name": "RangeError",
 				"type": "thrown",
 				"description": "The recursive formatter cannot render a circular example."
+			},
+			{
+				"name": "Value access or conversion error",
+				"type": "thrown",
+				"description": "A supplied getter, proxy or value conversion callback can throw while formatting an example."
+			}
+		],
+		"operations": [
+			{
+				"name": "compact",
+				"inputs": [],
+				"outputs": [],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "BigInt values cannot be JSON serialized."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Circular arrays or objects exceed the recursive formatter's stack."
+					},
+					{
+						"name": "Value access or conversion error",
+						"type": "thrown",
+						"description": "A supplied getter, proxy or value conversion callback can throw."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "usageExamples",
+				"inputs": [],
+				"outputs": [],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "An example containing BigInt cannot be JSON serialized."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Circular arrays or objects exceed the recursive formatter's stack."
+					},
+					{
+						"name": "Value access or conversion error",
+						"type": "thrown",
+						"description": "A supplied getter, proxy or value conversion callback can throw."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},

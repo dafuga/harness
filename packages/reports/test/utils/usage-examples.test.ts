@@ -25,3 +25,22 @@ test('a missing authored call is a comment, never fabricated executable code', (
 		'// Call not documented\n// Input: false\n// => ""'
 	]);
 });
+
+test('formatters propagate unsupported and caller-provided value errors', () => {
+	const cycle: Record<string, unknown> = {};
+	cycle.self = cycle;
+	const error = new Error('value unavailable');
+	const inaccessible = {
+		get value(): never {
+			throw error;
+		}
+	};
+	for (const format of [
+		(value: unknown) => compact(value),
+		(value: unknown) => usageExamples([{ name: 'Result', input: null, output: value }])
+	]) {
+		expect(() => format(1n)).toThrow(TypeError);
+		expect(() => format(cycle)).toThrow(RangeError);
+		expect(() => format(inaccessible)).toThrow(error);
+	}
+});
