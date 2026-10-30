@@ -21,12 +21,15 @@ export const moduleCatalogVariants: Record<string, string[]> = {
 		'empty',
 		'gaps',
 		'not-found',
-		'detail-unindexed'
+		'detail-unindexed',
+		'link-focused',
+		'link-hovered'
 	]
 };
 
 /** Select only module data recorded at the synthetic revision. */
 export function moduleVariant(id: string, props: PreviewCases[string], variant: string) {
+	if (variant.startsWith('link-')) return props;
 	if (variant === 'playwright' || variant === 'headless-audio') return null;
 	const host = props as unknown as ExplorerScreenProps;
 	if (!id.endsWith('explorer-module-resources-screen')) return moduleListVariant(host, variant);

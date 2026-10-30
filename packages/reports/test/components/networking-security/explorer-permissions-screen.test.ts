@@ -8,6 +8,17 @@ const host = (entity?: string) => {
 	props.head = { ...props.head, permissions: permissionProfiles };
 	return props;
 };
+test('profile links propagate host URL generation errors', () => {
+	const props = host();
+	const error = new Error('navigation unavailable');
+	props.lens = {
+		...props.lens,
+		href: () => {
+			throw error;
+		}
+	};
+	expect(() => render(ExplorerPermissionsScreen, { props }).body).toThrow(error);
+});
 test('profile index exposes one revision-scoped page per declared user level', () => {
 	const body = render(ExplorerPermissionsScreen, { props: host() }).body;
 	expect(words(body)).toMatch(/Users (?:&amp;|&) Permissions/);

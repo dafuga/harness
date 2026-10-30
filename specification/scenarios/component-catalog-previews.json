@@ -4337,6 +4337,18 @@
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
+			"id": "reports-component-module-system-explorer-modules-screen-link-focused",
+			"title": "ExplorerModulesScreen: focused plugin link",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-link-hovered",
+			"title": "ExplorerModulesScreen: hovered plugin link",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
 			"id": "reports-component-networking-security-explorer-permissions-screen",
 			"title": "User profile with scoped endpoint and data access",
 			"coverage": "required",
@@ -4405,6 +4417,24 @@
 		{
 			"id": "reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
 			"title": "ExplorerPermissionsScreen: endpoint policy not indexed",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-index-link-focused",
+			"title": "ExplorerPermissionsScreen: focused profile link",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
+			"title": "ExplorerPermissionsScreen: hovered profile link",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-data-focused",
+			"title": "ExplorerPermissionsScreen: focused data access",
 			"coverage": "required",
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
 		},
@@ -6575,6 +6605,12 @@
 			"units": ["reports.component.usage-examples-usage-examples"]
 		},
 		{
+			"id": "reports-component-usage-examples-usage-examples-empty",
+			"title": "UsageExamples: no examples",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
 			"id": "reports-layout-explorer-layout",
 			"coverage": "required",
 			"units": ["reports.layout.explorer-layout"],
@@ -7442,6 +7478,8 @@
 				"reports-component-module-system-explorer-modules-screen-gaps",
 				"reports-component-module-system-explorer-modules-screen-not-found",
 				"reports-component-module-system-explorer-modules-screen-detail-unindexed",
+				"reports-component-module-system-explorer-modules-screen-link-focused",
+				"reports-component-module-system-explorer-modules-screen-link-hovered",
 				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-networking-security-explorer-permissions-screen-index",
 				"reports-component-networking-security-explorer-permissions-screen-guest",
@@ -7454,6 +7492,9 @@
 				"reports-component-networking-security-explorer-permissions-screen-endpoint",
 				"reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
 				"reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
+				"reports-component-networking-security-explorer-permissions-screen-index-link-focused",
+				"reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
+				"reports-component-networking-security-explorer-permissions-screen-data-focused",
 				"reports-component-project-activity",
 				"reports-component-project-activity-recorded",
 				"reports-component-project-activity-empty",
@@ -7815,6 +7856,7 @@
 				"reports-component-usage-examples-usage-examples-missing-call",
 				"reports-component-usage-examples-usage-examples-error",
 				"reports-component-usage-examples-usage-examples-void",
+				"reports-component-usage-examples-usage-examples-empty",
 				"reports-layout-explorer-layout",
 				"reports-page-harness-branch-branch-at-apis",
 				"reports-page-harness-branch-branch-at-apis-entity",

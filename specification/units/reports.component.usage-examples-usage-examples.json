@@ -13,6 +13,7 @@
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-pre"
 		]
 	},
@@ -78,7 +79,7 @@
 			{
 				"name": "UsageExamples",
 				"type": "markup",
-				"description": "Short titles and code blocks only, without tables, comparison panels or disclosures."
+				"description": "Short titles and code blocks, or an explicit message when no usage examples are recorded."
 			},
 			{
 				"name": "compact",
@@ -101,6 +102,59 @@
 				"name": "RangeError",
 				"type": "thrown",
 				"description": "The recursive formatter cannot render a circular example."
+			},
+			{
+				"name": "Value access or conversion error",
+				"type": "thrown",
+				"description": "A supplied getter, proxy or value conversion callback can throw while formatting an example."
+			}
+		],
+		"operations": [
+			{
+				"name": "compact",
+				"inputs": [],
+				"outputs": [],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "BigInt values cannot be JSON serialized."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Circular arrays or objects exceed the recursive formatter's stack."
+					},
+					{
+						"name": "Value access or conversion error",
+						"type": "thrown",
+						"description": "A supplied getter, proxy or value conversion callback can throw."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "usageExamples",
+				"inputs": [],
+				"outputs": [],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "An example containing BigInt cannot be JSON serialized."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Circular arrays or objects exceed the recursive formatter's stack."
+					},
+					{
+						"name": "Value access or conversion error",
+						"type": "thrown",
+						"description": "A supplied getter, proxy or value conversion callback can throw."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
@@ -127,6 +181,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

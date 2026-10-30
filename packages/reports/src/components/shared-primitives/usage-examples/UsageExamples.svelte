@@ -14,6 +14,9 @@
 </script>
 
 <hx-div class="examples">
+	{#if !lead && examples.length === 0}
+		<hx-p class="empty">No usage examples are recorded.</hx-p>
+	{/if}
 	{#if lead}
 		<hx-article>
 			<hx-h3>{setupTitle}</hx-h3>
@@ -35,6 +38,11 @@
 	}
 	article {
 		min-width: 0;
+	}
+	.empty {
+		margin: 0;
+		color: var(--hx-color-text-muted);
+		font-size: var(--hx-type-size-sm);
 	}
 	h3 {
 		margin: 0 0 var(--hx-space-8);

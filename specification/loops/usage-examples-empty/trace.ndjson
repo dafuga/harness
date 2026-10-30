@@ -1,0 +1,6 @@
+{"event":"loop.created","timestamp":"2026-10-30T07:41:40.348Z","name":"usage-examples-empty","goal":"Show an informative empty usage examples state","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T07:41:40.923Z","loop":"usage-examples-empty","step":"spec","evidence":"An empty examples list currently renders no visible content; readers need an explicit empty message."}
+{"event":"step.completed","timestamp":"2026-10-30T07:41:41.476Z","loop":"usage-examples-empty","step":"coverage","evidence":"The standard usage examples unit and catalog tests covered populated and setup-only cases but omitted an empty list."}
+{"event":"step.completed","timestamp":"2026-10-30T07:44:06.050Z","loop":"usage-examples-empty","step":"red","evidence":"At 083f0e10 an empty example list failed the standard component assertion."}
+{"event":"step.completed","timestamp":"2026-10-30T07:44:07.281Z","loop":"usage-examples-empty","step":"implement","evidence":"At a2665e72 an empty list renders an explicit recorded-data message."}
+{"event":"step.completed","timestamp":"2026-10-30T07:44:08.561Z","loop":"usage-examples-empty","step":"green","evidence":"The unchanged unit test passed at a2665e72 in the same reserved environment."}

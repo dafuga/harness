@@ -9,6 +9,8 @@ import { prepareEvidenceGrid } from './evidenceGridActions';
 import { preparePlatforms } from './platformsPreviewAssertions';
 import { preparePlatformDetails } from './platformDetailsPreviewAssertions';
 import { prepareTranslations } from './translationsPreviewAssertions';
+import { prepareModuleState } from './modulePreviewAssertions';
+import { preparePermissionState } from './permissionPreviewAssertions';
 import { prepareImageZoom } from './imageZoomActions';
 import { prepareCoverageList } from './coverageListActions';
 import { prepareUploadComparison } from './uploadComparisonActions';
@@ -49,7 +51,9 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.report-view': prepareReportView,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-platform-details': preparePlatformDetails,
-	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations
+	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations,
+	'reports.component.module-system-explorer-modules-screen': prepareModuleState,
+	'reports.component.networking-security-explorer-permissions-screen': preparePermissionState
 };
 
 /** Open report examples through their actual controls before a capture. */

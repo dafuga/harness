@@ -1,0 +1,6 @@
+{"event":"loop.created","timestamp":"2026-10-30T07:28:35.032Z","name":"platform-status-menu","goal":"Capture visible status filter options in platform previews","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T07:28:35.966Z","loop":"platform-status-menu","step":"spec","evidence":"At 754739b4 the open status selector renders no option pixels in captures at any viewport."}
+{"event":"step.completed","timestamp":"2026-10-30T07:28:36.658Z","loop":"platform-status-menu","step":"coverage","evidence":"The standard catalog checked :open without proving visible pixels; the committed pixel comparison fails in scoped verification."}
+{"event":"step.completed","timestamp":"2026-10-30T07:37:01.944Z","loop":"platform-status-menu","step":"red","evidence":"At 8b75c9f5 the capture test failed because open options produced no pixels outside the selector."}
+{"event":"step.completed","timestamp":"2026-10-30T07:37:02.782Z","loop":"platform-status-menu","step":"implement","evidence":"At f2fe3205 the status picker renders below its control in supported browsers."}
+{"event":"step.completed","timestamp":"2026-10-30T07:37:04.112Z","loop":"platform-status-menu","step":"green","evidence":"The unchanged capture test passed at f2fe3205 in the same reserved environment."}

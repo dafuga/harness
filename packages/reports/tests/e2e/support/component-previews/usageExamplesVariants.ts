@@ -9,12 +9,14 @@ export const usageExampleCatalogVariants: Record<string, string[]> = {
 		'multiple',
 		'missing-call',
 		'error',
-		'void'
+		'void',
+		'empty'
 	]
 };
 
 /** Use fictional documented examples without executing their source. */
 export function usageExamplesVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'empty') return { ...props, examples: [] };
 	const setup = 'const seconds = 90;';
 	const withSetup = { ...example, call: 'formatDuration(seconds)' };
 	if (variant === 'setup' || variant === 'inline-setup')

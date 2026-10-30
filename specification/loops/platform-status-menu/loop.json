@@ -1,0 +1,62 @@
+{
+	"name": "platform-status-menu",
+	"goal": "Capture visible status filter options in platform previews",
+	"createdAt": "2026-10-30T07:28:35.032Z",
+	"updatedAt": "2026-10-30T07:37:04.112Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-30T07:28:35.966Z",
+			"evidence": "At 754739b4 the open status selector renders no option pixels in captures at any viewport."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-30T07:28:36.658Z",
+			"evidence": "The standard catalog checked :open without proving visible pixels; the committed pixel comparison fails in scoped verification."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-30T07:37:01.944Z",
+			"evidence": "At 8b75c9f5 the capture test failed because open options produced no pixels outside the selector."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-30T07:37:02.782Z",
+			"evidence": "At f2fe3205 the status picker renders below its control in supported browsers."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-30T07:37:04.112Z",
+			"evidence": "The unchanged capture test passed at f2fe3205 in the same reserved environment."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
