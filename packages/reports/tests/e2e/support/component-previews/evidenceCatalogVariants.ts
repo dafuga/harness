@@ -72,5 +72,16 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 		'not-proven',
 		'interrupted'
 	],
+	'reports.component.report-findings': [
+		'empty',
+		'with-evidence',
+		'multiple',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted'
+	],
 	'reports.component.regression-proof': ['pending', 'gap', 'output-open', 'capture-only', 'empty']
 };

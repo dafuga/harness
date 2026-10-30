@@ -20,6 +20,7 @@ import { evidenceGridVariant } from './evidenceGridVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { activityReportVariant } from './activityReportVariants';
 import { reportChecksVariant } from './reportChecksVariants';
+import { reportFindingsVariant } from './reportFindingsVariants';
 import { recordedValueVariant } from './recordedValueVariants';
 import { reportSummaryVariant } from './reportSummaryVariants';
 import { imageZoomVariant } from './imageZoomVariants';
@@ -63,6 +64,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		return evidenceProvenanceVariant(props, variant);
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
 	if (id === 'reports.component.report-checks') return reportChecksVariant(props, variant);
+	if (id === 'reports.component.report-findings') return reportFindingsVariant(props, variant);
 	if (id === 'reports.component.recorded-value') return recordedValueVariant(props, variant);
 	if (id === 'reports.component.report-summary') return reportSummaryVariant(props, variant);
 	if (id === 'reports.component.image-zoom') return imageZoomVariant(props, variant);
