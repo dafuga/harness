@@ -27,7 +27,7 @@
 	{#each units as unit (unit)}
 		<hx-span class="pa-chip"
 			>{unit}{#if unknown.includes(unit)}
-				<hx-em>not in the registry</hx-em>{/if}</hx-span
+				{' '}<hx-em>not in the registry</hx-em>{/if}</hx-span
 		>
 	{/each}
 {/snippet}
