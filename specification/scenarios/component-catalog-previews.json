@@ -2795,10 +2795,124 @@
 			"units": ["reports.component.explorer-ui-explorer-platforms"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-platforms-unindexed",
+			"title": "ExplorerPlatforms: revision not indexed",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-gap",
+			"title": "ExplorerPlatforms: manifest unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-search",
+			"title": "ExplorerPlatforms: matching search",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-no-matches",
+			"title": "ExplorerPlatforms: no matches",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-filter-open",
+			"title": "ExplorerPlatforms: filter open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-status-configured",
+			"title": "ExplorerPlatforms: configured status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-status-setup-required",
+			"title": "ExplorerPlatforms: setup required status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-status-not-configured",
+			"title": "ExplorerPlatforms: not configured status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-status-not-recorded",
+			"title": "ExplorerPlatforms: not recorded status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-detail-web",
+			"title": "ExplorerPlatforms: Web detail",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-translations-screen",
 			"units": ["reports.component.explorer-ui-explorer-translations-screen"],
 			"coverage": "required",
 			"title": "Translations in English and French"
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-unindexed",
+			"title": "ExplorerTranslationsScreen: catalog not recorded",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-empty",
+			"title": "ExplorerTranslationsScreen: empty catalog",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-gaps",
+			"title": "ExplorerTranslationsScreen: source gaps",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-gaps-open",
+			"title": "ExplorerTranslationsScreen: source gaps open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-search",
+			"title": "ExplorerTranslationsScreen: matching search",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-no-matches",
+			"title": "ExplorerTranslationsScreen: no matches",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-german",
+			"title": "ExplorerTranslationsScreen: German",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-more",
+			"title": "ExplorerTranslationsScreen: more strings",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-missing-values",
+			"title": "ExplorerTranslationsScreen: missing and empty values",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
 		},
 		{
 			"id": "reports-component-explorer-ui-harness-explorer-styles-screen",
@@ -3329,6 +3443,36 @@
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
 		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-empty-generated",
+			"title": "ExplorerModuleResourcesScreen: none generated",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-unavailable",
+			"title": "ExplorerModuleResourcesScreen: plugin unavailable",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-not-found",
+			"title": "ExplorerModuleResourcesScreen: resource not found",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-unindexed",
+			"title": "ExplorerModuleResourcesScreen: catalog not indexed",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-missing-id",
+			"title": "ExplorerModuleResourcesScreen: resource not named",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
 			"id": "reports-component-module-system-explorer-modules-screen",
 			"title": "ExplorerModulesScreen",
 			"coverage": "required",
@@ -3347,8 +3491,122 @@
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
+			"id": "reports-component-module-system-explorer-modules-screen-detail-email",
+			"title": "ExplorerModulesScreen: installed plugin",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-detail-offline",
+			"title": "ExplorerModulesScreen: available plugin",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-project-module",
+			"title": "ExplorerModulesScreen: project plugin",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-unindexed",
+			"title": "ExplorerModulesScreen: catalog not indexed",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-empty",
+			"title": "ExplorerModulesScreen: empty catalog",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-gaps",
+			"title": "ExplorerModulesScreen: incomplete catalog",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-not-found",
+			"title": "ExplorerModulesScreen: plugin not found",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-detail-unindexed",
+			"title": "ExplorerModulesScreen: plugin catalog unavailable",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
 			"id": "reports-component-networking-security-explorer-permissions-screen",
 			"title": "User profile with scoped endpoint and data access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-index",
+			"title": "ExplorerPermissionsScreen: profiles",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-guest",
+			"title": "ExplorerPermissionsScreen: guest access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-admin",
+			"title": "ExplorerPermissionsScreen: administrator access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-empty",
+			"title": "ExplorerPermissionsScreen: no profiles",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-unindexed",
+			"title": "ExplorerPermissionsScreen: catalog not indexed",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-not-found",
+			"title": "ExplorerPermissionsScreen: profile not found",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-gap",
+			"title": "ExplorerPermissionsScreen: incomplete policy",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-empty-data",
+			"title": "ExplorerPermissionsScreen: no data access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-endpoint",
+			"title": "ExplorerPermissionsScreen: endpoint grants",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
+			"title": "ExplorerPermissionsScreen: endpoint without grants",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
+			"title": "ExplorerPermissionsScreen: endpoint policy not indexed",
 			"coverage": "required",
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
 		},
@@ -5367,7 +5625,26 @@
 				"reports-component-explorer-ui-explorer-platform-details-not-found",
 				"reports-component-explorer-ui-explorer-platform-details-source-unavailable",
 				"reports-component-explorer-ui-explorer-platforms",
+				"reports-component-explorer-ui-explorer-platforms-unindexed",
+				"reports-component-explorer-ui-explorer-platforms-gap",
+				"reports-component-explorer-ui-explorer-platforms-search",
+				"reports-component-explorer-ui-explorer-platforms-no-matches",
+				"reports-component-explorer-ui-explorer-platforms-filter-open",
+				"reports-component-explorer-ui-explorer-platforms-status-configured",
+				"reports-component-explorer-ui-explorer-platforms-status-setup-required",
+				"reports-component-explorer-ui-explorer-platforms-status-not-configured",
+				"reports-component-explorer-ui-explorer-platforms-status-not-recorded",
+				"reports-component-explorer-ui-explorer-platforms-detail-web",
 				"reports-component-explorer-ui-explorer-translations-screen",
+				"reports-component-explorer-ui-explorer-translations-screen-unindexed",
+				"reports-component-explorer-ui-explorer-translations-screen-empty",
+				"reports-component-explorer-ui-explorer-translations-screen-gaps",
+				"reports-component-explorer-ui-explorer-translations-screen-gaps-open",
+				"reports-component-explorer-ui-explorer-translations-screen-search",
+				"reports-component-explorer-ui-explorer-translations-screen-no-matches",
+				"reports-component-explorer-ui-explorer-translations-screen-german",
+				"reports-component-explorer-ui-explorer-translations-screen-more",
+				"reports-component-explorer-ui-explorer-translations-screen-missing-values",
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
 				"reports-component-explorer-ui-harness-group",
 				"reports-component-explorer-usage",
@@ -5456,10 +5733,34 @@
 				"reports-component-modal-lightbox",
 				"reports-component-module-system-explorer-module-resources-screen",
 				"reports-component-module-system-explorer-module-resources-screen-playwright",
+				"reports-component-module-system-explorer-module-resources-screen-empty-generated",
+				"reports-component-module-system-explorer-module-resources-screen-unavailable",
+				"reports-component-module-system-explorer-module-resources-screen-not-found",
+				"reports-component-module-system-explorer-module-resources-screen-unindexed",
+				"reports-component-module-system-explorer-module-resources-screen-missing-id",
 				"reports-component-module-system-explorer-modules-screen",
 				"reports-component-module-system-explorer-modules-screen-playwright",
 				"reports-component-module-system-explorer-modules-screen-headless-audio",
+				"reports-component-module-system-explorer-modules-screen-detail-email",
+				"reports-component-module-system-explorer-modules-screen-detail-offline",
+				"reports-component-module-system-explorer-modules-screen-project-module",
+				"reports-component-module-system-explorer-modules-screen-unindexed",
+				"reports-component-module-system-explorer-modules-screen-empty",
+				"reports-component-module-system-explorer-modules-screen-gaps",
+				"reports-component-module-system-explorer-modules-screen-not-found",
+				"reports-component-module-system-explorer-modules-screen-detail-unindexed",
 				"reports-component-networking-security-explorer-permissions-screen",
+				"reports-component-networking-security-explorer-permissions-screen-index",
+				"reports-component-networking-security-explorer-permissions-screen-guest",
+				"reports-component-networking-security-explorer-permissions-screen-admin",
+				"reports-component-networking-security-explorer-permissions-screen-empty",
+				"reports-component-networking-security-explorer-permissions-screen-unindexed",
+				"reports-component-networking-security-explorer-permissions-screen-not-found",
+				"reports-component-networking-security-explorer-permissions-screen-gap",
+				"reports-component-networking-security-explorer-permissions-screen-empty-data",
+				"reports-component-networking-security-explorer-permissions-screen-endpoint",
+				"reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
+				"reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
 				"reports-component-project-activity",
 				"reports-component-project-activity-recorded",
 				"reports-component-project-activity-empty",

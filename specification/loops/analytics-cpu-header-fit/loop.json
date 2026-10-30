@@ -1,0 +1,62 @@
+{
+	"name": "analytics-cpu-header-fit",
+	"goal": "Keep CPU table labels readable on mobile.",
+	"createdAt": "2026-10-30T01:21:14.725Z",
+	"updatedAt": "2026-10-30T01:27:36.353Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-30T01:21:19.494Z",
+			"evidence": "The populated mobile capture splits Processes into two fragments; the label must stay whole."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-30T01:21:25.992Z",
+			"evidence": "The catalog checked column bounds but not whether the header word wraps; it now checks text rectangles."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-30T01:23:28.707Z",
+			"evidence": "Regression 09cc12895d15 reproduced the split header on harbor-mbp-2."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-30T01:23:49.217Z",
+			"evidence": "Allocate more table width to the Processes and Machine headings on mobile."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-30T01:27:36.353Z",
+			"evidence": "The unchanged mobile header regression passed on harbor-mbp-2."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

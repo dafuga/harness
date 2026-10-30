@@ -3,3 +3,4 @@
 {"event":"step.completed","timestamp":"2026-10-30T01:05:23.410Z","loop":"analytics-cpu-layout-fit","step":"coverage","evidence":"The catalog checked CPU values but not column bounds or word wrapping; it now asserts both layouts."}
 {"event":"step.completed","timestamp":"2026-10-30T01:11:34.411Z","loop":"analytics-cpu-layout-fit","step":"red","evidence":"Regression b2574e4e8cef reproduced the tablet word break and mobile table overflow on harbor-mbp-2."}
 {"event":"step.completed","timestamp":"2026-10-30T01:12:25.776Z","loop":"analytics-cpu-layout-fit","step":"implement","evidence":"Use compact CPU table cells on mobile and the existing quiet style for unmeasured totals."}
+{"event":"step.completed","timestamp":"2026-10-30T01:16:55.892Z","loop":"analytics-cpu-layout-fit","step":"green","evidence":"The unchanged tablet and mobile catalog regression passed on harbor-mbp-2."}

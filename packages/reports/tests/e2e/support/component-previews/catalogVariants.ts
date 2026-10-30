@@ -6,6 +6,7 @@ import { explorerCatalogVariants } from './explorerCatalogVariants';
 import { entityStatesCatalogVariants } from './entityStatesCatalogVariants';
 import { configValueCatalogVariants } from './configValueTreeVariants';
 import { usageExampleCatalogVariants } from './usageExamplesVariants';
+import { moduleCatalogVariants } from './reportModuleVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
@@ -15,6 +16,7 @@ const variants: Record<string, string[]> = {
 	...entityStatesCatalogVariants,
 	...configValueCatalogVariants,
 	...usageExampleCatalogVariants,
+	...moduleCatalogVariants,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
@@ -178,8 +180,6 @@ const variants: Record<string, string[]> = {
 		'not-proven',
 		'interrupted'
 	],
-	'reports.component.module-system-explorer-module-resources-screen': ['playwright'],
-	'reports.component.module-system-explorer-modules-screen': ['playwright', 'headless-audio'],
 	'desktop.component.project-agent': [
 		'closed',
 		'read-only',
