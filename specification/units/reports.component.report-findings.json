@@ -43,7 +43,13 @@
 				"description": "A findings section with cards or a no-findings message. Evidence identifiers become anchor links."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Rendering throws if multiple findings have the same ID."
+			}
+		]
 	},
 	"dependencies": [
 		{
