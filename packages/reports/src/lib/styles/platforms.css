@@ -8,6 +8,25 @@
 	flex: 1;
 	min-width: 0;
 }
+/* Supported browsers keep native select semantics while rendering the picker in the page. */
+@supports (appearance: base-select) {
+	.ex-content .pf-controls .report-select select,
+	.ex-content .pf-controls .report-select select::picker(select) {
+		appearance: base-select;
+	}
+	.ex-content .pf-controls .report-select select::picker(select) {
+		color: var(--hx-color-text);
+		background: var(--hx-color-surface);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
+		border-radius: var(--hx-radius);
+	}
+	.ex-content .pf-controls .report-select select::picker-icon {
+		display: none;
+	}
+	.ex-content .pf-controls option {
+		padding: var(--hx-space-2) var(--hx-space-4);
+	}
+}
 /* Four across a desktop, two on a tablet, one on a phone. */
 .ex-content .pf-grid {
 	display: grid;
