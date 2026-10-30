@@ -6,6 +6,7 @@ import { assertEntityCasesState } from './entityCasesPreviewAssertions';
 import { assertAudioViewerCapture } from './catalogStateActions';
 import { assertEntityExamplesState } from './entityExamplesPreviewAssertions';
 import { assertEntityContractState } from './entityContractPreviewAssertions';
+import { assertActivityCountFits } from './projectActivityAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(
@@ -59,20 +60,6 @@ export async function assertComponentCapture(
 			`${id} excludes the preview title and empty canvas`
 		).toBeLessThanOrEqual(Math.ceil(actual) + 18);
 	}
-}
-
-/** A long count label remains one word at every catalog viewport. */
-async function assertActivityCountFits(page: Page) {
-	const count = page
-		.locator('[data-preview-unit="reports.component.project-activity"]')
-		.getByTestId('agents-working');
-	await expect(count).toHaveText('Unknown');
-	const lines = await count.evaluate((node) => {
-		const range = document.createRange();
-		range.selectNodeContents(node);
-		return [...range.getClientRects()].filter((rect) => rect.width > 0).length;
-	});
-	expect(lines, 'The activity count must stay on one line').toBe(1);
 }
 
 /** An opened search is a populated dialog, rather than a capture of its trigger alone. */
