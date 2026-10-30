@@ -25,7 +25,16 @@
 				"description": "Returns en. Importing the module registers English and French report dictionaries and initializes English as fallback and initial locale."
 			}
 		],
-		"errors": []
+		"errors": [],
+		"operations": [
+			{
+				"name": "reportLocale",
+				"inputs": [],
+				"outputs": [],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
