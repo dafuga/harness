@@ -14,6 +14,7 @@ import { previewCaptureBounds } from './previewCaptureBounds';
 import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 import { applyActivityPreviewContext } from './activityPreviewContext';
 import { audioComparisonPreMount } from './audioComparisonPreMount';
+import { assertLanguagePickerCapture } from './translationsPreviewAssertions';
 const pageUnitIds = new Set(
 	catalogUnits
 		.filter((unit) => unit.owns.source.some((path) => path.endsWith('/+page.svelte')))
@@ -161,6 +162,11 @@ export async function capturePreview(
 		animations: 'disabled',
 		caret: 'hide'
 	});
+	if (
+		id === 'reports.component.explorer-ui-explorer-translations-screen' &&
+		variant === 'language-open'
+	)
+		await assertLanguagePickerCapture(page, clip, bytes);
 	const state = previewState(id, variant);
 	if (process.env.COMPONENT_PREVIEW_SHOTS) {
 		mkdirSync(process.env.COMPONENT_PREVIEW_SHOTS, { recursive: true });
