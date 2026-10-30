@@ -91,7 +91,18 @@
 				"description": "Literal code snippets followed by expected output or throws comments."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "An example containing BigInt cannot be serialized."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "The recursive formatter cannot render a circular example."
+			}
+		]
 	},
 	"dependencies": [
 		{
