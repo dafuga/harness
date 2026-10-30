@@ -116,7 +116,10 @@ async function measuredBounds(
 			captureElement,
 			chatPicker,
 			includeUsageTooltip: tooltipUnits.has(id),
-			edge: id === 'reports.component.evidence-grid' && modal ? 0 : 8
+			edge:
+				modal && ['reports.component.evidence-grid', 'reports.component.entity-states'].includes(id)
+					? 0
+					: 8
 		}
 	);
 }
