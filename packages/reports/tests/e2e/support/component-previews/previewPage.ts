@@ -29,6 +29,15 @@ const pageUnitIds = new Set(
 		.filter((unit) => unit.owns.source.some((path) => path.endsWith('/+page.svelte')))
 		.map((unit) => unit.id)
 );
+const emptyPreviews = new Set([
+	'reports.component.regression-proof:empty',
+	'reports.component.activity-list:empty',
+	'reports.component.module-system-plugins-plugin-steps:empty',
+	'reports.component.report-findings:empty',
+	'reports.component.evidence-provenance:empty',
+	'reports.component.evidence-provenance:absent',
+	'reports.component.shared-primitives-detail-list:empty-unprovided'
+]);
 export async function openPreview(page: Page, home: string, id: string, variant = '') {
 	if (
 		['reports.component.entity-search', 'reports.component.entity-search-results'].includes(id) &&
@@ -82,15 +91,7 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		await expect(page.getByRole('dialog')).toBeVisible();
 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
 	}
-	const emptyComponent =
-		([
-			'reports.component.regression-proof',
-			'reports.component.activity-list',
-			'reports.component.module-system-plugins-plugin-steps',
-			'reports.component.report-findings'
-		].includes(id) &&
-			variant === 'empty') ||
-		(id === 'reports.component.evidence-provenance' && ['empty', 'absent'].includes(variant));
+	const emptyComponent = emptyPreviews.has(`${id}:${variant}`);
 	if (!emptyComponent) {
 		await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
 		await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);

@@ -3517,6 +3517,36 @@
 			"units": ["reports.component.harness-explorer-table"]
 		},
 		{
+			"id": "reports-component-harness-explorer-table-long-string",
+			"title": "Entity catalog table: long-string",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-multiline-string",
+			"title": "Entity catalog table: multiline-string",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-expression",
+			"title": "Entity catalog table: expression",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-long-expression",
+			"title": "Entity catalog table: long-expression",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-value-open",
+			"title": "Entity catalog table: value-open",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
 			"id": "reports-component-harness-explorer-table-functions",
 			"title": "Entity catalog table: functions",
 			"coverage": "required",
@@ -5251,6 +5281,12 @@
 			"units": ["reports.component.shared-primitives-data-table"]
 		},
 		{
+			"id": "reports-component-shared-primitives-data-table-empty-unprovided",
+			"title": "DataTable: empty-unprovided",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-data-table"]
+		},
+		{
 			"id": "reports-component-shared-primitives-data-table-long",
 			"title": "DataTable: long",
 			"coverage": "required",
@@ -5271,6 +5307,12 @@
 		{
 			"id": "reports-component-shared-primitives-detail-list-empty",
 			"title": "DetailList: empty",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-detail-list"]
+		},
+		{
+			"id": "reports-component-shared-primitives-detail-list-empty-unprovided",
+			"title": "DetailList: empty-unprovided",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-detail-list"]
 		},
@@ -6305,6 +6347,11 @@
 				"reports-component-harness-explorer-pages-screen",
 				"reports-component-harness-explorer-table",
 				"reports-component-harness-explorer-table-empty",
+				"reports-component-harness-explorer-table-long-string",
+				"reports-component-harness-explorer-table-multiline-string",
+				"reports-component-harness-explorer-table-expression",
+				"reports-component-harness-explorer-table-long-expression",
+				"reports-component-harness-explorer-table-value-open",
 				"reports-component-harness-explorer-table-functions",
 				"reports-component-harness-explorer-table-models",
 				"reports-component-harness-explorer-table-types",
@@ -6594,10 +6641,12 @@
 				"reports-component-shared-primitives-code-line-inspection-open",
 				"reports-component-shared-primitives-data-table",
 				"reports-component-shared-primitives-data-table-empty",
+				"reports-component-shared-primitives-data-table-empty-unprovided",
 				"reports-component-shared-primitives-data-table-long",
 				"reports-component-shared-primitives-data-table-focused",
 				"reports-component-shared-primitives-detail-list",
 				"reports-component-shared-primitives-detail-list-empty",
+				"reports-component-shared-primitives-detail-list-empty-unprovided",
 				"reports-component-shared-primitives-detail-list-long",
 				"reports-component-shared-primitives-detail-list-values",
 				"reports-component-shared-primitives-detail-list-duplicate-labels",

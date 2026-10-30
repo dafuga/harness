@@ -1,7 +1,5 @@
 import { compatibilityVariant } from './compatibilityVariants';
-import { entityCatalog } from '../../../../src/utils/explorer-ui/entityCatalog';
-import type { Kind } from '../../../../src/components/explorer-ui/ExplorerTable.types';
-import { entities, reading } from './explorerData';
+import { explorerTableVariant } from './explorerTableVariants';
 import type { EntityContract } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 import type { PreviewCases } from './shared';
 
@@ -16,13 +14,7 @@ export function presentationVariant(id: string, props: PreviewCases[string], var
 	)
 		return props;
 	if (id === 'reports.component.harness-explorer-table')
-		return variant === 'empty'
-			? { ...props, rows: [] }
-			: {
-					...props,
-					category: variant,
-					rows: entityCatalog(entities, variant as Kind, reading.relations)
-				};
+		return explorerTableVariant(props, variant);
 	if (id !== 'desktop.component.contract-panel') return null;
 	if (variant === 'technical-open') return props;
 	const contract = props.contract as EntityContract;
