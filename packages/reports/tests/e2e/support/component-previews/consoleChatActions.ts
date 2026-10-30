@@ -7,7 +7,11 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 	await request;
 	await expect(component.locator('.floating-chat-panel')).toBeVisible();
 	const message = component.getByRole('textbox', { name: 'Message' });
-	if (variant === 'loading') return expect(message).toBeDisabled();
+	if (variant === 'loading') {
+		await expect(message).toBeDisabled();
+		await expect(component.getByText('Loading project…', { exact: true })).toBeVisible();
+		return;
+	}
 	if (variant === 'connection-error') {
 		await expect(
 			component.getByText('Chat unavailable: Error: Project connection unavailable.')
