@@ -4,6 +4,8 @@ import type { Gathered } from '../../src/utils/gatherCaptures';
 import { scenarioCoverage } from '../../src/services/verification-service/scenarioCoverage';
 import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';
 import { captureSchema } from '../../src/core/verification-evidence/verificationTypes';
+import { assertColdEntries } from '../support/coldEntries';
+import { measureWorkload } from '../support/measureWorkload';
 
 const commit = 'a'.repeat(40);
 const scenario = scenarioManifestSchema.parse({
@@ -69,10 +71,29 @@ test('an end-to-end result that says it was captured from running software is bo
 	expect(judged(served('build-0'))[0]).toContain('was served by build build-0');
 });
 
-test('a result that claims no running software is judged as before', () => {
-	expect(judged({})).toEqual([]);
-	expect(judged({ provenance: 'fixture' })).toEqual([]);
-});
+test('a result that claims no running software is judged as before', () =>
+	measureWorkload('function.scenario-coverage', 'judge-fixture-provenance', () => {
+		expect(judged({})).toEqual([]);
+		expect(judged({ provenance: 'fixture' })).toEqual([]);
+		const input = JSON.stringify({
+			scenario,
+			commit,
+			gathered: [gathered({ provenance: 'fixture' })],
+			checkFailed: false
+		});
+		assertColdEntries(
+			[
+				'src/utils/scenarioCoverage.ts',
+				'src/utils/verification-evidence/scenarioCoverage.ts',
+				'src/services/verification-service/scenarioCoverage.ts',
+				'src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts'
+			].map((entry) => ({
+				entry,
+				code: `console.log(JSON.stringify(m.scenarioCoverage(${input}).failures));`
+			})),
+			[]
+		);
+	}));
 
 const region = { x: 12, y: 56, width: 158, height: 50 };
 function picture(mode = 'element', scale = 1) {

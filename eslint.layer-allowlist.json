@@ -560,6 +560,16 @@
 			"from": "src/utils/writingLimits.ts",
 			"to": "src/services/git-source-history/commit-message-service/writingLimits",
 			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
+		},
+		{
+			"from": "src/utils/scanImports.ts",
+			"to": "src/services/development-tooling/source-index-service/scanImports",
+			"todo": "TODO: Preserve this supported compatibility export; canonical implementations depend on owner-local leaves."
+		},
+		{
+			"from": "src/utils/verification-evidence/scenarioCoverage.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/captureProblem",
+			"todo": "TODO: Preserve this supported compatibility export; canonical implementations depend on owner-local leaves."
 		}
 	]
 }
