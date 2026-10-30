@@ -67,6 +67,22 @@ function withArchivedScenario(evidence: ExplorerEvidence): ExplorerEvidence {
 function galleryEvidence(evidence: ExplorerEvidence, variant: string): ExplorerEvidence | null {
 	if (variant === 'empty') return { ...evidence, scenarios: [] };
 	if (variant === 'current') return { ...evidence, mode: 'current', before: null };
+	if (variant === 'initial')
+		return {
+			...evidence,
+			before: null,
+			initial: 'This is the first commit of its history: there is no parent to compare with.'
+		};
+	if (variant === 'coverage-gap') {
+		const scenario = evidence.scenarios[0];
+		const state = {
+			id: 'pending',
+			title: 'Pending',
+			coverage: 'missing',
+			reason: 'The team has not specified capture coverage.'
+		};
+		return { ...evidence, scenarios: [{ ...scenario, states: [state] }] };
+	}
 	if (variant === 'missing')
 		return {
 			...evidence,

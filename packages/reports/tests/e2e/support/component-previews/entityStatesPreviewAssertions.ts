@@ -40,9 +40,11 @@ export async function assertEntityStates(component: Locator, variant: string) {
 	const words: Record<string, string> = {
 		empty: 'No visual states are declared',
 		current: 'Current',
+		initial: 'This is the first commit of its history',
 		missing: 'No capture of',
 		rejected: 'not usable',
 		inapplicable: 'Inapplicable:',
+		'coverage-gap': 'The team has not specified capture coverage.',
 		incomparable: 'Viewport sizes changed between these revisions.',
 		'load-error': 'Recorded capture could not be loaded.'
 	};

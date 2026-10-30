@@ -3,9 +3,11 @@ export const entityStatesCatalogVariants: Record<string, string[]> = {
 	'reports.component.entity-states': [
 		'empty',
 		'current',
+		'initial',
 		'missing',
 		'rejected',
 		'inapplicable',
+		'coverage-gap',
 		'incomparable',
 		'loading',
 		'load-error',

@@ -2501,6 +2501,12 @@
 			"units": ["reports.component.entity-states"]
 		},
 		{
+			"id": "reports-component-entity-states-initial",
+			"title": "Supported states: first revision",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
 			"id": "reports-component-entity-states-missing",
 			"title": "Supported states: captures missing",
 			"coverage": "required",
@@ -2515,6 +2521,12 @@
 		{
 			"id": "reports-component-entity-states-inapplicable",
 			"title": "Supported states: inapplicable",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-coverage-gap",
+			"title": "Supported states: missing coverage declaration",
 			"coverage": "required",
 			"units": ["reports.component.entity-states"]
 		},
@@ -6740,9 +6752,11 @@
 				"reports-component-entity-states",
 				"reports-component-entity-states-empty",
 				"reports-component-entity-states-current",
+				"reports-component-entity-states-initial",
 				"reports-component-entity-states-missing",
 				"reports-component-entity-states-rejected",
 				"reports-component-entity-states-inapplicable",
+				"reports-component-entity-states-coverage-gap",
 				"reports-component-entity-states-incomparable",
 				"reports-component-entity-states-loading",
 				"reports-component-entity-states-load-error",
