@@ -1,1 +1,2 @@
-export { type PathClass, classifyPath } from './accounts-access/classify-path/classifyPath';
+export { classifyPath } from './development-tooling/classify-path/classifyPath';
+export type { PathClass } from './development-tooling/classify-path/classifyPath.types';

@@ -1,2 +1,1 @@
-export { unitIdentity } from '../accounts-access/classify-path/unitIdentity';
-export * from '../accounts-access/classify-path/unitIdentity';
+export { unitIdentity } from '../development-tooling/classify-path/unitIdentity';

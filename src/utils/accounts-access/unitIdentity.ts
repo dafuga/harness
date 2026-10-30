@@ -1,7 +1,2 @@
-export interface UnitIdentity {
-	id: string;
-	kind: string;
-	name: string;
-}
-
-export { unitIdentity } from './classify-path/unitIdentity';
+export type { UnitIdentity } from '../development-tooling/classify-path/unitIdentity.types';
+export { unitIdentity } from '../development-tooling/classify-path/unitIdentity';

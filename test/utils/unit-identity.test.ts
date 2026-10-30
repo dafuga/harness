@@ -3,6 +3,7 @@ import { indexFiles, unitOf } from '../support/memoryTree';
 import { afterAll, expect, test } from 'vitest';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { unitIdentity } from '../../src/utils/classify-path/unitIdentity';
+import { assertIdentityEntries } from './unitIdentityEntries';
 
 test('unitIdentity derives kind and name from Harness scaffold folders', () => {
 	const cases: Array<[string, string]> = [
@@ -30,6 +31,7 @@ test('unitIdentity derives kind and name from Harness scaffold folders', () => {
 		['db/seed-data/analytics-e2e.ts', 'seeder.analytics-e2e']
 	];
 	for (const [path, id] of cases) expect(unitIdentity(path)?.id).toBe(id);
+	return assertIdentityEntries();
 });
 
 test('unitIdentity prefixes named workspaces and skips tests and unknown files', () => {

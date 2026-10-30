@@ -11,13 +11,13 @@ import type { UnitsConfig } from '../../../core/development-tooling/unitsConfig'
 import {
 	classifyPath,
 	type PathClass
-} from '../../../utils/accounts-access/classify-path/classifyPath';
+} from '../../../utils/development-tooling/classify-path/classifyPath';
 import { resolveImport } from '../../../utils/development-tooling/resolveImport';
 import { scanExports } from '../../../utils/development-tooling/scanExports';
 import {
 	type SourceLanguage,
 	type SourceReference
-} from '../../../utils/development-tooling/scanImports';
+} from '../../../utils/development-tooling/scanImports.types';
 
 import { complexityCoverage } from './complexityCoverage';
 import { scanComponent } from './scanComponent';

@@ -1,5 +1,8 @@
 import type { ComplexityCoverage } from '../../utils/development-tooling/complexityCoverage';
-import type { ReferenceVia, SourceLanguage } from '../../utils/development-tooling/scanImports';
+import type {
+	ReferenceVia,
+	SourceLanguage
+} from '../../utils/development-tooling/scanImports.types';
 import type { SourceBlock } from '../../utils/development-tooling/sourceBlocks';
 import type { ContractItem, ComponentManifest } from './unitTypes';
 
