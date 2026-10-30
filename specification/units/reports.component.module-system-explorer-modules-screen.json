@@ -123,6 +123,11 @@
 				"name": "onroute callback error",
 				"type": "thrown",
 				"description": "An error supplied by the navigation callback propagates when a plugin link is activated."
+			},
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Duplicate plugin IDs or resource IDs throw when their keyed lists are mounted or updated."
 			}
 		],
 		"operations": [],
