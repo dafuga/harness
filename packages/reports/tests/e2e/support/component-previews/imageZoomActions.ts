@@ -45,8 +45,10 @@ export async function prepareImageZoom(component: Locator, variant: string) {
 async function expectUnsettled(image: Locator, variant: string) {
 	await expect
 		.poll(() =>
-			image.evaluate((node: HTMLImageElement) =>
-				variant === 'loading' ? !node.complete : node.complete && node.naturalWidth === 0
+			image.evaluate(
+				(node: HTMLImageElement, state) =>
+					state === 'loading' ? !node.complete : node.complete && node.naturalWidth === 0,
+				variant
 			)
 		)
 		.toBe(true);
