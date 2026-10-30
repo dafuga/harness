@@ -3,9 +3,9 @@ import type { Locator, Page } from '@playwright/test';
 /** Frame rendered UI roots, including fragments and fixed surfaces, with a small edge allowance. */
 export async function previewCaptureBounds(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
-	const { target, modal, captureElement } = await previewTarget(content, id, variant);
+	const { target, modal, captureElement, chatPicker } = await previewTarget(content, id, variant);
 	const bounds = await target.evaluate(
-		(node, { captureElement, includeUsageTooltip, edge }) => {
+		(node, { captureElement, includeUsageTooltip, chatPicker, edge }) => {
 			const boxes: DOMRect[] = [];
 			function collect(element: Element) {
 				const style = getComputedStyle(element);
@@ -19,6 +19,8 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			else for (const child of node.children) collect(child);
 			const tooltip = includeUsageTooltip && node.querySelector('[role="tooltip"]');
 			if (tooltip) collect(tooltip);
+			const picker = chatPicker && node.querySelector('[role="dialog"]');
+			if (picker) collect(picker);
 			if (!boxes.length) throw new Error('The component has no rendered capture bounds.');
 			const start = (value: number, scroll: number) =>
 				Math.max(0, Math.floor(value + scroll) - edge);
@@ -36,6 +38,7 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 		},
 		{
 			captureElement,
+			chatPicker,
 			includeUsageTooltip: [
 				'reports.component.explorer-usage-link',
 				'reports.component.explorer-ui-explorer-module-card'
@@ -69,6 +72,7 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 	return {
 		target,
 		modal,
+		chatPicker,
 		captureElement: Boolean(modal) || projectAgent || Boolean(compactTarget)
 	};
 }

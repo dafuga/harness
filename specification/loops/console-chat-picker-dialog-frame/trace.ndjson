@@ -1,3 +1,5 @@
 {"event":"loop.created","timestamp":"2026-10-30T04:06:08.834Z","name":"console-chat-picker-dialog-frame","goal":"Keep the entire picker visible with its console chat","template":"bug-fix","templateLineage":["bug-fix"]}
 {"event":"step.completed","timestamp":"2026-10-30T04:06:09.680Z","loop":"console-chat-picker-dialog-frame","step":"spec","evidence":"Desktop and tablet picker dialogs extend outside the chat frame and are clipped in screenshots."}
 {"event":"step.completed","timestamp":"2026-10-30T04:06:10.284Z","loop":"console-chat-picker-dialog-frame","step":"coverage","evidence":"The capture assertion covered the panel and launcher but not the open dialog; include its bounds in the existing catalog assertion."}
+{"event":"step.completed","timestamp":"2026-10-30T04:11:52.985Z","loop":"console-chat-picker-dialog-frame","step":"red","evidence":"At 963e3951d4 the desktop model-open test failed because the dialog extended beyond the capture."}
+{"event":"step.completed","timestamp":"2026-10-30T04:12:02.184Z","loop":"console-chat-picker-dialog-frame","step":"implement","evidence":"Include the independently positioned dialog in the console picker capture bounds."}

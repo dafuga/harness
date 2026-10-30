@@ -2,7 +2,7 @@
 	"name": "console-chat-picker-dialog-frame",
 	"goal": "Keep the entire picker visible with its console chat",
 	"createdAt": "2026-10-30T04:06:08.834Z",
-	"updatedAt": "2026-10-30T04:06:10.284Z",
+	"updatedAt": "2026-10-30T04:12:02.184Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T04:11:52.985Z",
+			"evidence": "At 963e3951d4 the desktop model-open test failed because the dialog extended beyond the capture."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T04:12:02.184Z",
+			"evidence": "Include the independently positioned dialog in the console picker capture bounds."
 		},
 		{
 			"id": "green",
