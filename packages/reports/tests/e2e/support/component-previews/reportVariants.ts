@@ -27,6 +27,7 @@ import { providerPickerVariant } from './providerPickerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.analytics-cpu') return { ...props };
 	if (id === 'reports.component.analytics-filters' && variant === 'all-filters')
 		return {
 			filters: {

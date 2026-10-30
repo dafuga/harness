@@ -101,7 +101,6 @@ const taskStates: Record<string, () => PreviewCases[string]> = {
 };
 
 export function analyticsVariant(id: string, variant: string, props: PreviewCases[string]) {
-	if (id === 'reports.component.analytics-cpu' && variant) return { ...props };
 	if (id === 'reports.component.analytics-history') return historyStates[variant]?.() ?? props;
 	if (id === 'reports.component.analytics-models') return modelStates[variant]?.() ?? props;
 	if (id === 'reports.component.analytics-tasks') return taskStates[variant]?.() ?? props;
