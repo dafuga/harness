@@ -52,8 +52,8 @@ export const activityCatalogVariants: Record<string, string[]> = {
 	'reports.component.analytics-cpu': ['loading', 'no-agents', 'not-measured', 'unavailable'],
 	// History retains independent empty tables and summaries after filters remove every loop.
 	'reports.component.analytics-history': ['empty'],
-	// Model usage has a separate unrecorded state from populated author and evaluator evidence.
-	'reports.component.analytics-models': ['empty'],
+	// Unknown model names and unassessed rates stay distinct from empty or measured data.
+	'reports.component.analytics-models': ['empty', 'unknown', 'unassessed'],
 	// Task history separates empty, unassessed, not-yet-passed and retried assessments.
 	'reports.component.analytics-tasks': ['empty', 'unassessed', 'unpassed', 'retried'],
 	// A replay can wait for its first live frame or retain an interrupted final run.

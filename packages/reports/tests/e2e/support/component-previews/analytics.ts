@@ -16,6 +16,10 @@ const check = {
 		}
 	]
 };
+const modelCheck = {
+	...check,
+	tasks: check.tasks.map((task) => ({ ...task, agentModel: 'gpt-6.1-terra' }))
+};
 export const analyticsCases: PreviewCases = {
 	'reports.component.analytics-cpu': {},
 	'reports.component.analytics-filters': {
@@ -43,10 +47,10 @@ export const analyticsCases: PreviewCases = {
 	},
 	'reports.component.analytics-models': {
 		models: {
-			authors: { 'Fixture author': 4 },
-			loopAuthors: { 'Fixture author': 1 },
-			evaluators: { 'Fixture evaluator': 4 },
-			firstTryByAuthor: { 'Fixture author': { response: check, cleanCode: check } },
+			authors: { 'gpt-6.1-terra': 4 },
+			loopAuthors: { 'gpt-6.1-terra': 1 },
+			evaluators: { 'claude-opus-5-5': 4 },
+			firstTryByAuthor: { 'gpt-6.1-terra': { response: modelCheck, cleanCode: modelCheck } },
 			inputTokens: 1200,
 			outputTokens: 300
 		}
