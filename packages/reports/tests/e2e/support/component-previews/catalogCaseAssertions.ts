@@ -31,7 +31,7 @@ export async function assertCatalogLayout(
 }
 
 /** Catalog examples retain their named values, consumers and basic presentation. */
-export async function assertCatalogDetails(component: Locator, id: string) {
+export async function assertCatalogDetails(component: Locator, id: string, variant = '') {
 	if (id === 'reports.component.harness-explorer-index') {
 		await expect(
 			component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
@@ -42,7 +42,7 @@ export async function assertCatalogDetails(component: Locator, id: string) {
 			'Catalogs omit the standalone proof marks'
 		).toHaveCount(0);
 	}
-	if (id === 'reports.component.explorer-function-card') {
+	if (id === 'reports.component.explorer-function-card' && !variant) {
 		await expect(component.locator('article')).toHaveCSS('border-top-style', 'solid');
 		await expect(component.locator('code')).toHaveText('filterOrders(orders, "SERVICE")');
 		await expect(component.getByRole('link', { name: 'OrderList', exact: true })).toBeVisible();

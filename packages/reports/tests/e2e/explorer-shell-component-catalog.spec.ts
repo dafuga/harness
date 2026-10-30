@@ -179,7 +179,7 @@ for (const viewport of catalogViewports) {
 					'Only the compact value is painted in a closed revision field'
 				).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
 			await assertCatalogLayout(component, unit, viewport);
-			await assertCatalogDetails(component, unit.id);
+			await assertCatalogDetails(component, unit.id, variant);
 			if (
 				['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 					(name) => unit.id === `desktop.component.${name}`

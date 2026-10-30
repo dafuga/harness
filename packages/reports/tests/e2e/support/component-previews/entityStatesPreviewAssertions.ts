@@ -19,11 +19,15 @@ export async function assertEntityStates(component: Locator, variant: string) {
 		rejected: 'not usable',
 		inapplicable: 'Inapplicable:',
 		incomparable: 'Viewport sizes changed between these revisions.',
-		loading: 'Loading recorded capture…',
-		'load-error': 'Recorded capture could not be loaded.',
-		'viewport-mobile': '390 × 844'
+		'load-error': 'Recorded capture could not be loaded.'
 	};
 	if (words[variant])
 		await expect(component.getByText(words[variant], { exact: false }).first()).toBeVisible();
+	if (variant === 'loading')
+		await expect(component.locator('.state-panes .state-gap').first()).toHaveText(
+			'Loading recorded capture…'
+		);
+	if (variant === 'viewport-mobile')
+		await expect(component.locator('.state-heading small').first()).toHaveText('390 × 844');
 	if (variant === 'viewer-open') await expect(component.getByRole('dialog')).toBeVisible();
 }
