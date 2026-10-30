@@ -10,6 +10,7 @@ import { activity, live } from './activity';
 import { image, layoutImage, ordersPageImage } from './shared';
 import { checkoutConfirmation, checkoutMobile, checkoutTablet } from './evidenceCardMedia';
 import { pickerFixture } from './providerPickerApi';
+import { consoleProviders } from './consoleProviders';
 import { audioFixture } from '../../../../test/audioFixture';
 import { routeIndex, routeRevision } from './routeHistory';
 import { routePreview } from './visualUnits';
@@ -55,25 +56,6 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	});
 }
 
-const consoleProviders = [
-	{
-		id: 'codex',
-		label: 'Codex',
-		available: true,
-		reason: null,
-		version: 'fixture',
-		imageGeneration: true,
-		models: [
-			{
-				id: 'gpt-6.1',
-				label: 'GPT 6.1',
-				efforts: ['high'],
-				defaultEffort: 'high',
-				isDefault: true
-			}
-		]
-	}
-];
 // Keep one realistic active registration within the chat's short desktop viewport.
 const consoleActivity = {
 	...live,
@@ -92,7 +74,7 @@ const consoleActivity = {
 
 /** The local project chat uses the same request protocol as its real console bridge. */
 async function consoleAgentFixture(route: Route) {
-	const { method } = route.request().postDataJSON() as { method: string };
+	const { method, input } = route.request().postDataJSON() as { method: string; input: unknown };
 	const page = route.request().frame().page();
 	const variant = new URL(page.url()).searchParams.get('variant');
 	if (variant === 'loading' && method === 'connect') {
@@ -101,6 +83,17 @@ async function consoleAgentFixture(route: Route) {
 	}
 	if (variant === 'connection-error' && method === 'connect')
 		return route.fulfill({ status: 503, json: { error: 'Project connection unavailable.' } });
+	if (method === 'addComment')
+		return route.fulfill({
+			json: {
+				kind: 'pending',
+				projectId: 'preview-project',
+				draftId: 'preview-comment',
+				savedAt: '2026-10-20T10:00:05Z',
+				input,
+				reason: 'Local preview fixture'
+			}
+		});
 	const commit = commits.tip;
 	const writable = variant !== 'read-only' && variant !== 'agents';
 	const snapshot = {

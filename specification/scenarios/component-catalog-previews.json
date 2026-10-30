@@ -1871,6 +1871,12 @@
 			"units": ["reports.component.console-chat"]
 		},
 		{
+			"id": "reports-component-console-chat-populated",
+			"title": "Local web project chat: Saved comment",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
 			"id": "reports-component-console-chat-loading",
 			"title": "Local web project chat: Connecting",
 			"coverage": "required",
@@ -6173,6 +6179,7 @@
 				"reports-component-browser-errors",
 				"reports-component-console-chat",
 				"reports-component-console-chat-open",
+				"reports-component-console-chat-populated",
 				"reports-component-console-chat-loading",
 				"reports-component-console-chat-connection-error",
 				"reports-component-console-chat-read-only",

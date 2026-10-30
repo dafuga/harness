@@ -28,6 +28,7 @@ const variants: Record<string, string[]> = {
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
+		'populated',
 		'loading',
 		'connection-error',
 		'read-only',

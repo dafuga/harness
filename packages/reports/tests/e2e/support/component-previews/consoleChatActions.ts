@@ -33,6 +33,7 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 		'title',
 		'Model: Codex · GPT 6.1'
 	);
+	if (variant === 'populated') return populateConversation(component, message);
 	const modes: Record<string, string> = { ask: 'Ask', change: 'Change', comment: 'Comment' };
 	if (modes[variant]) {
 		const button = component.getByRole('button', { name: modes[variant], exact: true });
@@ -50,6 +51,14 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 		).toBeVisible();
 		await assertChatFrame(component, variant);
 	}
+}
+
+async function populateConversation(component: Locator, message: Locator) {
+	await component.getByRole('button', { name: 'Comment', exact: true }).click();
+	await message.fill('Please review the activity panel on mobile.');
+	await component.getByRole('button', { name: 'Send comment', exact: true }).click();
+	await expect(component.getByText('Please review the activity panel on mobile.')).toBeVisible();
+	await expect(component.getByText('Comment saved on this device; not shared yet.')).toBeVisible();
 }
 
 async function assertChatFrame(component: Locator, variant: string) {
