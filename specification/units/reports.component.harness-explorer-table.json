@@ -23,14 +23,13 @@
 			"reports.component.shared-primitives-atoms-html-pre",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-summary",
-			"reports.component.shared-primitives-atoms-html-table",
-			"reports.component.shared-primitives-atoms-html-tbody",
 			"reports.component.shared-primitives-atoms-html-td",
 			"reports.component.shared-primitives-atoms-html-th",
-			"reports.component.shared-primitives-atoms-html-thead",
 			"reports.component.shared-primitives-atoms-html-tr",
 			"reports.component.shared-primitives-atoms-html-ul",
-			"reports.component.shared-primitives-atoms-html-wbr"
+			"reports.component.shared-primitives-atoms-html-wbr",
+			"reports.component.shared-primitives-code-line",
+			"reports.component.shared-primitives-data-table"
 		]
 	},
 	"owns": {
@@ -40,7 +39,14 @@
 			"packages/reports/src/components/explorer-ui/explorer-table/ConfigValue.svelte",
 			"packages/reports/src/components/explorer-ui/explorer-table/explorerTable.css"
 		],
-		"symbols": ["ExplorerTable", "Kind", "Column", "ConfigValue"]
+		"symbols": [
+			"ExplorerTable",
+			"ExplorerTable.header",
+			"ExplorerTable.children",
+			"Kind",
+			"Column",
+			"ConfigValue"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -49,7 +55,7 @@
 				"name": "ExplorerTable.category",
 				"type": "Kind",
 				"required": true,
-				"description": "Required category other than pages and components: shells, functions, configs, services or models. Determines columns and labels; only a shell is described under its name."
+				"description": "Required table category: functions, configs, services, models, types, layouts, APIs or platforms. Configs keep only Variable and Value columns; layout rows also show their descriptions."
 			},
 			{
 				"name": "ExplorerTable.rows",
@@ -92,7 +98,33 @@
 		],
 		"errors": [],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ExplorerTable.header",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerTable.header",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerTable.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerTable.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -171,27 +203,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-table",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-tbody",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-td",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-th",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-thead",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -207,6 +224,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-wbr",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-code-line",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-data-table",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -251,7 +278,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-harness-explorer-table",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -396,6 +396,24 @@
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
 			"reason": "Level briefs reuse the shared Select control for the generated level dimension."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/ContractPanel.svelte",
+			"specifier": "../../../../reports/src/components/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Desktop uses the canonical shared DetailList implementation; the supported public forwarding entry remains owned by its existing unit."
+		},
+		{
+			"from": "packages/desktop/src/components/agents-providers/AgentControls.svelte",
+			"specifier": "../../../../reports/src/components/shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Desktop uses the canonical shared Select implementation; the supported public forwarding entry remains owned by its existing unit."
+		},
+		{
+			"from": "packages/desktop/src/components/networking-security/RemoteApproval.svelte",
+			"specifier": "../../../../reports/src/components/shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Desktop uses the canonical shared Select implementation; the supported public forwarding entry remains owned by its existing unit."
 		}
 	]
 }

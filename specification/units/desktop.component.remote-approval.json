@@ -44,14 +44,14 @@
 				"name": "RemoteApproval.store",
 				"type": "RemoteHost",
 				"required": true,
-				"description": "Host state providing busy and approve/deny operations. Approval receives selected project identifiers and agents=false unless explicitly checked. Operation failures are delegated to this store."
+				"description": "Required host state providing busy and approve/deny operations. Approval receives selected project identifiers and explicit read/comment/write grants; failures are delegated to this store."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteApproval",
 				"type": "markup",
-				"description": "Request fieldset showing phone identity, project checkboxes and Plan/Change permission. Approve is disabled while busy or without a chosen project; Deny is disabled while busy. Submits exactly the selected project list and agent flag."
+				"description": "A device request with project checkboxes, initially unselected, and Device access initially Comment. Read grants browsing only; Comment also grants comments; Write also permits AI requests. Approve is disabled while busy or without projects selected; Deny is disabled while busy. Approval includes both displayed identities and the exact selected project IDs."
 			}
 		],
 		"errors": [],
@@ -135,7 +135,12 @@
 			}
 		]
 	},
-	"scenarios": ["remote-mobile-ui"],
+	"scenarios": ["remote-mobile-ui", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-remote-approval",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

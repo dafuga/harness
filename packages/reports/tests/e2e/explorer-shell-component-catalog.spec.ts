@@ -1,3 +1,4 @@
+import { assertPresentationPreview } from './support/component-previews/presentationPreviewAssertions';
 import {
 	assertInlinePluginKitCapture,
 	assertPluginKitPreview
@@ -169,6 +170,7 @@ for (const viewport of catalogViewports) {
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
 			await assertInlinePluginKitCapture(component, unit.id);
+			await assertPresentationPreview(component, unit.id, variant);
 			await assertRecordedValueCapture(component, unit.id, variant);
 			if (unit.id === 'reports.component.module-system-explorer-modules-screen' && !variant) {
 				await expect(component.locator('article')).toHaveCount(6);
@@ -212,7 +214,7 @@ for (const viewport of catalogViewports) {
 				)
 			)
 				await expect(component.getByText('Expires in 5:00', { exact: true })).toBeVisible();
-			if (unit.id === 'desktop.component.agent-controls') {
+			if (unit.id === 'desktop.component.agent-controls' && !variant) {
 				const provider = component
 					.getByRole('group', { name: 'Agent', exact: true })
 					.getByRole('button');

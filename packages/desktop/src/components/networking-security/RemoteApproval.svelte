@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import Select from '../../../../reports/src/components/Select.svelte';
+	import Select from '../../../../reports/src/components/shared-primitives/Select.svelte';
 	import type { RemoteHost } from '../../lib/stores/networking-security/remoteHost.svelte';
 	import type { RemotePairingRequest } from '../../models/development-tooling/Environment.types';
 	import { identityLabel } from '../../helpers/networking-security/identityLabel';

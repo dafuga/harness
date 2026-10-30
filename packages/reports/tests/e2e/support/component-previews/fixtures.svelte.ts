@@ -1,3 +1,5 @@
+import { presentationCases } from './presentationVariants';
+import { presentationVariant } from './presentationProps';
 import { modulePreview } from './modules';
 import { previewVariants } from './catalogVariants';
 import { reportVariantProps } from './reportVariants';
@@ -33,6 +35,7 @@ export function previewFixture(id: string, variant = '') {
 	};
 	const cases: PreviewCases = {
 		...explorerCases,
+		...presentationCases,
 		...legacy,
 		...reportCases,
 		...activityCases,
@@ -97,6 +100,8 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (!previewVariants(id).includes(variant))
 		throw new Error(`Unknown preview variant ${id}:${variant}`);
 	if (!variant || id === 'desktop.component.project-agent') return props;
+	const presentation = presentationVariant(id, props, variant);
+	if (presentation) return presentation;
 	const report = reportVariantProps(id, props, variant);
 	if (report) return report;
 	if (id === 'reports.component.entity-search') return props;

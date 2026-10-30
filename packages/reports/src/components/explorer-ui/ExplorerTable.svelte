@@ -14,6 +14,7 @@
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from './ExplorerUsage.svelte';
 	import Modal from '../shared-primitives/Modal.svelte';
+	import DataTable from '../shared-primitives/DataTable.svelte';
 	import ConfigValueTree, { collection } from './ConfigValueTree.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
@@ -89,12 +90,12 @@
 </script>
 
 <hx-div
-	class="ex-scroll"
+	class="ex-table-content"
 	class:ex-config-values={category === 'configs'}
 	data-harness-component="harness-explorer-table"
 >
-	<hx-table class="ex-table" aria-label={heading}>
-		<hx-thead>
+	<DataTable label={heading} className="ex-scroll" tableClass="ex-table">
+		{#snippet header()}
 			<hx-tr>
 				{#if category === 'configs'}
 					<hx-th scope="col">Variable</hx-th><hx-th scope="col">Value</hx-th>
@@ -105,8 +106,8 @@
 					<hx-th scope="col"><hx-span class="ex-hidden">Open</hx-span></hx-th>
 				{/if}
 			</hx-tr>
-		</hx-thead>
-		<hx-tbody>
+		{/snippet}
+		{#snippet children()}
 			{#each rows as row (row.id)}
 				<hx-tr>
 					{#if category === 'configs'}
@@ -171,8 +172,8 @@
 					{/if}
 				</hx-tr>
 			{/each}
-		</hx-tbody>
-	</hx-table>
+		{/snippet}
+	</DataTable>
 	<Modal open={chosen !== null} title={`${chosen?.name} · Value`} variant="text" onClose={close}>
 		{#if contents}
 			<ConfigValueTree node={contents} />

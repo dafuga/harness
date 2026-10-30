@@ -7,6 +7,7 @@
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
 	import { routePreview } from './visualUnits';
+	import PresentationPreviews from './PresentationPreviews.svelte';
 	import NativeAtomPreview from './NativeAtomPreview.svelte';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
@@ -22,6 +23,12 @@
 		'reports.component.audio-comparison'
 	].includes(id);
 	const Component = previewComponent(unit.source);
+	const presentationIds = Object.fromEntries(
+		['data-table', 'code-line', 'detail-list'].map((name) => [
+			`reports.component.shared-primitives-${name}`,
+			true
+		])
+	);
 	const layout = unit.kind === 'layout';
 	const Root = layout ? previewComponent('packages/reports/src/routes/+layout.svelte') : null;
 	const fullFrame =
@@ -110,6 +117,8 @@
 							<tbody><Component {...fixture.props} /></tbody>
 						</table>
 					</div>
+				{:else if id in presentationIds}
+					<PresentationPreviews {id} {variant} />
 				{:else if fitted}
 					<div class="flow-host">
 						<SvelteFlow bind:nodes={flowNodes} bind:edges={flowEdges} colorMode="dark" fitView>

@@ -4,6 +4,8 @@
 	import './contractTableMobile.css';
 	import type { ContractField, ContractGroup } from '../../utils/explorer-ui/contractFields';
 	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
+	import DataTable from './DataTable.svelte';
+	import CodeLine from './CodeLine.svelte';
 	/** One group of contract fields as a table: name, type, a clipped example and its info control. */
 	let {
 		group,
@@ -30,48 +32,44 @@
 	{#if group.fields.length === 0 && !group.keepEmpty}
 		<hx-p class="ex-note">{group.none}</hx-p>
 	{:else}
-		<hx-div class="frame">
-			<hx-table aria-label={group.title}>
-				<hx-thead>
+		<DataTable label={group.title} className="frame" isEmpty={group.fields.length === 0}>
+			{#snippet header()}
+				<hx-tr>
+					{#if named}<hx-th scope="col" class="leading">Name</hx-th>{/if}
+					<hx-th scope="col" class="leading">Type</hx-th>
+					<hx-th scope="col">Example</hx-th>
+					<hx-th scope="col" class="act" aria-label="Actions"></hx-th>
+				</hx-tr>
+			{/snippet}
+			{#snippet empty()}
+				<hx-tr><hx-td colspan={named ? 4 : 3} class="ex-note">{group.none}</hx-td></hx-tr>
+			{/snippet}
+			{#snippet children()}
+				{#each group.fields as field, position (position)}
+					{@const sample = field.examples[0]}
 					<hx-tr>
-						{#if named}<hx-th scope="col" class="leading">Name</hx-th>{/if}
-						<hx-th scope="col" class="leading">Type</hx-th>
-						<hx-th scope="col">Example</hx-th>
-						<hx-th scope="col" class="act" aria-label="Actions"></hx-th>
+						{#if named}<hx-th scope="row">{field.name}</hx-th>{/if}
+						<hx-td><hx-code class="type">{field.type}</hx-code></hx-td>
+						<hx-td>
+							<hx-div class="example">
+								{#if field.source !== 'declared'}<hx-i>{labels[field.source]}</hx-i>{/if}
+								{#if sample}<CodeLine text={sample.text} />{/if}
+							</hx-div>
+						</hx-td>
+						<hx-td class="act">
+							<hx-button
+								type="button"
+								class="info"
+								aria-label={`View example for ${field.name}`}
+								aria-haspopup="dialog"
+								onclick={(event) => onexample(field, event.currentTarget)}
+								><HarnessIcon name="info" size={18} /></hx-button
+							>
+						</hx-td>
 					</hx-tr>
-				</hx-thead>
-				<hx-tbody>
-					{#if group.fields.length === 0}
-						<hx-tr><hx-td colspan={named ? 4 : 3} class="ex-note">{group.none}</hx-td></hx-tr>
-					{/if}
-					{#each group.fields as field, position (position)}
-						{@const sample = field.examples[0]}
-						<hx-tr>
-							{#if named}<hx-th scope="row">{field.name}</hx-th>{/if}
-							<hx-td><hx-code class="type">{field.type}</hx-code></hx-td>
-							<hx-td>
-								<hx-div class="example">
-									{#if field.source !== 'declared'}<hx-i>{labels[field.source]}</hx-i>{/if}
-									{#if sample}<hx-code
-											>{sample.text.slice(0, 240)}{sample.text.length > 240 ? '...' : ''}</hx-code
-										>{/if}
-								</hx-div>
-							</hx-td>
-							<hx-td class="act">
-								<hx-button
-									type="button"
-									class="info"
-									aria-label={`View example for ${field.name}`}
-									aria-haspopup="dialog"
-									onclick={(event) => onexample(field, event.currentTarget)}
-									><HarnessIcon name="info" size={18} /></hx-button
-								>
-							</hx-td>
-						</hx-tr>
-					{/each}
-				</hx-tbody>
-			</hx-table>
-		</hx-div>
+				{/each}
+			{/snippet}
+		</DataTable>
 	{/if}
 </hx-div>
 
@@ -96,16 +94,12 @@
 	}
 	/* A name or type is never broken: a column is at least as wide as its own, and a table wider
 	   than a phone scrolls sideways inside this frame while the page keeps its width. */
-	.frame {
+	.group :global(.frame) {
 		min-width: 0;
 		overflow-x: auto;
 		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
 		background: var(--hx-color-surface);
-	}
-	table {
-		width: 100%;
-		border-collapse: collapse;
 	}
 	th,
 	td {
@@ -114,15 +108,15 @@
 		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 		vertical-align: middle;
 	}
-	tbody tr:last-child > * {
+	.group :global(tbody tr:last-child > *) {
 		border-bottom: 0;
 	}
-	thead th {
+	.group :global(thead th) {
 		color: var(--hx-color-text-supporting);
 		font-size: var(--hx-type-size-compact);
 		font-weight: var(--hx-style-weight-semibold);
 	}
-	tbody th {
+	.group :global(tbody th) {
 		white-space: nowrap;
 	}
 	/* Where there is room, name and type keep their width, also when a returns table hides its

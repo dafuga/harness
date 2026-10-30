@@ -5,6 +5,7 @@
 	import { collection, valueMark } from '../ConfigValueTree.svelte';
 	import HarnessAction from '../HarnessAction.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
+	import CodeLine from '../../shared-primitives/CodeLine.svelte';
 	let {
 		name,
 		source,
@@ -69,8 +70,10 @@
 			{:else}<hx-li class="chip blank">Empty array</hx-li>{/each}
 		</hx-ul>
 	{:else if typeof literal === 'string'}
-		<hx-span class="string" role="img" aria-label={`String ${literal}`}>{literal}</hx-span>
-	{:else if !mark}<hx-code class="source" title={source}>{source}</hx-code>{/if}
+		<hx-span class="string" role="img" aria-label={`String ${literal}`}
+			><CodeLine text={literal} /></hx-span
+		>
+	{:else if !mark}<CodeLine text={source} className="source" />{/if}
 </hx-div>
 
 <style>
@@ -140,7 +143,7 @@
 	}
 	.number,
 	.keyword,
-	.source {
+	.cv :global(.source) {
 		font-family: var(--hx-font-family-code);
 		font-size: var(--hx-type-size-sm);
 	}
@@ -152,18 +155,15 @@
 		color: var(--ex-muted);
 	}
 	.string,
-	.source {
+	.cv :global(.source) {
 		color: var(--ex-text);
 		max-width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
 	}
 	.string,
-	.source {
+	.cv :global(.source) {
 		min-width: 0;
 	}
-	.source {
+	.cv :global(.source) {
 		color: var(--ex-soft);
 	}
 </style>
