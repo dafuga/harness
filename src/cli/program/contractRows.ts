@@ -26,7 +26,10 @@ export function fields(list: Field[], componentProps = false): string[] {
 			] as const
 	);
 	const width = Math.max(...rows.map(([name]) => name.length));
-	return rows.map(([name, type]) => (type === 'thrown' ? name : `${name.padEnd(width)}  ${type}`));
+	return rows.flatMap(([name, type], index) => [
+		type === 'thrown' ? name : `${name.padEnd(width)}  ${type}`,
+		...(list[index].description?.split('\n').map((line) => `  ${line}`) ?? [])
+	]);
 }
 
 export function errorRows(
