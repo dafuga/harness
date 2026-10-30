@@ -1,7 +1,6 @@
 import type { Written } from './shared-select-impact.test.types';
 import * as sourceIndex from '../src/services/source-index-service/SourceIndexService';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { readdirSync } from 'node:fs';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
@@ -9,7 +8,7 @@ import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
 import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
-import { scanImports } from '../src/services/source-index-service/scanImports';
+import { readBuildAliases, readSelectImports } from './shared-select-impact/imports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
 const canonicalSelect = 'packages/reports/src/components/shared-primitives/Select.svelte';
@@ -23,35 +22,13 @@ let builds: Record<string, Record<string, string>>;
 let written: Written[];
 beforeAll(async () => {
 	loaded = await loadUnits(process.cwd(), undefined, indexer);
-	builds = Object.fromEntries(readdirSync('packages').map((name) => [name, aliases(name)]));
-	written = [...loaded.index.files.keys()].flatMap(imports);
+	builds = Object.fromEntries(
+		readdirSync('packages').map((name) => [name, readBuildAliases(name)])
+	);
+	written = [...loaded.index.files.keys()].flatMap((from) =>
+		readSelectImports(loaded.index, builds, from, [select, canonicalSelect])
+	);
 }, 60_000);
-function aliases(name: string): Record<string, string> {
-	const file = join('packages', name, 'svelte.config.js');
-	const stated = existsSync(file) ? /alias:\s*\{([^}]*)\}/.exec(readFileSync(file, 'utf8')) : null;
-	const pairs = [...(stated?.[1] ?? '').matchAll(/(\$\w+):\s*'([^']+)'/g)];
-	return Object.fromEntries(pairs.map(([, alias, target]) => [alias, target]));
-}
-function imports(from: string): Written[] {
-	const [, name = ''] = /^packages\/([^/]+)\//.exec(from) ?? [];
-	const language = /\.(svelte|css|ts)$/.exec(from)?.[1] as 'svelte' | 'css' | 'ts' | undefined;
-	const own = Object.entries(builds[name] ?? {});
-	if (!language || own.length === 0) return [];
-	const found = scanImports(readFileSync(from, 'utf8'), language);
-	return found.flatMap((item) => {
-		const [alias, target] = own.find(([key]) => item.specifier?.startsWith(`${key}/`)) ?? [];
-		if (!item.specifier) return [];
-		if (!alias || !target) {
-			const to = join(dirname(from), item.specifier);
-			return [select, canonicalSelect].includes(to)
-				? [{ from, specifier: item.specifier, to }]
-				: [];
-		}
-		const path = join('packages', name, target, item.specifier.slice(alias.length + 1));
-		const to = [path, `${path}.ts`].find((candidate) => loaded.index.files.has(candidate));
-		return [{ from, specifier: item.specifier, to }];
-	});
-}
 function side(index: sourceIndex.SourceIndex): ImpactSide {
 	return {
 		revision: 'working-tree',
