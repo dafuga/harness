@@ -1,9 +1,29 @@
 import type { PreviewCases } from './shared';
+import type { LiveActivity, ProjectActivity } from '../../../../../../src/core/activityTypes';
 import { noop } from './shared';
 
-/** Retain the supplied live observation while its refresh fails or grows stale. */
+/** Show an empty repository or retain a live observation that fails or grows stale. */
 export function projectActivityVariant(props: PreviewCases[string], variant: string) {
-	const live = props.live as { sampledAt: string };
+	const live = props.live as LiveActivity;
+	if (variant === 'empty') {
+		const activity = props.activity as ProjectActivity;
+		return {
+			...props,
+			activity: {
+				...activity,
+				repository: { ...activity.repository, head: null },
+				asOf: null,
+				work: [],
+				files: [],
+				loops: { total: 0, types: [] }
+			},
+			live: {
+				...live,
+				worktrees: [],
+				agents: { tracking: 'never-used', working: null, unreadable: 0, roster: [] }
+			}
+		};
+	}
 	return {
 		...props,
 		reading: {

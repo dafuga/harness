@@ -42,7 +42,10 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.activity-work') return activityWorkVariant(props, variant);
 	if (id === 'reports.component.analytics-tasks' && variant !== 'empty')
 		return analyticsTaskVariant(props, variant);
-	if (id === 'reports.component.project-activity' && ['stale', 'failed-read'].includes(variant))
+	if (
+		id === 'reports.component.project-activity' &&
+		['empty', 'stale', 'failed-read'].includes(variant)
+	)
 		return projectActivityVariant(props, variant);
 	if (id === 'reports.component.provider-picker-cards')
 		return providerPickerCardVariant(props, variant);

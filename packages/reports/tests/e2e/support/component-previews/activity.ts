@@ -144,16 +144,7 @@ const loopStates: Record<string, () => PreviewCases[string]> = {
 };
 
 const projectActivityStates: Record<string, () => PreviewCases[string]> = {
-	recorded: () => ({ activity: { ...activity, kind: 'recorded' }, live: null, base: '/harness' }),
-	empty: () => ({
-		activity: { ...activity, work: [], files: [], loops: { total: 0, types: [] } },
-		live: {
-			...live,
-			worktrees: [],
-			agents: { tracking: 'never-used', working: null, unreadable: 0, roster: [] }
-		},
-		base: '/harness'
-	})
+	recorded: () => ({ activity: { ...activity, kind: 'recorded' }, live: null, base: '/harness' })
 };
 
 export function activityVariant(id: string, variant: string, props: PreviewCases[string]) {

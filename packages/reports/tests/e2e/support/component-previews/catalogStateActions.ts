@@ -39,6 +39,10 @@ const actions: Record<string, CatalogStateAction> = {
 	'reports.component.project-activity:stale': async (component) => {
 		await expect(component.getByText(/The last reading is older than a minute/)).toBeVisible();
 	},
+	'reports.component.project-activity:empty': async (component) => {
+		await expect(component.locator('.pa-identity')).toContainText('no commit');
+		await expect(component).toContainText('No commit is in this history yet.');
+	},
 	'reports.component.project-activity:failed-read': async (component) => {
 		await expect(component.getByRole('status')).toContainText('Activity could not be read again');
 	},
