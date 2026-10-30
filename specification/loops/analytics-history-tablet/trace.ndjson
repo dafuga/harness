@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T02:40:32.928Z","name":"analytics-history-tablet","goal":"Keep loop history labels readable at tablet widths","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T02:40:57.351Z","loop":"analytics-history-tablet","step":"spec","evidence":"At tablet width the eight narrow table columns split headers and model names inside words. Labeled rows keep each field readable."}
+{"event":"step.completed","timestamp":"2026-10-30T02:40:57.940Z","loop":"analytics-history-tablet","step":"coverage","evidence":"The prior catalog assertion covered horizontal fit and mobile labels but did not exercise the tablet layout. The same label check now covers compact tablet width."}

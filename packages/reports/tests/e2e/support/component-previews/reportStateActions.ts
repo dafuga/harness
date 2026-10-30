@@ -44,7 +44,7 @@ async function prepareAnalyticsHistory(component: Locator, variant: string) {
 	const cells = table.locator('tbody tr').first().locator('td');
 	await expect(cells).toHaveCount(8);
 	if (variant === 'active') await expect(cells.nth(3)).toHaveText('active');
-	if ((component.page().viewportSize()?.width ?? 0) > 672) return;
+	if ((component.page().viewportSize()?.width ?? 0) > 832) return;
 	const labels = [
 		'Loop',
 		'Template',
@@ -58,7 +58,8 @@ async function prepareAnalyticsHistory(component: Locator, variant: string) {
 	for (let index = 0; index < labels.length; index++) {
 		await expect(cells.nth(index)).toHaveAttribute('data-label', labels[index]);
 		expect(
-			await cells.nth(index).evaluate((node) => getComputedStyle(node, '::before').content)
+			await cells.nth(index).evaluate((node) => getComputedStyle(node, '::before').content),
+			'History labels remain visible at compact widths'
 		).toBe(`"${labels[index]}"`);
 	}
 }
