@@ -64,7 +64,16 @@ export async function assertEntityStates(component: Locator, variant: string) {
 		);
 	if (variant === 'scenario-selected')
 		await expect(component.getByRole('heading', { name: 'Archived', exact: true })).toBeVisible();
-	if (variant === 'viewport-mobile')
+	if (variant === 'viewport-mobile') {
 		await expect(component.locator('.state-heading small').first()).toHaveText('390 × 844');
+		const images = component.locator('.state-panes img');
+		await expect(images).toHaveCount(4);
+		for (const img of await images.all())
+			await expect
+				.poll(() =>
+					img.evaluate((node: HTMLImageElement) => [node.naturalWidth, node.naturalHeight])
+				)
+				.toEqual([390, 844]);
+	}
 	if (variant === 'viewer-open') await expect(component.getByRole('dialog')).toBeVisible();
 }

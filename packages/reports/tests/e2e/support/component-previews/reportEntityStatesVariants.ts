@@ -6,22 +6,25 @@ import type { Evidence } from '../../../../src/models/reports-media/Report.types
 import type { PreviewCases } from './shared';
 
 /** Synthetic, visibly labelled fixture images show the matching populated or empty order list. */
-export function orderListImage(empty: boolean, compact = false) {
+export function orderListImage(empty: boolean, compact = false, mobile = false) {
 	const firstRow = compact ? 155 : 230;
 	const secondRow = compact ? 196 : 290;
+	const left = mobile ? 24 : 52;
+	const rowSize = mobile ? 16 : 24;
 	const body = empty
-		? `<text x="52" y="${firstRow}" fill="#d8e4ee" font-size="24">No matching orders</text>`
-		: `<text x="52" y="${firstRow}" fill="#d8e4ee" font-size="24">Order A-1048 · Ready to ship</text><text x="52" y="${secondRow}" fill="#d8e4ee" font-size="24">Order A-1047 · Delivered</text>`;
-	const height = compact ? 230 : 560;
+		? `<text x="${left}" y="${firstRow}" fill="#d8e4ee" font-size="${rowSize}">No matching orders</text>`
+		: `<text x="${left}" y="${firstRow}" fill="#d8e4ee" font-size="${rowSize}">Order A-1048 · Ready to ship</text><text x="${left}" y="${secondRow}" fill="#d8e4ee" font-size="${rowSize}">Order A-1047 · Delivered</text>`;
+	const width = mobile ? 390 : 920;
+	const height = mobile ? 844 : compact ? 230 : 560;
 	const header = compact ? 40 : 60;
 	const title = compact ? 95 : 125;
-	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="${height}" viewBox="0 0 920 ${height}"><rect width="920" height="${height}" fill="#0e1c29"/><g font-family="sans-serif"><text x="52" y="${header}" fill="#f3c33b" font-size="20">SYNTHETIC ORDER LIST</text><text x="52" y="${title}" fill="#f4f7fb" font-size="36">Orders</text>${body}</g></svg>`;
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="#0e1c29"/><g font-family="sans-serif"><text x="${left}" y="${header}" fill="#f3c33b" font-size="20">SYNTHETIC ORDER LIST</text><text x="${left}" y="${title}" fill="#f4f7fb" font-size="36">Orders</text>${body}</g></svg>`;
 	return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 
 /** The fixture's image resolver represents the particular declared state, not a copied capture. */
 export async function resolveStateImage(item: Evidence): Promise<string> {
-	return orderListImage(item.title.startsWith('Empty'));
+	return orderListImage(item.title.startsWith('Empty'), false, item.viewport === 'mobile');
 }
 
 /** State gallery variations retain revision, scenario and missing-capture boundaries. */
@@ -35,7 +38,7 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 			resolveImage: async (item: Evidence) =>
 				item.title === 'Default · Before'
 					? '/media/preview-invalid-image.svg'
-					: orderListImage(item.title.startsWith('Empty'))
+					: resolveStateImage(item)
 		};
 	if (variant === 'viewer-open')
 		return {
