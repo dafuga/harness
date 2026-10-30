@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T05:29:44.657Z","name":"replay-picker-capture","goal":"Show open replay speed and scene options in component captures","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T05:29:58.546Z","loop":"replay-picker-capture","step":"spec","evidence":"Replay Controls uses native speed and scene selectors. Open controls must show their option lists in recorded component images."}
+{"event":"step.completed","timestamp":"2026-10-30T05:29:59.108Z","loop":"replay-picker-capture","step":"coverage","evidence":"component-catalog-previews tests closed selections only; add open selector states, frame their popup and assert changed pixels outside the control."}

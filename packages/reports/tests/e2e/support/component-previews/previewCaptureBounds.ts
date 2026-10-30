@@ -48,9 +48,13 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			edge: id === 'reports.component.evidence-grid' && modal ? 0 : 8
 		}
 	);
-	if (id === 'reports.component.select' && variant === 'open') {
+	if (
+		(id === 'reports.component.select' && variant === 'open') ||
+		(id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
+	) {
 		const height = await page.evaluate(() => document.documentElement.scrollHeight);
-		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + 180) };
+		const extra = id === 'reports.component.select' ? 180 : 250;
+		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + extra) };
 	}
 	return bounds;
 }

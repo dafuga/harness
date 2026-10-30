@@ -4487,6 +4487,12 @@
 			"units": ["reports.component.replay-controls"]
 		},
 		{
+			"id": "reports-component-replay-controls-middle-frame",
+			"title": "Evidence replay controls: Middle frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
 			"id": "reports-component-replay-controls-final-frame",
 			"title": "Evidence replay controls: Final frame",
 			"coverage": "required",
@@ -4495,6 +4501,12 @@
 		{
 			"id": "reports-component-replay-controls-single-frame",
 			"title": "Evidence replay controls: Single frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-no-scenes",
+			"title": "Evidence replay controls: No scenes",
 			"coverage": "required",
 			"units": ["reports.component.replay-controls"]
 		},
@@ -4513,6 +4525,18 @@
 		{
 			"id": "reports-component-replay-controls-speed-2x",
 			"title": "Evidence replay controls: 2× speed",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-speed-open",
+			"title": "Evidence replay controls: Speed selector open",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-scene-open",
+			"title": "Evidence replay controls: Scene selector open",
 			"coverage": "required",
 			"units": ["reports.component.replay-controls"]
 		},
@@ -6963,11 +6987,15 @@
 				"reports-component-regression-proof-empty",
 				"reports-component-replay-controls",
 				"reports-component-replay-controls-playing",
+				"reports-component-replay-controls-middle-frame",
 				"reports-component-replay-controls-final-frame",
 				"reports-component-replay-controls-single-frame",
+				"reports-component-replay-controls-no-scenes",
 				"reports-component-replay-controls-scene-unselected",
 				"reports-component-replay-controls-fullscreen",
 				"reports-component-replay-controls-speed-2x",
+				"reports-component-replay-controls-speed-open",
+				"reports-component-replay-controls-scene-open",
 				"reports-component-report-checks",
 				"reports-component-report-checks-empty",
 				"reports-component-report-checks-embedded",
