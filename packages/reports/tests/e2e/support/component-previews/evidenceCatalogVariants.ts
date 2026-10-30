@@ -1,4 +1,4 @@
-/** Separate gallery, card and proof presentations. */
+/** Evidence cards, galleries and proof views each expose their distinct presentations. */
 export const evidenceCatalogVariants: Record<string, string[]> = {
 	'reports.component.evidence-card': [
 		'missing',
