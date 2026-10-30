@@ -201,4 +201,5 @@ export async function capturePreview(
 		bytes
 	);
 	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport);
+	return { clip, bytes };
 }

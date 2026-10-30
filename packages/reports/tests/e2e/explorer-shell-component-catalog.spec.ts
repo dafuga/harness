@@ -19,6 +19,7 @@ import {
 import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
 import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
 import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
+import { assertOpenLanguagePixels } from './support/component-previews/translationsPreviewAssertions';
 import {
 	assertCatalogLayout,
 	assertCatalogDetails
@@ -135,7 +136,8 @@ for (const viewport of catalogViewports) {
 				} else await expect(panel).toBeVisible();
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
-			await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			const capture = await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			await assertOpenLanguagePixels(page, unit.id, variant, capture);
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
@@ -180,9 +182,8 @@ for (const viewport of catalogViewports) {
 				['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 					(name) => unit.id === `desktop.component.${name}`
 				)
-			) {
+			)
 				await expect(component.getByText('Expires in 5:00', { exact: true })).toBeVisible();
-			}
 			if (unit.id === 'desktop.component.agent-controls') {
 				const provider = component
 					.getByRole('group', { name: 'Agent', exact: true })
