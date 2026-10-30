@@ -81,9 +81,11 @@
 	}
 	.console-chat :global(.composer.compact) {
 		grid-template-columns: minmax(0, 1fr) auto;
+		padding: var(--hx-space-6);
 	}
 	.console-chat :global(.composer.compact textarea) {
-		height: var(--hx-space-64);
+		min-height: var(--hx-space-48);
+		height: var(--hx-space-48);
 	}
 	.console-chat :global(.composer.compact .mode-options button) {
 		padding-inline: var(--hx-space-6);
