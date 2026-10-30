@@ -72,6 +72,11 @@
 				"name": "TypeError",
 				"type": "thrown",
 				"description": "Contract field examples cannot serialize BigInt or circular values."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Deeply nested contract examples can exceed the JSON serializer stack."
 			}
 		]
 	},
