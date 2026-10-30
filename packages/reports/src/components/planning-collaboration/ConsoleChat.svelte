@@ -79,6 +79,15 @@
 		max-height: 10rem;
 		resize: vertical;
 	}
+	.console-chat :global(.composer.compact) {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+	.console-chat :global(.composer.compact textarea) {
+		height: var(--hx-space-64);
+	}
+	.console-chat :global(.composer.compact .mode-options button) {
+		padding-inline: var(--hx-space-6);
+	}
 	.console-chat :global(textarea::placeholder),
 	.console-chat :global(input::placeholder) {
 		color: var(--hx-color-text-muted);
