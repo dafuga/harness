@@ -44,6 +44,7 @@ export const evidenceViewerProps = {
 
 /** Keep evidence selection and missing metadata cases on realistic checkout captures. */
 export function evidenceViewerVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'unselected') return { ...props, selected: null };
 	if (variant === 'no-navigation') return { ...props, navigableItems: [] };
 	if (variant === 'no-pair') return { ...props, items: [after], navigableItems: [after] };
 	if (variant === 'no-provenance') {

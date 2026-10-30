@@ -2,6 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Reach the viewport and image viewer through the gallery's real controls. */
 export async function prepareEntityStates(component: Locator, variant: string) {
+	await expect(component.getByText('No screenshot selected.', { exact: true })).toHaveCount(0);
 	if (variant === 'image-error') {
 		const button = component.locator('.state-card .image-button').first();
 		await expect(button).toBeDisabled();
@@ -25,8 +26,13 @@ export async function prepareEntityStates(component: Locator, variant: string) {
 		await expect(details).toHaveAttribute('open', '');
 	}
 	if (variant === 'viewer-open') {
-		await component.locator('.state-card .image-button').nth(1).click();
+		const button = component.locator('.state-card .image-button').nth(1);
+		await button.click();
 		const viewer = component.getByRole('dialog');
+		await viewer.getByRole('button', { name: 'Close viewer' }).click();
+		await expect(viewer).toHaveCount(0);
+		await expect(component.getByText('No screenshot selected.', { exact: true })).toHaveCount(0);
+		await button.click();
 		await expect(viewer.getByRole('heading', { name: 'Default · After' })).toBeVisible();
 		await expect(
 			viewer.getByRole('button', { name: 'View after screenshot', exact: true })
