@@ -61,8 +61,8 @@ export const activityCatalogVariants: Record<string, string[]> = {
 	// Replay covers run status, image loading and failure, playback, export and controls.
 	'reports.component.gameplay-replay': [
 		'live-empty',
-		'live',
 		'interrupted',
+		'live',
 		'nonportable',
 		'download-preparing',
 		'loading',
