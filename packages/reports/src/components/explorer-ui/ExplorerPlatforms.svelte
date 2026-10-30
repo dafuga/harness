@@ -118,7 +118,7 @@
 
 <!-- The platforms are settings of the selected revision, read whether or not it has a registry. -->
 <ExplorerFrame {host} registryRequired={false}>
-	{#snippet children(nav)}
+	{#snippet children(nav: EntityNav)}
 		{#if host.route.entity}
 			<ExplorerPlatformDetails {host} {nav} />
 		{:else}
