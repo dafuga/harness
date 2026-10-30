@@ -45,10 +45,16 @@
 			{
 				"name": "CoverageList",
 				"type": "markup",
-				"description": "Acceptance list and/or coverage check rows with status badges. Coverage is omitted when empty; there is no extra empty-state message. Does not assess criteria itself."
+				"description": "Acceptance list and/or coverage check rows with status badges. Empty selected sections show localized messages. Does not assess criteria itself."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Rendering coverage throws if multiple coverage entries have the same ID."
+			}
+		]
 	},
 	"dependencies": [
 		{
