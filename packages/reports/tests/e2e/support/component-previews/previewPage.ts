@@ -171,6 +171,8 @@ export async function capturePreview(
 function usesNativePopup(id: string, variant: string) {
 	return (
 		(id === 'reports.component.select' && variant === 'open') ||
+		(id === 'reports.component.entity-states' &&
+			['scenario-open', 'viewport-open'].includes(variant)) ||
 		(id === 'reports.component.evidence-grid' && variant === 'status-open') ||
 		(id === 'reports.component.upload-comparison' && variant === 'viewport-open') ||
 		(id === 'reports.component.upload-audio' && variant === 'mode-open') ||
