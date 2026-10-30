@@ -5675,6 +5675,78 @@
 			"units": ["reports.component.upload-comparison"]
 		},
 		{
+			"id": "reports-component-upload-comparison-open",
+			"title": "Screenshot comparison upload: open",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-pre-mount",
+			"title": "Screenshot comparison upload: pre mount",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-before-selected",
+			"title": "Screenshot comparison upload: before selected",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-after-selected",
+			"title": "Screenshot comparison upload: after selected",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-both-selected",
+			"title": "Screenshot comparison upload: both selected",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-viewport-mobile",
+			"title": "Screenshot comparison upload: viewport mobile",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-viewport-tablet",
+			"title": "Screenshot comparison upload: viewport tablet",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-viewport-desktop",
+			"title": "Screenshot comparison upload: viewport desktop",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-viewport-open",
+			"title": "Screenshot comparison upload: viewport open",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-uploading",
+			"title": "Screenshot comparison upload: uploading",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-success",
+			"title": "Screenshot comparison upload: success",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
+			"id": "reports-component-upload-comparison-error",
+			"title": "Screenshot comparison upload: error",
+			"coverage": "required",
+			"units": ["reports.component.upload-comparison"]
+		},
+		{
 			"id": "reports-component-usage-examples-usage-examples",
 			"title": "Function usage examples",
 			"coverage": "required",
@@ -6813,6 +6885,18 @@
 				"reports-component-status-badge-interrupted",
 				"reports-component-upload-audio",
 				"reports-component-upload-comparison",
+				"reports-component-upload-comparison-open",
+				"reports-component-upload-comparison-pre-mount",
+				"reports-component-upload-comparison-before-selected",
+				"reports-component-upload-comparison-after-selected",
+				"reports-component-upload-comparison-both-selected",
+				"reports-component-upload-comparison-viewport-mobile",
+				"reports-component-upload-comparison-viewport-tablet",
+				"reports-component-upload-comparison-viewport-desktop",
+				"reports-component-upload-comparison-viewport-open",
+				"reports-component-upload-comparison-uploading",
+				"reports-component-upload-comparison-success",
+				"reports-component-upload-comparison-error",
 				"reports-component-usage-examples-usage-examples",
 				"reports-component-usage-examples-usage-examples-setup",
 				"reports-component-usage-examples-usage-examples-inline-setup",

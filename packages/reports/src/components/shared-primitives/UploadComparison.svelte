@@ -105,3 +105,21 @@
 		</hx-div>
 	</hx-form>
 </hx-details>
+
+<style>
+	@supports (appearance: base-select) {
+		.upload-comparison :global(.report-select select),
+		.upload-comparison :global(.report-select select::picker(select)) {
+			appearance: base-select;
+		}
+		.upload-comparison :global(.report-select select::picker(select)) {
+			color: var(--hx-color-text);
+			background: var(--hx-color-surface);
+			border: var(--hx-border-thin) solid var(--hx-color-border);
+			border-radius: var(--hx-radius);
+		}
+		.upload-comparison :global(.report-select select::picker-icon) {
+			display: none;
+		}
+	}
+</style>

@@ -7,6 +7,7 @@ import { explorerEntities } from '../../../../src/utils/explorerEntities';
 import { explorerRelations } from '../../../../src/utils/explorerRelations';
 import { withApis } from '../../../../test/entityApiFixtures';
 import { routeIds, routeUnits } from './routeUnits';
+import { usageLinkVariant } from './reportUsageLinkVariants';
 
 /** Distinct visual, page and nonvisual rows of the shared module card. */
 export function moduleCardVariant(props: PreviewCases[string], variant: string) {
@@ -14,7 +15,10 @@ export function moduleCardVariant(props: PreviewCases[string], variant: string) 
 	if (variant === 'image-error')
 		return { ...props, shot: { ...picture, file: 'preview-invalid-image.svg' } };
 	if (variant === 'function') return { ...props, row: helperRows[0] };
-	if (variant === 'usage-open') return props;
+	if (variant === 'usage-open') {
+		const usage = usageLinkVariant(props, 'visual-open');
+		return { ...usage, shot: { ...picture, file: `/media/${picture.file}` } };
+	}
 	if (['api', 'api-no-methods'].includes(variant)) return apiCard(props, variant);
 	if (['no-usage', 'many-usage'].includes(variant)) {
 		const row = props.row as CatalogRow;

@@ -15,7 +15,7 @@ import {
 import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
 import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
 import { assertModuleCardPreview as assertCard } from './support/component-previews/moduleCardPreviewAssertions';
-import { assertOpenPickerPixels } from './support/component-previews/translationsPreviewAssertions';
+import * as picker from './support/component-previews/translationsPreviewAssertions';
 import * as caseAssertions from './support/component-previews/catalogCaseAssertions';
 import { assertProjectAgentState } from './support/component-previews/projectAgentStateAssertions';
 import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
@@ -86,6 +86,7 @@ for (const viewport of catalogViewports) {
 				? `desktop-component-project-agent-${variant} at ${viewport.id}`
 				: `${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`;
 		test(title, async ({ page, browserErrors }) => {
+			picker.expectUploadError(unit.id, variant, browserErrors);
 			const projectErrors: string[] = [];
 			if (unit.id === 'reports.component.console-chat' && variant === 'connection-error')
 				browserErrors.expectError({
@@ -136,7 +137,7 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
-			await assertOpenPickerPixels(page, unit.id, variant, capture);
+			await picker.assertOpenPickerPixels(page, unit.id, variant, capture);
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);

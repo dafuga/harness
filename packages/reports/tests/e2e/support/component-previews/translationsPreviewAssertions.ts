@@ -11,9 +11,12 @@ export async function assertOpenPickerPixels(
 		id === 'reports.component.explorer-ui-explorer-translations-screen' &&
 		variant === 'language-open';
 	const status = id === 'reports.component.evidence-grid' && variant === 'status-open';
-	if (!capture || (!language && !status)) return;
+	const viewport = id === 'reports.component.upload-comparison' && variant === 'viewport-open';
+	if (!capture || (!language && !status && !viewport)) return;
 	const { clip, bytes: opened } = capture;
-	const selector = page.getByRole('combobox', { name: language ? 'Language' : 'Status' });
+	const selector = page.getByRole('combobox', {
+		name: language ? 'Language' : status ? 'Status' : 'Viewport'
+	});
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(true);
 	const control = (await selector.boundingBox())!;
 	await page.mouse.click(1, 1);
@@ -26,9 +29,24 @@ export async function assertOpenPickerPixels(
 		caret: 'hide'
 	});
 	const changed = await pickerPixelsChanged(page, { opened, closed, clip, control });
-	const message = `The open ${language ? 'language' : 'status'} menu must change pixels outside its control`;
+	const message = `The open ${language ? 'language' : status ? 'status' : 'viewport'} menu must change pixels outside its control`;
 	expect(changed, message).toBeGreaterThan(100);
 	await selector.click();
+}
+
+/** The failure fixture returns an intentional HTTP error, logged by the browser. */
+export function expectUploadError(
+	id: string,
+	variant: string,
+	errors: { expectError: (entry: { type: 'console'; message: string; reason: string }) => void }
+) {
+	if (id === 'reports.component.upload-comparison' && variant === 'error')
+		errors.expectError({
+			type: 'console',
+			message:
+				'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+			reason: 'The comparison upload error fixture deliberately refuses the upload.'
+		});
 }
 
 /** Compare the captured images outside the selector, excluding focus or arrow changes. */
