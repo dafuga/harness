@@ -2,7 +2,7 @@ import { activityCatalogVariants } from './activityCatalogVariants';
 import { providerPickerStates } from './providerPickerVariants';
 import { audioCatalogVariants } from './audioCatalogVariants';
 import { evidenceCatalogVariants } from './evidenceCatalogVariants';
-import { explorerUsageCatalogVariants } from './explorerUsageCatalogVariants';
+import { explorerCatalogVariants } from './explorerCatalogVariants';
 import { entityStatesCatalogVariants } from './entityStatesCatalogVariants';
 import { configValueCatalogVariants } from './configValueTreeVariants';
 
@@ -10,7 +10,7 @@ import { configValueCatalogVariants } from './configValueTreeVariants';
 const variants: Record<string, string[]> = {
 	...audioCatalogVariants,
 	...evidenceCatalogVariants,
-	...explorerUsageCatalogVariants,
+	...explorerCatalogVariants,
 	...entityStatesCatalogVariants,
 	...configValueCatalogVariants,
 	// The console connects on open and exposes its access, roster and composer states.

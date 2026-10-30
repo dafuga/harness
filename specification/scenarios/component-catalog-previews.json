@@ -2411,6 +2411,60 @@
 			"units": ["reports.component.explorer-catalog-items"]
 		},
 		{
+			"id": "reports-component-explorer-catalog-items-multiple",
+			"title": "ExplorerCatalogItems: multiple components",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-batched",
+			"title": "ExplorerCatalogItems: batched components",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-more",
+			"title": "ExplorerCatalogItems: more components",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-functions",
+			"title": "ExplorerCatalogItems: functions",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-pages",
+			"title": "ExplorerCatalogItems: pages",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-configs",
+			"title": "ExplorerCatalogItems: config variables",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-configs-open",
+			"title": "ExplorerCatalogItems: open config value",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-empty-configs",
+			"title": "ExplorerCatalogItems: empty config table",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-unlinked",
+			"title": "ExplorerCatalogItems: unlinked dependency",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
 			"id": "reports-component-explorer-dependencies-screen",
 			"title": "ExplorerDependenciesScreen",
 			"coverage": "required",
@@ -5009,6 +5063,15 @@
 				"reports-component-evidence-viewer-compare",
 				"reports-component-evidence-viewer-unavailable",
 				"reports-component-explorer-catalog-items",
+				"reports-component-explorer-catalog-items-multiple",
+				"reports-component-explorer-catalog-items-batched",
+				"reports-component-explorer-catalog-items-more",
+				"reports-component-explorer-catalog-items-functions",
+				"reports-component-explorer-catalog-items-pages",
+				"reports-component-explorer-catalog-items-configs",
+				"reports-component-explorer-catalog-items-configs-open",
+				"reports-component-explorer-catalog-items-empty-configs",
+				"reports-component-explorer-catalog-items-unlinked",
 				"reports-component-explorer-dependencies-screen",
 				"reports-component-explorer-function-card",
 				"reports-component-explorer-function-card-service",

@@ -207,7 +207,11 @@ export const explorerCases: PreviewCases = {
 		lens: d.reading,
 		mediaBase: '/media/'
 	},
-	'reports.component.explorer-catalog-items': { category: 'components', rows: d.rows, ...base },
+	'reports.component.explorer-catalog-items': {
+		category: 'components',
+		rows: [d.rows[0]],
+		...base
+	},
 	'reports.component.explorer-usage': { consumers: d.rows[0].usedIn ?? [], ...base },
 	'reports.component.explorer-usage-link': { entity: d.entity, ...base },
 	'reports.component.explorer-ui-harness-group': {
