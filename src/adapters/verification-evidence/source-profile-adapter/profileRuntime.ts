@@ -7,13 +7,18 @@ import {
 import type { Boundary } from './profileRuntime.types';
 export type { Boundary } from './profileRuntime.types';
 
-const profiler = new PerformanceProfileService();
+// Instrumented dependencies may register wrappers before the collector class finishes importing.
+let profiler: PerformanceProfileService | undefined;
 let flushing = false;
+
+function collector(): PerformanceProfileService {
+	return (profiler ??= new PerformanceProfileService());
+}
 
 /** A failed import never reaches its finishing statement and therefore emits no success sample. */
 export function beginSourceScope(boundary: Boundary): () => void {
 	if (!process.env.HARNESS_RUNTIME_PROFILE_DIR || flushing) return () => {};
-	return profiler.beginScope(observationInput(boundary, 'initialization'));
+	return collector().beginScope(observationInput(boundary, 'initialization'));
 }
 
 /** Metadata describes source boundaries only; values and arguments never enter the collector. */
@@ -37,7 +42,7 @@ export function watchOperation<T extends (...args: never[]) => unknown>(
 			pending++;
 			try {
 				if (boundary.asynchronous)
-					return profiler.observeAsync(input, call).then(
+					return collector().observeAsync(input, call).then(
 						(value) => {
 							pending--;
 							completed++;
@@ -48,7 +53,7 @@ export function watchOperation<T extends (...args: never[]) => unknown>(
 							throw error;
 						}
 					);
-				const result = profiler.observe(input, call);
+				const result = collector().observe(input, call);
 				pending--;
 				if (types.isPromise(result)) unsupported = true;
 				else completed++;
@@ -93,7 +98,7 @@ export function flushSourceProfiles(): void {
 	try {
 		process.env.HARNESS_EVIDENCE_DIR = directory;
 		process.env.TAKE_SCREENSHOT = '1';
-		profiler.flush();
+		profiler?.flush();
 	} finally {
 		for (const [index, name] of ['HARNESS_EVIDENCE_DIR', 'TAKE_SCREENSHOT'].entries()) {
 			if (previous[index] === undefined) delete process.env[name];
