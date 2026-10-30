@@ -4,7 +4,7 @@ import { expect, type Locator } from '@playwright/test';
 export async function assertFunctionCardState(component: Locator, variant: string) {
 	const card = component.locator('[data-harness-component="explorer-ui-explorer-module-card"]');
 	await expect(card).toBeVisible();
-	await expect(card.locator('img')).toHaveCount(0);
+	await expect(card.locator('img')).toHaveCount(variant === 'usage-open' ? 1 : 0);
 	if (variant === 'service') await expect(card).toContainText('OrderStore');
 	if (variant === 'model') await expect(card).toContainText('Order');
 	if (variant === 'no-usage')

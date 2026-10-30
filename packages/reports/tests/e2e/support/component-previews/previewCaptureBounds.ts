@@ -41,6 +41,8 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			chatPicker,
 			includeUsageTooltip: [
 				'reports.component.explorer-usage-link',
+				'reports.component.explorer-usage',
+				'reports.component.explorer-function-card',
 				'reports.component.explorer-ui-explorer-module-card'
 			].includes(id),
 			edge: id === 'reports.component.evidence-grid' && modal ? 0 : 8
@@ -55,12 +57,7 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 
 async function previewTarget(content: Locator, id: string, variant: string) {
 	const dialog = content.locator('dialog[open], [role="dialog"]:visible').last();
-	const chatPicker =
-		id === 'reports.component.console-chat' && ['model-open', 'effort-open'].includes(variant);
-	const modal =
-		!chatPicker &&
-		(await content.getAttribute('data-preview-frame')) !== 'full' &&
-		(await dialog.count());
+	const modal = await previewModal(content, dialog, id, variant);
 	const projectAgent = id === 'desktop.component.project-agent';
 	const compactTarget =
 		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
@@ -75,4 +72,12 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 		chatPicker,
 		captureElement: Boolean(modal) || projectAgent || Boolean(compactTarget)
 	};
+}
+
+async function previewModal(content: Locator, dialog: Locator, id: string, variant: string) {
+	if (id === 'reports.component.console-chat' && ['model-open', 'effort-open'].includes(variant))
+		return false;
+	return (
+		(await content.getAttribute('data-preview-frame')) !== 'full' && (await dialog.count()) > 0
+	);
 }
