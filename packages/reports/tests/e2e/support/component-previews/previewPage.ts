@@ -14,7 +14,13 @@ import { previewCaptureBounds } from './previewCaptureBounds';
 import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 import { applyActivityPreviewContext } from './activityPreviewContext';
 import { audioComparisonPreMount } from './audioComparisonPreMount';
-import { previewImages, routeLoadingZoom } from './imageZoomActions';
+import { routeLoadingZoom } from './imageZoomActions';
+import {
+	assertPreviewLoading,
+	assertPreviewMessages,
+	previewWaitUntil,
+	settlePreviewImages
+} from './previewReadinessAssertions';
 const pageUnitIds = new Set(
 	catalogUnits
 		.filter((unit) => unit.owns.source.some((path) => path.endsWith('/+page.svelte')))
@@ -49,8 +55,7 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 	await page.goto(
 		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`,
 		{
-			waitUntil:
-				id === 'reports.component.image-zoom' && variant === 'loading' ? 'domcontentloaded' : 'load'
+			waitUntil: previewWaitUntil(id, variant)
 		}
 	);
 }
@@ -71,61 +76,15 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
 	}
 	const emptyComponent =
-		(id === 'reports.component.regression-proof' || id === 'reports.component.activity-list') &&
+		['reports.component.regression-proof', 'reports.component.activity-list'].includes(id) &&
 		variant === 'empty';
 	if (!emptyComponent) {
 		await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
 		await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
 	}
-	if (id === 'reports.component.analytics-cpu' && variant === 'loading')
-		await expect(content).toContainText('Sampling CPU…');
-	else if (id === 'reports.component.entity-states' && variant === 'loading')
-		await expect(content).toContainText('Loading recorded capture…');
-	else {
-		await expect(content).not.toContainText(
-			/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Loading history…|Loading this revision…|Sampling CPU…|Checking sign-in…|Reading the request…/
-		);
-		if (id === 'reports.component.entity-states')
-			await expect(content).not.toContainText('Loading recorded capture…');
-	}
-	await expect(content).not.toContainText(
-		/This project could not be opened|Loading projects?…|Design preview unavailable|Preview unavailable|Screenshot unavailable|not listed by the evidence|Not verified|Reading the clip…|TypeError:|ReferenceError:|Checking the GitHub connection…/
-	);
-	if (
-		!(
-			id === 'reports.component.explorer-ui-explorer-module-card' &&
-			['missing', 'page-missing'].includes(variant)
-		)
-	)
-		await expect(content).not.toContainText(/No screenshot (?:is )?recorded/);
-	const expectedReadFailure =
-		(id === 'reports.component.activity-agents' &&
-			['failed-read', 'unreadable'].includes(variant)) ||
-		(id === 'reports.component.project-activity' && variant === 'failed-read') ||
-		(id === 'reports.component.explorer-dependencies-screen' &&
-			['partial', 'unreadable'].includes(variant)) ||
-		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
-			['gaps', 'gaps-open'].includes(variant));
-	if (!expectedReadFailure) await expect(content).not.toContainText('could not be read');
-	for (const img of await previewImages(content, id, variant)) {
-		await img.scrollIntoViewIfNeeded();
-		await expect
-			.poll(() =>
-				img.evaluate(
-					(node: HTMLImageElement) =>
-						node.complete && node.naturalWidth > 0 && node.naturalHeight > 0
-				)
-			)
-			.toBe(true);
-		await img.evaluate((node: HTMLImageElement) => node.decode());
-	}
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await new Promise<void>((resolve) =>
-			requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
-		);
-		scrollTo(0, 0);
-	});
+	await assertPreviewLoading(content, id, variant);
+	await assertPreviewMessages(content, id, variant);
+	await settlePreviewImages(page, content, id, variant);
 	return content;
 }
 /** Wait for the real route store, rather than its earlier gate or loading frame. */
@@ -160,10 +119,7 @@ export async function capturePreview(
 	const { viewport, variant = '' } = target;
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
 	const clip = await previewCaptureBounds(page, id, variant);
-	const nativeOpen =
-		(id === 'reports.component.select' && variant === 'open') ||
-		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
-			variant === 'language-open');
+	const nativeOpen = usesNativePopup(id, variant);
 	const bytes = await page.screenshot({
 		fullPage: !nativeOpen,
 		clip,
@@ -189,10 +145,7 @@ export async function capturePreview(
 			file: `${state}-${viewport}.png`,
 			mediaType: 'image/png',
 			provenance: 'actual-capture',
-			note:
-				id === 'reports.component.evidence-grid' && ['image-open', 'audio-open'].includes(variant)
-					? 'Rendered dialog bounds without preview-only canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.'
-					: 'Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.',
+			note: previewCaptureNote(id, variant),
 			server: {
 				buildId: served?.buildId ?? 'not-built',
 				revision: process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40)
@@ -202,4 +155,18 @@ export async function capturePreview(
 	);
 	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport);
 	return { clip, bytes };
+}
+
+function usesNativePopup(id: string, variant: string) {
+	return (
+		(id === 'reports.component.select' && variant === 'open') ||
+		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
+			variant === 'language-open')
+	);
+}
+
+function previewCaptureNote(id: string, variant: string) {
+	return id === 'reports.component.evidence-grid' && ['image-open', 'audio-open'].includes(variant)
+		? 'Rendered dialog bounds without preview-only canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.'
+		: 'Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.';
 }
