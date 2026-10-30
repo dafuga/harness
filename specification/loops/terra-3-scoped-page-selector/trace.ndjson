@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T01:28:02.969Z","name":"terra-3-scoped-page-selector","goal":"Run page scenarios without component-catalog-only name filters.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T01:28:03.562Z","loop":"terra-3-scoped-page-selector","step":"spec","evidence":"The scoped platform page command received a component-catalog name filter and Playwright found no tests."}
+{"event":"step.completed","timestamp":"2026-10-30T01:28:04.133Z","loop":"terra-3-scoped-page-selector","step":"coverage","evidence":"The entity-scope test covered preserving an existing selector but not page scenarios with their own test names."}

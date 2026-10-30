@@ -38,7 +38,11 @@ test('an entity no scenario covers is refused', () => {
 });
 
 test('a scoped Playwright check greps the tests named after the entity', () => {
-	const check = { runner: 'command', command: 'bun x playwright test a.spec.ts' } as PlannedCheck;
+	const check = {
+		scenario: 'component-catalog-previews',
+		runner: 'command',
+		command: 'bun x playwright test explorer-shell-component-catalog.spec.ts'
+	} as PlannedCheck;
 	const grep = new RegExp(scopedCheck(check, badge).command.split("--grep '")[1].slice(0, -1));
 	expect(grep.test('a.spec.ts > reports.component.status-badge at desktop')).toBe(true);
 	expect(grep.test('reports.component.status-badge:failed at mobile')).toBe(true);
@@ -46,10 +50,17 @@ test('a scoped Playwright check greps the tests named after the entity', () => {
 	expect(grep.test('reports.component.modal at desktop')).toBe(false);
 	const vitest = { runner: 'vitest', command: 'vitest run a.test.ts' } as PlannedCheck;
 	expect(scopedCheck(vitest, badge)).toBe(vitest);
+	const page = {
+		scenario: 'explorer-platforms',
+		runner: 'command',
+		command: 'bun x playwright test test/entity-preview-platforms.spec.ts'
+	} as PlannedCheck;
+	expect(scopedCheck(page, badge), 'Page scenarios keep their own test names').toBe(page);
 });
 
 test('a scoped Playwright check preserves a scenario selector', () => {
 	const check = {
+		scenario: 'component-catalog-previews',
 		runner: 'command',
 		command: "bun x playwright test preview.spec.ts --grep 'APIs catalog'"
 	} as PlannedCheck;
