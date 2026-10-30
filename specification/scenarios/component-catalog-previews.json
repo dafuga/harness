@@ -2561,6 +2561,12 @@
 			"units": ["reports.component.provider-picker"]
 		},
 		{
+			"id": "reports-component-provider-picker-queue-error",
+			"title": "Session model picker: Unreadable queued sessions",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
 			"id": "reports-component-provider-picker-cancelled",
 			"title": "Session model picker: Request cancelled",
 			"coverage": "required",
@@ -4344,6 +4350,7 @@
 				"reports-component-provider-picker-provider-claude",
 				"reports-component-provider-picker-queue-empty",
 				"reports-component-provider-picker-queue-populated",
+				"reports-component-provider-picker-queue-error",
 				"reports-component-provider-picker-cancelled",
 				"reports-component-provider-picker-applying",
 				"reports-component-provider-picker-applied",

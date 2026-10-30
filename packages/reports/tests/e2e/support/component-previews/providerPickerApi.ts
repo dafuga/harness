@@ -16,7 +16,12 @@ export async function pickerFixture(route: Route) {
 	if (variant === 'connection-error' && name === 'open_model_picker')
 		return route.fulfill({ status: 503, json: { error: 'Picker unavailable.' } });
 	if (name === 'list_observed_sessions')
-		return route.fulfill({ json: { sessions: variant === 'queue-empty' ? [] : [picker.request] } });
+		return route.fulfill({
+			json: {
+				sessions:
+					variant === 'queue-error' ? null : variant === 'queue-empty' ? [] : [picker.request]
+			}
+		});
 	if (name === 'cancel_model_switch') return route.fulfill({ json: { ...picker, request: null } });
 	return route.fulfill({ json: pickerSnapshot(variant) });
 }
