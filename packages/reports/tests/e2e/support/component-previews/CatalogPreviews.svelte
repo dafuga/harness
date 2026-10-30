@@ -39,6 +39,8 @@
 	const explorer =
 		Boolean(unit.source?.includes('/components/explorer-ui/')) ||
 		[
+			'contract-example',
+			'contract-table',
 			'explorer-catalog-items',
 			'explorer-function-card',
 			'explorer-usage',
