@@ -6,12 +6,16 @@ export function permissionsVariant(props: PreviewCases[string], variant: string)
 	const host = props as unknown as ExplorerPermissionsScreenProps;
 	const catalog = host.head.permissions!;
 	if (
-		variant === 'index' ||
+		variant.startsWith('index') ||
 		variant === 'guest' ||
 		variant === 'admin' ||
 		variant === 'not-found'
 	) {
-		const entity = variant === 'index' ? undefined : variant === 'not-found' ? 'unknown' : variant;
+		const entity = variant.startsWith('index')
+			? undefined
+			: variant === 'not-found'
+				? 'unknown'
+				: variant;
 		return { ...props, route: { ...host.route, entity } };
 	}
 	if (variant === 'empty' || variant === 'unindexed')

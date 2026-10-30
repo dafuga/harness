@@ -11,7 +11,10 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 		'empty-data',
 		'endpoint',
 		'endpoint-empty',
-		'endpoint-unindexed'
+		'endpoint-unindexed',
+		'index-link-focused',
+		'index-link-hovered',
+		'data-focused'
 	],
 	'reports.component.explorer-ui-explorer-translations-screen': [
 		'unindexed',

@@ -1,5 +1,17 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
+/** Capture the keyboard and pointer states of the real profile link and data region. */
+export async function preparePermissionState(component: Locator, variant: string) {
+	const profile = component.getByRole('link', { name: 'Administrator', exact: true });
+	if (variant === 'index-link-focused') await profile.focus();
+	if (variant === 'index-link-hovered') await profile.hover();
+	if (variant === 'data-focused')
+		await component
+			.getByRole('region', { name: /data access/ })
+			.first()
+			.focus();
+}
+
 /** Permission grants remain legible and reachable at every viewport. */
 export async function assertPermissionTable(component: Locator, page: Page, mobile = false) {
 	const identifier = component.getByRole('table').first().locator('tbody code').first();
@@ -44,4 +56,11 @@ export async function assertPermissionState(component: Locator, variant: string)
 	if (words[variant]) await expect(component).toContainText(words[variant]);
 	if (variant === 'index') await expect(component.locator('article')).toHaveCount(3);
 	if (variant === 'endpoint') await expect(component.locator('article')).toHaveCount(2);
+	if (variant.startsWith('index-link-')) {
+		const link = component.getByRole('link', { name: 'Administrator', exact: true });
+		const selector = variant === 'index-link-focused' ? ':focus-visible' : ':hover';
+		expect(await link.evaluate((node, state) => node.matches(state), selector)).toBe(true);
+	}
+	if (variant === 'data-focused')
+		await expect(component.getByRole('region', { name: /data access/ }).first()).toBeFocused();
 }

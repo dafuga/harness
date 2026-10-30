@@ -4421,6 +4421,24 @@
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
 		},
 		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-index-link-focused",
+			"title": "ExplorerPermissionsScreen: focused profile link",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
+			"title": "ExplorerPermissionsScreen: hovered profile link",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-networking-security-explorer-permissions-screen-data-focused",
+			"title": "ExplorerPermissionsScreen: focused data access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
 			"id": "reports-component-project-activity",
 			"title": "Project activity overview",
 			"coverage": "required",
@@ -7468,6 +7486,9 @@
 				"reports-component-networking-security-explorer-permissions-screen-endpoint",
 				"reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
 				"reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
+				"reports-component-networking-security-explorer-permissions-screen-index-link-focused",
+				"reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
+				"reports-component-networking-security-explorer-permissions-screen-data-focused",
 				"reports-component-project-activity",
 				"reports-component-project-activity-recorded",
 				"reports-component-project-activity-empty",
