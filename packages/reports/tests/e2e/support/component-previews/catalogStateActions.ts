@@ -50,6 +50,12 @@ const actions: Record<string, CatalogStateAction> = {
 	'reports.component.analytics-tasks:unassessed': async (component) => {
 		await expect(component.getByRole('cell', { name: 'Not assessed' })).toBeVisible();
 	},
+	'reports.component.analytics-models:unknown': async (component) => {
+		await expect(component.getByRole('cell', { name: 'unknown', exact: true })).toBeVisible();
+	},
+	'reports.component.analytics-models:unassessed': async (component) => {
+		await expect(component.getByRole('cell', { name: /No assessments/ })).toHaveCount(2);
+	},
 	'reports.component.analytics-tasks:unpassed': async (component) => {
 		await expect(component.getByRole('cell', { name: 'Not yet passed' })).toBeVisible();
 	},
