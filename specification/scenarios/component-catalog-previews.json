@@ -2885,6 +2885,12 @@
 			"units": ["reports.component.explorer-function-card"]
 		},
 		{
+			"id": "reports-component-explorer-function-card-usage-open",
+			"title": "Function card: usage preview open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-config-value-tree",
 			"title": "ConfigValueTree",
 			"coverage": "required",
@@ -6414,6 +6420,7 @@
 				"reports-component-explorer-function-card-model",
 				"reports-component-explorer-function-card-no-usage",
 				"reports-component-explorer-function-card-many-usage",
+				"reports-component-explorer-function-card-usage-open",
 				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-config-value-tree-expanded",
 				"reports-component-explorer-ui-config-value-tree-object",

@@ -67,6 +67,29 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 		'empty-configs',
 		'unlinked'
 	],
+	'reports.component.explorer-function-card': [
+		'service',
+		'model',
+		'no-usage',
+		'many-usage',
+		'usage-open'
+	],
+	// Visual, page, function and unlinked dependency cards have distinct treatments.
+	'reports.component.explorer-ui-explorer-module-card': [
+		'missing',
+		'image-error',
+		'function',
+		'api',
+		'api-no-methods',
+		'page',
+		'page-missing',
+		'layout',
+		'layout-missing',
+		'unlinked',
+		'no-usage',
+		'many-usage',
+		'usage-open'
+	],
 	'reports.component.explorer-usage': ['empty', 'many', 'limited', 'limit-zero', 'duplicates'],
 	'reports.component.explorer-usage-link': [
 		'visual-open',

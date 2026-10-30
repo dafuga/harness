@@ -5,6 +5,7 @@ import { previewCaptureBounds } from './previewCaptureBounds';
 export async function prepareUsagePopover(component: Locator, variant: string) {
 	if (variant !== 'usage-open') return;
 	const link = component.getByRole('group', { name: 'Used In' }).getByRole('link').first();
+	await expect(link).toHaveText('OrderList');
 	await link.focus();
 	const tip = component.getByRole('tooltip');
 	await expect(tip).toBeVisible();
@@ -13,6 +14,7 @@ export async function prepareUsagePopover(component: Locator, variant: string) {
 		.poll(() => image.evaluate((node: HTMLImageElement) => node.naturalWidth))
 		.toBeGreaterThan(0);
 	await image.evaluate((node: HTMLImageElement) => node.decode());
+	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('SYNTHETIC ORDER LIST');
 	const id = (await component.getAttribute('data-preview-unit'))!;
 	const clip = await previewCaptureBounds(component.page(), id, variant);
 	const box = (await tip.boundingBox())!;

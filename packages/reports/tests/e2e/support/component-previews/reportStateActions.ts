@@ -16,6 +16,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.analytics-history': prepareAnalyticsHistory,
 	'reports.component.activity-list': prepareActivityList,
 	'reports.component.explorer-usage-link': prepareUsageLink,
+	'reports.component.explorer-function-card': prepareUsagePopover,
 	'reports.component.explorer-ui-explorer-module-card': prepareUsagePopover,
 	'reports.component.explorer-ui-config-value-tree': prepareConfigValueTree,
 	'reports.component.explorer-catalog-items': prepareCatalogItems,
