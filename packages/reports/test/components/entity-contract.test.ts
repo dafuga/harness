@@ -8,13 +8,20 @@ import { record, revision } from '../entityFixture';
 import { commits, ids } from '../entityUnits';
 const route = { category: 'components' as const, entity: ids.list, tab: 'contract' as const };
 
-test('deep contract examples can exceed the serializer stack', () => {
+test('contract examples propagate serializer and conversion errors', () => {
 	let value: Record<string, unknown> = {};
 	for (let index = 0; index < 20_000; index++) value = { nested: value };
 	const head = structuredClone(revision(commits.tip, [record(commits.tip)]));
 	const unit = head.registry.units.find((item) => item.id === ids.list)!;
 	unit.contract.inputs = [{ name: 'orders', type: 'object', examples: [value] }];
 	expect(() => content('current', route, { head })).toThrow(RangeError);
+	const rejected = {
+		toJSON() {
+			throw new Error('Example conversion failed');
+		}
+	};
+	unit.contract.inputs[0].examples = [rejected];
+	expect(() => content('current', route, { head })).toThrow('Example conversion failed');
 });
 
 test('a component contract lists prop types and examples without an output section', () => {
