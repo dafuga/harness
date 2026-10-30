@@ -24,7 +24,7 @@ export function assertColdEntries(
 				['bun', entry],
 				['node', bundle]
 			]) {
-				const code = `const m = await import(${JSON.stringify(pathToFileURL(target).href)}); ${item.code}`;
+				const code = `const workspace = ${JSON.stringify(directory)}; const m = await import(${JSON.stringify(pathToFileURL(target).href)}); ${item.code}`;
 				const args = runtime === 'node' ? ['--input-type=module', '-e', code] : ['-e', code];
 				const actual = execFileSync(runtime, args, {
 					encoding: 'utf8',

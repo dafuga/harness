@@ -1,9 +1,9 @@
 import type { CreateProjectInput, CreateProjectResult } from './createProject.types';
 import {
 	ensureParents,
-	renderFileList,
 	writePlannedFiles
-} from '../../../core/development-tooling/files';
+} from '../../../adapters/development-tooling/planned-files/writePlannedFiles';
+import { renderFileList } from '../../../core/development-tooling/renderFileList';
 import { validateProjectName } from './validation';
 import { join } from 'node:path';
 import { projectFiles } from '../../../templates/projects-sessions/project';

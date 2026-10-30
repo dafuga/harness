@@ -3,36 +3,44 @@
 	"id": "workflow.projects-sessions-generate-code-generate-elements",
 	"kind": "workflow",
 	"title": "generateElements",
-	"responsibility": "Owns the generateElements command workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Installs canonical HTML and SVG atoms in app or game projects while retaining a configured shared library and the existing design system.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/workflows/projects-sessions/generate-code/generateElements.ts"],
 		"symbols": ["generateElements"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "generateElements.input",
 				"type": "{ root?: string; force?: boolean }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional root and force options; defaults to an empty object, root uses the current directory and omitted force preserves changed files."
 			}
 		],
 		"outputs": [
 			{
 				"name": "generateElements",
-				"type": "Promise<GenerateResult>"
+				"type": "Promise<GenerateResult>",
+				"description": "Promise of native-atom file-write statuses, or an empty write list naming an existing configured shared library; does not update SDK exports."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects non-app/game projects, invalid library configuration and refused overwrites using the existing CLI errors."
+			},
+			{
+				"name": "Element generation failure",
+				"type": "propagated",
+				"description": "Project detection, configured-library resolution and planned-file filesystem failures propagate without inventing successful writes."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "generateElements",
@@ -41,22 +49,30 @@
 						"name": "generateElements.input",
 						"type": "{ root?: string; force?: boolean }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional root and force options; defaults to an empty object, root uses the current directory and omitted force preserves changed files."
 					}
 				],
 				"outputs": [
 					{
 						"name": "generateElements",
-						"type": "Promise<GenerateResult>"
+						"type": "Promise<GenerateResult>",
+						"description": "Promise of native-atom file-write statuses, or an empty write list naming an existing configured shared library; does not update SDK exports."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects non-app/game projects, invalid library configuration and refused overwrites using the existing CLI errors."
+					},
+					{
+						"name": "Element generation failure",
+						"type": "propagated",
+						"description": "Project detection, configured-library resolution and planned-file filesystem failures propagate without inventing successful writes."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

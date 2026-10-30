@@ -3,16 +3,20 @@
 	"id": "function.files",
 	"kind": "function",
 	"title": "Planned file writes",
-	"responsibility": "Creates parent directories, writes planned text files with overwrite protection, and formats the resulting statuses.",
+	"responsibility": "Preserves planned-file write operations and status formatting, with filesystem effects behind a generation adapter and formatting in a core value leaf.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/adapters/development-tooling/planned-files/writePlannedFiles.ts",
 			"src/core/development-tooling/files.ts",
 			"src/core/development-tooling/files.types.ts",
+			"src/core/development-tooling/renderFileList.ts",
 			"src/core/files.ts"
 		],
 		"symbols": [
+			"writePlannedFiles",
+			"ensureParents",
 			"writePlannedFiles",
 			"ensureParents",
 			"renderFileList",
@@ -24,6 +28,7 @@
 			"FileWriteStatus",
 			"FileWriteResult",
 			"WriteFilesOptions",
+			"renderFileList",
 			"writePlannedFiles",
 			"ensureParents",
 			"renderFileList"
@@ -36,64 +41,70 @@
 				"name": "writePlannedFiles.root",
 				"type": "string",
 				"required": true,
-				"description": "Root directory against which each planned path is joined."
+				"description": "Filesystem root for the caller-admitted planned paths; this operation does not independently validate traversal."
 			},
 			{
 				"name": "writePlannedFiles.files",
 				"type": "PlannedFile[]",
 				"required": true,
-				"description": "Ordered relative paths and text contents to write; parent directories must already exist."
+				"description": "Ordered planned paths and contents; existing identical contents are skipped and earlier writes remain if a later item fails."
 			},
 			{
 				"name": "writePlannedFiles.options",
 				"type": "WriteFilesOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional force flag, default false, permitting replacement of differing existing contents."
+				"description": "Optional write policy, default {}; force must be truthy to replace differing existing contents."
 			},
 			{
 				"name": "ensureParents.root",
 				"type": "string",
 				"required": true,
-				"description": "Root directory under which parent folders should be created."
+				"description": "Filesystem root used to resolve planned destination directories."
 			},
 			{
 				"name": "ensureParents.files",
 				"type": "PlannedFile[]",
 				"required": true,
-				"description": "Planned files whose parent directories are created recursively."
+				"description": "Planned destinations whose parent directories are created recursively, once per distinct directory."
 			},
 			{
 				"name": "renderFileList.files",
 				"type": "FileWriteResult[]",
 				"required": true,
-				"description": "File write results with created, skipped or overwritten status."
+				"description": "Ordered write results whose status and path are rendered without filesystem access."
 			}
 		],
 		"outputs": [
 			{
 				"name": "writePlannedFiles",
 				"type": "Promise<FileWriteResult[]>",
-				"description": "Resolves ordered file results. Identical files are skipped, absent files created and differing files overwritten only with force; earlier writes remain if a later file fails."
+				"description": "Promise of one result per processed planned file, retaining path/contents and created, skipped or overwritten status."
 			},
 			{
 				"name": "ensureParents",
 				"type": "Promise<void>",
-				"description": "Resolves after ensuring each distinct parent directory exists; writes no file contents."
+				"description": "Completes after all distinct planned parent directories exist; returns no data."
 			},
 			{
 				"name": "renderFileList",
 				"type": "string",
-				"description": "One indented create, overwrite or skip line per file, joined by newlines."
+				"description": "Two-space-indented create/skip/overwrite lines in caller order, joined by newlines."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown when an existing file differs and force was not requested."
+				"description": "Refuses differing existing contents unless force is enabled; preserves the exact overwrite-refusal message."
+			},
+			{
+				"name": "Filesystem failure",
+				"type": "propagated",
+				"description": "Read, write and mkdir exceptions propagate; directory creation and writes are not transactional."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "writePlannedFiles",
@@ -102,31 +113,42 @@
 						"name": "writePlannedFiles.root",
 						"type": "string",
 						"required": true,
-						"description": "Root directory against which each planned path is joined."
+						"description": "Filesystem root for the caller-admitted planned paths; this operation does not independently validate traversal."
 					},
 					{
 						"name": "writePlannedFiles.files",
 						"type": "PlannedFile[]",
 						"required": true,
-						"description": "Ordered relative paths and text contents to write; parent directories must already exist."
+						"description": "Ordered planned paths and contents; existing identical contents are skipped and earlier writes remain if a later item fails."
 					},
 					{
 						"name": "writePlannedFiles.options",
 						"type": "WriteFilesOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional force flag, default false, permitting replacement of differing existing contents."
+						"description": "Optional write policy, default {}; force must be truthy to replace differing existing contents."
 					}
 				],
 				"outputs": [
 					{
 						"name": "writePlannedFiles",
 						"type": "Promise<FileWriteResult[]>",
-						"description": "Resolves ordered file results. Identical files are skipped, absent files created and differing files overwritten only with force; earlier writes remain if a later file fails."
+						"description": "Promise of one result per processed planned file, retaining path/contents and created, skipped or overwritten status."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Refuses differing existing contents unless force is enabled; preserves the exact overwrite-refusal message."
+					},
+					{
+						"name": "Filesystem failure",
+						"type": "propagated",
+						"description": "Read, write and mkdir exceptions propagate; directory creation and writes are not transactional."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ensureParents",
@@ -135,24 +157,30 @@
 						"name": "ensureParents.root",
 						"type": "string",
 						"required": true,
-						"description": "Root directory under which parent folders should be created."
+						"description": "Filesystem root used to resolve planned destination directories."
 					},
 					{
 						"name": "ensureParents.files",
 						"type": "PlannedFile[]",
 						"required": true,
-						"description": "Planned files whose parent directories are created recursively."
+						"description": "Planned destinations whose parent directories are created recursively, once per distinct directory."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ensureParents",
 						"type": "Promise<void>",
-						"description": "Resolves after ensuring each distinct parent directory exists; writes no file contents."
+						"description": "Completes after all distinct planned parent directories exist; returns no data."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Filesystem failure",
+						"type": "propagated",
+						"description": "Read, write and mkdir exceptions propagate; directory creation and writes are not transactional."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderFileList",
@@ -161,18 +189,18 @@
 						"name": "renderFileList.files",
 						"type": "FileWriteResult[]",
 						"required": true,
-						"description": "File write results with created, skipped or overwritten status."
+						"description": "Ordered write results whose status and path are rendered without filesystem access."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderFileList",
 						"type": "string",
-						"description": "One indented create, overwrite or skip line per file, joined by newlines."
+						"description": "Two-space-indented create/skip/overwrite lines in caller order, joined by newlines."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
