@@ -2,7 +2,7 @@
 	"name": "console-chat-loading-notice",
 	"goal": "Describe a pending project connection without claiming read-only access",
 	"createdAt": "2026-10-30T03:19:36.628Z",
-	"updatedAt": "2026-10-30T03:19:57.536Z",
+	"updatedAt": "2026-10-30T03:38:14.531Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T03:28:30.766Z",
+			"evidence": "The committed loading catalog assertion failed on harbor-mbp-2; the desktop unit test also observed the incorrect read-only notice."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T03:28:46.912Z",
+			"evidence": "Show a loading notice while the workspace is busy, after prioritizing connection errors; annotate the store factory return type."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T03:38:14.531Z",
+			"evidence": "The unchanged loading catalog assertion passed on harbor-mbp-2, and the desktop store unit tests also pass at the repair commit."
 		},
 		{
 			"id": "verify",
