@@ -1895,6 +1895,18 @@
 			"units": ["reports.component.browser-errors"]
 		},
 		{
+			"id": "reports-component-browser-errors-unavailable",
+			"title": "Recorded browser errors: Diagnostics unavailable",
+			"coverage": "required",
+			"units": ["reports.component.browser-errors"]
+		},
+		{
+			"id": "reports-component-browser-errors-empty",
+			"title": "Recorded browser errors: No diagnostic entries",
+			"coverage": "required",
+			"units": ["reports.component.browser-errors"]
+		},
+		{
 			"id": "reports-component-console-chat",
 			"title": "Local web project chat",
 			"coverage": "required",
@@ -6879,6 +6891,8 @@
 				"reports-component-browser-errors-missing-expected",
 				"reports-component-browser-errors-multiple",
 				"reports-component-browser-errors-zero-entries",
+				"reports-component-browser-errors-unavailable",
+				"reports-component-browser-errors-empty",
 				"reports-component-console-chat",
 				"reports-component-console-chat-open",
 				"reports-component-console-chat-populated",
