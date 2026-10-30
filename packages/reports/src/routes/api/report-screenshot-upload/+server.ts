@@ -1,17 +1,8 @@
-import { json, type RequestEvent } from '@sveltejs/kit';
+import { admitUploadRequest } from '../../../utils/reports-media/admitUploadRequest';
+import { json } from '@sveltejs/kit';
 import { R2ScreenshotStoreAdapter } from '../../../adapters/reports-media/R2ScreenshotStoreAdapter';
 import { ScreenshotUploadService, type ScreenshotUploadInput } from './ScreenshotUploadService';
 import { repository } from '../../../utils/reports-media/reportHttp';
-
-function requestProblem(request: Request, url: URL) {
-	if (request.headers.get('origin') !== url.origin)
-		return json({ error: 'Same-origin upload required' }, { status: 403 });
-	if (!request.headers.get('content-type')?.startsWith('multipart/form-data'))
-		return json({ error: 'Multipart form required' }, { status: 415 });
-	if (Number(request.headers.get('content-length') || 0) > 101_000_000)
-		return json({ error: 'Upload exceeds size limit' }, { status: 413 });
-	return null;
-}
 
 function uploadFields(form: FormData): ScreenshotUploadInput {
 	const before = form.get('before');
@@ -36,8 +27,8 @@ function uploadFailure(reason: unknown) {
 	return json({ error: 'Cloudflare upload failed; no evidence was added' }, { status: 502 });
 }
 
-export async function POST({ request, url }: RequestEvent) {
-	const problem = requestProblem(request, url);
+export async function POST({ request, url }: { request: Request; url: URL }): Promise<Response> {
+	const problem = admitUploadRequest(request, url.origin, 101_000_000);
 	if (problem) return problem;
 	try {
 		const form = await request.formData();

@@ -10,7 +10,7 @@ export async function assertUploadAdmission(
 	failure: string,
 	state: string
 ) {
-	await measureWorkload('reports.function.admit-upload-request', state, () =>
+	await measureWorkload('reports.function.reports-media-admit-upload-request', state, () =>
 		measureWorkload('reports.endpoint.api-report-' + state, state, async () => {
 			const admitted = [undefined, '', '0', '-1', 'invalid', String(limit - 1), String(limit)].map(
 				(size) => ({
