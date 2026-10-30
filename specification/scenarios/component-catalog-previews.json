@@ -6605,6 +6605,12 @@
 			"units": ["reports.component.usage-examples-usage-examples"]
 		},
 		{
+			"id": "reports-component-usage-examples-usage-examples-empty",
+			"title": "UsageExamples: no examples",
+			"coverage": "required",
+			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
 			"id": "reports-layout-explorer-layout",
 			"coverage": "required",
 			"units": ["reports.layout.explorer-layout"],
@@ -7850,6 +7856,7 @@
 				"reports-component-usage-examples-usage-examples-missing-call",
 				"reports-component-usage-examples-usage-examples-error",
 				"reports-component-usage-examples-usage-examples-void",
+				"reports-component-usage-examples-usage-examples-empty",
 				"reports-layout-explorer-layout",
 				"reports-page-harness-branch-branch-at-apis",
 				"reports-page-harness-branch-branch-at-apis-entity",

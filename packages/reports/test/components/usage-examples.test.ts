@@ -5,6 +5,10 @@ import type { UsageExample } from '../../../../src/utils/unit-documentation/unit
 
 const draw = (examples: UsageExample[]) => render(UsageExamples, { props: { examples } }).body;
 
+test('an empty list says that no examples were recorded', () => {
+	expect(draw([])).toContain('No usage examples are recorded.');
+});
+
 test('only titles and escaped code show calls with output or error comments', () => {
 	const body = draw([
 		{
