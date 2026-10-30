@@ -19,57 +19,10 @@ export async function resolveStateImage(item: Evidence): Promise<string> {
 /** State gallery variations retain revision, scenario and missing-capture boundaries. */
 export function entityStatesVariant(props: PreviewCases[string], variant: string) {
 	const evidence = props.evidence as ExplorerEvidence;
-	if (variant === 'scenario-open' || variant === 'scenario-selected') {
-		const first = evidence.scenarios[0];
-		const archived = {
-			...first,
-			id: 'archived-orders',
-			title: 'Archived orders',
-			states: [{ id: 'archived', title: 'Archived', coverage: 'required' as const }]
-		};
-		return { ...props, evidence: { ...evidence, scenarios: [first, archived] } };
-	}
-	if (variant === 'empty') return { ...props, evidence: { ...evidence, scenarios: [] } };
-	if (variant === 'current')
-		return { ...props, evidence: { ...evidence, mode: 'current', before: null } };
-	if (variant === 'missing')
-		return {
-			...props,
-			evidence: {
-				...evidence,
-				after: { ...evidence.after, captures: [] },
-				before: evidence.before && { ...evidence.before, captures: [] }
-			}
-		};
-	if (variant === 'rejected')
-		return {
-			...props,
-			evidence: {
-				...evidence,
-				mode: 'current',
-				before: null,
-				after: {
-					...evidence.after,
-					captures: evidence.after.captures.map((capture) => ({
-						...capture,
-						usable: false,
-						standing: 'rejected'
-					}))
-				}
-			}
-		};
-	if (variant === 'inapplicable') {
-		const scenario = evidence.scenarios[0];
-		return {
-			...props,
-			evidence: { ...evidence, scenarios: [{ ...scenario, states: [scenario.states[2]] }] }
-		};
-	}
-	if (variant === 'incomparable')
-		return {
-			...props,
-			evidence: { ...evidence, incomparable: ['Viewport sizes changed between these revisions.'] }
-		};
+	if (variant === 'scenario-open' || variant === 'scenario-selected')
+		return { ...props, evidence: withArchivedScenario(evidence) };
+	const changed = galleryEvidence(evidence, variant);
+	if (changed) return { ...props, evidence: changed };
 	if (variant === 'loading') return { ...props, resolveImage: () => new Promise<string>(() => {}) };
 	if (variant === 'load-error')
 		return {
@@ -79,5 +32,48 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 			}
 		};
 	if (['viewport-mobile', 'viewport-open', 'viewer-open'].includes(variant)) return props;
+	return null;
+}
+
+function withArchivedScenario(evidence: ExplorerEvidence): ExplorerEvidence {
+	const first = evidence.scenarios[0];
+	const archived = {
+		...first,
+		id: 'archived-orders',
+		title: 'Archived orders',
+		states: [{ id: 'archived', title: 'Archived', coverage: 'required' as const }]
+	};
+	return { ...evidence, scenarios: [first, archived] };
+}
+
+function galleryEvidence(evidence: ExplorerEvidence, variant: string): ExplorerEvidence | null {
+	if (variant === 'empty') return { ...evidence, scenarios: [] };
+	if (variant === 'current') return { ...evidence, mode: 'current', before: null };
+	if (variant === 'missing')
+		return {
+			...evidence,
+			after: { ...evidence.after, captures: [] },
+			before: evidence.before && { ...evidence.before, captures: [] }
+		};
+	if (variant === 'rejected')
+		return {
+			...evidence,
+			mode: 'current',
+			before: null,
+			after: {
+				...evidence.after,
+				captures: evidence.after.captures.map((capture) => ({
+					...capture,
+					usable: false,
+					standing: 'rejected'
+				}))
+			}
+		};
+	if (variant === 'inapplicable') {
+		const scenario = evidence.scenarios[0];
+		return { ...evidence, scenarios: [{ ...scenario, states: [scenario.states[2]] }] };
+	}
+	if (variant === 'incomparable')
+		return { ...evidence, incomparable: ['Viewport sizes changed between these revisions.'] };
 	return null;
 }

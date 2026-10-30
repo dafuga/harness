@@ -1,5 +1,13 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
+const pickerNames: Record<string, Record<string, string>> = {
+	'reports.component.explorer-ui-explorer-translations-screen': { 'language-open': 'Language' },
+	'reports.component.entity-states': { 'scenario-open': 'Scenario', 'viewport-open': 'Viewport' },
+	'reports.component.evidence-grid': { 'status-open': 'Status' },
+	'reports.component.upload-comparison': { 'viewport-open': 'Viewport' },
+	'reports.component.upload-audio': { 'mode-open': 'Audio upload mode' }
+};
+
 /** A native picker can be open while its popup is absent from captured pixels. */
 export async function assertOpenPickerPixels(
 	page: Page,
@@ -7,26 +15,9 @@ export async function assertOpenPickerPixels(
 	variant: string,
 	capture?: { clip: { x: number; y: number; width: number; height: number }; bytes: Buffer }
 ) {
-	const language =
-		id === 'reports.component.explorer-ui-explorer-translations-screen' &&
-		variant === 'language-open';
-	const gallery = id === 'reports.component.entity-states';
-	const galleryScenario = gallery && variant === 'scenario-open';
-	const galleryViewport = gallery && variant === 'viewport-open';
-	const status = id === 'reports.component.evidence-grid' && variant === 'status-open';
-	const viewport = id === 'reports.component.upload-comparison' && variant === 'viewport-open';
-	const audioMode = id === 'reports.component.upload-audio' && variant === 'mode-open';
-	if (
-		!capture ||
-		(!language && !status && !viewport && !audioMode && !galleryScenario && !galleryViewport)
-	)
-		return;
+	const name = pickerNames[id]?.[variant];
+	if (!capture || !name) return;
 	const { clip, bytes: opened } = capture;
-	let name = 'Viewport';
-	if (language) name = 'Language';
-	else if (status) name = 'Status';
-	else if (audioMode) name = 'Audio upload mode';
-	else if (galleryScenario) name = 'Scenario';
 	const selector = page.getByRole('combobox', { name });
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(true);
 	const control = (await selector.boundingBox())!;
