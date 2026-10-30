@@ -66,8 +66,13 @@ function selectVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'display')
 		return {
 			...props,
+			label: 'Branch',
+			value: 'release/orders/final-approval',
 			display: 'release/orders/final-approval',
-			title: 'release/orders/final-approval'
+			title: 'release/orders/final-approval',
+			children: text(
+				'<optgroup label="Branches"><option value="release/orders/final-approval">release/orders/final-approval</option><option value="main">main</option></optgroup>'
+			)
 		};
 	return variant === 'disabled' ? { ...props, disabled: true } : props;
 }
