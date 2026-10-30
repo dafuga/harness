@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms atoms -->
 <script lang="ts">
+	import './contractTableMobile.css';
 	import type { ContractField, ContractGroup } from '../../utils/explorer-ui/contractFields';
 	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
 	/** One group of contract fields as a table: name, type, a clipped example and its info control. */
@@ -177,34 +178,6 @@
 		.info {
 			width: 44px;
 			height: 44px;
-		}
-	}
-	/* On a phone, preserve the example control in the first painted table view. The example itself
-	   remains a compact preview: its button opens the complete value in the dialog. */
-	@media (max-width: 480px) {
-		table {
-			table-layout: fixed;
-		}
-		.leading {
-			width: auto;
-		}
-		thead .leading:first-child {
-			width: 28%;
-		}
-		thead .leading:nth-child(2) {
-			width: 23%;
-		}
-		th,
-		td {
-			padding: var(--hx-space-6) var(--hx-space-4);
-		}
-		.example {
-			min-width: 0;
-			max-width: 100%;
-		}
-		.act {
-			width: 44px;
-			padding: var(--hx-space-2) var(--hx-space-4);
 		}
 	}
 </style>

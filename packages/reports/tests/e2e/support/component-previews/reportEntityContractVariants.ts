@@ -1,6 +1,6 @@
 import type { HarnessUnit } from '../../../../src/models/explorer-ui/Harness.types';
 import { modelDefinition, typeDeclarations } from '../../../../test/entityClassFixtures';
-import { commits, ids, units } from '../../../../test/entityUnits';
+import { ids, units } from '../../../../test/entityUnits';
 import type { PreviewCases } from './shared';
 
 const sampleOrders = [{ id: 'A-1048', status: 'Ready to ship' }];
@@ -114,7 +114,7 @@ export function entityContractVariant(props: PreviewCases[string], variant: stri
 				}
 			}
 		};
-	if (variant === 'last') return { ...props, last: commits.middle };
+	if (variant === 'last') return { ...props, last: '7561ee42571f249925f71feb0bddcbdc45da9bbe' };
 	if (variant === 'example-open') return props;
 	if (variant === 'function' || variant === 'function-error')
 		return {
