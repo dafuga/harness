@@ -2,7 +2,7 @@
 	"name": "console-chat-populated-visibility",
 	"goal": "Keep the latest chat message visible above its composer",
 	"createdAt": "2026-10-30T04:49:42.758Z",
-	"updatedAt": "2026-10-30T04:52:40.340Z",
+	"updatedAt": "2026-10-30T04:58:48.788Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T04:58:48.788Z",
+			"evidence": "The unchanged desktop populated-state bounds assertion passed at c30d761f53 on harbor-mbp-2."
 		},
 		{
 			"id": "verify",
