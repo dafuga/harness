@@ -2213,6 +2213,30 @@
 			"units": ["reports.component.explorer-function-card"]
 		},
 		{
+			"id": "reports-component-explorer-function-card-service",
+			"title": "Function card: service",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
+			"id": "reports-component-explorer-function-card-model",
+			"title": "Function card: model",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
+			"id": "reports-component-explorer-function-card-no-usage",
+			"title": "Function card: no consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
+			"id": "reports-component-explorer-function-card-many-usage",
+			"title": "Function card: more consumers",
+			"coverage": "required",
+			"units": ["reports.component.explorer-function-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-config-value-tree",
 			"title": "ConfigValueTree",
 			"coverage": "required",
@@ -4622,6 +4646,10 @@
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-dependencies-screen",
 				"reports-component-explorer-function-card",
+				"reports-component-explorer-function-card-service",
+				"reports-component-explorer-function-card-model",
+				"reports-component-explorer-function-card-no-usage",
+				"reports-component-explorer-function-card-many-usage",
 				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",

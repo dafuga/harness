@@ -129,6 +129,7 @@ const variants: Record<string, string[]> = {
 		'none-selected',
 		'no-purpose'
 	],
+	'reports.component.explorer-function-card': ['service', 'model', 'no-usage', 'many-usage'],
 	// Visual, page, function and unlinked dependency cards each have their own treatment.
 	'reports.component.explorer-ui-explorer-module-card': [
 		'missing',
