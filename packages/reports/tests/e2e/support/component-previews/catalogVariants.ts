@@ -9,6 +9,7 @@ import { usageExampleCatalogVariants } from './usageExamplesVariants';
 import { moduleCatalogVariants } from './reportModuleVariants';
 import { recordedValueStates } from './recordedValueVariants';
 import { reportSummaryStates } from './reportSummaryVariants';
+import { imageZoomStates } from './imageZoomVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
@@ -21,6 +22,7 @@ const variants: Record<string, string[]> = {
 	...moduleCatalogVariants,
 	'reports.component.recorded-value': recordedValueStates,
 	'reports.component.report-summary': reportSummaryStates,
+	'reports.component.image-zoom': imageZoomStates,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',

@@ -143,7 +143,7 @@ export const reportCases: PreviewCases = {
 		assetBase: '/media/',
 		portable: true
 	},
-	'reports.component.image-zoom': { src: image, alt: 'Activity list preview' },
+	'reports.component.image-zoom': { src: '/media/' + cardPicture.file, alt: cardPicture.title },
 	'reports.component.modal': {
 		open: true,
 		title: 'Recorded example',

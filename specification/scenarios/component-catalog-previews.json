@@ -3485,6 +3485,60 @@
 			"units": ["reports.component.image-zoom"]
 		},
 		{
+			"id": "reports-component-image-zoom-loading",
+			"title": "Image zoom: Loading image",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-error",
+			"title": "Image zoom: Unavailable image",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-actual",
+			"title": "Image zoom: Actual size",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-zoomed",
+			"title": "Image zoom: Zoomed in",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-zoom-out",
+			"title": "Image zoom: Zoomed out",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-maximum",
+			"title": "Image zoom: Maximum zoom",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-panned",
+			"title": "Image zoom: Panned image",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-focused",
+			"title": "Image zoom: Keyboard focus",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-dragging",
+			"title": "Image zoom: Dragging",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
 			"id": "reports-component-modal",
 			"title": "Evidence dialog",
 			"coverage": "required",
@@ -6154,6 +6208,15 @@
 				"reports-component-harness-harness-verdict",
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
+				"reports-component-image-zoom-loading",
+				"reports-component-image-zoom-error",
+				"reports-component-image-zoom-actual",
+				"reports-component-image-zoom-zoomed",
+				"reports-component-image-zoom-zoom-out",
+				"reports-component-image-zoom-maximum",
+				"reports-component-image-zoom-panned",
+				"reports-component-image-zoom-focused",
+				"reports-component-image-zoom-dragging",
 				"reports-component-modal",
 				"reports-component-modal-image",
 				"reports-component-modal-lightbox",
