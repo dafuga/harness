@@ -70,7 +70,10 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		await expect(page.getByRole('dialog')).toBeVisible();
 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
 	}
-	if (!(id === 'reports.component.regression-proof' && variant === 'empty')) {
+	const emptyComponent =
+		(id === 'reports.component.regression-proof' || id === 'reports.component.activity-list') &&
+		variant === 'empty';
+	if (!emptyComponent) {
 		await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
 		await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
 	}
@@ -198,4 +201,5 @@ export async function capturePreview(
 		bytes
 	);
 	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport);
+	return { clip, bytes };
 }

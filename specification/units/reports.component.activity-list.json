@@ -53,7 +53,7 @@
 				"name": "ActivityList.noun",
 				"type": "string",
 				"required": true,
-				"description": "Required item name used in Show all/Show fewer button text.",
+				"description": "Required item name used in empty-state and Show all/Show fewer button text.",
 				"examples": ["activities"]
 			},
 			{
@@ -82,13 +82,19 @@
 			{
 				"name": "ActivityList",
 				"type": "markup",
-				"description": "Accessible list with hidden overflow rows and a toggle only when item count exceeds preview. Starts collapsed. Row content is not lazily created on expansion.",
+				"description": "Accessible list with hidden overflow rows and a toggle only when item count exceeds preview. Starts collapsed. Row content is not lazily created on expansion. An empty list shows a status message using the supplied item name.",
 				"examples": [
 					"<ul aria-label=\"Recent activity\"><li>First activity</li><li>Second activity</li></ul>"
 				]
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "row snippet error",
+				"type": "thrown",
+				"description": "Any value thrown by the caller-supplied row snippet propagates while rendering that item."
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -15,6 +15,7 @@ import {
 import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
 import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
 import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
+import { assertOpenLanguagePixels } from './support/component-previews/translationsPreviewAssertions';
 import {
 	assertCatalogLayout,
 	assertCatalogDetails
@@ -116,10 +117,9 @@ for (const viewport of catalogViewports) {
 			await preview.openPreview(page, home, unit.id, variant);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await preview.readyPreview(page, unit.id, variant);
-			const captureBeforeAssertion =
-				unit.id === 'reports.component.coverage-list' && variant === 'empty';
-			if (captureBeforeAssertion)
-				await preview.capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			const target = { viewport: viewport.id, variant };
+			const early = unit.id === 'reports.component.coverage-list' && variant === 'empty';
+			if (early) await preview.capturePreview(page, home, unit.id, target);
 			await prepareCatalogState(component, unit.id, variant);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
@@ -135,8 +135,8 @@ for (const viewport of catalogViewports) {
 				} else await expect(panel).toBeVisible();
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
-			if (!captureBeforeAssertion)
-				await preview.capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
+			await assertOpenLanguagePixels(page, unit.id, variant, capture);
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
@@ -181,9 +181,8 @@ for (const viewport of catalogViewports) {
 				['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 					(name) => unit.id === `desktop.component.${name}`
 				)
-			) {
+			)
 				await expect(component.getByText('Expires in 5:00', { exact: true })).toBeVisible();
-			}
 			if (unit.id === 'desktop.component.agent-controls') {
 				const provider = component
 					.getByRole('group', { name: 'Agent', exact: true })
