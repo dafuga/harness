@@ -12,7 +12,10 @@ import {
 	assertModulePreview,
 	assertTranslationControls
 } from './support/component-previews/previewCaptureAssertions';
-import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
+import {
+	assertPermissionPanelStyles,
+	assertPermissionTable
+} from './support/component-previews/permissionPreviewAssertions';
 import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
 import { assertModuleCardPreview as assertCard } from './support/component-previews/moduleCardPreviewAssertions';
 import * as picker from './support/component-previews/translationsPreviewAssertions';
@@ -128,6 +131,11 @@ for (const viewport of catalogViewports) {
 			if (unit.id === 'reports.component.explorer-ui-explorer-module-card')
 				await test.step('Module card', () => assertCard(component, variant));
 			await test.step('Report state', () => assertReportPreviewState(component, unit.id, variant));
+			if (
+				unit.id === 'reports.component.networking-security-explorer-permissions-screen' &&
+				variant.startsWith('endpoint')
+			)
+				await assertPermissionPanelStyles(component);
 			if (isProjectAgent) {
 				const panel = component.locator('.floating-chat-panel');
 				if (variant === 'closed') {

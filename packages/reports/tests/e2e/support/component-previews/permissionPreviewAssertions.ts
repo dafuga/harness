@@ -12,6 +12,18 @@ export async function preparePermissionState(component: Locator, variant: string
 			.focus();
 }
 
+/** The endpoint panel uses the same Explorer card treatment as its real parent page. */
+export async function assertPermissionPanelStyles(component: Locator) {
+	const panel = component.locator(
+		'[data-harness-component="networking-security-explorer-permissions-screen"]'
+	);
+	await expect(panel, 'Permission panel retains Explorer card styling').toHaveCSS(
+		'display',
+		'grid'
+	);
+	await expect(panel).toHaveCSS('border-top-style', 'solid');
+}
+
 /** Permission grants remain legible and reachable at every viewport. */
 export async function assertPermissionTable(component: Locator, page: Page, mobile = false) {
 	const identifier = component.getByRole('table').first().locator('tbody code').first();
