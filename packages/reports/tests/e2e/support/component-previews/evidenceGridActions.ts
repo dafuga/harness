@@ -25,12 +25,10 @@ export async function prepareEvidenceGrid(component: Locator, variant: string) {
 	}
 	if (variant.startsWith('viewport-')) await selectViewport(component, variant.slice(9));
 	if (variant === 'category' || variant === 'category-audio') {
-		const button = component
-			.getByRole('group', { name: 'Evidence filters' })
-			.getByRole('button', {
-				name: variant === 'category' ? 'Checkout' : 'Voice review',
-				exact: true
-			});
+		const button = component.getByRole('group', { name: 'Evidence filters' }).getByRole('button', {
+			name: variant === 'category' ? 'Checkout' : 'Voice review',
+			exact: true
+		});
 		await button.click();
 		await expect(button).toHaveAttribute('aria-pressed', 'true');
 	}
@@ -59,6 +57,10 @@ async function selectViewport(component: Locator, size: string) {
 async function selectStatus(component: Locator, variant: string) {
 	const select = component.getByRole('combobox', { name: 'Status' });
 	if (variant === 'status-open') {
+		await component
+			.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
+			.fill('refund');
+		await expect(component.getByText('No matching evidence.', { exact: true })).toBeVisible();
 		await select.click();
 		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	} else {
