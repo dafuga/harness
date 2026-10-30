@@ -2,6 +2,11 @@ import type { Locator, Page } from '@playwright/test';
 
 /** Frame rendered UI roots, including fragments and fixed surfaces, with a small edge allowance. */
 export async function previewCaptureBounds(page: Page, id: string, variant = '') {
+	if (await reportViewDialog(page, id)) {
+		const viewport = page.viewportSize();
+		if (!viewport) throw new Error('Report dialog capture requires a viewport.');
+		return { x: 0, y: 0, ...viewport };
+	}
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	const { target, modal, captureElement, chatPicker } = await previewTarget(content, id, variant);
 	const bounds = await target.evaluate(
@@ -53,6 +58,14 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + 180) };
 	}
 	return bounds;
+}
+
+/** Full-frame report dialogs must be captured in the visible viewport. */
+export async function reportViewDialog(page: Page, id: string) {
+	return (
+		id === 'reports.component.report-view' &&
+		(await page.locator(`[data-preview-unit="${id}"]`).getByRole('dialog').count()) > 0
+	);
 }
 
 async function previewTarget(content: Locator, id: string, variant: string) {

@@ -10,7 +10,7 @@ import {
 import { previewOrigin, servePreview } from './previewApi';
 import { catalogUnits, previewState } from './catalogUnits';
 import { previewNavigation } from './previewNavigation';
-import { previewCaptureBounds } from './previewCaptureBounds';
+import { previewCaptureBounds, reportViewDialog } from './previewCaptureBounds';
 import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 import { applyActivityPreviewContext } from './activityPreviewContext';
 import { audioComparisonPreMount } from './audioComparisonPreMount';
@@ -131,9 +131,10 @@ export async function capturePreview(
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
 	const clip = await previewCaptureBounds(page, id, variant);
 	const nativeOpen = usesNativePopup(id, variant);
+	const reportDialog = await reportViewDialog(page, id);
 	const bytes = await page.screenshot({
-		fullPage: !nativeOpen,
-		clip,
+		fullPage: !nativeOpen && !reportDialog,
+		...(reportDialog ? {} : { clip }),
 		animations: 'disabled',
 		caret: 'hide'
 	});
@@ -156,7 +157,9 @@ export async function capturePreview(
 			file: `${state}-${viewport}.png`,
 			mediaType: 'image/png',
 			provenance: 'actual-capture',
-			note: previewCaptureNote(id, variant),
+			note: reportDialog
+				? 'Visible viewport with the report dialog open. Synthetic representative inputs; real backend and native-device behavior are not reproduced.'
+				: previewCaptureNote(id, variant),
 			server: {
 				buildId: served?.buildId ?? 'not-built',
 				revision: process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40)
