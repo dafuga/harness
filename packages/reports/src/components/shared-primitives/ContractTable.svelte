@@ -90,7 +90,7 @@
 	}
 	.label {
 		margin: 0;
-		color: var(--ex-soft);
+		color: var(--hx-color-text-supporting);
 		font-size: var(--hx-type-size-sm);
 		font-weight: var(--hx-style-weight-semibold);
 	}
@@ -99,9 +99,9 @@
 	.frame {
 		min-width: 0;
 		overflow-x: auto;
-		border: var(--hx-border-thin) solid var(--ex-line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
-		background: var(--ex-surface);
+		background: var(--hx-color-surface);
 	}
 	table {
 		width: 100%;
@@ -111,14 +111,14 @@
 	td {
 		padding: var(--hx-space-8) var(--hx-space-6);
 		text-align: start;
-		border-bottom: var(--hx-border-thin) solid var(--ex-line);
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 		vertical-align: middle;
 	}
 	tbody tr:last-child > * {
 		border-bottom: 0;
 	}
 	thead th {
-		color: var(--ex-soft);
+		color: var(--hx-color-text-supporting);
 		font-size: var(--hx-type-size-compact);
 		font-weight: var(--hx-style-weight-semibold);
 	}
@@ -132,9 +132,9 @@
 	}
 	.type {
 		padding: var(--hx-space-2) var(--hx-space-4);
-		border: var(--hx-border-thin) solid color-mix(in srgb, var(--ex-gold) 45%, transparent);
+		border: var(--hx-border-thin) solid color-mix(in srgb, var(--hx-color-primary) 45%, transparent);
 		border-radius: var(--hx-radius-compact);
-		color: var(--ex-gold);
+		color: var(--hx-color-primary);
 		font-size: var(--hx-type-size-sm);
 		white-space: nowrap;
 	}
@@ -144,7 +144,7 @@
 		min-width: 100%;
 		max-width: var(--hx-layout-contract-example);
 		overflow: hidden;
-		color: var(--ex-soft);
+		color: var(--hx-color-text-supporting);
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
@@ -162,16 +162,16 @@
 		border: var(--hx-border-thin) solid transparent;
 		border-radius: var(--hx-radius-compact);
 		background: none;
-		color: var(--ex-soft);
+		color: var(--hx-color-text-supporting);
 		cursor: pointer;
 	}
 	.info:hover,
 	.info:focus-visible {
-		border-color: var(--ex-line);
-		color: var(--ex-gold);
+		border-color: var(--hx-color-border);
+		color: var(--hx-color-primary);
 	}
 	.info:focus-visible {
-		outline: var(--hx-border-thick) solid var(--ex-gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-border-thin);
 	}
 	@media (pointer: coarse) {
