@@ -27,6 +27,7 @@ import { assertProjectAgentState } from './support/component-previews/projectAge
 import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
 import { prepareCatalogState } from './support/component-previews/catalogStateActions';
 import { assertReportPreviewState } from './support/component-previews/reportPreviewAssertions';
+import { assertRecordedValueCapture } from './support/component-previews/recordedValueCaptureAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { assertCatalogRegistry } from './support/component-previews/catalogRegistryAssertions';
 let home = '';
@@ -136,6 +137,7 @@ for (const viewport of catalogViewports) {
 			}
 			await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
+			await assertRecordedValueCapture(component, unit.id, variant);
 			if (unit.id === 'reports.component.module-system-explorer-modules-screen' && !variant) {
 				await expect(component.locator('article')).toHaveCount(6);
 				await expect(component.getByText('Testing', { exact: true })).toHaveCount(2);
