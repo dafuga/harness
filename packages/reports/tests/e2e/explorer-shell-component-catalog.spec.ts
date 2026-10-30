@@ -137,6 +137,14 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
+			if (
+				unit.id === 'reports.component.explorer-ui-explorer-platforms' &&
+				variant === 'status-options-open'
+			)
+				expect(
+					capture,
+					'The open status menu is captured before comparing its pixels'
+				).toBeDefined();
 			await picker.assertOpenPickerPixels(page, unit.id, variant, capture);
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
