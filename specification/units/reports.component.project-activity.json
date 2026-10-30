@@ -60,7 +60,13 @@
 				"description": "Repository identity and commit navigation, agent observations, worktrees, recorded work and loops. Missing live data remains distinguishable from observations. This component renders supplied data and does not fetch it."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "refresh callback error",
+				"type": "thrown",
+				"description": "An error thrown by the caller-supplied reading.refresh callback propagates when Refresh is clicked."
+			}
+		]
 	},
 	"dependencies": [
 		{

@@ -15,6 +15,7 @@ import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 import { applyActivityPreviewContext } from './activityPreviewContext';
 import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { uploadComparisonPreMount } from './uploadComparisonPreMount';
+import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
 import {
 	assertPreviewLoading,
@@ -40,7 +41,9 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 			? await audioComparisonPreMount()
 			: id === 'reports.component.upload-comparison' && variant === 'pre-mount'
 				? await uploadComparisonPreMount()
-				: '';
+				: id === 'reports.component.upload-audio' && variant === 'pre-mount'
+					? await uploadAudioPreMount()
+					: '';
 	await page.route('**/*', (route) => servePreview(route, home, markup));
 	await routeLoadingZoom(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
@@ -79,11 +82,13 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
 	}
 	const emptyComponent =
-		[
+		([
 			'reports.component.regression-proof',
 			'reports.component.activity-list',
 			'reports.component.report-findings'
-		].includes(id) && variant === 'empty';
+		].includes(id) &&
+			variant === 'empty') ||
+		(id === 'reports.component.evidence-provenance' && ['empty', 'absent'].includes(variant));
 	if (!emptyComponent) {
 		await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
 		await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
@@ -168,6 +173,7 @@ function usesNativePopup(id: string, variant: string) {
 		(id === 'reports.component.select' && variant === 'open') ||
 		(id === 'reports.component.evidence-grid' && variant === 'status-open') ||
 		(id === 'reports.component.upload-comparison' && variant === 'viewport-open') ||
+		(id === 'reports.component.upload-audio' && variant === 'mode-open') ||
 		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
 			variant === 'language-open')
 	);

@@ -2,19 +2,22 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Evidence } from '../../models/reports-media/Report.types';
+	import { t } from '../../utils/reports-media/reportLocale';
 	let { item }: { item: Evidence } = $props();
 </script>
 
-{#if item.provenance?.length}
-	<hx-dl class="evidence-provenance" data-harness-component="evidence-provenance">
-		{#each item.provenance as fact (fact.label)}
+<hx-dl class="evidence-provenance" data-harness-component="evidence-provenance">
+	{#if item.provenance?.length}
+		{#each item.provenance as fact}
 			<hx-div>
 				<hx-dt>{fact.label}</hx-dt>
 				<hx-dd>{fact.value}</hx-dd>
 			</hx-div>
 		{/each}
-	</hx-dl>
-{/if}
+	{:else}
+		<hx-div><hx-dt>{$t('provenance')}</hx-dt><hx-dd>{$t('noProvenance')}</hx-dd></hx-div>
+	{/if}
+</hx-dl>
 
 <style>
 	.evidence-provenance {

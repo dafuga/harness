@@ -61,7 +61,13 @@
 				"description": "Working-agents card with current or Unknown count, stale/failed-read notices and registration guidance when tracking was never used. Lists agents with state, model, checkout, branch and details. Working agents expose task/loop and four unit chips initially; nonworking declarations stay behind a disclosure. Unreadable registrations are reported as uncounted."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "refresh callback error",
+				"type": "thrown",
+				"description": "An error thrown by the caller-supplied reading.refresh callback propagates when Refresh is clicked."
+			}
+		]
 	},
 	"dependencies": [
 		{

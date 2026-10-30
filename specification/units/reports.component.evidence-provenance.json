@@ -29,14 +29,14 @@
 				"name": "EvidenceProvenance.item",
 				"type": "Evidence",
 				"required": true,
-				"description": "Required evidence record whose optional provenance list supplies labels and values. Labels serve as row keys."
+				"description": "Required evidence record whose optional provenance list supplies labels and values; repeated labels are allowed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceProvenance",
 				"type": "markup",
-				"description": "Definition list of supplied provenance facts when nonempty; otherwise nothing. Does not derive or verify provenance."
+				"description": "Definition list of supplied provenance facts, or a message when none are recorded. Does not derive or verify provenance."
 			}
 		],
 		"errors": []
@@ -59,6 +59,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-dt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-locale",
 			"via": "import",
 			"origin": "derived"
 		},
