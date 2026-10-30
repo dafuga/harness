@@ -2,6 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Each card branch retains its real name, destination and own visual evidence. */
 export async function assertModuleCardPreview(component: Locator, variant: string) {
+	await assertUsageImage(component, variant);
 	if (['missing', 'page-missing', 'layout-missing'].includes(variant)) {
 		await expect(component.getByText('No screenshot is recorded at this revision')).toBeVisible();
 		await expect(component.locator('img')).toHaveCount(0);
@@ -32,14 +33,6 @@ export async function assertModuleCardPreview(component: Locator, variant: strin
 	}
 	if (variant === 'api-no-methods')
 		await expect(component.locator('.ex-function-call')).toHaveText('/api/orders');
-	if (variant === 'usage-open') {
-		const preview = component.getByRole('tooltip', { name: 'Preview of OrderList' });
-		const image = preview.getByRole('img', { name: 'Screenshot of OrderList' });
-		await expect(image).toHaveAttribute('src', /^data:image\/svg\+xml,/);
-		expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain(
-			'SYNTHETIC ORDER LIST'
-		);
-	}
 	if (variant === 'no-usage')
 		await expect(component.getByRole('group', { name: 'Used In' })).toContainText('—');
 	if (variant === 'many-usage') {
@@ -48,4 +41,12 @@ export async function assertModuleCardPreview(component: Locator, variant: strin
 		await expect(usage.locator('.ex-usage-more')).toContainText('1 more usage');
 		await expect(usage).not.toContainText('OrderCard');
 	}
+}
+
+async function assertUsageImage(component: Locator, variant: string) {
+	if (variant !== 'usage-open') return;
+	const preview = component.getByRole('tooltip', { name: 'Preview of OrderList' });
+	const image = preview.getByRole('img', { name: 'Screenshot of OrderList' });
+	await expect(image).toHaveAttribute('src', /^data:image\/svg\+xml,/);
+	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('SYNTHETIC ORDER LIST');
 }
