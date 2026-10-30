@@ -28,19 +28,19 @@ export const analyticsGuide: Guide = {
 };
 export const reportGuide: Guide = {
 	topic: 'report',
-	summary: 'The existing Project Reports engine and media website bundled into Harness.',
+	summary: 'The Project Reports store and the website bundled into Harness.',
 	steps: [
 		'Begin a feature or suite report.',
 		'Record checks and evidence, including transcripts with audio.',
-		'Serve the gallery and analytics locally.',
-		'Finalize using packaged viewer assets; publish selected reports through existing explicit publication controls.'
+		'Serve the explorer and analytics locally.',
+		'Finalize a report to seal its record.'
 	],
 	rules: [
 		'Existing PROJECT_REPORTS_HOME and manifests remain compatible.',
 		'Use PROJECT_REPORTS_CONFIG_FILE and PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME for project-owned configuration.',
 		'Media requires configured private R2 for real reports.',
 		'Reports expire after 30 days; analytics history remains.',
-		'PDF and ZIP exports require Python with reportlab; replay video requires ffmpeg.'
+		'Replay video requires ffmpeg.'
 	],
 	antiPatterns: [
 		'Do not publish global analytics automatically.',
