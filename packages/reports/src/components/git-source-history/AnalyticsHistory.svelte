@@ -127,7 +127,7 @@
 	.analytics-history :global(.analytics-history-table .analytics-wrap) {
 		min-width: 0;
 	}
-	@media (max-width: 42rem) {
+	@media (max-width: 52rem) {
 		.analytics-history :global(.analytics-history-table),
 		.analytics-history :global(.analytics-history-table tbody),
 		.analytics-history :global(.analytics-history-table tr),
@@ -159,6 +159,9 @@
 			font-weight: var(--hx-style-weight-semibold);
 			letter-spacing: var(--hx-style-tracking-caps);
 			text-transform: uppercase;
+		}
+		.analytics-history :global(.analytics-history-table td .badge) {
+			justify-self: start;
 		}
 	}
 </style>
