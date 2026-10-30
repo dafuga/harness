@@ -59,8 +59,10 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		await expect(page.getByRole('dialog')).toBeVisible();
 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
 	}
-	await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
-	await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
+	if (!(id === 'reports.component.regression-proof' && variant === 'empty')) {
+		await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
+		await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
+	}
 	if (id === 'reports.component.analytics-cpu' && variant === 'loading')
 		await expect(content).toContainText('Sampling CPU…');
 	else if (id === 'reports.component.entity-states' && variant === 'loading')

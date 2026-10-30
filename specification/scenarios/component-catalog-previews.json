@@ -3287,6 +3287,18 @@
 			"units": ["reports.component.regression-proof"]
 		},
 		{
+			"id": "reports-component-regression-proof-capture-only",
+			"title": "Regression proof: Focused capture without failing test",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-empty",
+			"title": "Regression proof: No recorded proof",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
 			"id": "reports-component-replay-controls",
 			"title": "Evidence replay controls",
 			"coverage": "required",
@@ -5083,6 +5095,8 @@
 				"reports-component-regression-proof-pending",
 				"reports-component-regression-proof-gap",
 				"reports-component-regression-proof-output-open",
+				"reports-component-regression-proof-capture-only",
+				"reports-component-regression-proof-empty",
 				"reports-component-replay-controls",
 				"reports-component-replay-controls-playing",
 				"reports-component-replay-controls-final-frame",

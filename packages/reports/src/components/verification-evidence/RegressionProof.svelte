@@ -31,6 +31,7 @@
 		follow(commit);
 	}
 </script>
+
 {#if shown.length}
 	<hx-section
 		class="regression-proof"
@@ -39,7 +40,7 @@
 	>
 		<hx-header>
 			<hx-h2>Regression proof</hx-h2>
-			<hx-p>Recorded tests before and after a fix.</hx-p>
+			<hx-p>Recorded regression tests and evidence.</hx-p>
 		</hx-header>
 		{#each shown as item, index (index)}
 			<hx-article>
@@ -106,14 +107,18 @@
 							</hx-div>
 						{/if}
 					</hx-details>
-				{/if}
+				{:else}<hx-p>No failing-test checkpoint is recorded.</hx-p>{/if}
 			</hx-article>
 		{/each}
 		<hx-p class="footnote">
-			These results prove the regression. Full verification and budgets are checked separately.
+			{#if shown.every((item) => !item.gap && item.red && item.green)}
+				These results prove the regression.
+			{/if}
+			Full verification and budgets are checked separately.
 		</hx-p>
 	</hx-section>
 {/if}
+
 <style>
-	@import "./regression-proof/regressionProof.css";
+	@import './regression-proof/regressionProof.css';
 </style>

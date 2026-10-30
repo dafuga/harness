@@ -54,14 +54,6 @@ const variants: Record<string, string[]> = {
 		'after-selected',
 		'both-selected'
 	],
-	// Media filtering, empty results, upload controls and a lightbox are separate gallery states.
-	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
-	// The default shows two facts; this state proves a fuller recorded provenance set remains legible.
-	'reports.component.evidence-provenance': ['extended'],
-	// The lightbox needs separate before, compare and unavailable-image examples.
-	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
-	// Paired results, pending repair, explicit gaps and expanded output are distinct proof states.
-	'reports.component.regression-proof': ['pending', 'gap', 'output-open'],
 	// Examples distinguish provenance, value shape and the expanded full JSON.
 	'reports.component.contract-example': [
 		'illustrative',

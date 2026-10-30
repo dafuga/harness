@@ -2,6 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 import { assertFunctionCardState } from './functionCardPreviewAssertions';
 import { assertExplorerUsageState } from './explorerUsagePreviewAssertions';
 import { assertEntityStates } from './entityStatesPreviewAssertions';
+import { assertRegressionProofState } from './regressionProofPreviewAssertions';
 
 /** Check that each additional report preview actually renders its distinct state. */
 export async function assertReportPreviewState(component: Locator, id: string, variant = '') {
@@ -15,6 +16,8 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 		for (const [index, name] of ['loop', 'task', 'model', 'since', 'until'].entries())
 			await expect(component.locator(`input[name="${name}"]`)).toHaveValue(expected[index]);
 	}
+	if (id === 'reports.component.regression-proof')
+		return assertRegressionProofState(component, variant);
 	if (id === 'reports.component.explorer-function-card')
 		return assertFunctionCardState(component, variant);
 	if (id === 'reports.component.explorer-usage')
