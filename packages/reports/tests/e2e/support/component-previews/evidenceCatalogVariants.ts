@@ -41,6 +41,20 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 	],
 	'reports.component.evidence-provenance': ['extended'],
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
+	'reports.component.upload-comparison': [
+		'open',
+		'pre-mount',
+		'before-selected',
+		'after-selected',
+		'both-selected',
+		'viewport-mobile',
+		'viewport-tablet',
+		'viewport-desktop',
+		'viewport-open',
+		'uploading',
+		'success',
+		'error'
+	],
 	'reports.component.report-checks': [
 		'empty',
 		'embedded',

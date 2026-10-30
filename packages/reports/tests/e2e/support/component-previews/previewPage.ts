@@ -14,6 +14,7 @@ import { previewCaptureBounds } from './previewCaptureBounds';
 import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 import { applyActivityPreviewContext } from './activityPreviewContext';
 import { audioComparisonPreMount } from './audioComparisonPreMount';
+import { uploadComparisonPreMount } from './uploadComparisonPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
 import {
 	assertPreviewLoading,
@@ -37,7 +38,9 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 	const markup =
 		id === 'reports.component.audio-comparison' && variant === 'pre-mount'
 			? await audioComparisonPreMount()
-			: '';
+			: id === 'reports.component.upload-comparison' && variant === 'pre-mount'
+				? await uploadComparisonPreMount()
+				: '';
 	await page.route('**/*', (route) => servePreview(route, home, markup));
 	await routeLoadingZoom(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
@@ -161,6 +164,7 @@ function usesNativePopup(id: string, variant: string) {
 	return (
 		(id === 'reports.component.select' && variant === 'open') ||
 		(id === 'reports.component.evidence-grid' && variant === 'status-open') ||
+		(id === 'reports.component.upload-comparison' && variant === 'viewport-open') ||
 		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
 			variant === 'language-open')
 	);

@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T03:58:12.007Z","name":"upload-comparison-picker","goal":"Capture the open viewport selector in comparison uploads","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T03:59:19.231Z","loop":"upload-comparison-picker","step":"spec","evidence":"The open viewport selector must visibly show its options in the component capture."}
+{"event":"step.completed","timestamp":"2026-10-30T03:59:19.794Z","loop":"upload-comparison-picker","step":"coverage","evidence":"The component catalog only covered the collapsed form; it did not open the viewport selector or compare pixels outside the control."}
