@@ -127,7 +127,7 @@ for (const viewport of catalogViewports) {
 				await assertMobileContractFields(component);
 			if (unit.id === 'reports.component.explorer-ui-explorer-module-card')
 				await assertModuleCardPreview(component, variant);
-			await assertReportPreviewState(component, unit.id, variant);
+			await test.step('Report state', () => assertReportPreviewState(component, unit.id, variant));
 			if (isProjectAgent) {
 				const panel = component.locator('.floating-chat-panel');
 				if (variant === 'closed') {

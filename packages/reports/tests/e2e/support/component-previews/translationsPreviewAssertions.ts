@@ -112,7 +112,9 @@ export async function assertTranslations(component: Locator, variant: string) {
 		await expect(component).toContainText('No translation catalog is recorded');
 	if (variant === 'english-only') {
 		await expect(component.getByRole('combobox', { name: 'Language' })).toHaveCount(0);
-		await expect(component).toContainText('Not translated');
+		await expect(component).toContainText('No comparison languages are recorded at this revision.');
+		await expect(component.getByRole('columnheader')).toHaveText(['English', 'Used In']);
+		await expect(component).toContainText('Acceptance criteria');
 	}
 	if (['empty', 'no-matches'].includes(variant))
 		await expect(component).toContainText('No translations match this search.');
