@@ -54,8 +54,8 @@
 			{
 				"name": "valueMark.node",
 				"type": "ConfigValueNode | undefined",
-				"required": false,
-				"description": "Optional static object/array structure supplying its shape, schema flag and exact known count."
+				"required": true,
+				"description": "Static object/array structure or undefined, supplying its shape, schema flag and exact known count."
 			},
 			{
 				"name": "valueMark.text",
@@ -81,7 +81,41 @@
 				"description": "Icon name and count/size label for an inspectable value, or undefined for a short unstructured expression."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Property access error",
+				"type": "thrown",
+				"description": "A caller-supplied node getter or proxy can throw when its source structure is read."
+			}
+		],
+		"operations": [
+			{
+				"name": "collection",
+				"inputs": [],
+				"outputs": [],
+				"errors": [
+					{
+						"name": "Property access error",
+						"type": "thrown",
+						"description": "A supplied node getter or proxy can throw when its kind is read."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "valueMark",
+				"inputs": [],
+				"outputs": [],
+				"errors": [
+					{
+						"name": "Property access error",
+						"type": "thrown",
+						"description": "A supplied node getter or proxy can throw when its shape and count are read."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		]
 	},
 	"dependencies": [
 		{
