@@ -26,18 +26,7 @@ export function contractExampleVariant(props: PreviewCases[string], variant: str
 				examples: [{ form: 'literal', value: 1, text: '1' }]
 			}
 		};
-	if (variant === 'missing')
-		return {
-			...props,
-			field: {
-				...field,
-				name: 'orderStore',
-				type: 'OrderStore',
-				description: 'The store that reads and updates orders.',
-				source: 'missing',
-				examples: []
-			}
-		};
+	if (variant === 'missing') return { ...props, field: missingField(field) };
 	if (variant === 'no-description')
 		return { ...props, field: { ...field, description: undefined } };
 	if (variant === 'structure' || variant === 'structure-open')
@@ -72,4 +61,15 @@ export function contractExampleVariant(props: PreviewCases[string], variant: str
 			}
 		};
 	return null;
+}
+
+function missingField(field: ContractField): ContractField {
+	return {
+		...field,
+		name: 'orderStore',
+		type: 'OrderStore',
+		description: 'The store that reads and updates orders.',
+		source: 'missing',
+		examples: []
+	};
 }
