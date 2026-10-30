@@ -1,3 +1,4 @@
+import { assertPluginKitPreview } from './support/component-previews/pluginKitPreviewAssertions';
 import { assertCompositionFilter } from './support/component-previews/atomicCatalog';
 import { dependencyTables } from './support/shellChecks';
 import { expect, test } from '../../../../test/support/browserTest';
@@ -126,6 +127,7 @@ for (const viewport of catalogViewports) {
 			}
 			await test.step('Prepare state', () => prepareCatalogState(component, unit.id, variant));
 			await assertCatalogState(component, unit.id, variant, viewport.id);
+			await assertPluginKitPreview(component, unit.id, variant);
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
 				await assertMobileContractFields(component);
 			if (unit.id === 'reports.component.explorer-ui-explorer-module-card')

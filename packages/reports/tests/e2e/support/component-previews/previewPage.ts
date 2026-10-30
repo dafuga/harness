@@ -86,6 +86,7 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		([
 			'reports.component.regression-proof',
 			'reports.component.activity-list',
+			'reports.component.module-system-plugins-plugin-steps',
 			'reports.component.report-findings'
 		].includes(id) &&
 			variant === 'empty') ||
