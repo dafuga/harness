@@ -10,14 +10,15 @@ const paths = [
 	'src/components/ActivityFiles.svelte',
 	'src/components/ActivityWork.svelte',
 	'src/components/ProjectActivity.svelte',
-	'test/activity-files.test.ts',
-	'specification/scenarios/activity-files.json',
+	'test/components/project-activity.test.ts',
+	'specification/scenarios/component-catalog-previews.json',
 	'docs/activity.md'
 ];
+const owners = ['activity-list', 'activity-files', 'activity-work', 'project-activity'];
 const changes: FileChange[] = paths.map((path, index) => ({
 	path,
 	status: index === 4 ? 'added' : 'modified',
-	units: index === 6 ? [] : ['reports.component.activity-files']
+	units: owners[index] ? [`reports.component.${owners[index]}`] : []
 }));
 
 /** Use a readable synthetic hash for the standalone committed-file example. */

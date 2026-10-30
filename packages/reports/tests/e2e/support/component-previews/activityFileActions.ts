@@ -2,6 +2,14 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Check each checkout and list boundary, opening the matching list when requested. */
 export async function prepareActivityFileState(component: Locator, variant: string) {
+	if (variant === 'truncated' || variant.endsWith('uncommitted'))
+		await expect(
+			component.getByRole('list', { name: 'Uncommitted files' }).locator('li').first()
+		).toContainText('reports.component.activity-list');
+	if (variant.endsWith('committed') && !variant.endsWith('uncommitted'))
+		await expect(
+			component.getByRole('list', { name: 'Committed files' }).locator('li').first()
+		).toContainText('reports.component.activity-list');
 	if (variant === 'multiple-checkouts')
 		await expect(component.getByText('Feature checkout · branch feature/activity')).toBeVisible();
 	if (
