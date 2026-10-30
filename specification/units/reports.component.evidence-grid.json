@@ -75,7 +75,13 @@
 				"description": "Gallery with search/category/status and screenshot-size filters, plus media tabs when audio or upload support exists. Shows filtered counts and an empty-result message. Paired audio opens a dedicated viewer; screenshots open a zoom/comparison viewer. Selecting another viewport can adjust filters to reveal it. Audio mode clears the viewport filter. Upload effects and failures belong to child controls."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Rendering throws if filtered gallery entries have duplicate evidence IDs."
+			}
+		]
 	},
 	"dependencies": [
 		{
