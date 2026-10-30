@@ -67,6 +67,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.report-summary') return reportSummaryVariant(props, variant);
 	if (id === 'reports.component.image-zoom') return imageZoomVariant(props, variant);
 	if (id === 'reports.component.coverage-list') return coverageListVariant(props, variant);
+	if (id === 'reports.component.upload-comparison') return props;
 	if (id === 'reports.component.console-chat' || id === 'reports.component.floating-chat')
 		return chatVariantProps(id, props, variant);
 	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);
