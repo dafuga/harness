@@ -1859,6 +1859,42 @@
 			"units": ["reports.component.browser-errors"]
 		},
 		{
+			"id": "reports-component-browser-errors-expected-open",
+			"title": "Recorded browser errors: Expected error",
+			"coverage": "required",
+			"units": ["reports.component.browser-errors"]
+		},
+		{
+			"id": "reports-component-browser-errors-unexpected",
+			"title": "Recorded browser errors: Unexpected console error",
+			"coverage": "required",
+			"units": ["reports.component.browser-errors"]
+		},
+		{
+			"id": "reports-component-browser-errors-exception",
+			"title": "Recorded browser errors: Uncaught exception",
+			"coverage": "required",
+			"units": ["reports.component.browser-errors"]
+		},
+		{
+			"id": "reports-component-browser-errors-missing-expected",
+			"title": "Recorded browser errors: Missing expected error",
+			"coverage": "required",
+			"units": ["reports.component.browser-errors"]
+		},
+		{
+			"id": "reports-component-browser-errors-multiple",
+			"title": "Recorded browser errors: Multiple attempts",
+			"coverage": "required",
+			"units": ["reports.component.browser-errors"]
+		},
+		{
+			"id": "reports-component-browser-errors-zero-entries",
+			"title": "Recorded browser errors: Attempt without errors",
+			"coverage": "required",
+			"units": ["reports.component.browser-errors"]
+		},
+		{
 			"id": "reports-component-console-chat",
 			"title": "Local web project chat",
 			"coverage": "required",
@@ -6489,6 +6525,12 @@
 				"reports-component-audio-upload-files-both-selected",
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
+				"reports-component-browser-errors-expected-open",
+				"reports-component-browser-errors-unexpected",
+				"reports-component-browser-errors-exception",
+				"reports-component-browser-errors-missing-expected",
+				"reports-component-browser-errors-multiple",
+				"reports-component-browser-errors-zero-entries",
 				"reports-component-console-chat",
 				"reports-component-console-chat-open",
 				"reports-component-console-chat-populated",

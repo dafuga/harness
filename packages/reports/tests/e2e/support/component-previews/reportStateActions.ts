@@ -13,6 +13,7 @@ import { prepareUploadComparison } from './uploadComparisonActions';
 import { prepareReportFindings } from './reportFindingsActions';
 import { prepareUploadAudio } from './uploadAudioActions';
 import { prepareEvidenceProvenance } from './evidenceProvenanceActions';
+import { prepareBrowserErrors } from './browserErrorsActions';
 
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.entity-states': prepareEntityStates,
@@ -35,6 +36,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.upload-audio': prepareUploadAudio,
 	'reports.component.report-findings': prepareReportFindings,
 	'reports.component.evidence-provenance': prepareEvidenceProvenance,
+	'reports.component.browser-errors': prepareBrowserErrors,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations
 };

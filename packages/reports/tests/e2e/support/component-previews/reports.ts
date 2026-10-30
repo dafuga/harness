@@ -40,22 +40,22 @@ export const reportCases: PreviewCases = {
 	'reports.component.browser-errors': {
 		diagnostics: [
 			{
-				test: 'Documented rejection state',
-				file: 'preview.spec.ts',
+				test: 'Checkout declined card',
+				file: 'checkout.spec.ts',
 				project: 'Chromium',
 				retry: 0,
 				errors: [
 					{
 						type: 'console',
-						message: 'Preview example rejected',
-						page: 'http://component.fixture/'
+						message: 'Payment rejected for test card',
+						page: '/checkout'
 					}
 				],
 				expected: [
 					{
 						type: 'console',
-						message: 'Preview example rejected',
-						reason: 'This fixture displays a documented rejection.'
+						message: 'Payment rejected for test card',
+						reason: 'The declined test card is expected in this checkout scenario.'
 					}
 				]
 			}
