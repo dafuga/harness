@@ -1,3 +1,5 @@
+import { SourceGraphService } from '../../../src/services/development-tooling/SourceGraphService';
+import { measureWorkload } from '../../support/measureWorkload';
 import { expect } from 'vitest';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { indexFiles, unitOf } from '../../support/memoryTree';
@@ -65,4 +67,35 @@ async function assertForwardedComponentOwnership(original: ComponentManifest): P
 			'forwarded component props appear once'
 		).toEqual([{ name: 'Tile.title', type: 'string', required: true }]);
 	}
+}
+
+export async function assertContractDependency(): Promise<void> {
+	const files = {
+		'src/utils/rank.ts': 'export function rank(value: number): number {\n\treturn value;\n}\n',
+		'src/utils/rankFast.ts':
+			'export function rankFast(value: number): number {\n\treturn value;\n}\n'
+	};
+	const first = await indexFiles(files);
+	const link = {
+		unit: 'function.rank',
+		via: 'contract',
+		origin: 'declared',
+		contract: 'rank'
+	} as const;
+	const fast = { ...unitOf(first, 'function.rank-fast'), dependencies: [link] };
+	const again = await indexFiles(files, [unitOf(first, 'function.rank'), fast]);
+
+	expect(again.result.updated).toEqual([]);
+	expect(unitOf(again, 'function.rank-fast').dependencies).toEqual([link]);
+	const graph = await measureWorkload(
+		'service.source-graph',
+		'build-contract-dependency-graph',
+		() => new SourceGraphService().build(again.index, again.result.manifests)
+	);
+	expect(graph.edges).toEqual(
+		expect.arrayContaining([
+			{ from: 'unit:function.rank-fast', to: 'unit:function.rank', via: 'contract' },
+			{ from: 'file:src/utils/rankFast.ts', to: 'unit:function.rank', via: 'contract' }
+		])
+	);
 }

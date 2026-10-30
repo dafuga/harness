@@ -3,12 +3,15 @@ import { mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { slugifySource, unitProject } from './support/unitProject';
+import { writeAttribution, assertAttribution } from './support/unitAttribution';
 
 test('CLI exposes execution targets and component versions, and refuses relaxed tolerance', async () => {
 	const project = await unitProject('lib');
 	await project.write('src/utils/slugify.ts', slugifySource);
+	await writeAttribution(project);
 	await project.harness(['units', 'index', '--write']);
 	const shown = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
+	assertAttribution(shown);
 	expect(shown.manifest.runtime).toEqual({
 		kind: 'module',
 		entry: 'src/utils/slugify.ts',

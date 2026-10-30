@@ -4,11 +4,10 @@ import { fail } from '../../core/development-tooling/errors';
 import type { SourceGraph } from '../../core/development-tooling/sourceTypes';
 import {
 	componentManifestSchema,
-	scenarioManifestSchema,
-	type ComponentManifest
+	scenarioManifestSchema
 } from '../../core/development-tooling/unitTypes';
 import { verificationRecordSchema } from '../../core/verification-evidence/verificationTypes';
-import { fileNode, unitNode } from '../../services/development-tooling/SourceGraphService';
+import { testAttribution } from './testAttribution';
 import { componentVersion } from '../../utils/development-tooling/componentVersion';
 import { graphOf, loadUnits } from '../../workflows/development-tooling/load-units/loadUnits';
 import type { UnitsOptions } from './manageUnits';
@@ -45,13 +44,17 @@ export async function showUnit(id: string, options: UnitsOptions = {}): Promise<
 	if (!manifest) return fail(`Unknown unit "${id}".`);
 	const byId = new Map(manifests.map((unit) => [unit.id, unit]));
 	const graph = graphOf(loaded, manifests);
+	const attribution = testAttribution(graph, manifest, loaded.scenarios);
 	return {
 		manifest,
 		version: componentVersion(manifest, loaded.index.files),
 		consumers: manifests
 			.filter((unit) => unit.dependencies.some((dependency) => dependency.unit === id))
 			.map((unit) => unit.id),
-		tests: dependentTests(graph, manifest),
+		tests: [...attribution.directImports, ...attribution.transitiveImpacts]
+			.map((test) => test.file)
+			.sort(),
+		testAttribution: attribution,
 		dependencies: manifest.dependencies.flatMap((dependency) => {
 			const unit = byId.get(dependency.unit);
 			return unit
@@ -59,27 +62,6 @@ export async function showUnit(id: string, options: UnitsOptions = {}): Promise<
 				: [];
 		})
 	};
-}
-
-/** Walks the graph backwards from the unit's files to every test that reaches them. */
-function dependentTests(graph: SourceGraph, manifest: ComponentManifest): string[] {
-	const kinds = new Map(graph.nodes.map((node) => [node.id, node.kind]));
-	const incoming = new Map<string, string[]>();
-	for (const edge of graph.edges)
-		incoming.set(edge.to, [...(incoming.get(edge.to) ?? []), edge.from]);
-	const seen = new Set([unitNode(manifest.id), ...manifest.owns.source.map(fileNode)]);
-	const queue = [...seen];
-	for (let node = queue.shift(); node !== undefined; node = queue.shift()) {
-		for (const dependent of incoming.get(node) ?? []) {
-			if (seen.has(dependent)) continue;
-			seen.add(dependent);
-			queue.push(dependent);
-		}
-	}
-	return [...seen]
-		.filter((node) => kinds.get(node) === 'test' && /\.(?:test|spec)\.[tj]s$/.test(node))
-		.map((node) => node.slice('file:'.length))
-		.sort();
 }
 
 export { renderUnit } from './renderUnit';

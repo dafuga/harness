@@ -26,6 +26,7 @@ test('scanImports reads static, type, side-effect, re-export, dynamic, require a
 	const code = [
 		"import defaultValue, { a,\n\tb } from './multi';",
 		"import type { T } from './types';",
+		"import { runtime } from './types';",
 		"import './side-effect.css';",
 		"export * from './all';",
 		"export { c as d } from './named';",
@@ -38,6 +39,7 @@ test('scanImports reads static, type, side-effect, re-export, dynamic, require a
 	expect(scanImports(code, 'ts')).toEqual([
 		{ specifier: './multi', via: 'import', typeOnly: false },
 		{ specifier: './types', via: 'import', typeOnly: true },
+		{ specifier: './types', via: 'import', typeOnly: false },
 		{ specifier: './side-effect.css', via: 'import', typeOnly: false },
 		{ specifier: './all', via: 'reexport', typeOnly: false },
 		{ specifier: './named', via: 'reexport', typeOnly: false },

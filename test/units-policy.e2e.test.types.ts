@@ -1,4 +1,6 @@
-export interface Shown {
+import type { UnitDetail } from '../src/cli/program/inspectUnits.types';
+
+export interface Shown extends Pick<UnitDetail, 'tests' | 'testAttribution'> {
 	manifest: {
 		id: string;
 		contract: { inputs: Array<{ name: string; type: string; examples?: unknown[] }> };
