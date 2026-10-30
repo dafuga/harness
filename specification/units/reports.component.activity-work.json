@@ -60,7 +60,13 @@
 				"description": "Recent-work list with five commits initially, expansion control and per-commit details. Shows branches or on no branch, counts, reasons and notices when additional details live on the commit page. No reasons and no commits are stated explicitly."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "href callback error",
+				"type": "thrown",
+				"description": "Any value thrown by the caller-supplied href callback propagates while a commit is rendered."
+			}
+		]
 	},
 	"dependencies": [
 		{
