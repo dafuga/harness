@@ -75,7 +75,7 @@
 				"type": "string",
 				"required": false,
 				"default": "category ?? 'Other'",
-				"description": "Optional accessible name of a batched group and its View More action, defaulting to the category."
+				"description": "Optional accessible name of a batched group and its View More action; defaults to the category or Other when null."
 			}
 		],
 		"outputs": [
@@ -85,7 +85,13 @@
 				"description": "Ordered shared module cards, with optional four-entry batching and focus handling; config setting values retain their table."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Function-card argument examples cannot serialize BigInt or circular values."
+			}
+		]
 	},
 	"dependencies": [
 		{
