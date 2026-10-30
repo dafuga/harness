@@ -183,4 +183,22 @@ export async function seedExplorer(repo: VerifyRepo): Promise<void> {
 		await repo.write(`specification/scenarios/${scenario.id}.json`, JSON.stringify(scenario));
 	}
 	await repo.harness(['units', 'index', '--write']);
+	const path = `specification/units/${explorerUnits.config}.json`;
+	const config = await repo.json<Record<string, unknown>>(path);
+	await repo.write(
+		path,
+		JSON.stringify({
+			...config,
+			catalog: { visibility: 'public' },
+			configControls: [
+				{
+					source: 'src/config/titlesConfig.ts',
+					name: 'titlesConfig.limit',
+					audience: 'operator',
+					purpose: 'Limit how many titles the list displays.'
+				}
+			]
+		})
+	);
+	await repo.harness(['units', 'index', '--write']);
 }
