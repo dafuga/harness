@@ -13,11 +13,20 @@ export async function prepareGameplayReplay(component: Locator, variant: string)
 	if (variant === 'live-empty')
 		return await expect(component.getByText('Waiting for the first capture')).toBeVisible();
 	if (variant === 'live')
-		await expect(component.getByText('Recording', { exact: true })).toBeVisible();
-	if (variant === 'image-error') {
+		await expect(component.locator('.replay-meta .badge.running')).toContainText('Recording');
+	if (variant === 'image-error' || variant === 'skipped') {
 		await expect(component.getByText('This screenshot could not be loaded.')).toBeVisible();
 		await expect(component.getByRole('button', { name: 'Retry' })).toBeVisible();
 		await expect(component.getByRole('button', { name: 'Skip frame' })).toBeVisible();
+		if (variant === 'skipped') {
+			await component.getByRole('button', { name: 'Skip frame' }).click();
+			await expectFrame(component, 2);
+		}
+	}
+	if (variant === 'last-image-error') {
+		await component.getByRole('button', { name: 'Jump to latest' }).click();
+		await expect(component.getByText('This screenshot could not be loaded.')).toBeVisible();
+		await expect(component.getByRole('button', { name: 'Skip frame' })).toHaveCount(0);
 	}
 	if (variant === 'nonportable' || variant === 'download-preparing') {
 		const download = component.getByRole('link', { name: /Download MP4/ });
@@ -29,8 +38,16 @@ export async function prepareGameplayReplay(component: Locator, variant: string)
 	}
 	if (variant === 'last-frame') {
 		await component.getByRole('button', { name: 'Jump to latest' }).click();
-		await expect(component.getByText('Frame 3 of 3')).toBeVisible();
+		await expectFrame(component, 3);
 	}
+	if (variant === 'single-frame')
+		await expect(component.getByRole('slider', { name: 'Replay timeline' })).toBeDisabled();
+	if (variant === 'scene-selected') {
+		await component.getByRole('combobox', { name: 'Jump to scene' }).selectOption('2');
+		await expectFrame(component, 2);
+	}
+	if (variant === 'speed-2x')
+		await component.getByRole('combobox', { name: 'Playback speed' }).selectOption('2');
 	if (['playing', 'ended', 'waiting-live'].includes(variant)) await playReplay(component, variant);
 	if (variant === 'fullscreen') {
 		await component.getByRole('button', { name: 'Full screen', exact: true }).click();
@@ -43,6 +60,13 @@ export async function prepareGameplayReplay(component: Locator, variant: string)
 		await select.click();
 		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	}
+}
+
+async function expectFrame(component: Locator, frame: number) {
+	await expect(component.getByText(`Frame ${frame} of 3`)).toBeVisible();
+	await component
+		.locator('.replay-stage img')
+		.evaluate((image: HTMLImageElement) => image.decode());
 }
 
 async function playReplay(component: Locator, variant: string) {
