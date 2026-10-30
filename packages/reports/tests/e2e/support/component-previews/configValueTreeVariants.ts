@@ -12,7 +12,13 @@ export const configValueCatalogVariants: Record<string, string[]> = {
 		'empty-array',
 		'empty-object',
 		'unknown-array',
+		'unknown-object',
 		'schema-array',
+		'single-array',
+		'single-object',
+		'long-key',
+		'disclosure-focused',
+		'disclosure-hovered',
 		'expression',
 		'long-expression'
 	]
@@ -21,10 +27,12 @@ export const configValueCatalogVariants: Record<string, string[]> = {
 /** Preserve the source as written; fixtures never execute a config expression. */
 export function configValueVariant(props: PreviewCases[string], variant: string) {
 	const node = props.node as ConfigValueNode;
-	if (variant === 'expanded') return props;
-	if ((variant === 'object' || variant === 'object-expanded') && node.kind === 'array')
+	const detail = configDetailVariant(variant);
+	if (detail) return { ...props, node: detail };
+	if (['expanded', 'disclosure-focused', 'disclosure-hovered'].includes(variant)) return props;
+	if (['object', 'object-expanded'].includes(variant) && node.kind === 'array')
 		return { ...props, node: node.entries[0].node };
-	if (variant === 'empty-array' || variant === 'empty-object') {
+	if (['empty-array', 'empty-object'].includes(variant)) {
 		const object = variant === 'empty-object';
 		return {
 			...props,
@@ -36,7 +44,11 @@ export function configValueVariant(props: PreviewCases[string], variant: string)
 			}
 		};
 	}
-	if (variant === 'unknown-array' || variant === 'schema-array')
+	return unresolvedConfigVariant(props, variant);
+}
+
+function unresolvedConfigVariant(props: PreviewCases[string], variant: string) {
+	if (['unknown-array', 'schema-array'].includes(variant))
 		return {
 			...props,
 			node: {
@@ -46,7 +58,7 @@ export function configValueVariant(props: PreviewCases[string], variant: string)
 				...(variant === 'schema-array' ? { schema: true } : {})
 			}
 		};
-	if (variant === 'expression' || variant === 'long-expression')
+	if (['expression', 'long-expression'].includes(variant))
 		return {
 			...props,
 			node: {
@@ -55,4 +67,35 @@ export function configValueVariant(props: PreviewCases[string], variant: string)
 			}
 		};
 	return null;
+}
+
+/** Singular counts, unknown object contents and long source keys retain their real values. */
+function configDetailVariant(variant: string): ConfigValueNode | undefined {
+	const values: Record<string, ConfigValueNode> = {
+		'unknown-object': { kind: 'object', source: 'deliveryPreferences', entries: [] },
+		'single-array': {
+			kind: 'array',
+			source: '["Ship"]',
+			count: 1,
+			entries: [{ name: '0', node: { kind: 'expression', source: '"Ship"' } }]
+		},
+		'single-object': {
+			kind: 'object',
+			source: '{ defaultRegion: "ca" }',
+			count: 1,
+			entries: [{ name: 'defaultRegion', node: { kind: 'expression', source: '"ca"' } }]
+		},
+		'long-key': {
+			kind: 'object',
+			source: '{ maximumConsecutiveDeliveryAttemptsBeforeRetryingShipment: 3 }',
+			count: 1,
+			entries: [
+				{
+					name: 'maximumConsecutiveDeliveryAttemptsBeforeRetryingShipment',
+					node: { kind: 'expression', source: '3' }
+				}
+			]
+		}
+	};
+	return values[variant];
 }

@@ -2969,6 +2969,24 @@
 			"units": ["reports.component.explorer-catalog-items"]
 		},
 		{
+			"id": "reports-component-explorer-catalog-items-all",
+			"title": "ExplorerCatalogItems: all components loaded",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-batch-focused",
+			"title": "ExplorerCatalogItems: focused pagination",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-batch-hovered",
+			"title": "ExplorerCatalogItems: hovered pagination",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
 			"id": "reports-component-explorer-catalog-items-functions",
 			"title": "ExplorerCatalogItems: functions",
 			"coverage": "required",
@@ -3121,6 +3139,42 @@
 		{
 			"id": "reports-component-explorer-ui-config-value-tree-unknown-array",
 			"title": "ConfigValueTree: array contents unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-unknown-object",
+			"title": "ConfigValueTree: object contents unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-single-array",
+			"title": "ConfigValueTree: one item",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-single-object",
+			"title": "ConfigValueTree: one attribute",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-long-key",
+			"title": "ConfigValueTree: long source key",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-disclosure-focused",
+			"title": "ConfigValueTree: focused disclosure",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-disclosure-hovered",
+			"title": "ConfigValueTree: hovered disclosure",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-config-value-tree"]
 		},
@@ -7100,6 +7154,9 @@
 				"reports-component-explorer-catalog-items-multiple",
 				"reports-component-explorer-catalog-items-batched",
 				"reports-component-explorer-catalog-items-more",
+				"reports-component-explorer-catalog-items-all",
+				"reports-component-explorer-catalog-items-batch-focused",
+				"reports-component-explorer-catalog-items-batch-hovered",
 				"reports-component-explorer-catalog-items-functions",
 				"reports-component-explorer-catalog-items-pages",
 				"reports-component-explorer-catalog-items-configs",
@@ -7126,6 +7183,12 @@
 				"reports-component-explorer-ui-config-value-tree-empty-array",
 				"reports-component-explorer-ui-config-value-tree-empty-object",
 				"reports-component-explorer-ui-config-value-tree-unknown-array",
+				"reports-component-explorer-ui-config-value-tree-unknown-object",
+				"reports-component-explorer-ui-config-value-tree-single-array",
+				"reports-component-explorer-ui-config-value-tree-single-object",
+				"reports-component-explorer-ui-config-value-tree-long-key",
+				"reports-component-explorer-ui-config-value-tree-disclosure-focused",
+				"reports-component-explorer-ui-config-value-tree-disclosure-hovered",
 				"reports-component-explorer-ui-config-value-tree-schema-array",
 				"reports-component-explorer-ui-config-value-tree-expression",
 				"reports-component-explorer-ui-config-value-tree-long-expression",

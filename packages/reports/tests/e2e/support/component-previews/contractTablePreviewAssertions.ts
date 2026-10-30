@@ -32,8 +32,27 @@ export async function assertContractTableState(
 		await expect(component.getByText('Example not recorded')).toBeVisible();
 		await expect(component.getByRole('rowheader', { name: 'orderStore' })).toBeVisible();
 	}
+	await assertLongTable(component, variant);
+	if (viewport === 'mobile') await assertMobileContractFields(component);
+}
+
+async function assertLongTable(component: Locator, variant: string) {
 	if (variant === 'long')
 		await expect(component.getByText('OrderStore.find.returnValue')).toBeVisible();
 	if (variant === 'multiple') await expect(component.locator('tbody tr')).toHaveCount(2);
-	if (viewport === 'mobile') await assertMobileContractFields(component);
+	if (['long', 'multiple'].includes(variant)) await assertExampleButtonsFit(component);
+}
+
+/** Long values must not push example controls outside the visible table frame. */
+async function assertExampleButtonsFit(component: Locator) {
+	const clipped = await component.locator('.frame').evaluate((frame) => {
+		const bounds = frame.getBoundingClientRect();
+		return Array.from(frame.querySelectorAll<HTMLButtonElement>('button.info'))
+			.filter((button) => {
+				const buttonBounds = button.getBoundingClientRect();
+				return buttonBounds.left < bounds.left || buttonBounds.right > bounds.right;
+			})
+			.map((button) => button.getAttribute('aria-label'));
+	});
+	expect(clipped, 'Example buttons fit inside the visible table frame').toEqual([]);
 }

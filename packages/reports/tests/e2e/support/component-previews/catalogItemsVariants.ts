@@ -30,7 +30,7 @@ export function catalogItemsVariant(props: PreviewCases[string], variant: string
 	};
 	const base = { ...props, lens: illustrated, mediaBase: '' };
 	if (variant === 'multiple') return { ...base, rows };
-	if (variant === 'batched' || variant === 'more')
+	if (['batched', 'more', 'all', 'batch-focused', 'batch-hovered'].includes(variant))
 		return { ...base, rows, batch: 1, label: 'Components' };
 	if (variant === 'functions') return { ...base, category: 'functions', rows: helperRows };
 	if (variant === 'pages')
