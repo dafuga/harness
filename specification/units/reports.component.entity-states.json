@@ -78,7 +78,13 @@
 				"description": "Screenshot gallery with named states, viewport selection, revision labels, explicit gaps and full-size previews."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Rendering rejects duplicate scenario, viewport, state or screenshot IDs within their keyed lists."
+			}
+		]
 	},
 	"dependencies": [
 		{
