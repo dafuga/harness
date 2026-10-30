@@ -16,6 +16,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.explorer-dependencies-screen': prepareDependencies,
 	'reports.component.evidence-grid': prepareEvidenceGrid,
 	'reports.component.report-checks': prepareReportChecks,
+	'reports.component.recorded-value': prepareRecordedValue,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations
 };
@@ -43,4 +44,19 @@ async function prepareReportChecks(component: Locator, variant: string) {
 		if (variant !== 'output-open') await expect(details.locator('code')).toContainText('checkout');
 		if (variant !== 'command-open') await expect(details).toContainText('12 passed');
 	}
+}
+
+async function prepareRecordedValue(component: Locator, variant: string) {
+	const notices: Record<string, string> = {
+		absent: 'Not recorded',
+		'empty-text': 'Empty text',
+		'empty-list': 'Empty list',
+		'empty-object': 'Empty object'
+	};
+	if (notices[variant])
+		await expect(component.getByText(notices[variant], { exact: true })).toBeVisible();
+	if (variant === 'table' || variant === 'many-rows')
+		await expect(component.getByRole('region', { name: 'Recorded rows' })).toBeVisible();
+	if (variant === 'long-text' || variant === 'custom-label')
+		await expect(component.getByText(/Preview shortened/)).toBeVisible();
 }

@@ -3833,6 +3833,138 @@
 			"units": ["reports.component.recorded-value"]
 		},
 		{
+			"id": "reports-component-recorded-value-text",
+			"title": "Recorded value: Text",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-number",
+			"title": "Recorded value: Number",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-boolean",
+			"title": "Recorded value: Boolean",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-null",
+			"title": "Recorded value: Null",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-absent",
+			"title": "Recorded value: Not recorded",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-empty-text",
+			"title": "Recorded value: Empty text",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-empty-list",
+			"title": "Recorded value: Empty list",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-empty-object",
+			"title": "Recorded value: Empty object",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-list",
+			"title": "Recorded value: List",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-mixed-list",
+			"title": "Recorded value: Mixed list",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-table",
+			"title": "Recorded value: Rows",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-long-text",
+			"title": "Recorded value: Shortened text",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-many-fields",
+			"title": "Recorded value: Additional fields",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-many-items",
+			"title": "Recorded value: Additional items",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-many-rows",
+			"title": "Recorded value: Additional rows",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-deep",
+			"title": "Recorded value: Depth limit",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-custom-label",
+			"title": "Recorded value: Custom disclosure label",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-field-empty",
+			"title": "Recorded value: Unnamed field",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-bigint",
+			"title": "Recorded value: Big integer",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-symbol",
+			"title": "Recorded value: Symbol",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-callable",
+			"title": "Recorded value: Function value",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
+			"id": "reports-component-recorded-value-error",
+			"title": "Recorded value: Recorded error",
+			"coverage": "required",
+			"units": ["reports.component.recorded-value"]
+		},
+		{
 			"id": "reports-component-regression-proof",
 			"title": "Regression proof",
 			"coverage": "required",
@@ -5888,6 +6020,28 @@
 				"reports-component-provider-picker-cards-cancelled",
 				"reports-component-provider-picker-cards-locked",
 				"reports-component-recorded-value",
+				"reports-component-recorded-value-text",
+				"reports-component-recorded-value-number",
+				"reports-component-recorded-value-boolean",
+				"reports-component-recorded-value-null",
+				"reports-component-recorded-value-absent",
+				"reports-component-recorded-value-empty-text",
+				"reports-component-recorded-value-empty-list",
+				"reports-component-recorded-value-empty-object",
+				"reports-component-recorded-value-list",
+				"reports-component-recorded-value-mixed-list",
+				"reports-component-recorded-value-table",
+				"reports-component-recorded-value-long-text",
+				"reports-component-recorded-value-many-fields",
+				"reports-component-recorded-value-many-items",
+				"reports-component-recorded-value-many-rows",
+				"reports-component-recorded-value-deep",
+				"reports-component-recorded-value-custom-label",
+				"reports-component-recorded-value-field-empty",
+				"reports-component-recorded-value-bigint",
+				"reports-component-recorded-value-symbol",
+				"reports-component-recorded-value-callable",
+				"reports-component-recorded-value-error",
 				"reports-component-regression-proof",
 				"reports-component-regression-proof-pending",
 				"reports-component-regression-proof-gap",
