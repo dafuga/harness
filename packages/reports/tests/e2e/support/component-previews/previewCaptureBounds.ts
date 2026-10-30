@@ -15,7 +15,7 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel'
 		);
 	const bounds = await target.evaluate(
-		(node, captureElement) => {
+		(node, { captureElement, includeUsageTooltip }) => {
 			const boxes: DOMRect[] = [];
 			function collect(element: Element) {
 				const style = getComputedStyle(element);
@@ -27,6 +27,8 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			}
 			if (captureElement) collect(node);
 			else for (const child of node.children) collect(child);
+			const tooltip = includeUsageTooltip && node.querySelector('[role="tooltip"]');
+			if (tooltip) collect(tooltip);
 			if (!boxes.length) throw new Error('The component has no rendered capture bounds.');
 			const left = Math.max(0, Math.floor(Math.min(...boxes.map((box) => box.left)) + scrollX) - 8);
 			const top = Math.max(0, Math.floor(Math.min(...boxes.map((box) => box.top)) + scrollY) - 8);
@@ -40,7 +42,10 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			);
 			return { x: left, y: top, width: right - left, height: bottom - top };
 		},
-		Boolean(modal) || projectAgent || Boolean(compactTarget)
+		{
+			captureElement: Boolean(modal) || projectAgent || Boolean(compactTarget),
+			includeUsageTooltip: id === 'reports.component.explorer-usage-link'
+		}
 	);
 	if (id === 'reports.component.select' && variant === 'open') {
 		const height = await page.evaluate(() => document.documentElement.scrollHeight);

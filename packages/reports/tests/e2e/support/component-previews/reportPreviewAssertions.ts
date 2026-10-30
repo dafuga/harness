@@ -2,6 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 import { assertFunctionCardState } from './functionCardPreviewAssertions';
 import { assertExplorerUsageState } from './explorerUsagePreviewAssertions';
 import { assertEntityStates } from './entityStatesPreviewAssertions';
+import { assertUsageLink } from './usageLinkPreviewAssertions';
 
 /** Check that each additional report preview actually renders its distinct state. */
 export async function assertReportPreviewState(component: Locator, id: string, variant = '') {
@@ -10,6 +11,7 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 	if (id === 'reports.component.explorer-usage')
 		return assertExplorerUsageState(component, variant);
 	if (id === 'reports.component.entity-states') return assertEntityStates(component, variant);
+	if (id === 'reports.component.explorer-usage-link') return assertUsageLink(component, variant);
 	if (id === 'reports.component.modal' && variant === 'image') {
 		const dialog = component.getByRole('dialog', { name: 'Order card evidence' });
 		await expect(dialog).toBeVisible();

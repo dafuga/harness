@@ -5,6 +5,7 @@ import { prepareProviderPickerState } from './providerPickerActions';
 import { prepareAudioEvidence } from './audioEvidenceActions';
 import { prepareEntitySearchState } from './entitySearchPreviewActions';
 import { prepareEntityStates } from './entityStatesPreviewAssertions';
+import { prepareUsageLink } from './usageLinkPreviewAssertions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -140,6 +141,7 @@ const actions: Record<string, CatalogStateAction> = {
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
 	if (id === 'reports.component.entity-states') return prepareEntityStates(component, variant);
+	if (id === 'reports.component.explorer-usage-link') return prepareUsageLink(component, variant);
 	if (id === 'reports.component.entity-search' && variant)
 		return prepareEntitySearchState(component, variant);
 	if (id === 'reports.component.provider-picker')
