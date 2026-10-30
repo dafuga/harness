@@ -3491,6 +3491,60 @@
 			"units": ["reports.component.image-zoom"]
 		},
 		{
+			"id": "reports-component-image-zoom-loading",
+			"title": "Image zoom: Loading image",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-error",
+			"title": "Image zoom: Unavailable image",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-actual",
+			"title": "Image zoom: Actual size",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-zoomed",
+			"title": "Image zoom: Zoomed in",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-zoom-out",
+			"title": "Image zoom: Zoomed out",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-maximum",
+			"title": "Image zoom: Maximum zoom",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-panned",
+			"title": "Image zoom: Panned image",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-focused",
+			"title": "Image zoom: Keyboard focus",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
+			"id": "reports-component-image-zoom-dragging",
+			"title": "Image zoom: Dragging",
+			"coverage": "required",
+			"units": ["reports.component.image-zoom"]
+		},
+		{
 			"id": "reports-component-modal",
 			"title": "Evidence dialog",
 			"coverage": "required",
@@ -4225,6 +4279,114 @@
 		{
 			"id": "reports-component-report-summary",
 			"title": "Report overview and downloads",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-run-open",
+			"title": "Report summary: Run details and downloads",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-portable-open",
+			"title": "Report summary: Portable downloads",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-active",
+			"title": "Report summary: Active run",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-active-open",
+			"title": "Report summary: Active run details",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-stale",
+			"title": "Report summary: Stale run",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-finalizing",
+			"title": "Report summary: Finalizing",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-historical",
+			"title": "Report summary: Imported run",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-gaps",
+			"title": "Report summary: Open gaps",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-no-revision",
+			"title": "Report summary: Missing revision",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-no-revision-open",
+			"title": "Report summary: Missing revision details",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-no-checks",
+			"title": "Report summary: No checks",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-suite",
+			"title": "Report summary: Full suite",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-running",
+			"title": "Report summary: Running",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-failed",
+			"title": "Report summary: Failed",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-blocked",
+			"title": "Report summary: Blocked",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-skipped",
+			"title": "Report summary: Skipped",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-not-proven",
+			"title": "Report summary: Not proven",
+			"coverage": "required",
+			"units": ["reports.component.report-summary"]
+		},
+		{
+			"id": "reports-component-report-summary-interrupted",
+			"title": "Report summary: Interrupted",
 			"coverage": "required",
 			"units": ["reports.component.report-summary"]
 		},
@@ -6053,6 +6215,15 @@
 				"reports-component-harness-harness-verdict",
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
+				"reports-component-image-zoom-loading",
+				"reports-component-image-zoom-error",
+				"reports-component-image-zoom-actual",
+				"reports-component-image-zoom-zoomed",
+				"reports-component-image-zoom-zoom-out",
+				"reports-component-image-zoom-maximum",
+				"reports-component-image-zoom-panned",
+				"reports-component-image-zoom-focused",
+				"reports-component-image-zoom-dragging",
 				"reports-component-modal",
 				"reports-component-modal-image",
 				"reports-component-modal-lightbox",
@@ -6176,6 +6347,24 @@
 				"reports-component-report-checks-interrupted",
 				"reports-component-report-findings",
 				"reports-component-report-summary",
+				"reports-component-report-summary-run-open",
+				"reports-component-report-summary-portable-open",
+				"reports-component-report-summary-active",
+				"reports-component-report-summary-active-open",
+				"reports-component-report-summary-stale",
+				"reports-component-report-summary-finalizing",
+				"reports-component-report-summary-historical",
+				"reports-component-report-summary-gaps",
+				"reports-component-report-summary-no-revision",
+				"reports-component-report-summary-no-revision-open",
+				"reports-component-report-summary-no-checks",
+				"reports-component-report-summary-suite",
+				"reports-component-report-summary-running",
+				"reports-component-report-summary-failed",
+				"reports-component-report-summary-blocked",
+				"reports-component-report-summary-skipped",
+				"reports-component-report-summary-not-proven",
+				"reports-component-report-summary-interrupted",
 				"reports-component-report-view",
 				"reports-component-select",
 				"reports-component-select-compact",
