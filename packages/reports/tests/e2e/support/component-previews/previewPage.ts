@@ -151,11 +151,8 @@ export async function capturePreview(
 	const { viewport, variant = '' } = target;
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
 	const clip = await previewCaptureBounds(page, id, variant);
-	const nativeSelectOpen =
-		(id === 'reports.component.select' && variant === 'open') ||
-		(id === 'reports.component.evidence-grid' && variant === 'status-open');
 	const bytes = await page.screenshot({
-		fullPage: !nativeSelectOpen,
+		fullPage: id !== 'reports.component.select' || variant !== 'open',
 		clip,
 		animations: 'disabled',
 		caret: 'hide'
