@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T00:40:13.339Z","name":"terra-3-state-image-loading","goal":"Show a loading message while a recorded image is being resolved.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T00:40:13.984Z","loop":"terra-3-state-image-loading","step":"spec","evidence":"The catalog preview for a pending image resolver shows capture provenance in place of the loading message."}
+{"event":"step.completed","timestamp":"2026-10-30T00:40:14.594Z","loop":"terra-3-state-image-loading","step":"coverage","evidence":"The existing state-gallery capture had no pending resolver fixture or assertion for a capture with provenance while loading."}

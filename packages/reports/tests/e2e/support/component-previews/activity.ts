@@ -1,6 +1,8 @@
 import type { PreviewCases } from './shared';
 import { noop, stamp, row } from './shared';
 import { commits } from '../../../../test/entityUnits';
+import { activityWorkPreview } from './activityWorkVariants';
+import { activityFilesPreview } from './activityFileVariants';
 const agent = {
 	id: 'preview-agent',
 	label: 'Preview agent',
@@ -85,7 +87,7 @@ export const live = {
 export const activityCases: PreviewCases = {
 	'reports.component.activity-agents': { agents: live.agents, sampledAt: stamp },
 	'reports.component.activity-files': {
-		files: activity.files,
+		files: activityFilesPreview(activity.files),
 		worktrees: live.worktrees,
 		href: () => '/history',
 		registry: 'Current checkout'
@@ -103,7 +105,10 @@ export const activityCases: PreviewCases = {
 		row
 	},
 	'reports.component.activity-loops': { loops: activity.loops },
-	'reports.component.activity-work': { work: activity.work, href: () => '/history' },
+	'reports.component.activity-work': {
+		work: activityWorkPreview(activity.work),
+		href: () => '/history'
+	},
 	'reports.component.project-activity': { activity, live, base: '/harness' },
 	'reports.component.site-activity': { shown: { activity, live } }
 };
@@ -134,58 +139,8 @@ const agentStates: Record<string, () => PreviewCases[string]> = {
 	})
 };
 
-const fileStates: Record<string, () => PreviewCases[string]> = {
-	recorded: () => ({
-		files: activity.files,
-		worktrees: null,
-		href: () => '/history',
-		registry: 'Recorded commit'
-	}),
-	clean: () => ({
-		files: activity.files,
-		worktrees: [{ ...live.worktrees[0], changes: [] }],
-		href: () => '/history',
-		registry: 'Current checkout'
-	}),
-	empty: () => ({
-		files: [],
-		worktrees: [],
-		href: () => '/history',
-		registry: 'Current checkout'
-	}),
-	truncated: () => ({
-		files: activity.files,
-		worktrees: [
-			{
-				...live.worktrees[0],
-				truncated: true,
-				changes: [
-					...live.worktrees[0].changes,
-					{
-						path: 'src/components/ActivityFiles.svelte',
-						status: 'modified',
-						units: ['reports.component.activity-files']
-					},
-					{
-						path: 'specification/scenarios/component-catalog-previews.json',
-						status: 'modified',
-						units: []
-					}
-				]
-			}
-		],
-		href: () => '/history',
-		registry: 'Current checkout'
-	})
-};
-
 const loopStates: Record<string, () => PreviewCases[string]> = {
 	empty: () => ({ loops: { total: 0, types: [] } })
-};
-
-const workStates: Record<string, () => PreviewCases[string]> = {
-	recorded: () => ({ work: activity.work, href: () => '/history', recorded: true }),
-	empty: () => ({ work: [], href: () => '/history', recorded: false })
 };
 
 const projectActivityStates: Record<string, () => PreviewCases[string]> = {
@@ -201,24 +156,14 @@ const projectActivityStates: Record<string, () => PreviewCases[string]> = {
 	})
 };
 
-const siteActivityStates: Record<string, () => PreviewCases[string]> = {
-	'failed-refresh': () => ({ shown: { activity, live } })
-};
-
 export function activityVariant(id: string, variant: string, props: PreviewCases[string]) {
 	const states =
 		id === 'reports.component.activity-agents'
 			? agentStates
-			: id === 'reports.component.activity-files'
-				? fileStates
-				: id === 'reports.component.activity-loops'
-					? loopStates
-					: id === 'reports.component.activity-work'
-						? workStates
-						: id === 'reports.component.project-activity'
-							? projectActivityStates
-							: id === 'reports.component.site-activity'
-								? siteActivityStates
-								: undefined;
+			: id === 'reports.component.activity-loops'
+				? loopStates
+				: id === 'reports.component.project-activity'
+					? projectActivityStates
+					: undefined;
 	return states?.[variant]?.() ?? props;
 }

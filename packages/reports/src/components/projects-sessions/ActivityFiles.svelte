@@ -34,7 +34,9 @@
 	</hx-span>
 {/snippet}
 
-{#snippet openRow({ tree, change }: Open)}
+{#snippet openRow(entry: Open)}
+	{@const tree = entry.tree}
+	{@const change = entry.change}
 	<hx-div class="pa-row"><hx-code>{change.path}</hx-code></hx-div>
 	<hx-div class="pa-meta">
 		<hx-span>{change.status}</hx-span>
