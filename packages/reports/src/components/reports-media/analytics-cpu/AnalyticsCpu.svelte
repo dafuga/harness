@@ -137,19 +137,19 @@
 			letter-spacing: var(--hx-style-tracking-normal);
 		}
 		:global(.analytics-table.analytics-cpu-table th:nth-child(1)) {
-			width: 24%;
-		}
-		:global(.analytics-table.analytics-cpu-table th:nth-child(2)) {
-			width: 12%;
-		}
-		:global(.analytics-table.analytics-cpu-table th:nth-child(3)) {
-			width: 22%;
-		}
-		:global(.analytics-table.analytics-cpu-table th:nth-child(4)) {
 			width: 20%;
 		}
+		:global(.analytics-table.analytics-cpu-table th:nth-child(2)) {
+			width: 14%;
+		}
+		:global(.analytics-table.analytics-cpu-table th:nth-child(3)) {
+			width: 28%;
+		}
+		:global(.analytics-table.analytics-cpu-table th:nth-child(4)) {
+			width: 18%;
+		}
 		:global(.analytics-table.analytics-cpu-table th:nth-child(5)) {
-			width: 22%;
+			width: 20%;
 		}
 		:global(.analytics-table.analytics-cpu-table .analytics-wrap) {
 			min-width: 0;
