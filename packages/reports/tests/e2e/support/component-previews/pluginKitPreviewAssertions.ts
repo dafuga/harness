@@ -163,6 +163,7 @@ async function steps(component: Locator, variant: string) {
 async function separatedEmptyAction(component: Locator) {
 	const action = component.getByRole('link', { name: 'Browse components' });
 	if (!(await action.count())) return;
+	await expect(action, 'Empty-state action remains in its capture viewport').toBeInViewport();
 	const gap = await component.locator('p.ex-empty').evaluate((node) => {
 		const text = node.querySelector('span')!.firstChild!;
 		const range = document.createRange();
