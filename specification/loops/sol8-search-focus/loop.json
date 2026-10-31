@@ -2,9 +2,11 @@
 	"name": "sol8-search-focus",
 	"goal": "Keep one aligned search focus ring and realistic project scope at every viewport",
 	"createdAt": "2026-10-31T23:31:57.584Z",
-	"updatedAt": "2026-10-31T23:33:18.987Z",
+	"updatedAt": "2026-10-31T23:36:54.363Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T23:36:54.363Z",
+			"evidence": "Record 82036765637e at ccbc98db49: all three open states fail because the input outline is 2px rather than 0, with three captures retained."
 		},
 		{
 			"id": "implement",
