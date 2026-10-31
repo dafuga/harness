@@ -2,7 +2,7 @@
 	"name": "desktop-selected-view",
 	"goal": "Show the selected second level in the Desktop multiple-view catalog state",
 	"createdAt": "2026-10-31T19:41:00.679Z",
-	"updatedAt": "2026-10-31T19:41:01.969Z",
+	"updatedAt": "2026-10-31T19:42:42.259Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:42:41.236Z",
+			"evidence": "82a83a69119dcf8ec48b02d98c4f58af785bd8e8ba03d7f0dc6bf23026a02aba; all three existing multiple cases show only the first view. Original failing images inspected."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:42:42.259Z",
+			"evidence": "The multiple fixture now supplies the real second active view together with both available views. The existing settings interaction exposes its selected name and title; product and default contracts stay unchanged."
 		},
 		{
 			"id": "green",

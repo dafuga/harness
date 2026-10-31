@@ -119,6 +119,7 @@ function pane(props: PreviewProps, variant: string): PreviewProps {
 }
 function fields(props: PreviewProps, variant: string): PreviewProps {
 	const view = props.view as GameView;
+	const second = { ...view, id: 'second-level', title: 'Garden return route' };
 	const changes: Record<string, PreviewProps> = {
 		readonly: { readonly: true },
 		gated: {
@@ -129,7 +130,8 @@ function fields(props: PreviewProps, variant: string): PreviewProps {
 			section: 'Level'
 		},
 		multiple: {
-			views: [view, { ...view, id: 'second-level', title: 'A second level with a longer title' }]
+			view: second,
+			views: [view, second]
 		}
 	};
 	return { ...props, ...changes[variant] };
