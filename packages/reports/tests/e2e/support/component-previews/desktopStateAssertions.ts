@@ -120,6 +120,15 @@ async function assertLoadedHistory(component: Locator, id: string, variant: stri
 }
 
 async function assertPickerPresentation(component: Locator, id: string, variant: string) {
+	if (id === 'desktop.component.game-view-fields' && variant === 'multiple') {
+		await expect(
+			component.getByRole('combobox', { name: 'View', exact: true }),
+			'Multiple-view capture shows the selected second level'
+		).toHaveValue('second-level');
+		await expect(component.getByRole('textbox', { name: 'View title', exact: true })).toHaveValue(
+			'Garden return route'
+		);
+	}
 	if (id === 'desktop.component.revision-picker' && variant === 'historical')
 		await expect(
 			component.locator('[aria-label="Viewed context"] strong'),
