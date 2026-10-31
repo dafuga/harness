@@ -102,3 +102,12 @@
 		>
 	{/if}
 </hx-div>
+
+<style>
+	/* The host's native field rules must not paint beneath the compact display label. */
+	@media (forced-colors: none) {
+		.hx-revision :global(.has-display select) {
+			color: transparent;
+		}
+	}
+</style>
