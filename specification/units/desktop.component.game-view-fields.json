@@ -52,7 +52,7 @@
 			{
 				"name": "GameViewFields.section",
 				"type": "GameSection",
-				"required": false,
+				"required": true,
 				"description": "Bindable current game section; planned levels gate preview and checkpoints until built. Required by the source prop type; the bindable declaration provides no fallback."
 			},
 			{

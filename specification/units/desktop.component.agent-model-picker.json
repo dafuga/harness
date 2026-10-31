@@ -33,13 +33,13 @@
 			{
 				"name": "AgentModelPicker.provider",
 				"type": "ProviderId",
-				"required": false,
+				"required": true,
 				"description": "Required bindable provider identifier. Selecting a model stores its provider identifier unchanged. Together with model, determines the selected button and tooltip."
 			},
 			{
 				"name": "AgentModelPicker.model",
 				"type": "string",
-				"required": false,
+				"required": true,
 				"description": "Required bindable model identifier. Selecting a model stores its identifier unchanged and closes the picker. Does not choose a default model."
 			}
 		],

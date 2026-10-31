@@ -58,13 +58,13 @@
 			{
 				"name": "GameLevelBrief.provider",
 				"type": "ProviderId",
-				"required": false,
+				"required": true,
 				"description": "Selected provider, bound to the planner. Required by the source prop type; the bindable declaration provides no fallback."
 			},
 			{
 				"name": "GameLevelBrief.model",
 				"type": "string",
-				"required": false,
+				"required": true,
 				"description": "Exact advertised model identifier, bound to the planner. Required by the source prop type; the bindable declaration provides no fallback."
 			},
 			{

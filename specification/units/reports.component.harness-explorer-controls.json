@@ -31,7 +31,7 @@
 			{
 				"name": "ExplorerControls.filter",
 				"type": "CatalogFilter",
-				"required": false,
+				"required": true,
 				"description": "Bindable catalog state; this component edits only its search query. Required by the source prop type; the bindable declaration provides no fallback."
 			}
 		],

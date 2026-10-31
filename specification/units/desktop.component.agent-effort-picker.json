@@ -30,7 +30,7 @@
 			{
 				"name": "AgentEffortPicker.effort",
 				"type": "string",
-				"required": false,
+				"required": true,
 				"description": "Required bindable current effort. Choosing an offered effort replaces this value and closes the dialog. No fallback is selected for an invalid value."
 			}
 		],
