@@ -61,3 +61,61 @@ async function composer(component: Locator, variant: string) {
 		await expect(send).toBeEnabled();
 	if (variant === 'ask') await expect(box).toHaveAttribute('placeholder', 'Ask a question…');
 }
+
+/** Validate painted state markers after capture, rather than accepting hidden state alone. */
+export async function assertDesktopCapturedState(component: Locator, id: string, variant: string) {
+	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
+	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
+	if (id === 'desktop.component.game-create' && variant === 'unavailable') {
+		await expect(component.getByRole('form', { name: 'New project' })).toBeVisible();
+		await expect(component.getByText('This desktop app cannot create projects yet.')).toBeVisible();
+		await expect(component.getByRole('button', { name: 'Create project' })).toBeDisabled();
+	}
+	if (id === 'desktop.component.game-checkpoint-pane' && variant === 'advanced') {
+		const visible = await component
+			.getByRole('region', { name: 'Rules', exact: true })
+			.evaluate((node) => {
+				const rules = node.getBoundingClientRect();
+				const body = node.closest('.viewer-content')!.getBoundingClientRect();
+				return rules.top >= body.top - 1 && rules.bottom <= body.bottom + 1;
+			});
+		expect(visible, 'Expanded checkpoint rules are fully visible above the footer').toBe(true);
+	}
+}
+
+async function assertComposerPresentation(component: Locator, variant: string) {
+	const modes: Record<string, string> = {
+		ask: 'Ask',
+		plan: 'Plan',
+		change: 'Change',
+		'visual-plan': 'Plan'
+	};
+	if (modes[variant])
+		await expect(
+			component.getByRole('button', { name: modes[variant], exact: true })
+		).toHaveAttribute('aria-pressed', 'true');
+	if (variant === 'visual-plan')
+		await expect(component.getByRole('textbox', { name: 'Message' })).toHaveValue(/visual/i);
+	if (variant === 'running') await expect(component.getByText(/agent is running/i)).toBeVisible();
+}
+
+async function assertStatusPresentation(component: Locator, variant: string) {
+	const messages: Record<string, RegExp> = {
+		failed: /verification failed/i,
+		unknown: /status is unknown/i,
+		unverified: /not been verified/i,
+		'no-reason': /no verification recorded for this revision/i
+	};
+	const status = component.getByRole('status');
+	if (messages[variant]) await expect(status).toHaveText(messages[variant]);
+	if (variant === 'long') {
+		const sentences = (await status.innerText())
+			.split(/[.!?]+/)
+			.map((sentence) => sentence.trim())
+			.filter(Boolean);
+		expect(
+			new Set(sentences).size,
+			'Long explanations contain distinct meaningful sentences'
+		).toBeGreaterThanOrEqual(3);
+	}
+}
