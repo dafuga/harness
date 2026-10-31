@@ -76,9 +76,10 @@
 		</hx-button>
 	</hx-div>
 	<hx-div id="game-view-settings" class="settings" hidden={!expanded}>
+		{#if readonly}<hx-small class="readonly-note">Read-only view settings</hx-small>{/if}
 		<hx-label class="field">
 			<hx-small>View title</hx-small>
-			<hx-input value={view.title} {readonly} oninput={retitle} />
+			<hx-input value={view.title} {readonly} disabled={readonly} oninput={retitle} />
 		</hx-label>
 		<hx-div class="field">
 			<hx-small aria-hidden="true">Dimension</hx-small>
@@ -89,7 +90,8 @@
 		</hx-div>
 		<hx-label class="field style">
 			<hx-small>Art direction</hx-small>
-			<hx-textarea rows="4" value={view.style} {readonly} oninput={restyle}></hx-textarea>
+			<hx-textarea rows="4" value={view.style} {readonly} disabled={readonly} oninput={restyle}
+			></hx-textarea>
 		</hx-label>
 		{#if !readonly}<hx-button type="button" class="new" onclick={createLevel}>New level</hx-button
 			>{/if}
@@ -133,6 +135,17 @@
 	}
 	.settings[hidden] {
 		display: none;
+	}
+	.readonly-note {
+		grid-column: 1 / -1;
+	}
+	input:disabled,
+	textarea:disabled {
+		opacity: var(--hx-opacity-dim);
+		cursor: not-allowed;
+	}
+	textarea:disabled {
+		resize: none;
 	}
 	.field {
 		display: grid;
