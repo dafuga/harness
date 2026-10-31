@@ -16,7 +16,7 @@ test('the pages screen lists pages as cards, each with its own screenshot and a 
 	const body = screen(ExplorerPagesScreen, 'current');
 	expect(words(body)).toContain('Pages Start with the pages people use.');
 	expect(count(body, /<article\b[^>]*aria-label="Orders page"/g)).toBe(1);
-	expect(body).toContain('src="/harness/media/ccccccc-default-desktop.png"');
+	expect(body).toContain('src="/harness/media/c725e93-default-desktop.png"');
 	expect(body).toContain('href="/harness/branch/feature%2Forders/pages/app.page.orders"');
 	// Pages are never a table, and the screen is the one the content shows at this address.
 	expect(count(body, /<table\b/g)).toBe(0);
@@ -67,7 +67,7 @@ function catalogCaptureProjection(): void {
 		expect(
 			catalogShot(evidence, actual.preview, true)?.file,
 			id + ' actual card chooses its settled default'
-		).toBe('ccccccc-default-desktop.png');
+		).toBe('c725e93-default-desktop.png');
 		if (id === 'reports.component.harness-harness-console')
 			expect(
 				evidence.after.captures.filter((entry) => entry.state.startsWith('loading-'))
@@ -76,7 +76,7 @@ function catalogCaptureProjection(): void {
 			expect(
 				catalogShot(evidence, { scenario: catalog.id, state: state.id, viewport: 'desktop' })?.file,
 				'A state named desktop keeps its own desktop capture'
-			).toBe('ccccccc-default-desktop.png');
+			).toBe('c725e93-default-desktop.png');
 		const choice = { scenario: catalog.id, state: state.id, viewport: 'desktop' };
 		for (const viewport of ['desktop', 'tablet', 'mobile'])
 			if (!catalogShot(evidence, { ...choice, viewport })?.file)
@@ -96,7 +96,7 @@ test('default page cards show their own focused source when a historical preferr
 	const shown = explorerEvidence(scope('current'), { head: captured, parent: null }, page);
 	expect(catalogShot(shown, page.preview), 'Explicit unavailable state remains a gap').toBeNull();
 	const body = screen(ExplorerPagesScreen, 'current', {}, { head: captured });
-	expect(body).toContain('src="/harness/media/ccccccc-default-desktop.png"');
+	expect(body).toContain('src="/harness/media/c725e93-default-desktop.png"');
 });
 
 /** The normal Console producer records these intentional loading states before its settled state. */

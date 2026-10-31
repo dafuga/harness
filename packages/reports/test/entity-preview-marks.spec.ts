@@ -156,7 +156,7 @@ test('a recorded clip plays on the overview: one at the tip, a pair at a commit'
 	const current = tab.getByRole('region', { name: 'Current audio' });
 	const clip = current.locator('audio');
 	await expect(clip).toHaveCount(1);
-	await expect(clip).toHaveAttribute('src', '/media/ccccccc-match-audio.wav');
+	await expect(clip).toHaveAttribute('src', '/media/c725e93-match-audio.wav');
 	await expect(current.getByText('Order filed.')).toBeVisible();
 	await clip.evaluate((audio: HTMLAudioElement) => ((audio.muted = true), audio.play()));
 	await expect
@@ -168,10 +168,10 @@ test('a recorded clip plays on the overview: one at the tip, a pair at a commit'
 	const compared = tab.getByRole('region', { name: 'Audio comparison' });
 	const sources = compared.locator('audio');
 	await expect(sources).toHaveCount(2);
-	await expect(compared.getByRole('group', { name: 'Before · aaaaaaa' })).toBeVisible();
-	await expect(compared.getByRole('group', { name: 'After · bbbbbbb' })).toBeVisible();
+	await expect(compared.getByRole('group', { name: 'Before · 3f9c2a1' })).toBeVisible();
+	await expect(compared.getByRole('group', { name: 'After · 8b41d07' })).toBeVisible();
 	expect(await sources.evaluateAll((all) => all.map((audio) => audio.getAttribute('src')))).toEqual(
-		['/media/aaaaaaa-match-audio.wav', '/media/bbbbbbb-match-audio.wav']
+		['/media/3f9c2a1-match-audio.wav', '/media/8b41d07-match-audio.wav']
 	);
 	const play = (audio: HTMLAudioElement) => ((audio.muted = true), audio.play());
 	await sources.first().evaluate(play);

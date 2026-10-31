@@ -23,7 +23,7 @@ test('a function shows its end-to-end behaviour first, even when a screenshot sc
 	expect(count(body, /<img/g)).toBe(0);
 	// The captures of the page it is seen on stay in its tests, where every capture is listed.
 	const tests = verificationPanel('commit', { ...filter, tab: 'examples' }, { head });
-	expect(tests).toContain('/harness/media/bbbbbbb-default-desktop.png');
+	expect(tests).toContain('/harness/media/8b41d07-default-desktop.png');
 });
 
 test('size and timing are read from the record the verdict is judged by: the newest of this commit', () => {
@@ -63,5 +63,5 @@ test('the branch tip never shows a capture it inherited as its current screensho
 	expect(words(body)).toContain('Current screenshot');
 	expect(count(body, /class="ex-shot"/g)).toBe(0);
 	expect(words(body)).toMatch(/No capture|not captured/i);
-	expect(words(body)).not.toContain('Current snapshot · ccccccc Branch tip Fresh');
+	expect(words(body)).not.toContain('Current snapshot · c725e93 Branch tip Fresh');
 });

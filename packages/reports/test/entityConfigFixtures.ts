@@ -14,7 +14,7 @@ export const configExpression = (commit: string): string => `z.strictObject({
 
 export const configStrings = {
 	defaultSort: 'newest',
-	archivePath: 'orders/'.repeat(35),
+	archivePath: '/srv/orders/archive/2026/10/completed-orders.jsonl',
 	fulfilmentNote:
 		'Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.'
 } as const;
@@ -24,8 +24,7 @@ export const configRemoteExpression =
 	'process.env.REPORT_ORIGIN ?? "https://orders.example.test/integrations"';
 export const configExpressions = {
 	remoteEndpoint: configRemoteExpression,
-	designProperties:
-		'/^(?:color|background(?:-.+)?|border(?:-.+)?|outline(?:-.+)?|fill|stroke|opacity|box-shadow|filter|backdrop-filter|<orders>)$/',
+	designProperties: '/^(color|background-color|border-color|opacity)$/',
 	message: '(() => {\n  throw new Error("Config expressions must never execute <orders>");\n})()',
 	retryDelay: '10 * 1000'
 };

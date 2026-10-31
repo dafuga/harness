@@ -4,7 +4,11 @@ import type { HarnessCapture, HarnessScenario, HarnessUnit } from '../src/models
 
 /** Synthetic history of an invented orders application; nothing here is a real repository. */
 export const sha = (letter: string): string => letter.repeat(40);
-export const commits = { first: sha('a'), middle: sha('b'), tip: sha('c') };
+export const commits = {
+	first: '3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6',
+	middle: '8b41d0720e252681deac809969b3faf8181dac30',
+	tip: 'c725e9337e913674d8b859665a97c2ea5d62c2da'
+};
 export const ids = {
 	page: 'app.page.orders',
 	list: 'app.component.order-list',

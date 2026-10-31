@@ -3,6 +3,10 @@ import type { HarnessIndex, HarnessRecord, HarnessRevision } from '../src/models
 import { capture, commits, ids, scenarios, units, type CaptureSeed } from './entityUnits';
 import { configSnapshot } from './entityConfigFixtures';
 
+/** Opaque synthetic record ids stay hex-shaped, as real stored record ids do. */
+const recordId = (commit: string) =>
+	(commit.slice(16) + commit.slice(0, 16) + commit.slice(8, 32)).slice(0, 64);
+
 export function tested(
 	commit: string,
 	id: string,
@@ -13,7 +17,7 @@ export function tested(
 		status: 'passed',
 		testedRevision: commit,
 		inherited: false,
-		origin: { record: `rec-${commit.slice(0, 6)}`, commit },
+		origin: { record: recordId(commit), commit },
 		states: states.map((state) => ({
 			id: state.id,
 			coverage: 'required',
@@ -55,7 +59,7 @@ const measured = (p95: number): HarnessRecord['measurements'] => [
 /** A passing record of one commit; `empty` is whether the empty state was captured there. */
 export function record(commit: string, empty = true, p95 = 0.12): HarnessRecord {
 	return {
-		id: `rec-${commit.slice(0, 6)}-0000`,
+		id: recordId(commit),
 		status: 'passed',
 		valid: true,
 		problems: [],

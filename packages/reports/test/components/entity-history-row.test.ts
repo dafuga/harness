@@ -63,7 +63,7 @@ test('commit rows omit lifecycle badges from index and revision change metadata'
 	for (const change of ['added', 'removed', 'direct', 'indirect'] as const) {
 		const body = shown(row({ change }));
 		expect(words(body), 'History lifecycle badges').not.toMatch(/\bAdded\b|\bRemoved\b/);
-		expect(words(body)).toContain('bbbbbbb');
+		expect(words(body)).toContain('8b41d07');
 	}
 	const unknown = row({ standing: 'unknown', change: null, gap: 'Not recorded.' });
 	expect(

@@ -129,7 +129,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		await expect(action).toHaveCount(1);
 		await expect(action.getByRole('img')).toHaveAttribute(
 			'src',
-			'/media/ccccccc-default-desktop.png'
+			'/media/c725e93-default-desktop.png'
 		);
 		await action.focus();
 		await tab.keyboard.press('Enter');
@@ -187,7 +187,7 @@ test('the component catalog keeps reused screenshots revision-bound without extr
 	await open(tab, { category: 'components' }, 'inherited');
 	await capture(tab, 'component-cards-reused-desktop');
 	const card = tab.getByRole('article', { name: 'OrderCard', exact: true });
-	await expect(card.getByRole('img')).toHaveAttribute('src', '/media/bbbbbbb-default-desktop.png');
+	await expect(card.getByRole('img')).toHaveAttribute('src', '/media/8b41d07-default-desktop.png');
 	await expect(card).not.toContainText(/Reused from|Captured at/);
 });
 test('branch and commit selection replace component screenshots with that revision', async ({
@@ -197,21 +197,21 @@ test('branch and commit selection replace component screenshots with that revisi
 	const card = tab.getByRole('article', { name: 'OrderCard', exact: true });
 	await expect(card.getByRole('img')).toHaveAttribute(
 		'src',
-		'/harness/media/ccccccc-default-desktop.png'
+		'/harness/media/c725e93-default-desktop.png'
 	);
 	await tab.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.middle);
 	await expect(card.getByRole('img')).toHaveAttribute(
 		'src',
-		'/harness/media/bbbbbbb-default-desktop.png'
+		'/harness/media/8b41d07-default-desktop.png'
 	);
 	await tab.getByRole('combobox', { name: 'Branch', exact: true }).selectOption('release/orders');
 	await expect(card.getByRole('img')).toHaveAttribute(
 		'src',
-		'/harness/media/aaaaaaa-default-desktop.png'
+		'/harness/media/3f9c2a1-default-desktop.png'
 	);
 	await tab.getByRole('combobox', { name: 'Branch', exact: true }).selectOption('feature/orders');
 	await expect(card.getByRole('img')).toHaveAttribute(
 		'src',
-		'/harness/media/ccccccc-default-desktop.png'
+		'/harness/media/c725e93-default-desktop.png'
 	);
 });
