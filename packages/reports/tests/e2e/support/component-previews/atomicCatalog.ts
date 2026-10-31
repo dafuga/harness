@@ -18,6 +18,7 @@ export async function assertCompositionFilter(component: Locator): Promise<void>
 /** Native states assert real browser properties, then the standard test records the same element. */
 const nativeSelectors: Record<string, string> = {
 	path: 'svg > path',
+	tr: 'tbody > tr',
 	option: 'option[value="example"]'
 };
 
