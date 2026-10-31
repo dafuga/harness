@@ -1,4 +1,4 @@
-import { providers, type DesktopData } from './desktopData.svelte';
+import type { DesktopData } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
 import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 import { desktopAgentActivityVariant } from './desktopAgentActivityVariants';
@@ -11,8 +11,9 @@ export function projectAgentStateFixture(
 	state: ProjectAgentState
 ): PreviewProps {
 	projectAgentRunFixture(data, state);
+	const providers = data.bridge.providers;
 	data.bridge.providers = async () =>
-		providers.map((provider) => ({
+		(await providers()).map((provider) => ({
 			...provider,
 			models: provider.models.map((model) => ({
 				...model,
