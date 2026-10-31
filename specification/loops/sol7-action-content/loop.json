@@ -1,8 +1,8 @@
 {
-	"name": "sol7-compact-selectors",
-	"goal": "Compact selectors paint only their display label and short hash at every viewport",
-	"createdAt": "2026-10-31T16:14:51.571Z",
-	"updatedAt": "2026-10-31T16:14:52.989Z",
+	"name": "sol7-action-content",
+	"goal": "Long action content remains readable inside the mobile viewport",
+	"createdAt": "2026-10-31T16:37:56.462Z",
+	"updatedAt": "2026-10-31T16:37:57.970Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -12,15 +12,15 @@
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
 			"status": "complete",
-			"completedAt": "2026-10-31T16:14:52.356Z",
-			"evidence": "New tip and at-tip states show native option text over the display label. HarnessSelectors uses canonical Select; constrain the compact host style without changing its controls."
+			"completedAt": "2026-10-31T16:37:57.293Z",
+			"evidence": "The standard long HarnessAction state overflows mobile by 19 CSS pixels. Keep its complete label, icons, link and button behavior while fitting the available width."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
 			"status": "complete",
-			"completedAt": "2026-10-31T16:14:52.989Z",
-			"evidence": "Existing catalog tested selectors only without tip. New tip and at-tip states exercise the unchanged closed-field transparency assertion at desktop tablet and mobile."
+			"completedAt": "2026-10-31T16:37:57.970Z",
+			"evidence": "Existing default states used short content. The declared long state reaches the existing viewport-fit assertion after its test-owned screenshot; retain it unchanged for red and green."
 		},
 		{
 			"id": "red",
