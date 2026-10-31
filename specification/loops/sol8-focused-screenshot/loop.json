@@ -2,7 +2,7 @@
 	"name": "sol8-focused-screenshot",
 	"goal": "Fetch an explicitly selected passed focused screenshot without weakening failed-record or integrity guards",
 	"createdAt": "2026-10-31T20:01:17.227Z",
-	"updatedAt": "2026-10-31T20:02:32.369Z",
+	"updatedAt": "2026-10-31T20:03:45.671Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:03:44.425Z",
+			"evidence": "3a099228d9 permits only explicitly selected passed usable focused screenshots, retaining original artifact binding, full-status null and all integrity checks."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:03:45.671Z",
+			"evidence": "The unchanged four-case download suite passes at 3a099228d9. It refuses implicit, failed, incomplete, unusable and failed-capture focused records and retains SHA-256 rejection."
 		},
 		{
 			"id": "verify",
