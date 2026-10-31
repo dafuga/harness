@@ -67,7 +67,7 @@ export async function assertProductArtwork(component: Locator, id: string, varia
 		'reports.component.entity-states': ['', 'current', 'initial', 'viewer-open', 'viewport-mobile']
 	};
 	if (!states[id]?.includes(variant)) return;
-	const forbidden = /\b(?:synthetic|fictional|fixture)\b/i;
+	const forbidden = /\b(?:synthetic|fictional|fixtures?)\b/i;
 	for (const image of await component.locator('img').all()) {
 		if (!(await image.isVisible())) continue;
 		const content = await image.evaluate(async (node: HTMLImageElement) => {
