@@ -42,7 +42,7 @@
 	{#each projects as item (item.id)}<hx-label
 			><hx-input type="checkbox" bind:group={chosen} value={item.id} /> {item.name}</hx-label
 		>{/each}{#if !projects.length}<hx-small class="muted">{none}</hx-small>{/if}
-	<hx-label
+	<hx-label class="remote-access"
 		>Access<Select label="Device access" bind:value={access}
 			><hx-option value="read">Read · browse only</hx-option><hx-option value="comment"
 				>Comment · read and comment</hx-option
@@ -62,3 +62,13 @@
 		>
 	</hx-div>
 </hx-fieldset>
+
+<style>
+	.remote-request .remote-access {
+		display: grid;
+		min-width: 0;
+	}
+	.remote-access :global(.report-select) {
+		width: 100%;
+	}
+</style>

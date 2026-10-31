@@ -18,15 +18,20 @@
 		label: Snippet<[Row]>;
 		/** Value content for the row's semantic definition description. */
 		children: Snippet<[Row]>;
-		/** Optional content shown instead of an empty definition list. */
+		/** Optional empty content; omitted content defaults to a visible empty message. */
 		empty?: Snippet;
 		/** Optional feature-owned classes; defaults to an empty string. */
 		className?: string;
 	} = $props();
 </script>
 
-{#if rows.length === 0 && empty}
-	{@render empty()}
+{#if rows.length === 0}
+	{#if empty}{@render empty()}{:else}
+		<hx-p
+			class="empty-detail-list {className}"
+			data-harness-component="shared-primitives-detail-list">No details to display.</hx-p
+		>
+	{/if}
 {:else}
 	<hx-dl class="detail-list {className}" data-harness-component="shared-primitives-detail-list">
 		{#each rows as row, position (rowKey(row, position))}
@@ -39,6 +44,10 @@
 {/if}
 
 <style>
+	.empty-detail-list {
+		margin: 0;
+		color: var(--hx-color-text-muted);
+	}
 	dl {
 		min-width: 0;
 		margin: 0;

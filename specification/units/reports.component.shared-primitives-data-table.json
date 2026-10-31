@@ -10,6 +10,7 @@
 		"level": "molecule",
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-table",
 			"reports.component.shared-primitives-atoms-html-tbody",
 			"reports.component.shared-primitives-atoms-html-thead"
@@ -44,14 +45,14 @@
 				"name": "DataTable.empty",
 				"type": "Snippet",
 				"required": false,
-				"description": "Optional snippet of complete empty rows and cell spans; omitted empty content renders no body rows."
+				"description": "Optional complete empty rows and cell spans. Defaults to JavaScript undefined; when isEmpty is true and this snippet is omitted, shows No rows to display. beneath the table."
 			},
 			{
 				"name": "DataTable.isEmpty",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional empty-state selector, default false. True renders empty instead of children."
+				"description": "Optional empty-state selector, default false. True renders the supplied empty rows or the visible default empty message instead of children."
 			},
 			{
 				"name": "DataTable.className",
@@ -72,7 +73,7 @@
 			{
 				"name": "DataTable",
 				"type": "markup",
-				"description": "A semantic table with caller-provided header/body or empty rows, contained horizontal scrolling and a keyboard-focusable labelled region."
+				"description": "A semantic table with caller-owned rows, a keyboard-focusable horizontal scroll region, a visible hint when columns overflow, and explicit fallback content when empty rows are omitted."
 			}
 		],
 		"errors": [
@@ -89,6 +90,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

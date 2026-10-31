@@ -12,7 +12,8 @@
 			"reports.component.shared-primitives-atoms-html-dd",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt"
+			"reports.component.shared-primitives-atoms-html-dt",
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
@@ -50,7 +51,7 @@
 				"name": "DetailList.empty",
 				"type": "Snippet",
 				"required": false,
-				"description": "Optional snippet shown instead of a definition list when rows is empty. Without it, an empty definition list is rendered."
+				"description": "Optional content shown instead of a definition list when rows is empty. Defaults to JavaScript undefined, showing No details to display. for empty rows."
 			},
 			{
 				"name": "DetailList.className",
@@ -64,7 +65,7 @@
 			{
 				"name": "DetailList",
 				"type": "markup",
-				"description": "A definition list with one keyed term/description group per row, or caller-owned empty content outside the list."
+				"description": "A definition list with one keyed term/description group per row, or caller-owned empty content. Empty rows without an empty snippet show No details to display."
 			}
 		],
 		"errors": [
@@ -101,6 +102,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-dt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		}
