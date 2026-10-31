@@ -96,7 +96,14 @@
 				"description": "Message form with permitted mode choices, agent controls for Plan and Change, and a send button. Blocks submission without a mode, with blank text, while running, without an agent choice for a request, or for an unapproved Change. Loads device agent settings on mount. Comments use the comment callback and never start an agent through this component."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied comment, send callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [

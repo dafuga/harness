@@ -27,8 +27,12 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/EntityBehavior.svelte"],
-		"symbols": ["EntityBehavior"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/EntityBehavior.svelte"
+		],
+		"symbols": [
+			"EntityBehavior"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -68,19 +72,20 @@
 				"name": "EntityBehavior.reasons",
 				"type": "Reasons",
 				"required": false,
-				"description": "Optional entity change reasons, displayed separately from test observations. Their behavior summary takes precedence over derived comparison explanation. Defaults to undefined when omitted."
+				"description": "Optional entity change reasons, displayed separately from test observations. Their behavior summary takes precedence over derived comparison explanation. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "EntityBehavior.duration",
 				"type": "string",
 				"required": false,
-				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it. Defaults to undefined when omitted."
+				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it. Defaults to Not measured.",
+				"default": "Not measured"
 			},
 			{
 				"name": "EntityBehavior.unit",
 				"type": "string",
 				"required": false,
-				"description": "Optional function identifier passed to run/artifact case rendering. Defaults to undefined when omitted."
+				"description": "Optional function identifier passed to run/artifact case rendering. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -90,13 +95,8 @@
 				"description": "Current or before/after test panel. Reads artifacts when not supplied, ignores completion whose row-hash signature no longer matches, and shows pending or unknown rather than premature comparison. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict is shown only when the helper also reports passing results."
 			}
 		],
-		"errors": [
-			{
-				"name": "Entitybehavior.callerError",
-				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},

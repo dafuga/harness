@@ -36,7 +36,7 @@
 			{
 				"name": "GameLevelPlan.run",
 				"type": "GameRun",
-				"required": false,
+				"required": true,
 				"description": "Current preview run, reset to the generated spawn on build."
 			},
 			{

@@ -45,7 +45,7 @@
 				"name": "NavBar.account",
 				"type": "Snippet",
 				"required": false,
-				"description": "Optional content supplied by the host for account controls, such as the signed-in identity. When omitted, no account container is rendered; this component does not supply sign-in or sign-out behavior itself."
+				"description": "Optional content supplied by the host for account controls, such as the signed-in identity. When omitted, no account container is rendered; this component does not supply sign-in or sign-out behavior itself. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -55,7 +55,14 @@
 				"description": "Top bar with project and revision controls, category navigation, search, optional Settings and account content. On phones all category icon-and-text labels fit in two rows, with search controls in the spare cell. Search uses the current workspace context; desktop navigation behavior is preserved."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied account callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

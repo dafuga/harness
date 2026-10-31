@@ -33,25 +33,25 @@
 				"name": "EntitySource.repository",
 				"type": "string",
 				"required": false,
-				"description": "Public GitHub repository used for commit-pinned file links; unsupported values remain plain paths."
+				"description": "Public GitHub repository used for commit-pinned file links; unsupported values remain plain paths. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, GitHub source links are unavailable."
 			},
 			{
 				"name": "EntitySource.commit",
 				"type": "string",
 				"required": false,
-				"description": "Full commit hash supplying the displayed files and GitHub links."
+				"description": "Full commit hash supplying the displayed files and GitHub links. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, no revision-pinned GitHub link is constructed."
 			},
 			{
 				"name": "EntitySource.entity",
 				"type": "ExplorerEntity",
 				"required": false,
-				"description": "Entity identity supplied by the host for per-file code actions."
+				"description": "Entity identity supplied by the host for per-file code actions. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, source-opening actions are absent."
 			},
 			{
 				"name": "EntitySource.nav",
 				"type": "EntityNav",
 				"required": false,
-				"description": "Revision-scoped modal callback; an unhosted source list remains read-only."
+				"description": "Revision-scoped modal callback; an unhosted source list remains read-only. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, source-opening actions are absent."
 			}
 		],
 		"outputs": [
@@ -62,6 +62,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [

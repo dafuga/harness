@@ -85,7 +85,14 @@
 				"description": "Version and option selectors, available viewport and image-state selectors, and the selected annotated image, with a prior image when available. Viewport and state selections fall back to available images. Displays loading or image errors explicitly. A version without a displayed image shows its behavior notes or a missing-notes message; no version shows planning guidance or a no-committed-plan/design message. Function plans distinguish proposals from observed test results."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied onthread, onannotate callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

@@ -99,7 +99,7 @@ function desktopCases(desktop: ReturnType<typeof createDesktopData>) {
 function variantProps(id: string, props: PreviewCases[string], variant: string) {
 	if (!previewVariants(id).includes(variant))
 		throw new Error(`Unknown preview variant ${id}:${variant}`);
-	if (!variant || id === 'desktop.component.project-agent') return props;
+	if (!variant || id === 'desktop.component.project-agent' || nativeAtomFixture(id)) return props;
 	const presentation = presentationVariant(id, props, variant);
 	if (presentation) return presentation;
 	const report = reportVariantProps(id, props, variant);

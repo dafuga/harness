@@ -8,11 +8,17 @@
 	"status": "active",
 	"composition": {
 		"level": "molecule",
-		"uses": ["reports.component.shared-primitives-atoms-html-a"]
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-a"
+		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/EntityLink.svelte"],
-		"symbols": ["EntityLink"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/EntityLink.svelte"
+		],
+		"symbols": [
+			"EntityLink"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -33,7 +39,7 @@
 				"name": "EntityLink.label",
 				"type": "string",
 				"required": false,
-				"description": "Optional accessible name when visible content is insufficient. Defaults to undefined when omitted."
+				"description": "Optional accessible name when visible content is insufficient. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "EntityLink.children",
@@ -51,11 +57,12 @@
 		],
 		"errors": [
 			{
-				"name": "Entitylink.callerError",
-				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied children callbacks or snippets propagate when invoked; this component does not provide an error boundary."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

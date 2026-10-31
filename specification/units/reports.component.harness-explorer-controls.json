@@ -31,8 +31,8 @@
 			{
 				"name": "ExplorerControls.filter",
 				"type": "CatalogFilter",
-				"required": false,
-				"description": "Bindable catalog state; this component edits only its search query."
+				"required": true,
+				"description": "Bindable catalog state; this component edits only its search query. Required by the source prop type; the bindable declaration provides no fallback."
 			}
 		],
 		"outputs": [
@@ -42,7 +42,14 @@
 				"description": "A full-width local search field above the catalog."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Missing required filter",
+				"type": "TypeError",
+				"description": "Omitting the required filter object fails when its search property is bound; no default filter is created."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

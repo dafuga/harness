@@ -23,7 +23,9 @@
 		"source": [
 			"packages/reports/src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte"
 		],
-		"symbols": ["HarnessSelectors"]
+		"symbols": [
+			"HarnessSelectors"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -99,11 +101,12 @@
 		],
 		"errors": [
 			{
-				"name": "Branchandrevisionselectors.callerError",
-				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied onbranch, oncommit, onbase, tip callbacks or snippets propagate when invoked; this component does not provide an error boundary."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

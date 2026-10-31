@@ -30,8 +30,12 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/EntityScreens.svelte"],
-		"symbols": ["EntityScreens"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/EntityScreens.svelte"
+		],
+		"symbols": [
+			"EntityScreens"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -76,7 +80,7 @@
 				"name": "EntityScreens.preview",
 				"type": "ScreenPick",
 				"required": false,
-				"description": "Exact optional scenario, state and initial viewport declared for this page. Viewport buttons preserve its scenario and state. Defaults to undefined when omitted."
+				"description": "Exact optional scenario, state and initial viewport declared for this page. Viewport buttons preserve its scenario and state. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -86,13 +90,8 @@
 				"description": "Captions show the revision that recorded each screenshot; a comparison retains Before/After labels with each capture's revision. Viewport buttons change only the viewport. Activating an image opens its full-size viewer with provenance. Rejected or absent captures remain explicit gaps."
 			}
 		],
-		"errors": [
-			{
-				"name": "Entityscreenshots.callerError",
-				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},

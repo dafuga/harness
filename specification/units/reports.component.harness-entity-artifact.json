@@ -28,8 +28,13 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/EntityArtifact.svelte"],
-		"symbols": ["EntityArtifact", "EntityArtifact.recorded"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/EntityArtifact.svelte"
+		],
+		"symbols": [
+			"EntityArtifact",
+			"EntityArtifact.recorded"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -63,7 +68,7 @@
 				"name": "EntityArtifact.unit",
 				"type": "string",
 				"required": false,
-				"description": "Optional function identifier limiting direct-call rows; absent uses general recorded-case presentation. Defaults to undefined when omitted."
+				"description": "Optional function identifier limiting direct-call rows; absent uses general recorded-case presentation. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -74,6 +79,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [

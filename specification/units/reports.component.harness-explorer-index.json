@@ -76,11 +76,12 @@
 		],
 		"errors": [
 			{
-				"name": "Entitycatalog.callerError",
-				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied list callbacks or snippets propagate when invoked; this component does not provide an error boundary."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "configSections",

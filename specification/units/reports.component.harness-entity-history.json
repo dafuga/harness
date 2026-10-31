@@ -31,8 +31,12 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"],
-		"symbols": ["EntityHistory"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"
+		],
+		"symbols": [
+			"EntityHistory"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -87,13 +91,8 @@
 				"description": "Shows changed commits with direct revision links, relative dates, source size, complexity and profile-scoped latency. Long reasons remain inline; no selected-change panel or duplicate action."
 			}
 		],
-		"errors": [
-			{
-				"name": "Entityhistory.callerError",
-				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
