@@ -69,6 +69,7 @@
 
 <style>
 	.ex-card :global(.source-files a .source-name) {
+		padding-bottom: var(--hx-space-4);
 		text-decoration: underline;
 		text-underline-offset: var(--hx-space-3);
 	}
