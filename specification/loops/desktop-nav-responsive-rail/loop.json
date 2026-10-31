@@ -2,7 +2,7 @@
 	"name": "desktop-nav-responsive-rail",
 	"goal": "Keep tablet navigation on one scrolling row with a clean context rail and aligned Game Views icon",
 	"createdAt": "2026-10-31T22:16:18.629Z",
-	"updatedAt": "2026-10-31T22:16:20.074Z",
+	"updatedAt": "2026-10-31T22:17:18.005Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T22:17:18.005Z",
+			"evidence": "Checkpoint ec8a9f1cf0 records three failures and one mobile default pass. Record79a952e83aaac5ef6c99a097d7c21031361cd1ac54e1989744c09dc2e94e051c retains four before images; tablet tabs wrap and Game Views has no SVG."
 		},
 		{
 			"id": "implement",
