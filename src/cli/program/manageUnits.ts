@@ -50,7 +50,7 @@ export function registryErrors(loaded: LoadedUnits): string[] {
 		...loaded.stored
 			.filter((unit) => unit.status === 'active')
 			.flatMap((unit) => previewBinding(unit, loaded.scenarios)),
-		...new UnitRegistryValidator().validate(loaded.stored, files),
+		...new UnitRegistryValidator().validate(loaded.stored, files, loaded.index.files),
 		...loaded.scenarios.flatMap((scenario) =>
 			scenario.units
 				.filter((unit) => !known.has(unit))

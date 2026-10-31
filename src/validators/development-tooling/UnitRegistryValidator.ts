@@ -1,14 +1,22 @@
+import type { SourceFile } from '../../core/development-tooling/sourceTypes';
+import { registryOwnershipFindings } from './unit-registry-validator/registryOwnershipFindings';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import { unitLineage } from '../../workflows/development-tooling/load-units/unit-index-service/unitLineage';
 import { compositionFindings } from './atomicComposition';
 
 /** Checks relationships between manifests that no single manifest can prove alone. */
 export class UnitRegistryValidator {
-	validate(manifests: ComponentManifest[], files: ReadonlySet<string>): string[] {
+	validate(
+		manifests: ComponentManifest[],
+		files: ReadonlySet<string>,
+		sources?: ReadonlyMap<string, SourceFile>
+	): string[] {
 		const active = manifests.filter((manifest) => manifest.status === 'active');
-		const known = new Set(active.map((manifest) => manifest.id));
+		const identifiers = active.map((manifest) => manifest.id);
+		const known = new Set(identifiers);
 		return [
 			...compositionFindings(active),
+			...registryOwnershipFindings(identifiers, active, sources),
 			...active.flatMap((unit) => this.missingSource(unit, files)),
 			...active.flatMap((unit) => this.helperExamples(unit)),
 			...active.flatMap((unit) => this.helperSources(unit)),

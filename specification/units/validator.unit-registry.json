@@ -3,38 +3,76 @@
 	"id": "validator.unit-registry",
 	"kind": "validator",
 	"title": "UnitRegistryValidator",
-	"responsibility": "Owns the UnitRegistryValidator input validation.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Checks active registry identities, source ownership, declared relationships and reviewed canonical dependency boundaries.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/validators/UnitRegistryValidator.ts",
-			"src/validators/development-tooling/UnitRegistryValidator.ts"
+			"src/validators/development-tooling/UnitRegistryValidator.ts",
+			"src/validators/development-tooling/unit-registry-validator/registryOwnershipFindings.ts"
 		],
-		"symbols": ["UnitRegistryValidator", "UnitRegistryValidator", "UnitRegistryValidator.validate"]
+		"symbols": [
+			"UnitRegistryValidator",
+			"UnitRegistryValidator",
+			"UnitRegistryValidator.validate",
+			"registryOwnershipFindings"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "UnitRegistryValidator.validate.manifests",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "All registry manifests; active entries are validated while retired entries remain available for lineage checks."
 			},
 			{
 				"name": "UnitRegistryValidator.validate.files",
 				"type": "ReadonlySet<string>",
-				"required": true
+				"required": true,
+				"description": "Indexed source paths used to detect missing owned files."
+			},
+			{
+				"name": "UnitRegistryValidator.validate.sources",
+				"type": "ReadonlyMap<string, SourceFile>",
+				"required": false,
+				"description": "Optional indexed source facts; omitted means canonical import checks are unavailable. The CLI supplies this map."
+			},
+			{
+				"name": "registryOwnershipFindings.identifiers",
+				"type": "string[]",
+				"required": true,
+				"description": "Active IDs projected by the caller using its existing collection admission behavior."
+			},
+			{
+				"name": "registryOwnershipFindings.units",
+				"type": "ComponentManifest[]",
+				"required": true,
+				"description": "Active manifests, including owned sources and canonical runtime entries."
+			},
+			{
+				"name": "registryOwnershipFindings.sources",
+				"type": "ReadonlyMap<string, SourceFile>",
+				"required": false,
+				"description": "Optional indexed source facts for the explicitly reviewed canonical owner cohort; omitted skips dependency inspection."
 			}
 		],
 		"outputs": [
 			{
 				"name": "UnitRegistryValidator.validate",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Diagnostics for invalid composition, duplicate identities or source owners, missing sources, helpers, configs, dependencies, lineage and reviewed canonical backedges."
+			},
+			{
+				"name": "registryOwnershipFindings",
+				"type": "string[]",
+				"description": "Duplicate identity diagnostics and, when sources are supplied, reviewed canonical forwarding backedges or unread-source diagnostics."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "UnitRegistryValidator.validate",
@@ -42,18 +80,59 @@
 					{
 						"name": "UnitRegistryValidator.validate.manifests",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "All registry manifests; active entries are validated while retired entries remain available for lineage checks."
 					},
 					{
 						"name": "UnitRegistryValidator.validate.files",
 						"type": "ReadonlySet<string>",
-						"required": true
+						"required": true,
+						"description": "Indexed source paths used to detect missing owned files."
+					},
+					{
+						"name": "UnitRegistryValidator.validate.sources",
+						"type": "ReadonlyMap<string, SourceFile>",
+						"required": false,
+						"description": "Optional indexed source facts; omitted means canonical import checks are unavailable. The CLI supplies this map."
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRegistryValidator.validate",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Diagnostics for invalid composition, duplicate identities or source owners, missing sources, helpers, configs, dependencies, lineage and reviewed canonical backedges."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "registryOwnershipFindings",
+				"inputs": [
+					{
+						"name": "registryOwnershipFindings.identifiers",
+						"type": "string[]",
+						"required": true,
+						"description": "Active IDs projected by the caller using its existing collection admission behavior."
+					},
+					{
+						"name": "registryOwnershipFindings.units",
+						"type": "ComponentManifest[]",
+						"required": true,
+						"description": "Active manifests, including owned sources and canonical runtime entries."
+					},
+					{
+						"name": "registryOwnershipFindings.sources",
+						"type": "ReadonlyMap<string, SourceFile>",
+						"required": false,
+						"description": "Optional indexed source facts for the explicitly reviewed canonical owner cohort; omitted skips dependency inspection."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registryOwnershipFindings",
+						"type": "string[]",
+						"description": "Duplicate identity diagnostics and, when sources are supplied, reviewed canonical forwarding backedges or unread-source diagnostics."
 					}
 				],
 				"errors": [],
@@ -63,6 +142,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.unit-lineage",
 			"via": "import",
@@ -89,7 +173,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["unit-registry-ownership"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
