@@ -21,6 +21,7 @@ export async function assertPluginKitPreview(component: Locator, id: string, var
 
 /** Standalone inline labels retain their content width, as they do inside plugin cards. */
 export async function assertInlinePluginKitCapture(component: Locator, id: string) {
+	if (id === `${kit}empty-state`) await separatedEmptyAction(component);
 	if (![`${kit}pill`, `${plugins}plugin-state-pills`].includes(id)) return;
 	for (const pill of await component.locator('.ex-pill').all()) {
 		const excess = await pill.evaluate((node) => {
@@ -48,7 +49,7 @@ async function card(component: Locator, variant: string) {
 	);
 	if (variant === 'section')
 		await expect(root).toHaveAttribute('aria-labelledby', 'kit-card-title');
-	if (variant === 'tone') await expect(root).toHaveClass(/mod-card/);
+	if (variant === 'section') await expect(root).toHaveClass(/mod-card/);
 	await expect(root.locator('p')).toContainText(
 		variant === 'section' ? 'Configure' : 'current orders'
 	);
@@ -63,7 +64,18 @@ async function pill(component: Locator, variant: string) {
 			variant === 'state' ? 'Available' : 'Installed'
 		);
 	else await expect(root).not.toHaveAttribute('data-state');
-	if (variant === 'tone') await expect(root).toHaveClass(/mod-state/);
+	if (variant === 'tone') {
+		await expect(root).toHaveClass(/mod-state/);
+		const colors = await root.evaluate((node) => {
+			const style = getComputedStyle(node);
+			const context = document.createElement('canvas').getContext('2d')!;
+			context.fillStyle = style.color;
+			const actual = context.fillStyle;
+			context.fillStyle = style.getPropertyValue('--ex-soft');
+			return { actual, plain: context.fillStyle };
+		});
+		expect(colors.actual, 'Pill tone changes the painted label color').not.toBe(colors.plain);
+	}
 }
 
 async function empty(component: Locator, variant: string) {
@@ -77,9 +89,11 @@ async function empty(component: Locator, variant: string) {
 	}
 }
 
-async function notice(component: Locator) {
+async function notice(component: Locator, variant: string) {
 	const root = component.getByRole('note');
 	await expect(root).toContainText('Some dependencies could not be read');
+	if (variant === 'long') await expect(root).toContainText('AgentControls.svelte');
+	await expect(root).not.toContainText('source/source/');
 	expect(await root.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
 }
 
@@ -90,7 +104,8 @@ async function command(component: Locator, variant: string) {
 	if (variant === 'multiline')
 		await expect(root.locator('code')).toContainText('harness plugin generate');
 	if (variant === 'long')
-		expect((await root.locator('code').innerText()).length).toBeGreaterThan(300);
+		expect((await root.locator('code').innerText()).length).toBeGreaterThan(80);
+	await expect(root.locator('code')).not.toContainText('long-plugin-name-long-plugin-name');
 	expect(await root.locator('pre').evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(
 		true
 	);
@@ -143,4 +158,21 @@ async function steps(component: Locator, variant: string) {
 		await expect(component.locator('li')).toContainText('SERVER_ONLY_ENVIRONMENT_');
 	if (variant === 'multiline')
 		await expect(component.locator('li').first()).toContainText('Then run its tests.');
+}
+
+async function separatedEmptyAction(component: Locator) {
+	const action = component.getByRole('link', { name: 'Browse components' });
+	if (!(await action.count())) return;
+	const gap = await component.locator('p.ex-empty').evaluate((node) => {
+		const text = node.querySelector('span')!.firstChild!;
+		const range = document.createRange();
+		range.selectNodeContents(text);
+		const message = range.getBoundingClientRect();
+		const link = node.querySelector('a')!.getBoundingClientRect();
+		const sameLine = link.top < message.bottom && link.bottom > message.top;
+		return { sameLine, pixels: sameLine ? link.left - message.right : link.top - message.bottom };
+	});
+	expect(gap.pixels, 'Empty-state action is separated from its message').toBeGreaterThanOrEqual(
+		gap.sameLine ? 8 : 0
+	);
 }

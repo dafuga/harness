@@ -28,7 +28,7 @@
 				"name": "Pill.state",
 				"type": "string",
 				"required": false,
-				"description": "Optional state exposed as data-state for styling."
+				"description": "Optional state exposed as data-state for styling. Defaults to JavaScript undefined, omitting data-state."
 			},
 			{
 				"name": "Pill.children",
@@ -44,7 +44,13 @@
 				"description": "An inline span with the shared ex-pill style."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Child snippet error",
+				"type": "propagated",
+				"description": "Errors thrown while rendering the required children snippet propagate to the caller."
+			}
+		],
 		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []

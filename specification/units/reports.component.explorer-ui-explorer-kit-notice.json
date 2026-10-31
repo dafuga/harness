@@ -31,7 +31,13 @@
 				"description": "A paragraph with role note in quiet supporting text."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Child snippet error",
+				"type": "propagated",
+				"description": "Errors thrown while rendering the required children snippet propagate to the caller."
+			}
+		],
 		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []

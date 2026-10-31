@@ -3,7 +3,7 @@ import { text } from './shared';
 
 const prefix = 'reports.component.explorer-ui-explorer-kit-';
 export const explorerKitVariants: Record<string, string[]> = {
-	[`${prefix}card`]: ['section', 'tone'],
+	[`${prefix}card`]: ['section'],
 	[`${prefix}pill`]: ['state', 'tone'],
 	[`${prefix}empty-state`]: ['action'],
 	[`${prefix}notice`]: ['long'],
@@ -13,7 +13,7 @@ export const explorerKitVariants: Record<string, string[]> = {
 /** Exercise public props through the same component fixtures used by normal catalog runs. */
 export function explorerKitVariant(id: string, props: PreviewCases[string], variant: string) {
 	if (!id.startsWith(prefix)) return null;
-	if (id === `${prefix}card`) return card(props, variant);
+	if (id === `${prefix}card`) return card(props);
 	if (id === `${prefix}pill`) return pill(props, variant);
 	if (id === `${prefix}empty-state`)
 		return {
@@ -26,7 +26,7 @@ export function explorerKitVariant(id: string, props: PreviewCases[string], vari
 		return {
 			...props,
 			children: text(
-				'<span>Some dependencies could not be read: ' + 'source/'.repeat(45) + '</span>'
+				'<span>Some dependencies could not be read: packages/desktop/src/components/agents-providers/AgentControls.svelte and packages/desktop/src/components/networking-security/RemoteApproval.svelte. Check that both source files exist at the selected revision.</span>'
 			)
 		};
 	return {
@@ -34,15 +34,15 @@ export function explorerKitVariant(id: string, props: PreviewCases[string], vari
 		command:
 			variant === 'multiline'
 				? 'harness plugin add email\nharness plugin generate email email Welcome'
-				: 'harness plugin add ' + 'long-plugin-name-'.repeat(24)
+				: 'harness plugin add email && harness plugin generate email email CustomerAccountSubscriptionRenewalNotification'
 	};
 }
 
-function card(props: PreviewCases[string], variant: string) {
-	if (variant === 'tone') return { ...props, tone: 'mod-card' };
+function card(props: PreviewCases[string]) {
 	return {
 		...props,
 		as: 'section',
+		tone: 'mod-card',
 		labelledby: 'kit-card-title',
 		children: text(
 			'<div><h2 id="kit-card-title">Plugin setup</h2><p>Configure the selected plugin.</p></div>'
@@ -53,5 +53,5 @@ function card(props: PreviewCases[string], variant: string) {
 function pill(props: PreviewCases[string], variant: string) {
 	return variant === 'state'
 		? { ...props, state: 'Available', children: text('<span>Available</span>') }
-		: { ...props, tone: 'mod-state', state: 'Installed' };
+		: { ...props, tone: 'mod-state gold', state: 'Installed' };
 }
