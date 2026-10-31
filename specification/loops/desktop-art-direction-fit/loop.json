@@ -2,7 +2,7 @@
 	"name": "desktop-art-direction-fit",
 	"goal": "Keep the default art direction fully visible in expanded game-view settings at every viewport",
 	"createdAt": "2026-10-31T19:54:57.552Z",
-	"updatedAt": "2026-10-31T19:54:59.034Z",
+	"updatedAt": "2026-10-31T19:57:04.195Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:57:02.687Z",
+			"evidence": "8842389acc72939a7ba63fba1d54d7124a95dd1726610b0e2662af6f980ed2b0; six desktop/tablet cases pass, all three mobile cases fail the actual content-versus-client-height assertion after capture."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:57:04.195Z",
+			"evidence": "Give art direction four rows so the unchanged default text fits fully at mobile width, including read-only settings. No prop/default contract or styling changes."
 		},
 		{
 			"id": "green",

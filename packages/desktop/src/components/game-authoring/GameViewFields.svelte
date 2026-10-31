@@ -89,7 +89,7 @@
 		</hx-div>
 		<hx-label class="field style">
 			<hx-small>Art direction</hx-small>
-			<hx-textarea rows="2" value={view.style} {readonly} oninput={restyle}></hx-textarea>
+			<hx-textarea rows="4" value={view.style} {readonly} oninput={restyle}></hx-textarea>
 		</hx-label>
 		{#if !readonly}<hx-button type="button" class="new" onclick={createLevel}>New level</hx-button
 			>{/if}
