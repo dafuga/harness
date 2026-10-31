@@ -86,6 +86,7 @@
 				class:evidence-grid={galleryCard}
 				class:provider-picker={id.includes('provider-picker')}
 				class:account={id === 'hub.component.account-menu'}
+				class:desktop-status={id === 'desktop.component.status-icon'}
 				class:ex-content={explorer && !fullFrame}
 				data-preview-unit={unit.id}
 				data-preview-frame={fullFrame ? 'full' : 'component'}
@@ -159,6 +160,10 @@
 	}
 	.preview-content {
 		min-width: 0;
+	}
+	.preview-content.desktop-status {
+		display: flex;
+		justify-content: flex-end;
 	}
 	.preview-content[data-preview-unit$='explorer-kit-pill'],
 	.preview-content[data-preview-unit$='plugins-plugin-state-pills'] {
