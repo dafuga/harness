@@ -66,6 +66,11 @@ async function composer(component: Locator, variant: string) {
 export async function assertDesktopCapturedState(component: Locator, id: string, variant: string) {
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
+	if (id === 'desktop.component.game-preview' && variant === 'readonly')
+		await expect(
+			component.getByRole('status').filter({ hasText: /AI/ }),
+			'Read-only previews explain why AI video is disabled'
+		).toContainText(/read-only/i);
 	if (id === 'desktop.component.game-create' && variant === 'unavailable') {
 		await expect(component.getByRole('form', { name: 'New project' })).toBeVisible();
 		await expect(component.getByText('This desktop app cannot create projects yet.')).toBeVisible();
