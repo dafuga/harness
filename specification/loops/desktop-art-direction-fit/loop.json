@@ -2,7 +2,7 @@
 	"name": "desktop-art-direction-fit",
 	"goal": "Keep the default art direction fully visible in expanded game-view settings at every viewport",
 	"createdAt": "2026-10-31T19:54:57.552Z",
-	"updatedAt": "2026-10-31T19:57:04.195Z",
+	"updatedAt": "2026-10-31T19:57:57.030Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:57:57.030Z",
+			"evidence": "7737f62d06eeccddf142f359adf43911bd6093b5d672be31a33d991c1c03a63f; all nine unchanged cases pass at the fix commit with the same frozen profile. Every green PNG inspected; all mobile default text is completely visible."
 		},
 		{
 			"id": "verify",
