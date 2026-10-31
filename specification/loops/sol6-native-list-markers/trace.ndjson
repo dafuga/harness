@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-31T19:55:47.607Z","name":"sol6-native-list-markers","goal":"Native list catalog states show markers and sibling items at every viewport.","template":"regression-prevention","templateLineage":["regression-prevention"]}
+{"event":"step.completed","timestamp":"2026-10-31T19:56:34.281Z","loop":"sol6-native-list-markers","step":"spec","evidence":"Catalog list examples inherited marker resets and supplied one item. Visual review rejected the earlier acceptance."}
+{"event":"step.completed","timestamp":"2026-10-31T19:56:35.101Z","loop":"sol6-native-list-markers","step":"coverage","evidence":"Existing component-catalog-previews cases checked text, not markers or siblings. The shared guard now checks all native list states."}
