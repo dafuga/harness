@@ -2,7 +2,7 @@
 	"name": "sol6-anchor-affordance",
 	"goal": "Native anchor examples show realistic linked text with visible affordance and plain unlinked content at every viewport.",
 	"createdAt": "2026-10-31T18:16:33.048Z",
-	"updatedAt": "2026-10-31T18:16:33.048Z",
+	"updatedAt": "2026-10-31T18:41:28.044Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -11,27 +11,37 @@
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:31:28.102Z",
+			"evidence": "Existing anchor reset made catalog links plain; prior completion trusted href and text checks. Visual review rejected the missing affordance."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:31:28.958Z",
+			"evidence": "The normal catalog lacked affordance checks. Its linked states now require underline, link role, destination and focus, with captures before assertions."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:31:30.108Z",
+			"evidence": "73fc1652fa expects underline but receives none. Six linked cases fail; nine canonical before captures are attached."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:31:30.863Z",
+			"evidence": "Supply native caller underline styling and realistic copy, keep unlinked content plain, and retain the same responsive cases."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:41:28.044Z",
+			"evidence": "Native caller styling and realistic copy are implemented. The unchanged guard passes all 321 responsive cases in the working fixture."
 		},
 		{
 			"id": "green",
