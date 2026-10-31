@@ -91,14 +91,23 @@ function selectedCapture(side: ExplorerSide | null, options: HarnessApiOptions):
 }
 
 function matchesCapture(item: ExplorerCapture, options: HarnessApiOptions): boolean {
-	const passedFocused =
-		options.scenario === 'focused' &&
-		item.focused?.status === 'passed' &&
-		item.usable &&
-		item.capture.status === 'passed';
+	const passedFocused = matchesFocusedSelection(item, options);
 	if (item.capture.kind !== 'screenshot' || (item.standing === 'unvalidated' && !passedFocused))
 		return false;
 	if (!item.usable && item.capture.media === null) return false;
+	return matchesSelectors(item, options);
+}
+
+function matchesFocusedSelection(item: ExplorerCapture, options: HarnessApiOptions): boolean {
+	return (
+		options.scenario === 'focused' &&
+		item.focused?.status === 'passed' &&
+		item.usable &&
+		item.capture.status === 'passed'
+	);
+}
+
+function matchesSelectors(item: ExplorerCapture, options: HarnessApiOptions): boolean {
 	return (
 		(!options.viewport || item.capture.viewport === options.viewport) &&
 		(!options.state || item.state === options.state) &&
