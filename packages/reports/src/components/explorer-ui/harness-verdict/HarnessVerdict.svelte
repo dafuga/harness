@@ -186,7 +186,15 @@
 		white-space: normal;
 		overflow-wrap: anywhere;
 		overflow-y: auto;
+		scrollbar-gutter: stable;
 		overscroll-behavior: contain;
+	}
+	.hx-tip::-webkit-scrollbar {
+		width: var(--hx-space-8);
+	}
+	.hx-tip::-webkit-scrollbar-thumb {
+		border-radius: var(--hx-radius-pill);
+		background: var(--hx-color-text-muted);
 	}
 	.hx-tip[hidden] {
 		display: none;

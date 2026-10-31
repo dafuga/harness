@@ -47,7 +47,7 @@
 		href={sourceLink}
 		relativeTo={entity?.category === 'services' ? 'src/services/' : ''}
 	>
-		{#snippet children(path)}
+		{#snippet children(path: string)}
 			{#if entity && nav}<SourceCodeAction {entity} {nav} {path} />{/if}
 		{/snippet}
 	</SourceFileList>
@@ -58,7 +58,7 @@
 		empty="No test files recorded at this revision."
 		href={sourceLink}
 	>
-		{#snippet children(path)}
+		{#snippet children(path: string)}
 			{#if entity && nav}<SourceCodeAction {entity} {nav} {path} />{/if}
 		{/snippet}
 	</SourceFileList>
@@ -68,6 +68,10 @@
 </hx-section>
 
 <style>
+	.ex-card :global(.source-files a .source-name) {
+		text-decoration: underline;
+		text-underline-offset: var(--hx-space-3);
+	}
 	.source-tests-title {
 		margin-top: var(--hx-space-28);
 	}

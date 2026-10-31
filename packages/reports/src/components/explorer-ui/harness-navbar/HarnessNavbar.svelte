@@ -99,3 +99,11 @@
 		</hx-div>
 	{/if}
 </hx-header>
+
+<style>
+	.hx-search :global(.entity-search-field input) {
+		border: 0;
+		outline: 0;
+		box-shadow: none;
+	}
+</style>
