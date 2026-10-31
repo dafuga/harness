@@ -124,7 +124,7 @@
 				<hx-span>No commit read so far is recorded as a change of this entity.</hx-span>
 			</hx-p>
 		{:else}
-			<hx-div class="ex-scroll">
+			<hx-div class="ex-scroll" style:--ex-profile={JSON.stringify(shown && ` (${shown})`)}>
 				<hx-table class="ex-table ex-history" aria-label={`History of ${entity.name}`}>
 					<hx-thead>
 						<hx-tr>
@@ -164,3 +164,57 @@
 		{/if}
 	</hx-section>
 </hx-div>
+
+<style>
+	/* A phone stacks each commit under visible labels; the headers stay for assistive technology. */
+	@media (max-width: 480px) {
+		.ex-table.ex-history {
+			overflow: hidden;
+		}
+		.ex-table.ex-history :global(thead) {
+			position: absolute;
+			width: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+		}
+		.ex-table.ex-history :global(tbody tr) {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+		.ex-table.ex-history :global(tbody tr + tr) {
+			border-top: var(--hx-border-thin) solid var(--ex-line);
+		}
+		.ex-table.ex-history :global(tbody tr.viewed td:not(:nth-child(5))) {
+			box-shadow: inset var(--hx-border-heavy) 0 0 var(--ex-gold);
+		}
+		.ex-table.ex-history :global(tbody td) {
+			min-width: 0;
+			padding: var(--hx-space-6) var(--hx-space-12);
+			border-top: 0;
+		}
+		.ex-table.ex-history :global(tbody td:not(:nth-child(4), :nth-child(5))) {
+			grid-column: 1 / -1;
+		}
+		.ex-table.ex-history :global(tbody td::before) {
+			display: block;
+			margin-bottom: var(--hx-space-4);
+			color: var(--ex-soft);
+			content: 'Date';
+		}
+		.ex-table.ex-history :global(tbody td:nth-child(2)::before) {
+			content: 'Commit';
+		}
+		.ex-table.ex-history :global(tbody td:nth-child(3)::before) {
+			content: 'Behavior change';
+		}
+		.ex-table.ex-history :global(tbody td:nth-child(4)::before) {
+			content: 'Size';
+		}
+		.ex-table.ex-history :global(tbody td:nth-child(5)::before) {
+			content: 'Complexity';
+		}
+		.ex-table.ex-history :global(tbody td:nth-child(6)::before) {
+			content: 'Latency' var(--ex-profile);
+		}
+	}
+</style>
