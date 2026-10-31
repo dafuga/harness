@@ -1,6 +1,7 @@
 import { expect, type Locator } from '@playwright/test';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 import { assertReadonlyGameFields } from './desktopReadonlyAssertions';
+import { assertDesktopArtifactCapture } from './desktopArtifactAssertions';
 
 /** Check the actual state branches, so a successful screenshot cannot silently show the default. */
 export async function assertDesktopState(component: Locator, id: string, variant: string) {
@@ -71,6 +72,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertArtDirectionFits(component, id, variant);
 	await assertHistoryFixtureContent(component, id, variant);
 	await assertReadonlyGameFields(component, id, variant);
+	await assertDesktopArtifactCapture(component, id, variant);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
