@@ -9,3 +9,5 @@ Shared fixture repairs use realistic synthetic identities and readable authored 
 The unchanged standard catalog matrix is strengthened after its capture checkpoint. Product red/green covers summary rendering, mobile measurements/history, source links, navbar focus, assertion layout, console error presentation and long tooltip scrolling. Default behavior, registered identities and existing case counts remain stable.
 
 The unchanged 48-case regression passes at 2394090329 against committed red e7bf6deb62. A later fixture-only correction binds long history notes to the displayed entity and asserts its disclosure. Fresh full-state recordings/API fetches and normal qualification follow; inherited broad-check failures keep full verification pending.
+
+Inspection of the frozen tablet capture at fc77cca883 exposed a remaining History gap: geometry checks ran only on mobile and compared cells with the browser instead of their clipping frame. The existing catalog now checks all History cells against that frame at every viewport. The next matched red/green pair covers the existing History states without adding cases.
