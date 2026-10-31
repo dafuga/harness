@@ -3,7 +3,7 @@
 	"id": "desktop.component.choice-dialog",
 	"kind": "component",
 	"title": "Choice dialog",
-	"responsibility": "Wraps supplied choices in a modal opened from an icon button.",
+	"responsibility": "Opens supplied choices beside their trigger in a keyboard-accessible modal, preserving panel headings and viewport bounds.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -44,7 +44,7 @@
 				"name": "ChoiceDialog.activeCount",
 				"type": "number",
 				"required": false,
-				"description": "Number of active jobs to show in the deployment dialog heading."
+				"description": "Optional count forwarded to the trigger data-active attribute. Defaults to JavaScript undefined, omitting the attribute."
 			},
 			{
 				"name": "ChoiceDialog.width",
@@ -75,7 +75,7 @@
 				"name": "ChoiceDialog.onopen",
 				"type": "() => void",
 				"required": false,
-				"description": "Callback invoked when the dialog opens so its latest contents can be loaded."
+				"description": "Optional callback called after showing the dialog; returned work is not awaited. Defaults to JavaScript undefined, with no callback."
 			},
 			{
 				"name": "ChoiceDialog.children",
@@ -87,19 +87,31 @@
 				"name": "ChoiceDialog.footer",
 				"type": "Snippet<[close: () => void]>",
 				"required": false,
-				"description": "Optional action row kept at the bottom of the dialog while the body scrolls; receives the same close callback."
+				"description": "Optional sticky action-row snippet receiving the close callback. Defaults to JavaScript undefined, with no footer."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ChoiceDialog",
 				"type": "markup",
-				"description": "Trigger and modal. Opening focuses an enabled aria-pressed=true choice when present. Escape closes this dialog and stops propagation; backdrop click also closes it. Closing returns focus to the trigger."
+				"description": "Trigger and anchored modal, clamped to the viewport and clear of an enclosing panel header. Overflow scrolls. Opening focuses the selected enabled choice; Escape or backdrop click closes only this picker and returns focus to its trigger."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Native dialog error",
+				"type": "thrown",
+				"description": "The browser may reject showModal when the dialog cannot enter its modal state; the component does not suppress that exception."
+			},
+			{
+				"name": "Caller snippet or callback error",
+				"type": "propagated",
+				"description": "Errors from the icon, children, footer or onopen callback propagate; the component does not catch them."
+			}
+		],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "declared"
 	},
 	"dependencies": [
 		{

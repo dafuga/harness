@@ -33,7 +33,7 @@ export function chatVariantProps(id: string, props: PreviewCases[string], varian
 		? {
 				...props,
 				navigation: text(
-					'<nav aria-label="Project chat"><a href="/harness">Project activity</a></nav>'
+					'<nav aria-label="Project chat" style="padding:var(--hx-space-8) var(--hx-space-14);border-bottom:var(--hx-border-thin) solid var(--hx-color-border)"><a href="/harness" style="color:var(--hx-color-primary);text-decoration:underline;text-underline-offset:var(--hx-space-2)">Project activity</a></nav>'
 				)
 			}
 		: null;
