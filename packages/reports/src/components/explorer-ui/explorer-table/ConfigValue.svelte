@@ -71,7 +71,7 @@
 		</hx-ul>
 	{:else if typeof literal === 'string'}
 		<hx-span class="string" role="img" aria-label={`String ${literal}`}
-			><CodeLine text={literal} /></hx-span
+			><CodeLine text={literal} mode={literal.includes('\n') ? 'wrap' : 'clip'} /></hx-span
 		>
 	{:else if !mark}<CodeLine text={source} className="source" />{/if}
 </hx-div>

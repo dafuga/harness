@@ -126,7 +126,7 @@ async function explorer(component: Locator, variant: string) {
 		});
 		await expect(table.getByRole('link', { name: /^Open / }).first()).toBeInViewport();
 	}
-	if (['long-string', 'multiline-string', 'expression', 'long-expression'].includes(variant)) {
+	if (['long-string', 'expression', 'long-expression'].includes(variant)) {
 		const code = table.locator('.code-line code');
 		await expect(code).toHaveAttribute('title', (await code.textContent()) ?? '');
 		await expect(code).toHaveCSS('white-space', 'nowrap');

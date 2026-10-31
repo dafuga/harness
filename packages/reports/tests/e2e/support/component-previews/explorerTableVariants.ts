@@ -2,7 +2,12 @@ import type { CatalogRow } from '../../../../src/utils/explorer-ui/entityCatalog
 import type { ConfigValueNode } from '../../../../../../src/utils/explorer-ui/unitMetadata';
 import type { Kind } from '../../../../src/components/explorer-ui/ExplorerTable.types';
 import { entityCatalog } from '../../../../src/utils/explorer-ui/entityCatalog';
-import { entities, reading } from './explorerData';
+import { entities, reading, shown } from './explorerData';
+import { withApis } from '../../../../test/entityApiFixtures';
+import { platformFixture } from '../../../../test/platformFixture';
+import { explorerEntities } from '../../../../src/utils/explorerEntities';
+import { explorerRelations } from '../../../../src/utils/explorerRelations';
+import { routeIds, routeUnits } from './routeUnits';
 import type { PreviewCases } from './shared';
 
 /** Keep decoded strings separate from committed expressions and collection inspection. */
@@ -15,7 +20,7 @@ export function explorerTableVariant(props: PreviewCases[string], variant: strin
 		return {
 			...props,
 			category: variant,
-			rows: entityCatalog(entities, variant as Kind, reading.relations)
+			rows: categoryRows(variant as Kind)
 		};
 	const row = rows[0];
 	const structure: ConfigValueNode =
@@ -48,6 +53,59 @@ export function explorerTableVariant(props: PreviewCases[string], variant: strin
 			}
 		]
 	};
+}
+
+/** Every category state supplies the kind of row it promises to demonstrate. */
+function categoryRows(category: Kind): CatalogRow[] {
+	if (category === 'platforms') return platformRows();
+	if (!['apis', 'layouts', 'models', 'types'].includes(category))
+		return entityCatalog(entities, category, reading.relations);
+	const purposes: Record<string, string> = {
+		[routeIds.shell]: 'Frames the order management pages.',
+		[routeIds.model]: 'Stores an order and its delivery status.',
+		[routeIds.types]: 'Describes an order submitted by a customer.'
+	};
+	const head = withApis({
+		...shown.head,
+		registry: {
+			...shown.head.registry,
+			units: [
+				...shown.head.registry.units,
+				...routeUnits.map((unit) => ({ ...unit, responsibility: purposes[unit.id] }))
+			]
+		}
+	});
+	return entityCatalog(explorerEntities(head), category, (id) => explorerRelations(head, id));
+}
+
+/** A configured platform is a catalog projection, never proof of a deployment. */
+function platformRows(): CatalogRow[] {
+	const platform = platformFixture.entries.find((entry) => entry.id === 'web')!;
+	const seed = entities.find((entity) => entity.category === 'configs')!;
+	const unit = {
+		...seed.unit,
+		id: platform.id,
+		title: 'Website',
+		responsibility: platform.summary,
+		owns: { source: platform.sources, symbols: [] },
+		dependencies: [],
+		contract: { inputs: [], outputs: [], errors: [] },
+		runtime: { kind: 'module', targets: [] }
+	};
+	const entity = {
+		...seed,
+		unit,
+		id: platform.id,
+		name: 'Website',
+		category: 'platforms' as const,
+		purpose: platform.summary,
+		verdict: {
+			passed: false,
+			label: 'Not proven',
+			reasons: ['No deployment verification is recorded.']
+		}
+	};
+	return entityCatalog([entity], 'platforms', () => ({ pages: [], usedBy: [], components: [] }));
 }
 function stringValue(variant: string): string | undefined {
 	if (variant === 'long-string') return 'Ready to ship after release review. '.repeat(20);

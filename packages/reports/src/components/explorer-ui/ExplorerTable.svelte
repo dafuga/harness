@@ -112,6 +112,12 @@
 				{/if}
 			</hx-tr>
 		{/snippet}
+		{#snippet empty()}
+			<hx-tr><hx-td colspan={category === 'configs' ? 2 : shown.length + (verification ? 3 : 2)}
+					>No rows to display.</hx-td
+				></hx-tr
+			>
+		{/snippet}
 		{#snippet children()}
 			{#each rows as row (row.id)}
 				<hx-tr>
