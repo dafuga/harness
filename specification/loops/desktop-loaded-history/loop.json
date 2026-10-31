@@ -2,7 +2,7 @@
 	"name": "desktop-loaded-history",
 	"goal": "Show a real returned older event after loading more Desktop history",
 	"createdAt": "2026-10-31T19:03:09.319Z",
-	"updatedAt": "2026-10-31T19:03:10.931Z",
+	"updatedAt": "2026-10-31T19:04:09.624Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:04:08.540Z",
+			"evidence": "e13116755e2400ef1c52e252945e2aea84442581ab5daf0cd9a87bdeb242ae3a; the three existing more cases fail because no earlier event is painted."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:04:09.624Z",
+			"evidence": "The synthetic history bridge now returns a real older event with its own identity, date, explanation and known commit. Product history behavior is unchanged."
 		},
 		{
 			"id": "green",

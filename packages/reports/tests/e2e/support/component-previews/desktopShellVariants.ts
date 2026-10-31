@@ -109,7 +109,20 @@ function history(props: PreviewProps, data: DesktopData, variant: string): Previ
 			loadedPages: 1
 		};
 	if (variant === 'more')
-		data.bridge.history = async () => ({ entries: [], complete: true, nextPage: null });
+		data.bridge.history = async () => ({
+			entries: [
+				{
+					...entity.history[0],
+					id: 'preview-earlier-history-page',
+					at: '2026-10-09T09:00:00Z',
+					title: 'Earlier API decision',
+					detail: 'Keep order filtering synchronous and preserve the original order of matches.',
+					commit: commits.first
+				}
+			],
+			complete: true,
+			nextPage: null
+		});
 	if (variant === 'loading') data.bridge.history = () => new Promise(() => {});
 	if (variant === 'error')
 		data.bridge.history = async () => {
