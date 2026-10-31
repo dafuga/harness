@@ -129,7 +129,6 @@
 		stroke-width: 2;
 		stroke-linecap: round;
 	}
-	/* The icon and the close button: under classes, so no host rule for buttons restyles them. */
 	.entity-search-trigger,
 	.entity-search :global(.viewer-dialog .viewer-header button) {
 		display: grid;
@@ -156,7 +155,6 @@
 		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-border-thin);
 	}
-	/* The shared dialog at this search's own size, near the top, in navy and gold on either host. */
 	.entity-search :global(.viewer-dialog[open]) {
 		display: flex;
 		flex-direction: column;
@@ -211,6 +209,9 @@
 		color: var(--hx-color-text);
 		font: inherit;
 		font-size: var(--hx-type-size-base);
+	}
+	.entity-search :global(.entity-search-field input:focus-visible) {
+		outline: 0;
 	}
 	input::placeholder {
 		color: var(--hx-color-text-muted, var(--hx-color-text-muted));

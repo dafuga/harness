@@ -75,7 +75,7 @@ export const reportCases: PreviewCases = {
 	},
 	'reports.component.entity-search': {
 		entries,
-		scope: { label: 'Preview project', pinned: null },
+		scope: { label: 'Orders', pinned: null },
 		href: () => '/components',
 		open: noop
 	},
