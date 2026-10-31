@@ -10,6 +10,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'harness-harness-verdict': verdictState,
 	'harness-harness-navbar': navbarState,
 	'harness-harness-action': actionState,
+	'harness-harness-selectors': selectorsState,
 	'shared-primitives-loading-state': loadingState,
 	'harness-harness-icon': iconState
 };
@@ -82,7 +83,9 @@ async function loadingState(component: Locator, variant: string) {
 	await component.page().emulateMedia({ reducedMotion: 'reduce' });
 	await expect(component.locator('.hx-loading-indicator')).toHaveCSS('animation-name', 'none');
 }
-async function iconState(component: Locator) {
+async function iconState(component: Locator, variant: string) {
+	if (variant !== 'decorative')
+		await expect(component.getByRole('img', { name: 'Component', exact: true })).toBeVisible();
 	await expect(component.locator('path')).toHaveAttribute('d', /\S+/);
 }
 
@@ -124,4 +127,18 @@ async function explorerState(component: Locator, id: string, variant: string) {
 	if (variant === 'empty') await expect(component).toContainText(/No .* are in the registry/);
 	if (id.endsWith('explorer-controls'))
 		await expect(component.getByRole('searchbox')).toBeVisible();
+}
+
+async function selectorsState(component: Locator, variant: string) {
+	if (!['tip', 'at-tip'].includes(variant)) return;
+	await expect(component.getByRole('combobox', { name: 'Branch', exact: true })).toHaveValue(
+		'feature/orders'
+	);
+	await expect(component.getByRole('combobox', { name: 'Commit', exact: true })).toHaveValue(
+		'b'.repeat(40)
+	);
+	await expect(component.locator('.report-select-value')).toHaveText(['feature/orders', 'bbbbbbb']);
+	const tip = component.getByRole('button', { name: 'Go to tip', exact: true });
+	if (variant === 'at-tip') await expect(tip).toBeDisabled();
+	else await expect(component.getByRole('link', { name: 'Go to tip', exact: true })).toBeVisible();
 }

@@ -54,8 +54,8 @@ export async function assertCatalogDetails(component: Locator, id: string, varia
 		await expect(component.locator('table.ex-history tbody > tr')).toHaveCount(1);
 		await expect(component.locator('td').first()).toHaveCSS('white-space', 'nowrap');
 	}
-	if (id === 'reports.component.harness-harness-icon' && !variant) {
-		await expect(component.getByRole('img', { name: 'Component', exact: true })).toBeVisible();
+	if (id === 'reports.component.harness-harness-icon') {
+		await expect(component.locator('svg')).toBeVisible();
 		await expect(component.locator('path')).toHaveAttribute('d', /\S+/);
 	}
 	if (id === 'hub.component.account-menu') {
