@@ -40,7 +40,7 @@
 			{
 				"name": "ProjectSwitcher",
 				"type": "markup",
-				"description": "Project name and an icon opening a grouped listbox of local-device/connected-computer and Shared projects. An empty list visibly says No projects yet. Busy state shows Loading project and disables opening choices and Add local project. Selection calls switchProject, then resets to the resulting project id. Local Add is shown only with a local bridge."
+				"description": "Project name and an icon opening a grouped listbox of local-device/connected-computer and Shared projects. With no projects, the dialog shows a normal No projects yet notice without a choice field. Busy state shows Loading project and disables opening choices and Add local project. Selection calls switchProject, then resets to the resulting project id. Local Add is shown only with a local bridge."
 			}
 		],
 		"errors": [
