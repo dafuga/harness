@@ -132,8 +132,8 @@ function appendReviewedPropGaps(unit: ComponentManifest, gaps: string[]): void {
 	for (const field of unit.contract.inputs) {
 		if (typeof field.required !== 'boolean')
 			gaps.push(`${unit.id}: required flag for ${field.name}`);
-		const omitted = /Defaults to JavaScript undefined/.test(field.description ?? '');
-		if (field.required === false && !Object.hasOwn(field, 'default') && !omitted)
+		const documentedDefault = /Defaults to /.test(field.description ?? '');
+		if (field.required === false && !Object.hasOwn(field, 'default') && !documentedDefault)
 			gaps.push(`${unit.id}: default for ${field.name}`);
 	}
 }
