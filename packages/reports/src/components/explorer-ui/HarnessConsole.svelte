@@ -108,8 +108,8 @@
 	onMount(async () => {
 		try {
 			index = await client.index();
-		} catch (reason) {
-			problem = reason instanceof Error ? reason.message : 'The history could not be loaded.';
+		} catch {
+			problem = 'The history could not be loaded. Refresh the page to try again.';
 		}
 		// The name of the repository this history was built from; a history without one names none.
 		repository = await client.activity().then(
@@ -133,8 +133,8 @@
 			(detail) => {
 				if (live()) head = detail;
 			},
-			(reason: unknown) => {
-				if (live()) problem = reason instanceof Error ? reason.message : String(reason);
+			() => {
+				if (live()) problem = 'This revision could not be loaded. Refresh the page to try again.';
 			}
 		);
 	});

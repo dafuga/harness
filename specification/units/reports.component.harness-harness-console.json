@@ -69,7 +69,7 @@
 			{
 				"name": "HarnessConsole",
 				"type": "markup",
-				"description": "Explorer header and selected screen, with loading, unavailable-address and missing-registry notices. Index and selected-revision failures become visible problem text; unavailable parent data becomes null."
+				"description": "Explorer header and selected screen, with loading, unavailable-address and missing-registry notices. Index and selected-revision failures show a concise load error with refresh guidance; unavailable parent data becomes null."
 			}
 		],
 		"errors": [

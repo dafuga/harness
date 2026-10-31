@@ -90,8 +90,13 @@
 				"description": "Current or before/after test panel. Reads artifacts when not supplied, ignores completion whose row-hash signature no longer matches, and shows pending or unknown rather than premature comparison. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict is shown only when the helper also reports passing results."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Navigation callback error",
+				"type": "propagated",
+				"description": "Errors from nav.href while rendering links or nav.go when following them propagate. Rejected recorded-artifact reads become an unknown behavior state."
+			}
+		],
 		"operations": [],
 		"initialization": []
 	},

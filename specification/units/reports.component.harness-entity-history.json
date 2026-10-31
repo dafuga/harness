@@ -71,7 +71,7 @@
 				"name": "EntityHistory.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Required revision reader. Failures are swallowed, leaving revision detail unknown rather than supplying false evidence."
+				"description": "Required revision reader. Promise rejections are swallowed, leaving revision detail unknown; synchronous exceptions propagate."
 			},
 			{
 				"name": "EntityHistory.nav",
@@ -84,11 +84,16 @@
 			{
 				"name": "EntityHistory",
 				"type": "markup",
-				"description": "Shows changed commits with direct revision links, relative dates, source size, complexity and profile-scoped latency. Long reasons remain inline; no selected-change panel or duplicate action."
+				"description": "Shows changed commits with direct links, relative dates, source size, complexity and profile-scoped latency. Phone rows stack under visible field labels; longer change reasons remain in an inline disclosure."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Reader or navigation callback error",
+				"type": "propagated",
+				"description": "Synchronous errors from client.revision, nav.href or nav.go propagate. Rejected revision promises are handled and leave the corresponding detail unknown."
+			}
+		],
 		"operations": [],
 		"initialization": []
 	},
