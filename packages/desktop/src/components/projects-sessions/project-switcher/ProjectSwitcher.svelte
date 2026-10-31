@@ -35,7 +35,7 @@
 				class="picker-field"
 				onchange={() => void choose(close)}
 				>Project<Select expanded label="Project" bind:value disabled={projects.length === 0}
-					>{#if projects.length === 0}<hx-option value="" disabled>No projects yet</hx-option
+					>{#if projects.length === 0}<hx-option value="">No projects yet</hx-option
 						>{/if}{#if local.length}<hx-optgroup
 							label={workspace.local ? 'On this device' : 'On your computer'}
 							>{#each local as item (item.id)}<hx-option value={item.id}>{item.name}</hx-option
@@ -109,5 +109,8 @@
 		max-width: none;
 		border-color: var(--hx-color-border);
 		background: var(--hx-color-surface-raised);
+	}
+	.picker-field :global(.report-select.disabled) {
+		opacity: var(--hx-opacity-secondary);
 	}
 </style>
