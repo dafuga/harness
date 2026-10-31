@@ -55,7 +55,7 @@
 				"name": "SourceFileList.href",
 				"type": "(path: string) => string | undefined",
 				"required": true,
-				"description": "Optional external GitHub destination for each path."
+				"description": "Required callback receiving each complete source path and returning its external destination URL or JavaScript undefined for a plain path. The display prefix does not change this argument."
 			},
 			{
 				"name": "SourceFileList.children",
@@ -68,10 +68,17 @@
 			{
 				"name": "SourceFileList",
 				"type": "markup",
-				"description": "Responsive file rows with links opening in a new tab, or plain paths when no GitHub repository is known. Empty input states that no file is recorded."
+				"description": "Responsive file rows with visibly underlined linked filenames opening in a new tab, or plain paths when href returns undefined. Complete paths remain in labels, titles and callback arguments. Empty input shows the supplied empty message."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or snippet error",
+				"type": "propagated",
+				"description": "Errors from href or the per-file children snippet propagate; the list does not catch them."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

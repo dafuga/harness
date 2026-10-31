@@ -56,10 +56,17 @@
 			{
 				"name": "SourceViewer",
 				"type": "markup",
-				"description": "Escaped, unmodified file text in a scrolling code block. Empty files remain valid; unavailable code never displays previous contents."
+				"description": "Escaped, unmodified nonempty file text in a scrolling code block. A loaded zero-length file shows This file is empty. outside the code pane; loading and failure never show previous text."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "onSelect callback error",
+				"type": "propagated",
+				"description": "Errors from the required selection callback are not caught when a file is chosen."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

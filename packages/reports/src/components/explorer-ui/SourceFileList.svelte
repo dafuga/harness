@@ -85,6 +85,10 @@
 		text-decoration: underline;
 		text-underline-offset: 3px;
 	}
+	.source-files a .source-name {
+		text-decoration: underline;
+		text-underline-offset: var(--hx-space-2);
+	}
 	.source-files :global(.hx-action) {
 		flex: 0 0 auto;
 		min-height: var(--hx-space-28);

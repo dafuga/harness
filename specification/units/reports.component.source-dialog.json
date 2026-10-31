@@ -57,17 +57,24 @@
 				"name": "SourceDialog.empty",
 				"type": "string",
 				"required": false,
-				"description": "Optional message for histories without archived source."
+				"description": "Optional no-files explanation. Defaults to JavaScript undefined, using the shared source viewer default."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceDialog",
 				"type": "markup",
-				"description": "Open dialogs mount the source reader. Closed dialogs read nothing. Escape and close delegate to the host, which restores initiating focus."
+				"description": "Open dialogs mount the source reader, including loading, failure, missing-source and empty-file messages. Closed dialogs read nothing. Escape and close delegate to the host, which owns focus restoration."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "onClose callback error",
+				"type": "propagated",
+				"description": "The required close callback may throw when the shared modal requests closure; SourceDialog does not catch it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

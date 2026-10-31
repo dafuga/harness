@@ -37,19 +37,19 @@
 				"name": "Select.id",
 				"type": "string",
 				"required": false,
-				"description": "Optional HTML identifier."
+				"description": "Optional HTML identifier. Defaults to JavaScript undefined, omitting id."
 			},
 			{
 				"name": "Select.name",
 				"type": "string",
 				"required": false,
-				"description": "Optional form field name."
+				"description": "Optional form field name. Defaults to JavaScript undefined, omitting name."
 			},
 			{
 				"name": "Select.required",
 				"type": "boolean",
 				"required": false,
-				"description": "Optional native required flag, omitted by default."
+				"description": "Optional native required flag. Defaults to JavaScript undefined, omitting the attribute; the browser does not require a selection."
 			},
 			{
 				"name": "Select.disabled",
@@ -66,16 +66,23 @@
 				"description": "Optional compact size for dense navigation. Defaults to false; coarse-pointer targets remain larger."
 			},
 			{
+				"name": "Select.expanded",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Optional in-page listbox mode, default false. True shows two to eight native rows including optgroup headings; longer lists scroll. The default mode is a native dropdown."
+			},
+			{
 				"name": "Select.display",
 				"type": "string",
 				"required": false,
-				"description": "Optional closed-field label. Names over 16 characters show their first and last six characters. Native options and bound values stay complete."
+				"description": "Optional closed-field label. Defaults to JavaScript undefined, showing the native selection. Supplied labels over 16 characters show their first and last six characters; expanded mode shows complete native options instead."
 			},
 			{
 				"name": "Select.title",
 				"type": "string",
 				"required": false,
-				"description": "Optional hover text. Defaults to the full display label."
+				"description": "Optional hover text. Defaults to JavaScript undefined, falling back to the full display label when supplied; otherwise title is omitted."
 			},
 			{
 				"name": "Select.children",
@@ -88,10 +95,17 @@
 			{
 				"name": "Select",
 				"type": "markup",
-				"description": "Native select with a decorative arrow. Binding updates its selected value; disabled and required behavior follow the browser. Forced-color mode restores the native appearance."
+				"description": "A labelled native dropdown with a decorative caret, or an expanded in-page listbox with complete options. Binding updates its value; form, disabled and required semantics remain native. Expanded mode hides the closed-field display overlay and caret."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller content or binding error",
+				"type": "propagated",
+				"description": "Errors from the required option snippet or the caller binding setter propagate; the component does not catch them."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

@@ -2,7 +2,7 @@
 	"name": "sol8-source-controls",
 	"goal": "Show open selection options, empty-file status and linked filenames in every responsive catalog capture",
 	"createdAt": "2026-10-31T19:07:54.418Z",
-	"updatedAt": "2026-10-31T19:07:56.083Z",
+	"updatedAt": "2026-10-31T19:26:56.672Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:26:56.672Z",
+			"evidence": "Red 8ee814b5 at dac1ace686 retains 96 responsive captures and fails the painted-listbox, empty-file status and linked-filename guards."
 		},
 		{
 			"id": "implement",
