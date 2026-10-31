@@ -4315,6 +4315,12 @@
 			"coverage": "required"
 		},
 		{
+			"id": "reports-component-harness-entity-history-profiles",
+			"title": "Entity history: profiles",
+			"units": ["reports.component.harness-entity-history"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-entity-history-row",
 			"title": "Entity history row",
 			"coverage": "required",
@@ -8670,6 +8676,7 @@
 				"reports-component-harness-entity-history-long",
 				"reports-component-harness-entity-history-row",
 				"reports-component-harness-entity-history-screen",
+				"reports-component-harness-entity-history-profiles",
 				"reports-component-harness-entity-link",
 				"reports-component-harness-entity-link-labelled",
 				"reports-component-harness-entity-link-long",

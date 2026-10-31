@@ -94,7 +94,22 @@ function sourceProps(props: PreviewCases[string], variant: string) {
 	};
 }
 
+const historyNotes = [
+	'Keeps the chosen source revision and comparison parent visible while browsing order changes, so links continue to open the same committed files.',
+	'Displays captured behavior alongside source size, complexity and latency, retaining the original profile and evidence instead of substituting newer results.'
+];
+
+function historyProfiles(props: PreviewCases[string]) {
+	return {
+		...props,
+		entity: d.entities.find((entity) => entity.id === d.ids.filter)!,
+		rows: d.reading.history(d.ids.filter),
+		known: [d.shown.head, d.shown.parent]
+	};
+}
+
 function historyProps(props: PreviewCases[string], variant: string) {
+	if (variant === 'profiles') return historyProfiles(props);
 	if (variant === 'empty') return { ...props, rows: [] };
 	const rows = d.reading.history(d.entity.id);
 	if (['unread', 'reading', 'unavailable'].includes(variant))
@@ -117,13 +132,14 @@ function historyProps(props: PreviewCases[string], variant: string) {
 		...props,
 		known: [d.shown.head, d.shown.parent].map((head) => ({
 			...head,
-			explanations: head.explanations.map((reason) => ({
-				...reason,
-				behavior:
-					'Preserves the selected source revision and its original recorded evidence while displaying a deliberately long explanation. '.repeat(
-						5
-					)
-			}))
+			explanations: head.explanations.flatMap((reason) =>
+				historyNotes.map((behavior) => ({
+					...reason,
+					unit: d.entity.id,
+					symbol: 'OrderList',
+					behavior
+				}))
+			)
 		}))
 	};
 }
