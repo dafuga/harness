@@ -8,6 +8,7 @@ const tooltipUnits = new Set([
 ]);
 
 const emptyStates: Record<string, string> = {
+	'desktop.component.game-create:unavailable': ':self',
 	'reports.component.module-system-plugins-plugin-steps:empty': '.mod-steps',
 	'reports.component.shared-primitives-detail-list:empty-unprovided': '.detail-list'
 };
@@ -36,7 +37,8 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 
 /** An empty list has zero content height; retain its real boundary and the normal edge allowance. */
 async function emptyContentBounds(content: Locator, selector: string) {
-	return content.locator(selector).evaluate((node) => {
+	const target = selector === ':self' ? content : content.locator(selector);
+	return target.evaluate((node) => {
 		const box = node.getBoundingClientRect();
 		const x = Math.max(0, Math.floor(box.left + scrollX) - 8);
 		const y = Math.max(0, Math.floor(box.top + scrollY) - 8);

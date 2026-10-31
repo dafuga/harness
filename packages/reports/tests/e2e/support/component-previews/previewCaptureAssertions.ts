@@ -12,6 +12,7 @@ import { assertEntitySearchState } from './entitySearchPreviewActions';
 import { assertContractExampleState } from './contractExamplePreviewAssertions';
 import { assertContractTableState } from './contractTablePreviewAssertions';
 import { assertActivityCountFits } from './projectActivityAssertions';
+import { assertDesktopState } from './desktopStateAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(
@@ -22,7 +23,7 @@ export async function assertComponentCapture(
 ) {
 	assertCaptureSlot(id, viewport, variant);
 	await assertAudioViewerCapture(page, id, viewport);
-	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
+	await assertDefaultAgents(page, id, variant);
 	if (id === 'reports.component.project-activity' && variant === 'stale')
 		await assertActivityCountFits(page);
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
@@ -74,6 +75,7 @@ export async function assertCatalogState(
 	variant = '',
 	viewport = ''
 ) {
+	await assertDesktopState(component, id, variant);
 	await assertNativeAtomState(component, id, variant);
 	if (id === 'reports.component.entity-cases') await assertEntityCasesState(component, variant);
 	if (id === 'reports.component.entity-examples')
@@ -113,6 +115,11 @@ async function assertAgentsPreview(page: Page) {
 	await expect(panel.getByRole('region', { name: 'Modules being worked on' })).toContainText(
 		'Preview agent'
 	);
+}
+
+async function assertDefaultAgents(page: Page, id: string, variant: string) {
+	if (id === 'desktop.component.agents-providers-chat-agents' && !variant)
+		await assertAgentsPreview(page);
 }
 
 /** The recorded slot selects the manifest's element rules as well as its required state. */

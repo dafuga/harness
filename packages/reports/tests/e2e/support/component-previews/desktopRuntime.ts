@@ -19,7 +19,9 @@ export const gameCases: PreviewCases = {
 	},
 	'desktop.component.game-checkpoint-pane': {
 		context: { checkpoint: view.checkpoints[0], view, document: game },
-		change: noop
+		change: noop,
+		close: noop,
+		remove: noop
 	},
 	'desktop.component.game-create': {
 		bridge: {

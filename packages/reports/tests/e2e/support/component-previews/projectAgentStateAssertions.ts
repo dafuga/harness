@@ -1,11 +1,13 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import type { ProjectAgentState } from './projectAgentStateFixtures.types';
+import { prepareProjectAgentState } from './projectAgentRunAssertions';
 
 export async function assertProjectAgentState(
 	page: Page,
 	component: Locator,
 	state: ProjectAgentState
 ) {
+	await prepareProjectAgentState(page, component, state);
 	if (state === 'closed') return assertClosedLauncher(component);
 	if (state === 'read-only') return assertReadOnly(component);
 	if (state === 'conversation') return assertConversation(component);
@@ -23,6 +25,10 @@ async function assertClosedLauncher(component: Locator) {
 	await launcher.press('Enter');
 	await expect(panel).toBeVisible();
 	const textbox = panel.getByRole('textbox').first();
+	await panel.getByRole('button', { name: 'Comment', exact: true }).click();
+	await textbox.fill('Review the component states.');
+	await panel.getByRole('button', { name: 'Send comment' }).click();
+	await expect(textbox).toHaveValue('');
 	const draft = 'Keep this project draft while the panel closes.';
 	await textbox.fill(draft);
 	await launcher.click();
@@ -44,7 +50,7 @@ async function assertReadOnly(component: Locator) {
 	const panel = component.locator('.floating-chat-panel');
 	await assertConversation(component);
 	const fields = panel.getByRole('textbox');
-	const submits = panel.locator('form button[type="submit"], form input[type="submit"]');
+	const submits = panel.locator('button.send');
 	await expect(
 		await fields.evaluateAll((nodes) => nodes.some((node) => node.matches(':enabled'))),
 		'Read permission cannot enter a comment or agent request'
@@ -63,7 +69,8 @@ async function assertConversation(component: Locator) {
 	const known = panel.locator('a[href*="app.page.orders"]');
 	await expect(known).toHaveAttribute('href', /\/history(?:[?#]|$)/);
 	await expect(panel.locator('a[href*="missing.preview-unit"]')).toHaveCount(0);
-	const assistant = panel.getByText(/^A deterministic assistant response/);
+	const assistant = panel.locator('.chat-message.agent').last();
+	await expect(assistant).toContainText('A deterministic assistant response');
 	await expect(assistant).toBeVisible();
 	const lines = await assistant.evaluate((node) => {
 		const range = document.createRange();
@@ -81,17 +88,17 @@ async function assertNoProvider(component: Locator) {
 	const textbox = panel.getByRole('textbox').first();
 	await expect(textbox).toBeEnabled();
 	await textbox.fill('A comment remains available without an agent model.');
-	await expect(panel.locator('form button[type="submit"]')).toBeEnabled();
+	await expect(panel.locator('button.send')).toBeEnabled();
 	const plan = panel.getByRole('button', { name: 'Plan', exact: true });
 	await plan.click();
 	await textbox.fill('No provider request is submitted.');
-	await expect(panel.locator('form button[type="submit"]')).toBeDisabled();
+	await expect(panel.locator('button.send')).toBeDisabled();
 }
 
 async function assertAgents(page: Page, component: Locator, state: ProjectAgentState) {
 	const panel = component.locator('.floating-chat-panel');
-	const chat = component.getByRole('tab', { name: 'Chat', exact: true });
-	const agents = component.getByRole('tab', { name: 'Agents', exact: true });
+	const chat = component.getByRole('button', { name: 'Chat', exact: true });
+	const agents = component.getByRole('button', { name: 'Agents', exact: true });
 	const textbox = panel.getByRole('textbox').first();
 	const draft = 'Return to this saved chat draft.';
 	await textbox.fill(draft);
@@ -105,11 +112,18 @@ async function assertAgents(page: Page, component: Locator, state: ProjectAgentS
 }
 
 async function assertRosterState(roster: Locator, state: ProjectAgentState) {
+	if (state === 'agents-many') {
+		await expect(roster).toContainText('8 working');
+		await roster.getByRole('button', { name: 'Show all 8 sessions' }).click();
+		await expect(roster.getByRole('list', { name: 'Agent sessions' }).locator('li')).toHaveCount(8);
+	}
 	if (state === 'agents-active') {
 		await expect(roster).toContainText('1 working');
 		await expect(roster).toContainText('Capture component states');
 		await expect(roster).toContainText('Preview agent');
-		await expect(roster.locator('a[href*="/history"]')).not.toHaveCount(0);
+		await expect(
+			roster.getByRole('region', { name: 'Modules being worked on' }).getByRole('link')
+		).toHaveAttribute('href', /\/components\/app\.component\.order-card$/);
 	}
 	if (state === 'agents-empty') {
 		await expect(roster).toContainText(/no (active )?(agents|sessions)|empty/i);

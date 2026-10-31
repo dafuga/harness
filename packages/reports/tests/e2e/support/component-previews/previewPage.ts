@@ -17,6 +17,7 @@ import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { uploadComparisonPreMount } from './uploadComparisonPreMount';
 import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
+import { prepareDesktopPage, desktopCaptureEvidence } from './desktopStateActions';
 
 import {
 	assertPreviewLoading,
@@ -30,6 +31,7 @@ const pageUnitIds = new Set(
 		.map((unit) => unit.id)
 );
 const emptyPreviews = new Set([
+	'desktop.component.game-create:unavailable',
 	'reports.component.regression-proof:empty',
 	'reports.component.activity-list:empty',
 	'reports.component.module-system-plugins-plugin-steps:empty',
@@ -39,6 +41,7 @@ const emptyPreviews = new Set([
 	'reports.component.shared-primitives-detail-list:empty-unprovided'
 ]);
 export async function openPreview(page: Page, home: string, id: string, variant = '') {
+	await prepareDesktopPage(page, id, variant);
 	if (
 		['reports.component.entity-search', 'reports.component.entity-search-results'].includes(id) &&
 		page.viewportSize()?.width === 390
@@ -159,7 +162,7 @@ export async function capturePreview(
 	const served = await new BuildIdentityService().identify(home);
 	recordCapture(
 		{
-			evidence: 'screens',
+			evidence: desktopCaptureEvidence(id, variant),
 			kind: 'screenshot',
 			state,
 			viewport,

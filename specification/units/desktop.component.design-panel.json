@@ -89,7 +89,7 @@
 			{
 				"name": "Caller callback or content error",
 				"type": "propagated",
-				"description": "Errors from supplied onthread, onannotate callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"description": "Errors from the supplied onthread callback propagate when selecting a thread. Annotation callback failures are caught and displayed in the panel."
 			}
 		],
 		"errorStatus": "declared",
