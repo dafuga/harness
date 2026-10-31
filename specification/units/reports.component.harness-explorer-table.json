@@ -61,7 +61,7 @@
 				"name": "ExplorerTable.rows",
 				"type": "CatalogRow[]",
 				"required": true,
-				"description": "Required rows in display order. A config table receives one source file with committed expressions, decoded literals and static collection structures."
+				"description": "Required rows in display order. A config table receives one source file with committed expressions, decoded literals and static collection structures. Row identifiers must be distinct."
 			},
 			{
 				"name": "ExplorerTable.nav",
@@ -96,7 +96,14 @@
 				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Duplicate row key",
+				"type": "Svelte keyed-each error",
+				"description": "Duplicate row identifiers are rejected by Svelte keyed-list updates."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [

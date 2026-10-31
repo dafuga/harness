@@ -29,7 +29,7 @@
 				"name": "AgentControls.providers",
 				"type": "ProviderState[]",
 				"required": true,
-				"description": "Provider availability, display names, reasons, models and supported reasoning efforts. Starts with Codex selected. Compact mode switches away from an unavailable provider to the first available provider when one exists; the expanded layout does not make that switch. An empty list produces a no-provider notice."
+				"description": "Provider availability, display names, reasons, models and supported reasoning efforts. Starts with Codex selected. Compact mode switches away from an unavailable provider to the first available provider when one exists; the expanded layout does not make that switch. An empty list produces a no-provider notice. Provider IDs, model IDs within a provider, and effort names within a model must be distinct."
 			},
 			{
 				"name": "AgentControls.choice",
@@ -59,7 +59,19 @@
 				"description": "Provider, model and effort controls followed by the supplied action. Unavailable provider buttons and unusable dropdowns are disabled. Invalid model selections fall back to the provider default, then its first model, then empty; effort falls back to the model default, then its first supported effort, then empty. Shows the selected provider reason when present."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Duplicate row key",
+				"type": "Svelte keyed-each error",
+				"description": "Duplicate provider/model/effort keys are rejected by Svelte keyed-list updates."
+			},
+			{
+				"name": "Caller content error",
+				"type": "thrown",
+				"description": "Errors from the required action snippet propagate during rendering; the component does not catch caller content failures."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

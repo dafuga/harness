@@ -2,7 +2,7 @@
 	"name": "sol5-presentation",
 	"goal": "Share table, code-line and detail-list presentation while retaining public component identities and all responsive states",
 	"createdAt": "2026-10-30T22:50:35.478Z",
-	"updatedAt": "2026-10-30T22:50:35.478Z",
+	"updatedAt": "2026-10-31T00:32:00.555Z",
 	"template": "refactor",
 	"templateLineage": [
 		"feature",
@@ -13,17 +13,23 @@
 		{
 			"id": "spec",
 			"title": "Name the responsibility boundary and unchanged behavior.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T00:31:59.303Z",
+			"evidence": "Reviewed current source boundaries in the committed README; AnalyticsTasks and the old report wrapper are deleted and remain skipped."
 		},
 		{
 			"id": "implement",
 			"title": "Extract or reorganize one responsibility at a time.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T00:31:59.933Z",
+			"evidence": "070c7557ef and 73f0d3b76c add three small presentation primitives and migrate current pilots while preserving IDs and public forwards."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T00:32:00.555Z",
+			"evidence": "Three primitive semantic cases and existing shared impact guards pass; the remote normal responsive matrix passes all 204 cases at 43b6f023cd."
 		},
 		{
 			"id": "verify",

@@ -8,7 +8,7 @@ import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
 import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
-import { readBuildAliases, readSelectImports } from './shared-select-impact/imports';
+import { readBuildAliases, readSelectImports } from './utils/shared-select-impact/imports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
 const canonicalSelect = 'packages/reports/src/components/shared-primitives/Select.svelte';

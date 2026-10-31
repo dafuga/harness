@@ -38,7 +38,7 @@
 				"name": "RemoteApproval.projects",
 				"type": "{ id: string; name: string }[]",
 				"required": true,
-				"description": "Required project choices; none are initially selected. An empty list explains that a local project is needed."
+				"description": "Required project choices; none are initially selected. An empty list explains that a local project is needed. Project identifiers must be distinct. The supplied host store catches operational failures and records its error state."
 			},
 			{
 				"name": "RemoteApproval.store",
@@ -54,7 +54,14 @@
 				"description": "A device request with project checkboxes, initially unselected, and Device access initially Comment. Read grants browsing only; Comment also grants comments; Write also permits AI requests. Approve is disabled while busy or without projects selected; Deny is disabled while busy. Approval includes both displayed identities and the exact selected project IDs."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Duplicate row key",
+				"type": "Svelte keyed-each error",
+				"description": "Duplicate project identifiers are rejected by Svelte keyed-list updates."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
