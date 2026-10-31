@@ -18,7 +18,11 @@ import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { uploadComparisonPreMount } from './uploadComparisonPreMount';
 import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
-import { prepareDesktopPage, desktopCaptureEvidence } from './desktopStateActions';
+import {
+	prepareDesktopPage,
+	desktopCaptureEvidence,
+	frameDesktopCapture
+} from './desktopStateActions';
 
 import {
 	assertPreviewLoading,
@@ -145,6 +149,7 @@ export async function capturePreview(
 	const { viewport, variant = '' } = target;
 	const nativeOpen = usesNativePopup(id, variant);
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
+	await frameDesktopCapture(page, id);
 	const clip = await previewCaptureBounds(page, id, variant);
 	const reportDialog = await reportViewDialog(page, id);
 	const bytes = await page.screenshot({
@@ -200,6 +205,8 @@ function usesNativePopup(id: string, variant: string) {
 }
 
 function previewCaptureNote(id: string, variant: string) {
+	if (id === 'desktop.component.game-create' && variant === 'unavailable')
+		return 'The unavailable host intentionally renders no form. The image retains the empty component boundary and edge allowance; it is not a screenshot of another page.';
 	return id === 'reports.component.evidence-grid' && ['image-open', 'audio-open'].includes(variant)
 		? 'Rendered dialog bounds without preview-only canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.'
 		: 'Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.';
