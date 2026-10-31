@@ -2,7 +2,7 @@
 	"name": "sol8-table-action",
 	"goal": "Keep ExplorerTable action labels and their arrows on one line without breaking horizontal scrolling",
 	"createdAt": "2026-10-31T21:17:48.312Z",
-	"updatedAt": "2026-10-31T21:17:49.915Z",
+	"updatedAt": "2026-10-31T21:22:33.862Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T21:22:33.862Z",
+			"evidence": "The unchanged 42-case catalog fails the named single-line action assertion at 4f40523e80 and retains the actual broken screenshots."
 		},
 		{
 			"id": "implement",
