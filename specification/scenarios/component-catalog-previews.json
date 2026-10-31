@@ -823,6 +823,30 @@
 			"units": ["desktop.component.game-checkpoint-editor"]
 		},
 		{
+			"id": "desktop-component-game-checkpoint-editor-empty",
+			"title": "GameCheckpointEditor: empty",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-editor"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-editor-readonly",
+			"title": "GameCheckpointEditor: readonly",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-editor"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-editor-empty-rules",
+			"title": "GameCheckpointEditor: empty-rules",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-editor"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-editor-long",
+			"title": "GameCheckpointEditor: long",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-editor"]
+		},
+		{
 			"id": "desktop-component-game-checkpoint-image",
 			"title": "GameCheckpointImage",
 			"coverage": "required",
@@ -831,6 +855,30 @@
 		{
 			"id": "desktop-component-game-checkpoint-pane",
 			"title": "GameCheckpointPane",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-pane"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-pane-adding",
+			"title": "GameCheckpointPane: adding",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-pane"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-pane-readonly",
+			"title": "GameCheckpointPane: readonly",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-pane"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-pane-advanced",
+			"title": "GameCheckpointPane: advanced",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-pane"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-pane-long",
+			"title": "GameCheckpointPane: long",
 			"coverage": "required",
 			"units": ["desktop.component.game-checkpoint-pane"]
 		},
@@ -847,6 +895,42 @@
 			"units": ["desktop.component.game-create"]
 		},
 		{
+			"id": "desktop-component-game-create-filled",
+			"title": "GameCreate: filled",
+			"coverage": "required",
+			"units": ["desktop.component.game-create"]
+		},
+		{
+			"id": "desktop-component-game-create-game-2d",
+			"title": "GameCreate: game-2d",
+			"coverage": "required",
+			"units": ["desktop.component.game-create"]
+		},
+		{
+			"id": "desktop-component-game-create-game-3d",
+			"title": "GameCreate: game-3d",
+			"coverage": "required",
+			"units": ["desktop.component.game-create"]
+		},
+		{
+			"id": "desktop-component-game-create-unavailable",
+			"title": "GameCreate: unavailable",
+			"coverage": "required",
+			"units": ["desktop.component.game-create"]
+		},
+		{
+			"id": "desktop-component-game-create-busy",
+			"title": "GameCreate: busy",
+			"coverage": "required",
+			"units": ["desktop.component.game-create"]
+		},
+		{
+			"id": "desktop-component-game-create-error",
+			"title": "GameCreate: error",
+			"coverage": "required",
+			"units": ["desktop.component.game-create"]
+		},
+		{
 			"id": "desktop-component-game-graph",
 			"title": "GameGraph",
 			"coverage": "required",
@@ -855,6 +939,54 @@
 		{
 			"id": "desktop-component-game-level-brief",
 			"title": "GameLevelBrief",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-brief"]
+		},
+		{
+			"id": "desktop-component-game-level-brief-concept",
+			"title": "GameLevelBrief: concept",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-brief"]
+		},
+		{
+			"id": "desktop-component-game-level-brief-empty",
+			"title": "GameLevelBrief: empty",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-brief"]
+		},
+		{
+			"id": "desktop-component-game-level-brief-readonly",
+			"title": "GameLevelBrief: readonly",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-brief"]
+		},
+		{
+			"id": "desktop-component-game-level-brief-busy",
+			"title": "GameLevelBrief: busy",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-brief"]
+		},
+		{
+			"id": "desktop-component-game-level-brief-error",
+			"title": "GameLevelBrief: error",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-brief"]
+		},
+		{
+			"id": "desktop-component-game-level-brief-reviewable",
+			"title": "GameLevelBrief: reviewable",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-brief"]
+		},
+		{
+			"id": "desktop-component-game-level-brief-no-model",
+			"title": "GameLevelBrief: no-model",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-brief"]
+		},
+		{
+			"id": "desktop-component-game-level-brief-long",
+			"title": "GameLevelBrief: long",
 			"coverage": "required",
 			"units": ["desktop.component.game-level-brief"]
 		},
@@ -895,6 +1027,24 @@
 			"units": ["desktop.component.game-preview"]
 		},
 		{
+			"id": "desktop-component-game-preview-three-dimensional",
+			"title": "GamePreview: three-dimensional",
+			"coverage": "required",
+			"units": ["desktop.component.game-preview"]
+		},
+		{
+			"id": "desktop-component-game-preview-readonly",
+			"title": "GamePreview: readonly",
+			"coverage": "required",
+			"units": ["desktop.component.game-preview"]
+		},
+		{
+			"id": "desktop-component-game-preview-reset",
+			"title": "GamePreview: reset",
+			"coverage": "required",
+			"units": ["desktop.component.game-preview"]
+		},
+		{
 			"id": "desktop-component-game-text-field",
 			"title": "GameTextField",
 			"coverage": "required",
@@ -909,6 +1059,30 @@
 		{
 			"id": "desktop-component-game-view-fields",
 			"title": "GameViewFields",
+			"coverage": "required",
+			"units": ["desktop.component.game-view-fields"]
+		},
+		{
+			"id": "desktop-component-game-view-fields-settings-open",
+			"title": "GameViewFields: settings-open",
+			"coverage": "required",
+			"units": ["desktop.component.game-view-fields"]
+		},
+		{
+			"id": "desktop-component-game-view-fields-readonly",
+			"title": "GameViewFields: readonly",
+			"coverage": "required",
+			"units": ["desktop.component.game-view-fields"]
+		},
+		{
+			"id": "desktop-component-game-view-fields-gated",
+			"title": "GameViewFields: gated",
+			"coverage": "required",
+			"units": ["desktop.component.game-view-fields"]
+		},
+		{
+			"id": "desktop-component-game-view-fields-multiple",
+			"title": "GameViewFields: multiple",
 			"coverage": "required",
 			"units": ["desktop.component.game-view-fields"]
 		},
@@ -6780,21 +6954,50 @@
 				"desktop-component-environment-picker-with-action",
 				"desktop-component-game-authoring-game-graph-fit",
 				"desktop-component-game-checkpoint-editor",
+				"desktop-component-game-checkpoint-editor-empty",
+				"desktop-component-game-checkpoint-editor-readonly",
+				"desktop-component-game-checkpoint-editor-empty-rules",
+				"desktop-component-game-checkpoint-editor-long",
 				"desktop-component-game-checkpoint-image",
 				"desktop-component-game-checkpoint-pane",
+				"desktop-component-game-checkpoint-pane-adding",
+				"desktop-component-game-checkpoint-pane-readonly",
+				"desktop-component-game-checkpoint-pane-advanced",
+				"desktop-component-game-checkpoint-pane-long",
 				"desktop-component-game-controls",
 				"desktop-component-game-create",
+				"desktop-component-game-create-filled",
+				"desktop-component-game-create-game-2d",
+				"desktop-component-game-create-game-3d",
+				"desktop-component-game-create-unavailable",
+				"desktop-component-game-create-busy",
+				"desktop-component-game-create-error",
 				"desktop-component-game-graph",
 				"desktop-component-game-level-brief",
+				"desktop-component-game-level-brief-concept",
+				"desktop-component-game-level-brief-empty",
+				"desktop-component-game-level-brief-readonly",
+				"desktop-component-game-level-brief-busy",
+				"desktop-component-game-level-brief-error",
+				"desktop-component-game-level-brief-reviewable",
+				"desktop-component-game-level-brief-no-model",
+				"desktop-component-game-level-brief-long",
 				"desktop-component-game-level-plan",
 				"desktop-component-game-level-preview",
 				"desktop-component-game-level-review",
 				"desktop-component-game-live-video",
 				"desktop-component-game-mechanics",
 				"desktop-component-game-preview",
+				"desktop-component-game-preview-three-dimensional",
+				"desktop-component-game-preview-readonly",
+				"desktop-component-game-preview-reset",
 				"desktop-component-game-text-field",
 				"desktop-component-game-trace",
 				"desktop-component-game-view-fields",
+				"desktop-component-game-view-fields-settings-open",
+				"desktop-component-game-view-fields-readonly",
+				"desktop-component-game-view-fields-gated",
+				"desktop-component-game-view-fields-multiple",
 				"desktop-component-game-workspace",
 				"desktop-component-history-panel",
 				"desktop-component-history-panel-empty",

@@ -31,6 +31,7 @@ const pageUnitIds = new Set(
 		.map((unit) => unit.id)
 );
 const emptyPreviews = new Set([
+	'desktop.component.game-create:unavailable',
 	'reports.component.regression-proof:empty',
 	'reports.component.activity-list:empty',
 	'reports.component.module-system-plugins-plugin-steps:empty',

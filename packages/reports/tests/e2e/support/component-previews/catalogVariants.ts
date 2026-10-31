@@ -17,10 +17,12 @@ import { imageZoomStates } from './imageZoomVariants';
 
 import { browserErrorsStates } from './browserErrorsVariants';
 import { desktopCatalogVariants } from './desktopCatalogVariants';
+import { desktopGameCatalogVariants } from './desktopGameVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
 	...desktopCatalogVariants,
+	...desktopGameCatalogVariants,
 	...nativeAtomVariants,
 	...explorerKitVariants,
 	...presentationVariants,

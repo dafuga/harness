@@ -3,6 +3,7 @@ import type { PreviewProps } from './shared.types';
 import { desktopShellVariant } from './desktopShellVariants';
 import { desktopRuntimeVariant } from './desktopRuntimeVariants';
 import { desktopAgentActivityVariant } from './desktopAgentActivityVariants';
+import { desktopGameVariant } from './desktopGameVariants';
 
 export function desktopPreviewVariant(
 	id: string,
@@ -14,6 +15,7 @@ export function desktopPreviewVariant(
 	if (id === 'desktop.component.agents-providers-chat-agents')
 		desktopAgentActivityVariant(data, variant);
 	return (
+		desktopGameVariant(id, props, variant) ??
 		desktopShellVariant(id, props, data, variant) ??
 		desktopRuntimeVariant(id, props, data, variant) ??
 		props
