@@ -6,6 +6,12 @@ export async function prepareDesktopState(component: Locator, id: string, varian
 	await actions[id.replace('desktop.component.', '')]?.(component, variant);
 }
 
+export function desktopCaptureEvidence(id: string, variant: string) {
+	return id === 'desktop.component.project-agent' && variant
+		? `project-agent-${variant}`
+		: 'screens';
+}
+
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'agent-settings': settings,
 	'agents-providers-chat-agents': roster,
@@ -13,6 +19,10 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'catalog-view': catalog,
 	'entity-view': entity,
 	'history-panel': history,
+	'environment-picker': async (component, variant) => {
+		if (['stage', 'preprod', 'prod'].includes(variant))
+			await component.getByRole('combobox', { name: 'Environment' }).selectOption(variant);
+	},
 	'project-switcher': async (component, variant) => {
 		if (['open', 'shared', 'empty', 'busy'].includes(variant))
 			await component.getByRole('button', { name: 'Choose workbench' }).click();
@@ -35,6 +45,10 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 };
 
 export async function prepareDesktopPage(page: Page, id: string, variant: string) {
+	if (id === 'desktop.component.project-agent' && variant === 'visual-plan')
+		await page.addInitScript(() =>
+			localStorage.setItem('harness.agent-settings.v1', JSON.stringify({ designOptions: 7 }))
+		);
 	if (id === 'desktop.component.agent-settings' && variant === 'not-saved')
 		await page.addInitScript(() => {
 			Storage.prototype.setItem = () => {

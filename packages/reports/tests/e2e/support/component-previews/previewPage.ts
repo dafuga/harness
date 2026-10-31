@@ -17,7 +17,7 @@ import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { uploadComparisonPreMount } from './uploadComparisonPreMount';
 import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
-import { prepareDesktopPage } from './desktopStateActions';
+import { prepareDesktopPage, desktopCaptureEvidence } from './desktopStateActions';
 
 import {
 	assertPreviewLoading,
@@ -162,7 +162,7 @@ export async function capturePreview(
 	const served = await new BuildIdentityService().identify(home);
 	recordCapture(
 		{
-			evidence: 'screens',
+			evidence: desktopCaptureEvidence(id, variant),
 			kind: 'screenshot',
 			state,
 			viewport,

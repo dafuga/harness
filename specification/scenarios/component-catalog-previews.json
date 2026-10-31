@@ -697,6 +697,12 @@
 			"units": ["desktop.component.design-panel"]
 		},
 		{
+			"id": "desktop-component-design-panel-headless-plan",
+			"title": "Design panel: headless-plan",
+			"coverage": "required",
+			"units": ["desktop.component.design-panel"]
+		},
+		{
 			"id": "desktop-component-design-panel-loading",
 			"title": "Design panel: loading",
 			"coverage": "required",
@@ -795,6 +801,18 @@
 		{
 			"id": "desktop-component-environment-picker",
 			"title": "EnvironmentPicker",
+			"coverage": "required",
+			"units": ["desktop.component.environment-picker"]
+		},
+		{
+			"id": "desktop-component-environment-picker-stage",
+			"title": "EnvironmentPicker: stage",
+			"coverage": "required",
+			"units": ["desktop.component.environment-picker"]
+		},
+		{
+			"id": "desktop-component-environment-picker-preprod",
+			"title": "EnvironmentPicker: preprod",
 			"coverage": "required",
 			"units": ["desktop.component.environment-picker"]
 		},
@@ -6933,6 +6951,7 @@
 				"desktop-component-design-panel",
 				"desktop-component-design-panel-empty",
 				"desktop-component-design-panel-headless",
+				"desktop-component-design-panel-headless-plan",
 				"desktop-component-design-panel-loading",
 				"desktop-component-design-panel-error",
 				"desktop-component-design-panel-readonly",
@@ -6950,6 +6969,8 @@
 				"desktop-component-entity-view-conversation-closed",
 				"desktop-component-entity-view-helper-examples",
 				"desktop-component-environment-picker",
+				"desktop-component-environment-picker-stage",
+				"desktop-component-environment-picker-preprod",
 				"desktop-component-environment-picker-prod",
 				"desktop-component-environment-picker-with-action",
 				"desktop-component-game-authoring-game-graph-fit",
@@ -7018,26 +7039,6 @@
 				"desktop-component-plan-badge",
 				"desktop-component-prior-image",
 				"desktop-component-project-agent",
-				"desktop-component-project-agent-closed",
-				"desktop-component-project-agent-read-only",
-				"desktop-component-project-agent-local-comment",
-				"desktop-component-project-agent-hosted-comment",
-				"desktop-component-project-agent-comment-retry",
-				"desktop-component-project-agent-conversation",
-				"desktop-component-project-agent-historical",
-				"desktop-component-project-agent-ask",
-				"desktop-component-project-agent-plan",
-				"desktop-component-project-agent-visual-plan",
-				"desktop-component-project-agent-change",
-				"desktop-component-project-agent-no-provider",
-				"desktop-component-project-agent-running",
-				"desktop-component-project-agent-saved-plan",
-				"desktop-component-project-agent-failure",
-				"desktop-component-project-agent-agents-empty",
-				"desktop-component-project-agent-agents-active",
-				"desktop-component-project-agent-agents-unknown",
-				"desktop-component-project-agent-agents-stale",
-				"desktop-component-project-agent-agents-many",
 				"desktop-component-project-gate",
 				"desktop-component-project-gate-available",
 				"desktop-component-project-gate-busy",

@@ -5,7 +5,8 @@ export async function assertDesktopState(component: Locator, id: string, variant
 	const key = id.replace('desktop.component.', '') + ':' + variant;
 	const messages: Record<string, string> = {
 		'design-panel:empty': 'No design image yet',
-		'design-panel:headless': 'Planned behavior',
+		'design-panel:headless': 'No plan yet',
+		'design-panel:headless-plan': 'Planned behavior',
 		'design-panel:loading': 'Loading design image…',
 		'design-panel:error': 'Synthetic image read refused.',
 		'history-panel:empty': 'No history recorded for this entity.',
@@ -26,8 +27,8 @@ export async function assertDesktopState(component: Locator, id: string, variant
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	composer,
 	'environment-picker': async (component, variant) => {
-		if (variant === 'prod')
-			await expect(component.getByRole('combobox', { name: 'Environment' })).toHaveValue('prod');
+		if (['stage', 'preprod', 'prod'].includes(variant))
+			await expect(component.getByRole('combobox', { name: 'Environment' })).toHaveValue(variant);
 	},
 	'status-icon': async (component, variant) => {
 		const failed = ['failed', 'unverified', 'unknown', 'no-reason', 'long'].includes(variant);

@@ -74,6 +74,8 @@ function design(props: PreviewProps, data: DesktopData, variant: string): Previe
 	if (variant === 'readonly') return { ...props, annotatable: false };
 	if (variant === 'empty') return { ...props, entity: { ...data.entity, versions: [] } };
 	if (variant === 'headless') return { ...props, entity: data.filterEntity };
+	if (variant === 'headless-plan')
+		return { ...props, entity: { ...data.filterEntity, versions: data.entity.versions } };
 	if (variant === 'long')
 		return {
 			...props,
@@ -110,9 +112,13 @@ const workspaceVariants: Record<
 	(props: PreviewProps, data: DesktopData, variant: string) => PreviewProps
 > = {
 	'environment-picker': (props, data, variant) => {
-		if (variant === 'prod') data.workspace.deployments.choose('prod');
 		return variant === 'with-action'
-			? { ...props, children: text('<button type="button">Review deployment</button>') }
+			? {
+					...props,
+					children: text(
+						'<button type="button" class="agent-icon" aria-label="Review deployment">↗</button>'
+					)
+				}
 			: props;
 	},
 	'nav-bar': (props, data, variant) => {

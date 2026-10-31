@@ -89,10 +89,7 @@ for (const viewport of catalogViewports) {
 for (const viewport of catalogViewports) {
 	for (const { unit, variant } of catalogCases) {
 		const isProjectAgent = unit.id === 'desktop.component.project-agent';
-		const title =
-			isProjectAgent && variant
-				? `desktop-component-project-agent-${variant} at ${viewport.id}`
-				: `${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`;
+		const title = `${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`;
 		test(title, async ({ page, browserErrors }) => {
 			picker.expectUploadErrors(unit.id, variant, browserErrors);
 			const projectErrors: string[] = [];

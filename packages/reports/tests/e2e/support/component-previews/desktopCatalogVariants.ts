@@ -27,7 +27,15 @@ export const desktopCatalogVariants: Record<string, string[]> = {
 		'compact',
 		'retry'
 	],
-	'desktop.component.design-panel': ['empty', 'headless', 'loading', 'error', 'readonly', 'long'],
+	'desktop.component.design-panel': [
+		'empty',
+		'headless',
+		'headless-plan',
+		'loading',
+		'error',
+		'readonly',
+		'long'
+	],
 	'desktop.component.entity-view': [
 		'source',
 		'designs',
@@ -39,7 +47,7 @@ export const desktopCatalogVariants: Record<string, string[]> = {
 		'conversation-closed',
 		'helper-examples'
 	],
-	'desktop.component.environment-picker': ['prod', 'with-action'],
+	'desktop.component.environment-picker': ['stage', 'preprod', 'prod', 'with-action'],
 	'desktop.component.history-panel': ['empty', 'incomplete', 'more', 'loading', 'error', 'long'],
 	'desktop.component.nav-bar': ['readonly', 'account', 'game'],
 	'desktop.component.project-gate': [

@@ -5,6 +5,9 @@ import { recordCapture } from '../../../../../../src/utils/record-capture/record
 import { readyPreview } from './previewPage';
 import { previewState } from './catalogUnits';
 import { prepareProviderPickerState } from './providerPickerActions';
+import { prepareCatalogState } from './catalogStateActions';
+import { assertProjectAgentState } from './projectAgentStateAssertions';
+import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 
 /** Profiles a real remount and settled render, including fixture and browser-protocol overhead. */
 export async function profilePreview(page: Page, unit: string, variant = '') {
@@ -14,6 +17,7 @@ export async function profilePreview(page: Page, unit: string, variant = '') {
 		const started = performance.now();
 		await page.evaluate(() => window.previewRemount());
 		await readyPreview(page, unit, variant);
+		await prepareDesktopProfile(page, unit, variant);
 		if (unit === 'reports.component.provider-picker')
 			await prepareProviderPickerState(page.locator(`[data-preview-unit="${unit}"]`), variant);
 
@@ -58,4 +62,12 @@ export async function profilePreview(page: Page, unit: string, variant = '') {
 		},
 		JSON.stringify({ measurements })
 	);
+}
+
+async function prepareDesktopProfile(page: Page, unit: string, variant: string) {
+	if (!unit.startsWith('desktop.component.')) return;
+	const component = page.locator(`[data-preview-unit="${unit}"]`);
+	await prepareCatalogState(component, unit, variant);
+	if (unit === 'desktop.component.project-agent')
+		await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 }
