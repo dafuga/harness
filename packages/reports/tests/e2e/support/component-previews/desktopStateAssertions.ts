@@ -68,6 +68,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertPickerPresentation(component, id, variant);
 	await assertLoadedHistory(component, id, variant);
 	await assertLongCatalogContent(component, id, variant);
+	await assertArtDirectionFits(component, id, variant);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
@@ -92,6 +93,18 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 			});
 		expect(visible, 'Expanded checkpoint rules are fully visible above the footer').toBe(true);
 	}
+}
+
+async function assertArtDirectionFits(component: Locator, id: string, variant: string) {
+	if (id !== 'desktop.component.game-view-fields') return;
+	if (!['multiple', 'readonly', 'settings-open'].includes(variant)) return;
+	const size = await component
+		.getByRole('textbox', { name: 'Art direction', exact: true })
+		.evaluate((node) => ({ content: node.scrollHeight, visible: node.clientHeight }));
+	expect(
+		size.content,
+		'Default art direction fits completely without a cut final line'
+	).toBeLessThanOrEqual(size.visible + 1);
 }
 
 async function assertLongCatalogContent(component: Locator, id: string, variant: string) {
