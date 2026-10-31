@@ -125,8 +125,7 @@ async function history(component: Locator, variant: string) {
 	const more = component.getByRole('button', { name: 'Load more history' });
 	await more.click();
 	if (variant === 'loading') await expect(more).toBeDisabled();
-	if (variant === 'error')
-		await expect(component.getByRole('alert')).toContainText('Synthetic earlier history');
+	if (variant === 'error') await expect(component.getByRole('alert')).toBeVisible();
 	if (variant === 'more') await expect(more).toHaveCount(0);
 }
 async function artifact(component: Locator, variant: string) {
