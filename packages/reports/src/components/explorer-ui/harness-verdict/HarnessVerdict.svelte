@@ -194,7 +194,7 @@
 	}
 	.hx-tip::-webkit-scrollbar-thumb {
 		border-radius: var(--hx-radius-pill);
-		background: var(--hx-color-text-muted);
+		background: var(--hx-color-border-strong);
 	}
 	.hx-tip[hidden] {
 		display: none;

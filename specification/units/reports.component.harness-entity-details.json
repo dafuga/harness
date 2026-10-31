@@ -49,9 +49,9 @@
 			},
 			{
 				"name": "EntityDetails.tab",
-				"type": "ExplorerTab",
+				"type": "ExplorerTab | 'summary'",
 				"required": false,
-				"description": "Optional. Defaults to JavaScript undefined and shows the contract/measurement summary. source selects source files; measurements selects measured detail."
+				"description": "Optional. Defaults to JavaScript undefined and shows the contract with its measurement summary. source selects source files; measurements selects measured detail; summary selects only the performance summary."
 			},
 			{
 				"name": "EntityDetails.repository",
@@ -76,7 +76,7 @@
 			{
 				"name": "EntityDetails",
 				"type": "markup",
-				"description": "Named tabpanel containing source files, measurements or the default contract/measurement summary. It performs no data fetching and propagates errors from rendered children."
+				"description": "Renders source files, measured detail, the standalone performance summary, or the default contract with its summary. On phones, measurement fields stack with visible labels and whole-word values."
 			}
 		],
 		"errors": [

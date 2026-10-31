@@ -65,7 +65,6 @@
 	let profiles = $derived(historyProfiles(timings));
 	let profile = $state('');
 	let shown = $derived(profiles.includes(profile) ? profile : (profiles[0] ?? ''));
-	// Why the history cannot say what the commits not read yet changed, each reason once.
 	let gaps = $derived([...new Set(found.unread.flatMap((row) => (row.gap ? [row.gap] : [])))]);
 	const at = (row: ExplorerHistoryRow) =>
 		entityLens(nav.route, { category: entity.category, entity: entity.id, commit: row.commit });
