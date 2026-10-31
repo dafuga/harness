@@ -1,0 +1,70 @@
+{
+	"name": "desktop-catalog-long-text",
+	"goal": "Prevent repeated placeholder sentences in remaining Desktop long-content captures",
+	"createdAt": "2026-10-31T19:27:41.822Z",
+	"updatedAt": "2026-10-31T19:29:20.373Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-31T19:27:42.707Z",
+			"evidence": "Image review rejected the GameLevelBrief long state: concatenated repeated concept and single repeated brief sentence. History long has the same fixture anti-pattern."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T19:27:43.389Z",
+			"evidence": "The existing component-catalog-previews long cases checked presence and layout only. Extend their shared post-capture guard to require three distinct sentences without adding cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T19:29:03.307Z",
+			"evidence": "3e89b15b29d9de5160ced500006fcd82c2c6f0f585dc9c6cf9327e0e109221ab; all six existing long-state cases fail the distinct-sentence guard after preserving their screenshots."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-10-31T19:29:04.001Z",
+			"evidence": "Use purposeful, spaced concept and level prose, and one detailed history event with several distinct sentences. Preserve the shared capture guard and existing case count."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-10-31T19:29:20.373Z",
+			"evidence": "Meaningful, spaced game concept/brief prose and one detailed history note replace repeated placeholders. The distinct-sentence guard stays unchanged in the normal catalog test."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -129,10 +129,19 @@ function history(props: PreviewProps, data: DesktopData, variant: string): Previ
 			throw new Error('Synthetic earlier history is unavailable.');
 		};
 	if (variant === 'long')
-		entity.history = entity.history.map((item) => ({
-			...item,
-			detail: 'A detailed history event. '.repeat(10)
-		}));
+		entity.history = entity.history.map((item, index) =>
+			index === 0
+				? {
+						...item,
+						detail: [
+							'A detailed history event.',
+							'The revision keeps order filtering synchronous and preserves the original order of matching rows.',
+							'Matching ignores letter case without changing caller-owned data.',
+							'The public input matrix covers an empty query, no matches and mixed-case customer names so reviewers can compare this change with the current implementation.'
+						].join(' ')
+					}
+				: item
+		);
 	return { ...props, entity };
 }
 

@@ -42,7 +42,6 @@ function creation(props: PreviewProps, variant: string): PreviewProps {
 	return props;
 }
 function brief(props: PreviewProps, variant: string): PreviewProps {
-	const planning = props.planning as { concept: string; description: string };
 	const status = { busy: false, readonly: false, reason: '', error: '' };
 	const changes: Record<string, PreviewProps> = {
 		concept: { step: 'concept' },
@@ -58,7 +57,16 @@ function brief(props: PreviewProps, variant: string): PreviewProps {
 			status: { ...status, reason: 'No local model is available.' }
 		},
 		long: {
-			planning: { concept: planning.concept.repeat(8), description: planning.description.repeat(8) }
+			planning: {
+				concept:
+					'An island where lantern light reveals safe paths across a flooded courtyard. The player restores three beacons, finds the garden key and opens the vault before the last light fades.',
+				description: [
+					'Begin on the western shore with a lantern and a view of the locked garden gate.',
+					'Place a low wall before the first beacon so players learn to jump before reaching it.',
+					'Keep the garden key visible on the upper platform, then use a second lit path to lead back to the gate.',
+					'The final checkpoint opens the vault and records the restored beacons, while missed jumps return the player to the last safe ledge.'
+				].join(' ')
+			}
 		}
 	};
 	return { ...props, ...changes[variant] };
@@ -111,6 +119,7 @@ function pane(props: PreviewProps, variant: string): PreviewProps {
 }
 function fields(props: PreviewProps, variant: string): PreviewProps {
 	const view = props.view as GameView;
+	const second = { ...view, id: 'second-level', title: 'Garden return route' };
 	const changes: Record<string, PreviewProps> = {
 		readonly: { readonly: true },
 		gated: {
@@ -121,7 +130,8 @@ function fields(props: PreviewProps, variant: string): PreviewProps {
 			section: 'Level'
 		},
 		multiple: {
-			views: [view, { ...view, id: 'second-level', title: 'A second level with a longer title' }]
+			view: second,
+			views: [view, second]
 		}
 	};
 	return { ...props, ...changes[variant] };
