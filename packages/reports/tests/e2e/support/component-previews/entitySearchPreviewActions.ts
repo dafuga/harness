@@ -43,3 +43,32 @@ export async function assertEntitySearchState(
 		await expect(option).toHaveAttribute('aria-selected', 'true');
 	}
 }
+
+/** Retain the screenshot before rejecting an extra focus indicator inside the field frame. */
+export async function assertEntitySearchCapture(component: Locator, id: string, variant: string) {
+	if (id !== 'reports.component.entity-search' || !variant) return;
+	const dialog = component.getByRole('dialog', { name: 'Search project' });
+	const field = dialog.getByRole('combobox', { name: 'Search entities' });
+	await expect(field).toBeFocused();
+	const indicators = await field.evaluate((node) => {
+		const style = getComputedStyle(node);
+		return {
+			outline: parseFloat(style.outlineWidth),
+			border: parseFloat(style.borderTopWidth),
+			shadow: style.boxShadow
+		};
+	});
+	expect(indicators, 'Search frame owns the single aligned focus indicator').toEqual({
+		outline: 0,
+		border: 0,
+		shadow: 'none'
+	});
+	const frame = dialog.locator('.entity-search-field');
+	await expect(frame).toHaveCSS('outline-style', 'solid');
+	expect(
+		await frame.evaluate((node) => parseFloat(getComputedStyle(node).outlineWidth))
+	).toBeGreaterThan(0);
+	await expect(dialog.locator('.entity-search-note').first()).toHaveText(
+		variant === 'open-pinned' ? 'Commit 7561ee4' : 'Orders'
+	);
+}
