@@ -119,8 +119,8 @@ async function assertRosterState(roster: Locator, state: ProjectAgentState) {
 	}
 	if (state === 'agents-active') {
 		await expect(roster).toContainText('1 working');
-		await expect(roster).toContainText('Capture component states');
-		await expect(roster).toContainText('Preview agent');
+		await expect(roster).toContainText('Review order-card state 1');
+		await expect(roster).toContainText('Order review 1');
 		await expect(
 			roster.getByRole('region', { name: 'Modules being worked on' }).getByRole('link')
 		).toHaveAttribute('href', /\/components\/app\.component\.order-card$/);
@@ -139,6 +139,6 @@ async function assertRosterState(roster: Locator, state: ProjectAgentState) {
 		await expect(roster).toContainText(/stale/i);
 		await expect(
 			roster.getByRole('region', { name: /modules being worked on/i })
-		).not.toContainText('Preview agent');
+		).not.toContainText('Order review');
 	}
 }
