@@ -2,7 +2,7 @@
 	"name": "sol8-source-controls",
 	"goal": "Show open selection options, empty-file status and linked filenames in every responsive catalog capture",
 	"createdAt": "2026-10-31T19:07:54.418Z",
-	"updatedAt": "2026-10-31T19:26:56.672Z",
+	"updatedAt": "2026-10-31T19:55:49.982Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:55:47.101Z",
+			"evidence": "3701740174 renders visible Select options, explicit empty-file status and underlined filenames without changing the frozen tests."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:55:49.982Z",
+			"evidence": "36886229 passes the unchanged 96-case matrix at 3701740174 against red b880db3e, using the same fixed runtime environment."
 		},
 		{
 			"id": "verify",
