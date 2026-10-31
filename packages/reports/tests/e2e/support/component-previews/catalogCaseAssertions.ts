@@ -1,6 +1,7 @@
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
 import { assertRecordedReportPreviewState } from './reportPreviewAssertions';
 import { assertChatPreviewState } from './chatPreviewAssertions';
+import { assertExplorerTableActions } from './explorerTableActionAssertions';
 
 /** Layout previews show both their child slot and the catalog's own layout screenshot. */
 export async function assertCatalogLayout(
@@ -36,6 +37,8 @@ export async function assertCatalogLayout(
 export async function assertCatalogDetails(component: Locator, id: string, variant = '') {
 	await assertRecordedReportPreviewState(component, id, variant);
 	await assertChatPreviewState(component, id, variant);
+	if (id === 'reports.component.harness-explorer-table')
+		await assertExplorerTableActions(component);
 	if (id === 'reports.component.harness-explorer-index') {
 		await expect(
 			component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
