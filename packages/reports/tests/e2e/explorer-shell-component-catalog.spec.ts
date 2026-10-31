@@ -125,7 +125,12 @@ for (const viewport of catalogViewports) {
 			const component = await preview.readyPreview(page, unit.id, variant);
 			const target = { viewport: viewport.id, variant };
 			const early =
-				unit.id === 'reports.component.shared-primitives-atoms-html-a' ||
+				[
+					'reports.component.shared-primitives-atoms-html-a',
+					'reports.component.shared-primitives-atoms-html-ol',
+					'reports.component.shared-primitives-atoms-html-li',
+					'reports.component.shared-primitives-atoms-html-ul'
+				].includes(unit.id) ||
 				(variant === 'empty' &&
 					[
 						'reports.component.coverage-list',
