@@ -77,8 +77,10 @@ header.topbar {
 		width: auto;
 		/* Keep both 40px controls and their gaps outside every row of tabs. */
 		max-width: calc(100% - 80px - 2 * var(--hx-space-8));
+		min-width: 0;
 		height: auto;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
+		overflow-x: auto;
 	}
 	.topbar nav :global(a) {
 		min-height: 58px;
@@ -91,6 +93,9 @@ header.topbar {
 }
 /* Narrower, the environment and the revision take a row of their own under the project. */
 @media (min-width: 561px) and (max-width: 1250px) {
+	.topbar :global(.environment-picker) {
+		justify-self: start;
+	}
 	header.topbar.with-account {
 		grid-template:
 			'brand project . account' auto

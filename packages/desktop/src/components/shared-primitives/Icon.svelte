@@ -12,6 +12,7 @@
 		layouts: 'M3 4h18v16H3z M3 9h18 M8 9v11',
 		components: 'm12 2 9 5v10l-9 5-9-5V7z M3 7l9 5 9-5 M12 12v10',
 		models: 'M4 5h16v14H4zM4 10h16M10 10v9',
+		game: 'M7 8h10a4 4 0 0 1 4 4l1 6a2 2 0 0 1-3 2l-4-3H9l-4 3a2 2 0 0 1-3-2l1-6a4 4 0 0 1 4-4z M7 11v5 M4.5 13.5h5 M16 12h.01 M19 15h.01',
 		functions: 'M16 3h-3c-3 0-3 4-4 9s-1 9-4 9 M5 9h11',
 		configs:
 			'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8 M12 2v3 M12 19v3 M2 12h3 M19 12h3 M5 5l2 2 M17 17l2 2 M5 19l2-2 M17 7l2-2',
