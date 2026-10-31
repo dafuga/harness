@@ -1,6 +1,7 @@
 import type { Locator, Page } from '@playwright/test';
 
 const tooltipUnits = new Set([
+	'reports.component.harness-harness-verdict',
 	'reports.component.explorer-usage-link',
 	'reports.component.explorer-usage',
 	'reports.component.explorer-function-card',
@@ -170,7 +171,10 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 	const replayFull = id === 'reports.component.gameplay-replay' && variant === 'fullscreen';
 	const compactTarget =
 		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
-	const target = previewTargetElement(content, dialog, { id, variant, modal, compactTarget });
+	const target =
+		id === 'reports.component.shared-primitives-loading-state'
+			? content.locator('.hx-loading')
+			: previewTargetElement(content, dialog, { id, variant, modal, compactTarget });
 	return {
 		target,
 		modal,

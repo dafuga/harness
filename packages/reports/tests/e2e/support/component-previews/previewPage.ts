@@ -1,3 +1,4 @@
+import { routeShellCatalog } from './shellCatalogRoutes';
 import type { PreviewCaptureTarget } from './previewPage.types';
 import { expect, type Page } from '@playwright/test';
 import { join } from 'node:path';
@@ -59,6 +60,7 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 					: '';
 	await page.route('**/*', (route) => servePreview(route, home, markup));
 	await routeLoadingZoom(page, id, variant);
+	await routeShellCatalog(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.

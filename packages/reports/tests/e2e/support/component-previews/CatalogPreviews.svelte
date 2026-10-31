@@ -8,6 +8,8 @@
 	import { previewFixture } from './fixtures.svelte';
 	import { routePreview } from './visualUnits';
 	import PresentationPreviews from './PresentationPreviews.svelte';
+	import ExplorerIndexPreview from './ExplorerIndexPreview.svelte';
+	import ExplorerFramePreview from './ExplorerFramePreview.svelte';
 	import NativeAtomPreview from './NativeAtomPreview.svelte';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
@@ -32,6 +34,7 @@
 	const layout = unit.kind === 'layout';
 	const Root = layout ? previewComponent('packages/reports/src/routes/+layout.svelte') : null;
 	const fullFrame =
+		(id === 'reports.component.harness-harness-selectors' && ['tip', 'at-tip'].includes(variant)) ||
 		reportView ||
 		layout ||
 		routePreview(id) ||
@@ -117,6 +120,12 @@
 							<tbody><Component {...fixture.props} /></tbody>
 						</table>
 					</div>
+				{:else if id === 'reports.component.harness-explorer-index'}
+					<ExplorerIndexPreview props={fixture.props as never} />
+				{:else if id === 'reports.component.harness-explorer-frame' && variant === 'source-open'}
+					<ExplorerFramePreview props={fixture.props as never} />
+				{:else if id === 'reports.component.harness-harness-selectors' && ['tip', 'at-tip'].includes(variant)}
+					<div class="hx-nav"><Component {...fixture.props} /></div>
 				{:else if id in presentationIds}
 					<PresentationPreviews {id} {variant} />
 				{:else if fitted}

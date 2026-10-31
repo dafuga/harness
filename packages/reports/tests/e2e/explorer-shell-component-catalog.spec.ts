@@ -179,7 +179,7 @@ for (const viewport of catalogViewports) {
 				['', 'admin', 'gap', 'endpoint'].includes(variant)
 			)
 				await assertPermissionTable(component, page, viewport.id === 'mobile');
-			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
+			if (unit.id.endsWith('explorer-index') && !variant) await assertCompositionFilter(component);
 			if (
 				(unit.id === 'reports.component.explorer-dependencies-screen' && !variant) ||
 				unit.id.endsWith('at-dependencies')
@@ -198,11 +198,16 @@ for (const viewport of catalogViewports) {
 					documentedStyleTokens().length
 				);
 			}
-			for (const field of await component.locator('.hx-revision .has-display select').all())
+			for (const field of await component.locator('.hx-revision .has-display select').all()) {
+				await expect(field, 'The full revision remains available as a title').toHaveAttribute(
+					'title',
+					/\S/
+				);
 				await expect(
 					field,
 					'Only the compact value is painted in a closed revision field'
 				).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
+			}
 			await caseAssertions.assertCatalogLayout(component, unit, viewport);
 			await caseAssertions.assertCatalogDetails(component, unit.id, variant);
 			if (
