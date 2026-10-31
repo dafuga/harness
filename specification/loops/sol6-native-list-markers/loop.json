@@ -2,7 +2,7 @@
 	"name": "sol6-native-list-markers",
 	"goal": "Native list catalog states show markers and sibling items at every viewport.",
 	"createdAt": "2026-10-31T19:55:47.607Z",
-	"updatedAt": "2026-10-31T19:56:35.101Z",
+	"updatedAt": "2026-10-31T20:34:14.621Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:34:13.651Z",
+			"evidence": "1abb7fa7cd records all18 marker failures and before images. The unchanged54-case command reproduces missing markers and table rows."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:34:14.621Z",
+			"evidence": "Supply native caller markers with siblings, then real header and body table context. Keep the strengthened assertions and state count."
 		},
 		{
 			"id": "implement",

@@ -127,7 +127,13 @@ for (const viewport of catalogViewports) {
 					'reports.component.shared-primitives-atoms-html-a',
 					'reports.component.shared-primitives-atoms-html-ol',
 					'reports.component.shared-primitives-atoms-html-li',
-					'reports.component.shared-primitives-atoms-html-ul'
+					'reports.component.shared-primitives-atoms-html-ul',
+					'reports.component.shared-primitives-atoms-html-table',
+					'reports.component.shared-primitives-atoms-html-thead',
+					'reports.component.shared-primitives-atoms-html-tbody',
+					'reports.component.shared-primitives-atoms-html-tr',
+					'reports.component.shared-primitives-atoms-html-th',
+					'reports.component.shared-primitives-atoms-html-td'
 				].includes(unit.id) ||
 				(variant === 'empty' &&
 					[
