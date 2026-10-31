@@ -1,3 +1,4 @@
+import { shellCatalogVariants } from './shellCatalogVariants';
 import { nativeAtomVariants } from './nativeAtomVariants';
 import { presentationVariants } from './presentationVariants';
 import { explorerKitVariants } from './explorerKitVariants';
@@ -20,6 +21,7 @@ import { browserErrorsStates } from './browserErrorsVariants';
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
 	...nativeAtomVariants,
+	...shellCatalogVariants,
 	...explorerKitVariants,
 	...presentationVariants,
 	...pluginVariants,

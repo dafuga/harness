@@ -1,3 +1,4 @@
+import { shellCatalogProps } from './shellCatalogProps';
 import { explorerKitVariant } from './explorerKitVariants';
 import { pluginVariant } from './pluginVariants';
 import type { PreviewCases } from './shared';
@@ -34,6 +35,8 @@ import { browserErrorsVariant } from './browserErrorsVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	const shell = shellCatalogProps(id, props, variant);
+	if (shell) return shell;
 	const kit = explorerKitVariant(id, props, variant) ?? pluginVariant(id, props, variant);
 	if (kit) return kit;
 	const activity = activityReportVariant(id, props, variant);

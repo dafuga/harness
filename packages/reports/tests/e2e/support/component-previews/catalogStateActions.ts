@@ -1,3 +1,4 @@
+import { prepareShellCatalog } from './shellCatalogActions';
 import { preparePresentationState } from './presentationPreviewAssertions';
 import { expect, type Locator } from '@playwright/test';
 import { prepareConsoleChatState } from './consoleChatActions';
@@ -93,6 +94,7 @@ const actions: Record<string, CatalogStateAction> = {
 
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
+	if (await prepareShellCatalog(component, id, variant)) return;
 	await preparePresentationState(component, id, variant);
 	if (await prepareReportState(component, id, variant)) return;
 	if (id === 'reports.component.entity-search' && variant)

@@ -1,0 +1,122 @@
+import { expect, type Locator } from '../../../../../../test/support/browserTest';
+import { shellCatalogVariants } from './shellCatalogVariants';
+
+/** Prepare state through normal controls and assert that the fixture reached its named branch. */
+const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
+	'harness-entity-artifact': artifactState,
+	'harness-entity-history': historyState,
+	'harness-entity-audio': audioState,
+	'harness-entity-screens': screensState,
+	'harness-harness-verdict': verdictState,
+	'harness-harness-navbar': navbarState,
+	'harness-harness-action': actionState,
+	'shared-primitives-loading-state': loadingState,
+	'harness-harness-icon': iconState
+};
+export async function prepareShellCatalog(component: Locator, id: string, variant: string) {
+	if (!(id in shellCatalogVariants)) return false;
+	await actions[id.replace('reports.component.', '')]?.(component, variant);
+	if (id.includes('harness-explorer-')) await explorerState(component, id, variant);
+	if (variant === 'focused') {
+		const focus = component.locator('input, a, button').first();
+		await focus.focus();
+		await expect(focus).toBeFocused();
+	}
+	return true;
+}
+async function historyState(component: Locator, variant: string) {
+	if (variant === 'reading')
+		await component.getByRole('button', { name: 'Read the next commits' }).click();
+	if (variant === 'empty') await expect(component).toContainText('No commit read so far');
+	if (['unread', 'unavailable'].includes(variant))
+		await expect(component).toContainText('not known until');
+	if (variant === 'reading')
+		await expect(component.getByRole('button', { name: 'Reading…', exact: true })).toBeDisabled();
+}
+async function audioState(component: Locator, variant: string) {
+	let title = 'Current audio';
+	if (variant) title = 'Audio comparison';
+	if (variant === 'empty') title = 'No audio evidence';
+	await expect(component).toContainText(title);
+	if (variant.startsWith('missing')) await expect(component).toContainText('No clip of this state');
+	if (variant === 'transcript-closed')
+		for (const summary of await component.locator('details[open] > summary').all())
+			await summary.click();
+}
+async function screensState(component: Locator, variant: string) {
+	if (variant === 'viewer-open') {
+		await component.locator('.ex-shot').first().click();
+		await expect(component.getByRole('dialog')).toBeVisible();
+	}
+	if (variant === 'mobile-selected') {
+		await component.getByRole('button', { name: 'Mobile', exact: true }).click();
+		await expect(component.getByRole('button', { name: 'Mobile', exact: true })).toHaveAttribute(
+			'aria-pressed',
+			'true'
+		);
+	}
+	if (variant === 'missing') await expect(component).toContainText('No capture');
+	if (variant === 'incomparable') await expect(component).toContainText('Not comparable');
+}
+async function verdictState(component: Locator, variant: string) {
+	if (variant.endsWith('-open')) {
+		await component.getByRole('button').click();
+		await expect(component.getByRole('tooltip')).toBeVisible();
+	}
+	let state = 'passed';
+	if (variant.startsWith('unknown')) state = 'unknown';
+	if (variant.startsWith('failed') || variant === 'long-open') state = 'failed';
+	await expect(component.locator('.hx-verdict')).toHaveClass(new RegExp(state));
+}
+async function navbarState(component: Locator, variant: string) {
+	if (variant !== 'search-open') return;
+	await component.getByRole('button', { name: /Search/ }).click();
+	await expect(component.getByRole('dialog')).toBeVisible();
+}
+async function actionState(component: Locator, variant: string) {
+	if (variant === 'disabled') await expect(component.getByRole('button')).toBeDisabled();
+}
+async function loadingState(component: Locator, variant: string) {
+	if (variant !== 'reduced-motion') return;
+	await component.page().emulateMedia({ reducedMotion: 'reduce' });
+	await expect(component.locator('.hx-loading-indicator')).toHaveCSS('animation-name', 'none');
+}
+async function iconState(component: Locator) {
+	await expect(component.locator('path')).toHaveAttribute('d', /\S+/);
+}
+
+async function artifactState(component: Locator, variant: string) {
+	const words: Record<string, string> = {
+		'not-recorded': 'Not recorded',
+		'not-stored': 'Not stored',
+		loading: 'Reading what it holds…',
+		unverified: 'Not verified',
+		lost: 'Not verified'
+	};
+	if (words[variant]) await expect(component).toContainText(words[variant]);
+	if (['expanded', 'raw-open', 'plain-text', 'long'].includes(variant)) {
+		await component.getByText('Assertions and recorded result', { exact: true }).click();
+		if (variant === 'raw-open') {
+			await component.getByText('Recorded JSON', { exact: true }).click();
+			await expect(component.locator('details[open] details[open] pre')).toContainText('scenario');
+		}
+		if (variant === 'long')
+			await expect(component).toContainText('shortened; open the recorded file');
+		if (variant === 'plain-text')
+			await expect(component).toContainText('The recorded command completed successfully.');
+	}
+}
+
+async function explorerState(component: Locator, id: string, variant: string) {
+	if (['search', 'no-matches'].includes(variant)) {
+		await component
+			.getByRole('searchbox')
+			.fill(variant === 'search' ? 'Order' : 'no-such-recorded-entity');
+		if (variant === 'no-matches') await expect(component).toContainText(/No .* match this search/);
+	}
+	if (variant === 'unindexed')
+		await expect(component).toContainText('No registry at this revision');
+	if (variant === 'empty') await expect(component).toContainText(/No .* are in the registry/);
+	if (id.endsWith('explorer-controls'))
+		await expect(component.getByRole('searchbox')).toBeVisible();
+}

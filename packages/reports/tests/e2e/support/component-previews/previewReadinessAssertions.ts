@@ -3,6 +3,14 @@ import { previewImages } from './imageZoomActions';
 
 /** Loading states are accepted only for the two previews that request them. */
 export async function assertPreviewLoading(content: Locator, id: string, variant: string) {
+	if (id === 'reports.component.harness-entity-artifact' && variant === 'loading')
+		return await expect(content).toContainText('Reading what it holds…');
+	if (id === 'reports.component.harness-entity-behavior' && variant === 'loading')
+		return await expect(content).toContainText('Reading the recorded results…');
+	if (id === 'reports.component.harness-harness-console' && variant.startsWith('loading-'))
+		return await expect(content).toContainText(
+			variant === 'loading-history' ? 'Loading history…' : 'Loading this revision…'
+		);
 	const loading: Record<string, string> = {
 		'reports.component.analytics-cpu': 'Sampling CPU…',
 		'reports.component.gameplay-replay': 'Loading screenshot…',
@@ -28,6 +36,11 @@ export async function assertPreviewMessages(content: Locator, id: string, varian
 	const moduleCard = id === 'reports.component.explorer-ui-explorer-module-card';
 	if (moduleCard && variant === 'image-error')
 		await expect(content.locator('.ex-thumb-gap')).toBeVisible();
+	if (
+		id === 'reports.component.harness-entity-artifact' &&
+		['unverified', 'lost'].includes(variant)
+	)
+		return;
 	await expect(content).not.toContainText(
 		/This project could not be opened|Loading projects?…|Design preview unavailable|Preview unavailable|Screenshot unavailable|not listed by the evidence|Not verified|Reading the clip…|TypeError:|ReferenceError:|Checking the GitHub connection…/
 	);

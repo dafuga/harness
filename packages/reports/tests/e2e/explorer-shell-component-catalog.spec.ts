@@ -182,7 +182,7 @@ for (const viewport of catalogViewports) {
 				['', 'admin', 'gap', 'endpoint'].includes(variant)
 			)
 				await assertPermissionTable(component, page, viewport.id === 'mobile');
-			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
+			if (unit.id.endsWith('explorer-index') && !variant) await assertCompositionFilter(component);
 			if (
 				(unit.id === 'reports.component.explorer-dependencies-screen' && !variant) ||
 				unit.id.endsWith('at-dependencies')
