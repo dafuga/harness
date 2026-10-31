@@ -1,3 +1,4 @@
+import { registryOwnershipVerificationScopes } from './registry-ownership-verification-scopes';
 import { uploadVerificationScopes } from './upload-verification-scopes';
 import gameScenario from '../specification/scenarios/game-authoring.json' with { type: 'json' };
 import { hostedVerificationScopes } from './hosted-verification-scopes';
@@ -39,5 +40,6 @@ export const registeredVerificationScopes: Record<string, VerificationScope> = {
 	...brandingVerificationScopes,
 	...historyFixtureVerificationScopes,
 	...moduleTaskVerificationScopes,
-	...uploadVerificationScopes
+	...uploadVerificationScopes,
+	...registryOwnershipVerificationScopes
 };
