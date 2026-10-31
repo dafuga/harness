@@ -48,11 +48,17 @@
 			{
 				"name": "RevisionPicker",
 				"type": "markup",
-				"description": "One summary line names the branch or explicit short commit hash with its timestamp. For an environment scope, it reads Updated at and the deployment date and time; the selector already names the environment. Icon dialogs select revisions and Go to tip exits a pinned revision."
+				"description": "Summary of the branch or explicit short commit and timestamp. Environment scope reads Updated at and the deployment time. Icon dialogs display expanded branch and commit listboxes; choosing a row navigates and closes the dialog. Go to tip exits a pinned revision."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Workspace operation failure",
+				"type": "propagated",
+				"description": "Synchronous errors and rejected promises from the supplied workspace navigation or project operations are not caught by this component."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
