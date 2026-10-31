@@ -34,6 +34,7 @@
 	const layout = unit.kind === 'layout';
 	const Root = layout ? previewComponent('packages/reports/src/routes/+layout.svelte') : null;
 	const fullFrame =
+		(id === 'reports.component.harness-harness-selectors' && ['tip', 'at-tip'].includes(variant)) ||
 		reportView ||
 		layout ||
 		routePreview(id) ||
