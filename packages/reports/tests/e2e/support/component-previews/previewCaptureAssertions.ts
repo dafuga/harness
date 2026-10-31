@@ -1,3 +1,4 @@
+import { assertNativeAtomState } from './atomicCatalog';
 import { expect, type Page, type Locator } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -73,6 +74,7 @@ export async function assertCatalogState(
 	variant = '',
 	viewport = ''
 ) {
+	await assertNativeAtomState(component, id, variant);
 	if (id === 'reports.component.entity-cases') await assertEntityCasesState(component, variant);
 	if (id === 'reports.component.entity-examples')
 		await assertEntityExamplesState(component, variant);

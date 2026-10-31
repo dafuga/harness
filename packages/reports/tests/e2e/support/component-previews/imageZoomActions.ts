@@ -10,6 +10,8 @@ export async function routeLoadingZoom(page: Page, id: string, variant: string) 
 
 /** Only these explicit image states intentionally lack decoded pixels. */
 export async function previewImages(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.shared-primitives-atoms-html-img' && variant === 'alt-only')
+		return [];
 	if (id === 'reports.component.image-zoom' && ['loading', 'error'].includes(variant)) return [];
 	if (
 		id === 'reports.component.gameplay-replay' &&

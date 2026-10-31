@@ -22,7 +22,7 @@
 				"name": "HtmlElement.children",
 				"type": "Snippet",
 				"required": false,
-				"description": "Optional content within the native selected element; native HTML content rules still apply."
+				"description": "Optional content within the native selected element; native HTML content rules still apply. Defaults to JavaScript undefined (no child snippet)."
 			},
 			{
 				"name": "HtmlElement.this",
@@ -39,7 +39,19 @@
 				"description": "The actual native selected element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller content or event error",
+				"type": "propagated",
+				"description": "Supplied event handlers and rendered child snippets may throw; the atom does not catch their errors. Void elements ignore the child snippet."
+			},
+			{
+				"name": "Invalid dynamic element",
+				"type": "Svelte render error",
+				"description": "An invalid non-string tag or child content for a selected void element is rejected by Svelte."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

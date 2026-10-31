@@ -17,7 +17,7 @@ const attributes: Record<string, Record<string, unknown>> = {
 	embed: { width: 180, height: 90 },
 	object: { width: 180, height: 90 },
 	iframe: { width: 180, height: 90, title: 'Example frame', srcdoc: '<p>Embedded content</p>' },
-	audio: { controls: true },
+	audio: { controls: true, src: '/media/preview.wav' },
 	video: { controls: true, width: 180, height: 110 },
 	svg: { width: 180, height: 80, viewBox: '0 0 180 80', 'aria-label': 'Example graphic' },
 	path: { d: 'M12 60 45 15 78 60Z', stroke: 'currentColor', fill: 'none' },
@@ -51,8 +51,9 @@ const inputValues: Record<string, string | number> = {
 };
 
 /** Representative native values, without network requests or project data. */
-export function nativeAtomProps(tag: string, type?: string): Record<string, unknown> {
-	if (tag !== 'input') return attributes[tag] ?? {};
+export function nativeAtomProps(tag: string, type?: string, variant = ''): Record<string, unknown> {
+	const changed = nativeVariantProps(tag, variant);
+	if (tag !== 'input') return { ...attributes[tag], ...changed };
 	return {
 		'aria-label': 'Example field',
 		...(type ? {} : { type: 'text' }),
@@ -62,8 +63,25 @@ export function nativeAtomProps(tag: string, type?: string): Record<string, unkn
 			: {}),
 		...(type === 'file'
 			? { accept: 'text/plain' }
-			: { value: inputValues[type ?? 'text'] ?? 'Example' })
+			: { value: inputValues[type ?? 'text'] ?? 'Example' }),
+		...changed
 	};
+}
+
+/** Variants preserve native behavior rather than adding behavior to the atom. */
+function nativeVariantProps(tag: string, variant: string): Record<string, unknown> {
+	const states: Record<string, Record<string, unknown>> = {
+		disabled: { disabled: true },
+		empty: { value: '', placeholder: 'Example field' },
+		filled:
+			tag === 'path' ? { fill: 'currentColor' } : { value: 'A saved message with several words.' },
+		closed: { open: false },
+		unlinked: { href: undefined },
+		'alt-only': { src: undefined, alt: 'Image description without a source' },
+		unavailable: { src: undefined },
+		outlined: { fill: 'none', stroke: 'currentColor' }
+	};
+	return states[variant] ?? {};
 }
 
 export const nativeAtomFixture = (id: string) =>

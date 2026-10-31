@@ -4465,6 +4465,18 @@
 			"units": ["reports.component.shared-primitives-atoms-html-a"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-a-unlinked",
+			"title": "HtmlA: unlinked",
+			"units": ["reports.component.shared-primitives-atoms-html-a"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-a-long",
+			"title": "HtmlA: long",
+			"units": ["reports.component.shared-primitives-atoms-html-a"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-abbr",
 			"title": "HtmlAbbr",
 			"coverage": "required",
@@ -4483,16 +4495,34 @@
 			"units": ["reports.component.shared-primitives-atoms-html-article"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-article-long",
+			"title": "HtmlArticle: long",
+			"units": ["reports.component.shared-primitives-atoms-html-article"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-aside",
 			"title": "HtmlAside",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-aside"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-aside-long",
+			"title": "HtmlAside: long",
+			"units": ["reports.component.shared-primitives-atoms-html-aside"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-audio",
 			"title": "HtmlAudio",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-audio"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-audio-unavailable",
+			"title": "HtmlAudio: unavailable",
+			"units": ["reports.component.shared-primitives-atoms-html-audio"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-b",
@@ -4519,10 +4549,28 @@
 			"units": ["reports.component.shared-primitives-atoms-html-blockquote"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-blockquote-long",
+			"title": "HtmlBlockquote: long",
+			"units": ["reports.component.shared-primitives-atoms-html-blockquote"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-button",
 			"title": "HtmlButton",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-button"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-button-disabled",
+			"title": "HtmlButton: disabled",
+			"units": ["reports.component.shared-primitives-atoms-html-button"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-button-long",
+			"title": "HtmlButton: long",
+			"units": ["reports.component.shared-primitives-atoms-html-button"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-canvas",
@@ -4549,6 +4597,12 @@
 			"units": ["reports.component.shared-primitives-atoms-html-code"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-code-long",
+			"title": "HtmlCode: long",
+			"units": ["reports.component.shared-primitives-atoms-html-code"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-colgroup",
 			"title": "HtmlColgroup",
 			"coverage": "required",
@@ -4567,6 +4621,12 @@
 			"units": ["reports.component.shared-primitives-atoms-html-dd"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-dd-long",
+			"title": "HtmlDd: long",
+			"units": ["reports.component.shared-primitives-atoms-html-dd"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-del",
 			"title": "HtmlDel",
 			"coverage": "required",
@@ -4577,6 +4637,12 @@
 			"title": "HtmlDetails",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-details"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-details-closed",
+			"title": "HtmlDetails: closed",
+			"units": ["reports.component.shared-primitives-atoms-html-details"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-dfn",
@@ -4597,10 +4663,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-div"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-div-long",
+			"title": "HtmlDiv: long",
+			"units": ["reports.component.shared-primitives-atoms-html-div"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-dl",
 			"title": "HtmlDl",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-dl"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-dl-long",
+			"title": "HtmlDl: long",
+			"units": ["reports.component.shared-primitives-atoms-html-dl"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-dt",
@@ -4609,16 +4687,34 @@
 			"units": ["reports.component.shared-primitives-atoms-html-dt"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-dt-long",
+			"title": "HtmlDt: long",
+			"units": ["reports.component.shared-primitives-atoms-html-dt"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-element",
 			"title": "HtmlElement",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-element"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-element-long",
+			"title": "HtmlElement: long",
+			"units": ["reports.component.shared-primitives-atoms-html-element"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-em",
 			"title": "HtmlEm",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-em"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-em-long",
+			"title": "HtmlEm: long",
+			"units": ["reports.component.shared-primitives-atoms-html-em"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-embed",
@@ -4639,10 +4735,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-figcaption"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-figcaption-long",
+			"title": "HtmlFigcaption: long",
+			"units": ["reports.component.shared-primitives-atoms-html-figcaption"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-figure",
 			"title": "HtmlFigure",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-figure"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-figure-long",
+			"title": "HtmlFigure: long",
+			"units": ["reports.component.shared-primitives-atoms-html-figure"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-footer",
@@ -4651,10 +4759,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-footer"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-footer-long",
+			"title": "HtmlFooter: long",
+			"units": ["reports.component.shared-primitives-atoms-html-footer"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-form",
 			"title": "HtmlForm",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-form"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-form-long",
+			"title": "HtmlForm: long",
+			"units": ["reports.component.shared-primitives-atoms-html-form"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-h1",
@@ -4663,10 +4783,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-h1"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-h1-long",
+			"title": "HtmlH1: long",
+			"units": ["reports.component.shared-primitives-atoms-html-h1"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-h2",
 			"title": "HtmlH2",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-h2"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-h2-long",
+			"title": "HtmlH2: long",
+			"units": ["reports.component.shared-primitives-atoms-html-h2"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-h3",
@@ -4675,10 +4807,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-h3"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-h3-long",
+			"title": "HtmlH3: long",
+			"units": ["reports.component.shared-primitives-atoms-html-h3"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-h4",
 			"title": "HtmlH4",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-h4"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-h4-long",
+			"title": "HtmlH4: long",
+			"units": ["reports.component.shared-primitives-atoms-html-h4"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-h5",
@@ -4697,6 +4841,12 @@
 			"title": "HtmlHeader",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-header"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-header-long",
+			"title": "HtmlHeader: long",
+			"units": ["reports.component.shared-primitives-atoms-html-header"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-hgroup",
@@ -4729,10 +4879,28 @@
 			"units": ["reports.component.shared-primitives-atoms-html-img"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-img-alt-only",
+			"title": "HtmlImg: alt-only",
+			"units": ["reports.component.shared-primitives-atoms-html-img"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-input",
 			"title": "HtmlInput",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-input"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-empty",
+			"title": "HtmlInput: empty",
+			"units": ["reports.component.shared-primitives-atoms-html-input"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-disabled",
+			"title": "HtmlInput: disabled",
+			"units": ["reports.component.shared-primitives-atoms-html-input"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-input-button",
@@ -4873,10 +5041,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-kbd"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-kbd-long",
+			"title": "HtmlKbd: long",
+			"units": ["reports.component.shared-primitives-atoms-html-kbd"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-label",
 			"title": "HtmlLabel",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-label"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-label-long",
+			"title": "HtmlLabel: long",
+			"units": ["reports.component.shared-primitives-atoms-html-label"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-legend",
@@ -4891,10 +5071,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-li"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-li-long",
+			"title": "HtmlLi: long",
+			"units": ["reports.component.shared-primitives-atoms-html-li"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-main",
 			"title": "HtmlMain",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-main"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-main-long",
+			"title": "HtmlMain: long",
+			"units": ["reports.component.shared-primitives-atoms-html-main"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-mark",
@@ -4921,6 +5113,12 @@
 			"units": ["reports.component.shared-primitives-atoms-html-nav"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-nav-long",
+			"title": "HtmlNav: long",
+			"units": ["reports.component.shared-primitives-atoms-html-nav"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-object",
 			"title": "HtmlObject",
 			"coverage": "required",
@@ -4931,6 +5129,12 @@
 			"title": "HtmlOl",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-ol"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-ol-long",
+			"title": "HtmlOl: long",
+			"units": ["reports.component.shared-primitives-atoms-html-ol"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-optgroup",
@@ -4945,16 +5149,34 @@
 			"units": ["reports.component.shared-primitives-atoms-html-option"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-option-disabled",
+			"title": "HtmlOption: disabled",
+			"units": ["reports.component.shared-primitives-atoms-html-option"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-output",
 			"title": "HtmlOutput",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-output"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-output-long",
+			"title": "HtmlOutput: long",
+			"units": ["reports.component.shared-primitives-atoms-html-output"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-p",
 			"title": "HtmlP",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-p"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-p-long",
+			"title": "HtmlP: long",
+			"units": ["reports.component.shared-primitives-atoms-html-p"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-picture",
@@ -4967,6 +5189,12 @@
 			"title": "HtmlPre",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-pre"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-pre-long",
+			"title": "HtmlPre: long",
+			"units": ["reports.component.shared-primitives-atoms-html-pre"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-progress",
@@ -5023,6 +5251,12 @@
 			"units": ["reports.component.shared-primitives-atoms-html-section"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-section-long",
+			"title": "HtmlSection: long",
+			"units": ["reports.component.shared-primitives-atoms-html-section"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-select",
 			"title": "HtmlSelect",
 			"coverage": "required",
@@ -5035,16 +5269,34 @@
 			"units": ["reports.component.shared-primitives-atoms-html-small"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-small-long",
+			"title": "HtmlSmall: long",
+			"units": ["reports.component.shared-primitives-atoms-html-small"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-span",
 			"title": "HtmlSpan",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-span"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-span-long",
+			"title": "HtmlSpan: long",
+			"units": ["reports.component.shared-primitives-atoms-html-span"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-strong",
 			"title": "HtmlStrong",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-strong"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-strong-long",
+			"title": "HtmlStrong: long",
+			"units": ["reports.component.shared-primitives-atoms-html-strong"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-sub",
@@ -5059,6 +5311,12 @@
 			"units": ["reports.component.shared-primitives-atoms-html-summary"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-summary-closed",
+			"title": "HtmlSummary: closed",
+			"units": ["reports.component.shared-primitives-atoms-html-summary"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-sup",
 			"title": "HtmlSup",
 			"coverage": "required",
@@ -5071,10 +5329,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-table"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-table-long",
+			"title": "HtmlTable: long",
+			"units": ["reports.component.shared-primitives-atoms-html-table"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-tbody",
 			"title": "HtmlTbody",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-tbody"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-tbody-long",
+			"title": "HtmlTbody: long",
+			"units": ["reports.component.shared-primitives-atoms-html-tbody"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-td",
@@ -5083,10 +5353,28 @@
 			"units": ["reports.component.shared-primitives-atoms-html-td"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-td-long",
+			"title": "HtmlTd: long",
+			"units": ["reports.component.shared-primitives-atoms-html-td"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-textarea",
 			"title": "HtmlTextarea",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-textarea"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-textarea-filled",
+			"title": "HtmlTextarea: filled",
+			"units": ["reports.component.shared-primitives-atoms-html-textarea"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-textarea-disabled",
+			"title": "HtmlTextarea: disabled",
+			"units": ["reports.component.shared-primitives-atoms-html-textarea"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-tfoot",
@@ -5101,10 +5389,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-th"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-th-long",
+			"title": "HtmlTh: long",
+			"units": ["reports.component.shared-primitives-atoms-html-th"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-thead",
 			"title": "HtmlThead",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-thead"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-thead-long",
+			"title": "HtmlThead: long",
+			"units": ["reports.component.shared-primitives-atoms-html-thead"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-time",
@@ -5113,10 +5413,22 @@
 			"units": ["reports.component.shared-primitives-atoms-html-time"]
 		},
 		{
+			"id": "reports-component-shared-primitives-atoms-html-time-long",
+			"title": "HtmlTime: long",
+			"units": ["reports.component.shared-primitives-atoms-html-time"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-tr",
 			"title": "HtmlTr",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-tr"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-tr-long",
+			"title": "HtmlTr: long",
+			"units": ["reports.component.shared-primitives-atoms-html-tr"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-u",
@@ -5129,6 +5441,12 @@
 			"title": "HtmlUl",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-ul"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-ul-long",
+			"title": "HtmlUl: long",
+			"units": ["reports.component.shared-primitives-atoms-html-ul"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-var",
@@ -5147,6 +5465,12 @@
 			"title": "SvgCircle",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-svg-circle"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-circle-outlined",
+			"title": "SvgCircle: outlined",
+			"units": ["reports.component.shared-primitives-atoms-svg-circle"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-svg-ellipse",
@@ -5183,6 +5507,12 @@
 			"title": "SvgPath",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-svg-path"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-path-filled",
+			"title": "SvgPath: filled",
+			"units": ["reports.component.shared-primitives-atoms-svg-path"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-svg-polygon",
@@ -6505,51 +6835,79 @@
 				"reports-component-select-disabled",
 				"reports-component-select-open",
 				"reports-component-shared-primitives-atoms-html-a",
+				"reports-component-shared-primitives-atoms-html-a-unlinked",
+				"reports-component-shared-primitives-atoms-html-a-long",
 				"reports-component-shared-primitives-atoms-html-abbr",
 				"reports-component-shared-primitives-atoms-html-address",
 				"reports-component-shared-primitives-atoms-html-article",
+				"reports-component-shared-primitives-atoms-html-article-long",
 				"reports-component-shared-primitives-atoms-html-aside",
+				"reports-component-shared-primitives-atoms-html-aside-long",
 				"reports-component-shared-primitives-atoms-html-audio",
+				"reports-component-shared-primitives-atoms-html-audio-unavailable",
 				"reports-component-shared-primitives-atoms-html-b",
 				"reports-component-shared-primitives-atoms-html-bdi",
 				"reports-component-shared-primitives-atoms-html-bdo",
 				"reports-component-shared-primitives-atoms-html-blockquote",
+				"reports-component-shared-primitives-atoms-html-blockquote-long",
 				"reports-component-shared-primitives-atoms-html-button",
+				"reports-component-shared-primitives-atoms-html-button-disabled",
+				"reports-component-shared-primitives-atoms-html-button-long",
 				"reports-component-shared-primitives-atoms-html-canvas",
 				"reports-component-shared-primitives-atoms-html-caption",
 				"reports-component-shared-primitives-atoms-html-cite",
 				"reports-component-shared-primitives-atoms-html-code",
+				"reports-component-shared-primitives-atoms-html-code-long",
 				"reports-component-shared-primitives-atoms-html-colgroup",
 				"reports-component-shared-primitives-atoms-html-data",
 				"reports-component-shared-primitives-atoms-html-dd",
+				"reports-component-shared-primitives-atoms-html-dd-long",
 				"reports-component-shared-primitives-atoms-html-del",
 				"reports-component-shared-primitives-atoms-html-details",
+				"reports-component-shared-primitives-atoms-html-details-closed",
 				"reports-component-shared-primitives-atoms-html-dfn",
 				"reports-component-shared-primitives-atoms-html-dialog",
 				"reports-component-shared-primitives-atoms-html-div",
+				"reports-component-shared-primitives-atoms-html-div-long",
 				"reports-component-shared-primitives-atoms-html-dl",
+				"reports-component-shared-primitives-atoms-html-dl-long",
 				"reports-component-shared-primitives-atoms-html-dt",
+				"reports-component-shared-primitives-atoms-html-dt-long",
 				"reports-component-shared-primitives-atoms-html-element",
+				"reports-component-shared-primitives-atoms-html-element-long",
 				"reports-component-shared-primitives-atoms-html-em",
+				"reports-component-shared-primitives-atoms-html-em-long",
 				"reports-component-shared-primitives-atoms-html-embed",
 				"reports-component-shared-primitives-atoms-html-fieldset",
 				"reports-component-shared-primitives-atoms-html-figcaption",
+				"reports-component-shared-primitives-atoms-html-figcaption-long",
 				"reports-component-shared-primitives-atoms-html-figure",
+				"reports-component-shared-primitives-atoms-html-figure-long",
 				"reports-component-shared-primitives-atoms-html-footer",
+				"reports-component-shared-primitives-atoms-html-footer-long",
 				"reports-component-shared-primitives-atoms-html-form",
+				"reports-component-shared-primitives-atoms-html-form-long",
 				"reports-component-shared-primitives-atoms-html-h1",
+				"reports-component-shared-primitives-atoms-html-h1-long",
 				"reports-component-shared-primitives-atoms-html-h2",
+				"reports-component-shared-primitives-atoms-html-h2-long",
 				"reports-component-shared-primitives-atoms-html-h3",
+				"reports-component-shared-primitives-atoms-html-h3-long",
 				"reports-component-shared-primitives-atoms-html-h4",
+				"reports-component-shared-primitives-atoms-html-h4-long",
 				"reports-component-shared-primitives-atoms-html-h5",
 				"reports-component-shared-primitives-atoms-html-h6",
 				"reports-component-shared-primitives-atoms-html-header",
+				"reports-component-shared-primitives-atoms-html-header-long",
 				"reports-component-shared-primitives-atoms-html-hgroup",
 				"reports-component-shared-primitives-atoms-html-hr",
 				"reports-component-shared-primitives-atoms-html-i",
 				"reports-component-shared-primitives-atoms-html-iframe",
 				"reports-component-shared-primitives-atoms-html-img",
+				"reports-component-shared-primitives-atoms-html-img-alt-only",
 				"reports-component-shared-primitives-atoms-html-input",
+				"reports-component-shared-primitives-atoms-html-input-empty",
+				"reports-component-shared-primitives-atoms-html-input-disabled",
 				"reports-component-shared-primitives-atoms-html-input-button",
 				"reports-component-shared-primitives-atoms-html-input-checkbox",
 				"reports-component-shared-primitives-atoms-html-input-color",
@@ -6573,22 +6931,32 @@
 				"reports-component-shared-primitives-atoms-html-input-week",
 				"reports-component-shared-primitives-atoms-html-ins",
 				"reports-component-shared-primitives-atoms-html-kbd",
+				"reports-component-shared-primitives-atoms-html-kbd-long",
 				"reports-component-shared-primitives-atoms-html-label",
+				"reports-component-shared-primitives-atoms-html-label-long",
 				"reports-component-shared-primitives-atoms-html-legend",
 				"reports-component-shared-primitives-atoms-html-li",
+				"reports-component-shared-primitives-atoms-html-li-long",
 				"reports-component-shared-primitives-atoms-html-main",
+				"reports-component-shared-primitives-atoms-html-main-long",
 				"reports-component-shared-primitives-atoms-html-mark",
 				"reports-component-shared-primitives-atoms-html-menu",
 				"reports-component-shared-primitives-atoms-html-meter",
 				"reports-component-shared-primitives-atoms-html-nav",
+				"reports-component-shared-primitives-atoms-html-nav-long",
 				"reports-component-shared-primitives-atoms-html-object",
 				"reports-component-shared-primitives-atoms-html-ol",
+				"reports-component-shared-primitives-atoms-html-ol-long",
 				"reports-component-shared-primitives-atoms-html-optgroup",
 				"reports-component-shared-primitives-atoms-html-option",
+				"reports-component-shared-primitives-atoms-html-option-disabled",
 				"reports-component-shared-primitives-atoms-html-output",
+				"reports-component-shared-primitives-atoms-html-output-long",
 				"reports-component-shared-primitives-atoms-html-p",
+				"reports-component-shared-primitives-atoms-html-p-long",
 				"reports-component-shared-primitives-atoms-html-picture",
 				"reports-component-shared-primitives-atoms-html-pre",
+				"reports-component-shared-primitives-atoms-html-pre-long",
 				"reports-component-shared-primitives-atoms-html-progress",
 				"reports-component-shared-primitives-atoms-html-q",
 				"reports-component-shared-primitives-atoms-html-rp",
@@ -6598,33 +6966,50 @@
 				"reports-component-shared-primitives-atoms-html-samp",
 				"reports-component-shared-primitives-atoms-html-search",
 				"reports-component-shared-primitives-atoms-html-section",
+				"reports-component-shared-primitives-atoms-html-section-long",
 				"reports-component-shared-primitives-atoms-html-select",
 				"reports-component-shared-primitives-atoms-html-small",
+				"reports-component-shared-primitives-atoms-html-small-long",
 				"reports-component-shared-primitives-atoms-html-span",
+				"reports-component-shared-primitives-atoms-html-span-long",
 				"reports-component-shared-primitives-atoms-html-strong",
+				"reports-component-shared-primitives-atoms-html-strong-long",
 				"reports-component-shared-primitives-atoms-html-sub",
 				"reports-component-shared-primitives-atoms-html-summary",
+				"reports-component-shared-primitives-atoms-html-summary-closed",
 				"reports-component-shared-primitives-atoms-html-sup",
 				"reports-component-shared-primitives-atoms-html-table",
+				"reports-component-shared-primitives-atoms-html-table-long",
 				"reports-component-shared-primitives-atoms-html-tbody",
+				"reports-component-shared-primitives-atoms-html-tbody-long",
 				"reports-component-shared-primitives-atoms-html-td",
+				"reports-component-shared-primitives-atoms-html-td-long",
 				"reports-component-shared-primitives-atoms-html-textarea",
+				"reports-component-shared-primitives-atoms-html-textarea-filled",
+				"reports-component-shared-primitives-atoms-html-textarea-disabled",
 				"reports-component-shared-primitives-atoms-html-tfoot",
 				"reports-component-shared-primitives-atoms-html-th",
+				"reports-component-shared-primitives-atoms-html-th-long",
 				"reports-component-shared-primitives-atoms-html-thead",
+				"reports-component-shared-primitives-atoms-html-thead-long",
 				"reports-component-shared-primitives-atoms-html-time",
+				"reports-component-shared-primitives-atoms-html-time-long",
 				"reports-component-shared-primitives-atoms-html-tr",
+				"reports-component-shared-primitives-atoms-html-tr-long",
 				"reports-component-shared-primitives-atoms-html-u",
 				"reports-component-shared-primitives-atoms-html-ul",
+				"reports-component-shared-primitives-atoms-html-ul-long",
 				"reports-component-shared-primitives-atoms-html-var",
 				"reports-component-shared-primitives-atoms-html-video",
 				"reports-component-shared-primitives-atoms-svg-circle",
+				"reports-component-shared-primitives-atoms-svg-circle-outlined",
 				"reports-component-shared-primitives-atoms-svg-ellipse",
 				"reports-component-shared-primitives-atoms-svg-foreign-object",
 				"reports-component-shared-primitives-atoms-svg-g",
 				"reports-component-shared-primitives-atoms-svg-image",
 				"reports-component-shared-primitives-atoms-svg-line",
 				"reports-component-shared-primitives-atoms-svg-path",
+				"reports-component-shared-primitives-atoms-svg-path-filled",
 				"reports-component-shared-primitives-atoms-svg-polygon",
 				"reports-component-shared-primitives-atoms-svg-polyline",
 				"reports-component-shared-primitives-atoms-svg-rect",

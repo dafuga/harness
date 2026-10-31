@@ -1,3 +1,4 @@
+import { nativeAtomVariants } from './nativeAtomVariants';
 import { presentationVariants } from './presentationVariants';
 import { explorerKitVariants } from './explorerKitVariants';
 import { pluginVariants } from './pluginVariants';
@@ -18,6 +19,7 @@ import { browserErrorsStates } from './browserErrorsVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
+	...nativeAtomVariants,
 	...explorerKitVariants,
 	...presentationVariants,
 	...pluginVariants,

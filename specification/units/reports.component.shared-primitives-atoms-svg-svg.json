@@ -22,7 +22,7 @@
 				"name": "SvgSvg.children",
 				"type": "Snippet",
 				"required": false,
-				"description": "Optional content within the native svg element; native HTML content rules still apply."
+				"description": "Optional content within the native svg element; native HTML content rules still apply. Defaults to JavaScript undefined (no child snippet)."
 			}
 		],
 		"outputs": [
@@ -32,7 +32,14 @@
 				"description": "The actual native svg element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller content or event error",
+				"type": "propagated",
+				"description": "Supplied event handlers and rendered child snippets may throw; the atom does not catch their errors. Void elements ignore the child snippet."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

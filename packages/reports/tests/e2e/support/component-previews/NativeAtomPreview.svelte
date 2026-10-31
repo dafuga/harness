@@ -7,12 +7,22 @@
 	import { nativeAtomProps } from './nativeAtomProps';
 	let {
 		Component,
-		source
-	}: { Component: SvelteComponent<Record<string, unknown>>; source: string } = $props();
+		source,
+		variant = ''
+	}: {
+		Component: SvelteComponent<Record<string, unknown>>;
+		source: string;
+		variant?: string;
+	} = $props();
 	const name = $derived(source.split('/').at(-1)?.replace('.svelte', ''));
 	const definition = $derived(nativeAtoms.find((atom) => atom.name === name)!);
 	const tag = $derived(definition.tag);
-	const attributes = $derived(nativeAtomProps(tag, definition.type));
+	const attributes = $derived(nativeAtomProps(tag, definition.type, variant));
+	const label = $derived(
+		variant === 'long'
+			? 'Long native content remains readable when a caller supplies several words and a second phrase.'
+			: name
+	);
 	let host: HTMLElement;
 	onMount(() => {
 		const canvas = host.querySelector('canvas');
@@ -25,16 +35,22 @@
 </script>
 
 {#snippet content()}
-	{#if ['input', 'img', 'hr', 'video', 'audio', 'iframe', 'canvas', 'embed', 'object'].includes(tag)}{:else if tag === 'select' || tag === 'optgroup'}<option
+	{#if ['input', 'img', 'hr', 'video', 'audio', 'iframe', 'canvas', 'embed', 'object', 'textarea'].includes(tag)}{:else if tag === 'select' || tag === 'optgroup'}<option
 			value="example">Example choice</option
 		>
-	{:else if tag === 'table'}<tbody><tr><td>Example cell</td></tr></tbody>
-	{:else if ['thead', 'tbody', 'tfoot'].includes(tag)}<tr><td>Example cell</td></tr>
-	{:else if tag === 'tr'}<td>Example cell</td>
-	{:else if ['ul', 'ol', 'menu'].includes(tag)}<li>Example item</li>
+	{:else if tag === 'table'}<tbody
+			><tr><td>{variant === 'long' ? label : 'Example cell'}</td></tr></tbody
+		>
+	{:else if ['thead', 'tbody', 'tfoot'].includes(tag)}<tr
+			><td>{variant === 'long' ? label : 'Example cell'}</td></tr
+		>
+	{:else if tag === 'tr'}<td>{variant === 'long' ? label : 'Example cell'}</td>
+	{:else if ['ul', 'ol', 'menu'].includes(tag)}<li>
+			{variant === 'long' ? label : 'Example item'}
+		</li>
 	{:else if tag === 'dl'}<div>
 			<dt>Label</dt>
-			<dd>Example value</dd>
+			<dd>{variant === 'long' ? label : 'Example value'}</dd>
 		</div>
 	{:else if tag === 'details'}<summary>Example details</summary>
 		<p>Expanded content</p>
@@ -59,7 +75,7 @@
 		>
 			Embedded content
 		</p>
-	{:else}{name}{/if}
+	{:else}{label}{/if}
 {/snippet}
 
 <div class="atom-host" bind:this={host}>
@@ -90,7 +106,7 @@
 			><Component {...attributes} children={content} /></select
 		>
 	{:else if tag === 'legend'}<fieldset><Component {...attributes} children={content} /></fieldset>
-	{:else if tag === 'summary'}<details open>
+	{:else if tag === 'summary'}<details open={variant !== 'closed'}>
 			<Component {...attributes} children={content} />
 		</details>
 	{:else if tag === 'rt' || tag === 'rp'}<ruby

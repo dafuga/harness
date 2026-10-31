@@ -128,7 +128,7 @@
 						</SvelteFlow>
 					</div>
 				{:else if unit.source?.includes('/atoms/')}
-					<NativeAtomPreview {Component} source={unit.source} />
+					<NativeAtomPreview {Component} source={unit.source} {variant} />
 				{:else}
 					<Component {...fixture.props} />
 				{/if}
