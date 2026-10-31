@@ -3,8 +3,8 @@
 	"id": "workflow.manage-units",
 	"kind": "workflow",
 	"title": "manageUnits",
-	"responsibility": "Owns the manageUnits command workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Indexes and checks registered units, reports relationship and canonical ownership diagnostics, and retires source-free identities.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program/manageUnits.ts", "src/cli/program/manageUnits.types.ts"],
@@ -24,90 +24,106 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "indexUnits.options",
 				"type": "UnitsOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional options, default {}: root defaults to the discovered project; write defaults false and controls manifest writes. json and now do not affect indexing."
 			},
 			{
 				"name": "checkUnits.options",
 				"type": "UnitsOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional options, default {}: root selects the project; other fields do not affect checking."
 			},
 			{
 				"name": "registryErrors.loaded",
 				"type": "LoadedUnits",
-				"required": true
+				"required": true,
+				"description": "Loaded stored and freshly indexed manifests, source facts, scenarios, parse errors, formatting gaps and repository context."
 			},
 			{
 				"name": "retireUnit.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Required registered identity to retire; its owned source must already be absent."
 			},
 			{
 				"name": "retireUnit.reason",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Required nonblank retirement explanation, preserved in the tombstone."
 			},
 			{
 				"name": "retireUnit.options",
 				"type": "UnitsOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional options, default {}: root selects the project and now defaults to the current ISO timestamp; json and write do not affect retirement."
 			},
 			{
 				"name": "renderIndex.report",
 				"type": "IndexReport",
-				"required": true
+				"required": true,
+				"description": "Required index changes, active count, written paths and uncertain-reference count."
 			},
 			{
 				"name": "renderIndex.wrote",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Required flag indicating whether manifest writes were requested; controls the follow-up instruction."
 			},
 			{
 				"name": "renderCheck.report",
 				"type": "CheckReport",
-				"required": true
+				"required": true,
+				"description": "Required active-unit and uncertain-reference counts from the check result."
 			}
 		],
 		"outputs": [
 			{
 				"name": "indexUnits",
-				"type": "Promise<IndexReport>"
+				"type": "Promise<IndexReport>",
+				"description": "Index changes, active-unit and uncertain-reference counts, plus manifest paths actually written."
 			},
 			{
 				"name": "checkUnits",
-				"type": "Promise<CheckReport>"
+				"type": "Promise<CheckReport>",
+				"description": "Active-unit and uncertain-reference counts, fresh/stored contract failure summaries and registry diagnostics."
 			},
 			{
 				"name": "registryErrors",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "All loading, contract, preview, scenario, staleness and ownership diagnostics; includes duplicate IDs and reviewed canonical forwarding backedges."
 			},
 			{
 				"name": "retireUnit",
-				"type": "Promise<ComponentManifest>"
+				"type": "Promise<ComponentManifest>",
+				"description": "Persisted retired manifest with its stable identity, reason and timestamp."
 			},
 			{
 				"name": "renderIndex",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable indexing summary, move/orphan details and a write instruction when needed."
 			},
 			{
 				"name": "renderCheck",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable valid-registry summary with active-unit and uncertain-reference counts."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Retirement rejects an unknown ID, a blank reason or remaining owned source. Loading and filesystem failures propagate from dependencies."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "indexUnits",
@@ -116,17 +132,19 @@
 						"name": "indexUnits.options",
 						"type": "UnitsOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional options, default {}: root defaults to the discovered project; write defaults false and controls manifest writes. json and now do not affect indexing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "indexUnits",
-						"type": "Promise<IndexReport>"
+						"type": "Promise<IndexReport>",
+						"description": "Index changes, active-unit and uncertain-reference counts, plus manifest paths actually written."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "checkUnits",
@@ -135,17 +153,19 @@
 						"name": "checkUnits.options",
 						"type": "UnitsOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional options, default {}: root selects the project; other fields do not affect checking."
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkUnits",
-						"type": "Promise<CheckReport>"
+						"type": "Promise<CheckReport>",
+						"description": "Active-unit and uncertain-reference counts, fresh/stored contract failure summaries and registry diagnostics."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "registryErrors",
@@ -153,17 +173,19 @@
 					{
 						"name": "registryErrors.loaded",
 						"type": "LoadedUnits",
-						"required": true
+						"required": true,
+						"description": "Loaded stored and freshly indexed manifests, source facts, scenarios, parse errors, formatting gaps and repository context."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registryErrors",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "All loading, contract, preview, scenario, staleness and ownership diagnostics; includes duplicate IDs and reviewed canonical forwarding backedges."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "retireUnit",
@@ -171,33 +193,38 @@
 					{
 						"name": "retireUnit.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Required registered identity to retire; its owned source must already be absent."
 					},
 					{
 						"name": "retireUnit.reason",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Required nonblank retirement explanation, preserved in the tombstone."
 					},
 					{
 						"name": "retireUnit.options",
 						"type": "UnitsOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional options, default {}: root selects the project and now defaults to the current ISO timestamp; json and write do not affect retirement."
 					}
 				],
 				"outputs": [
 					{
 						"name": "retireUnit",
-						"type": "Promise<ComponentManifest>"
+						"type": "Promise<ComponentManifest>",
+						"description": "Persisted retired manifest with its stable identity, reason and timestamp."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Retirement rejects an unknown ID, a blank reason or remaining owned source. Loading and filesystem failures propagate from dependencies."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderIndex",
@@ -205,22 +232,25 @@
 					{
 						"name": "renderIndex.report",
 						"type": "IndexReport",
-						"required": true
+						"required": true,
+						"description": "Required index changes, active count, written paths and uncertain-reference count."
 					},
 					{
 						"name": "renderIndex.wrote",
 						"type": "boolean",
-						"required": true
+						"required": true,
+						"description": "Required flag indicating whether manifest writes were requested; controls the follow-up instruction."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderIndex",
-						"type": "string"
+						"type": "string",
+						"description": "Human-readable indexing summary, move/orphan details and a write instruction when needed."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderCheck",
@@ -228,17 +258,19 @@
 					{
 						"name": "renderCheck.report",
 						"type": "CheckReport",
-						"required": true
+						"required": true,
+						"description": "Required active-unit and uncertain-reference counts from the check result."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderCheck",
-						"type": "string"
+						"type": "string",
+						"description": "Human-readable valid-registry summary with active-unit and uncertain-reference counts."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
@@ -290,7 +322,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["unit-registry-ownership"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

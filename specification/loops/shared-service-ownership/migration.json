@@ -2901,13 +2901,13 @@
 			"unit": "workflow.manage-units",
 			"from": "src/workflows/manageUnits.ts",
 			"to": "src/cli/program/manageUnits.ts",
-			"definition": "87548f18489da50626771fe056383f4bb7258177e0666e557ec88be19bf91bea",
+			"definition": "ec29a089393b4e07c6bb5d6cf0bcd9ca45b84dfbf1a3b1bc1b52daa2bec3e2a2",
 			"relocationDefinition": "9724dcb63f8d4269c25b93b40fe77fac47ecd44518b088f3f0e8b47a79c03353",
 			"review": {
-				"commit": "ed44856479b8b702f03f90795ad513bdca4a90ca",
+				"commit": "43b6f023cd4ccc8ee1ba474852b9f60382fb5153",
 				"path": "src/cli/program/manageUnits.ts",
-				"definition": "87548f18489da50626771fe056383f4bb7258177e0666e557ec88be19bf91bea",
-				"reason": "Check source-derived contract quality and report current and stored entity failure counts."
+				"definition": "ec29a089393b4e07c6bb5d6cf0bcd9ca45b84dfbf1a3b1bc1b52daa2bec3e2a2",
+				"reason": "Validate duplicate active identities and reviewed canonical backedges using indexed source facts."
 			},
 			"previousReviews": [
 				{
@@ -2915,6 +2915,12 @@
 					"path": "src/cli/program/manageUnits.ts",
 					"definition": "fbf0eb9a9e1831f1455c480266bd3a7ace78dcfe9fc32054f6a1bcc6e8df71b6",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "ed44856479b8b702f03f90795ad513bdca4a90ca",
+					"path": "src/cli/program/manageUnits.ts",
+					"definition": "87548f18489da50626771fe056383f4bb7258177e0666e557ec88be19bf91bea",
+					"reason": "Check source-derived contract quality and report current and stored entity failure counts."
 				}
 			]
 		},

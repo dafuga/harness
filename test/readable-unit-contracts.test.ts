@@ -65,6 +65,8 @@ test('SQLite catalog functions and persisted models publish declared human-reada
 
 test('reviewed architecture units describe method inputs, defaults, outputs and failures', () => {
 	const ids = [
+		'validator.unit-registry',
+		'workflow.manage-units',
 		'service.source-graph',
 		'service.source-index',
 		'service.unit-index',
