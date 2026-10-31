@@ -1,4 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
+import { measurePreviewBounds } from './measurePreviewBounds';
 
 const tooltipUnits = new Set([
 	'reports.component.harness-harness-verdict',
@@ -26,13 +27,19 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 	const empty = emptyStates[`${id}:${variant}`];
 	if (empty) return emptyContentBounds(content, empty);
 	const selected = await previewTarget(content, id, variant);
-	const bounds = await measuredBounds(id, selected);
+	const bounds = await measurePreviewBounds(selected.target, {
+		captureElement: selected.captureElement,
+		chatPicker: selected.chatPicker,
+		includeUsageTooltip: tooltipUnits.has(id),
+		cropLightbox: id === 'reports.component.modal',
+		edge:
+			selected.modal &&
+			['reports.component.evidence-grid', 'reports.component.entity-states'].includes(id)
+				? 0
+				: 8
+	});
 	if (id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
 		return replayPickerBounds(page, bounds, variant);
-	if (id === 'reports.component.select' && variant === 'open') {
-		const height = await page.evaluate(() => document.documentElement.scrollHeight);
-		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + 180) };
-	}
 	return bounds;
 }
 
@@ -82,55 +89,6 @@ async function platformPickerBounds(page: Page) {
 		);
 		return { x: left + scrollX, y: top + scrollY, width: right - left, height: bottom - top };
 	});
-}
-
-async function measuredBounds(
-	id: string,
-	{ target, modal, captureElement, chatPicker }: Awaited<ReturnType<typeof previewTarget>>
-) {
-	return target.evaluate(
-		(node, { captureElement, includeUsageTooltip, chatPicker, edge }) => {
-			const boxes: DOMRect[] = [];
-			function collect(element: Element) {
-				const style = getComputedStyle(element);
-				if (style.display === 'none' || style.visibility === 'hidden') return;
-				const box = element.getBoundingClientRect();
-				if (style.display === 'contents' || !(box.width && box.height)) {
-					for (const child of element.children) collect(child);
-				} else boxes.push(box);
-			}
-			if (captureElement) collect(node);
-			else for (const child of node.children) collect(child);
-			const tooltip =
-				includeUsageTooltip && node.querySelector('[role="tooltip"], .reason[role="status"]');
-			if (tooltip) collect(tooltip);
-			const picker = chatPicker && node.querySelector('dialog[open], [role="dialog"]');
-			if (picker) collect(picker);
-			if (!boxes.length) throw new Error('The component has no rendered capture bounds.');
-			const start = (value: number, scroll: number) =>
-				Math.max(0, Math.floor(value + scroll) - edge);
-			const left = start(Math.min(...boxes.map((box) => box.left)), scrollX);
-			const top = start(Math.min(...boxes.map((box) => box.top)), scrollY);
-			const right = Math.min(
-				document.documentElement.scrollWidth,
-				Math.ceil(Math.max(...boxes.map((box) => box.right)) + scrollX) + edge
-			);
-			const bottom = Math.min(
-				document.documentElement.scrollHeight,
-				Math.ceil(Math.max(...boxes.map((box) => box.bottom)) + scrollY) + edge
-			);
-			return { x: left, y: top, width: right - left, height: bottom - top };
-		},
-		{
-			captureElement,
-			chatPicker,
-			includeUsageTooltip: tooltipUnits.has(id),
-			edge:
-				modal && ['reports.component.evidence-grid', 'reports.component.entity-states'].includes(id)
-					? 0
-					: 8
-		}
-	);
 }
 
 /** Full-frame report dialogs must be captured in the visible viewport. */

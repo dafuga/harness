@@ -17,7 +17,7 @@
 		empty?: string;
 		onSelect: (path: string) => void;
 	} = $props();
-	// An empty file is a file: once it is read, its code is shown, empty.
+	// An empty file keeps its path and revision, with an explicit status outside the source text.
 	let readable = $derived(state.path !== '' && !state.loading && !state.error);
 </script>
 
@@ -40,7 +40,10 @@
 	{:else if state.error}<hx-p class="source-error" role="alert">{state.error}</hx-p>
 	{:else if state.files.length === 0}<hx-p class="source-note">{empty}</hx-p>{/if}
 	<!-- The text is the file and nothing else: no line numbers and no markup are added to it. -->
-	{#if readable}<hx-pre class="source-code"><hx-code>{state.text}</hx-code></hx-pre>{/if}
+	{#if readable}
+		{#if state.text === ''}<hx-p class="source-note" role="status">This file is empty.</hx-p>
+		{:else}<hx-pre class="source-code"><hx-code>{state.text}</hx-code></hx-pre>{/if}
+	{/if}
 </hx-div>
 
 <style>

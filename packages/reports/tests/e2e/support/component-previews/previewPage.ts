@@ -191,8 +191,6 @@ export async function capturePreview(
 }
 
 const nativePopups: Record<string, string[]> = {
-	'reports.component.select': ['open'],
-
 	'reports.component.evidence-grid': ['status-open'],
 
 	'reports.component.explorer-ui-explorer-platforms': ['status-options-open'],

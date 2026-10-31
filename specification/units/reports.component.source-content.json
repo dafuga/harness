@@ -39,14 +39,14 @@
 				"name": "SourceContent.empty",
 				"type": "string",
 				"required": false,
-				"description": "Optional no-files explanation."
+				"description": "Optional no-files explanation. Defaults to JavaScript undefined, using SourceViewer's No source files recorded at this revision. message."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceContent",
 				"type": "markup",
-				"description": "Shows files, code and revision; changed callbacks start a new session. Unmounting cancels pending replies."
+				"description": "Shows files, revision and unmodified code or the explicit empty-file status through SourceViewer. Changed files/read callbacks start a new session; unmounting cancels pending replies. Reader failures become visible error states."
 			}
 		],
 		"errors": [],
