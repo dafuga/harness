@@ -2,7 +2,7 @@
 	"name": "desktop-nav-complete-captions",
 	"goal": "Keep all category captions complete in the recorded tablet and desktop navigation states",
 	"createdAt": "2026-10-31T22:28:24.365Z",
-	"updatedAt": "2026-10-31T22:29:53.662Z",
+	"updatedAt": "2026-10-31T22:31:49.529Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T22:31:48.220Z",
+			"evidence": "Content-width category tabs with the existing4px inline spacing token fit all sample captions at desktop/tablet while preserving horizontal overflow for longer content."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T22:31:49.529Z",
+			"evidence": "Matched reddf040ec4e419bdc8f861fdf2fae43db600a77e8173ea75335c17bc7e3becb796 fails3/pass1; green49dd16893fbefd30c9064eb16e81edf11eee5044ad1b7a85e9c0a81c558087d7 atb8c85f288e passes4. Same frozen tests/fixtures/profile; all8 original images inspected."
 		},
 		{
 			"id": "verify",
