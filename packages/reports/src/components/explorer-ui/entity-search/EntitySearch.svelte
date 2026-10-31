@@ -211,7 +211,7 @@
 		font-size: var(--hx-type-size-base);
 	}
 	.entity-search :global(.entity-search-field input:focus-visible) {
-		outline: none;
+		outline: 0;
 	}
 	input::placeholder {
 		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
