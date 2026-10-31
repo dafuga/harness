@@ -94,6 +94,11 @@
 				"name": "ExplorerTable",
 				"type": "markup",
 				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision."
+			},
+			{
+				"name": "ConfigValue",
+				"type": "markup",
+				"description": "Owned private renderer, not another public component unit. Required props: name: string identifies the variable and inspection action; source: string is the exact committed initializer; onview: (event: MouseEvent) => void handles the inspection action. Optional literal: unknown and structure: ConfigValueNode both default to undefined. It renders typed scalar or short-array marks, collection counts, or complete clipped string/expression text. It does not execute initializers. onview callback failures propagate."
 			}
 		],
 		"errors": [
@@ -101,6 +106,11 @@
 				"name": "Duplicate row key",
 				"type": "Svelte keyed-each error",
 				"description": "Duplicate row identifiers are rejected by Svelte keyed-list updates."
+			},
+			{
+				"name": "ConfigValue onview callback error",
+				"type": "thrown",
+				"description": "The owned ConfigValue renderer forwards inspection events to its required onview callback; callback failures propagate. ExplorerTable supplies its normal internal view handler."
 			}
 		],
 		"errorStatus": "declared",
