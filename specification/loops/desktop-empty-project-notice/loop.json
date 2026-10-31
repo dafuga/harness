@@ -2,7 +2,7 @@
 	"name": "desktop-empty-project-notice",
 	"goal": "Show the empty project explanation as readable normal text instead of a disabled empty field",
 	"createdAt": "2026-10-31T23:21:05.471Z",
-	"updatedAt": "2026-10-31T23:23:22.334Z",
+	"updatedAt": "2026-10-31T23:27:22.506Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T23:27:21.070Z",
+			"evidence": "Fix af3ecbbbb9 renders normal No projects yet text and omits the empty choice field without changing the three viewport guards."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T23:27:22.506Z",
+			"evidence": "Matched red 64b156d157 and green 41a605d049 use the frozen cf2b5b4965 test corpus and identical command/profile. All three viewport cases pass; all six original before/after PNGs inspected."
 		},
 		{
 			"id": "verify",
