@@ -1,0 +1,60 @@
+{
+	"name": "sol8-table-action",
+	"goal": "Keep ExplorerTable action labels and their arrows on one line without breaking horizontal scrolling",
+	"createdAt": "2026-10-31T21:17:48.312Z",
+	"updatedAt": "2026-10-31T21:26:59.586Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T21:17:49.210Z",
+			"evidence": "Fresh 1c1d003216 screenshots show Open split over multiple lines in the functions table at desktop and tablet. The label and arrow must fit one link row."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T21:17:49.915Z",
+			"evidence": "The standard catalog checked scroll hints, rows and links but never the painted action line count. Its existing cases now inspect the actual label range and arrow bounds after capture."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T21:22:33.862Z",
+			"evidence": "The unchanged 42-case catalog fails the named single-line action assertion at 4f40523e80 and retains the actual broken screenshots."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-31T21:26:55.499Z",
+			"evidence": "e6d6126987 keeps the table action intrinsic width and prevents label wrapping, while preserving the existing scroll frame and hint."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-31T21:26:59.586Z",
+			"evidence": "The unchanged 42-case responsive catalog passes at e6d6126987 against red feab90ca at 4f40523e80, including functions and services action geometry."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
