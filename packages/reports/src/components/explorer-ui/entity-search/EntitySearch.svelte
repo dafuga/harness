@@ -210,7 +210,7 @@
 		font: inherit;
 		font-size: var(--hx-type-size-base);
 	}
-	.entity-search-field input:focus-visible {
+	.entity-search :global(.entity-search-field input:focus-visible) {
 		outline: none;
 	}
 	input::placeholder {
