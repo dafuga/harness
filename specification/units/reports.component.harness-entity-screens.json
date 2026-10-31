@@ -76,7 +76,7 @@
 				"name": "EntityScreens.preview",
 				"type": "ScreenPick",
 				"required": false,
-				"description": "Exact optional scenario, state and initial viewport declared for this page. Viewport buttons preserve its scenario and state."
+				"description": "Exact optional scenario, state and initial viewport declared for this page. Viewport buttons preserve its scenario and state. Defaults to undefined when omitted."
 			}
 		],
 		"outputs": [
@@ -86,7 +86,13 @@
 				"description": "Captions show the revision that recorded each screenshot; a comparison retains Before/After labels with each capture's revision. Viewport buttons change only the viewport. Activating an image opens its full-size viewer with provenance. Rejected or absent captures remain explicit gaps."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Entityscreenshots.callerError",
+				"type": "unknown",
+				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+			}
+		],
 		"operations": [],
 		"initialization": []
 	},

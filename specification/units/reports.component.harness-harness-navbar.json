@@ -32,7 +32,7 @@
 				"name": "HarnessNavbar.modules",
 				"type": "ModuleCatalog",
 				"required": false,
-				"description": "Optional selected-revision module catalog. Installed resources supply Code tabs; omitted catalogs use included standard modules."
+				"description": "Optional selected-revision module catalog. Installed resources supply Code tabs; omitted catalogs use included standard modules. Defaults to undefined when omitted."
 			},
 			{
 				"name": "HarnessNavbar.base",
@@ -80,7 +80,7 @@
 				"name": "HarnessNavbar.search",
 				"type": "{ entries: SearchEntry[] | null }",
 				"required": false,
-				"description": "Optional searchable entities for the viewed revision, or null entries while loading. The search helper excludes entries for a mismatched revision."
+				"description": "Optional searchable entities for the viewed revision, or null entries while loading. The search helper excludes entries for a mismatched revision. Defaults to undefined when omitted."
 			}
 		],
 		"outputs": [
@@ -90,7 +90,13 @@
 				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Explorernavigationbar.callerError",
+				"type": "unknown",
+				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+			}
+		],
 		"operations": [],
 		"initialization": []
 	},

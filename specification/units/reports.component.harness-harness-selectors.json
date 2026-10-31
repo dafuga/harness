@@ -97,7 +97,13 @@
 				"description": "Native branch, commit and optional base selectors. In the navbar they form one compact row with middle-shortened names, short hashes and full hover details. Selecting a value invokes its matching callback."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Branchandrevisionselectors.callerError",
+				"type": "unknown",
+				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+			}
+		],
 		"operations": [],
 		"initialization": []
 	},

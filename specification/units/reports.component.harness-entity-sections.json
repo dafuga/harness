@@ -74,7 +74,13 @@
 				"description": "Only the selected section: overview evidence and summary, consumers in Used In for non-page entities, dependencies in Uses, component recordings in Audio, recorded test results, or source-declared model Table columns with unbroken identifiers in a contained scroll frame, primary keys, nullability, defaults and unresolved schema gaps. A page addressed with Used In shows Overview."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Entitysections.callerError",
+				"type": "unknown",
+				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+			}
+		],
 		"operations": [],
 		"initialization": [],
 		"snippets": [

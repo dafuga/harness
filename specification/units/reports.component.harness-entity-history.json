@@ -87,7 +87,13 @@
 				"description": "Shows changed commits with direct revision links, relative dates, source size, complexity and profile-scoped latency. Long reasons remain inline; no selected-change panel or duplicate action."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Entityhistory.callerError",
+				"type": "unknown",
+				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+			}
+		],
 		"operations": [],
 		"initialization": []
 	},

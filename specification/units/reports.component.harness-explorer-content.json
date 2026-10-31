@@ -106,14 +106,9 @@
 		],
 		"errors": [
 			{
-				"name": "no-registry",
-				"type": "stated",
-				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
-			},
-			{
-				"name": "entity-missing",
-				"type": "stated",
-				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
+				"name": "ExplorerContent.callerError",
+				"type": "unknown",
+				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
 			}
 		],
 		"operations": [],

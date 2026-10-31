@@ -74,7 +74,13 @@
 				"description": "Searchable alphabetical catalog with one source-file section per config and responsibility sections for other kinds. Retains count status, explicit empty states and a clear-search action. Catalog rows are presented without a standalone proof legend footer."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Entitycatalog.callerError",
+				"type": "unknown",
+				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+			}
+		],
 		"operations": [
 			{
 				"name": "configSections",

@@ -63,7 +63,7 @@
 				"name": "EntityArtifact.unit",
 				"type": "string",
 				"required": false,
-				"description": "Optional function identifier limiting direct-call rows; absent uses general recorded-case presentation."
+				"description": "Optional function identifier limiting direct-call rows; absent uses general recorded-case presentation. Defaults to undefined when omitted."
 			}
 		],
 		"outputs": [
