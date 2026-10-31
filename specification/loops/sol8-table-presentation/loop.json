@@ -2,9 +2,11 @@
 	"name": "sol8-table-presentation",
 	"goal": "Render catalog category rows, aligned empty feedback and multiline config strings at every viewport",
 	"createdAt": "2026-10-31T23:10:30.686Z",
-	"updatedAt": "2026-10-31T23:11:34.993Z",
+	"updatedAt": "2026-10-31T23:16:04.678Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T23:16:04.678Z",
+			"evidence": "Record b75608d653a6 at 53a25c7d06: all six cases fail; empty body cell absent and multiline CSS is nowrap at desktop, tablet and mobile."
 		},
 		{
 			"id": "implement",
