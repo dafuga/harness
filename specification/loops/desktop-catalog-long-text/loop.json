@@ -2,7 +2,7 @@
 	"name": "desktop-catalog-long-text",
 	"goal": "Prevent repeated placeholder sentences in remaining Desktop long-content captures",
 	"createdAt": "2026-10-31T19:27:41.822Z",
-	"updatedAt": "2026-10-31T19:27:43.389Z",
+	"updatedAt": "2026-10-31T19:29:20.373Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:29:03.307Z",
+			"evidence": "3e89b15b29d9de5160ced500006fcd82c2c6f0f585dc9c6cf9327e0e109221ab; all six existing long-state cases fail the distinct-sentence guard after preserving their screenshots."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:29:04.001Z",
+			"evidence": "Use purposeful, spaced concept and level prose, and one detailed history event with several distinct sentences. Preserve the shared capture guard and existing case count."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:29:20.373Z",
+			"evidence": "Meaningful, spaced game concept/brief prose and one detailed history note replace repeated placeholders. The distinct-sentence guard stays unchanged in the normal catalog test."
 		},
 		{
 			"id": "green",
