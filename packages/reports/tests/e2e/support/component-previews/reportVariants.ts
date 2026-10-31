@@ -1,3 +1,4 @@
+import { shellCatalogProps } from './shellCatalogProps';
 import { explorerKitVariant } from './explorerKitVariants';
 import { pluginVariant } from './pluginVariants';
 import type { PreviewCases } from './shared';
@@ -34,6 +35,8 @@ import { browserErrorsVariant } from './browserErrorsVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	const shell = shellCatalogProps(id, props, variant);
+	if (shell) return shell;
 	const kit = explorerKitVariant(id, props, variant) ?? pluginVariant(id, props, variant);
 	if (kit) return kit;
 	const activity = activityReportVariant(id, props, variant);
@@ -95,6 +98,7 @@ function audioVariant(id: string, props: PreviewCases[string], variant: string) 
 }
 
 function selectVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'open') return { ...props, expanded: true };
 	if (variant === 'compact') return { ...props, compact: true };
 	if (variant === 'display')
 		return {
@@ -121,7 +125,7 @@ function modalVariant(props: PreviewCases[string], variant: string) {
 		title: 'Order card evidence',
 		variant,
 		children: text(
-			`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`
+			`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · synthetic preview</figcaption></figure></div>`
 		)
 	};
 }

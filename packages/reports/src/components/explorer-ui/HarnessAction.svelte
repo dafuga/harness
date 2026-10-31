@@ -59,3 +59,11 @@
 		onclick={(event) => onclick?.(event)}>{@render inner()}</hx-button
 	>
 {/if}
+
+<style>
+	.hx-action {
+		max-width: 100%;
+		white-space: normal;
+		overflow-wrap: anywhere;
+	}
+</style>

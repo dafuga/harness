@@ -61,7 +61,7 @@
 				onclick={() => (provider = item.id)}>{item.label}</hx-button
 			>{/each}
 	</hx-div>
-	<hx-div class="composer-bottom">
+	<hx-div class="composer-bottom expanded-agent-controls">
 		<Select label="Model" bind:value={model} disabled={!current?.available}
 			>{#each current?.models || [] as item (item.id)}<hx-option value={item.id}
 					>{item.label}</hx-option
@@ -75,3 +75,15 @@
 {#if current?.reason}<hx-small>{current.reason}</hx-small>{/if}{#if !providers.length}<hx-small
 		>No agent provider available.</hx-small
 	>{/if}
+
+<style>
+	.expanded-agent-controls {
+		flex-wrap: wrap;
+	}
+	.expanded-agent-controls :global(.report-select) {
+		flex: 1 0 auto;
+	}
+	.expanded-agent-controls :global(select) {
+		padding-inline-end: var(--hx-space-42);
+	}
+</style>

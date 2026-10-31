@@ -4,6 +4,8 @@ import { expect, type Locator } from '@playwright/test';
 export async function assertExplorerUsageState(component: Locator, variant: string) {
 	const usage = component.getByRole('group', { name: 'Used In' });
 	await expect(usage).toBeVisible();
+	if (variant === 'usage-open')
+		await expect(component.getByRole('tooltip')).toContainText('Fresh capture at 7c4a8d0');
 	if (variant === 'empty') {
 		await expect(usage).toContainText('—');
 		await expect(usage.getByRole('link')).toHaveCount(0);

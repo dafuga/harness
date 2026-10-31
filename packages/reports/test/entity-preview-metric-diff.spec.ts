@@ -27,11 +27,11 @@ test('a selected page diff shows before, after and performance metric changes', 
 		const profile = tab.getByRole('region', { name: 'Performance profile', exact: true });
 		const comparison = profile.getByRole('table', { name: 'Performance metric changes' });
 		await expect(comparison).toBeVisible();
-		await expect(profile).toContainText('Compared with first parent aaaaaaa');
+		await expect(profile).toContainText('Compared with first parent 3f9c2a1');
 		await expect(comparison.getByRole('columnheader')).toHaveText([
 			'Metric',
-			'Before · aaaaaaa',
-			'After · bbbbbbb',
+			'Before · 3f9c2a1',
+			'After · 8b41d07',
 			'Change'
 		]);
 		for (const [label, values] of expected) {

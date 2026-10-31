@@ -7,7 +7,8 @@
 	 * Escape closes this dialog only, never a panel around it; a click on the backdrop closes it;
 	 * closing returns focus to the icon. A choice closes it through the `close` it is given;
 	 * `onopen` is told each time the dialog is shown. It keeps at least 12 pixels clear of each edge
-	 * of the viewport, and what does not fit scrolls inside it.
+	 * of the viewport, anchors beside its trigger, and scrolls choices that do not fit.
+	 * Inside a panel, placement keeps its header clear.
 	 */
 	let {
 		label,
@@ -41,8 +42,37 @@
 	} = $props();
 	let trigger = $state<HTMLButtonElement>();
 	let dialog = $state<HTMLDialogElement>();
+	let shown = $state(false);
+	function place() {
+		if (!trigger || !dialog?.open) return;
+		const gutter = Number.parseFloat(getComputedStyle(dialog).getPropertyValue('--hx-space-12'));
+		const anchor = trigger.getBoundingClientRect();
+		const header = trigger.closest('aside')?.querySelector('header')?.getBoundingClientRect();
+		const ceiling = Math.max(gutter, header?.bottom ?? gutter);
+		const above = Math.max(0, anchor.top - ceiling);
+		const below = Math.max(0, innerHeight - gutter - anchor.bottom);
+		const upwards = above >= below;
+		dialog.style.maxHeight = `${Math.min(maxHeight, upwards ? above : below)}px`;
+		const bounds = dialog.getBoundingClientRect();
+		dialog.style.left = `${Math.max(gutter, Math.min(anchor.left, innerWidth - bounds.width - gutter))}px`;
+		dialog.style.top = `${upwards ? Math.max(ceiling, anchor.top - bounds.height) : anchor.bottom}px`;
+	}
+	$effect(() => {
+		if (!shown || !dialog || !trigger) return;
+		place();
+		const observer = new ResizeObserver(place);
+		observer.observe(dialog);
+		observer.observe(trigger);
+		window.addEventListener('scroll', place, true);
+		return () => {
+			observer.disconnect();
+			window.removeEventListener('scroll', place, true);
+		};
+	});
 	async function open() {
 		dialog?.showModal();
+		shown = true;
+		place();
 		onopen?.();
 		await tick();
 		dialog?.querySelector<HTMLButtonElement>('[aria-pressed="true"]:enabled')?.focus();
@@ -59,6 +89,7 @@
 	}
 </script>
 
+<svelte:window onresize={place} />
 <hx-button
 	bind:this={trigger}
 	type="button"
@@ -80,7 +111,10 @@
 	style:--picker-gap="{gap}px"
 	onclick={(event) => event.target === event.currentTarget && close()}
 	onkeydown={keydown}
-	onclose={() => trigger?.focus()}
+	onclose={() => {
+		shown = false;
+		trigger?.focus();
+	}}
 >
 	<hx-div class="agent-picker-body">{@render children(close)}</hx-div>
 	{#if footer}<hx-div class="agent-picker-footer">{@render footer(close)}</hx-div>{/if}
@@ -88,6 +122,9 @@
 
 <style>
 	.agent-picker {
+		position: fixed;
+		inset: auto;
+		margin: 0;
 		width: min(var(--picker-width), calc(100vw - 24px));
 		max-height: min(var(--picker-height), calc(100dvh - 24px));
 		padding: 0;

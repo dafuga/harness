@@ -94,7 +94,12 @@
 	class:ex-config-values={category === 'configs'}
 	data-harness-component="harness-explorer-table"
 >
-	<DataTable label={heading} className="ex-scroll" tableClass="ex-table">
+	<DataTable
+		label={heading}
+		className="ex-scroll"
+		tableClass="ex-table"
+		isEmpty={rows.length === 0}
+	>
 		{#snippet header()}
 			<hx-tr>
 				{#if category === 'configs'}

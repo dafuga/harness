@@ -93,7 +93,7 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision."
+				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision. Empty categories show the DataTable empty message; overflowing columns retain an explicit horizontal scroll hint."
 			},
 			{
 				"name": "ConfigValue",

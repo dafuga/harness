@@ -54,10 +54,10 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}/history`));
 		await titled(page, 'TitleFrame');
 	},
-	// The address of a component leads a shell to Shells, with its branch, commit, section and tab.
+	// The address of a component leads a shell to Layouts, with its branch, commit, section and tab.
 	async 'shell-redirect'(page) {
 		await page.goto(at(shellsBranch, commits.shelled, `components/${unit}/details?tab=source`));
-		await expectPath(page, at(shellsBranch, commits.shelled, `shells/${unit}?tab=source`));
+		await expectPath(page, at(shellsBranch, commits.shelled, `layouts/${unit}?tab=source`));
 		await expect(content(page).getByText('src/components/TitleFrame.svelte').first()).toBeVisible();
 		await active(page, 'Layouts');
 	},

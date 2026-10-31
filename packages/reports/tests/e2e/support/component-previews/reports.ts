@@ -163,7 +163,7 @@ export const reportCases: PreviewCases = {
 		value: 'desktop',
 		label: 'Viewport',
 		children: text(
-			'<optgroup label="Viewports"><option value="desktop">Desktop</option><option value="mobile">Mobile</option></optgroup>'
+			'<optgroup label="Viewports"><option value="desktop">Desktop</option><option value="tablet">Tablet</option><option value="mobile">Mobile</option></optgroup>'
 		)
 	},
 	'reports.component.status-badge': { status: 'passed' },

@@ -1,0 +1,45 @@
+{
+	"name": "sol7-component-evidence",
+	"goal": "All assigned Explorer entity and shell components have complete contracts and API screenshots for every real state at desktop tablet and mobile",
+	"createdAt": "2026-10-31T15:54:11.945Z",
+	"updatedAt": "2026-10-31T16:47:03.090Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-31T16:01:43.668Z",
+			"evidence": "Reviewed 27 registered units, current source branches, Uses and Used In; all states require desktop tablet mobile API fetches. Five contract files remain assigned to Sol-8."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-31T16:31:32.505Z",
+			"evidence": "223 component states cover current rendering branches using the standard catalog. Collection snippets have declared parameter types. Full-width selectors use their real navbar context; original shared-control styling passes."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-31T16:47:03.090Z",
+			"evidence": "All 669 standard catalog state and viewport cases pass at one Playwright worker. Fonts and relevant images decode before capture; expected state and no unexpected browser errors are asserted."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

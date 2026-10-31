@@ -23,7 +23,7 @@ test('a revision without a registry shows its gap, and nothing of the screen in 
 	const host = hostProps('commit', { category: 'functions' }, { head: bare });
 	const body = render(ExplorerFrame, { props: { host, children } }).body;
 	expect(words(body)).toContain('No registry at this revision');
-	expect(words(body)).toContain('No unit registry is stored at bbbbbbb.');
+	expect(words(body)).toContain('No unit registry is stored at 8b41d07.');
 	expect(words(body)).not.toContain('the screen');
 	expect(body).toContain(
 		`href="/harness/branch/feature%2Forders/commit/${commits.middle}/functions"`

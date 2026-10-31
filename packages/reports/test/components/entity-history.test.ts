@@ -10,12 +10,12 @@ const hashes = (body: string) =>
 
 test('history lists the commits that changed the entity through the viewed commit, newest first', () => {
 	const body = content('commit', filter);
-	expect(hashes(body)).toEqual(['bbbbbbb', 'aaaaaaa']);
-	expect(words(body)).toContain('Changes to this entity through bbbbbbb, newest first.');
+	expect(hashes(body)).toEqual(['8b41d07', '3f9c2a1']);
+	expect(words(body)).toContain('Changes to this entity through 8b41d07, newest first.');
 	expect(body).toContain('title="2026-10-09T09:00:00.000Z"');
 	expect(words(body)).toContain('Viewed commit');
 	// The later tip is not part of the history of an earlier commit.
-	expect(body).not.toContain('ccccccc');
+	expect(body).not.toContain('c725e93');
 });
 
 test('history rows show compact commit metrics without duplicate sections', () => {
@@ -43,15 +43,15 @@ test('view revision opens the entity at that commit, where it is compared with i
 	expect(body).toContain(`href="${base}/${commits.first}/functions/${ids.filter}"`);
 	expect(words(body)).not.toContain('Compare with previous');
 	// The tip measured the same as the commit before it: it is not listed as a change.
-	expect(hashes(body)).toEqual(['bbbbbbb', 'aaaaaaa']);
+	expect(hashes(body)).toEqual(['8b41d07', '3f9c2a1']);
 });
 
 test('pages have a history too: the commit that added the page is listed as that', () => {
 	const page = { category: 'pages' as const, entity: ids.page, section: 'history' as const };
 	const body = content('commit', page);
-	expect(hashes(body)).toEqual(['aaaaaaa']);
+	expect(hashes(body)).toEqual(['3f9c2a1']);
 	// No reason was recorded for the page, so the row is told by the subject of its commit.
-	expect(words(body)).toContain('aaaaaaa feat: orders page');
+	expect(words(body)).toContain('3f9c2a1 feat: orders page');
 	expect(words(body)).not.toContain('Selected change');
 	expect(words(body)).not.toContain('do not record what they changed');
 });

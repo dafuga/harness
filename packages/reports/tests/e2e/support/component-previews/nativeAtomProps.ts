@@ -3,10 +3,16 @@ import type { CatalogRow } from '../../../../src/utils/entityCatalog';
 
 const attributes: Record<string, Record<string, unknown>> = {
 	img: { src: image, alt: 'Example image', width: 180, height: 110 },
-	a: { href: '#example' },
+	a: { href: '#release-notes', style: 'text-decoration:underline' },
+	ol: { style: 'list-style:decimal inside' },
+	ul: { style: 'list-style:disc inside' },
+	li: { style: 'list-style:disc inside' },
+	table: { class: 'native-atom-table' },
+	th: { scope: 'col' },
 	button: { type: 'button' },
 	select: { 'aria-label': 'Example choice' },
 	textarea: { 'aria-label': 'Example text', placeholder: 'Write a message', rows: 3 },
+	time: { datetime: '2026-10-20' },
 	optgroup: { label: 'Example group' },
 	option: { value: 'example' },
 	details: { open: true },
@@ -70,14 +76,22 @@ export function nativeAtomProps(tag: string, type?: string, variant = ''): Recor
 
 /** Variants preserve native behavior rather than adding behavior to the atom. */
 function nativeVariantProps(tag: string, variant: string): Record<string, unknown> {
+	if (tag === 'pre' && variant === 'long')
+		return { style: 'max-width:100%;overflow-x:auto', tabindex: 0 };
 	const states: Record<string, Record<string, unknown>> = {
-		disabled: { disabled: true },
+		disabled: {
+			disabled: true,
+			...(['input', 'textarea'].includes(tag) ? { value: 'Disabled example text' } : {}),
+			...(['button', 'input', 'textarea'].includes(tag)
+				? { style: 'opacity:var(--hx-opacity-disabled)' }
+				: {})
+		},
 		empty: { value: '', placeholder: 'Example field' },
 		filled:
 			tag === 'path' ? { fill: 'currentColor' } : { value: 'A saved message with several words.' },
 		closed: { open: false },
-		unlinked: { href: undefined },
-		'alt-only': { src: undefined, alt: 'Image description without a source' },
+		unlinked: { href: undefined, style: 'text-decoration:none' },
+		'alt-only': { src: undefined, alt: 'No image available' },
 		unavailable: { src: undefined },
 		outlined: { fill: 'none', stroke: 'currentColor' }
 	};

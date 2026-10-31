@@ -67,8 +67,13 @@
 				"description": "Navigation bar or legacy heading, followed by problem and missing-address alerts. It renders supplied state and performs no data fetching."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Navbar callback error",
+				"type": "propagated",
+				"description": "When navbar is supplied, errors from its href or onroute callbacks propagate through the rendered navigation bar. This header supplies no error boundary."
+			}
+		],
 		"operations": [],
 		"initialization": []
 	},

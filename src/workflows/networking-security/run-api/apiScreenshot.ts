@@ -16,7 +16,8 @@ import { fail } from '../../../core/development-tooling/errors';
 /**
  * Download a recorded capture of this page, with all artifact bindings and its hash intact. A
  * capture that stands as proof is preferred; otherwise one of a failed or incomplete record is
- * returned, and its verification says so, so it is never presented as passed.
+ * returned, and its verification says so, so it is never presented as passed. Explicit
+ * --scenario focused also admits passed usable focused captures, without claiming full verification.
  */
 export async function apiScreenshot(
 	client: HarnessApiService,
@@ -90,8 +91,23 @@ function selectedCapture(side: ExplorerSide | null, options: HarnessApiOptions):
 }
 
 function matchesCapture(item: ExplorerCapture, options: HarnessApiOptions): boolean {
-	if (item.capture.kind !== 'screenshot' || item.standing === 'unvalidated') return false;
+	const passedFocused = matchesFocusedSelection(item, options);
+	if (item.capture.kind !== 'screenshot' || (item.standing === 'unvalidated' && !passedFocused))
+		return false;
 	if (!item.usable && item.capture.media === null) return false;
+	return matchesSelectors(item, options);
+}
+
+function matchesFocusedSelection(item: ExplorerCapture, options: HarnessApiOptions): boolean {
+	return (
+		options.scenario === 'focused' &&
+		item.focused?.status === 'passed' &&
+		item.usable &&
+		item.capture.status === 'passed'
+	);
+}
+
+function matchesSelectors(item: ExplorerCapture, options: HarnessApiOptions): boolean {
 	return (
 		(!options.viewport || item.capture.viewport === options.viewport) &&
 		(!options.state || item.state === options.state) &&

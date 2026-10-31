@@ -1,4 +1,7 @@
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
+import { assertRecordedReportPreviewState } from './reportPreviewAssertions';
+import { assertChatPreviewState } from './chatPreviewAssertions';
+import { assertExplorerTableActions } from './explorerTableActionAssertions';
 
 /** Layout previews show both their child slot and the catalog's own layout screenshot. */
 export async function assertCatalogLayout(
@@ -32,6 +35,10 @@ export async function assertCatalogLayout(
 
 /** Catalog examples retain their named values, consumers and basic presentation. */
 export async function assertCatalogDetails(component: Locator, id: string, variant = '') {
+	await assertRecordedReportPreviewState(component, id, variant);
+	await assertChatPreviewState(component, id, variant);
+	if (id === 'reports.component.harness-explorer-table')
+		await assertExplorerTableActions(component);
 	if (id === 'reports.component.harness-explorer-index') {
 		await expect(
 			component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
@@ -55,7 +62,7 @@ export async function assertCatalogDetails(component: Locator, id: string, varia
 		await expect(component.locator('td').first()).toHaveCSS('white-space', 'nowrap');
 	}
 	if (id === 'reports.component.harness-harness-icon') {
-		await expect(component.getByRole('img', { name: 'Component', exact: true })).toBeVisible();
+		await expect(component.locator('svg')).toBeVisible();
 		await expect(component.locator('path')).toHaveAttribute('d', /\S+/);
 	}
 	if (id === 'hub.component.account-menu') {

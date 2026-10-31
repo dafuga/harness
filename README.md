@@ -65,6 +65,11 @@ harness api agents events RUN_ID --after 0
 harness api agents cancel RUN_ID
 ```
 
+Screenshot downloads select recorded images using `--viewport desktop|tablet|mobile`.
+Use `--scenario focused` explicitly for a passed, usable focused capture; its metadata
+retains the focused record and does not claim a full verification pass. Omitting
+`--scenario` keeps the standard recording selection.
+
 Hosted requests read their bearer token from `HARNESS_API_TOKEN`, or the
 project-specific variable named by `--token-env`. Supply it through the project's
 secret environment. Local connections create and reuse an owner-only session

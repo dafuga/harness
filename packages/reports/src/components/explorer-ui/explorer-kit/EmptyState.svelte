@@ -7,3 +7,10 @@
 </script>
 
 <hx-p class="ex-empty">{@render children()}</hx-p>
+
+<style>
+	.ex-empty :global(a) {
+		display: inline-block;
+		margin-inline-start: var(--hx-space-8);
+	}
+</style>

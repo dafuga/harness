@@ -53,9 +53,9 @@
 		],
 		"errors": [
 			{
-				"name": "no-registry",
-				"type": "stated",
-				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
+				"name": "ExplorerFrame.callerError",
+				"type": "unknown",
+				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
 			}
 		],
 		"errorStatus": "declared",

@@ -34,13 +34,13 @@ test('a page at a selected commit shows the parent and the commit for one state 
 		body.indexOf('Commit comparison')
 	);
 	expect(words(body)).toContain('Commit comparison');
-	expect(words(body)).toContain('Before · aaaaaaa');
-	expect(words(body)).toContain('After · bbbbbbb');
+	expect(words(body)).toContain('Before · 3f9c2a1');
+	expect(words(body)).toContain('After · 8b41d07');
 	expect(words(body)).not.toContain('Parent commit');
 	expect(words(body)).not.toContain('Selected commit');
-	expect(shots(body)).toEqual(['aaaaaaa-default-desktop.png', 'bbbbbbb-default-desktop.png']);
+	expect(shots(body)).toEqual(['3f9c2a1-default-desktop.png', '8b41d07-default-desktop.png']);
 	// The later tip is never a side of the comparison.
-	expect(body).not.toContain('ccccccc');
+	expect(body).not.toContain('c725e93');
 	expect(words(body)).toContain('Behavior change');
 	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=states`);
 });
@@ -52,8 +52,8 @@ test('a page at the branch tip shows exactly one screenshot and no before or aft
 		body.indexOf('Current screenshot')
 	);
 	expect(words(body)).toContain('Current screenshot');
-	expect(words(body)).toContain('ccccccc');
-	expect(shots(body)).toEqual(['ccccccc-default-desktop.png']);
+	expect(words(body)).toContain('c725e93');
+	expect(shots(body)).toEqual(['c725e93-default-desktop.png']);
 	expect(words(body)).not.toMatch(/Before ·|After ·|Parent commit|Commit comparison/);
 	// Overview fixes the state while retaining viewport selection.
 	expect(body).not.toMatch(/<select[^>]*aria-label="State"/);
@@ -64,19 +64,19 @@ test('a page at the branch tip shows exactly one screenshot and no before or aft
 test('a side with no capture of the state is a stated gap, never the other side picture', () => {
 	const parent = revision(commits.first, []);
 	const body = content('commit', page, { parent });
-	expect(shots(body)).toEqual(['bbbbbbb-default-desktop.png']);
+	expect(shots(body)).toEqual(['8b41d07-default-desktop.png']);
 	expect(verdicts(body)).toContainEqual({ passed: false, name: 'No capture', reasons: [] });
 	// Why there is none is read on the page, in the pane of the side that lacks it.
 	expect(words(body)).toContain(
-		'Before · aaaaaaa No verification record is attached to this commit.'
+		'Before · 3f9c2a1 No verification record is attached to this commit.'
 	);
 	const focused = content('commit', page, {
 		head: withFocused(revision(commits.middle, [])),
 		parent: withFocused(parent)
 	});
 	expect(shots(focused), 'focused screenshots display without a full verification record').toEqual([
-		'aaaaaaa-default-desktop.png',
-		'bbbbbbb-default-desktop.png'
+		'3f9c2a1-default-desktop.png',
+		'8b41d07-default-desktop.png'
 	]);
 	expect(words(focused)).not.toContain('Focused capture');
 	expect(words(focused)).not.toContain('Open full size');
@@ -115,11 +115,11 @@ test('a component no visual scenario names keeps the screenshot pane, as a state
 	expect(words(body)).toContain('Commit comparison');
 	expect(words(body)).not.toContain('End-to-end');
 	const gap = 'No scenario with a viewport names this entity, so no screenshot of it is recorded';
-	expect(words(body)).toContain(`Before · aaaaaaa ${gap} at aaaaaaa.`);
-	expect(words(body)).toContain(`After · bbbbbbb ${gap} at bbbbbbb.`);
+	expect(words(body)).toContain(`Before · 3f9c2a1 ${gap} at 3f9c2a1.`);
+	expect(words(body)).toContain(`After · 8b41d07 ${gap} at 8b41d07.`);
 	expect(shots(body)).toEqual([]);
 	const tip = content('current', card, { head: { ...head, commit: commits.tip } });
-	expect(words(tip)).toContain(`ccccccc ${gap} at ccccccc.`);
+	expect(words(tip)).toContain(`c725e93 ${gap} at c725e93.`);
 	expect(words(tip)).not.toMatch(/Before ·|After ·/);
 });
 
@@ -135,27 +135,27 @@ test('a page lists its components as components, each a link in the same scope',
 test('a function at a selected commit shows its end-to-end results before and after', () => {
 	const body = content('commit', filter);
 	expect(words(body)).toContain('End-to-end test comparison');
-	expect(words(body)).toContain('Before · aaaaaaa Parent commit');
-	expect(words(body)).toContain('After · bbbbbbb Selected commit');
+	expect(words(body)).toContain('Before · 3f9c2a1 Parent commit');
+	expect(words(body)).toContain('After · 8b41d07 Selected commit');
 	// Nothing is called unchanged before the recorded results were read.
 	expect(words(body)).toContain('Reading the recorded results…');
 	expect(words(body)).not.toContain('Behavior unchanged');
 	expect(words(body)).toContain('Search across synthetic orders · match');
 	expect(words(body)).toContain('Matches orders regardless of case.');
-	expect(body).toContain('href="/harness/media/bbbbbbb-match-output.json"');
+	expect(body).toContain('href="/harness/media/8b41d07-match-output.json"');
 	expect(count(body, /<img/g)).toBe(0);
 });
 
 test('a function at the branch tip shows one run, and an unrecorded one is a cross', () => {
 	const body = content('current', filter);
 	expect(words(body)).toContain('Current end-to-end behavior');
-	expect(words(body)).toContain('Current snapshot · ccccccc Branch tip');
+	expect(words(body)).toContain('Current snapshot · c725e93 Branch tip');
 	expect(words(body)).not.toMatch(/Before ·|Behavior unchanged/);
 	expect(words(body)).toContain('E2E duration 40 ms');
 	const bare = content('current', filter, { head: revision(commits.tip, []) });
 	expect(verdicts(bare).every((badge) => !badge.passed)).toBe(true);
 	expect(verdicts(bare).map((badge) => badge.name)).toContain('Evidence missing');
-	expect(words(bare)).toContain('No end-to-end result is recorded for this entity at ccccccc.');
+	expect(words(bare)).toContain('No end-to-end result is recorded for this entity at c725e93.');
 	expect(words(bare)).toContain('E2E duration Not measured');
 });
 

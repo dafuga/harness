@@ -3,6 +3,7 @@ import { render } from 'svelte/server';
 import ExplorerPermissionsScreen from '../../../src/components/networking-security/ExplorerPermissionsScreen.svelte';
 import { permissionProfiles } from '../../../../../test/support/permissionProfiles';
 import { hostProps, words } from '../../entityRender';
+import { commits } from '../../entityUnits';
 const host = (entity?: string) => {
 	const props = hostProps('commit', { category: 'pages', screen: 'permissions', entity });
 	props.head = { ...props.head, permissions: permissionProfiles };
@@ -23,7 +24,7 @@ test('profile index exposes one revision-scoped page per declared user level', (
 	const body = render(ExplorerPermissionsScreen, { props: host() }).body;
 	expect(words(body)).toMatch(/Users (?:&amp;|&) Permissions/);
 	for (const p of permissionProfiles.profiles) expect(body).toContain(`/permissions/${p.id}`);
-	expect(body).toContain('/commit/' + 'b'.repeat(40));
+	expect(body).toContain('/commit/' + commits.middle);
 });
 test('a profile page lists only its endpoint methods, page access and data boundaries', () => {
 	const body = render(ExplorerPermissionsScreen, { props: host('member') }).body;

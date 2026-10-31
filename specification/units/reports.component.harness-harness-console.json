@@ -38,7 +38,7 @@
 				"name": "HarnessConsole.base",
 				"type": "string",
 				"required": true,
-				"description": "Required URL prefix used for the data client, media and export addresses."
+				"description": "Required URL prefix used for the history data client, media and selected screen addresses."
 			},
 			{
 				"name": "HarnessConsole.path",
@@ -56,7 +56,7 @@
 				"name": "HarnessConsole.links",
 				"type": "Array<{ label: string; href: string }>",
 				"required": false,
-				"description": "Compatibility input accepted by the prop type but not read or rendered by this component. Defaults to JavaScript undefined (omitted), not the literal string. Compatibility input accepted but unused by the current console."
+				"description": "Optional compatibility input. Defaults to JavaScript undefined. It is neither read nor rendered."
 			},
 			{
 				"name": "HarnessConsole.content",
@@ -69,14 +69,14 @@
 			{
 				"name": "HarnessConsole",
 				"type": "markup",
-				"description": "Explorer header and selected screen, with loading, unavailable-address and missing-registry notices. Index and selected-revision failures become visible problem text; unavailable parent data becomes null."
+				"description": "Explorer header and selected screen, with loading, unavailable-address and missing-registry notices. Index and selected-revision failures show a concise load error with refresh guidance; unavailable parent data becomes null."
 			}
 		],
 		"errors": [
 			{
-				"name": "Caller callback or content error",
+				"name": "Host navigation or screen error",
 				"type": "propagated",
-				"description": "Errors from supplied navigate callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"description": "Errors from navigate or the supplied content component propagate. Index/revision fetch failures become notices; missing parent/activity data falls back to null."
 			}
 		],
 		"errorStatus": "declared",
@@ -87,13 +87,15 @@
 					{
 						"name": "consoleContentKey.location",
 						"type": "ExplorerLocation | undefined",
-						"required": true
+						"required": true,
+						"description": "Required argument; undefined represents a screen not ready to render. The key includes branch, commit, category, screen, entity, helper and section, preserving content across tab changes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleContentKey",
-						"type": "string"
+						"type": "string",
+						"description": "JSON key of the selected route identity. Tab changes preserve it; undefined locations serialize as seven null entries."
 					}
 				],
 				"errors": [],
@@ -105,23 +107,27 @@
 					{
 						"name": "consoleRelations.detail",
 						"type": "HarnessRevision",
-						"required": true
+						"required": true,
+						"description": "Required selected revision whose registered units use their own dependency and consumer relationships."
 					},
 					{
 						"name": "consoleRelations.before",
 						"type": "HarnessRevision | null",
-						"required": true
+						"required": true,
+						"description": "Required parent revision or null; removed units use parent relationships when available."
 					},
 					{
 						"name": "consoleRelations.listed",
 						"type": "ExplorerEntity[]",
-						"required": true
+						"required": true,
+						"description": "Required selected-revision entities used to resolve runtime owners and relationships."
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleRelations",
-						"type": "unknown"
+						"type": "EntityLens['relations']",
+						"description": "Resolver returning dependencies and consumers from the current revision, or the parent for a removed unit. Unknown ids retain the reader's explicit empty relationships."
 					}
 				],
 				"errors": [],
@@ -132,44 +138,52 @@
 				"inputs": [
 					{
 						"name": "consoleView.index",
-						"type": "unknown",
-						"required": true
+						"type": "HarnessIndex",
+						"required": true,
+						"description": "Required selected history index used for revision-bound history lookup."
 					},
 					{
 						"name": "consoleView.scope",
-						"type": "unknown",
-						"required": true
+						"type": "ExplorerScope",
+						"required": true,
+						"description": "Required route scope, canonicalized to the selected entity category and helper."
 					},
 					{
 						"name": "consoleView.loaded",
-						"type": "unknown",
-						"required": true
+						"type": "{ head: HarnessRevision; parent: HarnessRevision | null }",
+						"required": true,
+						"description": "Required matching head revision and its parent revision or null."
 					},
 					{
 						"name": "consoleView.entities",
-						"type": "unknown",
-						"required": true
+						"type": "ExplorerEntity[]",
+						"required": true,
+						"description": "Required entities belonging to those loaded revisions."
 					},
 					{
 						"name": "consoleView.relations",
-						"type": "unknown",
-						"required": true
+						"type": "EntityLens['relations']",
+						"required": true,
+						"description": "Required revision-scoped relationship resolver retained by the returned lens."
 					},
 					{
 						"name": "consoleView.answers",
-						"type": "unknown",
-						"required": true
+						"type": "Map<string, ConsoleAnswer>",
+						"required": true,
+						"description": "Required caller-owned answer cache; missing evidence/behavior entries are populated lazily by the returned lens."
 					},
 					{
 						"name": "consoleView.href",
-						"type": "unknown",
-						"required": true
+						"type": "(to: ExplorerLocation) => string",
+						"required": true,
+						"description": "Required address callback retained by the returned lens; called later by its consumers."
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleView",
-						"type": "unknown"
+						"type": "{ index: HarnessIndex; scope: ExplorerScope; head: HarnessRevision; parent: HarnessRevision | null; lens: EntityLens }",
+						"description": "Canonical revision view and lazy evidence, behavior, relationships, address and history lens. Evidence/behavior share answers cached by unit id; callbacks retain their caller behavior."
 					}
 				],
 				"errors": [],

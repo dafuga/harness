@@ -39,7 +39,7 @@ export const explorerFlows: Record<string, { expects: string; source?: boolean }
 	missing: { expects: 'Wait for the notice that the entity is absent' },
 	source: { expects: 'Wait for the source ownership that was asked for', source: true },
 	'shell-redirect': {
-		expects: 'Wait for the shell under Shells, with the source that was asked for',
+		expects: 'Wait for the layout under Layouts, with the source that was asked for',
 		source: true
 	}
 };

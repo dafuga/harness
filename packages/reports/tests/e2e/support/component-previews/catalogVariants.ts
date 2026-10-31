@@ -1,3 +1,4 @@
+import { shellCatalogVariants } from './shellCatalogVariants';
 import { nativeAtomVariants } from './nativeAtomVariants';
 import { presentationVariants } from './presentationVariants';
 import { explorerKitVariants } from './explorerKitVariants';
@@ -24,6 +25,7 @@ const variants: Record<string, string[]> = {
 	...desktopCatalogVariants,
 	...desktopGameCatalogVariants,
 	...nativeAtomVariants,
+	...shellCatalogVariants,
 	...explorerKitVariants,
 	...presentationVariants,
 	...pluginVariants,

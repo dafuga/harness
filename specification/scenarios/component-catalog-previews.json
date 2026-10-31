@@ -2257,6 +2257,24 @@
 			"units": ["reports.component.brand-mark"]
 		},
 		{
+			"id": "reports-component-brand-mark-decorative",
+			"title": "Brand mark: decorative",
+			"units": ["reports.component.brand-mark"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-brand-mark-inline",
+			"title": "Brand mark: inline",
+			"units": ["reports.component.brand-mark"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-brand-mark-large",
+			"title": "Brand mark: large",
+			"units": ["reports.component.brand-mark"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-browser-errors",
 			"title": "Recorded browser errors",
 			"coverage": "required",
@@ -3487,12 +3505,6 @@
 			"units": ["reports.component.explorer-ui-explorer-kit-card"]
 		},
 		{
-			"id": "reports-component-explorer-ui-explorer-kit-card-tone",
-			"title": "explorer-ui-explorer-kit-card: tone",
-			"coverage": "required",
-			"units": ["reports.component.explorer-ui-explorer-kit-card"]
-		},
-		{
 			"id": "reports-component-explorer-ui-explorer-kit-command-block",
 			"title": "Command block",
 			"coverage": "required",
@@ -4063,16 +4075,142 @@
 			"units": ["reports.component.harness-entity-artifact"]
 		},
 		{
+			"id": "reports-component-harness-entity-artifact-not-recorded",
+			"title": "Entity artifact: not-recorded",
+			"units": ["reports.component.harness-entity-artifact"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-artifact-not-stored",
+			"title": "Entity artifact: not-stored",
+			"units": ["reports.component.harness-entity-artifact"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-artifact-loading",
+			"title": "Entity artifact: loading",
+			"units": ["reports.component.harness-entity-artifact"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-artifact-unverified",
+			"title": "Entity artifact: unverified",
+			"units": ["reports.component.harness-entity-artifact"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-artifact-lost",
+			"title": "Entity artifact: lost",
+			"units": ["reports.component.harness-entity-artifact"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-artifact-expanded",
+			"title": "Entity artifact: expanded",
+			"units": ["reports.component.harness-entity-artifact"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-artifact-raw-open",
+			"title": "Entity artifact: raw-open",
+			"units": ["reports.component.harness-entity-artifact"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-artifact-plain-text",
+			"title": "Entity artifact: plain-text",
+			"units": ["reports.component.harness-entity-artifact"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-artifact-long",
+			"title": "Entity artifact: long",
+			"units": ["reports.component.harness-entity-artifact"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-entity-audio",
 			"title": "Entity audio",
 			"coverage": "required",
 			"units": ["reports.component.harness-entity-audio"]
 		},
 		{
+			"id": "reports-component-harness-entity-audio-comparison",
+			"title": "Entity audio: comparison",
+			"units": ["reports.component.harness-entity-audio"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-audio-missing-before",
+			"title": "Entity audio: missing-before",
+			"units": ["reports.component.harness-entity-audio"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-audio-missing-after",
+			"title": "Entity audio: missing-after",
+			"units": ["reports.component.harness-entity-audio"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-audio-empty",
+			"title": "Entity audio: empty",
+			"units": ["reports.component.harness-entity-audio"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-audio-transcript-closed",
+			"title": "Entity audio: transcript-closed",
+			"units": ["reports.component.harness-entity-audio"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-entity-behavior",
 			"title": "Entity behavior",
 			"coverage": "required",
 			"units": ["reports.component.harness-entity-behavior"]
+		},
+		{
+			"id": "reports-component-harness-entity-behavior-current",
+			"title": "Entity behavior: current",
+			"units": ["reports.component.harness-entity-behavior"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-behavior-initial",
+			"title": "Entity behavior: initial",
+			"units": ["reports.component.harness-entity-behavior"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-behavior-empty",
+			"title": "Entity behavior: empty",
+			"units": ["reports.component.harness-entity-behavior"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-behavior-unknown",
+			"title": "Entity behavior: unknown",
+			"units": ["reports.component.harness-entity-behavior"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-behavior-changed",
+			"title": "Entity behavior: changed",
+			"units": ["reports.component.harness-entity-behavior"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-behavior-loading",
+			"title": "Entity behavior: loading",
+			"units": ["reports.component.harness-entity-behavior"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-behavior-reasons",
+			"title": "Entity behavior: reasons",
+			"units": ["reports.component.harness-entity-behavior"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-entity-behavior-screen",
@@ -4099,6 +4237,30 @@
 			"units": ["reports.component.harness-entity-details"]
 		},
 		{
+			"id": "reports-component-harness-entity-details-summary",
+			"title": "Entity details: summary",
+			"units": ["reports.component.harness-entity-details"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-details-source",
+			"title": "Entity details: source",
+			"units": ["reports.component.harness-entity-details"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-details-measurements",
+			"title": "Entity details: measurements",
+			"units": ["reports.component.harness-entity-details"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-details-unmeasured",
+			"title": "Entity details: unmeasured",
+			"units": ["reports.component.harness-entity-details"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-entity-details-screen",
 			"title": "EntityDetailsScreen",
 			"coverage": "required",
@@ -4123,6 +4285,42 @@
 			"units": ["reports.component.harness-entity-history"]
 		},
 		{
+			"id": "reports-component-harness-entity-history-empty",
+			"title": "Entity history: empty",
+			"units": ["reports.component.harness-entity-history"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-history-unread",
+			"title": "Entity history: unread",
+			"units": ["reports.component.harness-entity-history"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-history-reading",
+			"title": "Entity history: reading",
+			"units": ["reports.component.harness-entity-history"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-history-unavailable",
+			"title": "Entity history: unavailable",
+			"units": ["reports.component.harness-entity-history"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-history-long",
+			"title": "Entity history: long",
+			"units": ["reports.component.harness-entity-history"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-history-profiles",
+			"title": "Entity history: profiles",
+			"units": ["reports.component.harness-entity-history"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-entity-history-row",
 			"title": "Entity history row",
 			"coverage": "required",
@@ -4141,6 +4339,24 @@
 			"units": ["reports.component.harness-entity-link"]
 		},
 		{
+			"id": "reports-component-harness-entity-link-labelled",
+			"title": "Entity link: labelled",
+			"units": ["reports.component.harness-entity-link"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-link-long",
+			"title": "Entity link: long",
+			"units": ["reports.component.harness-entity-link"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-link-focused",
+			"title": "Entity link: focused",
+			"units": ["reports.component.harness-entity-link"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-entity-measures",
 			"title": "Entity measurements",
 			"coverage": "required",
@@ -4151,6 +4367,18 @@
 			"title": "Unavailable entity",
 			"coverage": "required",
 			"units": ["reports.component.harness-entity-missing"]
+		},
+		{
+			"id": "reports-component-harness-entity-missing-custom-action",
+			"title": "Unavailable entity: custom-action",
+			"units": ["reports.component.harness-entity-missing"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-missing-long",
+			"title": "Unavailable entity: long",
+			"units": ["reports.component.harness-entity-missing"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-entity-overview",
@@ -4171,6 +4399,42 @@
 			"units": ["reports.component.harness-entity-relations"]
 		},
 		{
+			"id": "reports-component-harness-entity-relations-empty",
+			"title": "Used In and Uses: empty",
+			"units": ["reports.component.harness-entity-relations"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-relations-removed",
+			"title": "Used In and Uses: removed",
+			"units": ["reports.component.harness-entity-relations"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-relations-used-in",
+			"title": "Used In and Uses: used-in",
+			"units": ["reports.component.harness-entity-relations"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-relations-uses",
+			"title": "Used In and Uses: uses",
+			"units": ["reports.component.harness-entity-relations"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-relations-models",
+			"title": "Used In and Uses: models",
+			"units": ["reports.component.harness-entity-relations"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-relations-apis",
+			"title": "Used In and Uses: apis",
+			"units": ["reports.component.harness-entity-relations"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-entity-run",
 			"title": "Recorded test run",
 			"coverage": "required",
@@ -4183,16 +4447,142 @@
 			"units": ["reports.component.harness-entity-screens"]
 		},
 		{
+			"id": "reports-component-harness-entity-screens-current",
+			"title": "Entity screenshots: current",
+			"units": ["reports.component.harness-entity-screens"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-screens-initial",
+			"title": "Entity screenshots: initial",
+			"units": ["reports.component.harness-entity-screens"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-screens-missing",
+			"title": "Entity screenshots: missing",
+			"units": ["reports.component.harness-entity-screens"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-screens-incomparable",
+			"title": "Entity screenshots: incomparable",
+			"units": ["reports.component.harness-entity-screens"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-screens-viewer-open",
+			"title": "Entity screenshots: viewer-open",
+			"units": ["reports.component.harness-entity-screens"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-screens-mobile-selected",
+			"title": "Entity screenshots: mobile-selected",
+			"units": ["reports.component.harness-entity-screens"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-entity-sections",
 			"title": "Entity sections",
 			"coverage": "required",
 			"units": ["reports.component.harness-entity-sections"]
 		},
 		{
+			"id": "reports-component-harness-entity-sections-contract",
+			"title": "Entity sections: contract",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-source",
+			"title": "Entity sections: source",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-used-in",
+			"title": "Entity sections: used-in",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-uses",
+			"title": "Entity sections: uses",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-audio",
+			"title": "Entity sections: audio",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-states",
+			"title": "Entity sections: states",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-tests",
+			"title": "Entity sections: tests",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-table",
+			"title": "Entity sections: table",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-table-empty",
+			"title": "Entity sections: table-empty",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-examples",
+			"title": "Entity sections: examples",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-sections-permissions",
+			"title": "Entity sections: permissions",
+			"units": ["reports.component.harness-entity-sections"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-entity-source",
 			"title": "Source ownership",
 			"coverage": "required",
 			"units": ["reports.component.harness-entity-source"]
+		},
+		{
+			"id": "reports-component-harness-entity-source-empty",
+			"title": "Source ownership: empty",
+			"units": ["reports.component.harness-entity-source"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-source-linked",
+			"title": "Source ownership: linked",
+			"units": ["reports.component.harness-entity-source"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-source-tests",
+			"title": "Source ownership: tests",
+			"units": ["reports.component.harness-entity-source"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-entity-source-long",
+			"title": "Source ownership: long",
+			"units": ["reports.component.harness-entity-source"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-entity-summary",
@@ -4219,10 +4609,130 @@
 			"units": ["reports.component.harness-explorer-catalog-screen"]
 		},
 		{
+			"id": "reports-component-harness-explorer-catalog-screen-empty",
+			"title": "ExplorerCatalogScreen: empty",
+			"units": ["reports.component.harness-explorer-catalog-screen"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-catalog-screen-unindexed",
+			"title": "ExplorerCatalogScreen: unindexed",
+			"units": ["reports.component.harness-explorer-catalog-screen"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-catalog-screen-search",
+			"title": "ExplorerCatalogScreen: search",
+			"units": ["reports.component.harness-explorer-catalog-screen"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-catalog-screen-no-matches",
+			"title": "ExplorerCatalogScreen: no-matches",
+			"units": ["reports.component.harness-explorer-catalog-screen"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-catalog-screen-functions",
+			"title": "ExplorerCatalogScreen: functions",
+			"units": ["reports.component.harness-explorer-catalog-screen"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-catalog-screen-configs",
+			"title": "ExplorerCatalogScreen: configs",
+			"units": ["reports.component.harness-explorer-catalog-screen"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-catalog-screen-layouts",
+			"title": "ExplorerCatalogScreen: layouts",
+			"units": ["reports.component.harness-explorer-catalog-screen"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-explorer-content",
 			"title": "ExplorerContent",
 			"coverage": "required",
 			"units": ["reports.component.harness-explorer-content"]
+		},
+		{
+			"id": "reports-component-harness-explorer-content-catalog",
+			"title": "ExplorerContent: catalog",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-pages",
+			"title": "ExplorerContent: pages",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-source",
+			"title": "ExplorerContent: source",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-history",
+			"title": "ExplorerContent: history",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-missing",
+			"title": "ExplorerContent: missing",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-configs",
+			"title": "ExplorerContent: configs",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-functions",
+			"title": "ExplorerContent: functions",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-styles",
+			"title": "ExplorerContent: styles",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-dependencies",
+			"title": "ExplorerContent: dependencies",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-translations",
+			"title": "ExplorerContent: translations",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-modules",
+			"title": "ExplorerContent: modules",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-permissions",
+			"title": "ExplorerContent: permissions",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-content-platforms",
+			"title": "ExplorerContent: platforms",
+			"units": ["reports.component.harness-explorer-content"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-explorer-controls",
@@ -4231,10 +4741,46 @@
 			"units": ["reports.component.harness-explorer-controls"]
 		},
 		{
+			"id": "reports-component-harness-explorer-controls-search",
+			"title": "Catalog controls: search",
+			"units": ["reports.component.harness-explorer-controls"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-controls-long",
+			"title": "Catalog controls: long",
+			"units": ["reports.component.harness-explorer-controls"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-controls-focused",
+			"title": "Catalog controls: focused",
+			"units": ["reports.component.harness-explorer-controls"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-explorer-frame",
 			"title": "ExplorerFrame",
 			"coverage": "required",
 			"units": ["reports.component.harness-explorer-frame"]
+		},
+		{
+			"id": "reports-component-harness-explorer-frame-unindexed",
+			"title": "ExplorerFrame: unindexed",
+			"units": ["reports.component.harness-explorer-frame"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-frame-registry-optional",
+			"title": "ExplorerFrame: registry-optional",
+			"units": ["reports.component.harness-explorer-frame"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-frame-source-open",
+			"title": "ExplorerFrame: source-open",
+			"units": ["reports.component.harness-explorer-frame"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-explorer-index",
@@ -4243,10 +4789,64 @@
 			"units": ["reports.component.harness-explorer-index"]
 		},
 		{
+			"id": "reports-component-harness-explorer-index-empty",
+			"title": "Entity catalog: empty",
+			"units": ["reports.component.harness-explorer-index"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-index-search",
+			"title": "Entity catalog: search",
+			"units": ["reports.component.harness-explorer-index"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-index-no-matches",
+			"title": "Entity catalog: no-matches",
+			"units": ["reports.component.harness-explorer-index"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-index-layouts",
+			"title": "Entity catalog: layouts",
+			"units": ["reports.component.harness-explorer-index"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-index-configs",
+			"title": "Entity catalog: configs",
+			"units": ["reports.component.harness-explorer-index"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-explorer-pages-screen",
 			"title": "ExplorerPagesScreen",
 			"coverage": "required",
 			"units": ["reports.component.harness-explorer-pages-screen"]
+		},
+		{
+			"id": "reports-component-harness-explorer-pages-screen-empty",
+			"title": "ExplorerPagesScreen: empty",
+			"units": ["reports.component.harness-explorer-pages-screen"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-pages-screen-unindexed",
+			"title": "ExplorerPagesScreen: unindexed",
+			"units": ["reports.component.harness-explorer-pages-screen"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-pages-screen-search",
+			"title": "ExplorerPagesScreen: search",
+			"units": ["reports.component.harness-explorer-pages-screen"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-explorer-pages-screen-no-matches",
+			"title": "ExplorerPagesScreen: no-matches",
+			"units": ["reports.component.harness-explorer-pages-screen"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-explorer-table",
@@ -4339,10 +4939,82 @@
 			"units": ["reports.component.harness-harness-action"]
 		},
 		{
+			"id": "reports-component-harness-harness-action-button",
+			"title": "Explorer action: button",
+			"units": ["reports.component.harness-harness-action"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-action-disabled",
+			"title": "Explorer action: disabled",
+			"units": ["reports.component.harness-harness-action"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-action-plain",
+			"title": "Explorer action: plain",
+			"units": ["reports.component.harness-harness-action"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-action-trailing-icon",
+			"title": "Explorer action: trailing-icon",
+			"units": ["reports.component.harness-harness-action"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-action-long",
+			"title": "Explorer action: long",
+			"units": ["reports.component.harness-harness-action"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-action-focused",
+			"title": "Explorer action: focused",
+			"units": ["reports.component.harness-harness-action"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-harness-console",
 			"title": "Explorer console",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-console"]
+		},
+		{
+			"id": "reports-component-harness-harness-console-loading-history",
+			"title": "Explorer console: loading-history",
+			"units": ["reports.component.harness-harness-console"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-console-loading-revision",
+			"title": "Explorer console: loading-revision",
+			"units": ["reports.component.harness-harness-console"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-console-index-error",
+			"title": "Explorer console: index-error",
+			"units": ["reports.component.harness-harness-console"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-console-revision-error",
+			"title": "Explorer console: revision-error",
+			"units": ["reports.component.harness-harness-console"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-console-missing",
+			"title": "Explorer console: missing",
+			"units": ["reports.component.harness-harness-console"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-console-unindexed",
+			"title": "Explorer console: unindexed",
+			"units": ["reports.component.harness-harness-console"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-harness-header",
@@ -4351,10 +5023,352 @@
 			"units": ["reports.component.harness-harness-header"]
 		},
 		{
+			"id": "reports-component-harness-harness-header-problem",
+			"title": "Explorer header and notices: problem",
+			"units": ["reports.component.harness-harness-header"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-header-missing",
+			"title": "Explorer header and notices: missing",
+			"units": ["reports.component.harness-harness-header"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-header-missing-no-home",
+			"title": "Explorer header and notices: missing-no-home",
+			"units": ["reports.component.harness-harness-header"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-header-long-repository",
+			"title": "Explorer header and notices: long-repository",
+			"units": ["reports.component.harness-harness-header"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-harness-icon",
 			"title": "Explorer icon",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-icon"]
+		},
+		{
+			"id": "reports-component-harness-harness-icon-decorative",
+			"title": "Explorer icon: decorative",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-inline",
+			"title": "Explorer icon: inline",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-pages",
+			"title": "Explorer icon: icon-pages",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-layouts",
+			"title": "Explorer icon: icon-layouts",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-components",
+			"title": "Explorer icon: icon-components",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-styles",
+			"title": "Explorer icon: icon-styles",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-functions",
+			"title": "Explorer icon: icon-functions",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-configs",
+			"title": "Explorer icon: icon-configs",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-services",
+			"title": "Explorer icon: icon-services",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-platforms",
+			"title": "Explorer icon: icon-platforms",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-web",
+			"title": "Explorer icon: icon-web",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-phone",
+			"title": "Explorer icon: icon-phone",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-android",
+			"title": "Explorer icon: icon-android",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-desktop",
+			"title": "Explorer icon: icon-desktop",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-passed",
+			"title": "Explorer icon: icon-passed",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-failed",
+			"title": "Explorer icon: icon-failed",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-contract",
+			"title": "Explorer icon: icon-contract",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-file",
+			"title": "Explorer icon: icon-file",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-size",
+			"title": "Explorer icon: icon-size",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-performance",
+			"title": "Explorer icon: icon-performance",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-gauge",
+			"title": "Explorer icon: icon-gauge",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-layers",
+			"title": "Explorer icon: icon-layers",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-tests",
+			"title": "Explorer icon: icon-tests",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-history",
+			"title": "Explorer icon: icon-history",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-relationships",
+			"title": "Explorer icon: icon-relationships",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-environment",
+			"title": "Explorer icon: icon-environment",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-database",
+			"title": "Explorer icon: icon-database",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-shield",
+			"title": "Explorer icon: icon-shield",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-fixture",
+			"title": "Explorer icon: icon-fixture",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-state",
+			"title": "Explorer icon: icon-state",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-route",
+			"title": "Explorer icon: icon-route",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-clock",
+			"title": "Explorer icon: icon-clock",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-object",
+			"title": "Explorer icon: icon-object",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-array",
+			"title": "Explorer icon: icon-array",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-code",
+			"title": "Explorer icon: icon-code",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-branch",
+			"title": "Explorer icon: icon-branch",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-commit",
+			"title": "Explorer icon: icon-commit",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-arrow-right",
+			"title": "Explorer icon: icon-arrow-right",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-arrow-left",
+			"title": "Explorer icon: icon-arrow-left",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-chevron-right",
+			"title": "Explorer icon: icon-chevron-right",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-chevron-down",
+			"title": "Explorer icon: icon-chevron-down",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-search",
+			"title": "Explorer icon: icon-search",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-close",
+			"title": "Explorer icon: icon-close",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-external",
+			"title": "Explorer icon: icon-external",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-expand",
+			"title": "Explorer icon: icon-expand",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-help",
+			"title": "Explorer icon: icon-help",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-info",
+			"title": "Explorer icon: icon-info",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-grid",
+			"title": "Explorer icon: icon-grid",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-list",
+			"title": "Explorer icon: icon-list",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-link",
+			"title": "Explorer icon: icon-link",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-change",
+			"title": "Explorer icon: icon-change",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-check-square",
+			"title": "Explorer icon: icon-check-square",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-icon-icon-empty",
+			"title": "Explorer icon: icon-empty",
+			"units": ["reports.component.harness-harness-icon"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-harness-navbar",
@@ -4363,10 +5377,76 @@
 			"units": ["reports.component.harness-harness-navbar"]
 		},
 		{
+			"id": "reports-component-harness-harness-navbar-unresolved",
+			"title": "Explorer navigation bar: unresolved",
+			"units": ["reports.component.harness-harness-navbar"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-navbar-no-repository",
+			"title": "Explorer navigation bar: no-repository",
+			"units": ["reports.component.harness-harness-navbar"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-navbar-pages",
+			"title": "Explorer navigation bar: pages",
+			"units": ["reports.component.harness-harness-navbar"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-navbar-historical",
+			"title": "Explorer navigation bar: historical",
+			"units": ["reports.component.harness-harness-navbar"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-navbar-long-repository",
+			"title": "Explorer navigation bar: long-repository",
+			"units": ["reports.component.harness-harness-navbar"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-navbar-search-open",
+			"title": "Explorer navigation bar: search-open",
+			"units": ["reports.component.harness-harness-navbar"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-harness-selectors",
 			"title": "Branch and revision selectors",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-selectors"]
+		},
+		{
+			"id": "reports-component-harness-harness-selectors-comparison",
+			"title": "Branch and revision selectors: comparison",
+			"units": ["reports.component.harness-harness-selectors"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-selectors-empty",
+			"title": "Branch and revision selectors: empty",
+			"units": ["reports.component.harness-harness-selectors"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-selectors-tip",
+			"title": "Branch and revision selectors: tip",
+			"units": ["reports.component.harness-harness-selectors"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-selectors-at-tip",
+			"title": "Branch and revision selectors: at-tip",
+			"units": ["reports.component.harness-harness-selectors"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-selectors-long",
+			"title": "Branch and revision selectors: long",
+			"units": ["reports.component.harness-harness-selectors"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-harness-shell",
@@ -4385,6 +5465,48 @@
 			"title": "Verification verdict indicator",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-failed",
+			"title": "Verification verdict indicator: failed",
+			"units": ["reports.component.harness-harness-verdict"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-unknown",
+			"title": "Verification verdict indicator: unknown",
+			"units": ["reports.component.harness-harness-verdict"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-framed",
+			"title": "Verification verdict indicator: framed",
+			"units": ["reports.component.harness-harness-verdict"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-passed-open",
+			"title": "Verification verdict indicator: passed-open",
+			"units": ["reports.component.harness-harness-verdict"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-failed-open",
+			"title": "Verification verdict indicator: failed-open",
+			"units": ["reports.component.harness-harness-verdict"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-unknown-open",
+			"title": "Verification verdict indicator: unknown-open",
+			"units": ["reports.component.harness-harness-verdict"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-long-open",
+			"title": "Verification verdict indicator: long-open",
+			"units": ["reports.component.harness-harness-verdict"],
+			"coverage": "required"
 		},
 		{
 			"id": "reports-component-harness-screen",
@@ -4478,7 +5600,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen · Playwright empty",
+			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -4532,13 +5654,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen · playwright",
+			"title": "ExplorerModulesScreen \u00b7 playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen · headless-audio",
+			"title": "ExplorerModulesScreen \u00b7 headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -6415,6 +7537,24 @@
 			"units": ["reports.component.shared-primitives-loading-state"]
 		},
 		{
+			"id": "reports-component-shared-primitives-loading-state-default-label",
+			"title": "LoadingState: default-label",
+			"units": ["reports.component.shared-primitives-loading-state"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-shared-primitives-loading-state-long",
+			"title": "LoadingState: long",
+			"units": ["reports.component.shared-primitives-loading-state"],
+			"coverage": "required"
+		},
+		{
+			"id": "reports-component-shared-primitives-loading-state-reduced-motion",
+			"title": "LoadingState: reduced-motion",
+			"units": ["reports.component.shared-primitives-loading-state"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
 			"coverage": "required",
@@ -7191,6 +8331,9 @@
 				"reports-component-audio-evidence-phase-current",
 				"reports-component-audio-evidence-standing",
 				"reports-component-brand-mark",
+				"reports-component-brand-mark-decorative",
+				"reports-component-brand-mark-inline",
+				"reports-component-brand-mark-large",
 				"reports-component-browser-errors",
 				"reports-component-browser-errors-expected-open",
 				"reports-component-browser-errors-unexpected",
@@ -7396,7 +8539,6 @@
 				"reports-component-explorer-ui-config-value-tree-long-expression",
 				"reports-component-explorer-ui-explorer-kit-card",
 				"reports-component-explorer-ui-explorer-kit-card-section",
-				"reports-component-explorer-ui-explorer-kit-card-tone",
 				"reports-component-explorer-ui-explorer-kit-command-block",
 				"reports-component-explorer-ui-explorer-kit-command-block-long",
 				"reports-component-explorer-ui-explorer-kit-command-block-multiline",
@@ -7492,37 +8634,135 @@
 				"reports-component-floating-chat-following",
 				"reports-component-floating-chat-not-following",
 				"reports-component-harness-entity-artifact",
+				"reports-component-harness-entity-artifact-not-recorded",
+				"reports-component-harness-entity-artifact-not-stored",
+				"reports-component-harness-entity-artifact-loading",
+				"reports-component-harness-entity-artifact-unverified",
+				"reports-component-harness-entity-artifact-lost",
+				"reports-component-harness-entity-artifact-expanded",
+				"reports-component-harness-entity-artifact-raw-open",
+				"reports-component-harness-entity-artifact-plain-text",
+				"reports-component-harness-entity-artifact-long",
 				"reports-component-harness-entity-audio",
+				"reports-component-harness-entity-audio-comparison",
+				"reports-component-harness-entity-audio-missing-before",
+				"reports-component-harness-entity-audio-missing-after",
+				"reports-component-harness-entity-audio-empty",
+				"reports-component-harness-entity-audio-transcript-closed",
 				"reports-component-harness-entity-behavior",
+				"reports-component-harness-entity-behavior-current",
+				"reports-component-harness-entity-behavior-initial",
+				"reports-component-harness-entity-behavior-empty",
+				"reports-component-harness-entity-behavior-unknown",
+				"reports-component-harness-entity-behavior-changed",
+				"reports-component-harness-entity-behavior-loading",
+				"reports-component-harness-entity-behavior-reasons",
 				"reports-component-harness-entity-behavior-screen",
 				"reports-component-harness-entity-config",
 				"reports-component-harness-entity-config-screen",
 				"reports-component-harness-entity-details",
+				"reports-component-harness-entity-details-summary",
+				"reports-component-harness-entity-details-source",
+				"reports-component-harness-entity-details-measurements",
+				"reports-component-harness-entity-details-unmeasured",
 				"reports-component-harness-entity-details-screen",
 				"reports-component-harness-entity-frame",
 				"reports-component-harness-entity-header",
 				"reports-component-harness-entity-history",
+				"reports-component-harness-entity-history-empty",
+				"reports-component-harness-entity-history-unread",
+				"reports-component-harness-entity-history-reading",
+				"reports-component-harness-entity-history-unavailable",
+				"reports-component-harness-entity-history-long",
 				"reports-component-harness-entity-history-row",
 				"reports-component-harness-entity-history-screen",
+				"reports-component-harness-entity-history-profiles",
 				"reports-component-harness-entity-link",
+				"reports-component-harness-entity-link-labelled",
+				"reports-component-harness-entity-link-long",
+				"reports-component-harness-entity-link-focused",
 				"reports-component-harness-entity-measures",
 				"reports-component-harness-entity-missing",
+				"reports-component-harness-entity-missing-custom-action",
+				"reports-component-harness-entity-missing-long",
 				"reports-component-harness-entity-overview",
 				"reports-component-harness-entity-reasons",
 				"reports-component-harness-entity-relations",
+				"reports-component-harness-entity-relations-empty",
+				"reports-component-harness-entity-relations-removed",
+				"reports-component-harness-entity-relations-used-in",
+				"reports-component-harness-entity-relations-uses",
+				"reports-component-harness-entity-relations-models",
+				"reports-component-harness-entity-relations-apis",
 				"reports-component-harness-entity-run",
 				"reports-component-harness-entity-screens",
+				"reports-component-harness-entity-screens-current",
+				"reports-component-harness-entity-screens-initial",
+				"reports-component-harness-entity-screens-missing",
+				"reports-component-harness-entity-screens-incomparable",
+				"reports-component-harness-entity-screens-viewer-open",
+				"reports-component-harness-entity-screens-mobile-selected",
 				"reports-component-harness-entity-sections",
+				"reports-component-harness-entity-sections-contract",
+				"reports-component-harness-entity-sections-source",
+				"reports-component-harness-entity-sections-used-in",
+				"reports-component-harness-entity-sections-uses",
+				"reports-component-harness-entity-sections-audio",
+				"reports-component-harness-entity-sections-states",
+				"reports-component-harness-entity-sections-tests",
+				"reports-component-harness-entity-sections-table",
+				"reports-component-harness-entity-sections-table-empty",
+				"reports-component-harness-entity-sections-examples",
+				"reports-component-harness-entity-sections-permissions",
 				"reports-component-harness-entity-source",
+				"reports-component-harness-entity-source-empty",
+				"reports-component-harness-entity-source-linked",
+				"reports-component-harness-entity-source-tests",
+				"reports-component-harness-entity-source-long",
 				"reports-component-harness-entity-summary",
 				"reports-component-harness-entity-tests",
 				"reports-component-harness-entity-visual-screen",
 				"reports-component-harness-explorer-catalog-screen",
+				"reports-component-harness-explorer-catalog-screen-empty",
+				"reports-component-harness-explorer-catalog-screen-unindexed",
+				"reports-component-harness-explorer-catalog-screen-search",
+				"reports-component-harness-explorer-catalog-screen-no-matches",
+				"reports-component-harness-explorer-catalog-screen-functions",
+				"reports-component-harness-explorer-catalog-screen-configs",
+				"reports-component-harness-explorer-catalog-screen-layouts",
 				"reports-component-harness-explorer-content",
+				"reports-component-harness-explorer-content-catalog",
+				"reports-component-harness-explorer-content-pages",
+				"reports-component-harness-explorer-content-source",
+				"reports-component-harness-explorer-content-history",
+				"reports-component-harness-explorer-content-missing",
+				"reports-component-harness-explorer-content-configs",
+				"reports-component-harness-explorer-content-functions",
+				"reports-component-harness-explorer-content-styles",
+				"reports-component-harness-explorer-content-dependencies",
+				"reports-component-harness-explorer-content-translations",
+				"reports-component-harness-explorer-content-modules",
+				"reports-component-harness-explorer-content-permissions",
+				"reports-component-harness-explorer-content-platforms",
 				"reports-component-harness-explorer-controls",
+				"reports-component-harness-explorer-controls-search",
+				"reports-component-harness-explorer-controls-long",
+				"reports-component-harness-explorer-controls-focused",
 				"reports-component-harness-explorer-frame",
+				"reports-component-harness-explorer-frame-unindexed",
+				"reports-component-harness-explorer-frame-registry-optional",
+				"reports-component-harness-explorer-frame-source-open",
 				"reports-component-harness-explorer-index",
+				"reports-component-harness-explorer-index-empty",
+				"reports-component-harness-explorer-index-search",
+				"reports-component-harness-explorer-index-no-matches",
+				"reports-component-harness-explorer-index-layouts",
+				"reports-component-harness-explorer-index-configs",
 				"reports-component-harness-explorer-pages-screen",
+				"reports-component-harness-explorer-pages-screen-empty",
+				"reports-component-harness-explorer-pages-screen-unindexed",
+				"reports-component-harness-explorer-pages-screen-search",
+				"reports-component-harness-explorer-pages-screen-no-matches",
 				"reports-component-harness-explorer-table",
 				"reports-component-harness-explorer-table-empty",
 				"reports-component-harness-explorer-table-long-string",
@@ -7538,14 +8778,101 @@
 				"reports-component-harness-explorer-table-apis",
 				"reports-component-harness-explorer-table-platforms",
 				"reports-component-harness-harness-action",
+				"reports-component-harness-harness-action-button",
+				"reports-component-harness-harness-action-disabled",
+				"reports-component-harness-harness-action-plain",
+				"reports-component-harness-harness-action-trailing-icon",
+				"reports-component-harness-harness-action-long",
+				"reports-component-harness-harness-action-focused",
 				"reports-component-harness-harness-console",
+				"reports-component-harness-harness-console-loading-history",
+				"reports-component-harness-harness-console-loading-revision",
+				"reports-component-harness-harness-console-index-error",
+				"reports-component-harness-harness-console-revision-error",
+				"reports-component-harness-harness-console-missing",
+				"reports-component-harness-harness-console-unindexed",
 				"reports-component-harness-harness-header",
+				"reports-component-harness-harness-header-problem",
+				"reports-component-harness-harness-header-missing",
+				"reports-component-harness-harness-header-missing-no-home",
+				"reports-component-harness-harness-header-long-repository",
 				"reports-component-harness-harness-icon",
+				"reports-component-harness-harness-icon-decorative",
+				"reports-component-harness-harness-icon-inline",
+				"reports-component-harness-harness-icon-icon-pages",
+				"reports-component-harness-harness-icon-icon-layouts",
+				"reports-component-harness-harness-icon-icon-components",
+				"reports-component-harness-harness-icon-icon-styles",
+				"reports-component-harness-harness-icon-icon-functions",
+				"reports-component-harness-harness-icon-icon-configs",
+				"reports-component-harness-harness-icon-icon-services",
+				"reports-component-harness-harness-icon-icon-platforms",
+				"reports-component-harness-harness-icon-icon-web",
+				"reports-component-harness-harness-icon-icon-phone",
+				"reports-component-harness-harness-icon-icon-android",
+				"reports-component-harness-harness-icon-icon-desktop",
+				"reports-component-harness-harness-icon-icon-passed",
+				"reports-component-harness-harness-icon-icon-failed",
+				"reports-component-harness-harness-icon-icon-contract",
+				"reports-component-harness-harness-icon-icon-file",
+				"reports-component-harness-harness-icon-icon-size",
+				"reports-component-harness-harness-icon-icon-performance",
+				"reports-component-harness-harness-icon-icon-gauge",
+				"reports-component-harness-harness-icon-icon-layers",
+				"reports-component-harness-harness-icon-icon-tests",
+				"reports-component-harness-harness-icon-icon-history",
+				"reports-component-harness-harness-icon-icon-relationships",
+				"reports-component-harness-harness-icon-icon-environment",
+				"reports-component-harness-harness-icon-icon-database",
+				"reports-component-harness-harness-icon-icon-shield",
+				"reports-component-harness-harness-icon-icon-fixture",
+				"reports-component-harness-harness-icon-icon-state",
+				"reports-component-harness-harness-icon-icon-route",
+				"reports-component-harness-harness-icon-icon-clock",
+				"reports-component-harness-harness-icon-icon-object",
+				"reports-component-harness-harness-icon-icon-array",
+				"reports-component-harness-harness-icon-icon-code",
+				"reports-component-harness-harness-icon-icon-branch",
+				"reports-component-harness-harness-icon-icon-commit",
+				"reports-component-harness-harness-icon-icon-arrow-right",
+				"reports-component-harness-harness-icon-icon-arrow-left",
+				"reports-component-harness-harness-icon-icon-chevron-right",
+				"reports-component-harness-harness-icon-icon-chevron-down",
+				"reports-component-harness-harness-icon-icon-search",
+				"reports-component-harness-harness-icon-icon-close",
+				"reports-component-harness-harness-icon-icon-external",
+				"reports-component-harness-harness-icon-icon-expand",
+				"reports-component-harness-harness-icon-icon-help",
+				"reports-component-harness-harness-icon-icon-info",
+				"reports-component-harness-harness-icon-icon-grid",
+				"reports-component-harness-harness-icon-icon-list",
+				"reports-component-harness-harness-icon-icon-link",
+				"reports-component-harness-harness-icon-icon-change",
+				"reports-component-harness-harness-icon-icon-check-square",
+				"reports-component-harness-harness-icon-icon-empty",
 				"reports-component-harness-harness-navbar",
+				"reports-component-harness-harness-navbar-unresolved",
+				"reports-component-harness-harness-navbar-no-repository",
+				"reports-component-harness-harness-navbar-pages",
+				"reports-component-harness-harness-navbar-historical",
+				"reports-component-harness-harness-navbar-long-repository",
+				"reports-component-harness-harness-navbar-search-open",
 				"reports-component-harness-harness-selectors",
+				"reports-component-harness-harness-selectors-comparison",
+				"reports-component-harness-harness-selectors-empty",
+				"reports-component-harness-harness-selectors-tip",
+				"reports-component-harness-harness-selectors-at-tip",
+				"reports-component-harness-harness-selectors-long",
 				"reports-component-harness-harness-shell",
 				"reports-component-harness-harness-tabs",
 				"reports-component-harness-harness-verdict",
+				"reports-component-harness-harness-verdict-failed",
+				"reports-component-harness-harness-verdict-unknown",
+				"reports-component-harness-harness-verdict-framed",
+				"reports-component-harness-harness-verdict-passed-open",
+				"reports-component-harness-harness-verdict-failed-open",
+				"reports-component-harness-harness-verdict-unknown-open",
+				"reports-component-harness-harness-verdict-long-open",
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
 				"reports-component-image-zoom-loading",
@@ -7884,6 +9211,9 @@
 				"reports-component-shared-primitives-detail-list-values",
 				"reports-component-shared-primitives-detail-list-duplicate-labels",
 				"reports-component-shared-primitives-loading-state",
+				"reports-component-shared-primitives-loading-state-default-label",
+				"reports-component-shared-primitives-loading-state-long",
+				"reports-component-shared-primitives-loading-state-reduced-motion",
 				"reports-component-source-code-action",
 				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",

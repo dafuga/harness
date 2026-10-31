@@ -30,6 +30,7 @@ import type { ProjectAgentState } from './support/component-previews/projectAgen
 import { prepareCatalogState } from './support/component-previews/catalogStateActions';
 import { assertReportPreviewState } from './support/component-previews/reportPreviewAssertions';
 import { assertRecordedValueCapture } from './support/component-previews/recordedValueCaptureAssertions';
+import { assertShellReview } from './support/component-previews/shellReviewAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { assertCatalogRegistry } from './support/component-previews/catalogRegistryAssertions';
 let home = '';
@@ -122,17 +123,33 @@ for (const viewport of catalogViewports) {
 			const component = await preview.readyPreview(page, unit.id, variant);
 			const target = { viewport: viewport.id, variant };
 			const early =
-				variant === 'empty' &&
 				[
-					'reports.component.coverage-list',
-					'reports.component.module-system-plugins-plugin-steps'
-				].includes(unit.id);
+					'reports.component.shared-primitives-atoms-html-a',
+					'reports.component.shared-primitives-atoms-html-ol',
+					'reports.component.shared-primitives-atoms-html-li',
+					'reports.component.shared-primitives-atoms-html-ul',
+					'reports.component.shared-primitives-atoms-html-table',
+					'reports.component.shared-primitives-atoms-html-thead',
+					'reports.component.shared-primitives-atoms-html-tbody',
+					'reports.component.shared-primitives-atoms-html-tr',
+					'reports.component.shared-primitives-atoms-html-th',
+					'reports.component.shared-primitives-atoms-html-td'
+				].includes(unit.id) ||
+				(variant === 'empty' &&
+					[
+						'reports.component.coverage-list',
+						'reports.component.module-system-plugins-plugin-steps'
+					].includes(unit.id));
 			if (early) {
 				if (unit.id === 'reports.component.coverage-list')
 					await expect(component.getByRole('heading', { name: 'Acceptance' })).toBeVisible();
 				await preview.capturePreview(page, home, unit.id, target);
 			}
 			await test.step('Prepare state', () => prepareCatalogState(component, unit.id, variant));
+			if (unit.id === 'reports.component.harness-harness-action' && variant === 'long')
+				await expect(component.getByRole('link')).toHaveText(
+					'Review every recorded result for this selected revision'
+				);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
 			await assertPluginKitPreview(component, unit.id, variant);
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
@@ -166,6 +183,7 @@ for (const viewport of catalogViewports) {
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
+			await assertShellReview(component, unit.id, variant, viewport.id);
 			await assertInlinePluginKitCapture(component, unit.id);
 			await assertPresentationPreview(component, unit.id, variant);
 			await assertRecordedValueCapture(component, unit.id, variant);
@@ -179,7 +197,7 @@ for (const viewport of catalogViewports) {
 				['', 'admin', 'gap', 'endpoint'].includes(variant)
 			)
 				await assertPermissionTable(component, page, viewport.id === 'mobile');
-			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
+			if (unit.id.endsWith('explorer-index') && !variant) await assertCompositionFilter(component);
 			if (
 				(unit.id === 'reports.component.explorer-dependencies-screen' && !variant) ||
 				unit.id.endsWith('at-dependencies')
@@ -198,11 +216,16 @@ for (const viewport of catalogViewports) {
 					documentedStyleTokens().length
 				);
 			}
-			for (const field of await component.locator('.hx-revision .has-display select').all())
+			for (const field of await component.locator('.hx-revision .has-display select').all()) {
+				await expect(field, 'The full revision remains available as a title').toHaveAttribute(
+					'title',
+					/\S/
+				);
 				await expect(
 					field,
 					'Only the compact value is painted in a closed revision field'
 				).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
+			}
 			await caseAssertions.assertCatalogLayout(component, unit, viewport);
 			await caseAssertions.assertCatalogDetails(component, unit.id, variant);
 			if (

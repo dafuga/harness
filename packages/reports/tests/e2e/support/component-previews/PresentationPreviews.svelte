@@ -34,7 +34,13 @@
 			{ key: 'attempts', label: 'Attempts', value: 0 },
 			{ key: 'blank', label: 'Blank', value: '' }
 		],
-		long: [{ key: 'long', label: longName, value: longName }],
+		long: [
+			{
+				key: 'long',
+				label: 'Customer account revision used for subscription renewal notifications',
+				value: 'src/services/customer-accounts/SubscriptionRenewalNotificationService.ts:128'
+			}
+		],
 		'duplicate-labels': [
 			{ key: 'first', label: 'Source', value: 'Checkout capture' },
 			{ key: 'second', label: 'Source', value: 'Release review' }
@@ -66,7 +72,14 @@
 			{#snippet header()}<tr><th scope="col">Name</th><th scope="col">Type</th></tr>{/snippet}
 
 			{#snippet children()}
-				<tr><th scope="row">{variant === 'long' ? longName : 'active'}</th><td>boolean</td></tr>
+				<tr
+					><th scope="row"
+						>{#if variant === 'long'}<CodeLine
+								text="OrderStore.findActiveOrdersByCustomerAccountAndRevision"
+								mode="wrap"
+							/>{:else}active{/if}</th
+					><td>boolean</td></tr
+				>
 				<tr><th scope="row">attempts</th><td>number</td></tr>
 			{/snippet}
 		</DataTable>

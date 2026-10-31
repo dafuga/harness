@@ -23,7 +23,7 @@ test('the branch tip shows one run: each state with what the state recorded', ()
 		['order-filter', 'no-match', 'passed']
 	]);
 	expect(run.groups[0].lines.map((line) => line.kind)).toEqual(['assertions', 'output']);
-	expect(run.groups[0].lines[0].after.capture?.media).toBe('media/ccccccc-match-assertions.json');
+	expect(run.groups[0].lines[0].after.capture?.media).toBe('media/c725e93-match-assertions.json');
 	expect(run.reasons).toEqual([]);
 });
 
@@ -32,7 +32,7 @@ test('equal results on both sides are behaviour unchanged, said in those words',
 	expect(run.label).toBe('Behavior unchanged');
 	expect(run.passed).toBe(true);
 	expect(run.groups[0]).toMatchObject({ before: 'passed', after: 'passed' });
-	expect(run.groups[0].lines[1].before.capture?.media).toBe('media/aaaaaaa-match-output.json');
+	expect(run.groups[0].lines[1].before.capture?.media).toBe('media/3f9c2a1-match-output.json');
 	expect(run.scenarios).toEqual([
 		{
 			id: 'order-filter',

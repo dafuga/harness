@@ -51,14 +51,14 @@
 				"name": "ExplorerUsage.layout",
 				"type": "'grouped' | 'flat'",
 				"required": false,
-				"description": "Compatibility input; every module-card footer is now flat, without consumer category labels. Defaults to JavaScript undefined (omitted), not the literal string. Compatibility input ignored by the current single-list footer."
+				"description": "Optional compatibility input. Defaults to JavaScript undefined. Its value is ignored: every footer remains a flat list."
 			},
 			{
 				"name": "ExplorerUsage.limit",
 				"type": "number",
 				"required": false,
 				"default": 3,
-				"description": "Optional lower limit; every footer shows at most three distinct consumers, with an accessible overflow ellipsis. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional lower limit; every footer shows at most three distinct consumers, with an accessible overflow ellipsis."
 			}
 		],
 		"outputs": [

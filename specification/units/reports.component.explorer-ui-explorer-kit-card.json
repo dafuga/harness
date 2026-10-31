@@ -25,20 +25,20 @@
 				"type": "'article' | 'section'",
 				"required": false,
 				"default": "article",
-				"description": "'article' (default) or 'section'; a section names a labelled region of the screen. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "'article' (default) or 'section'; a section names a labelled region of the screen."
 			},
 			{
 				"name": "Card.tone",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Extra class names for the owner's own card styling. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Extra class names for the owner's own card styling."
 			},
 			{
 				"name": "Card.labelledby",
 				"type": "string",
 				"required": false,
-				"description": "Id of the heading that names the card. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, no aria-labelledby attribute is supplied."
+				"description": "Optional. Defaults to JavaScript undefined, omitting aria-labelledby. Supply the heading id when the card should be named."
 			},
 			{
 				"name": "Card.children",
@@ -56,9 +56,9 @@
 		],
 		"errors": [
 			{
-				"name": "Caller callback or content error",
+				"name": "Child snippet error",
 				"type": "propagated",
-				"description": "Errors from supplied children callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"description": "Errors thrown while rendering the required children snippet propagate to the caller."
 			}
 		],
 		"errorStatus": "declared",

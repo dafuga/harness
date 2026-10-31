@@ -10,6 +10,7 @@
 		required,
 		disabled = false,
 		compact = false,
+		expanded = false,
 		display,
 		title,
 		children
@@ -21,10 +22,27 @@
 		required?: boolean;
 		disabled?: boolean;
 		compact?: boolean;
+		expanded?: boolean;
 		display?: string;
 		title?: string;
 		children: Snippet;
 	} = $props();
+	let field = $state<HTMLSelectElement>();
+	let listRows = $state(2);
+	$effect(() => {
+		const select = field;
+		if (!expanded || !select) return;
+		const measure = () => {
+			listRows = Math.max(
+				2,
+				Math.min(8, select.options.length + select.querySelectorAll('optgroup').length)
+			);
+		};
+		const observer = new MutationObserver(measure);
+		observer.observe(select, { childList: true, subtree: true });
+		measure();
+		return () => observer.disconnect();
+	});
 	const shown = $derived(
 		display && display.length > 16 ? `${display.slice(0, 6)}…${display.slice(-6)}` : display
 	);
@@ -34,11 +52,14 @@
 	class="report-select"
 	class:disabled
 	class:compact
-	class:has-display={display !== undefined}
+	class:expanded
+	class:has-display={display !== undefined && !expanded}
 	data-harness-component="select"
 >
 	<hx-select
 		bind:value
+		bind:this={field}
+		size={expanded ? listRows : undefined}
 		aria-label={label}
 		{id}
 		{name}
@@ -51,7 +72,7 @@
 	<hx-svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
 		<hx-svg-path d="m4 6 4 4 4-4" />
 	</hx-svg>
-	{#if display !== undefined}<hx-span class="report-select-value" aria-hidden="true"
+	{#if display !== undefined && !expanded}<hx-span class="report-select-value" aria-hidden="true"
 			>{shown}</hx-span
 		>{/if}
 </hx-span>
@@ -121,6 +142,13 @@
 		pointer-events: none;
 		font: inherit;
 		color: inherit;
+	}
+	.report-select.expanded select {
+		height: auto;
+		padding-inline-end: var(--hx-space-14);
+	}
+	.expanded svg {
+		display: none;
 	}
 	@media (pointer: coarse) {
 		.compact select {

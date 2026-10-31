@@ -78,36 +78,36 @@ test('screenshots use their capture commit and comparisons show their paired rev
 	await open(tab, page);
 	await expect(tab.getByRole('heading', { name: 'Current screenshot' })).toBeVisible();
 	await expect(tab.locator(shots)).toHaveCount(1);
-	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-desktop.png');
-	await expect(tab.locator('.ex-pane figcaption strong')).toContainText('ccccccc');
+	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/c725e93-default-desktop.png');
+	await expect(tab.locator('.ex-pane figcaption strong')).toContainText('c725e93');
 	await expect(tab.locator('.ex-pane figcaption strong')).not.toContainText('Branch tip');
 	await capture(tab, 'page-current-desktop');
 	await tab.getByRole('button', { name: 'Mobile' }).click();
-	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-mobile.png');
+	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/c725e93-default-mobile.png');
 	await expect(tab.getByRole('combobox', { name: 'State' })).toHaveCount(0);
 	await open(tab, { category: 'components', entity: ids.card }, 'inherited');
 	await expect(tab.getByRole('heading', { name: 'Current screenshot' })).toBeVisible();
 	await ready(tab);
-	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/bbbbbbb-default-desktop.png');
-	await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('bbbbbbb');
+	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/8b41d07-default-desktop.png');
+	await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('8b41d07');
 	await capture(tab, 'component-current-inherited-desktop');
 	await tab.getByRole('button', { name: 'Mobile' }).click();
-	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/bbbbbbb-default-mobile.png');
-	await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('bbbbbbb');
+	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/8b41d07-default-mobile.png');
+	await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('8b41d07');
 	await capture(tab, 'component-current-inherited-mobile');
 	await open(tab, { ...page, commit: commits.middle });
 	await expect(tab.getByRole('heading', { name: 'Commit comparison' })).toBeVisible();
 	const sources = () =>
 		tab.locator(shots).evaluateAll((all) => all.map((image) => image.getAttribute('src')));
 	expect(await sources()).toEqual([
-		'/media/aaaaaaa-default-desktop.png',
-		'/media/bbbbbbb-default-desktop.png'
+		'/media/3f9c2a1-default-desktop.png',
+		'/media/8b41d07-default-desktop.png'
 	]);
 	await capture(tab, 'page-commit-desktop');
 	await tab.getByRole('button', { name: 'Mobile' }).click();
 	expect(await sources()).toEqual([
-		'/media/aaaaaaa-default-mobile.png',
-		'/media/bbbbbbb-default-mobile.png'
+		'/media/3f9c2a1-default-mobile.png',
+		'/media/8b41d07-default-mobile.png'
 	]);
 	const image = tab.locator('.ex-evidence .ex-shot').last();
 	await image.click();
@@ -129,9 +129,9 @@ test('legacy device-qualified captures remain selectable without changing their 
 		await capture(tab, `legacy-device-${label.toLowerCase()}`);
 		await expect(tab.locator(shots)).toHaveAttribute(
 			'src',
-			`/media/ccccccc-default-${label.toLowerCase()}.png`
+			`/media/c725e93-default-${label.toLowerCase()}.png`
 		);
-		await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('ccccccc');
+		await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('c725e93');
 		await expect(tab.locator(shots)).toBeVisible();
 	}
 });

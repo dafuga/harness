@@ -3,7 +3,7 @@ import { stamp, done } from './shared';
 const projects = [{ id: 'preview-project', name: 'Preview project' }];
 const request = {
 	pairingId: 'preview-request',
-	deviceId: 'preview-phone-key',
+	deviceId: '7c4a8d09e1b2f6a35d08c94716fe2b809ab6c5d483e17f902a3dc64e58b7190f',
 	deviceName: 'Ada’s iPhone',
 	platform: 'iOS',
 	requestedAt: stamp,

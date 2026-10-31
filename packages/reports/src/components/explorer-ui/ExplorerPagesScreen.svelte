@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';
+	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { entityCatalog } from '../../utils/explorer-ui/entityCatalog';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import ExplorerFrame from './ExplorerFrame.svelte';
@@ -14,13 +16,13 @@
 	marker of the screen draws no box. -->
 <hx-div class="ex-screen" data-harness-component="harness-explorer-pages-screen">
 	<ExplorerFrame {host}>
-		{#snippet children(nav)}
+		{#snippet children(nav: EntityNav)}
 			<ExplorerIndex
 				category="pages"
 				{rows}
 				scope={JSON.stringify([host.route.branch, host.scope.commit])}
 			>
-				{#snippet list(listed)}
+				{#snippet list(listed: CatalogRow[])}
 					<ExplorerCatalogItems
 						category="pages"
 						rows={listed}

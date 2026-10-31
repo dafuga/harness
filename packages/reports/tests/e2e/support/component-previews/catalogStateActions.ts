@@ -1,3 +1,4 @@
+import { prepareShellCatalog } from './shellCatalogActions';
 import { preparePresentationState } from './presentationPreviewAssertions';
 import { expect, type Locator } from '@playwright/test';
 import { prepareConsoleChatState } from './consoleChatActions';
@@ -85,16 +86,12 @@ const actions: Record<string, CatalogStateAction> = {
 		const label = component.locator('.report-select-value');
 		await expect(label).toHaveText('releas…proval');
 		expect(await label.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
-	},
-	'reports.component.select:open': async (component) => {
-		const select = component.getByRole('combobox', { name: 'Viewport', exact: true });
-		await select.click();
-		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	}
 };
 
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
+	if (await prepareShellCatalog(component, id, variant)) return;
 	await prepareDesktopState(component, id, variant);
 	await prepareDesktopGameState(component, id, variant);
 	await preparePresentationState(component, id, variant);

@@ -40,7 +40,7 @@ test('service Tests keep parent and selected-commit cases separate', async ({ pa
 	const pane = page.getByRole('tabpanel', { name: 'OrderStore tests' });
 	await expect(pane.getByRole('status').filter({ hasText: 'Behavior unchanged' })).toBeVisible();
 	await capture(page, `${process.env.SCREENSHOT_LABEL ?? 'run'}-tests-commit-desktop`);
-	for (const name of ['Before · aaaaaaa', 'After · bbbbbbb']) {
+	for (const name of ['Before · 3f9c2a1', 'After · 8b41d07']) {
 		const side = pane.getByRole('region', { name });
 		await expect(
 			side.getByRole('table').filter({ hasText: 'Test observation' }).first()

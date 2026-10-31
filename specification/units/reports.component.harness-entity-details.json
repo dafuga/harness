@@ -49,15 +49,15 @@
 			},
 			{
 				"name": "EntityDetails.tab",
-				"type": "ExplorerTab",
+				"type": "ExplorerTab | 'summary'",
 				"required": false,
-				"description": "Optional selected tab. Exactly source shows source; measurements shows measured detail; missing or any other tab uses the summary. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, renders the contract and summary."
+				"description": "Optional. Defaults to JavaScript undefined and shows the contract with its measurement summary. source selects source files; measurements selects measured detail; summary selects only the performance summary."
 			},
 			{
 				"name": "EntityDetails.repository",
 				"type": "string",
 				"required": false,
-				"description": "Canonical GitHub repository address for source navigation. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional. Defaults to JavaScript undefined. Source files then remain plain paths without GitHub links."
 			},
 			{
 				"name": "EntityDetails.commit",
@@ -69,18 +69,24 @@
 				"name": "EntityDetails.nav",
 				"type": "EntityNav",
 				"required": false,
-				"description": "Optional entity navigation context for contract links at the selected branch and revision. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional. Defaults to JavaScript undefined. Without revision-scoped navigation, the Source tab omits code-opening actions."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityDetails",
 				"type": "markup",
-				"description": "Named tabpanel containing the selected child view. The default shows contract/measurement summary without source; data fetching and child errors are outside this component."
+				"description": "Renders source files, measured detail, the standalone performance summary, or the default contract with its summary. On phones, measurement fields stack with visible labels and whole-word values."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Source navigation callback error",
+				"type": "propagated",
+				"description": "On the Source tab, an error from nav.source propagates when a file code action is activated; other tabs do not invoke it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

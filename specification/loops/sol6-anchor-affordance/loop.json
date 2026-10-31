@@ -1,0 +1,70 @@
+{
+	"name": "sol6-anchor-affordance",
+	"goal": "Native anchor examples show realistic linked text with visible affordance and plain unlinked content at every viewport.",
+	"createdAt": "2026-10-31T18:16:33.048Z",
+	"updatedAt": "2026-10-31T18:41:28.044Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-31T18:31:28.102Z",
+			"evidence": "Existing anchor reset made catalog links plain; prior completion trusted href and text checks. Visual review rejected the missing affordance."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T18:31:28.958Z",
+			"evidence": "The normal catalog lacked affordance checks. Its linked states now require underline, link role, destination and focus, with captures before assertions."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T18:31:30.108Z",
+			"evidence": "73fc1652fa expects underline but receives none. Six linked cases fail; nine canonical before captures are attached."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-10-31T18:31:30.863Z",
+			"evidence": "Supply native caller underline styling and realistic copy, keep unlinked content plain, and retain the same responsive cases."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-10-31T18:41:28.044Z",
+			"evidence": "Native caller styling and realistic copy are implemented. The unchanged guard passes all 321 responsive cases in the working fixture."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

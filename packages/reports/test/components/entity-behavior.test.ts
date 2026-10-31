@@ -27,14 +27,14 @@ test('nothing is called unchanged before the results were read, and nothing cras
 	expect(words(body)).toContain('Reading what it holds…');
 	// An entity with no headless result at all renders its gap, not an error.
 	const bare = await panel(view('current', { head: revision(commits.tip, []) }));
-	expect(words(bare)).toContain('No end-to-end result is recorded for this entity at ccccccc.');
+	expect(words(bare)).toContain('No end-to-end result is recorded for this entity at c725e93.');
 });
 
 test('both sides show what their run was given and observed as rows, and its steps and assertions on request', async () => {
 	const at = view('commit');
 	const body = await panel(at, servedArtifacts([at.head, at.parent!]));
 	expect(words(body)).toContain('Behavior unchanged');
-	const sides = ['Before · aaaaaaa', 'After · bbbbbbb'];
+	const sides = ['Before · 3f9c2a1', 'After · 8b41d07'];
 	const from = (side: string) => body.indexOf(`aria-label="${side}"`);
 	for (const [position, side] of sides.entries()) {
 		const pane = body.slice(from(side), position === 0 ? from(sides[1]) : undefined);
@@ -48,7 +48,7 @@ test('both sides show what their run was given and observed as rows, and its ste
 		expect(disclosed(pane)).toContain('Open the orders page');
 		expect(disclosed(pane)).toContain('Matching order is listed');
 		// A structured step stays structured, and what an assertion expected is beside it.
-		expect(disclosed(pane)).toContain('"action": "search"');
+		expect(disclosed(pane)).toContain('Search for SERVICE');
 		expect(disclosed(pane)).toContain('"expected": 12');
 	}
 	// The rows need nothing pressed, and no button loads anything.
@@ -74,7 +74,7 @@ test('the branch tip shows one run with its payload, and no before or after', as
 	const at = view('current');
 	const body = await panel(at, servedArtifacts([at.head]));
 	expect(words(body)).toContain('Current end-to-end behavior');
-	expect(words(body)).toContain('Current snapshot · ccccccc');
+	expect(words(body)).toContain('Current snapshot · c725e93');
 	expect(words(body)).toContain('Order 1042 · Service call');
 	expect(words(body)).not.toMatch(/Before ·|After ·|Behavior unchanged/);
 });
@@ -87,6 +87,6 @@ test('bytes that do not have the recorded hash are shown as unverified, never as
 	const body = await panel({ ...at, head: revision(commits.middle, [forged]) }, fetcher);
 	expect(words(body)).toContain('Behavior unknown');
 	expect(words(body)).toContain('do not have the recorded SHA-256');
-	const after = body.slice(body.indexOf('aria-label="After · bbbbbbb"'));
+	const after = body.slice(body.indexOf('aria-label="After · 8b41d07"'));
 	expect(words(after)).not.toContain('Matching order is listed');
 });

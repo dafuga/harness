@@ -31,7 +31,7 @@
 				"name": "Modal.isOpen",
 				"type": "boolean",
 				"required": false,
-				"description": "Optional open-state alias that takes precedence over open, including when false."
+				"description": "Optional open-state alias. Defaults to JavaScript undefined, using open. A supplied boolean takes precedence, including false."
 			},
 			{
 				"name": "Modal.title",
@@ -51,25 +51,25 @@
 				"name": "Modal.onClose",
 				"type": "() => void",
 				"required": false,
-				"description": "Optional close request callback for the close button, backdrop and native cancel event. Called alongside onclose when both are supplied; the parent owns open state."
+				"description": "Optional close-request callback. Defaults to JavaScript undefined (no callback). Runs first for the close button, backdrop and native cancel event; the parent owns open state."
 			},
 			{
 				"name": "Modal.onclose",
 				"type": "() => void",
 				"required": false,
-				"description": "Optional alternate close request callback, invoked after onClose for the same close actions. It does not replace onClose."
+				"description": "Optional alternate close-request callback. Defaults to JavaScript undefined (no callback). Runs after onClose when supplied; a preceding throw prevents this call."
 			},
 			{
 				"name": "Modal.children",
 				"type": "import('svelte').Snippet",
 				"required": false,
-				"description": "Optional dialog body content; omitted content renders nothing."
+				"description": "Optional dialog body snippet. Defaults to JavaScript undefined, rendering no body content."
 			},
 			{
 				"name": "Modal.footer",
 				"type": "import('svelte').Snippet",
 				"required": false,
-				"description": "Optional footer content. The footer is rendered only when this snippet is supplied."
+				"description": "Optional footer snippet. Defaults to JavaScript undefined, omitting the footer."
 			}
 		],
 		"outputs": [
@@ -79,7 +79,14 @@
 				"description": "A native dialog when isOpen, or otherwise open, is true. It shows the title, child content and optional footer in the selected image, text or lightbox presentation. Close-button and backdrop actions invoke both supplied close callbacks; Escape also invokes them through the cancel event. The parent owns the open state."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller content or close callback error",
+				"type": "propagated",
+				"description": "Body/footer snippet failures and errors from either supplied close callback propagate. onClose runs before onclose; a throw prevents the second callback."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
