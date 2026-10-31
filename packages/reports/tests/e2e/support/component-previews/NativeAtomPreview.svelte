@@ -5,6 +5,7 @@
 		svgElements
 	} from '../../../../../../src/templates/development-tooling/htmlElements.js';
 	import { nativeAtomProps } from './nativeAtomProps';
+	import { nativeAtomContent } from './nativeAtomContent';
 	let {
 		Component,
 		source,
@@ -18,6 +19,7 @@
 	const definition = $derived(nativeAtoms.find((atom) => atom.name === name)!);
 	const tag = $derived(definition.tag);
 	const attributes = $derived(nativeAtomProps(tag, definition.type, variant));
+	const example = $derived(nativeAtomContent[name ?? '']);
 	const stateLabels: Record<string, string> = {
 		disabled: 'Disabled action',
 		unlinked: 'Link without a destination'
@@ -27,7 +29,7 @@
 			? `HtmlOption: ${variant === 'disabled' ? 'Disabled choice' : 'Available choice'}`
 			: variant === 'long'
 				? 'Long native content remains readable when a caller supplies several words and a second phrase.'
-				: (stateLabels[variant] ?? name)
+				: (stateLabels[variant] ?? example ?? name)
 	);
 	let host: HTMLElement;
 	onMount(() => {
@@ -45,14 +47,14 @@
 			value="example">Example choice</option
 		>
 	{:else if tag === 'table'}<tbody
-			><tr><td>{variant === 'long' ? label : 'Example cell'}</td></tr></tbody
+			><tr><td>{variant === 'long' ? label : (example ?? 'Example cell')}</td></tr></tbody
 		>
 	{:else if ['thead', 'tbody', 'tfoot'].includes(tag)}<tr
-			><td>{variant === 'long' ? label : 'Example cell'}</td></tr
+			><td>{variant === 'long' ? label : (example ?? 'Example cell')}</td></tr
 		>
-	{:else if tag === 'tr'}<td>{variant === 'long' ? label : 'Example cell'}</td>
+	{:else if tag === 'tr'}<td>{variant === 'long' ? label : (example ?? 'Example cell')}</td>
 	{:else if ['ul', 'ol', 'menu'].includes(tag)}<li>
-			{variant === 'long' ? label : 'Example item'}
+			{variant === 'long' ? label : (example ?? 'Example item')}
 		</li>
 	{:else if tag === 'dl'}<div>
 			<dt>Label</dt>
@@ -61,8 +63,10 @@
 	{:else if tag === 'details'}<summary>Example details</summary>
 		<p>Expanded content</p>
 	{:else if tag === 'form' || tag === 'fieldset'}<label
-			>{variant === 'long' ? label : 'Example field'}
-			<input value={variant === 'long' ? label : 'Example'} /></label
+			>{variant === 'long' ? label : (example ?? 'Example field')}
+			<input
+				value={variant === 'long' ? label : example ? 'Release checklist' : 'Example'}
+			/></label
 		><button type="button">Continue</button>
 	{:else if tag === 'picture'}<img
 			src={nativeAtomProps('img').src as string}

@@ -122,11 +122,12 @@ for (const viewport of catalogViewports) {
 			const component = await preview.readyPreview(page, unit.id, variant);
 			const target = { viewport: viewport.id, variant };
 			const early =
-				variant === 'empty' &&
-				[
-					'reports.component.coverage-list',
-					'reports.component.module-system-plugins-plugin-steps'
-				].includes(unit.id);
+				unit.id === 'reports.component.shared-primitives-atoms-html-a' ||
+				(variant === 'empty' &&
+					[
+						'reports.component.coverage-list',
+						'reports.component.module-system-plugins-plugin-steps'
+					].includes(unit.id));
 			if (early) {
 				if (unit.id === 'reports.component.coverage-list')
 					await expect(component.getByRole('heading', { name: 'Acceptance' })).toBeVisible();

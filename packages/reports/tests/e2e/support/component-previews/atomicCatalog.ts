@@ -1,4 +1,5 @@
 import { nativeAtomVariants } from './nativeAtomVariants';
+import { nativeAtomContent } from './nativeAtomContent';
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
 
 export async function assertCompositionFilter(component: Locator): Promise<void> {
@@ -33,6 +34,7 @@ export async function assertNativeAtomState(component: Locator, id: string, vari
 	await assertNativeControl(element, tag, variant);
 	await assertNativeDisclosure(component, tag, variant);
 	await assertNativeAttributes(element, tag, variant);
+	await assertNativeCopy(element, name, variant);
 	if (tag === 'audio' && !variant)
 		await expect
 			.poll(() => element.evaluate((node: HTMLAudioElement) => node.readyState))
@@ -76,12 +78,29 @@ async function assertNativeOption(element: Locator, component: Locator, variant:
 }
 
 async function assertNativeAttributes(element: Locator, tag: string, variant: string) {
-	if (variant === 'unlinked') {
-		await expect(element).not.toHaveAttribute('href');
-		await expect(element).toHaveText('Link without a destination');
-	}
+	if (tag === 'a') await assertNativeAnchor(element, variant);
 	if (variant === 'alt-only') await expect(element).toHaveAttribute('alt', 'No image available');
 	if (variant === 'outlined') await expect(element).toHaveAttribute('fill', 'none');
 	if (tag === 'path' && variant === 'filled')
 		await expect(element).toHaveAttribute('fill', 'currentColor');
+}
+
+async function assertNativeAnchor(element: Locator, variant: string) {
+	if (variant === 'unlinked') {
+		await expect(element).not.toHaveAttribute('href');
+		await expect(element).not.toHaveRole('link');
+		await expect(element).toHaveCSS('text-decoration-line', 'none');
+		await expect(element).toHaveText('Link without a destination');
+		return;
+	}
+	await expect(element).toHaveRole('link');
+	await expect(element).toHaveCSS('text-decoration-line', 'underline', { timeout: 1000 });
+	await expect(element).toHaveAttribute('href', '#release-notes');
+	await element.focus();
+	await expect(element).toBeFocused();
+}
+
+async function assertNativeCopy(element: Locator, name: string, variant: string) {
+	const expected = nativeAtomContent[`Html${name[0].toUpperCase()}${name.slice(1)}`];
+	if (!variant && expected) await expect(element).toContainText(expected);
 }

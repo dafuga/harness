@@ -47,7 +47,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 			await component.getByRole('combobox', { name: 'Environment' }).selectOption(variant);
 	},
 	'project-switcher': async (component, variant) => {
-		if (['open', 'shared', 'empty', 'busy'].includes(variant))
+		if (['open', 'shared', 'empty'].includes(variant))
 			await component.getByRole('button', { name: 'Choose workbench' }).click();
 	},
 	'revision-picker': async (component, variant) => {
@@ -60,7 +60,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	},
 	'runtime-artifact': artifact,
 	'status-icon': async (component, variant) => {
-		if (['open', 'long'].includes(variant)) {
+		if (['failed', 'unknown', 'unverified', 'no-reason', 'open', 'long'].includes(variant)) {
 			await component.getByRole('button').focus();
 			await expect(component.getByRole('status')).toBeVisible();
 		}
@@ -88,9 +88,23 @@ async function settings(component: Locator, variant: string) {
 }
 async function composer(component: Locator, variant: string) {
 	if (['running', 'no-modes'].includes(variant)) return;
+	const modes: Record<string, string> = {
+		plan: 'Plan',
+		ask: 'Ask',
+		change: 'Change',
+		'visual-plan': 'Plan'
+	};
+	if (modes[variant])
+		await component.getByRole('button', { name: modes[variant], exact: true }).click();
+	const requests: Record<string, string> = {
+		plan: 'Plan the next checkpoint editor change.',
+		ask: 'Where is the current checkpoint saved?',
+		change: 'Update the checkpoint title to Collect the key.',
+		'visual-plan': 'Create visual options for the checkpoint editor.'
+	};
 	await component
 		.getByRole('textbox', { name: 'Message' })
-		.fill('A synthetic request kept for this capture.');
+		.fill(requests[variant] ?? 'A synthetic request kept for this capture.');
 	if (variant === 'retry') {
 		await component.getByRole('button', { name: 'Send comment' }).click();
 		await expect(component.getByRole('textbox')).toHaveValue(
