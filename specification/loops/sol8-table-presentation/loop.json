@@ -2,11 +2,9 @@
 	"name": "sol8-table-presentation",
 	"goal": "Render catalog category rows, aligned empty feedback and multiline config strings at every viewport",
 	"createdAt": "2026-10-31T23:10:30.686Z",
-	"updatedAt": "2026-10-31T23:16:04.678Z",
+	"updatedAt": "2026-10-31T23:31:15.169Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T23:31:13.868Z",
+			"evidence": "af1e1c9478 adds a spanning empty body row and preserves multiline literal whitespace; single-line ellipsis and existing actions remain."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T23:31:15.169Z",
+			"evidence": "f9fc9a1574b7fe360e383f75be0779b406bae0bb75f20961ae38919e7e1f95cc passes all six unchanged empty/multiline cases at desktop, tablet and mobile."
 		},
 		{
 			"id": "verify",
