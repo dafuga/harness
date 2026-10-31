@@ -23,7 +23,7 @@ const active = async (page: Page, name: string) => {
  * Components address of it; and the commit where it was still recorded as a component.
  */
 export const shellStates: Record<string, (page: Page) => Promise<void>> = {
-	async shells(page) {
+	async layouts(page) {
 		await page.goto(at(shellsBranch, commits.shelled, 'layouts'));
 		await titled(page, 'Layouts');
 		await listed(page);

@@ -50,9 +50,9 @@ for (const viewport of viewports) {
 			await reach(page);
 			const actualPage = pageUnit(page.url());
 			expect(actualPage, state).toBeDefined();
-			expect(scenario.states.find((entry) => entry.id === state)?.units, state).toContain(
-				actualPage
-			);
+			const declaredState = scenario.states.find((entry) => entry.id === state);
+			expect(declaredState, `Declared harness-console state ${state}`).toBeDefined();
+			expect(declaredState?.units, state).toContain(actualPage);
 			await captureScreen(page, state, viewport as Viewport);
 			shown.set(state, [...(shown.get(state) ?? []), await shownUnits(page)]);
 			// What a flow asked for and what the application then showed is recorded once.

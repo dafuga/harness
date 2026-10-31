@@ -11,7 +11,7 @@ const src = join(desktop, 'src');
 const ownFile = join(desktop, 'test', 'agent-picker-cleanup.test.ts');
 const alias = /\$shared:\s*'([^']+)'/.exec(read('svelte.config.js'))?.[1] ?? '';
 const shared = resolve(desktop, alias);
-const component = (name: string) => join(src, 'components', `${name}.svelte`);
+const component = (name: string) => join(src, 'components', 'agents-providers', `${name}.svelte`);
 const pickers = ['AgentModelPicker', 'AgentEffortPicker'].map(component);
 const packagesDir = join(root, 'packages');
 const packageDirs = readdirSync(packagesDir).map((name) => join(packagesDir, name));
