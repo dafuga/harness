@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { commits } from '../../../../test/entityUnits';
 
 /** Check the actual state branches, so a successful screenshot cannot silently show the default. */
 export async function assertDesktopState(component: Locator, id: string, variant: string) {
@@ -64,6 +65,7 @@ async function composer(component: Locator, variant: string) {
 
 /** Validate painted state markers after capture, rather than accepting hidden state alone. */
 export async function assertDesktopCapturedState(component: Locator, id: string, variant: string) {
+	await assertPickerPresentation(component, id, variant);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
@@ -87,6 +89,28 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 				return rules.top >= body.top - 1 && rules.bottom <= body.bottom + 1;
 			});
 		expect(visible, 'Expanded checkpoint rules are fully visible above the footer').toBe(true);
+	}
+}
+
+async function assertPickerPresentation(component: Locator, id: string, variant: string) {
+	if (id === 'desktop.component.revision-picker' && variant === 'historical')
+		await expect(
+			component.locator('[aria-label="Viewed context"] strong'),
+			'Historical revision names the older selected commit'
+		).toHaveText(commits.middle.slice(0, 7));
+	if (id !== 'desktop.component.project-switcher') return;
+	if (variant === 'shared') {
+		const project = component.getByRole('combobox', { name: 'Project', exact: true });
+		await expect(project, 'Shared project is selected in the visible picker').toHaveValue(
+			'shared-project'
+		);
+		await expect(project.locator('option:checked')).toHaveText('Shared workbench');
+	}
+	if (variant === 'busy') {
+		await expect(component.getByRole('dialog')).toHaveCount(0);
+		const add = component.getByRole('button', { name: 'Add local project', exact: true });
+		await expect(add).toBeVisible();
+		await expect(add).toBeDisabled();
 	}
 }
 
