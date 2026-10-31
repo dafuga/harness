@@ -46,7 +46,7 @@
 			{
 				"name": "GameCreate",
 				"type": "markup",
-				"description": "Displays the new-project form for an app or dimensional game. Without a host gameCreate operation, shows unavailable guidance and disabled controls. Successful creation opens the resulting workspace or invokes the created callback. Creation, callback and navigation failures are caught and displayed in the form alert."
+				"description": "Create an app or dimensional game through the local host and open its resulting workspace. Renders reactive UI and publishes edits through its callbacks. Creation, callback and navigation failures are caught and displayed in the form alert."
 			}
 		],
 		"errors": [],
