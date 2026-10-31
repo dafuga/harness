@@ -70,6 +70,8 @@ export function nativeAtomProps(tag: string, type?: string, variant = ''): Recor
 
 /** Variants preserve native behavior rather than adding behavior to the atom. */
 function nativeVariantProps(tag: string, variant: string): Record<string, unknown> {
+	if (tag === 'pre' && variant === 'long')
+		return { style: 'max-width:100%;overflow-x:auto', tabindex: 0 };
 	const states: Record<string, Record<string, unknown>> = {
 		disabled: { disabled: true },
 		empty: { value: '', placeholder: 'Example field' },

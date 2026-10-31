@@ -55,7 +55,8 @@
 	{:else if tag === 'details'}<summary>Example details</summary>
 		<p>Expanded content</p>
 	{:else if tag === 'form' || tag === 'fieldset'}<label
-			>Example field <input value="Example" /></label
+			>{variant === 'long' ? label : 'Example field'}
+			<input value={variant === 'long' ? label : 'Example'} /></label
 		><button type="button">Continue</button>
 	{:else if tag === 'picture'}<img
 			src={nativeAtomProps('img').src as string}

@@ -1,3 +1,4 @@
+import { nativeAtomVariants } from './nativeAtomVariants';
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
 
 export async function assertCompositionFilter(component: Locator): Promise<void> {
@@ -14,11 +15,16 @@ export async function assertCompositionFilter(component: Locator): Promise<void>
 }
 
 /** Native states assert real browser properties, then the standard test records the same element. */
+const nativeSelectors: Record<string, string> = { path: 'svg > path' };
+
 export async function assertNativeAtomState(component: Locator, id: string, variant: string) {
-	if (!id.includes('.shared-primitives-atoms-')) return;
+	if (!Object.hasOwn(nativeAtomVariants, id)) return;
 	const name = id.split('-').at(-1)!;
 	const tag = name === 'element' ? 'div' : name;
-	const element = component.locator('.atom-host').locator(tag).first();
+	const element = component
+		.locator('.atom-host')
+		.locator(nativeSelectors[tag] ?? tag)
+		.first();
 	await expect(tag === 'option' ? component.locator('.atom-host select') : element).toBeVisible();
 	await assertNativeControl(element, tag, variant);
 	if (tag === 'details') {
