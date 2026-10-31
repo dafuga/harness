@@ -2,6 +2,7 @@ import { expect, type Locator } from '../../../../../../test/support/browserTest
 import { assertRecordedReportPreviewState } from './reportPreviewAssertions';
 import { assertChatPreviewState } from './chatPreviewAssertions';
 import { assertExplorerTableActions } from './explorerTableActionAssertions';
+import { assertProductArtwork } from './moduleCardPreviewAssertions';
 
 /** Layout previews show both their child slot and the catalog's own layout screenshot. */
 export async function assertCatalogLayout(
@@ -35,6 +36,7 @@ export async function assertCatalogLayout(
 
 /** Catalog examples retain their named values, consumers and basic presentation. */
 export async function assertCatalogDetails(component: Locator, id: string, variant = '') {
+	await assertProductArtwork(component, id, variant);
 	await assertRecordedReportPreviewState(component, id, variant);
 	await assertChatPreviewState(component, id, variant);
 	if (id === 'reports.component.harness-explorer-table')
