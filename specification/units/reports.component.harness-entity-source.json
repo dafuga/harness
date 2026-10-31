@@ -33,25 +33,25 @@
 				"name": "EntitySource.repository",
 				"type": "string",
 				"required": false,
-				"description": "Public GitHub repository used for commit-pinned file links; unsupported values remain plain paths. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, GitHub source links are unavailable."
+				"description": "Optional. Defaults to JavaScript undefined. GitHub links are unavailable unless both the repository address and commit validate."
 			},
 			{
 				"name": "EntitySource.commit",
 				"type": "string",
 				"required": false,
-				"description": "Full commit hash supplying the displayed files and GitHub links. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, no revision-pinned GitHub link is constructed."
+				"description": "Optional. Defaults to JavaScript undefined. GitHub links are unavailable without a valid full commit hash; no working-copy source is substituted."
 			},
 			{
 				"name": "EntitySource.entity",
 				"type": "ExplorerEntity",
 				"required": false,
-				"description": "Entity identity supplied by the host for per-file code actions. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, source-opening actions are absent."
+				"description": "Optional. Defaults to JavaScript undefined, omitting per-file code actions even when nav is supplied."
 			},
 			{
 				"name": "EntitySource.nav",
 				"type": "EntityNav",
 				"required": false,
-				"description": "Revision-scoped modal callback; an unhosted source list remains read-only. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, source-opening actions are absent."
+				"description": "Optional. Defaults to JavaScript undefined, leaving a read-only source list. With entity and nav, source actions use the supplied callback."
 			}
 		],
 		"outputs": [
@@ -61,8 +61,14 @@
 				"description": "Lists implementation and associated test files separately. Service labels omit the implied src/services/ root while file links and code actions retain complete paths. The modal reads archived committed text; unavailable revisions state gaps."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Source navigation callback error",
+				"type": "propagated",
+				"description": "An error from nav.source propagates when a code action is activated with both entity and nav supplied."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [

@@ -11,37 +11,47 @@
 		"symbols": ["apiScreenshot"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "apiScreenshot.client",
 				"type": "HarnessApiService",
-				"required": true
+				"required": true,
+				"description": "Required API client for the selected local console or hosted project. Snapshot, evidence and artifact requests retain server authorization and revision identity."
 			},
 			{
 				"name": "apiScreenshot.entityId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Required registered visual entity id whose recorded screenshot is requested."
 			},
 			{
 				"name": "apiScreenshot.options",
 				"type": "HarnessApiOptions",
-				"required": true
+				"required": true,
+				"description": "Required options object. output requires a new file path. Optional size (--size WIDTHxHEIGHT) defaults to JavaScript undefined: no CSS viewport-size filter. Width/height are 1-16384, lowercase x, no spaces/signs/leading zeros. size conflicts with viewport (--viewport id), whose omitted default is also undefined and whose existing id matching is unchanged. state/scenario default undefined (no filter), side defaults after; commit selects historical mode."
 			}
 		],
 		"outputs": [
 			{
 				"name": "apiScreenshot",
-				"type": "unknown"
+				"type": "Promise<{ path: string; entityId: string; commit: string; scenario: string; state: string; viewport: string | null; sha256: string; mediaType: string; capturedAt: string; inheritedFrom: string | null; focused: object | null; verification: object }>",
+				"description": "Saved screenshot metadata: absolute path, entityId, commit, scenario, state, original viewport id, SHA-256, media type, capture timestamp, inherited/focused provenance and honest verification status. Original image bytes are written exclusively to the new file; CSS size never resizes pixels."
 			}
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
-				"type": "thrown"
+				"name": "Invalid screenshot selection",
+				"type": "ExpectedCliError",
+				"description": "Rejects malformed/out-of-bounds --size, simultaneous --size/--viewport, missing output, invalid side, missing or ambiguous captures, missing record binding, non-image media, or an integrity mismatch. A missing exact size requires a standard committed recording with original viewport metadata."
+			},
+			{
+				"name": "Transport or file write error",
+				"type": "propagated",
+				"description": "API authorization/network/deadline errors propagate. File write errors propagate, including EEXIST so an existing output is never overwritten."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "apiScreenshot",
@@ -49,32 +59,42 @@
 					{
 						"name": "apiScreenshot.client",
 						"type": "HarnessApiService",
-						"required": true
+						"required": true,
+						"description": "Required API client for the selected local console or hosted project. Snapshot, evidence and artifact requests retain server authorization and revision identity."
 					},
 					{
 						"name": "apiScreenshot.entityId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Required registered visual entity id whose recorded screenshot is requested."
 					},
 					{
 						"name": "apiScreenshot.options",
 						"type": "HarnessApiOptions",
-						"required": true
+						"required": true,
+						"description": "Required options object. output requires a new file path. Optional size (--size WIDTHxHEIGHT) defaults to JavaScript undefined: no CSS viewport-size filter. Width/height are 1-16384, lowercase x, no spaces/signs/leading zeros. size conflicts with viewport (--viewport id), whose omitted default is also undefined and whose existing id matching is unchanged. state/scenario default undefined (no filter), side defaults after; commit selects historical mode."
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiScreenshot",
-						"type": "unknown"
+						"type": "Promise<{ path: string; entityId: string; commit: string; scenario: string; state: string; viewport: string | null; sha256: string; mediaType: string; capturedAt: string; inheritedFrom: string | null; focused: object | null; verification: object }>",
+						"description": "Saved screenshot metadata: absolute path, entityId, commit, scenario, state, original viewport id, SHA-256, media type, capture timestamp, inherited/focused provenance and honest verification status. Original image bytes are written exclusively to the new file; CSS size never resizes pixels."
 					}
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
-						"type": "thrown"
+						"name": "Invalid screenshot selection",
+						"type": "ExpectedCliError",
+						"description": "Rejects malformed/out-of-bounds --size, simultaneous --size/--viewport, missing output, invalid side, missing or ambiguous captures, missing record binding, non-image media, or an integrity mismatch. A missing exact size requires a standard committed recording with original viewport metadata."
+					},
+					{
+						"name": "Transport or file write error",
+						"type": "propagated",
+						"description": "API authorization/network/deadline errors propagate. File write errors propagate, including EEXIST so an existing output is never overwritten."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

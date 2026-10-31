@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { test } from 'vitest';
+import { test, vi } from 'vitest';
 import { expect } from './verificationExpect';
 import { apiScreenshot } from '../src/workflows/networking-security/run-api/apiScreenshot';
 import type { HarnessApiService } from '../src/services/networking-security/HarnessApiService';
@@ -31,7 +31,16 @@ function capture(usable: boolean, standing: string, media: string | null = 'medi
 }
 
 function client(captures: unknown[], served = bytes) {
-	const side = { commit: 'abc', record: { id: 'rec1', status: 'failed' }, captures };
+	const side = {
+		commit: 'abc',
+		record: { id: 'rec1', status: 'failed', source: { commit: 'abc' } },
+		detail: {
+			registry: {
+				scenarios: [{ id: 'catalog', viewports: [{ id: 'desktop', width: 1440, height: 900 }] }]
+			}
+		},
+		captures
+	};
 	const data = {
 		evidence: { after: side, before: null },
 		identity: { notesRevision: 'n', evidenceRevision: 'e' }
@@ -74,4 +83,89 @@ test('a hash mismatch still errors', async () => {
 	await expect(apiScreenshot(tampered, 'unit', { output: await output() })).rejects.toThrow(
 		'SHA-256 integrity check failed'
 	);
+});
+
+test('an exact CSS size selects recorded viewports and focused dimensions without changing bytes', async () => {
+	for (const [width, height] of [
+		[1, 1],
+		[390, 844],
+		[777, 555],
+		[1440, 900],
+		[16384, 16384]
+	]) {
+		const sized = {
+			...capture(false, 'fresh'),
+			state: 'sized',
+			focused: { loop: 'capture', status: 'passed', record: 'focused', viewport: { width, height } }
+		};
+		const options = { output: await output(), size: `${width}x${height}` };
+		const other = {
+			...capture(true, 'fresh'),
+			focused: { record: 'other', viewport: { width: 100, height: 100 } }
+		};
+		const result = await apiScreenshot(client([other, sized]), 'unit', options);
+		expect(result.state).toBe('sized');
+		expect(result.viewport).toBe('desktop');
+		expect(result.verification).toMatchObject({ usable: false, record: 'focused' });
+		expect(await readFile(options.output)).toEqual(bytes);
+	}
+	const options = { output: await output(), size: '1440x900' };
+	expect((await apiScreenshot(client([capture(true, 'fresh')]), 'unit', options)).viewport).toBe(
+		'desktop'
+	);
+});
+
+test('size selection requires both dimensions and original recorded viewport metadata', async () => {
+	const shot = capture(true, 'fresh');
+	const missingMetadata = { ...shot, focused: { loop: 'capture', record: 'focused' } };
+	const inherited = { ...shot, inheritedFrom: 'older' };
+	for (const size of ['1440x901', '1439x900', '390x844']) {
+		const options = { output: await output(), size };
+		await expect(apiScreenshot(client([shot]), 'unit', options)).rejects.toThrow(
+			'No recorded screenshot matches'
+		);
+	}
+	for (const item of [missingMetadata, inherited]) {
+		const options = { output: await output(), size: '1440x900' };
+		await expect(apiScreenshot(client([item]), 'unit', options)).rejects.toThrow(
+			'No recorded screenshot matches'
+		);
+	}
+});
+
+test('malformed sizes and viewport conflicts fail before network or file access', async () => {
+	const service = client([capture(true, 'fresh')]);
+	const snapshot = vi.spyOn(service, 'snapshot');
+	const invalid = [
+		'',
+		'390',
+		'390X844',
+		'390×844',
+		'390 x 844',
+		' 390x844',
+		'390x844\n',
+		'0x844',
+		'-1x844',
+		'390x0',
+		'390x-1',
+		'3.9x844',
+		'390x8e2',
+		'0390x844',
+		'16385x844',
+		'390x16385',
+		'99999999999999999999x844'
+	];
+	for (const size of invalid) {
+		const options = { output: await output(), size };
+		await expect(apiScreenshot(service, 'unit', options)).rejects.toThrow(
+			'--size must be WIDTHxHEIGHT in CSS pixels'
+		);
+	}
+	for (const viewport of ['desktop', 'tablet', 'mobile', '']) {
+		const options = { output: await output(), size: '390x844', viewport };
+		await expect(apiScreenshot(service, 'unit', options)).rejects.toThrow(
+			'--size and --viewport are mutually exclusive'
+		);
+	}
+	expect(snapshot).not.toHaveBeenCalled();
 });

@@ -59,6 +59,7 @@ harness api contracts get entry.program
 harness api get source page.checkout --query path=src/routes/checkout/+page.svelte
 harness api get history page.checkout --query page=1
 harness api screenshot page.checkout --viewport desktop --state loaded --output checkout.png
+harness api screenshot page.checkout --size 390x844 --state loaded --output checkout-mobile.png
 harness api agents providers
 harness api agents start --input @run.json --request-id 8775318f-d765-4e78-9d40-6cb92e1f6b11
 harness api agents events RUN_ID --after 0
@@ -103,10 +104,19 @@ contract for backend units outside that catalog. `get contracts` lists all
 registered contracts.
 
 Screenshot downloads retrieve recorded verification captures and check their
-SHA-256 before saving. `--scenario`, `--state`, `--viewport` and `--side` select
-the exact capture; the result retains its revision, timestamp and focused or
+SHA-256 before saving. `--scenario`, `--state`, `--viewport` (desktop, tablet,
+mobile or another recorded id) and `--side` select the exact capture; the result retains its revision, timestamp and focused or
 inherited provenance. Missing captures require the page's standard capture
 scenario. This command does not start a new browser capture or agent run.
+
+Use `--size WIDTHxHEIGHT` instead of `--viewport` to select an exact recorded CSS
+viewport size, for example `--size 390x844`. Both dimensions must be integers
+from 1 to 16384, separated by a lowercase `x`, without spaces, signs or leading
+zeros. The two options are mutually exclusive. Omitting both keeps the existing
+selection without a viewport filter. Size matches original viewport metadata,
+not element-clip or image dimensions; captures without original size metadata
+cannot match. Missing sizes require a committed standard scenario recording at
+those dimensions, followed by `history attach`; images are never resized.
 
 `request METHOD /api/path` and `get /api/path` cover every endpoint the server
 exposes, including future resources. Named resources are conveniences; the server

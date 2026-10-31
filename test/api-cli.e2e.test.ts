@@ -1,3 +1,4 @@
+import { assertScreenshotSizes } from './support/api-cli/assertScreenshotSizes';
 import { assertPermissionCli } from './support/api-cli/permissionScenario';
 import { expect } from './verificationExpect';
 import { test } from 'vitest';
@@ -148,6 +149,7 @@ test.each(['local', 'hosted'] as const)(
 				notesRevision: null,
 				evidenceRevision: null
 			});
+			await assertScreenshotSizes(f);
 			f.corrupt();
 			const failed = await f.cli(
 				['screenshot', 'page.example', '--output', join(f.directory, 'corrupt.png')],
