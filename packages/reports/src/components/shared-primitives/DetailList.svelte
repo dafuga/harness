@@ -28,7 +28,7 @@
 {#if rows.length === 0}
 	{#if empty}{@render empty()}{:else}
 		<hx-p
-			class="empty-detail-list {className}"
+			class="detail-list empty-detail-list {className}"
 			data-harness-component="shared-primitives-detail-list">No details to display.</hx-p
 		>
 	{/if}
