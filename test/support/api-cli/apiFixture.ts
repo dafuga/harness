@@ -39,7 +39,14 @@ function evidence() {
 			before: null,
 			after: {
 				commit,
-				record: { id: 'b'.repeat(64) },
+				record: { id: 'b'.repeat(64), source: { commit } },
+				detail: {
+					registry: {
+						scenarios: [
+							{ id: 'page-screens', viewports: [{ id: 'desktop', width: 1440, height: 900 }] }
+						]
+					}
+				},
 				captures: [
 					{
 						scenario: 'page-screens',
