@@ -3,11 +3,16 @@ import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 
 async function assertPickerReview(component: Locator, id: string, variant: string) {
 	if (id === 'desktop.component.project-switcher') {
-		if (['open', 'shared'].includes(variant))
+		if (['open', 'shared'].includes(variant)) {
 			await expect(
 				component.getByRole('listbox', { name: 'Project', exact: true }),
 				'Opening a project picker displays its choices'
 			).toBeVisible();
+			await expect(
+				component.getByRole('option', { name: 'Orders', exact: true }),
+				'An opened project list paints its available project'
+			).toBeVisible();
+		}
 		if (variant === 'empty') {
 			await expect(component.getByRole('listbox', { name: 'Project', exact: true })).toBeDisabled();
 			await expect(

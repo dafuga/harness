@@ -46,8 +46,10 @@ export async function assertPreviewMessages(content: Locator, id: string, varian
 	)
 		return;
 	await expect(content).not.toContainText(
-		/This project could not be opened|Loading projects?…|Design preview unavailable|Preview unavailable|Screenshot unavailable|not listed by the evidence|Not verified|Reading the clip…|TypeError:|ReferenceError:|Checking the GitHub connection…/
+		/This project could not be opened|Design preview unavailable|Preview unavailable|Screenshot unavailable|not listed by the evidence|Not verified|Reading the clip…|TypeError:|ReferenceError:|Checking the GitHub connection…/
 	);
+	if (!(id === 'desktop.component.project-switcher' && variant === 'busy'))
+		await expect(content).not.toContainText(/Loading projects?…/);
 	if (
 		!(moduleCard && ['missing', 'page-missing', 'layout-missing', 'image-error'].includes(variant))
 	)

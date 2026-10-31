@@ -1,5 +1,13 @@
 import { expect, type Locator } from '@playwright/test';
 
+export async function assertGameNavGlyph(game: Locator, tabs: Locator) {
+	const fallback = await tabs.locator('a').first().locator('svg path').getAttribute('d');
+	await expect(
+		game.locator('svg path'),
+		'Game Views has a distinct controller glyph'
+	).not.toHaveAttribute('d', fallback!);
+}
+
 /** The context controls form a joined group, rather than float across the header. */
 export async function assertNavContext(component: Locator, width: number) {
 	if (width <= 560) return;
