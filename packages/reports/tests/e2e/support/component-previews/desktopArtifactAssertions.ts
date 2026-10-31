@@ -37,7 +37,9 @@ export async function assertDesktopArtifactCapture(
 
 async function assertReadableResult(component: Locator, variant: string) {
 	if (['', 'text', 'recorded-open', 'json-open'].includes(variant)) {
-		await expect(component).not.toContainText('This result records no input and output.');
+		await expect(component, 'Recorded results do not claim to be empty').not.toContainText(
+			'This result records no input and output.'
+		);
 	}
 	if (['recorded-open', 'json-open'].includes(variant)) {
 		await expect(component.locator('ol li').nth(1)).toHaveText('Search for “SERVICE”');
