@@ -127,12 +127,21 @@ async function sourceLink(component: Locator) {
 		const name = anchor.querySelector('.source-name') ?? anchor;
 		const style = getComputedStyle(name);
 		const panel = anchor.closest('section')!;
-		return (
-			style.textDecorationLine.includes('underline') ||
-			style.color !== getComputedStyle(panel).color
-		);
+		const text = document.createRange();
+		text.selectNodeContents(name);
+		return {
+			visible:
+				style.textDecorationLine.includes('underline') ||
+				style.color !== getComputedStyle(panel).color,
+			room: name.getBoundingClientRect().bottom - text.getBoundingClientRect().bottom,
+			offset: parseFloat(style.textUnderlineOffset) || 0
+		};
 	});
-	expect(indicated, 'The source filename visibly indicates that it is a link').toBe(true);
+	expect(indicated.visible, 'The source filename visibly indicates that it is a link').toBe(true);
+	expect(
+		indicated.room,
+		'The underline fits inside the source filename clipping box'
+	).toBeGreaterThanOrEqual(indicated.offset + 1);
 }
 
 async function searchFocus(component: Locator) {
