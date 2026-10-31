@@ -66,7 +66,14 @@
 			{#snippet header()}<tr><th scope="col">Name</th><th scope="col">Type</th></tr>{/snippet}
 
 			{#snippet children()}
-				<tr><th scope="row">{variant === 'long' ? longName : 'active'}</th><td>boolean</td></tr>
+				<tr
+					><th scope="row"
+						>{#if variant === 'long'}<CodeLine
+								text="OrderStore.findActiveOrdersByCustomerAccountAndRevision"
+								mode="wrap"
+							/>{:else}active{/if}</th
+					><td>boolean</td></tr
+				>
 				<tr><th scope="row">attempts</th><td>number</td></tr>
 			{/snippet}
 		</DataTable>
