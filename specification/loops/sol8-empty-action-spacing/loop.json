@@ -2,7 +2,7 @@
 	"name": "sol8-empty-action-spacing",
 	"goal": "Keep the EmptyState message and action visibly separated at each viewport",
 	"createdAt": "2026-10-31T18:22:43.667Z",
-	"updatedAt": "2026-10-31T18:23:12.933Z",
+	"updatedAt": "2026-10-31T18:32:10.279Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:32:10.279Z",
+			"evidence": "Red ebaeb47d at 9bf0bf7cb4 captures the action and fails the actual message-to-action gap assertion."
 		},
 		{
 			"id": "implement",
