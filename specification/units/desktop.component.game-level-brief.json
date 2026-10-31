@@ -59,13 +59,13 @@
 				"name": "GameLevelBrief.provider",
 				"type": "ProviderId",
 				"required": false,
-				"description": "Selected provider, bound to the planner."
+				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. No fallback provider is selected."
 			},
 			{
 				"name": "GameLevelBrief.model",
 				"type": "string",
 				"required": false,
-				"description": "Exact advertised model identifier, bound to the planner."
+				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. No fallback model is selected."
 			},
 			{
 				"name": "GameLevelBrief.status",
@@ -112,7 +112,14 @@
 				"description": "Collect the level description, dimension and selected local model."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback error",
+				"type": "propagated",
+				"description": "Errors from revise, reshape, generate or go propagate during their corresponding edit or action; the component does not catch them."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

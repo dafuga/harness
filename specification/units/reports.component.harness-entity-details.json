@@ -51,13 +51,13 @@
 				"name": "EntityDetails.tab",
 				"type": "ExplorerTab",
 				"required": false,
-				"description": "Optional selected tab. Exactly source shows source; measurements shows measured detail; missing or any other tab uses the summary."
+				"description": "Optional; defaults to JavaScript undefined and shows the contract/measurement summary. source selects source files; measurements selects measured detail."
 			},
 			{
 				"name": "EntityDetails.repository",
 				"type": "string",
 				"required": false,
-				"description": "Canonical GitHub repository address for source navigation."
+				"description": "Optional; defaults to JavaScript undefined. Source files then remain plain paths without GitHub links."
 			},
 			{
 				"name": "EntityDetails.commit",
@@ -69,17 +69,24 @@
 				"name": "EntityDetails.nav",
 				"type": "EntityNav",
 				"required": false,
-				"description": "Optional entity navigation context for contract links at the selected branch and revision."
+				"description": "Optional; defaults to JavaScript undefined. Without revision-scoped navigation, the Source tab omits code-opening actions."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityDetails",
 				"type": "markup",
-				"description": "Named tabpanel containing the selected child view. The default shows contract/measurement summary without source; data fetching and child errors are outside this component."
+				"description": "Named tabpanel containing source files, measurements or the default contract/measurement summary. It performs no data fetching and propagates errors from rendered children."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Source navigation callback error",
+				"type": "propagated",
+				"description": "On the Source tab, an error from nav.source propagates when a file code action is activated; other tabs do not invoke it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

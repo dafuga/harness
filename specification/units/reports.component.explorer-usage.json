@@ -51,7 +51,7 @@
 				"name": "ExplorerUsage.layout",
 				"type": "'grouped' | 'flat'",
 				"required": false,
-				"description": "Compatibility input; every module-card footer is now flat, without consumer category labels."
+				"description": "Optional compatibility input; defaults to JavaScript undefined. Its value is ignored: every footer remains a flat list."
 			},
 			{
 				"name": "ExplorerUsage.limit",
@@ -90,6 +90,7 @@
 				"description": "An error from the evidence callback propagates when a visual consumer preview opens."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

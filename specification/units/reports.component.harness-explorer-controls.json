@@ -32,7 +32,7 @@
 				"name": "ExplorerControls.filter",
 				"type": "CatalogFilter",
 				"required": false,
-				"description": "Bindable catalog state; this component edits only its search query."
+				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. No fallback object is created; the search control reads and edits filter.search."
 			}
 		],
 		"outputs": [
@@ -43,6 +43,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},

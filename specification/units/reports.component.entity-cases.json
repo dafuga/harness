@@ -38,19 +38,19 @@
 				"name": "EntityCases.document",
 				"type": "unknown",
 				"required": false,
-				"description": "Optional parsed test result. Used when no documented examples are supplied."
+				"description": "Optional; defaults to JavaScript undefined, producing an explicit missing-result message when examples are also omitted."
 			},
 			{
 				"name": "EntityCases.examples",
 				"type": "UsageExample[]",
 				"required": false,
-				"description": "Documented uses with input and one expected output or error. These are never recorded test results."
+				"description": "Optional; defaults to JavaScript undefined and reads document instead. An explicit empty array shows the no-documented-examples message."
 			},
 			{
 				"name": "EntityCases.unit",
 				"type": "string",
 				"required": false,
-				"description": "Optional unit identifier limiting direct invocation rows to that function."
+				"description": "Optional; defaults to JavaScript undefined, leaving recorded invocation rows unrestricted by unit identifier."
 			},
 			{
 				"name": "EntityCases.callable",
@@ -84,6 +84,7 @@
 				"description": "A supplied getter, proxy or toJSON method can throw while a document or example value is read or serialized."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

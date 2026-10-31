@@ -53,7 +53,7 @@
 				"name": "GameViewFields.section",
 				"type": "GameSection",
 				"required": false,
-				"description": "Bindable current game section; planned levels gate preview and checkpoints until built."
+				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. New level selects Level."
 			},
 			{
 				"name": "GameViewFields.select",
@@ -81,7 +81,14 @@
 				"description": "Select game views in a compact toolbar and progressively disclose view title, dimension and art direction."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback error",
+				"type": "propagated",
+				"description": "Errors from select, create or change propagate during selection, level creation or edits; later steps in the same action do not run."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

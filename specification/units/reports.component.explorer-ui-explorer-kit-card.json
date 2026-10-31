@@ -38,7 +38,7 @@
 				"name": "Card.labelledby",
 				"type": "string",
 				"required": false,
-				"description": "Id of the heading that names the card."
+				"description": "Optional; defaults to JavaScript undefined, omitting aria-labelledby. Supply the heading id when the card should be named."
 			},
 			{
 				"name": "Card.children",
@@ -54,7 +54,13 @@
 				"description": "An article or section with the shared ex-card style."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Child snippet error",
+				"type": "propagated",
+				"description": "Errors thrown while rendering the required children snippet propagate to the caller."
+			}
+		],
 		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []

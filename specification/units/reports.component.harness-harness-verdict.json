@@ -32,7 +32,7 @@
 				"name": "HarnessVerdict.label",
 				"type": "string",
 				"required": false,
-				"description": "Optional displayed verdict text. When omitted or null, uses Full coverage passed or Verification failed according to passed; an empty string is retained."
+				"description": "Optional; defaults to JavaScript undefined. Omitted or null labels display Full coverage passed for passed === true, otherwise Verification failed; empty text is retained."
 			},
 			{
 				"name": "HarnessVerdict.reasons",
@@ -52,7 +52,7 @@
 				"name": "HarnessVerdict.bare",
 				"type": "boolean",
 				"required": false,
-				"description": "Accepted compatibility prop that is not read and has no effect."
+				"description": "Optional compatibility input; defaults to JavaScript undefined. It is ignored and does not change the icon-only presentation."
 			}
 		],
 		"outputs": [
@@ -63,6 +63,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
