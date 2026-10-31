@@ -8,7 +8,9 @@ export async function assertDesktopArtifactCapture(
 	id: string,
 	variant: string
 ) {
-	if (id !== 'desktop.component.runtime-artifact' || variant !== 'json-open') return;
+	if (id !== 'desktop.component.runtime-artifact') return;
+	await assertReadableResult(component, variant);
+	if (variant !== 'json-open') return;
 	const directory = process.env.HARNESS_EVIDENCE_DIR;
 	if (!directory || process.env.TAKE_SCREENSHOT !== '1') return;
 	const raw = component.getByText('Recorded JSON', { exact: true }).locator('..').locator('pre');
@@ -31,4 +33,28 @@ export async function assertDesktopArtifactCapture(
 		bounds.bottom,
 		'Opened recorded JSON is completely inside the captured image'
 	).toBeLessThanOrEqual(capture.clip.y + capture.clip.height + 1);
+}
+
+async function assertReadableResult(component: Locator, variant: string) {
+	if (['', 'text', 'recorded-open', 'json-open'].includes(variant)) {
+		await expect(component).not.toContainText('This result records no input and output.');
+	}
+	if (['recorded-open', 'json-open'].includes(variant)) {
+		await expect(component.locator('ol li').nth(1)).toHaveText('Search for “SERVICE”');
+		expect(
+			await component.innerText(),
+			'Recorded results use meaningful workload descriptions'
+		).not.toMatch(/synthetic orders|taken for [a-f\d]{7}/i);
+	}
+	if (['unreadable', 'unstored'].includes(variant)) {
+		const separation = await component.locator('.runtime-gap').evaluate((node) => {
+			const icon = node.querySelector('button')!.getBoundingClientRect();
+			const message = node.lastElementChild!.getBoundingClientRect();
+			return { actual: message.left - icon.right, gap: parseFloat(getComputedStyle(node).gap) };
+		});
+		expect(
+			separation.actual,
+			'Artifact gap message stays beside its status icon'
+		).toBeLessThanOrEqual(separation.gap + 1);
+	}
 }
