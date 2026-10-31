@@ -1,7 +1,10 @@
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
 import { assertRecordedReportPreviewState } from './reportPreviewAssertions';
 import { assertChatPreviewState } from './chatPreviewAssertions';
-import { assertExplorerTableActions } from './explorerTableActionAssertions';
+import {
+	assertExplorerTableActions,
+	assertExplorerTablePresentation
+} from './explorerTableActionAssertions';
 import { assertProductArtwork } from './moduleCardPreviewAssertions';
 
 /** Layout previews show both their child slot and the catalog's own layout screenshot. */
@@ -39,8 +42,10 @@ export async function assertCatalogDetails(component: Locator, id: string, varia
 	await assertProductArtwork(component, id, variant);
 	await assertRecordedReportPreviewState(component, id, variant);
 	await assertChatPreviewState(component, id, variant);
-	if (id === 'reports.component.harness-explorer-table')
+	if (id === 'reports.component.harness-explorer-table') {
 		await assertExplorerTableActions(component);
+		await assertExplorerTablePresentation(component, variant);
+	}
 	if (id === 'reports.component.harness-explorer-index') {
 		await expect(
 			component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
