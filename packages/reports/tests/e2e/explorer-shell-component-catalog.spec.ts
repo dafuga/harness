@@ -136,6 +136,10 @@ for (const viewport of catalogViewports) {
 				await preview.capturePreview(page, home, unit.id, target);
 			}
 			await test.step('Prepare state', () => prepareCatalogState(component, unit.id, variant));
+			if (unit.id === 'reports.component.harness-harness-action' && variant === 'long')
+				await expect(component.getByRole('link')).toHaveText(
+					'Review every recorded result for this selected revision'
+				);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
 			await assertPluginKitPreview(component, unit.id, variant);
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
