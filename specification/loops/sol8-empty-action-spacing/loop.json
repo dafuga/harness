@@ -2,7 +2,7 @@
 	"name": "sol8-empty-action-spacing",
 	"goal": "Keep the EmptyState message and action visibly separated at each viewport",
 	"createdAt": "2026-10-31T18:22:43.667Z",
-	"updatedAt": "2026-10-31T18:32:10.279Z",
+	"updatedAt": "2026-10-31T18:34:37.182Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:34:35.716Z",
+			"evidence": "8cf908c993 adds the shared eight-pixel spacing token before inline actions and keeps each action label together."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:34:37.182Z",
+			"evidence": "Green 9b8a903e passes the unchanged spacing and viewport assertion at committed 8cf908c993."
 		},
 		{
 			"id": "verify",
