@@ -2,6 +2,7 @@ import type { Locator, Page } from '@playwright/test';
 
 const tooltipUnits = new Set([
 	'reports.component.harness-harness-verdict',
+	'desktop.component.status-icon',
 	'reports.component.explorer-usage-link',
 	'reports.component.explorer-usage',
 	'reports.component.explorer-function-card',
@@ -101,7 +102,8 @@ async function measuredBounds(
 			}
 			if (captureElement) collect(node);
 			else for (const child of node.children) collect(child);
-			const tooltip = includeUsageTooltip && node.querySelector('[role="tooltip"]');
+			const tooltip =
+				includeUsageTooltip && node.querySelector('[role="tooltip"], .reason[role="status"]');
 			if (tooltip) collect(tooltip);
 			const picker = chatPicker && node.querySelector('dialog[open], [role="dialog"]');
 			if (picker) collect(picker);

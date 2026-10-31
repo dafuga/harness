@@ -1,4 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { desktopCatalogVariants } from './desktopCatalogVariants';
+import { desktopGameCatalogVariants } from './desktopGameVariants';
 
 /** Reach stateful Desktop presentations through their normal controls before capture. */
 export async function prepareDesktopState(component: Locator, id: string, variant: string) {
@@ -10,6 +12,27 @@ export function desktopCaptureEvidence(id: string, variant: string) {
 	return id === 'desktop.component.project-agent' && variant
 		? `project-agent-${variant}`
 		: 'screens';
+}
+
+export function desktopCaptureDirectory(id: string) {
+	return (
+		process.env.COMPONENT_PREVIEW_SHOTS ??
+		(id === 'desktop.component.status-icon' ? process.env.HARNESS_EVIDENCE_DIR : undefined)
+	);
+}
+
+/** Keep fixture-only heading pixels out without moving the rendered component. */
+export async function frameDesktopCapture(page: Page, id: string) {
+	const owned =
+		Object.hasOwn(desktopCatalogVariants, id) ||
+		Object.hasOwn(desktopGameCatalogVariants, id) ||
+		id === 'desktop.component.project-agent';
+	if (owned) {
+		await page.locator('#preview-title').evaluate((node: HTMLElement) => {
+			node.style.visibility = 'hidden';
+		});
+		await expect(page.locator('#preview-title')).toBeHidden();
+	}
 }
 
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {

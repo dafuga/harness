@@ -13,6 +13,7 @@ import { assertContractExampleState } from './contractExamplePreviewAssertions';
 import { assertContractTableState } from './contractTablePreviewAssertions';
 import { assertActivityCountFits } from './projectActivityAssertions';
 import { assertDesktopState } from './desktopStateAssertions';
+import { desktopCaptureDirectory } from './desktopStateActions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(
@@ -26,9 +27,10 @@ export async function assertComponentCapture(
 	await assertDefaultAgents(page, id, variant);
 	if (id === 'reports.component.project-activity' && variant === 'stale')
 		await assertActivityCountFits(page);
-	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
+	const directory = desktopCaptureDirectory(id);
 	if (!directory) return;
 	const selectors: Record<string, string> = {
+		'desktop.component.status-icon': '.verification-wrap, .reason',
 		'desktop.component.environment-picker': '.environment-choice',
 		'desktop.component.deployment-route': '.deployment-route',
 		'reports.component.harness-harness-icon': 'svg',
