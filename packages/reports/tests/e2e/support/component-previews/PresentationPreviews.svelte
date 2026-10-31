@@ -34,7 +34,13 @@
 			{ key: 'attempts', label: 'Attempts', value: 0 },
 			{ key: 'blank', label: 'Blank', value: '' }
 		],
-		long: [{ key: 'long', label: longName, value: longName }],
+		long: [
+			{
+				key: 'long',
+				label: 'Customer account revision used for subscription renewal notifications',
+				value: 'src/services/customer-accounts/SubscriptionRenewalNotificationService.ts:128'
+			}
+		],
 		'duplicate-labels': [
 			{ key: 'first', label: 'Source', value: 'Checkout capture' },
 			{ key: 'second', label: 'Source', value: 'Release review' }

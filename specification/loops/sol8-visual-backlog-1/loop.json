@@ -2,11 +2,9 @@
 	"name": "sol8-visual-backlog-1",
 	"goal": "Make agent controls, remote approval, explorer tables and presentation primitives readable, complete and visibly empty at every required viewport",
 	"createdAt": "2026-10-31T17:27:20.711Z",
-	"updatedAt": "2026-10-31T17:40:10.325Z",
+	"updatedAt": "2026-10-31T18:24:00.524Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:22:44.095Z",
+			"evidence": "Red c8b3f982 at a1c5c467c9 retains readable-label, empty-state and overflow-hint failures in the corrected 102-case catalog."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:23:57.726Z",
+			"evidence": "f04b1caba1 and d7ae3e97e8 restore label room, explicit empty messages, scroll hints and the existing capture class."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:24:00.524Z",
+			"evidence": "Green aab1839a passes the unchanged 102-case catalog at committed d7ae3e97e8 with 68 timing and memory observations."
 		},
 		{
 			"id": "verify",

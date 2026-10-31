@@ -81,6 +81,12 @@ async function details(component: Locator, variant: string) {
 	if (variant === 'values')
 		await expect(values).toHaveText(['Not recorded', 'false', '0', 'Empty string']);
 	if (variant === 'duplicate-labels') await expect(terms).toHaveText(['Source', 'Source']);
+	if (variant === 'long') {
+		await expect(terms).toContainText(
+			'Customer account revision used for subscription renewal notifications'
+		);
+		await expect(values).toContainText('SubscriptionRenewalNotificationService.ts:128');
+	}
 }
 
 async function contract(component: Locator, variant: string) {
@@ -90,6 +96,13 @@ async function contract(component: Locator, variant: string) {
 		await expect(component.getByText('No description recorded.').first()).toBeVisible();
 	if (variant === 'technical-open')
 		await expect(component.locator('details')).toHaveAttribute('open', '');
+	if (variant === 'long') {
+		const labels = component.locator('dt');
+		for (const label of await labels.all()) {
+			await expect(label).toContainText(/for customer account revision history/i);
+			expect((await label.innerText()).length).toBeLessThan(100);
+		}
+	}
 }
 
 async function explorer(component: Locator, variant: string) {

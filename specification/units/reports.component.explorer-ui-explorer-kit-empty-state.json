@@ -28,10 +28,16 @@
 			{
 				"name": "EmptyState",
 				"type": "markup",
-				"description": "A paragraph with the shared ex-empty style."
+				"description": "An empty-state paragraph containing the caller message. Inline links stay together and have visible space before the action."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Child snippet error",
+				"type": "propagated",
+				"description": "Errors thrown while rendering the required children snippet propagate to the caller."
+			}
+		],
 		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
