@@ -2,7 +2,7 @@
 	"name": "sol6-native-list-markers",
 	"goal": "Native list catalog states show markers and sibling items at every viewport.",
 	"createdAt": "2026-10-31T19:55:47.607Z",
-	"updatedAt": "2026-10-31T20:34:14.621Z",
+	"updatedAt": "2026-10-31T21:17:22.872Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T21:17:22.872Z",
+			"evidence": "Native list markers and table context are implemented. All321 atom cases, typechecks and127 focused guards pass; root retains only2 known failures."
 		},
 		{
 			"id": "green",

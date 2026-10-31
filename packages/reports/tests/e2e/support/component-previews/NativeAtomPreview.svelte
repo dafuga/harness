@@ -42,18 +42,33 @@
 	});
 </script>
 
+{#snippet tableHeading()}
+	<tr><th scope="col">{tag === 'thead' ? label : 'Check'}</th><th scope="col">Status</th></tr>
+{/snippet}
+{#snippet tableReference()}
+	<tr><td>Unit tests</td><td>Queued</td></tr>
+{/snippet}
+{#snippet tableRows()}
+	<tr><td>{tag === 'table' || tag === 'tbody' ? label : 'Typecheck'}</td><td>Passed</td></tr>
+	{@render tableReference()}
+{/snippet}
+
 {#snippet content()}
 	{#if ['input', 'img', 'hr', 'video', 'audio', 'iframe', 'canvas', 'embed', 'object', 'textarea'].includes(tag)}{:else if tag === 'select' || tag === 'optgroup'}<option
 			value="example">Example choice</option
 		>
-	{:else if tag === 'table'}<tbody
-			><tr><td>{variant === 'long' ? label : (example ?? 'Example cell')}</td></tr></tbody
+	{:else if tag === 'table'}<thead>{@render tableHeading()}</thead><tbody
+			>{@render tableRows()}</tbody
 		>
-	{:else if ['thead', 'tbody', 'tfoot'].includes(tag)}<tr
+	{:else if tag === 'thead'}{@render tableHeading()}
+	{:else if tag === 'tbody'}{@render tableRows()}
+	{:else if tag === 'tfoot'}<tr
 			><td>{variant === 'long' ? label : (example ?? 'Example cell')}</td></tr
 		>
-	{:else if tag === 'tr'}<td>{variant === 'long' ? label : (example ?? 'Example cell')}</td>
-	{:else if tag === 'ul' || tag === 'ol'}<li style="list-style:inherit">{label}</li>
+	{:else if tag === 'tr'}<td>{label}</td><td>Passed</td>
+	{:else if tag === 'ul' || tag === 'ol'}<li style="list-style:inherit">
+			{label}
+		</li>
 		<li style="list-style:inherit">Check the catalog previews</li>
 		<li style="list-style:inherit">Publish the release notes</li>
 	{:else if tag === 'menu'}<li>
@@ -106,19 +121,36 @@
 				>
 			{:else}<Component {...attributes} children={content} />{/if}
 		</svg>
-	{:else if ['caption', 'thead', 'tbody', 'tfoot'].includes(tag)}
-		<table><Component {...attributes} children={content} /></table>
-	{:else if tag === 'tr'}<table>
-			<tbody><Component {...attributes} children={content} /></tbody>
+	{:else if ['thead', 'tbody', 'tr', 'td', 'th'].includes(tag)}<table class="native-atom-table">
+			{#if tag === 'thead'}<Component {...attributes} children={content} />
+			{:else}<thead>
+					{#if tag === 'th'}<tr
+							><Component {...attributes} children={content} /><th scope="col">Status</th></tr
+						>
+					{:else}{@render tableHeading()}{/if}
+				</thead>{/if}
+			{#if tag === 'tbody'}<Component {...attributes} children={content} />
+			{:else}<tbody>
+					{#if tag === 'tr'}<Component
+							{...attributes}
+							children={content}
+						/>{@render tableReference()}
+					{:else if tag === 'td'}<tr
+							><Component {...attributes} children={content} /><td>Passed</td></tr
+						>{@render tableReference()}
+					{:else}{@render tableRows()}{/if}
+				</tbody>{/if}
 		</table>
-	{:else if tag === 'td' || tag === 'th'}<table>
-			<tbody><tr><Component {...attributes} children={content} /></tr></tbody>
+	{:else if tag === 'caption' || tag === 'tfoot'}<table>
+			<Component {...attributes} children={content} />
 		</table>
 	{:else if tag === 'li'}<ul style="list-style:disc inside">
 			<Component {...attributes} children={content} />
 			<li style="list-style:inherit">Check the catalog previews</li>
 		</ul>
-	{:else if tag === 'dt' || tag === 'dd'}<dl><Component {...attributes} children={content} /></dl>
+	{:else if tag === 'dt' || tag === 'dd'}<dl>
+			<Component {...attributes} children={content} />
+		</dl>
 	{:else if tag === 'option'}<label for="native-option-context">Option choices</label>
 		<select id="native-option-context" aria-label="Native option context" size="3">
 			<option value="selected" selected>Selected choice</option>
@@ -128,7 +160,9 @@
 	{:else if tag === 'optgroup'}<select aria-label="Native option context"
 			><Component {...attributes} children={content} /></select
 		>
-	{:else if tag === 'legend'}<fieldset><Component {...attributes} children={content} /></fieldset>
+	{:else if tag === 'legend'}<fieldset>
+			<Component {...attributes} children={content} />
+		</fieldset>
 	{:else if tag === 'summary'}<details open={variant !== 'closed'}>
 			<Component {...attributes} children={content} />
 			<p>Expanded summary content</p>
@@ -150,5 +184,17 @@
 	details {
 		width: max-content;
 		max-width: 100%;
+	}
+	:global(table.native-atom-table) {
+		width: 100%;
+		table-layout: fixed;
+		border-collapse: collapse;
+	}
+	:global(.native-atom-table th),
+	:global(.native-atom-table td) {
+		border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+		padding: var(--hx-space-8);
+		text-align: left;
+		overflow-wrap: anywhere;
 	}
 </style>
