@@ -7,7 +7,7 @@ import type { EntityDetail } from '../../../../../desktop/src/models/Desktop.typ
 import { ids } from './explorerData';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 import { stamp } from './shared';
-import { desktopData } from './desktopFixtureData';
+import { desktopData, desktopProject as project } from './desktopFixtureData';
 import { deploymentBridge } from './deployments';
 export const providers = [
 	{
@@ -105,9 +105,7 @@ function desktopBridge(entity: EntityDetail): DesktopBridge {
 		providers: async () => providers,
 		onRunEvent: () => () => {},
 		onCacheStatus: () => () => {},
-		projects: async () => [
-			{ id: desktopData.project.id, name: 'Preview project', source: 'local' }
-		],
+		projects: async () => [{ id: project.id, name: project.name, source: 'local' }],
 		image: async () => new Uint8Array(desktopData.design),
 		entity: async () => entity,
 		messages: async () => [message],
@@ -139,16 +137,14 @@ function configureWorkspace(
 ) {
 	workspace.bridge = bridge;
 	workspace.snapshot = {
-		project: { ...desktopData.project, root: '/preview' },
+		project: { ...project },
 		revision: { branch: desktopData.branch, commit: commits.tip, tip: commits.tip, atTip: true },
 		branches: [{ name: desktopData.branch, tip: commits.tip, current: true }],
 		commits: desktopData.commits,
 		entities: previewEntities(id),
 		writable: true
 	};
-	workspace.projects = [
-		{ id: desktopData.project.id, name: 'Preview project', kind: 'local', root: '/preview' }
-	];
+	workspace.projects = [{ ...project, kind: 'local' }];
 	workspace.capabilities = {
 		agents: true,
 		comments: true,

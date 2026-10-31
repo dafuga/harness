@@ -41,3 +41,5 @@ desktopData.commits = [
 ];
 
 export const desktopArtifactText = desktopArtifacts.text;
+
+export const desktopProject = { ...desktopData.project, root: '/Users/ada/projects/orders' };
