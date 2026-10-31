@@ -20,3 +20,11 @@ assertion required zero body rows, so it must now require the spanning empty cel
 before current-code refetching. This is an assertion correction for item 40's
 existing repair, not a new product change. Current captures will establish whether
 the local SearchBox artwork and View More hover still need correction.
+
+Current-code item 42 preflight `6069804c9f77` retains twelve API images. Inspection
+confirms the hovered pagination background differs from the transparent default,
+and empty-configs already shows its aligned message. Only the local SearchBox SVG
+still paints a fixture label. The standard artwork guard now covers every catalog
+variant, and pagination assertions retain the visible background distinction.
+The guard must reject the old multiple-card images before the fixture label changes.
+That fixture qualification is separate from the matched product loops.
