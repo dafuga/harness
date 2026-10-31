@@ -2,7 +2,7 @@
 	"name": "desktop-empty-project-notice",
 	"goal": "Show the empty project explanation as readable normal text instead of a disabled empty field",
 	"createdAt": "2026-10-31T23:21:05.471Z",
-	"updatedAt": "2026-10-31T23:21:07.325Z",
+	"updatedAt": "2026-10-31T23:23:22.334Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T23:23:22.334Z",
+			"evidence": "Checkpointcf2b5b4965 fails all3 existing empty viewport cases. Record64b156d1570564f65ff0ba513f48b4d18646d03fbae4e39afaf51eeafb8c53d5 retains the faint disabled-field before images."
 		},
 		{
 			"id": "implement",
