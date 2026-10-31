@@ -1,5 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
-import { commits } from '../../../../test/entityUnits';
+import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 
 /** Check the actual state branches, so a successful screenshot cannot silently show the default. */
 export async function assertDesktopState(component: Locator, id: string, variant: string) {
@@ -13,14 +13,13 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'design-panel:error': 'Synthetic image read refused.',
 		'history-panel:empty': 'No history recorded for this entity.',
 		'history-panel:incomplete': 'Earlier history is not loaded here.',
-		'history-panel:long': 'A detailed history event.',
 		'runtime-artifact:missing': 'Not recorded',
 		'runtime-artifact:unstored': 'The original bytes were not retained.',
 		'runtime-artifact:loading': 'Reading what it holds…',
-		'runtime-artifact:unreadable': 'Synthetic artifact hash mismatch.',
+		'runtime-artifact:unreadable': 'The artifact bytes do not match the recorded hash.',
 		'runtime-artifact:text': 'Recorded plain text output.',
 		'runtime-screens:incomparable': 'different runtime profiles',
-		'runtime-evidence:error': 'Synthetic evidence read refused.',
+		'runtime-evidence:error': "Couldn't load recorded evidence. Try again.",
 		'runtime-evidence:offline': 'Saved'
 	};
 	if (messages[key]) await expect(component).toContainText(messages[key], { ignoreCase: true });
@@ -69,6 +68,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertLoadedHistory(component, id, variant);
 	await assertLongCatalogContent(component, id, variant);
 	await assertArtDirectionFits(component, id, variant);
+	await assertHistoryFixtureContent(component, id, variant);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
@@ -93,6 +93,18 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 			});
 		expect(visible, 'Expanded checkpoint rules are fully visible above the footer').toBe(true);
 	}
+}
+
+async function assertHistoryFixtureContent(component: Locator, id: string, variant: string) {
+	if (id !== 'desktop.component.history-panel') return;
+	expect(
+		await component.innerText(),
+		'History uses realistic commit ids and event details'
+	).not.toMatch(/\b([a-f\d])\1{6,}\b|Detail of |Synthetic|A detailed history event\./i);
+	if (variant === 'error')
+		await expect(component.getByRole('alert')).toContainText(
+			"Couldn't load earlier history. Try again."
+		);
 }
 
 async function assertArtDirectionFits(component: Locator, id: string, variant: string) {

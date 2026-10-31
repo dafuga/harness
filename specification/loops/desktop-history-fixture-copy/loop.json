@@ -1,0 +1,54 @@
+{
+	"name": "desktop-history-fixture-copy",
+	"goal": "Render realistic Desktop history identities, useful event details and plausible failure messages",
+	"createdAt": "2026-10-31T20:26:16.817Z",
+	"updatedAt": "2026-10-31T20:26:18.447Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T20:26:17.768Z",
+			"evidence": "Visual review 3 rejects every HistoryPanel image for repeated placeholder hashes, title-echo event details and synthetic error text. The private Desktop dataset carries these placeholders into pending widgets too."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T20:26:18.447Z",
+			"evidence": "The standard catalog cases checked text presence and layout, and review accepted fixture boilerplate. Extend the same post-capture guard to reject repeated-hex ids, title-echo details and synthetic failure wording; preserve all case identities."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
