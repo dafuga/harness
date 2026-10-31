@@ -26,12 +26,12 @@ export const nativeAtomContent: Record<string, string> = {
 	HtmlSmall: 'Optional release notes',
 	HtmlSpan: 'Ready for review',
 	HtmlStrong: 'Save changes before leaving.',
-	HtmlTable: 'Release ready',
-	HtmlTbody: 'Release ready',
-	HtmlTd: 'Release ready',
-	HtmlTh: 'Status',
-	HtmlThead: 'Release status',
+	HtmlTable: 'Typecheck',
+	HtmlTbody: 'Typecheck',
+	HtmlTd: 'Typecheck',
+	HtmlTh: 'Check',
+	HtmlThead: 'Check',
 	HtmlTime: '2026-10-20',
-	HtmlTr: 'Release ready',
+	HtmlTr: 'Typecheck',
 	HtmlUl: 'Review the release notes'
 };
