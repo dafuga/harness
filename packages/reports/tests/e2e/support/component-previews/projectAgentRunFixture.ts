@@ -1,11 +1,12 @@
 import type { DesktopData } from './desktopData.svelte';
 import type { RunEvent } from '../../../../../desktop/src/models/DesktopBridge.types';
 import type { ProjectAgentState } from './projectAgentStateFixtures.types';
+import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 
 export const projectConversation =
-	'Please review [[unit:app.page.orders]] and [[unit:missing.preview-unit]]. Plain reference: preview-function-name.';
+	'Please review [[unit:app.page.orders]] and the earlier [[unit:app.function.archive-orders]] proposal. Confirm filterOrders preserves the order of matches.';
 export const projectReply =
-	'A deterministic assistant response wraps across the available component width. '.repeat(12);
+	'The search matches order names without regard to letter case and preserves their order. An empty query returns every order. Add checks for mixed-case names and no matches before approving the change.';
 
 /** Synthetic request, event and comment ports stop every operation before a provider or host. */
 export function projectAgentRunFixture(data: DesktopData, state: ProjectAgentState): void {
@@ -20,7 +21,7 @@ export function projectAgentRunFixture(data: DesktopData, state: ProjectAgentSta
 	data.workspace.refresh = async () => {};
 	data.workspace.deployments.load = async () => {};
 	data.bridge.startRun = async (request) => {
-		const runId = 'synthetic-project-run-' + ++sequence;
+		const runId = 'order-review-run-' + ++sequence;
 		sessionStorage.setItem('harness.preview.request', JSON.stringify(request));
 		setTimeout(() => respond(data, state, runId, (event) => listener?.(event)), 20);
 		return { runId };
@@ -43,14 +44,14 @@ export function projectAgentRunFixture(data: DesktopData, state: ProjectAgentSta
 function comments(data: DesktopData, state: ProjectAgentState) {
 	data.bridge.addComment = async (input) => {
 		sessionStorage.setItem('harness.preview.comment', JSON.stringify(input));
-		if (state === 'comment-retry') throw new Error('Synthetic comment save refused.');
+		if (state === 'comment-retry') throw new Error("Couldn't save the comment. Try again.");
 		const projectId = data.workspace.projectId!;
 		if (state === 'hosted-comment')
 			return {
 				kind: 'shared',
 				projectId,
 				thread: {
-					id: 'synthetic-thread',
+					id: 'order-search-review',
 					projectId,
 					anchor: input.anchor,
 					comments: [],
@@ -60,10 +61,10 @@ function comments(data: DesktopData, state: ProjectAgentState) {
 		return {
 			kind: 'pending',
 			projectId,
-			draftId: 'synthetic-draft',
+			draftId: 'order-search-review-comment',
 			savedAt: '2026-10-20T10:00:05Z',
 			input,
-			reason: 'Synthetic local comment fixture.'
+			reason: 'Saved on this device; share the comment when the connection is available.'
 		};
 	};
 }
@@ -79,12 +80,16 @@ function respond(
 			runId,
 			kind: 'status',
 			phase: 'prompting',
-			detail: 'Reviewing the synthetic project request…'
+			detail: 'Reviewing order search behavior…'
 		});
 		return;
 	}
 	if (state === 'failure') {
-		emit({ runId, kind: 'failed', message: 'Synthetic agent request failed.' });
+		emit({
+			runId,
+			kind: 'failed',
+			message: 'The agent connection closed before the review finished. Try again.'
+		});
 		return;
 	}
 	emit({ runId, kind: 'text', text: projectReply });
@@ -100,7 +105,7 @@ function respond(
 	emit({
 		runId,
 		kind: 'finished',
-		summary: 'Synthetic request completed.',
+		summary: 'Review completed. The proposed checks are ready.',
 		verified: false,
 		...(created ? { created } : {})
 	});
@@ -115,5 +120,6 @@ function respond(
 	if (state === 'historical') {
 		data.workspace.pinned = true;
 		data.workspace.snapshot!.revision.atTip = false;
+		data.workspace.snapshot!.revision.commit = commits.middle;
 	}
 }
