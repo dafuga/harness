@@ -4,7 +4,8 @@ import { execFile } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { captureIndex, type CaptureLine } from '../src/core/verifyTypes';
+import type { CaptureLine } from '../src/core/verifyTypes';
+import { captureLines } from './utils/verification-observations/captureLines';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
 const root = resolve(import.meta.dirname, '..');
 const directories: string[] = [];
@@ -47,12 +48,6 @@ async function run(scenario: string, cwd: string, targets: string[]) {
 		)
 	);
 	return { directory, result };
-}
-function captures(directory: string): CaptureLine[] {
-	return readFileSync(join(directory, captureIndex), 'utf8')
-		.trim()
-		.split('\n')
-		.map((line) => JSON.parse(line));
 }
 test.each([
 	[
@@ -171,7 +166,7 @@ test.each([
 		const { directory, result } = await run(scenario, join(root, 'packages', workspace), [file]);
 		expect(result.error).toBeUndefined();
 		expect(result.status, result.stdout + result.stderr).toBe(0);
-		const lines = captures(directory).filter((line) => line.state === state);
+		const lines = captureLines(directory).filter((line) => line.state === state);
 		expect(lines.some((line) => line.kind === 'output')).toBe(true);
 		const assertion = lines.find((line) => line.kind === 'assertions')!;
 		const recorded = JSON.parse(readFileSync(join(directory, assertion.file), 'utf8'));
@@ -183,28 +178,32 @@ test.each([
 	},
 	60000
 );
-test('the Git evidence scenario executes metadata and binary test files and records every required state', async () => {
-	const scenario = scenarioManifestSchema.parse(
-		JSON.parse(readFileSync(join(root, 'specification/scenarios/git-evidence-read.json'), 'utf8'))
-	);
-	const all: CaptureLine[] = [];
-	for (const check of scenario.tests) {
-		const command = check.target.split(/\s+/);
-		expect(command.slice(0, 3)).toEqual(['bun', 'test/verification-output.ts', 'vitest']);
-		const { directory, result } = await run(scenario.id, root, command.slice(3));
-		expect(result.error).toBeUndefined();
-		expect(result.status, result.stdout + result.stderr).toBe(0);
-		all.push(...captures(directory));
+test('headless scenario commands record every actual test and required evidence state', async () => {
+	for (const id of ['git-evidence-read', 'upload-request-admission', 'unit-registry-ownership']) {
+		const scenario = scenarioManifestSchema.parse(
+			JSON.parse(readFileSync(join(root, 'specification/scenarios', id + '.json'), 'utf8'))
+		);
+		const all: CaptureLine[] = [];
+		for (const check of scenario.tests) {
+			const command = check.target.split(/\s+/);
+			const cwd = resolve(root, check.cwd ?? '.');
+			expect([command[0], command[2]]).toEqual(['bun', 'vitest']);
+			expect(resolve(cwd, command[1])).toBe(join(root, 'test/verification-output.ts'));
+			const { directory, result } = await run(scenario.id, cwd, command.slice(3));
+			expect(result.error).toBeUndefined();
+			expect(result.status, result.stdout + result.stderr).toBe(0);
+			all.push(...captureLines(directory));
+		}
+		for (const evidence of scenario.evidence.filter((item) => item.required))
+			for (const state of evidence.states)
+				expect(
+					all.some(
+						(line) =>
+							line.evidence === evidence.id && line.state === state && line.kind === evidence.kind
+					),
+					`${evidence.id}:${state}`
+				).toBe(true);
 	}
-	for (const evidence of scenario.evidence.filter((item) => item.required))
-		for (const state of evidence.states)
-			expect(
-				all.some(
-					(line) =>
-						line.evidence === evidence.id && line.state === state && line.kind === evidence.kind
-				),
-				`${evidence.id}:${state}`
-			).toBe(true);
 }, 60000);
 
 test('an extra test target is rejected before any runner starts or evidence is recorded', async () => {
@@ -214,5 +213,5 @@ test('an extra test target is rejected before any runner starts or evidence is r
 	]);
 	expect(result.status).not.toBe(0);
 	expect(result.stderr).toContain('Expected exactly one runner and test file');
-	expect(() => captures(directory)).toThrow(/ENOENT/);
+	expect(() => captureLines(directory)).toThrow(/ENOENT/);
 }, 60000);
