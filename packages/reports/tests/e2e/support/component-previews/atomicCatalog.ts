@@ -15,7 +15,10 @@ export async function assertCompositionFilter(component: Locator): Promise<void>
 }
 
 /** Native states assert real browser properties, then the standard test records the same element. */
-const nativeSelectors: Record<string, string> = { path: 'svg > path' };
+const nativeSelectors: Record<string, string> = {
+	path: 'svg > path',
+	option: 'option[value="example"]'
+};
 
 export async function assertNativeAtomState(component: Locator, id: string, variant: string) {
 	if (!Object.hasOwn(nativeAtomVariants, id)) return;
@@ -26,11 +29,9 @@ export async function assertNativeAtomState(component: Locator, id: string, vari
 		.locator(nativeSelectors[tag] ?? tag)
 		.first();
 	await expect(tag === 'option' ? component.locator('.atom-host select') : element).toBeVisible();
+	if (tag === 'option') await assertNativeOption(element, component, variant);
 	await assertNativeControl(element, tag, variant);
-	if (tag === 'details') {
-		if (variant === 'closed') await expect(element).not.toHaveAttribute('open');
-		else await expect(element).toHaveAttribute('open', '');
-	}
+	await assertNativeDisclosure(component, tag, variant);
 	await assertNativeAttributes(element, tag, variant);
 	if (tag === 'audio' && !variant)
 		await expect
@@ -38,18 +39,48 @@ export async function assertNativeAtomState(component: Locator, id: string, vari
 			.toBeGreaterThanOrEqual(2);
 }
 
+async function assertNativeDisclosure(component: Locator, tag: string, variant: string) {
+	if (!['details', 'summary'].includes(tag)) return;
+	const details = component.locator('.atom-host details');
+	const body = details.locator('p');
+	if (variant === 'closed') {
+		await expect(details).not.toHaveAttribute('open');
+		await expect(body).toBeHidden();
+	} else {
+		await expect(details).toHaveAttribute('open', '');
+		await expect(body).toBeVisible();
+	}
+}
+
 async function assertNativeControl(element: Locator, tag: string, variant: string) {
 	if (variant === 'disabled') await expect(element).toBeDisabled();
+	if (variant === 'disabled' && ['input', 'textarea'].includes(tag))
+		await expect(element).toHaveValue('Disabled example text');
+	if (variant === 'disabled' && ['button', 'input', 'textarea'].includes(tag))
+		await expect(element).toHaveCSS('opacity', '0.45');
 	if (variant === 'empty') await expect(element).toHaveValue('');
 	if (tag === 'textarea' && variant === 'filled')
 		await expect(element).toHaveValue('A saved message with several words.');
 	if (variant === 'long') await expect(element).toContainText('Long native content');
 }
 
+async function assertNativeOption(element: Locator, component: Locator, variant: string) {
+	const label = `HtmlOption: ${variant === 'disabled' ? 'Disabled choice' : 'Available choice'}`;
+	await expect(element).toHaveText(label);
+	await expect(element).toHaveJSProperty('label', label);
+	await expect(element).toBeInViewport();
+	await expect(component.locator('select')).toHaveAttribute('size', '3');
+	await expect(component.locator('option')).toHaveCount(3);
+	await expect(component.locator('option').first()).toHaveJSProperty('selected', true);
+	await expect(component.locator('option').last()).toBeDisabled();
+}
+
 async function assertNativeAttributes(element: Locator, tag: string, variant: string) {
-	if (variant === 'unlinked') await expect(element).not.toHaveAttribute('href');
-	if (variant === 'alt-only')
-		await expect(element).toHaveAttribute('alt', 'Image description without a source');
+	if (variant === 'unlinked') {
+		await expect(element).not.toHaveAttribute('href');
+		await expect(element).toHaveText('Link without a destination');
+	}
+	if (variant === 'alt-only') await expect(element).toHaveAttribute('alt', 'No image available');
 	if (variant === 'outlined') await expect(element).toHaveAttribute('fill', 'none');
 	if (tag === 'path' && variant === 'filled')
 		await expect(element).toHaveAttribute('fill', 'currentColor');

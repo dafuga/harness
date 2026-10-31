@@ -73,13 +73,19 @@ function nativeVariantProps(tag: string, variant: string): Record<string, unknow
 	if (tag === 'pre' && variant === 'long')
 		return { style: 'max-width:100%;overflow-x:auto', tabindex: 0 };
 	const states: Record<string, Record<string, unknown>> = {
-		disabled: { disabled: true },
+		disabled: {
+			disabled: true,
+			...(['input', 'textarea'].includes(tag) ? { value: 'Disabled example text' } : {}),
+			...(['button', 'input', 'textarea'].includes(tag)
+				? { style: 'opacity:var(--hx-opacity-disabled)' }
+				: {})
+		},
 		empty: { value: '', placeholder: 'Example field' },
 		filled:
 			tag === 'path' ? { fill: 'currentColor' } : { value: 'A saved message with several words.' },
 		closed: { open: false },
 		unlinked: { href: undefined },
-		'alt-only': { src: undefined, alt: 'Image description without a source' },
+		'alt-only': { src: undefined, alt: 'No image available' },
 		unavailable: { src: undefined },
 		outlined: { fill: 'none', stroke: 'currentColor' }
 	};
