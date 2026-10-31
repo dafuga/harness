@@ -14,11 +14,15 @@ async function assertPickerReview(component: Locator, id: string, variant: strin
 			).toBeVisible();
 		}
 		if (variant === 'empty') {
-			await expect(component.getByRole('listbox', { name: 'Project', exact: true })).toBeDisabled();
 			await expect(
 				component.getByText('No projects yet', { exact: true }),
 				'An empty project picker has a visible explanation'
 			).toBeVisible();
+			await expect(
+				component.getByRole('listbox'),
+				'An empty project picker explains the absence instead of a disabled empty field'
+			).toHaveCount(0);
+			await expect(component.getByRole('combobox')).toHaveCount(0);
 		}
 		if (variant === 'busy') {
 			await expect(component.getByRole('button', { name: 'Choose workbench' })).toBeDisabled();
