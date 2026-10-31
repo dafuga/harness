@@ -1,4 +1,5 @@
 import type { DesktopCase } from './desktopData.svelte';
+import { desktopHistoryFixture } from './desktopHistoryFixture';
 import { providers } from './desktopData.svelte';
 import { children, done, noop, text, image } from './shared';
 import { routeIds } from './routeUnits';
@@ -82,7 +83,7 @@ export const desktopControls: Record<string, DesktopCase> = {
 	'desktop.component.entity-card': (d) => ({ entity: d.entity, workspace: d.workspace }),
 	'desktop.component.entity-view': (d) => ({ workspace: d.workspace }),
 	'desktop.component.history-panel': (d) => ({
-		entity: d.filterEntity,
+		entity: desktopHistoryFixture(d.filterEntity, 'default'),
 		workspace: d.workspace,
 		evidence: d.evidence
 	}),
