@@ -18,10 +18,16 @@
 	const definition = $derived(nativeAtoms.find((atom) => atom.name === name)!);
 	const tag = $derived(definition.tag);
 	const attributes = $derived(nativeAtomProps(tag, definition.type, variant));
+	const stateLabels: Record<string, string> = {
+		disabled: 'Disabled action',
+		unlinked: 'Link without a destination'
+	};
 	const label = $derived(
-		variant === 'long'
-			? 'Long native content remains readable when a caller supplies several words and a second phrase.'
-			: name
+		tag === 'option'
+			? `HtmlOption: ${variant === 'disabled' ? 'Disabled choice' : 'Available choice'}`
+			: variant === 'long'
+				? 'Long native content remains readable when a caller supplies several words and a second phrase.'
+				: (stateLabels[variant] ?? name)
 	);
 	let host: HTMLElement;
 	onMount(() => {
@@ -103,12 +109,19 @@
 		</table>
 	{:else if tag === 'li'}<ul><Component {...attributes} children={content} /></ul>
 	{:else if tag === 'dt' || tag === 'dd'}<dl><Component {...attributes} children={content} /></dl>
-	{:else if tag === 'option' || tag === 'optgroup'}<select aria-label="Native option context"
+	{:else if tag === 'option'}<label for="native-option-context">Option choices</label>
+		<select id="native-option-context" aria-label="Native option context" size="3">
+			<option value="selected" selected>Selected choice</option>
+			<Component {...attributes} children={content} />
+			<option value="reference" disabled>Disabled reference</option>
+		</select>
+	{:else if tag === 'optgroup'}<select aria-label="Native option context"
 			><Component {...attributes} children={content} /></select
 		>
 	{:else if tag === 'legend'}<fieldset><Component {...attributes} children={content} /></fieldset>
 	{:else if tag === 'summary'}<details open={variant !== 'closed'}>
 			<Component {...attributes} children={content} />
+			<p>Expanded summary content</p>
 		</details>
 	{:else if tag === 'rt' || tag === 'rp'}<ruby
 			>Example<Component {...attributes} children={content} /></ruby
