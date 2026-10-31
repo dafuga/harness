@@ -86,7 +86,18 @@ test('reviewed architecture units describe method inputs, defaults, outputs and 
 		'model.catalog-revision-entity',
 		'model.catalog-metadata',
 		'model.adapters-types',
-		'model.adapters-sqlite'
+		'model.adapters-sqlite',
+		'desktop.component.game-create',
+		'desktop.component.game-level-brief',
+		'desktop.component.game-view-fields',
+		'reports.component.entity-cases',
+		'reports.component.explorer-ui-explorer-kit-card',
+		'reports.component.explorer-usage',
+		'reports.component.harness-entity-details',
+		'reports.component.harness-entity-source',
+		'reports.component.harness-explorer-controls',
+		'reports.component.harness-harness-console',
+		'reports.component.harness-harness-verdict'
 	];
 	for (const id of ids) {
 		const unit = componentManifestSchema.parse(
@@ -114,5 +125,10 @@ function assertContractFields(
 		for (const field of contract[group]) {
 			expect(described(field.description), `${id}: ${group}.${field.name}`).toBe(true);
 			if (group === 'inputs') expect(typeof field.required, `${id}: ${field.name}`).toBe('boolean');
+			if (group === 'inputs' && id.includes('.component.') && field.required === false)
+				expect(
+					Object.hasOwn(field, 'default') || /defaults?\b/i.test(field.description ?? ''),
+					`${id}: ${field.name} explains its omitted default`
+				).toBe(true);
 		}
 }
