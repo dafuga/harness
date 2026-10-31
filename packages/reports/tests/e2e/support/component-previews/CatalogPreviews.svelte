@@ -123,7 +123,7 @@
 					</div>
 				{:else if id === 'reports.component.harness-explorer-index'}
 					<ExplorerIndexPreview props={fixture.props as never} />
-				{:else if id === 'reports.component.harness-explorer-frame' && variant === 'source-open'}
+				{:else if id === 'reports.component.harness-explorer-frame' && ['source-open', 'registry-optional'].includes(variant)}
 					<ExplorerFramePreview props={fixture.props as never} />
 				{:else if id === 'reports.component.harness-harness-selectors' && ['tip', 'at-tip'].includes(variant)}
 					<div class="hx-nav"><Component {...fixture.props} /></div>

@@ -13,7 +13,7 @@ test('a function and a service open on what their end-to-end checks recorded, no
 	for (const at of [filter, store]) {
 		const body = screen(EntityBehaviorScreen, 'commit', at);
 		expect(words(body), at.entity).toContain('End-to-end test comparison');
-		expect(words(body), at.entity).toContain('Before · aaaaaaa Parent commit');
+		expect(words(body), at.entity).toContain('Before · 3f9c2a1 Parent commit');
 		expect(count(body, /<img\b/g), at.entity).toBe(0);
 		expect(drawn(body), at.entity).toBe(drawn(content('commit', at)));
 		const tip = screen(EntityBehaviorScreen, 'current', at);
@@ -39,7 +39,7 @@ test('its tabs and a missing entity behave as on every entity screen', () => {
 	const tests = screen(EntityBehaviorScreen, 'commit', { ...filter, tab: 'tests' });
 	expect(words(tests)).toContain('Examples');
 	expect(words(tests)).not.toContain('Recorded tests and verification');
-	expect(words(tests)).not.toContain('Verification at bbbbbbb');
+	expect(words(tests)).not.toContain('Verification at 8b41d07');
 	const related = screen(EntityBehaviorScreen, 'commit', { ...filter, tab: 'used-in' });
 	expect(related).toContain('aria-label="filterOrders used in"');
 	const gone = { category: 'functions' as const, entity: 'app.function.gone' };

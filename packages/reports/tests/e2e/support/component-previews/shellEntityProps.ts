@@ -27,7 +27,7 @@ export function shellEntityProps(id: string, props: PreviewCases[string], varian
 function detailsProps(props: PreviewCases[string], variant: string) {
 	return {
 		...props,
-		tab: variant === 'summary' ? undefined : selectedTab(variant),
+		tab: variant === 'summary' ? 'summary' : selectedTab(variant),
 		record: variant === 'unmeasured' ? null : props.record
 	};
 }

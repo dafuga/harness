@@ -110,7 +110,7 @@ test('visual component cards show the selected revision, never the parent or ano
 		expect(count(body, /<article\b/g)).toBe(3);
 		expect(count(body, /<img\b/g)).toBe(3);
 		expect(body).toContain(`src="/harness/media/${commit.slice(0, 7)}-default-desktop.png"`);
-		expect(body).not.toContain('src="/harness/media/aaaaaaa-');
+		expect(body).not.toContain('src="/harness/media/3f9c2a1-');
 		expect(body).toContain('/components/app.component.order-card');
 		expect(words(body)).toContain('Used In');
 	}
@@ -128,9 +128,9 @@ test('component cards keep reused screenshots revision-bound without extra sourc
 	const head = revision(commits.tip, [taken]);
 	const body = screen(ExplorerCatalogScreen, 'current', { category: 'components' }, { head });
 	expect(count(body, /<img\b/g)).toBe(3);
-	expect(body).toContain('src="/harness/media/bbbbbbb-default-desktop.png"');
-	expect(words(body)).not.toContain('Reused from bbbbbbb');
-	expect(body).not.toContain('src="/harness/media/ccccccc-');
+	expect(body).toContain('src="/harness/media/8b41d07-default-desktop.png"');
+	expect(words(body)).not.toContain('Reused from 8b41d07');
+	expect(body).not.toContain('src="/harness/media/c725e93-');
 });
 
 test.each(['unvalidated', 'wrong-build', 'failed', 'missing', 'unrelated'] as const)(

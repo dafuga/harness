@@ -15,10 +15,7 @@ export function runDocument(state: string, kind: string, takenAt: string) {
 		// When a run was taken is not what it did. A run declares that about itself under the one
 		// name the reader sets aside, so two runs that differ only there are the same behaviour.
 		[artifactRun.field]: { version: artifactRun.version, at: takenAt },
-		steps: [
-			'Open the orders page',
-			{ action: 'search', text: state === 'match' ? 'SERVICE' : 'zzz' }
-		],
+		steps: ['Open the orders page', `Search for ${state === 'match' ? 'SERVICE' : 'zzz'}`],
 		input: { searchText: state === 'match' ? 'SERVICE' : 'zzz' },
 		...(kind === 'output' ? { output: found } : {}),
 		assertions: [

@@ -66,7 +66,7 @@ test('a function shows its recorded run: steps, input, output and assertions', a
 	// The results are read as the entity opens; what they did is said once they were.
 	await expect(tab.getByRole('status').filter({ hasText: 'Behavior unchanged' })).toBeVisible();
 	// Both sides show what the run did without anything to press.
-	for (const side of ['Before · aaaaaaa', 'After · bbbbbbb']) {
+	for (const side of ['Before · 3f9c2a1', 'After · 8b41d07']) {
 		const pane = tab.getByRole('region', { name: side });
 		await expect(pane.getByRole('table').first()).toBeVisible();
 		await pane
@@ -145,7 +145,7 @@ test('history lists changes, keeps profiles apart and opens a revision', async (
 	await tab.getByRole('combobox', { name: 'Performance profile' }).selectOption('ci-linux');
 	await expect(tab.getByRole('columnheader', { name: 'Latency (ci-linux)' })).toBeVisible();
 	await expect(tab.locator('.ex-history tbody tr').first()).toContainText('0.31 ms');
-	await tab.getByRole('link', { name: 'aaaaaaa', exact: true }).click();
+	await tab.getByRole('link', { name: '3f9c2a1', exact: true }).click();
 	expect(await where(tab)).toEqual({ branch: 'feature/orders', commit: commits.first, ...filter });
 	await expect(tab.getByText('First version')).toBeVisible();
 });

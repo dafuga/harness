@@ -68,7 +68,7 @@ async function assertUsageLinkImage(tip: Locator, variant: string) {
 			.toBeGreaterThan(0);
 		await image.evaluate((node: HTMLImageElement) => node.decode());
 		await expect(tip).toContainText(
-			variant === 'inherited-open' ? 'Reused from aaaaaaa' : 'Fresh capture at bbbbbbb'
+			variant === 'inherited-open' ? 'Reused from 3f9c2a1' : 'Fresh capture at 8b41d07'
 		);
 	}
 }

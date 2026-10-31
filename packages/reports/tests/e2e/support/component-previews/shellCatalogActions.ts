@@ -1,5 +1,6 @@
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
 import { shellCatalogVariants } from './shellCatalogVariants';
+import { commits } from '../../../../test/entityUnits';
 
 /** Prepare state through normal controls and assert that the fixture reached its named branch. */
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
@@ -7,6 +8,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'harness-entity-history': historyState,
 	'harness-entity-audio': audioState,
 	'harness-entity-screens': screensState,
+	'harness-entity-sections': sectionsState,
 	'harness-harness-verdict': verdictState,
 	'harness-harness-navbar': navbarState,
 	'harness-harness-action': actionState,
@@ -59,6 +61,18 @@ async function screensState(component: Locator, variant: string) {
 	}
 	if (variant === 'missing') await expect(component).toContainText('No capture');
 	if (variant === 'incomparable') await expect(component).toContainText('Not comparable');
+}
+async function sectionsState(component: Locator, variant: string) {
+	if (variant !== 'tests') return;
+	await component.getByText('Verification details', { exact: true }).click();
+	await expect(component.getByText(`Verification at ${commits.middle.slice(0, 7)}`)).toBeVisible();
+	await component.locator('img').evaluateAll(async (images) => {
+		await Promise.all(
+			images
+				.filter((image) => image.getClientRects().length)
+				.map((image) => (image as HTMLImageElement).decode())
+		);
+	});
 }
 async function verdictState(component: Locator, variant: string) {
 	if (variant.endsWith('-open')) {
@@ -135,9 +149,12 @@ async function selectorsState(component: Locator, variant: string) {
 		'feature/orders'
 	);
 	await expect(component.getByRole('combobox', { name: 'Commit', exact: true })).toHaveValue(
-		'b'.repeat(40)
+		commits.middle
 	);
-	await expect(component.locator('.report-select-value')).toHaveText(['feature/orders', 'bbbbbbb']);
+	await expect(component.locator('.report-select-value')).toHaveText([
+		'feature/orders',
+		commits.middle.slice(0, 7)
+	]);
 	const tip = component.getByRole('button', { name: 'Go to tip', exact: true });
 	if (variant === 'at-tip') await expect(tip).toBeDisabled();
 	else await expect(component.getByRole('link', { name: 'Go to tip', exact: true })).toBeVisible();
