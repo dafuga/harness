@@ -33,14 +33,20 @@ import { assertRecordedValueCapture } from './support/component-previews/recorde
 import { assertShellReview } from './support/component-previews/shellReviewAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { assertCatalogRegistry } from './support/component-previews/catalogRegistryAssertions';
+import { catalogFixtureMedia } from './support/component-previews/catalogFixtureMedia';
+import { assertCatalogFixtureMedia } from './support/component-previews/catalogFixtureAssertions';
 let home = '';
 test.beforeAll(async () => {
 	test.setTimeout(180_000);
 	assertCatalogRegistry();
 	home = buildShellFixture(['catalog']);
+	catalogFixtureMedia(home);
 });
 test.afterAll(() => removeShellFixture(home));
-test('every active visual component has its own required capture state', assertCatalogRegistry);
+test('every active visual component has its own required capture state', () => {
+	assertCatalogRegistry();
+	assertCatalogFixtureMedia(home);
+});
 for (const viewport of catalogViewports) {
 	for (const stage of ['history', 'revision'] as const) {
 		test(`console data loading: ${stage} at ${viewport.id}`, async ({ page }) => {
