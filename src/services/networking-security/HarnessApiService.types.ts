@@ -12,6 +12,8 @@ export interface HarnessApiOptions {
 	timeout?: string;
 	requestId?: string;
 	viewport?: string;
+	/** Exact recorded CSS viewport dimensions, exclusive with viewport; omitted means no size filter. */
+	size?: string;
 	state?: string;
 	scenario?: string;
 	side?: 'before' | 'after';

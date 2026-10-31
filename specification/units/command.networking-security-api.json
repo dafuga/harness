@@ -11,22 +11,35 @@
 		"symbols": ["ApiCommand", "ApiCommand.register"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ApiCommand.register.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "Required Commander program to receive API subcommands and options. Screenshot --size WIDTHxHEIGHT is optional, defaults to JavaScript undefined (no CSS size filter), and is mutually exclusive with --viewport; each dimension is a canonical integer 1-16384. Existing --viewport id selection and default no-filter behavior remain."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ApiCommand.register",
-				"type": "void"
+				"type": "void",
+				"description": "Registers API resource reads, screenshot downloads, contract and agent actions. Screenshot downloads select sealed evidence; they never launch a browser or resize images. Registration returns no value."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Invalid screenshot selection",
+				"type": "ExpectedCliError",
+				"description": "The registered screenshot action rejects malformed/out-of-bounds --size and --size/--viewport conflicts before network/file access. Commander rejects missing option arguments and unknown options."
+			},
+			{
+				"name": "API operation error",
+				"type": "propagated",
+				"description": "Invoking a registered action propagates its API, authorization and file-system failures; registration itself performs no API request."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ApiCommand.register",
@@ -34,13 +47,15 @@
 					{
 						"name": "ApiCommand.register.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "Required Commander program to receive API subcommands and options. Screenshot --size WIDTHxHEIGHT is optional, defaults to JavaScript undefined (no CSS size filter), and is mutually exclusive with --viewport; each dimension is a canonical integer 1-16384. Existing --viewport id selection and default no-filter behavior remain."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ApiCommand.register",
-						"type": "void"
+						"type": "void",
+						"description": "Registers API resource reads, screenshot downloads, contract and agent actions. Screenshot downloads select sealed evidence; they never launch a browser or resize images. Registration returns no value."
 					}
 				],
 				"errors": [],
