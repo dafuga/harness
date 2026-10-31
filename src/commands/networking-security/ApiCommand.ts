@@ -46,11 +46,7 @@ function registerReads(api: Command): void {
 	wire(
 		api
 			.command('screenshot <entityId>')
-			.description('Download a recorded page screenshot, verified against its evidence hash.')
-			.addHelpText(
-				'after',
-				'\nSelect --viewport desktop|tablet|mobile OR --size WIDTHxHEIGHT (CSS pixels, 1-16384 each). Omit both for no viewport filter. A matching standard recording must exist.'
-			),
+			.description('Download a recorded page screenshot, verified against its evidence hash.'),
 		'screenshot'
 	);
 }
@@ -109,14 +105,7 @@ function apiOptions(api: Command): Command {
 		.option('--timeout <ms>', 'HTTP request deadline in milliseconds.', '30000')
 		.option('--request-id <uuid>', 'Stable identity for retrying an agent start.')
 		.option('--after <sequence>', 'Run event cursor.', '0')
-		.option(
-			'--viewport <name>',
-			'Recorded screenshot viewport id, such as desktop, tablet or mobile; exclusive with --size.'
-		)
-		.option(
-			'--size <WIDTHxHEIGHT>',
-			'Exact recorded CSS viewport size, 1-16384 pixels per dimension; exclusive with --viewport. Defaults to no size filter.'
-		)
+		.option('--viewport <name>', 'Screenshot viewport, such as desktop, tablet or mobile.')
 		.option('--state <name>', 'Recorded screenshot state.')
 		.option('--scenario <id>', 'Recorded screenshot scenario.')
 		.option('--side <side>', 'Screenshot evidence side: before or after.', 'after');

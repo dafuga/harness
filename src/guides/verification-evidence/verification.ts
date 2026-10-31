@@ -6,7 +6,7 @@ const scenarioGuide: Guide = {
 	steps: [
 		'Name the units the scenario proves and every state they can be in.',
 		'Mark a state required, missing or inapplicable, with a reason for the last two.',
-		'List viewports for visual states and the checks that produce the evidence. Each viewport declares an id and CSS-pixel width/height.',
+		'List viewports for visual states and the checks that produce the evidence.',
 		'Declare each evidence requirement: kind, states, viewports and, for audio, provenance.',
 		'Run harness scenarios show to see the exact captures a passing run must contain.'
 	],
@@ -25,9 +25,7 @@ const scenarioGuide: Guide = {
 			'An old bundle relabelled with the current revision is rejected.',
 		'harness verify identity <directory> prints that identity; a server reports the identity ' +
 			'of the files it was started from, read once at start.',
-		'Checks capture only when TAKE_SCREENSHOT is 1; harness verify always sets it.',
-		'Download attached screenshots with api screenshot --viewport desktop|tablet|mobile, or --size WIDTHxHEIGHT for an exact recorded CSS viewport. The options are mutually exclusive; omission adds no viewport filter.',
-		'--size uses lowercase x and positive integers from 1 to 16384 per dimension, without spaces or leading zeros. Missing size metadata or recordings never triggers image resizing or a new browser capture.'
+		'Checks capture only when TAKE_SCREENSHOT is 1; harness verify always sets it.'
 	],
 	antiPatterns: [
 		'Do not relabel an unproven state as inapplicable.',
@@ -36,8 +34,7 @@ const scenarioGuide: Guide = {
 	exampleCommands: [
 		'harness scenarios list',
 		'harness scenarios show checkout-page',
-		'harness scenarios check',
-		'harness api screenshot page.checkout --size 390x844 --state loaded --output checkout.png'
+		'harness scenarios check'
 	]
 };
 

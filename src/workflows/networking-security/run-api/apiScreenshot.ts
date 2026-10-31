@@ -23,7 +23,6 @@ export async function apiScreenshot(
 	entityId: string,
 	options: HarnessApiOptions
 ) {
-	const size = screenshotSize(options);
 	if (!options.output || options.output === '-')
 		fail('Screenshot downloads require --output <file>.');
 	const snapshot = await client.snapshot();
@@ -37,7 +36,7 @@ export async function apiScreenshot(
 	const sideName = options.side ?? 'after';
 	if (!['before', 'after'].includes(sideName)) fail('Screenshot side must be before or after.');
 	const side = result.evidence[sideName];
-	const selected = selectedCapture(side, options, size);
+	const selected = selectedCapture(side, options);
 	const binding = artifactBinding(result, { ...query, side: sideName }, selected);
 	const artifact = await client.read('artifact', { ...binding });
 	const { capture, scenario, state, inheritedFrom, focused } = selected;
@@ -77,21 +76,14 @@ function verificationOf(side: ExplorerSide, selected: ExplorerCapture) {
 	};
 }
 
-function selectedCapture(
-	side: ExplorerSide | null,
-	options: HarnessApiOptions,
-	size: readonly [number, number] | undefined
-): ExplorerCapture {
-	const matching =
-		side?.captures.filter(
-			(item) => matchesCapture(item, options) && (!size || matchesSize(item, side, size))
-		) ?? [];
+function selectedCapture(side: ExplorerSide | null, options: HarnessApiOptions): ExplorerCapture {
+	const matching = side?.captures.filter((item) => matchesCapture(item, options)) ?? [];
 	const proven = matching.filter((item) => item.usable);
 	const captures = proven.length ? proven : matching;
 	if (captures.length !== 1)
 		fail(
 			captures.length
-				? 'Several screenshots match; select --viewport or --size, plus --state and --scenario.'
+				? 'Several screenshots match; select --viewport, --state and --scenario.'
 				: 'No recorded screenshot matches this entity and revision. Run its standard capture scenario first.'
 		);
 	return captures[0];
@@ -133,37 +125,4 @@ function recordFor(side: ExplorerSide, capture: ExplorerCapture) {
 	return capture.recordId
 		? (side.detail?.records.find((record) => record.id === capture.recordId) ?? side.record)
 		: side.record;
-}
-
-/** An exact CSS viewport filter; absence preserves selection by recorded viewport id. */
-function screenshotSize(options: HarnessApiOptions): readonly [number, number] | undefined {
-	if (options.size === undefined) return undefined;
-	if (options.viewport !== undefined) fail('--size and --viewport are mutually exclusive.');
-	const message =
-		'--size must be WIDTHxHEIGHT in CSS pixels, with integers from 1 to 16384 and no spaces or leading zeros (for example 390x844).';
-	if (
-		!/^[1-9][0-9]{0,4}x[1-9][0-9]{0,4}$/.test(options.size) ||
-		options.size.trim() !== options.size
-	)
-		fail(message);
-	const [width, height] = options.size.split('x').map(Number);
-	if (width > 16384 || height > 16384) fail(message);
-	return [width, height];
-}
-
-/** Never infer viewport dimensions from a preset name or from the clipped image's pixels. */
-function matchesSize(
-	item: ExplorerCapture,
-	side: ExplorerSide,
-	size: readonly [number, number]
-): boolean {
-	const viewport = item.focused ? item.focused.viewport : recordedViewport(item, side);
-	return viewport?.width === size[0] && viewport?.height === size[1];
-}
-
-function recordedViewport(item: ExplorerCapture, side: ExplorerSide) {
-	// An inherited record needs its own dimensions; the selected revision cannot supply them.
-	if (item.inheritedFrom || recordFor(side, item)?.source?.commit !== side.commit) return undefined;
-	const scenario = side.detail?.registry.scenarios.find((entry) => entry.id === item.scenario);
-	return scenario?.viewports.find((entry) => entry.id === item.capture.viewport);
 }
