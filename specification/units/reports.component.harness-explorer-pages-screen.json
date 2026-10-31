@@ -106,7 +106,7 @@
 				"inputs": [
 					{
 						"name": "ExplorerPagesScreen.children.nav",
-						"type": "unknown",
+						"type": "EntityNav",
 						"required": true
 					}
 				],
@@ -124,7 +124,7 @@
 				"inputs": [
 					{
 						"name": "ExplorerPagesScreen.list.listed",
-						"type": "unknown",
+						"type": "CatalogRow[]",
 						"required": true
 					}
 				],
@@ -162,6 +162,11 @@
 		},
 		{
 			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

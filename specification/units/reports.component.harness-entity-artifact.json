@@ -28,13 +28,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/EntityArtifact.svelte"
-		],
-		"symbols": [
-			"EntityArtifact",
-			"EntityArtifact.recorded"
-		]
+		"source": ["packages/reports/src/components/explorer-ui/EntityArtifact.svelte"],
+		"symbols": ["EntityArtifact", "EntityArtifact.recorded"]
 	},
 	"contract": {
 		"origin": "declared",

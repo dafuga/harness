@@ -1,3 +1,4 @@
+import { desktopData } from './sealedData';
 import type { PreviewCases } from './shared';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import type {
@@ -17,12 +18,8 @@ export function shellExplorerProps(id: string, props: PreviewCases[string], vari
 				search: searchQuery(variant)
 			}
 		};
-	if (id === 'reports.component.harness-explorer-index') {
-		if (variant === 'empty') return { ...props, rows: [] };
-		if (variant === 'layouts') return { ...props, category: 'layouts' };
-		if (variant === 'configs') return { ...props, category: 'configs', rows: d.configRows };
-		return props;
-	}
+	if (id === 'reports.component.harness-explorer-index') return indexProps(props, variant);
+	if (id === 'reports.component.harness-explorer-frame' && variant === 'source-open') return props;
 	if (id === 'reports.component.harness-explorer-frame')
 		return {
 			...props,
@@ -75,7 +72,7 @@ function contentProps(variant: string) {
 }
 
 function sectionsProps(props: PreviewCases[string], variant: string) {
-	let host = d.host();
+	let host = sectionsHost();
 	let entity = d.entity;
 	if (variant === 'examples') {
 		host = d.host('functions', 'examples');
@@ -140,5 +137,20 @@ function catalogProps(props: PreviewCases[string], variant: string) {
 		const category = variant as ExplorerScreenProps['route']['category'];
 		return { ...d.host(category), route: { ...host.route, category, entity: undefined } };
 	}
+	return props;
+}
+
+function sectionsHost(): ExplorerScreenProps {
+	const data = desktopData.results[`${d.ids.list}|commit|${d.commits.middle}`];
+	return {
+		...d.host(),
+		lens: { ...d.reading, evidence: () => data.evidence, behavior: () => data.behavior }
+	};
+}
+
+function indexProps(props: PreviewCases[string], variant: string) {
+	if (variant === 'empty') return { ...props, rows: [] };
+	if (variant === 'layouts') return { ...props, category: 'layouts' };
+	if (variant === 'configs') return { ...props, category: 'configs', rows: d.configRows };
 	return props;
 }

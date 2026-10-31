@@ -4033,6 +4033,12 @@
 			"coverage": "required"
 		},
 		{
+			"id": "reports-component-harness-explorer-frame-source-open",
+			"title": "ExplorerFrame: source-open",
+			"units": ["reports.component.harness-explorer-frame"],
+			"coverage": "required"
+		},
+		{
 			"id": "reports-component-harness-explorer-index",
 			"title": "Entity catalog",
 			"coverage": "required",
@@ -7897,6 +7903,7 @@
 				"reports-component-harness-explorer-frame",
 				"reports-component-harness-explorer-frame-unindexed",
 				"reports-component-harness-explorer-frame-registry-optional",
+				"reports-component-harness-explorer-frame-source-open",
 				"reports-component-harness-explorer-index",
 				"reports-component-harness-explorer-index-empty",
 				"reports-component-harness-explorer-index-search",

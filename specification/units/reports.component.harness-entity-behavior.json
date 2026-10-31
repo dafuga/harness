@@ -27,12 +27,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/EntityBehavior.svelte"
-		],
-		"symbols": [
-			"EntityBehavior"
-		]
+		"source": ["packages/reports/src/components/explorer-ui/EntityBehavior.svelte"],
+		"symbols": ["EntityBehavior"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -78,8 +74,7 @@
 				"name": "EntityBehavior.duration",
 				"type": "string",
 				"required": false,
-				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it. Defaults to Not measured.",
-				"default": "Not measured"
+				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it. Defaults to Not measured."
 			},
 			{
 				"name": "EntityBehavior.unit",

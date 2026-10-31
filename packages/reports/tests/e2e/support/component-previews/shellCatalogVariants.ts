@@ -89,7 +89,7 @@ export const shellCatalogVariants: Record<string, string[]> = {
 		'platforms'
 	],
 	'reports.component.harness-explorer-controls': ['search', 'long', 'focused'],
-	'reports.component.harness-explorer-frame': ['unindexed', 'registry-optional'],
+	'reports.component.harness-explorer-frame': ['unindexed', 'registry-optional', 'source-open'],
 	'reports.component.harness-explorer-index': [
 		'empty',
 		'search',

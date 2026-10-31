@@ -40,8 +40,9 @@ async function audioState(component: Locator, variant: string) {
 	await expect(component).toContainText(title);
 	if (variant.startsWith('missing')) await expect(component).toContainText('No clip of this state');
 	if (variant === 'transcript-closed')
-		for (const summary of await component.locator('details[open] > summary').all())
-			await summary.click();
+		for (const details of await component.locator('details').all())
+			if ((await details.getAttribute('open')) !== null)
+				await details.locator('summary').first().click();
 }
 async function screensState(component: Locator, variant: string) {
 	if (variant === 'viewer-open') {
@@ -113,6 +114,10 @@ async function explorerState(component: Locator, id: string, variant: string) {
 			.getByRole('searchbox')
 			.fill(variant === 'search' ? 'Order' : 'no-such-recorded-entity');
 		if (variant === 'no-matches') await expect(component).toContainText(/No .* match this search/);
+	}
+	if (id.endsWith('explorer-frame') && variant === 'source-open') {
+		await component.getByRole('button', { name: 'View OrderList source' }).click();
+		await expect(component.getByRole('dialog')).toBeVisible();
 	}
 	if (variant === 'unindexed')
 		await expect(component).toContainText('No registry at this revision');

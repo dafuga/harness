@@ -15,13 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/HarnessAction.svelte"
-		],
-		"symbols": [
-			"HarnessAction",
-			"HarnessAction.inner"
-		]
+		"source": ["packages/reports/src/components/explorer-ui/HarnessAction.svelte"],
+		"symbols": ["HarnessAction", "HarnessAction.inner"]
 	},
 	"contract": {
 		"origin": "declared",

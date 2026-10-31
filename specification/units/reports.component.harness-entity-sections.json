@@ -36,13 +36,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"
-		],
-		"symbols": [
-			"EntitySections",
-			"EntitySections.verificationPanel"
-		]
+		"source": ["packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"],
+		"symbols": ["EntitySections", "EntitySections.verificationPanel"]
 	},
 	"contract": {
 		"origin": "declared",
