@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-31T16:00:29.250Z","name":"desktop-catalog-shots","goal":"Retain every listed Desktop component state at desktop tablet and mobile through committed catalog recordings","template":"visual-change","templateLineage":["feature","visual-change"]}
+{"event":"step.completed","timestamp":"2026-10-31T16:07:44.480Z","loop":"desktop-catalog-shots","step":"spec","evidence":"Review all 24 listed Desktop components; retain default and real states through committed catalog recordings, three viewport API fetches and contract readback."}

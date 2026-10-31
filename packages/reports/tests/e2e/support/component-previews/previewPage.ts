@@ -17,6 +17,7 @@ import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { uploadComparisonPreMount } from './uploadComparisonPreMount';
 import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
+import { prepareDesktopPage } from './desktopStateActions';
 
 import {
 	assertPreviewLoading,
@@ -39,6 +40,7 @@ const emptyPreviews = new Set([
 	'reports.component.shared-primitives-detail-list:empty-unprovided'
 ]);
 export async function openPreview(page: Page, home: string, id: string, variant = '') {
+	await prepareDesktopPage(page, id, variant);
 	if (
 		['reports.component.entity-search', 'reports.component.entity-search-results'].includes(id) &&
 		page.viewportSize()?.width === 390

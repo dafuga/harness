@@ -3,6 +3,10 @@ import { previewImages } from './imageZoomActions';
 
 /** Loading states are accepted only for the two previews that request them. */
 export async function assertPreviewLoading(content: Locator, id: string, variant: string) {
+	if (id === 'desktop.component.runtime-artifact' && variant === 'loading') {
+		await expect(content).toContainText('Reading what it holds…');
+		return;
+	}
 	const loading: Record<string, string> = {
 		'reports.component.analytics-cpu': 'Sampling CPU…',
 		'reports.component.gameplay-replay': 'Loading screenshot…',
@@ -36,6 +40,8 @@ export async function assertPreviewMessages(content: Locator, id: string, varian
 	)
 		await expect(content).not.toContainText(/No screenshot (?:is )?recorded/);
 	const expected: Record<string, string[]> = {
+		'desktop.component.runtime-evidence': ['error'],
+		'desktop.component.runtime-behavior': ['unreadable'],
 		'reports.component.explorer-ui-explorer-kit-notice': ['', 'long'],
 		'reports.component.activity-agents': ['failed-read', 'unreadable'],
 		'reports.component.project-activity': ['failed-read'],

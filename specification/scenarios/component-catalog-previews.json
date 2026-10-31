@@ -415,8 +415,80 @@
 			"units": ["desktop.component.agent-settings"]
 		},
 		{
+			"id": "desktop-component-agent-settings-selected",
+			"title": "Agent settings preference: selected",
+			"coverage": "required",
+			"units": ["desktop.component.agent-settings"]
+		},
+		{
+			"id": "desktop-component-agent-settings-not-saved",
+			"title": "Agent settings preference: not-saved",
+			"coverage": "required",
+			"units": ["desktop.component.agent-settings"]
+		},
+		{
 			"id": "desktop-component-agents-providers-chat-agents",
 			"title": "Agents panel",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-loading",
+			"title": "Agents panel: loading",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-unavailable",
+			"title": "Agents panel: unavailable",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-empty",
+			"title": "Agents panel: empty",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-never-used",
+			"title": "Agents panel: never-used",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-unreadable",
+			"title": "Agents panel: unreadable",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-stale",
+			"title": "Agents panel: stale",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-stale-reading",
+			"title": "Agents panel: stale-reading",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-many",
+			"title": "Agents panel: many",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-historical",
+			"title": "Agents panel: historical",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents-refresh-error",
+			"title": "Agents panel: refresh-error",
 			"coverage": "required",
 			"units": ["desktop.component.agents-providers-chat-agents"]
 		},
@@ -439,6 +511,30 @@
 			"units": ["desktop.component.catalog-view"]
 		},
 		{
+			"id": "desktop-component-catalog-view-empty",
+			"title": "Catalog view: empty",
+			"coverage": "required",
+			"units": ["desktop.component.catalog-view"]
+		},
+		{
+			"id": "desktop-component-catalog-view-search-empty",
+			"title": "Catalog view: search-empty",
+			"coverage": "required",
+			"units": ["desktop.component.catalog-view"]
+		},
+		{
+			"id": "desktop-component-catalog-view-filters-open",
+			"title": "Catalog view: filters-open",
+			"coverage": "required",
+			"units": ["desktop.component.catalog-view"]
+		},
+		{
+			"id": "desktop-component-catalog-view-long",
+			"title": "Catalog view: long",
+			"coverage": "required",
+			"units": ["desktop.component.catalog-view"]
+		},
+		{
 			"id": "desktop-component-choice-dialog",
 			"title": "Choice dialog",
 			"coverage": "required",
@@ -447,6 +543,72 @@
 		{
 			"id": "desktop-component-composer",
 			"title": "Composer",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-plan",
+			"title": "Composer: plan",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-ask",
+			"title": "Composer: ask",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-change",
+			"title": "Composer: change",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-visual-plan",
+			"title": "Composer: visual-plan",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-running",
+			"title": "Composer: running",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-unapproved",
+			"title": "Composer: unapproved",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-no-modes",
+			"title": "Composer: no-modes",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-no-provider",
+			"title": "Composer: no-provider",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-long",
+			"title": "Composer: long",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-compact",
+			"title": "Composer: compact",
+			"coverage": "required",
+			"units": ["desktop.component.composer"]
+		},
+		{
+			"id": "desktop-component-composer-retry",
+			"title": "Composer: retry",
 			"coverage": "required",
 			"units": ["desktop.component.composer"]
 		},
@@ -523,6 +685,42 @@
 			"units": ["desktop.component.design-panel"]
 		},
 		{
+			"id": "desktop-component-design-panel-empty",
+			"title": "Design panel: empty",
+			"coverage": "required",
+			"units": ["desktop.component.design-panel"]
+		},
+		{
+			"id": "desktop-component-design-panel-headless",
+			"title": "Design panel: headless",
+			"coverage": "required",
+			"units": ["desktop.component.design-panel"]
+		},
+		{
+			"id": "desktop-component-design-panel-loading",
+			"title": "Design panel: loading",
+			"coverage": "required",
+			"units": ["desktop.component.design-panel"]
+		},
+		{
+			"id": "desktop-component-design-panel-error",
+			"title": "Design panel: error",
+			"coverage": "required",
+			"units": ["desktop.component.design-panel"]
+		},
+		{
+			"id": "desktop-component-design-panel-readonly",
+			"title": "Design panel: readonly",
+			"coverage": "required",
+			"units": ["desktop.component.design-panel"]
+		},
+		{
+			"id": "desktop-component-design-panel-long",
+			"title": "Design panel: long",
+			"coverage": "required",
+			"units": ["desktop.component.design-panel"]
+		},
+		{
 			"id": "desktop-component-details-panel",
 			"title": "Source files",
 			"coverage": "required",
@@ -541,8 +739,74 @@
 			"units": ["desktop.component.entity-view"]
 		},
 		{
+			"id": "desktop-component-entity-view-source",
+			"title": "Entity view: source",
+			"coverage": "required",
+			"units": ["desktop.component.entity-view"]
+		},
+		{
+			"id": "desktop-component-entity-view-designs",
+			"title": "Entity view: designs",
+			"coverage": "required",
+			"units": ["desktop.component.entity-view"]
+		},
+		{
+			"id": "desktop-component-entity-view-used-in",
+			"title": "Entity view: used-in",
+			"coverage": "required",
+			"units": ["desktop.component.entity-view"]
+		},
+		{
+			"id": "desktop-component-entity-view-uses",
+			"title": "Entity view: uses",
+			"coverage": "required",
+			"units": ["desktop.component.entity-view"]
+		},
+		{
+			"id": "desktop-component-entity-view-apis",
+			"title": "Entity view: apis",
+			"coverage": "required",
+			"units": ["desktop.component.entity-view"]
+		},
+		{
+			"id": "desktop-component-entity-view-states",
+			"title": "Entity view: states",
+			"coverage": "required",
+			"units": ["desktop.component.entity-view"]
+		},
+		{
+			"id": "desktop-component-entity-view-history",
+			"title": "Entity view: history",
+			"coverage": "required",
+			"units": ["desktop.component.entity-view"]
+		},
+		{
+			"id": "desktop-component-entity-view-conversation-closed",
+			"title": "Entity view: conversation-closed",
+			"coverage": "required",
+			"units": ["desktop.component.entity-view"]
+		},
+		{
+			"id": "desktop-component-entity-view-helper-examples",
+			"title": "Entity view: helper-examples",
+			"coverage": "required",
+			"units": ["desktop.component.entity-view"]
+		},
+		{
 			"id": "desktop-component-environment-picker",
 			"title": "EnvironmentPicker",
+			"coverage": "required",
+			"units": ["desktop.component.environment-picker"]
+		},
+		{
+			"id": "desktop-component-environment-picker-prod",
+			"title": "EnvironmentPicker: prod",
+			"coverage": "required",
+			"units": ["desktop.component.environment-picker"]
+		},
+		{
+			"id": "desktop-component-environment-picker-with-action",
+			"title": "EnvironmentPicker: with-action",
 			"coverage": "required",
 			"units": ["desktop.component.environment-picker"]
 		},
@@ -661,6 +925,42 @@
 			"units": ["desktop.component.history-panel"]
 		},
 		{
+			"id": "desktop-component-history-panel-empty",
+			"title": "History panel: empty",
+			"coverage": "required",
+			"units": ["desktop.component.history-panel"]
+		},
+		{
+			"id": "desktop-component-history-panel-incomplete",
+			"title": "History panel: incomplete",
+			"coverage": "required",
+			"units": ["desktop.component.history-panel"]
+		},
+		{
+			"id": "desktop-component-history-panel-more",
+			"title": "History panel: more",
+			"coverage": "required",
+			"units": ["desktop.component.history-panel"]
+		},
+		{
+			"id": "desktop-component-history-panel-loading",
+			"title": "History panel: loading",
+			"coverage": "required",
+			"units": ["desktop.component.history-panel"]
+		},
+		{
+			"id": "desktop-component-history-panel-error",
+			"title": "History panel: error",
+			"coverage": "required",
+			"units": ["desktop.component.history-panel"]
+		},
+		{
+			"id": "desktop-component-history-panel-long",
+			"title": "History panel: long",
+			"coverage": "required",
+			"units": ["desktop.component.history-panel"]
+		},
+		{
 			"id": "desktop-component-hosted-connection",
 			"title": "Hosted connection",
 			"coverage": "required",
@@ -693,6 +993,24 @@
 		{
 			"id": "desktop-component-nav-bar",
 			"title": "Nav bar",
+			"coverage": "required",
+			"units": ["desktop.component.nav-bar"]
+		},
+		{
+			"id": "desktop-component-nav-bar-readonly",
+			"title": "Nav bar: readonly",
+			"coverage": "required",
+			"units": ["desktop.component.nav-bar"]
+		},
+		{
+			"id": "desktop-component-nav-bar-account",
+			"title": "Nav bar: account",
+			"coverage": "required",
+			"units": ["desktop.component.nav-bar"]
+		},
+		{
+			"id": "desktop-component-nav-bar-game",
+			"title": "Nav bar: game",
 			"coverage": "required",
 			"units": ["desktop.component.nav-bar"]
 		},
@@ -841,8 +1159,68 @@
 			"units": ["desktop.component.project-gate"]
 		},
 		{
+			"id": "desktop-component-project-gate-available",
+			"title": "Project gate: available",
+			"coverage": "required",
+			"units": ["desktop.component.project-gate"]
+		},
+		{
+			"id": "desktop-component-project-gate-busy",
+			"title": "Project gate: busy",
+			"coverage": "required",
+			"units": ["desktop.component.project-gate"]
+		},
+		{
+			"id": "desktop-component-project-gate-recent",
+			"title": "Project gate: recent",
+			"coverage": "required",
+			"units": ["desktop.component.project-gate"]
+		},
+		{
+			"id": "desktop-component-project-gate-remote-empty",
+			"title": "Project gate: remote-empty",
+			"coverage": "required",
+			"units": ["desktop.component.project-gate"]
+		},
+		{
+			"id": "desktop-component-project-gate-remote-projects",
+			"title": "Project gate: remote-projects",
+			"coverage": "required",
+			"units": ["desktop.component.project-gate"]
+		},
+		{
 			"id": "desktop-component-project-switcher",
 			"title": "Project switcher",
+			"coverage": "required",
+			"units": ["desktop.component.project-switcher"]
+		},
+		{
+			"id": "desktop-component-project-switcher-open",
+			"title": "Project switcher: open",
+			"coverage": "required",
+			"units": ["desktop.component.project-switcher"]
+		},
+		{
+			"id": "desktop-component-project-switcher-shared",
+			"title": "Project switcher: shared",
+			"coverage": "required",
+			"units": ["desktop.component.project-switcher"]
+		},
+		{
+			"id": "desktop-component-project-switcher-empty",
+			"title": "Project switcher: empty",
+			"coverage": "required",
+			"units": ["desktop.component.project-switcher"]
+		},
+		{
+			"id": "desktop-component-project-switcher-busy",
+			"title": "Project switcher: busy",
+			"coverage": "required",
+			"units": ["desktop.component.project-switcher"]
+		},
+		{
+			"id": "desktop-component-project-switcher-long",
+			"title": "Project switcher: long",
 			"coverage": "required",
 			"units": ["desktop.component.project-switcher"]
 		},
@@ -931,6 +1309,36 @@
 			"units": ["desktop.component.revision-picker"]
 		},
 		{
+			"id": "desktop-component-revision-picker-branch-open",
+			"title": "Revision picker: branch-open",
+			"coverage": "required",
+			"units": ["desktop.component.revision-picker"]
+		},
+		{
+			"id": "desktop-component-revision-picker-commit-open",
+			"title": "Revision picker: commit-open",
+			"coverage": "required",
+			"units": ["desktop.component.revision-picker"]
+		},
+		{
+			"id": "desktop-component-revision-picker-historical",
+			"title": "Revision picker: historical",
+			"coverage": "required",
+			"units": ["desktop.component.revision-picker"]
+		},
+		{
+			"id": "desktop-component-revision-picker-pinned",
+			"title": "Revision picker: pinned",
+			"coverage": "required",
+			"units": ["desktop.component.revision-picker"]
+		},
+		{
+			"id": "desktop-component-revision-picker-unknown-time",
+			"title": "Revision picker: unknown-time",
+			"coverage": "required",
+			"units": ["desktop.component.revision-picker"]
+		},
+		{
 			"id": "desktop-component-run-status",
 			"title": "Run status",
 			"coverage": "required",
@@ -939,6 +1347,48 @@
 		{
 			"id": "desktop-component-runtime-artifact",
 			"title": "Runtime artifact",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-artifact"]
+		},
+		{
+			"id": "desktop-component-runtime-artifact-missing",
+			"title": "Runtime artifact: missing",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-artifact"]
+		},
+		{
+			"id": "desktop-component-runtime-artifact-unstored",
+			"title": "Runtime artifact: unstored",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-artifact"]
+		},
+		{
+			"id": "desktop-component-runtime-artifact-loading",
+			"title": "Runtime artifact: loading",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-artifact"]
+		},
+		{
+			"id": "desktop-component-runtime-artifact-unreadable",
+			"title": "Runtime artifact: unreadable",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-artifact"]
+		},
+		{
+			"id": "desktop-component-runtime-artifact-text",
+			"title": "Runtime artifact: text",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-artifact"]
+		},
+		{
+			"id": "desktop-component-runtime-artifact-recorded-open",
+			"title": "Runtime artifact: recorded-open",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-artifact"]
+		},
+		{
+			"id": "desktop-component-runtime-artifact-json-open",
+			"title": "Runtime artifact: json-open",
 			"coverage": "required",
 			"units": ["desktop.component.runtime-artifact"]
 		},
@@ -955,8 +1405,56 @@
 			"units": ["desktop.component.runtime-behavior"]
 		},
 		{
+			"id": "desktop-component-runtime-behavior-loading",
+			"title": "Runtime behavior: loading",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-behavior"]
+		},
+		{
+			"id": "desktop-component-runtime-behavior-unreadable",
+			"title": "Runtime behavior: unreadable",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-behavior"]
+		},
+		{
+			"id": "desktop-component-runtime-behavior-empty",
+			"title": "Runtime behavior: empty",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-behavior"]
+		},
+		{
 			"id": "desktop-component-runtime-evidence",
 			"title": "Runtime evidence",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-evidence"]
+		},
+		{
+			"id": "desktop-component-runtime-evidence-planned",
+			"title": "Runtime evidence: planned",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-evidence"]
+		},
+		{
+			"id": "desktop-component-runtime-evidence-unavailable",
+			"title": "Runtime evidence: unavailable",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-evidence"]
+		},
+		{
+			"id": "desktop-component-runtime-evidence-loading",
+			"title": "Runtime evidence: loading",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-evidence"]
+		},
+		{
+			"id": "desktop-component-runtime-evidence-error",
+			"title": "Runtime evidence: error",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-evidence"]
+		},
+		{
+			"id": "desktop-component-runtime-evidence-offline",
+			"title": "Runtime evidence: offline",
 			"coverage": "required",
 			"units": ["desktop.component.runtime-evidence"]
 		},
@@ -979,6 +1477,24 @@
 			"units": ["desktop.component.runtime-screens"]
 		},
 		{
+			"id": "desktop-component-runtime-screens-empty",
+			"title": "Runtime screens: empty",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-screens"]
+		},
+		{
+			"id": "desktop-component-runtime-screens-paired",
+			"title": "Runtime screens: paired",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-screens"]
+		},
+		{
+			"id": "desktop-component-runtime-screens-incomparable",
+			"title": "Runtime screens: incomparable",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-screens"]
+		},
+		{
 			"id": "desktop-component-segmented-choice",
 			"title": "Segmented choice",
 			"coverage": "required",
@@ -993,6 +1509,42 @@
 		{
 			"id": "desktop-component-status-icon",
 			"title": "Status icon",
+			"coverage": "required",
+			"units": ["desktop.component.status-icon"]
+		},
+		{
+			"id": "desktop-component-status-icon-failed",
+			"title": "Status icon: failed",
+			"coverage": "required",
+			"units": ["desktop.component.status-icon"]
+		},
+		{
+			"id": "desktop-component-status-icon-unverified",
+			"title": "Status icon: unverified",
+			"coverage": "required",
+			"units": ["desktop.component.status-icon"]
+		},
+		{
+			"id": "desktop-component-status-icon-unknown",
+			"title": "Status icon: unknown",
+			"coverage": "required",
+			"units": ["desktop.component.status-icon"]
+		},
+		{
+			"id": "desktop-component-status-icon-no-reason",
+			"title": "Status icon: no-reason",
+			"coverage": "required",
+			"units": ["desktop.component.status-icon"]
+		},
+		{
+			"id": "desktop-component-status-icon-open",
+			"title": "Status icon: open",
+			"coverage": "required",
+			"units": ["desktop.component.status-icon"]
+		},
+		{
+			"id": "desktop-component-status-icon-long",
+			"title": "Status icon: long",
 			"coverage": "required",
 			"units": ["desktop.component.status-icon"]
 		},
@@ -6160,12 +6712,39 @@
 				"desktop-component-agent-effort-picker",
 				"desktop-component-agent-model-picker",
 				"desktop-component-agent-settings",
+				"desktop-component-agent-settings-selected",
+				"desktop-component-agent-settings-not-saved",
 				"desktop-component-agents-providers-chat-agents",
+				"desktop-component-agents-providers-chat-agents-loading",
+				"desktop-component-agents-providers-chat-agents-unavailable",
+				"desktop-component-agents-providers-chat-agents-empty",
+				"desktop-component-agents-providers-chat-agents-never-used",
+				"desktop-component-agents-providers-chat-agents-unreadable",
+				"desktop-component-agents-providers-chat-agents-stale",
+				"desktop-component-agents-providers-chat-agents-stale-reading",
+				"desktop-component-agents-providers-chat-agents-many",
+				"desktop-component-agents-providers-chat-agents-historical",
+				"desktop-component-agents-providers-chat-agents-refresh-error",
 				"desktop-component-annotated-image",
 				"desktop-component-approval-button",
 				"desktop-component-catalog-view",
+				"desktop-component-catalog-view-empty",
+				"desktop-component-catalog-view-search-empty",
+				"desktop-component-catalog-view-filters-open",
+				"desktop-component-catalog-view-long",
 				"desktop-component-choice-dialog",
 				"desktop-component-composer",
+				"desktop-component-composer-plan",
+				"desktop-component-composer-ask",
+				"desktop-component-composer-change",
+				"desktop-component-composer-visual-plan",
+				"desktop-component-composer-running",
+				"desktop-component-composer-unapproved",
+				"desktop-component-composer-no-modes",
+				"desktop-component-composer-no-provider",
+				"desktop-component-composer-long",
+				"desktop-component-composer-compact",
+				"desktop-component-composer-retry",
 				"desktop-component-contract-panel",
 				"desktop-component-contract-panel-empty",
 				"desktop-component-contract-panel-missing-description",
@@ -6178,10 +6757,27 @@
 				"desktop-component-deployment-progress",
 				"desktop-component-deployment-route",
 				"desktop-component-design-panel",
+				"desktop-component-design-panel-empty",
+				"desktop-component-design-panel-headless",
+				"desktop-component-design-panel-loading",
+				"desktop-component-design-panel-error",
+				"desktop-component-design-panel-readonly",
+				"desktop-component-design-panel-long",
 				"desktop-component-details-panel",
 				"desktop-component-entity-card",
 				"desktop-component-entity-view",
+				"desktop-component-entity-view-source",
+				"desktop-component-entity-view-designs",
+				"desktop-component-entity-view-used-in",
+				"desktop-component-entity-view-uses",
+				"desktop-component-entity-view-apis",
+				"desktop-component-entity-view-states",
+				"desktop-component-entity-view-history",
+				"desktop-component-entity-view-conversation-closed",
+				"desktop-component-entity-view-helper-examples",
 				"desktop-component-environment-picker",
+				"desktop-component-environment-picker-prod",
+				"desktop-component-environment-picker-with-action",
 				"desktop-component-game-authoring-game-graph-fit",
 				"desktop-component-game-checkpoint-editor",
 				"desktop-component-game-checkpoint-image",
@@ -6201,12 +6797,21 @@
 				"desktop-component-game-view-fields",
 				"desktop-component-game-workspace",
 				"desktop-component-history-panel",
+				"desktop-component-history-panel-empty",
+				"desktop-component-history-panel-incomplete",
+				"desktop-component-history-panel-more",
+				"desktop-component-history-panel-loading",
+				"desktop-component-history-panel-error",
+				"desktop-component-history-panel-long",
 				"desktop-component-hosted-connection",
 				"desktop-component-icon",
 				"desktop-component-image-thumbnail",
 				"desktop-component-measures-panel",
 				"desktop-component-message-list",
 				"desktop-component-nav-bar",
+				"desktop-component-nav-bar-readonly",
+				"desktop-component-nav-bar-account",
+				"desktop-component-nav-bar-game",
 				"desktop-component-plan-badge",
 				"desktop-component-prior-image",
 				"desktop-component-project-agent",
@@ -6231,7 +6836,17 @@
 				"desktop-component-project-agent-agents-stale",
 				"desktop-component-project-agent-agents-many",
 				"desktop-component-project-gate",
+				"desktop-component-project-gate-available",
+				"desktop-component-project-gate-busy",
+				"desktop-component-project-gate-recent",
+				"desktop-component-project-gate-remote-empty",
+				"desktop-component-project-gate-remote-projects",
 				"desktop-component-project-switcher",
+				"desktop-component-project-switcher-open",
+				"desktop-component-project-switcher-shared",
+				"desktop-component-project-switcher-empty",
+				"desktop-component-project-switcher-busy",
+				"desktop-component-project-switcher-long",
 				"desktop-component-recorded-preview",
 				"desktop-component-reference-text",
 				"desktop-component-relationships-panel",
@@ -6246,17 +6861,46 @@
 				"desktop-component-remote-offer-code",
 				"desktop-component-remote-phone-panel",
 				"desktop-component-revision-picker",
+				"desktop-component-revision-picker-branch-open",
+				"desktop-component-revision-picker-commit-open",
+				"desktop-component-revision-picker-historical",
+				"desktop-component-revision-picker-pinned",
+				"desktop-component-revision-picker-unknown-time",
 				"desktop-component-run-status",
 				"desktop-component-runtime-artifact",
+				"desktop-component-runtime-artifact-missing",
+				"desktop-component-runtime-artifact-unstored",
+				"desktop-component-runtime-artifact-loading",
+				"desktop-component-runtime-artifact-unreadable",
+				"desktop-component-runtime-artifact-text",
+				"desktop-component-runtime-artifact-recorded-open",
+				"desktop-component-runtime-artifact-json-open",
 				"desktop-component-runtime-audio",
 				"desktop-component-runtime-behavior",
+				"desktop-component-runtime-behavior-loading",
+				"desktop-component-runtime-behavior-unreadable",
+				"desktop-component-runtime-behavior-empty",
 				"desktop-component-runtime-evidence",
+				"desktop-component-runtime-evidence-planned",
+				"desktop-component-runtime-evidence-unavailable",
+				"desktop-component-runtime-evidence-loading",
+				"desktop-component-runtime-evidence-error",
+				"desktop-component-runtime-evidence-offline",
 				"desktop-component-runtime-pane",
 				"desktop-component-runtime-run",
 				"desktop-component-runtime-screens",
+				"desktop-component-runtime-screens-empty",
+				"desktop-component-runtime-screens-paired",
+				"desktop-component-runtime-screens-incomparable",
 				"desktop-component-segmented-choice",
 				"desktop-component-status-bar",
 				"desktop-component-status-icon",
+				"desktop-component-status-icon-failed",
+				"desktop-component-status-icon-unverified",
+				"desktop-component-status-icon-unknown",
+				"desktop-component-status-icon-no-reason",
+				"desktop-component-status-icon-open",
+				"desktop-component-status-icon-long",
 				"desktop-component-thread-history",
 				"desktop-component-thread-links",
 				"desktop-component-thread-panel",

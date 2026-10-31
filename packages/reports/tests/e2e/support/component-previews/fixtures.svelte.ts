@@ -22,6 +22,8 @@ import { nativeAtomFixture } from './nativeAtomProps';
 import { projectAgentStateFixture } from './projectAgentStateFixtures';
 import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 import { evidenceViewerState } from './evidenceViewerState.svelte';
+import { desktopPreviewVariant } from './desktopPreviewVariants';
+import { desktopRuntimeReady } from './desktopRuntimeVariants';
 export function previewFixture(id: string, variant = '') {
 	const desktop = createDesktopData(id);
 	// The shell opens at Pages, where its store starts and where the web workspace opens too.
@@ -56,7 +58,11 @@ export function previewFixture(id: string, variant = '') {
 		nativeAtomFixture(id);
 	if (!props) throw new Error(`No representative fixture for ${id}`);
 	const selectedProps = projectAgentProps(id, props, desktop, variant);
-	const rendered = variantProps(id, selectedProps, variant);
+	const rendered = variantProps(
+		id,
+		desktopPreviewVariant(id, selectedProps, desktop, variant),
+		variant
+	);
 	// A shell that reads its place from the browser is opened where its host serves it.
 	const address = { ...legacyAddresses, ...hub.addresses }[id];
 	if (address) history.replaceState(history.state, '', address);
@@ -68,7 +74,7 @@ export function previewFixture(id: string, variant = '') {
 			desktop.cleanup();
 			route?.restore();
 		},
-		ready: desktop.ready
+		ready: desktopRuntimeReady(id, desktop, variant)
 	};
 }
 
@@ -99,7 +105,7 @@ function desktopCases(desktop: ReturnType<typeof createDesktopData>) {
 function variantProps(id: string, props: PreviewCases[string], variant: string) {
 	if (!previewVariants(id).includes(variant))
 		throw new Error(`Unknown preview variant ${id}:${variant}`);
-	if (!variant || id === 'desktop.component.project-agent' || nativeAtomFixture(id)) return props;
+	if (!variant || id.startsWith('desktop.component.') || nativeAtomFixture(id)) return props;
 	const presentation = presentationVariant(id, props, variant);
 	if (presentation) return presentation;
 	const report = reportVariantProps(id, props, variant);

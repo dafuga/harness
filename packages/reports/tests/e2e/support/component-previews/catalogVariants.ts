@@ -16,9 +16,11 @@ import { recordedValueStates } from './recordedValueVariants';
 import { imageZoomStates } from './imageZoomVariants';
 
 import { browserErrorsStates } from './browserErrorsVariants';
+import { desktopCatalogVariants } from './desktopCatalogVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
+	...desktopCatalogVariants,
 	...nativeAtomVariants,
 	...explorerKitVariants,
 	...presentationVariants,

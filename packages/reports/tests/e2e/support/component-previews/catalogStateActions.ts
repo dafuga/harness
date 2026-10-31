@@ -10,6 +10,7 @@ import { prepareEntitySearchState } from './entitySearchPreviewActions';
 
 import { prepareEvidenceCard } from './evidenceCardActions';
 import { prepareReportState } from './reportStateActions';
+import { prepareDesktopState } from './desktopStateActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -93,6 +94,7 @@ const actions: Record<string, CatalogStateAction> = {
 
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
+	await prepareDesktopState(component, id, variant);
 	await preparePresentationState(component, id, variant);
 	if (await prepareReportState(component, id, variant)) return;
 	if (id === 'reports.component.entity-search' && variant)
