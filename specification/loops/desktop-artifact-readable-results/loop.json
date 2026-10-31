@@ -2,7 +2,7 @@
 	"name": "desktop-artifact-readable-results",
 	"goal": "Show meaningful recorded steps and adjacent gap messages without contradictory empty-case text",
 	"createdAt": "2026-10-31T21:56:52.837Z",
-	"updatedAt": "2026-10-31T21:56:52.837Z",
+	"updatedAt": "2026-10-31T21:57:05.228Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -13,12 +13,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T21:57:04.460Z",
+			"evidence": "Visual6 rejects raw search-step objects, synthetic fixture wording, contradictory missing-I/O copy and distant gap icons in the existing eight states."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T21:57:05.228Z",
+			"evidence": "The standard component catalog checked state markers and bounds but not readable step labels or icon-to-message spacing. Strengthen the same 24 cases after capture."
 		},
 		{
 			"id": "red",
