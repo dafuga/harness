@@ -1,6 +1,6 @@
 import { SourceGraphService } from '../../../src/services/development-tooling/SourceGraphService';
 import { measureWorkload } from '../../support/measureWorkload';
-import { expect } from 'vitest';
+import { expect } from '../../verificationExpect';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { indexFiles, unitOf } from '../../support/memoryTree';
 import { recordIndexWorkload } from './measurements';

@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import type { SourceTree, TreeEntry } from '../../../src/core/sourceTypes';
 import { defaultUnitsConfig } from '../../../src/core/unitsConfig';
 import { SourceIndexService } from '../../../src/services/source-index-service/SourceIndexService';

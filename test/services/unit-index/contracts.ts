@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect } from '../../verificationExpect';
 import type { Indexed } from '../../support/memoryTree';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { indexFiles, unitOf } from '../../support/memoryTree';
@@ -51,7 +51,7 @@ export async function assertContractExtraction(): Promise<void> {
 }
 
 function assertCallContract(call: ComponentManifest['contract']): void {
-	expect.soft(call.inputs).toEqual(
+	expect(call.inputs).toEqual(
 		expect.arrayContaining([
 			{ name: 'call.name', type: 'string', required: true },
 			{ name: 'call.size', type: 'number', required: false, default: 16 },
@@ -59,55 +59,50 @@ function assertCallContract(call: ComponentManifest['contract']): void {
 			{ name: 'call.enabled', type: 'boolean', required: false, default: true }
 		])
 	);
-	expect
-		.soft(call.operations?.map((operation) => operation.name))
-		.toEqual(['call', 'reject', 'relay']);
-	expect.soft(call.operations?.[0]).toMatchObject({ errors: [], errorStatus: 'none-found' });
-	expect
-		.soft(call.operations?.[1])
-		.toMatchObject({ errors: [{ name: 'RangeError', type: 'thrown' }] });
-	expect.soft(call.operations?.[2]).toMatchObject({ errorStatus: 'unknown' });
+	expect(call.operations?.map((operation) => operation.name)).toEqual(['call', 'reject', 'relay']);
+	expect(call.operations?.[0]).toMatchObject({ errors: [], errorStatus: 'none-found' });
+	expect(call.operations?.[1]).toMatchObject({ errors: [{ name: 'RangeError', type: 'thrown' }] });
+	expect(call.operations?.[2]).toMatchObject({ errorStatus: 'unknown' });
 }
 
 function assertComponentContracts(indexed: Indexed): void {
 	const panel = unitOf(indexed, 'component.panel').contract;
-	expect.soft(panel.inputs).toEqual([
+	expect(panel.inputs).toEqual([
 		{ name: 'Panel.title', type: 'string', required: true },
 		{ name: 'Panel.size', type: 'number', required: false, default: 16 },
 		{ name: 'Panel.children', type: 'Snippet', required: false }
 	]);
-	expect.soft(panel.snippets?.[0]).toMatchObject({
+	expect(panel.snippets?.[0]).toMatchObject({
 		name: 'Panel.row',
 		inputs: [
 			{ name: 'Panel.row.node', type: 'string', required: true },
 			{ name: 'Panel.row.text', type: 'string', required: false }
 		]
 	});
-	expect
-		.soft(unitOf(indexed, 'component.wrapper').contract.inputs)
-		.toEqual(
-			panel.inputs.map((item) => ({ ...item, name: item.name.replace('Panel.', 'Wrapper.') }))
-		);
+	expect(unitOf(indexed, 'component.wrapper').contract.inputs).toEqual(
+		panel.inputs.map((item) => ({ ...item, name: item.name.replace('Panel.', 'Wrapper.') }))
+	);
 }
 
 function assertServiceContract(service: ComponentManifest['contract']): void {
-	expect.soft(service.initialization?.[0]).toMatchObject({
+	expect(service.initialization?.[0]).toMatchObject({
 		name: 'StoreService.constructor',
 		inputs: [
 			{ name: 'StoreService.constructor.root', type: 'string', required: false, default: '/tmp' }
 		]
 	});
-	expect
-		.soft(service.operations?.map((operation) => operation.name))
-		.toEqual(['StoreService.read', 'StoreService.write']);
-	expect.soft(service.operations?.[0].errors).toEqual([]);
-	expect.soft(service.operations?.[1].errors).toEqual([{ name: 'TypeError', type: 'thrown' }]);
+	expect(service.operations?.map((operation) => operation.name)).toEqual([
+		'StoreService.read',
+		'StoreService.write'
+	]);
+	expect(service.operations?.[0].errors).toEqual([]);
+	expect(service.operations?.[1].errors).toEqual([{ name: 'TypeError', type: 'thrown' }]);
 }
 
 function assertModelContract(indexed: Indexed): void {
 	const model = unitOf(indexed, 'model.entry');
-	expect.soft(model.owns.source).toEqual(['src/models/Entry.ts', 'src/models/Entry.types.ts']);
-	expect.soft(model.contract.storage?.[0]).toMatchObject({
+	expect(model.owns.source).toEqual(['src/models/Entry.ts', 'src/models/Entry.types.ts']);
+	expect(model.contract.storage?.[0]).toMatchObject({
 		name: 'Entry',
 		table: 'entries',
 		primaryKey: 'id',

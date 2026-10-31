@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { indexFiles, unitOf } from '../../support/memoryTree';
 import { UnitRegistryValidator } from '../../../src/validators/UnitRegistryValidator';
 import { revisionRegistry } from '../../../src/utils/verification-evidence/revision-registry/revisionRegistry';

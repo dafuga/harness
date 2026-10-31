@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { indexFiles } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
 import { defaultUnitsConfig } from '../../../src/core/unitsConfig';

@@ -1,5 +1,5 @@
 import type { ComponentManifest } from '../../../src/core/unitTypes';
-import { expect } from 'vitest';
+import { expect } from '../../verificationExpect';
 import type { Indexed } from '../../support/memoryTree';
 import { indexFiles, unitOf } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';

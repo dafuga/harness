@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { UnitRegistryValidator } from '../../../src/validators/UnitRegistryValidator';
 import { registryErrors } from '../../../src/cli/program/manageUnits';
 import { UnitRegistryRepository } from '../../../src/repositories/verification-evidence/UnitRegistryRepository';
@@ -37,9 +37,9 @@ function assertIdentityAdmission(first: ComponentManifest) {
 	const other = { ...first, id: 'function.other', owns: { source: [leaf], symbols: ['other'] } };
 	const paths = new Set([facade, leaf]);
 	const validator = new UnitRegistryValidator();
-	expect
-		.soft(validator.validate([first, { ...other, id: first.id }], paths))
-		.toContain('Duplicate active unit id function.scan-imports');
+	expect(validator.validate([first, { ...other, id: first.id }], paths)).toContain(
+		'Duplicate active unit id function.scan-imports'
+	);
 	expect(validator.validate([first, other], paths)).toEqual([]);
 	expect(validator.validate([first, { ...other, owns: first.owns }], paths)).toContain(
 		`${facade} is owned by function.scan-imports and function.other`
@@ -96,11 +96,9 @@ async function assertRuntimeBackEdges(first: ComponentManifest) {
 		const stable = await indexFiles(files, indexed.result.manifests);
 		const errors = registryErrors(context(stable));
 		if (mode === 'backedge')
-			expect
-				.soft(errors)
-				.toContain(
-					`function.scan-imports: canonical ${canonical} runtime-imports forwarding entry ${facade}`
-				);
+			expect(errors).toContain(
+				`function.scan-imports: canonical ${canonical} runtime-imports forwarding entry ${facade}`
+			);
 		else expect(errors).toEqual([]);
 	}
 }
@@ -154,11 +152,9 @@ async function assertComponentBackEdges() {
 		const stable = await indexFiles(files, indexed.result.manifests);
 		const errors = registryErrors(context(stable));
 		if (cycle)
-			expect
-				.soft(errors)
-				.toContain(
-					`reports.component.select: canonical ${implementation} runtime-imports forwarding entry ${entry}`
-				);
+			expect(errors).toContain(
+				`reports.component.select: canonical ${implementation} runtime-imports forwarding entry ${entry}`
+			);
 		else expect(errors).toEqual([]);
 	}
 }

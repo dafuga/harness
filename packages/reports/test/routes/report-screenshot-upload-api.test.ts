@@ -1,5 +1,6 @@
 import { assertUploadAdmission } from './uploadAdmissionCases';
-import { expect, test, vi } from 'vitest';
+import { test, vi } from 'vitest';
+import { expect } from '../../../../test/verificationExpect';
 import { POST } from '../../src/routes/api/report-screenshot-upload/+server';
 
 test('upload endpoint rejects cross-origin requests before reading files', async () => {

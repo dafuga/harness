@@ -1,5 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import { expect, vi } from 'vitest';
+import { vi } from 'vitest';
+import { expect } from '../../../../test/verificationExpect';
 import type { AdmissionCase, UploadPost } from './uploadAdmissionCases.types';
 const origin = 'http://127.0.0.1:5588';
 const multipart = { Origin: origin, 'Content-Type': 'multipart/form-data' };
