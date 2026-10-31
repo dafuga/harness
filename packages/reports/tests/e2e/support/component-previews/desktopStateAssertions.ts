@@ -7,6 +7,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'design-panel:empty': 'No design image yet',
 		'design-panel:headless': 'No plan yet',
 		'design-panel:headless-plan': 'Planned behavior',
+		'design-panel:long': 'A detailed design direction.',
 		'design-panel:loading': 'Loading design image…',
 		'design-panel:error': 'Synthetic image read refused.',
 		'history-panel:empty': 'No history recorded for this entity.',
