@@ -2,7 +2,7 @@
 	"name": "sol8-table-action",
 	"goal": "Keep ExplorerTable action labels and their arrows on one line without breaking horizontal scrolling",
 	"createdAt": "2026-10-31T21:17:48.312Z",
-	"updatedAt": "2026-10-31T21:22:33.862Z",
+	"updatedAt": "2026-10-31T21:26:59.586Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T21:26:55.499Z",
+			"evidence": "e6d6126987 keeps the table action intrinsic width and prevents label wrapping, while preserving the existing scroll frame and hint."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T21:26:59.586Z",
+			"evidence": "The unchanged 42-case responsive catalog passes at e6d6126987 against red feab90ca at 4f40523e80, including functions and services action geometry."
 		},
 		{
 			"id": "verify",
