@@ -2,7 +2,7 @@
 	"name": "sol8-chat-anchoring",
 	"goal": "Anchor model and effort choices beside their trigger and align the navigation fixture with its real caller",
 	"createdAt": "2026-10-31T19:56:03.897Z",
-	"updatedAt": "2026-10-31T19:56:05.234Z",
+	"updatedAt": "2026-10-31T19:59:06.105Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T19:59:06.105Z",
+			"evidence": "At ad6de0137f the committed catalog fails Chat picker stays beside its opening button. Its actual images and failing geometry are retained in the red proof."
 		},
 		{
 			"id": "implement",
