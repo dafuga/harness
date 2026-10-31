@@ -2,7 +2,7 @@
 	"name": "desktop-readonly-field-treatment",
 	"goal": "Make every read-only game view field visibly immutable while retaining navigation",
 	"createdAt": "2026-10-31T20:39:14.319Z",
-	"updatedAt": "2026-10-31T20:39:16.521Z",
+	"updatedAt": "2026-10-31T20:46:43.338Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:43:25.893Z",
+			"evidence": "Test checkpoint f7e7abdde8 fails the same readonly case at desktop, tablet and mobile: title remains enabled. Record770c5016019f3e2e5b88ad36222c9ee1d43ac886d6585300c9c7525c51accad6 retains all three original images."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:46:42.043Z",
+			"evidence": "Product-only fix0a3f92dbe4 disables title and art direction with the existing muted-control token, removes the resize affordance, and labels read-only settings. View navigation remains enabled."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:46:43.338Z",
+			"evidence": "Pinned matched pair: redffbb9d991f4cf695f3fda876877676591e2062f8c8093050c3c9cef483daed33 atf7e7abdde8 fails3; green456248ea3c189b2b3ce907bce5f610f09d176eb6514aff08e85c400a20869a45 at0a3f92dbe4 passes3. Same frozen tests, fixtures, command and profile; all six originals inspected."
 		},
 		{
 			"id": "verify",
