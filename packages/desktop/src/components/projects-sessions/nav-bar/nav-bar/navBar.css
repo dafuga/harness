@@ -93,6 +93,10 @@ header.topbar {
 }
 /* Narrower, the environment and the revision take a row of their own under the project. */
 @media (min-width: 561px) and (max-width: 1250px) {
+	.topbar nav :global(a) {
+		min-width: max-content;
+		padding-inline: var(--hx-space-6);
+	}
 	.topbar :global(.environment-picker) {
 		justify-self: start;
 	}
