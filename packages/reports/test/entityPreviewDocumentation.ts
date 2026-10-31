@@ -1,10 +1,10 @@
 import type { HarnessRevision } from '../src/models/Harness.types';
-import { ids } from './entityUnits';
+import { commits, ids } from './entityUnits';
 
 /** Committed usage documentation differs at each revision; it is never verification evidence. */
 export function withDocumentation(detail: HarnessRevision): HarnessRevision {
 	const name =
-		detail.commit === 'c'.repeat(40) ? 'Find a matching order' : 'Search the earlier catalog';
+		detail.commit === commits.tip ? 'Find a matching order' : 'Search the earlier catalog';
 	const examples = [
 		{
 			name,

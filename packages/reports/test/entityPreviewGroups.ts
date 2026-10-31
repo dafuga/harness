@@ -1,7 +1,7 @@
 import { deliveryConfig } from './entityConfigFixtures';
 import { modelDefinition } from './entityClassFixtures';
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
-import { ids, units } from './entityUnits';
+import { commits, ids, units } from './entityUnits';
 import taxonomy from '../../../harness.groups.json' with { type: 'json' };
 import { moduleGroup } from '../../../src/utils/development-tooling/moduleGroup';
 import { modelContractFixture } from './entityModelContract';
@@ -98,7 +98,7 @@ function categoryUnit(unit: HarnessUnit, commit: string): HarnessUnit {
 	const group =
 		unit.id === ids.search
 			? { id: 'inputs', title: 'Inputs' }
-			: { id: 'orders', title: commit === 'a'.repeat(40) ? 'Purchases' : 'Orders' };
+			: { id: 'orders', title: commit === commits.first ? 'Purchases' : 'Orders' };
 	const source = unit.owns.source.map((path) =>
 		path.includes('/routes/') || path.includes(`/${group.id}/`)
 			? path
@@ -161,7 +161,7 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 			].map((unit) =>
 				modelContractFixture(
 					categoryUnit(
-						unit.id === ids.store && detail.commit !== 'a'.repeat(40)
+						unit.id === ids.store && detail.commit !== commits.first
 							? {
 									...unit,
 									dependencies: [
@@ -182,7 +182,7 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 
 /** A text export keeps its own folder even when its owning module serves orders. */
 function textHelper(unit: HarnessUnit, commit: string) {
-	const group = { id: 'strings', title: commit === 'a'.repeat(40) ? 'Words' : 'Strings' };
+	const group = { id: 'strings', title: commit === commits.first ? 'Words' : 'Strings' };
 	return {
 		helpers: [
 			...(unit.helpers ?? []).map((helper) => ({
