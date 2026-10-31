@@ -2,7 +2,7 @@
 	"name": "desktop-picker-presentation",
 	"goal": "Show actual historical, selected shared project and busy controls in Desktop catalog states",
 	"createdAt": "2026-10-31T18:52:53.592Z",
-	"updatedAt": "2026-10-31T18:52:54.977Z",
+	"updatedAt": "2026-10-31T18:55:23.469Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:55:22.196Z",
+			"evidence": "0aa9178bd99e61738b7056e73d39009969a33545bdaa3451777cd457bb675861; nine existing picker cases fail across desktop, tablet and mobile on the visible historical/shared/busy markers."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:55:23.469Z",
+			"evidence": "Select the real shared-project snapshot, use the older committed fixture hash and leave busy closed so its disabled Add control is painted."
 		},
 		{
 			"id": "green",
