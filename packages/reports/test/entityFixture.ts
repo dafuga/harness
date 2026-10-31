@@ -29,10 +29,11 @@ export function tested(
 const shot = (viewport: string): CaptureSeed => ({ kind: 'screenshot', state: '', viewport });
 const proof = (kind: string): CaptureSeed => ({ kind, state: '' });
 
+const metricUnits: Record<string, string> = { 'p95-ms': 'ms', complexity: 'count' };
 const measure = (target: string, metric: string, value: number | null) => ({
 	unit: target,
 	metric,
-	unitOfMeasure: metric === 'p95-ms' ? 'ms' : metric === 'complexity' ? 'count' : 'bytes',
+	unitOfMeasure: metricUnits[metric] ?? 'bytes',
 	value,
 	workload: metric === 'p95-ms' ? 'thousand-orders' : null,
 	profile: metric === 'p95-ms' ? 'bun-reference' : null
