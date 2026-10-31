@@ -1,0 +1,62 @@
+{
+	"name": "desktop-nav-complete-captions",
+	"goal": "Keep all category captions complete in the recorded tablet and desktop navigation states",
+	"createdAt": "2026-10-31T22:28:24.365Z",
+	"updatedAt": "2026-10-31T22:31:49.529Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:28:40.703Z",
+			"evidence": "Self-review of the full NavBar game captures found partially painted neighboring labels at the scroll edge despite the valid single-row layout."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:28:41.445Z",
+			"evidence": "The row-count and game-icon assertions missed fixed-width tabs overflowing their sample catalog. Require complete category caption bounds in the same existing desktop/tablet cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:29:53.662Z",
+			"evidence": "Checkpoint2ec41ce78c records three failures and one desktop default pass. Recorddf040ec4e419bdc8f861fdf2fae43db600a77e8173ea75335c17bc7e3becb796 retains4 original captures with partially painted or hidden category captions."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:31:48.220Z",
+			"evidence": "Content-width category tabs with the existing4px inline spacing token fit all sample captions at desktop/tablet while preserving horizontal overflow for longer content."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:31:49.529Z",
+			"evidence": "Matched reddf040ec4e419bdc8f861fdf2fae43db600a77e8173ea75335c17bc7e3becb796 fails3/pass1; green49dd16893fbefd30c9064eb16e81edf11eee5044ad1b7a85e9c0a81c558087d7 atb8c85f288e passes4. Same frozen tests/fixtures/profile; all8 original images inspected."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

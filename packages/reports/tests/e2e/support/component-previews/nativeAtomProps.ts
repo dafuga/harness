@@ -7,6 +7,8 @@ const attributes: Record<string, Record<string, unknown>> = {
 	ol: { style: 'list-style:decimal inside' },
 	ul: { style: 'list-style:disc inside' },
 	li: { style: 'list-style:disc inside' },
+	table: { class: 'native-atom-table' },
+	th: { scope: 'col' },
 	button: { type: 'button' },
 	select: { 'aria-label': 'Example choice' },
 	textarea: { 'aria-label': 'Example text', placeholder: 'Write a message', rows: 3 },

@@ -1,0 +1,62 @@
+{
+	"name": "desktop-nav-responsive-rail",
+	"goal": "Keep tablet navigation on one scrolling row with a clean context rail and aligned Game Views icon",
+	"createdAt": "2026-10-31T22:16:18.629Z",
+	"updatedAt": "2026-10-31T22:21:49.759Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:16:19.419Z",
+			"evidence": "Visual5 rejects tablet context placement, ragged wrapped tabs and the missing Game Views icon; mobile must retain aligned readable icon labels."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:16:20.074Z",
+			"evidence": "Existing catalog cases checked Settings visibility but not tab row geometry, context alignment or the Game Views SVG. Add those assertions to the same cases and scroll the game link into view through the standard action."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:17:18.005Z",
+			"evidence": "Checkpoint ec8a9f1cf0 records three failures and one mobile default pass. Record79a952e83aaac5ef6c99a097d7c21031361cd1ac54e1989744c09dc2e94e051c retains four before images; tablet tabs wrap and Game Views has no SVG."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:21:48.136Z",
+			"evidence": "Fix92a07c2b50 prevents tablet/desktop tab wrapping, scrolls overflow within the reserved category row, left-aligns the tablet environment rail, and adds a game-controller glyph with the standard icon-label structure."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:21:49.759Z",
+			"evidence": "Matched red79a952e83aaac5ef6c99a097d7c21031361cd1ac54e1989744c09dc2e94e051c has3 failures/1 pass; green1635fe822bb3a6b5fed341fd2ea983fa0c87753a2bcc00c2c6877e3a39eafd9f passes4 with frozen tests, fixtures, command and profile. All8 originals inspected."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

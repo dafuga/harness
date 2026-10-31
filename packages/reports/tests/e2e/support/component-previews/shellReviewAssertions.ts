@@ -33,7 +33,7 @@ export async function assertShellReview(
 		'Catalog text uses realistic identities and config values'
 	).not.toMatch(/\b(?:a{7,}|b{7,}|c{7,})\b|record-test-|orders\/orders\//);
 	await namedState(component, id, variant);
-	if (viewport === 'mobile') await mobileTables(component, id, variant);
+	await responsiveTables(component, id, variant, viewport);
 	await affordances(component, id, variant);
 }
 
@@ -81,8 +81,12 @@ async function detailState(component: Locator, id: string, variant: string) {
 	}
 }
 
-async function mobileTables(component: Locator, id: string, variant: string) {
-	if (id.endsWith('harness-entity-details') && ['measurements', 'unmeasured'].includes(variant)) {
+async function responsiveTables(component: Locator, id: string, variant: string, viewport: string) {
+	if (
+		viewport === 'mobile' &&
+		id.endsWith('harness-entity-details') &&
+		['measurements', 'unmeasured'].includes(variant)
+	) {
 		const panel = component.locator('[data-harness-component="harness-entity-measures"]');
 		expect(await panel.innerText(), 'Measurement values remain visible on mobile').toMatch(
 			/source bytes/i
@@ -108,11 +112,12 @@ async function mobileTables(component: Locator, id: string, variant: string) {
 		cells
 			.filter((cell) => {
 				const rect = cell.getBoundingClientRect();
-				return rect.width > 0 && (rect.left < 0 || rect.right > innerWidth);
+				const frame = cell.closest('.ex-scroll')!.getBoundingClientRect();
+				return rect.width > 0 && (rect.left < frame.left - 1 || rect.right > frame.right + 1);
 			})
 			.map((cell) => cell.textContent?.trim())
 	);
-	expect(clipped, 'All history fields are visible within the mobile frame').toEqual([]);
+	expect(clipped, 'All history fields are visible within the viewport frame').toEqual([]);
 }
 
 async function sourceLink(component: Locator) {
@@ -122,12 +127,21 @@ async function sourceLink(component: Locator) {
 		const name = anchor.querySelector('.source-name') ?? anchor;
 		const style = getComputedStyle(name);
 		const panel = anchor.closest('section')!;
-		return (
-			style.textDecorationLine.includes('underline') ||
-			style.color !== getComputedStyle(panel).color
-		);
+		const text = document.createRange();
+		text.selectNodeContents(name);
+		return {
+			visible:
+				style.textDecorationLine.includes('underline') ||
+				style.color !== getComputedStyle(panel).color,
+			room: name.getBoundingClientRect().bottom - text.getBoundingClientRect().bottom,
+			offset: parseFloat(style.textUnderlineOffset) || 0
+		};
 	});
-	expect(indicated, 'The source filename visibly indicates that it is a link').toBe(true);
+	expect(indicated.visible, 'The source filename visibly indicates that it is a link').toBe(true);
+	expect(
+		indicated.room,
+		'The underline fits inside the source filename clipping box'
+	).toBeGreaterThanOrEqual(indicated.offset + 1);
 }
 
 async function searchFocus(component: Locator) {

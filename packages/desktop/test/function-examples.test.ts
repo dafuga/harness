@@ -47,7 +47,11 @@ test('a result that states an input and an output is one row, said to be what a 
 
 test('what an assertion expected and found is never a row, and what is malformed or of another unit says so', () => {
 	const none = artifact(stored(compared), unit);
-	expect([rows(none), words(none).includes(gaps.none)]).toEqual([[], true]);
+	// A legacy assertion summary has no case rows, without a contradictory empty-result notice.
+	expect(
+		[rows(none), words(none).includes(gaps.none)],
+		'Assertion summaries retain facts without claiming that no result was recorded'
+	).toEqual([[], false]);
 	expect(words(none)).toContain('Total matches');
 	for (const [position, document] of malformed.entries()) {
 		const body = artifact(stored(document), unit);

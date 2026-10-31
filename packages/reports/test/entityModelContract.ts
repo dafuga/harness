@@ -1,9 +1,10 @@
 import type { HarnessUnit } from '../src/models/Harness.types';
+import { commits } from './entityUnits';
 
 /** Synthetic model declarations let normal model detail coverage distinguish methods and storage. */
 export function modelContractFixture(unit: HarnessUnit, commit: string): HarnessUnit {
 	if (unit.id !== 'app.model.order') return unit;
-	const previous = commit === 'b'.repeat(40);
+	const previous = commit === commits.middle;
 	const declaration = {
 		name: 'Order',
 		kind: 'class',

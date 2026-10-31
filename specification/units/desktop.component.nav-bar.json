@@ -52,7 +52,7 @@
 			{
 				"name": "NavBar",
 				"type": "markup",
-				"description": "Top bar with project and revision controls, category navigation, search, optional Settings and account content. On phones all category icon-and-text labels fit in two rows, with search controls in the spare cell. Search uses the current workspace context; desktop navigation behavior is preserved."
+				"description": "Top bar with project and revision controls, category navigation, search, optional Settings and account content. Desktop and tablet categories stay in one horizontally scrolling row; the tablet context rail starts at the header edge. Mobile category cells use aligned icon-and-text labels, including Game Views. Search uses the current workspace context."
 			}
 		],
 		"errors": [

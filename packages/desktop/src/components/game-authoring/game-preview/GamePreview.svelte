@@ -47,7 +47,6 @@
 		untrack(() => live?.setPrompt(style));
 	});
 	const keyup = (event: KeyboardEvent) => held.delete(event.key);
-
 	function step(input: GameInput) {
 		run = stepGame(run, input, view);
 		onRun(run);

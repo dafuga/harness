@@ -1,0 +1,62 @@
+import { expect, type Locator } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+/** An open disclosure must retain its actual content inside the original recorded crop. */
+export async function assertDesktopArtifactCapture(
+	component: Locator,
+	id: string,
+	variant: string
+) {
+	if (id !== 'desktop.component.runtime-artifact') return;
+	await assertReadableResult(component, variant);
+	if (variant !== 'json-open') return;
+	const directory = process.env.HARNESS_EVIDENCE_DIR;
+	if (!directory || process.env.TAKE_SCREENSHOT !== '1') return;
+	const raw = component.getByText('Recorded JSON', { exact: true }).locator('..').locator('pre');
+	await expect(raw).toBeVisible();
+	const capture = readFileSync(join(directory, 'captures.ndjson'), 'utf8')
+		.split('\n')
+		.filter(Boolean)
+		.map((line) => JSON.parse(line))
+		.findLast(
+			(slot) =>
+				slot.kind === 'screenshot' && slot.state === 'desktop-component-runtime-artifact-json-open'
+		);
+	expect(capture?.clip).toBeDefined();
+	const bounds = await raw.evaluate((node) => {
+		const box = node.getBoundingClientRect();
+		return { top: box.top + scrollY, bottom: box.bottom + scrollY };
+	});
+	expect(bounds.top).toBeGreaterThanOrEqual(capture.clip.y);
+	expect(
+		bounds.bottom,
+		'Opened recorded JSON is completely inside the captured image'
+	).toBeLessThanOrEqual(capture.clip.y + capture.clip.height + 1);
+}
+
+async function assertReadableResult(component: Locator, variant: string) {
+	if (['', 'text', 'recorded-open', 'json-open'].includes(variant)) {
+		await expect(component, 'Recorded results do not claim to be empty').not.toContainText(
+			'This result records no input and output.'
+		);
+	}
+	if (['recorded-open', 'json-open'].includes(variant)) {
+		await expect(component.locator('ol li').nth(1)).toHaveText('Search for “SERVICE”');
+		expect(
+			await component.innerText(),
+			'Recorded results use meaningful workload descriptions'
+		).not.toMatch(/synthetic orders|taken for [a-f\d]{7}/i);
+	}
+	if (['unreadable', 'unstored'].includes(variant)) {
+		const separation = await component.locator('.runtime-gap').evaluate((node) => {
+			const icon = node.querySelector('button')!.getBoundingClientRect();
+			const message = node.lastElementChild!.getBoundingClientRect();
+			return { actual: message.left - icon.right, gap: parseFloat(getComputedStyle(node).gap) };
+		});
+		expect(
+			separation.actual,
+			'Artifact gap message stays beside its status icon'
+		).toBeLessThanOrEqual(separation.gap + 1);
+	}
+}

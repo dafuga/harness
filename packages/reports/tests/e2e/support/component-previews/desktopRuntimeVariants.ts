@@ -1,5 +1,6 @@
 import type { DesktopData } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
+import { desktopArtifactText } from './desktopFixtureData';
 
 export function desktopRuntimeVariant(
 	id: string,
@@ -73,20 +74,7 @@ function artifact(props: PreviewProps, data: DesktopData, variant: string): Prev
 		text: {
 			cell: {
 				...cell,
-				read: {
-					...cell.read,
-					verified: true,
-					document: null,
-					text: [
-						'Recorded plain text output.',
-						'Workload: order-name filtering',
-						'Query: service',
-						'Input: three orders in their original order',
-						'Match: Service plan',
-						'Original row objects and ordering were preserved.',
-						'Result: passed'
-					].join('\n')
-				}
+				...desktopArtifactText
 			}
 		}
 	};

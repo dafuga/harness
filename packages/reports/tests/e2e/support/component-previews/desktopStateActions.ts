@@ -59,6 +59,12 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 				.click();
 	},
 	'runtime-artifact': artifact,
+	'nav-bar': async (component, variant) => {
+		if (variant === 'game')
+			await component
+				.getByRole('link', { name: 'Game Views', exact: true })
+				.scrollIntoViewIfNeeded();
+	},
 	'status-icon': async (component, variant) => {
 		if (['failed', 'unknown', 'unverified', 'no-reason', 'open', 'long'].includes(variant)) {
 			await component.getByRole('button').focus();
@@ -131,7 +137,11 @@ async function history(component: Locator, variant: string) {
 async function artifact(component: Locator, variant: string) {
 	if (!['text', 'recorded-open', 'json-open'].includes(variant)) return;
 	await component.getByText('Assertions and recorded result', { exact: true }).click();
-	if (variant === 'json-open') await component.getByText('Recorded JSON', { exact: true }).click();
+	if (variant === 'json-open') {
+		const summary = component.getByText('Recorded JSON', { exact: true });
+		await summary.click();
+		await expect(summary.locator('..').locator('pre')).not.toBeEmpty();
+	}
 	await expect(component.locator('details[open]')).not.toHaveCount(0);
 }
 

@@ -7,7 +7,11 @@ import { audioFixture } from './audioFixture';
 import { stateRecord } from './entityPreviewData';
 import { capture, commits } from './entityUnits';
 import { sourcePaths, sourceText } from './entitySourceFixture';
-const tints: Record<string, Colour> = { a: [36, 52, 71], b: [20, 39, 58], c: [16, 44, 52] };
+const tints: Record<string, Colour> = {
+	[commits.first]: [36, 52, 71],
+	[commits.middle]: [20, 39, 58],
+	[commits.tip]: [16, 44, 52]
+};
 const sizes: Record<string, [number, number]> = {
 	desktop: [1440, 900],
 	tablet: [920, 800],
@@ -118,7 +122,7 @@ export function entityPreviewAssets(directory: string): Record<string, string> {
 				const [width, height] = sizes[capture.viewport ?? 'desktop'];
 				const full = commit === commits.first ? 4 : 6;
 				const cards = state.id === 'empty' ? 0 : full;
-				const drawn = () => picture(width, height, tints[commit[0]], cards);
+				const drawn = () => picture(width, height, tints[commit], cards);
 				const stated = () => Buffer.from(JSON.stringify(run(state.id, capture.kind), null, 2));
 				const made = { screenshot: drawn, audio: () => audioFixture(2) }[capture.kind] ?? stated;
 				const bytes = made();

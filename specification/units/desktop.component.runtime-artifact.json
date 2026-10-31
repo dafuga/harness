@@ -68,7 +68,7 @@
 			{
 				"name": "RuntimeArtifact",
 				"type": "markup",
-				"description": "Verified cases plus expandable assertions, steps, traces and other facts. Unstated assertions remain unknown. Raw JSON renders only while expanded; non-JSON recorded text is shown. Each formatted text value is capped at 12,000 characters with a shortened marker. No capture, missing bytes, pending read and failed verification have distinct messages."
+				"description": "Verified input/output cases when recorded, with expandable assertions, readable search steps, traces and other facts. Legacy step/assertion results omit the empty-case notice. Raw JSON renders only while expanded; non-JSON text is preserved. Formatted values cap at 12,000 characters. Missing, unstored, pending and failed reads have distinct messages."
 			}
 		],
 		"errors": [],

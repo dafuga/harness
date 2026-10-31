@@ -28,6 +28,17 @@ export async function prepareShellCatalog(component: Locator, id: string, varian
 	return true;
 }
 async function historyState(component: Locator, variant: string) {
+	if (variant === 'profiles') {
+		const profile = component.getByRole('combobox', { name: 'Performance profile' });
+		await profile.selectOption('ci-linux');
+		await expect(profile).toHaveValue('ci-linux');
+		await expect(component.locator('.ex-history')).toContainText('0.31');
+	}
+	if (variant === 'long')
+		await expect(
+			component.locator('.ex-full > summary').first(),
+			'Long history attaches change notes to the displayed entity'
+		).toBeVisible();
 	if (variant === 'reading')
 		await component.getByRole('button', { name: 'Read the next commits' }).click();
 	if (variant === 'empty') await expect(component).toContainText('No commit read so far');
