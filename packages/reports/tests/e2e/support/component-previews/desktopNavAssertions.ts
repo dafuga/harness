@@ -10,6 +10,14 @@ export async function assertDesktopNavCapture(component: Locator, id: string) {
 			.locator('a')
 			.evaluateAll((links) => links.map((link) => Math.round(link.getBoundingClientRect().top)));
 		expect(new Set(rows).size, 'Tablet and desktop categories use one continuous tab row').toBe(1);
+		const complete = await tabs.evaluate((node) => {
+			const row = node.getBoundingClientRect();
+			return [...node.querySelectorAll('a span')].every((label) => {
+				const caption = label.getBoundingClientRect();
+				return caption.left >= row.left - 1 && caption.right <= row.right + 1;
+			});
+		});
+		expect(complete, 'Catalog category captions fit completely at the recorded width').toBe(true);
 	}
 	if (width > 560 && width <= 900) {
 		const rail = await component.locator('.environment-picker').boundingBox();
