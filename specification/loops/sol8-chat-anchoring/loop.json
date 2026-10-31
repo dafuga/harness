@@ -2,7 +2,7 @@
 	"name": "sol8-chat-anchoring",
 	"goal": "Anchor model and effort choices beside their trigger and align the navigation fixture with its real caller",
 	"createdAt": "2026-10-31T19:56:03.897Z",
-	"updatedAt": "2026-10-31T19:59:06.105Z",
+	"updatedAt": "2026-10-31T20:01:16.379Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:01:14.196Z",
+			"evidence": "ddfba1a1f8 anchors the native dialog to its trigger, preserves the enclosing panel heading, and cleans up resize and scroll observers."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:01:16.379Z",
+			"evidence": "9d7fb7b5 passes the unchanged 63-case responsive catalog at ddfba1a1f8 against red 1fd598b8. Picker-cleanup ownership guard passes 7/7."
 		},
 		{
 			"id": "verify",
