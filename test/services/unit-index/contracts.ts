@@ -18,14 +18,14 @@ export function relay(error: Error): never { throw error; }`,
 	'src/components/Panel.svelte': `<script module lang="ts">
 		export function describe(node: string): string { return node; }
 	</script><script lang="ts">
-		type Props = { title: string; size?: number; children?: Snippet; value: string; optional?: string; fallback?: string };
-		let { title, size = 16, children, value = $bindable(), optional = $bindable(), fallback = $bindable('ready') }: Props = $props();
+		type Props = { title: string; size?: number; children?: Snippet; value: string; current: string; optional?: string; fallback?: string };
+		let { title, size = 16, children, value = $bindable(), current: aliased = $bindable(), optional = $bindable(), fallback = $bindable('ready') }: Props = $props();
 		function inside() { let { wrong }: { wrong: string } = $props(); }
 	</script>{#snippet row(node: string, text?: string)}{node}{/snippet}`,
 	'src/components/Wrapper.svelte': `<script lang="ts">
 		import type { ComponentProps } from 'svelte';
 		import Panel from './Panel.svelte';
-		let { title, size = 16, children, value = $bindable(), optional = $bindable(), fallback = $bindable('ready') }: ComponentProps<typeof Panel> = $props();
+		let { title, size = 16, children, value = $bindable(), current: aliased = $bindable(), optional = $bindable(), fallback = $bindable('ready') }: ComponentProps<typeof Panel> = $props();
 	</script>`,
 	'src/models/Entry.ts': `export class Entry {
 		static definition = { table: 'entries', primaryKey: 'id', fields: {
@@ -74,6 +74,7 @@ function assertComponentContracts(indexed: Indexed): void {
 		{ name: 'Panel.size', type: 'number', required: false, default: 16 },
 		{ name: 'Panel.children', type: 'Snippet', required: false },
 		{ name: 'Panel.value', type: 'string', required: true },
+		{ name: 'Panel.current', type: 'string', required: true },
 		{ name: 'Panel.optional', type: 'string', required: false },
 		{ name: 'Panel.fallback', type: 'string', required: false, default: 'ready' }
 	]);
