@@ -4,6 +4,9 @@ import type { CatalogRow } from '../../../../src/utils/entityCatalog';
 const attributes: Record<string, Record<string, unknown>> = {
 	img: { src: image, alt: 'Example image', width: 180, height: 110 },
 	a: { href: '#release-notes', style: 'text-decoration:underline' },
+	ol: { style: 'list-style:decimal inside' },
+	ul: { style: 'list-style:disc inside' },
+	li: { style: 'list-style:disc inside' },
 	button: { type: 'button' },
 	select: { 'aria-label': 'Example choice' },
 	textarea: { 'aria-label': 'Example text', placeholder: 'Write a message', rows: 3 },
