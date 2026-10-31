@@ -1,3 +1,4 @@
+import { assertCanonicalOwnership } from './unit-index/canonicalOwnership';
 import { assertCompanionOwnership, assertContractDependency } from './unit-index/ownership';
 import './unit-index/composition';
 import './unit-index/http';
@@ -180,6 +181,7 @@ test('several owned files produce identical metadata after one indexing pass', a
 		'function.z'
 	);
 	await assertCompanionOwnership(files, first);
+	await assertCanonicalOwnership();
 });
 
 test('recorded service moves preserve implementations and registered owner-local placement', () => {

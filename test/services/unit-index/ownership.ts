@@ -1,4 +1,3 @@
-import { assertCanonicalOwnership } from './canonicalOwnership';
 import { SourceGraphService } from '../../../src/services/development-tooling/SourceGraphService';
 import { measureWorkload } from '../../support/measureWorkload';
 import { expect } from 'vitest';
@@ -38,7 +37,6 @@ export async function assertCompanionOwnership(
 	};
 	const declared = await indexFiles(files, [first, types]);
 	expect(unitOf(declared, 'model.z-types').owns.source).toEqual(types.owns.source);
-	await assertCanonicalOwnership();
 }
 
 /** A relocated component and its retained forwarding entry describe one public prop contract. */
