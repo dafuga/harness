@@ -41,17 +41,24 @@ function catalog(props: PreviewProps, data: DesktopData, variant: string) {
 }
 
 function composer(props: PreviewProps, variant: string): PreviewProps {
+	const modes = ['comment', 'ask', 'plan', 'change'];
 	const changes: Record<string, PreviewProps> = {
-		plan: { modes: ['plan'] },
-		ask: { modes: ['ask'] },
-		change: { modes: ['change'] },
-		'visual-plan': { modes: ['plan'], visual: true },
-		running: { running: true },
+		plan: { modes },
+		ask: { modes },
+		change: { modes },
+		'visual-plan': { modes, visual: true },
+		running: {
+			running: true,
+			notice: 'An agent is running. Requests are paused until it finishes.'
+		},
 		unapproved: { modes: ['change'], approved: false },
 		'no-modes': { modes: [] },
 		'no-provider': { modes: ['plan'], providers: [] },
 		compact: { compact: true },
-		long: { notice: 'A longer notice explains where this comment will be saved. '.repeat(5) },
+		long: {
+			notice:
+				'This comment stays with the selected revision so reviewers can find its context later. It will be saved when you send it; it does not start an agent or change the approved design.'
+		},
 		retry: { comment: async () => false }
 	};
 	return { ...props, ...changes[variant] };

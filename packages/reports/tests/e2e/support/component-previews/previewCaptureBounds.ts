@@ -9,7 +9,6 @@ const tooltipUnits = new Set([
 ]);
 
 const emptyStates: Record<string, string> = {
-	'desktop.component.game-create:unavailable': ':self',
 	'reports.component.module-system-plugins-plugin-steps:empty': '.mod-steps',
 	'reports.component.shared-primitives-detail-list:empty-unprovided': '.detail-list'
 };

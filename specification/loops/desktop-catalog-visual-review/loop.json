@@ -2,7 +2,7 @@
 	"name": "desktop-catalog-visual-review",
 	"goal": "Require visible distinct Desktop states and unoccluded controls before accepting catalog captures",
 	"createdAt": "2026-10-31T17:46:35.302Z",
-	"updatedAt": "2026-10-31T17:46:43.208Z",
+	"updatedAt": "2026-10-31T17:54:58.334Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T17:51:33.928Z",
+			"evidence": "07135af298: 11 existing Desktop state cases failed against unchanged captures; immutable red checkpoint 63e6f1ad9b66 retains their screenshots and assertions."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T17:51:34.860Z",
+			"evidence": "Expose selected modes and running context, open distinct status explanations, scroll expanded rules above the footer, and show the disabled unavailable creation form."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T17:54:58.334Z",
+			"evidence": "Catalog actions select visible modes, show running and status explanations, and scroll expanded rules. GameCreate shows its unavailable disabled form; the post-capture assertions remain unchanged."
 		},
 		{
 			"id": "green",

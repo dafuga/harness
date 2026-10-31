@@ -35,7 +35,6 @@ const pageUnitIds = new Set(
 		.map((unit) => unit.id)
 );
 const emptyPreviews = new Set([
-	'desktop.component.game-create:unavailable',
 	'reports.component.regression-proof:empty',
 	'reports.component.activity-list:empty',
 	'reports.component.module-system-plugins-plugin-steps:empty',
@@ -203,8 +202,6 @@ function usesNativePopup(id: string, variant: string) {
 }
 
 function previewCaptureNote(id: string, variant: string) {
-	if (id === 'desktop.component.game-create' && variant === 'unavailable')
-		return 'The unavailable host intentionally renders no form. The image retains the empty component boundary and edge allowance; it is not a screenshot of another page.';
 	return id === 'reports.component.evidence-grid' && ['image-open', 'audio-open'].includes(variant)
 		? 'Rendered dialog bounds without preview-only canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.'
 		: 'Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.';

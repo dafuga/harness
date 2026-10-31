@@ -7,7 +7,7 @@
 	import type { ProjectSnapshot } from '../../models/development-tooling/Desktop.types';
 	import type { DesktopBridge } from '../../models/development-tooling/DesktopBridge.types';
 	import type { EnvironmentHost } from '../../models/development-tooling/Environment.types';
-	/** Without a `bridge` the preload's is used; one without `gameCreate` creates nothing. */
+	/** Without a `bridge` the preload's is used; one without `gameCreate` keeps the form disabled. */
 	let {
 		bridge,
 		created
@@ -56,46 +56,44 @@
 	}
 </script>
 
-{#if ready}
-	<hx-form
-		class="game-create"
-		data-harness-component="game-create"
-		aria-label="New project"
-		aria-busy={busy}
-		onsubmit={submit}
-	>
-		<hx-div class="intro wide">
-			<hx-h2>New project</hx-h2>
-			<hx-small
-				>{ready
-					? 'An app or a game, created and opened on this device.'
-					: 'This desktop app cannot create projects yet.'}</hx-small
-			>
-		</hx-div>
-		<hx-label class="field wide">
-			<hx-span class="caption">Name</hx-span>
-			<hx-input bind:value={name} name="name" required autocomplete="off" disabled={locked} />
-		</hx-label>
-		<hx-label class="field" class:wide={!game}>
-			<hx-span class="caption">Project type</hx-span>
-			<Select bind:value={kind} label="Project type" name="kind" disabled={locked}>
-				<hx-option value="app">App</hx-option>
-				<hx-option value="game">Game</hx-option>
-			</Select>
-		</hx-label>
-		{#if game}<hx-label class="field">
-				<hx-span class="caption">Dimension</hx-span>
-				<Select bind:value={dimension} label="Dimension" name="dimension" disabled={locked}>
-					<hx-option value="2d">2D</hx-option>
-					<hx-option value="3d">3D</hx-option>
-				</Select>
-			</hx-label>{/if}
-		<hx-button class="primary wide" type="submit" disabled={locked || !name.trim()}
-			>{busy ? 'Creating…' : 'Create project'}</hx-button
+<hx-form
+	class="game-create"
+	data-harness-component="game-create"
+	aria-label="New project"
+	aria-busy={busy}
+	onsubmit={submit}
+>
+	<hx-div class="intro wide">
+		<hx-h2>New project</hx-h2>
+		<hx-small
+			>{ready
+				? 'An app or a game, created and opened on this device.'
+				: 'This desktop app cannot create projects yet.'}</hx-small
 		>
-		{#if error}<hx-p class="error wide" role="alert">{error}</hx-p>{/if}
-	</hx-form>
-{/if}
+	</hx-div>
+	<hx-label class="field wide">
+		<hx-span class="caption">Name</hx-span>
+		<hx-input bind:value={name} name="name" required autocomplete="off" disabled={locked} />
+	</hx-label>
+	<hx-label class="field" class:wide={!game}>
+		<hx-span class="caption">Project type</hx-span>
+		<Select bind:value={kind} label="Project type" name="kind" disabled={locked}>
+			<hx-option value="app">App</hx-option>
+			<hx-option value="game">Game</hx-option>
+		</Select>
+	</hx-label>
+	{#if game}<hx-label class="field">
+			<hx-span class="caption">Dimension</hx-span>
+			<Select bind:value={dimension} label="Dimension" name="dimension" disabled={locked}>
+				<hx-option value="2d">2D</hx-option>
+				<hx-option value="3d">3D</hx-option>
+			</Select>
+		</hx-label>{/if}
+	<hx-button class="primary wide" type="submit" disabled={locked || !name.trim()}
+		>{busy ? 'Creating…' : 'Create project'}</hx-button
+	>
+	{#if error}<hx-p class="error wide" role="alert">{error}</hx-p>{/if}
+</hx-form>
 
 <style>
 	.game-create {
