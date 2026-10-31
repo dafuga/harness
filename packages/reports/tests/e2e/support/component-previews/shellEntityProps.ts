@@ -99,7 +99,17 @@ const historyNotes = [
 	'Displays captured behavior alongside source size, complexity and latency, retaining the original profile and evidence instead of substituting newer results.'
 ];
 
+function historyProfiles(props: PreviewCases[string]) {
+	return {
+		...props,
+		entity: d.entities.find((entity) => entity.id === d.ids.filter)!,
+		rows: d.reading.history(d.ids.filter),
+		known: [d.shown.head, d.shown.parent]
+	};
+}
+
 function historyProps(props: PreviewCases[string], variant: string) {
+	if (variant === 'profiles') return historyProfiles(props);
 	if (variant === 'empty') return { ...props, rows: [] };
 	const rows = d.reading.history(d.entity.id);
 	if (['unread', 'reading', 'unavailable'].includes(variant))
