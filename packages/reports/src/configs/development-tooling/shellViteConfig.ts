@@ -20,15 +20,14 @@ const contextStyles: Plugin = {
 		return id === '\0catalog-context-styles' ? '' : null;
 	}
 };
-export default defineConfig(
-	async (): Promise<UserConfig> => ({
+export default defineConfig(async (): Promise<UserConfig> => {
+	const data = page === 'catalog' ? JSON.stringify(await buildData()) : '';
+	return {
 		define: {
 			'process.env.NODE_ENV': JSON.stringify('production'),
-			...(page === 'catalog'
-				? { __COMPONENT_PREVIEW_DATA__: JSON.stringify(await buildData()) }
-				: {})
+			...(data ? { __COMPONENT_PREVIEW_DATA__: data } : {})
 		},
-		plugins: [page === 'catalog' && contextStyles, svelte()],
+		plugins: [page === 'catalog' && contextStyles, fixtureMedia(data), svelte()],
 		resolve: ['components', 'catalog'].includes(page)
 			? {
 					alias: {
@@ -65,5 +64,15 @@ export default defineConfig(
 				fileName: 'page'
 			}
 		}
-	})
-);
+	};
+});
+
+/** Publish the original sealed bytes with the bundle, for its media router and admission check. */
+function fixtureMedia(data: string): Plugin {
+	return {
+		name: 'catalog-fixture-media',
+		generateBundle() {
+			if (data) this.emitFile({ type: 'asset', fileName: 'preview-data.json', source: data });
+		}
+	};
+}

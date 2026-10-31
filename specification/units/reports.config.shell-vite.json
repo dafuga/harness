@@ -3,7 +3,7 @@
 	"id": "reports.config.shell-vite",
 	"kind": "config",
 	"title": "shellViteConfig",
-	"responsibility": "Builds one page of the shell fixture as one script and one stylesheet into the directory of the run that asked for it.",
+	"responsibility": "Builds one isolated shell fixture page and publishes its catalog data with the bundle, keeping media references bound to their original bytes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"catalog": {
