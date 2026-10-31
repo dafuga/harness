@@ -12,7 +12,7 @@ import { assertEntitySearchState } from './entitySearchPreviewActions';
 import { assertContractExampleState } from './contractExamplePreviewAssertions';
 import { assertContractTableState } from './contractTablePreviewAssertions';
 import { assertActivityCountFits } from './projectActivityAssertions';
-import { assertDesktopState } from './desktopStateAssertions';
+import { assertDesktopState, assertDesktopCapturedState } from './desktopStateAssertions';
 import { desktopCaptureDirectory } from './desktopStateActions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
@@ -23,6 +23,7 @@ export async function assertComponentCapture(
 	variant = ''
 ) {
 	assertCaptureSlot(id, viewport, variant);
+	await assertDesktopCapturedState(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await assertAudioViewerCapture(page, id, viewport);
 	await assertDefaultAgents(page, id, variant);
 	if (id === 'reports.component.project-activity' && variant === 'stale')

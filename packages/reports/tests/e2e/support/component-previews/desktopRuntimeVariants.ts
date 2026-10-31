@@ -10,13 +10,24 @@ export function desktopRuntimeVariant(
 	if (id === 'desktop.component.runtime-artifact') return artifact(props, data, variant);
 	if (id === 'desktop.component.status-icon') {
 		const changes: Record<string, PreviewProps> = {
-			failed: { status: 'failed' },
-			unverified: { status: 'unverified' },
-			unknown: { status: 'unknown' },
+			failed: {
+				status: 'failed',
+				reason:
+					'Verification failed: the component test did not finish successfully at this revision.'
+			},
+			unverified: {
+				status: 'unverified',
+				reason: 'This revision has not been verified. Run the required checks before accepting it.'
+			},
+			unknown: {
+				status: 'unknown',
+				reason: 'Verification status is unknown: the saved record could not be read or trusted.'
+			},
 			'no-reason': { status: 'unknown', reason: '' },
 			long: {
 				status: 'failed',
-				reason: 'A required state has no capture at this revision. '.repeat(8)
+				reason:
+					'The desktop capture passed, but tablet and mobile captures are missing for this revision. Their earlier images predate the current source change and cannot verify this build. Rerun the component catalog at both viewports, retain the original images in history, and inspect them before accepting this revision.'
 			}
 		};
 		return { ...props, ...changes[variant] };

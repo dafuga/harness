@@ -16,7 +16,6 @@ export async function prepareDesktopGameState(component: Locator, id: string, va
 
 async function create(component: Locator, variant: string) {
 	if (variant === 'unavailable') {
-		await expect(component.getByRole('form')).toHaveCount(0);
 		return;
 	}
 	const submit = component.getByRole('button', { name: 'Create project', exact: true });
@@ -57,7 +56,9 @@ async function checkpoint(component: Locator, variant: string) {
 async function pane(component: Locator, variant: string) {
 	if (variant === 'advanced') {
 		await component.getByRole('button', { name: 'Advanced rules' }).click();
-		await expect(component.getByRole('region', { name: 'Rules', exact: true })).toBeVisible();
+		const rules = component.getByRole('region', { name: 'Rules', exact: true });
+		await rules.scrollIntoViewIfNeeded();
+		await expect(rules).toBeVisible();
 	}
 	if (variant === 'adding')
 		await expect(component.getByRole('dialog', { name: 'Add checkpoint' })).toBeVisible();
