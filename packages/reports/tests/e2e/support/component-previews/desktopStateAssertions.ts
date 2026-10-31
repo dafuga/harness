@@ -66,6 +66,7 @@ async function composer(component: Locator, variant: string) {
 /** Validate painted state markers after capture, rather than accepting hidden state alone. */
 export async function assertDesktopCapturedState(component: Locator, id: string, variant: string) {
 	await assertPickerPresentation(component, id, variant);
+	await assertLoadedHistory(component, id, variant);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
@@ -90,6 +91,14 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 			});
 		expect(visible, 'Expanded checkpoint rules are fully visible above the footer').toBe(true);
 	}
+}
+
+async function assertLoadedHistory(component: Locator, id: string, variant: string) {
+	if (id === 'desktop.component.history-panel' && variant === 'more')
+		await expect(
+			component.getByText('Earlier API decision', { exact: true }),
+			'Loading earlier history paints the returned event'
+		).toBeVisible();
 }
 
 async function assertPickerPresentation(component: Locator, id: string, variant: string) {
