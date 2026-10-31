@@ -32,6 +32,7 @@ export async function assertNativeAtomState(component: Locator, id: string, vari
 	await expect(tag === 'option' ? component.locator('.atom-host select') : element).toBeVisible();
 	if (tag === 'option') await assertNativeOption(element, component, variant);
 	await assertNativeList(component, tag);
+	await assertNativeTable(component, tag);
 	await assertNativeControl(element, tag, variant);
 	await assertNativeDisclosure(component, tag, variant);
 	await assertNativeAttributes(element, tag, variant);
@@ -54,6 +55,19 @@ async function assertNativeList(component: Locator, tag: string) {
 		await expect(item).toHaveCSS('list-style-type', marker);
 		await expect(item).toHaveCSS('list-style-position', 'inside');
 		await expect(item).toBeInViewport();
+	}
+}
+
+async function assertNativeTable(component: Locator, tag: string) {
+	if (!['table', 'thead', 'tbody', 'tr', 'th', 'td'].includes(tag)) return;
+	const table = component.locator('.atom-host table');
+	await expect(table.getByRole('row')).toHaveCount(3, { timeout: 1000 });
+	await expect(table.getByRole('columnheader')).toHaveCount(2);
+	await expect(table.getByRole('cell')).toHaveCount(4);
+	for (const cell of await table.locator('th, td').all()) {
+		await expect(cell).toHaveCSS('border-top-width', '1px');
+		await expect(cell).toHaveCSS('border-top-style', 'solid');
+		await expect(cell).toBeInViewport();
 	}
 }
 
