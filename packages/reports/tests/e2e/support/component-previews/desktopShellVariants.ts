@@ -79,7 +79,15 @@ function design(props: PreviewProps, data: DesktopData, variant: string): Previe
 	if (variant === 'long')
 		return {
 			...props,
-			entity: { ...data.entity, summary: 'A detailed design direction. '.repeat(10) }
+			entity: {
+				...data.entity,
+				versions: data.entity.versions.map((version) => ({
+					...version,
+					images: [],
+					options: [],
+					notes: 'A detailed design direction. '.repeat(10)
+				}))
+			}
 		};
 	return props;
 }
