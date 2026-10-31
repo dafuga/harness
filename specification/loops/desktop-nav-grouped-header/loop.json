@@ -2,7 +2,7 @@
 	"name": "desktop-nav-grouped-header",
 	"goal": "Join context controls, preserve complete resting tabs and balance mobile categories and account alignment",
 	"createdAt": "2026-10-31T22:40:47.899Z",
-	"updatedAt": "2026-10-31T22:40:49.317Z",
+	"updatedAt": "2026-10-31T22:45:08.105Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T22:45:08.105Z",
+			"evidence": "Checkpoint7b8bdb8d8e reproduces context separation, orphan game rows and mobile account misalignment. Record0eddc128641e484c61a9988ca22b8207034f04844ffdfc962c3f552d2bbdaf3e retains all12 before images."
 		},
 		{
 			"id": "implement",

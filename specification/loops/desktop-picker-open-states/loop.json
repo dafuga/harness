@@ -2,7 +2,7 @@
 	"name": "desktop-picker-open-states",
 	"goal": "Show opened revision and project lists, a named empty project choice and visible project loading",
 	"createdAt": "2026-10-31T22:42:08.771Z",
-	"updatedAt": "2026-10-31T22:42:10.285Z",
+	"updatedAt": "2026-10-31T22:51:28.091Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T22:51:28.091Z",
+			"evidence": "Checkpoint7b8bdb8d8e fails all18 selected project/revision picker cases. Record399b07746c07bac99326e0eddaece8b315c39f2b11ba5bbb496c3a6d1a20decf retains all18 original closed/empty/busy captures."
 		},
 		{
 			"id": "implement",
