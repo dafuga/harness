@@ -1,5 +1,6 @@
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
 import { commits } from '../../../../test/entityUnits';
+import { assertScrollbarPaint } from './scrollbarReviewAssertions';
 
 const reviewed = new Set([
 	'harness-entity-audio',
@@ -190,6 +191,7 @@ async function longTooltip(component: Locator) {
 	});
 	expect(geometry.overflow, 'The long state exercises genuinely overflowing content').toBe(true);
 	expect(geometry.gutter, 'A long tooltip has a visible scrollbar gutter').toBeGreaterThan(0);
+	await assertScrollbarPaint(tooltip, geometry.gutter);
 	await component.getByRole('button').press('End');
 	const end = tooltip.locator(':scope > span').last();
 	const [tip, last] = await Promise.all([tooltip.boundingBox(), end.boundingBox()]);

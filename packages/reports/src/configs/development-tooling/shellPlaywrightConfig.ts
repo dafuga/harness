@@ -6,6 +6,9 @@ export default defineConfig({
 	testMatch: /[\\/]explorer-shell[^\\/]*\.spec\.ts$/,
 	workers: 1,
 	outputDir: '../../test-results/explorer-shell',
-	use: { screenshot: 'only-on-failure' },
+	use: {
+		screenshot: 'only-on-failure',
+		launchOptions: { ignoreDefaultArgs: ['--hide-scrollbars'] }
+	},
 	reporter: 'list'
 });

@@ -3,7 +3,7 @@
 	"id": "reports.config.shell-playwright",
 	"kind": "config",
 	"title": "shellPlaywrightConfig",
-	"responsibility": "Runs the browser checks of the explorer shell alone: no server, no seeded history and no build of the application.",
+	"responsibility": "Runs isolated explorer-shell browser checks with visible scrollbars, without an application server, seeded history or application build.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"catalog": {
