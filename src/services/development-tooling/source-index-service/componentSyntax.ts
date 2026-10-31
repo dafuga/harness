@@ -88,12 +88,11 @@ export function boundProps(
 		const binding = bindings.find(
 			(entry) => (entry.propertyName?.getText() ?? entry.name.getText()) === item.name
 		);
+		const fallback = binding?.initializer ? bindableValue(binding.initializer) : undefined;
 		return {
 			...item,
 			name: `${owner}.${item.name}`,
-			...(binding?.initializer
-				? { required: false, ...parameterDefault(bindableValue(binding.initializer)) }
-				: {})
+			...(fallback ? { required: false, ...parameterDefault(fallback) } : {})
 		};
 	});
 }

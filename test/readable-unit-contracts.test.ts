@@ -3,6 +3,15 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { componentManifestSchema, type ComponentManifest } from '../src/core/unitTypes';
 
+const reviewedComponents = new Set<string>(
+	JSON.parse(
+		readFileSync(
+			resolve(import.meta.dirname, '../specification/loops/sol6-component-evidence/contracts.json'),
+			'utf8'
+		)
+	).units
+);
+
 const described = (value: string | undefined) =>
 	Boolean(value?.trim()) && !/^(No description|TODO|TBD)\b/i.test(value ?? '');
 
@@ -19,6 +28,7 @@ test('every active function and component explains its contract without requirin
 		if (unit.responsibilityOrigin !== 'declared' || /^Owns the\b/.test(unit.responsibility))
 			gaps.push(`${unit.id}: describe its responsibility`);
 		if (unit.contract.origin !== 'declared') gaps.push(`${unit.id}: review the derived contract`);
+		appendReviewedPropGaps(unit, gaps);
 		for (const group of ['inputs', 'outputs', 'errors'] as const)
 			for (const field of unit.contract[group])
 				if (!described(field.description)) gaps.push(`${unit.id}: describe ${group}.${field.name}`);
@@ -131,4 +141,15 @@ function assertContractFields(
 					`${id}: ${field.name} explains its omitted default`
 				).toBe(true);
 		}
+}
+
+function appendReviewedPropGaps(unit: ComponentManifest, gaps: string[]): void {
+	if (!reviewedComponents.has(unit.id)) return;
+	for (const field of unit.contract.inputs) {
+		if (typeof field.required !== 'boolean')
+			gaps.push(`${unit.id}: required flag for ${field.name}`);
+		const documentedDefault = /Defaults to /.test(field.description ?? '');
+		if (field.required === false && !Object.hasOwn(field, 'default') && !documentedDefault)
+			gaps.push(`${unit.id}: default for ${field.name}`);
+	}
 }

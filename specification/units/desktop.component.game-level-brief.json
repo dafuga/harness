@@ -58,13 +58,13 @@
 			{
 				"name": "GameLevelBrief.provider",
 				"type": "ProviderId",
-				"required": false,
+				"required": true,
 				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. No fallback provider is selected."
 			},
 			{
 				"name": "GameLevelBrief.model",
 				"type": "string",
-				"required": false,
+				"required": true,
 				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. No fallback model is selected."
 			},
 			{

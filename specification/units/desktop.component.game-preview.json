@@ -38,7 +38,7 @@
 				"name": "GamePreview.initialRun",
 				"type": "GameRun",
 				"required": false,
-				"description": "Optional saved gameplay state; without it a fresh run starts at the view spawn."
+				"description": "Optional saved gameplay state; without it a fresh run starts at the view spawn. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "GamePreview.projectId",
@@ -63,7 +63,7 @@
 				"name": "GamePreview.bridge",
 				"type": "DesktopBridge",
 				"required": false,
-				"description": "Optional native bridge providing the authorized game rendering operation."
+				"description": "Optional native bridge providing the authorized game rendering operation. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -73,7 +73,14 @@
 				"description": "Run native key-door gameplay and preserve progress while keeping optional AI video disabled by default. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Renderer initialization or run callback error",
+				"type": "propagated",
+				"description": "WebGL renderer initialization can fail when unavailable; errors from onRun propagate during initialization, reset or movement. AI video failures are caught and displayed."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

@@ -74,7 +74,14 @@
 				"description": "Searchable alphabetical catalog with one source-file section per config and responsibility sections for other kinds. Retains count status, explicit empty states and a clear-search action. Catalog rows are presented without a standalone proof legend footer."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied list callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "configSections",

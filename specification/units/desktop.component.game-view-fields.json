@@ -52,7 +52,7 @@
 			{
 				"name": "GameViewFields.section",
 				"type": "GameSection",
-				"required": false,
+				"required": true,
 				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. New level selects Level."
 			},
 			{

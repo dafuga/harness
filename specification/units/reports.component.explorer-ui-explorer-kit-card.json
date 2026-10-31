@@ -38,7 +38,7 @@
 				"name": "Card.labelledby",
 				"type": "string",
 				"required": false,
-				"description": "Optional; defaults to JavaScript undefined, omitting aria-labelledby. Supply the heading id when the card should be named."
+				"description": "Optional. Defaults to JavaScript undefined, omitting aria-labelledby. Supply the heading id when the card should be named."
 			},
 			{
 				"name": "Card.children",

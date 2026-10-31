@@ -55,13 +55,13 @@
 				"name": "RuntimeArtifact.refusal",
 				"type": "string",
 				"required": false,
-				"description": "Optional backend refusal, preferred over the read problem and generic hash-check failure message."
+				"description": "Optional backend refusal, preferred over the read problem and generic hash-check failure message. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "RuntimeArtifact.unit",
 				"type": "string",
 				"required": false,
-				"description": "Optional function identifier passed to case rendering, enabling callable rows scoped to that function."
+				"description": "Optional function identifier passed to case rendering, enabling callable rows scoped to that function. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -72,6 +72,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [

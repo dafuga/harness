@@ -31,7 +31,7 @@
 			{
 				"name": "ExplorerControls.filter",
 				"type": "CatalogFilter",
-				"required": false,
+				"required": true,
 				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. No fallback object is created; the search control reads and edits filter.search."
 			}
 		],

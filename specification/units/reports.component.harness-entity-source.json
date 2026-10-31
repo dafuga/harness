@@ -33,25 +33,25 @@
 				"name": "EntitySource.repository",
 				"type": "string",
 				"required": false,
-				"description": "Optional; defaults to JavaScript undefined. GitHub links are unavailable unless both the repository address and commit validate."
+				"description": "Optional. Defaults to JavaScript undefined. GitHub links are unavailable unless both the repository address and commit validate."
 			},
 			{
 				"name": "EntitySource.commit",
 				"type": "string",
 				"required": false,
-				"description": "Optional; defaults to JavaScript undefined. GitHub links are unavailable without a valid full commit hash; no working-copy source is substituted."
+				"description": "Optional. Defaults to JavaScript undefined. GitHub links are unavailable without a valid full commit hash; no working-copy source is substituted."
 			},
 			{
 				"name": "EntitySource.entity",
 				"type": "ExplorerEntity",
 				"required": false,
-				"description": "Optional; defaults to JavaScript undefined, omitting per-file code actions even when nav is supplied."
+				"description": "Optional. Defaults to JavaScript undefined, omitting per-file code actions even when nav is supplied."
 			},
 			{
 				"name": "EntitySource.nav",
 				"type": "EntityNav",
 				"required": false,
-				"description": "Optional; defaults to JavaScript undefined, leaving a read-only source list. With entity and nav, source actions use the supplied callback."
+				"description": "Optional. Defaults to JavaScript undefined, leaving a read-only source list. With entity and nav, source actions use the supplied callback."
 			}
 		],
 		"outputs": [

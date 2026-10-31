@@ -51,7 +51,7 @@
 				"name": "ExplorerUsage.layout",
 				"type": "'grouped' | 'flat'",
 				"required": false,
-				"description": "Optional compatibility input; defaults to JavaScript undefined. Its value is ignored: every footer remains a flat list."
+				"description": "Optional compatibility input. Defaults to JavaScript undefined. Its value is ignored: every footer remains a flat list."
 			},
 			{
 				"name": "ExplorerUsage.limit",

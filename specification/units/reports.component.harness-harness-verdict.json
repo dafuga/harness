@@ -32,7 +32,7 @@
 				"name": "HarnessVerdict.label",
 				"type": "string",
 				"required": false,
-				"description": "Optional; defaults to JavaScript undefined. Omitted or null labels display Full coverage passed for passed === true, otherwise Verification failed; empty text is retained."
+				"description": "Optional. Defaults to JavaScript undefined. Omitted or null labels display Full coverage passed for passed === true, otherwise Verification failed; empty text is retained."
 			},
 			{
 				"name": "HarnessVerdict.reasons",
@@ -52,7 +52,7 @@
 				"name": "HarnessVerdict.bare",
 				"type": "boolean",
 				"required": false,
-				"description": "Optional compatibility input; defaults to JavaScript undefined. It is ignored and does not change the icon-only presentation."
+				"description": "Optional compatibility input. Defaults to JavaScript undefined. It is ignored and does not change the icon-only presentation."
 			}
 		],
 		"outputs": [

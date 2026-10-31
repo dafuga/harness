@@ -33,13 +33,13 @@
 				"name": "GameCreate.bridge",
 				"type": "DesktopBridge",
 				"required": false,
-				"description": "Optional; defaults to JavaScript undefined, then uses window.harness after mount. Creation stays hidden when neither bridge provides gameCreate."
+				"description": "Optional. Defaults to JavaScript undefined, then uses window.harness after mount. Creation stays hidden when neither bridge provides gameCreate."
 			},
 			{
 				"name": "GameCreate.created",
 				"type": "(snapshot: ProjectSnapshot) => void",
 				"required": false,
-				"description": "Optional; defaults to JavaScript undefined. On success, absence navigates to /harness for an app or /game?projectId=<id> for a game; otherwise receives the snapshot."
+				"description": "Optional. Defaults to JavaScript undefined. On success, absence navigates to /harness for an app or /game?projectId=<id> for a game; otherwise receives the snapshot."
 			}
 		],
 		"outputs": [

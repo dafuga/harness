@@ -74,7 +74,14 @@
 				"description": "Only the selected section: overview evidence and summary, consumers in Used In for non-page entities, dependencies in Uses, component recordings in Audio, recorded test results, or source-declared model Table columns with unbroken identifiers in a contained scroll frame, primary keys, nullability, defaults and unresolved schema gaps. A page addressed with Used In shows Overview."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied pane callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
