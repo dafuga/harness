@@ -48,5 +48,37 @@ async function assertUsageImage(component: Locator, variant: string) {
 	const preview = component.getByRole('tooltip', { name: 'Preview of OrderList' });
 	const image = preview.getByRole('img', { name: 'Screenshot of OrderList' });
 	await expect(image).toHaveAttribute('src', /^data:image\/svg\+xml,/);
-	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('SYNTHETIC ORDER LIST');
+	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('Order management');
+}
+
+/** Preview artwork contains product content; fixture provenance stays outside the painted image. */
+export async function assertProductArtwork(component: Locator, id: string, variant: string) {
+	const states: Record<string, string[]> = {
+		'reports.component.explorer-ui-explorer-module-card': [
+			'',
+			'many-usage',
+			'no-usage',
+			'page',
+			'layout',
+			'usage-open'
+		],
+		'reports.component.modal': ['image', 'lightbox'],
+		'reports.component.explorer-usage': ['usage-open'],
+		'reports.component.entity-states': ['', 'current', 'initial', 'viewer-open', 'viewport-mobile']
+	};
+	if (!states[id]?.includes(variant)) return;
+	const forbidden = /\b(?:synthetic|fictional|fixtures?)\b/i;
+	for (const image of await component.locator('img').all()) {
+		if (!(await image.isVisible())) continue;
+		const content = await image.evaluate(async (node: HTMLImageElement) => {
+			const response = await fetch(node.currentSrc);
+			return { ok: response.ok, text: await response.text() };
+		});
+		expect(content.ok, 'Painted preview artwork is readable').toBe(true);
+		expect(content.text, 'Artwork omits painted fixture labels').not.toMatch(forbidden);
+		expect(await image.getAttribute('alt')).not.toMatch(forbidden);
+	}
+	expect((await component.locator('figcaption').allTextContents()).join(' ')).not.toMatch(
+		forbidden
+	);
 }

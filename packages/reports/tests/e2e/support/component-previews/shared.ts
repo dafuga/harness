@@ -15,19 +15,19 @@ export const image =
 	encodeURIComponent(
 		`<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">
 <rect width="920" height="560" fill="#0e1c29"/>
-<text x="52" y="60" fill="#f3c33b" font-family="sans-serif" font-size="20">SYNTHETIC PREVIEW INPUT</text>
-<text x="52" y="124" fill="#f4f7fb" font-family="sans-serif" font-size="36">Order card</text>
+<text x="52" y="60" fill="#f3c33b" font-family="sans-serif" font-size="20">Order management</text>
+<text x="52" y="124" fill="#f4f7fb" font-family="sans-serif" font-size="36">Order A-1048</text>
 <g fill="#d8e4ee" font-family="sans-serif" font-size="24">
-<text x="52" y="206">Order #1048</text><text x="650" y="206">$128.00</text>
-<text x="52" y="266">Customer: Alex Example</text>
+<text x="52" y="206">2 items · Standard delivery</text><text x="650" y="206">$128.00</text>
+<text x="52" y="266">Customer: Alex Morgan</text>
 <text x="52" y="326">Status: Ready to ship</text>
-</g><text x="52" y="480" fill="#92a6bb" font-family="sans-serif" font-size="20">Fictional input for image-viewer and card fixtures.</text></svg>`
+</g><text x="52" y="480" fill="#92a6bb" font-family="sans-serif" font-size="20">Placed 20 Oct 2026 · Paid</text></svg>`
 	);
 /** Fictional layout input, distinct from the orders page and card fixture images. */
 export const layoutImage = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">
 <rect width="920" height="560" fill="#0e1c29"/>
-<text x="40" y="48" fill="#f3c33b" font-family="sans-serif" font-size="18">SYNTHETIC LAYOUT INPUT</text>
-<text x="40" y="94" fill="#f4f7fb" font-family="sans-serif" font-size="28">OrdersFrame</text>
+<text x="40" y="48" fill="#f3c33b" font-family="sans-serif" font-size="18">Order management</text>
+<text x="40" y="94" fill="#f4f7fb" font-family="sans-serif" font-size="28">Orders workspace</text>
 <path d="M0 120H920" stroke="#30495f"/>
 <rect x="40" y="152" width="840" height="368" rx="12" fill="#142b3e" stroke="#f3c33b" stroke-width="2" stroke-dasharray="8 6"/>
 <text x="460" y="326" text-anchor="middle" fill="#f3c33b" font-family="sans-serif" font-size="32">Child content</text>
@@ -35,13 +35,13 @@ export const layoutImage = `<svg xmlns="http://www.w3.org/2000/svg" width="920" 
 /** Fictional page input, distinct from the nested component and layout examples. */
 export const ordersPageImage = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">
 <rect width="920" height="560" fill="#0e1c29"/>
-<text x="48" y="56" fill="#f3c33b" font-family="sans-serif" font-size="18">SYNTHETIC PAGE INPUT</text>
+<text x="48" y="56" fill="#f3c33b" font-family="sans-serif" font-size="18">Order management</text>
 <text x="48" y="116" fill="#f4f7fb" font-family="sans-serif" font-size="36">Orders</text>
 <rect x="48" y="150" width="824" height="54" rx="8" fill="#142b3e" stroke="#30495f"/>
 <text x="68" y="184" fill="#92a6bb" font-family="sans-serif" font-size="20">Search orders</text>
 <g fill="#d8e4ee" font-family="sans-serif" font-size="23">
-<text x="68" y="270">Order #1048</text><text x="650" y="270">Ready to ship</text>
-<text x="68" y="342">Order #1047</text><text x="650" y="342">Delivered</text>
+<text x="68" y="270">Order A-1048</text><text x="650" y="270">Ready to ship</text>
+<text x="68" y="342">Order A-1047</text><text x="650" y="342">Delivered</text>
 </g></svg>`;
 export const example = {
 	name: 'Format a duration',
