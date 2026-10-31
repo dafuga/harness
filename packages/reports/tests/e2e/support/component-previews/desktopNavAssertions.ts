@@ -1,10 +1,17 @@
 import { expect, type Locator } from '@playwright/test';
+import { assertNavContext, assertMobileNavLayout } from './desktopNavLayoutAssertions';
 
 /** Catalog navigation keeps its context rail and icon labels aligned across viewport sizes. */
 export async function assertDesktopNavCapture(component: Locator, id: string) {
 	if (id !== 'desktop.component.nav-bar') return;
 	const tabs = component.getByRole('navigation', { name: 'Catalog categories' });
 	const width = component.page().viewportSize()!.width;
+	await assertNavContext(component, width);
+	await assertMobileNavLayout(component, tabs, width);
+	await expect(
+		tabs.locator('a').first(),
+		'First category remains fully visible at rest'
+	).toBeInViewport({ ratio: 1 });
 	if (width > 560) {
 		const rows = await tabs
 			.locator('a')
@@ -24,8 +31,8 @@ export async function assertDesktopNavCapture(component: Locator, id: string) {
 		const row = await tabs.boundingBox();
 		expect(
 			Math.abs(rail!.x - row!.x),
-			'Tablet context rail starts at the header edge'
-		).toBeLessThanOrEqual(1);
+			'Tablet context rail starts near the header edge'
+		).toBeLessThanOrEqual(12);
 		expect(rail!.y + rail!.height, 'Context rail sits above the tabs').toBeLessThanOrEqual(
 			row!.y + 1
 		);

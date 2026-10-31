@@ -8,16 +8,20 @@ async function assertPickerReview(component: Locator, id: string, variant: strin
 				component.getByRole('listbox', { name: 'Project', exact: true }),
 				'Opening a project picker displays its choices'
 			).toBeVisible();
-		if (variant === 'empty')
+		if (variant === 'empty') {
+			await expect(component.getByRole('listbox', { name: 'Project', exact: true })).toBeDisabled();
 			await expect(
 				component.getByText('No projects yet', { exact: true }),
 				'An empty project picker has a visible explanation'
 			).toBeVisible();
-		if (variant === 'busy')
+		}
+		if (variant === 'busy') {
+			await expect(component.getByRole('button', { name: 'Choose workbench' })).toBeDisabled();
 			await expect(
 				component.getByRole('status'),
 				'Busy project switching has a visible status'
 			).toContainText('Loading project');
+		}
 	}
 	if (id === 'desktop.component.revision-picker' && variant.endsWith('-open'))
 		await expect(
