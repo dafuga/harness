@@ -3,10 +3,11 @@ import type { CatalogRow } from '../../../../src/utils/entityCatalog';
 
 const attributes: Record<string, Record<string, unknown>> = {
 	img: { src: image, alt: 'Example image', width: 180, height: 110 },
-	a: { href: '#example' },
+	a: { href: '#release-notes', style: 'text-decoration:underline' },
 	button: { type: 'button' },
 	select: { 'aria-label': 'Example choice' },
 	textarea: { 'aria-label': 'Example text', placeholder: 'Write a message', rows: 3 },
+	time: { datetime: '2026-10-20' },
 	optgroup: { label: 'Example group' },
 	option: { value: 'example' },
 	details: { open: true },
@@ -84,7 +85,7 @@ function nativeVariantProps(tag: string, variant: string): Record<string, unknow
 		filled:
 			tag === 'path' ? { fill: 'currentColor' } : { value: 'A saved message with several words.' },
 		closed: { open: false },
-		unlinked: { href: undefined },
+		unlinked: { href: undefined, style: 'text-decoration:none' },
 		'alt-only': { src: undefined, alt: 'No image available' },
 		unavailable: { src: undefined },
 		outlined: { fill: 'none', stroke: 'currentColor' }
