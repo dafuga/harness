@@ -3,17 +3,26 @@ import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 
 async function assertPickerReview(component: Locator, id: string, variant: string) {
 	if (id === 'desktop.component.project-switcher') {
-		if (['open', 'shared'].includes(variant))
+		if (['open', 'shared'].includes(variant)) {
 			await expect(
 				component.getByRole('listbox', { name: 'Project', exact: true }),
 				'Opening a project picker displays its choices'
 			).toBeVisible();
+			await expect(
+				component.getByRole('option', { name: 'Orders', exact: true }),
+				'An opened project list paints its available project'
+			).toBeVisible();
+		}
 		if (variant === 'empty') {
-			await expect(component.getByRole('listbox', { name: 'Project', exact: true })).toBeDisabled();
 			await expect(
 				component.getByText('No projects yet', { exact: true }),
 				'An empty project picker has a visible explanation'
 			).toBeVisible();
+			await expect(
+				component.getByRole('listbox'),
+				'An empty project picker explains the absence instead of a disabled empty field'
+			).toHaveCount(0);
+			await expect(component.getByRole('combobox')).toHaveCount(0);
 		}
 		if (variant === 'busy') {
 			await expect(component.getByRole('button', { name: 'Choose workbench' })).toBeDisabled();
@@ -29,7 +38,7 @@ async function assertPickerReview(component: Locator, id: string, variant: strin
 			'Opening a revision picker displays its choices'
 		).toBeVisible();
 	if (['desktop.component.project-gate', 'desktop.component.project-switcher'].includes(id)) {
-		await expect(component).not.toContainText('Preview project');
+		await expect(component).not.toContainText(/Preview project|Shared workbench|A workbench with/);
 		await expect(component.getByText('preview', { exact: true })).toHaveCount(0);
 	}
 }
@@ -56,7 +65,7 @@ export async function assertPickerPresentation(component: Locator, id: string, v
 		await expect(project, 'Shared project is selected in the visible picker').toHaveValue(
 			'shared-project'
 		);
-		await expect(project.locator('option:checked')).toHaveText('Shared workbench');
+		await expect(project.locator('option:checked')).toHaveText('Orders Operations');
 	}
 	if (variant === 'busy') {
 		await expect(component.getByRole('dialog')).toHaveCount(0);

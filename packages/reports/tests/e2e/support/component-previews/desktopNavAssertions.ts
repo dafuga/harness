@@ -1,5 +1,9 @@
 import { expect, type Locator } from '@playwright/test';
-import { assertNavContext, assertMobileNavLayout } from './desktopNavLayoutAssertions';
+import {
+	assertNavContext,
+	assertMobileNavLayout,
+	assertGameNavGlyph
+} from './desktopNavLayoutAssertions';
 
 /** Catalog navigation keeps its context rail and icon labels aligned across viewport sizes. */
 export async function assertDesktopNavCapture(component: Locator, id: string) {
@@ -40,6 +44,7 @@ export async function assertDesktopNavCapture(component: Locator, id: string) {
 	const game = tabs.getByRole('link', { name: 'Game Views', exact: true });
 	if (await game.count()) {
 		await expect(game.locator('svg'), 'Game Views has a category icon').toHaveCount(1);
+		await assertGameNavGlyph(game, tabs);
 		await expect(game.locator('span')).toHaveText('Game Views');
 		const direction = await tabs
 			.locator('a')
