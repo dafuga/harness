@@ -86,11 +86,6 @@ const actions: Record<string, CatalogStateAction> = {
 		const label = component.locator('.report-select-value');
 		await expect(label).toHaveText('releas…proval');
 		expect(await label.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
-	},
-	'reports.component.select:open': async (component) => {
-		const select = component.getByRole('combobox', { name: 'Viewport', exact: true });
-		await select.click();
-		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	}
 };
 

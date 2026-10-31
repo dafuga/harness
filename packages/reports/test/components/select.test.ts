@@ -27,6 +27,9 @@ test('the shared select names its field, carries its form name and holds the opt
 	const compact = markup({ compact: true, display: 'feature/very-long-branch-name' });
 	expect(compact).toContain('featur…h-name');
 	expect(field(compact)[0]).toContain('title="feature/very-long-branch-name"');
+	const expanded = markup({ expanded: true, display: 'feature/very-long-branch-name' });
+	expect(field(expanded)[0]).toContain('size="2"');
+	expect(expanded).not.toContain('report-select-value');
 });
 
 test('a disabled select is disabled as a field and dimmed together with its caret', () => {

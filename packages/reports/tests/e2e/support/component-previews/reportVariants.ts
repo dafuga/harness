@@ -98,6 +98,7 @@ function audioVariant(id: string, props: PreviewCases[string], variant: string) 
 }
 
 function selectVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'open') return { ...props, expanded: true };
 	if (variant === 'compact') return { ...props, compact: true };
 	if (variant === 'display')
 		return {
@@ -124,7 +125,7 @@ function modalVariant(props: PreviewCases[string], variant: string) {
 		title: 'Order card evidence',
 		variant,
 		children: text(
-			`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`
+			`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · synthetic preview</figcaption></figure></div>`
 		)
 	};
 }
