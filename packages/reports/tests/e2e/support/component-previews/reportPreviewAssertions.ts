@@ -9,7 +9,7 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 		const dialog = component.getByRole('dialog', { name: 'Order card evidence' });
 		await expect(dialog).toBeVisible();
 		await expect(dialog).not.toHaveClass(/\b(?:text|lightbox)\b/);
-		await expect(dialog.getByRole('img', { name: 'Synthetic order card evidence' })).toBeVisible();
+		await expect(dialog.getByRole('img', { name: 'Order card evidence' })).toBeVisible();
 	}
 	if (!id.startsWith('reports.component.source-')) return;
 	return assertSourcePreviewState(component, id, variant);
@@ -74,16 +74,14 @@ export async function assertRecordedReportPreviewState(
 		await expect(links.first()).toBeFocused();
 	}
 	if (id === 'reports.component.modal' && variant === 'lightbox') {
-		const image = component.getByRole('img', { name: 'Synthetic order card evidence' });
+		const image = component.getByRole('img', { name: 'Order card evidence' });
 		const box = (await image.boundingBox())!;
 		const clip = await previewCaptureBounds(component.page(), id, variant);
 		expect(
 			(box.width * box.height) / (clip.width * clip.height),
 			'Lightbox capture frames the image rather than unused canvas'
 		).toBeGreaterThan(0.45);
-		await expect(component.locator('figcaption')).toHaveText(
-			'Recorded order card · synthetic preview'
-		);
+		await expect(component.locator('figcaption')).toHaveText('Order A-1048 · Ready to ship');
 	}
 }
 

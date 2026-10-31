@@ -14,7 +14,7 @@ export async function prepareUsagePopover(component: Locator, variant: string) {
 		.poll(() => image.evaluate((node: HTMLImageElement) => node.naturalWidth))
 		.toBeGreaterThan(0);
 	await image.evaluate((node: HTMLImageElement) => node.decode());
-	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('SYNTHETIC ORDER LIST');
+	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('Order management');
 	const id = (await component.getAttribute('data-preview-unit'))!;
 	const clip = await previewCaptureBounds(component.page(), id, variant);
 	const box = (await tip.boundingBox())!;

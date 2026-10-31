@@ -48,7 +48,7 @@ async function assertUsageImage(component: Locator, variant: string) {
 	const preview = component.getByRole('tooltip', { name: 'Preview of OrderList' });
 	const image = preview.getByRole('img', { name: 'Screenshot of OrderList' });
 	await expect(image).toHaveAttribute('src', /^data:image\/svg\+xml,/);
-	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('SYNTHETIC ORDER LIST');
+	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('Order management');
 }
 
 /** Preview artwork contains product content; fixture provenance stays outside the painted image. */
