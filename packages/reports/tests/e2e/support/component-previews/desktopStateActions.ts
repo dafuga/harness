@@ -59,6 +59,12 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 				.click();
 	},
 	'runtime-artifact': artifact,
+	'nav-bar': async (component, variant) => {
+		if (variant === 'game')
+			await component
+				.getByRole('link', { name: 'Game Views', exact: true })
+				.scrollIntoViewIfNeeded();
+	},
 	'status-icon': async (component, variant) => {
 		if (['failed', 'unknown', 'unverified', 'no-reason', 'open', 'long'].includes(variant)) {
 			await component.getByRole('button').focus();

@@ -57,8 +57,8 @@
 							: category[0].toUpperCase() + category.slice(1)}</hx-span
 				></WorkspaceLink
 			>{/each}
-		<!-- On a phone, Game Views starts a row of its own, which search and settings then end. -->
-		{#if gameViews}<hx-a href={resolve(gameViews as '/')} style:grid-column="1">Game Views</hx-a
+		{#if gameViews}<hx-a href={resolve(gameViews as '/')}
+				><Icon name="game" /><hx-span>Game Views</hx-span></hx-a
 			>{/if}
 	</hx-nav>
 	<hx-div class="topbar-search">
