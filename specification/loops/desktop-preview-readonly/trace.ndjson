@@ -1,1 +1,3 @@
 {"event":"loop.created","timestamp":"2026-10-31T18:40:29.173Z","name":"desktop-preview-readonly","goal":"Show why AI video is disabled in a read-only gameplay preview","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-31T18:52:46.320Z","loop":"desktop-preview-readonly","step":"spec","evidence":"The existing read-only gameplay preview hid its AI restriction behind an unconfigured-transport message."}
+{"event":"step.completed","timestamp":"2026-10-31T18:52:47.074Z","loop":"desktop-preview-readonly","step":"coverage","evidence":"The component-catalog-previews readonly case checked only hidden data and a disabled AI button, not the visible status or interactive Reset."}

@@ -47,7 +47,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 			await component.getByRole('combobox', { name: 'Environment' }).selectOption(variant);
 	},
 	'project-switcher': async (component, variant) => {
-		if (['open', 'shared', 'empty', 'busy'].includes(variant))
+		if (['open', 'shared', 'empty'].includes(variant))
 			await component.getByRole('button', { name: 'Choose workbench' }).click();
 	},
 	'revision-picker': async (component, variant) => {

@@ -1,6 +1,7 @@
 import type { DesktopData } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
 import { text } from './shared';
+import { commits } from '../../../../test/entityUnits';
 
 /** Workspace state changes are confined to the catalog's synthetic store and bridge. */
 export function desktopShellVariant(
@@ -108,7 +109,20 @@ function history(props: PreviewProps, data: DesktopData, variant: string): Previ
 			loadedPages: 1
 		};
 	if (variant === 'more')
-		data.bridge.history = async () => ({ entries: [], complete: true, nextPage: null });
+		data.bridge.history = async () => ({
+			entries: [
+				{
+					...entity.history[0],
+					id: 'preview-earlier-history-page',
+					at: '2026-10-09T09:00:00Z',
+					title: 'Earlier API decision',
+					detail: 'Keep order filtering synchronous and preserve the original order of matches.',
+					commit: commits.first
+				}
+			],
+			complete: true,
+			nextPage: null
+		});
 	if (variant === 'loading') data.bridge.history = () => new Promise(() => {});
 	if (variant === 'error')
 		data.bridge.history = async () => {
@@ -159,8 +173,11 @@ const workspaceVariants: Record<
 			workspace.projects = [];
 			workspace.snapshot = null;
 		}
-		if (variant === 'shared')
+		if (variant === 'shared') {
 			workspace.projects.push({ id: 'shared-project', name: 'Shared workbench', kind: 'shared' });
+			workspace.snapshot!.project.id = 'shared-project';
+			workspace.snapshot!.project.name = 'Shared workbench';
+		}
 		if (variant === 'busy') workspace.busy = true;
 		if (variant === 'long')
 			workspace.snapshot!.project.name = 'A workbench with a long descriptive project name';
@@ -169,7 +186,10 @@ const workspaceVariants: Record<
 	'revision-picker': (props, data, variant) => {
 		const workspace = data.workspace;
 		if (variant === 'pinned' || variant === 'historical') workspace.pinned = true;
-		if (variant === 'historical') workspace.snapshot!.revision.atTip = false;
+		if (variant === 'historical') {
+			workspace.snapshot!.revision.atTip = false;
+			workspace.snapshot!.revision.commit = commits.middle;
+		}
 		if (variant === 'unknown-time') workspace.snapshot!.commits = [];
 		return props;
 	}

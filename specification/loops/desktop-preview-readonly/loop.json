@@ -2,7 +2,7 @@
 	"name": "desktop-preview-readonly",
 	"goal": "Show why AI video is disabled in a read-only gameplay preview",
 	"createdAt": "2026-10-31T18:40:29.173Z",
-	"updatedAt": "2026-10-31T18:40:29.173Z",
+	"updatedAt": "2026-10-31T18:52:47.074Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:52:46.320Z",
+			"evidence": "The existing read-only gameplay preview hid its AI restriction behind an unconfigured-transport message."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T18:52:47.074Z",
+			"evidence": "The component-catalog-previews readonly case checked only hidden data and a disabled AI button, not the visible status or interactive Reset."
 		},
 		{
 			"id": "red",

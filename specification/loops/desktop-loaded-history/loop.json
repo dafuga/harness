@@ -1,0 +1,58 @@
+{
+	"name": "desktop-loaded-history",
+	"goal": "Show a real returned older event after loading more Desktop history",
+	"createdAt": "2026-10-31T19:03:09.319Z",
+	"updatedAt": "2026-10-31T19:04:09.624Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T19:03:10.297Z",
+			"evidence": "The more catalog state returns an empty page, making its completed screenshot indistinguishable from complete default history."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T19:03:10.931Z",
+			"evidence": "The existing history-panel:more case checked that the paging button disappeared, without requiring a returned row to be visible. Add that assertion to the existing shared capture guard."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T19:04:08.540Z",
+			"evidence": "e13116755e2400ef1c52e252945e2aea84442581ab5daf0cd9a87bdeb242ae3a; the three existing more cases fail because no earlier event is painted."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-31T19:04:09.624Z",
+			"evidence": "The synthetic history bridge now returns a real older event with its own identity, date, explanation and known commit. Product history behavior is unchanged."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
