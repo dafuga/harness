@@ -38,7 +38,7 @@ async function assertPickerReview(component: Locator, id: string, variant: strin
 			'Opening a revision picker displays its choices'
 		).toBeVisible();
 	if (['desktop.component.project-gate', 'desktop.component.project-switcher'].includes(id)) {
-		await expect(component).not.toContainText('Preview project');
+		await expect(component).not.toContainText(/Preview project|Shared workbench|A workbench with/);
 		await expect(component.getByText('preview', { exact: true })).toHaveCount(0);
 	}
 }
@@ -65,7 +65,7 @@ export async function assertPickerPresentation(component: Locator, id: string, v
 		await expect(project, 'Shared project is selected in the visible picker').toHaveValue(
 			'shared-project'
 		);
-		await expect(project.locator('option:checked')).toHaveText('Shared workbench');
+		await expect(project.locator('option:checked')).toHaveText('Orders Operations');
 	}
 	if (variant === 'busy') {
 		await expect(component.getByRole('dialog')).toHaveCount(0);
