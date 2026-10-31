@@ -14,3 +14,9 @@ artwork and the old positive copy assertions changes the test corpus, so subsequ
 passing captures are fixture qualification, not a matched product red/green pair.
 No runtime component repair is claimed for these image-data corrections. Item 40's
 table rendering defects have their own product regression loop.
+
+Item 42's empty-configs state delegates to the repaired ExplorerTable. Its old
+assertion required zero body rows, so it must now require the spanning empty cell
+before current-code refetching. This is an assertion correction for item 40's
+existing repair, not a new product change. Current captures will establish whether
+the local SearchBox artwork and View More hover still need correction.

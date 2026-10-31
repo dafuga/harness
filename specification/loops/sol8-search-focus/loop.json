@@ -2,11 +2,9 @@
 	"name": "sol8-search-focus",
 	"goal": "Keep one aligned search focus ring and realistic project scope at every viewport",
 	"createdAt": "2026-10-31T23:31:57.584Z",
-	"updatedAt": "2026-10-31T23:36:54.363Z",
+	"updatedAt": "2026-10-31T23:57:10.629Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T23:55:28.338Z",
+			"evidence": "0ec48f071f explicitly resets the focused input outline width through the search root; the field wrapper retains the visible outline."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T23:57:10.629Z",
+			"evidence": "2ff7ff2e4c087425ebea2379fb4f8e80be51dc4dfad3ef25dbd246cec12d7ed5 passes all three unchanged viewport cases with retained captures."
 		},
 		{
 			"id": "verify",

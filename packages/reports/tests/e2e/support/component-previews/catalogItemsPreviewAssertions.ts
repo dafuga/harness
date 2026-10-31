@@ -20,14 +20,21 @@ export async function assertCatalogItems(component: Locator, variant: string) {
 	if (variant === 'pages')
 		await expect(component.getByRole('img', { name: 'Screenshot of Orders page' })).toBeVisible();
 	if (variant === 'unlinked') await expect(component).toContainText('Orders styles');
-	if (['configs', 'configs-open', 'empty-configs'].includes(variant)) {
-		await expect(component.getByRole('columnheader')).toHaveText(['Variable', 'Value']);
-		await expect(component.locator('tbody tr')).toHaveCount(variant === 'empty-configs' ? 0 : 4);
-	}
+	if (['configs', 'configs-open', 'empty-configs'].includes(variant))
+		await assertConfigItems(component, variant);
 	if (variant === 'configs-open')
 		await expect(
 			component.getByRole('dialog', { name: 'orderSettings.steps · Value' })
 		).toBeVisible();
+}
+
+async function assertConfigItems(component: Locator, variant: string) {
+	await expect(component.getByRole('columnheader')).toHaveText(['Variable', 'Value']);
+	const rows = component.locator('tbody tr');
+	await expect(rows).toHaveCount(variant === 'empty-configs' ? 1 : 4);
+	if (variant !== 'empty-configs') return;
+	await expect(rows.getByRole('cell')).toHaveText('No rows to display.');
+	await expect(rows.getByRole('cell')).toHaveAttribute('colspan', '2');
 }
 
 async function assertPagination(component: Locator, variant: string) {
