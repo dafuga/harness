@@ -1,0 +1,58 @@
+{
+	"name": "desktop-artifact-json-visibility",
+	"goal": "Capture the complete opened recorded JSON after its reactive content renders",
+	"createdAt": "2026-10-31T21:27:57.456Z",
+	"updatedAt": "2026-10-31T21:30:15.101Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T21:27:58.627Z",
+			"evidence": "Self-review of canonical RuntimeArtifact json-open images at64b10df9bb found only the heading and top border of its JSON; all three viewport crops exclude the opened content."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T21:27:59.348Z",
+			"evidence": "Existing action only counted open details, satisfied by the outer disclosure, while the nested JSON body mounts after the native toggle event. Add a post-capture geometry assertion against the original retained crop in the same three standardized cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T21:28:55.098Z",
+			"evidence": "Committed checkpoint40a1692665 fails all3 viewport cases: JSON bottom lies beyond the original recorded crop. Recordc13a77454cd7284d2e002c661709cd023b3181b8a321c708481c7a1768cf89a6 preserves the failing images and geometry assertion."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-31T21:30:15.101Z",
+			"evidence": "The existing JSON action now waits for its reactive pre content before bounds are measured. Guard remains unchanged. GamePreview separately loses one redundant blank line to satisfy the existing file limit."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
