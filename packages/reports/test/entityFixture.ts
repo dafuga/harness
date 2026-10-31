@@ -32,7 +32,7 @@ const proof = (kind: string): CaptureSeed => ({ kind, state: '' });
 const measure = (target: string, metric: string, value: number | null) => ({
 	unit: target,
 	metric,
-	unitOfMeasure: metric === 'p95-ms' ? 'ms' : 'bytes',
+	unitOfMeasure: metric === 'p95-ms' ? 'ms' : metric === 'complexity' ? 'count' : 'bytes',
 	value,
 	workload: metric === 'p95-ms' ? 'thousand-orders' : null,
 	profile: metric === 'p95-ms' ? 'bun-reference' : null
