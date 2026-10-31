@@ -67,6 +67,7 @@ async function composer(component: Locator, variant: string) {
 export async function assertDesktopCapturedState(component: Locator, id: string, variant: string) {
 	await assertPickerPresentation(component, id, variant);
 	await assertLoadedHistory(component, id, variant);
+	await assertLongCatalogContent(component, id, variant);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
@@ -91,6 +92,23 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 			});
 		expect(visible, 'Expanded checkpoint rules are fully visible above the footer').toBe(true);
 	}
+}
+
+async function assertLongCatalogContent(component: Locator, id: string, variant: string) {
+	const read: Record<string, () => Promise<string>> = {
+		'desktop.component.game-level-brief': () =>
+			component.getByRole('textbox', { name: 'Level brief', exact: true }).inputValue(),
+		'desktop.component.history-panel': () => component.locator('article p').first().innerText()
+	};
+	if (variant !== 'long' || !read[id]) return;
+	const sentences = (await read[id]())
+		.split(/[.!?]+/)
+		.map((sentence) => sentence.trim())
+		.filter(Boolean);
+	expect(
+		new Set(sentences).size,
+		'Long catalog content uses distinct meaningful sentences'
+	).toBeGreaterThanOrEqual(3);
 }
 
 async function assertLoadedHistory(component: Locator, id: string, variant: string) {
