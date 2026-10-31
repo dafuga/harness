@@ -1,5 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
-import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
+import { assertPickerPresentation } from './desktopPickerAssertions';
 import { assertReadonlyGameFields } from './desktopReadonlyAssertions';
 import { assertDesktopArtifactCapture } from './desktopArtifactAssertions';
 import { assertDesktopNavCapture } from './desktopNavAssertions';
@@ -148,37 +148,6 @@ async function assertLoadedHistory(component: Locator, id: string, variant: stri
 			component.getByText('Earlier API decision', { exact: true }),
 			'Loading earlier history paints the returned event'
 		).toBeVisible();
-}
-
-async function assertPickerPresentation(component: Locator, id: string, variant: string) {
-	if (id === 'desktop.component.game-view-fields' && variant === 'multiple') {
-		await expect(
-			component.getByRole('combobox', { name: 'View', exact: true }),
-			'Multiple-view capture shows the selected second level'
-		).toHaveValue('second-level');
-		await expect(component.getByRole('textbox', { name: 'View title', exact: true })).toHaveValue(
-			'Garden return route'
-		);
-	}
-	if (id === 'desktop.component.revision-picker' && variant === 'historical')
-		await expect(
-			component.locator('[aria-label="Viewed context"] strong'),
-			'Historical revision names the older selected commit'
-		).toHaveText(commits.middle.slice(0, 7));
-	if (id !== 'desktop.component.project-switcher') return;
-	if (variant === 'shared') {
-		const project = component.getByRole('combobox', { name: 'Project', exact: true });
-		await expect(project, 'Shared project is selected in the visible picker').toHaveValue(
-			'shared-project'
-		);
-		await expect(project.locator('option:checked')).toHaveText('Shared workbench');
-	}
-	if (variant === 'busy') {
-		await expect(component.getByRole('dialog')).toHaveCount(0);
-		const add = component.getByRole('button', { name: 'Add local project', exact: true });
-		await expect(add).toBeVisible();
-		await expect(add).toBeDisabled();
-	}
 }
 
 async function assertComposerPresentation(component: Locator, variant: string) {
