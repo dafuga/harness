@@ -38,26 +38,26 @@
 				"name": "EntityCases.document",
 				"type": "unknown",
 				"required": false,
-				"description": "Optional parsed test result. Used when no documented examples are supplied."
+				"description": "Optional parsed test result. Used when no documented examples are supplied. Defaults to JavaScript undefined (omitted), not the literal string. When omitted and no examples are supplied, the view reports that recorded values are unavailable."
 			},
 			{
 				"name": "EntityCases.examples",
 				"type": "UsageExample[]",
 				"required": false,
-				"description": "Documented uses with input and one expected output or error. These are never recorded test results."
+				"description": "Documented uses with input and one expected output or error. These are never recorded test results. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, reads observed document cases; an explicit empty array means no documented examples."
 			},
 			{
 				"name": "EntityCases.unit",
 				"type": "string",
 				"required": false,
-				"description": "Optional unit identifier limiting direct invocation rows to that function."
+				"description": "Optional unit identifier limiting direct invocation rows to that function. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, recorded invocations are not restricted to one unit."
 			},
 			{
 				"name": "EntityCases.callable",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Optional flag, true by default. Controls wording distinguishing observed end-to-end behavior from a direct function call; false is suitable for noncallable entities."
+				"description": "Optional flag, true by default. Controls wording distinguishing observed end-to-end behavior from a direct function call; false is suitable for noncallable entities. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -84,6 +84,7 @@
 				"description": "A supplied getter, proxy or toJSON method can throw while a document or example value is read or serialized."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

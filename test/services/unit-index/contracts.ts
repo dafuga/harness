@@ -18,14 +18,14 @@ export function relay(error: Error): never { throw error; }`,
 	'src/components/Panel.svelte': `<script module lang="ts">
 		export function describe(node: string): string { return node; }
 	</script><script lang="ts">
-		type Props = { title: string; size?: number; children?: Snippet };
-		let { title, size = 16, children }: Props = $props();
+		type Props = { title: string; size?: number; children?: Snippet; value: string; optional?: string; fallback?: string };
+		let { title, size = 16, children, value = $bindable(), optional = $bindable(), fallback = $bindable('ready') }: Props = $props();
 		function inside() { let { wrong }: { wrong: string } = $props(); }
 	</script>{#snippet row(node: string, text?: string)}{node}{/snippet}`,
 	'src/components/Wrapper.svelte': `<script lang="ts">
 		import type { ComponentProps } from 'svelte';
 		import Panel from './Panel.svelte';
-		let { title, size = 16, children }: ComponentProps<typeof Panel> = $props();
+		let { title, size = 16, children, value = $bindable(), optional = $bindable(), fallback = $bindable('ready') }: ComponentProps<typeof Panel> = $props();
 	</script>`,
 	'src/models/Entry.ts': `export class Entry {
 		static definition = { table: 'entries', primaryKey: 'id', fields: {
@@ -41,7 +41,9 @@ export function relay(error: Error): never { throw error; }`,
 /** SourceIndexService.index and UnitIndexService.index: callable, component and storage states. */
 export async function assertContractExtraction(): Promise<void> {
 	const indexed = await measureWorkload('service.source-index', 'derive-contract-states', () =>
-		indexFiles(declarations)
+		measureWorkload('function.scan-component', 'required-and-optional-bindable-props', () =>
+			indexFiles(declarations)
+		)
 	);
 	assertCallContract(unitOf(indexed, 'function.call').contract);
 	assertComponentContracts(indexed);
@@ -67,10 +69,13 @@ function assertCallContract(call: ComponentManifest['contract']): void {
 
 function assertComponentContracts(indexed: Indexed): void {
 	const panel = unitOf(indexed, 'component.panel').contract;
-	expect(panel.inputs).toEqual([
+	expect(panel.inputs, 'No-fallback bindable props retain source requiredness').toEqual([
 		{ name: 'Panel.title', type: 'string', required: true },
 		{ name: 'Panel.size', type: 'number', required: false, default: 16 },
-		{ name: 'Panel.children', type: 'Snippet', required: false }
+		{ name: 'Panel.children', type: 'Snippet', required: false },
+		{ name: 'Panel.value', type: 'string', required: true },
+		{ name: 'Panel.optional', type: 'string', required: false },
+		{ name: 'Panel.fallback', type: 'string', required: false, default: 'ready' }
 	]);
 	expect(panel.snippets?.[0]).toMatchObject({
 		name: 'Panel.row',

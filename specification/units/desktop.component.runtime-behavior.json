@@ -43,7 +43,7 @@
 				"name": "RuntimeBehavior.unit",
 				"type": "string",
 				"required": false,
-				"description": "Optional function identifier forwarded to result rows on both sides."
+				"description": "Optional function identifier forwarded to result rows on both sides. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -54,6 +54,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},

@@ -68,19 +68,19 @@
 				"name": "EntityBehavior.reasons",
 				"type": "Reasons",
 				"required": false,
-				"description": "Optional entity change reasons, displayed separately from test observations. Their behavior summary takes precedence over derived comparison explanation."
+				"description": "Optional entity change reasons, displayed separately from test observations. Their behavior summary takes precedence over derived comparison explanation. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "EntityBehavior.duration",
 				"type": "string",
 				"required": false,
-				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it."
+				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it. Defaults to Not measured."
 			},
 			{
 				"name": "EntityBehavior.unit",
 				"type": "string",
 				"required": false,
-				"description": "Optional function identifier passed to run/artifact case rendering."
+				"description": "Optional function identifier passed to run/artifact case rendering. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -91,6 +91,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},

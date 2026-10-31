@@ -33,7 +33,7 @@
 				"name": "EntityLink.label",
 				"type": "string",
 				"required": false,
-				"description": "Optional accessible name when visible content is insufficient."
+				"description": "Optional accessible name when visible content is insufficient. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "EntityLink.children",
@@ -49,7 +49,14 @@
 				"description": "Anchor with a real href. A plain click prevents document navigation and calls nav.go; modified/nonprimary clicks keep native behavior. Does not catch navigation errors."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied children callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

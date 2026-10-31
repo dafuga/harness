@@ -51,13 +51,13 @@
 				"name": "EntityDetails.tab",
 				"type": "ExplorerTab",
 				"required": false,
-				"description": "Optional selected tab. Exactly source shows source; measurements shows measured detail; missing or any other tab uses the summary."
+				"description": "Optional selected tab. Exactly source shows source; measurements shows measured detail; missing or any other tab uses the summary. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, renders the contract and summary."
 			},
 			{
 				"name": "EntityDetails.repository",
 				"type": "string",
 				"required": false,
-				"description": "Canonical GitHub repository address for source navigation."
+				"description": "Canonical GitHub repository address for source navigation. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "EntityDetails.commit",
@@ -69,7 +69,7 @@
 				"name": "EntityDetails.nav",
 				"type": "EntityNav",
 				"required": false,
-				"description": "Optional entity navigation context for contract links at the selected branch and revision."
+				"description": "Optional entity navigation context for contract links at the selected branch and revision. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -80,6 +80,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},

@@ -32,7 +32,7 @@
 				"name": "HarnessNavbar.modules",
 				"type": "ModuleCatalog",
 				"required": false,
-				"description": "Optional selected-revision module catalog. Installed resources supply Code tabs; omitted catalogs use included standard modules."
+				"description": "Optional selected-revision module catalog. Installed resources supply Code tabs; omitted catalogs use included standard modules. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "HarnessNavbar.base",
@@ -80,7 +80,7 @@
 				"name": "HarnessNavbar.search",
 				"type": "{ entries: SearchEntry[] | null }",
 				"required": false,
-				"description": "Optional searchable entities for the viewed revision, or null entries while loading. The search helper excludes entries for a mismatched revision."
+				"description": "Optional searchable entities for the viewed revision, or null entries while loading. The search helper excludes entries for a mismatched revision. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -90,7 +90,14 @@
 				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied href, onroute callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

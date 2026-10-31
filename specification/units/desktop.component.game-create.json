@@ -33,29 +33,24 @@
 				"name": "GameCreate.bridge",
 				"type": "DesktopBridge",
 				"required": false,
-				"description": "Local desktop host operations for project creation, persistence and explicit image generation."
+				"description": "Local desktop host operations for project creation, persistence and explicit image generation. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, uses window.harness after mount; without gameCreate creation stays disabled."
 			},
 			{
 				"name": "GameCreate.created",
 				"type": "(snapshot: ProjectSnapshot) => void",
 				"required": false,
-				"description": "Optional callback receiving the created project snapshot instead of full-page navigation."
+				"description": "Optional callback receiving the created project snapshot instead of full-page navigation. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, successful creation navigates to /harness for an app or /game?projectId=... for a game."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCreate",
 				"type": "markup",
-				"description": "Create an app or dimensional game through the local host and open its resulting workspace. Renders reactive UI and publishes edits through its callbacks."
+				"description": "Create an app or dimensional game through the local host and open its resulting workspace. Renders reactive UI and publishes edits through its callbacks. Creation, callback and navigation failures are caught and displayed in the form alert."
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "Creation or navigation cannot continue when the created game snapshot lacks its project identity."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},

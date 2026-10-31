@@ -56,7 +56,7 @@
 				"name": "HarnessConsole.links",
 				"type": "Array<{ label: string; href: string }>",
 				"required": false,
-				"description": "Compatibility input accepted by the prop type but not read or rendered by this component."
+				"description": "Compatibility input accepted by the prop type but not read or rendered by this component. Defaults to JavaScript undefined (omitted), not the literal string. Compatibility input accepted but unused by the current console."
 			},
 			{
 				"name": "HarnessConsole.content",
@@ -72,7 +72,14 @@
 				"description": "Explorer header and selected screen, with loading, unavailable-address and missing-registry notices. Index and selected-revision failures become visible problem text; unavailable parent data becomes null."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied navigate callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "consoleContentKey",

@@ -32,7 +32,7 @@
 				"name": "EnvironmentPicker.children",
 				"type": "Snippet",
 				"required": false,
-				"description": "Optional action rendered beside the environment choice, such as production promotion."
+				"description": "Optional action rendered beside the environment choice, such as production promotion. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
 		"outputs": [
@@ -42,7 +42,14 @@
 				"description": "Selects the environment scope for changes and switches the shared header summary to that environment."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller callback or content error",
+				"type": "propagated",
+				"description": "Errors from supplied children callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
