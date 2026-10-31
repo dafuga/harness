@@ -51,7 +51,7 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Disables gameplay edits and AI rendering when true; defaults to false."
+				"description": "Prevents starting an AI video session when true; defaults to false. Gameplay movement and reset remain interactive, and run changes still reach onRun."
 			},
 			{
 				"name": "GamePreview.onRun",
@@ -70,7 +70,7 @@
 			{
 				"name": "GamePreview",
 				"type": "markup",
-				"description": "Run native key-door gameplay and preserve progress while keeping optional AI video disabled by default. Renders reactive UI and publishes edits through its callbacks."
+				"description": "Interactive 2D or 3D gameplay canvas, movement and reset controls, current run readout and optional AI video controls. A read-only preview explains that AI generation is disabled. Initial, movement and reset run snapshots are published through onRun."
 			}
 		],
 		"errors": [

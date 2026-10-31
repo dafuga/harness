@@ -36,6 +36,7 @@
 	const busy = $derived(status !== 'off');
 	const scope = $derived(view.id + ':' + view.dimension + ':' + view.planning?.built);
 	const summary = $derived.by(() => {
+		if (readonly) return 'AI video is disabled in this read-only preview.';
 		if (!aiVideo.decartTransportReady()) return 'Live AI is not configured for this build.';
 		if (!available) return 'AI video needs a saved project open in the desktop app.';
 		if (busy) return status === 'live' ? `Live · ${left} s left` : 'Starting the AI video…';
