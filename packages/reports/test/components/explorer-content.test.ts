@@ -11,7 +11,7 @@ test('the pages collection is cards with a page title and screenshot without a p
 	expect(words(body)).toContain('Pages Start with the pages people use.');
 	expect(body).toContain('aria-label="Orders page"');
 	// The tip shows the tip's capture, and the link stays on the branch without a commit.
-	expect(body).toContain('src="/harness/media/ccccccc-default-desktop.png"');
+	expect(body).toContain('src="/harness/media/c725e93-default-desktop.png"');
 	expect(body).toContain('href="/harness/branch/feature%2Forders/pages/app.page.orders"');
 	expect(words(body)).not.toContain('2 components');
 	// Catalogs omit proof marks and their legend; evidence belongs to the entity view.

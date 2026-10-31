@@ -1,7 +1,8 @@
 import type { DesktopData } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
 import { text } from './shared';
-import { commits } from '../../../../test/entityUnits';
+import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
+import { desktopHistoryFixture, earlierDesktopHistoryEvent } from './desktopHistoryFixture';
 
 /** Workspace state changes are confined to the catalog's synthetic store and bridge. */
 export function desktopShellVariant(
@@ -100,8 +101,7 @@ function design(props: PreviewProps, data: DesktopData, variant: string): Previe
 	return props;
 }
 function history(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
-	const entity =
-		variant === 'empty' ? { ...data.filterEntity, history: [] } : { ...data.filterEntity };
+	const entity = desktopHistoryFixture(data.filterEntity, variant);
 	if (['incomplete', 'more', 'loading', 'error'].includes(variant))
 		entity.historyCoverage = {
 			complete: false,
@@ -110,38 +110,15 @@ function history(props: PreviewProps, data: DesktopData, variant: string): Previ
 		};
 	if (variant === 'more')
 		data.bridge.history = async () => ({
-			entries: [
-				{
-					...entity.history[0],
-					id: 'preview-earlier-history-page',
-					at: '2026-10-09T09:00:00Z',
-					title: 'Earlier API decision',
-					detail: 'Keep order filtering synchronous and preserve the original order of matches.',
-					commit: commits.first
-				}
-			],
+			entries: [earlierDesktopHistoryEvent()],
 			complete: true,
 			nextPage: null
 		});
 	if (variant === 'loading') data.bridge.history = () => new Promise(() => {});
 	if (variant === 'error')
 		data.bridge.history = async () => {
-			throw new Error('Synthetic earlier history is unavailable.');
+			throw new Error("Couldn't load earlier history. Try again.");
 		};
-	if (variant === 'long')
-		entity.history = entity.history.map((item, index) =>
-			index === 0
-				? {
-						...item,
-						detail: [
-							'A detailed history event.',
-							'The revision keeps order filtering synchronous and preserves the original order of matching rows.',
-							'Matching ignores letter case without changing caller-owned data.',
-							'The public input matrix covers an empty query, no matches and mixed-case customer names so reviewers can compare this change with the current implementation.'
-						].join(' ')
-					}
-				: item
-		);
 	return { ...props, entity };
 }
 

@@ -86,8 +86,13 @@
 				"description": "Captions show the revision that recorded each screenshot; a comparison retains Before/After labels with each capture's revision. Viewport buttons change only the viewport. Activating an image opens its full-size viewer with provenance. Rejected or absent captures remain explicit gaps."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Navigation callback error",
+				"type": "propagated",
+				"description": "Errors from nav.href while rendering the comparison link or nav.go when following it propagate; missing screenshots remain visible gaps."
+			}
+		],
 		"operations": [],
 		"initialization": []
 	},

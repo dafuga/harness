@@ -62,7 +62,11 @@ function artifact(props: PreviewProps, data: DesktopData, variant: string): Prev
 		unreadable: {
 			cell: {
 				...cell,
-				read: { ...cell.read, verified: false, problem: 'Synthetic artifact hash mismatch.' }
+				read: {
+					...cell.read,
+					verified: false,
+					problem: 'The artifact bytes do not match the recorded hash.'
+				}
 			},
 			lost: true
 		},
@@ -73,7 +77,15 @@ function artifact(props: PreviewProps, data: DesktopData, variant: string): Prev
 					...cell.read,
 					verified: true,
 					document: null,
-					text: 'Recorded plain text output.\n'.repeat(30)
+					text: [
+						'Recorded plain text output.',
+						'Workload: order-name filtering',
+						'Query: service',
+						'Input: three orders in their original order',
+						'Match: Service plan',
+						'Original row objects and ordering were preserved.',
+						'Result: passed'
+					].join('\n')
 				}
 			}
 		}
@@ -111,6 +123,7 @@ function prepareEvidence(data: DesktopData, variant: string) {
 		error: 'failed'
 	} as const;
 	if (variant in statuses) data.visualEvidence.status = statuses[variant as keyof typeof statuses];
-	if (variant === 'error') data.visualEvidence.error = 'Synthetic evidence read refused.';
+	if (variant === 'error')
+		data.visualEvidence.error = "Couldn't load recorded evidence. Try again.";
 	if (variant === 'offline') data.workspace.offline = { cachedAt: '2026-10-20T09:00:00Z' };
 }

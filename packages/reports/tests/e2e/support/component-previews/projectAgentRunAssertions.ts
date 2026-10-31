@@ -53,18 +53,20 @@ export async function prepareProjectAgentState(
 
 async function outcome(component: Locator, state: ProjectAgentState) {
 	if (state === 'running') {
-		await expect(component).toContainText('Reviewing the synthetic project request…');
+		await expect(component).toContainText('Reviewing order search behavior…');
 		await expect(component.getByRole('textbox', { name: 'Message' })).toBeDisabled();
 		await expect(component.locator('button.send')).toBeDisabled();
 		return;
 	}
 	if (state === 'failure') {
-		await expect(component.getByRole('alert')).toHaveText('Synthetic agent request failed.');
+		await expect(component.getByRole('alert')).toHaveText(
+			'The agent connection closed before the review finished. Try again.'
+		);
 		await expect(component.getByRole('textbox')).toHaveValue('  ' + projectConversation + '  ');
 		await expect(component.getByRole('textbox')).toBeEnabled();
 		return;
 	}
-	await expect(component).toContainText('Synthetic request completed.');
+	await expect(component).toContainText('Review completed. The proposed checks are ready.');
 	if (state === 'saved-plan')
 		await expect(component.getByRole('button', { name: 'Open the saved draft' })).toBeVisible();
 	if (state === 'historical')
@@ -73,7 +75,7 @@ async function outcome(component: Locator, state: ProjectAgentState) {
 
 async function comment(page: Page, component: Locator, state: ProjectAgentState) {
 	const textbox = component.getByRole('textbox', { name: 'Message' });
-	const draft = '  A synthetic comment kept in the project conversation.  ';
+	const draft = '  Please keep the empty-query case in the order-search review.  ';
 	await textbox.fill(draft);
 	await component.getByRole('button', { name: 'Send comment' }).click();
 	await expect
@@ -85,7 +87,9 @@ async function comment(page: Page, component: Locator, state: ProjectAgentState)
 		.toBe(draft.trim());
 	expect(await page.evaluate(() => sessionStorage.getItem('harness.preview.request'))).toBeNull();
 	if (state === 'comment-retry') {
-		await expect(component.getByRole('alert')).toHaveText('Error: Synthetic comment save refused.');
+		await expect(component.getByRole('alert')).toHaveText(
+			"Error: Couldn't save the comment. Try again."
+		);
 		await expect(textbox).toHaveValue(draft);
 		return;
 	}

@@ -140,3 +140,12 @@
 		>
 	</hx-div>
 {/if}
+
+<style>
+	.ex-artifact .ex-checks > li {
+		align-items: flex-start;
+	}
+	.ex-artifact .ex-checks > li > pre {
+		flex: 1 0 100%;
+	}
+</style>

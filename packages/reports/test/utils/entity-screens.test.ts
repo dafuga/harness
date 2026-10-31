@@ -46,7 +46,7 @@ test('device states share a picker while original metadata and missing-device ga
 	for (const viewport of ['desktop', 'tablet', 'mobile']) {
 		expect(
 			entityScreens(found, screenPick(opts, { scenario: 'focused', viewport })!).after.file
-		).toBe(`ccccccc-default-${viewport}.png`);
+		).toBe(`c725e93-default-${viewport}.png`);
 	}
 	expect(found.after.captures.map((item) => item.state)).toEqual(['default', 'default', 'default']);
 	expect(found.after.captures.map((item) => item.capture.state)).toEqual([
@@ -98,7 +98,7 @@ test('the branch tip shows exactly one screenshot, the one of the picked state a
 	const pick = screenPick(options, { viewport: 'mobile' })!;
 	const shown = entityScreens(evidence(page, tip), pick);
 	expect(shown.before).toBeUndefined();
-	expect(shown.after.file).toBe('ccccccc-default-mobile.png');
+	expect(shown.after.file).toBe('c725e93-default-mobile.png');
 	expect(shown.after.missing).toBe(false);
 	expect(shown.after.phase).toBe('current');
 	expect(shown.fresh).toBe(true);
@@ -106,8 +106,8 @@ test('the branch tip shows exactly one screenshot, the one of the picked state a
 
 test('a selected commit pairs the parent and the commit for the same state and viewport', () => {
 	const shown = entityScreens(evidence(page, head, base), screenPick(options, {})!);
-	expect(shown.before?.file).toBe('aaaaaaa-default-desktop.png');
-	expect(shown.after.file).toBe('bbbbbbb-default-desktop.png');
+	expect(shown.before?.file).toBe('3f9c2a1-default-desktop.png');
+	expect(shown.after.file).toBe('8b41d07-default-desktop.png');
 	expect([shown.before?.phase, shown.after.phase]).toEqual(['before', 'after']);
 	expect(shown.before?.comparison).toBe(shown.after.comparison);
 	expect(shown.after.standing).toBe('Fresh capture');
@@ -121,15 +121,15 @@ test('a side with no capture is a stated gap and is never filled from the other 
 		file: '',
 		status: 'not-proven'
 	});
-	expect(shown.before?.note).toBe('No capture of empty at desktop is recorded for aaaaaaa.');
-	expect(shown.before?.file).not.toContain('bbbbbbb');
-	expect(shown.after.file).toBe('bbbbbbb-empty-desktop.png');
+	expect(shown.before?.note).toBe('No capture of empty at desktop is recorded for 3f9c2a1.');
+	expect(shown.before?.file).not.toContain('8b41d07');
+	expect(shown.after.file).toBe('8b41d07-empty-desktop.png');
 });
 
 test('a revision without a record has a gap for its screenshot, in the words its side gives', () => {
 	const shown = entityScreens(evidence(page, revision(commits.tip, [])), screenPick(options, {})!);
 	expect(shown.after.missing).toBe(true);
-	expect(shown.after.note).toMatch(/ccccccc|record/);
+	expect(shown.after.note).toMatch(/c725e93|record/);
 	expect(shown.after.file).toBe('');
 	expect(shown.fresh).toBe(false);
 });
@@ -157,7 +157,7 @@ test('an inherited capture is never the screenshot of the tip: it is a gap that 
 		file: '',
 		phase: 'current'
 	});
-	expect(shown.after.note).toContain('inherited from aaaaaaa');
+	expect(shown.after.note).toContain('inherited from 3f9c2a1');
 });
 
 test('the gallery gets every screenshot of both sides, each side marked as what it is', () => {
@@ -179,7 +179,7 @@ test('a declared catalog preview selects its exact state and viewport without a 
 		state: 'empty',
 		viewport: 'mobile'
 	};
-	expect(catalogShot(shown, preview)?.file).toBe('ccccccc-empty-mobile.png');
+	expect(catalogShot(shown, preview)?.file).toBe('c725e93-empty-mobile.png');
 	expect(catalogShot(shown, { ...preview, state: 'uncaptured' })).toBeNull();
 	const focused = structuredClone(shown);
 	for (const item of focused.after.captures) {
@@ -193,7 +193,7 @@ test('a declared catalog preview selects its exact state and viewport without a 
 	expect(
 		catalogShot(focused, preview)?.file,
 		'catalog preview keeps its declared state and viewport'
-	).toBe('ccccccc-empty-mobile.png');
+	).toBe('c725e93-empty-mobile.png');
 	expect(catalogShot(focused, { ...preview, state: 'uncaptured' })).toBeNull();
 });
 
@@ -211,7 +211,7 @@ test('validated unchanged screenshots stay visible with their capture origin', (
 	const shown = entityScreens(usable, screenPick(options, {})!);
 	expect(shown.after).toMatchObject({
 		missing: false,
-		file: 'bbbbbbb-default-desktop.png'
+		file: '8b41d07-default-desktop.png'
 	});
 	expect(shown.fresh).toBe(false);
 	expect(shown.origin).toBe(commits.middle);

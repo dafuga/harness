@@ -30,15 +30,15 @@ test('the tabs of the address open what it uses and its tests on the same screen
 	expect(count(related, /<img\b/g), 'relationship cards show their component screenshots').toBe(2);
 	const tests = screen(EntityVisualScreen, 'commit', { ...page, tab: 'tests' });
 	expect(words(tests)).toContain('States');
-	expect(words(tests)).not.toContain('Verification at bbbbbbb');
-	expect(disclosed(tests)).toContain('Verification at bbbbbbb');
+	expect(words(tests)).not.toContain('Verification at 8b41d07');
+	expect(disclosed(tests)).toContain('Verification at 8b41d07');
 	expect(drawn(tests)).toBe(drawn(content('commit', { ...page, tab: 'tests' })));
 });
 
 test('an entity the revision does not hold is said to be missing, with the way back', () => {
 	const body = screen(EntityVisualScreen, 'commit', { category: 'pages', entity: 'app.page.gone' });
 	expect(words(body)).toContain('Not at this revision');
-	expect(words(body)).toContain('Nothing named app.page.gone is in the registry at bbbbbbb.');
+	expect(words(body)).toContain('Nothing named app.page.gone is in the registry at 8b41d07.');
 	expect(body).toMatch(/<h1[^>]*>Not at this revision<\/h1>/);
 	expect(count(body, /<img\b|role="tab"/g)).toBe(0);
 });
@@ -54,6 +54,6 @@ test('a page overview keeps its declared screenshot state and viewport', () => {
 			: unit
 	);
 	const body = screen(EntityVisualScreen, 'current', page, { head });
-	expect(body).toContain('/harness/media/ccccccc-empty-mobile.png');
-	expect(body).not.toContain('/harness/media/ccccccc-default-desktop.png');
+	expect(body).toContain('/harness/media/c725e93-empty-mobile.png');
+	expect(body).not.toContain('/harness/media/c725e93-default-desktop.png');
 });

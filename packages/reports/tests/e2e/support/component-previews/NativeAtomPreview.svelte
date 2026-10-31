@@ -53,7 +53,10 @@
 			><td>{variant === 'long' ? label : (example ?? 'Example cell')}</td></tr
 		>
 	{:else if tag === 'tr'}<td>{variant === 'long' ? label : (example ?? 'Example cell')}</td>
-	{:else if ['ul', 'ol', 'menu'].includes(tag)}<li>
+	{:else if tag === 'ul' || tag === 'ol'}<li style="list-style:inherit">{label}</li>
+		<li style="list-style:inherit">Check the catalog previews</li>
+		<li style="list-style:inherit">Publish the release notes</li>
+	{:else if tag === 'menu'}<li>
 			{variant === 'long' ? label : (example ?? 'Example item')}
 		</li>
 	{:else if tag === 'dl'}<div>
@@ -111,7 +114,10 @@
 	{:else if tag === 'td' || tag === 'th'}<table>
 			<tbody><tr><Component {...attributes} children={content} /></tr></tbody>
 		</table>
-	{:else if tag === 'li'}<ul><Component {...attributes} children={content} /></ul>
+	{:else if tag === 'li'}<ul style="list-style:disc inside">
+			<Component {...attributes} children={content} />
+			<li style="list-style:inherit">Check the catalog previews</li>
+		</ul>
 	{:else if tag === 'dt' || tag === 'dd'}<dl><Component {...attributes} children={content} /></dl>
 	{:else if tag === 'option'}<label for="native-option-context">Option choices</label>
 		<select id="native-option-context" aria-label="Native option context" size="3">

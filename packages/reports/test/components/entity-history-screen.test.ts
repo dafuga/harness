@@ -13,11 +13,11 @@ test('the history screen lists the commits that changed the entity, for every ki
 		section: 'history' as const
 	};
 	const body = screen(EntityHistoryScreen, 'commit', filter);
-	expect(hashes(body)).toEqual(['bbbbbbb', 'aaaaaaa']);
+	expect(hashes(body)).toEqual(['8b41d07', '3f9c2a1']);
 	expect(words(body), 'Compact commit history').not.toContain('Selected change');
 	expect(drawn(body)).toBe(drawn(content('commit', filter)));
 	const page = { category: 'pages' as const, entity: ids.page, section: 'history' as const };
-	expect(hashes(screen(EntityHistoryScreen, 'commit', page))).toEqual(['aaaaaaa']);
+	expect(hashes(screen(EntityHistoryScreen, 'commit', page))).toEqual(['3f9c2a1']);
 });
 
 test('the history of an entity the revision does not hold says that it is missing', () => {

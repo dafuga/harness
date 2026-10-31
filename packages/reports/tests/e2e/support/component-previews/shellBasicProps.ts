@@ -51,11 +51,20 @@ function verdictProps(props: PreviewCases[string], variant: string) {
 			'The required mobile screenshot is missing.',
 			'The result belongs to the selected commit.'
 		];
-	if (variant === 'long-open')
-		reasons = Array.from(
-			{ length: 24 },
-			(_, n) =>
-				`State ${n + 1}: the required capture is missing from this selected revision and must be recorded before full verification.`
-		);
+	if (variant === 'long-open') {
+		const names = [
+			'Search results',
+			'Component details',
+			'Revision selector',
+			'Verification tooltip'
+		];
+		const devices = ['desktop', 'tablet', 'mobile'];
+		reasons = Array.from({ length: 24 }, (_, n) => {
+			const state = `${names[n % names.length]} at ${devices[Math.floor(n / names.length) % devices.length]}`;
+			return n < 12
+				? `${state}: the required capture is missing for this revision. Run its declared component scenario before requesting full verification.`
+				: `${state}: original image bytes are unavailable. Attach the capture with its recorded source revision and SHA-256 before verification.`;
+		});
+	}
 	return { ...props, passed: !failed && !unknown, framed: variant === 'framed', label, reasons };
 }

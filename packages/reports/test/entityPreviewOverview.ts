@@ -199,7 +199,7 @@ export async function reviewComponentCapture(
 		.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
 	expect(files).toEqual(
 		commit
-			? ['/media/aaaaaaa-default-desktop.png', '/media/bbbbbbb-default-desktop.png']
-			: ['/media/ccccccc-default-desktop.png']
+			? ['/media/3f9c2a1-default-desktop.png', '/media/8b41d07-default-desktop.png']
+			: ['/media/c725e93-default-desktop.png']
 	);
 }

@@ -111,7 +111,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(dialog.locator('pre')).toContainText(commits.tip);
 			await expect(dialog.locator('pre')).toContainText('export const sourceRevision');
 			await expect(dialog.locator('pre')).toContainText('<script>');
-			await expect(dialog.getByText('ccccccc', { exact: true })).toBeVisible();
+			await expect(dialog.getByText('c725e93', { exact: true })).toBeVisible();
 			expect(await where(page)).toEqual(address);
 			expect(await fits(page)).toBe(true);
 			await capture(page, `${phase}-source-open-${category}-${viewport}`);

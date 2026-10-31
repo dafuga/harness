@@ -12,7 +12,7 @@ function side(lost: boolean) {
 	const props = {
 		shown,
 		side: 'after' as const,
-		title: 'After · bbbbbbb',
+		title: 'After · 8b41d07',
 		role: 'Selected commit'
 	};
 	return render(EntityRun, { props: { ...props, mediaBase: '/media/', lost } }).body;
@@ -28,5 +28,5 @@ test('a result whose reading failed says so, and does not go on saying it is bei
 	expect(words(body)).toContain('It could not be read and checked against its hash.');
 	expect(verdicts(body).map((mark) => mark.name)).toContain('Not verified');
 	// What was recorded can still be opened as the file it is.
-	expect(body).toContain('href="/media/bbbbbbb-match-output.json"');
+	expect(body).toContain('href="/media/8b41d07-match-output.json"');
 });

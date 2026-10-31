@@ -21,7 +21,7 @@ test('its tabs and a missing config behave as on every entity screen', () => {
 	expect(related).toContain('aria-label="orderSettings used in"');
 	expect(words(related)).toContain('Orders page');
 	const tests = screen(EntityConfigScreen, 'commit', { ...settings, tab: 'tests' });
-	expect(words(tests)).toContain('Verification at bbbbbbb');
+	expect(words(tests)).toContain('Verification at 8b41d07');
 	const gone = { category: 'configs' as const, entity: 'app.config.gone' };
 	expect(words(screen(EntityConfigScreen, 'commit', gone))).toContain('Not at this revision');
 });

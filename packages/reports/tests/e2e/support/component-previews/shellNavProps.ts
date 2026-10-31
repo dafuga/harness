@@ -25,8 +25,7 @@ function harnessHarnessHeaderProps(props: PreviewCases[string], variant: string)
 		...props,
 		navbar: {
 			...(props.navbar as object),
-			repository:
-				'Orders workspace with a deliberately long repository name for responsive navigation'
+			repository: 'Northstar Field Services · Customer Operations · Order Management'
 		}
 	};
 }
@@ -37,8 +36,7 @@ function harnessHarnessNavbarProps(props: PreviewCases[string], variant: string)
 	if (variant === 'long-repository')
 		return {
 			...props,
-			repository:
-				'Orders workspace with a deliberately long repository name for responsive navigation'
+			repository: 'Northstar Field Services · Customer Operations · Order Management'
 		};
 	if (variant === 'pages')
 		return {
@@ -66,20 +64,25 @@ function harnessHarnessSelectorsProps(props: PreviewCases[string], variant: stri
 			commits: [],
 			bases: []
 		};
-	if (variant === 'long')
+	if (variant === 'long') {
+		const name = 'feature/catalog/responsive-component-explorer-navigation';
+		const revisions = d.index.revisions.map((revision) => ({ ...revision, branches: [name] }));
 		return {
 			...props,
 			index: {
 				...d.index,
 				branches: [
 					{
-						name: 'feature/orders/long-branch-name-for-responsive-selector',
+						name,
 						head: d.commits.middle
 					}
-				]
+				],
+				revisions
 			},
-			branch: 'feature/orders/long-branch-name-for-responsive-selector'
+			branch: name,
+			commits: revisions
 		};
+	}
 	return {
 		...props,
 		tip: {

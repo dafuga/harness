@@ -167,7 +167,7 @@ export async function reviewStates(
 		await expect(card).toBeVisible();
 		const images = card.getByRole('img');
 		await expect(images).toHaveCount(commit ? 2 : 1);
-		const revisions = commit ? ['aaaaaaa', 'bbbbbbb'] : ['ccccccc'];
+		const revisions = commit ? ['3f9c2a1', '8b41d07'] : ['c725e93'];
 		expect(
 			await images.evaluateAll((all) => all.map((image) => image.getAttribute('src')))
 		).toEqual(revisions.map((at) => `/media/${at}-${state.toLowerCase()}-desktop.png`));
@@ -180,7 +180,7 @@ export async function reviewStates(
 	await panel.getByRole('combobox', { name: 'Viewport', exact: true }).selectOption('mobile');
 	await expect(
 		panel.getByRole('article', { name: 'Error', exact: true }).getByRole('img').last()
-	).toHaveAttribute('src', `/media/${commit ? 'bbbbbbb' : 'ccccccc'}-error-mobile.png`);
+	).toHaveAttribute('src', `/media/${commit ? '8b41d07' : 'c725e93'}-error-mobile.png`);
 	expect(await fits(page)).toBe(true);
 }
 

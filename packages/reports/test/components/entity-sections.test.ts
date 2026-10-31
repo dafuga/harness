@@ -65,8 +65,8 @@ test('what it uses and its tests replace the overview, and its evidence pane wit
 	const tests = sections('tests');
 	expect(tests).toContain('aria-label="Orders page states"');
 	expect(words(tests)).toContain('States');
-	expect(words(tests)).not.toContain('Verification at bbbbbbb');
-	expect(disclosed(tests)).toContain('Verification at bbbbbbb');
+	expect(words(tests)).not.toContain('Verification at 8b41d07');
+	expect(disclosed(tests)).toContain('Verification at 8b41d07');
 	expect(words(tests)).not.toContain('the evidence of its kind');
 	expect(words(tests)).not.toContain('Lists the orders of an account.');
 });
@@ -80,14 +80,14 @@ test('a service opens Examples at either address, construction first and verific
 		expect(shown).toContain('Create the service');
 		expect(at('new OrderStore(accountId)')).toBeLessThan(at('store.orders()'));
 		expect(at('store.orders()')).toBeLessThan(at('not test results'));
-		expect(shown).not.toContain('Verification at bbbbbbb');
-		expect(disclosed(body)).toContain('Verification at bbbbbbb');
+		expect(shown).not.toContain('Verification at 8b41d07');
+		expect(disclosed(body)).toContain('Verification at 8b41d07');
 		expect(shown).not.toContain('the evidence of its kind');
 	}
 	const bare = evidence('services', ids.store, 'tests');
 	expect(words(bare)).toContain('No usage examples are documented at this commit.');
 	expect(words(bare)).not.toContain('Create the service');
-	expect(disclosed(bare)).toContain('Verification at bbbbbbb');
+	expect(disclosed(bare)).toContain('Verification at 8b41d07');
 });
 
 test('a function keeps its Examples alone and another kind keeps its Tests', () => {
@@ -95,11 +95,11 @@ test('a function keeps its Examples alone and another kind keeps its Tests', () 
 	expect(helper).toContain('aria-label="filterOrders examples"');
 	expect(helper).not.toContain('<details');
 	expect(words(helper)).not.toContain('Create the service');
-	expect(words(helper)).not.toContain('Verification at bbbbbbb');
+	expect(words(helper)).not.toContain('Verification at 8b41d07');
 	const config = evidence('configs', ids.settings, 'tests', documented);
 	expect(config).toMatch(/aria-label="[^"]+ tests"/);
 	expect(config).not.toMatch(/aria-label="[^"]+ examples"/);
-	expect(words(config)).toContain('Verification at bbbbbbb');
+	expect(words(config)).toContain('Verification at 8b41d07');
 	expect(words(config)).not.toContain('store.orders()');
 });
 

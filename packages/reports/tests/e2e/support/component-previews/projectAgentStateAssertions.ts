@@ -26,17 +26,17 @@ async function assertClosedLauncher(component: Locator) {
 	await expect(panel).toBeVisible();
 	const textbox = panel.getByRole('textbox').first();
 	await panel.getByRole('button', { name: 'Comment', exact: true }).click();
-	await textbox.fill('Review the component states.');
+	await textbox.fill('Review the order-search acceptance cases.');
 	await panel.getByRole('button', { name: 'Send comment' }).click();
 	await expect(textbox).toHaveValue('');
-	const draft = 'Keep this project draft while the panel closes.';
+	const draft = 'Include empty queries in the search review.';
 	await textbox.fill(draft);
 	await launcher.click();
 	await expect(panel).toBeHidden();
 	await expect(launcher).toBeFocused();
 	await launcher.press('Enter');
 	await expect(textbox).toHaveValue(draft);
-	await expect(panel).toContainText('Review the component states.');
+	await expect(panel).toContainText('Review the order-search acceptance cases.');
 	await textbox.press('Escape');
 	await expect(panel).toBeHidden();
 	await expect(launcher).toBeFocused();
@@ -64,13 +64,13 @@ async function assertReadOnly(component: Locator) {
 async function assertConversation(component: Locator) {
 	const panel = component.locator('.floating-chat-panel');
 	await expect(panel).toContainText('Please review');
-	await expect(panel).toContainText('missing.preview-unit');
-	await expect(panel).toContainText('preview-function-name');
+	await expect(panel).toContainText('app.function.archive-orders');
+	await expect(panel).toContainText('filterOrders');
 	const known = panel.locator('a[href*="app.page.orders"]');
 	await expect(known).toHaveAttribute('href', /\/history(?:[?#]|$)/);
-	await expect(panel.locator('a[href*="missing.preview-unit"]')).toHaveCount(0);
+	await expect(panel.locator('a[href*="app.function.archive-orders"]')).toHaveCount(0);
 	const assistant = panel.locator('.chat-message.agent').last();
-	await expect(assistant).toContainText('A deterministic assistant response');
+	await expect(assistant).toContainText('The search matches order names');
 	await expect(assistant).toBeVisible();
 	const lines = await assistant.evaluate((node) => {
 		const range = document.createRange();
@@ -87,11 +87,11 @@ async function assertNoProvider(component: Locator) {
 	await comment.click();
 	const textbox = panel.getByRole('textbox').first();
 	await expect(textbox).toBeEnabled();
-	await textbox.fill('A comment remains available without an agent model.');
+	await textbox.fill('Please review the order-search edge cases.');
 	await expect(panel.locator('button.send')).toBeEnabled();
 	const plan = panel.getByRole('button', { name: 'Plan', exact: true });
 	await plan.click();
-	await textbox.fill('No provider request is submitted.');
+	await textbox.fill('Plan coverage for empty queries and mixed-case order names.');
 	await expect(panel.locator('button.send')).toBeDisabled();
 }
 
@@ -100,7 +100,7 @@ async function assertAgents(page: Page, component: Locator, state: ProjectAgentS
 	const chat = component.getByRole('button', { name: 'Chat', exact: true });
 	const agents = component.getByRole('button', { name: 'Agents', exact: true });
 	const textbox = panel.getByRole('textbox').first();
-	const draft = 'Return to this saved chat draft.';
+	const draft = 'Review the order-search behavior after the agent summary.';
 	await textbox.fill(draft);
 	await agents.click();
 	const roster = page.locator('[data-harness-component="agents-providers-chat-agents"]');

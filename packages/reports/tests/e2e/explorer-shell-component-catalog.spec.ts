@@ -30,6 +30,7 @@ import type { ProjectAgentState } from './support/component-previews/projectAgen
 import { prepareCatalogState } from './support/component-previews/catalogStateActions';
 import { assertReportPreviewState } from './support/component-previews/reportPreviewAssertions';
 import { assertRecordedValueCapture } from './support/component-previews/recordedValueCaptureAssertions';
+import { assertShellReview } from './support/component-previews/shellReviewAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { assertCatalogRegistry } from './support/component-previews/catalogRegistryAssertions';
 let home = '';
@@ -122,7 +123,18 @@ for (const viewport of catalogViewports) {
 			const component = await preview.readyPreview(page, unit.id, variant);
 			const target = { viewport: viewport.id, variant };
 			const early =
-				unit.id === 'reports.component.shared-primitives-atoms-html-a' ||
+				[
+					'reports.component.shared-primitives-atoms-html-a',
+					'reports.component.shared-primitives-atoms-html-ol',
+					'reports.component.shared-primitives-atoms-html-li',
+					'reports.component.shared-primitives-atoms-html-ul',
+					'reports.component.shared-primitives-atoms-html-table',
+					'reports.component.shared-primitives-atoms-html-thead',
+					'reports.component.shared-primitives-atoms-html-tbody',
+					'reports.component.shared-primitives-atoms-html-tr',
+					'reports.component.shared-primitives-atoms-html-th',
+					'reports.component.shared-primitives-atoms-html-td'
+				].includes(unit.id) ||
 				(variant === 'empty' &&
 					[
 						'reports.component.coverage-list',
@@ -171,6 +183,7 @@ for (const viewport of catalogViewports) {
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
+			await assertShellReview(component, unit.id, variant, viewport.id);
 			await assertInlinePluginKitCapture(component, unit.id);
 			await assertPresentationPreview(component, unit.id, variant);
 			await assertRecordedValueCapture(component, unit.id, variant);

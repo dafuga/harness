@@ -14,7 +14,7 @@ test('the summary of an entity is its contract, its measures and the record that
 	const shown = entityShown(host, entity);
 	expect(value(shown.contract, 'Inputs')).toBe('orders, search text');
 	expect(value(shown.measure.size, 'Source size')).toBe('800 B');
-	expect(shown.record?.id).toBe('rec-bbbbbb-0000');
+	expect(shown.record?.id).toBe(record(commits.middle).id);
 });
 
 const tree = 'd'.repeat(40);

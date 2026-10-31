@@ -20,7 +20,7 @@ const labels = (category: Kind, entity: string) => {
 
 test('tests show the verdict, each scenario with its states, and the checks that ran', () => {
 	const body = content('commit', page);
-	expect(disclosed(body)).toContain('Verification at bbbbbbb');
+	expect(disclosed(body)).toContain('Verification at 8b41d07');
 	expect(names(body)).toContain('Full coverage passed');
 	expect(names(body)).toContain('Every required state is proven');
 	// A badge is its icon: what it says is its name and its tooltip, not words on the page.
@@ -73,11 +73,11 @@ test('the full comparison is the existing gallery, which pairs each capture with
 	expect(disclosed(body)).toContain('Screenshot gallery');
 	// Four states and viewports: each after is listed once, its before is opened beside it.
 	expect(disclosed(body)).toContain('4 / 4');
-	for (const file of ['bbbbbbb-default-desktop.png', 'bbbbbbb-empty-mobile.png']) {
+	for (const file of ['8b41d07-default-desktop.png', '8b41d07-empty-mobile.png']) {
 		expect(body).toContain(`/harness/media/${file}`);
 	}
 	expect(disclosed(body)).toContain('Fresh capture');
-	expect(body).not.toContain('ccccccc');
+	expect(body).not.toContain('c725e93');
 });
 
 test('a function lists its end-to-end results in full, and a revision without a record says so', () => {
@@ -99,7 +99,7 @@ test('what the commit no longer declares is shown as gone, with a result before 
 	}));
 	head.registry = { ...head.registry, scenarios: kept };
 	const body = content('commit', page, { head });
-	expect(disclosed(body)).toContain('No longer declared at bbbbbbb');
+	expect(disclosed(body)).toContain('No longer declared at 8b41d07');
 	expect(disclosed(body)).toContain('Orders page over synthetic orders: the state empty.');
 	expect(words(content('commit', page))).not.toContain('No longer declared');
 });

@@ -18,6 +18,7 @@ export async function assertCompositionFilter(component: Locator): Promise<void>
 /** Native states assert real browser properties, then the standard test records the same element. */
 const nativeSelectors: Record<string, string> = {
 	path: 'svg > path',
+	tr: 'tbody > tr',
 	option: 'option[value="example"]'
 };
 
@@ -31,6 +32,8 @@ export async function assertNativeAtomState(component: Locator, id: string, vari
 		.first();
 	await expect(tag === 'option' ? component.locator('.atom-host select') : element).toBeVisible();
 	if (tag === 'option') await assertNativeOption(element, component, variant);
+	await assertNativeList(component, tag);
+	await assertNativeTable(component, tag);
 	await assertNativeControl(element, tag, variant);
 	await assertNativeDisclosure(component, tag, variant);
 	await assertNativeAttributes(element, tag, variant);
@@ -39,6 +42,34 @@ export async function assertNativeAtomState(component: Locator, id: string, vari
 		await expect
 			.poll(() => element.evaluate((node: HTMLAudioElement) => node.readyState))
 			.toBeGreaterThanOrEqual(2);
+}
+
+async function assertNativeList(component: Locator, tag: string) {
+	if (!['ol', 'ul', 'li'].includes(tag)) return;
+	const list = component.locator(`.atom-host ${tag === 'li' ? 'ul' : tag}`);
+	const items = list.locator(':scope > li');
+	const marker = tag === 'ol' ? 'decimal' : 'disc';
+	await expect(items.first()).toHaveCSS('list-style-type', marker, { timeout: 1000 });
+	await expect(items).toHaveCount(tag === 'li' ? 2 : 3);
+	for (const item of await items.all()) {
+		await expect(item).toHaveCSS('display', 'list-item');
+		await expect(item).toHaveCSS('list-style-type', marker);
+		await expect(item).toHaveCSS('list-style-position', 'inside');
+		await expect(item).toBeInViewport();
+	}
+}
+
+async function assertNativeTable(component: Locator, tag: string) {
+	if (!['table', 'thead', 'tbody', 'tr', 'th', 'td'].includes(tag)) return;
+	const table = component.locator('.atom-host table');
+	await expect(table.getByRole('row')).toHaveCount(3, { timeout: 1000 });
+	await expect(table.getByRole('columnheader')).toHaveCount(2);
+	await expect(table.getByRole('cell')).toHaveCount(4);
+	for (const cell of await table.locator('th, td').all()) {
+		await expect(cell).toHaveCSS('border-top-width', '1px');
+		await expect(cell).toHaveCSS('border-top-style', 'solid');
+		await expect(cell).toBeInViewport();
+	}
 }
 
 async function assertNativeDisclosure(component: Locator, tag: string, variant: string) {
