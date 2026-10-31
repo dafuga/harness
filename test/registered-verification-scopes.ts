@@ -1,3 +1,4 @@
+import { uploadVerificationScopes } from './upload-verification-scopes';
 import gameScenario from '../specification/scenarios/game-authoring.json' with { type: 'json' };
 import { hostedVerificationScopes } from './hosted-verification-scopes';
 import { functionVerificationScopes } from './function-verification-scopes';
@@ -37,5 +38,6 @@ export const registeredVerificationScopes: Record<string, VerificationScope> = {
 	...hubDesignVerificationScopes,
 	...brandingVerificationScopes,
 	...historyFixtureVerificationScopes,
-	...moduleTaskVerificationScopes
+	...moduleTaskVerificationScopes,
+	...uploadVerificationScopes
 };

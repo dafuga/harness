@@ -3,63 +3,64 @@
 	"id": "reports.endpoint.api-report-screenshot-upload",
 	"kind": "endpoint",
 	"title": "/api/report-screenshot-upload",
-	"responsibility": "Owns the /api/report-screenshot-upload HTTP endpoint.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Accepts a same-origin screenshot pair and preserves storage, image and report-state failure responses.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/routes/api/report-screenshot-upload/+server.ts"],
 		"symbols": ["POST"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "POST.request",
-				"type": "unknown",
-				"required": true
+				"type": "Request",
+				"required": true,
+				"description": "Required incoming HTTP request, admitted before reading multipart data."
 			},
 			{
 				"name": "POST.url",
-				"type": "unknown",
-				"required": true
+				"type": "URL",
+				"required": true,
+				"description": "Required server-resolved URL; its origin defines the accepted upload origin."
 			}
 		],
 		"outputs": [
 			{
 				"name": "POST",
-				"type": "unknown"
+				"type": "Promise<Response>",
+				"description": "A 201 JSON report on success, or an explicit JSON admission, media, report-state or storage error response. Parsing/storage exceptions are translated into responses."
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown"
-			}
-		],
-		"errorStatus": "unknown",
+		"errors": [],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "POST",
 				"inputs": [
 					{
 						"name": "POST.request",
-						"type": "unknown",
-						"required": true
+						"type": "Request",
+						"required": true,
+						"description": "Required incoming HTTP request, admitted before reading multipart data."
 					},
 					{
 						"name": "POST.url",
-						"type": "unknown",
-						"required": true
+						"type": "URL",
+						"required": true,
+						"description": "Required server-resolved URL; its origin defines the accepted upload origin."
 					}
 				],
 				"outputs": [
 					{
 						"name": "POST",
-						"type": "unknown"
+						"type": "Promise<Response>",
+						"description": "A 201 JSON report on success, or an explicit JSON admission, media, report-state or storage error response. Parsing/storage exceptions are translated into responses."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
@@ -72,6 +73,11 @@
 		},
 		{
 			"unit": "reports.function.report-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.reports-media-admit-upload-request",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -91,7 +97,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["upload-request-admission"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

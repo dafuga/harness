@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "upload-request-admission",
+	"title": "Same-origin upload admission at the three existing media endpoints",
+	"kind": "headless",
+	"units": [
+		"reports.endpoint.api-report-audio-comparison",
+		"reports.endpoint.api-report-audio-upload",
+		"reports.endpoint.api-report-screenshot-upload",
+		"reports.function.reports-media-admit-upload-request"
+	],
+	"states": [
+		{
+			"id": "audio-upload",
+			"title": "Audio upload origin, multipart, exact header limits and refusal before body access",
+			"coverage": "required",
+			"units": [
+				"reports.endpoint.api-report-audio-upload",
+				"reports.function.reports-media-admit-upload-request"
+			]
+		},
+		{
+			"id": "audio-comparison",
+			"title": "Audio comparison origin, multipart, exact header limits and refusal before body access",
+			"coverage": "required",
+			"units": [
+				"reports.endpoint.api-report-audio-comparison",
+				"reports.function.reports-media-admit-upload-request"
+			]
+		},
+		{
+			"id": "screenshot-upload",
+			"title": "Screenshot upload origin, multipart, exact header limits and refusal before body access",
+			"coverage": "required",
+			"units": [
+				"reports.endpoint.api-report-screenshot-upload",
+				"reports.function.reports-media-admit-upload-request"
+			]
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "audio-upload",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/routes/report-audio-upload-api.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "audio-comparison",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/routes/report-audio-comparison-api.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "screenshot-upload",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/routes/report-screenshot-upload-api.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "admission-output",
+			"kind": "output",
+			"states": ["audio-upload", "audio-comparison", "screenshot-upload"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "admission-assertions",
+			"kind": "assertions",
+			"states": ["audio-upload", "audio-comparison", "screenshot-upload"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "behavior-benchmarks",
+			"kind": "benchmark",
+			"states": ["audio-upload", "audio-comparison", "screenshot-upload"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -23,7 +23,8 @@ export function presentationVariant(id: string, props: PreviewCases[string], var
 			? []
 			: contract.inputs.map((field) => ({
 					...field,
-					name: variant === 'long' ? 'customerRevisionIdentifier'.repeat(12) : field.name,
+					name:
+						variant === 'long' ? field.name + 'customerRevisionIdentifier'.repeat(12) : field.name,
 					description: variant === 'missing-description' ? undefined : field.description
 				}));
 	return { ...props, contract: { ...contract, inputs, outputs: [], errors: [] } };

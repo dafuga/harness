@@ -1,15 +1,7 @@
-import { json, type RequestEvent } from '@sveltejs/kit';
+import { admitUploadRequest } from '../../../utils/reports-media/admitUploadRequest';
+import { json } from '@sveltejs/kit';
 import { AudioUploadService } from '../../../services/reports-media/AudioUploadService';
 import { repository } from '../../../utils/reports-media/reportHttp';
-function requestProblem(request: Request, url: URL) {
-	if (request.headers.get('origin') !== url.origin)
-		return json({ error: 'Same-origin upload required' }, { status: 403 });
-	if (!request.headers.get('content-type')?.startsWith('multipart/form-data'))
-		return json({ error: 'Multipart form required' }, { status: 415 });
-	if (Number(request.headers.get('content-length') || 0) > 51_000_000)
-		return json({ error: 'Upload exceeds size limit' }, { status: 413 });
-	return null;
-}
 function uploadFailure(reason: unknown) {
 	const message = reason instanceof Error ? reason.message : '';
 	if (message.includes('finaliz')) return json({ error: message }, { status: 409 });
@@ -18,8 +10,8 @@ function uploadFailure(reason: unknown) {
 		return json({ error: message }, { status: 400 });
 	return json({ error: 'Audio upload failed; no evidence was added' }, { status: 500 });
 }
-export async function POST({ request, url }: RequestEvent) {
-	const problem = requestProblem(request, url);
+export async function POST({ request, url }: { request: Request; url: URL }): Promise<Response> {
+	const problem = admitUploadRequest(request, url.origin, 51_000_000);
 	if (problem) return problem;
 	try {
 		const form = await request.formData();
