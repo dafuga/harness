@@ -95,7 +95,7 @@ header.topbar {
 @media (min-width: 561px) and (max-width: 1250px) {
 	.topbar nav :global(a) {
 		min-width: max-content;
-		padding-inline: var(--hx-space-6);
+		padding-inline: var(--hx-space-4);
 	}
 	.topbar :global(.environment-picker) {
 		justify-self: start;
