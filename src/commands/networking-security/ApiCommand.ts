@@ -107,6 +107,9 @@ function apiOptions(api: Command): Command {
 		.option('--after <sequence>', 'Run event cursor.', '0')
 		.option('--viewport <name>', 'Screenshot viewport, such as desktop, tablet or mobile.')
 		.option('--state <name>', 'Recorded screenshot state.')
-		.option('--scenario <id>', 'Recorded screenshot scenario.')
+		.option(
+			'--scenario <id>',
+			'Recorded screenshot scenario; focused selects passed focused captures.'
+		)
 		.option('--side <side>', 'Screenshot evidence side: before or after.', 'after');
 }

@@ -11,37 +11,52 @@
 		"symbols": ["apiScreenshot"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "apiScreenshot.client",
 				"type": "HarnessApiService",
-				"required": true
+				"required": true,
+				"description": "Required connected Harness API client supplying the selected snapshot, evidence and bound artifact bytes."
 			},
 			{
 				"name": "apiScreenshot.entityId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Required registered entity identifier whose recorded screenshot is selected."
 			},
 			{
 				"name": "apiScreenshot.options",
 				"type": "HarnessApiOptions",
-				"required": true
+				"required": true,
+				"description": "Required selection options. output must name a new file. Optional viewport, state and scenario default to omitted selectors; side defaults to after. Explicit scenario focused admits only passed usable focused captures. An omitted commit selects current evidence; supplied commit selects that historical revision."
 			}
 		],
 		"outputs": [
 			{
 				"name": "apiScreenshot",
-				"type": "unknown"
+				"type": "Promise<{path: string; entityId: string; commit: string; scenario: string; state: string; viewport: string | null; sha256: string; mediaType: string; capturedAt: string; inheritedFrom: string | null; focused: ExplorerCapture[\"focused\"] | null; verification: {record: string | null; status: string | null; standing: string; usable: boolean; note: string}}>",
+				"description": "Writes the original hash-verified image bytes to a new output file and returns its absolute path, entity, revision, state, viewport, capture time and provenance. Focused captures retain their focused record identity and have null full-verification status."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Missing output, invalid side, absent or ambiguous capture, missing record binding, SHA-256 mismatch, or a non-image artifact."
+			},
+			{
+				"name": "Transport error",
+				"type": "propagated",
+				"description": "Snapshot, evidence and bound artifact requests may reject; client errors propagate."
+			},
+			{
+				"name": "Filesystem error",
+				"type": "propagated",
+				"description": "Writing the new file may reject, including an existing output path or insufficient permissions; original bytes are never overwritten."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "apiScreenshot",
@@ -49,32 +64,47 @@
 					{
 						"name": "apiScreenshot.client",
 						"type": "HarnessApiService",
-						"required": true
+						"required": true,
+						"description": "Required connected Harness API client supplying the selected snapshot, evidence and bound artifact bytes."
 					},
 					{
 						"name": "apiScreenshot.entityId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Required registered entity identifier whose recorded screenshot is selected."
 					},
 					{
 						"name": "apiScreenshot.options",
 						"type": "HarnessApiOptions",
-						"required": true
+						"required": true,
+						"description": "Required selection options. output must name a new file. Optional viewport, state and scenario default to omitted selectors; side defaults to after. Explicit scenario focused admits only passed usable focused captures. An omitted commit selects current evidence; supplied commit selects that historical revision."
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiScreenshot",
-						"type": "unknown"
+						"type": "Promise<{path: string; entityId: string; commit: string; scenario: string; state: string; viewport: string | null; sha256: string; mediaType: string; capturedAt: string; inheritedFrom: string | null; focused: ExplorerCapture[\"focused\"] | null; verification: {record: string | null; status: string | null; standing: string; usable: boolean; note: string}}>",
+						"description": "Writes the original hash-verified image bytes to a new output file and returns its absolute path, entity, revision, state, viewport, capture time and provenance. Focused captures retain their focused record identity and have null full-verification status."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Missing output, invalid side, absent or ambiguous capture, missing record binding, SHA-256 mismatch, or a non-image artifact."
+					},
+					{
+						"name": "Transport error",
+						"type": "propagated",
+						"description": "Snapshot, evidence and bound artifact requests may reject; client errors propagate."
+					},
+					{
+						"name": "Filesystem error",
+						"type": "propagated",
+						"description": "Writing the new file may reject, including an existing output path or insufficient permissions; original bytes are never overwritten."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
