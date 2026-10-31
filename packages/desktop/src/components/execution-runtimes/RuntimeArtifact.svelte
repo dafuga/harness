@@ -30,6 +30,24 @@
 		return whole.length > most ? `${whole.slice(0, most)}\n… (shortened)` : whole;
 	};
 	const run = $derived(cell.read?.verified ? cell.read.behavior : null);
+	const showCases = $derived.by(() => {
+		const document = cell.read?.document;
+		if (!document || typeof document !== 'object') return false;
+		if (!run?.steps.length && !run?.assertions.length) return true;
+		return ['cases', 'output', 'outputs', 'response'].some((field) => field in document);
+	});
+	const stepText = (step: unknown) => {
+		if (
+			typeof step === 'object' &&
+			step !== null &&
+			'action' in step &&
+			step.action === 'search' &&
+			'text' in step &&
+			typeof step.text === 'string'
+		)
+			return `Search for “${step.text}”`;
+		return text(step);
+	};
 	/** Whether the recorded text was asked for: it is drawn only then, and never twice at once. */
 	let asked = $state(false);
 	const facts = (stated: ExplorerArtifactBehavior) =>
@@ -48,7 +66,7 @@
 		</hx-dl>{/if}
 	{#if stated.steps.length}<hx-h5>Steps</hx-h5>
 		<hx-ol>
-			{#each stated.steps as step, position (position)}<hx-li>{text(step)}</hx-li>{/each}
+			{#each stated.steps as step, position (position)}<hx-li>{stepText(step)}</hx-li>{/each}
 		</hx-ol>{/if}
 	{#if stated.assertions.length}<hx-h5>Assertions</hx-h5>
 		<hx-ul class="runtime-checks">
@@ -87,7 +105,11 @@
 			</hx-p>
 		{:else}
 			<!-- A result is shown by its rows; what else was recorded stays behind a disclosure. -->
-			<EntityCases document={cell.read.document} {unit} callable={unit !== undefined} />
+			{#if showCases}<EntityCases
+					document={cell.read.document}
+					{unit}
+					callable={unit !== undefined}
+				/>{/if}
 			<hx-details>
 				<hx-summary>Assertions and recorded result</hx-summary>
 				{#if run}{@render recorded(run)}{/if}
@@ -100,3 +122,12 @@
 			</hx-details>
 		{/if}
 	</hx-div>{/if}
+
+<style>
+	.runtime-gap {
+		flex-wrap: nowrap;
+	}
+	.runtime-gap > :global(.verification-wrap) {
+		flex: none;
+	}
+</style>
