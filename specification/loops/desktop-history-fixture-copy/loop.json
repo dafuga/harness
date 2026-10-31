@@ -2,7 +2,7 @@
 	"name": "desktop-history-fixture-copy",
 	"goal": "Render realistic Desktop history identities, useful event details and plausible failure messages",
 	"createdAt": "2026-10-31T20:26:16.817Z",
-	"updatedAt": "2026-10-31T20:26:18.447Z",
+	"updatedAt": "2026-10-31T20:32:13.013Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:31:25.703Z",
+			"evidence": "Committed guard 95a4a02858 rejects placeholder history content: record b30c0085d270a9156379be755f523ceb8400eec70573622f68f273d91903157b, 18 failures and 3 empty-state passes; all 21 original captures retained."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T20:32:13.013Z",
+			"evidence": "Private Desktop DTOs now use consistent realistic commit identities; HistoryPanel has meaningful event details and a plausible load failure. Checked artifact bytes remain unchanged. Fixture edits require independent after-capture rather than matched green."
 		},
 		{
 			"id": "green",

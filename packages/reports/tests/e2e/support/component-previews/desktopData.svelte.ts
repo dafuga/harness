@@ -4,9 +4,10 @@ import { entityBehavior } from '../../../../src/utils/entityBehavior';
 import { galleryItems, screenOptions } from '../../../../src/utils/entityScreens';
 import type { DesktopBridge } from '../../../../../desktop/src/models/DesktopBridge.types';
 import type { EntityDetail } from '../../../../../desktop/src/models/Desktop.types';
-import { ids, commits } from './explorerData';
+import { ids } from './explorerData';
+import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 import { stamp } from './shared';
-import { desktopData } from './sealedData';
+import { desktopData } from './desktopFixtureData';
 import { deploymentBridge } from './deployments';
 export const providers = [
 	{
