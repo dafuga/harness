@@ -1,4 +1,4 @@
-import { assertScreenshotSizes } from './support/api-cli/assertScreenshotSizes';
+import { assertScreenshotDownload } from './support/api-cli/assertScreenshotSizes';
 import { assertPermissionCli } from './support/api-cli/permissionScenario';
 import { expect } from './verificationExpect';
 import { test } from 'vitest';
@@ -120,43 +120,7 @@ test.each(['local', 'hosted'] as const)(
 	async (mode) => {
 		const f = await apiFixture(mode);
 		try {
-			const output = join(f.directory, 'page.png');
-			const result = await f.cli([
-				'screenshot',
-				'page.example',
-				'--viewport',
-				'desktop',
-				'--state',
-				'ready',
-				'--output',
-				output
-			]);
-			expect(await readFile(output)).toEqual(png);
-			expect(JSON.parse(result.stdout)).toMatchObject({
-				path: output,
-				entityId: 'page.example',
-				commit,
-				viewport: 'desktop',
-				state: 'ready',
-				mediaType: 'image/png'
-			});
-			expect(f.seen.find((r) => r.operation === 'artifact')?.input).toMatchObject({
-				entityId: 'page.example',
-				commit,
-				scenarioId: 'page-screens',
-				recordId: 'b'.repeat(64),
-				evidenceId: 'screen',
-				notesRevision: null,
-				evidenceRevision: null
-			});
-			await assertScreenshotSizes(f);
-			f.corrupt();
-			const failed = await f.cli(
-				['screenshot', 'page.example', '--output', join(f.directory, 'corrupt.png')],
-				false
-			);
-			expect(failed.exitCode).toBe(1);
-			expect(failed.stderr).toMatch(/hash|SHA-256|integrity/i);
+			await assertScreenshotDownload(f);
 		} finally {
 			await f.close();
 		}
