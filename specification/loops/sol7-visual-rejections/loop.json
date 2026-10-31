@@ -2,7 +2,7 @@
 	"name": "sol7-visual-rejections",
 	"goal": "Repair the 16 rejected catalog previews with realistic fixtures, distinct states, readable mobile tables and visible interaction affordances; capture every state at desktop, tablet and mobile.",
 	"createdAt": "2026-10-31T19:46:25.009Z",
-	"updatedAt": "2026-10-31T20:37:39.070Z",
+	"updatedAt": "2026-10-31T21:00:09.117Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T21:00:06.352Z",
+			"evidence": "Seven assigned components repaired; mobile layouts preserve all fields, and focused affordance/error captures pass at all viewports."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-31T21:00:09.117Z",
+			"evidence": "The unchanged 48-case command passes at 2394090329 with matching test/fixture hashes and runtime profile; committed red and green records retain all captures."
 		},
 		{
 			"id": "verify",
