@@ -59,7 +59,7 @@
 
 {#if snapshot && revision}<hx-div class="revision-picker">
 		<hx-div class="revision-choices">
-			<ChoiceDialog label="Choose branch" width={320} maxHeight={320} gap={10}>
+			<ChoiceDialog label="Choose branch" title="" width={320} maxHeight={320} gap={10}>
 				{#snippet icon()}<Icon name="branch" size={18} /><hx-span>Branch</hx-span>{/snippet}
 				{#snippet children(close: () => void)}<hx-label
 						class="picker-field"
@@ -79,7 +79,7 @@
 						onclick={() => chooseBranch(close)}>View branch</hx-button
 					>{/snippet}
 			</ChoiceDialog>
-			<ChoiceDialog label="Choose commit" width={380} maxHeight={320} gap={10}>
+			<ChoiceDialog label="Choose commit" title="" width={380} maxHeight={320} gap={10}>
 				{#snippet icon()}<Icon name="commit" size={18} /><hx-span
 						>Commit{environment ? ` ${environment}` : ''}</hx-span
 					>{/snippet}
