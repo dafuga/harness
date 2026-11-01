@@ -2,7 +2,7 @@
 	"name": "sol8-tab-overflow-cue",
 	"goal": "Keep overflowing entity sections visibly discoverable in mobile and desktop captures.",
 	"createdAt": "2026-11-01T12:16:52.422Z",
-	"updatedAt": "2026-11-01T12:17:24.393Z",
+	"updatedAt": "2026-11-01T12:21:13.122Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:21:13.122Z",
+			"evidence": "At 50eda3330d, five standard cases fail for a missing persistent overflow cue; four non-overflow cases pass. The original captures remain in tabcue-red.json."
 		},
 		{
 			"id": "implement",
