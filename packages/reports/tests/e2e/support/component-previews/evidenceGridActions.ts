@@ -56,10 +56,11 @@ async function selectViewport(component: Locator, size: string) {
 async function selectStatus(component: Locator, variant: string) {
 	const select = component.getByRole('combobox', { name: 'Status' });
 	if (variant === 'status-open') {
-		await component
-			.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
-			.fill('refund');
-		await expect(component.getByText('No matching evidence.', { exact: true })).toBeVisible();
+		// Open over the real cards: the menu must not need a search to explain what it filters.
+		await expect(component.locator('.evidence-grid .evidence-card')).toHaveCount(4);
+		await expect(
+			component.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
+		).toHaveValue('');
 		await select.click();
 		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	} else {
