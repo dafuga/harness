@@ -52,6 +52,12 @@ async function assertPagination(component: Locator, variant: string) {
 	else await expect(more).toBeVisible();
 	if (variant === 'batch-focused')
 		expect(await more.evaluate((button) => button.matches(':focus-visible'))).toBe(true);
-	if (variant === 'batch-hovered')
+	if (variant === 'batched') await expect(more).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+	if (variant === 'batch-hovered') {
 		expect(await more.evaluate((button) => button.matches(':hover'))).toBe(true);
+		await expect(more, 'Hovered pagination paints its background').not.toHaveCSS(
+			'background-color',
+			'rgba(0, 0, 0, 0)'
+		);
+	}
 }

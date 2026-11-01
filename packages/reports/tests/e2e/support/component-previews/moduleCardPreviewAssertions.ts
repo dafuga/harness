@@ -54,6 +54,21 @@ async function assertUsageImage(component: Locator, variant: string) {
 /** Preview artwork contains product content; fixture provenance stays outside the painted image. */
 export async function assertProductArtwork(component: Locator, id: string, variant: string) {
 	const states: Record<string, string[]> = {
+		'reports.component.explorer-catalog-items': [
+			'',
+			'multiple',
+			'batched',
+			'more',
+			'all',
+			'batch-focused',
+			'batch-hovered',
+			'functions',
+			'pages',
+			'configs',
+			'configs-open',
+			'empty-configs',
+			'unlinked'
+		],
 		'reports.component.explorer-ui-explorer-module-card': [
 			'',
 			'many-usage',

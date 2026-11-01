@@ -10,7 +10,7 @@ function picture(id: string) {
 	if (id === ids.list) return orderListImage(false);
 	if (id === ids.page) return 'data:image/svg+xml,' + encodeURIComponent(ordersPageImage);
 	const svg =
-		'<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560"><rect width="920" height="560" fill="#0e1c29"/><text x="52" y="60" fill="#f3c33b" font-family="sans-serif" font-size="20">SYNTHETIC SEARCH BOX</text><text x="52" y="130" fill="#f4f7fb" font-family="sans-serif" font-size="36">Search orders</text><rect x="52" y="175" width="680" height="64" rx="8" fill="#142b3e" stroke="#92a6bb"/><text x="72" y="218" fill="#d8e4ee" font-family="sans-serif" font-size="24">Find an order</text></svg>';
+		'<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560"><rect width="920" height="560" fill="#0e1c29"/><text x="52" y="60" fill="#f3c33b" font-family="sans-serif" font-size="20">Order management</text><text x="52" y="130" fill="#f4f7fb" font-family="sans-serif" font-size="36">Search orders</text><rect x="52" y="175" width="680" height="64" rx="8" fill="#142b3e" stroke="#92a6bb"/><text x="72" y="218" fill="#d8e4ee" font-family="sans-serif" font-size="24">Find an order</text></svg>';
 	return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 
