@@ -1,3 +1,4 @@
+import { measureWorkload } from './support/measureWorkload';
 import type { Snapshot } from './history-source.test.types';
 import { createHash } from 'node:crypto';
 import { readFile, readdir } from 'node:fs/promises';
@@ -87,33 +88,39 @@ async function assertSource(out: string, commit: string, expected: string, expec
 	return media;
 }
 
-test('history archives owned text from each commit, deduplicates it and states source gaps', async () => {
-	const project = await unitProject('lib');
-	const repo = repoAt(project.root);
-	try {
-		const revisions = await seedSource(repo);
-		const out = join(dirname(repo.root), 'source-history');
-		const started = performance.now();
-		await new HistoryIndexService(repo.root).build(out, 10, async () => []);
-		archiveMeasurements(performance.now() - started);
-		console.log(
-			JSON.stringify({
-				workload: 'two committed source trees with text and gaps',
-				method: 'performance.now wall time; whole Vitest process RSS',
-				buildMs: performance.now() - started,
-				processRssBytes: process.memoryUsage().rss
-			})
-		);
-		const media = new Set<string>();
-		for (const [commit, expected, expectedTest] of revisions)
-			for (const file of await assertSource(out, commit, expected, expectedTest)) media.add(file);
-		expect((await readdir(join(out, 'media'))).map((name) => `media/${name}`).sort()).toEqual(
-			[...media].sort()
-		);
-	} finally {
-		await repo.dispose();
-	}
-}, 120_000);
+test(
+	'history archives owned text from each commit, deduplicates it and states source gaps',
+	async () =>
+		measureWorkload('service.history-index', 'history-source-normal-behavior', async () => {
+			const project = await unitProject('lib');
+			const repo = repoAt(project.root);
+			try {
+				const revisions = await seedSource(repo);
+				const out = join(dirname(repo.root), 'source-history');
+				const started = performance.now();
+				await new HistoryIndexService(repo.root).build(out, 10, async () => []);
+				archiveMeasurements(performance.now() - started);
+				console.log(
+					JSON.stringify({
+						workload: 'two committed source trees with text and gaps',
+						method: 'performance.now wall time; whole Vitest process RSS',
+						buildMs: performance.now() - started,
+						processRssBytes: process.memoryUsage().rss
+					})
+				);
+				const media = new Set<string>();
+				for (const [commit, expected, expectedTest] of revisions)
+					for (const file of await assertSource(out, commit, expected, expectedTest))
+						media.add(file);
+				expect((await readdir(join(out, 'media'))).map((name) => `media/${name}`).sort()).toEqual(
+					[...media].sort()
+				);
+			} finally {
+				await repo.dispose();
+			}
+		}),
+	120_000
+);
 
 const testText =
 	"import { slugify } from '../src/utils/slugify';\nexport const actual = slugify('Hello');\n";

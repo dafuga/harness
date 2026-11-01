@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { afterEach, beforeEach, test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
@@ -28,31 +29,36 @@ beforeEach(() => {
 });
 afterEach(() => vi.unstubAllGlobals());
 
-test('a runtime thumbnail reads the precisely bound capture at pinned revisions', async () => {
-	const { bridge, calls } = evidenceBridge();
-	const shown: Array<{ status: string; url: string; caption: string }> = [];
-	const release = recordedPreview(workspaceOf(bridge), ids.page, preview, (value) =>
-		shown.push(value)
-	);
-	await expect.poll(() => shown.at(-1)?.status).toBe('ready');
-	expect(shown.at(-1)?.url).toBe('blob:capture');
-	expect(shown.at(-1)?.caption).toContain('Screenshot');
-	expect(calls).toHaveLength(2);
-	expect(calls[1]).toMatchObject({
-		op: 'artifact',
-		projectId: scope.projectId,
-		entityId: ids.page,
-		commit: scope.commit,
-		scenarioId: preview.scenario,
-		state: preview.state,
-		viewport: preview.viewport,
-		sha256: capture.capture.sha256,
-		notesRevision: answer.identity.notesRevision,
-		evidenceRevision: answer.identity.evidenceRevision
-	});
-	release();
-	expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:capture');
-});
+test('a runtime thumbnail reads the precisely bound capture at pinned revisions', async () =>
+	measureWorkload(
+		'desktop.function.recorded-preview',
+		'recorded-preview-normal-behavior',
+		async () => {
+			const { bridge, calls } = evidenceBridge();
+			const shown: Array<{ status: string; url: string; caption: string }> = [];
+			const release = recordedPreview(workspaceOf(bridge), ids.page, preview, (value) =>
+				shown.push(value)
+			);
+			await expect.poll(() => shown.at(-1)?.status).toBe('ready');
+			expect(shown.at(-1)?.url).toBe('blob:capture');
+			expect(shown.at(-1)?.caption).toContain('Screenshot');
+			expect(calls).toHaveLength(2);
+			expect(calls[1]).toMatchObject({
+				op: 'artifact',
+				projectId: scope.projectId,
+				entityId: ids.page,
+				commit: scope.commit,
+				scenarioId: preview.scenario,
+				state: preview.state,
+				viewport: preview.viewport,
+				sha256: capture.capture.sha256,
+				notesRevision: answer.identity.notesRevision,
+				evidenceRevision: answer.identity.evidenceRevision
+			});
+			release();
+			expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:capture');
+		}
+	));
 
 test('a different state is unavailable instead of borrowing another screenshot', async () => {
 	const { bridge, calls } = evidenceBridge();

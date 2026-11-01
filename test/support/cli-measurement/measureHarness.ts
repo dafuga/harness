@@ -88,6 +88,13 @@ const benchmarkRunUnits = [
 ];
 
 const measuredWorkloads: Record<string, string[]> = {
+	'history:attach': ['command.history', 'service.evidence-attach'],
+	'history:status': ['command.history', 'service.attached-record'],
+	'history:reasons': ['command.history', 'workflow.persist-reasons'],
+	'hooks:install': ['workflow.run-hooks'],
+	'activity:register': ['workflow.run-activity'],
+	'activity:heartbeat': ['workflow.run-activity'],
+	'activity:finish': ['workflow.run-activity'],
 	'units:show': ['workflow.inspect-units', 'repository.unit-registry', 'function.unit-types'],
 	'units:index': ['workflow.manage-units', 'repository.unit-registry', 'function.unit-types'],
 	'units:check': ['workflow.manage-units', 'validator.component-manifest'],

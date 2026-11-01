@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
@@ -48,21 +49,26 @@ const entities = explorerEntities(head);
 const ids = (list: Array<{ id: string }>) => list.map((item) => item.id);
 const related = (id: string) => explorerRelations(head, id);
 
-test('the active units of the five kinds are listed, each once, pages first', () => {
-	expect(ids(entities)).toEqual([
-		'page.orders',
-		'component.list',
-		'component.row',
-		'function.money',
-		'function.total',
-		'config.site',
-		'page.loader',
-		'service.orders'
-	]);
-	expect(
-		entities.map((item) => item.category).filter((item, at, all) => all.indexOf(item) === at)
-	).toEqual(['pages', 'components', 'functions', 'configs', 'services']);
-});
+test('the active units of the five kinds are listed, each once, pages first', async () =>
+	measureWorkload(
+		'reports.function.explorer-entities',
+		'explorer-entities-normal-behavior',
+		async () => {
+			expect(ids(entities)).toEqual([
+				'page.orders',
+				'component.list',
+				'component.row',
+				'function.money',
+				'function.total',
+				'config.site',
+				'page.loader',
+				'service.orders'
+			]);
+			expect(
+				entities.map((item) => item.category).filter((item, at, all) => all.indexOf(item) === at)
+			).toEqual(['pages', 'components', 'functions', 'configs', 'services']);
+		}
+	));
 
 test('an entity has a name, a role, a purpose, a verdict and how the commit changed it', () => {
 	const page = entities[0];

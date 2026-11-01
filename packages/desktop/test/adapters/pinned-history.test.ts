@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { readdir } from 'node:fs/promises';
 import { PinnedHistoryAdapter } from '../../src/adapters/PinnedHistoryAdapter';
@@ -16,24 +17,37 @@ const legacy = (commit: string, id: string) =>
 		evidence: { commit, path: `legacy/${id}`, manifest: 'a'.repeat(64) }
 	});
 
-test('a commit without a note is built from Git alone, and nothing is written for it', async () => {
-	const f = await fixture();
-	const before = await readdir(f.root);
-	const built = await new PinnedHistoryAdapter(f.root).revision(none, f.tip);
-	expect(built.facts).toMatchObject({
-		commit: f.tip,
-		parents: [f.base],
-		subject: 'main source',
-		author: 'Fixture',
-		committedAt: git(f.root, 'show', '-s', '--format=%cI', f.tip)
-	});
-	expect(built.detail).toMatchObject({ commit: f.tip, registry: { available: true }, records: [] });
-	expect(built.detail.registry.units.map((unit) => unit.id)).toContain('page.home');
-	expect(built.judged).toEqual({ coverage: 'unverified', gaps: [unverified], records: [] });
-	expect(built.legacy).toEqual([]);
-	expect(await readdir(f.root)).toEqual(before);
-	expect(git(f.root, 'status', '--short')).toBe('');
-}, 60_000);
+test(
+	'a commit without a note is built from Git alone, and nothing is written for it',
+	async () =>
+		measureWorkload(
+			'desktop.adapter.pinned-history',
+			'pinned-history-normal-behavior',
+			async () => {
+				const f = await fixture();
+				const before = await readdir(f.root);
+				const built = await new PinnedHistoryAdapter(f.root).revision(none, f.tip);
+				expect(built.facts).toMatchObject({
+					commit: f.tip,
+					parents: [f.base],
+					subject: 'main source',
+					author: 'Fixture',
+					committedAt: git(f.root, 'show', '-s', '--format=%cI', f.tip)
+				});
+				expect(built.detail).toMatchObject({
+					commit: f.tip,
+					registry: { available: true },
+					records: []
+				});
+				expect(built.detail.registry.units.map((unit) => unit.id)).toContain('page.home');
+				expect(built.judged).toEqual({ coverage: 'unverified', gaps: [unverified], records: [] });
+				expect(built.legacy).toEqual([]);
+				expect(await readdir(f.root)).toEqual(before);
+				expect(git(f.root, 'status', '--short')).toBe('');
+			}
+		),
+	60_000
+);
 
 test('a note is read at the revision it is pinned to, never at where the ref is now', async () => {
 	const f = await fixture();

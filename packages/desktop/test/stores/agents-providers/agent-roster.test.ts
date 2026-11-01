@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../../test/support/measureWorkload';
 import { afterEach, expect, test, vi } from 'vitest';
 import { createAgentRosterStore } from '../../../src/lib/stores/agents-providers/agentRoster.svelte';
 import type { Workspace } from '../../../src/lib/stores/projects-sessions/workspace.svelte';
@@ -36,16 +37,21 @@ afterEach(() => {
 	vi.unstubAllGlobals();
 });
 
-test('declared assignments group actual owners, remove duplicate units and omit stale work', async () => {
-	const f = fixture();
-	await f.state.refresh();
-	expect(f.read).toHaveBeenCalledWith({ projectId: 'local-a' });
-	expect(f.state.working).toBe(2);
-	expect(f.state.modules.map((row) => [row.id, row.owners.map((owner) => owner.id)])).toEqual([
-		['component.card', ['A', 'B']]
-	]);
-	expect(f.state.sessions.at(-1)?.label).toBe('Stale');
-});
+test('declared assignments group actual owners, remove duplicate units and omit stale work', async () =>
+	measureWorkload(
+		'desktop.store.agents-providers-agent-roster',
+		'agent-roster-normal-behavior',
+		async () => {
+			const f = fixture();
+			await f.state.refresh();
+			expect(f.read).toHaveBeenCalledWith({ projectId: 'local-a' });
+			expect(f.state.working).toBe(2);
+			expect(f.state.modules.map((row) => [row.id, row.owners.map((owner) => owner.id)])).toEqual([
+				['component.card', ['A', 'B']]
+			]);
+			expect(f.state.sessions.at(-1)?.label).toBe('Stale');
+		}
+	));
 
 test('a missed refresh retains its reading, then expires its claims of current work', async () => {
 	vi.useFakeTimers();

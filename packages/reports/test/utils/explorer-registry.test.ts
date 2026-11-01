@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { written } from '../explorerRegistryStates';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -144,23 +145,30 @@ const visual = (id: string) =>
 const naming = (id: string) =>
 	scenario.states.filter((state) => state.units?.includes(id)).map((state) => state.id);
 
-test('a visual unit is under exactly the states that name it, and never under another screen', () => {
-	expect(statesOf(`${at}pages`)).toEqual(['pages']);
-	expect(statesOf(`${at}configs-entity`)).toEqual(['config', 'config-details']);
-	expect(statesOf(`${at}functions-entity-history`)).toEqual(['history']);
-	// Each page, shell and component the scenario covers is named by a state whose capture shows it.
-	const covered = scenario.units.filter(visual);
-	expect(covered.filter((id) => naming(id).length === 0)).toEqual([]);
-	expect(covered.map((id) => [id, statesOf(id)])).toEqual(covered.map((id) => [id, naming(id)]));
-	// Named by no state, a screen is under none: what imports it does not lend it its captures.
-	for (const id of [`${part}entity-history-screen`, `${part}harness-header`]) {
-		const states = scenario.states.map((state) => ({
-			...state,
-			units: state.units?.filter((unit) => unit !== id)
-		}));
-		expect([id, scenarioFor({ ...scenario, states }, id, units).states]).toEqual([id, []]);
-	}
-});
+test('a visual unit is under exactly the states that name it, and never under another screen', async () =>
+	measureWorkload(
+		'reports.function.explorer-state',
+		'explorer-registry-normal-behavior',
+		async () => {
+			expect(statesOf(`${at}pages`)).toEqual(['pages']);
+			expect(statesOf(`${at}configs-entity`)).toEqual(['config', 'config-details']);
+			expect(statesOf(`${at}functions-entity-history`)).toEqual(['history']);
+			// Each page, shell and component the scenario covers is named by a state whose capture shows it.
+			const covered = scenario.units.filter(visual);
+			expect(covered.filter((id) => naming(id).length === 0)).toEqual([]);
+			expect(covered.map((id) => [id, statesOf(id)])).toEqual(
+				covered.map((id) => [id, naming(id)])
+			);
+			// Named by no state, a screen is under none: what imports it does not lend it its captures.
+			for (const id of [`${part}entity-history-screen`, `${part}harness-header`]) {
+				const states = scenario.states.map((state) => ({
+					...state,
+					units: state.units?.filter((unit) => unit !== id)
+				}));
+				expect([id, scenarioFor({ ...scenario, states }, id, units).states]).toEqual([id, []]);
+			}
+		}
+	));
 
 test('each state names the one page it is reached on, and the code written for it', () => {
 	const every = scenario.states.map((state) => state.id);

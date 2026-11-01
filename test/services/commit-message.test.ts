@@ -1,3 +1,4 @@
+import { measureWorkload } from '../support/measureWorkload';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -26,27 +27,28 @@ beforeAll(() => {
 });
 afterAll(() => rmSync(root, { recursive: true, force: true }));
 
-test('stored messages are measured from the commit that declares the limits on, each by its name', async () => {
-	const service = new CommitMessageService(root);
-	const before = commit(`an old subject without a prefix ${'x'.repeat(80)}`);
-	writeFileSync(
-		join(root, 'harness.verify.json'),
-		JSON.stringify({ schemaVersion: 1, writing: 1 })
-	);
-	const adopted = commit('chore: adopt the writing limits');
-	const tooLong = commit(long);
-	const hashed = commit(`fix: short\n\n# ${'x'.repeat(700)}`);
-	// What was written before the limits were declared stays valid, with or without a base.
-	expect(await service.stored(null, adopted)).toEqual([]);
-	expect(await service.stored(before, adopted)).toEqual([]);
-	expect(await service.stored(adopted, hashed)).toEqual([
-		`commit ${tooLong.slice(0, 7)}: subject has 73 characters; the limit is 72.`,
-		`commit ${hashed.slice(0, 7)}: body has 702 characters; the limit is 400.`
-	]);
-	// Only the commits after the base are measured, and a base that is the head leaves none.
-	expect(await service.stored(tooLong, hashed)).toHaveLength(1);
-	expect(await service.stored(hashed, hashed)).toEqual([]);
-});
+test('stored messages are measured from the commit that declares the limits on, each by its name', async () =>
+	measureWorkload('service.commit-message', 'commit-message-normal-behavior', async () => {
+		const service = new CommitMessageService(root);
+		const before = commit(`an old subject without a prefix ${'x'.repeat(80)}`);
+		writeFileSync(
+			join(root, 'harness.verify.json'),
+			JSON.stringify({ schemaVersion: 1, writing: 1 })
+		);
+		const adopted = commit('chore: adopt the writing limits');
+		const tooLong = commit(long);
+		const hashed = commit(`fix: short\n\n# ${'x'.repeat(700)}`);
+		// What was written before the limits were declared stays valid, with or without a base.
+		expect(await service.stored(null, adopted)).toEqual([]);
+		expect(await service.stored(before, adopted)).toEqual([]);
+		expect(await service.stored(adopted, hashed)).toEqual([
+			`commit ${tooLong.slice(0, 7)}: subject has 73 characters; the limit is 72.`,
+			`commit ${hashed.slice(0, 7)}: body has 702 characters; the limit is 400.`
+		]);
+		// Only the commits after the base are measured, and a base that is the head leaves none.
+		expect(await service.stored(tooLong, hashed)).toHaveLength(1);
+		expect(await service.stored(hashed, hashed)).toEqual([]);
+	}));
 
 test('every new commit a merge brings in is measured, not only the line of first parents', async () => {
 	const service = new CommitMessageService(root);

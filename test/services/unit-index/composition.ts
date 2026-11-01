@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../support/measureWorkload';
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { indexFiles, unitOf } from '../../support/memoryTree';
@@ -89,4 +90,21 @@ async function assertPrimitiveContracts(units: ComponentManifest[], files: Recor
 	);
 }
 
-test('atomic levels follow runtime calls and survive projections', assertCompositionRegistry);
+test('atomic levels follow runtime calls and survive projections', () =>
+	measureWorkload('validator.unit-registry', 'composition.ts-normal-behavior', () =>
+		measureWorkload(
+			'function.development-tooling-composition',
+			'composition.ts-normal-behavior',
+			() =>
+				measureWorkload(
+					'validator.development-tooling-atomic-composition',
+					'composition.ts-normal-behavior',
+					() =>
+						measureWorkload(
+							'function.unit-types',
+							'composition.ts-normal-behavior',
+							assertCompositionRegistry
+						)
+				)
+		)
+	));

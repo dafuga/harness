@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-ui-explorer-kit-card",
 	"kind": "component",
 	"title": "Explorer card",
-	"responsibility": "Draws one explorer card as an article, or as a labelled section, around the content it is given.",
+	"responsibility": "Draws supplied content in an article, labelled section or list item with the shared card or module treatment.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -77,7 +77,7 @@
 			{
 				"name": "Card",
 				"type": "markup",
-				"description": "An article or section with the shared ex-card style."
+				"description": "An article, section or list item containing the supplied content, with the card or module treatment and owner attributes."
 			}
 		],
 		"errors": [

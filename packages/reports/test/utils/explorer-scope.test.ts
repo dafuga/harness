@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { explorerScope } from '../../src/utils/harness-page/explorerScope';
 import { history, sha, summary } from '../explorerFixture';
@@ -21,17 +22,18 @@ const scope = (branch: string | null, commit: string | null) => {
 	return found.kind === 'scope' ? found.scope : found.message;
 };
 
-test('a branch address shows the head the index records for that branch', () => {
-	expect(scope('main', null)).toMatchObject({
-		mode: 'current',
-		branch: 'main',
-		tip: sha('c'),
-		commit: sha('c'),
-		atTip: true,
-		parent: sha('b')
-	});
-	expect(scope('feature/x', null)).toMatchObject({ tip: sha('d'), commit: sha('d') });
-});
+test('a branch address shows the head the index records for that branch', async () =>
+	measureWorkload('reports.function.explorer-scope', 'explorer-scope-normal-behavior', async () => {
+		expect(scope('main', null)).toMatchObject({
+			mode: 'current',
+			branch: 'main',
+			tip: sha('c'),
+			commit: sha('c'),
+			atTip: true,
+			parent: sha('b')
+		});
+		expect(scope('feature/x', null)).toMatchObject({ tip: sha('d'), commit: sha('d') });
+	}));
 
 test('a selected commit stays selected, with the tip of its branch beside it', () => {
 	expect(scope('main', sha('b'))).toMatchObject({

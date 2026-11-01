@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { ExplorerScope } from '../../src/models/Explorer.types';
 import type { HarnessCapture, HarnessRevision } from '../../src/models/Harness.types';
@@ -42,22 +43,27 @@ function scope(mode: 'current' | 'commit', parent: string | null = sha('b')): Ex
 	};
 }
 
-test('a branch tip is shown with one set of captures and never a pair', () => {
-	const shown = explorerEvidence(
-		scope('current'),
-		{ head: at(sha('a')), parent: at(sha('b')) },
-		page
-	);
-	expect(shown).toMatchObject({ mode: 'current', before: null, initial: null });
-	expect(shown.after).toMatchObject({ commit: sha('a'), gap: null, record: { id: 'r-a' } });
-	expect(
-		shown.after.captures.map((item) => [item.state, item.capture.viewport, item.usable])
-	).toEqual([
-		['empty', 'desktop', true],
-		['empty', 'mobile', true]
-	]);
-	expect(shown.scenarios.map((item) => item.id)).toEqual(['titles-page']);
-});
+test('a branch tip is shown with one set of captures and never a pair', async () =>
+	measureWorkload(
+		'reports.function.explorer-evidence',
+		'explorer-evidence-normal-behavior',
+		async () => {
+			const shown = explorerEvidence(
+				scope('current'),
+				{ head: at(sha('a')), parent: at(sha('b')) },
+				page
+			);
+			expect(shown).toMatchObject({ mode: 'current', before: null, initial: null });
+			expect(shown.after).toMatchObject({ commit: sha('a'), gap: null, record: { id: 'r-a' } });
+			expect(
+				shown.after.captures.map((item) => [item.state, item.capture.viewport, item.usable])
+			).toEqual([
+				['empty', 'desktop', true],
+				['empty', 'mobile', true]
+			]);
+			expect(shown.scenarios.map((item) => item.id)).toEqual(['titles-page']);
+		}
+	));
 
 test('a selected commit is paired with its first parent, each side from its own record', () => {
 	const shown = explorerEvidence(

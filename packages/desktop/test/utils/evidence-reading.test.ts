@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { record } from '../../../reports/test/entityFixture';
 import { expect, test } from 'vitest';
 import { evidenceReading } from '../../src/utils/evidenceReading';
@@ -9,25 +10,30 @@ const output = result.behavior.rows.find((row) => row.kind === 'output')!;
 const changes = (rows: typeof result.behavior.rows) =>
 	rows.map((row) => `${row.state}/${row.kind}:${row.change}`);
 
-test('results are read by their bindings and compared by what they hold', async () => {
-	const { bridge, calls } = evidenceBridge();
-	expect(result.behavior.summary).toBe('differs');
-	const read = await evidenceReading(bridge, result, scope);
-	expect(read.behavior.summary).toBe('changed');
-	expect(changes(read.behavior.rows)).toEqual([
-		'match/assertions:unchanged',
-		'match/output:changed',
-		'no-match/assertions:unchanged'
-	]);
-	expect(read.behavior.rows[1].differences).toEqual(['output[1]']);
-	expect(read.refusals).toEqual({});
-	// Six results, each read once and on the side that lists it.
-	const sides = calls.map((call) => `${call.side}|${call.recordId}`).sort();
-	expect(sides).toEqual([
-		...Array(3).fill(`after|${record(commits.tip).id}`),
-		...Array(3).fill(`before|${record(commits.middle).id}`)
-	]);
-});
+test('results are read by their bindings and compared by what they hold', async () =>
+	measureWorkload(
+		'desktop.function.evidence-reading',
+		'evidence-reading-normal-behavior',
+		async () => {
+			const { bridge, calls } = evidenceBridge();
+			expect(result.behavior.summary).toBe('differs');
+			const read = await evidenceReading(bridge, result, scope);
+			expect(read.behavior.summary).toBe('changed');
+			expect(changes(read.behavior.rows)).toEqual([
+				'match/assertions:unchanged',
+				'match/output:changed',
+				'no-match/assertions:unchanged'
+			]);
+			expect(read.behavior.rows[1].differences).toEqual(['output[1]']);
+			expect(read.refusals).toEqual({});
+			// Six results, each read once and on the side that lists it.
+			const sides = calls.map((call) => `${call.side}|${call.recordId}`).sort();
+			expect(sides).toEqual([
+				...Array(3).fill(`after|${record(commits.tip).id}`),
+				...Array(3).fill(`before|${record(commits.middle).id}`)
+			]);
+		}
+	));
 
 test('damaged bytes are not read: the result is unverified and the behaviour unknown', async () => {
 	const { bridge } = evidenceBridge({ corrupt: [output.after!.sha256] });
