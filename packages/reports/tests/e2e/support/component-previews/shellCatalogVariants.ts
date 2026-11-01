@@ -2,7 +2,7 @@ import { harnessIcons } from '../../../../src/utils/explorer-ui/harnessIcons';
 
 /** Real rendering branches of the explorer, evidence panels and navigation shell. */
 export const shellCatalogVariants: Record<string, string[]> = {
-	'reports.component.brand-mark': ['decorative', 'inline', 'large'],
+	'reports.component.brand-mark': ['inline', 'large'],
 	'reports.component.harness-entity-artifact': [
 		'not-recorded',
 		'not-stored',
@@ -121,9 +121,11 @@ export const shellCatalogVariants: Record<string, string[]> = {
 		'long-repository'
 	],
 	'reports.component.harness-harness-icon': [
-		'decorative',
 		'inline',
-		...Object.keys(harnessIcons).map((name) => `icon-${name}`)
+		// The default state shows components, and environment draws the database glyph.
+		...Object.keys(harnessIcons)
+			.filter((name) => !['components', 'environment'].includes(name))
+			.map((name) => `icon-${name}`)
 	],
 	'reports.component.harness-harness-navbar': [
 		'unresolved',
@@ -162,7 +164,6 @@ export const shellCatalogVariants: Record<string, string[]> = {
 	'reports.component.shared-primitives-loading-state': [
 		'default-label',
 		'long',
-		'reduced-motion',
 		'inline'
 	]
 };

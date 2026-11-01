@@ -137,8 +137,8 @@ async function navbarState(component: Locator, variant: string) {
 async function actionState(component: Locator, variant: string) {
 	if (variant === 'disabled') await expect(component.getByRole('button')).toBeDisabled();
 }
-async function loadingState(component: Locator, variant: string) {
-	if (variant !== 'reduced-motion') return;
+/** Every loading capture is taken without motion, so its still shows the ring at rest. */
+async function loadingState(component: Locator) {
 	await component.page().emulateMedia({ reducedMotion: 'reduce' });
 	await expect(component.locator('.hx-loading-indicator')).toHaveCSS('animation-name', 'none');
 }
