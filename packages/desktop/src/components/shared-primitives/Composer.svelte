@@ -86,7 +86,7 @@
 	{#if failed && !failureReported}<hx-p class="error" role="alert"
 			>Couldn’t send. Your message is kept. Try again.</hx-p
 		>{/if}
-	{#if counted}<hx-small class="composer-hint" role="status"
+	{#if counted}<hx-small class="composer-hint"
 			>Visual plan · {agentSettings.designOptions} design options</hx-small
 		>{/if}
 	{#if modes.length > 1}<hx-div class="mode-options" role="group" aria-label="Request mode">
