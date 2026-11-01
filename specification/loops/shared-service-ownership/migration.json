@@ -2652,13 +2652,13 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "52242a062d31ccfb295d263aff09bdf1eddb419254c83e487acefcc7d0e82d83",
+			"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "d43af247975d9a0d2a77adb26dd519c1a31f4bee",
+				"commit": "2ac7147eec73a3948bd95cb3cf8eb473b3b099ea",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "52242a062d31ccfb295d263aff09bdf1eddb419254c83e487acefcc7d0e82d83",
-				"reason": "Record main\u2019s scoped entity verification path, preserving full verification behavior and priority handling."
+				"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
+				"reason": "Return automatic entity attachment results without changing whole-commit verification."
 			},
 			"previousReviews": [
 				{
@@ -2702,6 +2702,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
 					"definition": "0a00e3a481743871561e9e3dba677231d4ea6650406dbcf91d924d4f0a0f0195",
 					"reason": "Retain compact source hashes for measured and removed units before releasing full indexes."
+				},
+				{
+					"commit": "d43af247975d9a0d2a77adb26dd519c1a31f4bee",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "52242a062d31ccfb295d263aff09bdf1eddb419254c83e487acefcc7d0e82d83",
+					"reason": "Record main\u2019s scoped entity verification path, preserving full verification behavior and priority handling."
 				}
 			]
 		},
@@ -2709,13 +2715,13 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "8191d762e020c376fcdf27b2a505c02877620d91a318d703ed1e41133f16c61f",
+			"definition": "f228965d07044fe8cd6e7407ed248f5c2c46ebcaf76d9bcdc06019328dbb0ab6",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "7b10468b45e2087c7e46501aa9cbcc54beeb8be7",
+				"commit": "2ac7147eec73a3948bd95cb3cf8eb473b3b099ea",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "8191d762e020c376fcdf27b2a505c02877620d91a318d703ed1e41133f16c61f",
-				"reason": "Record main\u2019s entity scenario selection and partial-verification verdict for scoped runs."
+				"definition": "f228965d07044fe8cd6e7407ed248f5c2c46ebcaf76d9bcdc06019328dbb0ab6",
+				"reason": "Keep successfully checked scoped scenarios passed while retaining the record scope restriction."
 			},
 			"previousReviews": [
 				{
@@ -2723,6 +2729,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 					"definition": "fcfc6dd3b50f6abf780d83c14a847a0bc1d382bbb25a979d25b39086a3e53a38",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "7b10468b45e2087c7e46501aa9cbcc54beeb8be7",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "8191d762e020c376fcdf27b2a505c02877620d91a318d703ed1e41133f16c61f",
+					"reason": "Record main\u2019s entity scenario selection and partial-verification verdict for scoped runs."
 				}
 			]
 		},
@@ -3875,13 +3887,13 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "6736a38b01420ffb9f56fc518519c271223340134fd05f7a1be21defaf27ab1d",
+			"definition": "a4b52923430ffca1e1c9390280d4c9f9e0f3483a6c5a0061596dadc8e94b6eee",
 			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
 			"review": {
-				"commit": "7b10468b45e2087c7e46501aa9cbcc54beeb8be7",
+				"commit": "2ac7147eec73a3948bd95cb3cf8eb473b3b099ea",
 				"path": "src/cli/program/VerifyCommand.ts",
-				"definition": "6736a38b01420ffb9f56fc518519c271223340134fd05f7a1be21defaf27ab1d",
-				"reason": "Record main\u2019s explicit entity option for partial verification."
+				"definition": "a4b52923430ffca1e1c9390280d4c9f9e0f3483a6c5a0061596dadc8e94b6eee",
+				"reason": "Exit successfully for complete attached entity proof while retaining failed full-commit status."
 			},
 			"previousReviews": [
 				{
@@ -3913,6 +3925,12 @@
 					"path": "src/cli/program/VerifyCommand.ts",
 					"definition": "db36ea90786b7885ee7c0a55303a7469d7123de88e83abc8b63c89666184f1b2",
 					"reason": "Add the explicit performance requirement flag while retaining current verification arguments and outputs."
+				},
+				{
+					"commit": "7b10468b45e2087c7e46501aa9cbcc54beeb8be7",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "6736a38b01420ffb9f56fc518519c271223340134fd05f7a1be21defaf27ab1d",
+					"reason": "Record main\u2019s explicit entity option for partial verification."
 				}
 			]
 		},
