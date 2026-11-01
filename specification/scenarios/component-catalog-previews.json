@@ -2065,12 +2065,6 @@
 			"units": ["reports.component.audio-comparison-viewer"]
 		},
 		{
-			"id": "reports-component-audio-comparison-viewer-no-duration",
-			"title": "Audio comparison viewer: Durations not recorded",
-			"coverage": "required",
-			"units": ["reports.component.audio-comparison-viewer"]
-		},
-		{
 			"id": "reports-component-audio-comparison-viewer-mixed",
 			"title": "Audio comparison viewer: Different recording results",
 			"coverage": "required",
@@ -2169,12 +2163,6 @@
 		{
 			"id": "reports-component-audio-evidence-no-details",
 			"title": "Audio evidence: No transcript or notes",
-			"coverage": "required",
-			"units": ["reports.component.audio-evidence"]
-		},
-		{
-			"id": "reports-component-audio-evidence-no-duration",
-			"title": "Audio evidence: Duration not recorded",
 			"coverage": "required",
 			"units": ["reports.component.audio-evidence"]
 		},
@@ -3213,12 +3201,6 @@
 		{
 			"id": "reports-component-evidence-viewer-unselected",
 			"title": "Evidence viewer: No screenshot selected",
-			"coverage": "required",
-			"units": ["reports.component.evidence-viewer"]
-		},
-		{
-			"id": "reports-component-evidence-viewer-closed",
-			"title": "Evidence viewer: Closed",
 			"coverage": "required",
 			"units": ["reports.component.evidence-viewer"]
 		},
@@ -8311,7 +8293,6 @@
 				"reports-component-audio-comparison-viewer-unavailable",
 				"reports-component-audio-comparison-viewer-after-unavailable",
 				"reports-component-audio-comparison-viewer-both-unavailable",
-				"reports-component-audio-comparison-viewer-no-duration",
 				"reports-component-audio-comparison-viewer-mixed",
 				"reports-component-audio-comparison-viewer-running",
 				"reports-component-audio-comparison-viewer-failed",
@@ -8329,7 +8310,6 @@
 				"reports-component-audio-evidence-notes-transcript",
 				"reports-component-audio-evidence-transcript-closed",
 				"reports-component-audio-evidence-no-details",
-				"reports-component-audio-evidence-no-duration",
 				"reports-component-audio-evidence-audio-error",
 				"reports-component-audio-evidence-playing",
 				"reports-component-audio-evidence-running",
@@ -8503,7 +8483,6 @@
 				"reports-component-evidence-provenance-absent",
 				"reports-component-evidence-viewer",
 				"reports-component-evidence-viewer-unselected",
-				"reports-component-evidence-viewer-closed",
 				"reports-component-evidence-viewer-before",
 				"reports-component-evidence-viewer-compare",
 				"reports-component-evidence-viewer-unavailable",

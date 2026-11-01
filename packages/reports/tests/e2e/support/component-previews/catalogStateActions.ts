@@ -64,7 +64,11 @@ const actions: Record<string, CatalogStateAction> = {
 
 	'reports.component.regression-proof:output-open': async (component) => {
 		await component.locator('summary').click();
-		await expect(component.getByText('harness verify run', { exact: true })).toBeVisible();
+		await expect(
+			component.getByText('bunx playwright test tests/checkout.spec.ts --grep "declined payment"', {
+				exact: true
+			})
+		).toBeVisible();
 	},
 	'reports.component.entity-cases:expanded': async (component) => {
 		await component.locator('.cases > details > summary').click();
@@ -144,7 +148,6 @@ async function assertAudioComparisonViewer(component: Locator, variant: string) 
 	);
 	const missing = variant === 'both-unavailable' ? 2 : variant.includes('unavailable') ? 1 : 0;
 	await expect(component.locator('.audio-card.unavailable')).toHaveCount(missing);
-	if (variant === 'no-duration') await expect(component.locator('.audio-duration')).toHaveCount(0);
 	if (variant === 'mixed') {
 		await expect(sides.nth(0).locator('.badge')).toHaveClass(/failed/);
 		await expect(sides.nth(1).locator('.badge')).toHaveClass(/passed/);

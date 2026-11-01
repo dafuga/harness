@@ -42,7 +42,7 @@
 				"type": "RegressionView[]",
 				"required": false,
 				"default": [],
-				"description": "Optional recorded regression views. An empty or unmatched list shows that proof is unavailable."
+				"description": "Optional recorded regression views. Default: []. An empty or unmatched list shows that proof is unavailable."
 			},
 			{
 				"name": "RegressionProof.unit",
@@ -60,7 +60,7 @@
 				"name": "RegressionProof.follow",
 				"type": "(commit: string) => void",
 				"required": false,
-				"description": "Optional client-side commit navigation callback for unmodified primary clicks; modified clicks keep normal link behavior."
+				"description": "Optional client-side commit navigation callback. Default: undefined, preserving ordinary links. Unmodified primary clicks call it when supplied; modified clicks keep normal link behavior."
 			}
 		],
 		"outputs": [

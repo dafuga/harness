@@ -157,7 +157,7 @@ function regressionProofVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'empty') return { ...props, items: [] };
 	if (variant === 'pending') return { ...props, items: [{ ...item, green: undefined }] };
 	if (variant === 'capture-only')
-		return { ...props, items: [{ ...item, loop: 'component-capture', red: null }] };
+		return { ...props, items: [{ ...item, loop: 'checkout-capture', red: null }] };
 	if (variant === 'gap')
 		return {
 			...props,

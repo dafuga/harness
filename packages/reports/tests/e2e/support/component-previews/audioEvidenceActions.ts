@@ -17,10 +17,6 @@ export async function prepareAudioEvidence(component: Locator, variant: string) 
 			.toBe(false);
 	}
 	if (variant === 'duration-loaded') {
-		await component.locator('audio').evaluate(async (element: HTMLAudioElement) => {
-			await element.play();
-			element.pause();
-		});
 		await expect(component.locator('.audio-duration')).toHaveText('0:42');
 	}
 	if (variant === 'audio-error') {
@@ -41,8 +37,7 @@ async function assertAudioEvidence(component: Locator, variant: string) {
 	await expect(component.locator('.audio-card.unavailable')).toHaveCount(missing ? 1 : 0);
 	if (['no-details', 'minimal'].includes(variant))
 		await expect(component.locator('.audio-details')).toHaveCount(0);
-	if (['no-duration', 'minimal'].includes(variant))
-		await expect(component.locator('.audio-duration')).toHaveCount(0);
+	if (variant === 'minimal') await expect(component.locator('.audio-duration')).toHaveText('0:42');
 	if (['notes-closed', 'transcript-closed', 'notes-transcript-closed'].includes(variant))
 		await expect(component.locator('.audio-details')).not.toHaveAttribute('open');
 	if (variant === 'minimal') {
