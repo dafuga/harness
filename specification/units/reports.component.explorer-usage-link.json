@@ -52,7 +52,7 @@
 			{
 				"name": "ExplorerUsageLink",
 				"type": "markup",
-				"description": "A normal entity link with a viewport-bounded hover/focus preview, screenshot provenance and explicit missing-image fallback. Escape dismisses the preview; touch and Enter navigate."
+				"description": "A consumer link or source button, with a hover or keyboard preview bounded horizontally by its owner and positioned clear of a containing card title."
 			}
 		],
 		"errors": [

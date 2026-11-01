@@ -20,8 +20,7 @@
 			helper: entity.caller?.symbol
 		})
 	);
-	// A pointer over the link or its preview, or the keyboard on the link, opens it; a touch never
-	// does, so a tap follows the link at once.
+	// Hover or keyboard focus opens the preview; touch follows the link immediately.
 	let over = $state(false);
 	let focused = $state(false);
 	let open = $derived(over || focused);
@@ -57,19 +56,29 @@
 		clearTimeout(timer);
 		timer = setTimeout(() => (over = false), 150);
 	}
-	// Placed against the screen, so no card or scrolling table cuts it; it ends once its link has
-	// left the screen.
+	// Fixed positioning avoids clipped ancestors; leaving the viewport closes it.
 	function put() {
 		if (!root || !tip) return;
 		const at = (root.querySelector('a') ?? root).getBoundingClientRect();
 		const view = { width: document.documentElement.clientWidth, height: innerHeight };
 		if (at.bottom < 0 || at.top > view.height) return close();
+		const owner = root.closest('.ex-page-card, .ex-function-tile, .ex-usage');
+		const frame = owner?.getBoundingClientRect();
+		const left = Math.max(8, frame?.left ?? 8);
+		const right = Math.min(view.width - 8, frame?.right ?? view.width - 8);
+		const width = Math.min(280, right - left);
+		tip.style.width = `${width}px`;
 		const whole = tip.scrollHeight + tip.offsetHeight - tip.clientHeight;
-		const spot = tooltipPlace(at, { width: tip.offsetWidth, height: whole }, view);
+		const spot = tooltipPlace(at, { width, height: whole }, view);
+		spot.left = Math.max(left, Math.min(spot.left, right - width));
+		const title = owner?.querySelector('h2')?.getBoundingClientRect();
+		if (title && spot.top < title.bottom && spot.top + whole > title.top) {
+			spot.top = Math.max(8, title.top - whole - 8);
+			spot.height = title.top - spot.top - 8;
+		}
 		const cut = spot.height === undefined ? '' : `;max-height:${spot.height}px`;
-		place = `left:${spot.left}px;top:${spot.top}px${cut}`;
+		place = `left:${spot.left}px;top:${spot.top}px;width:${width}px${cut}`;
 	}
-	// A file that loads but cannot be decoded is no picture either.
 	function loaded(image: EventTarget & Element) {
 		if (image instanceof HTMLImageElement && image.naturalWidth) put();
 		else failed = file;

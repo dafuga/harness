@@ -58,14 +58,14 @@
 				"type": "number",
 				"required": false,
 				"default": 3,
-				"description": "Optional lower limit; every footer shows at most three distinct consumers, with an accessible overflow ellipsis."
+				"description": "Optional lower limit; every footer shows at most three distinct consumers. A zero limit shows the hidden-consumer count; positive limits use an accessible overflow ellipsis."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerUsage",
 				"type": "markup",
-				"description": "One flat Used In list in provided consumer order, capped at three distinct links; overflow has an accessible ellipsis."
+				"description": "One flat Used In list in provided consumer order, capped at three distinct links; overflow has an accessible ellipsis, or a visible hidden-consumer count when the limit is zero."
 			}
 		],
 		"errors": [
