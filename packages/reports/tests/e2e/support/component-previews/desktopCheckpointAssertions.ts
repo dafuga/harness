@@ -1,4 +1,4 @@
-import { expect, type Locator } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 /** An expanded checkpoint capture must include its complete rule rows and readable field values. */
 export async function assertCheckpointCapture(component: Locator, id: string, variant: string) {
@@ -50,4 +50,16 @@ export async function assertCheckpointCapture(component: Locator, id: string, va
 			'Checkpoint text must grow without hiding its last line'
 		).toBeLessThanOrEqual(1);
 	}
+}
+
+/** Keep the standard viewport width and enlarge its height to show the complete modal contents. */
+export async function frameCheckpointCapture(page: Page, id: string) {
+	if (id !== 'desktop.component.game-checkpoint-pane') return;
+	const content = page.locator(`[data-preview-unit="${id}"] .viewer-content`);
+	const hiddenHeight = await content.evaluate((node) => node.scrollHeight - node.clientHeight);
+	if (hiddenHeight > 0) {
+		const viewport = page.viewportSize()!;
+		await page.setViewportSize({ ...viewport, height: viewport.height + hiddenHeight + 48 });
+	}
+	await content.evaluate((node) => node.scrollTo(0, 0));
 }
