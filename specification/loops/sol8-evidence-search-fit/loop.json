@@ -2,7 +2,7 @@
 	"name": "sol8-evidence-search-fit",
 	"goal": "Keep the entire evidence search placeholder visible at desktop, tablet and mobile without changing its accessible label.",
 	"createdAt": "2026-11-01T05:14:51.866Z",
-	"updatedAt": "2026-11-01T05:19:42.187Z",
+	"updatedAt": "2026-11-01T05:25:13.223Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T05:25:11.848Z",
+			"evidence": "Committed 0879fc8cc2: the visible search placeholder uses concise localized text; the complete accessible label remains."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T05:25:13.223Z",
+			"evidence": "Unchanged frozen browser command passed all three viewports at 0879fc8cc2; record 9d12d02f763f090d582d2dc2dabb34df97f661ec534a7dd944d5c726213db5bb."
 		},
 		{
 			"id": "verify",
