@@ -2,6 +2,11 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Populated history and multiple-view states must be visible in the captured pixels. */
 export async function assertHistoryViewCapture(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.shared-primitives-loading-state' && variant === 'inline')
+		await expect(
+			component.locator('.hx-loading'),
+			'Inline loading stays in document flow'
+		).toHaveCSS('position', 'static');
 	if (id === 'desktop.component.game-view-fields' && variant === 'multiple') {
 		const views = component.getByRole('listbox', { name: 'View', exact: true });
 		await expect(views, 'Multiple views are listed visibly in the capture').toBeVisible();

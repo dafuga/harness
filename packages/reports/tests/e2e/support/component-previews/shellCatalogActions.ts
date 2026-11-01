@@ -136,11 +136,6 @@ async function actionState(component: Locator, variant: string) {
 	if (variant === 'disabled') await expect(component.getByRole('button')).toBeDisabled();
 }
 async function loadingState(component: Locator, variant: string) {
-	if (variant === 'inline')
-		await expect(
-			component.locator('.hx-loading'),
-			'Inline loading stays in document flow'
-		).toHaveCSS('position', 'static');
 	if (variant !== 'reduced-motion') return;
 	await component.page().emulateMedia({ reducedMotion: 'reduce' });
 	await expect(component.locator('.hx-loading-indicator')).toHaveCSS('animation-name', 'none');
