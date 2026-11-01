@@ -87,7 +87,9 @@ test('catalog search, changed filter and conversational plan request', async ({ 
 		.toContain('Add an Activity page to make work visible');
 	await expect(page.getByRole('textbox', { name: 'Message', exact: true })).toBeVisible();
 });
-test('Go to tip exits both historical and explicitly pinned tip revisions', async ({ page }) => {
+test('Revision navigation exits historical and explicitly pinned tip revisions', async ({
+	page
+}) => {
 	await fakeProject(page, true);
 	await page.setViewportSize({ width: 320, height: 568 });
 	await page.goto('/');
@@ -107,12 +109,19 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 				path: `test-results/go-to-tip-${process.env.SCREENSHOT_LABEL ?? 'local'}-${commit[0]}.png`
 			});
 		}
-		await expect(page.locator('.revision-summary strong')).toHaveText(commit.slice(0, 7));
+		await expect(page.locator('.revision-summary strong')).toHaveText(
+			`${commit[0] === 'a' ? 'Pinned' : 'Historical'} commit · ${commit.slice(0, 7)}`
+		);
 		await expect(page.locator('.revision-summary time')).toHaveAttribute(
 			'datetime',
 			commit[0] === 'a' ? '2026-10-11' : '2026-10-10'
 		);
-		await page.getByRole('button', { name: 'Go to tip', exact: true }).click();
+		await page
+			.getByRole('button', {
+				name: commit[0] === 'a' ? 'Follow branch' : 'Go to tip',
+				exact: true
+			})
+			.click();
 		await expect(page).toHaveURL(/\/harness\/branch\/feat%2Factivity\/pages$/);
 		await expect(page.locator('.revision-summary strong')).toHaveText('feat/activity');
 		await expect(page.locator('.revision-summary time')).toHaveAttribute('datetime', '2026-10-11');
@@ -173,10 +182,13 @@ test('workspace selectors start collapsed and environment stays directly selecta
 			});
 		await expect(page.getByText(/Changes reach preprod\./)).toHaveCount(0);
 		const summary = page.locator('.revision-summary');
-		await expect(summary.locator('strong')).toHaveText('Updated at');
+		await expect(summary.locator('strong')).toHaveText(environment);
+		await expect(page.getByRole('button', { name: 'Choose commit', exact: true })).toContainText(
+			environment
+		);
 		await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:15:00.000Z');
 		await expect(page.locator('.environment-status')).toHaveCount(0);
-		await expect(summary).not.toContainText(/Deployed|Current|branch tip|Tip|dev|prod|·/);
+		await expect(summary).not.toContainText(/Deployed|Current|branch tip|Tip|·/);
 		const sameLine = await summary.evaluate((element) => {
 			const name = element.querySelector('strong')!.getBoundingClientRect();
 			const time = element.querySelector('time')!.getBoundingClientRect();
