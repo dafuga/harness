@@ -13,6 +13,7 @@
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-form",
+			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-atoms-html-textarea"
 		]
@@ -154,6 +155,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-form",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},
