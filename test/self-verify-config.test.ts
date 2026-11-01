@@ -6,6 +6,8 @@ import { expect, test } from 'vitest';
 import { verifyConfigSchema } from '../src/core/verifyTypes';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
 import { verificationTarget } from './verification-targets';
+import { ScenarioRepository } from '../src/repositories/verification-evidence/ScenarioRepository';
+import { WorkingTreeAdapter } from '../src/adapters/git-source-history/WorkingTreeAdapter';
 
 /** Every file under a directory of this repository, as repository paths. */
 function under(directory: string): string[] {
@@ -20,7 +22,7 @@ function covers(declared: string, path: string): boolean {
 	return path === declared || path.startsWith(directory);
 }
 
-test('this repository declares no source, test or specification file as something a check may write', () => {
+test('this repository keeps source read-only and required scenario evidence complete', async () => {
 	const config = verifyConfigSchema.parse(JSON.parse(readFileSync('harness.verify.json', 'utf8')));
 	const manifests = under('specification/units').map(
 		(file) => JSON.parse(readFileSync(file, 'utf8')) as Manifest
@@ -38,6 +40,13 @@ test('this repository declares no source, test or specification file as somethin
 	for (const build of config.builds) {
 		expect(config.outputs.some((declared) => covers(declared, `${build.directory}/x`))).toBe(true);
 	}
+	const scenarios = await new ScenarioRepository(process.cwd()).read(
+		new WorkingTreeAdapter(process.cwd())
+	);
+	expect(
+		scenarios.errors,
+		'Every required repository scenario state has required evidence'
+	).toEqual([]);
 });
 
 test('standalone evidence fixtures load outside the test runner', () => {
