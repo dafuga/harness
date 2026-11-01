@@ -1,3 +1,4 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Shown } from './runActivity.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
@@ -75,7 +76,7 @@ export function renderShown({ activity, live }: Shown): string {
 		(type) => `  ${type.template}: ${type.loops} loops, ${type.complete} complete`
 	);
 	const work = activity.work.map(
-		(item) => `  ${item.commit.slice(0, 7)} ${item.committedAt} ${item.subject}`
+		(item) => `  ${shortCommit(item.commit)} ${item.committedAt} ${item.subject}`
 	);
 	const open = live.worktrees.map(
 		(tree) => `  ${tree.name} (${tree.branch ?? 'no branch'}): ${tree.changes.length} uncommitted`

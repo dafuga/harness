@@ -38,15 +38,8 @@
 			"root": "packages/game"
 		}
 	],
-	"tests": [
-		"test/",
-		"tests/"
-	],
-	"global": [
-		"**/.prettierignore",
-		"tsconfig.api.json",
-		"specification/measurements/"
-	],
+	"tests": ["test/", "tests/"],
+	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
 	"ignored": [
 		"**/*.md",
 		"specification/features/",
@@ -1495,6 +1488,42 @@
 			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
 			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "src/cli/program/HistoryCommand.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "src/cli/program/persistReasons.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "src/repositories/verification-evidence/RegressionProofRepository.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "src/services/git-source-history/commit-message-service/CommitMessageService.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "src/workflows/projects-sessions/runActivity.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
 		}
 	]
 }

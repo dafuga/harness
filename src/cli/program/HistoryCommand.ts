@@ -1,3 +1,4 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Flags } from './HistoryCommand.types';
 import type { Command } from 'commander';
 import { buildHistory, renderBuild, type BuildOptions } from './buildHistory';
@@ -35,7 +36,7 @@ function registerRecords(history: Command): void {
 		.action(async (flags: Flags) => {
 			const attached = await historyAttach(flags);
 			const state = attached.created ? 'attached' : 'was already attached';
-			const where = `${attached.evidence.commit.slice(0, 12)}:${attached.evidence.path}`;
+			const where = `${shortCommit(attached.evidence.commit)}:${attached.evidence.path}`;
 			const record = `Record ${attached.record.slice(0, 12)} (${attached.status})`;
 			print(flags, attached, `${record} ${state} at ${where}.`);
 		});

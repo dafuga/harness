@@ -161,6 +161,9 @@
 			],
 			"consumers": [
 				{
+					"unit": "command.history"
+				},
+				{
 					"unit": "desktop.component.coverage-panel"
 				},
 				{
@@ -204,6 +207,9 @@
 				{
 					"unit": "desktop.function.workspace-search",
 					"symbol": "workspaceSearch"
+				},
+				{
+					"unit": "hub.service.hub-attached"
 				},
 				{
 					"unit": "reports.component.entity-contract"
@@ -330,6 +336,18 @@
 				{
 					"unit": "reports.helper.verification-evidence-comparison-panes",
 					"symbol": "pane"
+				},
+				{
+					"unit": "repository.regression-proof"
+				},
+				{
+					"unit": "service.commit-message"
+				},
+				{
+					"unit": "workflow.persist-reasons"
+				},
+				{
+					"unit": "workflow.run-activity"
 				}
 			]
 		}

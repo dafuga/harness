@@ -1,3 +1,4 @@
+import { displayTime as sharedDisplayTime } from '$reports/helpers/strings/formatTime';
 import type { ProjectSnapshot } from '../../models/Desktop.types';
 export function revisionTime(
 	snapshot: ProjectSnapshot | null,
@@ -7,4 +8,6 @@ export function revisionTime(
 	const commit = snapshot?.commits.find((item) => item.hash === hash);
 	return commit?.committedAt ?? commit?.authoredAt ?? null;
 }
-export { displayTime } from '$reports/helpers/strings/formatTime';
+export function displayTime(value: string | null): string {
+	return sharedDisplayTime(value);
+}
