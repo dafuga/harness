@@ -1,4 +1,5 @@
 import type { PreviewCases } from './shared';
+import type { ExplorerEntity } from '../../../../src/models/explorer-ui/Explorer.types';
 import { text } from './shared';
 import * as d from './explorerData';
 import { artifactProps, audioProps, behaviorProps, screenProps } from './shellEntityEvidenceProps';
@@ -36,13 +37,17 @@ function linkProps(props: PreviewCases[string], variant: string) {
 	return {
 		...props,
 		label: variant === 'labelled' ? 'Open the order list at this revision' : undefined,
-		children:
-			variant === 'long'
-				? text(
-						'<span>OrderList with a deliberately long name for the selected repository revision</span>'
-					)
-				: props.children
+		children: linkChildren(props, variant)
 	};
+}
+
+// A labelled link has icon-like short text, so its accessible name carries the destination.
+function linkChildren(props: PreviewCases[string], variant: string) {
+	if (variant === 'labelled') return text('<span>Open →</span>');
+	if (variant !== 'long') return props.children;
+	return text(
+		'<span>OrderList with a deliberately long name for the selected repository revision</span>'
+	);
 }
 
 function missingProps(props: PreviewCases[string], variant: string) {
@@ -60,12 +65,40 @@ function relationsProps(props: PreviewCases[string], variant: string) {
 	const empty = Object.fromEntries(
 		Object.keys(d.reading.relations(d.entity.id)).map((key) => [key, []])
 	);
+	const relations = props.relations as Record<string, unknown>;
+	const recorded = {
+		...relations,
+		models: [relatedEntity('model', 'models', 'Order', 'Persisted order records')],
+		apis: [relatedEntity('api', 'apis', 'GET /api/orders', 'Lists orders for a customer')]
+	};
 	return {
 		...props,
-		relations: ['empty', 'removed'].includes(variant) ? empty : props.relations,
+		relations: ['empty', 'removed'].includes(variant)
+			? empty
+			: ['models', 'apis'].includes(variant)
+				? recorded
+				: props.relations,
 		removed: variant === 'removed',
 		show: ['empty', 'removed'].includes(variant) ? 'both' : variant
 	};
+}
+
+function relatedEntity(
+	kind: 'model' | 'api',
+	category: 'models' | 'apis',
+	name: string,
+	purpose: string
+) {
+	const id = `reports.${kind}.${name.toLowerCase().replace(/[^a-z]+/g, '-')}`;
+	return {
+		...d.entity,
+		id,
+		category,
+		role: kind === 'model' ? 'Model' : 'Endpoint',
+		name,
+		purpose,
+		unit: { ...d.entity.unit, id, kind }
+	} as ExplorerEntity;
 }
 
 function sourceProps(props: PreviewCases[string], variant: string) {
