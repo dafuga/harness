@@ -4021,12 +4021,6 @@
 			"units": ["reports.component.explorer-usage-link"]
 		},
 		{
-			"id": "reports-component-explorer-usage-link-touch",
-			"title": "ExplorerUsageLink: touch without preview",
-			"coverage": "required",
-			"units": ["reports.component.explorer-usage-link"]
-		},
-		{
 			"id": "reports-component-filter-dialog",
 			"title": "Catalog filters",
 			"coverage": "required",
@@ -8637,7 +8631,6 @@
 				"reports-component-explorer-usage-link-function-open",
 				"reports-component-explorer-usage-link-source-enabled",
 				"reports-component-explorer-usage-link-source-disabled",
-				"reports-component-explorer-usage-link-touch",
 				"reports-component-filter-dialog",
 				"reports-component-filter-dialog-active",
 				"reports-component-filter-dialog-open",
