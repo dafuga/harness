@@ -2,7 +2,7 @@
 	"name": "sol8-result-and-approval-review",
 	"goal": "Recorded results use consistent row spacing and remote approval visibly reports progress.",
 	"createdAt": "2026-11-01T11:35:00.760Z",
-	"updatedAt": "2026-11-01T12:00:39.780Z",
+	"updatedAt": "2026-11-01T12:12:42.176Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:12:38.227Z",
+			"evidence": "379cd174cc shares row spacing and removes list margins; busy approval exposes aria-busy and an Approving label. Test corpus is unchanged from 950f874e7c."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:12:42.176Z",
+			"evidence": "Record 399c067949 at 379cd174cc passes all 174 cases, paired with b07a2b9741 at 950f874e7c using unchanged tests, fixtures, command, inputs and environment."
 		},
 		{
 			"id": "verify",
