@@ -148,6 +148,9 @@ async function assertRosterState(roster: Locator, state: ProjectAgentState) {
 		await expect(roster).toContainText('8 working');
 		await roster.getByRole('button', { name: 'Show all 8 sessions' }).click();
 		await expect(roster.getByRole('list', { name: 'Agent sessions' }).locator('li')).toHaveCount(8);
+		const summary = roster.getByText('8 working', { exact: true });
+		await summary.scrollIntoViewIfNeeded();
+		await expect(summary).toBeInViewport({ ratio: 1 });
 	}
 	if (state === 'agents-active') {
 		await expect(roster).toContainText('1 working');
