@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { buildData } from './buildData';
 import { catalogFixtureMedia } from './catalogFixtureMedia';
+import { shellMedia } from './shellArtworkImages';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
 
@@ -150,6 +151,8 @@ function historyOf(route: Route, url: URL) {
 async function media(route: Route, path: string, home: string) {
 	const all = catalogFixtureMedia(home);
 	const file = path.split('/').pop()!;
+	const shell = shellMedia(file);
+	if (shell) return route.fulfill({ contentType: 'image/svg+xml', body: shell });
 	const artifact = artifactByName(all, file);
 	if (artifact)
 		return route.fulfill({ contentType: artifact.mediaType, body: Buffer.from(artifact.data) });

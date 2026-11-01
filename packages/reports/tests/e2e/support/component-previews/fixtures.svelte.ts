@@ -24,6 +24,8 @@ import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 import { evidenceViewerState } from './evidenceViewerState.svelte';
 import { desktopPreviewVariant } from './desktopPreviewVariants';
 import { desktopRuntimeReady } from './desktopRuntimeVariants';
+import { shellArtworkProps } from './shellArtwork';
+import ShellContentPreview from './ShellContentPreview.svelte';
 export function previewFixture(id: string, variant = '') {
 	const desktop = createDesktopData(id);
 	// The shell opens at Pages, where its store starts and where the web workspace opens too.
@@ -67,7 +69,7 @@ export function previewFixture(id: string, variant = '') {
 	const address = { ...legacyAddresses, ...hub.addresses }[id];
 	if (address) history.replaceState(history.state, '', address);
 	return {
-		props: reactiveProps(id, rendered),
+		props: reactiveProps(id, rendered, variant),
 		remote,
 		hub: hub.context,
 		cleanup: () => {
@@ -78,10 +80,16 @@ export function previewFixture(id: string, variant = '') {
 	};
 }
 
-function reactiveProps<Props>(id: string, props: Props) {
-	return id === 'reports.component.evidence-viewer'
-		? evidenceViewerState(props as PreviewCases[string])
-		: props;
+function reactiveProps(id: string, props: unknown, variant: string) {
+	const input = props as PreviewCases[string];
+	const artwork = shellArtworkProps(
+		id,
+		id === 'reports.component.harness-harness-console'
+			? { ...input, content: ShellContentPreview }
+			: input,
+		variant
+	);
+	return id === 'reports.component.evidence-viewer' ? evidenceViewerState(artwork) : artwork;
 }
 
 function projectAgentProps(
