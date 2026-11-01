@@ -11,6 +11,7 @@ import { assertDesktopNavCapture } from './desktopNavAssertions';
 import { assertComposerCaptions } from './projectAgentStateAssertions';
 import { assertDesktopPresentation } from './desktopPresentationAssertions';
 import { assertCheckpointCapture } from './desktopCheckpointAssertions';
+import { assertHistoryViewCapture } from './desktopHistoryViewAssertions';
 
 /** Check the actual state branches, so a successful screenshot cannot silently show the default. */
 export async function assertDesktopState(component: Locator, id: string, variant: string) {
@@ -91,6 +92,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertEntitySectionContent(component, id, variant);
 	await assertDesktopPresentation(component, id, variant);
 	await assertCheckpointCapture(component, id, variant);
+	await assertHistoryViewCapture(component, id, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
 		await expect(
 			component.getByRole('status').filter({ hasText: /AI/ }),
@@ -182,7 +184,8 @@ async function assertLongCatalogContent(component: Locator, id: string, variant:
 	const read: Record<string, () => Promise<string>> = {
 		'desktop.component.game-level-brief': () =>
 			component.getByRole('textbox', { name: 'Level brief', exact: true }).inputValue(),
-		'desktop.component.history-panel': () => component.locator('article p').first().innerText()
+		'desktop.component.history-panel': () =>
+			component.locator('.history > article p').first().innerText()
 	};
 	if (variant !== 'long' || !read[id]) return;
 	const sentences = (await read[id]())

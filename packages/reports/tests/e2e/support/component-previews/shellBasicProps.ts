@@ -17,6 +17,7 @@ function brandMarkProps(props: PreviewCases[string], variant: string) {
 	return { ...props, size: variant === 'inline' ? '1em' : '6rem' };
 }
 function loadingStateProps(props: PreviewCases[string], variant: string) {
+	if (variant === 'inline') return { label: 'Loading earlier history…', inline: true };
 	if (variant === 'default-label') return {};
 	if (variant === 'long')
 		return {

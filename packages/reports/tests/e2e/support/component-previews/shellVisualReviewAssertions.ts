@@ -1,5 +1,6 @@
 import { expect, type Locator } from '@playwright/test';
 import { assertExplorerContentCatalog } from './explorerContentPreviewAssertions';
+import { assertPopulatedEntitySection } from './entitySectionsPreviewAssertions';
 
 /** A persistent cue remains visible when native scrollbars fade between interactions. */
 export async function assertTabOverflowCue(component: Locator, id: string) {
@@ -108,6 +109,7 @@ async function navbar(component: Locator, variant: string) {
 }
 
 async function sections(component: Locator, variant: string) {
+	await assertPopulatedEntitySection(component, variant);
 	await expect(component).not.toContainText('Recent activity is ready to review.');
 	if (variant === 'used-in') {
 		for (const card of await component.locator('.ex-page-minimal').all())
