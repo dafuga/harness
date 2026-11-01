@@ -2,7 +2,9 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { ownEnvironment } from './support/cli';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
+import { loadConfigFromFile } from 'vite';
+import { measureWorkload } from './support/measureWorkload';
 import { unitsConfigFile, unitsConfigSchema } from '../src/core/unitsConfig';
 import { verifyConfigFile, verifyConfigSchema } from '../src/core/verifyTypes';
 import { verifyPlan } from '../src/services/verification-service/verifyPlan';
@@ -99,12 +101,46 @@ function assertPlainSetupImports() {
 	}
 }
 
-test('capture readiness runs under the server-free shell config', () => {
+test('capture readiness runs under the server-free shell config', async () => {
 	const path = 'packages/reports/tests/e2e/explorer-shell-capture-readiness.spec.ts';
 	expect(existsSync(path)).toBe(true);
 	expect(planned(path)[0].command).toBe(
 		'bun x playwright test --config src/configs/shellPlaywrightConfig.ts tests/e2e/explorer-shell-capture-readiness.spec.ts'
 	);
+	try {
+		vi.stubEnv('PLAYWRIGHT_BROWSERS_PATH', '/unavailable-harness-unit-browser');
+		await measureWorkload(
+			'reports.config.shell-vite',
+			'fixture-config-alias-admission',
+			async () => {
+				for (const page of ['navbar', 'components']) {
+					vi.stubEnv('SHELL_FIXTURE_PAGE', page);
+					const loaded = await loadConfigFromFile(
+						{ command: 'build', mode: 'production' },
+						resolve('packages/reports/src/configs/shellViteConfig.ts')
+					);
+					expect(loaded, `${page} configuration loads in its normal Vite runner`).not.toBeNull();
+					const rendered = loaded!.config;
+					if (page === 'navbar') expect(rendered.resolve).toBeUndefined();
+					else
+						expect(
+							Object.fromEntries(
+								Object.entries(rendered.resolve?.alias ?? {}).map(([name, target]) => [
+									name,
+									resolve(String(target))
+								])
+							)
+						).toMatchObject({
+							$shared: resolve('packages/reports/src/components'),
+							$reports: resolve('packages/reports/src'),
+							$desktop: resolve('packages/desktop/src')
+						});
+				}
+			}
+		);
+	} finally {
+		vi.unstubAllEnvs();
+	}
 });
 
 test('an ordinary reports end-to-end spec keeps the default Playwright config', () => {

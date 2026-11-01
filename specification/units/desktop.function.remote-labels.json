@@ -510,6 +510,9 @@
 			],
 			"consumers": [
 				{
+					"unit": "desktop.component.agents-providers-chat-agents"
+				},
+				{
 					"unit": "desktop.function.remote-labels",
 					"symbol": "grantSummary"
 				},
