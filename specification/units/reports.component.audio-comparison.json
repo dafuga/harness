@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-article",
 			"reports.component.shared-primitives-atoms-html-button",
@@ -17,8 +18,7 @@
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-time",
 			"reports.component.shared-primitives-atoms-svg-path",
-			"reports.component.shared-primitives-atoms-svg-svg",
-			"reports.component.status-badge"
+			"reports.component.shared-primitives-atoms-svg-svg"
 		]
 	},
 	"owns": {
@@ -27,7 +27,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.status-badge"],
+		"primitives": ["reports.component.harness-harness-verdict"],
 		"inputs": [
 			{
 				"name": "AudioComparison.before",
@@ -66,6 +66,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
@@ -108,11 +113,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-svg-svg",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.status-badge",
 			"via": "import",
 			"origin": "derived"
 		},

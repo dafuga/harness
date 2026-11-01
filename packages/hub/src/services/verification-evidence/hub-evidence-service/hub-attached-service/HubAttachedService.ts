@@ -1,3 +1,4 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Context } from './HubAttachedService.types';
 import {
 	evidenceManifestSchema,
@@ -74,7 +75,7 @@ export class HubAttachedService {
 			return {
 				...result,
 				problems: [
-					`evidence commit ${pointer.commit.slice(0, 12)} is not part of the pinned evidence`
+					`evidence commit ${shortCommit(pointer.commit)} is not part of the pinned evidence`
 				]
 			};
 		const source = await hubPinnedSource(base, pointer.commit);

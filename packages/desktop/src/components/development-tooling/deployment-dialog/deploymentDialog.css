@@ -5,7 +5,7 @@ h2 {
 }
 /* Preprod above production, each commit in full at the same place, so the two compare at a
    glance and wrap rather than being cut on a phone. */
-dl {
+:global(dl.deployment-commit) {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
 	gap: var(--hx-space-3);
@@ -16,14 +16,14 @@ dl {
 	background: var(--hx-color-surface-raised);
 	font-size: var(--hx-type-size-compact);
 }
-dt {
+:global(.deployment-commit dt) {
 	font-size: var(--hx-type-size-2xs);
 	font-weight: var(--hx-style-weight-semibold);
 	letter-spacing: var(--hx-style-tracking-wide);
 	text-transform: uppercase;
 	color: var(--hx-color-text-muted);
 }
-dd {
+:global(.deployment-commit dd) {
 	margin: 0;
 	color: var(--hx-color-text);
 }
@@ -32,7 +32,9 @@ code {
 	font-size: var(--hx-type-size-xs);
 	overflow-wrap: anywhere;
 }
-.when {
+:global(.deployment-commit .when),
+:global(.deployment-commit dd.when) {
+	display: block;
 	font-size: var(--hx-type-size-xs);
 	color: var(--hx-color-text-muted);
 }

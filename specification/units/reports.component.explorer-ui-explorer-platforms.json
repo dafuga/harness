@@ -9,6 +9,8 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-platform-details",
 			"reports.component.filter-dialog",
 			"reports.component.harness-entity-link",
@@ -18,10 +20,7 @@
 			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-article",
 			"reports.component.shared-primitives-atoms-html-button",
-			"reports.component.shared-primitives-atoms-html-dd",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-header",
@@ -32,7 +31,8 @@
 			"reports.component.shared-primitives-atoms-html-option",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-detail-list"
 		]
 	},
 	"owns": {
@@ -44,13 +44,20 @@
 			"ExplorerPlatforms",
 			"ExplorerPlatforms.statusFilter",
 			"ExplorerPlatforms.platformCard",
+			"ExplorerPlatforms.label",
+			"ExplorerPlatforms.children",
 			"ExplorerPlatforms.children",
 			"Card"
 		]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.select"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.select",
+			"reports.component.shared-primitives-detail-list"
+		],
 		"inputs": [
 			{
 				"name": "ExplorerPlatforms.index",
@@ -176,6 +183,42 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "ExplorerPlatforms.label",
+				"inputs": [
+					{
+						"name": "ExplorerPlatforms.label.name",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPlatforms.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerPlatforms.children",
+				"inputs": [
+					{
+						"name": "ExplorerPlatforms.children.name",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPlatforms.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "ExplorerPlatforms.children",
 				"inputs": [
 					{
@@ -198,6 +241,16 @@
 	"dependencies": [
 		{
 			"unit": "function.explorer-ui-platform-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -247,22 +300,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -318,6 +356,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-detail-list",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -12,6 +12,7 @@
 			"reports.component.browser-errors",
 			"reports.component.evidence-grid",
 			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-entity-behavior",
 			"reports.component.harness-harness-verdict",
 			"reports.component.regression-proof",
@@ -20,13 +21,11 @@
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-table",
-			"reports.component.shared-primitives-atoms-html-tbody",
 			"reports.component.shared-primitives-atoms-html-td",
 			"reports.component.shared-primitives-atoms-html-th",
-			"reports.component.shared-primitives-atoms-html-thead",
 			"reports.component.shared-primitives-atoms-html-tr",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-data-table"
 		]
 	},
 	"owns": {
@@ -34,11 +33,16 @@
 			"packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
 			"packages/reports/src/components/explorer-ui/entity-tests/coverageLabels.ts"
 		],
-		"symbols": ["EntityTests", "coverageLabels"]
+		"symbols": ["EntityTests", "EntityTests.header", "EntityTests.children", "coverageLabels"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.harness-harness-verdict",
+			"reports.component.shared-primitives-data-table"
+		],
 		"inputs": [
 			{
 				"name": "EntityTests.entity",
@@ -86,7 +90,33 @@
 		],
 		"errors": [],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityTests.header",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EntityTests.header",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "EntityTests.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EntityTests.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -101,6 +131,11 @@
 		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -145,16 +180,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-table",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-tbody",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-td",
 			"via": "import",
 			"origin": "derived"
@@ -165,17 +190,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-thead",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-tr",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-data-table",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -191,6 +216,11 @@
 		},
 		{
 			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-ui-entity-tests-test-location",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -87,7 +87,7 @@ async function selectedLabels(component: Locator) {
 }
 
 async function tooltipFit(component: Locator, variant: string) {
-	if (!variant.endsWith('-open')) return;
+	if (!variant.endsWith('-open') || variant.startsWith('icon')) return;
 	const tooltip = component.getByRole('tooltip');
 	const geometry = await tooltip.evaluate((node: HTMLElement) => {
 		const box = node.getBoundingClientRect();

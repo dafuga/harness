@@ -1,6 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
+	import DetailList from '$shared/shared-primitives/DetailList.svelte';
+	import { behaviorFacts } from '$reports/helpers/verification-evidence/behaviorFacts';
 	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
@@ -71,9 +74,9 @@
 	<hx-p class="runtime-verdict">
 		<hx-strong role="status">{label}</hx-strong>{#if why}<hx-span>{why}</hx-span>{/if}
 	</hx-p>
-	{#if shown.groups.length === 0}<hx-p class="empty">
+	{#if shown.groups.length === 0}<EmptyState as="p" className="empty runtime-behavior-empty">
 			No end-to-end result is recorded for this entity at {at}.
-		</hx-p>{:else}<ComparePanes {panes} className="runtime-panes" framed={false}>
+		</EmptyState>{:else}<ComparePanes {panes} className="runtime-panes" framed={false}>
 			{#snippet children(pane)}
 				<RuntimeRun
 					shown={pane.value!}
@@ -86,14 +89,18 @@
 				/>
 			{/snippet}
 		</ComparePanes>{/if}
-	<hx-dl class="runtime-facts">
-		<hx-dt>End-to-end duration</hx-dt>
-		<hx-dd>{duration ?? 'Not measured'}</hx-dd>
-		{#each shown.scenarios as scenario (scenario.id)}<hx-dt>{scenario.title}</hx-dt>
-			<hx-dd>
-				{paired ? `${scenario.before ?? 'not run'} → ` : ''}{scenario.after ?? 'not run'}
-			</hx-dd>{/each}
-	</hx-dl>
+	<DetailList
+		rows={behaviorFacts(duration, shown.scenarios, paired, {
+			durationLabel: 'End-to-end duration'
+		})}
+		rowKey={(row) => row.key}
+		className="runtime-facts"
+		grouped={false}
+		valueClass={(row) => row.className}
+	>
+		{#snippet label(row)}{row.label}{/snippet}
+		{#snippet children(row)}{row.value}{/snippet}
+	</DetailList>
 </hx-div>
 
 <style>

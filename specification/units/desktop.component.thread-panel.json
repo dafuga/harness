@@ -13,9 +13,9 @@
 			"desktop.component.composer",
 			"desktop.component.message-list",
 			"desktop.component.reference-text",
-			"desktop.component.run-status",
 			"desktop.component.thread-history",
 			"desktop.component.thread-links",
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-aside",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -30,6 +30,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.harness-harness-verdict"],
 		"inputs": [
 			{
 				"name": "ThreadPanel.entity",
@@ -111,11 +112,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.component.run-status",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.component.thread-history",
 			"via": "import",
 			"origin": "derived"
@@ -162,6 +158,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

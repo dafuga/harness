@@ -9,7 +9,8 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"desktop.component.status-icon",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-audio",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h3",
@@ -24,7 +25,11 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.shared-primitives-compare-panes"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.harness-harness-verdict",
+			"reports.component.shared-primitives-compare-panes"
+		],
 		"inputs": [
 			{
 				"name": "RuntimeAudio.result",
@@ -90,17 +95,22 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.component.status-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.model.desktop-evidence-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.store.entity-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

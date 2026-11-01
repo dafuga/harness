@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../../shared-primitives/DataTable.svelte';
+	import Card from '../explorer-kit/Card.svelte';
 	import { shortCommit } from '../../../helpers/strings/shortCommit';
 
 	import type { Snippet } from 'svelte';
@@ -132,7 +134,7 @@
 		</hx-div>
 	{:else if entity.category === 'models' && host.route.tab === 'table'}
 		<hx-div role="tabpanel" aria-label={`${entity.name} table`}>
-			<hx-section class="ex-card" aria-label={entity.lastAt ? 'Last table' : 'Table'}>
+			<Card as="section" label={entity.lastAt ? 'Last table' : 'Table'}>
 				<hx-h2><HarnessIcon name="database" size={24} /> {schemaTitle}</hx-h2>
 				{#if entity.lastAt}
 					<hx-p class="ex-note">Removed at the shown commit; this is what its parent held.</hx-p>
@@ -146,32 +148,34 @@
 						<hx-p class="ex-note">
 							Declared by <hx-code>{item.name}</hx-code> in <hx-code>{item.source}</hx-code>.
 						</hx-p>
-						<hx-div class="ex-scroll">
-							<hx-table class="ex-table" aria-label={`${item.table.name} columns`}>
-								<hx-thead>
+						<DataTable
+							label={`${item.table.name} columns`}
+							tableClass="ex-table"
+							className="ex-scroll"
+						>
+							{#snippet header()}
+								<hx-tr>
+									<hx-th scope="col">Column</hx-th>
+									<hx-th scope="col">Property</hx-th>
+									<hx-th scope="col">Type</hx-th>
+									<hx-th scope="col">Primary key</hx-th>
+									<hx-th scope="col">Nullable</hx-th>
+									<hx-th scope="col">Default</hx-th>
+								</hx-tr>
+							{/snippet}
+							{#snippet children()}
+								{#each item.table.columns as column, columnPosition (columnPosition)}
 									<hx-tr>
-										<hx-th scope="col">Column</hx-th>
-										<hx-th scope="col">Property</hx-th>
-										<hx-th scope="col">Type</hx-th>
-										<hx-th scope="col">Primary key</hx-th>
-										<hx-th scope="col">Nullable</hx-th>
-										<hx-th scope="col">Default</hx-th>
+										<hx-td data-label="Column"><hx-code>{column.name}</hx-code></hx-td>
+										<hx-td data-label="Property"><hx-code>{column.property}</hx-code></hx-td>
+										<hx-td data-label="Type"><hx-code>{column.type}</hx-code></hx-td>
+										<hx-td data-label="Primary key">{column.primaryKey ? 'Yes' : 'No'}</hx-td>
+										<hx-td data-label="Nullable">{column.nullable ? 'Yes' : 'No'}</hx-td>
+										<hx-td data-label="Default">{column.default ?? 'None'}</hx-td>
 									</hx-tr>
-								</hx-thead>
-								<hx-tbody>
-									{#each item.table.columns as column, columnPosition (columnPosition)}
-										<hx-tr>
-											<hx-td data-label="Column"><hx-code>{column.name}</hx-code></hx-td>
-											<hx-td data-label="Property"><hx-code>{column.property}</hx-code></hx-td>
-											<hx-td data-label="Type"><hx-code>{column.type}</hx-code></hx-td>
-											<hx-td data-label="Primary key">{column.primaryKey ? 'Yes' : 'No'}</hx-td>
-											<hx-td data-label="Nullable">{column.nullable ? 'Yes' : 'No'}</hx-td>
-											<hx-td data-label="Default">{column.default ?? 'None'}</hx-td>
-										</hx-tr>
-									{/each}
-								</hx-tbody>
-							</hx-table>
-						</hx-div>
+								{/each}
+							{/snippet}
+						</DataTable>
 					</hx-div>
 				{/each}
 				{#each gaps as item, position (position)}
@@ -182,7 +186,7 @@
 				{#if tables.length === 0 && gaps.length === 0}
 					<hx-p class="ex-note">This revision records no database table for this model.</hx-p>
 				{/if}
-			</hx-section>
+			</Card>
 		</hx-div>
 	{:else}
 		<EntityOverview {entity} measure={summary.measure} {comparison}>

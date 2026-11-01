@@ -6,7 +6,7 @@
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { imageUrl } from '../../utils/development-tooling/imageUrl';
 	import PlanBadge from '../planning-collaboration/PlanBadge.svelte';
-	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	import WorkspaceLink from '../projects-sessions/WorkspaceLink.svelte';
 	import RecordedPreview from '../shared-primitives/recorded-preview/RecordedPreview.svelte';
 	let { entity, workspace }: { entity: CatalogEntity; workspace: Workspace } = $props();
@@ -76,7 +76,8 @@
 		<hx-p>{entity.summary}</hx-p>
 		{#if !headless}{@render thumbnail()}{/if}
 		<hx-div class="row card-meta">
-			<hx-span>{recorded ? entity.kind : entity.latestVersion || entity.kind}</hx-span><StatusIcon
+			<hx-span>{recorded ? entity.kind : entity.latestVersion || entity.kind}</hx-span><Status
+				variant="icon"
 				status={entity.verification}
 				reason={entity.verificationNote}
 			/>

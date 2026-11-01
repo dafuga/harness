@@ -16,6 +16,10 @@ const primitiveFiles = {
 async function assertCompositionRegistry(): Promise<void> {
 	const files = {
 		...primitiveFiles,
+		'src/components/shared-primitives/status/Status.svelte':
+			'<!-- @harness-tier atom --><span>Passed</span>',
+		'src/components/Standing.svelte':
+			'<!-- @harness-tier organism --><script lang="ts">import Status from "./shared-primitives/status/Status.svelte";</script><Status />',
 		'src/components/atoms/ButtonAtom.svelte': '<!-- @harness-tier atom --><button>Save</button>',
 		'src/components/Control.svelte':
 			'<!-- @harness-tier molecule --><script lang="ts">import ButtonAtom from "./atoms/ButtonAtom.svelte";</script><ButtonAtom />',
@@ -51,6 +55,9 @@ async function assertCompositionRegistry(): Promise<void> {
 }
 
 async function assertPrimitiveContracts(units: ComponentManifest[], files: Record<string, string>) {
+	expect(units.find((unit) => unit.id === 'component.standing')?.contract.primitives).toEqual([
+		'component.shared-primitives-status-status'
+	]);
 	const cards = units.find((unit) => unit.id === 'component.cards')!;
 	expect(cards.contract.primitives).toEqual(['component.shared-primitives-card']);
 	const omitted = units.map((unit) =>

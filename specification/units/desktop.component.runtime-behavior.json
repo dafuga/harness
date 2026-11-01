@@ -10,24 +10,32 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.runtime-run",
-			"reports.component.shared-primitives-atoms-html-dd",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt",
 			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
-			"reports.component.shared-primitives-compare-panes"
+			"reports.component.shared-primitives-compare-panes",
+			"reports.component.shared-primitives-detail-list"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte"],
-		"symbols": ["RuntimeBehavior", "RuntimeBehavior.children"]
+		"symbols": [
+			"RuntimeBehavior",
+			"RuntimeBehavior.children",
+			"RuntimeBehavior.label",
+			"RuntimeBehavior.children"
+		]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.shared-primitives-compare-panes"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.shared-primitives-compare-panes",
+			"reports.component.shared-primitives-detail-list"
+		],
 		"inputs": [
 			{
 				"name": "RuntimeBehavior.result",
@@ -77,6 +85,42 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "RuntimeBehavior.label",
+				"inputs": [
+					{
+						"name": "RuntimeBehavior.label.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RuntimeBehavior.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RuntimeBehavior.children",
+				"inputs": [
+					{
+						"name": "RuntimeBehavior.children.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RuntimeBehavior.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},
@@ -97,22 +141,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -142,12 +176,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-detail-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-behavior",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.verification-evidence-behavior-facts",
 			"via": "import",
 			"origin": "derived"
 		},

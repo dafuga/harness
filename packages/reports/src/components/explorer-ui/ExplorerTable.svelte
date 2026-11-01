@@ -21,7 +21,7 @@
 	import HarnessIcon from './HarnessIcon.svelte';
 	import type { Kind, Column } from './ExplorerTable.types';
 	import ConfigValue from './explorer-table/ConfigValue.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		category,
 		rows,
@@ -113,7 +113,8 @@
 			</hx-tr>
 		{/snippet}
 		{#snippet empty()}
-			<hx-tr><hx-td colspan={category === 'configs' ? 2 : shown.length + (verification ? 3 : 2)}
+			<hx-tr
+				><hx-td colspan={category === 'configs' ? 2 : shown.length + (verification ? 3 : 2)}
 					>No rows to display.</hx-td
 				></hx-tr
 			>
@@ -168,8 +169,7 @@
 									/>{/if}</hx-td
 							>
 						{/each}
-						{#if verification}<hx-td data-label="Verification"
-								><HarnessVerdict {...row.verdict} /></hx-td
+						{#if verification}<hx-td data-label="Verification"><Status {...row.verdict} /></hx-td
 							>{/if}
 						<hx-td class="ex-open">
 							<HarnessAction

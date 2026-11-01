@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-ui-source-file-parts",
+	"kind": "function",
+	"title": "sourceFileParts",
+	"responsibility": "Splits a committed source path into its literal folder and filename for SourceFileList.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/explorer-ui/sourceFileParts.ts",
+			"packages/reports/src/components/explorer-ui/sourceFileParts.types.ts"
+		],
+		"symbols": ["sourceFileParts", "SourceFileParts"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sourceFileParts.path",
+				"type": "string",
+				"required": true,
+				"description": "Required committed source path. Retains its spelling and accepts the same string operations as the renderer."
+			},
+			{
+				"name": "sourceFileParts.relativeTo",
+				"type": "string",
+				"required": true,
+				"description": "Required literal owner prefix; removed only when the path starts with it."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sourceFileParts",
+				"type": "SourceFileParts",
+				"description": "Folder and filename from the displayed path. Empty paths and trailing separators retain empty parts."
+			}
+		],
+		"errors": [
+			{
+				"name": "Input access error",
+				"type": "propagated",
+				"description": "Errors from supplied property or string-operation access propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "sourceFileParts",
+				"inputs": [
+					{
+						"name": "sourceFileParts.path",
+						"type": "string",
+						"required": true,
+						"description": "Required committed source path. Retains its spelling and accepts the same string operations as the renderer."
+					},
+					{
+						"name": "sourceFileParts.relativeTo",
+						"type": "string",
+						"required": true,
+						"description": "Required literal owner prefix; removed only when the path starts with it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceFileParts",
+						"type": "SourceFileParts",
+						"description": "Folder and filename from the displayed path. Empty paths and trailing separators retain empty parts."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access error",
+						"type": "propagated",
+						"description": "Errors from supplied property or string-operation access propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/sourceFileParts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/sourceFileParts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -12,6 +12,8 @@
 			"desktop.component.annotated-image",
 			"desktop.component.prior-image",
 			"desktop.component.segmented-choice",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-article",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -32,7 +34,12 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["desktop.component.segmented-choice", "reports.component.select"],
+		"primitives": [
+			"desktop.component.segmented-choice",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.select"
+		],
 		"inputs": [
 			{
 				"name": "DesignPanel.entity",
@@ -135,6 +142,16 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},

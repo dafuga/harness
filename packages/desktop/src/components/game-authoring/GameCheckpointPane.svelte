@@ -70,13 +70,14 @@
 			</hx-label>
 			<hx-label class="name">
 				<hx-span>Title</hx-span>
-				<hx-input
+				<hx-textarea
 					aria-label="Checkpoint title"
+					rows="1"
 					value={node.title}
 					{readonly}
 					disabled={readonly}
 					oninput={(e) => update({ title: e.currentTarget.value })}
-				/>
+				></hx-textarea>
 			</hx-label>
 			<GameCheckpointImage
 				checkpoint={node}
@@ -114,7 +115,6 @@
 
 <style>
 	@import './game-checkpoint-pane/gameCheckpointPane.css';
-	input:disabled,
 	textarea:disabled {
 		opacity: var(--hx-opacity-dim);
 		cursor: not-allowed;

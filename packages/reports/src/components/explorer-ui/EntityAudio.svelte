@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 	import Card from './explorer-kit/Card.svelte';
@@ -11,7 +12,7 @@
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { galleryItems } from '../../utils/explorer-ui/entityScreens';
 	import AudioEvidence from '../verification-evidence/AudioEvidence.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		evidence,
 		scope,
@@ -69,10 +70,10 @@
 						/>{/if}
 				{/snippet}
 				{#snippet gap(pane)}
-					<hx-p class="ex-gap"
-						><HarnessVerdict passed={false} label="No clip" /><hx-span
+					<Notice as="p" className={'ex-gap entity-audio-ex-gap'}
+						><Status passed={false} label="No clip" /><hx-span
 							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span
-						></hx-p
+						></Notice
 					>
 				{/snippet}
 			</ComparePanes>

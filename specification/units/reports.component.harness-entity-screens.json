@@ -11,6 +11,7 @@
 		"uses": [
 			"reports.component.evidence-viewer",
 			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-entity-reasons",
 			"reports.component.harness-harness-action",
 			"reports.component.harness-harness-icon",
@@ -23,7 +24,6 @@
 			"reports.component.shared-primitives-atoms-html-header",
 			"reports.component.shared-primitives-atoms-html-img",
 			"reports.component.shared-primitives-atoms-html-li",
-			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
 			"reports.component.shared-primitives-atoms-html-ul",
@@ -38,6 +38,8 @@
 		"origin": "declared",
 		"primitives": [
 			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-compare-panes"
 		],
 		"inputs": [
@@ -133,6 +135,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-entity-reasons",
 			"via": "import",
 			"origin": "derived"
@@ -189,11 +196,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-li",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

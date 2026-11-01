@@ -9,7 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.usage-examples-usage-examples"
 		]
 	},
@@ -19,6 +19,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-notice"],
 		"inputs": [
 			{
 				"name": "EntityExamples.documentation",
@@ -67,7 +68,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},

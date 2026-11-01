@@ -1140,6 +1140,996 @@
 			"specifier": "../shared-primitives/ComparePanes.svelte",
 			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
 			"reason": "Shared comparison and presentation primitives retain each side context."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityMeasures.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntitySummary.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte",
+			"specifier": "../DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/hub/src/components/shared-primitives/MembersPanel.svelte",
+			"specifier": "$shared/shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/helpers/verification-evidence/behaviorFacts",
+			"to": "packages/reports/src/helpers/verification-evidence/behaviorFacts.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDetails.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDialog.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimePane.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/EntityCard.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+			"specifier": "./explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityRun.svelte",
+			"specifier": "./explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityHeader.svelte",
+			"specifier": "./explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/explorer-table/ConfigValue.svelte",
+			"specifier": "../explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history-row/EntityHistoryRow.svelte",
+			"specifier": "../explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/usage-examples/UsageExamples.svelte",
+			"specifier": "../../explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+			"specifier": "../explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+			"specifier": "../explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
+			"specifier": "../../explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/module-system/ExplorerModuleResourcesScreen.svelte",
+			"specifier": "../explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/module-system/ExplorerModuleResourcesScreen.svelte",
+			"specifier": "../explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/module-system/plugins/ExplorerPluginCard.svelte",
+			"specifier": "../../explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/CatalogView.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimePane.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/networking-security/RemoteDevices.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameMechanics.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameWorkspace.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameControls.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameLevelReview.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "src/cli/program/HistoryCommand.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "src/cli/program/persistReasons.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "src/repositories/verification-evidence/RegressionProofRepository.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "src/services/git-source-history/commit-message-service/CommitMessageService.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "src/workflows/projects-sessions/runActivity.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "packages/desktop/src/components/agents-providers/ProjectAgent.svelte",
+			"specifier": "../shared-primitives/Composer.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Composer.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentActivity.svelte",
+			"specifier": "../shared-primitives/ChoiceDialog.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDialog.svelte",
+			"specifier": "../shared-primitives/ChoiceDialog.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDialog.svelte",
+			"specifier": "../shared-primitives/Icon.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Icon.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "../shared-primitives/SegmentedChoice.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/EntityCard.svelte",
+			"specifier": "../shared-primitives/recorded-preview/RecordedPreview.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/recorded-preview/RecordedPreview.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/CoveragePanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/ContractPanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ContractPanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/RelationshipsPanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/DetailsPanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/DetailsPanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/MeasuresPanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/Icon.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Icon.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "../../shared-primitives/ApprovalButton.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ApprovalButton.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "../../shared-primitives/Composer.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Composer.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "../../shared-primitives/MessageList.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/MessageList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"specifier": "../../shared-primitives/SegmentedChoice.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"specifier": "../../shared-primitives/AnnotatedImage.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/AnnotatedImage.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"specifier": "../../shared-primitives/PriorImage.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/PriorImage.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte",
+			"specifier": "./Icon.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Icon.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/RevisionPicker.svelte",
+			"specifier": "./ChoiceDialog.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/RevisionPicker.svelte",
+			"specifier": "./Icon.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Icon.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityArtifact.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityArtifact.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityAudio.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityBehavior.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityBehavior.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityConfig.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityHeader.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityRun.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityScreens.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityStates.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityStates.svelte",
+			"specifier": "../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntitySummary.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
+			"specifier": "./explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
+			"specifier": "./explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+			"specifier": "../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+			"specifier": "../shared-primitives/FilterDialog.svelte",
+			"to": "packages/reports/src/components/shared-primitives/FilterDialog.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+			"specifier": "../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+			"specifier": "./explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte",
+			"specifier": "../../shared-primitives/recorded-value/RecordedValue.svelte",
+			"to": "packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../../shared-primitives/ContractExample.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ContractExample.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../../shared-primitives/ContractTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ContractTable.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../../shared-primitives/Modal.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "../../shared-primitives/browser-errors/BrowserErrors.svelte",
+			"to": "packages/reports/src/components/shared-primitives/browser-errors/BrowserErrors.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "../../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/explorer-table/ConfigValue.svelte",
+			"specifier": "../../shared-primitives/CodeLine.svelte",
+			"to": "packages/reports/src/components/shared-primitives/CodeLine.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte",
+			"specifier": "../../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/module-system/plugins/ExplorerPluginCard.svelte",
+			"specifier": "../../explorer-ui/explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/module-system/plugins/ExplorerPluginCard.svelte",
+			"specifier": "../../explorer-ui/explorer-kit/CommandBlock.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/CommandBlock.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/reports-media/AudioComparison.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/reports-media/AudioComparisonViewer.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/reports-media/AudioComparisonViewer.svelte",
+			"specifier": "../shared-primitives/Modal.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/ContractExample.svelte",
+			"specifier": "./DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/ContractExample.svelte",
+			"specifier": "./recorded-value/RecordedValue.svelte",
+			"to": "packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte",
+			"specifier": "../DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/AudioEvidence.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceCard.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
+			"specifier": "../explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
+			"specifier": "../shared-primitives/image-zoom/ImageZoom.svelte",
+			"to": "packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
+			"specifier": "../shared-primitives/Modal.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/RegressionProof.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/RegressionProof.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
+			"specifier": "../../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntitySource.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte",
+			"specifier": "../explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte",
+			"specifier": "../explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte",
+			"specifier": "./../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "./../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityStates.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityScreens.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityAudio.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceViewer.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceFileList.svelte",
+			"specifier": "./explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityExamples.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/HarnessHeader.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityBehavior.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityArtifact.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "../explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimePane.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityExamples.svelte",
+			"specifier": "../shared-primitives/usage-examples/UsageExamples.svelte",
+			"to": "packages/reports/src/components/shared-primitives/usage-examples/UsageExamples.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/HarnessHeader.svelte",
+			"specifier": "../shared-primitives/BrandMark.svelte",
+			"to": "packages/reports/src/components/shared-primitives/BrandMark.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "src/cli/program/runHooks.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Format commit identities consistently while retaining record and content digests."
+		},
+		{
+			"from": "src/cli/program/history-index-service/HistoryIndexService.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Format commit identities consistently while retaining record and content digests."
+		},
+		{
+			"from": "src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Format commit identities consistently while retaining record and content digests."
+		},
+		{
+			"from": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Format commit identities consistently while retaining record and content digests."
 		}
 	]
 }

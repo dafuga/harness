@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-entity-link",
 			"reports.component.harness-entity-reasons",
 			"reports.component.shared-primitives-atoms-html-span",
@@ -25,6 +26,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "EntityHistoryRow.row",
@@ -95,6 +97,11 @@
 	"dependencies": [
 		{
 			"unit": "function.writing-limits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},

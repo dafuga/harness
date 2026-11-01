@@ -11,8 +11,8 @@
 		"uses": [
 			"desktop.component.plan-badge",
 			"desktop.component.recorded-preview",
-			"desktop.component.status-icon",
 			"desktop.component.workspace-link",
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-article",
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -28,6 +28,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.harness-harness-verdict"],
 		"inputs": [
 			{
 				"name": "EntityCard.entity",
@@ -86,11 +87,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.component.status-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.component.workspace-link",
 			"via": "import",
 			"origin": "derived"
@@ -107,6 +103,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

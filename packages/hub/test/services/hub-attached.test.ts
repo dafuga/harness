@@ -29,7 +29,7 @@ test('a stored record retains attested file facts and reads selected bytes on de
 
 test('a pointer is followed only into the evidence that is pinned', async () => {
 	const f = evidenceFixture();
-	const stray = `evidence commit ${f.pointers.second.commit.slice(0, 12)} is not part of the pinned evidence`;
+	const stray = `evidence commit ${f.pointers.second.commit.slice(0, 7)} is not part of the pinned evidence`;
 	for (const within of [null, f.pointers.first.commit]) {
 		const loaded = await (await opened(f, within)).load(f.pointers.second);
 		expect(loaded.problems).toEqual([stray]);

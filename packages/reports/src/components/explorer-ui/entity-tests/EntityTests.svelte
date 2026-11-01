@@ -1,6 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import { testLocation } from './testLocation';
+	import Notice from '../explorer-kit/Notice.svelte';
+	import DataTable from '../../shared-primitives/DataTable.svelte';
 	import Card from '../explorer-kit/Card.svelte';
 	import type {
 		ExplorerBehavior,
@@ -9,7 +12,7 @@
 		ExplorerSlotCoverage as Slot,
 		ExplorerScope
 	} from '../../../models/explorer-ui/Explorer.types';
-	import { entityLens, shortCommit, type EntityNav } from '../../../utils/explorer-ui/entityLens';
+	import { shortCommit, type EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import RegressionProof from '../../verification-evidence/RegressionProof.svelte';
 	import { entityRemoved } from './entityRemoved';
 	import { coverageLabels as said } from './coverageLabels';
@@ -17,7 +20,7 @@
 	import EvidenceGrid from '../../verification-evidence/evidence-grid/EvidenceGrid.svelte';
 	import BrowserErrors from '../../shared-primitives/browser-errors/BrowserErrors.svelte';
 	import EntityBehavior from '../EntityBehavior.svelte';
-	import HarnessVerdict from '../harness-verdict/HarnessVerdict.svelte';
+	import Status from '../../shared-primitives/status/Status.svelte';
 	let {
 		entity,
 		scope,
@@ -58,28 +61,12 @@
 	<RegressionProof
 		items={evidence.after.detail?.regressions ?? []}
 		unit={entity.id}
-		href={(commit) =>
-			nav.href(
-				entityLens(nav.route, {
-					commit,
-					category: entity.category,
-					entity: entity.id,
-					tab: 'tests'
-				})
-			)}
-		follow={(commit) =>
-			nav.go(
-				entityLens(nav.route, {
-					commit,
-					category: entity.category,
-					entity: entity.id,
-					tab: 'tests'
-				})
-			)}
+		href={(commit) => nav.href(testLocation(nav.route, entity, commit))}
+		follow={(commit) => nav.go(testLocation(nav.route, entity, commit))}
 	/>
 	<Card as="section" labelledby="ex-verdict-title">
 		<hx-h2 id="ex-verdict-title">Verification at {shortCommit(scope.commit)}</hx-h2>
-		<hx-p><HarnessVerdict {...entity.verdict} /></hx-p>
+		<hx-p><Status {...entity.verdict} /></hx-p>
 		{#if entity.verdict.reasons.length}
 			<hx-ul class="ex-reasons" aria-label="Why it is not proven">
 				{#each entity.verdict.reasons as reason, position (position)}<hx-li>{reason}</hx-li>{/each}
@@ -90,16 +77,16 @@
 		{/if}
 	</Card>
 	{#if coverage.length === 0}
-		<hx-p class="ex-gap">
-			<HarnessVerdict passed={false} label="Evidence missing" />
+		<Notice as="p" className={'ex-gap entity-tests-ex-gap'}>
+			<Status passed={false} label="Evidence missing" />
 			<hx-span>No scenario names this entity, so nothing proves it here.</hx-span>
-		</hx-p>
+		</Notice>
 	{/if}
 	{#each coverage as scenario, position (position)}
 		<Card as="section" label={scenario.title}>
 			<hx-h2>{scenario.title}</hx-h2>
 			<hx-p>
-				<HarnessVerdict
+				<Status
 					passed={scenario.standing === 'passed'}
 					label={scenario.standing === 'passed'
 						? 'Every required state is proven'
@@ -117,57 +104,52 @@
 					{#each scenario.reasons as reason}<hx-li>{reason}</hx-li>{/each}
 				</hx-ul>
 			{/if}
-			<hx-div class="ex-scroll">
-				<hx-table class="ex-mini" aria-label={`States of ${scenario.title}`}>
-					<hx-thead>
+			<DataTable label={`States of ${scenario.title}`} tableClass="ex-mini" className="ex-scroll">
+				{#snippet header()}
+					<hx-tr>
+						<hx-th scope="col">State</hx-th>
+						<hx-th scope="col">Required</hx-th>
+						<hx-th scope="col">Proven</hx-th>
+					</hx-tr>
+				{/snippet}
+				{#snippet children()}
+					{#each scenario.states as state}
 						<hx-tr>
-							<hx-th scope="col">State</hx-th>
-							<hx-th scope="col">Required</hx-th>
-							<hx-th scope="col">Proven</hx-th>
+							<hx-th scope="row" style:min-width="0">{state.state}</hx-th>
+							<hx-td class="state-value"
+								>{state.declared}{declared(scenario.scenario, state.state)
+									? `: ${declared(scenario.scenario, state.state)}`
+									: ''}</hx-td
+							>
+							<hx-td class="state-value">
+								{#if state.standing === 'inapplicable'}
+									<hx-span class="ex-soft">{said.inapplicable}</hx-span>
+								{:else}
+									<Status
+										passed={state.standing === 'passed'}
+										label={said[state.standing]}
+										reasons={state.reasons}
+									/>
+								{/if}
+								<!-- Sentences and slots in the order the host gave them; none is a key. -->
+								{#each state.reasons as reason}
+									<hx-span class="ex-soft ex-block">{reason}</hx-span>
+								{/each}
+								<!-- A slot is told where the state has not already said the same of it. -->
+								{#each state.slots.filter((slot) => untold(state.reasons, slot)) as slot}
+									<hx-span class="ex-soft ex-block"
+										>{where(slot)}: {slot.reason ?? said[slot.standing]}</hx-span
+									>
+								{/each}
+							</hx-td>
 						</hx-tr>
-					</hx-thead>
-					<hx-tbody>
-						{#each scenario.states as state}
-							<hx-tr>
-								<hx-th scope="row" style:min-width="0">{state.state}</hx-th>
-								<hx-td class="state-value"
-									>{state.declared}{declared(scenario.scenario, state.state)
-										? `: ${declared(scenario.scenario, state.state)}`
-										: ''}</hx-td
-								>
-								<hx-td class="state-value">
-									{#if state.standing === 'inapplicable'}
-										<hx-span class="ex-soft">{said.inapplicable}</hx-span>
-									{:else}
-										<HarnessVerdict
-											passed={state.standing === 'passed'}
-											label={said[state.standing]}
-											reasons={state.reasons}
-										/>
-									{/if}
-									<!-- Sentences and slots in the order the host gave them; none is a key. -->
-									{#each state.reasons as reason}
-										<hx-span class="ex-soft ex-block">{reason}</hx-span>
-									{/each}
-									<!-- A slot is told where the state has not already said the same of it. -->
-									{#each state.slots.filter((slot) => untold(state.reasons, slot)) as slot}
-										<hx-span class="ex-soft ex-block"
-											>{where(slot)}: {slot.reason ?? said[slot.standing]}</hx-span
-										>
-									{/each}
-								</hx-td>
-							</hx-tr>
-						{/each}
-					</hx-tbody>
-				</hx-table>
-			</hx-div>
+					{/each}
+				{/snippet}
+			</DataTable>
 			<hx-ul class="ex-checks" aria-label="Checks">
 				{#each scenario.tests as test}
 					<hx-li>
-						<HarnessVerdict
-							passed={test.status === 'passed'}
-							label={test.status ?? 'not in the record'}
-						/>
+						<Status passed={test.status === 'passed'} label={test.status ?? 'not in the record'} />
 						<hx-span>{test.id}</hx-span>
 						<hx-span class="ex-soft">{test.status ?? 'not in the record'}</hx-span>
 						{#if job(scenario.scenario, test.id)}

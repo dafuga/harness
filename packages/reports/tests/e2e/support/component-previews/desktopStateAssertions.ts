@@ -10,6 +10,7 @@ import {
 import { assertDesktopNavCapture } from './desktopNavAssertions';
 import { assertComposerCaptions } from './projectAgentStateAssertions';
 import { assertDesktopPresentation } from './desktopPresentationAssertions';
+import { assertCheckpointCapture } from './desktopCheckpointAssertions';
 
 /** Check the actual state branches, so a successful screenshot cannot silently show the default. */
 export async function assertDesktopState(component: Locator, id: string, variant: string) {
@@ -89,6 +90,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertEntityCategory(component, id, variant);
 	await assertEntitySectionContent(component, id, variant);
 	await assertDesktopPresentation(component, id, variant);
+	await assertCheckpointCapture(component, id, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
 		await expect(
 			component.getByRole('status').filter({ hasText: /AI/ }),

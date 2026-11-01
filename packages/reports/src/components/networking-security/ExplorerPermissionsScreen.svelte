@@ -1,6 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from '../explorer-ui/explorer-kit/EmptyState.svelte';
+	import Pill from '../explorer-ui/explorer-kit/Pill.svelte';
+	import DataTable from '../shared-primitives/DataTable.svelte';
 	import Card from '../explorer-ui/explorer-kit/Card.svelte';
 	import './ExplorerPermissionsScreen.css';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
@@ -63,7 +66,9 @@
 {#snippet heading(text: string, id: string, top: boolean)}
 	<hx-header class="ex-head-title">
 		{#if top}<hx-h1 {id}>{text}</hx-h1>{:else}<hx-h2 {id}>{text}</hx-h2>{/if}
-		<hx-span class="ex-pill">Declared policy</hx-span>
+		<Pill as="span" variant="explorer" tone="explorer-permissions-screen-ex-pill"
+			>Declared policy</Pill
+		>
 	</hx-header>
 {/snippet}
 
@@ -76,36 +81,40 @@
 {#snippet data(rows: DataGrant[], label: string)}
 	{#if rows.length}
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable table must be keyboard reachable.) -->
-		<hx-div class="ex-scroll permission-data" tabindex="0" role="region" aria-label={label}>
-			<hx-table class="ex-table">
-				<hx-thead>
+		<DataTable {label} tableClass="ex-table" className="ex-scroll permission-data">
+			{#snippet header()}
+				<hx-tr>
+					<hx-th scope="col">Model</hx-th>
+					<hx-th scope="col">Actions</hx-th>
+					<hx-th scope="col">Fields</hx-th>
+					<hx-th scope="col">Scope</hx-th>
+				</hx-tr>
+			{/snippet}
+			{#snippet children()}
+				{#each rows as row, position (position)}
 					<hx-tr>
-						<hx-th scope="col">Model</hx-th>
-						<hx-th scope="col">Actions</hx-th>
-						<hx-th scope="col">Fields</hx-th>
-						<hx-th scope="col">Scope</hx-th>
+						<hx-th scope="row">{@render ref(row.resource)}</hx-th>
+						<hx-td data-label="Actions">{row.actions.join(', ')}</hx-td>
+						<hx-td data-label="Fields"><hx-code>{row.fields.join(', ')}</hx-code></hx-td>
+						<hx-td data-label="Scope">{row.scope}</hx-td>
 					</hx-tr>
-				</hx-thead>
-				<hx-tbody>
-					{#each rows as row, position (position)}
-						<hx-tr>
-							<hx-th scope="row">{@render ref(row.resource)}</hx-th>
-							<hx-td data-label="Actions">{row.actions.join(', ')}</hx-td>
-							<hx-td data-label="Fields"><hx-code>{row.fields.join(', ')}</hx-code></hx-td>
-							<hx-td data-label="Scope">{row.scope}</hx-td>
-						</hx-tr>
-					{/each}
-				</hx-tbody>
-			</hx-table>
-		</hx-div>
+				{/each}
+			{/snippet}
+		</DataTable>
 	{:else}
-		<hx-p class="ex-empty">No data access declared.</hx-p>
+		<EmptyState as="p" className="ex-empty explorer-permissions-screen-ex-empty"
+			>No data access declared.</EmptyState
+		>
 	{/if}
 {/snippet}
 
 {#snippet access(grant: ApiGrant, label: string)}
 	<hx-ul class="ex-links inline" aria-label="HTTP methods">
-		{#each grant.actions as method, place (place)}<hx-li class="ex-pill">{method}</hx-li>{/each}
+		{#each grant.actions as method, place (place)}<Pill
+				as="li"
+				variant="explorer"
+				tone="explorer-permissions-screen-ex-pill">{method}</Pill
+			>{/each}
 	</hx-ul>
 	{@render data(grant.data, label)}
 {/snippet}
@@ -125,9 +134,9 @@
 				{@render access(grant, `${profile.title} data access`)}
 			</hx-article>
 		{:else}
-			<hx-p class="ex-empty">
+			<EmptyState as="p" className="ex-empty explorer-permissions-screen-ex-empty">
 				{catalog ? 'No access declaration names this endpoint' : none} at this revision.
-			</hx-p>
+			</EmptyState>
 		{/each}
 	</Card>
 {/snippet}
@@ -142,7 +151,9 @@
 			<hx-p class="ex-soft">{profile.description}</hx-p>
 		</Card>
 	{:else}
-		<hx-p class="ex-empty">{none} at this revision.</hx-p>
+		<EmptyState as="p" className="ex-empty explorer-permissions-screen-ex-empty"
+			>{none} at this revision.</EmptyState
+		>
 		<hx-p class="ex-note">
 			Declare one with <hx-code>harness module generate permissions profile Member</hx-code>
 		</hx-p>
@@ -162,7 +173,9 @@
 				{@render access(grant, `${grant.resource} data access`)}
 			</hx-article>
 		{:else}
-			<hx-p class="ex-empty">No API access declared.</hx-p>
+			<EmptyState as="p" className="ex-empty explorer-permissions-screen-ex-empty"
+				>No API access declared.</EmptyState
+			>
 		{/each}
 	</Card>
 	<Card as="section" labelledby="perm-pages">
@@ -170,7 +183,9 @@
 		{#each grants(profile, 'page') as grant, position (position)}
 			<hx-p>{@render ref(grant.resource)} · {grant.actions.join(', ')}</hx-p>
 		{:else}
-			<hx-p class="ex-empty">No page access declared.</hx-p>
+			<EmptyState as="p" className="ex-empty explorer-permissions-screen-ex-empty"
+				>No page access declared.</EmptyState
+			>
 		{/each}
 	</Card>
 	<Card as="section" labelledby="perm-data">
@@ -203,9 +218,9 @@
 						{@render detail(shown)}
 					{:else}
 						<hx-h1 id="perm-title">Profile not found</hx-h1>
-						<hx-p class="ex-empty">
+						<EmptyState as="p" className="ex-empty explorer-permissions-screen-ex-empty">
 							{catalog ? `No profile “${host.route.entity}” is declared` : none} at this revision.
-						</hx-p>
+						</EmptyState>
 					{/if}
 				{/if}
 			</hx-section>

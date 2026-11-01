@@ -1,3 +1,4 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Action } from './runHooks.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
@@ -65,10 +66,10 @@ export function renderHookOutcome(outcome: HookOutcome): string[] {
 	const short = (id: string) => id.slice(0, 12);
 	return [
 		...outcome.verified.map(
-			(item) => `harness: ${short(item.commit)} is verified by ${short(item.record)}`
+			(item) => `harness: ${shortCommit(item.commit)} is verified by ${short(item.record)}`
 		),
 		...outcome.blocked.flatMap((item) => [
-			`harness: push blocked: ${short(item.commit)} is not verified`,
+			`harness: push blocked: ${shortCommit(item.commit)} is not verified`,
 			...item.failures.map((failure) => `  ${failure}`)
 		])
 	];

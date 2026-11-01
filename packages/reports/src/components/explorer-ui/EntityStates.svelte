@@ -1,7 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import { shortCommit } from '../../helpers/strings/shortCommit';
+	import Notice from './explorer-kit/Notice.svelte';
+	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
@@ -97,8 +99,12 @@
 		if (item.phase === 'before') return 'Before';
 		return evidence.mode === 'commit' ? 'After' : 'Current';
 	}
-	const revision = (item: Evidence) =>
-		shortCommit((item.phase === 'before' ? scope.parent : scope.commit) ?? '');
+	const statePanes = (items: Evidence[]) =>
+		comparisonPanes(
+			{ value: items.find((item) => item.phase === 'before'), commit: scope.parent },
+			{ value: items.find((item) => item.phase !== 'before'), commit: scope.commit },
+			evidence.mode === 'commit'
+		);
 </script>
 
 <hx-section class="states-gallery" aria-label={`${name} supported states`}>
@@ -134,11 +140,12 @@
 			{/if}
 		</hx-div>
 	</hx-header>
-	{#if evidence.incomparable.length}<hx-p class="state-gap">{evidence.incomparable.join(' ')}</hx-p
+	{#if evidence.incomparable.length}<Notice as="p" className={'state-gap entity-states-state-gap'}
+			>{evidence.incomparable.join(' ')}</Notice
 		>{/if}
-	{#if !rows.length}<hx-p class="state-gap">
+	{#if !rows.length}<Notice as="p" className={'state-gap entity-states-state-gap'}>
 			No visual states are declared for this entity at this revision.
-		</hx-p>{/if}
+		</Notice>{/if}
 	<hx-div class="state-grid" class:paired={evidence.mode === 'commit'}>
 		{#each rows as row (`${scenario.id}-${row.state.id}-${screen?.id}`)}
 			<hx-article class="state-card" aria-label={row.title}>
@@ -146,27 +153,37 @@
 					<hx-h3>{row.title}</hx-h3>
 					<hx-small>{screen?.width} × {screen?.height}</hx-small>
 				</hx-div>
-				{#if row.state.coverage !== 'required'}<hx-p class="state-gap">
+				{#if row.state.coverage !== 'required'}<Notice
+						as="p"
+						className={'state-gap entity-states-state-gap'}
+					>
 						{words(row.state.coverage)}: {row.state.reason ??
 							'This state has no declared capture coverage.'}
-					</hx-p>{/if}
-				{#if row.state.coverage !== 'inapplicable'}<hx-div class="state-panes">
-						{#each row.items as item (item.id)}
-							{@const shown = prepared(item)}
-							<hx-figure>
-								<hx-figcaption>{phase(item)} <hx-code>{revision(item)}</hx-code></hx-figcaption>
-								{#if shown.missing}<hx-p class="state-gap">
-										{shown.note ?? 'No screenshot was recorded.'}
-									</hx-p>
-								{:else}<EvidenceCard
-										compact
-										item={shown}
-										{assetBase}
-										onopen={() => (viewing = shown)}
-									/>{/if}
-							</hx-figure>
-						{/each}
-					</hx-div>{/if}
+					</Notice>{/if}
+				{#if row.state.coverage !== 'inapplicable'}<ComparePanes
+						panes={statePanes(row.items)}
+						className="state-panes"
+						framed={false}
+					>
+						{#snippet children(pane)}
+							{#if pane.value}
+								{@const item = pane.value}
+								{@const shown = prepared(item)}
+								<hx-figure>
+									<hx-figcaption>{pane.heading}</hx-figcaption>
+									{#if shown.missing}<Notice as="p" className={'state-gap entity-states-state-gap'}>
+											{shown.note ?? 'No screenshot was recorded.'}
+										</Notice>
+									{:else}<EvidenceCard
+											compact
+											item={shown}
+											{assetBase}
+											onopen={() => (viewing = shown)}
+										/>{/if}
+								</hx-figure>
+							{/if}
+						{/snippet}
+					</ComparePanes>{/if}
 			</hx-article>
 		{/each}
 	</hx-div>

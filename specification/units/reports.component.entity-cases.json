@@ -16,23 +16,23 @@
 			"reports.component.shared-primitives-atoms-html-pre",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-summary",
-			"reports.component.shared-primitives-atoms-html-table",
-			"reports.component.shared-primitives-atoms-html-tbody",
 			"reports.component.shared-primitives-atoms-html-td",
 			"reports.component.shared-primitives-atoms-html-th",
-			"reports.component.shared-primitives-atoms-html-thead",
-			"reports.component.shared-primitives-atoms-html-tr"
+			"reports.component.shared-primitives-atoms-html-tr",
+			"reports.component.shared-primitives-data-table"
 		]
 	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte",
-			"packages/reports/src/components/explorer-ui/entity-cases/EntityCases.types.ts"
+			"packages/reports/src/components/explorer-ui/entity-cases/EntityCases.types.ts",
+			"packages/reports/src/components/explorer-ui/entity-cases/entityCases.css"
 		],
-		"symbols": ["EntityCases", "Row"]
+		"symbols": ["EntityCases", "EntityCases.header", "EntityCases.children", "Row"]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-data-table"],
 		"inputs": [
 			{
 				"name": "EntityCases.document",
@@ -86,7 +86,33 @@
 		],
 		"errorStatus": "declared",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityCases.header",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EntityCases.header",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "EntityCases.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EntityCases.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -130,16 +156,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-table",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-tbody",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-td",
 			"via": "import",
 			"origin": "derived"
@@ -150,12 +166,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-thead",
+			"unit": "reports.component.shared-primitives-atoms-html-tr",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-tr",
+			"unit": "reports.component.shared-primitives-data-table",
 			"via": "import",
 			"origin": "derived"
 		},

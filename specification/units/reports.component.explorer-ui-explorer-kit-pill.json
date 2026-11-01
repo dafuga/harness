@@ -8,7 +8,7 @@
 	"status": "active",
 	"composition": {
 		"level": "molecule",
-		"uses": ["reports.component.shared-primitives-atoms-html-span"]
+		"uses": ["reports.component.shared-primitives-atoms-html-element"]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte"],
@@ -18,37 +18,69 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "Pill.as",
+				"type": "'span' | 'li'",
+				"required": false,
+				"default": "span",
+				"description": "Optional semantic element. Defaults to span, with li for list items."
+			},
+			{
+				"name": "Pill.variant",
+				"type": "'explorer' | 'compact' | 'chip'",
+				"required": false,
+				"default": "explorer",
+				"description": "Optional visual treatment. Defaults to explorer; compact retains a pill and chip retains the Desktop treatment."
+			},
+			{
 				"name": "Pill.tone",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Extra class names for the owner's styling."
+				"description": "Optional extra owner classes. Defaults to an empty string."
 			},
 			{
 				"name": "Pill.state",
 				"type": "string",
 				"required": false,
-				"description": "Optional state exposed as data-state for styling. Defaults to JavaScript undefined, omitting data-state."
+				"description": "Optional styling state. Defaults to JavaScript undefined, omitting data-state."
+			},
+			{
+				"name": "Pill.role",
+				"type": "'img' | 'status'",
+				"required": false,
+				"description": "Optional semantic role. Defaults to JavaScript undefined, omitting role."
+			},
+			{
+				"name": "Pill.label",
+				"type": "string",
+				"required": false,
+				"description": "Optional accessible name. Defaults to JavaScript undefined, omitting aria-label."
+			},
+			{
+				"name": "Pill.title",
+				"type": "string",
+				"required": false,
+				"description": "Optional native tooltip. Defaults to JavaScript undefined, omitting title."
 			},
 			{
 				"name": "Pill.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "The label."
+				"description": "Required caller content. Rendering errors propagate without replacing or suppressing its values."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Pill",
 				"type": "markup",
-				"description": "An inline span with the shared ex-pill style."
+				"description": "Semantic Pill markup retaining caller content, native accessibility and the selected existing treatment."
 			}
 		],
 		"errors": [
 			{
-				"name": "Child snippet error",
+				"name": "Content rendering error",
 				"type": "propagated",
-				"description": "Errors thrown while rendering the required children snippet propagate to the caller."
+				"description": "Errors from the required content snippet propagate to the owner."
 			}
 		],
 		"errorStatus": "declared",
@@ -57,7 +89,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"unit": "reports.component.shared-primitives-atoms-html-element",
 			"via": "import",
 			"origin": "derived"
 		}

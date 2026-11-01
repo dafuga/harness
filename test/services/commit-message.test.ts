@@ -40,8 +40,8 @@ test('stored messages are measured from the commit that declares the limits on, 
 	expect(await service.stored(null, adopted)).toEqual([]);
 	expect(await service.stored(before, adopted)).toEqual([]);
 	expect(await service.stored(adopted, hashed)).toEqual([
-		`commit ${tooLong.slice(0, 12)}: subject has 73 characters; the limit is 72.`,
-		`commit ${hashed.slice(0, 12)}: body has 702 characters; the limit is 400.`
+		`commit ${tooLong.slice(0, 7)}: subject has 73 characters; the limit is 72.`,
+		`commit ${hashed.slice(0, 7)}: body has 702 characters; the limit is 400.`
 	]);
 	// Only the commits after the base are measured, and a base that is the head leaves none.
 	expect(await service.stored(tooLong, hashed)).toHaveLength(1);
@@ -58,11 +58,11 @@ test('every new commit a merge brings in is measured, not only the line of first
 	git('merge', '-q', '--no-ff', '-m', 'chore: merge the side branch', 'side');
 	const merged = git('rev-parse', 'HEAD');
 	expect(await service.stored(kept, merged)).toEqual([
-		`commit ${hidden.slice(0, 12)}: subject has 85 characters; the limit is 72.`
+		`commit ${hidden.slice(0, 7)}: subject has 85 characters; the limit is 72.`
 	]);
 	// The same commit is found from the base both lines share.
 	expect(await service.stored(base, merged)).toContain(
-		`commit ${hidden.slice(0, 12)}: subject has 85 characters; the limit is 72.`
+		`commit ${hidden.slice(0, 7)}: subject has 85 characters; the limit is 72.`
 	);
 	git('reset', '-q', '--hard', base);
 });

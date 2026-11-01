@@ -91,6 +91,33 @@ async function sectionsState(component: Locator, variant: string) {
 	});
 }
 async function verdictState(component: Locator, variant: string) {
+	if (variant.startsWith('badge-')) {
+		await expect(component.locator('.badge')).toBeVisible();
+		return;
+	}
+	if (variant.startsWith('run')) {
+		await expect(component.getByRole('status')).toContainText('Invoice approval review');
+		await expect(component.getByRole('button', { name: 'Cancel run' })).toHaveCount(
+			variant === 'run' ? 1 : 0
+		);
+		return;
+	}
+	if (variant.startsWith('icon')) {
+		const failed = [
+			'icon-failed',
+			'icon-unverified',
+			'icon-unknown',
+			'icon-no-reason',
+			'icon-long'
+		].includes(variant);
+		await expect(component.getByRole('button')).toHaveText(failed ? '×' : '✓');
+		if (variant !== 'icon') {
+			await component.getByRole('button').focus();
+			await expect(component.getByRole('status')).toBeVisible();
+		}
+		return;
+	}
+
 	if (variant.endsWith('-open')) {
 		await component.getByRole('button').click();
 		await expect(component.getByRole('tooltip')).toBeVisible();
@@ -145,7 +172,7 @@ async function explorerState(component: Locator, id: string, variant: string) {
 	if (['search', 'no-matches'].includes(variant)) {
 		await component
 			.getByRole('searchbox')
-			.fill(variant === 'search' ? 'Order' : 'no-such-recorded-entity');
+			.fill(variant === 'search' ? 'Order' : 'refund policy');
 		if (variant === 'no-matches') await expect(component).toContainText(/No .* match this search/);
 	}
 	if (id.endsWith('explorer-frame') && variant === 'source-open') {

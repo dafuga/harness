@@ -41,6 +41,10 @@
 				value: 'src/services/customer-accounts/SubscriptionRenewalNotificationService.ts:128'
 			}
 		],
+		attributes: [
+			{ key: 'capture', label: 'Capture', value: 'Invoice approval' },
+			{ key: 'build', label: 'Build', value: 'orders-selected' }
+		],
 		'duplicate-labels': [
 			{ key: 'first', label: 'Source', value: 'Checkout capture' },
 			{ key: 'second', label: 'Source', value: 'Release review' }
@@ -99,6 +103,10 @@
 	{:else}
 		<DetailList
 			rows={facts}
+			grouped={variant !== 'flat'}
+			termTitle={variant === 'attributes' ? (fact) => `Field: ${fact.key}` : undefined}
+			valueTitle={variant === 'attributes' ? (fact) => `Recorded: ${shown(fact.value)}` : undefined}
+			valueClass={variant === 'attributes' ? () => 'recorded-detail' : undefined}
 			rowKey={(fact) => fact.key}
 			empty={variant === 'empty-unprovided' ? undefined : emptyDetails}
 		>

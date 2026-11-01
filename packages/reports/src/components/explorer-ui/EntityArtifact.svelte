@@ -1,12 +1,14 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
+	import DetailList from '../shared-primitives/DetailList.svelte';
 	import type { BehaviorCell } from '../../utils/explorer-ui/entityBehavior';
 	import { artifactText } from '../../utils/explorer-ui/explorerArtifact';
 	import { mediaFile } from '../../utils/explorer-ui/harnessEvidence';
 	import type { ExplorerArtifactBehavior } from '../../models/explorer-ui/ExplorerEvidence.types';
 	import EntityCases from './entity-cases/EntityCases.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		cell,
 		label,
@@ -45,14 +47,10 @@
 
 {#snippet recorded(run: ExplorerArtifactBehavior)}
 	{#if facts(run).length}
-		<hx-dl class="ex-rows">
-			{#each facts(run) as [name, value] (name)}
-				<hx-div>
-					<hx-dt>{name}</hx-dt>
-					<hx-dd>{value}</hx-dd>
-				</hx-div>
-			{/each}
-		</hx-dl>
+		<DetailList rows={facts(run)} rowKey={([name]) => String(name)} className="ex-rows">
+			{#snippet label([name])}{name}{/snippet}
+			{#snippet children([, value])}{value}{/snippet}
+		</DetailList>
 	{/if}
 	{#if run.steps.length}
 		<hx-h4>Steps</hx-h4>
@@ -68,7 +66,7 @@
 					{#if item.passed === null}
 						<hx-span class="ex-soft">Not stated</hx-span>
 					{:else}
-						<HarnessVerdict passed={item.passed} label={item.passed ? 'Held' : 'Failed'} />
+						<Status passed={item.passed} label={item.passed ? 'Held' : 'Failed'} />
 					{/if}
 					<hx-span>{item.name}</hx-span>
 					{#if item.detail}<hx-pre>{shown(item.detail)}</hx-pre>{/if}
@@ -95,10 +93,10 @@
 {#if !cell.capture}
 	<hx-p class="ex-soft" data-harness-component="harness-entity-artifact">Not recorded</hx-p>
 {:else if cell.capture.media === null}
-	<hx-p class="ex-gap" data-harness-component="harness-entity-artifact">
-		<HarnessVerdict passed={false} label="Not stored" />
+	<Notice as="p" className={'ex-gap entity-artifact-ex-gap'} component="harness-entity-artifact">
+		<Status passed={false} label="Not stored" />
 		<hx-span>{cell.capture.gap ?? 'Its bytes are not in this history.'}</hx-span>
-	</hx-p>
+	</Notice>
 {:else}
 	<hx-div
 		class="ex-artifact"
@@ -109,12 +107,12 @@
 		{#if cell.read === undefined && !lost}
 			<hx-p class="ex-soft" role="status">Reading what it holds…</hx-p>
 		{:else if !cell.read || !cell.read.verified}
-			<hx-p class="ex-gap">
-				<HarnessVerdict passed={false} label="Not verified" />
+			<Notice as="p" className={'ex-gap entity-artifact-ex-gap'}>
+				<Status passed={false} label="Not verified" />
 				<hx-span
 					>{cell.read?.problem ?? 'It could not be read and checked against its hash.'}</hx-span
 				>
-			</hx-p>
+			</Notice>
 		{:else}
 			<!-- A result is shown by its rows; what else was recorded stays behind a disclosure. -->
 			<EntityCases document={cell.read.document} {unit} callable={unit !== undefined} />

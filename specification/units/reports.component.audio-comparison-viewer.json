@@ -14,7 +14,8 @@
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-compare-panes"
 		]
 	},
 	"owns": {
@@ -22,10 +23,11 @@
 			"packages/reports/src/components/reports-media/AudioComparisonViewer.svelte",
 			"packages/reports/src/components/reports-media/AudioComparisonViewer.types.ts"
 		],
-		"symbols": ["AudioComparisonViewer", "View"]
+		"symbols": ["AudioComparisonViewer", "AudioComparisonViewer.children", "View"]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-compare-panes"],
 		"inputs": [
 			{
 				"name": "AudioComparisonViewer.before",
@@ -72,7 +74,27 @@
 			}
 		],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "AudioComparisonViewer.children",
+				"inputs": [
+					{
+						"name": "AudioComparisonViewer.children.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AudioComparisonViewer.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -106,7 +128,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-compare-panes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.verification-evidence-comparison-panes",
 			"via": "import",
 			"origin": "derived"
 		},

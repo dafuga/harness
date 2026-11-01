@@ -5,7 +5,7 @@
 	import HarnessNavbar from '../../../../src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte';
 	import HarnessSelectors from '../../../../src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte';
 	import HarnessTabs from '../../../../src/components/explorer-ui/HarnessTabs.svelte';
-	import HarnessVerdict from '../../../../src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte';
+	import Status from '../../../../src/components/shared-primitives/status/Status.svelte';
 	import { harnessIcons, type HarnessIconName } from '../../../../src/utils/harnessIcons';
 	import { sha, shellBranch, shellCommits, shellHref, shellIndex, shellMount } from '../shellData';
 	// Every shared piece of the shell once, inside the explorer, and the two rows of the console
@@ -68,21 +68,21 @@
 			{/each}
 		</ul>
 		<p aria-label="Verdicts" style="display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;">
-			<HarnessVerdict passed={true} />
-			<HarnessVerdict passed={false} label="Evidence missing" reasons={['no capture at mobile']} />
-			<HarnessVerdict passed={true} label="Full coverage passed" framed />
-			<HarnessVerdict passed={false} label="Coverage incomplete" framed />
-			<HarnessVerdict passed={true} label="Passed" bare />
-			<HarnessVerdict passed={false} label="Failed" bare />
-			<HarnessVerdict passed={false} label="Many reasons" reasons={many} />
+			<Status passed={true} />
+			<Status passed={false} label="Evidence missing" reasons={['no capture at mobile']} />
+			<Status passed={true} label="Full coverage passed" framed />
+			<Status passed={false} label="Coverage incomplete" framed />
+			<Status passed={true} label="Passed" bare />
+			<Status passed={false} label="Failed" bare />
+			<Status passed={false} label="Many reasons" reasons={many} />
 		</p>
 		<div class="hx-scroll-x" role="group" aria-label="Narrow table">
 			<table style="width:100%;border-collapse:collapse;">
 				<tbody>
 					<tr>
-						<td><HarnessVerdict passed={false} label="Stale evidence" reasons={why} /></td>
+						<td><Status passed={false} label="Stale evidence" reasons={why} /></td>
 						<td style="width:100%;padding:0 12px;">A row of a catalogue</td>
-						<td><HarnessVerdict passed={false} label="Coverage incomplete" reasons={why} /></td>
+						<td><Status passed={false} label="Coverage incomplete" reasons={why} /></td>
 					</tr>
 				</tbody>
 			</table>

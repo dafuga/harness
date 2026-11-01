@@ -2,11 +2,41 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	/** A side note that qualifies what the screen shows, such as an incomplete reading. */
-	let { children }: { children: Snippet } = $props();
+	let {
+		as = 'p',
+		className = 'ex-notice',
+		role = 'note',
+		id,
+		label,
+		component,
+		children
+	}: {
+		/** Semantic paragraph, block or list container; defaults to p. Use list role for ul. */
+		as?: 'p' | 'div' | 'ul';
+		/** Existing owner treatment; defaults to ex-notice. */
+		className?: string;
+		/** Optional semantic role. Defaults to note.
+		 */
+		role?: 'note' | 'status' | 'alert' | 'list';
+		/** Optional native id. Defaults to JavaScript undefined. */
+		id?: string;
+		/** Optional accessible name. Defaults to JavaScript undefined. */
+		label?: string;
+		/** Optional owner attribution. Defaults to JavaScript undefined. */
+		component?: string;
+		/** Required explanation or empty-state content; snippet errors propagate. */
+		children: Snippet;
+	} = $props();
 </script>
 
-<hx-p class="ex-notice" role="note">{@render children()}</hx-p>
+<hx-element
+	this={as}
+	class={className}
+	{role}
+	{id}
+	aria-label={label}
+	data-harness-component={component}>{@render children()}</hx-element
+>
 
 <style>
 	.ex-notice {

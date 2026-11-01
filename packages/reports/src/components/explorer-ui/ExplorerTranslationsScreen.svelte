@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../shared-primitives/DataTable.svelte';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type { TranslationRow } from '../../../../../src/core/explorer-ui/Translation.types';
 	import type { CatalogFilter } from '../../utils/explorer-ui/entityCatalog';
@@ -96,69 +97,62 @@
 				{/if}
 				{#if rows.length}
 					<!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable table must be keyboard reachable.) -->
-					<hx-div
-						class="ex-translations-scroll"
-						tabindex="0"
-						role="region"
-						aria-label="Translation strings"
-					>
-						<hx-table>
-							<hx-thead>
+					<DataTable label="Translation strings" className="ex-translations-scroll">
+						{#snippet header()}
+							<hx-tr>
+								<hx-th scope="col">English</hx-th>
+								{#if locales.length}<hx-th scope="col">{languageName(selected)}</hx-th>{/if}
+								<hx-th scope="col">Used In</hx-th>
+							</hx-tr>
+						{/snippet}
+						{#snippet children()}
+							{#each visible as row (`${row.scope}:${row.key}`)}
 								<hx-tr>
-									<hx-th scope="col">English</hx-th>
-									{#if locales.length}<hx-th scope="col">{languageName(selected)}</hx-th>{/if}
-									<hx-th scope="col">Used In</hx-th>
-								</hx-tr>
-							</hx-thead>
-							<hx-tbody>
-								{#each visible as row (`${row.scope}:${row.key}`)}
-									<hx-tr>
-										{#each rowLocales as locale}
-											<hx-td lang={locale}
-												>{#if Object.hasOwn(row.values, locale)}{#if row.values[locale] === ''}<hx-span
-															class="ex-translations-missing">Empty string</hx-span
-														>{:else}{row.values[locale]}{/if}{:else}<hx-span
-														class="ex-translations-missing">Not translated</hx-span
-													>{/if}</hx-td
-											>
-										{/each}
-										<hx-td
-											class="ex-translations-usage"
-											class:ex-translations-unused={!row.usedBy.length}
-											><hx-ul class="ex-translations-callers">
-												{#each row.usedBy as id}{@const entity = host.entities.find(
-														(item) => item.id === id
-													)}{#if entity}{@const to = {
-															...host.route,
-															screen: undefined,
-															category: entity.category,
-															entity: id
-														}}
-														<hx-li>
-															<hx-a
-																href={nav.href(to)}
-																onclick={(event) => {
-																	if (
-																		!event.metaKey &&
-																		!event.ctrlKey &&
-																		!event.shiftKey &&
-																		!event.altKey
-																	) {
-																		event.preventDefault();
-																		nav.go(to);
-																	}
-																}}>{entity.name}</hx-a
-															>
-														</hx-li>{/if}{/each}
-											</hx-ul>
-											{#if !row.usedBy.length}<hx-span class="ex-translations-missing">—</hx-span
+									{#each rowLocales as locale}
+										<hx-td lang={locale}
+											>{#if Object.hasOwn(row.values, locale)}{#if row.values[locale] === ''}<hx-span
+														class="ex-translations-missing">Empty string</hx-span
+													>{:else}{row.values[locale]}{/if}{:else}<hx-span
+													class="ex-translations-missing">Not translated</hx-span
 												>{/if}</hx-td
 										>
-									</hx-tr>
-								{/each}
-							</hx-tbody>
-						</hx-table>
-					</hx-div>
+									{/each}
+									<hx-td
+										class="ex-translations-usage"
+										class:ex-translations-unused={!row.usedBy.length}
+										><hx-ul class="ex-translations-callers">
+											{#each row.usedBy as id}{@const entity = host.entities.find(
+													(item) => item.id === id
+												)}{#if entity}{@const to = {
+														...host.route,
+														screen: undefined,
+														category: entity.category,
+														entity: id
+													}}
+													<hx-li>
+														<hx-a
+															href={nav.href(to)}
+															onclick={(event) => {
+																if (
+																	!event.metaKey &&
+																	!event.ctrlKey &&
+																	!event.shiftKey &&
+																	!event.altKey
+																) {
+																	event.preventDefault();
+																	nav.go(to);
+																}
+															}}>{entity.name}</hx-a
+														>
+													</hx-li>{/if}{/each}
+										</hx-ul>
+										{#if !row.usedBy.length}<hx-span class="ex-translations-missing">—</hx-span
+											>{/if}</hx-td
+									>
+								</hx-tr>
+							{/each}
+						{/snippet}
+					</DataTable>
 					{#if rows.length > visible.length}<hx-button
 							type="button"
 							class="ex-button ex-translations-more"

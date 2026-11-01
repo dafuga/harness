@@ -12,6 +12,7 @@
 			"desktop.component.icon",
 			"desktop.component.plan-badge",
 			"desktop.component.workspace-link",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-article",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
@@ -27,6 +28,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "RelationshipsPanel.relationships",
@@ -87,6 +89,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},

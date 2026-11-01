@@ -10,6 +10,7 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.entity-card",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.filter-dialog",
 			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-button",
@@ -29,7 +30,10 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.select"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.select"
+		],
 		"inputs": [
 			{
 				"name": "CatalogView.workspace",
@@ -68,6 +72,11 @@
 		},
 		{
 			"unit": "function.helper-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
 		},

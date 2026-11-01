@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { MechanicDefinition } from '../../../../game/src/index';
 	import GameTextField from './GameTextField.svelte';
 	let {
@@ -48,7 +49,7 @@
 		{#if !readonly}<hx-button type="button" class="gold" onclick={add}>Add mechanic</hx-button>{/if}
 	</hx-header>
 	{#if mechanics.length === 0}
-		<hx-p class="empty">No mechanics yet.</hx-p>
+		<EmptyState as="p" className="empty game-mechanics-empty">No mechanics yet.</EmptyState>
 	{/if}
 	<hx-ol>
 		{#each mechanics as mechanic, index (index)}
@@ -118,8 +119,8 @@
 		margin: 0 0 var(--hx-space-4);
 		font-size: var(--hx-type-size-base);
 	}
-	header p,
-	.empty {
+	:global(header p),
+	:global(.game-mechanics-empty) {
 		margin: 0;
 		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-sm);

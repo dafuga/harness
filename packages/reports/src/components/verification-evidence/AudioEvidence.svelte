@@ -10,7 +10,7 @@
 	import { timeAgo } from '../../utils/reports-media/timeAgo';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import EvidenceProvenance from './EvidenceProvenance.svelte';
-	import StatusBadge from '../shared-primitives/StatusBadge.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	// A second copy (for example in a viewer) passes its own prefix so HTML ids stay unique.
 	let {
 		item,
@@ -117,7 +117,8 @@
 	</hx-div>
 	<hx-div class="card-body">
 		<hx-div class="card-kicker">
-			<hx-span>{item.category}</hx-span><StatusBadge
+			<hx-span>{item.category}</hx-span><Status
+				variant="badge"
 				status={missing ? 'not-proven' : item.status}
 			/>
 		</hx-div>

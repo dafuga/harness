@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 	import Card from './explorer-kit/Card.svelte';
@@ -19,7 +20,7 @@
 	import EntityReasons from './entity-reasons/EntityReasons.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		options,
 		evidence,
@@ -110,12 +111,12 @@
 		{/if}
 	</hx-header>
 	{#if unlike.length}
-		<hx-div class="ex-gap">
-			<HarnessVerdict passed={false} label="Not comparable" reasons={unlike} />
+		<Notice as="div" className={'ex-gap entity-screens-ex-gap'}>
+			<Status passed={false} label="Not comparable" reasons={unlike} />
 			<hx-ul class="ex-reasons" aria-label="Why the two sides are not compared">
 				{#each unlike as reason}<hx-li>{reason}</hx-li>{/each}
 			</hx-ul>
-		</hx-div>
+		</Notice>
 	{/if}
 	<ComparePanes {panes} framed={false}>
 		{#snippet children(pane)}
@@ -126,10 +127,10 @@
 					<hx-strong>{named}</hx-strong>
 				</hx-figcaption>
 				{#if item.missing}
-					<hx-p class="ex-gap">
-						<HarnessVerdict passed={false} label="No capture" />
+					<Notice as="p" className={'ex-gap entity-screens-ex-gap'}>
+						<Status passed={false} label="No capture" />
 						<hx-span>{item.note}</hx-span>
-					</hx-p>
+					</Notice>
 				{:else}
 					<hx-button type="button" class="ex-shot" onclick={() => (viewing = item)}>
 						<hx-img src={mediaBase + item.file} alt={`${item.title} at ${item.viewport}`} />

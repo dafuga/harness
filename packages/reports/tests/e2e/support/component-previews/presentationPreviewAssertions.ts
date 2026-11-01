@@ -78,6 +78,15 @@ async function details(component: Locator, variant: string) {
 		await expect(component.locator('dl')).toHaveCount(0);
 		return;
 	}
+	if (variant === 'flat') await expect(component.locator('.detail-row')).toHaveCount(0);
+	if (variant === 'attributes') {
+		await expect(component.locator('dt').first()).toHaveAttribute('title', 'Field: capture');
+		await expect(component.locator('dd').first()).toHaveAttribute(
+			'title',
+			'Recorded: Invoice approval'
+		);
+		await expect(component.locator('dd').first()).toHaveClass(/recorded-detail/);
+	}
 	const terms = component.locator('dt');
 	const values = component.locator('dd');
 	await expect(values).toHaveCount(await terms.count());

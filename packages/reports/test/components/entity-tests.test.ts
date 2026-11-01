@@ -1,3 +1,5 @@
+import { testLocation } from '../../src/components/explorer-ui/entity-tests/testLocation';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { Kind } from './entity-tests.test.types';
 import { expect, test } from 'vitest';
 import { record, revision } from '../entityFixture';
@@ -23,7 +25,30 @@ const labels = (category: Kind, entity: string) => {
 	return shown.match(/\b(?:Examples|States|Tests)\b/g) ?? [];
 };
 
-test('tests show the verdict, each scenario with its states, and the checks that ran', () => {
+test('tests show the verdict, each scenario with its states, and the checks that ran', async () => {
+	await measureWorkload(
+		'reports.function.explorer-ui-entity-tests-test-location',
+		'regression-checkpoint-location',
+		() => {
+			const route = {
+				branch: 'feature/invoices',
+				category: 'pages' as const,
+				entity: ids.page,
+				commit: null,
+				tab: 'source' as const
+			};
+			expect(testLocation(route, { id: ids.page, category: 'pages' }, commits.first)).toMatchObject(
+				{
+					branch: 'feature/invoices',
+					category: 'pages',
+					entity: ids.page,
+					commit: commits.first,
+					tab: 'tests'
+				}
+			);
+			expect(route.tab).toBe('source');
+		}
+	);
 	const body = content('commit', page);
 	expect(disclosed(body)).toContain('Verification at 8b41d07');
 	expect(names(body)).toContain('Full coverage passed');
