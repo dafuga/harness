@@ -38,7 +38,6 @@
 	let tip = $state<HTMLElement>();
 	let place = $state('');
 	let timer: ReturnType<typeof setTimeout> | undefined;
-	// Escape, a press elsewhere and a blur end it; only a new hover or focus opens it again.
 	function close() {
 		clearTimeout(timer);
 		over = false;
@@ -62,7 +61,7 @@
 		const at = (root.querySelector('a') ?? root).getBoundingClientRect();
 		const view = { width: document.documentElement.clientWidth, height: innerHeight };
 		if (at.bottom < 0 || at.top > view.height) return close();
-		const owner = root.closest('.ex-page-card, .ex-function-tile, .ex-usage');
+		const owner = root.closest('.ex-page-card, .ex-function-tile') ?? root.closest('.ex-usage');
 		const frame = owner?.getBoundingClientRect();
 		const left = Math.max(8, frame?.left ?? 8);
 		const right = Math.min(view.width - 8, frame?.right ?? view.width - 8);
@@ -85,7 +84,6 @@
 	}
 	$effect(() => {
 		if (!open) return void (place = '');
-		// A picture that turns into its gap changes the size, so it is placed again.
 		void pictured;
 		put();
 		const away = (event: Event) => {
