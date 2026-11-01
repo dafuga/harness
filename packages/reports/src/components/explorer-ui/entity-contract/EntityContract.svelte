@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from '../explorer-kit/Card.svelte';
 	import { shortCommit } from '../../../helpers/strings/shortCommit';
 
 	import { tick } from 'svelte';
@@ -113,10 +114,11 @@
 	}
 </script>
 
-<hx-section
-	class="ex-card ex-contract"
-	data-harness-component="entity-contract"
-	aria-label={last ? 'Last contract' : 'Contract'}
+<Card
+	as="section"
+	tone="ex-contract"
+	component="entity-contract"
+	label={last ? 'Last contract' : 'Contract'}
 >
 	<hx-h2><HarnessIcon name="contract" size={24} /> {title}</hx-h2>
 	{#if last}
@@ -146,7 +148,7 @@
 		{/each}
 	{/each}
 	{#if serviceErrors}<ContractTable group={serviceErrors} onexample={openExample} />{/if}
-</hx-section>
+</Card>
 {#snippet summaryRows(rows: ContractRow[])}
 	{#if rows.length > 0}
 		<hx-dl class="ex-rows">
@@ -186,7 +188,7 @@
 </Modal>
 
 <style>
-	.ex-contract {
+	:global(.ex-contract) {
 		display: grid;
 		gap: var(--hx-space-16);
 		min-width: 0;

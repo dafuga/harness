@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';
@@ -124,12 +125,13 @@
 		/>{/if}
 {/snippet}
 
-<hx-article
-	class:ex-page-card={visual}
-	class:ex-page-minimal={page}
-	class:ex-function-tile={!visual}
-	aria-label={row.name}
-	data-harness-component="explorer-ui-explorer-module-card"
+<Card
+	variant="module"
+	tone={[visual ? 'ex-page-card' : 'ex-function-tile', page ? 'ex-page-minimal' : '']
+		.filter(Boolean)
+		.join(' ')}
+	label={row.name}
+	component="explorer-ui-explorer-module-card"
 >
 	{#if page && to}
 		<EntityLink {to} {nav} class="ex-page-open" label={`Open ${row.name}`} title={provenance}>
@@ -158,11 +160,11 @@
 		<hx-span class="ex-function-call"><hx-code>{call}</hx-code></hx-span>
 		{@render usage()}
 	{/if}
-</hx-article>
+</Card>
 
 <style>
 	/* Any code card: its call or name in code type above its Used In list. */
-	.ex-function-tile {
+	:global(.ex-function-tile) {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
 		align-content: start;
@@ -172,7 +174,7 @@
 		border-radius: var(--ex-radius);
 		background: var(--ex-surface);
 	}
-	.ex-function-tile code {
+	:global(.ex-function-tile) code {
 		display: block;
 		max-height: 6em;
 		overflow: auto;
@@ -180,33 +182,33 @@
 		overflow-wrap: anywhere;
 		font: var(--hx-style-code);
 	}
-	.ex-function-tile :global(.ex-function-call) {
+	:global(.ex-function-tile) :global(.ex-function-call) {
 		display: block;
 		min-width: 0;
 		padding: var(--hx-space-16) var(--hx-space-16) var(--hx-space-8);
 		border-radius: inherit;
 	}
-	.ex-function-tile > :global(.ex-usage) {
+	:global(.ex-function-tile) > :global(.ex-usage) {
 		padding: 0 var(--hx-space-16) var(--hx-space-14);
 	}
-	.ex-page-card.ex-page-minimal {
+	:global(.ex-page-card.ex-page-minimal) {
 		grid-template-columns: minmax(0, 1fr);
 		gap: var(--hx-space-12);
 	}
 	/* A layout or component card, wherever listed: its own capture above its title and Used In. */
-	.ex-page-card:not(.ex-page-minimal) {
+	:global(.ex-page-card:not(.ex-page-minimal)) {
 		grid-template-columns: minmax(0, 1fr);
 		grid-template-rows: auto 1fr;
 		gap: var(--hx-space-14);
 		min-width: 0;
 	}
-	.ex-page-card .ex-page-body {
+	:global(.ex-page-card) .ex-page-body {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		gap: var(--hx-space-10);
 	}
-	.ex-page-card .ex-page-body h2 {
+	:global(.ex-page-card) .ex-page-body h2 {
 		font-size: var(--hx-type-size-xl);
 	}
 	:global(.ex-page-open) {

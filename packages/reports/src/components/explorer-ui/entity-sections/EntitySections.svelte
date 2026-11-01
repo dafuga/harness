@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from '../explorer-kit/Card.svelte';
 	import { shortCommit } from '../../../helpers/strings/shortCommit';
 
 	import type { Snippet } from 'svelte';
@@ -132,7 +133,7 @@
 		</hx-div>
 	{:else if entity.category === 'models' && host.route.tab === 'table'}
 		<hx-div role="tabpanel" aria-label={`${entity.name} table`}>
-			<hx-section class="ex-card" aria-label={entity.lastAt ? 'Last table' : 'Table'}>
+			<Card as="section" label={entity.lastAt ? 'Last table' : 'Table'}>
 				<hx-h2><HarnessIcon name="database" size={24} /> {schemaTitle}</hx-h2>
 				{#if entity.lastAt}
 					<hx-p class="ex-note">Removed at the shown commit; this is what its parent held.</hx-p>
@@ -182,7 +183,7 @@
 				{#if tables.length === 0 && gaps.length === 0}
 					<hx-p class="ex-note">This revision records no database table for this model.</hx-p>
 				{/if}
-			</hx-section>
+			</Card>
 		</hx-div>
 	{:else}
 		<EntityOverview {entity} measure={summary.measure} {comparison}>

@@ -38,8 +38,15 @@
 			"root": "packages/game"
 		}
 	],
-	"tests": ["test/", "tests/"],
-	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
+	"tests": [
+		"test/",
+		"tests/"
+	],
+	"global": [
+		"**/.prettierignore",
+		"tsconfig.api.json",
+		"specification/measurements/"
+	],
 	"ignored": [
 		"**/*.md",
 		"specification/features/",
@@ -1943,6 +1950,54 @@
 			"from": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
 			"specifier": "../../shared-primitives/Select.svelte",
 			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntitySource.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte",
+			"specifier": "../explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte",
+			"specifier": "../explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte",
+			"specifier": "./../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "./../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
 			"reason": "Declare the canonical shared component used by this owner."
 		}
 	]
