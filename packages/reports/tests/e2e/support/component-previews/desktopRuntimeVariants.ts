@@ -112,7 +112,7 @@ export async function desktopRuntimeReady(id: string, data: DesktopData, variant
 				entityId: data.filterEntity.id,
 				projectId: data.workspace.projectId!,
 				commit: commits.tip,
-				branch: result.scope.branch,
+				branch: desktopData.branch,
 				mode: 'commit'
 			});
 			data.evidence.read = read.behavior;
