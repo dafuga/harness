@@ -1,3 +1,4 @@
+import { parse } from 'svelte/compiler';
 import { readFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,10 +10,13 @@ const allowlist = JSON.parse(
 const shared =
 	/\/src\/(?:helpers\/|components\/(?:shared-primitives\/|explorer-ui\/explorer-kit\/))/;
 const classes = [
-	['card', /\bex-card\b/],
-	['pill', /(?:^|[\s"'`])(?:ex-)?pill(?:[\s"'`]|$)/],
-	['empty', /(?:^|[\s"'`])(?:ex-empty|empty-state|empty|empty-note)(?:[\s"'`]|$)/],
-	['notice', /(?:^|[\s"'`])(?:ex-notice|notice)(?:[\s"'`]|$)/]
+	['card', /(?:^|[\s"'`])ex-card(?:[\s"'`]|$)/],
+	['pill', /(?:^|[\s"'`])(?:(?:ex-)?pill|chip)(?:[\s"'`]|$)/],
+	['empty', /(?:^|[\s"'`])(?:ex-empty|empty-state|empty|empty-note|source-empty)(?:[\s"'`]|$)/],
+	[
+		'notice',
+		/(?:^|[\s"'`])(?:ex-notice|notice|pf-notice|hc-notice|ex-gap|runtime-gap|state-gap|source-note)(?:[\s"'`]|$)/
+	]
 ];
 
 /** Shared primitives own their markup; feature source composes them. */
@@ -20,19 +24,46 @@ export function reuseFindings(filename, source) {
 	const file = filename.replaceAll('\\', '/');
 	if (shared.test(file) || /\/(?:test|tests)\//.test(file)) return [];
 	const found = [];
-	if (file.endsWith('.svelte')) {
-		for (const match of source.matchAll(/\bclass\s*=\s*(?:"[^"]*"|'[^']*'|\{`[^`]*`\})/g))
-			for (const [kind, pattern] of classes)
-				if (pattern.test(match[0].replace(/^class\s*=\s*/, '')))
-					found.push({ kind, index: match.index });
-		for (const match of source.matchAll(/<hx-(table|dl)(?=[\s>])/g))
-			found.push({ kind: match[1] === 'table' ? 'table' : 'details', index: match.index });
-	}
+	if (file.endsWith('.svelte')) found.push(...nativeFindings(source));
 	for (const match of source.matchAll(
 		/\b[\w?.]*(?:commit|hash|tip|origin|parent|sha|acknowledged)\b\??\.slice\(\s*0\s*,\s*\d+\s*\)/gi
 	))
 		found.push({ kind: 'commit', index: match.index });
 	return found.sort((left, right) => left.index - right.index);
+}
+
+/** Read native attributes, including conditional classes and class directives. */
+function nativeFindings(source) {
+	const found = [];
+	let tree;
+	try {
+		tree = parse(source, { modern: true });
+	} catch {
+		return found;
+	}
+	const walk = (node) => {
+		if (!node || typeof node !== 'object') return;
+		if (Array.isArray(node)) {
+			node.forEach(walk);
+			return;
+		}
+		if (node.type === 'RegularElement') inspectNative(node, source, found);
+		for (const [key, value] of Object.entries(node))
+			if (!['parent', 'metadata', 'loc'].includes(key)) walk(value);
+	};
+	walk(tree.fragment);
+	return found;
+}
+function inspectNative(node, source, found) {
+	if (['hx-table', 'hx-dl', 'table', 'dl'].includes(node.name))
+		found.push({ kind: node.name.endsWith('table') ? 'table' : 'details', index: node.start });
+	for (const attribute of node.attributes) {
+		const directive = attribute.type === 'ClassDirective';
+		if (!directive && !(attribute.type === 'Attribute' && attribute.name === 'class')) continue;
+		const value = directive ? attribute.name : source.slice(attribute.start, attribute.end);
+		for (const [kind, pattern] of classes)
+			if (pattern.test(value)) found.push({ kind, index: attribute.start });
+	}
 }
 
 /** Every admitted exception belongs to the frozen ceiling and may only decrease. */

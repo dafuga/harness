@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -32,9 +33,18 @@ function lint(filename: string, code: string): string[] {
 }
 
 test('feature source must reuse shared markup and commit shortening', () => {
+	expect(
+		lint(
+			'packages/reports/src/components/Unlisted.svelte',
+			'<hx-figure class="ex-card-shot">Capture</hx-figure>'
+		)
+	).toEqual([]);
 	for (const markup of [
 		'<hx-article class="ex-card">Content</hx-article>',
 		'<hx-span class="ex-pill">Ready</hx-span>',
+		'<hx-span class="chip">Ready</hx-span>',
+		'<hx-section class:ex-card={true}>Content</hx-section>',
+		"<hx-p class={true ? 'empty' : 'content'}>No rows</hx-p>",
 		'<hx-p class="empty">Nothing recorded</hx-p>',
 		'<hx-p class="ex-notice">Partial reading</hx-p>',
 		'<hx-table><hx-tbody /></hx-table>',
@@ -85,6 +95,7 @@ test('the frozen reuse allowlist only shrinks and exactly describes remaining so
 			.digest('hex')
 	).toBe('7842adf54e62376ba038ca8aa310e95c0457ed0c092723e913c3a1b28bd93aa0');
 	expect(reuse.reuseAllowlistGaps(allowlist, ceiling)).toEqual([]);
+	assertAllowlistHistory();
 	const current: Record<string, number> = {};
 	for (const area of ['src', 'packages/reports/src', 'packages/desktop/src', 'packages/hub/src'])
 		for (const file of sources(join(root, area)))
@@ -100,3 +111,29 @@ test('allowlist admission rejects new entries and increases while admitting remo
 	expect(reuse.reuseAllowlistGaps({ known: 1 }, { known: 2, removed: 1 })).toEqual([]);
 	expect(reuse.reuseAllowlistGaps({ known: 0 }, { known: 1 })).toEqual(['known']);
 });
+
+/** Compare every committed version, so the original ceiling cannot permit debt to grow back. */
+function assertAllowlistHistory(): void {
+	const versions = execFileSync(
+		'git',
+		['log', '--first-parent', '--format=%H', 'HEAD', '--', 'eslint.reuse-allowlist.json'],
+		{ cwd: root, encoding: 'utf8' }
+	)
+		.trim()
+		.split('\n')
+		.filter(Boolean);
+	let newer: Record<string, number> = allowlist;
+	for (const commit of versions) {
+		const older = JSON.parse(
+			execFileSync('git', ['show', commit + ':eslint.reuse-allowlist.json'], {
+				cwd: root,
+				encoding: 'utf8'
+			})
+		) as Record<string, number>;
+		expect(
+			reuse.reuseAllowlistGaps(newer, older),
+			'Shared reuse debt cannot grow beyond ' + commit
+		).toEqual([]);
+		newer = older;
+	}
+}
