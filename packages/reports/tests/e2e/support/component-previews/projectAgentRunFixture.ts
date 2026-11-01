@@ -92,7 +92,11 @@ function respond(
 		});
 		return;
 	}
-	emit({ runId, kind: 'text', text: projectReply });
+	emit({
+		runId,
+		kind: 'text',
+		text: state === 'saved-plan' ? 'Review completed. The proposed checks are ready.' : projectReply
+	});
 	const created =
 		state === 'saved-plan'
 			? {
