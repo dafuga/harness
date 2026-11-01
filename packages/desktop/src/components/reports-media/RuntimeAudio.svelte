@@ -60,7 +60,7 @@
 					{#await evidence.url(pane.side, clip.file)}
 						<hx-p class="muted">Reading the clip…</hx-p>
 					{:then url}<hx-audio controls src={url} aria-label={clip.title}></hx-audio>
-					{:catch cause}<Notice as="p" className={'runtime-gap runtime-audio-runtime-gap'}
+					{:catch cause}<Notice as="p" className="runtime-gap runtime-audio-runtime-gap"
 							><Status variant="icon" status="failed" reason="Not verified" /><hx-span
 								>{errorMessage(cause)}</hx-span
 							></Notice
@@ -69,14 +69,14 @@
 					<hx-p class="runtime-standing">{clip.standing} · {clip.status}</hx-p>
 				{/snippet}
 				{#snippet gap(pane)}
-					<Notice as="p" className={'runtime-gap runtime-audio-runtime-gap'}
+					<Notice as="p" className="runtime-gap runtime-audio-runtime-gap"
 						><Status variant="icon" status="failed" reason="No clip" /><hx-span
 							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span
 						></Notice
 					>
 				{/snippet}
 			</ComparePanes>
-		{:else}<Notice as="p" className={'runtime-gap runtime-audio-runtime-gap'}
+		{:else}<Notice as="p" className="runtime-gap runtime-audio-runtime-gap"
 				><Status variant="icon" status="failed" reason="No clip" /><hx-span
 					>A clip is declared for this entity, and none is recorded at {shortCommit(
 						result.scope.commit

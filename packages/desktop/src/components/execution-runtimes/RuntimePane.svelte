@@ -45,9 +45,9 @@
 			>{role}</Pill
 		></hx-figcaption
 	>
-	{#if item.missing}<Notice as="p" className={'runtime-gap runtime-pane-runtime-gap'}>
+	{#if item.missing}<Notice as="p" className="runtime-gap runtime-pane-runtime-gap">
 			<Status variant="icon" status="failed" reason="No capture" /><hx-span>{item.note}</hx-span>
-		</Notice>{:else if problem}<Notice as="p" className={'runtime-gap runtime-pane-runtime-gap'}>
+		</Notice>{:else if problem}<Notice as="p" className="runtime-gap runtime-pane-runtime-gap">
 			<Status variant="icon" status="failed" reason="Not verified" /><hx-span>{problem}</hx-span>
 		</Notice>{:else if url}<hx-img src={url} alt={`${item.title} at ${item.viewport}`} />
 		<hx-p class="runtime-standing" class:stale={item.standing !== 'Fresh capture'}>

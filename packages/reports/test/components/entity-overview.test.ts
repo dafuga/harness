@@ -1,7 +1,4 @@
-import { measureWorkload } from '../../../../test/support/measureWorkload';
-import { render } from 'svelte/server';
-import EntitySummary from '../../src/components/explorer-ui/EntitySummary.svelte';
-import type { EntityMeasure } from '../../src/utils/explorer-ui/entityMeasure.types';
+import { assertCompactSummaryAdmission } from './entity-overview-assertions';
 import { expect, test } from 'vitest';
 import { record, revision } from '../entityFixture';
 import { content, count, verdicts, words } from '../entityRender';
@@ -29,53 +26,7 @@ test('an overview groups size and timings in Performance profile, with no source
 	expect(words(body)).not.toContain('5%');
 	expect(words(body)).not.toMatch(/src\/|\.ts\b|v-app\./);
 	expect(words(body)).not.toMatch(/provenance/i);
-	const measure: EntityMeasure = {
-		size: [{ label: 'Source size', value: '810 B' }],
-		performance: [
-			{
-				workload: 'Approve invoice',
-				metric: 'latency',
-				target: 'browser',
-				profile: 'desktop',
-				value: '2 ms',
-				tolerance: '5%',
-				over: false
-			}
-		]
-	};
-	for (const array of [measure.size, measure.performance]) {
-		Object.defineProperty(array, Symbol.iterator, {
-			value: () => {
-				throw new Error('Unexpected iterator');
-			}
-		});
-		Object.defineProperty(array, 'constructor', {
-			value: {
-				get [Symbol.species]() {
-					throw new Error('Unexpected species');
-				}
-			}
-		});
-	}
-	const summary = () => render(EntitySummary, { props: { measure, compact: true } }).body;
-	await measureWorkload(
-		'reports.function.explorer-ui-entity-summary-facts',
-		'compact-profile-facts',
-		() => expect(words(summary())).toContain('Source size 810 B Latency 2 ms Memory Not measured')
-	);
-	Object.defineProperty(measure.size[0], 'value', {
-		get() {
-			return '920 B';
-		}
-	});
-	expect(words(summary())).toContain('Source size 920 B');
-	const error = new Error('Unreadable measurement');
-	Object.defineProperty(measure.performance[0], 'metric', {
-		get() {
-			throw error;
-		}
-	});
-	expect(summary).toThrow(error);
+	await assertCompactSummaryAdmission();
 });
 
 test('a page at a selected commit shows the parent and the commit for one state and viewport', () => {

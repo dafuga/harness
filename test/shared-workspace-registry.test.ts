@@ -140,15 +140,12 @@ function assertNoNestedHarnessSources() {
 		redundant,
 		'Components use their responsibility folder without a redundant harness namespace'
 	).toEqual([]);
-	const owned = loaded.stored
-		.filter((unit) => unit.status === 'active')
-		.flatMap((unit) => unit.owns.source);
+	const active = loaded.stored.filter((unit) => unit.status === 'active');
+	const owned = active.flatMap((unit) => unit.owns.source);
 	expect(owned.filter((path) => /\/components\/(?:explorer-ui\/)?harness\//.test(path))).toEqual(
 		[]
 	);
-	const entries = loaded.stored
-		.filter((unit) => unit.status === 'active')
-		.map((unit) => unit.runtime.entry);
+	const entries = active.map((unit) => unit.runtime.entry);
 	expect(
 		entries.some(
 			(path) => path?.includes('/components/harness/') || path?.includes('/explorer-ui/harness/')
@@ -168,28 +165,7 @@ test('every active visual module has its own required capture state', () => {
 	expect(catalogVisual(component), 'The component using that stylesheet remains visual').toBe(true);
 	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
 	const visual = loaded.stored
-		.filter((unit) => {
-			if (unit.status !== 'active') return false;
-			if (internalAtom(unit)) return false;
-			if (['component', 'shell'].includes(unit.kind))
-				return [unit.runtime.entry, ...unit.owns.source].some((path) => path.endsWith('.svelte'));
-			const sources = unit.owns.source;
-			if (unit.kind === 'layout')
-				return (
-					unit.catalog?.visibility !== 'internal' &&
-					sources.some((path) => path.endsWith('.svelte'))
-				);
-			const alias = sources.some(
-				(path) =>
-					path.startsWith('packages/reports/src/routes/harness/') &&
-					(path.endsWith('/[entity]/details/+page.svelte') || /\/shells(?:\/|$)/.test(path))
-			);
-			return (
-				!alias &&
-				unit.catalog?.visibility !== 'internal' &&
-				sources.some((path) => path.endsWith('/+page.svelte'))
-			);
-		})
+		.filter(expectedVisual)
 		.map((unit) => unit.id)
 		.sort();
 	expect(catalog?.units.slice().sort()).toEqual(visual);
@@ -214,6 +190,29 @@ test('every active visual module has its own required capture state', () => {
 	}
 });
 
-function internalAtom(unit: LoadedUnits['stored'][number]) {
-	return unit.composition?.level === 'atom' && unit.catalog?.visibility === 'internal';
+function expectedVisual(unit: LoadedUnits['stored'][number]) {
+	if (unit.status !== 'active') return false;
+	if (unit.composition?.level === 'atom' && unit.catalog?.visibility === 'internal') return false;
+	if (['component', 'shell'].includes(unit.kind))
+		return [unit.runtime.entry, ...unit.owns.source].some((path) => path.endsWith('.svelte'));
+	const sources = unit.owns.source;
+	if (unit.kind === 'layout')
+		return (
+			unit.catalog?.visibility !== 'internal' && sources.some((path) => path.endsWith('.svelte'))
+		);
+	return expectedPage(unit);
+}
+
+function expectedPage(unit: LoadedUnits['stored'][number]) {
+	const sources = unit.owns.source;
+	const alias = sources.some(
+		(path) =>
+			path.startsWith('packages/reports/src/routes/harness/') &&
+			(path.endsWith('/[entity]/details/+page.svelte') || /\/shells(?:\/|$)/.test(path))
+	);
+	return (
+		!alias &&
+		unit.catalog?.visibility !== 'internal' &&
+		sources.some((path) => path.endsWith('/+page.svelte'))
+	);
 }
