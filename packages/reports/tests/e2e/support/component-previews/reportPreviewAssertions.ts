@@ -89,20 +89,30 @@ export async function assertRecordedReportPreviewState(
 /** Check visible state distinctions after retaining the same settled screenshot. */
 async function assertCatalogStateDistinction(component: Locator, id: string, variant: string) {
 	const key = `${id}:${variant}`;
-	const gaps: Record<string, string> = {
-		'reports.component.explorer-ui-explorer-platform-details:unindexed':
+	const gaps: Record<string, [string, string]> = {
+		'reports.component.explorer-ui-explorer-platform-details:unindexed': [
 			'No platform catalog is indexed at this revision.',
-		'reports.component.explorer-ui-explorer-translations-screen:empty':
+			'No platform configuration is recorded at this revision.'
+		],
+		'reports.component.explorer-ui-explorer-translations-screen:empty': [
 			'No translation strings are recorded at this revision.',
-		'reports.component.networking-security-explorer-permissions-screen:endpoint-unindexed':
-			'No permission catalog is indexed at this revision.'
+			'No translations match this search.'
+		],
+		'reports.component.networking-security-explorer-permissions-screen:endpoint-unindexed': [
+			'No permission catalog is indexed at this revision.',
+			'No access declaration names this endpoint'
+		]
 	};
 	if (key === 'reports.component.explorer-ui-config-value-tree:disclosure-hovered')
 		await assertDisclosurePaint(component);
-	if (gaps[key])
+	if (gaps[key]) {
 		await expect(component, 'Catalog absence and empty data stay distinct').toContainText(
-			gaps[key]
+			gaps[key][0]
 		);
+		await expect(component, 'Catalog gaps do not also claim an empty result').not.toContainText(
+			gaps[key][1]
+		);
+	}
 	if (
 		key === 'reports.component.explorer-ui-explorer-platforms:status-options-open' ||
 		key === 'reports.component.explorer-ui-explorer-translations-screen:language-open'
