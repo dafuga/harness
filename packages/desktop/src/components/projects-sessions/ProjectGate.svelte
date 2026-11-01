@@ -37,8 +37,11 @@
 	<hx-div class="brand-mark"><BrandMark /></hx-div>
 	<hx-h1>Harness</hx-h1>
 	<hx-p>Understand your project. Design what comes next.</hx-p>
-	{#if local}<hx-button class="primary" disabled={!available || busy} onclick={open}
-			>Open Project</hx-button
+	{#if local}<hx-button
+			class="primary"
+			disabled={!available || busy}
+			aria-busy={busy}
+			onclick={open}>{busy ? 'Opening project…' : 'Open Project'}</hx-button
 		>{/if}
 	<hx-p class="muted">{hint}</hx-p>
 	<!-- A new project is made on this device, so a phone or a browser preview offers none. -->
