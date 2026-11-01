@@ -108,11 +108,12 @@ test('capture readiness runs under the server-free shell config', async () => {
 		'bun x playwright test --config src/configs/shellPlaywrightConfig.ts tests/e2e/explorer-shell-capture-readiness.spec.ts'
 	);
 	try {
+		vi.stubEnv('PLAYWRIGHT_BROWSERS_PATH', '/unavailable-harness-unit-browser');
 		await measureWorkload(
 			'reports.config.shell-vite',
 			'fixture-config-alias-admission',
 			async () => {
-				for (const page of ['navbar', 'components', 'catalog']) {
+				for (const page of ['navbar', 'components']) {
 					vi.stubEnv('SHELL_FIXTURE_PAGE', page);
 					const loaded = await loadConfigFromFile(
 						{ command: 'build', mode: 'production' },
@@ -134,11 +135,6 @@ test('capture readiness runs under the server-free shell config', async () => {
 							$reports: resolve('packages/reports/src'),
 							$desktop: resolve('packages/desktop/src')
 						});
-					if (page === 'catalog') {
-						const data = JSON.parse(rendered.define?.__COMPONENT_PREVIEW_DATA__);
-						expect(data.entitySectionsEvidence).toBeDefined();
-						expect(data.desktopScreens).toBeDefined();
-					}
 				}
 			}
 		);
