@@ -18,7 +18,8 @@
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-loading-state"
 		]
 	},
 	"owns": {
@@ -40,7 +41,7 @@
 				"name": "HistoryPanel.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplying project/revision identity, known commits, navigation and an optional history bridge. Only event commits present in the snapshot’s commit list become links."
+				"description": "Workspace supplying project/revision identity, known commits, navigation and an optional history bridge. Only event commits present in the snapshot\u2019s commit list become links."
 			},
 			{
 				"name": "HistoryPanel.evidence",
@@ -134,6 +135,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
 			"via": "import",
 			"origin": "derived"
 		},
