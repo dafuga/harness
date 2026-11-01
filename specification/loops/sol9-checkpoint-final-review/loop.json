@@ -2,7 +2,7 @@
 	"name": "sol9-checkpoint-final-review",
 	"goal": "Checkpoint descriptions and titles wrap fully while all advanced rule rows appear in viewport evidence",
 	"createdAt": "2026-11-01T17:08:18.022Z",
-	"updatedAt": "2026-11-01T17:17:37.835914+00:00",
+	"updatedAt": "2026-11-01T17:23:08.018Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T17:23:06.570Z",
+			"evidence": "Content-sized canonical textareas wrap title and description; modal and rule controls retain their shared implementations. Only product source and its contract changed after red."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T17:23:08.018Z",
+			"evidence": "Record 30b0a6c7a85202bcebd1cd4c575b7bd43ab14b5e48792170a1413fbd530ce7aa passes all six unchanged cases atb1d90d736b. Inspected every original before and after image; advanced rows and long text are fully visible."
 		},
 		{
 			"id": "verify",
