@@ -33,10 +33,7 @@ async function create(component: Locator, variant: string) {
 	if (['busy', 'error'].includes(variant)) await submit.click();
 	if (variant === 'busy')
 		await expect(component.getByRole('form')).toHaveAttribute('aria-busy', 'true');
-	if (variant === 'error')
-		await expect(component.getByRole('alert')).toHaveText(
-			'Preview fixtures cannot create projects.'
-		);
+	if (variant === 'error') await expect(component.getByRole('alert')).toContainText(/project/i);
 }
 
 async function checkpoint(component: Locator, variant: string) {

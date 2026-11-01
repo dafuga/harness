@@ -96,6 +96,11 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 		await expect(component.getByText('This desktop app cannot create projects yet.')).toBeVisible();
 		await expect(component.getByRole('button', { name: 'Create project' })).toBeDisabled();
 	}
+	if (id === 'desktop.component.game-create' && variant === 'error')
+		await expect(
+			component.getByRole('alert'),
+			'Creation errors use representative user-facing text'
+		).not.toContainText(/preview fixtures|synthetic/i);
 	if (id === 'desktop.component.game-checkpoint-pane' && variant === 'advanced') {
 		const visible = await component
 			.getByRole('region', { name: 'Rules', exact: true })
