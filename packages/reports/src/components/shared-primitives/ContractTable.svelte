@@ -168,7 +168,7 @@
 	   Longer previews are clipped with an ellipsis; the dialog shows the full example. */
 	.example {
 		width: 0;
-		min-width: 100%;
+		min-width: max(100%, 14ch);
 		max-width: var(--hx-layout-contract-example);
 		overflow: hidden;
 		color: var(--hx-color-text-supporting);

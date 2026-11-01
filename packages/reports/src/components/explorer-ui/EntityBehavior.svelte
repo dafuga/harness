@@ -81,8 +81,13 @@
 	let settled = $derived(
 		['Behavior unchanged', 'Current behavior'].includes(label) && shown.passed
 	);
-	let why = $derived(
-		known === null ? 'The recorded results could not be read.' : shown.reasons.join('; ')
+	let why = $derived(known === null ? ['The recorded results could not be read.'] : shown.reasons);
+	let descriptions = $derived(
+		reasons?.behavior.text
+			? [reasons.behavior.text]
+			: why.length
+				? why
+				: ['No reason is recorded for this entity here.']
 	);
 </script>
 
@@ -147,16 +152,18 @@
 		{#if pending}
 			<HarnessIcon name="clock" size={22} />
 		{:else if unknown}
-			<HarnessVerdict passed={false} {label} reasons={why ? [why] : []} />
+			<HarnessVerdict passed={false} {label} reasons={why} />
 		{:else if settled}
 			<HarnessVerdict passed={true} {label} />
 		{:else}
 			<HarnessIcon name="change" size={22} />
 		{/if}
 		<hx-strong role="status">{label}</hx-strong>
-		<hx-span
-			>{reasons?.behavior.text || why || 'No reason is recorded for this entity here.'}</hx-span
-		>
+		{#if !pending}
+			<hx-div class="ex-change-reasons">
+				{#each descriptions as description, position (position)}<hx-p>{description}</hx-p>{/each}
+			</hx-div>
+		{/if}
 		{#if reasons}<EntityReasons {reasons} />{/if}
 		<hx-dl class="ex-inline">
 			<hx-div>
@@ -176,6 +183,14 @@
 </hx-section>
 
 <style>
+	.ex-change-reasons {
+		flex: 1 0 100%;
+		display: grid;
+		gap: var(--hx-space-4);
+	}
+	.ex-change-reasons p {
+		margin: 0;
+	}
 	.ex-gap.ex-unrecorded {
 		border-color: var(--hx-color-border);
 		color: var(--hx-color-text-muted);

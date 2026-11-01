@@ -10,6 +10,7 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-code-line",
 			"reports.component.shared-primitives-detail-list"
 		]
 	},
@@ -31,7 +32,7 @@
 			{
 				"name": "EvidenceProvenance",
 				"type": "markup",
-				"description": "Semantic provenance term/value rows in recorded order, including repeated labels. Missing or empty provenance shows the translated no-provenance message."
+				"description": "Semantic provenance term/value rows in recorded order, including repeated labels. Missing or empty provenance shows the translated no-provenance message. Revision hashes stay on one clipped line with their complete value available in native hover text."
 			}
 		],
 		"errors": [],
@@ -80,6 +81,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-code-line",
 			"via": "import",
 			"origin": "derived"
 		},

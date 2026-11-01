@@ -414,6 +414,12 @@
 			"specifier": "../../../../reports/src/components/shared-primitives/Select.svelte",
 			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
 			"reason": "Desktop uses the canonical shared Select implementation; the supported public forwarding entry remains owned by its existing unit."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceProvenance.svelte",
+			"specifier": "../shared-primitives/CodeLine.svelte",
+			"to": "packages/reports/src/components/shared-primitives/CodeLine.svelte",
+			"reason": "Provenance hashes reuse the shared single-line source renderer with full-value hover text."
 		}
 	]
 }
