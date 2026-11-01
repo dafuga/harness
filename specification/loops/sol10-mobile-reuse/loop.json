@@ -2,7 +2,7 @@
 	"name": "sol10-mobile-reuse",
 	"goal": "Keep shared-workspace function views inside the admitted viewport before recording",
 	"createdAt": "2026-11-01T18:58:56.249Z",
-	"updatedAt": "2026-11-01T18:59:49.167Z",
+	"updatedAt": "2026-11-01T19:19:50.406Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T19:16:08.830Z",
+			"evidence": "Committed test 20473de6a1 failed with a 403px document at 390px; record edcab33c31df retains the actual assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T19:19:48.782Z",
+			"evidence": "fc3b36d698 hides the mobile search text inside its existing compact button; its accessible name and desktop label remain."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T19:19:50.406Z",
+			"evidence": "Unchanged command and environment pass all nine cases at fc3b36d698. Paired record 0b6c1574fb4c retains the committed test corpus."
 		},
 		{
 			"id": "verify",

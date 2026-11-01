@@ -2,7 +2,7 @@
 	"name": "sol10-reuse",
 	"goal": "Consolidate shared behavior and primitives while preserving contracts and evidence",
 	"createdAt": "2026-11-01T15:03:53.442Z",
-	"updatedAt": "2026-11-01T15:03:53.442Z",
+	"updatedAt": "2026-11-01T19:19:52.438Z",
 	"template": "refactor",
 	"templateLineage": ["feature", "refactor"],
 	"enforceOrder": false,
@@ -10,17 +10,23 @@
 		{
 			"id": "spec",
 			"title": "Name the responsibility boundary and unchanged behavior.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T19:19:51.097Z",
+			"evidence": "Use canonical helpers and shared primitives; retain source identities, complete contracts, status visuals and side-bound comparison metadata."
 		},
 		{
 			"id": "implement",
 			"title": "Extract or reorganize one responsibility at a time.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T19:19:51.773Z",
+			"evidence": "Shared helpers, aliases, Card, comparisons, tables, lists, status and messages are consolidated. Reuse allowance is sealed at zero; native wrappers remain compiler inputs."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T19:19:52.438Z",
+			"evidence": "Focused workloads and guards passed 171 cases. Immutable comparison and mobile red-green pairs are retained; the initial hosted-binding failure is reproduced at c26676a169."
 		},
 		{
 			"id": "verify",
