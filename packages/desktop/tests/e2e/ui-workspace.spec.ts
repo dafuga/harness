@@ -1,4 +1,4 @@
-import { catalogCategories, fakeProject } from './ui-workspace-fixture';
+import { assertWorkspaceHeaderFits, catalogCategories, fakeProject } from './ui-workspace-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 test('browser preview exposes no writable backend', async ({ page }) => {
 	await page.goto('/');
@@ -197,25 +197,7 @@ test('workspace selectors start collapsed and environment stays directly selecta
 			);
 		});
 		expect(sameLine, 'Viewed context and update time must fit on one line').toBe(true);
-		const projectControl = await page
-			.getByRole('button', { name: 'Choose workbench' })
-			.boundingBox();
-		const contextControl = await page.getByLabel('Environment', { exact: true }).boundingBox();
-		expect(
-			contextControl!.y - projectControl!.y - projectControl!.height,
-			'Mobile project and context controls need breathing room'
-		).toBeGreaterThanOrEqual(8);
-		const branchFits = await page
-			.locator('.revision-summary strong')
-			.evaluate((element) => element.scrollWidth <= element.clientWidth);
-		expect(branchFits, 'The short current branch name must remain readable on mobile').toBe(true);
-		const header = await page.getByRole('banner').boundingBox();
-		expect(header!.height, 'Mobile header must leave room for project content').toBeLessThanOrEqual(
-			184
-		);
-		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
-			width
-		);
+		await assertWorkspaceHeaderFits(page, width);
 		for (const name of [
 			'Choose workbench',
 			'Choose branch',
