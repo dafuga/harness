@@ -2,7 +2,7 @@
 	"name": "desktop-compact-mode-labels",
 	"goal": "Compact Composer modes stay readable inside their buttons in ProjectAgent.",
 	"createdAt": "2026-11-01T01:37:26.214Z",
-	"updatedAt": "2026-11-01T01:41:25.201Z",
+	"updatedAt": "2026-11-01T01:41:26.501Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T01:41:26.501Z",
+			"evidence": "Compact Composer sizes its icon column to content, preserves mode minimum text widths, and reuses standard6px mode padding. Public props and callbacks are unchanged."
 		},
 		{
 			"id": "green",

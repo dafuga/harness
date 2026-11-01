@@ -104,7 +104,7 @@
 	/* Compact, what is asked shares one row with the icons that choose its agent, beside send. */
 	.compact {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-columns: minmax(0, 1fr) auto;
 		gap: var(--hx-space-8);
 		margin: 0;
 		padding: var(--hx-space-10);
@@ -119,8 +119,8 @@
 		gap: 0;
 	}
 	.compact .mode-options button {
-		min-width: 0;
-		padding: var(--hx-space-6) var(--hx-space-8);
+		min-width: max-content;
+		padding: var(--hx-space-6);
 		font-size: inherit;
 	}
 	/* The modes are joined, so they read as one control. */
