@@ -2,7 +2,7 @@
 	"name": "sol-12-units-guide",
 	"goal": "Guide models through committed state tests and verified shots; flag incomplete contracts",
 	"createdAt": "2026-11-01T23:02:14.207Z",
-	"updatedAt": "2026-11-01T23:05:44.217Z",
+	"updatedAt": "2026-11-01T23:23:45.059Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T23:23:44.292Z",
+			"evidence": "Implementation 8d405f736e; sealed green record passes the unchanged 10-case command matrix."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T23:23:45.059Z",
+			"evidence": "33 focused tests pass, including source ownership and unchanged readable-contract guards; green is sealed at 8d405f736e."
 		},
 		{
 			"id": "verify",

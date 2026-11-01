@@ -2606,14 +2606,22 @@
 			"unit": "command.units",
 			"from": "src/commands/UnitsCommand.ts",
 			"to": "src/cli/program/UnitsCommand.ts",
-			"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
+			"definition": "d2968313141b533f9261c51cda4669ee84922a4a956eb97eaa73bbc4dc56ef66",
 			"relocationDefinition": "56b7063d4a3eaae60eab61f13b0a1da62432d13e4f6ee5e0cd0cc25f997289b0",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "8d405f736ee2e050da6f1e419382c216da566765",
 				"path": "src/cli/program/UnitsCommand.ts",
-				"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "d2968313141b533f9261c51cda4669ee84922a4a956eb97eaa73bbc4dc56ef66",
+				"reason": "Registers unit state guidance and contract checking through the existing units command."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/UnitsCommand.ts",
+					"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.inspect-units",
