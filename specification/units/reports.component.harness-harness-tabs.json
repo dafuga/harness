@@ -11,7 +11,8 @@
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
-			"reports.component.shared-primitives-atoms-html-div"
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
 	"owns": {
@@ -37,7 +38,7 @@
 				"name": "HarnessTabs.tabs",
 				"type": "Array<HarnessTab<View>>",
 				"required": false,
-				"description": "Optional tab definitions. When omitted, uses map, compare, history, growth and activity; an explicitly empty list renders no tabs. Definitions may provide destinations and disabled state."
+				"description": "Optional tab definitions, defaulting to JavaScript undefined (omitted). Omission uses map, compare, history, growth and activity; an explicitly empty list renders no tabs. Definitions may provide destinations and disabled state. Tab identifiers must be distinct."
 			},
 			{
 				"name": "HarnessTabs.label",
@@ -51,10 +52,22 @@
 			{
 				"name": "HarnessTabs",
 				"type": "markup",
-				"description": "Links for enabled tabs with destinations and buttons otherwise. Keeps the selected tab visible within the scrolling strip without moving focus or scrolling the page. Overflow retains a painted horizontal scrollbar."
+				"description": "Links for enabled tabs with destinations and buttons otherwise. Keeps the selected tab visible within the scrolling strip without moving focus or scrolling the page. Overflow retains a painted horizontal scrollbar and persistent text explaining horizontal scrolling. The cue updates when the strip or tab widths change."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Duplicate tab key",
+				"type": "Svelte keyed-each error",
+				"description": "Duplicate tab identifiers are rejected by Svelte keyed-list updates."
+			},
+			{
+				"name": "Caller callback error",
+				"type": "propagated",
+				"description": "Errors thrown by the supplied onview callback propagate from an enabled button or plain link click."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
@@ -71,6 +84,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

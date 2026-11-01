@@ -28,11 +28,14 @@
 		onview(id);
 	}
 	let strip = $state<HTMLElement>();
+	let overflowing = $state(false);
 	// A strip narrower than its tabs scrolls sideways. The tab that is shown is brought wholly
 	// into it, by moving the strip alone: the page is not scrolled, and nothing is focused.
 	function reveal() {
-		const shown = strip?.querySelector('[aria-selected="true"]');
-		if (!strip || !shown) return;
+		if (!strip) return;
+		overflowing = strip.scrollWidth > strip.clientWidth + 1;
+		const shown = strip.querySelector('[aria-selected="true"]');
+		if (!shown) return;
 		const [held, own] = [strip.getBoundingClientRect(), shown.getBoundingClientRect()];
 		if (own.left < held.left) strip.scrollLeft -= held.left - own.left;
 		else if (own.right > held.right) strip.scrollLeft += own.right - held.right;
@@ -43,9 +46,11 @@
 		reveal();
 	});
 	$effect(() => {
+		void tabs;
 		if (!strip) return;
 		const resized = new ResizeObserver(reveal);
 		resized.observe(strip);
+		for (const child of strip.children) resized.observe(child);
 		return () => resized.disconnect();
 	});
 </script>
@@ -76,3 +81,16 @@
 		{/if}
 	{/each}
 </hx-div>
+{#if overflowing}
+	<hx-span class="hx-tab-overflow" role="note">Scroll horizontally to see more sections.</hx-span>
+{/if}
+
+<style>
+	.hx-tab-overflow {
+		display: block;
+		flex-basis: 100%;
+		order: 3;
+		font-size: var(--hx-type-size-xs);
+		color: var(--hx-color-text-muted);
+	}
+</style>
