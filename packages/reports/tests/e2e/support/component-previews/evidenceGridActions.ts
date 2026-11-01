@@ -106,5 +106,5 @@ async function makeRoomBelow(select: Locator) {
 	if (needed > size.height) await page.setViewportSize({ ...size, height: needed });
 }
 
-// Six status options at touch size, plus a margin below them.
-const MENU_ROOM = 280;
+// Chromium opens a native menu upward unless roughly this much page remains below its select.
+const MENU_ROOM = 520;
