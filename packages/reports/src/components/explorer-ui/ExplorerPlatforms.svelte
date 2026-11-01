@@ -76,7 +76,7 @@
 </script>
 
 {#snippet statusFilter()}
-	<hx-label class="filter-field"
+	<hx-label class="filter-field" style:--status-row-count={statuses.length}
 		><hx-span>Status</hx-span>
 		<Select label="Status filter" bind:value={status}>
 			{#each statuses as [id, text] (id)}<hx-option value={id}>{text}</hx-option>{/each}
@@ -165,3 +165,9 @@
 		{/if}
 	{/snippet}
 </ExplorerFrame>
+
+<style>
+	.filter-field:has(:global(select:open)) {
+		padding-block-end: calc(var(--status-row-count) * (1lh + var(--hx-space-4)));
+	}
+</style>

@@ -126,7 +126,7 @@
 				"name": "ExplorerPermissionsScreen.endpoint",
 				"type": "string",
 				"required": false,
-				"description": "Optional API unit ID restricting the screen to the profile grants declared for that endpoint."
+				"description": "Optional API unit ID restricting the screen to that endpoint. Defaults to JavaScript undefined, which shows the profile index or selected profile instead."
 			}
 		],
 		"outputs": [
