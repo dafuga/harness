@@ -44,8 +44,9 @@
 	// left the screen, and with a press anywhere else. One with more reasons than the screen has
 	// room for is given the room there is, and scrolls inside it.
 	function put() {
-		if (!root || !tip) return;
-		const [at, view] = [root.getBoundingClientRect(), { width: innerWidth, height: innerHeight }];
+		const mark = root?.querySelector('button');
+		if (!mark || !tip) return;
+		const [at, view] = [mark.getBoundingClientRect(), { width: innerWidth, height: innerHeight }];
 		if (at.bottom < 0 || at.top > view.height) return close();
 		const whole = tip.scrollHeight + tip.offsetHeight - tip.clientHeight;
 		const to = tooltipPlace(at, { width: tip.offsetWidth, height: whole }, view);
@@ -185,9 +186,12 @@
 		text-align: left;
 		white-space: normal;
 		overflow-wrap: anywhere;
+		overflow-y: visible;
+		overscroll-behavior: contain;
+	}
+	.hx-tip[style*='max-height'] {
 		overflow-y: auto;
 		scrollbar-gutter: stable;
-		overscroll-behavior: contain;
 	}
 	.hx-tip::-webkit-scrollbar {
 		width: var(--hx-space-8);
