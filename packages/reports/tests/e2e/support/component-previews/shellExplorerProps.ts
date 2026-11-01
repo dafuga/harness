@@ -1,4 +1,5 @@
 import { desktopData } from './sealedData';
+import { reviewedOrdersEvidence } from './shellArtwork';
 import type { PreviewCases } from './shared';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import type {
@@ -144,13 +145,28 @@ function sectionsHost(): ExplorerScreenProps {
 	const data = desktopData.results[`${d.ids.list}|commit|${d.commits.middle}`];
 	return {
 		...d.host(),
-		lens: { ...d.reading, evidence: () => data.evidence, behavior: () => data.behavior }
+		lens: {
+			...d.reading,
+			evidence: () => reviewedOrdersEvidence(data.evidence),
+			behavior: () => data.behavior
+		}
 	};
+}
+
+/** The same rows named as the page frames a layouts catalog lists. */
+function layoutRows() {
+	const names = ['AppLayout', 'OrdersLayout', 'SettingsLayout'];
+	return d.rows.map((row, position) => ({
+		...row,
+		id: `reports.layout.${names[position].toLowerCase()}`,
+		name: names[position % names.length],
+		entity: { ...row.entity, category: 'layouts' as const, name: names[position % names.length] }
+	}));
 }
 
 function indexProps(props: PreviewCases[string], variant: string) {
 	if (variant === 'empty') return { ...props, rows: [] };
-	if (variant === 'layouts') return { ...props, category: 'layouts' };
+	if (variant === 'layouts') return { ...props, category: 'layouts', rows: layoutRows() };
 	if (variant === 'configs') return { ...props, category: 'configs', rows: d.configRows };
 	return props;
 }

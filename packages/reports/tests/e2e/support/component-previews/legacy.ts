@@ -5,7 +5,7 @@ import ExplorerContent from '../../../../src/components/explorer-ui/ExplorerCont
 const components = '/branch/feature%2Forders/components';
 const navbar = {
 	base: '/harness',
-	repository: 'Preview project',
+	repository: 'Orders',
 	scope: d.shown.scope,
 	index: d.index,
 	commits: d.index.revisions,

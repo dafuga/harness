@@ -130,7 +130,9 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 		(id === 'reports.component.console-chat' &&
 			['model-open', 'model-selected', 'effort-open', 'effort-selected'].includes(variant)) ||
 		['desktop.component.project-switcher', 'desktop.component.revision-picker'].includes(id);
-	const modal = await previewModal(content, dialog, chatPicker);
+	const catalogValue =
+		id === 'reports.component.explorer-catalog-items' && variant === 'configs-open';
+	const modal = await previewModal(content, dialog, chatPicker || catalogValue);
 	const projectAgent = id === 'desktop.component.project-agent';
 	const replayFull = id === 'reports.component.gameplay-replay' && variant === 'fullscreen';
 	const compact: Record<string, string> = {
