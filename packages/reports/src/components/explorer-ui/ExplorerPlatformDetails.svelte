@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import type { Row } from './ExplorerPlatformDetails.types';
 
 	import type { PlatformEntry } from '../../../../../src/core/explorer-ui/Platform.types';
@@ -70,30 +71,30 @@
 
 {#snippet sections(declared: PlatformEntry, name: string)}
 	<hx-div class="pf-sections">
-		<hx-section class="ex-card" aria-labelledby="pf-configuration-title">
+		<Card as="section" labelledby="pf-configuration-title">
 			<hx-h2 id="pf-configuration-title">Deployment configuration</hx-h2>
 			{#if declared.configuration.length}
 				{@render table(`${name} deployment configuration`, 'Value', declared.configuration)}
 			{:else}<hx-p class="ex-soft">No deployment settings are declared for {name}.</hx-p>{/if}
-		</hx-section>
+		</Card>
 		{#if commands.length}
-			<hx-section class="ex-card" aria-labelledby="pf-commands-title">
+			<Card as="section" labelledby="pf-commands-title">
 				<hx-h2 id="pf-commands-title">Commands</hx-h2>
 				{@render table(`${name} commands`, 'Command', commands)}
-			</hx-section>
+			</Card>
 		{/if}
 		{#if declared.requirements.length}
-			<hx-section class="ex-card" aria-labelledby="pf-requirements-title">
+			<Card as="section" labelledby="pf-requirements-title">
 				<hx-h2 id="pf-requirements-title">Release requirements</hx-h2>
 				<hx-ul class="ex-reasons pf-requirements">
 					{#each declared.requirements as requirement, position (position)}
 						<hx-li>{requirement}</hx-li>
 					{/each}
 				</hx-ul>
-			</hx-section>
+			</Card>
 		{/if}
 		{#if declared.sources.length}
-			<hx-section class="ex-card" aria-labelledby="pf-sources-title">
+			<Card as="section" labelledby="pf-sources-title">
 				<hx-h2 id="pf-sources-title">Configuration sources</hx-h2>
 				<SourceFileList files={declared.sources} href={sourceLink}>
 					{#snippet children()}{/snippet}
@@ -103,7 +104,7 @@
 						>GitHub links are unavailable here, so paths are shown as recorded.</hx-p
 					>
 				{/if}
-			</hx-section>
+			</Card>
 		{/if}
 	</hx-div>
 {/snippet}

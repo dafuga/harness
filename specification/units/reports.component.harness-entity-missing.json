@@ -9,10 +9,10 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.harness-harness-action",
 			"reports.component.shared-primitives-atoms-html-h1",
-			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section"
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
@@ -21,6 +21,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
 		"inputs": [
 			{
 				"name": "EntityMissing.title",
@@ -68,6 +69,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-action",
 			"via": "import",
 			"origin": "derived"
@@ -79,11 +85,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
 		},

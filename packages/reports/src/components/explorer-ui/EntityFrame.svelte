@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import { explorerEntity } from '../../utils/explorer-ui/explorerEntities';
@@ -92,7 +93,7 @@
 				{/if}
 			{/snippet}
 			{#if choosing && moduleEntity}
-				<hx-section class="ex-card">
+				<Card as="section">
 					<hx-h1>{moduleEntity.name}</hx-h1>
 					<hx-p>Choose a helper to open its own detail page.</hx-p>
 					<hx-ul class="ex-links">
@@ -109,7 +110,7 @@
 							</hx-li>
 						{/each}
 					</hx-ul>
-				</hx-section>
+				</Card>
 			{:else if entity}
 				<EntityHeader {entity} {usesAvailable} {owner} {nav} preview={screens} />
 				{@render screen(entity, nav)}

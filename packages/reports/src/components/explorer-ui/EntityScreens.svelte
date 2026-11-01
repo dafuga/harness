@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
@@ -74,10 +75,11 @@
 	}
 </script>
 
-<hx-section
-	class="ex-card ex-evidence"
-	aria-labelledby="ex-screens-title"
-	data-harness-component="harness-entity-screens"
+<Card
+	as="section"
+	tone="ex-evidence"
+	labelledby="ex-screens-title"
+	component="harness-entity-screens"
 >
 	<hx-header class="ex-evidence-head">
 		<hx-div>
@@ -144,7 +146,7 @@
 			<EntityReasons {reasons} />
 		</hx-div>
 	{/if}
-</hx-section>
+</Card>
 {#if viewing}<EvidenceViewer
 		items={panes}
 		navigableItems={panes.filter((item) => !item.missing)}
