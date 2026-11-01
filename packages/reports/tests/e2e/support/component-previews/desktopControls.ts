@@ -2,7 +2,7 @@ import { contractPanelPreview } from './presentationProps';
 import type { DesktopCase } from './desktopData.svelte';
 import { desktopHistoryFixture } from './desktopHistoryFixture';
 import { providers } from './desktopData.svelte';
-import { children, done, noop, text, image } from './shared';
+import { done, noop, text, image } from './shared';
 import { routeIds } from './routeUnits';
 import { live } from './activity';
 import { ids } from './explorerData';
@@ -122,8 +122,7 @@ export const desktopControls: Record<string, DesktopCase> = {
 		busy: false,
 		open: noop,
 		projects: [],
-		choose: noop,
-		children
+		choose: noop
 	}),
 	'desktop.component.project-switcher': (d) => ({ workspace: d.workspace }),
 	'desktop.component.recorded-preview': (d) => ({

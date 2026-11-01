@@ -1549,6 +1549,12 @@
 			"units": ["desktop.component.runtime-artifact"]
 		},
 		{
+			"id": "desktop-component-runtime-artifact-output",
+			"title": "Runtime artifact: output",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-artifact"]
+		},
+		{
 			"id": "desktop-component-runtime-artifact-missing",
 			"title": "Runtime artifact: missing",
 			"coverage": "required",
@@ -8219,6 +8225,7 @@
 				"desktop-component-revision-picker-unknown-time",
 				"desktop-component-run-status",
 				"desktop-component-runtime-artifact",
+				"desktop-component-runtime-artifact-output",
 				"desktop-component-runtime-artifact-missing",
 				"desktop-component-runtime-artifact-unstored",
 				"desktop-component-runtime-artifact-loading",
