@@ -10,6 +10,7 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.evidence-viewer",
+			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.harness-entity-reasons",
 			"reports.component.harness-harness-action",
 			"reports.component.harness-harness-icon",
@@ -23,7 +24,6 @@
 			"reports.component.shared-primitives-atoms-html-img",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
 			"reports.component.shared-primitives-atoms-html-ul"
@@ -35,6 +35,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
 		"inputs": [
 			{
 				"name": "EntityScreens.options",
@@ -103,6 +104,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-entity-reasons",
 			"via": "import",
 			"origin": "derived"
@@ -164,11 +170,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
 		},

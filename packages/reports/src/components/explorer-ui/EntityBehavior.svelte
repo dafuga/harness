@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import { untrack } from 'svelte';
 	import type { ExplorerBehavior, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import { entityBehavior } from '../../utils/explorer-ui/entityBehavior';
@@ -91,10 +92,11 @@
 	);
 </script>
 
-<hx-section
-	class="ex-card ex-evidence"
-	aria-labelledby="ex-behavior-title"
-	data-harness-component="harness-entity-behavior"
+<Card
+	as="section"
+	tone="ex-evidence"
+	labelledby="ex-behavior-title"
+	component="harness-entity-behavior"
 >
 	<hx-header class="ex-evidence-head">
 		<hx-div>
@@ -180,7 +182,7 @@
 			{/each}
 		</hx-dl>
 	</hx-div>
-</hx-section>
+</Card>
 
 <style>
 	.ex-inline dd {

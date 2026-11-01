@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import type { Pair } from './EntityAudio.types';
 
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
@@ -41,10 +42,11 @@
 </script>
 
 {#if clips.length}
-	<hx-section
-		class="ex-card ex-evidence"
-		aria-labelledby="ex-audio-title"
-		data-harness-component="harness-entity-audio"
+	<Card
+		as="section"
+		tone="ex-evidence"
+		labelledby="ex-audio-title"
+		component="harness-entity-audio"
 	>
 		<hx-header class="ex-evidence-head">
 			<hx-div>
@@ -79,14 +81,15 @@
 				{/each}
 			</hx-div>
 		{/each}
-	</hx-section>
+	</Card>
 {:else if empty}
-	<hx-section
-		class="ex-card ex-evidence"
-		aria-labelledby="ex-audio-title"
-		data-harness-component="harness-entity-audio"
+	<Card
+		as="section"
+		tone="ex-evidence"
+		labelledby="ex-audio-title"
+		component="harness-entity-audio"
 	>
 		<hx-h2 id="ex-audio-title">Audio evidence</hx-h2>
 		<hx-p class="ex-soft">No audio evidence is recorded for this component at this revision.</hx-p>
-	</hx-section>
+	</Card>
 {/if}

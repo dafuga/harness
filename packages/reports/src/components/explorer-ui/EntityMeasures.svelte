@@ -1,6 +1,7 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import type { Line } from './EntityMeasures.types';
 
 	import type { HarnessRecord, HarnessUnit } from '../../models/explorer-ui/Harness.types';
@@ -51,11 +52,7 @@
 	]);
 </script>
 
-<hx-section
-	class="ex-card"
-	aria-labelledby="ex-measures-title"
-	data-harness-component="harness-entity-measures"
->
+<Card as="section" labelledby="ex-measures-title" component="harness-entity-measures">
 	<hx-h2 id="ex-measures-title">Measurements and frozen limits</hx-h2>
 	{#if !record}
 		<hx-p class="ex-soft">No verification record measured this revision.</hx-p>
@@ -85,4 +82,4 @@
 	{#if unit.budgets.performance.length === 0}
 		<hx-p class="ex-note">No performance budget is declared for it.</hx-p>
 	{/if}
-</hx-section>
+</Card>

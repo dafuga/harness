@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from '../explorer-ui/explorer-kit/Card.svelte';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type {
@@ -70,12 +71,12 @@
 	{#if listed.length}
 		<hx-ul class="res-list" aria-labelledby="res-made">
 			{#each listed as item, position (position)}
-				<hx-li class="ex-card">
+				<Card as="li">
 					<hx-h3>{item.name}</hx-h3>
 					<hx-ul class="res-text" aria-label={`${item.name} source files`}>
 						{#each item.files as file, index (index)}<hx-li><hx-code>{file}</hx-code></hx-li>{/each}
 					</hx-ul>
-				</hx-li>
+				</Card>
 			{/each}
 		</hx-ul>
 	{:else}
