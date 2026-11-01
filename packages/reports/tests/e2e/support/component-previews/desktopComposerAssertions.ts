@@ -12,9 +12,14 @@ export async function assertComposerLayout(component: Locator, variant: string) 
 		).toBeGreaterThanOrEqual(4);
 		await expect(caption).toBeInViewport({ ratio: 1 });
 	}
-	if (variant === 'unapproved')
+	if (variant === 'unapproved') {
+		await expect(
+			component.getByRole('textbox', { name: 'Message' }),
+			'The approval block is exercised with a nonempty request'
+		).not.toHaveValue('');
 		await expect(
 			component.getByRole('note').filter({ hasText: /approve the current exact design/i }),
 			'Unapproved changes explain why sending is blocked'
 		).toBeInViewport({ ratio: 1 });
+	}
 }
