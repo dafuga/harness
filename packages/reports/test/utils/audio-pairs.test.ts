@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { Evidence } from '../../src/models/Report.types';
+import type { Evidence } from '../../src/models/reports-media/Report.types';
 import { audioPairs } from '../../src/utils/audioPairs';
 import { galleryEvidence } from '../../src/utils/reportFilter';
 import { reportFilter } from '../../src/components/evidence-grid/reportFilter';

@@ -1,4 +1,4 @@
-import type { HarnessRevision } from '../../../../reports/src/models/Harness.types';
+import type { HarnessRevision } from '$reports/models/Harness.types';
 
 export type Impact = NonNullable<HarnessRevision['sourceImpact']>;
 

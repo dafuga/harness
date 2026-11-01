@@ -5,7 +5,7 @@ import { atomicComponents } from '../../src/templates/development-tooling/atomic
 export default {
 	kit: {
 		adapter: adapter({ fallback: 'index.html' }),
-		alias: { $desktop: './src', $shared: '../reports/src/components' },
+		alias: { $reports: '../reports/src', $desktop: './src', $shared: '../reports/src/components' },
 		prerender: { entries: [] }
 	},
 	preprocess: [atomicComponents(), vitePreprocess()]

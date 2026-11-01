@@ -1,9 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { errorMessage } from '../../../../reports/src/helpers/strings/errorMessage';
+	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 
-	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import type { Source } from './GameWorkspace.types';
 	import { resolve } from '$app/paths';

@@ -1,10 +1,10 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import EntityCases from '../../../../reports/src/components/explorer-ui/entity-cases/EntityCases.svelte';
-	import type { ExplorerArtifactBehavior } from '../../../../reports/src/models/ExplorerEvidence.types';
-	import type { BehaviorCell } from '../../../../reports/src/utils/entityBehavior';
-	import { artifactText } from '../../../../reports/src/utils/explorerArtifact';
+	import EntityCases from '$shared/explorer-ui/entity-cases/EntityCases.svelte';
+	import type { ExplorerArtifactBehavior } from '$reports/models/ExplorerEvidence.types';
+	import type { BehaviorCell } from '$reports/utils/entityBehavior';
+	import { artifactText } from '$reports/utils/explorerArtifact';
 	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
 	let {
 		cell,

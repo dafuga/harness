@@ -8,7 +8,7 @@ import {
 import { RegressionProofRepository } from '../../../../../../src/repositories/verification-evidence/RegressionProofRepository';
 import { checkedMedia } from '../../../../../../src/utils/development-tooling/mediaPlace';
 import { revisionSummary } from '../../../../../../src/utils/development-tooling/revisionSummary';
-import type { HarnessRevision } from '../../../../../reports/src/models/Harness.types';
+import type { HarnessRevision } from '$reports/models/Harness.types';
 import type { PinnedRevisions } from '../../../adapters/EvidenceRefsAdapter';
 
 /** What stays read: two pairs of revisions, and of each the commits of two views. */

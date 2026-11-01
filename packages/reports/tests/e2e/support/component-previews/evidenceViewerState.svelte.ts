@@ -1,4 +1,4 @@
-import type { Evidence } from '../../../../src/models/Report.types';
+import type { Evidence } from '../../../../src/models/reports-media/Report.types';
 import type { PreviewCases } from './shared';
 
 /** Model the owning gallery's selection callbacks without drawing another component. */

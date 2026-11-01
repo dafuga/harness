@@ -1,1 +1,1 @@
-export { timeLabel } from '../../../../reports/src/helpers/strings/formatTime';
+export { timeLabel } from '$reports/helpers/strings/formatTime';

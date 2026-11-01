@@ -1,16 +1,16 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import Select from '$shared/Select.svelte';
-	import type { Evidence } from '../../../../reports/src/models/Report.types';
+	import type { Evidence } from '$reports/models/reports-media/Report.types';
 	import {
 		entityScreens,
 		screenPick,
 		type ScreenOption,
 		type ScreenPick
-	} from '../../../../reports/src/utils/entityScreens';
+	} from '$reports/utils/explorer-ui/entityScreens';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
 	import RuntimePane from './RuntimePane.svelte';

@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import Select from '../../../../reports/src/components/shared-primitives/Select.svelte';
+	import Select from '$shared/shared-primitives/Select.svelte';
 	import type { Snippet } from 'svelte';
 	import type { ProviderId, ProviderState } from '../../models/development-tooling/Desktop.types';
 	import type { AgentChoice } from '../../utils/explorer-ui/composeModes';

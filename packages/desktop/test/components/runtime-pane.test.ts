@@ -1,5 +1,9 @@
 import { expect, test } from 'vitest';
-import { entityScreens, screenOptions, screenPick } from '../../../reports/src/utils/entityScreens';
+import {
+	entityScreens,
+	screenOptions,
+	screenPick
+} from '../../../reports/src/utils/explorer-ui/entityScreens';
 import RuntimePane from '../../src/components/execution-runtimes/RuntimePane.svelte';
 import { commits, drawn, ids, scopeOf, shownEvidence } from '../evidence-fixture';
 

@@ -7,4 +7,4 @@ export function revisionTime(
 	const commit = snapshot?.commits.find((item) => item.hash === hash);
 	return commit?.committedAt ?? commit?.authoredAt ?? null;
 }
-export { displayTime } from '../../../../reports/src/helpers/strings/formatTime';
+export { displayTime } from '$reports/helpers/strings/formatTime';

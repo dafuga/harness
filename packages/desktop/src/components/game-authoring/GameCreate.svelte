@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { errorMessage } from '../../../../reports/src/helpers/strings/errorMessage';
+	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 
 	import { resolve } from '$app/paths';
 	import Select from '$shared/Select.svelte';

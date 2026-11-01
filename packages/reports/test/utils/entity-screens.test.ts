@@ -6,7 +6,7 @@ import {
 	galleryItems,
 	screenOptions,
 	screenPick
-} from '../../src/utils/entityScreens';
+} from '../../src/utils/explorer-ui/entityScreens';
 import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import { record, revision } from '../entityFixture';
 import { withInherited } from '../entityPreviewData';

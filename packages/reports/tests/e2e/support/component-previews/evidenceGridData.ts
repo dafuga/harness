@@ -1,5 +1,5 @@
 import { cardPicture, viewerBaseline, viewerRelease } from './reportData';
-import type { Evidence } from '../../../../src/models/Report.types';
+import type { Evidence } from '../../../../src/models/reports-media/Report.types';
 
 /** Fictional checkout captures and a paired review recording for one gallery. */
 export const evidenceGridItems: Evidence[] = [

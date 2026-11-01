@@ -1,9 +1,9 @@
 import { helperContract } from '../../../../../src/utils/helperContract';
-import { explorerName } from '../../../../reports/src/utils/explorerName';
+import { explorerName } from '$reports/utils/explorerName';
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
 import type { CatalogEntity, DesignVersion } from '../../models/development-tooling/Desktop.types';
 import type { PlanRecord } from '../../models/planning-collaboration/PlanningPort.types';
-import { explorerCategory } from '../../../../reports/src/utils/explorerCategory';
+import { explorerCategory } from '$reports/utils/explorerCategory';
 import { categoryOf } from '../development-tooling/categoryOf';
 function ownsChange(paths: string[], changed: Set<string>) {
 	return paths.some((p) => [...changed].some((c) => c === p || c.startsWith(p + '/')));

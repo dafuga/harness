@@ -1,9 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
-	import { behaviorDuration, entityBehavior } from '../../../../reports/src/utils/entityBehavior';
+	import { behaviorDuration, entityBehavior } from '$reports/utils/entityBehavior';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
 	import RuntimeRun from './RuntimeRun.svelte';

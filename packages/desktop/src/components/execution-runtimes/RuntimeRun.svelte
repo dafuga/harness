@@ -1,10 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import type {
-		BehaviorOutcome,
-		EntityBehavior
-	} from '../../../../reports/src/utils/entityBehavior';
+	import type { BehaviorOutcome, EntityBehavior } from '$reports/utils/entityBehavior';
 	import RuntimeArtifact from './RuntimeArtifact.svelte';
 	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
 	let {

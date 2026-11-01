@@ -4,7 +4,7 @@ import type { PreviewProps } from './shared.types';
 import { desktopArtifactText, desktopData } from './desktopFixtureData';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 import { evidenceReading } from '../../../../../desktop/src/utils/verification-evidence/evidenceReading';
-import { screenOptions } from '../../../../src/utils/entityScreens';
+import { screenOptions } from '../../../../src/utils/explorer-ui/entityScreens';
 
 export function desktopRuntimeVariant(
 	id: string,

@@ -1,9 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { errorMessage } from '../../../../reports/src/helpers/strings/errorMessage';
+	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 
-	import type { Evidence } from '../../../../reports/src/models/Report.types';
+	import type { Evidence } from '$reports/models/reports-media/Report.types';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
 	let {

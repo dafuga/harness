@@ -1,6 +1,6 @@
 import type { EvidenceSide } from './artifactQuery.types';
-import { mediaFile } from '../../../../reports/src/utils/harnessEvidence';
-import type { ExplorerCapture } from '../../../../reports/src/models/ExplorerEvidence.types';
+import { mediaFile } from '$reports/utils/harnessEvidence';
+import type { ExplorerCapture } from '$reports/models/ExplorerEvidence.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,

@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { formatTime } from '../../../../../reports/src/helpers/strings/formatTime';
+	import { formatTime } from '$reports/helpers/strings/formatTime';
 	import Select from '$shared/Select.svelte';
 	import type { Invitation } from 'collaboration';
 	import { browserContext } from '../../../utils/development-tooling/browserContext';

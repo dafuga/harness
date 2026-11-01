@@ -1,21 +1,18 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
-	import BrowserErrors from '../../../../reports/src/components/shared-primitives/browser-errors/BrowserErrors.svelte';
-	import EntityStates from '../../../../reports/src/components/explorer-ui/EntityStates.svelte';
-	import { explorerName } from '../../../../reports/src/utils/explorerName';
-	import type {
-		CoverageStanding,
-		ExplorerStateCoverage
-	} from '../../../../reports/src/models/Explorer.types';
+	import BrowserErrors from '$shared/shared-primitives/browser-errors/BrowserErrors.svelte';
+	import EntityStates from '$shared/explorer-ui/EntityStates.svelte';
+	import { explorerName } from '$reports/utils/explorerName';
+	import type { CoverageStanding, ExplorerStateCoverage } from '$reports/models/Explorer.types';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityDetail } from '../../models/development-tooling/Desktop.types';
 	import { evidenceNotice } from '../../utils/verification-evidence/evidenceNotice';
 	import RuntimeBehavior from '../execution-runtimes/RuntimeBehavior.svelte';
 	import StatusIcon from './StatusIcon.svelte';
-	import RegressionProof from '../../../../reports/src/components/verification-evidence/RegressionProof.svelte';
+	import RegressionProof from '$shared/verification-evidence/RegressionProof.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	let {
 		entity,

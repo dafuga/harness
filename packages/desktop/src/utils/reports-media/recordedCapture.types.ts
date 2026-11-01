@@ -1,5 +1,5 @@
 import type { EvidenceArtifactQuery } from '../../models/verification-evidence/DesktopEvidence.types';
-import type { HarnessCapture } from '../../../../reports/src/models/Harness.types';
+import type { HarnessCapture } from '$reports/models/Harness.types';
 
 /** What names one capture of an evidence answer; all of it has to be as the answer lists it. */
 export type CaptureBinding = Pick<

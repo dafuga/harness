@@ -1,5 +1,5 @@
 import { stamp } from './shared';
-import type { Report, Evidence } from '../../../../src/models/Report.types';
+import type { Report, Evidence } from '../../../../src/models/reports-media/Report.types';
 export const picture: Evidence = {
 	id: 'activity',
 	title: 'Synthetic preview input',

@@ -2,8 +2,8 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { EntityContract } from '../../models/development-tooling/Desktop.types';
-	import { humanize } from '../../../../reports/src/utils/entityContract';
-	import DetailList from '../../../../reports/src/components/shared-primitives/DetailList.svelte';
+	import { humanize } from '$reports/utils/entityContract';
+	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	let { contract }: { contract: EntityContract } = $props();
 	const groups = [
 		['inputs', 'Accepts'],
