@@ -159,5 +159,10 @@ export const shellCatalogVariants: Record<string, string[]> = {
 		'run',
 		'run-idle'
 	],
-	'reports.component.shared-primitives-loading-state': ['default-label', 'long', 'reduced-motion']
+	'reports.component.shared-primitives-loading-state': [
+		'default-label',
+		'long',
+		'reduced-motion',
+		'inline'
+	]
 };

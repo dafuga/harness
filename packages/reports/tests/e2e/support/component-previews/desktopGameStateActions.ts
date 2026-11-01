@@ -92,9 +92,7 @@ async function fields(component: Locator, variant: string) {
 	if (variant === 'readonly')
 		await expect(component.getByRole('button', { name: 'New level' })).toHaveCount(0);
 	if (variant === 'multiple')
-		await expect(
-			component.getByRole('combobox', { name: 'View', exact: true }).locator('option')
-		).toHaveCount(2);
+		await expect(component.getByLabel('View', { exact: true }).locator('option')).toHaveCount(2);
 	if (variant === 'gated') {
 		await expect(component.getByRole('button', { name: 'Preview', exact: true })).toBeDisabled();
 		await expect(
