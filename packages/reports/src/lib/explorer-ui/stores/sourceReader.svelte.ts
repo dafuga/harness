@@ -1,9 +1,6 @@
+import { errorMessage } from '../../../helpers/strings/errorMessage';
 import type { SourceState, SourceRead, SourceFiles } from './sourceReader.svelte.types';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
-
-function sourceError(cause: unknown): string {
-	return cause instanceof Error ? cause.message : String(cause);
-}
 
 /** Owns one source read session; later selections and disposal supersede pending replies. */
 export function createSourceReaderStore() {
@@ -18,7 +15,7 @@ export function createSourceReaderStore() {
 			const text = await read(path);
 			if (own === generation) state.text = text;
 		} catch (cause) {
-			if (own === generation) state.error = sourceError(cause);
+			if (own === generation) state.error = errorMessage(cause);
 		} finally {
 			if (own === generation) state.loading = false;
 		}
@@ -35,7 +32,7 @@ export function createSourceReaderStore() {
 			if (found.length) await select(found[0]);
 		} catch (cause) {
 			if (own !== generation) return;
-			state.error = sourceError(cause);
+			state.error = errorMessage(cause);
 			state.loading = false;
 		}
 	}

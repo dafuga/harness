@@ -108,6 +108,11 @@
 			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.strings-format-time",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

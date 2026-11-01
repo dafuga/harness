@@ -1,3 +1,4 @@
+import { shortCommit } from '../../helpers/strings/shortCommit';
 import type { ScreenOption, ScreenPick, Phase, Pane, EntityScreens } from './entityScreens.types';
 import type {
 	ExplorerCapture,
@@ -10,7 +11,6 @@ import { captureProvenance } from '../reports-media/captureProvenance';
 import { mediaFile } from './harnessEvidence';
 const media = ['screenshot', 'audio'];
 const title = (id: string) => id.charAt(0).toUpperCase() + id.slice(1);
-const short = (commit: string) => commit.slice(0, 7);
 /** The scenarios of an entity that are seen: those with a viewport, with what each declares. */
 export function screenOptions(scenarios: HarnessScenario[]): ScreenOption[] {
 	return scenarios
@@ -68,7 +68,7 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 	const origin = told(side, found);
 	const where = capture.viewport ?? capture.kind;
 	return {
-		id: `${phase}-${short(side.commit)}-${scenario}-${state}-${capture.evidence}-${where}`,
+		id: `${phase}-${shortCommit(side.commit)}-${scenario}-${state}-${capture.evidence}-${where}`,
 		title: `${scenario} · ${state}`,
 		category: scenario,
 		file: mediaFile(capture),
@@ -108,7 +108,7 @@ function gap(
 	phase: Phase,
 	why: string | null
 ): Evidence {
-	const at = short(side?.commit ?? '');
+	const at = shortCommit(side?.commit ?? '');
 	const { key, title, category, none } = gapOf(pick, at);
 	const own =
 		side?.gap ?? `No capture of ${pick?.state} at ${pick?.viewport} is recorded for ${at}.`;
@@ -147,9 +147,9 @@ function pane(
 const current = (found: ExplorerCapture) => found.current;
 /** Why a recorded capture is not shown as the screenshot of the branch tip. */
 function borrowed(side: ExplorerSide, found: ExplorerCapture): string {
-	const at = short(side.commit);
+	const at = shortCommit(side.commit);
 	return found.inheritedFrom
-		? `The capture on record was inherited from ${short(found.inheritedFrom)}; it was not captured at ${at}.`
+		? `The capture on record was inherited from ${shortCommit(found.inheritedFrom)}; it was not captured at ${at}.`
 		: `The capture on record is not usable for ${at}: it is ${found.standing}.`;
 }
 /** The selected state's current capture or parent/commit pair, keeping every side's own gaps. */

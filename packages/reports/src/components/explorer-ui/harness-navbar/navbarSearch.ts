@@ -1,3 +1,4 @@
+import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { NavbarSearch } from '../../../utils/explorer-ui/navbarSearch';
 import type { ExplorerScope } from '../../../models/explorer-ui/Explorer.types';
 import type { SearchEntry } from '../../../utils/explorer-ui/entitySearch';
@@ -22,7 +23,7 @@ export function navbarSearch(
 ): NavbarSearch {
 	const location = scope?.location ?? null;
 	const current = given?.every((entry) => entry.commit === scope?.commit) ?? false;
-	const pinned = location?.commit ? location.commit.slice(0, 7) : null;
+	const pinned = location?.commit ? shortCommit(location.commit) : null;
 	const entries = location && current ? given! : null;
 	const held = new Set((entries ?? []).map(key));
 	return {

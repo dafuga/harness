@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../../helpers/strings/shortCommit';
+
 	import type { Snippet } from 'svelte';
 	import ExplorerPermissionsScreen from '../../networking-security/ExplorerPermissionsScreen.svelte';
 	import type { ExplorerEntity } from '../../../models/explorer-ui/Explorer.types';
@@ -58,7 +60,9 @@
 	let tableView = $derived(modelTableView(entity.unit));
 	let tables = $derived(tableView.tables);
 	let gaps = $derived(tableView.gaps);
-	let schemaTitle = $derived(entity.lastAt ? `Last table · ${entity.lastAt.slice(0, 7)}` : 'Table');
+	let schemaTitle = $derived(
+		entity.lastAt ? `Last table · ${shortCommit(entity.lastAt)}` : 'Table'
+	);
 </script>
 
 <hx-div class="ex-sections" data-harness-component="harness-entity-sections">

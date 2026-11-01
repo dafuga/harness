@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../../../../reports/src/helpers/strings/shortCommit';
+
 	import { onMount, untrack } from 'svelte';
 	import { explorerName } from '../../../../../reports/src/utils/explorerName';
 	import type { EntityDetail, ProviderState, ThreadInfo } from '../../../models/Desktop.types';
@@ -158,6 +160,7 @@
 		return true;
 	}
 </script>
+
 <hx-aside class="thread-panel" aria-label="Design conversation">
 	<hx-div class="row">
 		<hx-h2>{explorerName(entity)} · {heading}</hx-h2>
@@ -198,7 +201,7 @@
 			class="comment-saved"
 			role="status"
 		>
-			Saved to GitHub · {comments.acknowledged.slice(0, 7)}
+			Saved to GitHub · {shortCommit(comments.acknowledged)}
 		</hx-p>{/if}<Composer
 		{modes}
 		{providers}

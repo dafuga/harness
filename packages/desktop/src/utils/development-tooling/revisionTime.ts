@@ -7,7 +7,4 @@ export function revisionTime(
 	const commit = snapshot?.commits.find((item) => item.hash === hash);
 	return commit?.committedAt ?? commit?.authoredAt ?? null;
 }
-export function displayTime(value: string | null): string {
-	if (!value || !Number.isFinite(Date.parse(value))) return 'Unknown';
-	return new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-}
+export { displayTime } from '../../../../reports/src/helpers/strings/formatTime';

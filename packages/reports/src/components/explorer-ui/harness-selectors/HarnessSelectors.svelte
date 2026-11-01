@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../../helpers/strings/shortCommit';
+
 	import type {
 		HarnessIndex,
 		HarnessRevisionSummary
@@ -77,7 +79,7 @@
 			label="Commit"
 			bind:value={() => commit, oncommit}
 			compact={Boolean(tip)}
-			display={commit ? commit.slice(0, 7) : undefined}
+			display={commit ? shortCommit(commit) : undefined}
 			disabled={!commits.length}
 			title={tip ? `${commit} · ${tip.viewed}` : commit}
 		>
@@ -94,7 +96,7 @@
 			<Select
 				label="Base commit"
 				bind:value={() => from, onbase}
-				display={from ? from.slice(0, 7) : undefined}
+				display={from ? shortCommit(from) : undefined}
 				title={from}
 				disabled={!bases.length}
 			>

@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+
 	import BrowserErrors from '../../../../reports/src/components/shared-primitives/browser-errors/BrowserErrors.svelte';
 	import EntityStates from '../../../../reports/src/components/explorer-ui/EntityStates.svelte';
 	import { explorerName } from '../../../../reports/src/utils/explorerName';
@@ -20,7 +22,6 @@
 		evidence,
 		workspace
 	}: { entity: EntityDetail; evidence: EntityEvidence; workspace?: Workspace } = $props();
-	const short = (commit: string) => commit.slice(0, 7);
 	const notice = $derived(evidenceNotice(evidence.status, evidence.error, entity.kind));
 	const result = $derived(evidence.status === 'ready' ? evidence.result : null);
 	const visual = $derived(['pages', 'components', 'layouts'].includes(entity.category));
@@ -61,7 +62,7 @@
 		<hx-div class="row">
 			<hx-h2>Evidence</hx-h2>
 			<hx-span class="chip runtime-chip">Runtime capture</hx-span>{#if side}<hx-small
-					>Recorded for {short(side.commit)}{side.record
+					>Recorded for {shortCommit(side.commit)}{side.record
 						? ` · record ${side.record.id}`
 						: ''}</hx-small
 				>{/if}
@@ -79,7 +80,7 @@
 					<hx-h3>
 						<StatusIcon status={mark(item.standing)} reason={told(item.standing, item.reasons)} />
 						{item.title}<hx-span class="chip">{item.kind}</hx-span>{#if item.inheritedFrom}<hx-small
-								>Inherited from {short(item.inheritedFrom)}</hx-small
+								>Inherited from {shortCommit(item.inheritedFrom)}</hx-small
 							>{/if}
 					</hx-h3>
 					<hx-p class="muted">
@@ -122,7 +123,7 @@
 					unit={entity.category === 'functions' ? entity.id : undefined}
 				/>{:else}<hx-p class="empty">
 					No test recorded an input and an observed output for this entity at
-					{short(result.scope.commit)}.
+					{shortCommit(result.scope.commit)}.
 				</hx-p>{/if}{/if}
 	</hx-section>
 {/snippet}
