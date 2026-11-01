@@ -47,9 +47,9 @@ async function assertComposerPresentation(component: Locator, variant: string) {
 		).toContainText(/couldn.t send|try again/i);
 	if (variant === 'visual-plan')
 		await expect(
-			component.getByRole('status'),
+			component.getByText('Visual plan · 3 design options', { exact: true }),
 			'Visual plans show the design option count'
-		).toContainText(/Visual plan.*3 design options/);
+		).toBeVisible();
 	if (variant === 'running') await expect(component.getByText(/agent is running/i)).toBeVisible();
 }
 
