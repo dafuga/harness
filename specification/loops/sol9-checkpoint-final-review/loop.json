@@ -2,7 +2,7 @@
 	"name": "sol9-checkpoint-final-review",
 	"goal": "Checkpoint descriptions and titles wrap fully while all advanced rule rows appear in viewport evidence",
 	"createdAt": "2026-11-01T17:08:18.022Z",
-	"updatedAt": "2026-11-01T17:16:40.593Z",
+	"updatedAt": "2026-11-01T17:17:37.835914+00:00",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -27,7 +27,7 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-11-01T17:16:40.593Z",
-			"evidence": "Record 59placeholder proves three long-title clipping failures after realistic fixtures and complete advanced framing; the advanced cases pass at all three widths."
+			"evidence": "Record 43f77ef4a894163ff0e9b5a850ff1618fef3ea0737aac34df8e56e0cb90933fc: three long cases fail horizontal text fit; all expanded advanced cases pass."
 		},
 		{
 			"id": "implement",
