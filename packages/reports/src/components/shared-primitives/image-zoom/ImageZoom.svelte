@@ -101,7 +101,7 @@
 			aria-disabled={!zoomed}
 			onclick={zoomOut}>−</hx-button
 		>
-		<hx-output class="scale">{percent}</hx-output>
+		<hx-output class="scale" aria-hidden={loading || failed}>{percent}</hx-output>
 		<hx-button
 			class="step"
 			aria-label={$t('zoomIn')}
