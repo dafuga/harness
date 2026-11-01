@@ -81,8 +81,8 @@
 							>
 						{/if}
 						<hx-td>
+							{#if field.source !== 'declared'}<hx-i>{labels[field.source]}</hx-i>{/if}
 							<hx-div class="example">
-								{#if field.source !== 'declared'}<hx-i>{labels[field.source]}</hx-i>{/if}
 								{#if sample}<CodeLine text={sample.text} />{/if}
 							</hx-div>
 						</hx-td>
