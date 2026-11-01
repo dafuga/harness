@@ -85,7 +85,7 @@ export const reportCases: PreviewCases = {
 		active: 0,
 		loading: false,
 		query: 'order',
-		scope: 'Preview project',
+		scope: 'Northstar Store',
 		href: () => '/components',
 		choose: noop
 	},

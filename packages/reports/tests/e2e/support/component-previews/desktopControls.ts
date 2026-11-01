@@ -8,8 +8,15 @@ import { live } from './activity';
 import { ids } from './explorerData';
 export const desktopControls: Record<string, DesktopCase> = {
 	'desktop.component.agent-controls': () => ({
-		providers,
-		choice: { provider: 'codex', model: 'preview-model', effort: 'high' },
+		providers: providers.map((provider) => ({
+			...provider,
+			models: provider.models.map((model) => ({
+				...model,
+				id: 'gpt-6.1-sol',
+				label: 'GPT-6.1 Sol'
+			}))
+		})),
+		choice: { provider: 'codex', model: 'gpt-6.1-sol', effort: 'high' },
 		action: text('<button>Ask agent</button>')
 	}),
 	'desktop.component.agent-effort-picker': () => ({ efforts: ['high', 'xhigh'], effort: 'high' }),
@@ -56,7 +63,9 @@ export const desktopControls: Record<string, DesktopCase> = {
 		width: 420,
 		maxHeight: 360,
 		icon: text('<span>Model</span>'),
-		children: text('<button>Preview model</button>')
+		children: text(
+			'<section><h2>Codex models</h2><button type="button" class="active" aria-pressed="true">GPT-6.1 Sol</button><button type="button" aria-pressed="false">GPT-6.1 Terra</button><button type="button" disabled>GPT-6.1 Luna · unavailable</button></section>'
+		)
 	}),
 	'desktop.component.composer': () => ({
 		modes: ['comment', 'plan', 'change'],

@@ -1,7 +1,6 @@
 import type { Page, Route } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { buildData } from './buildData';
 import { catalogFixtureMedia } from './catalogFixtureMedia';
 import { shellMedia } from './shellArtworkImages';
 import { index, revision, record } from '../../../../test/entityFixture';
@@ -49,7 +48,7 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
 		'/harness/data/index.json': shown.index,
-		'/harness/data/activity.json': activity
+		'/harness/data/activity.json': shellActivity(route)
 	};
 	if (url.pathname in given) return route.fulfill({ json: given[url.pathname] });
 	const commit = /\/data\/revisions\/([a-f0-9]+)\.json$/.exec(url.pathname)?.[1];
@@ -61,6 +60,13 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	});
 }
 
+function shellActivity(route: Route) {
+	const unit = new URL(route.request().frame().page().url()).searchParams.get('unit');
+	return unit === 'reports.component.harness-harness-console'
+		? { ...activity, repository: { ...activity.repository, name: 'Northstar Store' } }
+		: activity;
+}
+
 // Keep one realistic active registration within the chat's short desktop viewport.
 const consoleActivity = {
 	...live,
@@ -68,6 +74,7 @@ const consoleActivity = {
 		...live.agents,
 		roster: live.agents.roster.map((agent) => ({
 			...agent,
+			label: 'Orders review',
 			task: '',
 			model: '',
 			provider: '',
@@ -102,7 +109,11 @@ async function consoleAgentFixture(route: Route) {
 	const commit = commits.tip;
 	const writable = variant !== 'read-only' && variant !== 'agents';
 	const snapshot = {
-		project: { id: 'preview-project', root: '/preview', name: 'Preview project' },
+		project: {
+			id: 'northstar-store',
+			root: '/Users/ada/projects/northstar-store',
+			name: 'Northstar Store'
+		},
 		revision: { branch: 'feature/orders', commit, tip: commit, atTip: true },
 		entities: [],
 		writable,
@@ -197,7 +208,7 @@ function storedMedia(all: ReturnType<typeof catalogFixtureMedia>, file: string) 
 }
 
 /** Recorded artifact bytes by their served filename; a declared artifact cannot fall back to a stand-in. */
-function artifactByName(all: Awaited<ReturnType<typeof buildData>>, file: string) {
+function artifactByName(all: ReturnType<typeof catalogFixtureMedia>, file: string) {
 	for (const result of Object.values(all.results)) {
 		for (const row of result.behavior.rows) {
 			for (const capture of [row.before, row.after]) {

@@ -35,6 +35,6 @@ export async function routeShellCatalog(page: Page, id: string, variant: string)
 	// An invalid payload exercises the client's handled parsing failure without network console errors.
 	if (variant === 'index-error')
 		await page.route('**/data/activity.json', (route) =>
-			route.fulfill({ json: { repository: { name: 'Preview project' } } })
+			route.fulfill({ json: { repository: { name: 'Northstar Store' } } })
 		);
 }

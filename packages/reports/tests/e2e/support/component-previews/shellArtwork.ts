@@ -5,9 +5,16 @@ import type {
 } from '../../../../src/models/explorer-ui/Explorer.types';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import { explorerEntities } from '../../../../src/utils/explorerEntities';
-import { ids, commits, index, evidence as ordersEvidence } from './explorerData';
+import {
+	ids,
+	commits,
+	index,
+	entities as ordersEntities,
+	evidence as ordersEvidence
+} from './explorerData';
 import { routeIds, routeUnits } from './routeUnits';
 import { text, type PreviewCases } from './shared';
+import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 
 /** Each side keeps its identity and declared viewport, with distinct before/after content. */
 export function shellEvidence(
@@ -57,6 +64,7 @@ export function shellArtworkHost(host: ExplorerScreenProps): ExplorerScreenProps
 }
 
 export function shellArtworkProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id.endsWith('harness-harness-navbar')) return navbarPreviewProps(props, variant);
 	if (id.endsWith('harness-entity-screens'))
 		return {
 			...props,
@@ -73,8 +81,6 @@ export function shellArtworkProps(id: string, props: PreviewCases[string], varia
 			host: shellArtworkHost(props.host as ExplorerScreenProps),
 			pane: text('<div></div>')
 		};
-	if (id.endsWith('harness-harness-navbar') && variant !== 'unresolved')
-		return navbarProps(props, variant);
 	if (
 		![
 			'reports.component.harness-explorer-catalog-screen',
@@ -105,6 +111,18 @@ export function shellArtworkProps(id: string, props: PreviewCases[string], varia
 			)
 		};
 	return shellArtworkHost(host) as unknown as PreviewCases[string];
+}
+
+function navbarPreviewProps(props: PreviewCases[string], variant: string) {
+	const shown = variant === 'unresolved' ? props : navbarProps(props, variant);
+	const scope = shown.scope as ExplorerScreenProps['scope'] | null;
+	return {
+		...shown,
+		repository: ['no-repository', 'long-repository'].includes(variant)
+			? props.repository
+			: 'Northstar Store',
+		search: { entries: explorerSearchEntries(ordersEntities, scope?.commit ?? commits.tip) }
+	};
 }
 
 function navbarProps(props: PreviewCases[string], variant: string) {

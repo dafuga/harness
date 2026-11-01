@@ -32,15 +32,19 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 		chatPicker: selected.chatPicker,
 		includeUsageTooltip: tooltipUnits.has(id),
 		cropLightbox: id === 'reports.component.modal',
-		edge:
-			selected.modal &&
-			['reports.component.evidence-grid', 'reports.component.entity-states'].includes(id)
-				? 0
-				: 8
+		edge: captureEdge(id, Boolean(selected.modal))
 	});
 	if (id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
 		return replayPickerBounds(page, bounds, variant);
 	return bounds;
+}
+
+function captureEdge(id: string, modal: boolean) {
+	if (id === 'desktop.component.remote-approval') return 0;
+	return modal &&
+		['reports.component.evidence-grid', 'reports.component.entity-states'].includes(id)
+		? 0
+		: 8;
 }
 
 /** An empty list has zero content height; retain its real boundary and the normal edge allowance. */
@@ -128,8 +132,11 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 	const modal = await previewModal(content, dialog, chatPicker);
 	const projectAgent = id === 'desktop.component.project-agent';
 	const replayFull = id === 'reports.component.gameplay-replay' && variant === 'fullscreen';
-	const compactTarget =
-		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
+	const compact: Record<string, string> = {
+		'reports.component.filter-dialog': '.filter-trigger',
+		'desktop.component.remote-approval': '.remote-request'
+	};
+	const compactTarget = compact[id] ? content.locator(compact[id]) : undefined;
 	const target =
 		id === 'reports.component.shared-primitives-loading-state'
 			? content.locator('.hx-loading')

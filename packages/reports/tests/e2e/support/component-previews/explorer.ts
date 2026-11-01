@@ -5,6 +5,7 @@ import type { PreviewCases } from './shared';
 import { children, text, names } from './shared';
 import * as d from './explorerData';
 import { sourceCases } from './source';
+import { desktopData } from './sealedData';
 const base = { nav: d.navigation, lens: d.reading, scope: d.shown.scope, mediaBase: '/media/' };
 const entity = { entity: d.entity, ...base };
 const page = d.host();
@@ -54,7 +55,7 @@ export const explorerCases: PreviewCases = {
 		unknown
 	>,
 	'reports.component.harness-entity-artifact': {
-		cell: d.cell,
+		cell: desktopData.reportArtifacts.default,
 		label: 'Assertions',
 		mediaBase: '/media/'
 	},

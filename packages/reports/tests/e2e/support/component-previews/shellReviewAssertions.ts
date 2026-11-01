@@ -170,7 +170,13 @@ async function searchFocus(component: Locator) {
 }
 
 async function assertionsFlow(component: Locator) {
+	await expect(component).not.toContainText('This result records no input and output.');
 	await expect(component.locator('.ex-steps')).toContainText('Search for SERVICE');
+	const gaps = await component
+		.locator('.ex-steps, .ex-checks')
+		.evaluateAll((lists) => lists.map((list) => parseFloat(getComputedStyle(list).rowGap)));
+	expect(gaps, 'Steps and assertion rows use the same spacing').toHaveLength(2);
+	expect(gaps[0], 'Steps and assertion rows use the same spacing').toBe(gaps[1]);
 	for (const row of await component.locator('.ex-checks > li').all()) {
 		const label = row.locator(':scope > span').last();
 		const [line, name] = await Promise.all([row.boundingBox(), label.boundingBox()]);
