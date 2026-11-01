@@ -2,7 +2,7 @@
 	"name": "sol9-history-view-review",
 	"goal": "Multiple views stay visible and history shows regression proof with a clear shared loading cue",
 	"createdAt": "2026-11-01T18:13:49.969Z",
-	"updatedAt": "2026-11-01T18:26:34.977Z",
+	"updatedAt": "2026-11-01T18:35:07.470Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T18:35:05.732Z",
+			"evidence": "Shared Select lists both views and shared LoadingState supports inline pagination status. Contracts declare the mode and source bindings; existing defaults remain."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T18:35:07.470Z",
+			"evidence": "Record de0765820092ed9ed088f819278a5fcf25ea9c77afd465d9f12143d01bfc3915 passes18 unchanged cases against matched red 74529a792841d18a107280caecc074531ba8b89310ff66a031ebc1f8ea248388. All18 before and18 after originals inspected."
 		},
 		{
 			"id": "verify",

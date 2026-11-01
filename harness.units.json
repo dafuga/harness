@@ -716,6 +716,12 @@
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
+			"from": "packages/desktop/src/components/git-source-history/history-panel/HistoryPanel.svelte",
+			"specifier": "$reports/components/shared-primitives/LoadingState.svelte",
+			"to": "packages/reports/src/components/shared-primitives/LoadingState.svelte",
+			"reason": "History pagination uses the shared loading status through the Reports build alias."
+		},
+		{
 			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
 			"specifier": "$reports/utils/explorerName",
 			"to": "packages/reports/src/utils/explorerName.ts",
