@@ -1,6 +1,8 @@
+import { recordCapture, evidenceRequested } from '../src/utils/record-capture/recordCapture';
+import { randomUUID } from 'node:crypto';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
@@ -79,8 +81,7 @@ test('a server on the build directory itself answers a refused page with an erro
 
 test('a run serves its own copy of the build, which a rebuild of the directory does not reach', async () => {
 	standInBuild();
-	const env = { HARNESS_E2E_ROOT: run };
-	const frozen = await runCommand(['bun', 'scripts/freeze-build.ts', standIn], reports, true, env);
+	const frozen = await freezeCommand(true);
 	const copy = (JSON.parse(frozen.stdout) as { build: string; buildId: string }).build;
 	expect(copy).not.toBe(standIn);
 	expect(readdirSync(copy)).toEqual(readdirSync(standIn));
@@ -92,9 +93,73 @@ test('a run serves its own copy of the build, which a rebuild of the directory d
 }, 60_000);
 
 test('a directory that holds no build is named, and nothing is served from it', async () => {
-	const env = { HARNESS_E2E_ROOT: run };
-	const absent = await runCommand(['bun', 'scripts/freeze-build.ts', standIn], reports, false, env);
+	const absent = await freezeCommand(false);
 	expect(absent.exitCode).toBe(1);
 	expect(absent.stderr).toContain('holds no build');
 	expect(existsSync(standIn)).toBe(false);
 });
+
+/** Keep the normal cold script workload and observe its own process, including failed admission. */
+async function freezeCommand(expectSuccess: boolean) {
+	const args = ['bun', 'scripts/freeze-build.ts', standIn];
+	const env = { HARNESS_E2E_ROOT: run };
+	if (!evidenceRequested()) return runCommand(args, reports, expectSuccess, env);
+	const usage = join(run, 'freeze-usage.txt');
+	const started = performance.now();
+	const result = await runCommand(
+		['/usr/bin/time', process.platform === 'darwin' ? '-l' : '-v', '-o', usage, ...args],
+		reports,
+		expectSuccess,
+		env
+	);
+	const duration = performance.now() - started;
+	const text = await readFile(usage, 'utf8');
+	const resident =
+		process.platform === 'darwin'
+			? /^\s*(\d+)\s+maximum resident set size/m.exec(text)
+			: /Maximum resident set size \(kbytes\):\s*(\d+)/.exec(text);
+	if (!resident) throw new Error('The frozen-build process did not report peak RSS.');
+	recordFreezeUsage(
+		expectSuccess,
+		duration,
+		Number(resident[1]) * (process.platform === 'darwin' ? 1 : 1024)
+	);
+	return result;
+}
+
+function recordFreezeUsage(copy: boolean, duration: number, resident: number) {
+	const context = {
+		unit: 'reports.script.freeze-build',
+		workload: copy ? 'copy-build' : 'missing-build',
+		target: 'process',
+		samples: 1
+	};
+	const measurements = [
+		{
+			...context,
+			metric: 'latency-cli-ms',
+			unitOfMeasure: 'ms',
+			value: duration,
+			method:
+				'Wall time of one cold frozen-build script process, including startup and build validation or copy; no warmup.'
+		},
+		{
+			...context,
+			metric: 'process-peak-rss-bytes',
+			unitOfMeasure: 'bytes',
+			value: resident,
+			method:
+				'Peak resident set of the cold Bun script process reported by system time; includes its runtime and dependencies.'
+		}
+	];
+	recordCapture(
+		{
+			evidence: 'behavior-benchmarks',
+			kind: 'benchmark',
+			state: context.workload,
+			file: 'freeze-usage-' + randomUUID() + '.json',
+			mediaType: 'application/json'
+		},
+		JSON.stringify({ measurements })
+	);
+}

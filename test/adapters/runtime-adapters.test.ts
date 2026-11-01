@@ -1,3 +1,4 @@
+import { measureWorkload } from '../support/measureWorkload';
 import { mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -48,28 +49,30 @@ test('persistent process runtime keeps one process, and recovers after a timeout
 }, 30_000);
 
 test('HTTP runtime reports bad status, malformed bodies, timeouts and refused connections', async () => {
-	const server = await fixtureServer({
-		'/ok': { status: 200, body: ok },
-		'/refused': {
-			status: 400,
-			body: '{"ok":false,"error":{"code":"invalid-request","message":"no"}}'
-		},
-		'/error': { status: 500, body: 'exploded' },
-		'/garbage': { status: 200, body: '<html>' },
-		'/hang': 'hang'
+	await measureWorkload('adapter.http-runtime', 'http-failures-and-recovery', async () => {
+		const server = await fixtureServer({
+			'/ok': { status: 200, body: ok },
+			'/refused': {
+				status: 400,
+				body: '{"ok":false,"error":{"code":"invalid-request","message":"no"}}'
+			},
+			'/error': { status: 500, body: 'exploded' },
+			'/garbage': { status: 200, body: '<html>' },
+			'/hang': 'hang'
+		});
+		const call = (path: string) =>
+			new HttpRuntimeAdapter(server.url + path, { timeoutMs: 300 }).invoke(request);
+		expect(await call('/ok')).toEqual(JSON.parse(ok));
+		expect(code(await call('/refused'))).toBe('invalid-request');
+		expect(await call('/error')).toEqual({
+			ok: false,
+			error: { code: 'runtime-failed', message: 'HTTP 500: exploded' }
+		});
+		expect(code(await call('/garbage'))).toBe('invalid-response');
+		expect(code(await call('/hang'))).toBe('runtime-timeout');
+		await server.close();
+		expect(code(await call('/ok'))).toBe('runtime-unavailable');
 	});
-	const call = (path: string) =>
-		new HttpRuntimeAdapter(server.url + path, { timeoutMs: 300 }).invoke(request);
-	expect(await call('/ok')).toEqual(JSON.parse(ok));
-	expect(code(await call('/refused'))).toBe('invalid-request');
-	expect(await call('/error')).toEqual({
-		ok: false,
-		error: { code: 'runtime-failed', message: 'HTTP 500: exploded' }
-	});
-	expect(code(await call('/garbage'))).toBe('invalid-response');
-	expect(code(await call('/hang'))).toBe('runtime-timeout');
-	await server.close();
-	expect(code(await call('/ok'))).toBe('runtime-unavailable');
 }, 30_000);
 
 test('Wasm runtime reports missing files and modules without the JSON ABI', async () => {

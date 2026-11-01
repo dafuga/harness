@@ -29,6 +29,11 @@
 			"unit": "reports.function.frozen-build",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.strings-error-message",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

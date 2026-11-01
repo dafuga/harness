@@ -1,3 +1,4 @@
+import { errorMessage } from '../src/helpers/strings/errorMessage';
 /**
  * Gives the browser run this process belongs to its own copy of the finished build, and prints
  * where it is. The run's built servers are started from that copy, never from the build
@@ -11,6 +12,6 @@ const source = resolve(process.argv[2] ?? 'build');
 try {
 	console.log(JSON.stringify(await frozenBuild(source, e2eFixtures().build)));
 } catch (error) {
-	console.error(error instanceof Error ? error.message : String(error));
+	console.error(errorMessage(error));
 	process.exit(1);
 }

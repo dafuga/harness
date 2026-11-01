@@ -47,6 +47,8 @@ const unique = new Set([
 	// An explorer list of entities is keyed by the entity, and a history by its commit.
 	'row.id',
 	'row.key',
+	// EntityAudio constructs one pair per member of the Set of comparison identities.
+	'pair.key',
 	'row.commit',
 	'group.id',
 	'group.name',

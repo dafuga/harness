@@ -5004,14 +5004,22 @@
 			"unit": "adapter.wasm-module-runtime",
 			"from": "src/adapters/WasmModuleRuntimeAdapter.ts",
 			"to": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
-			"definition": "a1be9417b15b6f66a9cc82fff3a44ad9b244b3b8732d95f7c9027c93f77e5db6",
+			"definition": "0512728dea030c994ef4a31f12bbd1490de7b3c38aa93e0563ceb7fd5964ed43",
 			"relocationDefinition": "6e795040118ba3425b9dabbd4884df717cc4f45b43bbcf841bb021b762d2f41a",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "f2ebc4c666eaaabadec04be22f63d1e27d22c882",
 				"path": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
-				"definition": "a1be9417b15b6f66a9cc82fff3a44ad9b244b3b8732d95f7c9027c93f77e5db6",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "0512728dea030c994ef4a31f12bbd1490de7b3c38aa93e0563ceb7fd5964ed43",
+				"reason": "Delegate error text to the shared formatter while preserving ABI failure classification and recovery."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
+					"definition": "a1be9417b15b6f66a9cc82fff3a44ad9b244b3b8732d95f7c9027c93f77e5db6",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.controller.native-handoff",

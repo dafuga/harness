@@ -1,3 +1,4 @@
+import { errorMessage } from '../../../../packages/reports/src/helpers/strings/errorMessage';
 import type { WasmSource, WasmLoader, JsonAbi } from './WasmModuleRuntimeAdapter.types';
 import {
 	defaultRuntimeTimeoutMs,
@@ -58,7 +59,7 @@ export class WasmModuleRuntimeAdapter implements UnitRuntime {
 			return runtimeResponseText(await this.invokeText(JSON.stringify(request)));
 		} catch (error) {
 			this.instance = undefined;
-			const message = error instanceof Error ? error.message : String(error);
+			const message = errorMessage(error);
 			const named = error instanceof Error && error.name === unavailableName;
 			const unavailable = named || error instanceof WebAssembly.CompileError;
 			return runtimeFailure(unavailable ? 'runtime-unavailable' : 'runtime-failed', message);
