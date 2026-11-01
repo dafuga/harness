@@ -63,7 +63,7 @@
 		<hx-div class="row">
 			<hx-h2>Evidence</hx-h2>
 			<Pill as="span" variant="chip" tone="runtime-chip coverage-panel-chip">Runtime capture</Pill
-			>{#if side}<hx-small
+			>{#if side}<hx-small class="coverage-panel-record"
 					>Recorded for {shortCommit(side.commit)}{side.record
 						? ` · record ${side.record.id}`
 						: ''}</hx-small
@@ -138,3 +138,9 @@
 				</EmptyState>{/if}{/if}
 	</hx-section>
 {/snippet}
+
+<style>
+	.coverage-panel-record {
+		overflow-wrap: anywhere;
+	}
+</style>
