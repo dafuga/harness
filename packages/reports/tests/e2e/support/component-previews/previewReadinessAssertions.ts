@@ -61,6 +61,7 @@ export async function assertPreviewMessages(content: Locator, id: string, varian
 	)
 		await expect(content).not.toContainText(/No screenshot (?:is )?recorded/);
 	const expected: Record<string, string[]> = {
+		'desktop.component.design-panel': ['error'],
 		'desktop.component.runtime-evidence': ['error'],
 		'desktop.component.runtime-behavior': ['unreadable'],
 		'reports.component.explorer-ui-explorer-kit-notice': ['', 'long'],
