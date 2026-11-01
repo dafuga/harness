@@ -2,7 +2,7 @@
 	"name": "desktop-evidence-heading-fit",
 	"goal": "Keep evidence header words whole while containing opaque record IDs at every viewport",
 	"createdAt": "2026-11-01T06:49:32.885Z",
-	"updatedAt": "2026-11-01T06:54:55.087Z",
+	"updatedAt": "2026-11-01T07:02:36.439Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -41,12 +41,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:02:34.456Z",
+			"evidence": "474f6759b4 removes inherited arbitrary wrapping and scopes it to coverage-record captions in the existing stylesheet."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:02:36.439Z",
+			"evidence": "Matched green 71b0b1fa6eb27d3074f491f6895c01eebf20d9233bc705f2b5364313195f7c4c passes all 48 cases with unchanged assertions and environment."
 		},
 		{
 			"id": "guard",
