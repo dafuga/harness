@@ -1,4 +1,5 @@
 import { assertPresentationPreview } from './support/component-previews/presentationPreviewAssertions';
+import { assertRecordedCompatibility } from './support/component-previews/compatibilityPreviewAssertions';
 import {
 	assertInlinePluginKitCapture,
 	assertPluginKitPreview
@@ -178,6 +179,7 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
+			await assertRecordedCompatibility(component, unit.id, variant);
 			if (
 				unit.id === 'reports.component.explorer-ui-explorer-platforms' &&
 				variant === 'status-options-open'

@@ -30,9 +30,25 @@ export async function assertCompatibilityPreview(component: Locator, id: string,
 		await expect(component.getByRole('combobox', { name: 'Device access' })).toHaveValue(variant);
 	}
 	if (variant === 'busy') {
-		await expect(approve, 'Approval progress is visibly distinct').toHaveText('Approving…');
-		await expect(component.getByRole('group')).toHaveAttribute('aria-busy', 'true');
 		await expect(component.getByRole('button', { name: 'Deny', exact: true })).toBeDisabled();
+	}
+}
+
+/** Pixel checkpoints precede these layout and in-progress feedback assertions. */
+export async function assertRecordedCompatibility(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.harness-entity-artifact' && variant === 'expanded') {
+		const gaps = await component
+			.locator('.ex-steps, .ex-checks')
+			.evaluateAll((lists) => lists.map((list) => parseFloat(getComputedStyle(list).rowGap)));
+		expect(gaps, 'Steps and assertion rows use the same spacing').toHaveLength(2);
+		expect(gaps[0], 'Steps and assertion rows use the same spacing').toBe(gaps[1]);
+	}
+	if (id === 'desktop.component.remote-approval' && variant === 'busy') {
+		await expect(
+			component.getByRole('button', { name: /^Approv/ }),
+			'Approval progress is visibly distinct'
+		).toHaveText('Approving…');
+		await expect(component.getByRole('group')).toHaveAttribute('aria-busy', 'true');
 	}
 }
 
