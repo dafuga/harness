@@ -27,8 +27,6 @@ export async function measurePreviewBounds(target: Locator, options: PreviewBoun
 			settings.includeUsageTooltip &&
 			node.querySelector('[role="tooltip"], .reason[role="status"]');
 		if (tooltip) collect(tooltip);
-		const picker = settings.chatPicker && node.querySelector('dialog[open], [role="dialog"]');
-		if (picker) collect(picker);
 		if (!boxes.length) throw new Error('The component has no rendered capture bounds.');
 		const start = (value: number, scroll: number) =>
 			Math.max(0, Math.floor(value + scroll) - settings.edge);
