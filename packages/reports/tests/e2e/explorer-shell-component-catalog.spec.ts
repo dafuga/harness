@@ -183,6 +183,10 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
+			if (unit.id === 'reports.component.harness-entity-screens' && variant === 'viewer-open')
+				await expect(component.getByRole('button', { name: 'View after screenshot' })).toHaveClass(
+					/\bactive\b/
+				);
 			await assertViewerReview(component, unit.id, variant);
 			if (unit.id === 'reports.component.explorer-catalog-items' && variant === 'configs-open')
 				await assertCatalogItemsFrame(component, viewport.id, capture);
