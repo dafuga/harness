@@ -1,6 +1,7 @@
 import { desktopData } from './sealedData';
 import { reviewedOrdersEvidence } from './shellArtwork';
 import { populatedExplorerContent } from './explorerContentCatalogProps';
+import { populatedEntitySections } from './entitySectionsCatalogProps';
 import type { PreviewCases } from './shared';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import type {
@@ -77,11 +78,10 @@ function contentProps(variant: string) {
 
 function sectionsProps(props: PreviewCases[string], variant: string) {
 	let host = sectionsHost();
+	const populated = populatedEntitySections(host, variant);
+	if (populated) return { ...props, ...populated };
 	let entity = d.entity;
-	if (variant === 'examples') {
-		host = d.host('functions', 'examples');
-		entity = d.entities.find((item) => item.category === 'functions')!;
-	} else if (variant.startsWith('table')) {
+	if (variant.startsWith('table')) {
 		entity = {
 			...entity,
 			category: 'models',
@@ -117,13 +117,6 @@ function sectionsProps(props: PreviewCases[string], variant: string) {
 			}
 		} as ExplorerEntity;
 		host = { ...host, route: { ...host.route, category: 'models', tab: 'table' } };
-	} else if (variant === 'permissions') {
-		entity = {
-			...entity,
-			category: 'apis',
-			unit: { ...entity.unit, kind: 'api' }
-		} as ExplorerEntity;
-		host = { ...host, route: { ...host.route, category: 'apis', tab: 'permissions' } };
 	} else host = { ...host, route: { ...host.route, tab: variant as ExplorerTab } };
 	return { ...props, host, entity };
 }

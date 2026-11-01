@@ -1,11 +1,15 @@
 import { expect, type Locator } from '@playwright/test';
 
+const entityAudioPreviews = [
+	'reports.component.harness-entity-audio',
+	'reports.component.harness-entity-sections'
+];
 const audioPreviews = new Set([
 	'reports.component.evidence-card',
 	'reports.component.audio-comparison-viewer',
 	'reports.component.audio-evidence',
 	'reports.component.evidence-grid',
-	'reports.component.harness-entity-audio'
+	...entityAudioPreviews
 ]);
 
 /** Load real fixture metadata without starting playback or changing the product's preload policy. */
@@ -20,7 +24,7 @@ export async function settlePreviewAudio(component: Locator, id: string, variant
 		});
 		await expect
 			.poll(() => player.evaluate((audio: HTMLAudioElement) => audio.duration))
-			.toBe(id === 'reports.component.harness-entity-audio' ? 1 : 42);
+			.toBe(entityAudioPreviews.includes(id) ? 1 : 42);
 	}
 	if (players.length)
 		await component
@@ -40,5 +44,5 @@ export async function assertPreviewAudio(component: Locator, id: string, variant
 		expect(
 			await player.evaluate((audio: HTMLAudioElement) => audio.duration),
 			'Native player retains the loaded recording duration'
-		).toBe(id === 'reports.component.harness-entity-audio' ? 1 : 42);
+		).toBe(entityAudioPreviews.includes(id) ? 1 : 42);
 }
