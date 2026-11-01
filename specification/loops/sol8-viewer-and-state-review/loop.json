@@ -2,9 +2,11 @@
 	"name": "sol8-viewer-and-state-review",
 	"goal": "Viewer controls and provenance match displayed evidence; state words remain whole; catalog captures are distinct and consistently framed.",
 	"createdAt": "2026-11-01T14:42:25.624Z",
-	"updatedAt": "2026-11-01T14:50:47.197Z",
+	"updatedAt": "2026-11-01T15:14:56.806Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T15:09:04.037Z",
+			"evidence": "Record a2d0368f at d31c7d3407: 8 assertion failures and 4 passes; 12 original desktop/tablet/mobile images retained. No fixture/setup errors. Navigation, After provenance and mobile whole-word guards fail."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T15:09:21.784Z",
+			"evidence": "56d5c11d97 and ae2393abc6 disable unavailable navigation, bind metadata/title to displayed evidence, space caption separators and preserve Required words. The complete test corpus remains unchanged from d31c7d3407."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T15:14:56.806Z",
+			"evidence": "Record 2f4cd5d6 at dd3bd67e8f passes all 12 cases, paired with a2d0368f at d31c7d3407. Tests, fixtures, command, inputs and environment match. Original pixels inspected; final capture readiness and broader verification remain pending."
 		},
 		{
 			"id": "verify",
