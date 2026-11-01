@@ -23,6 +23,7 @@ export async function assertDesktopPresentation(component: Locator, id: string, 
 
 async function assertChatPresentation(component: Locator, variant: string) {
 	if (variant === 'closed') return;
+	if (variant === 'saved-plan') await assertSavedPlanPresentation(component);
 	if (['failure', 'running'].includes(variant)) {
 		await expect(
 			component.getByRole('textbox', { name: 'Message' }),
@@ -177,4 +178,21 @@ async function assertStatusPresentation(component: Locator, variant: string) {
 			'Long explanations contain distinct meaningful sentences'
 		).toBeGreaterThanOrEqual(3);
 	}
+}
+
+/** A saved-plan example must expose its notice and action above the composer. */
+async function assertSavedPlanPresentation(component: Locator) {
+	const action = component.getByRole('button', { name: 'Open the saved draft', exact: true });
+	const notice = action.locator('..');
+	const bounds = (await notice.boundingBox())!;
+	const body = (await component.locator('.floating-chat-body').boundingBox())!;
+	const composer = (await component.locator('.chat-compose').boundingBox())!;
+	expect(bounds.y, 'Saved-plan notice starts inside the visible body').toBeGreaterThanOrEqual(
+		body.y
+	);
+	expect(
+		bounds.y + bounds.height,
+		'Saved-plan notice and action remain above the composer'
+	).toBeLessThanOrEqual(Math.min(body.y + body.height, composer.y));
+	await expect(action, 'The saved-plan action is fully visible').toBeInViewport({ ratio: 1 });
 }

@@ -51,7 +51,6 @@
 		void workspace.navigate(workspace.link({ branch, commit }));
 	}
 </script>
-
 {#snippet when(label: string, value: string | null)}<hx-small
 		>{label}
 		{#if value}<hx-time datetime={value}>{displayTime(value)}</hx-time>{:else}Unknown{/if}</hx-small

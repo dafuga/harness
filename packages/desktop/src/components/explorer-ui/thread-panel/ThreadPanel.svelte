@@ -158,7 +158,6 @@
 		return true;
 	}
 </script>
-
 <hx-aside class="thread-panel" aria-label="Design conversation">
 	<hx-div class="row">
 		<hx-h2>{explorerName(entity)} · {heading}</hx-h2>

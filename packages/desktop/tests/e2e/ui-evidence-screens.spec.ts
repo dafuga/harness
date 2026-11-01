@@ -12,7 +12,6 @@ import {
 	sharedProject,
 	tones
 } from './ui-evidence-fixture';
-
 /**
  * Recorded runtime screenshots in the shared viewer, read through the two evidence reads of a
  * synthetic backend: one capture at a branch tip, the commit beside its first parent at a named
