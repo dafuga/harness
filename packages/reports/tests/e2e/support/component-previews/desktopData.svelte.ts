@@ -152,7 +152,7 @@ function configureWorkspace(
 		approval: true,
 		source: 'local'
 	};
-	workspace.category = 'components';
+	workspace.category = id === 'desktop.component.entity-view' ? entity.category : 'components';
 	workspace.entity = id === 'desktop.component.entity-view' ? entity : null;
 }
 
