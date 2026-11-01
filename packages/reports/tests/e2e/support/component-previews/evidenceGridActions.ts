@@ -104,6 +104,8 @@ async function makeRoomBelow(select: Locator) {
 	if (!size || !box) return;
 	const needed = Math.ceil(box.y + box.height + MENU_ROOM);
 	if (needed > size.height) await page.setViewportSize({ ...size, height: needed });
+	// The emulated screen, not the viewport, bounds the menu: lift the select toward the top.
+	if (size.width < 500) await page.evaluate((top) => window.scrollBy(0, top), box.y - 340);
 }
 
 // Chromium opens a native menu upward unless roughly this much page remains below its select.
