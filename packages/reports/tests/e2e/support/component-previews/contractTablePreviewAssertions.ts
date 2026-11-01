@@ -38,7 +38,7 @@ export async function assertContractTableState(
 
 async function assertLongTable(component: Locator, variant: string) {
 	if (variant === 'long')
-		await expect(component.getByText('OrderStore.find.returnValue')).toBeVisible();
+		await expect(component.getByText('OrderStore.find.customerAccountIdentifier')).toBeVisible();
 	if (variant === 'multiple') await expect(component.locator('tbody tr')).toHaveCount(2);
 	if (['long', 'multiple'].includes(variant)) await assertExampleButtonsFit(component);
 }

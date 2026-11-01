@@ -131,6 +131,8 @@ export const group = {
 		{
 			name: 'seconds',
 			type: 'number',
+			required: false,
+			default: 0,
 			description: 'Duration in seconds.',
 			source: 'declared',
 			examples: [{ form: 'literal', value: 90, text: '90' }]

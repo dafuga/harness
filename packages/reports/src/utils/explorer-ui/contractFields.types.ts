@@ -15,6 +15,10 @@ export interface ContractField {
 	/** The public type as declared, without the module an inferred type is imported from. */
 	type: string;
 	description?: string;
+	/** Missing legacy requiredness stays unknown rather than becoming optional. */
+	required?: boolean;
+	/** An own literal default; false, zero, null and empty text remain distinct from absence. */
+	default?: unknown;
 	/**
 	 * `declared` when the contract records examples; `illustrative` when it records none and the
 	 * type is plain data a placeholder can show; `missing` when it is neither.
@@ -28,6 +32,8 @@ export interface ContractGroup {
 	title: string;
 	/** Some error tables show only type and example; parameter and return tables keep names. */
 	hideNames?: boolean;
+	/** Source-declared interface fields use the same metadata columns as inputs. */
+	inputMetadata?: boolean;
 	/** Keep an empty API table with an explicit absence message. */
 	keepEmpty?: boolean;
 	/** What is said when the contract declares none. */

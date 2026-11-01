@@ -7,6 +7,7 @@ import {
 } from './explorerTableActionAssertions';
 import { assertProductArtwork } from './moduleCardPreviewAssertions';
 import { assertEntitySearchCapture } from './entitySearchPreviewActions';
+import { assertContractMetadata } from './entityContractPreviewAssertions';
 
 /** Layout previews show both their child slot and the catalog's own layout screenshot. */
 export async function assertCatalogLayout(
@@ -40,6 +41,7 @@ export async function assertCatalogLayout(
 
 /** Catalog examples retain their named values, consumers and basic presentation. */
 export async function assertCatalogDetails(component: Locator, id: string, variant = '') {
+	await assertContractMetadata(component, id, variant);
 	await assertEntitySearchCapture(component, id, variant);
 	await assertProductArtwork(component, id, variant);
 	await assertRecordedReportPreviewState(component, id, variant);

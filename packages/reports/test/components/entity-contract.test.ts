@@ -1,3 +1,4 @@
+import { propContract, contractArrayAdmission } from './entity-contract.fixture';
 import { contractFields } from '../../src/utils/contractFields';
 import { unit as fixtureUnit } from '../explorerFixture';
 import { typeDeclarations } from '../entityClassFixtures';
@@ -22,6 +23,7 @@ test('contract examples propagate serializer and conversion errors', () => {
 	};
 	unit.contract.inputs[0].examples = [rejected];
 	expect(() => content('current', route, { head })).toThrow('Example conversion failed');
+	expect(contractArrayAdmission()).toEqual({ indexed: 1, species: 1, value: 0 });
 });
 
 test('a component contract lists prop types and examples without an output section', () => {
@@ -29,35 +31,25 @@ test('a component contract lists prop types and examples without an output secti
 		const commit = mode === 'current' ? commits.tip : commits.middle;
 		const head = revision(commit, [record(commit)]);
 		head.registry.units = head.registry.units.map((unit) =>
-			unit.id !== ids.list
-				? unit
-				: {
-						...unit,
-						contract: {
-							inputs: [
-								{
-									name: 'enabled',
-									type: 'boolean',
-									description: 'Whether the list is active.',
-									examples: [false]
-								},
-								{ name: 'limit', type: 'number', examples: [0] },
-								{ name: 'empty', type: 'unknown', examples: [null] },
-								{ name: 'settings', type: 'object', examples: [{ label: 'Safe <tag>' }] }
-							],
-							outputs: [{ name: 'count', type: 'number', examples: [2] }],
-							errors: []
-						}
-					}
+			unit.id === ids.list ? { ...unit, contract: propContract } : unit
 		);
 		const body = content(mode, route, { head });
-		for (const text of ['boolean', 'number', 'false', '0', 'null'])
+		for (const text of [
+			'boolean',
+			'number',
+			'false',
+			'0',
+			'null',
+			'Required',
+			'Optional',
+			'Default',
+			'No default'
+		])
 			expect(words(body)).toContain(text);
 		expect(body).toContain('aria-label="Props"');
 		expect(body).not.toContain('aria-label="Inputs"');
 		expect(body).not.toContain('aria-label="Outputs"');
-		expect(body).not.toContain('aria-label="Errors"');
-		expect(words(body)).not.toContain('No errors declared.');
+		expect(words(body)).toContain('No errors declared.');
 		expect(body).toMatch(/<table\b/);
 		expect(body).toContain('aria-haspopup="dialog"');
 		expect(body).toContain('View example for Enabled');
@@ -137,7 +129,12 @@ test('callable contracts preserve actual parameters and associate their returns'
 					],
 					contract: {
 						inputs: [
-							{ name: 'countWords.textToConvert', type: 'string', examples: ['hello world'] }
+							{
+								name: 'countWords.textToConvert',
+								type: 'string',
+								required: true,
+								examples: ['hello world']
+							}
 						],
 						outputs: [{ name: 'countWords.wordCount', type: 'number', examples: [2] }],
 						errors: []
@@ -153,13 +150,14 @@ test('callable contracts preserve actual parameters and associate their returns'
 	expect(words(body)).toContain('countWords(textToConvert)');
 	expect(words(body)).not.toContain('textToConvert: string');
 	for (const type of ['string', 'number']) expect(words(body)).toContain(type);
+	expect(words(body)).toContain('Required');
+	expect(words(body)).toContain('No default');
 	expect(body).toContain('aria-label="Parameters"');
 	expect(body).toContain('aria-label="Returns"');
 	expect(body, 'return table includes the declared value name').toContain(
 		'View example for wordCount'
 	);
-	expect(body).not.toContain('aria-label="Throws"');
-	expect(words(body)).not.toContain('No errors declared.');
+	expect(words(body)).toContain('No errors declared.');
 	expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
 });
 test('a selected callable page excludes sibling APIs and rejects missing symbols', () => {
@@ -195,8 +193,7 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 				`aria-label="${helper === 'first' ? 'second' : 'first'} contract"`
 			);
 			expect(body).toContain(`View example for ${helper === 'first' ? 'greeting' : 'answer'}`);
-			expect(body.includes('aria-label="Throws"')).toBe(helper === 'second');
-			expect(words(body).includes('No errors declared.')).toBe(false);
+			expect(words(body).includes('No errors declared.')).toBe(helper === 'first');
 			expect(words(body).includes('TypeError')).toBe(helper === 'second');
 		}
 		const missing = content(

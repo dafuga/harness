@@ -74,7 +74,8 @@ test('model contracts show each real initialization and mutation method with par
 		'find(id)',
 		'update(id, input)',
 		'delete(id)',
-		'initialize(adapter)'
+		'initialize(adapter)',
+		'Errors'
 	]);
 	const displayed = words(body).replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 	for (const type of ['PersistenceAdapter', 'OrderInput', 'Promise<Order>'])
@@ -83,7 +84,7 @@ test('model contracts show each real initialization and mutation method with par
 		expect(body).not.toContain(`aria-label="${title}"`);
 	expect(body).toContain('aria-label="Parameters"');
 	expect(body).toContain('aria-label="Returns"');
-	expect(body).not.toContain('No errors declared.');
+	expect(body).toContain('No errors declared.');
 });
 
 test('model details provide a separate revision-scoped Table tab', () => {

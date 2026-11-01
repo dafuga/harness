@@ -149,7 +149,7 @@
 			{
 				"name": "contractFields",
 				"type": "ContractGroup[]",
-				"description": "Input, output and declared-error groups, or source-declared type groups. Type fields retain exact names and types without invented examples or runtime behavior."
+				"description": "Typed input/output groups and declared errors or an explicit absence message; shared types retain source fields and optionality without invented defaults."
 			},
 			{
 				"name": "contractFacts",
@@ -159,10 +159,42 @@
 			{
 				"name": "callableContracts",
 				"type": "{ name: string; signature: string; groups: ContractGroup[] }[]",
-				"description": "Callable signatures and Parameters/Returns groups with literal parameter names and declared return value names; a Throws table appears only when errors are declared."
+				"description": "Literal callable parameters with requirement/default metadata, named return values and declared errors or an explicit No errors declared message."
+			},
+			{
+				"name": "fieldOf",
+				"type": "ContractField",
+				"description": "A readable field preserving requiredness, own literal defaults and authored or illustrative examples."
+			},
+			{
+				"name": "returnField",
+				"type": "ContractField",
+				"description": "A declared return value with its literal name and public type, or an explicit void return."
+			},
+			{
+				"name": "guess",
+				"type": "Guess",
+				"description": "A bounded illustrative plain-data value when its type can be represented; otherwise JavaScript undefined."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Deeply nested authored examples exceed the JSON serializer stack."
+			},
+			{
+				"name": "Getter, proxy or conversion error",
+				"type": "propagated",
+				"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "typeLabel",
@@ -203,11 +235,28 @@
 				"outputs": [
 					{
 						"name": "fieldOf",
-						"type": "ContractField"
+						"type": "ContractField",
+						"description": "A readable field preserving requiredness, own literal defaults and authored or illustrative examples."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Deeply nested authored examples exceed the JSON serializer stack."
+					},
+					{
+						"name": "Getter, proxy or conversion error",
+						"type": "propagated",
+						"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "contractFields",
@@ -232,8 +281,24 @@
 						"description": "Input, output and declared-error groups, or source-declared type groups. Type fields retain exact names and types without invented examples or runtime behavior."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Deeply nested authored examples exceed the JSON serializer stack."
+					},
+					{
+						"name": "Getter, proxy or conversion error",
+						"type": "propagated",
+						"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "contractFacts",
@@ -281,11 +346,27 @@
 					{
 						"name": "callableContracts",
 						"type": "CallableContract[]",
-						"description": "Callable signatures and Parameters/Returns groups with literal parameter names and declared return value names; a Throws table appears only when errors are declared."
+						"description": "Callable parameters and named returns preserve declared metadata; Throws lists errors or states No errors declared."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Deeply nested authored examples exceed the JSON serializer stack."
+					},
+					{
+						"name": "Getter, proxy or conversion error",
+						"type": "propagated",
+						"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "returnField",
@@ -318,11 +399,28 @@
 				"outputs": [
 					{
 						"name": "returnField",
-						"type": "ContractField"
+						"type": "ContractField",
+						"description": "A declared return value with its literal name and public type, or an explicit void return."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "An authored example contains BigInt or circular data that JSON cannot serialize."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Deeply nested authored examples exceed the JSON serializer stack."
+					},
+					{
+						"name": "Getter, proxy or conversion error",
+						"type": "propagated",
+						"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "guess",
@@ -343,7 +441,8 @@
 				"outputs": [
 					{
 						"name": "guess",
-						"type": "Guess"
+						"type": "Guess",
+						"description": "A bounded illustrative plain-data value when its type can be represented; otherwise JavaScript undefined."
 					}
 				],
 				"errors": [],
