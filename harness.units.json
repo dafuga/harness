@@ -1068,6 +1068,12 @@
 			"specifier": "../explorer-ui/explorer-kit/Card.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
 			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/Composer.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Desktop reuses the shared Notice to explain why an unapproved Change cannot be sent."
 		}
 	]
 }

@@ -6,6 +6,7 @@
 	import type { AgentChoice, ComposeMode, RunDraft } from '../../utils/explorer-ui/composeModes';
 	import { agentSettings } from '../../lib/agents-providers/agent-settings/agentSettings.svelte';
 	import AgentControls from '../agents-providers/AgentControls.svelte';
+	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
 	let {
 		modes,
 		providers,
@@ -89,6 +90,9 @@
 	{#if counted}<hx-small class="composer-hint"
 			>Visual plan · {agentSettings.designOptions} design options</hx-small
 		>{/if}
+	{#if request === 'change' && !approved}
+		<Notice>Approve the current exact design before sending changes.</Notice>
+	{/if}
 	{#if modes.length > 1}<hx-div class="mode-options" role="group" aria-label="Request mode">
 			{#each modes as item (item)}<hx-button
 					type="button"
@@ -112,6 +116,13 @@
 </hx-form>
 
 <style>
+	.composer:not(.compact) > .composer-hint {
+		display: block;
+		margin-top: var(--hx-space-8);
+	}
+	.composer:not(.compact) > :global(.ex-notice) {
+		margin: var(--hx-space-8) 0 0;
+	}
 	/* Compact, what is asked shares one row with the icons that choose its agent, beside send. */
 	.compact {
 		display: grid;

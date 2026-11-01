@@ -10,6 +10,7 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.agent-controls",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-form",
@@ -24,6 +25,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-notice"],
 		"inputs": [
 			{
 				"name": "Composer.modes",
@@ -101,7 +103,7 @@
 			{
 				"name": "Composer",
 				"type": "markup",
-				"description": "Message form with permitted mode choices, agent controls for Ask, Plan and Change, and a send button. Blocks submission without a mode, with blank text, while running, without an agent choice for a request, or for an unapproved Change. Loads device agent settings on mount. Comments use the comment callback and never start an agent through this component. False callback results retain the message and show a retry notice unless the parent reports the failure. Visual plans show the device option count."
+				"description": "Message form with permitted mode choices, agent controls for Ask, Plan and Change, and a send button. Blocks submission without a mode, with blank text, while running, without an agent choice for a request, or for an unapproved Change. Loads device agent settings on mount. Comments use the comment callback and never start an agent through this component. False callback results retain the message and show a retry notice unless the parent reports the failure. Visual plans show the device option count. Visual-plan captions occupy a separate line below the message field. Unapproved Change requests display the shared Notice explaining that the current exact design needs approval."
 			}
 		],
 		"errors": [
@@ -147,6 +149,11 @@
 		},
 		{
 			"unit": "desktop.store.agent-settings",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},
