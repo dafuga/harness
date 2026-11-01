@@ -151,13 +151,11 @@ function historyOf(route: Route, url: URL) {
 async function media(route: Route, path: string, home: string) {
 	const all = catalogFixtureMedia(home);
 	const file = path.split('/').pop()!;
-	const shell = shellMedia(file);
-	if (shell) return route.fulfill({ contentType: 'image/svg+xml', body: shell });
 	const artifact = artifactByName(all, file);
 	if (artifact)
 		return route.fulfill({ contentType: artifact.mediaType, body: Buffer.from(artifact.data) });
 	// A sealed result is kept under its hash, as the function results of the route history are.
-	const kept = all.bytes[file.replace(/\.[^.]+$/, '')];
+	const kept = storedMedia(all, file);
 	if (kept) return route.fulfill({ contentType: kept.mediaType, body: Buffer.from(kept.data) });
 	if (file === 'preview.wav')
 		return route.fulfill({ contentType: 'audio/wav', body: audioFixture(42) });
@@ -187,6 +185,15 @@ async function media(route: Route, path: string, home: string) {
 		contentType: 'image/svg+xml',
 		body: decodeURIComponent(image.split(',')[1])
 	});
+}
+
+/** Additional shell artwork shares the existing immutable-media response path. */
+function storedMedia(all: ReturnType<typeof catalogFixtureMedia>, file: string) {
+	const svg = shellMedia(file);
+	return (
+		all.bytes[file.replace(/\.[^.]+$/, '')] ??
+		(svg ? { mediaType: 'image/svg+xml', data: [...Buffer.from(svg)] } : undefined)
+	);
 }
 
 /** Recorded artifact bytes by their served filename; a declared artifact cannot fall back to a stand-in. */

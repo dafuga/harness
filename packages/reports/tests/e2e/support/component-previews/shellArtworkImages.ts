@@ -2,12 +2,12 @@ import { ids } from '../../../../test/entityUnits';
 
 /** Product-shaped input artwork; the surrounding recording retains fixture provenance. */
 export function shellImage(id: string, viewport = 'desktop', before = false, incomparable = false) {
-	const [width, height] =
-		viewport === 'mobile'
-			? [390, 844]
-			: viewport === 'tablet'
-				? [768, 1024]
-				: [incomparable ? 1120 : 1440, 900];
+	const sizes: Record<string, [number, number]> = {
+		mobile: [390, 844],
+		tablet: [768, 1024],
+		desktop: [incomparable ? 1120 : 1440, 900]
+	};
+	const [width, height] = sizes[viewport] ?? sizes.desktop;
 	const pad = width < 500 ? 24 : 48;
 	const font = width < 500 ? 18 : 28;
 	const layout = id === 'app.shell.orders-frame';
@@ -50,10 +50,8 @@ function imageText(id: string, before: boolean) {
 			} as Record<string, string>
 		)[id] ?? 'Orders';
 	const status = before ? 'Processing' : 'Ready to ship';
-	const rows = search
-		? ['Find a customer or reference', 'Search']
-		: card
-			? ['2 items · Standard delivery', '$128.00 · Paid', `Status: ${status}`]
-			: [`Order A-1048 · ${status}`, 'Order A-1047 · Delivered'];
+	let rows = [`Order A-1048 · ${status}`, 'Order A-1047 · Delivered'];
+	if (search) rows = ['Find a customer or reference', 'Search'];
+	else if (card) rows = ['2 items · Standard delivery', '$128.00 · Paid', `Status: ${status}`];
 	return { heading, rows };
 }
