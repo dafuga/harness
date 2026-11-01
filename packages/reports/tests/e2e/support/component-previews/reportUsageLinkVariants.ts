@@ -20,7 +20,6 @@ export function usageLinkVariant(props: PreviewCases[string], variant: string) {
 			nav: variant === 'source-enabled' ? { ...nav, source: () => {} } : nav
 		};
 	}
-	if (variant === 'touch') return props;
 	if (
 		!['visual-open', 'hover-open', 'inherited-open', 'missing-open', 'image-error-open'].includes(
 			variant

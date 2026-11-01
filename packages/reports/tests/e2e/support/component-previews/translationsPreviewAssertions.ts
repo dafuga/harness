@@ -164,7 +164,7 @@ export async function assertTranslations(component: Locator, variant: string) {
 		await expect(component.getByRole('columnheader')).toHaveText(['English', 'Used In']);
 		await expect(component).toContainText('Acceptance criteria');
 	}
-	if (['empty', 'no-matches'].includes(variant))
+	if (variant === 'no-matches')
 		await expect(component).toContainText('No translations match this search.');
 	if (['gaps', 'gaps-open'].includes(variant))
 		await expect(component.locator('.ex-translations-gaps summary')).toContainText(

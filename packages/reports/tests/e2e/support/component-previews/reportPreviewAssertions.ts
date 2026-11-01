@@ -55,6 +55,7 @@ export async function assertRecordedReportPreviewState(
 	id: string,
 	variant: string
 ) {
+	await assertCatalogStateDistinction(component, id, variant);
 	if (id === 'reports.component.select' && variant === 'open') await expandedSelect(component);
 	if (id.startsWith('reports.component.source-') && variant === 'empty-file') {
 		await expect(component.getByRole('status')).toHaveText('This file is empty.');
@@ -82,6 +83,71 @@ export async function assertRecordedReportPreviewState(
 			'Lightbox capture frames the image rather than unused canvas'
 		).toBeGreaterThan(0.45);
 		await expect(component.locator('figcaption')).toHaveText('Order A-1048 · Ready to ship');
+	}
+}
+
+/** Check visible state distinctions after retaining the same settled screenshot. */
+async function assertCatalogStateDistinction(component: Locator, id: string, variant: string) {
+	const key = `${id}:${variant}`;
+	const gaps: Record<string, string> = {
+		'reports.component.explorer-ui-explorer-platform-details:unindexed':
+			'No platform catalog is indexed at this revision.',
+		'reports.component.explorer-ui-explorer-translations-screen:empty':
+			'No translation strings are recorded at this revision.',
+		'reports.component.networking-security-explorer-permissions-screen:endpoint-unindexed':
+			'No permission catalog is indexed at this revision.'
+	};
+	if (key === 'reports.component.explorer-ui-config-value-tree:disclosure-hovered')
+		await assertDisclosurePaint(component);
+	if (gaps[key])
+		await expect(component, 'Catalog absence and empty data stay distinct').toContainText(
+			gaps[key]
+		);
+	if (
+		key === 'reports.component.explorer-ui-explorer-platforms:status-options-open' ||
+		key === 'reports.component.explorer-ui-explorer-translations-screen:language-open'
+	)
+		await assertCatalogPickerClearance(component, id);
+}
+
+async function assertDisclosurePaint(component: Locator) {
+	const summary = component.locator('summary').first();
+	const paint = () =>
+		summary.evaluate((node) => {
+			const style = getComputedStyle(node);
+			return [style.backgroundColor, style.color, style.boxShadow].join('/');
+		});
+	const hovered = await paint();
+	await component.page().mouse.move(1, 1);
+	const resting = await paint();
+	expect(hovered, 'Disclosure hover changes visible paint').not.toEqual(resting);
+	await summary.hover();
+}
+
+async function assertCatalogPickerClearance(component: Locator, id: string) {
+	const platform = id === 'reports.component.explorer-ui-explorer-platforms';
+	const select = component.getByRole('combobox', { name: platform ? 'Status filter' : 'Language' });
+	const menu = await select.evaluate((node: HTMLSelectElement) => {
+		const boxes = [...node.options].map((option) => option.getBoundingClientRect());
+		return {
+			bottom: Math.max(...boxes.map((box) => box.bottom)),
+			painted: boxes.every((box) => box.width > 0 && box.height > 0)
+		};
+	});
+	expect(menu.painted, 'Every open catalog option is painted').toBe(true);
+	const next = platform
+		? component.getByRole('button', { name: 'Done', exact: true })
+		: component.getByRole('columnheader', { name: 'English', exact: true });
+	const boundary = (await next.boundingBox())!;
+	expect(
+		menu.bottom,
+		'Open catalog options leave headings and dialog actions clear'
+	).toBeLessThanOrEqual(boundary.y);
+	if (platform) {
+		const dialog = (await component.getByRole('dialog', { name: 'Filters' }).boundingBox())!;
+		expect(menu.bottom, 'Open status options fit inside the dialog').toBeLessThanOrEqual(
+			dialog.y + dialog.height
+		);
 	}
 }
 

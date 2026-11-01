@@ -27,7 +27,7 @@ export async function prepareUsagePopover(component: Locator, variant: string) {
 
 /** Use the link's own focus and touch handling to reach its preview states. */
 export async function prepareUsageLink(component: Locator, variant: string) {
-	if (variant === 'touch') {
+	if (!variant) {
 		await component.getByRole('link').dispatchEvent('pointerenter', { pointerType: 'touch' });
 		await expect(component.getByRole('tooltip')).toHaveCount(0);
 	}

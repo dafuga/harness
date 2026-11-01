@@ -62,8 +62,7 @@ export async function assertPermissionState(component: Locator, variant: string)
 		gap: 'Policy manifest is unavailable at this revision.',
 		'empty-data': 'No data access declared.',
 		endpoint: 'Administrator',
-		'endpoint-empty': 'No access declaration names this endpoint',
-		'endpoint-unindexed': 'No access declaration names this endpoint'
+		'endpoint-empty': 'No access declaration names this endpoint'
 	};
 	if (words[variant]) await expect(component).toContainText(words[variant]);
 	if (variant === 'index') await expect(component.locator('article')).toHaveCount(3);
