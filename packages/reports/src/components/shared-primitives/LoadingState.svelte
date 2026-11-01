@@ -1,5 +1,5 @@
 <!-- @harness-tier molecule -->
-<!-- @harness-atoms atoms -->
+<!-- @harness-atoms ./atoms -->
 <script lang="ts">
 	/** A quiet status while page data is read. It reads nothing itself and claims no progress. */
 	let { label = 'Loading…', inline = false }: { label?: string; inline?: boolean } = $props();
