@@ -100,3 +100,14 @@
 		{#each panes as item (item.id)}<RuntimePane {item} {evidence} {...heading(item)} />{/each}
 	</hx-div>
 </hx-div>
+
+<style>
+	.runtime-card :global(p.runtime-gap),
+	.runtime-gap :global(li) {
+		flex-wrap: nowrap;
+	}
+	.runtime-card :global(p.runtime-gap > .verification-wrap),
+	.runtime-gap :global(li > .verification-wrap) {
+		flex: none;
+	}
+</style>

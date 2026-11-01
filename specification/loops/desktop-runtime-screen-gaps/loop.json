@@ -2,7 +2,7 @@
 	"name": "desktop-runtime-screen-gaps",
 	"goal": "Runtime screen gap messages stay beside their icons at every viewport.",
 	"createdAt": "2026-11-01T01:19:50.118Z",
-	"updatedAt": "2026-11-01T01:22:16.807Z",
+	"updatedAt": "2026-11-01T01:22:32.887Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T01:22:32.887Z",
+			"evidence": "RuntimeScreens locally copies RuntimeArtifact nowrap gap rows and non-growing verification wrappers. Tests, fixtures and assertions remain unchanged from4541."
 		},
 		{
 			"id": "green",
