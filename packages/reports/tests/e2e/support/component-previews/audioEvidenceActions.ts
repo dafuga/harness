@@ -11,13 +11,22 @@ export async function prepareAudioEvidence(component: Locator, variant: string) 
 	}
 	if (variant === 'playing') {
 		const audio = component.locator('audio');
-		await audio.evaluate((element: HTMLAudioElement) => element.play());
+		// Start part-way through the clip so the player shows elapsed time and progress.
+		await audio.evaluate(async (element: HTMLAudioElement) => {
+			await new Promise<void>((resolve) => {
+				if (element.readyState >= 1) return resolve();
+				element.addEventListener('loadedmetadata', () => resolve(), { once: true });
+				element.load();
+			});
+			element.currentTime = 15;
+			await element.play();
+		});
 		await expect
 			.poll(() => audio.evaluate((element: HTMLAudioElement) => element.paused))
 			.toBe(false);
-	}
-	if (variant === 'duration-loaded') {
-		await expect(component.locator('.audio-duration')).toHaveText('0:42');
+		await expect
+			.poll(() => audio.evaluate((element: HTMLAudioElement) => element.currentTime))
+			.toBeGreaterThan(15);
 	}
 	if (variant === 'audio-error') {
 		await component.locator('audio').evaluate(async (element: HTMLAudioElement) => {

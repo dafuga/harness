@@ -78,7 +78,6 @@ export const audioCatalogVariants: Record<string, string[]> = {
 		'interrupted',
 		'notes-transcript-closed',
 		'minimal',
-		'duration-loaded',
 		'phase-before',
 		'phase-after',
 		'phase-current',

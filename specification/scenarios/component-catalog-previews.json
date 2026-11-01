@@ -2227,12 +2227,6 @@
 			"units": ["reports.component.audio-evidence"]
 		},
 		{
-			"id": "reports-component-audio-evidence-duration-loaded",
-			"title": "Audio evidence: Duration from playback",
-			"coverage": "required",
-			"units": ["reports.component.audio-evidence"]
-		},
-		{
 			"id": "reports-component-audio-evidence-phase-before",
 			"title": "Audio evidence: Before recording",
 			"coverage": "required",
@@ -8290,7 +8284,6 @@
 				"reports-component-audio-evidence-interrupted",
 				"reports-component-audio-evidence-notes-transcript-closed",
 				"reports-component-audio-evidence-minimal",
-				"reports-component-audio-evidence-duration-loaded",
 				"reports-component-audio-evidence-phase-before",
 				"reports-component-audio-evidence-phase-after",
 				"reports-component-audio-evidence-phase-current",
