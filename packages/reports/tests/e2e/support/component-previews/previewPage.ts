@@ -193,7 +193,7 @@ export async function capturePreview(
 	return { clip, bytes };
 }
 
-function visibleClip(page: Page, bounds: PreviewClip) {
+function visibleClip(page: Page, bounds: { x: number; y: number; width: number; height: number }) {
 	const height = page.viewportSize()?.height ?? bounds.height;
 	return { ...bounds, height: Math.max(1, Math.min(bounds.height, height - bounds.y)) };
 }
