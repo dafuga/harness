@@ -2,7 +2,7 @@
 	"name": "sol8-result-and-approval-review",
 	"goal": "Recorded results use consistent row spacing and remote approval visibly reports progress.",
 	"createdAt": "2026-11-01T11:35:00.760Z",
-	"updatedAt": "2026-11-01T11:35:55.290Z",
+	"updatedAt": "2026-11-01T12:00:39.780Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:00:39.780Z",
+			"evidence": "At 950f874e7c, all three viewports fail unchanged catalog assertions: 4px versus 8px gaps and Approve instead of Approving. Record resume36-red-sealed.json."
 		},
 		{
 			"id": "implement",

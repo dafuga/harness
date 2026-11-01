@@ -180,6 +180,12 @@ for (const viewport of catalogViewports) {
 			}
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
 			await assertRecordedCompatibility(component, unit.id, variant);
+			if (unit.id === 'reports.component.harness-entity-artifact' && variant === 'raw-open') {
+				const original = await component
+					.getByRole('link', { name: 'Open the recorded Assertions' })
+					.evaluate(async (link: HTMLAnchorElement) => (await fetch(link.href)).text());
+				await expect(component.locator('details[open] details[open] pre')).toHaveText(original);
+			}
 			if (
 				unit.id === 'reports.component.explorer-ui-explorer-platforms' &&
 				variant === 'status-options-open'
