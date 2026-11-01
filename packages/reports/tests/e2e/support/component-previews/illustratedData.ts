@@ -87,19 +87,7 @@ export async function desktopScreenFixtures(original: Data) {
 				const data = await page.locator('svg').screenshot({ animations: 'disabled' });
 				const hash = createHash('sha256').update(data).digest('hex');
 				const old = value.captures[0].capture.sha256;
-				for (const found of value.captures) {
-					found.current = true;
-					found.standing = 'fresh';
-					found.inheritedFrom = null;
-					if (found.capture.server) found.capture.server.revision = value.commit;
-				}
-				const record = value.record!;
-				for (const entry of record.scenarios.filter((item) => item.id === scenario)) {
-					entry.inherited = false;
-					entry.testedRevision = value.commit;
-					entry.origin = { ...entry.origin, record: record.id, commit: value.commit };
-				}
-				if (value.detail) value.detail.records = [record];
+				freshComparison(value, scenario);
 				result.evidence[side] = JSON.parse(JSON.stringify(value).replaceAll(old, hash));
 				bytes[hash] = { mediaType: 'image/png', data: [...data] };
 			}
@@ -137,4 +125,23 @@ ${
 		: ''
 }
 </g></svg>`;
+}
+
+function freshComparison(
+	value: NonNullable<Data['results'][string]['evidence']['after']>,
+	scenario: string
+) {
+	for (const found of value.captures) {
+		found.current = true;
+		found.standing = 'fresh';
+		found.inheritedFrom = null;
+		if (found.capture.server) found.capture.server.revision = value.commit;
+	}
+	const record = value.record!;
+	for (const entry of record.scenarios.filter((item) => item.id === scenario)) {
+		entry.inherited = false;
+		entry.testedRevision = value.commit;
+		entry.origin = { ...entry.origin, record: record.id, commit: value.commit };
+	}
+	if (value.detail) value.detail.records = [record];
 }
