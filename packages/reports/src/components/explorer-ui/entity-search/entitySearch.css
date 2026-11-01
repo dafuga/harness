@@ -1,0 +1,101 @@
+.entity-search-trigger svg,
+.entity-search-field svg {
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+}
+.entity-search-trigger,
+.entity-search .viewer-dialog .viewer-header button {
+	display: grid;
+	place-items: center;
+	box-sizing: border-box;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
+	border-radius: var(--hx-radius-small);
+	background: none;
+	color: inherit;
+	font-size: var(--hx-type-size-2xl);
+	cursor: pointer;
+}
+.entity-search-trigger:hover,
+.entity-search .viewer-dialog .viewer-header button:hover {
+	border-color: var(--hx-color-primary);
+	color: var(--hx-color-primary);
+}
+.entity-search-trigger:focus-visible,
+.entity-search .viewer-dialog .viewer-header button:focus-visible,
+.entity-search-field:focus-within {
+	outline: var(--hx-border-thick) solid var(--hx-color-primary);
+	outline-offset: var(--hx-border-thin);
+}
+.entity-search .viewer-dialog[open] {
+	display: flex;
+	flex-direction: column;
+	width: min(640px, calc(100vw - 24px));
+	max-width: none;
+	height: auto;
+	max-height: calc(100dvh - min(12vh, 96px) - 12px);
+	margin: var(--hx-layout-dialog-offset) auto auto;
+	padding: 0;
+	overflow: hidden;
+	border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
+	border-radius: var(--hx-radius-xlarge);
+	background: var(--hx-color-surface, var(--hx-color-surface));
+	color: var(--hx-color-text);
+	font-size: var(--hx-type-size-base);
+	box-shadow: var(--hx-shadow-dialog);
+}
+.entity-search .viewer-dialog[open]::backdrop {
+	background: var(--hx-color-scrim);
+}
+.entity-search .viewer-dialog .viewer-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--hx-space-8) var(--hx-space-8) var(--hx-space-8) var(--hx-space-18);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
+	background: none;
+}
+.entity-search .viewer-dialog h2 {
+	margin: 0;
+	font-size: inherit;
+}
+.entity-search-field {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-10);
+	padding: 0 var(--hx-space-14);
+	border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
+	border-radius: var(--hx-radius);
+	background: var(--hx-color-hover);
+	color: var(--hx-color-text-muted, var(--hx-color-text-muted));
+}
+/* Under the field's border, which shows the focus; sixteen pixels, so a phone does not zoom in. */
+.entity-search-field input {
+	flex: 1;
+	min-width: 0;
+	min-height: 44px;
+	padding: 0;
+	border: 0;
+	outline: none;
+	background: none;
+	color: var(--hx-color-text);
+	font: inherit;
+	font-size: var(--hx-type-size-base);
+}
+.entity-search .entity-search-field input:focus-visible {
+	outline: 0;
+}
+.entity-search-field input::placeholder {
+	color: var(--hx-color-text-muted, var(--hx-color-text-muted));
+}
+.entity-search-trigger {
+	display: flex;
+	gap: var(--hx-space-8);
+	width: auto;
+	padding-inline: var(--hx-space-12);
+	font-size: var(--hx-type-size-base);
+}

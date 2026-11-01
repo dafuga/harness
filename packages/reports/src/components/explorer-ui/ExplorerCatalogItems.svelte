@@ -77,6 +77,11 @@
 		gap: var(--hx-space-14);
 		min-width: 0;
 	}
+	.ex-batched-catalog > :global(.hx-action:hover) {
+		border-color: var(--hx-color-secondary);
+		text-decoration: underline;
+		text-underline-offset: var(--hx-space-2);
+	}
 	/* Three tiles across a desktop, two on a tablet, one on a phone; a lone tile stays a tile. */
 	.ex-catalog-grid {
 		display: grid;

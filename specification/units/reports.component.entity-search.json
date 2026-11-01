@@ -3,7 +3,7 @@
 	"id": "reports.component.entity-search",
 	"kind": "component",
 	"title": "Entity search",
-	"responsibility": "Opens project search from a navbar icon and finds entities in the selected revision.",
+	"responsibility": "Opens project search from a labelled navbar control and finds entities in the selected revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -14,13 +14,17 @@
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-input",
+			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-svg-circle",
 			"reports.component.shared-primitives-atoms-svg-path",
 			"reports.component.shared-primitives-atoms-svg-svg"
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/entity-search/EntitySearch.svelte"],
+		"source": [
+			"packages/reports/src/components/explorer-ui/entity-search/EntitySearch.svelte",
+			"packages/reports/src/components/explorer-ui/entity-search/entitySearch.css"
+		],
 		"symbols": ["EntitySearch", "EntitySearch.glass"]
 	},
 	"contract": {
@@ -55,7 +59,7 @@
 			{
 				"name": "EntitySearch",
 				"type": "markup",
-				"description": "A search icon opens a modal by click or Cmd/Ctrl+K. The focused query offers ranked results; arrows and Enter navigate. Escape closes the modal and restores icon focus."
+				"description": "A labelled search control opens a modal by click or Cmd/Ctrl+K. The focused query offers ranked results with a visible scroll cue when they overflow; arrows and Enter navigate. Escape closes the modal and restores trigger focus."
 			}
 		],
 		"errors": [
@@ -116,6 +120,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},
