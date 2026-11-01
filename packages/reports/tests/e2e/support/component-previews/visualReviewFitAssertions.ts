@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { previewCaptureBounds } from './previewCaptureBounds';
 
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.explorer-catalog-items': paginationHover,
@@ -13,6 +14,7 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 
 /** Check the recorded state after capture so rejected pixels remain available for diagnosis. */
 export async function assertVisualReviewFit(component: Locator, id: string, variant: string) {
+	await openDialogExtent(component, id, variant);
 	await checks[id]?.(component, variant);
 }
 
@@ -58,6 +60,14 @@ async function shortExamples(component: Locator) {
 }
 
 async function selectedLabels(component: Locator) {
+	const altered = await component
+		.locator('.report-select-value')
+		.evaluateAll((nodes) =>
+			nodes
+				.filter((node) => (node as HTMLElement).innerText.trim() !== node.textContent?.trim())
+				.map((node) => node.textContent)
+		);
+	expect(altered, 'Revision summaries preserve the original value case').toEqual([]);
 	const clipped = await component.locator('select').evaluateAll((fields: HTMLSelectElement[]) => {
 		const canvas = document.createElement('canvas').getContext('2d')!;
 		return fields.flatMap((field) => {
@@ -143,5 +153,33 @@ async function behaviorSummary(component: Locator, variant: string) {
 			await summary.locator('.ex-change-reasons p').count(),
 			'Each reason is a separate paragraph'
 		).toBeGreaterThan(1);
+	}
+}
+
+/** A full frame still includes owned fixed dialogs that extend beyond its ordinary content. */
+async function openDialogExtent(component: Locator, id: string, variant: string) {
+	if ((await component.getAttribute('data-preview-frame')) !== 'full') return;
+	const dialogs = component.getByRole('dialog');
+	if (!(await dialogs.count())) return;
+	const clip = await previewCaptureBounds(component.page(), id, variant);
+	const boxes = await dialogs.evaluateAll((nodes) =>
+		nodes.map((node) => {
+			const box = node.getBoundingClientRect();
+			return {
+				left: box.left + scrollX,
+				right: box.right + scrollX,
+				top: box.top + scrollY,
+				bottom: box.bottom + scrollY
+			};
+		})
+	);
+	for (const box of boxes) {
+		expect(clip.x, 'The complete open dialog fits its capture').toBeLessThanOrEqual(box.left);
+		expect(clip.y).toBeLessThanOrEqual(box.top);
+		expect(clip.x + clip.width).toBeGreaterThanOrEqual(box.right);
+		expect(
+			clip.y + clip.height,
+			'The complete open dialog fits its capture'
+		).toBeGreaterThanOrEqual(box.bottom);
 	}
 }

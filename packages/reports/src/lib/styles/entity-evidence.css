@@ -182,6 +182,10 @@
 	white-space: pre-wrap;
 	overflow-wrap: anywhere;
 }
+.ex-content .ex-artifact > details pre {
+	max-height: none;
+	overflow: visible;
+}
 .ex-content .ex-artifact summary {
 	color: var(--ex-soft);
 	cursor: pointer;
