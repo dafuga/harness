@@ -2,7 +2,7 @@
 	"name": "sol8-shell-visual-review",
 	"goal": "Render distinct responsive shell previews and readable history, tables and navigation.",
 	"createdAt": "2026-11-01T10:00:58.038Z",
-	"updatedAt": "2026-11-01T10:07:42.236Z",
+	"updatedAt": "2026-11-01T10:26:32.012Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T10:25:02.515Z",
+			"evidence": "6e13454517fc8640e1cef9ffc33865d518b1fa7ecacd909648f2acd10c1efa9f: 28 visual failures and two passes at d04817ee08."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T10:25:04.309Z",
+			"evidence": "7f6e3362cf fixes screenshot captions and viewer mounting, historical status, phone schema rows, registry notices and tab scroll affordances."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T10:26:32.012Z",
+			"evidence": "669bea550e0493a96668a7704d81d3702b0b0af1eddae407ab15416f836582a1: unchanged command and complete test corpus, 30 passed at 7f6e3362cf."
 		},
 		{
 			"id": "verify",
