@@ -111,6 +111,11 @@ async function assertUsagePreviewBounds(component: Locator) {
 		'Usage preview stays inside its owner right edge'
 	).toBeLessThanOrEqual(owner.x + owner.width);
 	if (await article.count()) {
+		expect(popup.y, 'Usage preview stays inside its card top edge').toBeGreaterThanOrEqual(owner.y);
+		expect(
+			popup.y + popup.height,
+			'Usage preview stays inside its card bottom edge'
+		).toBeLessThanOrEqual(owner.y + owner.height);
 		const title = (await article.getByRole('heading').boundingBox())!;
 		const overlaps =
 			popup.x < title.x + title.width &&

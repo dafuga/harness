@@ -2,11 +2,9 @@
 	"name": "sol8-usage-preview-fit",
 	"goal": "Show hidden consumers at a zero limit and keep usage previews inside their owner without covering its title.",
 	"createdAt": "2026-11-01T03:18:05.853Z",
-	"updatedAt": "2026-11-01T03:22:11.390Z",
+	"updatedAt": "2026-11-01T03:28:08.784Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -29,17 +27,21 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-11-01T03:22:11.390Z",
-			"evidence": "3eaa1c3e0a at 754437103c fails zero-limit visibility and owner left-edge assertions after retaining all nine affected screenshots."
+			"evidence": "Final record 9dbef82290 at b2c3db264f fails all nine owner-fit and readable-count cases. Earlier 3eaa1c3e0a failed six geometry cases but admitted clipped labels."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T03:28:07.350Z",
+			"evidence": "30f1333351 and 01d4afec70 show zero-limit counts and anchor previews inside the containing card, away from its title."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T03:28:08.784Z",
+			"evidence": "Final green record at 01d4afec70 passes all nine unchanged state/viewport assertions; final red 9dbef82290 fails all nine."
 		},
 		{
 			"id": "verify",
