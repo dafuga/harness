@@ -53,7 +53,8 @@
 			'explorer-usage-link',
 			'source-code-action',
 			'source-file-list',
-			'source-viewer'
+			'source-viewer',
+			'shared-primitives-compare-panes'
 		].some((name) => id === `reports.component.${name}`);
 	const reports = id.startsWith('reports.');
 	const historyColumns = ['Date', 'Commit', 'Behavior change', 'Size', 'Complexity', 'Latency'];
