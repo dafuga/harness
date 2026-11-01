@@ -1,6 +1,7 @@
 import type { DesktopData } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
-import { desktopArtifactText } from './desktopFixtureData';
+import { desktopArtifactText, desktopData } from './desktopFixtureData';
+import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 
 export function desktopRuntimeVariant(
 	id: string,
@@ -9,6 +10,7 @@ export function desktopRuntimeVariant(
 	variant: string
 ): PreviewProps | null {
 	if (id === 'desktop.component.runtime-artifact') return artifact(props, data, variant);
+	if (id === 'desktop.component.runtime-behavior') return behavior(props, data, variant);
 	if (id === 'desktop.component.status-icon') {
 		const changes: Record<string, PreviewProps> = {
 			failed: {
@@ -42,12 +44,31 @@ export function desktopRuntimeVariant(
 		};
 		return { ...props, options: [], result: { ...result, evidence } };
 	}
-	if (id === 'desktop.component.runtime-behavior' && variant === 'empty')
-		return {
-			...props,
-			result: { ...data.result, behavior: { ...data.result.behavior, rows: [] } }
-		};
 	return id.includes('.runtime-') ? props : null;
+}
+
+function behavior(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
+	const result =
+		variant === 'loading'
+			? desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`]
+			: data.result;
+	if (variant === 'empty')
+		return { ...props, result: { ...result, behavior: { ...result.behavior, rows: [] } } };
+	if (!['loading', 'unreadable'].includes(variant)) return props;
+	return {
+		...props,
+		result: {
+			...result,
+			behavior: {
+				...result.behavior,
+				rows: result.behavior.rows.map((row) => ({
+					...row,
+					beforeRead: undefined,
+					afterRead: undefined
+				}))
+			}
+		}
+	};
 }
 function artifact(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
 	const cell = data.cell;

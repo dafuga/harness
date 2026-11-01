@@ -26,7 +26,15 @@ export async function desktopArtifactFixtures(original: Data) {
 		serialized = serialized.replaceAll(before, after);
 	const results = JSON.parse(serialized) as Data['results'];
 	const bindings = Object.fromEntries(
-		Object.entries(original.bindings).map(([key, hash]) => [key, hashes[hash] ?? hash])
+		Object.entries(original.bindings).map(([key, hash]) => [
+			key
+				.split('|')
+				.map((value, index) =>
+					original.bindingFields[index] === 'sha256' ? (hashes[value] ?? value) : value
+				)
+				.join('|'),
+			hashes[hash] ?? hash
+		])
 	);
 	const body = Buffer.from(
 		'Recorded plain text output.\nWorkload: order-name filtering\nQuery: service\nInput: 12 orders in their original order\nMatches: Service call; Service plan\nOriginal row objects and ordering were preserved.\nResult: passed'
