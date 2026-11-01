@@ -17,6 +17,7 @@
 			"reports.component.shared-primitives-atoms-html-label",
 			"reports.component.shared-primitives-atoms-html-option",
 			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
 			"reports.component.shared-primitives-atoms-html-time"
 		]
@@ -48,7 +49,7 @@
 			{
 				"name": "RevisionPicker",
 				"type": "markup",
-				"description": "Summary of the branch or explicit short commit and timestamp. Environment scope reads Updated at and the deployment time. Icon dialogs display expanded branch and commit listboxes; choosing a row navigates and closes the dialog. Go to tip exits a pinned revision. Renders nothing without a snapshot."
+				"description": "Readable branch/commit triggers and the selected branch, historical or pinned commit, or named deployment environment with its update time. Expanded choices navigate and close their dialog. Go to tip exits history; Follow branch resumes a pinned tip. Renders nothing without a snapshot."
 			}
 		],
 		"errors": [
@@ -231,6 +232,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

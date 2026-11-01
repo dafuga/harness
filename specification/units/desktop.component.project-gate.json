@@ -46,7 +46,7 @@
 				"name": "ProjectGate.busy",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether a project operation is in progress. Disables the local Open Project button and all recent-project choices."
+				"description": "Whether a project operation is in progress. Shows Opening project and busy semantics on the disabled local button; also disables recent-project choices."
 			},
 			{
 				"name": "ProjectGate.open",

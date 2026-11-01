@@ -23,9 +23,7 @@ async function create(component: Locator, variant: string) {
 		await expect(submit).toBeDisabled();
 		return;
 	}
-	await component
-		.getByRole('textbox', { name: 'Name', exact: true })
-		.fill('Synthetic checkpoint game');
+	await component.getByRole('textbox', { name: 'Name', exact: true }).fill('Garden trail');
 	if (variant.startsWith('game-')) {
 		await component.getByRole('combobox', { name: 'Project type' }).selectOption('game');
 		await component
@@ -81,7 +79,9 @@ async function brief(component: Locator, variant: string) {
 	if (variant === 'busy')
 		await expect(component.getByRole('button', { name: 'Generate level' })).toBeDisabled();
 	if (variant === 'error')
-		await expect(component.getByRole('alert')).toContainText('Synthetic provider refused');
+		await expect(component.getByRole('alert')).toContainText(
+			'The provider could not generate a level proposal.'
+		);
 	if (variant === 'reviewable')
 		await expect(component.getByRole('button', { name: 'Back to review' })).toBeVisible();
 	if (variant === 'no-model') await expect(component).toContainText('No local model is available.');

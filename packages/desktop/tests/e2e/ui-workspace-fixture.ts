@@ -1,3 +1,4 @@
+import { expect, type Page } from '@playwright/test';
 import { installDeploymentFixture } from './ui-deployment-fixture';
 export const catalogCategories = [
 	'Pages',
@@ -140,4 +141,33 @@ export async function fakeProject(page: import('@playwright/test').Page, identif
 		: snapshot;
 	await page.addInitScript(installProject, { snapshot: shown, item, providers, thread });
 	await installDeploymentFixture(page);
+}
+
+/** Existing responsive host geometry, including the bounds of labelled revision controls. */
+export async function assertWorkspaceHeaderFits(page: Page, width: number) {
+	const projectControl = await page.getByRole('button', { name: 'Choose workbench' }).boundingBox();
+	const contextControl = await page.getByLabel('Environment', { exact: true }).boundingBox();
+	expect(
+		contextControl!.y - projectControl!.y - projectControl!.height,
+		'Mobile project and context controls need breathing room'
+	).toBeGreaterThanOrEqual(8);
+	const branchFits = await page
+		.locator('.revision-summary strong')
+		.evaluate((element) => element.scrollWidth <= element.clientWidth);
+	expect(branchFits, 'The short current branch name must remain readable on mobile').toBe(true);
+	const header = await page.getByRole('banner').boundingBox();
+	expect(header!.height, 'Mobile header must leave room for project content').toBeLessThanOrEqual(
+		184
+	);
+	for (const name of ['Choose branch', 'Choose commit']) {
+		const bounds = await page.getByRole('button', { name, exact: true }).boundingBox();
+		expect(bounds!.x).toBeGreaterThanOrEqual(0);
+		expect(
+			bounds!.x + bounds!.width,
+			'Labelled revision controls stay inside the viewport'
+		).toBeLessThanOrEqual(width);
+	}
+	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+		width
+	);
 }

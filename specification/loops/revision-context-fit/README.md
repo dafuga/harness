@@ -1,0 +1,43 @@
+# Complete revision context
+
+The new Historical and Pinned labels in `34b102bf69` exposed the old 300px summary
+cap: desktop and tablet ellipsized the selected short commit ID. The committed
+catalog asserted text content, but not whether all of that context was painted.
+The original green images demonstrate the clipping before delivery.
+
+The existing component catalog now checks the rendered width of the selected
+context in every RevisionPicker state at desktop, tablet and mobile. This shared
+assertion covers future context labels without adding a case or relying on a
+particular commit ID. The check belongs at the catalog's pre-capture acceptance
+checkpoint; DOM text alone cannot establish readable selected context.
+
+The proposed repair removes the arbitrary summary cap while retaining its normal
+container boundary. Record the strengthened test failing in a clean committed
+snapshot before repair, then run it unchanged on the product fix. The broken
+snapshot is also the isolated reintroduction of the clipping rule.
+
+Normal workspace navigation, catalog captures, owning typechecks and baseline
+project checks remain required. A focused green record does not grant a full
+repository verification verdict. NavBar remains rejected and deferred.
+
+The canonical workspace check then caught a second consequence of the new labels:
+the mobile trigger group exceeded the viewport. The isolated catalog fixture had
+enough space and could not expose that constraint. Its existing host test now
+checks both labelled controls against the viewport boundary at 390px and 320px,
+alongside the retained header-height and whole-document checks. Trigger-label
+changes must satisfy both this host geometry matrix and the isolated catalog.
+The repair remains inside RevisionPicker; NavBar's separate layout is deferred.
+
+Saved-image review found that mobile trigger text could fit while remaining at
+the top of its button. The shared guard now checks the painted text range, rather
+than a stretched span box, for both containment and vertical alignment.
+
+The all-component capture also exposed an unbroken evidence record ID extending
+beyond EntityView on mobile. The existing artifact assertion now checks painted
+record captions inside the entity panel. Keep both guards in the normal catalog;
+an isolated passing unit record does not establish that all sibling states fit.
+
+Review also found evidence table headings breaking inside short words while the
+document still fit. The same artifact guard now requires each heading's painted
+word to remain whole. The existing overflow frame handles genuinely wide tables;
+ordinary words should use the browser's normal wrapping opportunities.

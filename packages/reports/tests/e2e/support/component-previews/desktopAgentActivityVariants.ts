@@ -14,7 +14,8 @@ export function desktopAgentActivityVariant(data: DesktopData, variant: string):
 	const original = data.bridge.agentActivity!;
 	let reads = 0;
 	data.bridge.agentActivity = async (...args) => {
-		if (variant === 'refresh-error' && reads++ > 0) throw new Error('Synthetic refresh failure.');
+		if (variant === 'refresh-error' && reads++ > 0)
+			throw new Error('The computer could not refresh agent activity.');
 		return reading(await original(...args), variant);
 	};
 }

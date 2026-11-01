@@ -111,7 +111,11 @@
 					callable={unit !== undefined}
 				/>{/if}
 			<hx-details>
-				<hx-summary>Assertions and recorded result</hx-summary>
+				<hx-summary
+					>{cell.capture.kind === 'output'
+						? 'Recorded output details'
+						: 'Assertions and recorded result'}</hx-summary
+				>
 				{#if run}{@render recorded(run)}{/if}
 				{#if cell.read.document === null}<hx-pre>{text(cell.read.text)}</hx-pre>{:else}
 					<!-- All that was read and checked, as it was recorded: a field no row shows is here. -->

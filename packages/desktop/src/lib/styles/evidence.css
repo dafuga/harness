@@ -181,7 +181,7 @@
 	vertical-align: top;
 	padding: var(--hx-space-8) var(--hx-space-10) var(--hx-space-8) 0;
 	border-top: var(--hx-border-thin) solid var(--hx-color-border);
-	overflow-wrap: anywhere;
+	overflow-wrap: normal;
 }
 @media (max-width: 850px) {
 	.runtime-panes.paired {
