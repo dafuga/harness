@@ -82,6 +82,7 @@ export async function assertProductArtwork(component: Locator, id: string, varia
 		'reports.component.entity-states': ['', 'current', 'initial', 'viewer-open', 'viewport-mobile']
 	};
 	if (!states[id]?.includes(variant)) return;
+	if (variant === 'usage-open') await assertUsagePreviewBounds(component);
 	const forbidden = /\b(?:synthetic|fictional|fixtures?)\b/i;
 	for (const image of await component.locator('img').all()) {
 		if (!(await image.isVisible())) continue;
@@ -96,4 +97,31 @@ export async function assertProductArtwork(component: Locator, id: string, varia
 	expect((await component.locator('figcaption').allTextContents()).join(' ')).not.toMatch(
 		forbidden
 	);
+}
+
+/** Fixed previews stay inside their owner horizontally and leave the module title clear. */
+async function assertUsagePreviewBounds(component: Locator) {
+	const preview = component.getByRole('tooltip');
+	const popup = (await preview.boundingBox())!;
+	const article = component.locator('article').first();
+	const owner = (await ((await article.count()) ? article : component).boundingBox())!;
+	expect(popup.x, 'Usage preview stays inside its owner left edge').toBeGreaterThanOrEqual(owner.x);
+	expect(
+		popup.x + popup.width,
+		'Usage preview stays inside its owner right edge'
+	).toBeLessThanOrEqual(owner.x + owner.width);
+	if (await article.count()) {
+		expect(popup.y, 'Usage preview stays inside its card top edge').toBeGreaterThanOrEqual(owner.y);
+		expect(
+			popup.y + popup.height,
+			'Usage preview stays inside its card bottom edge'
+		).toBeLessThanOrEqual(owner.y + owner.height);
+		const title = (await article.getByRole('heading').boundingBox())!;
+		const overlaps =
+			popup.x < title.x + title.width &&
+			popup.x + popup.width > title.x &&
+			popup.y < title.y + title.height &&
+			popup.y + popup.height > title.y;
+		expect(overlaps, 'Usage preview leaves the module title visible').toBe(false);
+	}
 }
