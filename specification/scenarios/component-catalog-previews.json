@@ -3215,6 +3215,12 @@
 			"units": ["reports.component.evidence-viewer"]
 		},
 		{
+			"id": "reports-component-evidence-viewer-missing-after",
+			"title": "Evidence viewer: missing after recording",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
 			"id": "reports-component-explorer-catalog-items",
 			"title": "ExplorerCatalogItems",
 			"coverage": "required",
@@ -8579,6 +8585,7 @@
 				"reports-component-evidence-viewer-previous",
 				"reports-component-evidence-viewer-zoomed",
 				"reports-component-evidence-viewer-actual-size",
+				"reports-component-evidence-viewer-missing-after",
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-catalog-items-multiple",
 				"reports-component-explorer-catalog-items-batched",

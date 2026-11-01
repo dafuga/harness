@@ -8,14 +8,23 @@ const after: Evidence = {
 	id: 'checkout-after',
 	title: 'Checkout after release',
 	comparison: 'checkout-flow',
-	provenance: [{ label: 'Viewport', value: 'Desktop' }]
+	source: 'b56de78abc01234567890123456789012345678901',
+	provenance: [
+		{ label: 'Build', value: 'checkout-selected' },
+		{ label: 'Viewport', value: 'Desktop' }
+	]
 };
 const before: Evidence = {
 	...after,
 	id: 'checkout-before',
 	title: 'Checkout before release',
 	file: 'checkout-before.svg',
-	phase: 'before'
+	phase: 'before',
+	source: 'a12bc34deffedcba123456789012345678901234567',
+	provenance: [
+		{ label: 'Build', value: 'checkout-parent' },
+		{ label: 'Viewport', value: 'Desktop' }
+	]
 };
 const mobile: Evidence = {
 	...after,
@@ -44,6 +53,8 @@ export const evidenceViewerProps = {
 
 /** Keep evidence selection and missing metadata cases on realistic checkout captures. */
 export function evidenceViewerVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'missing-after')
+		return { ...props, items: [before], navigableItems: [before], selected: before };
 	if (variant === 'unselected') return { ...props, selected: null };
 	if (variant === 'no-navigation') return { ...props, navigableItems: [] };
 	if (variant === 'no-pair') return { ...props, items: [after], navigableItems: [after] };

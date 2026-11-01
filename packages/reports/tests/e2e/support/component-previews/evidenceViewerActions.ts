@@ -105,6 +105,11 @@ async function assertUnselected(component: Locator, dialog: Locator) {
 
 /** Capture every image, its zoom controls, original link and caption inside the lightbox. */
 async function assertViewerImagesFit(dialog: Locator, variant: string) {
+	if (variant === 'missing-after') {
+		await expect(dialog).toContainText('No after screenshot is recorded for this state.');
+		await expect(dialog.locator('.viewer-images img')).toHaveCount(0);
+		return;
+	}
 	const figures = dialog.locator('.viewer-images figure');
 	await expect(figures).toHaveCount(variant === 'compare' ? 2 : 1);
 	for (const figure of await figures.all()) {
@@ -117,6 +122,21 @@ async function assertViewerImagesFit(dialog: Locator, variant: string) {
 }
 
 async function assertViewerState(dialog: Locator, variant: string) {
+	if (['', 'before', 'compare'].includes(variant)) {
+		const metadata = dialog.locator('.viewer-provenance');
+		if (variant === 'compare') {
+			await expect(metadata).toContainText('checkout-parent');
+			await expect(metadata).toContainText('checkout-selected');
+		} else {
+			await expect(metadata).toContainText(
+				variant === 'before' ? 'checkout-parent' : 'checkout-selected'
+			);
+			await expect(metadata).not.toContainText(
+				variant === 'before' ? 'checkout-selected' : 'checkout-parent'
+			);
+		}
+	}
+
 	if (variant === 'compare') await expect(dialog.locator('.viewer-images figure')).toHaveCount(2);
 	if (variant === 'before')
 		await expect(dialog.getByRole('heading', { name: 'Checkout before release' })).toBeVisible();
