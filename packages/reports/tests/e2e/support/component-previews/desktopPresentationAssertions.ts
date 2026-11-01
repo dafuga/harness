@@ -4,6 +4,16 @@ import { expect, type Locator } from '@playwright/test';
 export async function assertDesktopPresentation(component: Locator, id: string, variant: string) {
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
+	if (id === 'desktop.component.game-level-brief' && variant === 'long') {
+		const fits = await component
+			.getByRole('textbox', { name: 'Level brief', exact: true })
+			.evaluate((node) => node.scrollHeight <= node.clientHeight + 1);
+		expect(fits, 'The full level brief fits without a clipped last line').toBe(true);
+	}
+	if (id === 'desktop.component.design-panel' && variant === 'long')
+		await expect(
+			component.getByRole('combobox', { name: 'Design version', exact: true })
+		).toBeVisible();
 }
 
 async function assertComposerPresentation(component: Locator, variant: string) {
@@ -22,6 +32,24 @@ async function assertComposerPresentation(component: Locator, variant: string) {
 		).toHaveAttribute('aria-pressed', 'true');
 	if (variant === 'visual-plan')
 		await expect(component.getByRole('textbox', { name: 'Message' })).toHaveValue(/visual/i);
+	if (variant === 'no-provider') {
+		const model = component.getByRole('combobox', { name: 'Model', exact: true });
+		await expect(model).toBeDisabled();
+		await expect(
+			model.locator('option:checked'),
+			'No provider has a readable model placeholder'
+		).toHaveText('No model');
+	}
+	if (variant === 'retry')
+		await expect(
+			component.getByRole('alert'),
+			'Failed send keeps a visible retry cue'
+		).toContainText(/couldn.t send|try again/i);
+	if (variant === 'visual-plan')
+		await expect(
+			component.getByRole('status'),
+			'Visual plans show the design option count'
+		).toContainText(/Visual plan.*3 design options/);
 	if (variant === 'running') await expect(component.getByText(/agent is running/i)).toBeVisible();
 }
 
