@@ -89,8 +89,15 @@
 	.hx-tab-overflow {
 		display: block;
 		flex-basis: 100%;
-		order: 3;
 		font-size: var(--hx-type-size-xs);
 		color: var(--hx-color-text-muted);
+	}
+	:global(.hx-nav) > .hx-tab-overflow {
+		order: 3;
+	}
+	@media (max-width: 1419px) {
+		:global(.hx-nav) > .hx-tab-overflow {
+			order: 1;
+		}
 	}
 </style>
