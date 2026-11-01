@@ -205,6 +205,7 @@
 		{providers}
 		{approved}
 		running={run.active || comments.busy}
+		failureReported={Boolean(error)}
 		{notice}
 		visual={visualCategory(entity.category)}
 		{comment}

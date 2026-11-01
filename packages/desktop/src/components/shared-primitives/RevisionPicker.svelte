@@ -113,6 +113,7 @@
 
 <style>
 	.revision-picker {
+		display: flex;
 		align-items: center;
 		gap: var(--hx-space-8);
 	}

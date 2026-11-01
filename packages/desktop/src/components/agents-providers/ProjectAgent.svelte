@@ -91,6 +91,7 @@
 					providers={agent.providers}
 					approved={agent.approved}
 					running={agent.active || workspace.busy}
+					failureReported={Boolean(agent.error)}
 					placeholder={`Describe the ${kind} to add…`}
 					comment={(text) => agent.comment(text)}
 					send={agent.send}
