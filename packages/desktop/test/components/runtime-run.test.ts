@@ -22,6 +22,8 @@ test('each side lists its states and results; where they differ is said on the a
 	expect(after).toContain('differs at output[1]');
 	expect(after).toContain('aria-label="All results passed"');
 	expect(after).toContain('Order 1077 · Service plan');
+	expect(after.match(/Assertions and recorded result/g)).toHaveLength(2);
+	expect(after).toContain('Recorded output details');
 	const before = side('before');
 	expect(before).not.toContain('differs at');
 	expect(before).not.toContain('Order 1077 · Service plan');

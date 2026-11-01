@@ -67,6 +67,12 @@ export async function assertDesktopArtifactCapture(
 }
 
 async function assertReadableResult(component: Locator, variant: string) {
+	if (variant === 'output') {
+		await expect(component.getByText('Recorded output details', { exact: true })).toBeVisible();
+		await expect(
+			component.getByText('Assertions and recorded result', { exact: true })
+		).toHaveCount(0);
+	}
 	if (['', 'text', 'recorded-open', 'json-open'].includes(variant)) {
 		await expect(component, 'Recorded results do not claim to be empty').not.toContainText(
 			'This result records no input and output.'
@@ -115,4 +121,21 @@ export async function assertDesktopBehaviorState(component: Locator, variant: st
 	}
 	if (['loading', 'unreadable'].includes(variant))
 		await expect(component).not.toContainText('What a test observed end to end.');
+}
+
+/** One test has one assertion disclosure; its recorded output has its own caption. */
+export async function assertDesktopBehaviorCapture(
+	component: Locator,
+	id: string,
+	variant: string
+) {
+	if (id !== 'desktop.component.runtime-behavior' || !['', 'paired'].includes(variant)) return;
+	for (const state of await component.locator('.runtime-state').all())
+		await expect(
+			state.getByText('Assertions and recorded result', { exact: true }),
+			'Each test presents its assertions once'
+		).toHaveCount(1);
+	await expect(
+		component.getByText('Recorded output details', { exact: true }).first()
+	).toBeVisible();
 }

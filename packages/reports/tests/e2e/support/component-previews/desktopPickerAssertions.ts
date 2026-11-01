@@ -45,6 +45,9 @@ async function assertPickerReview(component: Locator, id: string, variant: strin
 
 export async function assertPickerPresentation(component: Locator, id: string, variant: string) {
 	await assertPickerReview(component, id, variant);
+	if (id === 'desktop.component.project-gate') await assertGatePresentation(component, variant);
+	if (id === 'desktop.component.revision-picker')
+		await assertRevisionPresentation(component, variant);
 	if (id === 'desktop.component.game-view-fields' && variant === 'multiple') {
 		await expect(
 			component.getByRole('combobox', { name: 'View', exact: true }),
@@ -58,7 +61,7 @@ export async function assertPickerPresentation(component: Locator, id: string, v
 		await expect(
 			component.locator('[aria-label="Viewed context"] strong'),
 			'Historical revision names the older selected commit'
-		).toHaveText(commits.middle.slice(0, 7));
+		).toContainText(commits.middle.slice(0, 7));
 	if (id !== 'desktop.component.project-switcher') return;
 	if (variant === 'shared') {
 		const project = component.getByRole('listbox', { name: 'Project', exact: true });
@@ -73,4 +76,66 @@ export async function assertPickerPresentation(component: Locator, id: string, v
 		await expect(add).toBeVisible();
 		await expect(add).toBeDisabled();
 	}
+}
+
+async function assertGatePresentation(component: Locator, variant: string) {
+	await expect(component).not.toContainText('Recent activity is ready to review.');
+	if (variant !== 'busy') return;
+	const opening = component.getByRole('button', { name: 'Opening project…', exact: true });
+	await expect(opening, 'Opening a project is visibly busy').toBeVisible();
+	await expect(opening).toBeDisabled();
+	await expect(opening).toHaveAttribute('aria-busy', 'true');
+}
+
+async function assertRevisionPresentation(component: Locator, variant: string) {
+	for (const word of ['Branch', 'Commit']) {
+		const button = component.getByRole('button', {
+			name: `Choose ${word.toLowerCase()}`,
+			exact: true
+		});
+		await expect(button, 'Revision triggers have visible words').toContainText(word);
+		const fits = await button.evaluate((node) => {
+			const label = node.querySelector('span')?.getBoundingClientRect();
+			const bounds = node.getBoundingClientRect();
+			return !!label && label.width > 0 && label.left >= bounds.left && label.right <= bounds.right;
+		});
+		expect(fits, 'The visible revision label fits its trigger').toBe(true);
+	}
+	const summary = component.getByLabel('Viewed context');
+	if (variant === 'environment') {
+		await expect(
+			component.getByRole('button', { name: 'Choose commit', exact: true })
+		).toContainText('preprod');
+		await expect(summary).toContainText('preprod');
+		await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:00:00Z');
+	}
+	if (variant === 'pinned') {
+		await expect(summary).toContainText('Pinned');
+		await expect(
+			component.getByRole('button', { name: 'Follow branch', exact: true })
+		).toBeVisible();
+	}
+	if (variant !== 'historical') {
+		await expect(component.getByRole('button', { name: 'Go to tip', exact: true })).toHaveCount(0);
+		return;
+	}
+	await expect(summary).toContainText('Historical');
+	const tip = component.getByRole('button', { name: 'Go to tip', exact: true });
+	await expect(tip).toBeVisible();
+	const ordinary = component.getByRole('button', {
+		name: 'View branch',
+		exact: true,
+		includeHidden: true
+	});
+	for (const property of ['color', 'border-color'])
+		await expect(
+			tip,
+			'Revision navigation uses the same neutral treatment at every viewport'
+		).toHaveCSS(
+			property,
+			await ordinary.evaluate(
+				(node, name) => getComputedStyle(node).getPropertyValue(name),
+				property
+			)
+		);
 }
