@@ -1,4 +1,4 @@
-import { assertComparePanesPreview } from './comparePanesPreview';
+import { assertComparePanesPreview } from './comparePanesPreviewAssertions';
 import {
 	prepareCompatibilityState,
 	assertCompatibilityPreview
