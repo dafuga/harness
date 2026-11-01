@@ -7697,6 +7697,12 @@
 			"coverage": "required"
 		},
 		{
+			"id": "reports-component-shared-primitives-loading-state-inline",
+			"title": "LoadingState: inline",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-loading-state"]
+		},
+		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
 			"coverage": "required",
@@ -9338,6 +9344,7 @@
 				"reports-component-shared-primitives-loading-state-default-label",
 				"reports-component-shared-primitives-loading-state-long",
 				"reports-component-shared-primitives-loading-state-reduced-motion",
+				"reports-component-shared-primitives-loading-state-inline",
 				"reports-component-source-code-action",
 				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",

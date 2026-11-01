@@ -136,6 +136,11 @@ async function actionState(component: Locator, variant: string) {
 	if (variant === 'disabled') await expect(component.getByRole('button')).toBeDisabled();
 }
 async function loadingState(component: Locator, variant: string) {
+	if (variant === 'inline')
+		await expect(
+			component.locator('.hx-loading'),
+			'Inline loading stays in document flow'
+		).toHaveCSS('position', 'static');
 	if (variant !== 'reduced-motion') return;
 	await component.page().emulateMedia({ reducedMotion: 'reduce' });
 	await expect(component.locator('.hx-loading-indicator')).toHaveCSS('animation-name', 'none');
@@ -170,9 +175,7 @@ async function artifactState(component: Locator, variant: string) {
 
 async function explorerState(component: Locator, id: string, variant: string) {
 	if (['search', 'no-matches'].includes(variant)) {
-		await component
-			.getByRole('searchbox')
-			.fill(variant === 'search' ? 'Order' : 'refund policy');
+		await component.getByRole('searchbox').fill(variant === 'search' ? 'Order' : 'refund policy');
 		if (variant === 'no-matches') await expect(component).toContainText(/No .* match this search/);
 	}
 	if (id.endsWith('explorer-frame') && variant === 'source-open') {
