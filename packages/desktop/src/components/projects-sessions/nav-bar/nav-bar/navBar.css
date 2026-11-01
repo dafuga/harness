@@ -168,6 +168,9 @@ header.topbar::before {
 		width: var(--hx-space-32);
 		height: var(--hx-space-32);
 	}
+	header.topbar .topbar-search :global(.entity-search-trigger > span) {
+		display: none;
+	}
 	.topbar .topbar-context :global(.environment-choice),
 	.topbar .topbar-context :global(.revision-choices),
 	.topbar .topbar-context :global(.revision-summary),
