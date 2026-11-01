@@ -1,4 +1,5 @@
 import { runtimeEvidence, runtimeAudio } from './runtime-evidence';
+import { record } from '../../../reports/test/entityFixture';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import {
 	branch,
@@ -60,7 +61,7 @@ test('a function at its branch tip shows the one run that was recorded, with wha
 		['no-match', 'assertions', null]
 	]);
 	expect(new Set(read.map((call) => `${call.side}|${call.mode}|${call.recordId}`))).toEqual(
-		new Set(['after|current|rec-cccccc-0000'])
+		new Set([`after|current|${record(commits.tip).id}`])
 	);
 });
 
