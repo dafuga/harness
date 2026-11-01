@@ -8,14 +8,20 @@
 	"status": "active",
 	"composition": {
 		"level": "organism",
-		"uses": ["reports.component.recorded-value"]
+		"uses": ["reports.component.recorded-value", "reports.component.shared-primitives-detail-list"]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/shared-primitives/ContractExample.svelte"],
-		"symbols": ["ContractExample", "ContractExample.example"]
+		"symbols": [
+			"ContractExample",
+			"ContractExample.example",
+			"ContractExample.label",
+			"ContractExample.children"
+		]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-detail-list"],
 		"inputs": [
 			{
 				"name": "ContractExample.field",
@@ -58,12 +64,53 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "ContractExample.label",
+				"inputs": [
+					{
+						"name": "ContractExample.label.name",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContractExample.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ContractExample.children",
+				"inputs": [
+					{
+						"name": "ContractExample.children.name",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContractExample.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},
 	"dependencies": [
 		{
 			"unit": "reports.component.recorded-value",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-detail-list",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '../shared-primitives/DetailList.svelte';
 	import type { Card } from './ExplorerPlatforms.types';
 
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
@@ -99,19 +100,15 @@
 		<hx-p class="pf-summary">
 			{card.entry?.summary ?? `Nothing is declared for ${card.name} at this revision.`}
 		</hx-p>
-		<hx-dl class="pf-facts">
-			<hx-div>
-				<hx-dt>Status</hx-dt>
-				<hx-dd
-					><hx-span class="pf-status" data-status={card.status.id}>{card.status.label}</hx-span
-					></hx-dd
-				>
-			</hx-div>
-			<hx-div>
-				<hx-dt>Runtime</hx-dt>
-				<hx-dd>{card.entry?.runtime ?? 'Not recorded'}</hx-dd>
-			</hx-div>
-		</hx-dl>
+		<DetailList rows={['Status', 'Runtime']} rowKey={(name) => name} className="pf-facts">
+			{#snippet label(name)}{name}{/snippet}
+			{#snippet children(name)}
+				{#if name === 'Status'}<hx-span class="pf-status" data-status={card.status.id}
+						>{card.status.label}</hx-span
+					>
+				{:else}{card.entry?.runtime ?? 'Not recorded'}{/if}
+			{/snippet}
+		</DetailList>
 		{#if card.tally}<hx-p class="pf-tally">{card.tally}</hx-p>{/if}
 	</hx-article>
 {/snippet}

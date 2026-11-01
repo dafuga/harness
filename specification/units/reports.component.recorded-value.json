@@ -9,10 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"reports.component.shared-primitives-atoms-html-dd",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-ol",
 			"reports.component.shared-primitives-atoms-html-p",
@@ -20,7 +17,8 @@
 			"reports.component.shared-primitives-atoms-html-td",
 			"reports.component.shared-primitives-atoms-html-th",
 			"reports.component.shared-primitives-atoms-html-tr",
-			"reports.component.shared-primitives-data-table"
+			"reports.component.shared-primitives-data-table",
+			"reports.component.shared-primitives-detail-list"
 		]
 	},
 	"owns": {
@@ -30,13 +28,18 @@
 		"symbols": [
 			"RecordedValue",
 			"RecordedValue.present",
+			"RecordedValue.label",
+			"RecordedValue.children",
 			"RecordedValue.header",
 			"RecordedValue.children"
 		]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.shared-primitives-data-table"],
+		"primitives": [
+			"reports.component.shared-primitives-data-table",
+			"reports.component.shared-primitives-detail-list"
+		],
 		"inputs": [
 			{
 				"name": "RecordedValue.value",
@@ -95,6 +98,42 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "RecordedValue.label",
+				"inputs": [
+					{
+						"name": "RecordedValue.label.field",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RecordedValue.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RecordedValue.children",
+				"inputs": [
+					{
+						"name": "RecordedValue.children.field",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RecordedValue.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "RecordedValue.header",
 				"inputs": [],
 				"outputs": [
@@ -122,22 +161,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -178,6 +202,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-data-table",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-detail-list",
 			"via": "import",
 			"origin": "derived"
 		},

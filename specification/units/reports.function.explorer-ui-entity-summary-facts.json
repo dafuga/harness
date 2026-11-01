@@ -1,0 +1,143 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-ui-entity-summary-facts",
+	"kind": "function",
+	"title": "entitySummaryFacts",
+	"responsibility": "Builds the performance profile definition rows without changing workload context.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/explorer-ui/entitySummaryFacts.ts",
+			"packages/reports/src/components/explorer-ui/entitySummaryFacts.types.ts"
+		],
+		"symbols": ["measurementLocation", "entitySummaryFacts", "SummaryFact"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "measurementLocation.row",
+				"type": "PerformanceRow",
+				"required": true,
+				"description": "Required performance observation with its own target and profile."
+			},
+			{
+				"name": "entitySummaryFacts.measure",
+				"type": "EntityMeasure",
+				"required": true,
+				"description": "Required source and runtime measurements in their original order."
+			},
+			{
+				"name": "entitySummaryFacts.compact",
+				"type": "boolean",
+				"required": true,
+				"description": "Required overview flag; true selects matching latency and memory, false retains detailed workload facts."
+			}
+		],
+		"outputs": [
+			{
+				"name": "measurementLocation",
+				"type": "string",
+				"description": "Declared target and profile joined with a middle dot, or an em dash when both are absent."
+			},
+			{
+				"name": "entitySummaryFacts",
+				"type": "SummaryFact[]",
+				"description": "Ordered visible size and performance facts, including explicit missing values and notes."
+			}
+		],
+		"errors": [
+			{
+				"name": "Input access error",
+				"type": "propagated",
+				"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "measurementLocation",
+				"inputs": [
+					{
+						"name": "measurementLocation.row",
+						"type": "PerformanceRow",
+						"required": true,
+						"description": "Required performance observation with its own target and profile."
+					}
+				],
+				"outputs": [
+					{
+						"name": "measurementLocation",
+						"type": "string",
+						"description": "Declared target and profile joined with a middle dot, or an em dash when both are absent."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access error",
+						"type": "propagated",
+						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "entitySummaryFacts",
+				"inputs": [
+					{
+						"name": "entitySummaryFacts.measure",
+						"type": "EntityMeasure",
+						"required": true,
+						"description": "Required source and runtime measurements in their original order."
+					},
+					{
+						"name": "entitySummaryFacts.compact",
+						"type": "boolean",
+						"required": true,
+						"description": "Required overview flag; true selects matching latency and memory, false retains detailed workload facts."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entitySummaryFacts",
+						"type": "SummaryFact[]",
+						"description": "Ordered visible size and performance facts, including explicit missing values and notes."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access error",
+						"type": "propagated",
+						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/entitySummaryFacts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/entitySummaryFacts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -11,17 +11,15 @@
 		"uses": [
 			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.harness-harness-icon",
-			"reports.component.shared-primitives-atoms-html-dd",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-td",
 			"reports.component.shared-primitives-atoms-html-th",
 			"reports.component.shared-primitives-atoms-html-tr",
-			"reports.component.shared-primitives-data-table"
+			"reports.component.shared-primitives-data-table",
+			"reports.component.shared-primitives-detail-list"
 		]
 	},
 	"owns": {
@@ -29,6 +27,8 @@
 		"symbols": [
 			"EntitySummary",
 			"EntitySummary.header",
+			"EntitySummary.children",
+			"EntitySummary.label",
 			"EntitySummary.children",
 			"EntitySummary.header",
 			"EntitySummary.children"
@@ -38,7 +38,8 @@
 		"origin": "declared",
 		"primitives": [
 			"reports.component.explorer-ui-explorer-kit-card",
-			"reports.component.shared-primitives-data-table"
+			"reports.component.shared-primitives-data-table",
+			"reports.component.shared-primitives-detail-list"
 		],
 		"inputs": [
 			{
@@ -98,6 +99,42 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "EntitySummary.label",
+				"inputs": [
+					{
+						"name": "EntitySummary.label.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntitySummary.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "EntitySummary.children",
+				"inputs": [
+					{
+						"name": "EntitySummary.children.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntitySummary.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "EntitySummary.header",
 				"inputs": [],
 				"outputs": [
@@ -135,22 +172,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -190,12 +212,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-detail-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-ui-entity-summary-facts",
 			"via": "import",
 			"origin": "derived"
 		},

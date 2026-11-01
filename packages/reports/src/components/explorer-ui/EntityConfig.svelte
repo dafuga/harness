@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '../shared-primitives/DetailList.svelte';
 	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerEntity, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import { humanize } from '../../helpers/strings/humanize';
@@ -53,14 +54,16 @@
 			{#if entity.unit.contract.outputs.length === 0}
 				<hx-p class="ex-soft">Its contract declares no setting at this revision.</hx-p>
 			{/if}
-			<hx-dl class="ex-rows">
-				{#each entity.unit.contract.outputs as setting, position (position)}
-					<hx-div>
-						<hx-dt>{word(setting.name)}</hx-dt>
-						<hx-dd>{kind(setting.type)}</hx-dd>
-					</hx-div>
-				{/each}
-			</hx-dl>
+			{#if entity.unit.contract.outputs.length}
+				<DetailList
+					rows={entity.unit.contract.outputs}
+					rowKey={(_, position) => position}
+					className="ex-rows"
+				>
+					{#snippet label(setting)}{word(setting.name)}{/snippet}
+					{#snippet children(setting)}{kind(setting.type)}{/snippet}
+				</DetailList>
+			{/if}
 		</hx-div>
 	</hx-div>
 	<hx-p class="ex-note">
