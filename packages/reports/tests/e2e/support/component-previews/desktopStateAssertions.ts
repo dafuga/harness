@@ -83,6 +83,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertDesktopNavCapture(component, id);
 	await assertComposerCaptions(component, id);
 	await assertCreationErrorText(component, id, variant);
+	await assertEntityCategory(component, id, variant);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
@@ -107,6 +108,13 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 			});
 		expect(visible, 'Expanded checkpoint rules are fully visible above the footer').toBe(true);
 	}
+}
+
+async function assertEntityCategory(component: Locator, id: string, variant: string) {
+	if (id !== 'desktop.component.entity-view') return;
+	const category = variant === 'helper-examples' ? 'functions' : 'pages';
+	const text = await component.locator('.breadcrumb').innerText();
+	expect(text, 'Entity breadcrumb category').toMatch(new RegExp(`^${category} ›`));
 }
 
 async function assertCreationErrorText(component: Locator, id: string, variant: string) {
