@@ -170,7 +170,11 @@ function declarationVariant(props: PreviewCases[string], unit: HarnessUnit, vari
 				...unit,
 				title: 'OrderInput',
 				owns: { source: [source], symbols: ['OrderInput'] },
-				modelDefinitions: typeDeclarations(source)
+				modelDefinitions: typeDeclarations(source),
+				contract: {
+					...unit.contract,
+					inputs: [{ name: 'OrderInput.resolve', type: '(key: string): number', required: true }]
+				}
 			},
 			category: 'types',
 			contract: []

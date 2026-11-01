@@ -124,6 +124,11 @@ async function assertContractMetadataGroups(
 ) {
 	const rows = component.locator('[data-contract-input]');
 	if (id === 'reports.component.entity-contract') {
+		if (variant === 'types')
+			await expect(
+				rows.locator('.requirement'),
+				'Source-declared callable fields retain authored Required metadata'
+			).toHaveText(['Required', 'Optional', 'Required']);
 		await expect(
 			component.getByText(/No errors declared\.|TypeError|NotFoundError/).first()
 		).toBeVisible();
@@ -163,4 +168,15 @@ async function assertContractLabels(component: Locator) {
 			.map((label) => label.textContent)
 	);
 	expect(clipped, 'Contract provenance labels remain fully readable').toEqual([]);
+	const broken = await component.locator('thead th, .requirement').evaluateAll((labels) =>
+		labels
+			.filter((label) => {
+				if (!/^[A-Za-z]+$/.test(label.textContent?.trim() ?? '')) return false;
+				const range = document.createRange();
+				range.selectNodeContents(label);
+				return range.getClientRects().length > 1;
+			})
+			.map((label) => label.textContent)
+	);
+	expect(broken, 'Contract headings and requirement words remain readable').toEqual([]);
 }
