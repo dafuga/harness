@@ -73,14 +73,18 @@ function relationsProps(props: PreviewCases[string], variant: string) {
 	};
 	return {
 		...props,
-		relations: ['empty', 'removed'].includes(variant)
-			? empty
-			: ['models', 'apis'].includes(variant)
-				? recorded
-				: props.relations,
+		relations: relationsFor(variant, { empty, recorded, props }),
 		removed: variant === 'removed',
 		show: ['empty', 'removed'].includes(variant) ? 'both' : variant
 	};
+}
+
+function relationsFor(
+	variant: string,
+	found: { empty: object; recorded: object; props: PreviewCases[string] }
+) {
+	if (['empty', 'removed'].includes(variant)) return found.empty;
+	return ['models', 'apis'].includes(variant) ? found.recorded : found.props.relations;
 }
 
 function relatedEntity(
