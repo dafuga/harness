@@ -1,4 +1,4 @@
-import type { ExplorerBehavior } from '../../../../reports/src/models/Explorer.types';
+import type { ExplorerBehavior } from '$reports/models/Explorer.types';
 
 export interface EvidenceRead {
 	/** The behaviour with every recorded result read, checked and compared. */

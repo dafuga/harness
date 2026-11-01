@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import FloatingChat from '../../../../reports/src/components/planning-collaboration/FloatingChat.svelte';
+	import FloatingChat from '$shared/planning-collaboration/FloatingChat.svelte';
 	import { onMount, untrack } from 'svelte';
 	import { createProjectAgentStore } from '../../lib/stores/agents-providers/projectAgent.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';

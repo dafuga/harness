@@ -1,7 +1,7 @@
 import type { VerificationRecord } from '../../../../../../src/core/verificationTypes';
 import { revisionSummary } from '../../../../../../src/utils/revisionSummary';
 import { revisionReasons } from '../../../../../../src/utils/revisionReasons';
-import type { HarnessRevision } from '../../../../../reports/src/models/Harness.types';
+import type { HarnessRevision } from '$reports/models/Harness.types';
 import type { HubRecordStatusService } from '../../../services/verification-evidence/hub-evidence-service/HubRecordStatusService';
 import type { HubSourceContext } from '../../development-tooling/hubSource';
 import { hubPinnedSource } from '../hubPinnedSource';

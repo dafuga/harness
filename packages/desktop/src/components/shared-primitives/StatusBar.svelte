@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { timeLabel } from '../../utils/development-tooling/timeLabel';

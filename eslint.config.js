@@ -71,6 +71,7 @@ export default [
 			'harness/max-class-lines': 'error',
 			'harness/max-method-lines': 'error',
 			'harness/no-manager-name': 'error',
+			'harness/shared-reuse': 'error',
 			'harness/thin-command-modules': 'error',
 			'max-classes-per-file': ['error', harnessRuleLimits.maxClassesPerFile],
 			'max-depth': ['error', harnessRuleLimits.maxNestingDepth],

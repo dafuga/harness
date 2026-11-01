@@ -30,6 +30,7 @@ export function sourceContractSchema(item: typeof contractItemSchema) {
 	});
 	return z.strictObject({
 		origin: z.enum(['derived', 'declared']),
+		primitives: z.array(text).optional(),
 		inputs: z.array(item),
 		outputs: z.array(item),
 		errors: z.array(item),

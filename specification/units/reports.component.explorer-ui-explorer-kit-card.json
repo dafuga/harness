@@ -10,6 +10,7 @@
 		"level": "molecule",
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-article",
+			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-section"
 		]
 	},
@@ -22,23 +23,48 @@
 		"inputs": [
 			{
 				"name": "Card.as",
-				"type": "'article' | 'section'",
+				"type": "'article' | 'section' | 'li'",
 				"required": false,
 				"default": "article",
-				"description": "'article' (default) or 'section'; a section names a labelled region of the screen."
+				"description": "Semantic container: article by default, section for a region, or li inside a resource list."
+			},
+			{
+				"name": "Card.variant",
+				"type": "'card' | 'module'",
+				"required": false,
+				"default": "card",
+				"description": "Visual treatment: card by default, or module to retain specialized catalog styling without an extra card frame."
 			},
 			{
 				"name": "Card.tone",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Extra class names for the owner's own card styling."
+				"description": "Owner styling classes appended to the selected treatment. Defaults to an empty string."
+			},
+			{
+				"name": "Card.id",
+				"type": "string",
+				"required": false,
+				"description": "Optional native id. Defaults to JavaScript undefined, omitting the attribute."
+			},
+			{
+				"name": "Card.label",
+				"type": "string",
+				"required": false,
+				"description": "Optional accessible name. Defaults to JavaScript undefined, omitting aria-label."
 			},
 			{
 				"name": "Card.labelledby",
 				"type": "string",
 				"required": false,
 				"description": "Optional. Defaults to JavaScript undefined, omitting aria-labelledby. Supply the heading id when the card should be named."
+			},
+			{
+				"name": "Card.component",
+				"type": "string",
+				"required": false,
+				"description": "Optional owning component id suffix for evidence attribution. Defaults to JavaScript undefined, omitting data-harness-component."
 			},
 			{
 				"name": "Card.children",
@@ -68,6 +94,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-article",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
 			"via": "import",
 			"origin": "derived"
 		},

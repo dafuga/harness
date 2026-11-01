@@ -1,4 +1,4 @@
-import type { SearchEntry } from '../../../../reports/src/utils/entitySearch';
+import type { SearchEntry } from '$reports/utils/entitySearch';
 
 /** What the search of the top bar is given for the project and revision in view. */
 export interface WorkspaceSearch {

@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/models/Report.types.ts",
-			"packages/reports/src/models/reports-media/Report.types.ts"
-		],
+		"source": ["packages/reports/src/models/reports-media/Report.types.ts"],
 		"symbols": [
 			"Status",
 			"Check",

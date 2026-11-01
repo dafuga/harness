@@ -6,7 +6,7 @@ export default {
 	kit: {
 		adapter: adapter(),
 		// The same shared workspace paths the cross-platform component fixture build resolves.
-		alias: { $desktop: '../desktop/src', $shared: './src/components' }
+		alias: { $reports: './src', $desktop: '../desktop/src', $shared: './src/components' }
 	},
 	preprocess: [atomicComponents(), vitePreprocess()]
 };

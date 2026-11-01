@@ -1,3 +1,4 @@
+import { sharedReuseRule } from '../../eslint.reuse-rules.js';
 import { existsSync, readFileSync } from 'node:fs';
 
 const defaults = {
@@ -15,6 +16,7 @@ export const harnessRuleLimits = readHarnessLimits();
 
 export default {
 	rules: {
+		'shared-reuse': sharedReuseRule,
 		'max-class-lines': sizeRule('Class', harnessRuleLimits.maxClassLines, 'ClassDeclaration'),
 		'max-method-lines': sizeRule('Method', harnessRuleLimits.maxMethodLines, 'MethodDefinition'),
 		'no-manager-name': {

@@ -1,4 +1,4 @@
-import { errorMessage } from '../../../../../reports/src/helpers/strings/errorMessage';
+import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import type { EvidenceArtifactResult } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { artifactAnswer } from '../../../utils/development-tooling/artifact-answer/artifactAnswer';
 

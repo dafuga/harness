@@ -1,5 +1,5 @@
-import { errorMessage } from '../../../../../reports/src/helpers/strings/errorMessage';
-import { shortCommit } from '../../../../../reports/src/helpers/strings/shortCommit';
+import { errorMessage } from '$reports/helpers/strings/errorMessage';
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { PreviewPick } from './recordedPreview.types';
 import type {
 	RecordedThumbnail,

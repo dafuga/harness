@@ -3493,6 +3493,24 @@
 			"units": ["reports.component.explorer-ui-explorer-kit-card"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-kit-card-list-item",
+			"title": "Explorer card: list item",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-card-module",
+			"title": "Explorer card: module",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-card-attributes",
+			"title": "Explorer card: attributes",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-kit-command-block",
 			"title": "Command block",
 			"coverage": "required",
@@ -8513,6 +8531,9 @@
 				"reports-component-explorer-ui-config-value-tree-long-expression",
 				"reports-component-explorer-ui-explorer-kit-card",
 				"reports-component-explorer-ui-explorer-kit-card-section",
+				"reports-component-explorer-ui-explorer-kit-card-list-item",
+				"reports-component-explorer-ui-explorer-kit-card-module",
+				"reports-component-explorer-ui-explorer-kit-card-attributes",
 				"reports-component-explorer-ui-explorer-kit-command-block",
 				"reports-component-explorer-ui-explorer-kit-command-block-long",
 				"reports-component-explorer-ui-explorer-kit-command-block-multiline",

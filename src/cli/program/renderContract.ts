@@ -7,12 +7,14 @@ export function renderContract(manifest: ComponentManifest): string[] {
 	const { contract, kind } = manifest;
 	const component = kind === 'component';
 	const detailed = component ? [] : detailSections(contract);
-	if (detailed.length) return [`Contract (${contract.origin})`, ...detailed];
+	if (detailed.length)
+		return [`Contract (${contract.origin})`, ...primitiveRows(contract), ...detailed];
 	const sections: Array<[string, Field[]]> = [[component ? 'Props' : 'Inputs', contract.inputs]];
 	if (!component) sections.push(['Outputs', contract.outputs]);
 	sections.push(['Errors', contract.errors]);
 	return [
 		`Contract (${contract.origin})`,
+		...primitiveRows(contract),
 		...indent(
 			sections.flatMap(([title, list]) => [title, ...indent(sectionFields(title, list, manifest))])
 		),
@@ -41,4 +43,10 @@ function group<T>(
 	render: (items: T[]) => string[]
 ): string[] {
 	return items?.length ? [`  ${title}`, ...indent(render(items), 2)] : [];
+}
+
+function primitiveRows(contract: ComponentManifest['contract']): string[] {
+	return contract.primitives?.length
+		? ['  Shared primitives', ...contract.primitives.map((id) => `    ${id}`)]
+		: [];
 }

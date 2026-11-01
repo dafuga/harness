@@ -1,9 +1,6 @@
 import type { CacheIdentity } from '../../../../collaboration/src/models/Collaboration.types';
-import type { ExplorerScope } from '../../../../reports/src/models/Explorer.types';
-import type {
-	ExplorerBehavior,
-	ExplorerEvidence
-} from '../../../../reports/src/models/ExplorerEvidence.types';
+import type { ExplorerScope } from '$reports/models/Explorer.types';
+import type { ExplorerBehavior, ExplorerEvidence } from '$reports/models/ExplorerEvidence.types';
 import type { EntityQuery } from '../development-tooling/DesktopBridge.types';
 
 /**

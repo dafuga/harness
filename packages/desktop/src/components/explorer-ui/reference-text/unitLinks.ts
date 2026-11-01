@@ -1,6 +1,6 @@
 import type { View } from './unitLinks.types';
 import type { UnitLink } from '../../../utils/explorer-ui/unitLinks';
-import { explorerName } from '../../../../../reports/src/utils/explorerName';
+import { explorerName } from '$reports/utils/explorerName';
 import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 import type { CatalogEntity } from '../../../models/development-tooling/Desktop.types';
 import { isUnitId } from '../../../utils/explorer-ui/entityReferences';

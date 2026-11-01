@@ -1,6 +1,6 @@
 import type { AgentEntry } from '../../../../../../src/core/activityTypes';
 import { SvelteMap } from 'svelte/reactivity';
-import { activityReading } from '../../../../../reports/src/utils/projects-sessions/activityReading';
+import { activityReading } from '$reports/utils/projects-sessions/activityReading';
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 
 import type { Sample } from './agentRoster.svelte.types';

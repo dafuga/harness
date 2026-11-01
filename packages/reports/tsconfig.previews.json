@@ -8,7 +8,9 @@
 			"$shared/*": ["./.svelte-kit/../src/components/*"],
 			"$lib": ["./.svelte-kit/../src/lib"],
 			"$lib/*": ["./.svelte-kit/../src/lib/*"],
-			"$app/types": ["./.svelte-kit/types/index.d.ts"]
+			"$app/types": ["./.svelte-kit/types/index.d.ts"],
+			"$reports": ["./.svelte-kit/../src"],
+			"$reports/*": ["./.svelte-kit/../src/*"]
 		}
 	},
 	"include": [

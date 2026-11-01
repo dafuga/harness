@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { replayVideoKey } from '../../src/utils/replayVideo';
-import type { Report } from '../../src/models/Report.types';
+import type { Report } from '../../src/models/reports-media/Report.types';
 const report = (id: string): Report =>
 	({
 		evidence: [{ id, title: 'Scene 1', file: id + '.jpg', status: 'passed', category: 'Game' }]

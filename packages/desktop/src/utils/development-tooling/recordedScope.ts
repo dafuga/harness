@@ -1,7 +1,7 @@
-import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Asked, ScopeFacts } from './recordedScope.types';
-import type { ExplorerScope } from '../../../../reports/src/models/Explorer.types';
-import type { HarnessRevisionSummary } from '../../../../reports/src/models/Harness.types';
+import type { ExplorerScope } from '$reports/models/Explorer.types';
+import type { HarnessRevisionSummary } from '$reports/models/Harness.types';
 import { categoryOf } from './categoryOf';
 
 /** Refuses a view of the tip once the tip is elsewhere: nothing is read for a stale view. */

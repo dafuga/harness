@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { ScreenshotUploadService } from '../../src/services/ScreenshotUploadService';
 import { ScreenshotRetentionService } from '../../src/services/ScreenshotRetentionService';
-import type { Report } from '../../src/models/Report.types';
+import type { Report } from '../../src/models/reports-media/Report.types';
 
 const roots: string[] = [];
 const oldImage = Buffer.from(

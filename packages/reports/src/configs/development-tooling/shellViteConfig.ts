@@ -45,6 +45,7 @@ export default defineConfig(async (): Promise<UserConfig> => {
 						),
 						$desktop: fileURLToPath(new URL('../../../../desktop/src', import.meta.url)),
 						$shared: fileURLToPath(new URL('../../components', import.meta.url)),
+						$reports: fileURLToPath(new URL('../..', import.meta.url)),
 						'$app/paths': fileURLToPath(
 							new URL('../../../tests/e2e/support/shell/hubPaths.ts', import.meta.url)
 						)

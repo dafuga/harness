@@ -1,6 +1,6 @@
-import { errorMessage } from '../../../../../reports/src/helpers/strings/errorMessage';
+import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import type { EvidenceTarget } from './entityEvidence.svelte.types';
-import type { ExplorerBehavior } from '../../../../../reports/src/models/Explorer.types';
+import type { ExplorerBehavior } from '$reports/models/Explorer.types';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type {
 	EntityEvidenceQuery,

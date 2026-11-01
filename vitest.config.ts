@@ -27,6 +27,12 @@ export async function profilingPlugins() {
 }
 export default defineConfig(async () => ({
 	plugins: await profilingPlugins(),
+	resolve: {
+		alias: {
+			$reports: owned('./packages/reports/src'),
+			$shared: owned('./packages/reports/src/components')
+		}
+	},
 	test: {
 		...testWorkers,
 		// A fresh checkout has no generated SvelteKit configs; root tests resolve them.

@@ -1,9 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
-	import { screenOptions } from '../../../../reports/src/utils/entityScreens';
+	import { screenOptions } from '$reports/utils/explorer-ui/entityScreens';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type { EntityDetail } from '../../models/development-tooling/Desktop.types';
@@ -12,7 +12,7 @@
 	import RuntimeAudio from '../reports-media/RuntimeAudio.svelte';
 	import RuntimeBehavior from '../execution-runtimes/RuntimeBehavior.svelte';
 	import RuntimeScreens from '../execution-runtimes/RuntimeScreens.svelte';
-	import RegressionProof from '../../../../reports/src/components/verification-evidence/RegressionProof.svelte';
+	import RegressionProof from '$shared/verification-evidence/RegressionProof.svelte';
 	let {
 		entity,
 		workspace,

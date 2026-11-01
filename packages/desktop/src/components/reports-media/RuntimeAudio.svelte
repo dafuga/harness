@@ -1,12 +1,12 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { errorMessage } from '../../../../reports/src/helpers/strings/errorMessage';
+	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 
-	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
-	import type { Evidence } from '../../../../reports/src/models/Report.types';
-	import { galleryItems } from '../../../../reports/src/utils/entityScreens';
+	import type { Evidence } from '$reports/models/reports-media/Report.types';
+	import { galleryItems } from '$reports/utils/explorer-ui/entityScreens';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
 	import StatusIcon from '../shared-primitives/StatusIcon.svelte';

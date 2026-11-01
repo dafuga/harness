@@ -25,6 +25,10 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": [
+			"reports.component.shared-primitives-code-line",
+			"reports.component.shared-primitives-data-table"
+		],
 		"inputs": [
 			{
 				"name": "ContractTable.group",
