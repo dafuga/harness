@@ -14,7 +14,6 @@
 			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-input",
 			"reports.component.shared-primitives-atoms-html-label",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-textarea"
@@ -29,6 +28,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": [],
 		"inputs": [
 			{
 				"name": "GameCheckpointPane.context",
@@ -54,26 +54,26 @@
 				"name": "GameCheckpointPane.change",
 				"type": "(node: Checkpoint) => void",
 				"required": true,
-				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+				"description": "Publishes the complete edited Checkpoint to its owner. The callback returns void; no return value is consumed."
 			},
 			{
 				"name": "GameCheckpointPane.close",
 				"type": "() => void",
 				"required": true,
-				"description": "Close the modal while preserving intentional edits and discarding untouched additions."
+				"description": "Closes the checkpoint modal through its owner. The callback returns void; no return value is consumed."
 			},
 			{
 				"name": "GameCheckpointPane.remove",
 				"type": "() => void",
 				"required": true,
-				"description": "Delete the selected checkpoint through its document owner."
+				"description": "Requests deletion of the selected checkpoint through its owner. The callback returns void; no return value is consumed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCheckpointPane",
 				"type": "markup",
-				"description": "Describe and edit one checkpoint in a shared modal, with image approval and advanced executable rules."
+				"description": "Shared modal with content-sized title and description textareas, image review, optional advanced rules and owner actions. Long text wraps without an inner field scrollbar; the modal content remains scrollable at normal application viewport heights."
 			}
 		],
 		"errors": [
@@ -134,11 +134,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-input",
 			"via": "import",
 			"origin": "derived"
 		},

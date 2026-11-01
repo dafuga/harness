@@ -62,8 +62,11 @@ label > span {
 	font-weight: var(--hx-style-weight-semibold);
 }
 textarea {
-	min-height: 96px;
+	min-height: var(--hx-space-96);
 	resize: vertical;
+}
+.checkpoint-modal .fields > label > textarea {
+	field-sizing: content;
 }
 input:focus-visible,
 textarea:focus-visible {
@@ -78,9 +81,11 @@ textarea:focus-visible {
 	color: var(--hx-color-text-muted);
 	font-weight: var(--hx-style-weight-regular);
 }
-.name input {
+.checkpoint-modal .name textarea {
+	min-height: 0;
 	padding-block: var(--hx-space-6);
 	background: none;
+	resize: none;
 }
 .disclosure,
 .quiet {
