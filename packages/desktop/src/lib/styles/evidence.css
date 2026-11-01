@@ -12,6 +12,9 @@
 .entity-main .coverage-panel > .row > small {
 	overflow-wrap: anywhere;
 }
+.entity-main .runtime-evidence > .row > h2 {
+	flex-basis: 100%;
+}
 .runtime-card {
 	padding: var(--hx-space-16) 0;
 	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);

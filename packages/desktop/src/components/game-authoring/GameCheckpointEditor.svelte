@@ -139,6 +139,11 @@
 </hx-section>
 
 <style>
+	fieldset:disabled :global(input),
+	fieldset:disabled :global(select) {
+		opacity: var(--hx-opacity-dim);
+		cursor: not-allowed;
+	}
 	.editor,
 	fieldset {
 		display: grid;

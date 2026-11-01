@@ -2,7 +2,7 @@
 	"name": "checkpoint-readonly-appearance",
 	"goal": "Make readonly checkpoint fields visibly inactive using the existing game-field treatment",
 	"createdAt": "2026-11-01T07:02:32.977Z",
-	"updatedAt": "2026-11-01T07:03:35.790Z",
+	"updatedAt": "2026-11-01T07:06:48.013Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:06:48.013Z",
+			"evidence": "2393988205dbc528059a16d061cb030aeb088bfec8915ce3b4bb0b13702f1c7f fails six checkpoint states; the three existing GameViewFields reference states pass."
 		},
 		{
 			"id": "implement",
