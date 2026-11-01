@@ -46,3 +46,8 @@ controls. Pixel review nevertheless finds that disabled navigation retains its e
 The availability guard checked the native disabled state and absent hint, but omitted appearance.
 The named catalog test now also requires both unavailable arrows to use the existing app disabled
 opacity token. This refinement receives another matched pair before its own full viewer recording.
+
+The appearance assertion normalizes the token numerically, because `.45` and `0.45` describe
+the same opacity. The named case also requires exactly the two navigation actions to be disabled.
+This corrected guard is committed and run on the original broken checkpoint, then merged into
+the repair history. No test corpus is changed between that red record and its green descendant.
