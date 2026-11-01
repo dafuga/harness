@@ -2,7 +2,7 @@
 	"name": "sol8-usage-preview-fit",
 	"goal": "Show hidden consumers at a zero limit and keep usage previews inside their owner without covering its title.",
 	"createdAt": "2026-11-01T03:18:05.853Z",
-	"updatedAt": "2026-11-01T03:18:27.562Z",
+	"updatedAt": "2026-11-01T03:22:11.390Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T03:22:11.390Z",
+			"evidence": "3eaa1c3e0a at 754437103c fails zero-limit visibility and owner left-edge assertions after retaining all nine affected screenshots."
 		},
 		{
 			"id": "implement",
