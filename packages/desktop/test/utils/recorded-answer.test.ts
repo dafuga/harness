@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
 import { explorerBehavior } from '../../../reports/src/utils/explorerBehavior';
@@ -23,17 +24,22 @@ const identity: CacheIdentity = {
 };
 const revisions = () => ({ head: sampleDetail(head), parent: sampleDetail(parent) });
 
-test('the answer is the evidence of the entity of its scope, projected, with its behaviour', () => {
-	const scope = sampleScope(feed);
-	const answer = recordedAnswer({ scope, identity, revisions: revisions() });
-	const whole = explorerEvidence(scope, revisions(), { id: feed });
-	expect(answer.scope).toBe(scope);
-	expect(answer.identity).toBe(identity);
-	expect(answer.evidence).toEqual(recordedProjection(whole, feed));
-	expect(answer.behavior).toEqual(explorerBehavior(whole));
-	expect(answer.behavior.rows).toMatchObject([{ scenario: 'feed-run', change: 'unchanged' }]);
-	expect(JSON.stringify(answer)).not.toContain(home);
-});
+test('the answer is the evidence of the entity of its scope, projected, with its behaviour', async () =>
+	measureWorkload(
+		'desktop.function.recorded-answer',
+		'recorded-answer-normal-behavior',
+		async () => {
+			const scope = sampleScope(feed);
+			const answer = recordedAnswer({ scope, identity, revisions: revisions() });
+			const whole = explorerEvidence(scope, revisions(), { id: feed });
+			expect(answer.scope).toBe(scope);
+			expect(answer.identity).toBe(identity);
+			expect(answer.evidence).toEqual(recordedProjection(whole, feed));
+			expect(answer.behavior).toEqual(explorerBehavior(whole));
+			expect(answer.behavior.rows).toMatchObject([{ scenario: 'feed-run', change: 'unchanged' }]);
+			expect(JSON.stringify(answer)).not.toContain(home);
+		}
+	));
 
 test('the tip alone has no before, whatever revision is given beside it', () => {
 	const scope = sampleScope(home, 'current');

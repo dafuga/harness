@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import { artifactAnswer } from '../../src/utils/artifact-answer/artifactAnswer';
@@ -11,14 +12,19 @@ const listed = (bytes: Uint8Array, kind = 'output', mediaType = 'text/plain') =>
 	media: `media/${hash(bytes)}.txt` as string | null
 });
 
-test('stored bytes with the recorded hash are answered with their attested media type', async () => {
-	const bytes = new TextEncoder().encode('{"ok":true}');
-	const capture = listed(bytes, 'assertions', 'application/json');
-	const answer = await artifactAnswer(capture, bytes);
-	expect(answer).toEqual({ bytes, mediaType: 'application/json', sha256: capture.sha256 });
-	const plain = await artifactAnswer(listed(bytes), bytes);
-	expect(plain.mediaType).toBe('text/plain; charset=utf-8');
-});
+test('stored bytes with the recorded hash are answered with their attested media type', async () =>
+	measureWorkload(
+		'desktop.function.artifact-answer',
+		'artifact-answer-normal-behavior',
+		async () => {
+			const bytes = new TextEncoder().encode('{"ok":true}');
+			const capture = listed(bytes, 'assertions', 'application/json');
+			const answer = await artifactAnswer(capture, bytes);
+			expect(answer).toEqual({ bytes, mediaType: 'application/json', sha256: capture.sha256 });
+			const plain = await artifactAnswer(listed(bytes), bytes);
+			expect(plain.mediaType).toBe('text/plain; charset=utf-8');
+		}
+	));
 
 test('exactly 11 MiB is answered and one byte more is refused in words', async () => {
 	const exact = new Uint8Array(limit).fill(97);

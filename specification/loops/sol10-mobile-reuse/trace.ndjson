@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-01T18:58:56.249Z","name":"sol10-mobile-reuse","goal":"Keep shared-workspace function views inside the admitted viewport before recording","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-01T18:59:48.209Z","loop":"sol10-mobile-reuse","step":"spec","evidence":"Hosted function views exceed 390px by 13px. Keep the full document inside its selected viewport before saving captures."}
+{"event":"step.completed","timestamp":"2026-11-01T18:59:49.167Z","loop":"sol10-mobile-reuse","step":"coverage","evidence":"Catalog fixtures omit the workspace header. Strengthen the existing function capture helper to reject document overflow and name escaping elements."}

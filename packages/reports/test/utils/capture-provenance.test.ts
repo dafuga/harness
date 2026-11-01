@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { Scenario } from './capture-provenance.test.types';
 import { expect, test } from 'vitest';
 import type { HarnessCapture, HarnessRecord } from '../../src/models/Harness.types';
@@ -61,18 +62,23 @@ function judged(item: HarnessCapture, changes: Partial<Scenario> = {}, extra = {
 	return captureProvenance(record([tested], extra), tested, item);
 }
 
-test('a fresh accepted capture names its own build and the passing attempt', () => {
-	const fresh = judged(capture());
-	expect(fresh.standing).toBe('fresh');
-	expect(fresh.facts).toEqual([
-		{ label: 'Standing', value: 'Fresh capture' },
-		{ label: 'Captured from', value: 'build build-7 of aaaaaaa' },
-		{ label: 'Verification attempt', value: 'record 111111111111 (passed) targeting aaaaaaa' }
-	]);
-	expect(fresh.note).toBe(
-		`Captured from build build-7 of revision ${target}. Tested at aaaaaaa by passing record 111111111111.`
-	);
-});
+test('a fresh accepted capture names its own build and the passing attempt', async () =>
+	measureWorkload(
+		'reports.function.capture-provenance',
+		'capture-provenance-normal-behavior',
+		async () => {
+			const fresh = judged(capture());
+			expect(fresh.standing).toBe('fresh');
+			expect(fresh.facts).toEqual([
+				{ label: 'Standing', value: 'Fresh capture' },
+				{ label: 'Captured from', value: 'build build-7 of aaaaaaa' },
+				{ label: 'Verification attempt', value: 'record 111111111111 (passed) targeting aaaaaaa' }
+			]);
+			expect(fresh.note).toBe(
+				`Captured from build build-7 of revision ${target}. Tested at aaaaaaa by passing record 111111111111.`
+			);
+		}
+	));
 
 test('a rejected capture of another build is never credited to the targeted revision', () => {
 	const stale = capture({ status: 'failed', server: { buildId: 'build-3', revision: older } });

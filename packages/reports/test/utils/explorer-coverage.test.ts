@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { HarnessRecord, HarnessRevision } from '../../src/models/Harness.types';
 import { explorerVerdict, verdictCoverage } from '../../src/utils/explorer-verdict/explorerVerdict';
@@ -18,20 +19,25 @@ const proven = (records: HarnessRecord[], extra: Partial<HarnessRevision> = {}) 
 const reasons = (records: HarnessRecord[], extra: Partial<HarnessRevision> = {}) =>
 	proven(records, extra).reasons.join(' | ');
 
-test('a scenario that declares no test or no evidence for a required state is not complete', () => {
-	const judged = (extra: Parameters<typeof declared>[0]) =>
-		explorerVerdict(page, revision([page], [declared(extra)], [record([result(complete())])]));
-	expect(judged({ tests: [] })).toMatchObject({ passed: false, label: 'Coverage incomplete' });
-	expect(judged({ evidence: undefined })).toMatchObject({
-		passed: false,
-		label: 'Coverage incomplete'
-	});
-	expect(judged({ evidence: [] }).reasons.join(' ')).toContain('declares no evidence');
-	// A headless scenario has no viewport to fall back on: nothing declared is nothing proven.
-	const headless = declared({ kind: 'headless', viewports: [], evidence: undefined });
-	const detail = revision([page], [headless], [record([result([])])]);
-	expect(explorerVerdict(page, detail).passed).toBe(false);
-});
+test('a scenario that declares no test or no evidence for a required state is not complete', async () =>
+	measureWorkload(
+		'reports.function.explorer-coverage',
+		'explorer-coverage-normal-behavior',
+		async () => {
+			const judged = (extra: Parameters<typeof declared>[0]) =>
+				explorerVerdict(page, revision([page], [declared(extra)], [record([result(complete())])]));
+			expect(judged({ tests: [] })).toMatchObject({ passed: false, label: 'Coverage incomplete' });
+			expect(judged({ evidence: undefined })).toMatchObject({
+				passed: false,
+				label: 'Coverage incomplete'
+			});
+			expect(judged({ evidence: [] }).reasons.join(' ')).toContain('declares no evidence');
+			// A headless scenario has no viewport to fall back on: nothing declared is nothing proven.
+			const headless = declared({ kind: 'headless', viewports: [], evidence: undefined });
+			const detail = revision([page], [headless], [record([result([])])]);
+			expect(explorerVerdict(page, detail).passed).toBe(false);
+		}
+	));
 
 test('a capture of another kind, without its build, or of a state not recorded as required fails', () => {
 	const wrongKind = complete().map((item) => ({ ...item, kind: 'output' }));

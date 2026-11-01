@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { Mode } from './recorded-projection.test.types';
 import { afterAll, expect, test } from 'vitest';
 import {
@@ -97,29 +98,34 @@ afterAll(() => {
 	);
 });
 
-test('a side keeps what judges this entity and nothing of another', () => {
-	const projected = recordedProjection(full(home), home);
-	for (const side of [projected.after, projected.before]) {
-		const own = held(side);
-		expect([own.units, own.scenarios, own.ran]).toEqual([[home], ['home-page'], ['home-page']]);
-		expect([own.available, own.edges, own.measured, own.explained]).toEqual([
-			true,
-			[],
-			[home],
-			[home]
-		]);
-		const [record] = own.detail.records;
-		expect(side?.record).toEqual(record);
-		expect(record.budgets.findings.map((found) => found.unit)).toEqual([home]);
-		expect(record.failures).toEqual([]);
-		// Every test stays: the record does not say which unit a test file covers.
-		expect(ids(record.tests)).toEqual(['home-page:run', 'feed-run:run', 'test/unit.test.ts']);
-		expect(side?.captures.map((item) => item.scenario)).toEqual(['home-page']);
-	}
-	expect(recordedProjection(full(feed), feed).after.record?.failures).toEqual([
-		`${feed}: a note of the feed alone`
-	]);
-});
+test('a side keeps what judges this entity and nothing of another', async () =>
+	measureWorkload(
+		'desktop.function.recorded-projection',
+		'recorded-projection-normal-behavior',
+		async () => {
+			const projected = recordedProjection(full(home), home);
+			for (const side of [projected.after, projected.before]) {
+				const own = held(side);
+				expect([own.units, own.scenarios, own.ran]).toEqual([[home], ['home-page'], ['home-page']]);
+				expect([own.available, own.edges, own.measured, own.explained]).toEqual([
+					true,
+					[],
+					[home],
+					[home]
+				]);
+				const [record] = own.detail.records;
+				expect(side?.record).toEqual(record);
+				expect(record.budgets.findings.map((found) => found.unit)).toEqual([home]);
+				expect(record.failures).toEqual([]);
+				// Every test stays: the record does not say which unit a test file covers.
+				expect(ids(record.tests)).toEqual(['home-page:run', 'feed-run:run', 'test/unit.test.ts']);
+				expect(side?.captures.map((item) => item.scenario)).toEqual(['home-page']);
+			}
+			expect(recordedProjection(full(feed), feed).after.record?.failures).toEqual([
+				`${feed}: a note of the feed alone`
+			]);
+		}
+	));
 
 test('what a commit changed is kept for this entity alone, and no file is named', () => {
 	const { detail } = recordedProjection(full(feed), feed).after;

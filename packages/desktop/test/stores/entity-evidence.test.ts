@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { afterEach, expect, test, vi } from 'vitest';
 import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
 import {
@@ -34,22 +35,23 @@ function gate() {
 }
 afterEach(() => vi.restoreAllMocks());
 
-test('evidence is read once for what is shown, and again when the scope or the pins change', async () => {
-	const { bridge, calls } = evidenceBridge();
-	const store = createEntityEvidenceStore();
-	store.show(bridge, target(ids.page));
-	expect(store.status).toBe('loading');
-	await settled(store);
-	expect(store.result?.scope.mode).toBe('current');
-	store.show(bridge, target(ids.page));
-	store.show(bridge, target(ids.page, commits.tip));
-	await settled(store);
-	expect(store.result?.scope).toMatchObject({ mode: 'commit', parent: commits.middle });
-	store.show(bridge, target(ids.page, commits.tip, 'notes moved'));
-	await settled(store);
-	const asked = calls.filter((call) => call.op === 'evidence').map((call) => call.mode);
-	expect(asked).toEqual(['current', 'commit', 'commit']);
-});
+test('evidence is read once for what is shown, and again when the scope or the pins change', async () =>
+	measureWorkload('desktop.store.entity-evidence', 'entity-evidence-normal-behavior', async () => {
+		const { bridge, calls } = evidenceBridge();
+		const store = createEntityEvidenceStore();
+		store.show(bridge, target(ids.page));
+		expect(store.status).toBe('loading');
+		await settled(store);
+		expect(store.result?.scope.mode).toBe('current');
+		store.show(bridge, target(ids.page));
+		store.show(bridge, target(ids.page, commits.tip));
+		await settled(store);
+		expect(store.result?.scope).toMatchObject({ mode: 'commit', parent: commits.middle });
+		store.show(bridge, target(ids.page, commits.tip, 'notes moved'));
+		await settled(store);
+		const asked = calls.filter((call) => call.op === 'evidence').map((call) => call.mode);
+		expect(asked).toEqual(['current', 'commit', 'commit']);
+	}));
 
 test('an answer that arrives after another target is shown is dropped', async () => {
 	const { bridge } = evidenceBridge();

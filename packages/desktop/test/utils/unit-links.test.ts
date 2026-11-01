@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { createWorkspaceStore, type Workspace } from '../../src/lib/stores/workspace.svelte';
@@ -26,14 +27,15 @@ const alpha = (commit = tip, entities = [frame, time]) =>
 	show(createWorkspaceStore(), 'local-alpha', commit, entities);
 const at = (rest: string) => `/projects/local-alpha/harness/branch/feat%2Falpha/${rest}`;
 
-test('a shell leads under Layouts and a pinned commit is kept in the address', () => {
-	expect(unitLinks(alpha())('app.shell.order-frame')).toEqual({
-		...{ to: at('layouts/app.shell.order-frame'), name: 'Order frame', category: 'layouts' }
-	});
-	expect(unitLinks(alpha(earlier))('app.function.format-time')?.to).toBe(
-		at(`commit/${earlier}/functions/app.function.format-time`)
-	);
-});
+test('a shell leads under Layouts and a pinned commit is kept in the address', async () =>
+	measureWorkload('desktop.function.unit-links', 'unit-links-normal-behavior', async () => {
+		expect(unitLinks(alpha())('app.shell.order-frame')).toEqual({
+			...{ to: at('layouts/app.shell.order-frame'), name: 'Order frame', category: 'layouts' }
+		});
+		expect(unitLinks(alpha(earlier))('app.function.format-time')?.to).toBe(
+			at(`commit/${earlier}/functions/app.function.format-time`)
+		);
+	}));
 
 test('a resolver made for one project and commit resolves nothing once another is shown', () => {
 	const shown = alpha();

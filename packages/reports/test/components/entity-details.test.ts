@@ -5,11 +5,8 @@ import { index, record, revision } from '../entityFixture';
 import { content, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { withGroups } from '../entityPreviewData';
-import { sourceAdmissionArrays } from '../entitySourceFixture';
+import { sourceAdmission } from '../entitySourceFixture';
 import { explorerEntities } from '../../src/utils/explorerEntities';
-import { render } from 'svelte/server';
-import EntitySource, { archivedSource } from '../../src/components/explorer-ui/EntitySource.svelte';
-import type { HarnessUnit } from '../../src/models/Harness.types';
 
 const page = { category: 'pages' as const, entity: ids.page, section: 'details' as const };
 const owned = /src\/|\+page\.svelte|\.ts\b|OrdersPage|OrderStore\b/;
@@ -116,27 +113,6 @@ function sourceSelection(entity: ReturnType<typeof explorerEntities>[number]) {
 		path.includes(`/${entity.unit.group!.id}/`)
 	);
 	return { helper: undefined, files: grouped.length ? grouped : entity.unit.owns.source };
-}
-
-/** Source accepts indexed arrays before serialization without invoking custom iteration/species. */
-async function sourceAdmission(unit: HarnessUnit): Promise<void> {
-	const { paths, tests, snapshots, reads } = sourceAdmissionArrays(unit);
-	const body = render(EntitySource, {
-		props: { unit: { ...unit, owns: { ...unit.owns, source: paths }, testFiles: tests } }
-	}).body;
-	expect(words(body)).toContain('src/services/orders/OrderStore.ts');
-	expect(words(body)).toContain('test/order-store.test.ts');
-	const beforeRead = reads.indexed;
-	const reader = archivedSource({ ...unit, sourceFiles: snapshots, testFiles: tests }, '/media/');
-	expect(reads.indexed, 'source readers keep indexed getters lazy until a read').toBe(beforeRead);
-	await expect(
-		reader.read(paths[0]),
-		'indexed source snapshots retain their recorded gap'
-	).rejects.toThrow('Recorded implementation gap');
-	await expect(reader.read(tests[0].path)).rejects.toThrow('Recorded test gap');
-	expect(reads.indexed).toBeGreaterThan(0);
-	expect(reads.iterated).toBe(0);
-	expect(reads.species).toBe(0);
 }
 
 test('measurements name the limit each figure is frozen at, or that none is recorded', () => {

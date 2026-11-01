@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { EvidenceStatus } from '../../src/utils/evidenceNotice';
 import { readingEvidence, unavailableEvidence } from '../../src/utils/evidenceNotice';
@@ -12,10 +13,15 @@ const read = (id: string, mode: string, commit = commits.tip) => ({
 const without = (status: EvidenceStatus, error = '') => ({ status, result: null, error });
 const catalog = { status: 'unverified', reason: 'No verification recorded for this revision.' };
 
-test('a record that proves the entity is a passed verdict, in the words of the explorer', () => {
-	const shown = evidenceVerdict(read(ids.filter, 'current'), entityOf(ids.filter), commits.tip);
-	expect(shown).toEqual({ status: 'verified', reason: 'Full coverage passed' });
-});
+test('a record that proves the entity is a passed verdict, in the words of the explorer', async () =>
+	measureWorkload(
+		'desktop.function.evidence-verdict',
+		'evidence-verdict-normal-behavior',
+		async () => {
+			const shown = evidenceVerdict(read(ids.filter, 'current'), entityOf(ids.filter), commits.tip);
+			expect(shown).toEqual({ status: 'verified', reason: 'Full coverage passed' });
+		}
+	));
 
 test('what the record does not prove fails with its reasons; a commit without a record is unknown', () => {
 	const page = evidenceVerdict(read(ids.page, 'current'), entityOf(ids.page), commits.tip);

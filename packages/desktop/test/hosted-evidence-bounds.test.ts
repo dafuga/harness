@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { hostedResponse } from '../src/utils/hostedResponse';
 import { hostedArtifact } from '../../hub/src/utils/browser-bridge/hostedArtifact';
@@ -30,13 +31,18 @@ test('a reply bound to another selected branch is rejected', () => {
 		'another evidence read'
 	);
 });
-test('supported but mismatched image MIME is refused', async () => {
-	const bytes = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
-	const digest = await crypto.subtle.digest('SHA-256', bytes);
-	const sha256 = Array.from(new Uint8Array(digest), (n) => n.toString(16).padStart(2, '0')).join(
-		''
-	);
-	await expect(hostedArtifact({ bytes, mediaType: 'image/jpeg' }, sha256)).rejects.toThrow(
-		'does not show'
-	);
-});
+test('supported but mismatched image MIME is refused', async () =>
+	measureWorkload(
+		'desktop.function.hosted-artifact',
+		'hosted-evidence-bounds-normal-behavior',
+		async () => {
+			const bytes = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
+			const digest = await crypto.subtle.digest('SHA-256', bytes);
+			const sha256 = Array.from(new Uint8Array(digest), (n) =>
+				n.toString(16).padStart(2, '0')
+			).join('');
+			await expect(hostedArtifact({ bytes, mediaType: 'image/jpeg' }, sha256)).rejects.toThrow(
+				'does not show'
+			);
+		}
+	));

@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import { RecordedEvidenceService } from '../../src/services/RecordedEvidenceService';
@@ -109,46 +110,51 @@ function fixture() {
 }
 for (const operation of ['evidence', 'artifact'] as const) {
 	for (const switching of [false, true]) {
-		it(`${operation}: ${switching ? 'switch while refs await must retain A or reject' : 'unchanged A succeeds'}`, async () => {
-			const f = fixture();
-			const request =
-				operation === 'evidence'
-					? f.service.evidence(f.query)
-					: f.service.artifact(
-							Object.freeze({
-								...f.query,
-								side: 'after' as const,
-								recordId: 'record-aaaa',
-								scenarioId: 'feed-run',
-								state: 'filled',
-								evidenceId: 'kept',
-								viewport: null,
-								sha256,
-								...pins
-							})
-						);
-			expect(io.reads).toEqual([`A:${operation === 'evidence' ? 'current' : 'pinned'}`]);
-			if (switching) f.switch();
-			io.release();
-			const result = await request.then(
-				(value) => ({ value }),
-				(error) => ({ error })
-			);
-			if ('error' in result) {
-				expect(switching, String(result.error)).toBe(true);
-				return;
-			}
-			if (operation === 'evidence') {
-				expect((result.value as EntityEvidenceResult).identity.projectId).toBe('A');
-				expect((result.value as EntityEvidenceResult).scope.summary.subject).toBe('A');
-			} else {
-				expect((result.value as EvidenceArtifactResult).sha256).toBe(sha256);
-				expect((result.value as EvidenceArtifactResult).bytes).toEqual(bytes);
-			}
-			expect(
-				io.reads.filter((read) => read.startsWith('B:')),
-				'a successful A request must never use B context'
-			).toEqual([]);
-		});
+		it(`${operation}: ${switching ? 'switch while refs await must retain A or reject' : 'unchanged A succeeds'}`, async () =>
+			measureWorkload(
+				'desktop.service.recorded-evidence',
+				'recorded-project-isolation-normal-behavior',
+				async () => {
+					const f = fixture();
+					const request =
+						operation === 'evidence'
+							? f.service.evidence(f.query)
+							: f.service.artifact(
+									Object.freeze({
+										...f.query,
+										side: 'after' as const,
+										recordId: 'record-aaaa',
+										scenarioId: 'feed-run',
+										state: 'filled',
+										evidenceId: 'kept',
+										viewport: null,
+										sha256,
+										...pins
+									})
+								);
+					expect(io.reads).toEqual([`A:${operation === 'evidence' ? 'current' : 'pinned'}`]);
+					if (switching) f.switch();
+					io.release();
+					const result = await request.then(
+						(value) => ({ value }),
+						(error) => ({ error })
+					);
+					if ('error' in result) {
+						expect(switching, String(result.error)).toBe(true);
+						return;
+					}
+					if (operation === 'evidence') {
+						expect((result.value as EntityEvidenceResult).identity.projectId).toBe('A');
+						expect((result.value as EntityEvidenceResult).scope.summary.subject).toBe('A');
+					} else {
+						expect((result.value as EvidenceArtifactResult).sha256).toBe(sha256);
+						expect((result.value as EvidenceArtifactResult).bytes).toEqual(bytes);
+					}
+					expect(
+						io.reads.filter((read) => read.startsWith('B:')),
+						'a successful A request must never use B context'
+					).toEqual([]);
+				}
+			));
 	}
 }
