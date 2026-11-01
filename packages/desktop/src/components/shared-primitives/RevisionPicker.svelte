@@ -59,13 +59,7 @@
 
 {#if snapshot && revision}<hx-div class="revision-picker">
 		<hx-div class="revision-choices">
-			<ChoiceDialog
-				label="Choose branch"
-				title="Choose branch"
-				width={320}
-				maxHeight={320}
-				gap={10}
-			>
+			<ChoiceDialog label="Choose branch" title="" width={320} maxHeight={320} gap={10}>
 				{#snippet icon()}<Icon name="branch" size={18} /><hx-span>Branch</hx-span>{/snippet}
 				{#snippet children(close: () => void)}<hx-label
 						class="picker-field"
@@ -85,15 +79,9 @@
 						onclick={() => chooseBranch(close)}>View branch</hx-button
 					>{/snippet}
 			</ChoiceDialog>
-			<ChoiceDialog
-				label="Choose commit"
-				title="Choose commit"
-				width={380}
-				maxHeight={320}
-				gap={10}
-			>
+			<ChoiceDialog label="Choose commit" title="" width={380} maxHeight={320} gap={10}>
 				{#snippet icon()}<Icon name="commit" size={18} /><hx-span
-						>Commit{environment ? ` · ${environment}` : ''}</hx-span
+						>Commit{environment ? ` ${environment}` : ''}</hx-span
 					>{/snippet}
 				{#snippet children(close: () => void)}<hx-label
 						class="picker-field"
@@ -173,6 +161,16 @@
 		display: block;
 	}
 	@media (max-width: 560px) {
+		.revision-choices :global(button.agent-icon) {
+			width: var(--hx-space-48);
+			height: var(--hx-space-40);
+			padding: 0;
+			font-size: var(--hx-type-size-xs);
+			white-space: normal;
+		}
+		.revision-choices :global(svg) {
+			display: none;
+		}
 		.revision-picker {
 			display: contents;
 		}
