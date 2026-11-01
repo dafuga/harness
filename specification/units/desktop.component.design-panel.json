@@ -32,7 +32,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["desktop.component.segmented-choice"],
+		"primitives": ["desktop.component.segmented-choice", "reports.component.select"],
 		"inputs": [
 			{
 				"name": "DesignPanel.entity",

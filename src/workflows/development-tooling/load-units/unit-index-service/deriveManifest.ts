@@ -161,14 +161,16 @@ function declaredMetadata(kept: Declared) {
 
 function primitiveContract(input: DeriveInput) {
 	if ((input.previous?.kind ?? input.kind) !== 'component') return {};
+	const sharedOwners = new Set(
+		[...input.owners].filter(([path]) => sharedPrimitivePath.test(path)).map(([, owner]) => owner)
+	);
 	const primitives = [
 		...new Set(
 			input.files.flatMap((file) =>
 				file.references.flatMap((reference) => {
-					if (reference.typeOnly || !reference.path || !sharedPrimitivePath.test(reference.path))
-						return [];
+					if (reference.typeOnly || !reference.path) return [];
 					const owner = input.owners.get(reference.path);
-					return owner && owner !== input.id ? [owner] : [];
+					return owner && owner !== input.id && sharedOwners.has(owner) ? [owner] : [];
 				})
 			)
 		)
