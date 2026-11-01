@@ -7,6 +7,7 @@ import {
 	assertDesktopScreenCapture
 } from './desktopArtifactAssertions';
 import { assertDesktopNavCapture } from './desktopNavAssertions';
+import { assertComposerCaptions } from './projectAgentStateAssertions';
 
 /** Check the actual state branches, so a successful screenshot cannot silently show the default. */
 export async function assertDesktopState(component: Locator, id: string, variant: string) {
@@ -92,6 +93,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertDesktopArtifactCapture(component, id, variant);
 	await assertDesktopScreenCapture(component, id, variant);
 	await assertDesktopNavCapture(component, id);
+	await assertComposerCaptions(component, id);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
@@ -168,6 +170,9 @@ async function assertLoadedHistory(component: Locator, id: string, variant: stri
 }
 
 async function assertComposerPresentation(component: Locator, variant: string) {
+	await expect(component.getByRole('textbox', { name: 'Message' })).not.toHaveValue(
+		/synthetic request kept for this capture/i
+	);
 	const modes: Record<string, string> = {
 		ask: 'Ask',
 		plan: 'Plan',

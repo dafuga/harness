@@ -104,11 +104,13 @@ async function composer(component: Locator, variant: string) {
 	};
 	await component
 		.getByRole('textbox', { name: 'Message' })
-		.fill(requests[variant] ?? 'A synthetic request kept for this capture.');
+		.fill(
+			requests[variant] ?? 'Review the order search and preserve the original order of matches.'
+		);
 	if (variant === 'retry') {
 		await component.getByRole('button', { name: 'Send comment' }).click();
 		await expect(component.getByRole('textbox')).toHaveValue(
-			'A synthetic request kept for this capture.'
+			'Review the order search and preserve the original order of matches.'
 		);
 	}
 }

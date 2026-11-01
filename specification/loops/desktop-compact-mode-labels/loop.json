@@ -1,0 +1,62 @@
+{
+	"name": "desktop-compact-mode-labels",
+	"goal": "Compact Composer modes stay readable inside their buttons in ProjectAgent.",
+	"createdAt": "2026-11-01T01:37:26.214Z",
+	"updatedAt": "2026-11-01T01:42:57.702Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-01T01:37:26.971Z",
+			"evidence": "ProjectAgent canonical ccd2f6b5d55c default desktop/tablet/mobile images clip Change and crowd Comment in compact Composer."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T01:37:27.622Z",
+			"evidence": "Existing standard catalog checked actions and selected modes, but not caption/hit-target bounds. Add reusable caption and toolbar bounds to the same Composer and ProjectAgent cases; compare narrow real panel and wide compact preview."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T01:41:25.201Z",
+			"evidence": "19c6976747 compact six-case red retains6 originals; narrow ProjectAgent captions fail while wide compact Composer cases pass."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-01T01:41:26.501Z",
+			"evidence": "Compact Composer sizes its icon column to content, preserves mode minimum text widths, and reuses standard6px mode padding. Public props and callbacks are unchanged."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-01T01:42:57.702Z",
+			"evidence": "Matched green28df1aabe187 at a18045bdf4 passes6 unchanged cases; red d2acfc2a19b0 had4 failures /2 passes. All6 originals on each side were individually opened."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
