@@ -20,7 +20,7 @@ export async function settlePreviewAudio(component: Locator, id: string, variant
 		});
 		await expect
 			.poll(() => player.evaluate((audio: HTMLAudioElement) => audio.duration))
-			.toBe(id === 'reports.component.harness-entity-audio' ? 2 : 42);
+			.toBe(id === 'reports.component.harness-entity-audio' ? 1 : 42);
 	}
 	if (players.length)
 		await component
@@ -40,5 +40,5 @@ export async function assertPreviewAudio(component: Locator, id: string, variant
 		expect(
 			await player.evaluate((audio: HTMLAudioElement) => audio.duration),
 			'Native player retains the loaded recording duration'
-		).toBe(id === 'reports.component.harness-entity-audio' ? 2 : 42);
+		).toBe(id === 'reports.component.harness-entity-audio' ? 1 : 42);
 }

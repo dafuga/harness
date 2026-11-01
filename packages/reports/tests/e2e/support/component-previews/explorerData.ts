@@ -46,6 +46,7 @@ export function recordedAudioSide(side: ExplorerSide, commit = side.commit): Exp
 			recordId: undefined,
 			capture: {
 				...found.capture,
+				durationSeconds: 1,
 				provenance: 'actual-capture',
 				server: { buildId: `orders-search-${commit.slice(0, 7)}`, revision: commit }
 			}
