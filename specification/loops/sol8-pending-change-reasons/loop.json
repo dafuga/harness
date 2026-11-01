@@ -2,7 +2,7 @@
 	"name": "sol8-pending-change-reasons",
 	"goal": "Retain explicit entity change reasons while results load without displaying a fallback absence claim.",
 	"createdAt": "2026-11-01T07:14:48.703Z",
-	"updatedAt": "2026-11-01T07:21:03.434Z",
+	"updatedAt": "2026-11-01T07:28:43.508Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,17 +39,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:28:40.640Z",
+			"evidence": "The isolated repair 919a302689 retains explicit reasons during reading without changing any frozen test or fixture."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:28:42.135Z",
+			"evidence": "Matched green 4ada2cfec448c1dd passes the unchanged complete parent-consumer test corpus at 919a302689."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:28:43.508Z",
+			"evidence": "The isolated original source fails and repaired 919a302689 passes; pending74-guard-pair-fixed.json confirms identical frozen input hashes."
 		},
 		{
 			"id": "verify",
