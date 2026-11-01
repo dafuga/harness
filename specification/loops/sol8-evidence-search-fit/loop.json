@@ -2,7 +2,7 @@
 	"name": "sol8-evidence-search-fit",
 	"goal": "Keep the entire evidence search placeholder visible at desktop, tablet and mobile without changing its accessible label.",
 	"createdAt": "2026-11-01T05:14:51.866Z",
-	"updatedAt": "2026-11-01T05:14:53.155Z",
+	"updatedAt": "2026-11-01T05:19:42.187Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T05:19:42.187Z",
+			"evidence": "Record 13290593f233e5ea99e89c0e990329150f84272265a1e5c470da420452871051 at 4e84451e99: mobile measures 305.04 pixels in 300 available; desktop/tablet pass."
 		},
 		{
 			"id": "implement",
