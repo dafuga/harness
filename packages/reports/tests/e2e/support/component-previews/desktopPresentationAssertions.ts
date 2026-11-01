@@ -24,6 +24,9 @@ export async function assertDesktopPresentation(component: Locator, id: string, 
 
 async function assertChatPresentation(component: Locator, variant: string) {
 	if (variant === 'closed') return;
+	await expect(component, 'Chat messages contain no raw unit-reference markup').not.toContainText(
+		/\[\[unit:/
+	);
 	if (variant === 'saved-plan') await assertSavedPlanPresentation(component);
 	if (['failure', 'running'].includes(variant)) {
 		await expect(
