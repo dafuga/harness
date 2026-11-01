@@ -61,6 +61,7 @@ export const desktopCatalogVariants: Record<string, string[]> = {
 	'desktop.component.revision-picker': [
 		'branch-open',
 		'commit-open',
+		'environment',
 		'historical',
 		'pinned',
 		'unknown-time'

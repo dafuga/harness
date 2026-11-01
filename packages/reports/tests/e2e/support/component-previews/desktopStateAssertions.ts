@@ -41,6 +41,12 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 			await expect(component.getByRole('status')).toBeVisible();
 	},
 	'revision-picker': async (component, variant) => {
+		if (variant === 'environment') {
+			const summary = component.getByLabel('Viewed context');
+			await expect(summary.locator('strong')).toHaveText('Updated at');
+			await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:00:00Z');
+			await expect(component.getByRole('button', { name: 'Go to tip' })).toHaveCount(0);
+		}
 		if (['pinned', 'historical'].includes(variant))
 			await expect(component.getByRole('button', { name: 'Go to tip' })).toBeVisible();
 	},
