@@ -116,7 +116,12 @@
 {/snippet}
 
 {#snippet usage()}
-	<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
+	{#if !page || row.usedIn?.length}<ExplorerUsage
+			consumers={row.usedIn ?? []}
+			{nav}
+			{lens}
+			{mediaBase}
+		/>{/if}
 {/snippet}
 
 <hx-article

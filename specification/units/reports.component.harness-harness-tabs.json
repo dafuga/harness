@@ -51,7 +51,7 @@
 			{
 				"name": "HarnessTabs",
 				"type": "markup",
-				"description": "Links for enabled tabs with destinations and buttons otherwise. Keeps the selected tab visible within the scrolling strip as selection or size changes, without moving focus or scrolling the page."
+				"description": "Links for enabled tabs with destinations and buttons otherwise. Keeps the selected tab visible within the scrolling strip without moving focus or scrolling the page. Overflow retains a painted horizontal scrollbar."
 			}
 		],
 		"errors": [],

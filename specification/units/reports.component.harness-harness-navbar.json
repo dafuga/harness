@@ -87,7 +87,7 @@
 			{
 				"name": "HarnessNavbar",
 				"type": "markup",
-				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
+				"description": "Pages, Code, Translations and Platforms navigation preserves branch and commit scope. Historical commits have a visible status. Module-declared Code tabs retain a horizontal scroll cue when they overflow."
 			}
 		],
 		"errors": [
