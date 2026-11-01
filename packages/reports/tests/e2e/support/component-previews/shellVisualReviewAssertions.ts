@@ -1,5 +1,24 @@
 import { expect, type Locator } from '@playwright/test';
 
+/** A persistent cue remains visible when native scrollbars fade between interactions. */
+export async function assertTabOverflowCue(component: Locator, id: string) {
+	if (
+		![
+			'reports.component.harness-explorer-content',
+			'reports.component.harness-harness-navbar',
+			'reports.component.harness-harness-tabs'
+		].includes(id)
+	)
+		return;
+	for (const strip of await component.getByRole('tablist').all()) {
+		if (!(await strip.evaluate((node) => node.scrollWidth > node.clientWidth + 1))) continue;
+		await expect(
+			component.getByText('Scroll horizontally to see more sections.', { exact: true }),
+			'Overflowing sections retain a visible scroll cue'
+		).toBeVisible();
+	}
+}
+
 /** Review the rendered shell, after its ordinary catalog capture has retained the checkpoint. */
 export async function assertShellVisualReview(component: Locator, id: string, variant: string) {
 	await reviewedCopy(component, id);

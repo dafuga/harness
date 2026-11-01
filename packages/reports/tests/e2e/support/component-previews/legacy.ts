@@ -47,11 +47,16 @@ export const legacyCases: PreviewCases = {
 	},
 	'reports.component.harness-harness-shell': { base: '/harness' },
 	'reports.component.harness-harness-tabs': {
-		view: 'contract',
+		view: 'history',
 		tabs: [
 			{ id: 'overview', label: 'Overview' },
 			{ id: 'contract', label: 'Contract' },
-			{ id: 'states', label: 'States' }
+			{ id: 'used-in', label: 'Used In' },
+			{ id: 'uses', label: 'Uses' },
+			{ id: 'audio', label: 'Audio' },
+			{ id: 'states', label: 'States' },
+			{ id: 'history', label: 'History' },
+			{ id: 'source', label: 'Source' }
 		],
 		onview: noop
 	},

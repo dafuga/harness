@@ -33,6 +33,7 @@ import { assertReportPreviewState } from './support/component-previews/reportPre
 import { assertRecordedValueCapture } from './support/component-previews/recordedValueCaptureAssertions';
 import { assertShellReview } from './support/component-previews/shellReviewAssertions';
 import { assertShellVisualReview } from './support/component-previews/shellVisualReviewAssertions';
+import { assertTabOverflowCue } from './support/component-previews/shellVisualReviewAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { assertCatalogRegistry } from './support/component-previews/catalogRegistryAssertions';
 import { catalogFixtureMedia } from './support/component-previews/catalogFixtureMedia';
@@ -180,6 +181,7 @@ for (const viewport of catalogViewports) {
 			}
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
 			await assertRecordedCompatibility(component, unit.id, variant);
+			await assertTabOverflowCue(component, unit.id);
 			if (unit.id === 'reports.component.harness-entity-artifact' && variant === 'raw-open') {
 				const original = await component
 					.getByRole('link', { name: 'Open the recorded Assertions' })
