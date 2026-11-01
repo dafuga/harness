@@ -28,13 +28,11 @@
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-summary",
-			"reports.component.shared-primitives-atoms-html-table",
-			"reports.component.shared-primitives-atoms-html-tbody",
 			"reports.component.shared-primitives-atoms-html-td",
 			"reports.component.shared-primitives-atoms-html-th",
-			"reports.component.shared-primitives-atoms-html-thead",
 			"reports.component.shared-primitives-atoms-html-tr",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-data-table"
 		]
 	},
 	"owns": {
@@ -42,13 +40,19 @@
 			"packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
 			"packages/reports/src/lib/styles/translations.css"
 		],
-		"symbols": ["ExplorerTranslationsScreen", "ExplorerTranslationsScreen.children"]
+		"symbols": [
+			"ExplorerTranslationsScreen",
+			"ExplorerTranslationsScreen.children",
+			"ExplorerTranslationsScreen.header",
+			"ExplorerTranslationsScreen.children"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"primitives": [
 			"reports.component.explorer-ui-explorer-kit-empty-state",
-			"reports.component.select"
+			"reports.component.select",
+			"reports.component.shared-primitives-data-table"
 		],
 		"inputs": [
 			{
@@ -148,6 +152,30 @@
 						"required": true
 					}
 				],
+				"outputs": [
+					{
+						"name": "ExplorerTranslationsScreen.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerTranslationsScreen.header",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerTranslationsScreen.header",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerTranslationsScreen.children",
+				"inputs": [],
 				"outputs": [
 					{
 						"name": "ExplorerTranslationsScreen.children",
@@ -261,16 +289,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-table",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-tbody",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-td",
 			"via": "import",
 			"origin": "derived"
@@ -281,17 +299,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-thead",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-tr",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-data-table",
 			"via": "import",
 			"origin": "derived"
 		},

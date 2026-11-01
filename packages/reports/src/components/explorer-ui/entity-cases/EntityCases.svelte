@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../../shared-primitives/DataTable.svelte';
 	import type { Row } from './EntityCases.types';
 
 	import type { UsageExample } from '../../../../../../src/utils/unit-documentation/unitDocumentation';
@@ -61,15 +62,15 @@
 {:else}
 	<hx-div class="cases" class:documented data-harness-component="entity-cases">
 		{#if view.note}<hx-p class="cases-note">{view.note}</hx-p>{/if}
-		<hx-table>
-			<hx-thead>
+		<DataTable label="Recorded examples" tableClass="entity-cases-table">
+			{#snippet header()}
 				<hx-tr
 					><hx-th scope="col">{documented ? 'Example' : 'Case'}</hx-th><hx-th scope="col"
 						>Input</hx-th
 					><hx-th scope="col">{verb} output</hx-th></hx-tr
 				>
-			</hx-thead>
-			<hx-tbody>
+			{/snippet}
+			{#snippet children()}
 				{#each view.rows as item, position (position)}
 					<hx-tr>
 						<hx-th scope="row">
@@ -90,8 +91,8 @@
 						</hx-td>
 					</hx-tr>
 				{/each}
-			</hx-tbody>
-		</hx-table>
+			{/snippet}
+		</DataTable>
 		<hx-details bind:open={expanded}>
 			<hx-summary>{fullValuesLabel}</hx-summary>
 			{#if expanded}<hx-pre>{JSON.stringify(documented ? examples : document, null, 2)}</hx-pre
@@ -109,21 +110,21 @@
 		font-size: var(--hx-type-size-sm);
 		opacity: var(--hx-opacity-secondary);
 	}
-	table {
+	:global(table.entity-cases-table) {
 		width: 100%;
 		border-collapse: separate;
 	}
-	thead {
+	:global(table.entity-cases-table) :global(thead) {
 		position: absolute;
 		width: 1px;
 		height: 1px;
 		overflow: hidden;
 		clip-path: inset(50%);
 	}
-	tbody {
+	:global(table.entity-cases-table) :global(tbody) {
 		counter-reset: cases;
 	}
-	tbody tr {
+	:global(table.entity-cases-table) :global(tbody) tr {
 		counter-increment: cases;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -140,7 +141,7 @@
 		font-size: var(--hx-type-size-base);
 		line-height: var(--hx-style-leading-normal);
 	}
-	tbody th::before {
+	:global(table.entity-cases-table) :global(tbody) th::before {
 		content: 'Case ' counter(cases, decimal-leading-zero);
 		display: block;
 		margin-bottom: var(--hx-space-4);
@@ -148,7 +149,7 @@
 		font-weight: var(--hx-style-weight-medium);
 		color: var(--hx-color-text-muted);
 	}
-	.documented tbody th::before {
+	:global(.documented table.entity-cases-table tbody) th::before {
 		content: 'Example ' counter(cases, decimal-leading-zero);
 	}
 	.case-description {
@@ -198,12 +199,12 @@
 		color: var(--hx-color-text-supporting);
 	}
 	@container (max-width: 800px) {
-		tbody tr {
+		:global(table.entity-cases-table) :global(tbody) tr {
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 	@container (max-width: 400px) {
-		tbody tr {
+		:global(table.entity-cases-table) :global(tbody) tr {
 			padding: var(--hx-space-8);
 		}
 		td {

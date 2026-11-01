@@ -1,6 +1,7 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../atoms -->
 <script lang="ts">
+	import DataTable from '../DataTable.svelte';
 	import { humanize } from '../../../helpers/strings/humanize';
 	import { recordedValue } from './recordedValue';
 	import { type RecordedNode } from '../../../utils/shared-primitives/recordedValue';
@@ -52,24 +53,18 @@
 			</hx-p>{/if}
 	{:else}
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex (Keyboard users need to scroll this data table.) -->
-		<hx-div class="value-scroll" tabindex="0" role="region" aria-label={rowsLabel}>
-			<hx-table>
-				<hx-thead
-					><hx-tr
-						>{#each node.columns as column (column)}<hx-th scope="col" title={column}
-								>{label(column)}</hx-th
+		<DataTable label={rowsLabel} tableClass="recorded-value-table" className="value-scroll">
+			{#snippet header()}<hx-tr
+					>{#each node.columns as column (column)}<hx-th scope="col" title={column}
+							>{label(column)}</hx-th
+						>{/each}</hx-tr
+				>{/snippet}
+			{#snippet children()}{#each node.rows as row, position (position)}<hx-tr
+						>{#each row as cell, column (column)}<hx-td data-field={label(node.columns[column])}
+								>{@render present(cell)}</hx-td
 							>{/each}</hx-tr
-					></hx-thead
-				>
-				<hx-tbody
-					>{#each node.rows as row, position (position)}<hx-tr
-							>{#each row as cell, column (column)}<hx-td data-field={label(node.columns[column])}
-									>{@render present(cell)}</hx-td
-								>{/each}</hx-tr
-						>{/each}</hx-tbody
-				>
-			</hx-table>
-		</hx-div>
+					>{/each}{/snippet}
+		</DataTable>
 		{#if node.remaining}<hx-p class="value-note">
 				{node.remaining} more rows in {fullValuesLabel}.
 			</hx-p>{/if}
@@ -142,11 +137,11 @@
 		border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 		border-radius: var(--hx-radius-xsmall);
 	}
-	.value-scroll {
+	:global(.value-scroll) {
 		max-width: 100%;
 		overflow: auto;
 	}
-	table {
+	:global(table.recorded-value-table) {
 		width: 100%;
 		border-collapse: collapse;
 		font-size: var(--hx-type-size-compact);
@@ -164,18 +159,18 @@
 		font-weight: var(--hx-style-weight-semibold);
 	}
 	@container (max-width: 420px) {
-		thead {
+		:global(table.recorded-value-table) :global(thead) {
 			position: absolute;
 			width: 1px;
 			height: 1px;
 			overflow: hidden;
 			clip-path: inset(50%);
 		}
-		tbody {
+		:global(table.recorded-value-table) :global(tbody) {
 			display: grid;
 			gap: var(--hx-space-10);
 		}
-		tbody tr {
+		:global(table.recorded-value-table) :global(tbody) tr {
 			display: grid;
 			padding: var(--hx-space-6) var(--hx-space-10);
 			border: var(--hx-border-thin) solid var(--hx-color-border-strong);
