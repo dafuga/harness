@@ -24,6 +24,10 @@ export async function assertDesktopPresentation(component: Locator, id: string, 
 async function assertChatPresentation(component: Locator, variant: string) {
 	if (variant === 'closed') return;
 	if (['failure', 'running'].includes(variant)) {
+		await expect(
+			component.getByRole('textbox', { name: 'Message' }),
+			'Restored drafts retain the complete review request'
+		).toHaveValue(/including mixed-case names and empty queries\.\s*$/);
 		const fits = await component
 			.getByRole('textbox', { name: 'Message' })
 			.evaluate((node) => node.scrollTop === 0 && node.scrollHeight <= node.clientHeight + 1);
@@ -94,6 +98,16 @@ async function assertScreenPresentation(component: Locator, variant: string) {
 			height: (node as HTMLImageElement).naturalHeight
 		}))
 	);
+	const hashes = await images.evaluateAll(async (nodes) =>
+		Promise.all(
+			nodes.map(async (node) => {
+				const bytes = await (await fetch((node as HTMLImageElement).src)).arrayBuffer();
+				const hash = await crypto.subtle.digest('SHA-256', bytes);
+				return [...new Uint8Array(hash)].join(',');
+			})
+		)
+	);
+	expect(new Set(hashes).size, 'Before and after retain visibly different capture inputs').toBe(2);
 	expect(dimensions.map((item) => item.width)).toEqual(
 		variant === 'paired' ? [1440, 1440] : [1440, 1280]
 	);
