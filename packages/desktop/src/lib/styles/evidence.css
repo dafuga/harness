@@ -9,6 +9,9 @@
 	padding-bottom: var(--hx-space-14);
 	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 }
+.entity-main .coverage-panel > .row > small {
+	overflow-wrap: anywhere;
+}
 .runtime-card {
 	padding: var(--hx-space-16) 0;
 	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
