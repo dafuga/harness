@@ -36,7 +36,11 @@ export async function prepareImageZoom(component: Locator, variant: string) {
 		await expect(component.locator('output')).toHaveText('100%');
 	}
 	if (variant === 'zoomed') {
+		await component.getByRole('button', { name: 'Actual size' }).click();
 		await plus.click();
+		await plus.click();
+		await expect(component.locator('output')).toHaveText('150%');
+		await component.locator('.stage.zoomed').evaluate((node) => node.scrollTo(0, 0));
 		await expect(minus).toHaveAttribute('aria-disabled', 'false');
 	}
 	if (variant === 'zoom-out') {
