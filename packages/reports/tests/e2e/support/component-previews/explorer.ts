@@ -60,7 +60,7 @@ export const explorerCases: PreviewCases = {
 	},
 	'reports.component.harness-entity-audio': {
 		evidence: d.audioEvidence,
-		scope: d.shown.scope,
+		scope: { ...d.shown.scope, commit: d.audioEvidence.after.commit },
 		mediaBase: '/media/'
 	},
 	'reports.component.harness-entity-behavior': {
@@ -173,7 +173,12 @@ export const explorerCases: PreviewCases = {
 			groups: []
 		}
 	},
-	'reports.component.harness-explorer-frame': { host: page, children },
+	'reports.component.harness-explorer-frame': {
+		host: page,
+		children: text(
+			'<section class="ex-card"><h2>Orders</h2><p class="ex-soft">2 orders ready for review.</p><dl class="ex-rows"><div><dt>Order A-1048</dt><dd>Ready to ship · $128.00</dd></div><div><dt>Order A-1047</dt><dd>Delivered · $84.00</dd></div></dl></section>'
+		)
+	},
 	'reports.component.harness-explorer-index': {
 		category: 'components',
 		rows: d.rows,

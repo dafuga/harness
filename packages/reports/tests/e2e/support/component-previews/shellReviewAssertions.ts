@@ -33,6 +33,12 @@ export async function assertShellReview(
 		await component.innerText(),
 		'Catalog text uses realistic identities and config values'
 	).not.toMatch(/\b(?:a{7,}|b{7,}|c{7,})\b|record-test-|orders\/orders\//);
+	if (id.endsWith('harness-entity-history') && variant === 'unread') {
+		const read = component.getByRole('button', { name: 'Read the next commits' });
+		await read.click();
+		await expect(read, 'A failed revision read releases the retry action').toBeEnabled();
+		await expect(component).toContainText('not known until');
+	}
 	await namedState(component, id, variant);
 	await responsiveTables(component, id, variant, viewport);
 	await affordances(component, id, variant);

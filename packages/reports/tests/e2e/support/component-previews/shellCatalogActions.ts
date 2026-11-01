@@ -42,8 +42,7 @@ async function historyState(component: Locator, variant: string) {
 	if (variant === 'reading')
 		await component.getByRole('button', { name: 'Read the next commits' }).click();
 	if (variant === 'empty') await expect(component).toContainText('No commit read so far');
-	if (['unread', 'unavailable'].includes(variant))
-		await expect(component).toContainText('not known until');
+	if (variant === 'unread') await expect(component).toContainText('not known until');
 	if (variant === 'reading')
 		await expect(component.getByRole('button', { name: 'Reading…', exact: true })).toBeDisabled();
 }

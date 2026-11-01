@@ -42,7 +42,6 @@ const emptyPreviews = new Set([
 	'reports.component.module-system-plugins-plugin-steps:empty',
 	'reports.component.report-findings:empty',
 	'reports.component.evidence-provenance:empty',
-	'reports.component.evidence-provenance:absent',
 	'reports.component.shared-primitives-detail-list:empty-unprovided'
 ]);
 export async function openPreview(page: Page, home: string, id: string, variant = '') {

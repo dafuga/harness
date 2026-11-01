@@ -3169,12 +3169,6 @@
 			"units": ["reports.component.evidence-provenance"]
 		},
 		{
-			"id": "reports-component-evidence-provenance-absent",
-			"title": "Evidence provenance: absent",
-			"coverage": "required",
-			"units": ["reports.component.evidence-provenance"]
-		},
-		{
 			"id": "reports-component-evidence-viewer",
 			"title": "Evidence viewer",
 			"coverage": "required",
@@ -4275,12 +4269,6 @@
 		{
 			"id": "reports-component-harness-entity-history-reading",
 			"title": "Entity history: reading",
-			"units": ["reports.component.harness-entity-history"],
-			"coverage": "required"
-		},
-		{
-			"id": "reports-component-harness-entity-history-unavailable",
-			"title": "Entity history: unavailable",
 			"units": ["reports.component.harness-entity-history"],
 			"coverage": "required"
 		},
@@ -8459,7 +8447,6 @@
 				"reports-component-evidence-provenance-long",
 				"reports-component-evidence-provenance-duplicate-labels",
 				"reports-component-evidence-provenance-empty",
-				"reports-component-evidence-provenance-absent",
 				"reports-component-evidence-viewer",
 				"reports-component-evidence-viewer-unselected",
 				"reports-component-evidence-viewer-before",
@@ -8644,7 +8631,6 @@
 				"reports-component-harness-entity-history-empty",
 				"reports-component-harness-entity-history-unread",
 				"reports-component-harness-entity-history-reading",
-				"reports-component-harness-entity-history-unavailable",
 				"reports-component-harness-entity-history-long",
 				"reports-component-harness-entity-history-row",
 				"reports-component-harness-entity-history-screen",

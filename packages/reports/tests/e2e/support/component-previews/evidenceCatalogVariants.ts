@@ -41,8 +41,7 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 		'single',
 		'long',
 		'duplicate-labels',
-		'empty',
-		'absent'
+		'empty'
 	],
 	'reports.component.evidence-viewer': [
 		'unselected',
