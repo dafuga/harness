@@ -12,6 +12,7 @@
 		approved,
 		running,
 		notice = '',
+		failureReported = false,
 		placeholder = '',
 		visual = false,
 		compact = false,
@@ -24,6 +25,8 @@
 		approved: boolean;
 		running: boolean;
 		notice?: string;
+		/** Whether the parent already displays the current send failure. */
+		failureReported?: boolean;
 		/** What an agent request is asked to describe here, where it is not the next design. */
 		placeholder?: string;
 		/** Whether a Plan here makes images, so it asks for the device's number of design options. */
@@ -80,7 +83,8 @@
 		rows="3"
 		disabled={!mode || running}
 	></hx-textarea>
-	{#if failed}<hx-p class="error" role="alert">Couldn’t send. Your message is kept. Try again.</hx-p
+	{#if failed && !failureReported}<hx-p class="error" role="alert"
+			>Couldn’t send. Your message is kept. Try again.</hx-p
 		>{/if}
 	{#if counted}<hx-small class="composer-hint" role="status"
 			>Visual plan · {agentSettings.designOptions} design options</hx-small
