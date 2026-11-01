@@ -160,13 +160,13 @@ const workspaceVariants: Record<
 			workspace.snapshot = null;
 		}
 		if (variant === 'shared') {
-			workspace.projects.push({ id: 'shared-project', name: 'Shared workbench', kind: 'shared' });
+			workspace.projects.push({ id: 'shared-project', name: 'Orders Operations', kind: 'shared' });
 			workspace.snapshot!.project.id = 'shared-project';
-			workspace.snapshot!.project.name = 'Shared workbench';
+			workspace.snapshot!.project.name = 'Orders Operations';
 		}
 		if (variant === 'busy') workspace.busy = true;
 		if (variant === 'long')
-			workspace.snapshot!.project.name = 'A workbench with a long descriptive project name';
+			workspace.snapshot!.project.name = 'Field Service Operations and Order Management';
 		return props;
 	},
 	'revision-picker': (props, data, variant) => {

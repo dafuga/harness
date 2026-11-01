@@ -38,7 +38,7 @@ export async function prepareProjectAgentState(
 		.toMatchObject({
 			mode: mode.toLowerCase(),
 			provider: 'codex',
-			model: 'preview-model',
+			model: 'gpt-6.1-sol',
 			effort: 'high',
 			text: projectConversation
 		});

@@ -1,7 +1,8 @@
 import type { Page, Route } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { buildData } from './buildData';
+import type { buildData } from './buildData';
+import { catalogFixtureMedia } from './catalogFixtureMedia';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
 
@@ -18,8 +19,6 @@ import { consoleProviders } from './consoleProviders';
 import { audioFixture } from '../../../../test/audioFixture';
 import { routeIndex, routeRevision } from './routeHistory';
 import { routePreview } from './visualUnits';
-// Sealed once, when the first preview asks for media; importing this module launches nothing.
-let sealed: ReturnType<typeof buildData> | undefined;
 /** The pages a route module was opened in, by the unit their document asked for. */
 const routed = new WeakSet<Page>();
 const fixtureMedia = new Set(
@@ -40,7 +39,7 @@ export async function servePreview(route: Route, home: string, markup = '') {
 			contentType: file.endsWith('css') ? 'text/css' : 'text/javascript',
 			body: readFileSync(join(home, 'catalog', file))
 		});
-	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
+	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname, home);
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
 	if (url.pathname === '/api/replay-video')
@@ -148,8 +147,8 @@ function historyOf(route: Route, url: URL) {
 	if (routed.has(page)) return { index: routeIndex, revision: routeRevision };
 	return { index, revision: (commit: string) => revision(commit, [record(commit)]) };
 }
-async function media(route: Route, path: string) {
-	const all = await (sealed ??= buildData());
+async function media(route: Route, path: string, home: string) {
+	const all = catalogFixtureMedia(home);
 	const file = path.split('/').pop()!;
 	const artifact = artifactByName(all, file);
 	if (artifact)

@@ -62,6 +62,9 @@ test('a function shows what its tests observed, an input beside the output, one 
 	await opened(page, filter);
 	await expect(heading(page, 'filterOrders')).toBeVisible();
 	await expect(runtime(page).getByRole('group', { name: /^Current snapshot/ })).toBeVisible();
+	const kept = runtime(page).locator('details').filter({ hasText: 'Matching order is listed' });
+	await expect(kept.first()).toBeAttached();
+	await kept.first().locator('summary').first().click();
 	await pictured(page, info, 'function-rows');
 	const tables = runtime(page).getByRole('table');
 	await expect(tables.first().getByRole('columnheader')).toHaveText([
@@ -77,9 +80,8 @@ test('a function shows what its tests observed, an input beside the output, one 
 	await expect(runtime(page)).toContainText('What a test observed end to end');
 	await expect(runtime(page)).not.toContainText('Actual output');
 	await expect(runtime(page).locator('img, figure')).toHaveCount(0);
-	const kept = runtime(page).locator('details').filter({ hasText: 'Matching order is listed' });
-	await expect(kept.first()).toBeAttached();
-	await expect(runtime(page).getByText(gap).first()).toBeVisible();
+	await expect(kept.first().getByText('Matching order is listed', { exact: true })).toBeVisible();
+	await expect(runtime(page)).not.toContainText('This result records no input and output.');
 });
 
 test('at a selected commit the parent and the commit each have their own rows, or say why not', async ({

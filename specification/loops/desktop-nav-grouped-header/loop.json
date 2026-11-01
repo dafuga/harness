@@ -1,0 +1,58 @@
+{
+	"name": "desktop-nav-grouped-header",
+	"goal": "Join context controls, preserve complete resting tabs and balance mobile categories and account alignment",
+	"createdAt": "2026-10-31T22:40:47.899Z",
+	"updatedAt": "2026-10-31T23:09:05.737Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:40:48.683Z",
+			"evidence": "Visual7 rejects detached tablet/desktop-account revision controls, clipped resting tabs, orphan mobile category rows and an account chip detached from the project header."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:40:49.317Z",
+			"evidence": "Earlier guards checked one tab row and caption bounds but did not constrain context-group gaps, mobile row fill or account/project alignment. Extend those same12 cases and remove forced game-tab scrolling."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:09:05.737Z",
+			"evidence": "Same corrected test corpus at ee93e61f33 still reproduces all7 layout failures and5 passes. Record8a334f96ebaf93ce6b32f89e8565aeae79c39202bf0db15c1b22d4ed673ce638 retains all12 before images."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

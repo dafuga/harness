@@ -23,22 +23,28 @@
 </script>
 
 <hx-div class="project-switcher">
-	<ChoiceDialog label="Choose workbench" title="Choose workbench" width={320} maxHeight={320}>
+	<ChoiceDialog
+		label="Choose workbench"
+		title="Choose workbench"
+		width={320}
+		maxHeight={320}
+		disabled={workspace.busy}
+	>
 		{#snippet icon()}<Icon name="workbench" size={18} />{/snippet}
-		{#snippet children(close: () => void)}<hx-label
-				class="picker-field"
-				onchange={() => void choose(close)}
-				>Project<Select label="Project" bind:value
-					>{#if local.length}<hx-optgroup
-							label={workspace.local ? 'On this device' : 'On your computer'}
-							>{#each local as item (item.id)}<hx-option value={item.id}>{item.name}</hx-option
-								>{/each}</hx-optgroup
-						>{/if}{#if shared.length}<hx-optgroup label="Shared"
-							>{#each shared as item (item.id)}<hx-option value={item.id}>{item.name}</hx-option
-								>{/each}</hx-optgroup
-						>{/if}</Select
-				></hx-label
-			>{/snippet}
+		{#snippet children(close: () => void)}{#if projects.length === 0}<hx-span
+					>No projects yet</hx-span
+				>{:else}<hx-label class="picker-field" onchange={() => void choose(close)}
+					>Project<Select expanded label="Project" bind:value
+						>{#if local.length}<hx-optgroup
+								label={workspace.local ? 'On this device' : 'On your computer'}
+								>{#each local as item (item.id)}<hx-option value={item.id}>{item.name}</hx-option
+									>{/each}</hx-optgroup
+							>{/if}{#if shared.length}<hx-optgroup label="Shared"
+								>{#each shared as item (item.id)}<hx-option value={item.id}>{item.name}</hx-option
+									>{/each}</hx-optgroup
+							>{/if}</Select
+					></hx-label
+				>{/if}{/snippet}
 	</ChoiceDialog>{#if name}<hx-span class="project-name" title={name}>{name}</hx-span
 		>{/if}{#if workspace.bridge && workspace.local}<hx-button
 			type="button"
@@ -48,6 +54,7 @@
 			disabled={workspace.busy}
 			onclick={() => void workspace.openProject()}>+</hx-button
 		>{/if}
+	{#if workspace.busy}<hx-span class="muted" role="status">Loading project…</hx-span>{/if}
 </hx-div>
 
 <style>

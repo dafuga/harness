@@ -70,6 +70,7 @@
 						onchange={() => chooseBranch(close)}
 						>Branch<Select
 							label="Branch"
+							expanded
 							title={`Tip · ${revision.tip.slice(0, 7)}`}
 							bind:value={branch}
 							>{#each snapshot.branches as item (item.name)}<hx-option value={item.name}
@@ -93,7 +94,7 @@
 				{#snippet children(close: () => void)}<hx-label
 						class="picker-field"
 						onchange={() => chooseCommit(close)}
-						>Commit<Select label="Commit" title={viewed} bind:value={commit}
+						>Commit<Select expanded label="Commit" title={viewed} bind:value={commit}
 							>{#each snapshot.commits as item (item.hash)}<hx-option value={item.hash}
 									>{item.hash.slice(0, 7)} · {item.subject}</hx-option
 								>{/each}</Select

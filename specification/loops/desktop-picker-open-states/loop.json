@@ -1,0 +1,62 @@
+{
+	"name": "desktop-picker-open-states",
+	"goal": "Show opened revision and project lists, a named empty project choice and visible project loading",
+	"createdAt": "2026-10-31T22:42:08.771Z",
+	"updatedAt": "2026-10-31T23:20:03.058Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:42:09.591Z",
+			"evidence": "Visual6 rejects closed native selects inside opened picker dialogs, blank empty choices and invisible project loading. Keep fixture project names and roots meaningful."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T22:42:10.285Z",
+			"evidence": "Existing cases proved dialogs and selected values but not painted option lists, empty labels or busy status. Strengthen the same18 affected viewport cases; preserve the existing state count."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:09:04.207Z",
+			"evidence": "Historical test-only checkpointee93e61f33 partitions readiness and flow assertions before repair. Record0f02ca41b11f63d6d5f0b8dd2b5f67ca953fc4c9887d97ece3184d40689c9aac fails all6 representative desktop picker states; original399b0774 retains all18 viewport failures."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:20:01.362Z",
+			"evidence": "Picker dialogs now use the shared Select expanded mode. Busy state has a loading status and disabled chooser; empty data has a named placeholder. Project fixture identities are meaningful."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:20:03.058Z",
+			"evidence": "Matched red0f02ca41b11f63d6d5f0b8dd2b5f67ca953fc4c9887d97ece3184d40689c9aac /green6fd954aed2aa7885ee2fa9ea72178d94d25a8652565936311bae1b6d304bc0b8 passes6 desktop states with identical corpus/profile. Full after2bd50fd2 passes18; originals inspected. Empty-label presentation gets a separate follow-up."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
