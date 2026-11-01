@@ -2,7 +2,7 @@
 	"name": "desktop-compact-mode-labels",
 	"goal": "Compact Composer modes stay readable inside their buttons in ProjectAgent.",
 	"createdAt": "2026-11-01T01:37:26.214Z",
-	"updatedAt": "2026-11-01T01:37:27.622Z",
+	"updatedAt": "2026-11-01T01:41:25.201Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T01:41:25.201Z",
+			"evidence": "19c6976747 compact six-case red retains6 originals; narrow ProjectAgent captions fail while wide compact Composer cases pass."
 		},
 		{
 			"id": "implement",
