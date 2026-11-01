@@ -142,6 +142,16 @@
 {/if}
 
 <style>
+	.ex-artifact .ex-steps,
+	.ex-artifact .ex-checks {
+		gap: var(--hx-space-8);
+		margin-block: var(--hx-space-8);
+	}
+	.ex-artifact .ex-steps > li,
+	.ex-artifact .ex-checks > li {
+		margin: 0;
+		line-height: var(--hx-style-leading-normal);
+	}
 	.ex-artifact .ex-checks > li {
 		align-items: flex-start;
 	}

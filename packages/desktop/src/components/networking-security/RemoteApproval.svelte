@@ -35,7 +35,7 @@
 	}
 </script>
 
-<hx-fieldset class="remote-request" aria-label={heading}>
+<hx-fieldset class="remote-request" aria-label={heading} aria-busy={store.busy}>
 	<hx-strong>{heading}</hx-strong>
 	<hx-small class="muted">Key {identityLabel(request.deviceId)} · {request.platform}</hx-small>
 	<hx-span>May access:</hx-span>
@@ -54,7 +54,7 @@
 			type="button"
 			class="primary"
 			disabled={store.busy || !chosen.length}
-			onclick={approve}>Approve</hx-button
+			onclick={approve}>{store.busy ? 'Approving…' : 'Approve'}</hx-button
 		><hx-button
 			type="button"
 			disabled={store.busy}

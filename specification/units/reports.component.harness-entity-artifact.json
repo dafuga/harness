@@ -70,7 +70,7 @@
 			{
 				"name": "EntityArtifact",
 				"type": "markup",
-				"description": "Recorded cases plus expandable assertions, facts, steps, trace and other content after verification. Unknown assertions stay Not stated. Formatted values are shortened after 12,000 characters with a file-opening reminder. Raw JSON is inserted only while expanded. A stored capture always gets an original-file link, including while pending or unverified."
+				"description": "Recorded cases plus expandable assertions, facts, steps, trace and other content after verification. Steps and assertion rows share consistent spacing. Unknown assertions stay Not stated. Formatted values are shortened after 12,000 characters with a file-opening reminder. Raw JSON is inserted only while expanded. A stored capture always gets an original-file link, including while pending or unverified."
 			}
 		],
 		"errors": [],
