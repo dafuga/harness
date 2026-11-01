@@ -20,6 +20,10 @@ export async function assertNavContext(component: Locator, width: number) {
 		revision!.x - environment!.x - environment!.width,
 		'Environment and revision controls share one context group'
 	).toBeLessThanOrEqual(gap + 1);
+	expect(
+		Math.abs(environment!.y + environment!.height / 2 - revision!.y - revision!.height / 2),
+		'Environment and revision controls align on the same row'
+	).toBeLessThanOrEqual(8);
 }
 
 /** A mobile header keeps balanced category rows and its account alongside the project. */

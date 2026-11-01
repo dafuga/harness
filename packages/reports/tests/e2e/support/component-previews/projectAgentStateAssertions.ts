@@ -2,6 +2,38 @@ import { expect, type Locator, type Page } from '@playwright/test';
 import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 import { prepareProjectAgentState } from './projectAgentRunAssertions';
 
+/** Mode text must stay inside its button and the toolbar that owns the hit target. */
+export async function assertComposerCaptions(component: Locator, id: string) {
+	if (!['desktop.component.composer', 'desktop.component.project-agent'].includes(id)) return;
+	const modes = component.getByRole('group', { name: 'Request mode', exact: true });
+	if (!(await modes.count())) return;
+	const labels = await modes.evaluate((node) => {
+		const group = node.getBoundingClientRect();
+		return [...node.querySelectorAll('button')].map((button) => {
+			const box = button.getBoundingClientRect();
+			const range = document.createRange();
+			range.selectNodeContents(button);
+			const text = range.getBoundingClientRect();
+			return {
+				label: button.textContent,
+				captionFits:
+					text.left >= box.left - 1 &&
+					text.right <= box.right + 1 &&
+					text.top >= box.top - 1 &&
+					text.bottom <= box.bottom + 1,
+				buttonFits: box.left >= group.left - 1 && box.right <= group.right + 1
+			};
+		});
+	});
+	for (const label of labels) {
+		expect(
+			label.captionFits,
+			`${label.label} mode caption stays completely inside its button`
+		).toBe(true);
+		expect(label.buttonFits, `${label.label} mode stays inside its toolbar`).toBe(true);
+	}
+}
+
 export async function assertProjectAgentState(
 	page: Page,
 	component: Locator,
