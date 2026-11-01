@@ -1,0 +1,60 @@
+{
+	"name": "sol9-checkpoint-final-review",
+	"goal": "Checkpoint descriptions and titles wrap fully while all advanced rule rows appear in viewport evidence",
+	"createdAt": "2026-11-01T17:08:18.022Z",
+	"updatedAt": "2026-11-01T17:23:08.018Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-01T17:08:58.251Z",
+			"evidence": "Advanced captures clip condition and action rows. Long fixtures contain repeated filler and a short title; real long text must wrap completely."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T17:08:58.898Z",
+			"evidence": "The existing catalog checked disclosure state and scrollTop, not visible rule rows, realistic long text, or overflowing field values. Strengthen those same cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T17:16:40.593Z",
+			"evidence": "Record 43f77ef4a894163ff0e9b5a850ff1618fef3ea0737aac34df8e56e0cb90933fc: three long cases fail horizontal text fit; all expanded advanced cases pass."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-01T17:23:06.570Z",
+			"evidence": "Content-sized canonical textareas wrap title and description; modal and rule controls retain their shared implementations. Only product source and its contract changed after red."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-01T17:23:08.018Z",
+			"evidence": "Record 30b0a6c7a85202bcebd1cd4c575b7bd43ab14b5e48792170a1413fbd530ce7aa passes all six unchanged cases atb1d90d736b. Inspected every original before and after image; advanced rows and long text are fully visible."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
