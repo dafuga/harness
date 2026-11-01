@@ -30,6 +30,16 @@ function projectAgents(data: DesktopData, state: ProjectAgentState) {
 	desktopAgentActivityVariant(data, state);
 	const activity = data.bridge.agentActivity;
 	if (!activity) return;
+	const sessions = [
+		['Checkout reviewer', 'Review checkout totals and payment states'],
+		['Search reviewer', 'Check order search and empty queries'],
+		['Delivery reviewer', 'Review delivery status and tracking links'],
+		['Accessibility reviewer', 'Check order-card labels and keyboard access'],
+		['Responsive reviewer', 'Review order cards on narrow screens'],
+		['API reviewer', 'Check order lookup response fields'],
+		['Release notes writer', 'Summarize the order-card changes'],
+		['Test reviewer', 'Review saved screenshots and assertions']
+	];
 	data.bridge.agentActivity = async (...args) => {
 		const reading = await activity(...args);
 		return {
@@ -39,8 +49,8 @@ function projectAgents(data: DesktopData, state: ProjectAgentState) {
 				roster: reading.agents.roster.map((agent, index) => ({
 					...agent,
 					id: `orders-review-${index + 1}`,
-					label: `Order review ${index + 1}`,
-					task: `Review order-card state ${index + 1}`
+					label: sessions[index][0],
+					task: sessions[index][1]
 				}))
 			}
 		};
