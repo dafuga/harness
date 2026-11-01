@@ -21,6 +21,7 @@ export async function assertComparePanesPreview(component: Locator, variant: str
 	}
 	for (const pane of await component.getByRole('group').all()) {
 		const header = pane.locator('.ex-pane-head');
+		await expect(header).toBeVisible();
 		const title = (await header.locator('strong').boundingBox())!;
 		const badge = (await header
 			.getByText(/^(?:Parent commit|Selected commit|Current snapshot|Branch tip)$/)

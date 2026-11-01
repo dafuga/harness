@@ -10,6 +10,7 @@ const prefix = 'reports.component.shared-primitives-';
 export async function preparePresentationState(component: Locator, id: string, variant: string) {
 	await prepareCompatibilityState(component, id, variant);
 	await prepareConfigInspection(component, id, variant);
+	if (id === `${prefix}compare-panes`) await assertComparePanesPreview(component, variant);
 	if (id === `${prefix}data-table` && variant === 'focused')
 		await component.getByRole('region', { name: 'Contract fields' }).focus();
 	if (id === `${prefix}code-line` && variant === 'action-focused')
