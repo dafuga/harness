@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '../../shared-primitives/DetailList.svelte';
 	import Card from '../explorer-kit/Card.svelte';
 	import { shortCommit } from '../../../helpers/strings/shortCommit';
 
@@ -151,14 +152,10 @@
 </Card>
 {#snippet summaryRows(rows: ContractRow[])}
 	{#if rows.length > 0}
-		<hx-dl class="ex-rows">
-			{#each rows as row, position (position)}
-				<hx-div>
-					<hx-dt>{row.label}</hx-dt>
-					<hx-dd>{row.value}</hx-dd>
-				</hx-div>
-			{/each}
-		</hx-dl>
+		<DetailList {rows} rowKey={(_, position) => position} className="ex-rows">
+			{#snippet label(row)}{row.label}{/snippet}
+			{#snippet children(row)}{row.value}{/snippet}
+		</DetailList>
 	{/if}
 {/snippet}
 {#snippet callableSection(callable: CallableContract, label: string)}
