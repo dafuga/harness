@@ -26,7 +26,7 @@ export const gameCases: PreviewCases = {
 	'desktop.component.game-create': {
 		bridge: {
 			gameCreate: async () => {
-				throw new Error('Preview fixtures cannot create projects.');
+				throw new Error('The project folder could not be created.');
 			}
 		},
 		created: noop

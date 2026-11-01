@@ -82,6 +82,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertDesktopScreenCapture(component, id, variant);
 	await assertDesktopNavCapture(component, id);
 	await assertComposerCaptions(component, id);
+	await assertCreationErrorText(component, id, variant);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
@@ -106,6 +107,14 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 			});
 		expect(visible, 'Expanded checkpoint rules are fully visible above the footer').toBe(true);
 	}
+}
+
+async function assertCreationErrorText(component: Locator, id: string, variant: string) {
+	if (id !== 'desktop.component.game-create' || variant !== 'error') return;
+	await expect(
+		component.getByRole('alert'),
+		'Creation errors use representative user-facing text'
+	).not.toContainText(/preview fixtures|synthetic/i);
 }
 
 async function assertHistoryFixtureContent(component: Locator, id: string, variant: string) {

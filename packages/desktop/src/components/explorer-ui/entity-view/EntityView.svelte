@@ -135,7 +135,7 @@
 </script>
 
 <hx-div class="entity-layout" class:with-thread={conversation}>
-	<hx-main class="entity-main" style="overflow-wrap: anywhere;">
+	<hx-main class="entity-main">
 		<WorkspaceLink {workspace} to={workspace.path()} class="breadcrumb"
 			>{workspace.category} › {name}</WorkspaceLink
 		>
