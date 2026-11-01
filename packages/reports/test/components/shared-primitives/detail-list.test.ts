@@ -17,4 +17,31 @@ test('definition rows preserve caller-owned falsy values, repeated labels and ex
 	const blank = render(DetailList, { props: { ...props, rows: [], empty } }).body;
 	expect(blank).toContain('No details provided.');
 	expect(blank).not.toContain('<dl');
+	const flat = render(DetailList, {
+		props: {
+			...props,
+			grouped: false,
+			termTitle: (row: unknown) => `Key ${String(row)}`,
+			valueTitle: (row: unknown) => `Value ${String(row)}`,
+			valueClass: () => 'recorded-detail'
+		}
+	}).body;
+	expect(flat).not.toContain('detail-row');
+	expect((flat.match(/<dt\b/g) ?? []).length).toBe(3);
+	expect((flat.match(/<dd\b/g) ?? []).length).toBe(3);
+	expect(flat).toContain('title="Key 0"');
+	expect(flat).toContain('title="Value false"');
+	expect(flat).toContain('recorded-detail');
+	const error = new Error('Detail unavailable');
+	expect(
+		() =>
+			render(DetailList, {
+				props: {
+					...props,
+					termTitle: () => {
+						throw error;
+					}
+				}
+			}).body
+	).toThrow(error);
 });
