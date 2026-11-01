@@ -2,7 +2,7 @@
 	"name": "desktop-compact-mode-labels",
 	"goal": "Compact Composer modes stay readable inside their buttons in ProjectAgent.",
 	"createdAt": "2026-11-01T01:37:26.214Z",
-	"updatedAt": "2026-11-01T01:41:26.501Z",
+	"updatedAt": "2026-11-01T01:42:57.702Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T01:42:57.702Z",
+			"evidence": "Matched green28df1aabe187 at a18045bdf4 passes6 unchanged cases; red d2acfc2a19b0 had4 failures /2 passes. All6 originals on each side were individually opened."
 		},
 		{
 			"id": "verify",
