@@ -264,6 +264,10 @@
 				},
 				{
 					"unit": "reports.function.capture-provenance",
+					"symbol": "captureProvenance"
+				},
+				{
+					"unit": "reports.function.capture-provenance",
 					"symbol": "scenarioOrigin"
 				},
 				{
@@ -338,13 +342,25 @@
 					"unit": "repository.regression-proof"
 				},
 				{
+					"unit": "service.attached-record"
+				},
+				{
 					"unit": "service.commit-message"
+				},
+				{
+					"unit": "service.evidence-attach"
+				},
+				{
+					"unit": "service.history-index"
 				},
 				{
 					"unit": "workflow.persist-reasons"
 				},
 				{
 					"unit": "workflow.run-activity"
+				},
+				{
+					"unit": "workflow.run-hooks"
 				}
 			]
 		}

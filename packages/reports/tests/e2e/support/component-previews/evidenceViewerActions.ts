@@ -1,3 +1,4 @@
+import { shortCommit } from '../../../../src/helpers/strings/shortCommit';
 import { expect, type Locator } from '@playwright/test';
 import { commits } from '../../../../test/entityUnits';
 
@@ -6,24 +7,7 @@ export async function prepareEvidenceViewer(component: Locator, variant: string)
 	const dialog = component.getByRole('dialog');
 	if (variant === 'unselected') return assertUnselected(component, dialog);
 	await expect(dialog).toBeVisible();
-	if (variant === 'before')
-		await dialog.getByRole('button', { name: 'View before screenshot' }).click();
-	if (variant === 'compare')
-		await dialog.getByRole('button', { name: 'Compare before and after' }).click();
-	if (variant === 'viewport-mobile')
-		await dialog.getByRole('button', { name: 'View mobile screenshots' }).click();
-	if (variant === 'viewport-tablet')
-		await dialog.getByRole('button', { name: 'View tablet screenshots' }).click();
-	if (variant === 'next') await dialog.getByRole('button', { name: 'Next image' }).click();
-	if (variant === 'previous') await dialog.getByRole('button', { name: 'Previous image' }).click();
-	if (variant === 'zoomed') {
-		await dialog.getByRole('button', { name: 'Actual size' }).click();
-		await dialog.getByRole('button', { name: 'Zoom in' }).click();
-		await dialog.getByRole('button', { name: 'Zoom in' }).click();
-		await expect(dialog.locator('output')).toHaveText('150%');
-		await dialog.locator('.stage.zoomed').evaluate((node) => node.scrollTo(0, 0));
-	}
-	if (variant === 'actual-size') await dialog.getByRole('button', { name: 'Actual size' }).click();
+	await selectViewerMode(dialog, variant);
 	await assertViewerState(dialog, variant);
 	for (const image of await dialog.locator('.viewer-images img').all()) {
 		await expect
@@ -66,10 +50,10 @@ async function assertDisplayedRevision(dialog: Locator, revision: string) {
 	const provenance = dialog.locator('.viewer-provenance');
 	await expect(
 		provenance.locator('.detail-row').filter({ hasText: 'Captured from' })
-	).toContainText(`build build-1 of ${revision.slice(0, 12)}`);
+	).toContainText(`build build-1 of ${shortCommit(revision)}`);
 	await expect(
 		provenance.locator('.detail-row').filter({ hasText: 'Verification attempt' })
-	).toContainText(`targeting ${revision.slice(0, 12)}`);
+	).toContainText(`targeting ${shortCommit(revision)}`);
 	await expect(dialog.locator('.viewer-images figcaption')).toContainText('default · desktop');
 	await expect(dialog.locator('.viewer-note')).toContainText(`revision ${revision}`);
 }
@@ -122,22 +106,40 @@ async function assertViewerImagesFit(dialog: Locator, variant: string) {
 }
 
 async function assertViewerState(dialog: Locator, variant: string) {
-	if (['', 'before', 'compare'].includes(variant)) {
-		const metadata = dialog.locator('.viewer-provenance');
-		if (variant === 'compare') {
-			await expect(metadata).toContainText('checkout-parent');
-			await expect(metadata).toContainText('checkout-selected');
-		} else {
-			await expect(metadata).toContainText(
-				variant === 'before' ? 'checkout-parent' : 'checkout-selected'
-			);
-			await expect(metadata).not.toContainText(
-				variant === 'before' ? 'checkout-selected' : 'checkout-parent'
-			);
-		}
-	}
+	await assertViewerMetadata(dialog, variant);
+	await assertViewerSelection(dialog, variant);
 
 	if (variant === 'compare') await expect(dialog.locator('.viewer-images figure')).toHaveCount(2);
+
+	if (variant === 'zoomed')
+		await expect(dialog.getByRole('button', { name: 'Zoom out' })).toHaveAttribute(
+			'aria-disabled',
+			'false'
+		);
+	if (variant === 'actual-size') await expect(dialog.locator('output')).toHaveText('100%');
+}
+
+async function selectViewerMode(dialog: Locator, variant: string) {
+	const actions: Record<string, string> = {
+		before: 'View before screenshot',
+		compare: 'Compare before and after',
+		'viewport-mobile': 'View mobile screenshots',
+		'viewport-tablet': 'View tablet screenshots',
+		next: 'Next image',
+		previous: 'Previous image',
+		'actual-size': 'Actual size'
+	};
+	if (actions[variant]) await dialog.getByRole('button', { name: actions[variant] }).click();
+	if (variant === 'zoomed') {
+		await dialog.getByRole('button', { name: 'Actual size' }).click();
+		await dialog.getByRole('button', { name: 'Zoom in' }).click();
+		await dialog.getByRole('button', { name: 'Zoom in' }).click();
+		await expect(dialog.locator('output')).toHaveText('150%');
+		await dialog.locator('.stage.zoomed').evaluate((node) => node.scrollTo(0, 0));
+	}
+}
+
+async function assertViewerSelection(dialog: Locator, variant: string) {
 	if (variant === 'before')
 		await expect(dialog.getByRole('heading', { name: 'Checkout before release' })).toBeVisible();
 	if (variant === 'unavailable')
@@ -152,10 +154,28 @@ async function assertViewerState(dialog: Locator, variant: string) {
 		await expect(dialog.getByRole('heading', { name: 'Checkout on tablet' })).toBeVisible();
 	if (variant === 'no-navigation')
 		await expect(dialog.getByRole('heading', { name: 'Checkout after release' })).toBeVisible();
-	if (variant === 'zoomed')
-		await expect(dialog.getByRole('button', { name: 'Zoom out' })).toHaveAttribute(
-			'aria-disabled',
-			'false'
+}
+
+async function assertViewerMetadata(dialog: Locator, variant: string) {
+	if (!['', 'before', 'compare'].includes(variant)) return;
+	if (variant === 'compare') {
+		for (const side of ['Before', 'After']) {
+			const own = side === 'Before' ? 'checkout-parent' : 'checkout-selected';
+			const other = side === 'Before' ? 'checkout-selected' : 'checkout-parent';
+			const metadata = dialog
+				.locator('.viewer-images figure')
+				.filter({ hasText: side + ' ·' })
+				.locator('.viewer-provenance');
+			await expect(metadata).toContainText(own);
+			await expect(metadata).not.toContainText(other);
+		}
+	} else {
+		const metadata = dialog.locator('.viewer-provenance');
+		await expect(metadata).toContainText(
+			variant === 'before' ? 'checkout-parent' : 'checkout-selected'
 		);
-	if (variant === 'actual-size') await expect(dialog.locator('output')).toHaveText('100%');
+		await expect(metadata).not.toContainText(
+			variant === 'before' ? 'checkout-selected' : 'checkout-parent'
+		);
+	}
 }

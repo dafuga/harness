@@ -66,8 +66,8 @@ test('a fresh accepted capture names its own build and the passing attempt', () 
 	expect(fresh.standing).toBe('fresh');
 	expect(fresh.facts).toEqual([
 		{ label: 'Standing', value: 'Fresh capture' },
-		{ label: 'Captured from', value: 'build build-7 of aaaaaaaaaaaa' },
-		{ label: 'Verification attempt', value: 'record 111111111111 (passed) targeting aaaaaaaaaaaa' }
+		{ label: 'Captured from', value: 'build build-7 of aaaaaaa' },
+		{ label: 'Verification attempt', value: 'record 111111111111 (passed) targeting aaaaaaa' }
 	]);
 	expect(fresh.note).toBe(
 		`Captured from build build-7 of revision ${target}. Tested at aaaaaaa by passing record 111111111111.`
@@ -78,9 +78,9 @@ test('a rejected capture of another build is never credited to the targeted revi
 	const stale = capture({ status: 'failed', server: { buildId: 'build-3', revision: older } });
 	const judgedStale = judged(stale, { status: 'failed' }, { status: 'failed' });
 	expect(judgedStale.label).toBe('Rejected capture from another revision');
-	expect(value(judgedStale.facts, 'Captured from')).toBe('build build-3 of bbbbbbbbbbbb');
+	expect(value(judgedStale.facts, 'Captured from')).toBe('build build-3 of bbbbbbb');
 	expect(value(judgedStale.facts, 'Verification attempt')).toBe(
-		'record 111111111111 (failed) targeting aaaaaaaaaaaa'
+		'record 111111111111 (failed) targeting aaaaaaa'
 	);
 	expect(judgedStale.note).toContain(`Captured from build build-3 of revision ${older}.`);
 	expect(judgedStale.note).toContain(`which targeted revision ${target}`);
@@ -136,8 +136,8 @@ test('inherited evidence keeps its original record, revision and build', () => {
 		origin: { record: origin, commit: older }
 	});
 	expect(inherited.label).toBe('Inherited capture');
-	expect(value(inherited.facts, 'Captured from')).toBe('build build-3 of bbbbbbbbbbbb');
-	expect(value(inherited.facts, 'Inherited from')).toBe('record 222222222222 of bbbbbbbbbbbb');
+	expect(value(inherited.facts, 'Captured from')).toBe('build build-3 of bbbbbbb');
+	expect(value(inherited.facts, 'Inherited from')).toBe('record 222222222222 of bbbbbbb');
 	expect(inherited.note).toContain(
 		`Inherited unchanged from record 222222222222 of revision ${older}; not captured again for revision ${target}.`
 	);
@@ -148,7 +148,7 @@ test('nothing in a record that could not be validated reads as proof', () => {
 	const unproven = judged(capture(), {}, { valid: false });
 	expect(unproven.label).toBe('Unvalidated capture');
 	expect(value(unproven.facts, 'Verification attempt')).toBe(
-		'record 111111111111 (not validated) targeting aaaaaaaaaaaa'
+		'record 111111111111 (not validated) targeting aaaaaaa'
 	);
 	expect(unproven.note).toContain('could not be validated, so this proves nothing');
 	const tested = scenario([capture()]);

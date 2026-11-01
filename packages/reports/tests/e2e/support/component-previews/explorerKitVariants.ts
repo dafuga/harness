@@ -89,7 +89,11 @@ function emptyState(props: PreviewCases[string], variant: string) {
 			as: variant === 'block' ? 'div' : 'p',
 			role: variant === 'status' ? 'status' : undefined,
 			className: 'ex-empty',
-			children: text('<span>No approved invoices match this search.</span>')
+			children: text(
+				variant === 'block'
+					? '<span>No invoices have been approved in this project.</span>'
+					: '<span>No approved invoices match this search.</span>'
+			)
 		};
 	return {
 		...props,
@@ -114,7 +118,11 @@ function noticeState(props: PreviewCases[string], variant: string) {
 			...props,
 			as: variant === 'block' ? 'div' : 'p',
 			role: variant === 'alert' ? 'alert' : 'note',
-			children: text('<span>The selected revision has no retained mobile capture.</span>')
+			children: text(
+				variant === 'block'
+					? '<span>Only the latest build has retained screenshots.</span>'
+					: '<span>The selected revision has no retained mobile capture.</span>'
+			)
 		};
 	return {
 		...props,

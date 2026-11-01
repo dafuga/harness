@@ -82,7 +82,7 @@ export function renderShown({ activity, live }: Shown): string {
 		(tree) => `  ${tree.name} (${tree.branch ?? 'no branch'}): ${tree.changes.length} uncommitted`
 	);
 	return [
-		`${name} · branch ${branch ?? 'none'} · ${head?.slice(0, 7) ?? 'no commit'}`,
+		`${name} · branch ${branch ?? 'none'} · ${head == null ? 'no commit' : shortCommit(head)}`,
 		'Loop types:',
 		...loops,
 		'Recent work:',
