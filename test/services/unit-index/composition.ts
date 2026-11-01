@@ -63,6 +63,23 @@ async function assertPrimitiveContracts(units: ComponentManifest[], files: Recor
 	expect(unitOf(restored, 'component.cards').contract.primitives).toEqual(
 		cards.contract.primitives
 	);
+	const forward = 'src/components/Card.svelte';
+	const forwardedFiles = {
+		...files,
+		[forward]:
+			'<!-- @harness-tier molecule --><script lang="ts">import Card from "./shared-primitives/Card.svelte";</script><Card />',
+		'src/components/Cards.svelte':
+			'<!-- @harness-tier organism --><script lang="ts">import Card from "./Card.svelte";</script><Card />'
+	};
+	const forwardedUnits = units.map((unit) =>
+		unit.id === 'component.shared-primitives-card'
+			? { ...unit, owns: { ...unit.owns, source: [...unit.owns.source, forward] } }
+			: unit
+	);
+	const forwarded = await indexFiles(forwardedFiles, forwardedUnits);
+	expect(unitOf(forwarded, 'component.cards').contract.primitives).toEqual(
+		cards.contract.primitives
+	);
 }
 
 test('atomic levels follow runtime calls and survive projections', assertCompositionRegistry);
