@@ -112,7 +112,7 @@ function historyProps(props: PreviewCases[string], variant: string) {
 	if (variant === 'profiles') return historyProfiles(props);
 	if (variant === 'empty') return { ...props, rows: [] };
 	const rows = d.reading.history(d.entity.id);
-	if (['unread', 'reading', 'unavailable'].includes(variant))
+	if (['unread', 'reading'].includes(variant))
 		return {
 			...props,
 			rows: rows.map((row) => ({
@@ -123,7 +123,7 @@ function historyProps(props: PreviewCases[string], variant: string) {
 			known: [],
 			client: {
 				revision: () =>
-					variant === 'unavailable'
+					variant === 'unread'
 						? Promise.reject(new Error('Revision unavailable'))
 						: new Promise(() => {})
 			}

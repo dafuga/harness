@@ -4,7 +4,8 @@ const audioPreviews = new Set([
 	'reports.component.evidence-card',
 	'reports.component.audio-comparison-viewer',
 	'reports.component.audio-evidence',
-	'reports.component.evidence-grid'
+	'reports.component.evidence-grid',
+	'reports.component.harness-entity-audio'
 ]);
 
 /** Load real fixture metadata without starting playback or changing the product's preload policy. */
@@ -17,7 +18,9 @@ export async function settlePreviewAudio(component: Locator, id: string, variant
 			audio.preload = 'metadata';
 			audio.load();
 		});
-		await expect.poll(() => player.evaluate((audio: HTMLAudioElement) => audio.duration)).toBe(42);
+		await expect
+			.poll(() => player.evaluate((audio: HTMLAudioElement) => audio.duration))
+			.toBe(id === 'reports.component.harness-entity-audio' ? 1 : 42);
 	}
 	if (players.length)
 		await component
@@ -30,12 +33,12 @@ export async function settlePreviewAudio(component: Locator, id: string, variant
 			);
 }
 
-/** Every available native player must agree with the fixture's actual 42-second recording. */
+/** Every available native player must agree with its fixture's actual recording duration. */
 export async function assertPreviewAudio(component: Locator, id: string, variant: string) {
 	if (!audioPreviews.has(id) || variant === 'audio-error') return;
 	for (const player of await component.locator('audio').all())
 		expect(
 			await player.evaluate((audio: HTMLAudioElement) => audio.duration),
 			'Native player retains the loaded recording duration'
-		).toBe(42);
+		).toBe(id === 'reports.component.harness-entity-audio' ? 1 : 42);
 }

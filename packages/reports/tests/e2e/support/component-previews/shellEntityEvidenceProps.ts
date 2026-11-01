@@ -2,6 +2,17 @@ import type { PreviewCases } from './shared';
 import * as d from './explorerData';
 import type { ExplorerEvidence } from '../../../../src/models/explorer-ui/Explorer.types';
 
+const reconciliation = [
+	'Orders reconciliation · 20 October 2026',
+	'Query: SERVICE · sort: order number · source: customer account AC-42',
+	'Each entry compares the indexed result with the stored order, invoice and delivery status.',
+	...Array.from({ length: 180 }, (_, position) => {
+		const status = ['Ready to ship', 'Delivered', 'Processing'][position % 3];
+		const total = (84 + position * 1.25).toFixed(2);
+		return `Order A-${1048 + position} | account AC-${42 + (position % 8)} | ${status} | USD ${total} | invoice paid | search matched SERVICE | indexed amount and delivery status match the stored order.`;
+	})
+].join('\n');
+
 export function artifactProps(props: PreviewCases[string], variant: string) {
 	const cell = d.cell;
 	if (variant === 'not-recorded') return { ...props, cell: { ...cell, capture: null } };
@@ -35,10 +46,7 @@ export function artifactProps(props: PreviewCases[string], variant: string) {
 				read: {
 					...cell.read,
 					document: null,
-					text:
-						variant === 'long'
-							? 'Recorded result with complete source provenance.\n'.repeat(300)
-							: 'The recorded command completed successfully.'
+					text: variant === 'long' ? reconciliation : 'The recorded command completed successfully.'
 				}
 			}
 		};
@@ -53,7 +61,7 @@ export function audioProps(props: PreviewCases[string], variant: string) {
 			evidence: { ...evidence, before: null, after: { ...evidence.after, captures: [] } },
 			empty: true
 		};
-	const before = { ...evidence.after, commit: d.commits.first };
+	const before = d.recordedAudioSide(evidence.after, d.commits.first);
 	const after = evidence.after;
 	return {
 		...props,

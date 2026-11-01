@@ -7,7 +7,7 @@ import type { PreviewCases } from './shared';
 const longField: ContractField = {
 	name: 'OrderStore.find.customerAccountIdentifier',
 	type: 'CustomerAccountIdentifier | undefined',
-	required: true,
+	required: false,
 	description: 'The customer account whose order is being retrieved.',
 	source: 'declared',
 	examples: [{ form: 'literal', value: 'account-42', text: '"account-42"' }]

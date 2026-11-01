@@ -30,5 +30,5 @@ export async function assertScrollbarPaint(tooltip: Locator, gutter: number) {
 		},
 		{ data, gutter }
 	);
-	expect(painted, 'The overflowing tooltip paints a visible scrollbar thumb').toBe(true);
+	expect(painted, 'The overflowing region paints a visible scrollbar thumb').toBe(true);
 }
