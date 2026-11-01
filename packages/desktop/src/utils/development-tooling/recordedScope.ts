@@ -1,15 +1,14 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Asked, ScopeFacts } from './recordedScope.types';
-import type { ExplorerScope } from '../../../../reports/src/models/Explorer.types';
-import type { HarnessRevisionSummary } from '../../../../reports/src/models/Harness.types';
+import type { ExplorerScope } from '$reports/models/Explorer.types';
+import type { HarnessRevisionSummary } from '$reports/models/Harness.types';
 import { categoryOf } from './categoryOf';
-
-const short = (commit: string) => commit.slice(0, 7);
 
 /** Refuses a view of the tip once the tip is elsewhere: nothing is read for a stale view. */
 export function recordedTip(query: Asked, tip: string): void {
 	if (query.mode === 'current' && query.commit !== tip)
 		throw new Error(
-			`Commit ${short(query.commit)} is no longer the tip of branch ${query.branch}.`
+			`Commit ${shortCommit(query.commit)} is no longer the tip of branch ${query.branch}.`
 		);
 }
 

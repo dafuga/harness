@@ -161,6 +161,57 @@
 			],
 			"consumers": [
 				{
+					"unit": "desktop.component.coverage-panel"
+				},
+				{
+					"unit": "desktop.component.deployment-activity"
+				},
+				{
+					"unit": "desktop.component.game-workspace"
+				},
+				{
+					"unit": "desktop.component.history-panel"
+				},
+				{
+					"unit": "desktop.component.revision-picker"
+				},
+				{
+					"unit": "desktop.component.runtime-audio"
+				},
+				{
+					"unit": "desktop.component.runtime-behavior"
+				},
+				{
+					"unit": "desktop.component.runtime-evidence"
+				},
+				{
+					"unit": "desktop.component.runtime-screens"
+				},
+				{
+					"unit": "desktop.component.status-bar"
+				},
+				{
+					"unit": "desktop.component.thread-panel"
+				},
+				{
+					"unit": "desktop.function.recorded-preview",
+					"symbol": "selected"
+				},
+				{
+					"unit": "desktop.function.recorded-scope",
+					"symbol": "recordedTip"
+				},
+				{
+					"unit": "desktop.function.workspace-search",
+					"symbol": "workspaceSearch"
+				},
+				{
+					"unit": "reports.component.entity-contract"
+				},
+				{
+					"unit": "reports.component.entity-states"
+				},
+				{
 					"unit": "reports.component.explorer-ui-explorer-module-card"
 				},
 				{
@@ -188,7 +239,7 @@
 					"unit": "reports.component.harness-entity-history"
 				},
 				{
-					"unit": "reports.component.harness-entity-screens"
+					"unit": "reports.component.harness-entity-sections"
 				},
 				{
 					"unit": "reports.component.harness-entity-summary"
@@ -198,6 +249,87 @@
 				},
 				{
 					"unit": "reports.component.harness-explorer-frame"
+				},
+				{
+					"unit": "reports.component.harness-harness-selectors"
+				},
+				{
+					"unit": "reports.component.regression-proof"
+				},
+				{
+					"unit": "reports.component.source-viewer"
+				},
+				{
+					"unit": "reports.function.capture-provenance",
+					"symbol": "scenarioOrigin"
+				},
+				{
+					"unit": "reports.function.capture-provenance",
+					"symbol": "verdict"
+				},
+				{
+					"unit": "reports.function.entity-screens",
+					"symbol": "borrowed"
+				},
+				{
+					"unit": "reports.function.entity-screens",
+					"symbol": "gap"
+				},
+				{
+					"unit": "reports.function.entity-screens",
+					"symbol": "item"
+				},
+				{
+					"unit": "reports.function.explorer-coverage",
+					"symbol": "lineage"
+				},
+				{
+					"unit": "reports.function.explorer-entities",
+					"symbol": "removedEntity"
+				},
+				{
+					"unit": "reports.function.explorer-evidence",
+					"symbol": "side"
+				},
+				{
+					"unit": "reports.function.explorer-scope",
+					"symbol": "explorerScope"
+				},
+				{
+					"unit": "reports.function.explorer-scope",
+					"symbol": "tipOf"
+				},
+				{
+					"unit": "reports.function.explorer-state",
+					"symbol": "captureUnbound"
+				},
+				{
+					"unit": "reports.function.harness-ancestry",
+					"symbol": "revisionLabel"
+				},
+				{
+					"unit": "reports.function.harness-comparison",
+					"symbol": "gap"
+				},
+				{
+					"unit": "reports.function.harness-comparison",
+					"symbol": "shell"
+				},
+				{
+					"unit": "reports.function.harness-shell",
+					"symbol": "revision"
+				},
+				{
+					"unit": "reports.function.legacy-evidence",
+					"symbol": "legacyLink"
+				},
+				{
+					"unit": "reports.function.navbar-search",
+					"symbol": "navbarSearch"
+				},
+				{
+					"unit": "reports.helper.verification-evidence-comparison-panes",
+					"symbol": "pane"
 				}
 			]
 		}

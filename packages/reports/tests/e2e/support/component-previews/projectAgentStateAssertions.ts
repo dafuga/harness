@@ -148,14 +148,16 @@ async function assertRosterState(roster: Locator, state: ProjectAgentState) {
 		await expect(roster).toContainText('8 working');
 		await roster.getByRole('button', { name: 'Show all 8 sessions' }).click();
 		await expect(roster.getByRole('list', { name: 'Agent sessions' }).locator('li')).toHaveCount(8);
+		await roster.getByRole('button', { name: /Show (fewer|less)/ }).click();
+		await expect(roster.getByRole('button', { name: 'Show all 8 sessions' })).toBeVisible();
 		const summary = roster.getByText('8 working', { exact: true });
 		await summary.scrollIntoViewIfNeeded();
 		await expect(summary).toBeInViewport({ ratio: 1 });
 	}
 	if (state === 'agents-active') {
 		await expect(roster).toContainText('1 working');
-		await expect(roster).toContainText('Review order-card state 1');
-		await expect(roster).toContainText('Order review 1');
+		await expect(roster).toContainText('Review checkout totals and payment states');
+		await expect(roster).toContainText('Checkout reviewer');
 		await expect(
 			roster.getByRole('region', { name: 'Modules being worked on' }).getByRole('link')
 		).toHaveAttribute('href', /\/components\/app\.component\.order-card$/);
@@ -174,6 +176,6 @@ async function assertRosterState(roster: Locator, state: ProjectAgentState) {
 		await expect(roster).toContainText(/stale/i);
 		await expect(
 			roster.getByRole('region', { name: /modules being worked on/i })
-		).not.toContainText('Order review');
+		).not.toContainText('Checkout reviewer');
 	}
 }

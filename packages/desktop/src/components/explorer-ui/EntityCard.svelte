@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { explorerName } from '../../../../reports/src/utils/explorerName';
+	import { explorerName } from '$reports/utils/explorerName';
 	import type { CatalogEntity } from '../../models/development-tooling/Desktop.types';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { imageUrl } from '../../utils/development-tooling/imageUrl';

@@ -1,3 +1,5 @@
+import { errorMessage } from '$reports/helpers/strings/errorMessage';
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { PreviewPick } from './recordedPreview.types';
 import type {
 	RecordedThumbnail,
@@ -85,7 +87,7 @@ function selected(
 	if (!origin) return null;
 	return {
 		query,
-		caption: `Screenshot · ${thumb.state.replaceAll('-', ' ')} · ${origin.slice(0, 7)}${found.inheritedFrom ? ' · inherited' : ''}`
+		caption: `Screenshot · ${thumb.state.replaceAll('-', ' ')} · ${shortCommit(origin)}${found.inheritedFrom ? ' · inherited' : ''}`
 	};
 }
 
@@ -116,8 +118,7 @@ export function recordedPreview(
 				apply({ status: 'ready', url, caption: pick.caption, reason: '' });
 			})
 			.catch((cause: unknown) => {
-				if (!disposed)
-					apply(empty('error', cause instanceof Error ? cause.message : String(cause)));
+				if (!disposed) apply(empty('error', errorMessage(cause)));
 			});
 	} else apply(empty('missing', 'Recorded screenshots cannot be read on this connection.'));
 	return () => {

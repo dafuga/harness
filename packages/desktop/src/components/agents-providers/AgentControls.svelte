@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import Select from '../../../../reports/src/components/shared-primitives/Select.svelte';
+	import Select from '$shared/shared-primitives/Select.svelte';
 	import type { Snippet } from 'svelte';
 	import type { ProviderId, ProviderState } from '../../models/development-tooling/Desktop.types';
 	import type { AgentChoice } from '../../utils/explorer-ui/composeModes';
@@ -62,10 +62,13 @@
 			>{/each}
 	</hx-div>
 	<hx-div class="composer-bottom expanded-agent-controls">
-		<Select label="Model" bind:value={model} disabled={!current?.available}
+		<Select
+			label="Model"
+			bind:value={model}
+			disabled={!current?.available || !current.models.length}
 			>{#each current?.models || [] as item (item.id)}<hx-option value={item.id}
 					>{item.label}</hx-option
-				>{/each}</Select
+				>{/each}{#if !current?.models.length}<hx-option value="">No model</hx-option>{/if}</Select
 		><Select label="Reasoning effort" bind:value={effort} disabled={!selected?.efforts.length}
 			>{#each selected?.efforts || [] as item (item)}<hx-option value={item}>{item}</hx-option
 				>{/each}{#if !selected?.efforts.length}<hx-option value="">Default effort</hx-option

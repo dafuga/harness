@@ -1,3 +1,4 @@
+import { assertComparePanesPreview } from './comparePanesPreview';
 import {
 	prepareCompatibilityState,
 	assertCompatibilityPreview
@@ -22,6 +23,7 @@ export async function preparePresentationState(component: Locator, id: string, v
 export async function assertPresentationPreview(component: Locator, id: string, variant: string) {
 	const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 		[`${prefix}data-table`]: table,
+		[`${prefix}compare-panes`]: assertComparePanesPreview,
 		[`${prefix}code-line`]: code,
 		[`${prefix}detail-list`]: details,
 		'desktop.component.contract-panel': contract,

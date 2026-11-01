@@ -56,10 +56,12 @@ async function selectViewport(component: Locator, size: string) {
 async function selectStatus(component: Locator, variant: string) {
 	const select = component.getByRole('combobox', { name: 'Status' });
 	if (variant === 'status-open') {
-		await component
-			.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
-			.fill('refund');
-		await expect(component.getByText('No matching evidence.', { exact: true })).toBeVisible();
+		// Open over the real cards: the menu must not need a search to explain what it filters.
+		await expect(component.locator('.evidence-grid .evidence-card')).toHaveCount(4);
+		await expect(
+			component.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
+		).toHaveValue('');
+		await makeRoomBelow(select);
 		await select.click();
 		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	} else {
@@ -93,3 +95,18 @@ async function openImage(component: Locator) {
 	const dialogBox = await dialog.boundingBox();
 	expect(captionBox!.y + captionBox!.height).toBeLessThanOrEqual(dialogBox!.y + dialogBox!.height);
 }
+
+/** A native menu opens upward over the filters when the viewport ends too soon below its select. */
+async function makeRoomBelow(select: Locator) {
+	const page = select.page();
+	const size = page.viewportSize();
+	const box = await select.boundingBox();
+	if (!size || !box) return;
+	const needed = Math.ceil(box.y + box.height + MENU_ROOM);
+	if (needed > size.height) await page.setViewportSize({ ...size, height: needed });
+	// The emulated screen, not the viewport, bounds the menu: lift the select toward the top.
+	if (size.width < 500) await page.evaluate((top) => window.scrollBy(0, top), box.y - 340);
+}
+
+// Chromium opens a native menu upward unless roughly this much page remains below its select.
+const MENU_ROOM = 520;

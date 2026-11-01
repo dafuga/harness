@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import { notMeasured, type EntityMeasure } from '../../utils/explorer-ui/entityMeasure';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { metricChanges, type MetricComparison } from '../../utils/explorer-ui/metricChanges';
@@ -42,7 +43,7 @@
 
 <!-- Size and timings share one profile; the contract keeps its own tab and Details section. -->
 <hx-div class="ex-summary" class:compact data-harness-component="harness-entity-summary">
-	<hx-section class="ex-card" aria-label="Performance profile">
+	<Card as="section" label="Performance profile">
 		<hx-h2><HarnessIcon name="gauge" size={24} /> Performance profile</hx-h2>
 		{#if comparison && compact}
 			<hx-p class="ex-note"
@@ -173,7 +174,7 @@
 				</hx-div>
 			{/if}
 		{/if}
-	</hx-section>
+	</Card>
 </hx-div>
 
 <style>

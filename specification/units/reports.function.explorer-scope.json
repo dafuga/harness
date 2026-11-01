@@ -77,6 +77,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.explorer-types",
 			"via": "import",
 			"origin": "derived"

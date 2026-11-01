@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
 	import { onMount, tick } from 'svelte';
 	import type { Workspace } from '../../lib/stores/workspace.svelte';
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
@@ -110,7 +112,7 @@
 								<hx-small><DeploymentRoute deployment={item} /></hx-small>
 								<hx-small
 									><hx-span data-state={state}>{phase(item)}</hx-span> · {item.projectName} ·
-									{item.commit.slice(0, 7)}</hx-small
+									{shortCommit(item.commit)}</hx-small
 								>
 							</hx-button>
 						</hx-li>{/each}

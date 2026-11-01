@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from '../explorer-kit/Card.svelte';
 	import type {
 		ExplorerBehavior,
 		ExplorerEntity,
@@ -76,7 +77,7 @@
 				})
 			)}
 	/>
-	<hx-section class="ex-card" aria-labelledby="ex-verdict-title">
+	<Card as="section" labelledby="ex-verdict-title">
 		<hx-h2 id="ex-verdict-title">Verification at {shortCommit(scope.commit)}</hx-h2>
 		<hx-p><HarnessVerdict {...entity.verdict} /></hx-p>
 		{#if entity.verdict.reasons.length}
@@ -87,7 +88,7 @@
 		{#if !record}
 			<hx-p class="ex-soft">No usable verification record judges this revision.</hx-p>
 		{/if}
-	</hx-section>
+	</Card>
 	{#if coverage.length === 0}
 		<hx-p class="ex-gap">
 			<HarnessVerdict passed={false} label="Evidence missing" />
@@ -95,7 +96,7 @@
 		</hx-p>
 	{/if}
 	{#each coverage as scenario, position (position)}
-		<hx-section class="ex-card" aria-label={scenario.title}>
+		<Card as="section" label={scenario.title}>
 			<hx-h2>{scenario.title}</hx-h2>
 			<hx-p>
 				<HarnessVerdict
@@ -181,10 +182,10 @@
 			{#each scenario.tests as check, position (position)}
 				{#if check.browserErrors?.length}<BrowserErrors diagnostics={check.browserErrors} />{/if}
 			{/each}
-		</hx-section>
+		</Card>
 	{/each}
 	{#if gone.length}
-		<hx-section class="ex-card" aria-label="No longer declared">
+		<Card as="section" label="No longer declared">
 			<hx-h2>No longer declared at {shortCommit(scope.commit)}</hx-h2>
 			<hx-p class="ex-soft">
 				What {shortCommit(scope.parent ?? '')} declared and this commit does not: it has a result before
@@ -193,7 +194,7 @@
 			<hx-ul class="ex-reasons">
 				{#each gone as item}<hx-li>{item}</hx-li>{/each}
 			</hx-ul>
-		</hx-section>
+		</Card>
 	{/if}
 	{#if behavior.rows.length}
 		{#key entity.id + scope.commit}

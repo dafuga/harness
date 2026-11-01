@@ -44,6 +44,11 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice"
+		],
 		"inputs": [
 			{
 				"name": "ExplorerModulesScreen.index",

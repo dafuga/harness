@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { Report } from '../../src/models/Report.types';
+import type { Report } from '../../src/models/reports-media/Report.types';
 import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';
 import { analytics, type Models } from './support/analyticsCli';

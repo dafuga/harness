@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import FloatingChat from '../../../../reports/src/components/planning-collaboration/FloatingChat.svelte';
+	import FloatingChat from '$shared/planning-collaboration/FloatingChat.svelte';
 	import { onMount, untrack } from 'svelte';
 	import { createProjectAgentStore } from '../../lib/stores/agents-providers/projectAgent.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
@@ -31,13 +31,16 @@
 	}
 </script>
 
-{#snippet line(author: 'user' | 'agent', text: string)}<hx-li class="chat-message {author}">
-		<hx-span class="chat-author">{author === 'user' ? 'You: ' : 'Agent: '}</hx-span><ReferenceText
-			{text}
-			{workspace}
-			history
-		/>
-	</hx-li>{/snippet}
+{#snippet line(
+	author: 'user' | 'agent',
+	text: string
+)}{#if author !== 'agent' || text !== agent.error}<hx-li class="chat-message {author}">
+			<hx-span class="chat-author">{author === 'user' ? 'You: ' : 'Agent: '}</hx-span><ReferenceText
+				{text}
+				{workspace}
+				history
+			/>
+		</hx-li>{/if}{/snippet}
 
 {#snippet tab(name: 'chat' | 'agents', text: string)}
 	<hx-button type="button" aria-pressed={view === name} onclick={() => (view = name)}
@@ -91,6 +94,7 @@
 					providers={agent.providers}
 					approved={agent.approved}
 					running={agent.active || workspace.busy}
+					failureReported={Boolean(agent.error)}
 					placeholder={`Describe the ${kind} to add…`}
 					comment={(text) => agent.comment(text)}
 					send={agent.send}

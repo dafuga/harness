@@ -1,7 +1,7 @@
 import { createWorkspaceStore } from '../../../../../desktop/src/lib/stores/workspace.svelte';
 import { createEntityEvidenceStore } from '../../../../../desktop/src/lib/stores/entityEvidence.svelte';
 import { entityBehavior } from '../../../../src/utils/entityBehavior';
-import { galleryItems, screenOptions } from '../../../../src/utils/entityScreens';
+import { galleryItems, screenOptions } from '../../../../src/utils/explorer-ui/entityScreens';
 import type { DesktopBridge } from '../../../../../desktop/src/models/DesktopBridge.types';
 import type { EntityDetail } from '../../../../../desktop/src/models/Desktop.types';
 import { ids } from './explorerData';
@@ -20,7 +20,7 @@ export const providers = [
 		models: [
 			{
 				id: 'preview-model',
-				label: 'Preview model',
+				label: 'GPT 6.1 Sol',
 				efforts: ['high', 'xhigh'],
 				defaultEffort: 'high',
 				isDefault: true
@@ -135,6 +135,12 @@ function configureWorkspace(
 	bridge: DesktopBridge,
 	id: string
 ) {
+	if (id === 'desktop.component.nav-bar')
+		bridge.deploymentActivities = async () =>
+			(await deploymentBridge.deploymentActivities!()).map((item) => ({
+				...item,
+				projectName: project.name
+			}));
 	workspace.bridge = bridge;
 	workspace.snapshot = {
 		project: { ...project },
@@ -152,7 +158,7 @@ function configureWorkspace(
 		approval: true,
 		source: 'local'
 	};
-	workspace.category = 'components';
+	workspace.category = id === 'desktop.component.entity-view' ? entity.category : 'components';
 	workspace.entity = id === 'desktop.component.entity-view' ? entity : null;
 }
 

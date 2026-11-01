@@ -174,15 +174,18 @@ test('desktop search and revision icons retain their widths across the responsiv
 	const natural = await revision();
 	await page.setViewportSize({ width: 1440, height: 900 });
 	expect(await revision()).toEqual(natural);
-	const [search, branch, row] = [
+	const [search, branch, context, row] = [
 		(await bar.getByRole('button', { name: 'Search entities', exact: true }).boundingBox())!,
 		(await bar.getByRole('button', { name: 'Choose branch', exact: true }).boundingBox())!,
+		(await bar.locator('.topbar-context').boundingBox())!,
 		(await bar.getByRole('navigation', { name: 'Catalog categories' }).boundingBox())!
 	];
-	// The layout of a wide desktop is one row: the field and the branch field lie in the row of the
-	// categories, as the branch field did before the search.
-	const within = (item: Box) => item.y >= row.y && item.y + item.height <= row.y + row.height;
+	// Search and revision share the context rail above the complete category row.
+	const within = (item: Box) =>
+		item.y >= context.y && item.y + item.height <= context.y + context.height;
 	expect(within(search)).toBe(true);
+	expect(within(branch)).toBe(true);
+	expect(search.y + search.height).toBeLessThanOrEqual(row.y);
 	expect(branch.y + branch.height).toBeLessThanOrEqual(row.y);
 	// The field, with its focus ring of three pixels, and the branch field meet on neither axis.
 	const ring = 3;

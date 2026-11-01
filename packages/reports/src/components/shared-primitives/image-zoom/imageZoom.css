@@ -60,6 +60,18 @@
 .zoom .stage.dragging {
 	cursor: grabbing;
 	user-select: none;
+	border-color: var(--hx-color-border-strong);
+	border-width: var(--hx-border-thick);
+	background: var(--hx-color-primary-wash);
+}
+.zoom .zoom-bar .drag-hint {
+	padding: var(--hx-space-4) var(--hx-space-10);
+	border: var(--hx-border-thin) solid var(--hx-color-primary);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-color-primary-wash);
+	color: var(--hx-color-primary);
+	font-size: var(--hx-type-size-compact);
+	font-weight: var(--hx-style-weight-semibold);
 }
 .zoom .stage:focus-visible {
 	outline: var(--hx-border-thick) solid var(--hx-color-primary);

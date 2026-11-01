@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.harness-entity-link",
 			"reports.component.harness-explorer-frame",
 			"reports.component.shared-primitives-atoms-html-article",
@@ -61,6 +62,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
 		"inputs": [
 			{
 				"name": "ExplorerPermissionsScreen.index",
@@ -346,6 +348,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-link",
 			"via": "import",

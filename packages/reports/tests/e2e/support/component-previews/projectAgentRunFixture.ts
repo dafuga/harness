@@ -8,6 +8,8 @@ export const projectConversation =
 export const projectReply =
 	'The search matches order names without regard to letter case and preserves their order. An empty query returns every order. Add checks for mixed-case names and no matches before approving the change.';
 
+const savedReply = 'The review draft is ready.';
+
 /** Synthetic request, event and comment ports stop every operation before a provider or host. */
 export function projectAgentRunFixture(data: DesktopData, state: ProjectAgentState): void {
 	let listener: ((event: RunEvent) => void) | undefined;
@@ -92,7 +94,7 @@ function respond(
 		});
 		return;
 	}
-	emit({ runId, kind: 'text', text: projectReply });
+	emit({ runId, kind: 'text', text: state === 'saved-plan' ? savedReply : projectReply });
 	const created =
 		state === 'saved-plan'
 			? {

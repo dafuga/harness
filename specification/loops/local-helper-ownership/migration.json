@@ -5635,6 +5635,87 @@
 			"commit": "6dcd9cfc81c4713599d1e5324e190cf0ae592272",
 			"definition": "f65112a7deea343c60bfb6c86ad22ad7f714ef0aed5f7f5726ede4bde9e13030",
 			"reason": "Preserve required source props for no-fallback bindable declarations through the owned syntax scanner."
+		},
+		{
+			"unit": "desktop.function.hosted-artifact",
+			"name": "hostedArtifact",
+			"commit": "7ecb49d22986783ba1c1262d214b18c9fef78c2c",
+			"definition": "a5ecb1b10c85123d0c8b0ef39a63c7452760dba43bfd403fb538f2c9165feb93",
+			"reason": "Use the canonical commit and error formatters without changing the owner responsibility.",
+			"to": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/hostedArtifact.ts",
+			"ownerSource": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserArtifact.ts"
+		},
+		{
+			"unit": "desktop.function.recorded-preview",
+			"name": "recordedPreview",
+			"commit": "7ecb49d22986783ba1c1262d214b18c9fef78c2c",
+			"definition": "0d0f9d12434d0a6b0190d0eea37588919cdbb804b65d732823a73a45ccc47f68",
+			"reason": "Use the canonical commit and error formatters without changing the owner responsibility.",
+			"to": "packages/desktop/src/components/shared-primitives/recorded-preview/recordedPreview.ts",
+			"ownerSource": "packages/desktop/src/components/shared-primitives/recorded-preview/RecordedPreview.svelte"
+		},
+		{
+			"unit": "desktop.function.workspace-search",
+			"name": "workspaceSearch",
+			"commit": "7ecb49d22986783ba1c1262d214b18c9fef78c2c",
+			"definition": "0c3e9da19cd738b950f2d7c498fbb54d4a19567be7871ebd828b4637c1f5b409",
+			"reason": "Use the canonical commit and error formatters without changing the owner responsibility.",
+			"to": "packages/desktop/src/components/projects-sessions/nav-bar/workspaceSearch.ts",
+			"ownerSource": "packages/desktop/src/components/projects-sessions/nav-bar/NavBar.svelte"
+		},
+		{
+			"unit": "reports.function.explorer-scope",
+			"name": "explorerScope",
+			"commit": "7ecb49d22986783ba1c1262d214b18c9fef78c2c",
+			"definition": "48022ad9d430718f10f9c3b3f39a719834ae2371ebc1844f2cfca77b2754ca11",
+			"reason": "Use the canonical commit and error formatters without changing the owner responsibility.",
+			"to": "packages/reports/src/utils/explorer-ui/harness-page/explorerScope.ts",
+			"ownerSource": "packages/reports/src/utils/explorer-ui/harness-page/harnessPage.ts"
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"name": "captureUnbound",
+			"commit": "7ecb49d22986783ba1c1262d214b18c9fef78c2c",
+			"definition": "270dd1bc7cca18e09675b712c08baf777d97ab449ef4ecb0de810e005f9f6299",
+			"reason": "Use the canonical commit and error formatters without changing the owner responsibility.",
+			"to": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerState.ts",
+			"ownerSource": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerState.ts"
+		},
+		{
+			"unit": "reports.function.harness-ancestry",
+			"name": "revisionLabel",
+			"commit": "7ecb49d22986783ba1c1262d214b18c9fef78c2c",
+			"definition": "1f0228970d9e41c61325a9292378cb6d169096e8545d6a4681184fc605c2429c",
+			"reason": "Use the canonical commit and error formatters without changing the owner responsibility.",
+			"to": "packages/reports/src/components/explorer-ui/harness-selectors/harnessAncestry.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte"
+		},
+		{
+			"unit": "reports.function.legacy-evidence",
+			"name": "legacyLink",
+			"commit": "7ecb49d22986783ba1c1262d214b18c9fef78c2c",
+			"definition": "fbb3e74e55854dd12582e6286fe0734379c0aceffe25c2198fbc8ad295592ffe",
+			"reason": "Use the canonical commit and error formatters without changing the owner responsibility.",
+			"to": "packages/reports/src/components/explorer-ui/harness-legacy/legacyEvidence.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-legacy/HarnessLegacy.svelte"
+		},
+		{
+			"unit": "reports.function.navbar-search",
+			"name": "navbarSearch",
+			"commit": "7ecb49d22986783ba1c1262d214b18c9fef78c2c",
+			"definition": "dbe80b7954e7bca85dabcf3dd21ff757845ade4806d16c67a36cd42c7f61796d",
+			"reason": "Use the canonical commit and error formatters without changing the owner responsibility.",
+			"to": "packages/reports/src/components/explorer-ui/harness-navbar/navbarSearch.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
+		},
+		{
+			"unit": "function.derive-manifest",
+			"name": "deriveManifest",
+			"commit": "49eb75429b2197c6c4aa2b496fe3f7a22fd97c97",
+			"definition": "01122ec6b7c8e9bae3164b8423c2dcc250749ab3bf354b7d5db81aabfb69195e",
+			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+			"ownerSource": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
+			"reason": "Declare shared primitive contracts, including public forwarding imports."
 		}
 	],
 	"retiredOwners": [

@@ -1,6 +1,6 @@
 import type { AnswerInput } from './recordedAnswer.types';
-import { explorerBehavior } from '../../../../../reports/src/utils/explorerBehavior';
-import { explorerEvidence } from '../../../../../reports/src/utils/explorerEvidence';
+import { explorerBehavior } from '$reports/utils/explorerBehavior';
+import { explorerEvidence } from '$reports/utils/explorerEvidence';
 import { remoteLimits } from '../../../../../remote/src/index';
 import type { EntityEvidenceResult } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { recordedProjection } from './recordedProjection';

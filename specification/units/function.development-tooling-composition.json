@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/core/development-tooling/composition.ts"],
-		"symbols": ["compositionSchema"]
+		"symbols": ["compositionSchema", "sharedPrimitivePath"]
 	},
 	"contract": {
 		"origin": "declared",

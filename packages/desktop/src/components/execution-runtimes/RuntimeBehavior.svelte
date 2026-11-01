@@ -1,7 +1,11 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { behaviorDuration, entityBehavior } from '../../../../reports/src/utils/entityBehavior';
+	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
+	import { behaviorDuration, entityBehavior } from '$reports/utils/entityBehavior';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
 	import RuntimeRun from './RuntimeRun.svelte';
@@ -15,7 +19,6 @@
 		/** The function the results are shown for, when they are shown as its rows. */
 		unit?: string;
 	} = $props();
-	const short = (commit: string) => commit.slice(0, 7);
 	const behavior = $derived(result.behavior);
 	/** Undefined while the results are being read; null when reading them failed. */
 	const known = $derived(evidence.read);
@@ -24,7 +27,7 @@
 	const shown = $derived(entityBehavior(known ?? behavior));
 	/** A first commit is one run: it has no parent to stand beside. */
 	const paired = $derived(shown.mode === 'commit' && result.scope.parent !== null);
-	const at = $derived(short(result.scope.commit));
+	const at = $derived(shortCommit(result.scope.commit));
 	/** One run, or unknown for a stated reason, stands without reading anything. */
 	const fixed = $derived(
 		behavior.summary === 'not-compared' ||
@@ -37,12 +40,23 @@
 		return known === null ? 'Behavior unknown' : shown.label;
 	});
 	const why = $derived(
-		known === null ? 'The recorded results could not be read.' : shown.reasons.join('; ')
+		pending
+			? 'Reading both results will show whether behavior changed.'
+			: known === null
+				? 'The recorded results could not be read.'
+				: shown.reasons.join('; ')
 	);
 	const duration = $derived(
 		behaviorDuration(
 			result.evidence.after.record,
 			shown.scenarios.map((item) => item.id)
+		)
+	);
+	const panes = $derived(
+		comparisonPanes(
+			{ value: shown, commit: result.scope.parent },
+			{ value: shown, commit: result.scope.commit },
+			paired
 		)
 	);
 </script>
@@ -59,25 +73,19 @@
 	</hx-p>
 	{#if shown.groups.length === 0}<hx-p class="empty">
 			No end-to-end result is recorded for this entity at {at}.
-		</hx-p>{:else}<hx-div class="runtime-panes" class:paired>
-			{#if paired}<RuntimeRun
-					{shown}
-					side="before"
-					title={`Before · ${short(result.scope.parent ?? '')}`}
-					role="Parent commit"
+		</hx-p>{:else}<ComparePanes {panes} className="runtime-panes" framed={false}>
+			{#snippet children(pane)}
+				<RuntimeRun
+					shown={pane.value!}
+					side={pane.side}
+					title={pane.heading}
+					role={pane.role}
 					lost={known === null}
-					refusals={evidence.refusals}
 					{unit}
-				/>{/if}<RuntimeRun
-				{shown}
-				side="after"
-				title={paired ? `After · ${at}` : `Current snapshot · ${at}`}
-				role={paired ? 'Selected commit' : 'Branch tip'}
-				lost={known === null}
-				refusals={evidence.refusals}
-				{unit}
-			/>
-		</hx-div>{/if}
+					refusals={evidence.refusals}
+				/>
+			{/snippet}
+		</ComparePanes>{/if}
 	<hx-dl class="runtime-facts">
 		<hx-dt>End-to-end duration</hx-dt>
 		<hx-dd>{duration ?? 'Not measured'}</hx-dd>
@@ -87,3 +95,11 @@
 			</hx-dd>{/each}
 	</hx-dl>
 </hx-div>
+
+<style>
+	@media (max-width: 560px) {
+		.runtime-card :global(.runtime-pane-head > strong) {
+			flex-basis: 100%;
+		}
+	}
+</style>

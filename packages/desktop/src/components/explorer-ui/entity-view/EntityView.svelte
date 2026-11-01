@@ -4,7 +4,7 @@
 	import type { Section } from './EntityView.types';
 
 	import { onDestroy, onMount, untrack } from 'svelte';
-	import { explorerAppRoute, explorerName } from '../../../../../reports/src/utils/explorerName';
+	import { explorerAppRoute, explorerName } from '$reports/utils/explorerName';
 	import { createEntityEvidenceStore } from '../../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 	import type { ThreadInfo } from '../../../models/development-tooling/Desktop.types';
@@ -26,7 +26,7 @@
 	import StatusIcon from '../../shared-primitives/StatusIcon.svelte';
 	import Icon from '../../shared-primitives/Icon.svelte';
 	import WorkspaceLink from '../../projects-sessions/WorkspaceLink.svelte';
-	import EntityExamples from '../../../../../reports/src/components/explorer-ui/EntityExamples.svelte';
+	import EntityExamples from '$shared/explorer-ui/EntityExamples.svelte';
 	import { workspaceSections as sections } from '../../../utils/projects-sessions/workspaceRoute';
 	let { workspace }: { workspace: Workspace } = $props();
 	/** A function has a plan and no designs; every other entity has designs and no plan section. */
@@ -135,7 +135,7 @@
 </script>
 
 <hx-div class="entity-layout" class:with-thread={conversation}>
-	<hx-main class="entity-main" style="overflow-wrap: anywhere;">
+	<hx-main class="entity-main">
 		<WorkspaceLink {workspace} to={workspace.path()} class="breadcrumb"
 			>{workspace.category} › {name}</WorkspaceLink
 		>

@@ -3,11 +3,11 @@ import { desktopData as sealed } from './sealedData';
 import { desktopFixtureCommits as identities } from './desktopFixtureCommits';
 
 // Desktop examples use their own resealed artifacts; shared checked inputs stay intact.
-const { desktopArtifacts, ...shared } = sealed;
+const { desktopArtifacts, desktopScreens, ...shared } = sealed;
 let serialized = JSON.stringify({
 	...shared,
-	results: desktopArtifacts.results,
-	bindings: desktopArtifacts.bindings,
+	results: { ...desktopArtifacts.results, ...desktopScreens.results },
+	bindings: { ...desktopArtifacts.bindings, ...desktopScreens.bindings },
 	bytes: {},
 	design: []
 });
@@ -20,7 +20,7 @@ for (const [original, replacement] of [
 	serialized = serialized.replaceAll(original, replacement);
 
 export const desktopData = JSON.parse(serialized) as typeof shared;
-desktopData.bytes = { ...sealed.bytes, ...desktopArtifacts.bytes };
+desktopData.bytes = { ...sealed.bytes, ...desktopArtifacts.bytes, ...desktopScreens.bytes };
 desktopData.design = sealed.design;
 desktopData.commits = [
 	{

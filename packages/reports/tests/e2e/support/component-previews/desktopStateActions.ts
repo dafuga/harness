@@ -4,7 +4,7 @@ import { desktopGameCatalogVariants } from './desktopGameVariants';
 
 /** Reach stateful Desktop presentations through their normal controls before capture. */
 export async function prepareDesktopState(component: Locator, id: string, variant: string) {
-	if (!variant) return;
+	if (!variant && id !== 'desktop.component.entity-view') return;
 	await actions[id.replace('desktop.component.', '')]?.(component, variant);
 }
 
@@ -21,12 +21,23 @@ export function desktopCaptureDirectory(id: string) {
 	);
 }
 
-/** Keep fixture-only heading pixels out without moving the rendered component. */
+/** Frame isolated Desktop surfaces and omit fixture-only headings. */
 export async function frameDesktopCapture(page: Page, id: string) {
+	if (id === 'desktop.component.thread-panel')
+		await page
+			.locator(`[data-preview-unit="${id}"] .thread-panel`)
+			.evaluate((node: HTMLElement) => {
+				node.style.position = 'static';
+				node.style.inset = 'auto';
+				node.style.maxHeight = 'none';
+				node.querySelector<HTMLElement>('.thread-scroll')!.style.maxHeight = 'none';
+			});
+
 	const owned =
 		Object.hasOwn(desktopCatalogVariants, id) ||
 		Object.hasOwn(desktopGameCatalogVariants, id) ||
-		id === 'desktop.component.project-agent';
+		id === 'desktop.component.project-agent' ||
+		id === 'desktop.component.thread-panel';
 	if (owned) {
 		await page.locator('#preview-title').evaluate((node: HTMLElement) => {
 			node.style.visibility = 'hidden';
@@ -142,6 +153,11 @@ async function artifact(component: Locator, variant: string) {
 }
 
 async function entity(component: Locator, variant: string) {
+	if (!variant) {
+		const open = component.getByRole('button', { name: 'Conversation', exact: true });
+		if (await open.isVisible()) await open.click();
+		await expect(component.getByRole('button', { name: 'Close conversation' })).toBeVisible();
+	}
 	if (variant === 'conversation-closed') {
 		const close = component.getByRole('button', { name: 'Close conversation' });
 		if (await close.isVisible()) await close.click();

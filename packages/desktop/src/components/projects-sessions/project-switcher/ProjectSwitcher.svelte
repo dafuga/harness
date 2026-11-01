@@ -26,7 +26,7 @@
 	<ChoiceDialog
 		label="Choose workbench"
 		title="Choose workbench"
-		width={320}
+		width={480}
 		maxHeight={320}
 		disabled={workspace.busy}
 	>
@@ -60,7 +60,7 @@
 <style>
 	.project-name {
 		min-width: 0;
-		max-width: 160px;
+		max-width: none;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -100,12 +100,16 @@
 		display: grid;
 		gap: var(--hx-space-6);
 		font-size: var(--hx-type-size-xs);
+		min-width: 0;
 	}
 	.picker-field :global(.report-select) {
 		display: block;
 	}
-	.picker-field :global(select) {
+	.picker-field :global(.report-select.expanded select) {
+		width: 100%;
 		max-width: none;
+		padding-inline: var(--hx-space-8);
+		font-size: var(--hx-type-size-sm);
 		border-color: var(--hx-color-border);
 		background: var(--hx-color-surface-raised);
 	}

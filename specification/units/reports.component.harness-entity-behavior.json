@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.harness-entity-reasons",
 			"reports.component.harness-entity-run",
 			"reports.component.harness-harness-action",
@@ -21,17 +22,21 @@
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-header",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-compare-panes"
 		]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityBehavior.svelte"],
-		"symbols": ["EntityBehavior"]
+		"symbols": ["EntityBehavior", "EntityBehavior.children"]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.shared-primitives-compare-panes"
+		],
 		"inputs": [
 			{
 				"name": "EntityBehavior.behavior",
@@ -98,9 +103,34 @@
 			}
 		],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityBehavior.children",
+				"inputs": [
+					{
+						"name": "EntityBehavior.children.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntityBehavior.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-reasons",
 			"via": "import",
@@ -162,17 +192,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-section",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-compare-panes",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -198,6 +228,11 @@
 		},
 		{
 			"unit": "reports.function.explorer-reading",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.verification-evidence-comparison-panes",
 			"via": "import",
 			"origin": "derived"
 		},

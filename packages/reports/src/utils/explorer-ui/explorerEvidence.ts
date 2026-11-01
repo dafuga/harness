@@ -1,3 +1,4 @@
+import { shortCommit } from '../../helpers/strings/shortCommit';
 import type { Named, ExplorerRevisions } from './explorerEvidence.types';
 import type {
 	ExplorerCapture,
@@ -18,7 +19,6 @@ import { scenarioFor } from './explorerState';
 import { explorerCoverage } from './explorer-verdict/explorerCoverage';
 import { verdictCoverage, verdictRecord } from './explorer-verdict/explorerVerdict';
 
-const short = (commit: string) => commit.slice(0, 7);
 const first = 'This is the first commit of its history: there is no parent to compare with.';
 const unusable = 'No capture of this commit can be used: each is rejected, stale or not stored.';
 /** The scenarios that cover a unit, each with the states that show that unit. */
@@ -114,7 +114,7 @@ function side(
 	unit: Named
 ): ExplorerSide {
 	if (!detail || detail.commit !== commit) {
-		const gap = `Revision ${short(commit)} is not available here; no other revision is shown in its place.`;
+		const gap = `Revision ${shortCommit(commit)} is not available here; no other revision is shown in its place.`;
 		return { commit, detail: null, record: null, captures: [], coverage: [], gap };
 	}
 	const record = verdictRecord(detail);

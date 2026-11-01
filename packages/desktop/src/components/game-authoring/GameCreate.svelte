@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { errorMessage } from '$reports/helpers/strings/errorMessage';
+
 	import { resolve } from '$app/paths';
 	import Select from '$shared/Select.svelte';
 	import { onMount } from 'svelte';
@@ -50,7 +52,7 @@
 			}
 			created(snapshot);
 		} catch (cause) {
-			error = cause instanceof Error ? cause.message : String(cause);
+			error = errorMessage(cause);
 		}
 		busy = false;
 	}

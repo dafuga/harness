@@ -32,8 +32,17 @@ function reading(
 		roster = Array.from({ length: 8 }, (_, index) => ({
 			...roster[0],
 			id: `preview-agent-${index}`,
-			label: `Preview agent ${index + 1}`,
-			task: `Capture component group ${index + 1}`
+			label: [
+				'Checkout reviewer',
+				'Release notes writer',
+				'Order search reviewer',
+				'Delivery planner',
+				'Billing reviewer',
+				'Catalog maintainer',
+				'Accessibility reviewer',
+				'Deployment reviewer'
+			][index],
+			task: `Review order workflow ${index + 1}`
 		}));
 	let working = value.agents.working;
 	if (empty) working = 0;

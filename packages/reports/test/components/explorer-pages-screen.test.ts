@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import { catalogShot } from '../../src/utils/entityScreens';
+import { catalogShot } from '../../src/utils/explorer-ui/entityScreens';
 import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import { scope } from '../entityPlaces';
 import { withFocused } from '../entityStates';

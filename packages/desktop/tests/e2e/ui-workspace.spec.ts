@@ -183,8 +183,8 @@ test('workspace selectors start collapsed and environment stays directly selecta
 		await expect(page.getByText(/Changes reach preprod\./)).toHaveCount(0);
 		const summary = page.locator('.revision-summary');
 		await expect(summary.locator('strong')).toHaveText(environment);
-		await expect(page.getByRole('button', { name: 'Choose commit', exact: true })).toContainText(
-			environment
+		await expect(page.getByRole('button', { name: 'Choose commit', exact: true })).toHaveText(
+			'Commit'
 		);
 		await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:15:00.000Z');
 		await expect(page.locator('.environment-status')).toHaveCount(0);

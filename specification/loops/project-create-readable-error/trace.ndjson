@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-01T07:09:50.062Z","name":"project-create-readable-error","goal":"Show a representative project creation failure without fixture implementation text","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-01T07:09:50.659Z","loop":"project-create-readable-error","step":"spec","evidence":"The GameCreate error screenshots display Preview fixtures cannot create projects instead of a representative user-facing failure."}
+{"event":"step.completed","timestamp":"2026-11-01T07:09:51.261Z","loop":"project-create-readable-error","step":"coverage","evidence":"The catalog asserted the fixture refusal literally but did not reject implementation jargon in the captured error state."}

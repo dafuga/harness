@@ -127,8 +127,9 @@ async function replayPickerBounds(
 async function previewTarget(content: Locator, id: string, variant: string) {
 	const dialog = content.locator('dialog[open], [role="dialog"]:visible').last();
 	const chatPicker =
-		id === 'reports.component.console-chat' &&
-		['model-open', 'model-selected', 'effort-open', 'effort-selected'].includes(variant);
+		(id === 'reports.component.console-chat' &&
+			['model-open', 'model-selected', 'effort-open', 'effort-selected'].includes(variant)) ||
+		['desktop.component.project-switcher', 'desktop.component.revision-picker'].includes(id);
 	const catalogValue =
 		id === 'reports.component.explorer-catalog-items' && variant === 'configs-open';
 	const modal = await previewModal(content, dialog, chatPicker || catalogValue);

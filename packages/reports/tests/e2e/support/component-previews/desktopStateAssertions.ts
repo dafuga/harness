@@ -9,6 +9,7 @@ import {
 } from './desktopArtifactAssertions';
 import { assertDesktopNavCapture } from './desktopNavAssertions';
 import { assertComposerCaptions } from './projectAgentStateAssertions';
+import { assertDesktopPresentation } from './desktopPresentationAssertions';
 
 /** Check the actual state branches, so a successful screenshot cannot silently show the default. */
 export async function assertDesktopState(component: Locator, id: string, variant: string) {
@@ -17,7 +18,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'design-panel:empty': 'No design image yet',
 		'design-panel:headless': 'No plan yet',
 		'design-panel:headless-plan': 'Planned behavior',
-		'design-panel:long': 'A detailed design direction.',
+		'design-panel:long': 'Keep order names and fulfilment status together',
 		'design-panel:loading': 'Loading design image…',
 		'design-panel:error': 'The saved design image could not be read.',
 		'history-panel:empty': 'No history recorded for this entity.',
@@ -30,13 +31,15 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'runtime-behavior:loading': 'Reading the recorded results…',
 		'runtime-behavior:unreadable': 'The recorded results could not be read.',
 		'runtime-screens:incomparable': '1280×900 after',
-		'runtime-evidence:error': "Couldn't load recorded evidence. Try again.",
+		'runtime-evidence:error': 'The saved record is incomplete. Try again.',
 		'runtime-evidence:offline': 'Saved'
 	};
 	if (messages[key]) await expect(component).toContainText(messages[key], { ignoreCase: true });
 	await expect(component).not.toContainText(
 		'Preview artifact is not bound to the selected result.'
 	);
+	if (id.startsWith('desktop.component.'))
+		await expect(component).not.toContainText(/Synthetic|Preview (model|agent|project)/i);
 	await checks[id.replace('desktop.component.', '')]?.(component, variant);
 }
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
@@ -82,8 +85,10 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertDesktopScreenCapture(component, id, variant);
 	await assertDesktopNavCapture(component, id);
 	await assertComposerCaptions(component, id);
-	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
-	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
+	await assertCreationErrorText(component, id, variant);
+	await assertEntityCategory(component, id, variant);
+	await assertEntitySectionContent(component, id, variant);
+	await assertDesktopPresentation(component, id, variant);
 	if (id === 'desktop.component.game-preview' && variant === 'readonly') {
 		await expect(
 			component.getByRole('status').filter({ hasText: /AI/ }),
@@ -97,15 +102,54 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 		await expect(component.getByRole('button', { name: 'Create project' })).toBeDisabled();
 	}
 	if (id === 'desktop.component.game-checkpoint-pane' && variant === 'advanced') {
-		const visible = await component
-			.getByRole('region', { name: 'Rules', exact: true })
-			.evaluate((node) => {
-				const rules = node.getBoundingClientRect();
-				const body = node.closest('.viewer-content')!.getBoundingClientRect();
-				return rules.top >= body.top - 1 && rules.bottom <= body.bottom + 1;
-			});
-		expect(visible, 'Expanded checkpoint rules are fully visible above the footer').toBe(true);
+		await expect(component.getByRole('button', { name: 'Advanced rules' })).toHaveAttribute(
+			'aria-expanded',
+			'true'
+		);
+		const top = await component.locator('.viewer-content').evaluate((node) => node.scrollTop);
+		expect(top, 'Expanded checkpoint capture starts with its description and title').toBe(0);
 	}
+}
+
+async function assertEntitySectionContent(component: Locator, id: string, variant: string) {
+	if (id !== 'desktop.component.entity-view') return;
+	const sections: Record<string, string[]> = {
+		apis: ['APIs', 'app.api.list-orders'],
+		'used-in': ['Used In', 'app.layout.operations'],
+		uses: ['Uses', 'app.component.order-list']
+	};
+	const section = sections[variant];
+	if (section) {
+		const region = component.getByRole('region', { name: section[0], exact: true });
+		await expect(
+			region.locator(`a[href*="${section[1]}"]`),
+			'The selected entity section shows its recorded relationship'
+		).toBeVisible();
+	}
+	if (variant === 'history')
+		await expect(
+			component.locator('.entity-main').getByText('Add order-status filters', { exact: true }),
+			'The History tab shows a meaningful recorded change'
+		).toBeVisible();
+}
+
+async function assertEntityCategory(component: Locator, id: string, variant: string) {
+	if (id !== 'desktop.component.entity-view') return;
+	const category = variant === 'helper-examples' ? 'functions' : 'pages';
+	const text = await component.locator('.breadcrumb').innerText();
+	expect(text, 'Entity breadcrumb category').toMatch(new RegExp(`^${category} ›`));
+	if (!variant || variant === 'conversation-closed')
+		await expect(component.getByRole('button', { name: 'Close conversation' })).toHaveCount(
+			variant ? 0 : 1
+		);
+}
+
+async function assertCreationErrorText(component: Locator, id: string, variant: string) {
+	if (id !== 'desktop.component.game-create' || variant !== 'error') return;
+	await expect(
+		component.getByRole('alert'),
+		'Creation errors use representative user-facing text'
+	).not.toContainText(/preview fixtures|synthetic/i);
 }
 
 async function assertHistoryFixtureContent(component: Locator, id: string, variant: string) {
@@ -155,44 +199,4 @@ async function assertLoadedHistory(component: Locator, id: string, variant: stri
 			component.getByText('Earlier API decision', { exact: true }),
 			'Loading earlier history paints the returned event'
 		).toBeVisible();
-}
-
-async function assertComposerPresentation(component: Locator, variant: string) {
-	await expect(component.getByRole('textbox', { name: 'Message' })).not.toHaveValue(
-		/synthetic request kept for this capture/i
-	);
-	const modes: Record<string, string> = {
-		ask: 'Ask',
-		plan: 'Plan',
-		change: 'Change',
-		'visual-plan': 'Plan'
-	};
-	if (modes[variant])
-		await expect(
-			component.getByRole('button', { name: modes[variant], exact: true })
-		).toHaveAttribute('aria-pressed', 'true');
-	if (variant === 'visual-plan')
-		await expect(component.getByRole('textbox', { name: 'Message' })).toHaveValue(/visual/i);
-	if (variant === 'running') await expect(component.getByText(/agent is running/i)).toBeVisible();
-}
-
-async function assertStatusPresentation(component: Locator, variant: string) {
-	const messages: Record<string, RegExp> = {
-		failed: /verification failed/i,
-		unknown: /status is unknown/i,
-		unverified: /not been verified/i,
-		'no-reason': /no verification recorded for this revision/i
-	};
-	const status = component.getByRole('status');
-	if (messages[variant]) await expect(status).toHaveText(messages[variant]);
-	if (variant === 'long') {
-		const sentences = (await status.innerText())
-			.split(/[.!?]+/)
-			.map((sentence) => sentence.trim())
-			.filter(Boolean);
-		expect(
-			new Set(sentences).size,
-			'Long explanations contain distinct meaningful sentences'
-		).toBeGreaterThanOrEqual(3);
-	}
 }

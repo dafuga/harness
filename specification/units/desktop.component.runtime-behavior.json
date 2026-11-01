@@ -17,15 +17,17 @@
 			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-compare-panes"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte"],
-		"symbols": ["RuntimeBehavior"]
+		"symbols": ["RuntimeBehavior", "RuntimeBehavior.children"]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-compare-panes"],
 		"inputs": [
 			{
 				"name": "RuntimeBehavior.result",
@@ -56,7 +58,27 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "RuntimeBehavior.children",
+				"inputs": [
+					{
+						"name": "RuntimeBehavior.children.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RuntimeBehavior.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -115,7 +137,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-compare-panes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-behavior",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.verification-evidence-comparison-panes",
 			"via": "import",
 			"origin": "derived"
 		}

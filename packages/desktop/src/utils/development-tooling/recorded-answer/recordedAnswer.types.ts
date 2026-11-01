@@ -1,6 +1,6 @@
-import type { ExplorerScope } from '../../../../../reports/src/models/Explorer.types';
+import type { ExplorerScope } from '$reports/models/Explorer.types';
 import type { CacheIdentity } from '../../../../../collaboration/src/models/Collaboration.types';
-import type { ExplorerRevisions } from '../../../../../reports/src/utils/explorerEvidence';
+import type { ExplorerRevisions } from '$reports/utils/explorerEvidence';
 
 export interface AnswerInput {
 	/** Where the read is in history, with the entity it is of. */

@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { replayFrames } from '../../src/utils/replayFrames';
-import type { Evidence } from '../../src/models/Report.types';
+import type { Evidence } from '../../src/models/reports-media/Report.types';
 const frame = (id: string, order: number, extra: Partial<Evidence> = {}): Evidence => ({
 	id,
 	title: `Scene ${order} — ${id}`,

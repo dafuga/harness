@@ -10,9 +10,11 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.agent-controls",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-form",
+			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-atoms-html-textarea"
 		]
@@ -23,18 +25,19 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-notice"],
 		"inputs": [
 			{
 				"name": "Composer.modes",
 				"type": "ComposeMode[]",
 				"required": true,
-				"description": "Ordered modes allowed in this context: comment, plan or change. Uses the first mode initially and whenever the previously chosen mode is no longer offered. An empty list disables entry and submission. Shows mode buttons only when more than one mode is offered."
+				"description": "Ordered modes allowed in this context: comment, ask, plan or change. Uses the first mode initially and whenever the previously chosen mode is no longer offered. An empty list disables entry and submission. Shows mode buttons only when more than one mode is offered."
 			},
 			{
 				"name": "Composer.providers",
 				"type": "ProviderState[]",
 				"required": true,
-				"description": "Provider choices passed to the agent controls for Plan and Change. Submission of either agent request requires a non-null agent choice; comments do not use these providers."
+				"description": "Provider choices passed to the agent controls for Ask, Plan and Change. Submission of an agent request requires a non-null agent choice; comments do not use these providers."
 			},
 			{
 				"name": "Composer.approved",
@@ -53,7 +56,14 @@
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional hint shown in the non-agent layout, empty by default. A nonempty value replaces the ordinary comment hint. It is not displayed while Plan or Change is selected."
+				"description": "Optional hint shown in the non-agent layout, empty by default. A nonempty value replaces the ordinary comment hint. It is not displayed while Ask, Plan or Change is selected."
+			},
+			{
+				"name": "Composer.failureReported",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "True when the parent already displays the current send failure. Hides the generic retry alert to avoid duplicate error messages. Defaults to false."
 			},
 			{
 				"name": "Composer.placeholder",
@@ -67,7 +77,7 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default. A visual Plan includes the device setting for the number of design options in its request. Change and Comment never include that count."
+				"description": "Optional flag, false by default. A visual Plan includes the device setting for the number of design options in its request. Ask, Change and Comment never include that count."
 			},
 			{
 				"name": "Composer.compact",
@@ -93,7 +103,7 @@
 			{
 				"name": "Composer",
 				"type": "markup",
-				"description": "Message form with permitted mode choices, agent controls for Plan and Change, and a send button. Blocks submission without a mode, with blank text, while running, without an agent choice for a request, or for an unapproved Change. Loads device agent settings on mount. Comments use the comment callback and never start an agent through this component."
+				"description": "Message form with permitted mode choices, agent controls for Ask, Plan and Change, and a send button. Blocks submission without a mode, with blank text, while running, without an agent choice for a request, or for an unapproved Change. Loads device agent settings on mount. Comments use the comment callback and never start an agent through this component. False callback results retain the message and show a retry notice unless the parent reports the failure. Visual plans show the device option count. Visual-plan captions occupy a separate line below the message field. Unapproved Change requests display the shared Notice explaining that the current exact design needs approval."
 			}
 		],
 		"errors": [
@@ -143,6 +153,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
@@ -154,6 +169,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-form",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

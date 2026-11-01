@@ -1,3 +1,4 @@
+import { record } from '../../../reports/test/entityFixture';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
@@ -17,7 +18,7 @@ test('a capture is asked for by the binding of the side that lists it', () =>
 		expect(artifactQuery(result, scope, 'after', mediaFile(after.capture))).toEqual({
 			...scope,
 			side: 'after',
-			recordId: 'rec-cccccc-0000',
+			recordId: `${record(commits.tip).id}`,
 			scenarioId: 'orders-page',
 			state: 'default',
 			evidenceId: 'screens',
@@ -27,7 +28,7 @@ test('a capture is asked for by the binding of the side that lists it', () =>
 			evidenceRevision: pinned.evidence
 		});
 		const before = artifactQuery(result, scope, 'before', mediaFile(shot('before').capture));
-		expect(before).toMatchObject({ side: 'before', recordId: 'rec-bbbbbb-0000' });
+		expect(before).toMatchObject({ side: 'before', recordId: `${record(commits.middle).id}` });
 	}));
 
 test('what a side does not list is not asked for, whatever name is given', () => {

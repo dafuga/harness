@@ -11,8 +11,8 @@ const row = (body: string, state: string) => {
 	const rows = body.split(/(?=<tr\b)/).map((part) => part.split('</tr>')[0]);
 	return (
 		rows.find((part) => {
-			const heading = part.match(/<th\b[^>]*\sscope="row"[^>]*>([\s\S]*?)<\/th>/)?.[1];
-			return heading !== undefined && words(heading) === state;
+			const header = /<th\b[^>]*\bscope="row"[^>]*>([\s\S]*?)<\/th>/.exec(part);
+			return header !== null && words(header[1]).trim() === state;
 		}) ?? ''
 	);
 };

@@ -11,6 +11,7 @@
 		"uses": [
 			"reports.component.browser-errors",
 			"reports.component.evidence-grid",
+			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.harness-entity-behavior",
 			"reports.component.harness-harness-verdict",
 			"reports.component.regression-proof",
@@ -18,7 +19,6 @@
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-table",
 			"reports.component.shared-primitives-atoms-html-tbody",
@@ -38,6 +38,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
 		"inputs": [
 			{
 				"name": "EntityTests.entity",
@@ -99,6 +100,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-entity-behavior",
 			"via": "import",
 			"origin": "derived"
@@ -130,11 +136,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
 		},

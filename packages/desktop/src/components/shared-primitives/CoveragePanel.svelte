@@ -1,26 +1,24 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import BrowserErrors from '../../../../reports/src/components/shared-primitives/browser-errors/BrowserErrors.svelte';
-	import EntityStates from '../../../../reports/src/components/explorer-ui/EntityStates.svelte';
-	import { explorerName } from '../../../../reports/src/utils/explorerName';
-	import type {
-		CoverageStanding,
-		ExplorerStateCoverage
-	} from '../../../../reports/src/models/Explorer.types';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
+	import BrowserErrors from '$shared/shared-primitives/browser-errors/BrowserErrors.svelte';
+	import EntityStates from '$shared/explorer-ui/EntityStates.svelte';
+	import { explorerName } from '$reports/utils/explorerName';
+	import type { CoverageStanding, ExplorerStateCoverage } from '$reports/models/Explorer.types';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityDetail } from '../../models/development-tooling/Desktop.types';
 	import { evidenceNotice } from '../../utils/verification-evidence/evidenceNotice';
 	import RuntimeBehavior from '../execution-runtimes/RuntimeBehavior.svelte';
 	import StatusIcon from './StatusIcon.svelte';
-	import RegressionProof from '../../../../reports/src/components/verification-evidence/RegressionProof.svelte';
+	import RegressionProof from '$shared/verification-evidence/RegressionProof.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	let {
 		entity,
 		evidence,
 		workspace
 	}: { entity: EntityDetail; evidence: EntityEvidence; workspace?: Workspace } = $props();
-	const short = (commit: string) => commit.slice(0, 7);
 	const notice = $derived(evidenceNotice(evidence.status, evidence.error, entity.kind));
 	const result = $derived(evidence.status === 'ready' ? evidence.result : null);
 	const visual = $derived(['pages', 'components', 'layouts'].includes(entity.category));
@@ -61,7 +59,7 @@
 		<hx-div class="row">
 			<hx-h2>Evidence</hx-h2>
 			<hx-span class="chip runtime-chip">Runtime capture</hx-span>{#if side}<hx-small
-					>Recorded for {short(side.commit)}{side.record
+					>Recorded for {shortCommit(side.commit)}{side.record
 						? ` · record ${side.record.id}`
 						: ''}</hx-small
 				>{/if}
@@ -79,7 +77,7 @@
 					<hx-h3>
 						<StatusIcon status={mark(item.standing)} reason={told(item.standing, item.reasons)} />
 						{item.title}<hx-span class="chip">{item.kind}</hx-span>{#if item.inheritedFrom}<hx-small
-								>Inherited from {short(item.inheritedFrom)}</hx-small
+								>Inherited from {shortCommit(item.inheritedFrom)}</hx-small
 							>{/if}
 					</hx-h3>
 					<hx-p class="muted">
@@ -122,7 +120,7 @@
 					unit={entity.category === 'functions' ? entity.id : undefined}
 				/>{:else}<hx-p class="empty">
 					No test recorded an input and an observed output for this entity at
-					{short(result.scope.commit)}.
+					{shortCommit(result.scope.commit)}.
 				</hx-p>{/if}{/if}
 	</hx-section>
 {/snippet}

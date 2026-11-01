@@ -6,12 +6,14 @@
 	import type { AgentChoice, ComposeMode, RunDraft } from '../../utils/explorer-ui/composeModes';
 	import { agentSettings } from '../../lib/agents-providers/agent-settings/agentSettings.svelte';
 	import AgentControls from '../agents-providers/AgentControls.svelte';
+	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
 	let {
 		modes,
 		providers,
 		approved,
 		running,
 		notice = '',
+		failureReported = false,
 		placeholder = '',
 		visual = false,
 		compact = false,
@@ -24,6 +26,8 @@
 		approved: boolean;
 		running: boolean;
 		notice?: string;
+		/** Whether the parent already displays the current send failure. */
+		failureReported?: boolean;
 		/** What an agent request is asked to describe here, where it is not the next design. */
 		placeholder?: string;
 		/** Whether a Plan here makes images, so it asks for the device's number of design options. */
@@ -35,6 +39,7 @@
 	} = $props();
 	const labels = { comment: 'Comment', ask: 'Ask', plan: 'Plan', change: 'Change' };
 	let text = $state('');
+	let failed = $state(false);
 	let chosen = $state<ComposeMode | null>(null);
 	let agent = $state<AgentChoice | null>(null);
 	onMount(() => agentSettings.load());
@@ -59,6 +64,7 @@
 			request && agent
 				? await send({ text: body, mode: request, ...agent, ...asked })
 				: await comment(body);
+		failed = !sent;
 		if (sent) text = '';
 	}
 </script>
@@ -78,6 +84,15 @@
 		rows="3"
 		disabled={!mode || running}
 	></hx-textarea>
+	{#if failed && !failureReported}<hx-p class="error" role="alert"
+			>Couldn’t send. Your message is kept. Try again.</hx-p
+		>{/if}
+	{#if counted}<hx-small class="composer-hint"
+			>Visual plan · {agentSettings.designOptions} design options</hx-small
+		>{/if}
+	{#if request === 'change' && !approved}
+		<Notice>Approve the current exact design before sending changes.</Notice>
+	{/if}
 	{#if modes.length > 1}<hx-div class="mode-options" role="group" aria-label="Request mode">
 			{#each modes as item (item)}<hx-button
 					type="button"
@@ -101,6 +116,13 @@
 </hx-form>
 
 <style>
+	.composer:not(.compact) > .composer-hint {
+		display: block;
+		margin-top: var(--hx-space-8);
+	}
+	.composer:not(.compact) > :global(.ex-notice) {
+		margin: var(--hx-space-8) 0 0;
+	}
 	/* Compact, what is asked shares one row with the icons that choose its agent, beside send. */
 	.compact {
 		display: grid;

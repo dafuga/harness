@@ -14,7 +14,7 @@
 }
 @media (max-width: 560px) {
 	.project-chat {
-		--floating-chat-top: var(--hx-layout-bar-clearance-phone);
+		--floating-chat-top: calc(var(--hx-layout-bar-clearance-stacked) + var(--hx-space-40));
 	}
 }
 /* Chat and Agents sit under the title, outside what scrolls; the hidden chat keeps its draft. */
@@ -114,4 +114,6 @@
 }
 .chat-compose :global(.composer textarea) {
 	font-size: var(--hx-type-size-base);
+	field-sizing: content;
+	min-height: var(--hx-space-64);
 }

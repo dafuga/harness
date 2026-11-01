@@ -91,6 +91,15 @@ These rules apply only to this Harness repository, including requests made in an
 - Omitted models use auto: Claude Haiku 5.5/medium, with Codex GPT-6-Luna/max only after a structured Claude quota rejection. Explicit models and intelligence never silently fall back.
 - Start an assigned foreground worker with `harness task worker --worker <id> --watch`; use `--modules <ids>` to limit pickup. Review isolated worker worktrees and run normal verification before landing changes. Sync with `harness task sync <remote>`; use one repository as the active queue owner.
 
+## Reuse first
+
+Before writing UI, use Card, Pill, Notice and EmptyState from the shared explorer kit;
+DataTable, DetailList, CodeLine, Select and SegmentedChoice from shared primitives;
+the single status component; and ComparePanes for before/after content. Contracts list
+the shared primitives each component uses. Extend the shared folder when a capability
+is missing instead of writing the primitive's markup inline. Existing inline exceptions
+live in eslint.reuse-allowlist.json; entries and counts may only shrink.
+
 ## Code Rules
 
 - Compose UI as atoms → molecules → organisms → layouts/templates → pages. Reuse the canonical native element atoms and existing shared controls; native markup belongs inside atoms. Declare `@harness-tier` and the relative `@harness-atoms` library directory. Native atom calls preserve bindings/actions and scoped CSS through `atomicComponents()`; keep generated native typings installed. Feature categories and stable unit IDs remain independent of composition level. Run the atomic audit, registry composition guard and normal interaction/catalog coverage. `harness info component` documents the supported APIs.

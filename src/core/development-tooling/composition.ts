@@ -7,3 +7,7 @@ export const compositionSchema = z.strictObject({
 	/** Direct runtime component calls, excluding type imports and navigation links. */
 	uses: z.array(z.string().trim().min(1)).optional()
 });
+
+/** Canonical reusable UI contracts; native element atoms retain their own composition graph. */
+export const sharedPrimitivePath =
+	/\/components\/(?:shared-primitives|explorer-ui\/explorer-kit)\/(?:Card|Pill|Notice|EmptyState|DataTable|DetailList|CodeLine|Select|SegmentedChoice|Status|StatusBadge|ComparePanes)\.svelte$/;

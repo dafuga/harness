@@ -1,3 +1,4 @@
+import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { Judged, Told } from '../explorerState';
 import { reasonText, coverageWorst } from '../explorerState';
 import type {
@@ -5,8 +6,6 @@ import type {
 	ExplorerStateCoverage
 } from '../../../models/explorer-ui/Explorer.types';
 import type { HarnessCapture, HarnessScenario } from '../../../models/explorer-ui/Harness.types';
-
-const short = (commit: string) => commit.slice(0, 7);
 
 /** A screenshot always shows running software; other evidence does only when it says it does. */
 const stamped = (capture: HarnessCapture) =>
@@ -18,7 +17,8 @@ const stamped = (capture: HarnessCapture) =>
  */
 export function captureUnbound(capture: HarnessCapture, commit: string): string | null {
 	const built = capture.server?.revision;
-	if (built && built !== commit) return `is of a build of ${short(built)}, not of ${short(commit)}`;
+	if (built && built !== commit)
+		return `is of a build of ${shortCommit(built)}, not of ${shortCommit(commit)}`;
 	return !built && stamped(capture) ? 'names no build, so it is bound to no commit' : null;
 }
 

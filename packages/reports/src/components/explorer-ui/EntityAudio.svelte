@@ -1,6 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
+	import Card from './explorer-kit/Card.svelte';
 	import type { Pair } from './EntityAudio.types';
 
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
@@ -27,24 +30,24 @@
 		[...new Set(clips.map((item) => item.comparison))].map((key): Pair => {
 			const of = (phase: Evidence['phase']) =>
 				clips.find((item) => item.comparison === key && item.phase === phase);
-			return { before: of('before'), after: of('after') ?? of('current') };
+			return {
+				key,
+				panes: comparisonPanes(
+					{ value: of('before'), commit: scope.parent },
+					{ value: of('after') ?? of('current'), commit: scope.commit, currentLabel: 'Current' },
+					paired
+				)
+			};
 		})
 	);
-	const sides = [
-		{ phase: 'before' as const, title: 'Before', role: 'Parent commit' },
-		{ phase: 'after' as const, title: 'After', role: 'Selected commit' }
-	];
-	// At the branch tip there is one side, and it is never called before or after.
-	let shown = $derived(paired ? sides : sides.slice(1));
-	const at = (phase: 'before' | 'after') =>
-		shortCommit(phase === 'before' ? (scope.parent ?? '') : scope.commit);
 </script>
 
 {#if clips.length}
-	<hx-section
-		class="ex-card ex-evidence"
-		aria-labelledby="ex-audio-title"
-		data-harness-component="harness-entity-audio"
+	<Card
+		as="section"
+		tone="ex-evidence"
+		labelledby="ex-audio-title"
+		component="harness-entity-audio"
 	>
 		<hx-header class="ex-evidence-head">
 			<hx-div>
@@ -56,37 +59,33 @@
 				</hx-p>
 			</hx-div>
 		</hx-header>
-		{#each pairs as pair, position (position)}
-			<hx-div class="ex-panes" class:paired>
-				{#each shown as side}
-					{@const clip = pair[side.phase]}
-					<hx-div class="ex-pane" role="group" aria-label={`${side.title} · ${at(side.phase)}`}>
-						{#if paired}
-							<hx-p class="ex-pane-head">
-								<hx-strong>{side.title} · {at(side.phase)}</hx-strong>
-								<hx-span class="ex-pill">{side.role}</hx-span>
-							</hx-p>
-						{/if}
-						{#if clip}
-							<AudioEvidence item={clip} assetBase={mediaBase} idPrefix="overview-audio-" />
-						{:else}
-							<hx-p class="ex-gap">
-								<HarnessVerdict passed={false} label="No clip" />
-								<hx-span>No clip of this state is recorded for {at(side.phase)}.</hx-span>
-							</hx-p>
-						{/if}
-					</hx-div>
-				{/each}
-			</hx-div>
+		{#each pairs as pair (pair.key)}
+			<ComparePanes panes={pair.panes} headings={paired}>
+				{#snippet children(pane)}
+					{#if pane.value}<AudioEvidence
+							item={pane.value}
+							assetBase={mediaBase}
+							idPrefix="overview-audio-"
+						/>{/if}
+				{/snippet}
+				{#snippet gap(pane)}
+					<hx-p class="ex-gap"
+						><HarnessVerdict passed={false} label="No clip" /><hx-span
+							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span
+						></hx-p
+					>
+				{/snippet}
+			</ComparePanes>
 		{/each}
-	</hx-section>
+	</Card>
 {:else if empty}
-	<hx-section
-		class="ex-card ex-evidence"
-		aria-labelledby="ex-audio-title"
-		data-harness-component="harness-entity-audio"
+	<Card
+		as="section"
+		tone="ex-evidence"
+		labelledby="ex-audio-title"
+		component="harness-entity-audio"
 	>
 		<hx-h2 id="ex-audio-title">Audio evidence</hx-h2>
 		<hx-p class="ex-soft">No audio evidence is recorded for this component at this revision.</hx-p>
-	</hx-section>
+	</Card>
 {/if}

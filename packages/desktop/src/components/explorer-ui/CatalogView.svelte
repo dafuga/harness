@@ -4,7 +4,7 @@
 	import { helperContract } from '../../../../../src/utils/helperContract';
 	import Select from '$shared/Select.svelte';
 	import FilterDialog from '$shared/FilterDialog.svelte';
-	import { explorerName } from '../../../../reports/src/utils/explorerName';
+	import { explorerName } from '$reports/utils/explorerName';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type { CatalogEntity } from '../../models/development-tooling/Desktop.types';
 	import EntityCard from './EntityCard.svelte';

@@ -1,14 +1,18 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
 	import Select from '$shared/Select.svelte';
-	import type { Evidence } from '../../../../reports/src/models/Report.types';
+
 	import {
 		entityScreens,
 		screenPick,
 		type ScreenOption,
 		type ScreenPick
-	} from '../../../../reports/src/utils/entityScreens';
+	} from '$reports/utils/explorer-ui/entityScreens';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
 	import RuntimePane from './RuntimePane.svelte';
@@ -24,7 +28,6 @@
 		options: ScreenOption[];
 		evidence: EntityEvidence;
 	} = $props();
-	const short = (commit: string) => commit.slice(0, 7);
 	let wanted = $state<Partial<ScreenPick>>({});
 	const pick = $derived(screenPick(options, wanted));
 	const option = $derived(options.find((item) => item.scenario === pick?.scenario));
@@ -32,7 +35,17 @@
 	const shown = $derived(entityScreens(result.evidence, pick));
 	const paired = $derived(result.evidence.mode === 'commit');
 	const unlike = $derived(paired ? result.evidence.incomparable : []);
-	const panes = $derived([...(shown.before ? [shown.before] : []), shown.after]);
+	const panes = $derived(
+		comparisonPanes(
+			{ value: shown.before, commit: result.scope.parent },
+			{
+				value: shown.after,
+				commit: result.scope.commit,
+				currentRole: shown.origin ? `Inherited from ${shortCommit(shown.origin)}` : 'Branch tip'
+			},
+			paired
+		)
+	);
 	const size = $derived(option?.viewports.find((item) => item.id === pick?.viewport)?.size ?? '');
 	const choose = (changed: Partial<ScreenPick>) => (wanted = { ...pick, ...changed });
 	const title = $derived.by(() => {
@@ -44,22 +57,13 @@
 	 * was made is said only as the record says it, so an inherited one names its own commit.
 	 */
 	const recorded = $derived.by(() => {
-		const at = short(result.scope.commit);
+		const at = shortCommit(result.scope.commit);
 		if (shown.origin)
-			return `Recorded for ${at}. The capture was made at ${short(shown.origin)} and is inherited.`;
+			return `Recorded for ${at}. The capture was made at ${shortCommit(shown.origin)} and is inherited.`;
 		return shown.fresh
 			? `Recorded for ${at} and captured from the build of that commit.`
 			: `Recorded for ${at}; no capture of this state stands for it.`;
 	});
-	/** Who a pane is: the parent, the named commit, or the one capture of the branch tip. */
-	function heading(item: Evidence): { title: string; role: string } {
-		const { commit, parent } = result.scope;
-		if (item.phase === 'before')
-			return { title: `Before · ${short(parent ?? '')}`, role: 'Parent commit' };
-		if (paired) return { title: `After · ${short(commit)}`, role: 'Selected commit' };
-		const role = shown.origin ? `Inherited from ${short(shown.origin)}` : 'Branch tip';
-		return { title: `Current snapshot · ${short(commit)}`, role };
-	}
 </script>
 
 <hx-div class="runtime-card">
@@ -96,9 +100,15 @@
 				bind:value={() => pick?.viewport ?? '', (viewport) => choose({ viewport })}
 			/><hx-small>{size}</hx-small>
 		</hx-div>{/if}
-	<hx-div class="runtime-panes" class:paired>
-		{#each panes as item (item.id)}<RuntimePane {item} {evidence} {...heading(item)} />{/each}
-	</hx-div>
+	{#if options.length === 1}<hx-p class="muted">One recorded scenario</hx-p>{/if}
+	<ComparePanes {panes} className="runtime-panes" framed={false}>
+		{#snippet children(pane)}<RuntimePane
+				item={pane.value!}
+				{evidence}
+				title={pane.heading}
+				role={pane.role}
+			/>{/snippet}
+	</ComparePanes>
 </hx-div>
 
 <style>

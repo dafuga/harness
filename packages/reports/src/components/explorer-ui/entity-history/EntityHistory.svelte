@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from '../explorer-kit/Card.svelte';
 	import { untrack } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type {
@@ -100,7 +101,7 @@
 				})
 			)}
 	/>
-	<hx-section class="ex-card" aria-labelledby="ex-history-title">
+	<Card as="section" labelledby="ex-history-title">
 		<hx-header class="ex-evidence-head">
 			<hx-div>
 				<hx-h2 id="ex-history-title"><HarnessIcon name="history" size={24} /> History</hx-h2>
@@ -161,7 +162,7 @@
 				>
 			</hx-p>
 		{/if}
-	</hx-section>
+	</Card>
 </hx-div>
 
 <style>

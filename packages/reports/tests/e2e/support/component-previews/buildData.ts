@@ -1,6 +1,6 @@
 import { evidenceData } from '../../../../../desktop/tests/e2e/ui-evidence-data';
 import { explorerArtifact } from '../../../../src/utils/explorerArtifact';
-import { illustratedData } from './illustratedData';
+import { illustratedData, desktopScreenFixtures } from './illustratedData';
 import { desktopArtifactFixtures } from './desktopArtifactFixtures';
 import { createHash } from 'node:crypto';
 import { commits, ids } from '../../../../test/entityUnits';
@@ -8,10 +8,11 @@ import { commits, ids } from '../../../../test/entityUnits';
 export async function buildData() {
 	const data = await illustratedData(evidenceData());
 	const desktopArtifacts = await desktopArtifactFixtures(data);
+	const desktopScreens = await desktopScreenFixtures(data);
 	await readResults(data.results, data.bytes);
 	await readResults(desktopArtifacts.results, { ...data.bytes, ...desktopArtifacts.bytes });
 	const reportArtifacts = await reportArtifactExamples(data);
-	return { ...data, desktopArtifacts, reportArtifacts };
+	return { ...data, desktopArtifacts, desktopScreens, reportArtifacts };
 }
 
 /** This panel's examples retain their own original bytes, independently of other component fixtures. */

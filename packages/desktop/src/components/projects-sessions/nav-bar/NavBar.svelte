@@ -23,28 +23,43 @@
 	const settings = $derived(`/settings?from=${encodeURIComponent(workspace.path())}`);
 	/** Deployments are of this device's host: only a local bridge that reports them shows them. */
 	const activity = $derived(workspace.local && !!workspace.bridge?.deploymentActivities);
-	let tabs = $state<HTMLElement>();
-	/** Where the categories scroll, as on a phone, the shown one is brought to their middle. */
-	$effect(() => {
-		void workspace.category;
-		const shown = tabs?.querySelector('.active')?.getBoundingClientRect();
-		const row = tabs?.getBoundingClientRect();
-		if (!tabs || !shown || !row) return;
-		tabs.scrollLeft += shown.left - row.left - (row.width - shown.width) / 2;
-	});
 	const gameViews = $derived(workspaceGameViews(workspace));
 </script>
 
-<!-- Focus follows the rows: project, environment and revision, categories, then search. -->
-<hx-header class="topbar" class:with-account={!!account} class:with-activity={activity && !account}>
+<!-- Focus follows the visible rows: project and identity, context and search, then categories. -->
+<hx-header
+	class="topbar"
+	class:has-game={!!gameViews}
+	class:with-account={!!account}
+	class:with-activity={activity && !account}
+>
 	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
 		><hx-span class="brand-mark"><BrandMark /></hx-span>
 		<hx-span class="brand-word">Harness</hx-span></WorkspaceLink
 	>
 	<ProjectSwitcher {workspace} />
-	<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
-	<RevisionPicker {workspace} />
-	<hx-nav aria-label="Catalog categories" bind:this={tabs}>
+	<hx-div class="topbar-context">
+		<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
+		<RevisionPicker {workspace} />
+
+		<hx-div class="topbar-search">
+			<EntitySearch
+				entries={search.entries}
+				scope={search.scope}
+				href={(entry) => resolve((search.at(entry) ?? workspace.path()) as '/')}
+				open={(entry) => {
+					const path = search.at(entry);
+					if (path) void workspace.navigate(path);
+				}}
+			/>{#if workspace.capabilities.agents}<hx-a
+					class="topbar-settings"
+					href={resolve(settings as '/')}
+					aria-label="Settings"
+					title="Settings"><Icon name="settings" /></hx-a
+				>{/if}
+		</hx-div>
+	</hx-div>
+	<hx-nav aria-label="Catalog categories">
 		{#each categories as category (category)}<WorkspaceLink
 				{workspace}
 				to={workspace.path(category)}
@@ -61,22 +76,7 @@
 				><Icon name="game" /><hx-span>Game Views</hx-span></hx-a
 			>{/if}
 	</hx-nav>
-	<hx-div class="topbar-search">
-		<EntitySearch
-			entries={search.entries}
-			scope={search.scope}
-			href={(entry) => resolve((search.at(entry) ?? workspace.path()) as '/')}
-			open={(entry) => {
-				const path = search.at(entry);
-				if (path) void workspace.navigate(path);
-			}}
-		/>{#if workspace.capabilities.agents}<hx-a
-				class="topbar-settings"
-				href={resolve(settings as '/')}
-				aria-label="Settings"
-				title="Settings"><Icon name="settings" /></hx-a
-			>{/if}
-	</hx-div>
+
 	{#if account}<hx-div class="account">
 			{@render account()}{#if activity}<DeploymentActivity {workspace} />{/if}
 		</hx-div>{:else if activity}<DeploymentActivity {workspace} />{/if}

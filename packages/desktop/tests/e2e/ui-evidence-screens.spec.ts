@@ -1,4 +1,5 @@
 import { componentScreens, runtimeEvidence } from './runtime-evidence';
+import { record } from '../../../reports/test/entityFixture';
 import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import {
 	branch,
@@ -11,7 +12,6 @@ import {
 	sharedProject,
 	tones
 } from './ui-evidence-fixture';
-
 /**
  * Recorded runtime screenshots in the shared viewer, read through the two evidence reads of a
  * synthetic backend: one capture at a branch tip, the commit beside its first parent at a named
@@ -80,7 +80,7 @@ test('a page at its branch tip shows one current screenshot beside its contract,
 			op: 'artifact',
 			...scope,
 			side: 'after',
-			recordId: 'rec-cccccc-0000',
+			recordId: record(commits.tip).id,
 			scenarioId: 'orders-page',
 			state: 'default',
 			evidenceId: 'screens',
@@ -122,7 +122,7 @@ test('the tip named as a commit is shown beside its first parent, and an older c
 	// What the parent did not capture is its own gap; what the tip rejected is shown as rejected.
 	await shown.getByLabel('State', { exact: true }).selectOption('empty');
 	await expect(
-		before.getByText(`No capture of empty at desktop is recorded for bbbbbbb.`)
+		before.getByText(`No capture of empty at desktop is recorded for ${short(commits.middle)}.`)
 	).toBeVisible();
 	await expect(before.getByRole('img')).toHaveCount(0);
 	await expect(after.getByText('Fresh capture · passed')).toBeVisible();
@@ -158,7 +158,9 @@ test('an inherited capture is not the current one, and sides that are not alike 
 	]);
 	await expect(shown.getByLabel('Scenario', { exact: true })).toHaveValue(cardScenario);
 	const current = shown.getByRole('figure', { name: `Current snapshot · ${short(commits.tip)}` });
-	await expect(current.getByText('Inherited from bbbbbbb', { exact: true })).toBeVisible();
+	await expect(
+		current.getByText(`Inherited from ${short(commits.middle)}`, { exact: true })
+	).toBeVisible();
 	await expect(current.getByText('Inherited capture · passed')).toBeVisible();
 	expect((await drawn(current.getByRole('img'))).tone).toEqual(tones[commits.middle]);
 	await runtimeEvidence(page, info, 'inherited');
@@ -204,7 +206,14 @@ for (const viewport of [
 		const overflow = await page.evaluate(
 			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 		);
-		expect(overflow).toBeLessThanOrEqual(0);
+		const frame = await Promise.all([
+			page.locator('.revision-picker').boundingBox(),
+			page.locator('.project-switcher').boundingBox()
+		]);
+		expect(
+			overflow,
+			`Workspace header stays within the viewport: ${JSON.stringify(frame)}`
+		).toBeLessThanOrEqual(0);
 		await runtimeEvidence(page, info, 'commit');
 	});
 }

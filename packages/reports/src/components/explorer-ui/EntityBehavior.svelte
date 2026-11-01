@@ -1,6 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
+	import Card from './explorer-kit/Card.svelte';
 	import { untrack } from 'svelte';
 	import type { ExplorerBehavior, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import { entityBehavior } from '../../utils/explorer-ui/entityBehavior';
@@ -89,12 +92,20 @@
 				? why
 				: ['No reason is recorded for this entity here.']
 	);
+	const panes = $derived(
+		comparisonPanes(
+			{ value: shown, commit: scope.parent },
+			{ value: shown, commit: scope.commit },
+			paired
+		)
+	);
 </script>
 
-<hx-section
-	class="ex-card ex-evidence"
-	aria-labelledby="ex-behavior-title"
-	data-harness-component="harness-entity-behavior"
+<Card
+	as="section"
+	tone="ex-evidence"
+	labelledby="ex-behavior-title"
+	component="harness-entity-behavior"
 >
 	<hx-header class="ex-evidence-head">
 		<hx-div>
@@ -125,28 +136,19 @@
 			<hx-span>No end-to-end result is recorded for this entity at {at}.</hx-span>
 		</hx-p>
 	{:else}
-		<hx-div class="ex-panes" class:paired>
-			{#if paired}
+		<ComparePanes {panes} className="ex-panes" framed={false}>
+			{#snippet children(pane)}
 				<EntityRun
-					{shown}
-					side="before"
-					title={`Before · ${shortCommit(scope.parent ?? '')}`}
-					role="Parent commit"
+					shown={pane.value!}
+					side={pane.side}
+					title={pane.heading}
+					role={pane.role}
 					{mediaBase}
 					lost={known === null}
 					{unit}
 				/>
-			{/if}
-			<EntityRun
-				{shown}
-				side="after"
-				title={paired ? `After · ${at}` : `Current snapshot · ${at}`}
-				role={paired ? 'Selected commit' : 'Branch tip'}
-				{mediaBase}
-				lost={known === null}
-				{unit}
-			/>
-		</hx-div>
+			{/snippet}
+		</ComparePanes>
 	{/if}
 	<hx-div class="ex-change">
 		{#if pending}
@@ -180,7 +182,7 @@
 			{/each}
 		</hx-dl>
 	</hx-div>
-</hx-section>
+</Card>
 
 <style>
 	.ex-inline dd {

@@ -31,7 +31,7 @@ export async function assertComponentCapture(
 	const directory = desktopCaptureDirectory(id);
 	if (!directory) return;
 	const selectors: Record<string, string> = {
-		'desktop.component.status-icon': '.verification-wrap, .reason',
+		'desktop.component.status-icon': '.verification, .reason',
 		'desktop.component.environment-picker': '.environment-choice',
 		'desktop.component.deployment-route': '.deployment-route',
 		'reports.component.harness-harness-icon': 'svg',
@@ -113,10 +113,10 @@ async function assertAgentsPreview(page: Page) {
 	await expect(panel).toBeVisible();
 	await expect(panel).toContainText('1 working');
 	await expect(panel.getByRole('region', { name: 'Main chats' })).toContainText(
-		'Capture component states'
+		'Review the order-card states'
 	);
 	await expect(panel.getByRole('region', { name: 'Modules being worked on' })).toContainText(
-		'Preview agent'
+		'Checkout reviewer'
 	);
 }
 

@@ -1,4 +1,4 @@
-@import url('../../../../reports/src/lib/styles/app-tokens.css');
+@import url('$reports/lib/styles/app-tokens.css');
 /* Desktop, iOS and Hub use the shared app choices; their older names are forwarded there. */
 :root {
 	font-family: var(--hx-font-family-body);

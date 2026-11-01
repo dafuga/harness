@@ -65,9 +65,17 @@ test('no import written through a build alias of any package is left as a packag
 		Object.entries(builds).filter(([, own]) => Object.keys(own).length)
 	);
 	expect(declared).toEqual({
-		desktop: { $desktop: './src', $shared: '../reports/src/components' },
-		hub: { $desktop: '../desktop/src', $shared: '../reports/src/components' },
-		reports: { $desktop: '../desktop/src', $shared: './src/components' }
+		desktop: {
+			$reports: '../reports/src',
+			$desktop: './src',
+			$shared: '../reports/src/components'
+		},
+		hub: {
+			$reports: '../reports/src',
+			$desktop: '../desktop/src',
+			$shared: '../reports/src/components'
+		},
+		reports: { $reports: './src', $desktop: '../desktop/src', $shared: './src/components' }
 	});
 	const resolved = (item: Written) =>
 		loaded.index.files

@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 	import type {
 		EntityDetail,
@@ -9,7 +11,7 @@
 	import { historyPages } from './historyPages';
 	import { timeLabel } from '../../../utils/development-tooling/timeLabel';
 	import WorkspaceLink from '../../projects-sessions/WorkspaceLink.svelte';
-	import RegressionProof from '../../../../../reports/src/components/verification-evidence/RegressionProof.svelte';
+	import RegressionProof from '$shared/verification-evidence/RegressionProof.svelte';
 	import type { EntityEvidence } from '../../../lib/stores/explorer-ui/entityEvidence.svelte';
 	let {
 		entity,
@@ -91,9 +93,9 @@
 					{#if contained.has(event.commit)}<WorkspaceLink
 							{workspace}
 							to={there(event.commit)}
-							label={`Show at commit ${event.commit.slice(0, 7)}`}
-							>{event.commit.slice(0, 7)}</WorkspaceLink
-						>{:else}{event.commit.slice(0, 7)}{/if}{/if}</hx-small
+							label={`Show at commit ${shortCommit(event.commit)}`}
+							>{shortCommit(event.commit)}</WorkspaceLink
+						>{:else}{shortCommit(event.commit)}{/if}{/if}</hx-small
 			>
 			<hx-p>{event.detail}</hx-p>
 		</hx-article>{:else}<hx-p class="muted">No history recorded for this entity.</hx-p>{/each}

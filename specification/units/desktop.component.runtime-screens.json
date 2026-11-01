@@ -21,15 +21,21 @@
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-compare-panes"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte"],
-		"symbols": ["RuntimeScreens"]
+		"symbols": ["RuntimeScreens", "RuntimeScreens.children"]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": [
+			"desktop.component.segmented-choice",
+			"reports.component.select",
+			"reports.component.shared-primitives-compare-panes"
+		],
 		"inputs": [
 			{
 				"name": "RuntimeScreens.result",
@@ -60,7 +66,27 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "RuntimeScreens.children",
+				"inputs": [
+					{
+						"name": "RuntimeScreens.children.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RuntimeScreens.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -139,12 +165,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-compare-panes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-screens",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.model.report-types",
+			"unit": "reports.helper.verification-evidence-comparison-panes",
 			"via": "import",
 			"origin": "derived"
 		}

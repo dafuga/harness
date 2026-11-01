@@ -1,6 +1,7 @@
 import type { DesktopData } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
 import { text } from './shared';
+import { desktopEntitySectionFixture } from './desktopEntitySectionFixture';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 import { desktopHistoryFixture, earlierDesktopHistoryEvent } from './desktopHistoryFixture';
 
@@ -18,6 +19,7 @@ export function desktopShellVariant(
 	if (name === 'history-panel') return history(props, data, variant);
 	if (name === 'catalog-view') return catalog(props, data, variant);
 	if (name === 'entity-view') {
+		desktopEntitySectionFixture(data, variant);
 		const sections: Record<string, string> = {
 			source: 'source',
 			designs: 'designs',
@@ -91,13 +93,23 @@ function design(props: PreviewProps, data: DesktopData, variant: string): Previe
 	if (variant === 'long')
 		return {
 			...props,
+			option: 'o1',
 			entity: {
 				...data.entity,
 				versions: data.entity.versions.map((version) => ({
 					...version,
-					images: [],
-					options: [],
-					notes: 'A detailed design direction. '.repeat(10)
+					images: version.images.map((image) => ({ ...image, option: 'o1' })),
+					options: [
+						{
+							id: 'o1',
+							direction:
+								'Keep order names and fulfilment status together so the operations team can review recent purchases, identify pending service plans and open the complete order history without losing the current selection.',
+							prompt: null,
+							revisedPrompt: null,
+							generator: version.generator,
+							imageHashes: version.images.map((image) => image.sha256)
+						}
+					]
 				}))
 			}
 		};

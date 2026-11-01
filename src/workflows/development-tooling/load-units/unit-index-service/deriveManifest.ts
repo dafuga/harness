@@ -1,3 +1,4 @@
+import { sharedPrimitivePath } from '../../../../core/development-tooling/composition';
 import type { Declared } from './deriveManifest.types';
 import type { DeriveInput } from '../../../../utils/development-tooling/deriveManifest';
 import type {
@@ -42,9 +43,12 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		...declaredMetadata(kept),
 		...lineage(input),
 		owns: { source, symbols: files.flatMap((file) => file.exports.map((symbol) => symbol.name)) },
-		contract: componentManifestSchema.shape.contract.parse(
-			kept.contract.origin === 'declared' ? declaredContract(kept.contract, contract) : contract
-		),
+		contract: componentManifestSchema.shape.contract.parse({
+			...(kept.contract.origin === 'declared'
+				? declaredContract(kept.contract, contract)
+				: contract),
+			...primitiveContract(input)
+		}),
 		dependencies: [...derivedDependencies(input), ...declaredDependencies(input.previous)],
 		...(kept.helperContracts?.length ? { helperContracts: kept.helperContracts } : {}),
 		runtime: execution,
@@ -153,4 +157,23 @@ function declaredMetadata(kept: Declared) {
 		...(catalog ? { catalog } : {}),
 		...(configControls ? { configControls } : {})
 	};
+}
+
+function primitiveContract(input: DeriveInput) {
+	if ((input.previous?.kind ?? input.kind) !== 'component') return {};
+	const sharedOwners = new Set(
+		[...input.owners].filter(([path]) => sharedPrimitivePath.test(path)).map(([, owner]) => owner)
+	);
+	const primitives = [
+		...new Set(
+			input.files.flatMap((file) =>
+				file.references.flatMap((reference) => {
+					if (reference.typeOnly || !reference.path) return [];
+					const owner = input.owners.get(reference.path);
+					return owner && owner !== input.id && sharedOwners.has(owner) ? [owner] : [];
+				})
+			)
+		)
+	].sort();
+	return primitives.length || input.previous?.contract.primitives ? { primitives } : {};
 }

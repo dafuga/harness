@@ -94,6 +94,9 @@ test('the project agent says its public reply with the units it names as links',
 	await page.goto(alphaAt('pages'));
 	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 	const agent = page.getByRole('complementary', { name: 'Project agent', exact: true });
+	await expect(agent.getByRole('status'), 'Static design metadata is not a run status').toHaveCount(
+		0
+	);
 	await agent.getByRole('textbox', { name: 'Message', exact: true }).fill('Add a refunds page');
 	await agent.getByRole('button', { name: 'Send plan', exact: true }).click();
 	// Events are heard once the run is known by its id.
@@ -120,6 +123,10 @@ test('streamed text and run progress in a thread link the units once they are wh
 	await openThread(page);
 	const modes = page.getByRole('group', { name: 'Request mode' });
 	await modes.getByRole('button', { name: 'Plan', exact: true }).click();
+	await expect(
+		thread(page).getByRole('status'),
+		'Static design metadata is not a run status'
+	).toHaveCount(0);
 	await page.getByRole('textbox', { name: 'Message', exact: true }).fill('Check the frame');
 	await page.getByRole('button', { name: 'Send plan', exact: true }).click();
 	const status = thread(page).getByRole('status');

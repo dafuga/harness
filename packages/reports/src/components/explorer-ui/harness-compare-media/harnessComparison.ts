@@ -1,3 +1,4 @@
+import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { Found, Slot } from './harnessComparison.types';
 import type {
 	ComparedSide,
@@ -9,8 +10,6 @@ import { captureProvenance } from '../../../utils/reports-media/captureProvenanc
 import { mediaFile } from '../../../utils/explorer-ui/harnessEvidence';
 
 const media = ['screenshot', 'audio'];
-
-const short = (commit: string) => commit.slice(0, 7);
 
 const keyOf = (found: Found) =>
 	[
@@ -59,7 +58,7 @@ export function comparisonChoices(base: ComparedSide, head: ComparedSide) {
 }
 
 function gap(side: ComparedSide, where: string): string {
-	const commit = short(side.detail.commit);
+	const commit = shortCommit(side.detail.commit);
 	return side.record
 		? `no capture of ${where} in record ${side.record.id.slice(0, 12)}`
 		: `no capture of ${where}: ${commit} has no verification record`;
@@ -75,7 +74,7 @@ function viewportLabel(sides: ComparedSide[], scenario: string, id?: string): st
 
 /** What every item of one aligned state shares, whichever side it is and whatever it holds. */
 function shell(side: ComparedSide, phase: 'before' | 'after', slot: Slot) {
-	const at = `${phase === 'before' ? 'Before' : 'After'} at ${short(side.detail.commit)}`;
+	const at = `${phase === 'before' ? 'Before' : 'After'} at ${shortCommit(side.detail.commit)}`;
 	const item = {
 		id: `${phase}-${slot.key}`,
 		title: `${slot.scenario} · ${slot.state}`,

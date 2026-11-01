@@ -62,6 +62,7 @@
 				<hx-textarea
 					value={node.description}
 					{readonly}
+					disabled={readonly}
 					placeholder="What happens here, and what should the player see?"
 					oninput={(e) => update({ description: e.currentTarget.value })}
 					use:focusFirst={adding}
@@ -73,6 +74,7 @@
 					aria-label="Checkpoint title"
 					value={node.title}
 					{readonly}
+					disabled={readonly}
 					oninput={(e) => update({ title: e.currentTarget.value })}
 				/>
 			</hx-label>
@@ -112,4 +114,12 @@
 
 <style>
 	@import './game-checkpoint-pane/gameCheckpointPane.css';
+	input:disabled,
+	textarea:disabled {
+		opacity: var(--hx-opacity-dim);
+		cursor: not-allowed;
+	}
+	textarea:disabled {
+		resize: none;
+	}
 </style>

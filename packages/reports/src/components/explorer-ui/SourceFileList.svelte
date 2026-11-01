@@ -113,6 +113,20 @@
 			max-width: 100%;
 		}
 	}
+	/* Phones and tablets show the whole path, wrapped, instead of clipping its folders or name. */
+	@media (max-width: 800px) {
+		.source-files a,
+		.source-files code {
+			display: block;
+			white-space: normal;
+		}
+		.source-folder,
+		.source-name {
+			display: inline;
+			overflow-wrap: anywhere;
+			text-overflow: clip;
+		}
+	}
 	.source-empty {
 		color: var(--ex-muted, var(--hx-color-text-muted));
 	}

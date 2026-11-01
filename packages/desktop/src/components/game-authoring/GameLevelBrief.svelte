@@ -160,6 +160,8 @@
 		line-height: var(--hx-style-leading-normal);
 	}
 	textarea {
+		field-sizing: content;
+		min-height: var(--hx-space-96);
 		resize: vertical;
 	}
 	textarea:focus-visible {

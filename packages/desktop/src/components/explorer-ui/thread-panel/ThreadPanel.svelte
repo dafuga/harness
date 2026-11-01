@@ -1,8 +1,10 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
 	import { onMount, untrack } from 'svelte';
-	import { explorerName } from '../../../../../reports/src/utils/explorerName';
+	import { explorerName } from '$reports/utils/explorerName';
 	import type { EntityDetail, ProviderState, ThreadInfo } from '../../../models/Desktop.types';
 	import type { RunEvent } from '../../../models/development-tooling/DesktopBridge.types';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
@@ -199,12 +201,13 @@
 			class="comment-saved"
 			role="status"
 		>
-			Saved to GitHub · {comments.acknowledged.slice(0, 7)}
+			Saved to GitHub · {shortCommit(comments.acknowledged)}
 		</hx-p>{/if}<Composer
 		{modes}
 		{providers}
 		{approved}
 		running={run.active || comments.busy}
+		failureReported={Boolean(error)}
 		{notice}
 		visual={visualCategory(entity.category)}
 		{comment}

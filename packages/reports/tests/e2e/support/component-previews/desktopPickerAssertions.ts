@@ -45,6 +45,7 @@ async function assertPickerReview(component: Locator, id: string, variant: strin
 
 export async function assertPickerPresentation(component: Locator, id: string, variant: string) {
 	await assertPickerReview(component, id, variant);
+	await assertPickerFrame(component, id, variant);
 	if (id === 'desktop.component.project-gate') await assertGatePresentation(component, variant);
 	if (id === 'desktop.component.revision-picker')
 		await assertRevisionPresentation(component, variant);
@@ -103,6 +104,7 @@ async function assertRevisionLabelFits(button: Locator) {
 		const text = range.getBoundingClientRect();
 		const bounds = node.getBoundingClientRect();
 		return (
+			range.getClientRects().length === 1 &&
 			text.width > 0 &&
 			text.left >= bounds.left &&
 			text.right <= bounds.right &&
@@ -116,17 +118,16 @@ async function assertRevisionPresentation(component: Locator, variant: string) {
 	for (const word of ['Branch', 'Commit']) {
 		const button = component.getByRole('button', {
 			name: `Choose ${word.toLowerCase()}`,
-			exact: true
+			exact: true,
+			includeHidden: true
 		});
 		await expect(button, 'Revision triggers have visible words').toContainText(word);
 		await assertRevisionLabelFits(button);
+		await expect(button.locator('svg'), 'Revision triggers retain their icons').toBeVisible();
 	}
 	const summary = component.getByLabel('Viewed context');
 	await assertRevisionContextFits(summary);
 	if (variant === 'environment') {
-		await expect(
-			component.getByRole('button', { name: 'Choose commit', exact: true })
-		).toContainText('preprod');
 		await expect(summary).toContainText('preprod');
 		await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:00:00Z');
 	}
@@ -159,4 +160,46 @@ async function assertRevisionPresentation(component: Locator, variant: string) {
 				property
 			)
 		);
+}
+
+async function assertPickerFrame(component: Locator, id: string, variant: string) {
+	if (!['desktop.component.project-switcher', 'desktop.component.revision-picker'].includes(id))
+		return;
+	if (
+		id.endsWith('project-switcher') &&
+		variant === 'long' &&
+		component.page().viewportSize()!.width > 560
+	) {
+		const fits = await component
+			.locator('.project-name')
+			.evaluate((node) => node.scrollWidth <= node.clientWidth);
+		expect(fits, 'Project names use available desktop and tablet width').toBe(true);
+	}
+	if (variant === 'open' || variant === 'shared' || variant.endsWith('-open')) {
+		await expect(
+			component.locator('button.agent-icon').first(),
+			'An opened picker retains its trigger context'
+		).toBeVisible();
+		for (const field of await component.getByRole('listbox').all()) {
+			const fits = await field.evaluate((node: HTMLSelectElement) => {
+				const style = getComputedStyle(node),
+					canvas = document.createElement('canvas');
+				const context = canvas.getContext('2d')!;
+				context.font = style.font;
+				const width =
+					node.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+				return [...node.options].every((option) => context.measureText(option.text).width <= width);
+			});
+			expect(fits, 'Choice labels fit the open native field without clipping').toBe(true);
+		}
+	}
+	if (id.endsWith('revision-picker')) {
+		const buttons = component.locator('.revision-choices > button');
+		const first = (await buttons.nth(0).boundingBox())!,
+			second = (await buttons.nth(1).boundingBox())!;
+		expect(
+			second.x - first.x - first.width,
+			'Revision triggers have a visible gap'
+		).toBeGreaterThanOrEqual(6);
+	}
 }

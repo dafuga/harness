@@ -4,7 +4,7 @@ import type { PreviewProps } from './shared.types';
 import { desktopArtifactText, desktopData } from './desktopFixtureData';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 import { evidenceReading } from '../../../../../desktop/src/utils/verification-evidence/evidenceReading';
-import { screenOptions } from '../../../../src/utils/entityScreens';
+import { screenOptions } from '../../../../src/utils/explorer-ui/entityScreens';
 
 export function desktopRuntimeVariant(
 	id: string,
@@ -34,7 +34,7 @@ export function desktopRuntimeVariant(
 			long: {
 				status: 'failed',
 				reason:
-					'The desktop capture passed, but tablet and mobile captures are missing for this revision. Their earlier images predate the current source change and cannot verify this build. Rerun the component catalog at both viewports, retain the original images in history, and inspect them before accepting this revision.'
+					'The desktop capture passed, but tablet and mobile captures are missing for this revision. Their earlier images predate the current source change and cannot verify this build. Rerun the component catalog at every viewport, retain the original images in history, and inspect them before accepting this revision.'
 			}
 		};
 		return { ...props, ...changes[variant] };
@@ -43,9 +43,8 @@ export function desktopRuntimeVariant(
 }
 
 function screens(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
-	const entity = variant === 'paired' ? data.entity : data.visualEntity;
 	const result = ['paired', 'incomparable'].includes(variant)
-		? desktopData.results[`${entity.id}|commit|${commits.tip}`]
+		? desktopData.results[`screen-${variant}`]
 		: data.visual;
 	const evidence = { ...result.evidence };
 	if (variant === 'empty') {
@@ -60,7 +59,10 @@ function behavior(props: PreviewProps, data: DesktopData, variant: string): Prev
 		? desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`]
 		: data.result;
 	if (variant === 'empty')
-		return { ...props, result: { ...result, behavior: { ...result.behavior, rows: [] } } };
+		return {
+			...props,
+			result: { ...result, behavior: { ...result.behavior, rows: [], scenarios: [] } }
+		};
 	if (variant === 'paired') return { ...props, result };
 	if (!['loading', 'unreadable'].includes(variant)) return props;
 	return {
@@ -128,7 +130,8 @@ export async function desktopRuntimeReady(id: string, data: DesktopData, variant
 		}
 		if (variant === 'loading') data.evidence.read = undefined;
 		if (variant === 'unreadable') data.evidence.read = null;
-		if (variant === 'empty') data.evidence.read = { ...data.result.behavior, rows: [] };
+		if (variant === 'empty')
+			data.evidence.read = { ...data.result.behavior, rows: [], scenarios: [] };
 	}
 	await prepareScreens(id, data, variant);
 	if (id !== 'desktop.component.runtime-evidence') return;
@@ -137,6 +140,12 @@ export async function desktopRuntimeReady(id: string, data: DesktopData, variant
 
 async function prepareScreens(id: string, data: DesktopData, variant: string) {
 	if (id === 'desktop.component.runtime-screens' && ['paired', 'incomparable'].includes(variant)) {
+		const read = data.bridge.evidence!;
+		const sample = desktopData.results[`screen-${variant}`];
+		data.bridge.evidence = async (query) =>
+			query.mode === 'commit' && query.entityId === sample.scope.location.entity
+				? sample
+				: read(query);
 		data.visualEvidence.show(data.bridge, {
 			scope: {
 				entityId: variant === 'paired' ? data.entity.id : data.visualEntity.id,
@@ -160,7 +169,6 @@ function prepareEvidence(data: DesktopData, variant: string) {
 		error: 'failed'
 	} as const;
 	if (variant in statuses) data.visualEvidence.status = statuses[variant as keyof typeof statuses];
-	if (variant === 'error')
-		data.visualEvidence.error = "Couldn't load recorded evidence. Try again.";
+	if (variant === 'error') data.visualEvidence.error = 'The saved record is incomplete. Try again.';
 	if (variant === 'offline') data.workspace.offline = { cachedAt: '2026-10-20T09:00:00Z' };
 }

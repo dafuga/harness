@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerEntity, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import { humanize } from '../../helpers/strings/humanize';
 	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
@@ -24,10 +25,11 @@
 	const kind = (type: string) => (type.length <= 48 ? type : 'structured value');
 </script>
 
-<hx-section
-	class="ex-card ex-evidence"
-	aria-labelledby="ex-config-title"
-	data-harness-component="harness-entity-config"
+<Card
+	as="section"
+	tone="ex-evidence"
+	labelledby="ex-config-title"
+	component="harness-entity-config"
 >
 	<hx-header class="ex-evidence-head">
 		<hx-div>
@@ -65,4 +67,4 @@
 		A config has no screenshot and no benchmark of its own; what it costs is measured on the
 		entities that use it.
 	</hx-p>
-</hx-section>
+</Card>

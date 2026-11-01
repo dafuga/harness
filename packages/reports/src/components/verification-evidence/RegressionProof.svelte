@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../helpers/strings/shortCommit';
+
 	import type { RegressionView } from '../../../../../src/core/regressionTypes';
 	import HarnessVerdict from '../explorer-ui/harness-verdict/HarnessVerdict.svelte';
 	let {
@@ -68,7 +70,7 @@
 								href={href(item.red.commit)}
 								aria-label="View failing test commit"
 								onclick={(event) => open(event, item.red!.commit)}
-								><hx-code>{item.red.commit.slice(0, 7)}</hx-code><hx-span
+								><hx-code>{shortCommit(item.red.commit)}</hx-code><hx-span
 									>View before-fix commit →</hx-span
 								></hx-a
 							>
@@ -86,7 +88,7 @@
 									href={href(item.green.commit)}
 									aria-label="View fix commit"
 									onclick={(event) => open(event, item.green!.commit)}
-									><hx-code>{item.green.commit.slice(0, 7)}</hx-code><hx-span
+									><hx-code>{shortCommit(item.green.commit)}</hx-code><hx-span
 										>View fix commit →</hx-span
 									></hx-a
 								>{:else}<hx-p>Awaiting a passing fix commit.</hx-p>{/if}
@@ -97,11 +99,11 @@
 						{#if expanded[index]}<hx-code class="command">{item.red.command}</hx-code>
 							<hx-div class="proof-steps">
 								<hx-div>
-									<hx-h4>Before fix · {item.red.commit.slice(0, 7)}</hx-h4>
+									<hx-h4>Before fix · {shortCommit(item.red.commit)}</hx-h4>
 									<hx-pre>{item.red.output}</hx-pre>
 								</hx-div>
 								{#if item.green}<hx-div>
-										<hx-h4>After fix · {item.green.commit.slice(0, 7)}</hx-h4>
+										<hx-h4>After fix · {shortCommit(item.green.commit)}</hx-h4>
 										<hx-pre>{item.green.output}</hx-pre>
 									</hx-div>{/if}
 							</hx-div>

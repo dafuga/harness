@@ -22,7 +22,18 @@
 		"operations": [],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.entry.atomic-dom-d",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.entry.atomic-elements-d",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/hub/src/lib/atoms/native-elements.d.ts",

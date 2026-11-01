@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
 	import Select from '$shared/Select.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { displayTime, revisionTime } from '../../utils/revisionTime';
@@ -19,9 +21,9 @@
 	/** Names an explicit commit separately from a followed branch. */
 	const viewed = $derived.by(() => {
 		if (!revision) return '';
-		if (!revision.atTip) return `Historical commit · ${revision.commit.slice(0, 7)}`;
+		if (!revision.atTip) return `Historical commit · ${shortCommit(revision.commit)}`;
 		return workspace.pinned
-			? `Pinned commit · ${revision.commit.slice(0, 7)}`
+			? `Pinned commit · ${shortCommit(revision.commit)}`
 			: 'Current · branch tip';
 	});
 	const committed = $derived(snapshot ? revisionTime(snapshot, 'commit') : null);
@@ -67,28 +69,26 @@
 						>Branch<Select
 							label="Branch"
 							expanded
-							title={`Tip · ${revision.tip.slice(0, 7)}`}
+							title={`Tip · ${shortCommit(revision.tip)}`}
 							bind:value={branch}
 							>{#each snapshot.branches as item (item.name)}<hx-option value={item.name}
 									>{item.name}</hx-option
 								>{/each}</Select
 						></hx-label
-					>{@render when(`Branch tip ${revision.tip.slice(0, 7)} committed`, tipped)}{/snippet}
+					>{@render when(`Branch tip ${shortCommit(revision.tip)} committed`, tipped)}{/snippet}
 				{#snippet footer(close: () => void)}<hx-button
 						type="button"
 						onclick={() => chooseBranch(close)}>View branch</hx-button
 					>{/snippet}
 			</ChoiceDialog>
-			<ChoiceDialog label="Choose commit" title="" width={380} maxHeight={320} gap={10}>
-				{#snippet icon()}<Icon name="commit" size={18} /><hx-span
-						>Commit{environment ? ` ${environment}` : ''}</hx-span
-					>{/snippet}
+			<ChoiceDialog label="Choose commit" title="" width={440} maxHeight={320} gap={10}>
+				{#snippet icon()}<Icon name="commit" size={18} /><hx-span>Commit</hx-span>{/snippet}
 				{#snippet children(close: () => void)}<hx-label
 						class="picker-field"
 						onchange={() => chooseCommit(close)}
 						>Commit<Select expanded label="Commit" title={viewed} bind:value={commit}
 							>{#each snapshot.commits as item (item.hash)}<hx-option value={item.hash}
-									>{item.hash.slice(0, 7)} · {item.subject}</hx-option
+									>{shortCommit(item.hash)} · {item.subject}</hx-option
 								>{/each}</Select
 						></hx-label
 					>{@render when('Commit updated', committed)}{/snippet}
@@ -115,6 +115,8 @@
 
 <style>
 	.revision-picker {
+		display: flex;
+		min-width: 0;
 		align-items: center;
 		gap: var(--hx-space-8);
 	}
@@ -154,24 +156,31 @@
 	.picker-field {
 		display: grid;
 		gap: var(--hx-space-6);
-		width: auto;
+		min-width: 0;
 		max-width: none;
 	}
 	.picker-field :global(.report-select) {
 		display: block;
 	}
+	.picker-field :global(.report-select.expanded select) {
+		width: 100%;
+		padding-inline: var(--hx-space-8);
+		font-size: var(--hx-type-size-sm);
+	}
 	@media (max-width: 560px) {
 		.revision-choices :global(button.agent-icon) {
 			align-items: center;
 			justify-content: center;
-			width: var(--hx-space-48);
+			width: var(--hx-space-50);
 			height: var(--hx-space-40);
+			gap: var(--hx-space-2);
 			padding: 0;
-			font-size: var(--hx-type-size-xs);
-			white-space: normal;
+			font-size: var(--hx-type-size-2xs);
+			white-space: nowrap;
 		}
 		.revision-choices :global(svg) {
-			display: none;
+			width: var(--hx-space-12);
+			height: var(--hx-space-12);
 		}
 		.revision-picker {
 			display: contents;
@@ -180,10 +189,8 @@
 			grid-area: revision;
 			display: flex;
 			justify-self: start;
-			margin: var(--hx-space-8) 0 0 calc(-1 * var(--hx-space-1));
-			border-radius: 0 var(--hx-radius-small) var(--hx-radius-small) 0;
-			background: var(--hx-color-surface);
-			box-shadow: inset 0 0 0 var(--hx-border-thin) var(--hx-color-border);
+			gap: var(--hx-space-6);
+			margin: var(--hx-space-8) 0 0;
 		}
 		.revision-summary {
 			grid-area: summary;
@@ -195,7 +202,6 @@
 		}
 		/* A long branch gives way first; what is shown stays whole. */
 		.revision-summary strong {
-			flex: 0 1 auto;
 			font-size: var(--hx-type-size-xs);
 		}
 		.revision-summary small {
@@ -207,7 +213,8 @@
 			justify-self: end;
 			height: 30px;
 			margin: var(--hx-space-8) var(--hx-space-6) 0 0;
-			padding: 0 var(--hx-space-12);
+			padding: 0 var(--hx-space-6);
+			font-size: var(--hx-type-size-2xs);
 			border-radius: var(--hx-radius-xlarge);
 			background: none;
 		}

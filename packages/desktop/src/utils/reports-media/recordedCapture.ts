@@ -1,5 +1,5 @@
 import type { CaptureBinding, ListedCapture } from './recordedCapture.types';
-import type { ExplorerEvidence } from '../../../../reports/src/models/Explorer.types';
+import type { ExplorerEvidence } from '$reports/models/Explorer.types';
 
 const unlisted = 'This capture is not listed by the evidence of this entity at these revisions.';
 

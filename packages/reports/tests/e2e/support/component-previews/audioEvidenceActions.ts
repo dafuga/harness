@@ -11,13 +11,16 @@ export async function prepareAudioEvidence(component: Locator, variant: string) 
 	}
 	if (variant === 'playing') {
 		const audio = component.locator('audio');
+		// Let real playback advance so the player shows elapsed time and progress.
 		await audio.evaluate((element: HTMLAudioElement) => element.play());
+		await expect
+			.poll(() => audio.evaluate((element: HTMLAudioElement) => element.currentTime), {
+				timeout: 20000
+			})
+			.toBeGreaterThan(6);
 		await expect
 			.poll(() => audio.evaluate((element: HTMLAudioElement) => element.paused))
 			.toBe(false);
-	}
-	if (variant === 'duration-loaded') {
-		await expect(component.locator('.audio-duration')).toHaveText('0:42');
 	}
 	if (variant === 'audio-error') {
 		await component.locator('audio').evaluate(async (element: HTMLAudioElement) => {

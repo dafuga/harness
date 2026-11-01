@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
-	import ActivityList from '../../../../reports/src/components/projects-sessions/ActivityList.svelte';
+	import ActivityList from '$shared/projects-sessions/ActivityList.svelte';
 	import type { AgentEntry } from '../../../../../src/core/activityTypes';
 	import { createAgentRosterStore } from '../../lib/stores/agents-providers/agentRoster.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
