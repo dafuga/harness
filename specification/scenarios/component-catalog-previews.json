@@ -665,6 +665,30 @@
 			"units": ["desktop.component.coverage-panel"]
 		},
 		{
+			"id": "desktop-component-coverage-panel-loading",
+			"title": "Coverage panel: loading",
+			"coverage": "required",
+			"units": ["desktop.component.coverage-panel"]
+		},
+		{
+			"id": "desktop-component-coverage-panel-failed",
+			"title": "Coverage panel: failed",
+			"coverage": "required",
+			"units": ["desktop.component.coverage-panel"]
+		},
+		{
+			"id": "desktop-component-coverage-panel-unavailable",
+			"title": "Coverage panel: unavailable",
+			"coverage": "required",
+			"units": ["desktop.component.coverage-panel"]
+		},
+		{
+			"id": "desktop-component-coverage-panel-planned",
+			"title": "Coverage panel: planned",
+			"coverage": "required",
+			"units": ["desktop.component.coverage-panel"]
+		},
+		{
 			"id": "desktop-component-deployment-activity",
 			"title": "DeploymentActivity",
 			"coverage": "required",
@@ -673,6 +697,24 @@
 		{
 			"id": "desktop-component-deployment-details",
 			"title": "DeploymentDetails",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-details"]
+		},
+		{
+			"id": "desktop-component-deployment-details-failed",
+			"title": "Deployment details: failed",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-details"]
+		},
+		{
+			"id": "desktop-component-deployment-details-succeeded",
+			"title": "Deployment details: succeeded",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-details"]
+		},
+		{
+			"id": "desktop-component-deployment-details-no-identity",
+			"title": "Deployment details: no identity",
 			"coverage": "required",
 			"units": ["desktop.component.deployment-details"]
 		},
@@ -5676,7 +5718,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
+			"title": "ExplorerModuleResourcesScreen · Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -5730,13 +5772,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen \u00b7 playwright",
+			"title": "ExplorerModulesScreen · playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen \u00b7 headless-audio",
+			"title": "ExplorerModulesScreen · headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},

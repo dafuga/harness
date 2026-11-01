@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
+	import { plural } from '../../helpers/strings/plural';
 	import ActivityList from '$shared/projects-sessions/ActivityList.svelte';
 	import type { AgentEntry } from '../../../../../src/core/activityTypes';
 	import { createAgentRosterStore } from '../../lib/stores/agents-providers/agentRoster.svelte';
@@ -67,7 +68,8 @@
 	{#if sample}
 		{#if activity.error}<hx-p class="error" role="status">{activity.error}</hx-p>{/if}
 		{#if sample.agents.unreadable}<hx-p class="agents-quiet" role="status">
-				{sample.agents.unreadable} unreadable registrations are not counted.
+				{plural(sample.agents.unreadable, 'unreadable registration')}
+				{sample.agents.unreadable === 1 ? 'is' : 'are'} not counted.
 			</hx-p>{/if}
 		<hx-section aria-label="Main chats">
 			<hx-h3>Main chats</hx-h3>

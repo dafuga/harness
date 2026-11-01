@@ -11,7 +11,8 @@ import { activityCases } from './activity';
 import { createDesktopData } from './desktopData.svelte';
 import { desktopControls } from './desktopControls';
 import { desktopRuntime, gameCases } from './desktopRuntime';
-import { deploymentCases } from './deployments';
+import { deploymentCases, deploymentVariantProps } from './deployments';
+import { coveragePanelVariantProps } from './coveragePanelVariants';
 import { remotePreview } from './remote.svelte';
 import { hubPreview } from './hub.svelte';
 import { routeFixture } from './routePages';
@@ -116,6 +117,8 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (!variant || nativeAtomFixture(id)) return props;
 	const presentation = presentationVariant(id, props, variant);
 	if (presentation) return presentation;
+	if (id === 'desktop.component.deployment-details') return deploymentVariantProps(props, variant);
+	if (id === 'desktop.component.coverage-panel') return coveragePanelVariantProps(props, variant);
 	if (id.startsWith('desktop.component.')) return props;
 	const report = reportVariantProps(id, props, variant);
 	if (report) return report;
