@@ -152,14 +152,6 @@
 		white-space: normal;
 		overflow-wrap: anywhere;
 	}
-	/* On wide tables a name breaks only after a dot and a type only at its spaces; a word that is
-	   still too long widens its column, and the frame scrolls rather than splitting it. */
-	@media (min-width: 901px) {
-		.group :global(tbody th),
-		.type {
-			overflow-wrap: normal;
-		}
-	}
 	/* Where there is room, name and type keep their width, also when a returns table hides its
 	   names; a longer name or type widens its own column instead. */
 	.leading {
@@ -173,6 +165,14 @@
 		font-size: var(--hx-type-size-sm);
 		white-space: normal;
 		overflow-wrap: anywhere;
+	}
+	/* On wide tables a name breaks only after a dot and a type only at its spaces; a word that is
+	   still too long widens its column, and the frame scrolls rather than splitting it. */
+	@media (min-width: 901px) {
+		.group :global(tbody th),
+		.type {
+			overflow-wrap: normal;
+		}
 	}
 	/* A zero intrinsic width lets the table fit its actions; min-width fills the assigned column.
 	   Longer previews are clipped with an ellipsis; the dialog shows the full example. */
