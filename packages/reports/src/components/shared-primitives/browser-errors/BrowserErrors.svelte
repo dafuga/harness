@@ -5,6 +5,9 @@
 	import { browserErrorRows } from './browserErrorRows';
 	import { type BrowserErrorRow } from '../../../utils/shared-primitives/browserErrorRows';
 	let { diagnostics }: { diagnostics?: BrowserDiagnostic[] } = $props();
+	let count = $derived(
+		diagnostics?.reduce((sum, item) => sum + browserErrorRows(item).length, 0) ?? 0
+	);
 	const location = (error: BrowserErrorRow) =>
 		error.source
 			? `${error.source}${error.line === undefined ? '' : `:${error.line + 1}:${(error.column ?? 0) + 1}`}`
@@ -14,20 +17,16 @@
 {#if diagnostics?.length}
 	<hx-div class="browser-errors" role="group" aria-label="Browser errors">
 		<hx-details>
-			<hx-summary
-				>Browser errors · {diagnostics.reduce(
-					(sum, item) => sum + browserErrorRows(item).length,
-					0
-				)} entries</hx-summary
-			>
+			<hx-summary>Browser errors · {count} {count === 1 ? 'entry' : 'entries'}</hx-summary>
 			{#each diagnostics as run, index (index)}
+				{@const rows = browserErrorRows(run)}
 				<hx-section aria-label={run.test}>
 					<hx-p><hx-strong>{run.test}</hx-strong></hx-p>
 					<hx-p class="metadata">
 						{run.file} · {run.project || run.browser || 'Browser'} · Retry {run.retry}
 					</hx-p>
 					<hx-ol>
-						{#each browserErrorRows(run) as error, position (position)}
+						{#each rows as error, position (position)}
 							<hx-li>
 								<hx-p>
 									<hx-strong>{error.status}</hx-strong> · {error.type === 'console'
@@ -42,6 +41,9 @@
 							</hx-li>
 						{/each}
 					</hx-ol>
+					{#if rows.length === 0}
+						<hx-p class="metadata">No diagnostic entries were recorded for this test.</hx-p>
+					{/if}
 				</hx-section>
 			{/each}
 		</hx-details>

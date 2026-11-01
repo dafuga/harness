@@ -1,0 +1,86 @@
+.zoom {
+	--view-height: var(--hx-layout-zoom-view);
+}
+.zoom .zoom-bar {
+	position: sticky;
+	top: 0;
+	z-index: var(--hx-layer-raised);
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: var(--hx-space-6);
+	padding-bottom: var(--hx-space-8);
+	background: var(--hx-color-background);
+}
+.zoom .zoom-bar button {
+	min-height: 36px;
+	padding: var(--hx-space-6) var(--hx-space-12);
+	font-size: var(--hx-type-size-compact);
+	line-height: var(--hx-style-leading-tight);
+}
+.zoom .zoom-bar .step {
+	min-width: 40px;
+	padding: var(--hx-space-4) var(--hx-space-10);
+	font-size: var(--hx-type-size-lg);
+}
+.zoom .zoom-bar .active {
+	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary);
+	color: var(--hx-color-primary-contrast);
+}
+.zoom .zoom-bar [aria-disabled='true'] {
+	opacity: var(--hx-opacity-disabled);
+	cursor: not-allowed;
+}
+.zoom .scale {
+	min-width: 4.5ch;
+	color: var(--hx-color-text);
+	font-size: var(--hx-type-size-compact);
+	font-weight: var(--hx-style-weight-semibold);
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+}
+.zoom .stage img {
+	max-height: var(--view-height);
+}
+.zoom .stage.zoomed {
+	max-height: var(--view-height);
+	overflow: auto;
+	overscroll-behavior: contain;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-background);
+	cursor: grab;
+	scrollbar-color: var(--hx-color-border-strong) transparent;
+}
+.zoom .stage.zoomed img {
+	max-width: none;
+	max-height: none;
+}
+.zoom .stage.dragging {
+	cursor: grabbing;
+	user-select: none;
+}
+.zoom .stage:focus-visible {
+	outline: var(--hx-border-thick) solid var(--hx-color-primary);
+	outline-offset: calc(-1 * var(--hx-space-2));
+}
+@media (max-width: 650px) {
+	.zoom {
+		--view-height: var(--hx-layout-zoom-view-compact);
+	}
+	.zoom .zoom-bar {
+		gap: var(--hx-space-4);
+	}
+	.zoom .zoom-bar button {
+		min-height: 44px;
+		padding: var(--hx-space-6) var(--hx-space-10);
+	}
+	.zoom .zoom-bar .step {
+		min-width: 44px;
+	}
+}
+
+.zoom img.failed {
+	display: none;
+}
