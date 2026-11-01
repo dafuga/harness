@@ -167,16 +167,16 @@
 		.revision-choices :global(button.agent-icon) {
 			align-items: center;
 			justify-content: center;
-			width: auto;
-			height: var(--hx-space-44);
-			gap: var(--hx-space-4);
-			padding-inline: var(--hx-space-4);
+			width: var(--hx-space-50);
+			height: var(--hx-space-40);
+			gap: var(--hx-space-2);
+			padding: 0;
 			font-size: var(--hx-type-size-2xs);
 			white-space: nowrap;
 		}
 		.revision-choices :global(svg) {
-			width: var(--hx-space-16);
-			height: var(--hx-space-16);
+			width: var(--hx-space-12);
+			height: var(--hx-space-12);
 		}
 		.revision-picker {
 			display: contents;
