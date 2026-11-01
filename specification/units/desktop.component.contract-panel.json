@@ -33,6 +33,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-detail-list"],
 		"inputs": [
 			{
 				"name": "ContractPanel.contract",

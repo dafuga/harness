@@ -2,7 +2,7 @@ import type { SourceFile } from '../../core/development-tooling/sourceTypes';
 import { registryOwnershipFindings } from './unit-registry-validator/registryOwnershipFindings';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import { unitLineage } from '../../workflows/development-tooling/load-units/unit-index-service/unitLineage';
-import { compositionFindings } from './atomicComposition';
+import { compositionFindings, sharedPrimitiveFindings } from './atomicComposition';
 
 /** Checks relationships between manifests that no single manifest can prove alone. */
 export class UnitRegistryValidator {
@@ -16,6 +16,7 @@ export class UnitRegistryValidator {
 		const known = new Set(identifiers);
 		return [
 			...compositionFindings(active),
+			...sharedPrimitiveFindings(active),
 			...registryOwnershipFindings(identifiers, active, sources),
 			...active.flatMap((unit) => this.missingSource(unit, files)),
 			...active.flatMap((unit) => this.helperExamples(unit)),

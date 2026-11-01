@@ -45,8 +45,11 @@ describe('units show rendering', () => {
 				})
 			);
 			manifest.contract.inputs = [...manifest.contract.inputs, ...manifest.contract.inputs];
+			manifest.contract.primitives = ['component.shared-primitives-card'];
 			expect(renderContract(manifest)).toEqual([
 				'Contract (declared)',
+				'  Shared primitives',
+				'    component.shared-primitives-card',
 				'  Props',
 				'    status  Status  (required)',
 				'    size    number  (optional; default 16)',

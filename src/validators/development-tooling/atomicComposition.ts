@@ -1,3 +1,4 @@
+import { sharedPrimitivePath } from '../../core/development-tooling/composition';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 
 /** Native atoms are leaves; higher-level features never become a molecule's building block. */
@@ -39,4 +40,27 @@ function invalidComposition(own: string, child: string) {
 		default:
 			return false;
 	}
+}
+
+/** Contracts name exactly the shared primitives their source composes. */
+export function sharedPrimitiveFindings(units: ComponentManifest[]): string[] {
+	const primitives = new Set(
+		units
+			.filter((unit) => unit.owns.source.some((path) => sharedPrimitivePath.test(path)))
+			.map((unit) => unit.id)
+	);
+	return units
+		.filter((unit) => unit.kind === 'component')
+		.flatMap((unit) => {
+			const expected = (unit.composition?.uses ?? []).filter((id) => primitives.has(id));
+			const declared = unit.contract.primitives ?? [];
+			const missing = expected.filter((id) => !declared.includes(id));
+			const extra = declared.filter(
+				(id, index) => !expected.includes(id) || declared.indexOf(id) !== index
+			);
+			return [
+				...missing.map((id) => `${unit.id}: contract omits shared primitive ${id}`),
+				...extra.map((id) => `${unit.id}: contract lists unused shared primitive ${id}`)
+			];
+		});
 }
