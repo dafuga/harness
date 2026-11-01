@@ -128,7 +128,7 @@ async function assertEntitySectionContent(component: Locator, id: string, varian
 	}
 	if (variant === 'history')
 		await expect(
-			component.getByText('Add order-status filters', { exact: true }),
+			component.locator('.entity-main').getByText('Add order-status filters', { exact: true }),
 			'The History tab shows a meaningful recorded change'
 		).toBeVisible();
 }
