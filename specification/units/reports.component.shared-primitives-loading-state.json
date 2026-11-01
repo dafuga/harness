@@ -23,13 +23,20 @@
 				"required": false,
 				"default": "Loading…",
 				"description": "Optional status label describing the data being read; defaults to Loading…. The host owns fetching and decides when to show or remove the status."
+			},
+			{
+				"name": "LoadingState.inline",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Show the decorative ring and label together in normal document flow. Defaults to false for a viewport-centered loading status."
 			}
 		],
 		"outputs": [
 			{
 				"name": "LoadingState",
 				"type": "markup",
-				"description": "A polite, atomic status with a decorative ring centered in the viewport and its label below. Pointer events pass through; reduced motion keeps the ring still."
+				"description": "A polite, atomic status with a decorative ring and label. Defaults to a viewport-centered ring with its label below; inline mode places a smaller ring beside the label in document flow. Pointer events pass through and reduced motion keeps the ring still."
 			}
 		],
 		"errors": [],

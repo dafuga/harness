@@ -2,11 +2,12 @@
 <!-- @harness-atoms atoms -->
 <script lang="ts">
 	/** A quiet status while page data is read. It reads nothing itself and claims no progress. */
-	let { label = 'Loading…' }: { label?: string } = $props();
+	let { label = 'Loading…', inline = false }: { label?: string; inline?: boolean } = $props();
 </script>
 
 <hx-div
 	class="hx-loading"
+	class:inline
 	role="status"
 	aria-live="polite"
 	aria-atomic="true"
@@ -51,6 +52,23 @@
 		left: var(--hx-gutter);
 		text-align: center;
 		overflow-wrap: anywhere;
+	}
+	.inline {
+		position: static;
+		z-index: auto;
+		display: flex;
+		align-items: center;
+		gap: var(--hx-space-12);
+		padding-block: var(--hx-space-12);
+	}
+	.inline .hx-loading-indicator {
+		flex-shrink: 0;
+		width: var(--hx-space-24);
+		height: var(--hx-space-24);
+	}
+	.inline .hx-loading-label {
+		position: static;
+		text-align: start;
 	}
 	@keyframes hx-loading-turn {
 		to {

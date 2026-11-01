@@ -53,7 +53,7 @@
 			{
 				"name": "HistoryPanel",
 				"type": "markup",
-				"description": "Timeline with names, formatted dates, details and commit references, or an empty-history message. Load more requires incomplete history, a next page and bridge support and is disabled during loading. Discards responses for another view; displays current-view errors as alerts. Incomplete history without a usable next-page operation is explicitly labeled not loaded."
+				"description": "Timeline with names, formatted dates, details and commit references, or an empty-history message. Load more requires incomplete history, a next page and bridge support and is disabled during loading. Discards responses for another view; displays current-view errors as alerts. Incomplete history without a usable next-page operation is explicitly labeled not loaded. A shared inline loading indicator and label identify pending page reads; the history region reports aria-busy."
 			}
 		],
 		"errors": [],

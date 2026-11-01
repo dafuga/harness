@@ -12,6 +12,7 @@
 	import { timeLabel } from '../../../utils/development-tooling/timeLabel';
 	import WorkspaceLink from '../../projects-sessions/WorkspaceLink.svelte';
 	import RegressionProof from '$shared/verification-evidence/RegressionProof.svelte';
+	import LoadingState from '$reports/components/shared-primitives/LoadingState.svelte';
 	import type { EntityEvidence } from '../../../lib/stores/explorer-ui/entityEvidence.svelte';
 	let {
 		entity,
@@ -78,7 +79,7 @@
 	}
 </script>
 
-<hx-section class="history">
+<hx-section class="history" aria-busy={loading}>
 	<hx-h2>Entity history</hx-h2>
 	<RegressionProof
 		items={proofs}
@@ -99,6 +100,7 @@
 			>
 			<hx-p>{event.detail}</hx-p>
 		</hx-article>{:else}<hx-p class="muted">No history recorded for this entity.</hx-p>{/each}
+	{#if loading}<LoadingState inline label="Loading earlier history…" />{/if}
 	{#if more}<hx-button
 			type="button"
 			class="history-more"
