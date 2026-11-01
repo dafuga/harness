@@ -9,7 +9,12 @@ const names = (body: string) => verdicts(body).map((badge) => badge.name);
 /** The row of one state in the table of a scenario. */
 const row = (body: string, state: string) => {
 	const rows = body.split(/(?=<tr\b)/).map((part) => part.split('</tr>')[0]);
-	return rows.find((part) => part.includes(`<th scope="row">${state}</th>`)) ?? '';
+	return (
+		rows.find((part) => {
+			const header = /<th\b[^>]*\bscope="row"[^>]*>([\s\S]*?)<\/th>/.exec(part);
+			return header !== null && words(header[1]).trim() === state;
+		}) ?? ''
+	);
 };
 const missing = 'No capture of Orders page over synthetic orders: empty at mobile.';
 /** The evidence labels read on an entity screen opened at its former Tests address. */
