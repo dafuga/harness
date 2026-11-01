@@ -113,6 +113,7 @@ export async function assertContractMetadata(component: Locator, id: string, var
 		expect(clipped, 'Contract metadata stays readable within the viewport').toBe(false);
 	}
 	await assertContractMetadataGroups(component, id, variant, empty);
+	await assertContractLabels(component);
 }
 
 async function assertContractMetadataGroups(
@@ -144,4 +145,22 @@ async function assertContractMetadataGroups(
 			1
 		);
 	}
+}
+
+/** Provenance is documentation, so only example values may be clipped. */
+async function assertContractLabels(component: Locator) {
+	const clipped = await component.locator('td i').evaluateAll((labels) =>
+		labels
+			.filter((label) => {
+				const frame = label.closest('.example') ?? label.closest('td')!;
+				const bounds = frame.getBoundingClientRect();
+				const range = document.createRange();
+				range.selectNodeContents(label);
+				return Array.from(range.getClientRects()).some(
+					(box) => box.left < bounds.left - 1 || box.right > bounds.right + 1
+				);
+			})
+			.map((label) => label.textContent)
+	);
+	expect(clipped, 'Contract provenance labels remain fully readable').toEqual([]);
 }
