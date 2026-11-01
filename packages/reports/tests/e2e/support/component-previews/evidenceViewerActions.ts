@@ -34,6 +34,7 @@ export async function prepareEvidenceViewer(component: Locator, variant: string)
 		await image.evaluate((node: HTMLImageElement) => node.decode());
 	}
 	await assertViewerImagesFit(dialog, variant);
+	await expect(dialog.getByRole('status').filter({ hasText: 'Loading image…' })).toHaveCount(0);
 }
 
 /** Unavailable navigation and displayed-side provenance are explicit, including after a switch. */

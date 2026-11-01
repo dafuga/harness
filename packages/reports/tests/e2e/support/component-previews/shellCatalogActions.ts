@@ -60,7 +60,13 @@ async function audioState(component: Locator, variant: string) {
 async function screensState(component: Locator, variant: string) {
 	if (variant === 'viewer-open') {
 		await component.locator('.ex-shot').first().click();
-		await expect(component.getByRole('dialog')).toBeVisible();
+		const dialog = component.getByRole('dialog');
+		await expect(dialog).toBeVisible();
+		await dialog.locator('.viewer-images img').evaluateAll(async (images) => {
+			await Promise.all(images.map((image) => (image as HTMLImageElement).decode()));
+		});
+		await expect(dialog.getByRole('status').filter({ hasText: 'Loading image…' })).toHaveCount(0);
+		await expect(dialog.locator('output')).toHaveText(/\d+%/);
 	}
 	if (variant === 'mobile-selected') {
 		await component.getByRole('button', { name: 'Mobile', exact: true }).click();
