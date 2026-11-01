@@ -6,6 +6,10 @@
 	} from '../../../../../../src/templates/development-tooling/htmlElements.js';
 	import { nativeAtomProps } from './nativeAtomProps';
 	import { nativeAtomContent } from './nativeAtomContent';
+	import {
+		nativeAtomReleaseContent,
+		nativeAtomLongReleaseContent
+	} from './nativeAtomReleaseContent';
 	let {
 		Component,
 		source,
@@ -19,16 +23,17 @@
 	const definition = $derived(nativeAtoms.find((atom) => atom.name === name)!);
 	const tag = $derived(definition.tag);
 	const attributes = $derived(nativeAtomProps(tag, definition.type, variant));
-	const example = $derived(nativeAtomContent[name ?? '']);
+	const example = $derived(nativeAtomContent[name ?? ''] ?? nativeAtomReleaseContent[name ?? '']);
 	const stateLabels: Record<string, string> = {
 		disabled: 'Disabled action',
-		unlinked: 'Link without a destination'
+		unlinked: nativeAtomContent.HtmlA
 	};
 	const label = $derived(
 		tag === 'option'
 			? `HtmlOption: ${variant === 'disabled' ? 'Disabled choice' : 'Available choice'}`
 			: variant === 'long'
-				? 'Long native content remains readable when a caller supplies several words and a second phrase.'
+				? (nativeAtomLongReleaseContent[name ?? ''] ??
+					'Long native content remains readable when a caller supplies several words and a second phrase.')
 				: (stateLabels[variant] ?? example ?? name)
 	);
 	let host: HTMLElement;
@@ -69,17 +74,17 @@
 	{:else if tag === 'ul' || tag === 'ol'}<li style="list-style:inherit">
 			{label}
 		</li>
-		<li style="list-style:inherit">Check the catalog previews</li>
+		<li style="list-style:inherit">Confirm the automated checks</li>
 		<li style="list-style:inherit">Publish the release notes</li>
 	{:else if tag === 'menu'}<li>
 			{variant === 'long' ? label : (example ?? 'Example item')}
 		</li>
 	{:else if tag === 'dl'}<div>
-			<dt>Label</dt>
-			<dd>{variant === 'long' ? label : 'Example value'}</dd>
+			<dt>Release owner</dt>
+			<dd>{label}</dd>
 		</div>
-	{:else if tag === 'details'}<summary>Example details</summary>
-		<p>Expanded content</p>
+	{:else if tag === 'details'}<summary>Release checks</summary>
+		<p>Typecheck passed. Unit tests are queued.</p>
 	{:else if tag === 'form' || tag === 'fieldset'}<label
 			>{variant === 'long' ? label : (example ?? 'Example field')}
 			<input
