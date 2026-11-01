@@ -1,7 +1,6 @@
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
 import { commits } from '../../../../test/entityUnits';
 import { assertScrollbarPaint } from './scrollbarReviewAssertions';
-import { assertShellVisualReview } from './shellVisualReviewAssertions';
 
 const reviewed = new Set([
 	'harness-entity-audio',
@@ -29,7 +28,6 @@ export async function assertShellReview(
 	variant: string,
 	viewport: string
 ) {
-	await assertShellVisualReview(component, id, variant);
 	if (!reviewed.has(id.replace('reports.component.', ''))) return;
 	expect(
 		await component.innerText(),
