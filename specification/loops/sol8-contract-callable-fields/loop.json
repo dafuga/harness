@@ -2,7 +2,7 @@
 	"name": "sol8-contract-callable-fields",
 	"goal": "Preserve authored requirement flags on source-declared callable fields",
 	"createdAt": "2026-11-01T00:51:16.659Z",
-	"updatedAt": "2026-11-01T00:51:16.659Z",
+	"updatedAt": "2026-11-01T00:54:39.577Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,17 +11,23 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:54:37.677Z",
+			"evidence": "Type contract tables ignore an authored Required flag for OrderInput.resolve while rendering the source-declared callable field."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:54:38.471Z",
+			"evidence": "The standard type fixture omitted callable requirement metadata and asserted only names/types. Extend the existing unit and three-viewport Types state without adding cases."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:54:39.577Z",
+			"evidence": "Frozen checkpoint 0a46667afa fails all three Types captures: resolve is Requiredness not recorded instead of its authored Required flag. Record 34ff5699192f91afbc7afd3c0f197583d8ba2aa23f7d883ea1fc70ede194f545 retains the failing images."
 		},
 		{
 			"id": "implement",

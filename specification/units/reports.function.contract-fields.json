@@ -149,7 +149,7 @@
 			{
 				"name": "contractFields",
 				"type": "ContractGroup[]",
-				"description": "Typed input/output groups and declared errors or an explicit absence message; shared types retain source fields and optionality without invented defaults."
+				"description": "Typed inputs, outputs and explicit error declarations. Source fields retain optionality, callable members retain authored requirement flags, and missing metadata stays explicit without invented defaults."
 			},
 			{
 				"name": "contractFacts",
@@ -278,7 +278,7 @@
 					{
 						"name": "contractFields",
 						"type": "ContractGroup[]",
-						"description": "Input, output and declared-error groups, or source-declared type groups. Type fields retain exact names and types without invented examples or runtime behavior."
+						"description": "Typed inputs, outputs and explicit error declarations. Source fields retain optionality, callable members retain authored requirement flags, and missing metadata stays explicit without invented defaults."
 					}
 				],
 				"errors": [

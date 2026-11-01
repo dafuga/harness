@@ -89,6 +89,9 @@ function typeGroups(unit: HarnessUnit): ContractGroup[] {
 				})),
 				...item.methods.map((method) => ({
 					name: method.name,
+					required: unit.contract.inputs.find(
+						(field) => field.name === `${item.name}.${method.name}`
+					)?.required,
 					type: `(${method.inputs.map((input) => `${input.name}: ${input.type}`).join(', ')}): ${method.output}`
 				})),
 				...(item.type ? [{ name: item.name, type: item.type }] : [])
