@@ -26,7 +26,7 @@ export function reuseFindings(filename, source) {
 	const found = [];
 	if (file.endsWith('.svelte')) found.push(...nativeFindings(source));
 	for (const match of source.matchAll(
-		/\b[\w?.]*(?:commit|hash|tip|origin|parent|sha|acknowledged)\b\??\.slice\(\s*0\s*,\s*\d+\s*\)/gi
+		/\b[\w?.]*(?:commit|hash|tip|head|base|origin|parent|sha|acknowledged)\b\??\.slice\(\s*0\s*,\s*\d+\s*\)/gi
 	))
 		if (!/sha256\s*\$\{\s*$/.test(source.slice(Math.max(0, match.index - 24), match.index)))
 			found.push({ kind: 'commit', index: match.index });

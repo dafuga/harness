@@ -1,3 +1,4 @@
+import { shortCommit } from '../../../../src/helpers/strings/shortCommit';
 import { expect, type Locator } from '@playwright/test';
 import { commits } from '../../../../test/entityUnits';
 
@@ -66,10 +67,10 @@ async function assertDisplayedRevision(dialog: Locator, revision: string) {
 	const provenance = dialog.locator('.viewer-provenance');
 	await expect(
 		provenance.locator('.detail-row').filter({ hasText: 'Captured from' })
-	).toContainText(`build build-1 of ${revision.slice(0, 12)}`);
+	).toContainText(`build build-1 of ${shortCommit(revision)}`);
 	await expect(
 		provenance.locator('.detail-row').filter({ hasText: 'Verification attempt' })
-	).toContainText(`targeting ${revision.slice(0, 12)}`);
+	).toContainText(`targeting ${shortCommit(revision)}`);
 	await expect(dialog.locator('.viewer-images figcaption')).toContainText('default · desktop');
 	await expect(dialog.locator('.viewer-note')).toContainText(`revision ${revision}`);
 }

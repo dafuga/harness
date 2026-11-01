@@ -36,7 +36,7 @@ export async function persistReasons(
 }
 
 export function renderReasons(result: PersistedReasons): string {
-	const from = result.base ? result.base.slice(0, 12) : 'an empty tree';
+	const from = result.base ? shortCommit(result.base) : 'an empty tree';
 	const head = `${result.attached} reasons for ${from}..${shortCommit(result.commit)} are kept in notes.`;
 	return [head, ...result.missing.map((failure) => `  ${failure}`)].join('\n');
 }
