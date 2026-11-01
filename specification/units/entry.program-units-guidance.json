@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "entry.program-units-guidance",
+	"kind": "entry",
+	"title": "unitsGuidance",
+	"responsibility": "Registers state-guidance and contract-review CLI commands, prints human or JSON reports, and preserves failing exit codes for unresolved gaps.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/program/unitsGuidance.ts", "src/cli/program/unitsGuidance.types.ts"],
+		"symbols": ["registerUnitsGuidance", "GuidanceFlags"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "registerUnitsGuidance.units",
+				"type": "Command",
+				"required": true,
+				"description": "Commander parent units command receiving the guide and check-contract subcommands."
+			}
+		],
+		"outputs": [
+			{
+				"name": "registerUnitsGuidance",
+				"type": "void",
+				"description": "Returns no value. Registers commands whose actions print reports and set exit code 1 for missing states or contract findings."
+			}
+		],
+		"errors": [
+			{
+				"name": "Dependency failure",
+				"type": "thrown",
+				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "registerUnitsGuidance",
+				"inputs": [
+					{
+						"name": "registerUnitsGuidance.units",
+						"type": "Command",
+						"required": true,
+						"description": "Commander parent units command receiving the guide and check-contract subcommands."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerUnitsGuidance",
+						"type": "void",
+						"description": "Returns no value. Registers commands whose actions print reports and set exit code 1 for missing states or contract findings."
+					}
+				],
+				"errors": [
+					{
+						"name": "Dependency failure",
+						"type": "thrown",
+						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "workflow.development-tooling-check-unit-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/unitsGuidance.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/unitsGuidance.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

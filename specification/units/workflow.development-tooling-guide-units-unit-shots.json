@@ -1,0 +1,138 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-guide-units-unit-shots",
+	"kind": "workflow",
+	"title": "unitShots",
+	"responsibility": "Reads the API-backed pinned Git proof store for one entity and revision, retaining only the reader verdicts and provenance of its original captures.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/development-tooling/guide-units/unitShots.ts",
+			"src/workflows/development-tooling/guide-units/unitShots.types.ts"
+		],
+		"symbols": ["unitShots", "UnitShots"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "unitShots.root",
+				"type": "string",
+				"required": true,
+				"description": "Project directory used for external inventory paths or read-only Git evidence access."
+			},
+			{
+				"name": "unitShots.entity",
+				"type": "string",
+				"required": true,
+				"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+			},
+			{
+				"name": "unitShots.commit",
+				"type": "string",
+				"required": true,
+				"description": "Exact source commit whose evidence is requested; the proof reader validates tree identity and retained bytes."
+			}
+		],
+		"outputs": [
+			{
+				"name": "unitShots",
+				"type": "Promise<UnitShots>",
+				"description": "Captures and evidence gap from the same pinned proof reader used by the screenshot API; missing evidence returns no captures."
+			}
+		],
+		"errors": [
+			{
+				"name": "Dependency failure",
+				"type": "thrown",
+				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "unitShots",
+				"inputs": [
+					{
+						"name": "unitShots.root",
+						"type": "string",
+						"required": true,
+						"description": "Project directory used for external inventory paths or read-only Git evidence access."
+					},
+					{
+						"name": "unitShots.entity",
+						"type": "string",
+						"required": true,
+						"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+					},
+					{
+						"name": "unitShots.commit",
+						"type": "string",
+						"required": true,
+						"description": "Exact source commit whose evidence is requested; the proof reader validates tree identity and retained bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitShots",
+						"type": "Promise<UnitShots>",
+						"description": "Captures and evidence gap from the same pinned proof reader used by the screenshot API; missing evidence returns no captures."
+					}
+				],
+				"errors": [
+					{
+						"name": "Dependency failure",
+						"type": "thrown",
+						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.evidence-refs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.pinned-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.recorded-scope",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/guide-units/unitShots.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/guide-units/unitShots.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

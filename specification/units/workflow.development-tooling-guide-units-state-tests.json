@@ -1,0 +1,140 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-guide-units-state-tests",
+	"kind": "workflow",
+	"title": "stateTests",
+	"responsibility": "Attributes authored committed test files to a unit state using registered scenarios and existing dependency attribution, excluding skipped and fixture-only mentions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/development-tooling/guide-units/stateTests.ts"],
+		"symbols": ["stateTests"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "stateTests.context",
+				"type": "GuidanceContext",
+				"required": true,
+				"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+			},
+			{
+				"name": "stateTests.unit",
+				"type": "ComponentManifest",
+				"required": true,
+				"description": "Stored unit identity, source ownership and authored contract selected for this review."
+			},
+			{
+				"name": "stateTests.state",
+				"type": "string",
+				"required": true,
+				"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
+			}
+		],
+		"outputs": [
+			{
+				"name": "stateTests",
+				"type": "Promise<StateTest[]>",
+				"description": "Existing authored test files attributable to this unit and state, with declared viewport IDs when a scenario supplies them."
+			}
+		],
+		"errors": [
+			{
+				"name": "Dependency failure",
+				"type": "thrown",
+				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "stateTests",
+				"inputs": [
+					{
+						"name": "stateTests.context",
+						"type": "GuidanceContext",
+						"required": true,
+						"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+					},
+					{
+						"name": "stateTests.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "Stored unit identity, source ownership and authored contract selected for this review."
+					},
+					{
+						"name": "stateTests.state",
+						"type": "string",
+						"required": true,
+						"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stateTests",
+						"type": "Promise<StateTest[]>",
+						"description": "Existing authored test files attributable to this unit and state, with declared viewport IDs when a scenario supplies them."
+					}
+				],
+				"errors": [
+					{
+						"name": "Dependency failure",
+						"type": "thrown",
+						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-contract-states",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-guidance-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.inspect-units",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/guide-units/stateTests.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/guide-units/stateTests.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

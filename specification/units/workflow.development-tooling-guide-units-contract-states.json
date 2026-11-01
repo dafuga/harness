@@ -1,0 +1,158 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-guide-units-contract-states",
+	"kind": "workflow",
+	"title": "contractStates",
+	"responsibility": "Derives explicit enum states and guessed prop boundaries, merges state declarations in order, and resolves entity-specific catalog slot names.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/development-tooling/guide-units/contractStates.ts"],
+		"symbols": ["contractStates", "mergeUnitStates", "unitStateName"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "contractStates.contract",
+				"type": "ComponentManifest['contract']",
+				"required": true,
+				"description": "Validated stored contract containing inputs, outputs, errors, callable operations and snippets."
+			},
+			{
+				"name": "mergeUnitStates.groups",
+				"type": "UnitState[][]",
+				"required": true,
+				"description": "Ordered state groups to merge; declarations upgrade guesses while preserving first occurrence and distinct reasons."
+			},
+			{
+				"name": "unitStateName.entity",
+				"type": "string",
+				"required": true,
+				"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+			},
+			{
+				"name": "unitStateName.state",
+				"type": "string",
+				"required": true,
+				"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
+			}
+		],
+		"outputs": [
+			{
+				"name": "contractStates",
+				"type": "UnitState[]",
+				"description": "Named literal-union declarations and guessed optional-presence, empty, loading, error, disabled and collection boundaries, with reasons."
+			},
+			{
+				"name": "mergeUnitStates",
+				"type": "UnitState[]",
+				"description": "Stable first-seen states, with REQUIRED taking precedence and all distinct reasons preserved."
+			},
+			{
+				"name": "unitStateName",
+				"type": "string",
+				"description": "State name with only this entity exact catalog prefix removed; its bare prefix or empty string denotes default."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "contractStates",
+				"inputs": [
+					{
+						"name": "contractStates.contract",
+						"type": "ComponentManifest['contract']",
+						"required": true,
+						"description": "Validated stored contract containing inputs, outputs, errors, callable operations and snippets."
+					}
+				],
+				"outputs": [
+					{
+						"name": "contractStates",
+						"type": "UnitState[]",
+						"description": "Named literal-union declarations and guessed optional-presence, empty, loading, error, disabled and collection boundaries, with reasons."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "mergeUnitStates",
+				"inputs": [
+					{
+						"name": "mergeUnitStates.groups",
+						"type": "UnitState[][]",
+						"required": true,
+						"description": "Ordered state groups to merge; declarations upgrade guesses while preserving first occurrence and distinct reasons."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mergeUnitStates",
+						"type": "UnitState[]",
+						"description": "Stable first-seen states, with REQUIRED taking precedence and all distinct reasons preserved."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "unitStateName",
+				"inputs": [
+					{
+						"name": "unitStateName.entity",
+						"type": "string",
+						"required": true,
+						"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+					},
+					{
+						"name": "unitStateName.state",
+						"type": "string",
+						"required": true,
+						"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitStateName",
+						"type": "string",
+						"description": "State name with only this entity exact catalog prefix removed; its bare prefix or empty string denotes default."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/guide-units/contractStates.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/guide-units/contractStates.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -56,6 +56,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "entry.program-units-guidance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
