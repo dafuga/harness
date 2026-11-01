@@ -74,6 +74,7 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Screenshot Evidence
 
+- Write and commit the entity's standard Playwright tests for every declared state and desktop/tablet/mobile viewport, then run `bun src/index.ts verify run --priority agent-test --entity <id>`. Complete passing entity checks automatically attach screenshots and their record link to Git evidence. Agents need no manual attachment command. Failed or incomplete entity runs attach nothing; uncommitted tests are excluded. Fetch the attached captures with `harness api screenshot`; scoped proof never grants whole-commit verification.
 - A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.
 - Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.

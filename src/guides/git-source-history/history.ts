@@ -4,7 +4,7 @@ const historyGuide: Guide = {
 	topic: 'history',
 	summary: 'Keep verification records, evidence and reasons in Git and rebuild history from it.',
 	steps: [
-		'Verify a commit, then run harness history attach to store its record and evidence.',
+		'Write and commit the standard Playwright tests, then run harness verify run --priority agent-test --entity <id>; complete passing entity checks automatically attach their screenshots and record link.',
 		'Run harness history status to see what Git alone proves about a commit.',
 		'Run harness history sync origin to exchange records with a remote.',
 		'Run harness history build --out <directory> to produce the portable history index.'
@@ -42,8 +42,8 @@ const historyGuide: Guide = {
 		'Do not edit a note to change an outcome.'
 	],
 	exampleCommands: [
-		'harness history attach',
-		'harness history attach --commit HEAD~1 --record <id>',
+		'harness verify run --priority agent-test --entity <id>',
+		'harness history attach --commit HEAD~1 --record <id> # manual import/full-record edge case',
 		'harness history reasons --base <rev> --commit <rev>',
 		'harness history status --commit HEAD --json',
 		'harness history fetch origin',
@@ -131,7 +131,7 @@ const ciGuide: Guide = {
 	],
 	exampleCommands: [
 		'harness verify run --commit "$COMMIT"',
-		'harness history attach --commit "$COMMIT" --record <record.json>',
+		'harness history attach --commit "$COMMIT" --record <record.json> # trusted CI artifact import',
 		'harness history sync origin'
 	]
 };

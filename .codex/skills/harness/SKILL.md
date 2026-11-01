@@ -131,6 +131,13 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 ## Screenshot Evidence
 
+Write and commit the standard Playwright tests for each entity's declared states and
+desktop/tablet/mobile viewports. Run `bun src/index.ts verify run --priority agent-test --entity <id>`;
+complete passing entity checks automatically attach screenshots with their verification record link.
+Failed or incomplete entity runs attach nothing. Uncommitted tests are excluded. Fetch each
+state/viewport through `harness api screenshot`; agents need no manual attachment command.
+Entity proof remains scoped and never grants whole-commit verification.
+
 Isolated component catalog captures frame the rendered component itself, including fragments,
 visible dialogs and fixed surfaces. Exclude fixture headings and unused page canvas. Declare
 `capture: "element"` and retain the actual CSS-pixel clip bounds; decoded dimensions must match

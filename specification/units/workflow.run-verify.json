@@ -24,6 +24,7 @@
 			"verifyIdentity",
 			"verifyStamp",
 			"renderVerify",
+			"VerifyResult",
 			"VerifyOptions"
 		]
 	},
@@ -54,14 +55,14 @@
 			},
 			{
 				"name": "renderVerify.stored",
-				"type": "StoredRecord",
+				"type": "VerifyResult",
 				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "verifyRun",
-				"type": "Promise<StoredRecord>"
+				"type": "Promise<VerifyResult>"
 			},
 			{
 				"name": "verifyCheck",
@@ -101,7 +102,7 @@
 				"outputs": [
 					{
 						"name": "verifyRun",
-						"type": "Promise<StoredRecord>"
+						"type": "Promise<VerifyResult>"
 					}
 				],
 				"errors": [
@@ -182,7 +183,7 @@
 				"inputs": [
 					{
 						"name": "renderVerify.stored",
-						"type": "StoredRecord",
+						"type": "VerifyResult",
 						"required": true
 					}
 				],

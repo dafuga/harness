@@ -371,8 +371,10 @@ adapters, the reference and Rust kernels, `harness impact`, `harness kernel` and
 package entries. Stage C: scenario contracts and their coverage rules, the evidence protocol
 with media and build-stamp validation, verification of clean snapshots under process isolation,
 reasons, frozen budgets with a reviewed ledger, and `harness scenarios`, `explain`, `budget` and
-`verify`. Stage D: records, evidence and reasons kept in Git (`harness history attach`,
-`reasons`, `status`, `fetch`, `push`, `sync`), the deterministic history index
+`verify`. Complete entity screenshots attach automatically through
+`harness verify run --priority agent-test --entity <id>` after the standard Playwright tests
+are committed. Stage D: records, evidence and reasons kept in Git (`harness history attach`
+for manual imports and full-record edge cases; `reasons`, `status`, `fetch`, `push`, `sync`), the deterministic history index
 (`harness history build`), the legacy report import, the opt-in pre-push hook
 (`harness hooks`), the two CI workflows and the `@dafuga01/harness/history` package entry.
 Stage E: the protected `/harness` console over the history index, with the map, comparison,

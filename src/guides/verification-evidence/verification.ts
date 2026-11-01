@@ -43,6 +43,7 @@ const verifyGuide: Guide = {
 	summary: 'Verify one exact commit in a clean snapshot and keep the record, pass or fail.',
 	steps: [
 		'Commit the change; uncommitted work is never part of a verification.',
+		'For entity screenshots, write and commit standard Playwright tests, then run harness verify run --priority agent-test --entity <id>; complete passing checks attach every declared state/viewport automatically.',
 		'Run harness verify run to export the commit, run its affected checks and judge every gate.',
 		'Read the failures; each names the unit, scenario or file it concerns.',
 		'Run harness verify check to confirm a stored record proves the commit.'
@@ -70,7 +71,8 @@ const verifyGuide: Guide = {
 		'Declare build output, caches and reports as outputs in harness.verify.json. A trailing ' +
 			'slash names a directory. An output may not cover a tracked file, so source cannot be ' +
 			'declared away.',
-		'Records are drafts in .cache/harness/verifications until they are stored as Git evidence.',
+		'Complete passing entity checks automatically attach screenshots and their record link as Git evidence. Failed or incomplete entity runs attach nothing. Repeated identical proof at one commit reuses the attached record. Full verification records remain drafts until explicitly attached.',
+		'Entity verification exits successfully when its screenshots attach, while its sealed record remains scoped and never proves a whole-commit pass. Output lists entity, states, viewports and attached record id.',
 		'harness.verify.json configures setup commands, shared paths, outputs, runners and time limits; a test file that needs a command of its own, such as another configuration of its runner, is listed under checks.',
 		'A compiled build whose server cannot read its own files, such as a Worker, is stamped after its last build step with harness verify stamp; the server reports the stamp and harness verify identity confirms it belongs to exactly those files.'
 	],
@@ -81,6 +83,7 @@ const verifyGuide: Guide = {
 	],
 	exampleCommands: [
 		'harness verify run',
+		'harness verify run --priority agent-test --entity <id>',
 		'harness verify run --commit HEAD~1 --test-timeout 120000',
 		'harness verify run --base none',
 		'harness verify check --commit HEAD --json'

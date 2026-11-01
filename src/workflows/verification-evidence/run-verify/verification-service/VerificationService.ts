@@ -104,8 +104,7 @@ export class VerificationService {
 		const failures = [
 			...own.flatMap((outcome) => outcome.failures),
 			...coverage.failures,
-			...(ran ? [] : [`${scenario.id}: its checks did not run`]),
-			...(this.context.entity ? [scopeFailure(this.context.entity)] : [])
+			...(ran ? [] : [`${scenario.id}: its checks did not run`])
 		];
 		return {
 			result: {
@@ -114,7 +113,7 @@ export class VerificationService {
 				testedRevision: this.context.commit,
 				states: coverage.states
 			},
-			failures
+			failures: [...failures, ...(this.context.entity ? [scopeFailure(this.context.entity)] : [])]
 		};
 	}
 }
