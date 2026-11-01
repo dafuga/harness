@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../../helpers/strings/shortCommit';
+
 	import { tick } from 'svelte';
 	import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
 	import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
@@ -96,7 +98,7 @@
 					...service.facts.filter((row) => row.label !== 'Errors not tied to a method')
 				]
 	);
-	let title = $derived(last ? `Last contract · ${last.slice(0, 7)}` : 'Contract');
+	let title = $derived(last ? `Last contract · ${shortCommit(last)}` : 'Contract');
 	let chosen = $state<{ field: ContractField; title: string } | null>(null);
 	let opener: HTMLButtonElement | null = null;
 	/** A callable's field is titled with its function, as `toKebabCase · value`. */

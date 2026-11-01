@@ -3541,7 +3541,14 @@
 			"unit": "adapter.handler-runtime",
 			"from": "src/adapters/HandlerRuntimeAdapter.ts",
 			"to": "packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter.ts",
-			"definition": "b3a640c6f5de8820d38ba1b57e4f75ddc8725d50a31802f5772aa5a6a5a8a191"
+			"definition": "e68e7c385ad7861b2f314e1f63750f44e03e5f007d151c9ecc86820dfbb08363",
+			"relocationDefinition": "b3a640c6f5de8820d38ba1b57e4f75ddc8725d50a31802f5772aa5a6a5a8a191",
+			"review": {
+				"commit": "7ecb49d22986783ba1c1262d214b18c9fef78c2c",
+				"path": "packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter.ts",
+				"definition": "e68e7c385ad7861b2f314e1f63750f44e03e5f007d151c9ecc86820dfbb08363",
+				"reason": "Use the shared errorMessage formatter for runtime failures; preserve the runtime boundary."
+			}
 		},
 		{
 			"unit": "workflow.generate-unit",

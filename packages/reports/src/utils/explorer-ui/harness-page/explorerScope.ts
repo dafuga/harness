@@ -1,11 +1,10 @@
+import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { ExplorerResolved } from '../explorerScope';
 import type { ExplorerLocation, ExplorerScope } from '../../../models/explorer-ui/Explorer.types';
 import type {
 	HarnessIndex,
 	HarnessRevisionSummary
 } from '../../../models/explorer-ui/Harness.types';
-
-const short = (commit: string) => commit.slice(0, 7);
 
 const missing = (message: string): ExplorerResolved => ({ kind: 'missing', message });
 
@@ -15,7 +14,9 @@ function tipOf(index: HarnessIndex, branch: string): string | ExplorerResolved {
 	if (!found) return missing(`Branch ${branch} is not in this history.`);
 	const held = index.revisions.some((item) => item.commit === found.head);
 	if (held) return found.head;
-	return missing(`The tip of branch ${branch} (${short(found.head)}) is not in this history.`);
+	return missing(
+		`The tip of branch ${branch} (${shortCommit(found.head)}) is not in this history.`
+	);
 }
 
 /**
@@ -29,9 +30,9 @@ export function explorerScope(index: HarnessIndex, location: ExplorerLocation): 
 	if (tip !== null && typeof tip !== 'string') return tip;
 	const commit = location.commit ?? tip ?? '';
 	const summary = index.revisions.find((item) => item.commit === commit);
-	if (!summary) return missing(`Commit ${short(commit)} is not in this history.`);
+	if (!summary) return missing(`Commit ${shortCommit(commit)} is not in this history.`);
 	if (location.branch !== null && !summary.branches.includes(location.branch)) {
-		return missing(`Branch ${location.branch} does not contain commit ${short(commit)}.`);
+		return missing(`Branch ${location.branch} does not contain commit ${shortCommit(commit)}.`);
 	}
 	return { kind: 'scope', scope: bound(location, tip, summary) };
 }

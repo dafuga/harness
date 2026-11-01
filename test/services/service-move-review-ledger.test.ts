@@ -1,6 +1,7 @@
 import type { ReviewedFile } from './service-move-review-ledger.test.types';
 import { expect, test } from 'vitest';
 import migration from '../../specification/loops/shared-service-ownership/migration.json';
+import { serviceMoveReviews } from '../support/serviceMoveReviews';
 
 test('history catalog changes have committed service-move review entries', () => {
 	const files = migration.files as ReviewedFile[];
@@ -18,4 +19,8 @@ test('history catalog changes have committed service-move review entries', () =>
 		if (!file.review.reason.trim()) gaps.push(`${unit}: review reason is missing`);
 	}
 	expect(gaps).toEqual([]);
+	const reviewed = migration.files.find((file) => file.unit === 'adapter.handler-runtime')!;
+	expect(serviceMoveReviews({ ...migration, files: [reviewed] })).toEqual([]);
+	const unbound = { ...migration, moves: {}, files: [reviewed] };
+	expect(serviceMoveReviews(unbound)).toContain(`${reviewed.to}: original move proof lost`);
 });

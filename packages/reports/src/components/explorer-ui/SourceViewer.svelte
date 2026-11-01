@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../helpers/strings/shortCommit';
+
 	import type { SourceState } from '../../lib/explorer-ui/stores/sourceReader.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import Select from '../shared-primitives/Select.svelte';
@@ -31,7 +33,7 @@
 		{#if commit}
 			<hx-span class="source-commit" title={commit}>
 				<HarnessIcon name="commit" size={16} /><hx-span>Commit</hx-span><hx-code
-					>{commit.slice(0, 7)}</hx-code
+					>{shortCommit(commit)}</hx-code
 				>
 			</hx-span>
 		{/if}

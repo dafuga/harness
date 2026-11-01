@@ -1,3 +1,4 @@
+import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { HarnessRevisionSummary } from '../../../models/explorer-ui/Harness.types';
 
 const coverage = {
@@ -9,5 +10,5 @@ const coverage = {
 
 /** How a commit reads in a selector: its short hash, its subject and what proves it. */
 export function revisionLabel(item: HarnessRevisionSummary): string {
-	return `${item.commit.slice(0, 7)} ${item.subject} · ${coverage[item.coverage]}`;
+	return `${shortCommit(item.commit)} ${item.subject} · ${coverage[item.coverage]}`;
 }

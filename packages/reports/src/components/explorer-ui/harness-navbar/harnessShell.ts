@@ -1,3 +1,4 @@
+import { shortCommit } from '../../../helpers/strings/shortCommit';
 import { standardCodeModules } from '../../../../../../src/templates/module-system/standardCodeModules';
 import { moduleResourceLocation } from '../../../../../../src/helpers/module-system/moduleResourceLocation';
 import type {
@@ -74,7 +75,7 @@ function revision(input: HarnessNavbarInput, scope: ExplorerScope): HarnessShell
 		branch: scope.branch ?? retainedBranch,
 		commit: scope.commit,
 		commits: listed ? input.commits : [scope.summary, ...input.commits],
-		note: scope.tip ? `Tip · ${scope.tip.slice(0, 7)}` : 'No branch tip',
+		note: scope.tip ? `Tip · ${shortCommit(scope.tip)}` : 'No branch tip',
 		viewed: viewed(scope),
 		tip: there ? null : { href: input.href(current), to: current },
 		branchTo: (name) => branched(input, location, name),

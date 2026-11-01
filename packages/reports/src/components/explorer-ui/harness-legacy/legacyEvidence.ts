@@ -1,3 +1,4 @@
+import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { HarnessLegacyReport } from '../../../models/explorer-ui/Harness.types';
 import type { Evidence, Status } from '../../../models/reports-media/Report.types';
 
@@ -9,7 +10,7 @@ const known = (status: string): Status =>
 /** Where an earlier report says it belongs: the commit it named, or why it names none. */
 export function legacyLink(report: HarnessLegacyReport, commit: string): string {
 	if (report.linked === commit) return 'Recorded for this commit';
-	if (report.linked) return `Recorded for ${report.linked.slice(0, 7)}`;
+	if (report.linked) return `Recorded for ${shortCommit(report.linked)}`;
 	return report.gap ?? 'It names no commit of this repository';
 }
 

@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../helpers/strings/shortCommit';
+
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { entityScreens } from '../../utils/explorer-ui/entityScreens';
@@ -96,7 +98,7 @@
 		return evidence.mode === 'commit' ? 'After' : 'Current';
 	}
 	const revision = (item: Evidence) =>
-		(item.phase === 'before' ? scope.parent : scope.commit)?.slice(0, 7) ?? '';
+		shortCommit((item.phase === 'before' ? scope.parent : scope.commit) ?? '');
 </script>
 
 <hx-section class="states-gallery" aria-label={`${name} supported states`}>

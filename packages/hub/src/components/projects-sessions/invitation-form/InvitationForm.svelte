@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { formatTime } from '../../../../../reports/src/helpers/strings/formatTime';
 	import Select from '$shared/Select.svelte';
 	import type { Invitation } from 'collaboration';
 	import { browserContext } from '../../../utils/development-tooling/browserContext';
@@ -69,9 +70,11 @@
 	{#if invitation}<hx-div class="hub-form invitation-result">
 			<hx-p>
 				Harness sends no email. Give the link and the code to the person yourself, by separate ways.
-				The code is shown only now and works once, until {new Date(
-					invitation.expiresAt
-				).toLocaleString()}, for the Google account with this email address.
+				The code is shown only now and works once, until {formatTime(
+					invitation.expiresAt,
+					invitation.expiresAt,
+					'full'
+				)}, for the Google account with this email address.
 			</hx-p>
 			<hx-div class="copy-row">
 				<hx-label>Invitation link<hx-input readonly value={link} /></hx-label><hx-button

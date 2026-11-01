@@ -1,0 +1,161 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.helper.strings-format-time",
+	"kind": "helper",
+	"title": "formatTime",
+	"responsibility": "Formats recorded instants consistently while retaining calendar labels and missing-value fallbacks.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/helpers/strings/formatTime.ts"],
+		"symbols": ["formatTime", "timeLabel", "displayTime"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "formatTime.instant",
+				"type": "string | null",
+				"required": true,
+				"description": "Recorded instant to format; null uses the fallback."
+			},
+			{
+				"name": "formatTime.fallback",
+				"type": "string",
+				"required": false,
+				"description": "Text for missing or invalid instants. Defaults to the original instant or Unknown when null."
+			},
+			{
+				"name": "formatTime.style",
+				"type": "'compact' | 'full'",
+				"required": false,
+				"default": "compact",
+				"description": "Optional format: compact medium date/short time, the default, or full platform date/time."
+			},
+			{
+				"name": "timeLabel.recorded",
+				"type": "string",
+				"required": true,
+				"description": "Recorded timestamp, calendar label or date-only text."
+			},
+			{
+				"name": "displayTime.instant",
+				"type": "string | null",
+				"required": true,
+				"description": "Recorded revision instant, or null when unavailable."
+			}
+		],
+		"outputs": [
+			{
+				"name": "formatTime",
+				"type": "string",
+				"description": "Localized instant or the supplied fallback."
+			},
+			{
+				"name": "timeLabel",
+				"type": "string",
+				"description": "Localized timestamp; other text and invalid timestamps stay unchanged."
+			},
+			{
+				"name": "displayTime",
+				"type": "string",
+				"description": "Localized revision instant, or Unknown when missing or invalid."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "formatTime",
+				"inputs": [
+					{
+						"name": "formatTime.instant",
+						"type": "string | null",
+						"required": true,
+						"description": "Recorded instant to format; null uses the fallback."
+					},
+					{
+						"name": "formatTime.fallback",
+						"type": "string",
+						"required": false,
+						"description": "Text for missing or invalid instants. Defaults to the original instant or Unknown when null."
+					},
+					{
+						"name": "formatTime.style",
+						"type": "'compact' | 'full'",
+						"required": false,
+						"default": "compact",
+						"description": "Optional format: compact medium date/short time, the default, or full platform date/time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatTime",
+						"type": "string",
+						"description": "Localized instant or the supplied fallback."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "timeLabel",
+				"inputs": [
+					{
+						"name": "timeLabel.recorded",
+						"type": "string",
+						"required": true,
+						"description": "Recorded timestamp, calendar label or date-only text."
+					}
+				],
+				"outputs": [
+					{
+						"name": "timeLabel",
+						"type": "string",
+						"description": "Localized timestamp; other text and invalid timestamps stay unchanged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "displayTime",
+				"inputs": [
+					{
+						"name": "displayTime.instant",
+						"type": "string | null",
+						"required": true,
+						"description": "Recorded revision instant, or null when unavailable."
+					}
+				],
+				"outputs": [
+					{
+						"name": "displayTime",
+						"type": "string",
+						"description": "Localized revision instant, or Unknown when missing or invalid."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/helpers/strings/formatTime.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/helpers/strings/formatTime.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

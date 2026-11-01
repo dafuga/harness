@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+
 	import Select from '$shared/Select.svelte';
 	import type { Evidence } from '../../../../reports/src/models/Report.types';
 	import {
@@ -24,7 +26,6 @@
 		options: ScreenOption[];
 		evidence: EntityEvidence;
 	} = $props();
-	const short = (commit: string) => commit.slice(0, 7);
 	let wanted = $state<Partial<ScreenPick>>({});
 	const pick = $derived(screenPick(options, wanted));
 	const option = $derived(options.find((item) => item.scenario === pick?.scenario));
@@ -44,9 +45,9 @@
 	 * was made is said only as the record says it, so an inherited one names its own commit.
 	 */
 	const recorded = $derived.by(() => {
-		const at = short(result.scope.commit);
+		const at = shortCommit(result.scope.commit);
 		if (shown.origin)
-			return `Recorded for ${at}. The capture was made at ${short(shown.origin)} and is inherited.`;
+			return `Recorded for ${at}. The capture was made at ${shortCommit(shown.origin)} and is inherited.`;
 		return shown.fresh
 			? `Recorded for ${at} and captured from the build of that commit.`
 			: `Recorded for ${at}; no capture of this state stands for it.`;
@@ -55,10 +56,10 @@
 	function heading(item: Evidence): { title: string; role: string } {
 		const { commit, parent } = result.scope;
 		if (item.phase === 'before')
-			return { title: `Before · ${short(parent ?? '')}`, role: 'Parent commit' };
-		if (paired) return { title: `After · ${short(commit)}`, role: 'Selected commit' };
-		const role = shown.origin ? `Inherited from ${short(shown.origin)}` : 'Branch tip';
-		return { title: `Current snapshot · ${short(commit)}`, role };
+			return { title: `Before · ${shortCommit(parent ?? '')}`, role: 'Parent commit' };
+		if (paired) return { title: `After · ${shortCommit(commit)}`, role: 'Selected commit' };
+		const role = shown.origin ? `Inherited from ${shortCommit(shown.origin)}` : 'Branch tip';
+		return { title: `Current snapshot · ${shortCommit(commit)}`, role };
 	}
 </script>
 

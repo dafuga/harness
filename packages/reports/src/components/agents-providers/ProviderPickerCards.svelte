@@ -1,6 +1,7 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import { formatTime } from '../../helpers/strings/formatTime';
 	import type { SessionObservation, SwitchRequest } from '../../../../../src/core/pickerTypes';
 	import type { PickerModel, ProviderSelection } from '../../../../../src/core/pickerModelTypes';
 	let {
@@ -24,11 +25,6 @@
 				?.label ?? target.model
 		);
 	}
-	function when(iso: string): string {
-		return Date.parse(iso)
-			? new Date(iso).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })
-			: iso;
-	}
 </script>
 
 {#snippet choice(target: ProviderSelection)}
@@ -44,7 +40,7 @@
 		{#if active}
 			{@render choice(active.selection)}
 			<hx-p>
-				{active.idle ? 'Idle' : 'In use'} · clients: {active.clients} · observed {when(
+				{active.idle ? 'Idle' : 'In use'} · clients: {active.clients} · observed {formatTime(
 					active.observedAt
 				)}
 			</hx-p>
@@ -61,7 +57,9 @@
 		</hx-h3>
 		{#if request}
 			{@render choice(request.target)}
-			<hx-p>Queued {when(request.createdAt)}{request.reason ? ` · ${request.reason}` : ''}</hx-p>
+			<hx-p
+				>Queued {formatTime(request.createdAt)}{request.reason ? ` · ${request.reason}` : ''}</hx-p
+			>
 		{:else}
 			<hx-p>Nothing is queued for this session.</hx-p>
 		{/if}

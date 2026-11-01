@@ -22,7 +22,12 @@ export function serviceMoveReviews(ledger: Ledger, pack = reviewHistory): string
 		const original = originalFiles(git, ledger);
 		for (const file of reviewed) {
 			const review = file.review!;
-			const previous = original.find((entry) => entry.from === file.from && entry.to === file.to);
+			const previous = original.find(
+				(entry) =>
+					entry.from === file.from &&
+					entry.unit === file.unit &&
+					(entry.to === file.to || ledger.moves[entry.from] === file.to)
+			);
 			if (file.relocationDefinition !== previous?.definition)
 				gaps.push(`${file.to}: original move proof lost`);
 			if (!review.reason.trim() || review.definition !== file.definition)

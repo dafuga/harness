@@ -1,8 +1,8 @@
+import { shortCommit } from '../../helpers/strings/shortCommit';
 import type { Scenario, CaptureStanding, CaptureProvenance } from './captureProvenance.types';
 import type { HarnessCapture, HarnessRecord } from '../../models/explorer-ui/Harness.types';
 
 const brief = (id: string) => id.slice(0, 12);
-const short = (commit: string) => commit.slice(0, 7);
 const kinds: Record<string, string> = {
 	fixture: 'fixture data, not a capture of running software',
 	'actual-capture': 'actual capture of running software'
@@ -53,7 +53,7 @@ function verdict(
 		return `Accepted on its own, but record ${id} failed for revision ${target}.`;
 	}
 	return stamped
-		? `Tested at ${short(target)} by passing record ${id}.`
+		? `Tested at ${shortCommit(target)} by passing record ${id}.`
 		: `Produced while record ${id} verified revision ${target}.`;
 }
 
@@ -107,16 +107,16 @@ export function captureProvenance(
 
 /** Where a scenario's result comes from; a failed attempt is never called tested. */
 export function scenarioOrigin(scenario: Scenario): string {
-	if (scenario.inherited) return `Inherited from ${short(scenario.origin.commit)}`;
-	if (scenario.status === 'passed') return `Tested at ${short(scenario.testedRevision)}`;
+	if (scenario.inherited) return `Inherited from ${shortCommit(scenario.origin.commit)}`;
+	if (scenario.status === 'passed') return `Tested at ${shortCommit(scenario.testedRevision)}`;
 	const builds = scenario.states.flatMap((state) =>
 		state.captures.map((capture) => capture.server?.revision)
 	);
 	const others = [...new Set(builds)].filter(
 		(revision): revision is string => Boolean(revision) && revision !== scenario.testedRevision
 	);
-	const elsewhere = others.length ? `; captures came from ${others.map(short).join(', ')}` : '';
-	return `Failed attempt at ${short(scenario.testedRevision)}${elsewhere}`;
+	const elsewhere = others.length ? `; captures came from ${others.map(shortCommit).join(', ')}` : '';
+	return `Failed attempt at ${shortCommit(scenario.testedRevision)}${elsewhere}`;
 }
 
 export type { CaptureStanding, CaptureProvenance } from './captureProvenance.types';

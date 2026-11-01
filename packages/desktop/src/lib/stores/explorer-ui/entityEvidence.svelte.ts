@@ -1,3 +1,4 @@
+import { errorMessage } from '../../../../../reports/src/helpers/strings/errorMessage';
 import type { EvidenceTarget } from './entityEvidence.svelte.types';
 import type { ExplorerBehavior } from '../../../../../reports/src/models/Explorer.types';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
@@ -10,9 +11,6 @@ import { artifactQuery, type EvidenceSide } from '../../../utils/development-too
 import type { EvidenceStatus } from '../../../utils/verification-evidence/evidenceNotice';
 import { evidenceReading } from '../../../utils/verification-evidence/evidenceReading';
 
-function words(cause: unknown): string {
-	return cause instanceof Error ? cause.message : String(cause);
-}
 const unlisted = 'This capture is not listed by the evidence that is shown.';
 const left = 'This capture is no longer shown.';
 
@@ -60,7 +58,7 @@ class EntityEvidenceState {
 			this.status = 'ready';
 		} catch (cause) {
 			if (token !== this.serial) return;
-			this.error = words(cause);
+			this.error = errorMessage(cause);
 			this.status = 'failed';
 			return;
 		}
