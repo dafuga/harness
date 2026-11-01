@@ -2,7 +2,7 @@
 	"name": "sol8-selector-overlay",
 	"goal": "Keep revision summary controls single-painted with the original value case in compact and noncompact layouts.",
 	"createdAt": "2026-11-01T07:03:18.156Z",
-	"updatedAt": "2026-11-01T07:03:37.463Z",
+	"updatedAt": "2026-11-01T07:06:25.011Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:06:24.390Z",
+			"evidence": "Admitted selector74-red.json fails the broadened native-paint assertion at 209a16088e, retaining eighteen diagnostic captures before repair."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:06:25.011Z",
+			"evidence": "Scope native text concealment and original-case typography to noncompact revision fields; retain both layout hosts in the normal catalog paint guard."
 		},
 		{
 			"id": "implement",

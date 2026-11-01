@@ -114,3 +114,15 @@
 		>
 	{/if}
 </hx-div>
+
+<style>
+	@media (forced-colors: none) {
+		:global([data-harness-component='harness-harness-selectors'].hc-controls .has-display select) {
+			color: transparent;
+		}
+	}
+	:global([data-harness-component='harness-harness-selectors'].hc-controls .report-select-value) {
+		letter-spacing: var(--hx-style-tracking-normal);
+		text-transform: none;
+	}
+</style>
