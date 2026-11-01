@@ -5,6 +5,7 @@ import type {
 } from '../../../../../game/src/models/game-authoring/Game.types';
 import type { PreviewProps } from './shared.types';
 import { noop } from './shared';
+import { commits } from '../../../../test/entityUnits';
 
 export const desktopGameCatalogVariants: Record<string, string[]> = {
 	'desktop.component.game-checkpoint-editor': ['empty', 'readonly', 'empty-rules', 'long'],
@@ -97,24 +98,46 @@ function checkpoint(props: PreviewProps, variant: string): PreviewProps {
 }
 function pane(props: PreviewProps, variant: string): PreviewProps {
 	const context = props.context as { checkpoint: Checkpoint; view: GameView };
+	const node = variant === 'advanced' ? context.view.checkpoints[1] : context.checkpoint;
+	const changes: Record<string, Partial<Checkpoint>> = {
+		advanced: {
+			title: 'Unlock the courtyard gate',
+			description:
+				'After collecting the garden key, open the courtyard gate and reveal the path to the northern beacon.',
+			conditions: [{ field: 'keys collected', op: 'gte', value: 1 }],
+			actions: [
+				{ type: 'set', target: 'gateOpen', value: true },
+				{ type: 'emit', target: 'gate-opened', value: true }
+			]
+		},
+		long: {
+			title:
+				'Restore the northern beacon and carry its lantern through the flooded courtyard to unlock the garden gate',
+			description: [
+				'Climb the broken stairs beside the western shore and relight the northern beacon with the lantern found at the docks.',
+				'Its light reveals a safe path across the flooded courtyard, where the player collects the brass garden key from a sheltered alcove.',
+				'Opening the garden gate saves the restored beacon and keeps the route available after a missed jump.',
+				'The camera then turns toward the greenhouse so the next destination is clear before control returns to the player.'
+			].join(' ')
+		}
+	};
 	return {
 		...props,
+		context: {
+			...context,
+			checkpoint: { ...node, ...changes[variant] },
+			projectId: 'garden-trail',
+			revision: commits.tip,
+			bridge: {
+				gameImageGenerate: async () => {
+					throw new Error('The image provider is unavailable. Try again.');
+				}
+			}
+		},
 		close: noop,
 		remove: noop,
 		adding: variant === 'adding',
-		readonly: variant === 'readonly',
-		...(variant === 'long'
-			? {
-					context: {
-						...context,
-						checkpoint: {
-							...context.checkpoint,
-							title: 'A checkpoint with a long title',
-							description: 'A detailed description of the checkpoint and its outcome. '.repeat(8)
-						}
-					}
-				}
-			: {})
+		readonly: variant === 'readonly'
 	};
 }
 function fields(props: PreviewProps, variant: string): PreviewProps {
