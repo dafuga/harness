@@ -170,6 +170,9 @@ async function assertLoadedHistory(component: Locator, id: string, variant: stri
 }
 
 async function assertComposerPresentation(component: Locator, variant: string) {
+	await expect(component.getByRole('textbox', { name: 'Message' })).not.toHaveValue(
+		/synthetic request kept for this capture/i
+	);
 	const modes: Record<string, string> = {
 		ask: 'Ask',
 		plan: 'Plan',
