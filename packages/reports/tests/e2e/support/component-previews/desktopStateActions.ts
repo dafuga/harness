@@ -21,12 +21,23 @@ export function desktopCaptureDirectory(id: string) {
 	);
 }
 
-/** Keep fixture-only heading pixels out without moving the rendered component. */
+/** Frame isolated Desktop surfaces and omit fixture-only headings. */
 export async function frameDesktopCapture(page: Page, id: string) {
+	if (id === 'desktop.component.thread-panel')
+		await page
+			.locator(`[data-preview-unit="${id}"] .thread-panel`)
+			.evaluate((node: HTMLElement) => {
+				node.style.position = 'static';
+				node.style.inset = 'auto';
+				node.style.maxHeight = 'none';
+				node.querySelector<HTMLElement>('.thread-scroll')!.style.maxHeight = 'none';
+			});
+
 	const owned =
 		Object.hasOwn(desktopCatalogVariants, id) ||
 		Object.hasOwn(desktopGameCatalogVariants, id) ||
-		id === 'desktop.component.project-agent';
+		id === 'desktop.component.project-agent' ||
+		id === 'desktop.component.thread-panel';
 	if (owned) {
 		await page.locator('#preview-title').evaluate((node: HTMLElement) => {
 			node.style.visibility = 'hidden';
