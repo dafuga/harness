@@ -66,6 +66,7 @@
 		display: grid;
 		justify-items: start;
 		gap: var(--hx-space-6);
+		padding-block-start: var(--hx-space-4);
 		font-size: var(--hx-type-size-xs);
 	}
 	h2 {
@@ -97,6 +98,12 @@
 	.deployment-details :global(.facts) {
 		padding-block: var(--hx-space-10);
 		border-block: var(--hx-border-thin) solid var(--hx-color-border);
+	}
+	/* A phone stacks each name over its value, so a full commit has the width to stay on one line. */
+	@media (max-width: 560px) {
+		.deployment-details :global(dl) {
+			grid-template-columns: minmax(0, 1fr);
+		}
 	}
 	.deployment-details :global(dt) {
 		font-size: var(--hx-type-size-xs);
