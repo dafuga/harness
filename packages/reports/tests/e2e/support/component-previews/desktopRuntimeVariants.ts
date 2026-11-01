@@ -1,4 +1,5 @@
 import { prepareDesktopHistoryProof } from './desktopHistoryFixture';
+import { prepareDesktopRuntimeProof } from './desktopRuntimeProofFixture';
 import type { DesktopData } from './desktopData.svelte';
 import { whenReady } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
@@ -137,6 +138,7 @@ export async function desktopRuntimeReady(id: string, data: DesktopData, variant
 	}
 	await prepareScreens(id, data, variant);
 	if (id !== 'desktop.component.runtime-evidence') return;
+	if (['', 'offline'].includes(variant)) prepareDesktopRuntimeProof(data);
 	prepareEvidence(data, variant);
 }
 

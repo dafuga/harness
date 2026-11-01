@@ -32,3 +32,19 @@ export async function assertHistoryViewCapture(component: Locator, id: string, v
 			'Pending history has a visible loading indicator and label'
 		).toBeVisible();
 }
+
+/** A ready record carries its proof; pending or unavailable reads cannot claim proof is absent. */
+export async function assertRuntimeEvidenceProof(component: Locator, id: string, variant: string) {
+	if (id !== 'desktop.component.runtime-evidence') return;
+	const proof = component.getByRole('region', { name: 'Regression proof', exact: true });
+	if (!['', 'offline'].includes(variant)) {
+		await expect(proof, 'Only loaded records show a regression proof verdict').toHaveCount(0);
+		return;
+	}
+	await expect(proof, 'Recorded runtime evidence includes regression proof').toContainText(
+		'Regression fixed'
+	);
+	await expect(proof).toContainText('order card delivery status');
+	await expect(proof.getByRole('link', { name: 'View failing test commit' })).toBeVisible();
+	await expect(proof.getByRole('link', { name: 'View fix commit', exact: true })).toBeVisible();
+}
