@@ -129,7 +129,7 @@
 						{#each scenario.states as state}
 							<hx-tr>
 								<hx-th scope="row">{state.state}</hx-th>
-								<hx-td
+								<hx-td class="required-state"
 									>{state.declared}{declared(scenario.scenario, state.state)
 										? `: ${declared(scenario.scenario, state.state)}`
 										: ''}</hx-td
@@ -210,3 +210,10 @@
 		<EvidenceGrid items={media} assetBase={mediaBase} idPrefix="entity-" />
 	{/if}
 </hx-div>
+
+<style>
+	.required-state {
+		overflow-wrap: normal;
+		word-break: normal;
+	}
+</style>

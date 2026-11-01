@@ -44,6 +44,8 @@
 	);
 	let before = $derived(pair.find((item) => item.phase === 'before'));
 	let after = $derived(pair.find((item) => item.phase === 'after') || selected);
+	let displayed = $derived(view === 'before' && before ? before : after);
+	let canNavigate = $derived(!!selected && navigableItems.some((item) => item.id !== selected?.id));
 	let shown = $derived(
 		view === 'compare' && before && after
 			? [before, after]
@@ -74,7 +76,7 @@
 		onselect(match, true);
 	}
 	function move(offset: number) {
-		if (!selected || !navigableItems.length) return;
+		if (!selected || !canNavigate) return;
 		const index = navigableItems.findIndex((item) => item.id === selected.id);
 		onselect(navigableItems[(index + offset + navigableItems.length) % navigableItems.length]);
 		view = 'after';
@@ -93,13 +95,13 @@
 <svelte:window onkeydown={keyboard} />
 <Modal
 	open={!!selected}
-	title={view === 'before' && before ? before.title : selected?.title || ''}
+	title={displayed?.title || ''}
 	variant="lightbox"
 	onclose={close}
 >
 	<hx-div class="viewer-actions toolbar">
-		<hx-button onclick={() => move(-1)} aria-label={$t('previous')}>←</hx-button>
-		<hx-button onclick={() => move(1)} aria-label={$t('next')}>→</hx-button>
+		<hx-button disabled={!canNavigate} onclick={() => move(-1)} aria-label={$t('previous')}>←</hx-button>
+		<hx-button disabled={!canNavigate} onclick={() => move(1)} aria-label={$t('next')}>→</hx-button>
 		{#if before}
 			<hx-button
 				class:active={view === 'before'}
@@ -117,7 +119,7 @@
 				onclick={() => (view = 'compare')}>{$t('compare')}</hx-button
 			>
 		{/if}
-		<hx-span class="muted">{$t('keyboard')}</hx-span>
+		{#if canNavigate}<hx-span class="muted">{$t('keyboard')}</hx-span>{/if}
 	</hx-div>
 	<hx-div class="viewer-sizes toolbar" role="group" aria-label={$t('viewport')}>
 		{#each ['mobile', 'tablet', 'desktop'] as size}
@@ -131,8 +133,8 @@
 		{/each}
 	</hx-div>
 	<!-- Stated before the image, so what produced it is read without scrolling past it. -->
-	{#if selected?.provenance}
-		<hx-div class="viewer-provenance"><EvidenceProvenance item={selected} /></hx-div>
+	{#if displayed?.provenance}
+		<hx-div class="viewer-provenance"><EvidenceProvenance item={displayed} /></hx-div>
 	{/if}
 	<hx-div class:comparison={view === 'compare'} class="viewer-images">
 		<!-- Keyed by view too, so every image or view change mounts a fresh zoom state at fit. -->
@@ -144,7 +146,7 @@
 					>{/if}
 				<hx-figcaption>
 					{item.standing ?? $t(item.phase || 'current')} · {item.title}{#if item.viewport}
-						· {item.viewport}{/if}
+						{' · '}{item.viewport}{/if}
 					{#if !item.missing && item.note}<hx-p class="viewer-note">{item.note}</hx-p>{/if}
 				</hx-figcaption>
 			</hx-figure>{/each}
