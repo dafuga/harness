@@ -15,10 +15,19 @@ loading status, so final screenshot readiness must be checked separately.
 
 Before the matched checkpoint, fixture/capture corrections make multiple show two linked
 components, preserve the full catalog context behind the config dialog, and rename the scoped
-scenario to Order browsing. Those are diagnostic fixture repairs, not product red/green proof.
+scenario to Browse customer orders and delivery status. Those are diagnostic fixture repairs,
+not product red/green proof.
 No original capture or recorded artifact bytes are relabelled. Unrelated fixtures stay unchanged.
 
 The frozen product regression selects EvidenceViewer/no-navigation, EntityScreens/viewer-open,
 EntitySections/tests and EntityTests/default at desktop, tablet and mobile. The product repair
 must preserve the complete test/fixture corpus. Normal verification and attachment then retain
 every state of those owners and CatalogItems. EntitySearchResults is refreshed to confirm note 40.
+
+The first red request was refused because its named word-wrap assertion did not occur.
+Independent diagnostic `4c55a39fd0d19afdddb9e5ba8dcd21a658383bb3ae431974ee83ed236500db8f`
+retains the actual result: six navigation/provenance assertion failures, three passes for Sections
+with a shorter title, and three EntityTests fixture failures requesting unserved function artifacts.
+Before retrying the pair, the standalone EntityTests example now uses the same Orders evidence
+and behavior as its Sections consumer. Its realistic longer scenario title preserves coverage of
+long declarations. Fixture failures do not count as product regression proof.
