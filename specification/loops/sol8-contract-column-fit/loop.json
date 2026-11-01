@@ -2,7 +2,7 @@
 	"name": "sol8-contract-column-fit",
 	"goal": "Keep contract table labels readable beside long identifiers and types",
 	"createdAt": "2026-11-01T00:46:30.177Z",
-	"updatedAt": "2026-11-01T00:49:03.163Z",
+	"updatedAt": "2026-11-01T00:51:15.748Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,17 +39,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:51:12.174Z",
+			"evidence": "f91703d07e wraps long identifiers/types within their cells, preserves intrinsic short-label widths and keeps table headings on one line."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:51:14.015Z",
+			"evidence": "Unchanged three-viewport long-field command passes at f91703d07e; record 0a7349e479c45e3d53de9e14a60f69ece05406b86308403e50da16d2a6366152 retains all three captures."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:51:15.748Z",
+			"evidence": "Isolated committed snapshots reject fragmented labels before repair and accept the unchanged guard after repair. The guard runs across every existing contract component catalog state."
 		},
 		{
 			"id": "verify",

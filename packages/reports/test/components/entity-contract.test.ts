@@ -85,6 +85,9 @@ test('legacy contract tables retain types and example controls for opaque fields
 		owns: { source: [source], symbols: ['OrderInput'] },
 		modelDefinitions: typeDeclarations(source)
 	});
+	types.contract.inputs = [
+		{ name: 'OrderInput.resolve', type: '(key: string): number', required: true }
+	];
 	const groups = await measureWorkload(
 		'reports.function.contract-fields',
 		'shared-type-declarations',
@@ -97,6 +100,7 @@ test('legacy contract tables retain types and example controls for opaque fields
 		['resolve', '(key: string): number']
 	]);
 	expect(groups[1].fields[0]).toMatchObject({ name: 'OrderIds', type: 'string[]' });
+	expect(groups[0].fields.map((field) => field.required)).toEqual([true, false, true]);
 	expect(
 		groups
 			.flatMap((group) => group.fields)
