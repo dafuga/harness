@@ -9,14 +9,7 @@ export async function desktopArtifactFixtures(original: Data) {
 	const hashes: Record<string, string> = {};
 	for (const [hash, value] of Object.entries(original.bytes)) {
 		if (!value.mediaType.includes('json')) continue;
-		const document = JSON.parse(describe(Buffer.from(value.data).toString()));
-		if (Array.isArray(document.steps))
-			document.steps = document.steps.map((step: unknown) =>
-				typeof step === 'string' && step.startsWith('Search for ')
-					? { action: 'search', text: step.slice('Search for '.length) }
-					: step
-			);
-		const body = Buffer.from(JSON.stringify(document, null, 2));
+		const body = readableArtifact(value.data);
 		const sha256 = createHash('sha256').update(body).digest('hex');
 		hashes[hash] = sha256;
 		bytes[sha256] = { mediaType: value.mediaType, data: [...body] };
@@ -51,6 +44,17 @@ export async function desktopArtifactFixtures(original: Data) {
 		arrayBuffer: async () => new Uint8Array(body).buffer
 	}));
 	return { results, bindings, bytes, text: { capture, read } };
+}
+
+function readableArtifact(data: number[]) {
+	const document = JSON.parse(describe(Buffer.from(data).toString()));
+	if (Array.isArray(document.steps))
+		document.steps = document.steps.map((step: unknown) =>
+			typeof step === 'string' && step.startsWith('Search for ')
+				? { action: 'search', text: step.slice('Search for '.length) }
+				: step
+		);
+	return Buffer.from(JSON.stringify(document, null, 2));
 }
 
 function describe(text: string) {
