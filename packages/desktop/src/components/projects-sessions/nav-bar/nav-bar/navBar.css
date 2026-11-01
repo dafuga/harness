@@ -4,10 +4,10 @@ header.topbar.with-account,
 header.topbar.with-activity {
 	display: grid;
 	grid-template:
-		'brand project account search' auto
-		'context context context context' auto
-		'tools tools tools tools' auto
-		/ auto minmax(0, 1fr) auto auto;
+		'brand project account' auto
+		'context context context' auto
+		'tools tools tools' auto
+		/ auto minmax(0, 1fr) auto;
 	align-items: center;
 	gap: var(--hx-space-8) var(--hx-space-16);
 	min-width: 0;
@@ -36,6 +36,8 @@ header.topbar::before {
 }
 .topbar-search {
 	grid-area: search;
+	flex: none;
+	margin-inline-start: auto;
 	display: flex;
 	align-items: center;
 	gap: var(--hx-space-8);
@@ -108,18 +110,18 @@ header.topbar::before {
 	header.topbar.with-account,
 	header.topbar.with-activity {
 		grid-template:
-			'brand project account search' auto
-			'context context context context' auto
-			'tools tools tools tools' auto
-			/ var(--hx-space-26) minmax(0, 1fr) auto auto;
+			'brand project account' auto
+			'context context context' auto
+			'tools tools tools' auto
+			/ var(--hx-space-26) minmax(0, 1fr) auto;
 		gap: var(--hx-space-8) var(--hx-space-6);
 		padding: var(--hx-space-8) var(--hx-space-12) 0;
 	}
 	.topbar-context {
 		display: grid;
 		grid-template:
-			'environment revision tip' auto
-			'summary summary summary' auto
+			'environment revision search' auto
+			'summary summary tip' auto
 			/ max-content minmax(0, 1fr) auto;
 		gap: var(--hx-space-6);
 		padding: var(--hx-space-6);
