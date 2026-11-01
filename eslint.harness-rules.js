@@ -62,50 +62,8 @@ export const layerAllowlist = readLayerAllowlist();
 export default {
 	rules: {
 		'shared-reuse': sharedReuseRule,
-		'max-class-lines': {
-			meta: {
-				type: 'suggestion',
-				messages: {
-					tooLarge: 'Class has {{lines}} lines. Keep classes at or below {{max}} lines.'
-				}
-			},
-			create(context) {
-				return {
-					ClassDeclaration(node) {
-						const lines = nodeLines(node);
-						if (lines > harnessRuleLimits.maxClassLines) {
-							context.report({
-								node,
-								messageId: 'tooLarge',
-								data: { lines, max: harnessRuleLimits.maxClassLines }
-							});
-						}
-					}
-				};
-			}
-		},
-		'max-method-lines': {
-			meta: {
-				type: 'suggestion',
-				messages: {
-					tooLarge: 'Method has {{lines}} lines. Keep methods at or below {{max}} lines.'
-				}
-			},
-			create(context) {
-				return {
-					MethodDefinition(node) {
-						const lines = nodeLines(node);
-						if (lines > harnessRuleLimits.maxMethodLines) {
-							context.report({
-								node,
-								messageId: 'tooLarge',
-								data: { lines, max: harnessRuleLimits.maxMethodLines }
-							});
-						}
-					}
-				};
-			}
-		},
+		'max-class-lines': lineLimitRule('ClassDeclaration', 'maxClassLines', 'Class', 'classes'),
+		'max-method-lines': lineLimitRule('MethodDefinition', 'maxMethodLines', 'Method', 'methods'),
 		'no-manager-name': {
 			meta: {
 				type: 'suggestion',
@@ -196,6 +154,31 @@ function boundaryViolation(filename, source, ruleName) {
 			normalizedFile.includes(entry.from) &&
 			entry.targets.some((target) => normalizedSource.includes(target))
 	);
+}
+
+/** Class and method limits share reporting while retaining live configured limits. */
+function lineLimitRule(nodeType, limit, label, plural) {
+	return {
+		meta: {
+			type: 'suggestion',
+			messages: {
+				tooLarge: label + ' has {{lines}} lines. Keep ' + plural + ' at or below {{max}} lines.'
+			}
+		},
+		create(context) {
+			return {
+				[nodeType](node) {
+					const lines = nodeLines(node);
+					if (lines > harnessRuleLimits[limit])
+						context.report({
+							node,
+							messageId: 'tooLarge',
+							data: { lines, max: harnessRuleLimits[limit] }
+						});
+				}
+			};
+		}
+	};
 }
 
 function nodeLines(node) {

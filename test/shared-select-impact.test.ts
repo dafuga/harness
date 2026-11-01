@@ -64,17 +64,10 @@ test('no import written through a build alias of any package is left as a packag
 	const declared = Object.fromEntries(
 		Object.entries(builds).filter(([, own]) => Object.keys(own).length)
 	);
+	const reportsAliases = { $reports: '../reports/src', $shared: '../reports/src/components' };
 	expect(declared).toEqual({
-		desktop: {
-			$reports: '../reports/src',
-			$desktop: './src',
-			$shared: '../reports/src/components'
-		},
-		hub: {
-			$reports: '../reports/src',
-			$desktop: '../desktop/src',
-			$shared: '../reports/src/components'
-		},
+		desktop: { ...reportsAliases, $desktop: './src' },
+		hub: { ...reportsAliases, $desktop: '../desktop/src' },
 		reports: { $reports: './src', $desktop: '../desktop/src', $shared: './src/components' }
 	});
 	const resolved = (item: Written) =>
