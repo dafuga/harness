@@ -2,7 +2,7 @@
 	"name": "sol8-usage-card-containment",
 	"goal": "Keep open visual-card usage previews inside all four card edges while preserving the card title.",
 	"createdAt": "2026-11-01T03:38:50.998Z",
-	"updatedAt": "2026-11-01T03:40:48.935Z",
+	"updatedAt": "2026-11-01T04:00:10.745Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:00:08.803Z",
+			"evidence": "b7e0e87824 selects the larger clear area above or below the card title and keeps the preview inside all four edges."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:00:10.745Z",
+			"evidence": "a5ee246635 at b7e0e87824 passes the same three viewport tests. Full capture fb9a65267e retains 90 images; all fetched and inspected."
 		},
 		{
 			"id": "verify",
