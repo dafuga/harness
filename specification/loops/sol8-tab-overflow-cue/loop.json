@@ -2,7 +2,7 @@
 	"name": "sol8-tab-overflow-cue",
 	"goal": "Keep overflowing entity sections visibly discoverable in mobile and desktop captures.",
 	"createdAt": "2026-11-01T12:16:52.422Z",
-	"updatedAt": "2026-11-01T12:21:13.122Z",
+	"updatedAt": "2026-11-01T12:30:35.168Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:30:33.521Z",
+			"evidence": "373f0e7407 adds persistent guidance next to overflowing sections and observes tab widths. Existing focus, selection and horizontal scrollbar behavior are preserved."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:30:35.168Z",
+			"evidence": "52f04a31cc passes all nine unchanged cases at 373f0e7407, paired with a1f46077d7 at 50eda3330d. Inspected every viewport image, including cue placement."
 		},
 		{
 			"id": "verify",
