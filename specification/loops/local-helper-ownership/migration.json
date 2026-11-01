@@ -5002,8 +5002,8 @@
 		{
 			"unit": "reports.function.contract-fields",
 			"name": "contractFields",
-			"commit": "407f1ab711ea6de6072189dcdad3996d4ae00451",
-			"reason": "Retain input requirements and literal defaults while displaying explicit empty error declarations.",
+			"commit": "05c843c94b12fae43287555320a8c7443c9d595b",
+			"reason": "Retain authored callable field requirements alongside source-declared interface fields.",
 			"definition": "7c73aac68623d59ddf67ed70c291afdcb9eb2adca6f2aa9b4337b072a2a60ad9",
 			"previousDefinitions": [
 				{
@@ -5019,6 +5019,13 @@
 					"commit": "caa32de5d477bfd67fdfca82519d2e1f0fe11ef6",
 					"reason": "Project source-declared shared interfaces and aliases through the existing contract tables under Types without inventing runtime behavior.",
 					"definition": "1e847858bfbc5f1e7cf8e00fd84c1f50f233c8714b4cd8fb0abca8f438bf8e10"
+				},
+				{
+					"unit": "reports.function.contract-fields",
+					"name": "contractFields",
+					"commit": "407f1ab711ea6de6072189dcdad3996d4ae00451",
+					"reason": "Retain input requirements and literal defaults while displaying explicit empty error declarations.",
+					"definition": "7c73aac68623d59ddf67ed70c291afdcb9eb2adca6f2aa9b4337b072a2a60ad9"
 				}
 			]
 		},

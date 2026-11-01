@@ -2,7 +2,7 @@
 	"name": "sol8-contract-callable-fields",
 	"goal": "Preserve authored requirement flags on source-declared callable fields",
 	"createdAt": "2026-11-01T00:51:16.659Z",
-	"updatedAt": "2026-11-01T00:54:39.577Z",
+	"updatedAt": "2026-11-01T00:56:29.675Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:56:27.905Z",
+			"evidence": "05c843c94b retains qualified authored requirement flags for source-declared callable fields; legacy gaps remain explicit."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:56:29.675Z",
+			"evidence": "The unchanged Types command passes all three viewports at 05c843c94b; record 45321d167bb74492721a5d4a72c26c7fb85b6bdf696565995d230f5df49f81c0 retains the captures."
 		},
 		{
 			"id": "verify",
