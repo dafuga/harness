@@ -2,7 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Painted captions and reasons distinguish the named catalog states. */
 export async function assertDesktopPresentation(component: Locator, id: string, variant: string) {
-	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
+	await assertConversationPreview(component, id, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
 	if (id === 'desktop.component.project-agent') await assertChatPresentation(component, variant);
 	if (id === 'desktop.component.runtime-behavior')
@@ -195,4 +195,13 @@ async function assertSavedPlanPresentation(component: Locator) {
 		'Saved-plan notice and action remain above the composer'
 	).toBeLessThanOrEqual(Math.min(body.y + body.height, composer.y));
 	await expect(action, 'The saved-plan action is fully visible').toBeInViewport({ ratio: 1 });
+}
+
+async function assertConversationPreview(component: Locator, id: string, variant: string) {
+	if (id === 'desktop.component.thread-panel')
+		await expect(
+			component.getByText('Review the component states.', { exact: true }),
+			'The isolated thread capture shows its complete conversation'
+		).toBeInViewport({ ratio: 1 });
+	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 }
