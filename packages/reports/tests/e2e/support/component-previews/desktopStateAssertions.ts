@@ -21,15 +21,28 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'runtime-artifact:loading': 'Reading what it holds…',
 		'runtime-artifact:unreadable': 'The artifact bytes do not match the recorded hash.',
 		'runtime-artifact:text': 'Recorded plain text output.',
+		'runtime-behavior:loading': 'Reading the recorded results…',
+		'runtime-behavior:unreadable': 'The recorded results could not be read.',
 		'runtime-screens:incomparable': 'different runtime profiles',
 		'runtime-evidence:error': "Couldn't load recorded evidence. Try again.",
 		'runtime-evidence:offline': 'Saved'
 	};
 	if (messages[key]) await expect(component).toContainText(messages[key], { ignoreCase: true });
+	await expect(component).not.toContainText(
+		'Preview artifact is not bound to the selected result.'
+	);
 	await checks[id.replace('desktop.component.', '')]?.(component, variant);
 }
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	composer,
+	'runtime-behavior': async (component, variant) => {
+		if (variant === '') {
+			await expect(component).toContainText('What a test observed end to end.');
+			await expect(component).toContainText('Order 1042 · Service call');
+		}
+		if (['loading', 'unreadable'].includes(variant))
+			await expect(component).not.toContainText('What a test observed end to end.');
+	},
 	'environment-picker': async (component, variant) => {
 		if (['stage', 'preprod', 'prod'].includes(variant))
 			await expect(component.getByRole('combobox', { name: 'Environment' })).toHaveValue(variant);
