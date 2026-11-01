@@ -3031,12 +3031,6 @@
 			"units": ["reports.component.evidence-grid"]
 		},
 		{
-			"id": "reports-component-evidence-grid-uploads",
-			"title": "Evidence grid: Upload controls",
-			"coverage": "required",
-			"units": ["reports.component.evidence-grid"]
-		},
-		{
 			"id": "reports-component-evidence-grid-image-open",
 			"title": "Evidence grid: Image viewer",
 			"coverage": "required",
@@ -3135,18 +3129,6 @@
 		{
 			"id": "reports-component-evidence-grid-audio-open",
 			"title": "Evidence grid: Audio comparison open",
-			"coverage": "required",
-			"units": ["reports.component.evidence-grid"]
-		},
-		{
-			"id": "reports-component-evidence-grid-upload-comparison-open",
-			"title": "Evidence grid: Screenshot upload open",
-			"coverage": "required",
-			"units": ["reports.component.evidence-grid"]
-		},
-		{
-			"id": "reports-component-evidence-grid-upload-audio-open",
-			"title": "Evidence grid: Audio upload open",
 			"coverage": "required",
 			"units": ["reports.component.evidence-grid"]
 		},
@@ -8454,7 +8436,6 @@
 				"reports-component-evidence-grid",
 				"reports-component-evidence-grid-empty",
 				"reports-component-evidence-grid-audio",
-				"reports-component-evidence-grid-uploads",
 				"reports-component-evidence-grid-image-open",
 				"reports-component-evidence-grid-no-items",
 				"reports-component-evidence-grid-screenshot-only",
@@ -8472,8 +8453,6 @@
 				"reports-component-evidence-grid-status-not-proven",
 				"reports-component-evidence-grid-search",
 				"reports-component-evidence-grid-audio-open",
-				"reports-component-evidence-grid-upload-comparison-open",
-				"reports-component-evidence-grid-upload-audio-open",
 				"reports-component-evidence-provenance",
 				"reports-component-evidence-provenance-extended",
 				"reports-component-evidence-provenance-single",

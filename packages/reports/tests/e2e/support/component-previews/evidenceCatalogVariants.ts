@@ -18,7 +18,6 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 	'reports.component.evidence-grid': [
 		'empty',
 		'audio',
-		'uploads',
 		'image-open',
 		'no-items',
 		'screenshot-only',
@@ -35,9 +34,7 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 		'status-skipped',
 		'status-not-proven',
 		'search',
-		'audio-open',
-		'upload-comparison-open',
-		'upload-audio-open'
+		'audio-open'
 	],
 	'reports.component.evidence-provenance': [
 		'extended',

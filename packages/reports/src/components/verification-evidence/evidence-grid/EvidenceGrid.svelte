@@ -153,7 +153,7 @@
 		<hx-div class="toolbar">
 			<hx-input
 				bind:value={search}
-				placeholder={$t(audioCount ? 'searchMedia' : 'searchEvidence')}
+				placeholder={$t('searchEvidencePlaceholder')}
 				aria-label={$t(audioCount ? 'searchMedia' : 'searchEvidence')}
 			/>
 			<Select bind:value={status} label={$t('status')}
