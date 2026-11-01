@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { assertExplorerContentCatalog } from './explorerContentPreviewAssertions';
 
 /** A persistent cue remains visible when native scrollbars fade between interactions. */
 export async function assertTabOverflowCue(component: Locator, id: string) {
@@ -22,6 +23,7 @@ export async function assertTabOverflowCue(component: Locator, id: string) {
 /** Review the rendered shell, after its ordinary catalog capture has retained the checkpoint. */
 export async function assertShellVisualReview(component: Locator, id: string, variant: string) {
 	await reviewedCopy(component, id);
+	await assertExplorerContentCatalog(component, id, variant);
 	if (id.endsWith('harness-entity-screens') || id.endsWith('harness-explorer-content')) {
 		await expect(component).not.toContainText('No screenshot selected.');
 		await screenGeometry(component, variant);
