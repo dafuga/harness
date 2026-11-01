@@ -1,0 +1,70 @@
+{
+	"name": "sol10-fixture-entrypoints",
+	"goal": "Keep raw build setup imports independent of renderer test assertions.",
+	"createdAt": "2026-11-01T21:51:51.767Z",
+	"updatedAt": "2026-11-01T22:07:10.479Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-11-01T21:53:23.562Z",
+			"evidence": "b54e3445bf added renderer imports to data read by plain Bun setup. Setup fails importing archivedSource."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T21:53:24.393Z",
+			"evidence": "Vitest supplied Svelte transforms. The existing preview runner guard now checks plain setup imports without renderer or browser state."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T21:56:56.937Z",
+			"evidence": "The unchanged preview runner case fails on the renderer import before repair."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-11-01T21:56:57.506Z",
+			"evidence": "Keep renderer admission assertions beside their test owner; retain data fixtures and the plain import guard."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-11-01T22:07:10.479Z",
+			"evidence": "Renderer assertions now belong to their test owner. The unchanged four-case guard and seven source cases pass; the paired recorder freezes the subject fixture."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

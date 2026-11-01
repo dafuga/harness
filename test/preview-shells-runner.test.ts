@@ -1,4 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { resolve } from 'node:path';
+import { ownEnvironment } from './support/cli';
 import { expect, test } from 'vitest';
 import { unitsConfigFile, unitsConfigSchema } from '../src/core/unitsConfig';
 import { verifyConfigFile, verifyConfigSchema } from '../src/core/verifyTypes';
@@ -41,6 +44,7 @@ test('the Shells preview spec runs once, in the reports package, under the entit
 });
 
 test('every entity preview spec of the reports package is run by the config that finds it', () => {
+	assertPlainSetupImports();
 	expect(previews).toEqual([
 		'entity-preview-actions.spec.ts',
 		'entity-preview-captures.spec.ts',
@@ -61,6 +65,39 @@ test('every entity preview spec of the reports package is run by the config that
 			plannedPreview(spec)
 		]);
 });
+
+/** Setup data must load before Vite, Vitest or a browser has installed renderer hooks. */
+function assertPlainSetupImports() {
+	const entries = config.setup.flatMap(({ command }) =>
+		[...command.matchAll(/\bimport setup from ['"]([^'"]+)['"]/g)].map((match) => ({
+			entry: match[1],
+			cwd: resolve(/^cd ([^ ]+) &&/.exec(command)?.[1] ?? '.')
+		}))
+	);
+	expect(entries.length).toBeGreaterThan(0);
+	for (const { entry, cwd } of entries) {
+		const env = Object.fromEntries(
+			Object.entries(ownEnvironment()).filter(([name]) => !name.startsWith('VITEST'))
+		);
+		const ran = spawnSync(
+			'bun',
+			[
+				'-e',
+				`const entry = await import(${JSON.stringify(entry)}); console.log(typeof entry.default);`
+			],
+			{
+				cwd,
+				env: { ...env, PLAYWRIGHT_BROWSERS_PATH: '/unavailable-harness-browser' },
+				encoding: 'utf8',
+				timeout: 15000
+			}
+		);
+		expect(
+			[ran.status, ran.stdout.trim()],
+			`${entry} must import without renderer or Vitest state: ${ran.stderr}`
+		).toEqual([0, 'function']);
+	}
+}
 
 test('capture readiness runs under the server-free shell config', () => {
 	const path = 'packages/reports/tests/e2e/explorer-shell-capture-readiness.spec.ts';
