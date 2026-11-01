@@ -81,6 +81,7 @@ function behavior(props: PreviewProps, data: DesktopData, variant: string): Prev
 function artifact(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
 	const cell = data.cell;
 	const changes: Record<string, PreviewProps> = {
+		output: { cell: data.shown.groups[0].lines.find((line) => line.kind === 'output')!.after },
 		missing: { cell: { ...cell, capture: null } },
 		unstored: {
 			cell: {

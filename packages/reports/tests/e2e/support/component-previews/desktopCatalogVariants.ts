@@ -67,6 +67,7 @@ export const desktopCatalogVariants: Record<string, string[]> = {
 		'unknown-time'
 	],
 	'desktop.component.runtime-artifact': [
+		'output',
 		'missing',
 		'unstored',
 		'loading',

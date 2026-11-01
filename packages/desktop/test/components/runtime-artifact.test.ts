@@ -16,6 +16,8 @@ const shown = (cell: BehaviorCell, more: { lost?: boolean; refusal?: string } = 
 test('a read and checked result shows what it was asked, what it answered and what held', async () => {
 	const { cell } = await cellOf();
 	const body = shown(cell);
+	expect(body).toContain('Recorded output details');
+	expect(body).not.toContain('Assertions and recorded result');
 	expect(body).toContain('role="group" aria-label="output of match"');
 	for (const heading of ['Steps', 'Assertions']) expect(body).toContain(`<h5>${heading}</h5>`);
 	// What it was asked and what it answered are one row of the shared table, under no heading.

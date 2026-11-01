@@ -3,6 +3,7 @@ import { assertPickerPresentation } from './desktopPickerAssertions';
 import { assertReadonlyGameFields } from './desktopReadonlyAssertions';
 import {
 	assertDesktopArtifactCapture,
+	assertDesktopBehaviorCapture,
 	assertDesktopBehaviorState,
 	assertDesktopScreenCapture
 } from './desktopArtifactAssertions';
@@ -51,23 +52,9 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 		if (['open', 'long'].includes(variant))
 			await expect(component.getByRole('status')).toBeVisible();
 	},
-	'revision-picker': async (component, variant) => {
-		if (variant === 'environment') {
-			const summary = component.getByLabel('Viewed context');
-			await expect(summary.locator('strong')).toHaveText('Updated at');
-			await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:00:00Z');
-			await expect(component.getByRole('button', { name: 'Go to tip' })).toHaveCount(0);
-		}
-		if (['pinned', 'historical'].includes(variant))
-			await expect(component.getByRole('button', { name: 'Go to tip' })).toBeVisible();
-	},
 	'nav-bar': async (component, variant) => {
 		if (variant === 'readonly')
 			await expect(component.getByRole('link', { name: 'Settings', exact: true })).toHaveCount(0);
-	},
-	'project-gate': async (component, variant) => {
-		if (variant === 'busy')
-			await expect(component.getByRole('button', { name: 'Open Project' })).toBeDisabled();
 	}
 };
 
@@ -91,6 +78,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertHistoryFixtureContent(component, id, variant);
 	await assertReadonlyGameFields(component, id, variant);
 	await assertDesktopArtifactCapture(component, id, variant);
+	await assertDesktopBehaviorCapture(component, id, variant);
 	await assertDesktopScreenCapture(component, id, variant);
 	await assertDesktopNavCapture(component, id);
 	await assertComposerCaptions(component, id);
