@@ -1,4 +1,5 @@
 export interface ReviewedFile {
+	unit: string;
 	from: string;
 	to: string;
 	definition: string;
