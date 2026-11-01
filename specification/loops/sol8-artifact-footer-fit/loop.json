@@ -2,7 +2,7 @@
 	"name": "sol8-artifact-footer-fit",
 	"goal": "Show complete recorded artifact text and keep mobile behavior status values readable without splitting words.",
 	"createdAt": "2026-11-01T06:53:49.377Z",
-	"updatedAt": "2026-11-01T06:55:45.394Z",
+	"updatedAt": "2026-11-01T07:03:05.716Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:03:04.270Z",
+			"evidence": "Scoped recorded text to page flow and kept behavior footer values together in 618d9f9c83; 39 owner and 42 shared guards pass."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:03:05.716Z",
+			"evidence": "Matched eleven cases pass unchanged in record 6068b6e2ddc0b5db at 618d9f9c83, after eight reproduced failures at 6015e99de0."
 		},
 		{
 			"id": "verify",
