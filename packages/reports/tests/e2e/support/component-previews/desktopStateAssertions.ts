@@ -113,11 +113,12 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 
 async function assertEntitySectionContent(component: Locator, id: string, variant: string) {
 	if (id !== 'desktop.component.entity-view') return;
-	const section = {
+	const sections: Record<string, string[]> = {
 		apis: ['APIs', 'app.api.list-orders'],
 		'used-in': ['Used In', 'app.layout.operations'],
 		uses: ['Uses', 'app.component.order-list']
-	}[variant];
+	};
+	const section = sections[variant];
 	if (section) {
 		const region = component.getByRole('region', { name: section[0], exact: true });
 		await expect(
