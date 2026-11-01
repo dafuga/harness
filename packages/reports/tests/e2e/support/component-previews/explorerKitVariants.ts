@@ -119,7 +119,7 @@ function noticeState(props: PreviewCases[string], variant: string) {
 			role: 'list',
 			className: 'ex-notice',
 			children: text(
-				'<li>No selected mobile capture is retained.</li><li>The parent screenshot is available in history.</li>'
+				'<li>No selected mobile capture is retained. The parent screenshot is available in history.</li>'
 			)
 		};
 	if (variant !== 'long')
