@@ -24,8 +24,8 @@
 				"name": "LoadingState.label",
 				"type": "string",
 				"required": false,
-				"default": "Loading\u2026",
-				"description": "Optional status label describing the data being read; defaults to Loading\u2026. The host owns fetching and decides when to show or remove the status."
+				"default": "Loading…",
+				"description": "Optional status label describing the data being read; defaults to Loading…. The host owns fetching and decides when to show or remove the status."
 			},
 			{
 				"name": "LoadingState.inline",
