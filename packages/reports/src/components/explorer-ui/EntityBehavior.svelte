@@ -159,7 +159,7 @@
 			<HarnessIcon name="change" size={22} />
 		{/if}
 		<hx-strong role="status">{label}</hx-strong>
-		{#if !pending}
+		{#if !pending || reasons?.behavior.text}
 			<hx-div class="ex-change-reasons">
 				{#each descriptions as description, position (position)}<hx-p>{description}</hx-p>{/each}
 			</hx-div>
