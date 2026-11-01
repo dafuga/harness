@@ -18,6 +18,26 @@ export async function assertMediaPreviewState(component: Locator, id: string, va
 		).toBeLessThan(1);
 	if (id === 'reports.component.evidence-viewer' && !variant)
 		await assertEvidenceViewerCloses(component);
+	if (id === 'reports.component.evidence-grid' && !variant)
+		await assertEvidenceSearchFit(component);
+}
+
+async function assertEvidenceSearchFit(component: Locator) {
+	const dimensions = await component.getByRole('textbox').evaluate((input: HTMLInputElement) => {
+		const style = getComputedStyle(input);
+		const canvas = document.createElement('canvas').getContext('2d')!;
+		canvas.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+		const spacing = parseFloat(style.letterSpacing) || 0;
+		return {
+			text:
+				canvas.measureText(input.placeholder).width +
+				Math.max(0, input.placeholder.length - 1) * spacing,
+			available: input.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)
+		};
+	});
+	expect(dimensions.text, 'The entire evidence search placeholder fits').toBeLessThanOrEqual(
+		dimensions.available
+	);
 }
 
 async function assertBrowserDiagnostics(component: Locator, variant: string) {
