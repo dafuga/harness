@@ -27,3 +27,12 @@ checks both labelled controls against the viewport boundary at 390px and 320px,
 alongside the retained header-height and whole-document checks. Trigger-label
 changes must satisfy both this host geometry matrix and the isolated catalog.
 The repair remains inside RevisionPicker; NavBar's separate layout is deferred.
+
+Saved-image review found that mobile trigger text could fit while remaining at
+the top of its button. The shared guard now checks the painted text range, rather
+than a stretched span box, for both containment and vertical alignment.
+
+The all-component capture also exposed an unbroken evidence record ID extending
+beyond EntityView on mobile. The existing artifact assertion now checks painted
+record captions inside the entity panel. Keep both guards in the normal catalog;
+an isolated passing unit record does not establish that all sibling states fit.

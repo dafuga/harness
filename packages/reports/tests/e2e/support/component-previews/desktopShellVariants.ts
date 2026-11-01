@@ -28,7 +28,10 @@ export function desktopShellVariant(
 			history: 'history',
 			'helper-examples': 'examples'
 		};
-		if (variant === 'helper-examples') data.workspace.entity = data.filterEntity;
+		if (variant === 'helper-examples') {
+			data.workspace.entity = data.filterEntity;
+			data.workspace.category = 'functions';
+		}
 		data.workspace.suffix = (sections[variant] ?? null) as DesktopData['workspace']['suffix'];
 		return props;
 	}
@@ -78,7 +81,7 @@ function design(props: PreviewProps, data: DesktopData, variant: string): Previe
 	if (variant === 'loading') data.bridge.image = () => new Promise(() => {});
 	if (variant === 'error')
 		data.bridge.image = async () => {
-			throw new Error('Synthetic image read refused.');
+			throw new Error('The saved design image could not be read.');
 		};
 	if (variant === 'readonly') return { ...props, annotatable: false };
 	if (variant === 'empty') return { ...props, entity: { ...data.entity, versions: [] } };

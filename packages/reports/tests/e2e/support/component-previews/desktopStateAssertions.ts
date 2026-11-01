@@ -19,7 +19,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'design-panel:headless-plan': 'Planned behavior',
 		'design-panel:long': 'A detailed design direction.',
 		'design-panel:loading': 'Loading design image…',
-		'design-panel:error': 'Synthetic image read refused.',
+		'design-panel:error': 'The saved design image could not be read.',
 		'history-panel:empty': 'No history recorded for this entity.',
 		'history-panel:incomplete': 'Earlier history is not loaded here.',
 		'runtime-artifact:missing': 'Not recorded',

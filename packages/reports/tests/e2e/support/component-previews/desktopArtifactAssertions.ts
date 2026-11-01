@@ -39,6 +39,7 @@ export async function assertDesktopArtifactCapture(
 	id: string,
 	variant: string
 ) {
+	if (id === 'desktop.component.entity-view') await assertEntityRecordFits(component);
 	if (id !== 'desktop.component.runtime-artifact') return;
 	await assertReadableResult(component, variant);
 	if (variant !== 'json-open') return;
@@ -64,6 +65,19 @@ export async function assertDesktopArtifactCapture(
 		bounds.bottom,
 		'Opened recorded JSON is completely inside the captured image'
 	).toBeLessThanOrEqual(capture.clip.y + capture.clip.height + 1);
+}
+
+async function assertEntityRecordFits(component: Locator) {
+	for (const caption of await component.locator('.coverage-panel > .row > small:visible').all()) {
+		const fits = await caption.evaluate((node) => {
+			const panel = node.closest('.coverage-panel')!.getBoundingClientRect();
+			const range = document.createRange();
+			range.selectNodeContents(node);
+			const text = range.getBoundingClientRect();
+			return text.left >= panel.left && text.right <= panel.right;
+		});
+		expect(fits, 'Full evidence record ID stays inside the entity panel').toBe(true);
+	}
 }
 
 async function assertReadableResult(component: Locator, variant: string) {

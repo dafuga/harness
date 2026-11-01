@@ -164,7 +164,7 @@ function previewEntities(id: string): EntityDetail[] {
 		{
 			...card,
 			verification: 'verified',
-			verificationNote: 'Synthetic recorded fixture',
+			verificationNote: 'The recorded checks passed for this revision.',
 			thumbnail: {
 				source: 'recorded',
 				scenario: 'order-card',
