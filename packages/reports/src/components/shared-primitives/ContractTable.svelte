@@ -122,8 +122,7 @@
 		font-size: var(--hx-type-size-sm);
 		font-weight: var(--hx-style-weight-semibold);
 	}
-	/* A name or type is never broken: a column is at least as wide as its own, and a table wider
-	   than a phone scrolls sideways inside this frame while the page keeps its width. */
+	/* Full identifiers and types wrap within their cells so metadata stays readable. */
 	.group :global(.frame) {
 		min-width: 0;
 		overflow-x: auto;
@@ -142,17 +141,19 @@
 		border-bottom: 0;
 	}
 	.group :global(thead th) {
+		white-space: nowrap;
 		color: var(--hx-color-text-supporting);
 		font-size: var(--hx-type-size-compact);
 		font-weight: var(--hx-style-weight-semibold);
 	}
 	.group :global(tbody th) {
-		white-space: nowrap;
+		white-space: normal;
+		overflow-wrap: anywhere;
 	}
 	/* Where there is room, name and type keep their width, also when a returns table hides its
 	   names; a longer name or type widens its own column instead. */
 	.leading {
-		width: 30%;
+		width: 24%;
 	}
 	.type {
 		padding: var(--hx-space-2) var(--hx-space-4);
@@ -160,7 +161,8 @@
 		border-radius: var(--hx-radius-compact);
 		color: var(--hx-color-primary);
 		font-size: var(--hx-type-size-sm);
-		white-space: nowrap;
+		white-space: normal;
+		overflow-wrap: anywhere;
 	}
 	/* A zero intrinsic width lets the table fit its actions; min-width fills the assigned column.
 	   Longer previews are clipped with an ellipsis; the dialog shows the full example. */
@@ -176,6 +178,9 @@
 	.requirement,
 	.default {
 		display: block;
+		overflow-wrap: normal;
+	}
+	.default code {
 		overflow-wrap: anywhere;
 	}
 	.act {

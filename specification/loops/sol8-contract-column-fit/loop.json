@@ -2,7 +2,7 @@
 	"name": "sol8-contract-column-fit",
 	"goal": "Keep contract table labels readable beside long identifiers and types",
 	"createdAt": "2026-11-01T00:46:30.177Z",
-	"updatedAt": "2026-11-01T00:46:30.177Z",
+	"updatedAt": "2026-11-01T00:49:03.163Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -11,22 +11,30 @@
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:49:00.045Z",
+			"evidence": "Metadata columns in 407f1ab711 leave desktop long identifiers/types unbroken, compressing Requirement and Default words. API long-desktop at 59ec4969c4 shows fragmented short labels."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:49:00.959Z",
+			"evidence": "The existing shared guard checks text presence and bounds, but not fragmentation into character-sized lines. Extend its normal contract viewport matrix with whole-word heading and requirement checks."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:49:02.335Z",
+			"evidence": "Checkpoint e4f1fcd8de fails desktop long-field label readability in the unchanged three-viewport command; immutable failing captures are retained."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:49:03.163Z",
+			"evidence": "Wrap long names/types, reserve readable short labels through intrinsic widths and nowrap headers, and keep the existing stacked narrow layout."
 		},
 		{
 			"id": "implement",
