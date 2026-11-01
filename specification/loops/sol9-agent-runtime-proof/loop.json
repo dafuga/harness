@@ -2,7 +2,7 @@
 	"name": "sol9-agent-runtime-proof",
 	"goal": "Project chat has readable unit references and runtime evidence shows recorded regression proof only after loading",
 	"createdAt": "2026-11-01T19:58:24.299Z",
-	"updatedAt": "2026-11-01T20:07:33.108Z",
+	"updatedAt": "2026-11-01T20:08:37.218Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T20:08:37.218Z",
+			"evidence": "Record958d6ba910819480cf419d55c82dcdb4447aa08f42f28f07088a29eb54b9ce7f passes18 cases with exactly the red tests, inputs, command and profile. All18 red and18 green originals inspected."
 		},
 		{
 			"id": "verify",
