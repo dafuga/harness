@@ -23,6 +23,8 @@ export async function measurePreviewBounds(target: Locator, options: PreviewBoun
 		}
 		for (const child of roots()) collect(child);
 		for (const dialog of node.querySelectorAll('dialog[open], [role="dialog"]')) collect(dialog);
+		const marker = settings.includeUsageTooltip && node.querySelector('button.verification');
+		if (marker) collect(marker);
 		const tooltip =
 			settings.includeUsageTooltip &&
 			node.querySelector('[role="tooltip"], .reason[role="status"]');

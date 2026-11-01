@@ -34,7 +34,7 @@ export function desktopRuntimeVariant(
 			long: {
 				status: 'failed',
 				reason:
-					'The desktop capture passed, but tablet and mobile captures are missing for this revision. Their earlier images predate the current source change and cannot verify this build. Rerun the component catalog at both viewports, retain the original images in history, and inspect them before accepting this revision.'
+					'The desktop capture passed, but tablet and mobile captures are missing for this revision. Their earlier images predate the current source change and cannot verify this build. Rerun the component catalog at every viewport, retain the original images in history, and inspect them before accepting this revision.'
 			}
 		};
 		return { ...props, ...changes[variant] };
