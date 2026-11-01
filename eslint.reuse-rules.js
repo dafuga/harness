@@ -28,7 +28,8 @@ export function reuseFindings(filename, source) {
 	for (const match of source.matchAll(
 		/\b[\w?.]*(?:commit|hash|tip|origin|parent|sha|acknowledged)\b\??\.slice\(\s*0\s*,\s*\d+\s*\)/gi
 	))
-		found.push({ kind: 'commit', index: match.index });
+		if (!/sha256\s*\$\{\s*$/.test(source.slice(Math.max(0, match.index - 24), match.index)))
+			found.push({ kind: 'commit', index: match.index });
 	return found.sort((left, right) => left.index - right.index);
 }
 
