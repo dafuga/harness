@@ -2,7 +2,7 @@
 	"name": "revision-context-fit",
 	"goal": "Keep complete revision labels and short commit identifiers visible at every viewport",
 	"createdAt": "2026-11-01T04:12:48.618Z",
-	"updatedAt": "2026-11-01T04:13:22.220Z",
+	"updatedAt": "2026-11-01T04:15:25.174Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:15:16.103Z",
+			"evidence": "Committed catalog checkpoint49286a4709 fails the complete-context guard at both desktop and tablet for Historical and Pinned; 4 failed and17 passed in isolated clean snapshots."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:15:25.174Z",
+			"evidence": "Use the available container width instead of a300px summary cap. Keep the shared all-state painted-width guard in the normal component catalog."
 		},
 		{
 			"id": "implement",
