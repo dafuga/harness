@@ -1524,6 +1524,426 @@
 			"specifier": "$reports/helpers/strings/shortCommit",
 			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
 			"reason": "Use the canonical pure seven-character commit formatter."
+		},
+		{
+			"from": "packages/desktop/src/components/agents-providers/ProjectAgent.svelte",
+			"specifier": "../shared-primitives/Composer.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Composer.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentActivity.svelte",
+			"specifier": "../shared-primitives/ChoiceDialog.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDialog.svelte",
+			"specifier": "../shared-primitives/ChoiceDialog.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDialog.svelte",
+			"specifier": "../shared-primitives/Icon.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Icon.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "../shared-primitives/SegmentedChoice.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/EntityCard.svelte",
+			"specifier": "../shared-primitives/recorded-preview/RecordedPreview.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/recorded-preview/RecordedPreview.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/CoveragePanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/ContractPanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ContractPanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/RelationshipsPanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/DetailsPanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/DetailsPanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/MeasuresPanel.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "../../shared-primitives/Icon.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Icon.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "../../shared-primitives/ApprovalButton.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ApprovalButton.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "../../shared-primitives/Composer.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Composer.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "../../shared-primitives/MessageList.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/MessageList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"specifier": "../../shared-primitives/SegmentedChoice.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"specifier": "../../shared-primitives/AnnotatedImage.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/AnnotatedImage.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte",
+			"specifier": "../../shared-primitives/PriorImage.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/PriorImage.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte",
+			"specifier": "./Icon.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Icon.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/RevisionPicker.svelte",
+			"specifier": "./ChoiceDialog.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/RevisionPicker.svelte",
+			"specifier": "./Icon.svelte",
+			"to": "packages/desktop/src/components/shared-primitives/Icon.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityArtifact.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityArtifact.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityAudio.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityBehavior.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityBehavior.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityConfig.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityHeader.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityRun.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityScreens.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityStates.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityStates.svelte",
+			"specifier": "../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntitySummary.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
+			"specifier": "./explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
+			"specifier": "./explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+			"specifier": "../shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+			"specifier": "../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+			"specifier": "../shared-primitives/FilterDialog.svelte",
+			"to": "packages/reports/src/components/shared-primitives/FilterDialog.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+			"specifier": "../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+			"specifier": "./explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte",
+			"specifier": "../../shared-primitives/recorded-value/RecordedValue.svelte",
+			"to": "packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../../shared-primitives/ContractExample.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ContractExample.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../../shared-primitives/ContractTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ContractTable.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"specifier": "../../shared-primitives/Modal.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "../../shared-primitives/browser-errors/BrowserErrors.svelte",
+			"to": "packages/reports/src/components/shared-primitives/browser-errors/BrowserErrors.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "../../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/explorer-table/ConfigValue.svelte",
+			"specifier": "../../shared-primitives/CodeLine.svelte",
+			"to": "packages/reports/src/components/shared-primitives/CodeLine.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte",
+			"specifier": "../../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/module-system/plugins/ExplorerPluginCard.svelte",
+			"specifier": "../../explorer-ui/explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/module-system/plugins/ExplorerPluginCard.svelte",
+			"specifier": "../../explorer-ui/explorer-kit/CommandBlock.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/CommandBlock.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/reports-media/AudioComparison.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/reports-media/AudioComparisonViewer.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/reports-media/AudioComparisonViewer.svelte",
+			"specifier": "../shared-primitives/Modal.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/ContractExample.svelte",
+			"specifier": "./DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/ContractExample.svelte",
+			"specifier": "./recorded-value/RecordedValue.svelte",
+			"to": "packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte",
+			"specifier": "../DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/AudioEvidence.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceCard.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
+			"specifier": "../explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
+			"specifier": "../shared-primitives/image-zoom/ImageZoom.svelte",
+			"to": "packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
+			"specifier": "../shared-primitives/Modal.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/RegressionProof.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/RegressionProof.svelte",
+			"specifier": "../shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
+			"specifier": "../../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
 		}
 	]
 }

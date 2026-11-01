@@ -2,7 +2,7 @@
 	"name": "sol10-viewer-side",
 	"goal": "Keep each viewer caption, image and build provenance bound to its recorded comparison side",
 	"createdAt": "2026-11-01T17:13:47.936Z",
-	"updatedAt": "2026-11-01T17:17:20.128Z",
+	"updatedAt": "2026-11-01T17:19:49.595Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T17:19:48.214Z",
+			"evidence": "6d52edd4da removes the parent fallback and renders content, captions and provenance from each ComparePanes context."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T17:19:49.595Z",
+			"evidence": "Immutable green record at 6d52edd4da passes the same committed test, command, fixtures and stable environment as red e0b99105b4."
 		},
 		{
 			"id": "verify",
