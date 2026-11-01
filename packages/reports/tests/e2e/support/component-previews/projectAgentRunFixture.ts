@@ -4,7 +4,7 @@ import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 
 export const projectConversation =
-	'Please review [[unit:app.page.orders]] and the earlier [[unit:app.function.archive-orders]] proposal. Confirm filterOrders preserves the order of matches.';
+	'Please review [[unit:app.page.orders]] and the earlier order-archiving proposal. Confirm filterOrders preserves the order of matches.';
 export const projectReply =
 	'The search matches order names without regard to letter case and preserves their order. An empty query returns every order. Add checks for mixed-case names and no matches before approving the change.';
 
