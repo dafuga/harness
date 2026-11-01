@@ -20,8 +20,7 @@ async function project() {
 	return root;
 }
 
-test('check-contract reports every heuristic finding with identity, detail and location', async () => {
-	const root = await project();
+function incompleteWidget() {
 	const unit = widgetManifest();
 	unit.contract.inputs = [
 		{ name: 'Widget.title', type: 'string' },
@@ -35,6 +34,12 @@ test('check-contract reports every heuristic finding with identity, detail and l
 	unit.contract.snippets = [
 		{ name: 'Widget.children', inputs: [], outputs: [], errors: [], errorStatus: 'unknown' }
 	];
+	return unit;
+}
+
+test('check-contract reports every heuristic finding with identity, detail and location', async () => {
+	const root = await project();
+	const unit = incompleteWidget();
 	await writeGuidanceFile(root, 'specification/units/component.widget.json', JSON.stringify(unit));
 	await writeGuidanceFile(
 		root,

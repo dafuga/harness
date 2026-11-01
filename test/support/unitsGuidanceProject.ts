@@ -63,6 +63,12 @@ export async function guidanceProject(states = ['default', 'loading', 'failed'])
 		'specification/units/component.widget.json',
 		JSON.stringify(widgetManifest())
 	);
+	await writeGuidanceCatalog(root, states);
+	await commitGuidance(root);
+	return root;
+}
+
+async function writeGuidanceCatalog(root: string, states: string[]) {
 	await writeGuidanceFile(
 		root,
 		'packages/example/tests/e2e/support/catalogVariants.ts',
@@ -105,8 +111,6 @@ export async function guidanceProject(states = ['default', 'loading', 'failed'])
 			]
 		})
 	);
-	await commitGuidance(root);
-	return root;
 }
 
 export async function commitGuidance(root: string) {
@@ -126,8 +130,6 @@ export async function guidanceJson(root: string, args: string[]) {
 export async function attachGuidanceShots(root: string, states: string[], devices = viewports) {
 	const git = new GitAdapter(root);
 	const commit = await git.run(['rev-parse', 'HEAD']);
-	const tree = await git.run(['rev-parse', 'HEAD^{tree}']);
-	const parent = await git.run(['rev-parse', 'HEAD^']);
 	const bytes = Buffer.from(
 		'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGMQUDAAAACkAGE0Zn1yAAAAAElFTkSuQmCC',
 		'base64'
@@ -151,6 +153,22 @@ export async function attachGuidanceShots(root: string, states: string[], device
 			}
 		}))
 	);
+	const record = await guidanceShotRecord(root, captures);
+	await new RegressionProofRepository(root).save(
+		record,
+		Buffer.from('fixture proof'),
+		captures.map(({ capture }) => ({ path: capture.path, bytes }))
+	);
+}
+
+async function guidanceShotRecord(
+	root: string,
+	captures: NonNullable<RegressionRecord['captures']>
+) {
+	const git = new GitAdapter(root);
+	const commit = await git.run(['rev-parse', 'HEAD']);
+	const tree = await git.run(['rev-parse', 'HEAD^{tree}']);
+	const parent = await git.run(['rev-parse', 'HEAD^']);
 	const output = Buffer.from('fixture proof');
 	const draft: Omit<RegressionRecord, 'id'> = {
 		schemaVersion: 1,
@@ -175,10 +193,5 @@ export async function attachGuidanceShots(root: string, states: string[], device
 		log: { path: 'output.log', sha256: regressionHash(output), bytes: output.length },
 		captures
 	};
-	const record = { ...draft, id: regressionHash(canonicalJson(draft)) };
-	await new RegressionProofRepository(root).save(
-		record,
-		output,
-		captures.map(({ capture }) => ({ path: capture.path, bytes }))
-	);
+	return { ...draft, id: regressionHash(canonicalJson(draft)) };
 }
