@@ -2,7 +2,7 @@
 	"name": "desktop-mobile-context-fit",
 	"goal": "Keep revision and search hit targets separate in a compact mobile header",
 	"createdAt": "2026-11-01T12:17:46.050Z",
-	"updatedAt": "2026-11-01T12:19:57.511Z",
+	"updatedAt": "2026-11-01T12:23:50.605Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,17 +39,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:23:47.918Z",
+			"evidence": "92f698d6c5 and 45fdc0f11c reserve labelled-control widths, reduce mobile rail spacing and give the current summary its full row; tests and fixtures stay frozen."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:23:49.266Z",
+			"evidence": "Six unchanged cases pass at 45fdc0f11c; record 9988d95012ca796f2ce4d89f7229f06b477b5797effb3370d2ba6692d2a73759. All four original mobile images were inspected."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:23:50.605Z",
+			"evidence": "The same six cases fail against isolated 7ed49d21a4; record a4343f2dca97abed6bd1053511011af717b42cc46ae0ec48a2fddce427d18100. Current 45fdc0f11c passes unchanged, with one browser worker."
 		},
 		{
 			"id": "verify",
