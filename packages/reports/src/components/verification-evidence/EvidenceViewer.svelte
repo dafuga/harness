@@ -93,14 +93,11 @@
 </script>
 
 <svelte:window onkeydown={keyboard} />
-<Modal
-	open={!!selected}
-	title={displayed?.title || ''}
-	variant="lightbox"
-	onclose={close}
->
+<Modal open={!!selected} title={displayed?.title || ''} variant="lightbox" onclose={close}>
 	<hx-div class="viewer-actions toolbar">
-		<hx-button disabled={!canNavigate} onclick={() => move(-1)} aria-label={$t('previous')}>←</hx-button>
+		<hx-button disabled={!canNavigate} onclick={() => move(-1)} aria-label={$t('previous')}
+			>←</hx-button
+		>
 		<hx-button disabled={!canNavigate} onclick={() => move(1)} aria-label={$t('next')}>→</hx-button>
 		{#if before}
 			<hx-button
