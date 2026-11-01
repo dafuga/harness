@@ -94,6 +94,24 @@ async function assertRevisionContextFits(summary: Locator) {
 	expect(complete, 'Complete revision context fits without clipping').toBe(true);
 }
 
+async function assertRevisionLabelFits(button: Locator) {
+	const fits = await button.evaluate((node) => {
+		const label = node.querySelector('span');
+		if (!label) return false;
+		const range = document.createRange();
+		range.selectNodeContents(label);
+		const text = range.getBoundingClientRect();
+		const bounds = node.getBoundingClientRect();
+		return (
+			text.width > 0 &&
+			text.left >= bounds.left &&
+			text.right <= bounds.right &&
+			Math.abs(text.top + text.height / 2 - bounds.top - bounds.height / 2) <= 4
+		);
+	});
+	expect(fits, 'Revision trigger text is centered and fits').toBe(true);
+}
+
 async function assertRevisionPresentation(component: Locator, variant: string) {
 	for (const word of ['Branch', 'Commit']) {
 		const button = component.getByRole('button', {
@@ -101,12 +119,7 @@ async function assertRevisionPresentation(component: Locator, variant: string) {
 			exact: true
 		});
 		await expect(button, 'Revision triggers have visible words').toContainText(word);
-		const fits = await button.evaluate((node) => {
-			const label = node.querySelector('span')?.getBoundingClientRect();
-			const bounds = node.getBoundingClientRect();
-			return !!label && label.width > 0 && label.left >= bounds.left && label.right <= bounds.right;
-		});
-		expect(fits, 'The visible revision label fits its trigger').toBe(true);
+		await assertRevisionLabelFits(button);
 	}
 	const summary = component.getByLabel('Viewed context');
 	await assertRevisionContextFits(summary);

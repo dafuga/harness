@@ -48,7 +48,7 @@ function brief(props: PreviewProps, variant: string): PreviewProps {
 		empty: { step: 'concept', planning: { concept: '', description: '' } },
 		readonly: { status: { ...status, readonly: true } },
 		busy: { status: { ...status, busy: true } },
-		error: { status: { ...status, error: 'Synthetic provider refused the proposal.' } },
+		error: { status: { ...status, error: 'The provider could not generate a level proposal.' } },
 		reviewable: { reviewable: true },
 		'no-model': {
 			providers: [],
