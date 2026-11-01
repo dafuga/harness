@@ -16,10 +16,7 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 }
 
 async function assertSourcePreviewState(component: Locator, id: string, variant: string) {
-	if (id === 'reports.component.source-file-list' && variant !== 'empty')
-		await expect(component.getByRole('button', { name: 'View code', exact: true })).toHaveCount(2, {
-			timeout: 1_000
-		});
+	if (id === 'reports.component.source-file-list') await prepareFileListLinks(component, variant);
 	if (
 		!variant &&
 		['source-content', 'source-dialog', 'source-viewer'].some((name) => id.endsWith(name))
@@ -66,10 +63,8 @@ export async function assertRecordedReportPreviewState(
 		await expect(links).toHaveCount(2);
 		for (const link of await links.all()) {
 			await expect(link).toHaveAttribute('target', '_blank');
-			await expect(
-				link.locator('.source-name'),
-				'Linked filenames visibly identify a destination'
-			).toHaveCSS('text-decoration-line', 'underline');
+			await link.hover();
+			await assertSourceHover(link);
 		}
 		await links.first().focus();
 		await expect(links.first()).toBeFocused();
@@ -86,9 +81,35 @@ export async function assertRecordedReportPreviewState(
 	}
 }
 
+async function prepareFileListLinks(component: Locator, variant: string) {
+	if (variant === 'empty') return;
+	await expect(component.getByRole('button', { name: 'View code', exact: true })).toHaveCount(2, {
+		timeout: 1_000
+	});
+	if (variant !== 'linked') return;
+	for (const name of await component.locator('a .source-name').all())
+		await expect(name, 'Linked filenames are underlined before interaction').toHaveCSS(
+			'text-decoration-line',
+			'underline'
+		);
+	await component.getByRole('link').first().hover();
+}
+
+async function assertSourceHover(link: Locator) {
+	const name = link.locator('.source-name');
+	const hovered = await name.evaluate((node) => getComputedStyle(node).color);
+	await link.page().mouse.move(1, 1);
+	expect(hovered, 'Source filename hover changes visible paint').not.toEqual(
+		await name.evaluate((node) => getComputedStyle(node).color)
+	);
+	await link.hover();
+}
+
 /** Check visible state distinctions after retaining the same settled screenshot. */
 async function assertCatalogStateDistinction(component: Locator, id: string, variant: string) {
 	const key = `${id}:${variant}`;
+	if (key === 'reports.component.explorer-ui-explorer-platform-details:source-hovered')
+		await assertSourceHover(component.getByRole('link', { name: 'wrangler.jsonc' }));
 	const gaps: Record<string, [string, string]> = {
 		'reports.component.explorer-ui-explorer-platform-details:unindexed': [
 			'No platform catalog is indexed at this revision.',
