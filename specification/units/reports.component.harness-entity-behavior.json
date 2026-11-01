@@ -68,7 +68,7 @@
 				"name": "EntityBehavior.reasons",
 				"type": "Reasons",
 				"required": false,
-				"description": "Optional entity change reasons, displayed separately from test observations. Their behavior summary takes precedence over derived comparison explanation. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional entity change reasons, displayed separately from test observations. Supplied behavior text remains visible while recorded results load and takes precedence over derived comparison explanation. Defaults to JavaScript undefined (omitted)."
 			},
 			{
 				"name": "EntityBehavior.duration",

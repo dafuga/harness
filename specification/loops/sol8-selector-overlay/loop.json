@@ -2,7 +2,7 @@
 	"name": "sol8-selector-overlay",
 	"goal": "Keep revision summary controls single-painted with the original value case in compact and noncompact layouts.",
 	"createdAt": "2026-11-01T07:03:18.156Z",
-	"updatedAt": "2026-11-01T07:06:25.011Z",
+	"updatedAt": "2026-11-01T07:21:01.734Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,17 +39,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:20:58.364Z",
+			"evidence": "Scoped noncompact summary paint and typography to the registered component while preserving root classes and forced-color native fallback; fix c4bcb6d93c."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:21:00.103Z",
+			"evidence": "All eighteen unchanged selector cases pass at c4bcb6d93c in record ffe95f5840111677."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:21:01.734Z",
+			"evidence": "Isolated original source 209a16088e fails record 8541e2e2f1c54d8d; identical comparison command passes repaired c4bcb6d93c as a1a5c19af90941d0."
 		},
 		{
 			"id": "verify",
