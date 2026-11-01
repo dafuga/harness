@@ -109,10 +109,30 @@ async function artifactExtent(component: Locator, variant: string) {
 		.locator('.ex-artifact')
 		.evaluate((node) => node.scrollHeight - node.clientHeight);
 	expect(clipped, 'The complete opened artifact follows the page scroll').toBeLessThanOrEqual(1);
+	const textClipping = await component
+		.locator('.ex-artifact > details pre:visible')
+		.evaluateAll((nodes) => nodes.map((node) => node.scrollHeight - node.clientHeight));
+	expect(
+		Math.max(0, ...textClipping),
+		'The complete recorded text follows the page scroll'
+	).toBeLessThanOrEqual(1);
 }
 
 async function behaviorSummary(component: Locator, variant: string) {
 	const summary = component.locator('.ex-change');
+	const wrapped = await summary.locator('.ex-inline dd').evaluateAll((nodes) =>
+		nodes
+			.filter((node) => {
+				if (!/^(passed|failed)$/.test(node.textContent?.trim() ?? '')) return false;
+				const text = document.createRange();
+				text.selectNodeContents(node);
+				return (
+					text.getBoundingClientRect().height > parseFloat(getComputedStyle(node).lineHeight) + 1
+				);
+			})
+			.map((node) => node.textContent)
+	);
+	expect(wrapped, 'Single-word behavior statuses stay on one line').toEqual([]);
 	if (variant === 'loading')
 		await expect(summary, 'Pending results do not claim an absent reason').not.toContainText(
 			'No reason is recorded'
