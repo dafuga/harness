@@ -12,7 +12,7 @@ const shown = async (id: string, commit: string | null = null) => {
 test('a branch tip has one pane and no before or after', async () => {
 	const body = await shown(ids.page);
 	expect(body).toContain('Current screenshot');
-	expect(body).toContain('aria-label="Current snapshot · ccccccc"');
+	expect(body).toContain(`aria-label="Current snapshot · ${commits.tip.slice(0, 7)}"`);
 	expect(body).toContain('Branch tip');
 	expect(body.match(/<figure/g)).toHaveLength(1);
 	expect(body).not.toMatch(/Before ·|After ·/);
@@ -21,13 +21,13 @@ test('a branch tip has one pane and no before or after', async () => {
 test('a named commit stands beside its first parent, each side under its own name', async () => {
 	const body = await shown(ids.page, commits.tip);
 	expect(body).toContain('Before and after');
-	expect(body).toContain('aria-label="Before · bbbbbbb"');
+	expect(body).toContain(`aria-label="Before · ${commits.middle.slice(0, 7)}"`);
 	expect(body).toContain('Parent commit');
-	expect(body).toContain('aria-label="After · ccccccc"');
+	expect(body).toContain(`aria-label="After · ${commits.tip.slice(0, 7)}"`);
 	expect(body).toContain('Selected commit');
 	expect(body).toContain('1440 × 900');
 	const older = await shown(ids.page, commits.middle);
-	expect(older).toContain('aria-label="Before · aaaaaaa"');
+	expect(older).toContain(`aria-label="Before · ${commits.first.slice(0, 7)}"`);
 	expect(older).toContain('No verification record is attached to this commit.');
 });
 

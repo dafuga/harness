@@ -1,3 +1,4 @@
+import { record } from '../../../reports/test/entityFixture';
 import { expect, test } from 'vitest';
 import CoveragePanel from '../../src/components/shared-primitives/CoveragePanel.svelte';
 import { createEntityEvidenceStore } from '../../src/lib/stores/entityEvidence.svelte';
@@ -13,7 +14,9 @@ const shown = async (id: string, commit: string | null = null) => {
 test('each scenario is listed with its checks and its states as the record judges them', async () => {
 	const body = await shown(ids.page);
 	expect(body).toContain('aria-label="Evidence coverage"');
-	expect(body).toContain('Recorded for ccccccc · record rec-cccccc-0000');
+	expect(body).toContain(
+		`Recorded for ${commits.tip.slice(0, 7)} · record ${record(commits.tip).id}`
+	);
 	expect(body).toContain('Orders page over synthetic orders');
 	expect(body).toContain('orders-browser · passed');
 	expect(body).not.toContain('Browser diagnostics are unavailable for this record.');
@@ -26,7 +29,7 @@ test('each scenario is listed with its checks and its states as the record judge
 });
 
 test('an inherited result names where it came from, and a commit without a record says so', async () => {
-	expect(await shown(ids.card)).toContain('Inherited from bbbbbbb');
+	expect(await shown(ids.card)).toContain(`Inherited from ${commits.middle.slice(0, 7)}`);
 	const first = await shown(ids.page, commits.first);
 	expect(first).toContain('No verification record is attached to this commit.');
 	expect(first).toMatch(/aria-label="missing[^"]*"/);

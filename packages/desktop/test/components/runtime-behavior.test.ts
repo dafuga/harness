@@ -14,8 +14,8 @@ test('a commit says that the behaviour changed, and where, once both results wer
 	expect(body).toContain('End-to-end comparison');
 	expect(body).toContain('<strong role="status">Behavior changed</strong>');
 	expect(body).toContain('match: the recorded output changed at output[1]');
-	expect(body).toContain('aria-label="Before · bbbbbbb"');
-	expect(body).toContain('aria-label="After · ccccccc"');
+	expect(body).toContain(`aria-label="Before · ${commits.middle.slice(0, 7)}"`);
+	expect(body).toContain(`aria-label="After · ${commits.tip.slice(0, 7)}"`);
 	expect(body).toContain('passed → passed');
 });
 
@@ -39,9 +39,11 @@ test('a branch tip and a first commit are one run; nothing recorded is said to b
 	const tip = await shown(ids.filter, null);
 	expect(tip.body).toContain('Current end-to-end behavior');
 	expect(tip.body).toContain('<strong role="status">Current behavior</strong>');
-	expect(tip.body).toContain('aria-label="Current snapshot · ccccccc"');
+	expect(tip.body).toContain(`aria-label="Current snapshot · ${commits.tip.slice(0, 7)}"`);
 	expect(tip.body).not.toMatch(/Before ·|After ·/);
 	const none = await shown(ids.settings, null);
 	expect(none.body).toContain('No end-to-end result is recorded');
-	expect(none.body).toContain('No end-to-end result is recorded for this entity at ccccccc.');
+	expect(none.body).toContain(
+		`No end-to-end result is recorded for this entity at ${commits.tip.slice(0, 7)}.`
+	);
 });
