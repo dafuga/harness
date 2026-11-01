@@ -108,6 +108,11 @@ async function assertSourceHover(link: Locator) {
 /** Check visible state distinctions after retaining the same settled screenshot. */
 async function assertCatalogStateDistinction(component: Locator, id: string, variant: string) {
 	const key = `${id}:${variant}`;
+	if (key === 'reports.component.explorer-usage:limit-zero')
+		await expect(
+			component.getByText('4 more usages', { exact: true }),
+			'Zero limit visibly distinguishes hidden consumers from an empty list'
+		).toBeVisible();
 	if (key === 'reports.component.explorer-ui-explorer-platform-details:source-hovered')
 		await assertSourceHover(component.getByRole('link', { name: 'wrangler.jsonc' }));
 	const gaps: Record<string, [string, string]> = {
