@@ -102,7 +102,7 @@
 {#if !cell.capture}<hx-p class="muted">Not recorded</hx-p
 	>{:else if cell.capture.media === null}<Notice
 		as="p"
-		className={'runtime-gap runtime-artifact-runtime-gap'}
+		className="runtime-gap runtime-artifact-runtime-gap"
 	>
 		<Status variant="icon" status="failed" reason="Not stored" /><hx-span
 			>{cell.capture.gap ?? 'Its bytes are not in this history.'}</hx-span
@@ -111,7 +111,7 @@
 		{#if cell.read === undefined && !lost}<hx-p class="muted">Reading what it holds…</hx-p>
 		{:else if !cell.read?.verified}<Notice
 				as="p"
-				className={'runtime-gap runtime-artifact-runtime-gap'}
+				className="runtime-gap runtime-artifact-runtime-gap"
 			>
 				<Status variant="icon" status="failed" reason="Not verified" /><hx-span
 					>{refusal ?? cell.read?.problem ?? unverified}</hx-span

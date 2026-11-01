@@ -35,12 +35,7 @@
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/shared-primitives/CoveragePanel.svelte"],
-		"symbols": [
-			"CoveragePanel",
-			"CoveragePanel.diagnostics",
-			"CoveragePanel.header",
-			"CoveragePanel.children"
-		]
+		"symbols": ["CoveragePanel", "CoveragePanel.diagnostics", "CoveragePanel.header"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -100,18 +95,6 @@
 				"outputs": [
 					{
 						"name": "CoveragePanel.header",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
-				"name": "CoveragePanel.children",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "CoveragePanel.children",
 						"type": "markup"
 					}
 				],
