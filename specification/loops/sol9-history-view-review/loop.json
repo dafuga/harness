@@ -2,7 +2,7 @@
 	"name": "sol9-history-view-review",
 	"goal": "Multiple views stay visible and history shows regression proof with a clear shared loading cue",
 	"createdAt": "2026-11-01T18:13:49.969Z",
-	"updatedAt": "2026-11-01T18:15:38.517Z",
+	"updatedAt": "2026-11-01T18:26:34.977Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T18:26:34.977Z",
+			"evidence": "Record 7253965385aa294beee4c1018fe7b231633d87ab35274a9a5367f37e29f7edba: nine cases fail visible view choices, history loading cue and inline placement; nine populated history cases pass."
 		},
 		{
 			"id": "implement",
