@@ -1,5 +1,5 @@
-import { scopedVerify, timer, verifyEnv } from './scopedVerify';
-import type { VerifyOptions } from './runVerify.types';
+import { scopedVerify, timer, verifyEnv, renderAttachment } from './scopedVerify';
+import type { VerifyOptions, VerifyResult } from './runVerify.types';
 export type { VerifyOptions } from './runVerify.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
@@ -11,10 +11,7 @@ import {
 	type VerifyConfig
 } from '../../../core/verification-evidence/verifyTypes';
 import { ExplanationRepository } from '../../../repositories/verification-evidence/ExplanationRepository';
-import {
-	VerificationStoreRepository,
-	type StoredRecord
-} from '../../../repositories/verification-evidence/VerificationStoreRepository';
+import { VerificationStoreRepository } from '../../../repositories/verification-evidence/VerificationStoreRepository';
 import { ReasonPathService } from '../../../services/development-tooling/ReasonPathService';
 import { UnitRuntimeService } from '../../../services/execution-runtimes/UnitRuntimeService';
 import { CommitMessageService } from '../../../services/git-source-history/commit-message-service/CommitMessageService';
@@ -55,7 +52,7 @@ async function provenBase(git: GitAdapter, commit: string, base: string | undefi
 }
 
 /** Verifies one exact commit in a clean snapshot; the record is stored even when it fails. */
-export async function verifyRun(options: VerifyOptions = {}): Promise<StoredRecord> {
+export async function verifyRun(options: VerifyOptions = {}): Promise<VerifyResult> {
 	const root = resolve(options.root ?? process.cwd());
 	const git = new GitAdapter(root);
 	if (!(await git.isRepository())) return fail('harness verify needs a Git repository.');
@@ -193,7 +190,7 @@ export async function verifyStamp(
 	return { directory: target, ...(await new BuildIdentityService().stamp(target)) };
 }
 
-export function renderVerify(stored: StoredRecord): string {
+export function renderVerify(stored: VerifyResult): string {
 	const { record } = stored;
 	const ran = record.scenarios.filter((scenario) => scenario.status !== 'referenced').length;
 	const { base, requestedBase } = record.source;
@@ -207,7 +204,8 @@ export function renderVerify(stored: StoredRecord): string {
 		...widened,
 		`Tests: ${record.tests.length} run. Scenarios: ${ran} verified, ${record.scenarios.length - ran} referenced.`,
 		...record.failures.map((failure) => `  ${failure}`),
-		`Record ${record.id.slice(0, 12)} in ${stored.directory}`
+		`Record ${record.id.slice(0, 12)} in ${stored.directory}`,
+		...renderAttachment(stored.attachment)
 	].join('\n');
 }
 

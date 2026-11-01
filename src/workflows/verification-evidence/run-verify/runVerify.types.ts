@@ -1,3 +1,16 @@
+import type { StoredRecord } from '../../../repositories/verification-evidence/VerificationStoreRepository';
+
+/** Attachment is separate from the sealed record: focused proof is never a full pass. */
+export interface VerifyResult extends StoredRecord {
+	attachment?: {
+		status: 'attached' | 'unchanged' | 'skipped';
+		entity: string;
+		record: string;
+		states: string[];
+		viewports: string[];
+	};
+}
+
 export interface VerifyOptions {
 	priority?: string;
 	/** Mandatory for task completion; historical verification contracts remain readable. */

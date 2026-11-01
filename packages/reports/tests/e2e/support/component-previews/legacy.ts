@@ -18,7 +18,7 @@ export const legacyCases: PreviewCases = {
 	'reports.component.harness-harness-action': {
 		children: children,
 		href: '#review',
-		lead: 'check'
+		lead: 'passed'
 	},
 	'reports.component.harness-harness-console': {
 		base: '/harness',

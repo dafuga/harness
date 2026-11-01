@@ -503,8 +503,18 @@ Typed contracts for all of this ship in `@dafuga01/harness/verification`, includ
 
 ## History in Git, hooks and CI
 
+For entity screenshots, write and commit the standard Playwright tests for every declared
+state and desktop/tablet/mobile viewport, then run
+`harness verify run --priority agent-test --entity <id>`. A complete passing entity run
+automatically stores and attaches its screenshots in Git with the verification record link.
+Failed checks or missing captures attach nothing. Uncommitted tests are never included.
+Repeating identical proof at the same commit reuses its attached record. The output lists
+the entity, states, viewports and record id; fetch captures with `harness api screenshot`.
+Entity proof remains scoped: it does not grant whole-commit verification.
+
 ```bash
-harness history attach [--commit <rev>] [--record <id>]   # store a record and its evidence in Git
+harness verify run --priority agent-test --entity <id>   # test and attach entity screenshots
+harness history attach [--commit <rev>] [--record <id>]   # manual import/full-record edge cases
 harness history reasons [--base <rev>] [--commit <rev>]   # keep a range's reasons in notes
 harness history status [--commit <rev>]                   # what Git alone proves about a commit
 harness history fetch|push|sync [remote]                  # exchange records; never forced

@@ -1,0 +1,58 @@
+{
+	"name": "sol9-native-atom-evidence",
+	"goal": "Qualify 26 native atoms with realistic states, complete contracts and usable screenshots at all three viewports",
+	"createdAt": "2026-11-01T21:47:16.201Z",
+	"updatedAt": "2026-11-01T22:10:52.013Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-01T21:49:14.333Z",
+			"evidence": "The assigned 26 atoms need 54 distinct states and 162 usable screenshots. Current Aside, Blockquote and Code display implementation names; long content, controls and disclosures use generic fixture copy. Native implementations remain forwarding primitives."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T21:49:15.091Z",
+			"evidence": "component-catalog-previews accepted implementation-name fallbacks, Example values and the exact Long native content placeholder. Extend its existing post-capture assertions with realistic-copy, control-state, preformatted-content and viewport-bounds checks, scoped to these 26 atoms."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T22:10:50.669Z",
+			"evidence": "Record 4d61612f4ba1b1e160a294e1b666b2f135280aabb7ef57afb7a297a834da8c89 at this tested checkpoint: 11 assertion failures and 11 individually inspected originals. Interrupted broad attempt excluded."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-01T22:10:52.013Z",
+			"evidence": "Repair 9a2c0d545c supplies realistic caller content and actual control states; native atom implementations and strengthened assertions are unchanged."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

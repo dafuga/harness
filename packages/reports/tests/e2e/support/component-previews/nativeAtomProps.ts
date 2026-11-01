@@ -70,7 +70,17 @@ export function nativeAtomProps(tag: string, type?: string, variant = ''): Recor
 		...(type === 'file'
 			? { accept: 'text/plain' }
 			: { value: inputValues[type ?? 'text'] ?? 'Example' }),
-		...changed
+		...changed,
+		...nativeInputExample(type, variant)
+	};
+}
+
+function nativeInputExample(type: string | undefined, variant: string) {
+	if (type) return {};
+	return {
+		'aria-label': 'Release title',
+		value: variant === 'empty' ? '' : 'October release',
+		...(variant === 'empty' ? { placeholder: 'Release title' } : {})
 	};
 }
 

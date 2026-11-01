@@ -26,6 +26,35 @@ export async function assertNavContext(component: Locator, width: number) {
 	).toBeLessThanOrEqual(8);
 }
 
+/** Context controls wrap or shrink instead of painting over one another at tablet and desktop widths. */
+export async function assertNavContextClear(component: Locator, width: number) {
+	if (width <= 560) return;
+	const boxes = await component
+		.locator('.environment-picker, .revision-picker, .topbar-search')
+		.evaluateAll((nodes) =>
+			nodes.map((node) => {
+				const { left, right, top, bottom } = node.getBoundingClientRect();
+				return { left, right, top, bottom, fits: node.scrollWidth <= node.clientWidth + 1 };
+			})
+		);
+	for (let index = 0; index < boxes.length; index++) {
+		for (let other = index + 1; other < boxes.length; other++) {
+			const a = boxes[index],
+				b = boxes[other];
+			const overlaps =
+				a.left < b.right - 1 &&
+				b.left < a.right - 1 &&
+				a.top < b.bottom - 1 &&
+				b.top < a.bottom - 1;
+			expect(overlaps, 'Context controls never paint over one another').toBe(false);
+		}
+	}
+	expect(
+		boxes.every((box) => box.fits),
+		'Revision summary text stays inside its own control'
+	).toBe(true);
+}
+
 /** A mobile header keeps balanced category rows and its account alongside the project. */
 export async function assertMobileNavLayout(component: Locator, tabs: Locator, width: number) {
 	if (width > 560) return;

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/verification-evidence/run-verify/scopedVerify.ts"],
-		"symbols": ["scopedVerify", "scopedContext", "timer", "verifyEnv"]
+		"source": [
+			"src/workflows/verification-evidence/run-verify/scopedVerify.ts",
+			"src/workflows/verification-evidence/run-verify/scopedVerify.types.ts"
+		],
+		"symbols": ["scopedVerify", "renderAttachment", "scopedContext", "timer", "verifyEnv", "Base"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -34,6 +37,11 @@
 				"required": true
 			},
 			{
+				"name": "renderAttachment.attachment",
+				"type": "VerifyResult['attachment']",
+				"required": true
+			},
+			{
 				"name": "scopedContext.context",
 				"type": "Base",
 				"required": true
@@ -52,7 +60,11 @@
 		"outputs": [
 			{
 				"name": "scopedVerify",
-				"type": "Promise<StoredRecord>"
+				"type": "Promise<VerifyResult>"
+			},
+			{
+				"name": "renderAttachment",
+				"type": "string[]"
 			},
 			{
 				"name": "scopedContext",
@@ -97,7 +109,25 @@
 				"outputs": [
 					{
 						"name": "scopedVerify",
-						"type": "Promise<StoredRecord>"
+						"type": "Promise<VerifyResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderAttachment",
+				"inputs": [
+					{
+						"name": "renderAttachment.attachment",
+						"type": "VerifyResult['attachment']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderAttachment",
+						"type": "string[]"
 					}
 				],
 				"errors": [],
@@ -172,7 +202,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.history-note",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.verification-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.evidence-attach",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.evidence-restore",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -182,7 +227,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.verification-check",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "workflow.run-verify",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-entity-scope",
 			"via": "import",
 			"origin": "derived"
 		}

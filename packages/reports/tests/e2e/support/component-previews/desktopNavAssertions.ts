@@ -1,6 +1,7 @@
 import { expect, type Locator } from '@playwright/test';
 import {
 	assertNavContext,
+	assertNavContextClear,
 	assertMobileNavLayout,
 	assertGameNavGlyph
 } from './desktopNavLayoutAssertions';
@@ -11,6 +12,7 @@ export async function assertDesktopNavCapture(component: Locator, id: string) {
 	const tabs = component.getByRole('navigation', { name: 'Catalog categories' });
 	const width = component.page().viewportSize()!.width;
 	await assertNavContext(component, width);
+	await assertNavContextClear(component, width);
 	await assertMobileNavLayout(component, tabs, width);
 	await expect(
 		tabs.locator('a').first(),

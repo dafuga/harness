@@ -36,15 +36,11 @@ export function registerVerifyCommand(program: Command): void {
 		)
 		.option(
 			'--entity <id>',
-			"Verify only this entity's scenario states; the record is partial and never passes."
+			'Verify this entity and automatically attach complete screenshots; never a full-commit pass.'
 		)
 		.option('--json', 'Print the record and its directory.')
 		.description('Run the affected checks and scenarios and store the record, pass or fail.')
-		.action(async (flags: Flags) => {
-			const stored = await verifyRun(flags);
-			console.log(flags.json ? JSON.stringify(stored, null, 2) : renderVerify(stored));
-			if (stored.record.status !== 'passed') process.exitCode = 1;
-		});
+		.action(runVerification);
 	verify
 		.command('check')
 		.option('--commit <revision>', 'Commit the record must prove.', 'HEAD')
@@ -60,6 +56,13 @@ export function registerVerifyCommand(program: Command): void {
 				console.log(`Commit ${report.commit} is verified by ${report.record.slice(0, 12)}.`);
 		});
 	registerIdentity(verify);
+}
+
+async function runVerification(flags: Flags): Promise<void> {
+	const stored = await verifyRun(flags);
+	console.log(flags.json ? JSON.stringify(stored, null, 2) : renderVerify(stored));
+	if (['failed', 'skipped'].includes(stored.attachment?.status ?? stored.record.status))
+		process.exitCode = 1;
 }
 
 function registerIdentity(verify: Command): void {

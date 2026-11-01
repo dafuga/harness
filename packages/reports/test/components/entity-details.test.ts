@@ -5,7 +5,7 @@ import { index, record, revision } from '../entityFixture';
 import { content, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { withGroups } from '../entityPreviewData';
-import { sourceAdmission } from './sourceAdmission';
+import { sourceAdmission } from '../entitySourceAdmissionFixture';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 
 const page = { category: 'pages' as const, entity: ids.page, section: 'details' as const };

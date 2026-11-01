@@ -1,12 +1,12 @@
-import { measureWorkload } from '../../../../test/support/measureWorkload';
+import { measureWorkload } from '../../../test/support/measureWorkload';
 import { render } from 'svelte/server';
 import { expect } from 'vitest';
-import { words } from '../entityRender';
-import EntitySource, { archivedSource } from '../../src/components/explorer-ui/EntitySource.svelte';
-import type { HarnessUnit } from '../../src/models/Harness.types';
+import { words } from './entityRender';
+import EntitySource, { archivedSource } from '../src/components/explorer-ui/EntitySource.svelte';
+import type { HarnessUnit } from '../src/models/Harness.types';
 
 /** Arrays admitted before JSON retain indexed values without using their iterator or species. */
-function sourceAdmissionArrays(unit: HarnessUnit) {
+export function sourceAdmissionArrays(unit: HarnessUnit) {
 	const paths = [...unit.owns.source];
 	const tests = [{ path: 'test/order-store.test.ts', media: null, gap: 'Recorded test gap' }];
 	const snapshots = paths.map((path) => ({

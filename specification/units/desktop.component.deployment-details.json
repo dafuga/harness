@@ -24,10 +24,8 @@
 		"symbols": [
 			"DeploymentDetails",
 			"DeploymentDetails.fact",
-			"DeploymentDetails.label",
-			"DeploymentDetails.children",
-			"DeploymentDetails.label",
-			"DeploymentDetails.children"
+			"DeploymentDetails.factName",
+			"DeploymentDetails.factValue"
 		]
 	},
 	"contract": {
@@ -78,17 +76,17 @@
 				"errorStatus": "none-found"
 			},
 			{
-				"name": "DeploymentDetails.label",
+				"name": "DeploymentDetails.factName",
 				"inputs": [
 					{
-						"name": "DeploymentDetails.label.row",
-						"type": "unknown",
+						"name": "DeploymentDetails.factName.row",
+						"type": "DeploymentFact",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "DeploymentDetails.label",
+						"name": "DeploymentDetails.factName",
 						"type": "markup"
 					}
 				],
@@ -96,53 +94,17 @@
 				"errorStatus": "none-found"
 			},
 			{
-				"name": "DeploymentDetails.children",
+				"name": "DeploymentDetails.factValue",
 				"inputs": [
 					{
-						"name": "DeploymentDetails.children.row",
-						"type": "unknown",
+						"name": "DeploymentDetails.factValue.row",
+						"type": "DeploymentFact",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "DeploymentDetails.children",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
-				"name": "DeploymentDetails.label",
-				"inputs": [
-					{
-						"name": "DeploymentDetails.label.row",
-						"type": "unknown",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "DeploymentDetails.label",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
-				"name": "DeploymentDetails.children",
-				"inputs": [
-					{
-						"name": "DeploymentDetails.children.row",
-						"type": "unknown",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "DeploymentDetails.children",
+						"name": "DeploymentDetails.factValue",
 						"type": "markup"
 					}
 				],
