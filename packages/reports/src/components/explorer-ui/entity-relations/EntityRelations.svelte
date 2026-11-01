@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Card from '../explorer-kit/Card.svelte';
 	import type {
 		ExplorerEntity,
 		ExplorerRelations,
@@ -99,7 +100,7 @@
 <!-- What uses the entity and what it uses are two sections; neither names a file. -->
 <hx-div class="ex-relations" data-harness-component="harness-entity-relations">
 	{#if show === 'models' || show === 'apis'}
-		<hx-section class="ex-card" aria-label={read.title}>
+		<Card as="section" label={read.title}>
 			<hx-h2>
 				<HarnessIcon name={read.icon} size={22} />
 				{read.title}
@@ -111,10 +112,10 @@
 			{:else}
 				{@render cards(reached, read.title)}
 			{/if}
-		</hx-section>
+		</Card>
 	{/if}
 	{#if show === 'both' || show === 'used-in'}
-		<hx-section class="ex-card" aria-label="Used In">
+		<Card as="section" label="Used In">
 			<hx-h2>
 				<HarnessIcon name="relationships" size={22} /> Used In
 				<hx-span class="ex-count">{usage.usedIn.length}</hx-span>
@@ -138,10 +139,10 @@
 					{@render cards(group.items, `${group.title} used in`)}
 				</HarnessGroup>
 			{/each}
-		</hx-section>
+		</Card>
 	{/if}
 	{#if show === 'both' || show === 'uses'}
-		<hx-section class="ex-card" aria-label="Uses">
+		<Card as="section" label="Uses">
 			<hx-h2>
 				<HarnessIcon name="layers" size={22} /> Uses
 				<hx-span class="ex-count">{usage.count}</hx-span>
@@ -188,6 +189,6 @@
 					{/key}
 				</HarnessGroup>
 			{/if}
-		</hx-section>
+		</Card>
 	{/if}
 </hx-div>

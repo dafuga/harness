@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import { behaviorFacts } from '../../helpers/verification-evidence/behaviorFacts';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
@@ -18,7 +19,7 @@
 	import EntityRun from './EntityRun.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		behavior,
 		read = null,
@@ -133,10 +134,10 @@
 		{/if}
 	</hx-header>
 	{#if shown.groups.length === 0}
-		<hx-p class="ex-gap ex-unrecorded">
-			<HarnessVerdict passed={false} label="Evidence missing" />
+		<Notice as="p" className={'ex-gap ex-unrecorded entity-behavior-ex-gap'}>
+			<Status passed={false} label="Evidence missing" />
 			<hx-span>No end-to-end result is recorded for this entity at {at}.</hx-span>
-		</hx-p>
+		</Notice>
 	{:else}
 		<ComparePanes {panes} className="ex-panes" framed={false}>
 			{#snippet children(pane)}
@@ -156,9 +157,9 @@
 		{#if pending}
 			<HarnessIcon name="clock" size={22} />
 		{:else if unknown}
-			<HarnessVerdict passed={false} {label} reasons={why} />
+			<Status passed={false} {label} reasons={why} />
 		{:else if settled}
-			<HarnessVerdict passed={true} {label} />
+			<Status passed={true} {label} />
 		{:else}
 			<HarnessIcon name="change" size={22} />
 		{/if}
@@ -194,7 +195,7 @@
 	.ex-change-reasons p {
 		margin: 0;
 	}
-	.ex-gap.ex-unrecorded {
+	:global(.entity-behavior-ex-gap.ex-unrecorded) {
 		border-color: var(--hx-color-border);
 		color: var(--hx-color-text-muted);
 	}

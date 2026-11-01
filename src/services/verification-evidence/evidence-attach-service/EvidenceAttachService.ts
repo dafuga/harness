@@ -1,3 +1,4 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Attached } from './EvidenceAttachService.types';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
@@ -87,7 +88,7 @@ export class EvidenceAttachService {
 		const added = await this.evidence.add(
 			path,
 			await this.files(stored, manifest, text),
-			`chore: record ${record.status} verification ${short(record.id)} of ${short(commit)}`,
+			`chore: record ${record.status} verification ${short(record.id)} of ${shortCommit(commit)}`,
 			'manifest.json'
 		);
 		const pointer = { commit: added.commit, path, manifest: sha256(text) };

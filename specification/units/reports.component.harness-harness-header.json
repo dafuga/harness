@@ -10,13 +10,13 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.brand-mark",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-harness-navbar",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-header",
 			"reports.component.shared-primitives-atoms-html-nav",
-			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
@@ -26,6 +26,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-notice"],
 		"inputs": [
 			{
 				"name": "HarnessHeader.base",
@@ -84,6 +85,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-navbar",
 			"via": "import",
 			"origin": "derived"
@@ -110,11 +116,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-nav",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

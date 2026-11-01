@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-span",
@@ -22,6 +23,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "RemoteDevices.devices",
@@ -71,6 +73,11 @@
 		},
 		{
 			"unit": "desktop.store.remote-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},

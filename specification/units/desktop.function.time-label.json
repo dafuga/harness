@@ -15,7 +15,14 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "timeLabel.value",
+				"type": "string",
+				"required": true,
+				"description": "Text beginning with a date and hour/minute timestamp to try formatting."
+			}
+		],
 		"outputs": [
 			{
 				"name": "timeLabel",
@@ -24,13 +31,35 @@
 			}
 		],
 		"errors": [],
-		"operations": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "timeLabel",
+				"inputs": [
+					{
+						"name": "timeLabel.value",
+						"type": "string",
+						"required": true,
+						"description": "Text beginning with a date and hour/minute timestamp to try formatting."
+					}
+				],
+				"outputs": [
+					{
+						"name": "timeLabel",
+						"type": "string",
+						"description": "Localized medium date and short time when parsing succeeds; original text otherwise."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [
 		{
 			"unit": "reports.helper.strings-format-time",
-			"via": "reexport",
+			"via": "import",
 			"origin": "derived"
 		}
 	],

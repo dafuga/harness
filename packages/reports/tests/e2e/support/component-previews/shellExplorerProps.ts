@@ -1,5 +1,6 @@
 import { desktopData } from './sealedData';
 import { reviewedOrdersEvidence } from './shellArtwork';
+import { populatedExplorerContent } from './explorerContentCatalogProps';
 import type { PreviewCases } from './shared';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import type {
@@ -54,6 +55,8 @@ function withoutRegistry(host: ExplorerScreenProps): ExplorerScreenProps {
 
 function contentProps(variant: string) {
 	const host = d.host();
+	const populated = populatedExplorerContent(host, variant);
+	if (populated) return populated;
 	if (['catalog', 'pages', 'configs', 'functions', 'platforms'].includes(variant)) {
 		const category =
 			variant === 'catalog' ? 'components' : (variant as ExplorerScreenProps['route']['category']);

@@ -22,7 +22,7 @@ h3 {
 	font-size: var(--hx-type-size-sm);
 	color: var(--hx-color-text-supporting);
 }
-.proof-steps {
+:global(.regression-proof .proof-steps) {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: var(--hx-space-16);
@@ -96,7 +96,7 @@ pre {
 	margin: 0 0 var(--hx-space-16);
 }
 @media (max-width: 700px) {
-	.proof-steps {
+	:global(.regression-proof .proof-steps) {
 		grid-template-columns: minmax(0, 1fr);
 	}
 	.regression-proof {

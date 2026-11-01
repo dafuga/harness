@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 	import type { View } from './AudioComparisonViewer.types';
 
 	import { onMount } from 'svelte';
@@ -24,12 +26,13 @@
 	onMount(() => {
 		document.querySelectorAll('audio').forEach((audio) => audio.pause());
 	});
-	let shown = $derived(
-		[
-			{ item: before, phase: 'before' },
-			{ item: after, phase: 'after' }
-		].filter(({ phase }) => view === 'compare' || view === phase)
+	const panes = $derived(
+		comparisonPanes(
+			{ value: before, commit: before.source, key: before.id },
+			{ value: after, commit: after.source, key: after.id }
+		)
 	);
+
 	// Close natively while the dialog is still attached, so the browser returns focus to the opener.
 	function close() {
 		const dialog = region?.closest('dialog');
@@ -60,11 +63,20 @@
 		aria-label={$t('audioComparisonFor', { values: { title: after.title } })}
 	>
 		<!-- Keyed by recording: an original leaving the view is destroyed, and AudioEvidence pauses it. -->
-		{#each shown as { item, phase } (item.id)}
-			<hx-div class="audio-comparison-side" role="group" aria-label={$t(phase + 'Recording')}>
-				<hx-span class={'audio-comparison-phase ' + phase} aria-hidden="true">{$t(phase)}</hx-span>
-				<AudioEvidence {item} {assetBase} idPrefix="audio-viewer-" />
-			</hx-div>
-		{/each}
+
+		<ComparePanes {panes} visible={view === 'compare' ? 'both' : view} framed={false} contents>
+			{#snippet children(pane)}
+				{#if pane.value}<hx-div
+						class="audio-comparison-side"
+						role="group"
+						aria-label={$t(pane.side + 'Recording')}
+					>
+						<hx-span class={'audio-comparison-phase ' + pane.side} aria-hidden="true"
+							>{pane.heading}</hx-span
+						>
+						<AudioEvidence item={pane.value} {assetBase} idPrefix="audio-viewer-" />
+					</hx-div>{/if}
+			{/snippet}
+		</ComparePanes>
 	</hx-section>
 </Modal>

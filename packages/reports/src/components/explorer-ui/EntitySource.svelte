@@ -5,6 +5,7 @@
 </script>
 
 <script lang="ts">
+	import Card from './explorer-kit/Card.svelte';
 	import { implementationFiles, testFiles } from '../../lib/explorer-ui/stores/sourceReader.svelte';
 	import type { HarnessUnit } from '../../models/explorer-ui/Harness.types';
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
@@ -36,10 +37,11 @@
 	}
 </script>
 
-<hx-section
-	class="ex-card"
-	aria-labelledby="ex-source-title"
-	data-harness-component="harness-entity-source"
+<Card
+	as="section"
+	tone="entity-source-card"
+	labelledby="ex-source-title"
+	component="harness-entity-source"
 >
 	<hx-h2 id="ex-source-title">Source files</hx-h2>
 	<SourceFileList
@@ -65,10 +67,10 @@
 	{#if !files.some((file) => sourceLink(file))}<hx-p class="ex-soft">
 			GitHub source unavailable for this revision.
 		</hx-p>{/if}
-</hx-section>
+</Card>
 
 <style>
-	.ex-card :global(.source-files a .source-name) {
+	:global(.entity-source-card .source-files a .source-name) {
 		padding-bottom: var(--hx-space-4);
 		text-decoration: underline;
 		text-underline-offset: var(--hx-space-3);

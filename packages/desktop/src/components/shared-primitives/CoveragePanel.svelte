@@ -1,6 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
+	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import DataTable from '$shared/shared-primitives/DataTable.svelte';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
@@ -12,7 +15,7 @@
 	import type { EntityDetail } from '../../models/development-tooling/Desktop.types';
 	import { evidenceNotice } from '../../utils/verification-evidence/evidenceNotice';
 	import RuntimeBehavior from '../execution-runtimes/RuntimeBehavior.svelte';
-	import StatusIcon from './StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	import RegressionProof from '$shared/verification-evidence/RegressionProof.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	let {
@@ -59,25 +62,36 @@
 			/>{/if}
 		<hx-div class="row">
 			<hx-h2>Evidence</hx-h2>
-			<hx-span class="chip runtime-chip">Runtime capture</hx-span>{#if side}<hx-small
+			<Pill as="span" variant="chip" tone="runtime-chip coverage-panel-chip">Runtime capture</Pill
+			>{#if side}<hx-small
 					>Recorded for {shortCommit(side.commit)}{side.record
 						? ` · record ${side.record.id}`
 						: ''}</hx-small
 				>{/if}
 		</hx-div>
-		{#if notice}<hx-p
-				class={notice.alert ? 'error' : 'empty'}
+		{#if notice}<Notice
+				className={notice.alert ? 'error' : 'empty'}
 				role={notice.alert ? 'alert' : 'status'}
 			>
 				{notice.text}
-			</hx-p>{:else if side}{#if side.gap}<hx-p class="runtime-gap">
-					<StatusIcon status="failed" reason="Evidence missing" /><hx-span>{side.gap}</hx-span>
-				</hx-p>{/if}{#each side.coverage as item (item.scenario)}<hx-article
+			</Notice>{:else if side}{#if side.gap}<Notice
+					as="p"
+					className={'runtime-gap coverage-panel-runtime-gap'}
+				>
+					<Status variant="icon" status="failed" reason="Evidence missing" /><hx-span
+						>{side.gap}</hx-span
+					>
+				</Notice>{/if}{#each side.coverage as item (item.scenario)}<hx-article
 					class="coverage-scenario"
 				>
 					<hx-h3>
-						<StatusIcon status={mark(item.standing)} reason={told(item.standing, item.reasons)} />
-						{item.title}<hx-span class="chip">{item.kind}</hx-span>{#if item.inheritedFrom}<hx-small
+						<Status
+							variant="icon"
+							status={mark(item.standing)}
+							reason={told(item.standing, item.reasons)}
+						/>
+						{item.title}<Pill as="span" variant="chip" tone="coverage-panel-chip">{item.kind}</Pill
+						>{#if item.inheritedFrom}<hx-small
 								>Inherited from {shortCommit(item.inheritedFrom)}</hx-small
 							>{/if}
 					</hx-h3>
@@ -104,7 +118,8 @@
 									<hx-td>{state.state}</hx-td>
 									<hx-td>{state.declared}</hx-td>
 									<hx-td
-										><StatusIcon
+										><Status
+											variant="icon"
 											status={mark(state.standing)}
 											reason={told(state.standing, state.reasons)}
 										/></hx-td
@@ -119,9 +134,9 @@
 					{result}
 					{evidence}
 					unit={entity.category === 'functions' ? entity.id : undefined}
-				/>{:else}<hx-p class="empty">
+				/>{:else}<EmptyState as="p" className="empty coverage-panel-empty">
 					No test recorded an input and an observed output for this entity at
 					{shortCommit(result.scope.commit)}.
-				</hx-p>{/if}{/if}
+				</EmptyState>{/if}{/if}
 	</hx-section>
 {/snippet}

@@ -1,10 +1,10 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import HarnessVerdict from '../../src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte';
+import Status from '../../src/components/shared-primitives/status/Status.svelte';
 import { harnessIcons } from '../../src/utils/harnessIcons';
 
 const markup = (props: Record<string, unknown>) =>
-	render(HarnessVerdict, { props: props as never }).body.replace(/<!--.*?-->/g, '');
+	render(Status, { props: props as never }).body.replace(/<!--.*?-->/g, '');
 const text = (html: string) =>
 	html
 		.replace(/<[^>]+>/g, ' ')
@@ -30,6 +30,31 @@ test('a verdict draws its icon and no words: the green check for a pass', () => 
 	// Nothing is read off the page until the mark is pointed at, focused or tapped.
 	expect(text(drawn(body))).toBe('');
 	expect(tip(body)[1]).toMatch(/\shidden\b/);
+	const icon = markup({
+		variant: 'icon',
+		status: 'verified',
+		reason: 'All required states passed.'
+	});
+	expect(icon).toContain('verification-wrap');
+	expect(icon).toContain('✓');
+	expect(icon).not.toContain('hx-verdict');
+	const failedIcon = markup({ variant: 'icon', status: 'failed', reason: '' });
+	expect(failedIcon).toContain('No verification recorded for this revision.');
+	expect(failedIcon).toContain('×');
+	const badge = markup({ variant: 'badge', status: 'failed' });
+	expect(badge).toContain('badge failed');
+	expect(badge).not.toContain('<button');
+	const run = markup({
+		variant: 'run',
+		label: 'Reviewing invoice approval',
+		active: true,
+		cancel: () => {
+			throw new Error('Must not run during render');
+		}
+	});
+	expect(text(run)).toBe('Reviewing invoice approval Cancel run');
+	expect(run).toContain('role="status"');
+	expect(markup({ variant: 'run', label: '' })).toBe('');
 });
 
 test('no caller brings the words back: a label, a frame and the bare look all draw the icon alone', () => {

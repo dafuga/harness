@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '../explorer-kit/Notice.svelte';
 	import DataTable from '../../shared-primitives/DataTable.svelte';
 	import Card from '../explorer-kit/Card.svelte';
 	import { untrack } from 'svelte';
@@ -20,7 +21,7 @@
 	import Select from '../../shared-primitives/Select.svelte';
 	import EntityHistoryRow from '../entity-history-row/EntityHistoryRow.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
-	import HarnessVerdict from '../harness-verdict/HarnessVerdict.svelte';
+	import Status from '../../shared-primitives/status/Status.svelte';
 	import RegressionProof from '../../verification-evidence/RegressionProof.svelte';
 	let {
 		entity,
@@ -120,10 +121,10 @@
 			{/if}
 		</hx-header>
 		{#if found.listed.length === 0}
-			<hx-p class="ex-gap">
-				<HarnessVerdict passed={false} label="No recorded change" />
+			<Notice as="p" className={'ex-gap entity-history-ex-gap'}>
+				<Status passed={false} label="No recorded change" />
 				<hx-span>No commit read so far is recorded as a change of this entity.</hx-span>
-			</hx-p>
+			</Notice>
 		{:else}
 			<hx-div style:--ex-profile={JSON.stringify(shown && ` (${shown})`)}>
 				<DataTable
@@ -171,55 +172,5 @@
 </hx-div>
 
 <style>
-	/* Narrow viewports stack each commit under visible labels; headers remain accessible. */
-	@media (max-width: 800px) {
-		:global(.ex-table.ex-history) {
-			overflow: hidden;
-		}
-		:global(.ex-table.ex-history) :global(thead) {
-			position: absolute;
-			width: 1px;
-			overflow: hidden;
-			clip-path: inset(50%);
-		}
-		:global(.ex-table.ex-history) :global(tbody tr) {
-			display: grid;
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-		:global(.ex-table.ex-history) :global(tbody tr + tr) {
-			border-top: var(--hx-border-thin) solid var(--ex-line);
-		}
-		:global(.ex-table.ex-history) :global(tbody tr.viewed td:not(:nth-child(5))) {
-			box-shadow: inset var(--hx-border-heavy) 0 0 var(--ex-gold);
-		}
-		:global(.ex-table.ex-history) :global(tbody td) {
-			min-width: 0;
-			padding: var(--hx-space-6) var(--hx-space-12);
-			border-top: 0;
-		}
-		:global(.ex-table.ex-history) :global(tbody td:not(:nth-child(4), :nth-child(5))) {
-			grid-column: 1 / -1;
-		}
-		:global(.ex-table.ex-history) :global(tbody td::before) {
-			display: block;
-			margin-bottom: var(--hx-space-4);
-			color: var(--ex-soft);
-			content: 'Date';
-		}
-		:global(.ex-table.ex-history) :global(tbody td:nth-child(2)::before) {
-			content: 'Commit';
-		}
-		:global(.ex-table.ex-history) :global(tbody td:nth-child(3)::before) {
-			content: 'Behavior change';
-		}
-		:global(.ex-table.ex-history) :global(tbody td:nth-child(4)::before) {
-			content: 'Size';
-		}
-		:global(.ex-table.ex-history) :global(tbody td:nth-child(5)::before) {
-			content: 'Complexity';
-		}
-		:global(.ex-table.ex-history) :global(tbody td:nth-child(6)::before) {
-			content: 'Latency' var(--ex-profile);
-		}
-	}
+	@import './entityHistory.css';
 </style>

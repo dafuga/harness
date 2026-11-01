@@ -11,10 +11,10 @@
 		"uses": [
 			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.explorer-ui-explorer-kit-command-block",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.module-system-plugins-plugin-state-pills",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-header",
-			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-ul"
 		]
@@ -25,7 +25,10 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-pill"
+		],
 		"inputs": [
 			{
 				"name": "ExplorerPluginCard.entry",
@@ -64,6 +67,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.module-system-plugins-plugin-state-pills",
 			"via": "import",
 			"origin": "derived"
@@ -75,11 +83,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-header",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-li",
 			"via": "import",
 			"origin": "derived"
 		},

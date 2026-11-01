@@ -77,7 +77,7 @@ export function captureProvenance(
 		{
 			label: 'Captured from',
 			value: server
-				? `build ${server.buildId} of ${brief(server.revision)}`
+				? `build ${server.buildId} of ${shortCommit(server.revision)}`
 				: 'not recorded: the capture names no build or revision'
 		},
 		...(kind ? [{ label: 'Provenance', value: kind }] : []),
@@ -85,13 +85,13 @@ export function captureProvenance(
 			? [
 					{
 						label: 'Inherited from',
-						value: `record ${brief(scenario.origin.record)} of ${brief(scenario.origin.commit)}`
+						value: `record ${brief(scenario.origin.record)} of ${shortCommit(scenario.origin.commit)}`
 					}
 				]
 			: []),
 		{
 			label: 'Verification attempt',
-			value: `record ${brief(record.id)} (${outcome}) targeting ${brief(record.source.commit)}`
+			value: `record ${brief(record.id)} (${outcome}) targeting ${shortCommit(record.source.commit)}`
 		}
 	];
 	const source = server
@@ -115,7 +115,9 @@ export function scenarioOrigin(scenario: Scenario): string {
 	const others = [...new Set(builds)].filter(
 		(revision): revision is string => Boolean(revision) && revision !== scenario.testedRevision
 	);
-	const elsewhere = others.length ? `; captures came from ${others.map(shortCommit).join(', ')}` : '';
+	const elsewhere = others.length
+		? `; captures came from ${others.map(shortCommit).join(', ')}`
+		: '';
 	return `Failed attempt at ${shortCommit(scenario.testedRevision)}${elsewhere}`;
 }
 

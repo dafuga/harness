@@ -2,7 +2,6 @@ import { createRawSnippet } from 'svelte';
 import type { ComparisonPane } from '../../../../src/helpers/verification-evidence/comparisonPanes.types';
 import { comparisonPanes } from '../../../../src/helpers/verification-evidence/comparisonPanes';
 import { commits } from '../../../../test/entityUnits';
-
 import type { Content } from './comparePanesPreview.types';
 const children = createRawSnippet<[ComparisonPane<Content>]>((pane) => ({
 	render: () => `<p>${pane().value?.summary ?? ''}</p>`

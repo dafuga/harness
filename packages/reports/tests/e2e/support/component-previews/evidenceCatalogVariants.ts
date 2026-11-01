@@ -56,7 +56,8 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 		'next',
 		'previous',
 		'zoomed',
-		'actual-size'
+		'actual-size',
+		'missing-after'
 	],
 	'reports.component.upload-comparison': [
 		'open',

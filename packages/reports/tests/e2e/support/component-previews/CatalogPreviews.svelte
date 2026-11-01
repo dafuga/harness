@@ -53,7 +53,8 @@
 			'explorer-usage-link',
 			'source-code-action',
 			'source-file-list',
-			'source-viewer'
+			'source-viewer',
+			'shared-primitives-compare-panes'
 		].some((name) => id === `reports.component.${name}`);
 	const reports = id.startsWith('reports.');
 	const historyColumns = ['Date', 'Commit', 'Behavior change', 'Size', 'Complexity', 'Latency'];
@@ -89,7 +90,8 @@
 				class:evidence-grid={galleryCard}
 				class:provider-picker={id.includes('provider-picker')}
 				class:account={id === 'hub.component.account-menu'}
-				class:desktop-status={id === 'desktop.component.status-icon'}
+				class:desktop-status={id === 'reports.component.harness-harness-verdict' &&
+					variant.startsWith('icon')}
 				class:ex-content={explorer && !fullFrame}
 				data-preview-unit={unit.id}
 				data-preview-frame={fullFrame ? 'full' : 'component'}

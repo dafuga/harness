@@ -1,3 +1,4 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { RegressionNote } from './RegressionProofRepository.types';
 import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/EvidenceTreeAdapter';
 import { evidenceRef } from '../../core/git-source-history/historyTypes';
@@ -65,7 +66,7 @@ export class RegressionProofRepository {
 				{ path: 'manifest.json', content: { bytes: manifest } },
 				...files.map(({ path, bytes }) => ({ path, content: { bytes } }))
 			],
-			`chore: record ${record.phase} regression ${record.source.commit.slice(0, 7)}`,
+			`chore: record ${record.phase} regression ${shortCommit(record.source.commit)}`,
 			'manifest.json'
 		);
 		await new HistoryNoteRepository(this.root).append(record.source.commit, [

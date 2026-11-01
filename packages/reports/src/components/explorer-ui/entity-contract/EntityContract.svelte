@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '../../shared-primitives/DetailList.svelte';
+	import Card from '../explorer-kit/Card.svelte';
 	import { shortCommit } from '../../../helpers/strings/shortCommit';
 
 	import { tick } from 'svelte';
@@ -113,10 +115,11 @@
 	}
 </script>
 
-<hx-section
-	class="ex-card ex-contract"
-	data-harness-component="entity-contract"
-	aria-label={last ? 'Last contract' : 'Contract'}
+<Card
+	as="section"
+	tone="ex-contract"
+	component="entity-contract"
+	label={last ? 'Last contract' : 'Contract'}
 >
 	<hx-h2><HarnessIcon name="contract" size={24} /> {title}</hx-h2>
 	{#if last}
@@ -146,17 +149,13 @@
 		{/each}
 	{/each}
 	{#if serviceErrors}<ContractTable group={serviceErrors} onexample={openExample} />{/if}
-</hx-section>
+</Card>
 {#snippet summaryRows(rows: ContractRow[])}
 	{#if rows.length > 0}
-		<hx-dl class="ex-rows">
-			{#each rows as row, position (position)}
-				<hx-div>
-					<hx-dt>{row.label}</hx-dt>
-					<hx-dd>{row.value}</hx-dd>
-				</hx-div>
-			{/each}
-		</hx-dl>
+		<DetailList {rows} rowKey={(_, position) => position} className="ex-rows">
+			{#snippet label(row)}{row.label}{/snippet}
+			{#snippet children(row)}{row.value}{/snippet}
+		</DetailList>
 	{/if}
 {/snippet}
 {#snippet callableSection(callable: CallableContract, label: string)}
@@ -186,35 +185,5 @@
 </Modal>
 
 <style>
-	.ex-contract {
-		display: grid;
-		gap: var(--hx-space-16);
-		min-width: 0;
-	}
-	/* Shared callable headings keep method names primary and parameters distinct. */
-	.callable {
-		display: grid;
-		gap: var(--hx-space-10);
-		min-width: 0;
-	}
-	.callable + .callable {
-		padding-top: var(--hx-space-16);
-		border-top: var(--hx-border-thin) solid var(--ex-line);
-	}
-	.call-signature {
-		color: var(--hx-color-text-muted);
-	}
-	.callable-name {
-		color: var(--hx-color-text);
-	}
-	.callable-parameter {
-		color: var(--hx-color-text-supporting);
-	}
-	.callable h3 {
-		margin: 0;
-		color: var(--ex-text);
-		font-size: var(--hx-type-size-base);
-		font-weight: var(--hx-style-weight-semibold);
-		overflow-wrap: anywhere;
-	}
+	@import './entityContract.css';
 </style>

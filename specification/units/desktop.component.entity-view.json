@@ -19,10 +19,11 @@
 			"desktop.component.plan-badge",
 			"desktop.component.relationships-panel",
 			"desktop.component.runtime-evidence",
-			"desktop.component.status-icon",
 			"desktop.component.thread-panel",
 			"desktop.component.workspace-link",
 			"reports.component.entity-examples",
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -42,6 +43,10 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.harness-harness-verdict"
+		],
 		"inputs": [
 			{
 				"name": "EntityView.workspace",
@@ -125,11 +130,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.component.status-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.component.thread-panel",
 			"via": "import",
 			"origin": "derived"
@@ -181,6 +181,16 @@
 		},
 		{
 			"unit": "reports.component.entity-examples",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

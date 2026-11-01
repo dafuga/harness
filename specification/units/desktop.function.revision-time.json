@@ -27,6 +27,12 @@
 				"type": "'commit' | 'branch'",
 				"required": true,
 				"description": "Chooses the selected commit timestamp or the timestamp of the branch tip."
+			},
+			{
+				"name": "displayTime.value",
+				"type": "string | null",
+				"required": true,
+				"description": "ISO timestamp to format; absent or invalid values produce the unknown-time label."
 			}
 		],
 		"outputs": [
@@ -42,6 +48,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "revisionTime",
@@ -68,6 +75,26 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "displayTime",
+				"inputs": [
+					{
+						"name": "displayTime.value",
+						"type": "string | null",
+						"required": true,
+						"description": "ISO timestamp to format; absent or invalid values produce the unknown-time label."
+					}
+				],
+				"outputs": [
+					{
+						"name": "displayTime",
+						"type": "string",
+						"description": "Localized date and time, or the explicit unknown fallback."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -80,7 +107,7 @@
 		},
 		{
 			"unit": "reports.helper.strings-format-time",
-			"via": "reexport",
+			"via": "import",
 			"origin": "derived"
 		}
 	],

@@ -141,7 +141,23 @@ export const shellCatalogVariants: Record<string, string[]> = {
 		'passed-open',
 		'failed-open',
 		'unknown-open',
-		'long-open'
+		'long-open',
+		'icon',
+		'icon-failed',
+		'icon-unverified',
+		'icon-unknown',
+		'icon-no-reason',
+		'icon-open',
+		'icon-long',
+		'badge-passed',
+		'badge-running',
+		'badge-failed',
+		'badge-blocked',
+		'badge-skipped',
+		'badge-not-proven',
+		'badge-interrupted',
+		'run',
+		'run-idle'
 	],
 	'reports.component.shared-primitives-loading-state': ['default-label', 'long', 'reduced-motion']
 };

@@ -32,9 +32,18 @@ function lint(filename: string, code: string): string[] {
 }
 
 test('feature source must reuse shared markup and commit shortening', () => {
+	expect(
+		lint(
+			'packages/reports/src/components/Unlisted.svelte',
+			'<hx-figure class="ex-card-shot">Capture</hx-figure>'
+		)
+	).toEqual([]);
 	for (const markup of [
 		'<hx-article class="ex-card">Content</hx-article>',
 		'<hx-span class="ex-pill">Ready</hx-span>',
+		'<hx-span class="chip">Ready</hx-span>',
+		'<hx-section class:ex-card={true}>Content</hx-section>',
+		"<hx-p class={true ? 'empty' : 'content'}>No rows</hx-p>",
 		'<hx-p class="empty">Nothing recorded</hx-p>',
 		'<hx-p class="ex-notice">Partial reading</hx-p>',
 		'<hx-table><hx-tbody /></hx-table>',
@@ -53,6 +62,12 @@ test('feature source must reuse shared markup and commit shortening', () => {
 });
 
 test('shared primitive implementation and unrelated collection or date slices stay admitted', () => {
+	expect(
+		lint(
+			'packages/desktop/src/services/ContentService.ts',
+			'const seen = (hash: string) => `sha256 ${hash.slice(0, 12)}`;'
+		)
+	).toEqual([]);
 	expect(
 		lint('packages/reports/src/components/shared-primitives/Table.svelte', '<hx-table />')
 	).toEqual([]);
@@ -85,6 +100,7 @@ test('the frozen reuse allowlist only shrinks and exactly describes remaining so
 			.digest('hex')
 	).toBe('7842adf54e62376ba038ca8aa310e95c0457ed0c092723e913c3a1b28bd93aa0');
 	expect(reuse.reuseAllowlistGaps(allowlist, ceiling)).toEqual([]);
+	expect(allowlist, 'Completed reuse has no exceptions; adding any entry grows it.').toEqual({});
 	const current: Record<string, number> = {};
 	for (const area of ['src', 'packages/reports/src', 'packages/desktop/src', 'packages/hub/src'])
 		for (const file of sources(join(root, area)))

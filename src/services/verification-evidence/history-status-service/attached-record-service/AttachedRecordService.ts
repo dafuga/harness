@@ -1,3 +1,4 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { AttachedRecord } from './AttachedRecordService.types';
 import { createHash } from 'node:crypto';
 import { LfsAdapter } from '../../../../adapters/git-source-history/LfsAdapter';
@@ -45,13 +46,13 @@ export class AttachedRecordService {
 		const result: AttachedRecord = { pointer, files: new Map(), problems: [] };
 		const { tree } = this.evidence;
 		if (!(await tree.exists(pointer.commit))) {
-			const missing = `evidence commit ${short(pointer.commit)} is not available`;
+			const missing = `evidence commit ${shortCommit(pointer.commit)} is not available`;
 			return { ...result, problems: [`${missing}; run harness history fetch`] };
 		}
 		const { within } = this;
 		const outside = within === null || (within && !(await tree.contains(within, pointer.commit)));
 		if (outside) {
-			const stray = `evidence commit ${short(pointer.commit)} is not part of the pinned evidence`;
+			const stray = `evidence commit ${shortCommit(pointer.commit)} is not part of the pinned evidence`;
 			return { ...result, problems: [stray] };
 		}
 		const text = await tree.read(pointer.commit, `${pointer.path}/manifest.json`);
@@ -119,10 +120,6 @@ function parseJson(bytes: Buffer): unknown {
 
 function sha256(bytes: Buffer): string {
 	return createHash('sha256').update(bytes).digest('hex');
-}
-
-function short(id: string): string {
-	return id.slice(0, 12);
 }
 
 export type { AttachedRecord } from './AttachedRecordService.types';

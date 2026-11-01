@@ -1,9 +1,10 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import type { BehaviorOutcome, EntityBehavior } from '$reports/utils/entityBehavior';
 	import RuntimeArtifact from './RuntimeArtifact.svelte';
-	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let {
 		shown,
 		side,
@@ -38,19 +39,23 @@
 
 <hx-div class="runtime-pane" role="group" aria-label={title}>
 	<hx-p class="runtime-pane-head">
-		<hx-strong>{title}</hx-strong><hx-span class="chip">{role}</hx-span><StatusIcon
+		<hx-strong>{title}</hx-strong><Pill as="span" variant="chip" tone="runtime-run-chip"
+			>{role}</Pill
+		><Status
+			variant="icon"
 			status={passed ? 'verified' : 'failed'}
 			reason={passed ? 'All results passed' : 'Not all results passed'}
 		/>
 	</hx-p>
 	{#each shown.groups as group (`${group.scenario}|${group.state}`)}<hx-div class="runtime-state">
 			<hx-h4>
-				<StatusIcon status={mark(group[side])} reason={said[group[side]]} />
+				<Status variant="icon" status={mark(group[side])} reason={said[group[side]]} />
 				{named(group.scenario)} · {group.state}
 			</hx-h4>
 			{#each group.lines as line (`${line.evidence}|${line.kind}`)}<hx-div class="runtime-result">
 					<hx-p>
-						<hx-span class="chip">{line.kind}</hx-span><hx-span>{said[line[side].outcome]}</hx-span
+						<Pill as="span" variant="chip" tone="runtime-run-chip">{line.kind}</Pill><hx-span
+							>{said[line[side].outcome]}</hx-span
 						>{#if side === 'after' && line.differences.length}<hx-span class="muted"
 								>differs at {line.differences.join(', ')}</hx-span
 							>{/if}

@@ -11,4 +11,4 @@ export interface TooltipSize {
 	height: number;
 }
 
-export { tooltipPlace } from '../../components/explorer-ui/harness-verdict/tooltipPlace';
+export { tooltipPlace } from '../../components/shared-primitives/status/tooltipPlace';

@@ -7,12 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
+		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-small",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-small"
 		]
 	},
 	"owns": {
@@ -24,6 +24,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "GameControls.view",
@@ -68,6 +69,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
@@ -79,11 +85,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-small",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,3 +1,4 @@
+import { statusModeProps } from './statusModeProps';
 import type { PreviewCases } from './shared';
 import { text } from './shared';
 
@@ -40,6 +41,8 @@ function iconProps(props: PreviewCases[string], variant: string) {
 	return { ...props, name: variant.replace('icon-', '') };
 }
 function verdictProps(props: PreviewCases[string], variant: string) {
+	const mode = statusModeProps(variant);
+	if (mode) return mode;
 	const failed = variant.startsWith('failed') || variant === 'long-open';
 	const unknown = variant.startsWith('unknown');
 	let label = props.label;

@@ -1,6 +1,7 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../atoms -->
 <script lang="ts">
+	import EmptyState from '../../explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { UsageExample } from '../../../../../../src/utils/unit-documentation/unitDocumentation';
 	import { usageExamples } from './usageExamples';
 	let {
@@ -15,7 +16,9 @@
 
 <hx-div class="examples">
 	{#if !lead && examples.length === 0}
-		<hx-p class="empty">No usage examples are recorded.</hx-p>
+		<EmptyState as="p" className="empty usage-examples-empty"
+			>No usage examples are recorded.</EmptyState
+		>
 	{/if}
 	{#if lead}
 		<hx-article>
@@ -39,7 +42,7 @@
 	article {
 		min-width: 0;
 	}
-	.empty {
+	:global(.usage-examples-empty) {
 		margin: 0;
 		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-sm);

@@ -9,6 +9,8 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-platform-details",
 			"reports.component.filter-dialog",
 			"reports.component.harness-entity-link",
@@ -50,7 +52,12 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.select", "reports.component.shared-primitives-detail-list"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.select",
+			"reports.component.shared-primitives-detail-list"
+		],
 		"inputs": [
 			{
 				"name": "ExplorerPlatforms.index",
@@ -234,6 +241,16 @@
 	"dependencies": [
 		{
 			"unit": "function.explorer-ui-platform-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},

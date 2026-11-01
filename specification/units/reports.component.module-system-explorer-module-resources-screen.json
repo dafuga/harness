@@ -10,6 +10,8 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-explorer-frame",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-code",
@@ -24,7 +26,6 @@
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-pre",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-ul"
 		]
 	},
@@ -43,7 +44,11 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-pill"
+		],
 		"inputs": [
 			{
 				"name": "ExplorerModuleResourcesScreen.index",
@@ -241,6 +246,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-explorer-frame",
 			"via": "import",
 			"origin": "derived"
@@ -307,11 +322,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -5,10 +5,14 @@
 	"title": "Report status badge",
 	"responsibility": "Shows a report status using its translated label and status styling.",
 	"responsibilityOrigin": "declared",
-	"status": "active",
+	"status": "retired",
 	"composition": {
 		"level": "molecule",
 		"uses": []
+	},
+	"retired": {
+		"reason": "Translated badge rendering is consolidated into the shared Status component.",
+		"at": "2026-11-01T17:01:56.877Z"
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/shared-primitives/StatusBadge.svelte"],

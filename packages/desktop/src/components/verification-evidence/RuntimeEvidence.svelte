@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import { screenOptions } from '$reports/utils/explorer-ui/entityScreens';
@@ -51,19 +53,18 @@
 	/>
 	<hx-div class="row">
 		<hx-h2>Recorded runtime evidence</hx-h2>
-		<hx-span class="chip runtime-chip">Runtime capture</hx-span>{#if where}<hx-small
-				>{where}</hx-small
-			>{/if}
+		<Pill as="span" variant="chip" tone="runtime-chip runtime-evidence-chip">Runtime capture</Pill
+		>{#if where}<hx-small>{where}</hx-small>{/if}
 	</hx-div>
 	{#if workspace.offline}<hx-p class="muted">
 			Saved copy{saved}; not checked with the server.
 		</hx-p>{/if}
-	{#if notice}<hx-p
-			class={notice.alert ? 'error' : 'empty'}
+	{#if notice}<Notice
+			className={notice.alert ? 'error' : 'empty'}
 			role={notice.alert ? 'alert' : 'status'}
 		>
 			{notice.text}
-		</hx-p>{:else if result}{#if !headless && (visual || options.length)}<RuntimeScreens
+		</Notice>{:else if result}{#if !headless && (visual || options.length)}<RuntimeScreens
 				{result}
 				{options}
 				{evidence}

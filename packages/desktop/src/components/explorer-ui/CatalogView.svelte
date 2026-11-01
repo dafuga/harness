@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { helperContract } from '../../../../../src/utils/helperContract';
 	import Select from '$shared/Select.svelte';
 	import FilterDialog from '$shared/FilterDialog.svelte';
@@ -106,12 +107,13 @@
 		>
 	</hx-div>
 	<hx-div class="card-grid">
-		{#each entities as entity (entity.id)}<EntityCard {entity} {workspace} />{:else}<hx-p
-				class="empty"
+		{#each entities as entity (entity.id)}<EntityCard {entity} {workspace} />{:else}<EmptyState
+				as="p"
+				className="empty catalog-view-empty"
 			>
 				No {workspace.category} match this view.
 				<hx-button onclick={reset}>Show all {workspace.category}</hx-button>
-			</hx-p>{/each}
+			</EmptyState>{/each}
 	</hx-div>
 </hx-main>
 

@@ -5,13 +5,17 @@
 	"title": "Status icon",
 	"responsibility": "Displays a verification marker and lets a person inspect the reason behind it.",
 	"responsibilityOrigin": "declared",
-	"status": "active",
+	"status": "retired",
 	"composition": {
 		"level": "molecule",
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-span"
 		]
+	},
+	"retired": {
+		"reason": "Icon rendering is consolidated into the shared Status component.",
+		"at": "2026-11-01T17:01:51.411Z"
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/shared-primitives/StatusIcon.svelte"],

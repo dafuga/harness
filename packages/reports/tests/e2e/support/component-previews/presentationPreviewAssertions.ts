@@ -1,3 +1,4 @@
+import { assertComparePanesPreview } from './comparePanesPreviewAssertions';
 import {
 	prepareCompatibilityState,
 	assertCompatibilityPreview
@@ -9,6 +10,7 @@ const prefix = 'reports.component.shared-primitives-';
 export async function preparePresentationState(component: Locator, id: string, variant: string) {
 	await prepareCompatibilityState(component, id, variant);
 	await prepareConfigInspection(component, id, variant);
+	if (id === `${prefix}compare-panes`) await assertComparePanesPreview(component, variant);
 	if (id === `${prefix}data-table` && variant === 'focused')
 		await component.getByRole('region', { name: 'Contract fields' }).focus();
 	if (id === `${prefix}code-line` && variant === 'action-focused')
@@ -154,25 +156,4 @@ async function explorer(component: Locator, variant: string) {
 async function prepareConfigInspection(component: Locator, id: string, variant: string) {
 	if (id === 'reports.component.harness-explorer-table' && variant === 'value-open')
 		await component.getByRole('button', { name: /View value for/ }).click();
-}
-
-async function assertComparePanesPreview(component: Locator, variant: string) {
-	const before = component.getByRole('group', { name: /^Before ·/ });
-	const after = component.getByRole('group', { name: /^(?:After|Current snapshot) ·/ });
-	await expect(before).toHaveCount(variant === 'single' ? 0 : 1);
-	await expect(after).toHaveCount(1);
-	await expect(after).toContainText(
-		variant === 'missing-selected'
-			? 'No selected capture is recorded.'
-			: 'Invoice approved by Daniel'
-	);
-	if (variant === 'missing-parent')
-		await expect(before).toContainText('No parent capture is recorded.');
-	else if (variant !== 'single') await expect(before).toContainText('Invoice awaiting approval');
-	if (variant === 'details') {
-		await expect(before).toContainText('Build: orders-parent');
-		await expect(after).toContainText('Build: orders-selected');
-		await expect(after).not.toContainText('orders-parent');
-		await expect(before).not.toContainText('orders-selected');
-	}
 }

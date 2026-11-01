@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
 	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
@@ -11,7 +12,7 @@
 	import { galleryItems } from '$reports/utils/explorer-ui/entityScreens';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
-	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let { result, evidence }: { result: EntityEvidenceResult; evidence: EntityEvidence } = $props();
 
 	const clips = $derived(
@@ -59,27 +60,27 @@
 					{#await evidence.url(pane.side, clip.file)}
 						<hx-p class="muted">Reading the clip…</hx-p>
 					{:then url}<hx-audio controls src={url} aria-label={clip.title}></hx-audio>
-					{:catch cause}<hx-p class="runtime-gap"
-							><StatusIcon status="failed" reason="Not verified" /><hx-span
+					{:catch cause}<Notice as="p" className={'runtime-gap runtime-audio-runtime-gap'}
+							><Status variant="icon" status="failed" reason="Not verified" /><hx-span
 								>{errorMessage(cause)}</hx-span
-							></hx-p
+							></Notice
 						>{/await}
 					{#if clip.transcript}<hx-p class="runtime-transcript">{clip.transcript}</hx-p>{/if}
 					<hx-p class="runtime-standing">{clip.standing} · {clip.status}</hx-p>
 				{/snippet}
 				{#snippet gap(pane)}
-					<hx-p class="runtime-gap"
-						><StatusIcon status="failed" reason="No clip" /><hx-span
+					<Notice as="p" className={'runtime-gap runtime-audio-runtime-gap'}
+						><Status variant="icon" status="failed" reason="No clip" /><hx-span
 							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span
-						></hx-p
+						></Notice
 					>
 				{/snippet}
 			</ComparePanes>
-		{:else}<hx-p class="runtime-gap"
-				><StatusIcon status="failed" reason="No clip" /><hx-span
+		{:else}<Notice as="p" className={'runtime-gap runtime-audio-runtime-gap'}
+				><Status variant="icon" status="failed" reason="No clip" /><hx-span
 					>A clip is declared for this entity, and none is recorded at {shortCommit(
 						result.scope.commit
 					)}.</hx-span
-				></hx-p
+				></Notice
 			>{/each}
 	</hx-div>{/if}

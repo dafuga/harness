@@ -1,3 +1,5 @@
+import { sourceFileParts } from '../../src/components/explorer-ui/sourceFileParts';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { index, record, revision } from '../entityFixture';
 import { content, words } from '../entityRender';
@@ -48,6 +50,7 @@ test('a page contract shows purpose, address, inputs and output without verifica
 });
 
 test('source is shown only when the source tab is the open one', async () => {
+	await sourceParts();
 	for (const tab of ['measurements', undefined] as const)
 		expect(words(content('commit', { ...page, tab }))).not.toMatch(owned);
 	for (const mode of ['current', 'commit'] as const) {
@@ -204,3 +207,26 @@ test('a declared contract explains each item in its dedicated tab and details', 
 		expect(words(body)).not.toContain('A missing page is said.');
 	}
 });
+
+async function sourceParts(): Promise<void> {
+	await measureWorkload(
+		'reports.function.explorer-ui-source-file-parts',
+		'source-path-parts',
+		() => {
+			expect(sourceFileParts('src/services/invoices/InvoiceService.ts', 'src/services/')).toEqual({
+				folder: 'invoices',
+				name: 'InvoiceService.ts'
+			});
+			expect(sourceFileParts('InvoiceService.ts', 'src/')).toEqual({
+				folder: '',
+				name: 'InvoiceService.ts'
+			});
+			expect(sourceFileParts('src/services/', 'src/')).toEqual({ folder: 'services', name: '' });
+			expect(sourceFileParts('', '')).toEqual({ folder: '', name: '' });
+			expect(sourceFileParts(Object('src/InvoiceService.ts') as string, 'src/')).toEqual({
+				folder: '',
+				name: 'InvoiceService.ts'
+			});
+		}
+	);
+}

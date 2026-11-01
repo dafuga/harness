@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { explorerName } from '$reports/utils/explorerName';
 	import type { Category, Relationship } from '../../models/development-tooling/Desktop.types';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
@@ -82,7 +83,11 @@
 								to={workspace.path(item.category, item.id)}>{named(item)}</WorkspaceLink
 							>{:else}<hx-span>{named(item)}</hx-span>{/if}
 					</hx-div>
-					{#if direction === 'used-by'}<hx-span class="chip">{kind(item)[1]}</hx-span>{/if}
+					{#if direction === 'used-by'}<Pill
+							as="span"
+							variant="chip"
+							tone="relationships-panel-chip">{kind(item)[1]}</Pill
+						>{/if}
 					{#if item.hasPlan}<PlanBadge />{/if}
 				</hx-article>{/each}
 		</hx-div>

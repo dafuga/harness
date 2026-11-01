@@ -5,7 +5,7 @@
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { formatDuration } from '../../helpers/strings/formatDuration';
 	import { t } from '../../utils/reports-media/reportLocale';
-	import StatusBadge from '../shared-primitives/StatusBadge.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let { before, after, onopen }: { before: Evidence; after: Evidence; onopen: () => void } =
 		$props();
 	let ready = $state(false);
@@ -65,7 +65,7 @@
 					{:else if length}<hx-time class="audio-duration" datetime={`PT${Math.round(length)}S`}
 							>{formatDuration(length)}</hx-time
 						>{/if}
-					<StatusBadge status={unavailable(item) ? 'not-proven' : item.status} />
+					<Status variant="badge" status={unavailable(item) ? 'not-proven' : item.status} />
 				</hx-span>
 			{/each}
 		</hx-span>

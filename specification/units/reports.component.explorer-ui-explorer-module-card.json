@@ -9,10 +9,10 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.explorer-usage",
 			"reports.component.harness-entity-link",
 			"reports.component.harness-harness-icon",
-			"reports.component.shared-primitives-atoms-html-article",
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-figure",
@@ -22,11 +22,15 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte"],
+		"source": [
+			"packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte",
+			"packages/reports/src/components/explorer-ui/explorerModuleCard.css"
+		],
 		"symbols": ["ExplorerModuleCard", "ExplorerModuleCard.picture", "ExplorerModuleCard.usage"]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
 		"inputs": [
 			{
 				"name": "ExplorerModuleCard.row",
@@ -140,6 +144,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.explorer-usage",
 			"via": "import",
 			"origin": "derived"
@@ -151,11 +160,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-article",
 			"via": "import",
 			"origin": "derived"
 		},
