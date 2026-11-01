@@ -2,6 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Review the rendered shell, after its ordinary catalog capture has retained the checkpoint. */
 export async function assertShellVisualReview(component: Locator, id: string, variant: string) {
+	await reviewedCopy(component, id);
 	if (id.endsWith('harness-entity-screens') || id.endsWith('harness-explorer-content')) {
 		await expect(component).not.toContainText('No screenshot selected.');
 		await screenGeometry(component, variant);
@@ -20,6 +21,22 @@ export async function assertShellVisualReview(component: Locator, id: string, va
 		].includes(id)
 	)
 		await tabOverflow(component);
+}
+
+async function reviewedCopy(component: Locator, id: string) {
+	if (
+		![
+			'reports.component.harness-entity-artifact',
+			'reports.component.harness-harness-navbar',
+			'reports.component.harness-harness-console',
+			'reports.component.entity-search-results',
+			'reports.component.console-chat'
+		].includes(id)
+	)
+		return;
+	await expect(component, 'Product-facing examples use realistic names').not.toContainText(
+		/\b(?:preview (?:project|agent|model)|synthetic|fixture)\b/i
+	);
 }
 
 async function screenGeometry(component: Locator, variant: string) {
@@ -49,6 +66,10 @@ async function screenGeometry(component: Locator, variant: string) {
 }
 
 async function navbar(component: Locator, variant: string) {
+	if (variant === 'search-open') {
+		await expect(component.getByRole('combobox', { name: 'Search entities' })).toBeEnabled();
+		await expect(component.getByRole('dialog')).not.toContainText('Loading entities…');
+	}
 	if (variant === 'historical')
 		await expect(component.locator('.hx-history-state')).toHaveText('Historical commit');
 	if (variant === 'pages')
@@ -111,7 +132,7 @@ async function catalog(component: Locator, variant: string) {
 
 async function consoleState(component: Locator, variant: string) {
 	if (variant === 'loading-history')
-		await expect(component.getByText('Preview project', { exact: true })).toBeVisible();
+		await expect(component.getByText('Northstar Store', { exact: true })).toBeVisible();
 	if (variant !== 'unindexed') return;
 	await expect(
 		component.getByRole('heading', { name: 'No registry at this revision', exact: true })

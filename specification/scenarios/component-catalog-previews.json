@@ -541,6 +541,24 @@
 			"units": ["desktop.component.choice-dialog"]
 		},
 		{
+			"id": "desktop-component-choice-dialog-closed",
+			"title": "Choice dialog: closed",
+			"coverage": "required",
+			"units": ["desktop.component.choice-dialog"]
+		},
+		{
+			"id": "desktop-component-choice-dialog-empty",
+			"title": "Choice dialog: empty",
+			"coverage": "required",
+			"units": ["desktop.component.choice-dialog"]
+		},
+		{
+			"id": "desktop-component-choice-dialog-disabled",
+			"title": "Choice dialog: disabled",
+			"coverage": "required",
+			"units": ["desktop.component.choice-dialog"]
+		},
+		{
 			"id": "desktop-component-composer",
 			"title": "Composer",
 			"coverage": "required",
@@ -8023,6 +8041,9 @@
 				"desktop-component-catalog-view-filters-open",
 				"desktop-component-catalog-view-long",
 				"desktop-component-choice-dialog",
+				"desktop-component-choice-dialog-closed",
+				"desktop-component-choice-dialog-empty",
+				"desktop-component-choice-dialog-disabled",
 				"desktop-component-composer",
 				"desktop-component-composer-plan",
 				"desktop-component-composer-ask",

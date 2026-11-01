@@ -5,6 +5,7 @@ export const presentationVariants: Record<string, string[]> = {
 	[`${prefix}code-line`]: ['long', 'multiline', 'wrap', 'action-focused', 'inspection-open'],
 	[`${prefix}detail-list`]: ['empty', 'empty-unprovided', 'long', 'values', 'duplicate-labels'],
 	'desktop.component.agent-controls': ['compact', 'empty', 'unavailable'],
+	'desktop.component.choice-dialog': ['closed', 'empty', 'disabled'],
 	'desktop.component.remote-approval': ['no-projects', 'busy', 'read', 'write'],
 	'desktop.component.contract-panel': ['empty', 'missing-description', 'long', 'technical-open'],
 	'reports.component.harness-explorer-table': [

@@ -1,20 +1,10 @@
 import type { PreviewCases } from './shared';
 import * as d from './explorerData';
 import type { ExplorerEvidence } from '../../../../src/models/explorer-ui/Explorer.types';
-
-const reconciliation = [
-	'Orders reconciliation · 20 October 2026',
-	'Query: SERVICE · sort: order number · source: customer account AC-42',
-	'Each entry compares the indexed result with the stored order, invoice and delivery status.',
-	...Array.from({ length: 180 }, (_, position) => {
-		const status = ['Ready to ship', 'Delivered', 'Processing'][position % 3];
-		const total = (84 + position * 1.25).toFixed(2);
-		return `Order A-${1048 + position} | account AC-${42 + (position % 8)} | ${status} | USD ${total} | invoice paid | search matched SERVICE | indexed amount and delivery status match the stored order.`;
-	})
-].join('\n');
+import { desktopData } from './sealedData';
 
 export function artifactProps(props: PreviewCases[string], variant: string) {
-	const cell = d.cell;
+	const cell = desktopData.reportArtifacts.default;
 	if (variant === 'not-recorded') return { ...props, cell: { ...cell, capture: null } };
 	if (variant === 'not-stored')
 		return {
@@ -39,17 +29,7 @@ export function artifactProps(props: PreviewCases[string], variant: string) {
 		};
 	if (variant === 'lost') return { ...props, cell: { ...cell, read: undefined }, lost: true };
 	if (variant === 'plain-text' || variant === 'long')
-		return {
-			...props,
-			cell: {
-				...cell,
-				read: {
-					...cell.read,
-					document: null,
-					text: variant === 'long' ? reconciliation : 'The recorded command completed successfully.'
-				}
-			}
-		};
+		return { ...props, cell: desktopData.reportArtifacts[variant === 'long' ? 'long' : 'plain'] };
 	return props;
 }
 

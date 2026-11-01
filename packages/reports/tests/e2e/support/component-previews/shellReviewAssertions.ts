@@ -170,6 +170,7 @@ async function searchFocus(component: Locator) {
 }
 
 async function assertionsFlow(component: Locator) {
+	await expect(component).not.toContainText('This result records no input and output.');
 	await expect(component.locator('.ex-steps')).toContainText('Search for SERVICE');
 	for (const row of await component.locator('.ex-checks > li').all()) {
 		const label = row.locator(':scope > span').last();

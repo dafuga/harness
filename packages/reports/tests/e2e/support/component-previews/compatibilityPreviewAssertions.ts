@@ -1,30 +1,80 @@
 import { expect, type Locator } from '@playwright/test';
 
 export async function prepareCompatibilityState(component: Locator, id: string, variant: string) {
-	if (id !== 'desktop.component.remote-approval' || !['read', 'write'].includes(variant)) return;
+	if (id === 'desktop.component.choice-dialog') {
+		if (['closed', 'disabled'].includes(variant)) return;
+		await component.getByRole('button', { name: 'Choose a model', exact: true }).click();
+		await expect(component.getByRole('dialog', { name: 'Choose a model' })).toBeVisible();
+	}
+	if (id !== 'desktop.component.remote-approval' || variant === 'no-projects') return;
 	await component.getByRole('checkbox').first().check();
-	await component.getByRole('combobox', { name: 'Device access' }).selectOption(variant);
+	if (['read', 'write'].includes(variant))
+		await component.getByRole('combobox', { name: 'Device access' }).selectOption(variant);
 }
 
 export async function assertCompatibilityPreview(component: Locator, id: string, variant: string) {
 	if (id === 'desktop.component.agent-controls') await controls(component, variant);
+	if (id === 'desktop.component.choice-dialog') await choices(component, variant);
 	if (id !== 'desktop.component.remote-approval') return;
+	await expect(component).not.toContainText(/\b(?:preview|synthetic|fixture)\b/i);
 	await readableSelections(component);
 	await expect(component.locator('small').first()).toHaveText(
 		/^Key (?:[0-9a-f]{4} ){15}[0-9a-f]{4} · iOS$/
 	);
 	if (variant === 'no-projects')
 		await expect(component).toContainText('Add a local project first.');
+	const approve = component.getByRole('button', { name: /^Approv/ });
+	if (variant === 'no-projects' || variant === 'busy') await expect(approve).toBeDisabled();
+	else await expect(approve).toBeEnabled();
 	if (['read', 'write'].includes(variant)) {
 		await expect(component.getByRole('combobox', { name: 'Device access' })).toHaveValue(variant);
-		await expect(component.getByRole('button', { name: 'Approve', exact: true })).toBeEnabled();
-	} else
-		await expect(component.getByRole('button', { name: 'Approve', exact: true })).toBeDisabled();
-	if (variant === 'busy')
+	}
+	if (variant === 'busy') {
 		await expect(component.getByRole('button', { name: 'Deny', exact: true })).toBeDisabled();
+	}
+}
+
+/** Pixel checkpoints precede these layout and in-progress feedback assertions. */
+export async function assertRecordedCompatibility(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.harness-entity-artifact' && variant === 'expanded') {
+		const gaps = await component
+			.locator('.ex-steps, .ex-checks')
+			.evaluateAll((lists) => lists.map((list) => parseFloat(getComputedStyle(list).rowGap)));
+		expect(gaps, 'Steps and assertion rows use the same spacing').toHaveLength(2);
+		expect(gaps[0], 'Steps and assertion rows use the same spacing').toBe(gaps[1]);
+	}
+	if (id === 'desktop.component.remote-approval' && variant === 'busy') {
+		await expect(
+			component.getByRole('button', { name: /^Approv/ }),
+			'Approval progress is visibly distinct'
+		).toHaveText('Approving…');
+		await expect(component.getByRole('group')).toHaveAttribute('aria-busy', 'true');
+	}
+}
+
+async function choices(component: Locator, variant: string) {
+	const trigger = component.getByRole('button', { name: 'Choose a model', exact: true });
+	const dialog = component.getByRole('dialog', { name: 'Choose a model' });
+	if (['closed', 'disabled'].includes(variant)) {
+		await expect(dialog).toBeHidden();
+		if (variant === 'disabled') await expect(trigger).toBeDisabled();
+		return;
+	}
+	await expect(dialog).toBeVisible();
+	if (variant === 'empty') await expect(dialog).toContainText('No models available.');
+	else {
+		const selected = dialog.getByRole('button', { name: 'GPT-6.1 Sol', exact: true });
+		await expect(selected).toHaveAttribute('aria-pressed', 'true');
+		await expect(selected).toBeFocused();
+		await expect(dialog.getByRole('button', { name: /Luna/ })).toBeDisabled();
+	}
+	await dialog.press('Escape');
+	await expect(dialog).toBeHidden();
+	await expect(trigger).toBeFocused();
 }
 
 async function controls(component: Locator, variant: string) {
+	await expect(component).not.toContainText(/\b(?:preview|synthetic|fixture)\b/i);
 	if (variant === 'compact') {
 		await expect(component.locator('.agent-icons')).toBeVisible();
 		await expect(component.getByRole('combobox')).toHaveCount(0);

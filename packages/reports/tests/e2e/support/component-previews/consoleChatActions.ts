@@ -136,7 +136,7 @@ async function assertChatFrame(component: Locator, variant: string) {
 async function agentRoster(component: Locator) {
 	await component.getByRole('button', { name: 'Agents', exact: true }).click();
 	await expect(
-		component.getByRole('list', { name: 'Agent sessions' }).getByText('Preview agent')
+		component.getByRole('list', { name: 'Agent sessions' }).getByText('Orders review')
 	).toBeVisible();
 	await expect(
 		component
