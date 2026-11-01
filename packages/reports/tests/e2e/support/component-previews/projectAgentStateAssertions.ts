@@ -96,7 +96,7 @@ async function assertReadOnly(component: Locator) {
 async function assertConversation(component: Locator) {
 	const panel = component.locator('.floating-chat-panel');
 	await expect(panel).toContainText('Please review');
-	await expect(panel).toContainText('app.function.archive-orders');
+	await expect(panel).toContainText('order-archiving proposal');
 	await expect(panel).toContainText('filterOrders');
 	const known = panel.locator('a[href*="app.page.orders"]');
 	await expect(known).toHaveAttribute('href', /\/history(?:[?#]|$)/);

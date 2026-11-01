@@ -6,7 +6,7 @@
 	import type { GameView } from '../../../../game/src/models/game-authoring/Game.types';
 	import type { GameSection, GameViewFieldsProps as Props } from './GameViewFields.types';
 	/**
-	 * The view picker in a compact toolbar, with the game sections beside it. The view's title,
+	 * The toolbar lists multiple views visibly, with the game sections beside the picker. The view's title,
 	 * dimension, art direction and New level wait behind View settings; closed, they stay in the
 	 * page, hidden, so their values are still the document's.
 	 */
@@ -49,7 +49,7 @@
 
 <hx-div class="fields" data-harness-component="game-view-fields">
 	<hx-div class="toolbar">
-		<Select label="View" bind:value={() => view.id, select}>
+		<Select label="View" expanded={views.length > 1} bind:value={() => view.id, select}>
 			{#each views as item (item.id)}
 				<hx-option value={item.id}>{item.title}</hx-option>
 			{/each}

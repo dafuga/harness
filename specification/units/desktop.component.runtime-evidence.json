@@ -56,7 +56,7 @@
 			{
 				"name": "RuntimeEvidence",
 				"type": "markup",
-				"description": "Runtime section identifying current tip or commit/parent. Labels offline content as saved and not server-checked. Shows screenshots for non-functions that are visual or declare screen options; behavior for nonvisual entities or existing behavior rows; audio when appropriate. Uses recorded runtime evidence, not proposed designs."
+				"description": "Runtime section identifying current tip or commit/parent. Labels offline content as saved and not server-checked. Shows screenshots for non-functions that are visual or declare screen options; behavior for nonvisual entities or existing behavior rows; audio when appropriate. Uses recorded runtime evidence, not proposed designs. A loaded record shows its shared regression proof or its genuine empty result. Planned, pending, failed and unavailable reads show their status notice without a premature empty-proof verdict."
 			}
 		],
 		"errors": [],

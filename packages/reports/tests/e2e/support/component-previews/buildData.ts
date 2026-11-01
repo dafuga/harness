@@ -2,6 +2,7 @@ import { evidenceData } from '../../../../../desktop/tests/e2e/ui-evidence-data'
 import { explorerArtifact } from '../../../../src/utils/explorerArtifact';
 import { illustratedData, desktopScreenFixtures } from './illustratedData';
 import { desktopArtifactFixtures } from './desktopArtifactFixtures';
+import { entitySectionsEvidenceFixtures } from './entitySectionsEvidenceFixtures';
 import { createHash } from 'node:crypto';
 import { commits, ids } from '../../../../test/entityUnits';
 /** The existing sealed synthetic history, including checked JSON results, for browser previews. */
@@ -12,7 +13,8 @@ export async function buildData() {
 	await readResults(data.results, data.bytes);
 	await readResults(desktopArtifacts.results, { ...data.bytes, ...desktopArtifacts.bytes });
 	const reportArtifacts = await reportArtifactExamples(data);
-	return { ...data, desktopArtifacts, desktopScreens, reportArtifacts };
+	const entitySectionsEvidence = await entitySectionsEvidenceFixtures(data);
+	return { ...data, desktopArtifacts, desktopScreens, reportArtifacts, entitySectionsEvidence };
 }
 
 /** This panel's examples retain their own original bytes, independently of other component fixtures. */

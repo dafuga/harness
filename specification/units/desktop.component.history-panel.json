@@ -18,7 +18,8 @@
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-loading-state"
 		]
 	},
 	"owns": {
@@ -53,7 +54,7 @@
 			{
 				"name": "HistoryPanel",
 				"type": "markup",
-				"description": "Timeline with names, formatted dates, details and commit references, or an empty-history message. Load more requires incomplete history, a next page and bridge support and is disabled during loading. Discards responses for another view; displays current-view errors as alerts. Incomplete history without a usable next-page operation is explicitly labeled not loaded."
+				"description": "Timeline with names, formatted dates, details and commit references, or an empty-history message. Load more requires incomplete history, a next page and bridge support and is disabled during loading. Discards responses for another view; displays current-view errors as alerts. Incomplete history without a usable next-page operation is explicitly labeled not loaded. A shared inline loading indicator and label identify pending page reads; the history region reports aria-busy."
 			}
 		],
 		"errors": [],
@@ -134,6 +135,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
 			"via": "import",
 			"origin": "derived"
 		},
