@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
@@ -48,7 +50,14 @@
 	let paired = $derived(evidence.mode === 'commit');
 	// Sides that were not recorded alike are shown, and are not called a comparison.
 	let unlike = $derived(paired ? evidence.incomparable : []);
-	let panes = $derived([...(shown.before ? [shown.before] : []), shown.after]);
+	let images = $derived([...(shown.before ? [shown.before] : []), shown.after]);
+	let panes = $derived(
+		comparisonPanes(
+			{ value: shown.before, commit: shown.before?.source ?? scope.parent },
+			{ value: shown.after, commit: shown.after.source ?? scope.commit, currentLabel: '' },
+			paired
+		)
+	);
 	let size = $derived(option?.viewports.find((item) => item.id === pick?.viewport)?.size ?? '');
 	const entity = () => ({ category: nav.route.category, entity: nav.route.entity });
 	let tests = $derived(entityLens(nav.route, { ...entity(), tab: 'states' }));
@@ -65,13 +74,6 @@
 		const declared = options.find((item) => item.scenario === fixed.scenario);
 		const known = declared?.viewports.find((item) => item.id === viewport);
 		return { ...fixed, viewport: known?.id ?? fixed.viewport };
-	}
-	/** A capture is named by the revision it was recorded from, including an inherited image. */
-	function heading(item: Evidence): string {
-		const revision = item.source ?? (item.phase === 'before' ? scope.parent : scope.commit) ?? '';
-		const at = shortCommit(revision);
-		if (item.phase === 'before') return at ? `Before · ${at}` : 'Before';
-		return paired ? `After · ${at}` : at;
 	}
 </script>
 
@@ -115,9 +117,10 @@
 			</hx-ul>
 		</hx-div>
 	{/if}
-	<hx-div class="ex-panes" class:paired>
-		{#each panes as item (item.id)}
-			{@const named = heading(item)}
+	<ComparePanes {panes} framed={false}>
+		{#snippet children(pane)}
+			{@const item = pane.value!}
+			{@const named = pane.heading}
 			<hx-figure class="ex-pane" aria-label={named}>
 				<hx-figcaption>
 					<hx-strong>{named}</hx-strong>
@@ -133,8 +136,8 @@
 					</hx-button>
 				{/if}
 			</hx-figure>
-		{/each}
-	</hx-div>
+		{/snippet}
+	</ComparePanes>
 	{#if paired}
 		<hx-div class="ex-change">
 			<HarnessIcon name="change" size={22} />
@@ -148,8 +151,8 @@
 	{/if}
 </Card>
 {#if viewing}<EvidenceViewer
-		items={panes}
-		navigableItems={panes.filter((item) => !item.missing)}
+		items={images}
+		navigableItems={images.filter((item) => !item.missing)}
 		selected={viewing}
 		assetBase={mediaBase}
 		onclose={() => (viewing = null)}

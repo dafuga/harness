@@ -239,9 +239,6 @@
 					"unit": "reports.component.harness-entity-history"
 				},
 				{
-					"unit": "reports.component.harness-entity-screens"
-				},
-				{
 					"unit": "reports.component.harness-entity-sections"
 				},
 				{
@@ -329,6 +326,10 @@
 				{
 					"unit": "reports.function.navbar-search",
 					"symbol": "navbarSearch"
+				},
+				{
+					"unit": "reports.helper.verification-evidence-comparison-panes",
+					"symbol": "pane"
 				}
 			]
 		}

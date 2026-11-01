@@ -26,16 +26,20 @@
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-compare-panes"
 		]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityScreens.svelte"],
-		"symbols": ["EntityScreens"]
+		"symbols": ["EntityScreens", "EntityScreens.children"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.shared-primitives-compare-panes"
+		],
 		"inputs": [
 			{
 				"name": "EntityScreens.options",
@@ -95,7 +99,27 @@
 			}
 		],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityScreens.children",
+				"inputs": [
+					{
+						"name": "EntityScreens.children.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntityScreens.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -189,6 +213,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-compare-panes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
@@ -200,6 +229,11 @@
 		},
 		{
 			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.verification-evidence-comparison-panes",
 			"via": "import",
 			"origin": "derived"
 		},

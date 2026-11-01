@@ -17,7 +17,7 @@
 			"reports.component.shared-primitives-atoms-html-header",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-compare-panes"
 		]
 	},
 	"owns": {
@@ -25,11 +25,14 @@
 			"packages/reports/src/components/explorer-ui/EntityAudio.svelte",
 			"packages/reports/src/components/explorer-ui/EntityAudio.types.ts"
 		],
-		"symbols": ["EntityAudio", "Pair"]
+		"symbols": ["EntityAudio", "EntityAudio.children", "EntityAudio.gap", "Pair"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.shared-primitives-compare-panes"
+		],
 		"inputs": [
 			{
 				"name": "EntityAudio.evidence",
@@ -67,7 +70,45 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityAudio.children",
+				"inputs": [
+					{
+						"name": "EntityAudio.children.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntityAudio.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "EntityAudio.gap",
+				"inputs": [
+					{
+						"name": "EntityAudio.gap.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EntityAudio.gap",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -111,7 +152,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"unit": "reports.component.shared-primitives-compare-panes",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -122,6 +163,11 @@
 		},
 		{
 			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.verification-evidence-comparison-panes",
 			"via": "import",
 			"origin": "derived"
 		},

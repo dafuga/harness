@@ -327,6 +327,7 @@
 		"reports.component.shared-primitives-atoms-svg-tspan",
 		"reports.component.shared-primitives-atoms-svg-use",
 		"reports.component.shared-primitives-code-line",
+		"reports.component.shared-primitives-compare-panes",
 		"reports.component.shared-primitives-data-table",
 		"reports.component.shared-primitives-detail-list",
 		"reports.component.shared-primitives-loading-state",
@@ -5594,7 +5595,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
+			"title": "ExplorerModuleResourcesScreen · Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -5648,13 +5649,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen \u00b7 playwright",
+			"title": "ExplorerModulesScreen · playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen \u00b7 headless-audio",
+			"title": "ExplorerModulesScreen · headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -7459,6 +7460,36 @@
 			"units": ["reports.component.shared-primitives-code-line"]
 		},
 		{
+			"id": "reports-component-shared-primitives-compare-panes",
+			"title": "ComparePanes",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-compare-panes"]
+		},
+		{
+			"id": "reports-component-shared-primitives-compare-panes-single",
+			"title": "ComparePanes: single",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-compare-panes"]
+		},
+		{
+			"id": "reports-component-shared-primitives-compare-panes-missing-parent",
+			"title": "ComparePanes: missing parent",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-compare-panes"]
+		},
+		{
+			"id": "reports-component-shared-primitives-compare-panes-missing-selected",
+			"title": "ComparePanes: missing selected",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-compare-panes"]
+		},
+		{
+			"id": "reports-component-shared-primitives-compare-panes-details",
+			"title": "ComparePanes: details",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-compare-panes"]
+		},
+		{
 			"id": "reports-component-shared-primitives-data-table",
 			"title": "DataTable",
 			"coverage": "required",
@@ -8667,9 +8698,9 @@
 				"reports-component-harness-entity-history-unread",
 				"reports-component-harness-entity-history-reading",
 				"reports-component-harness-entity-history-long",
+				"reports-component-harness-entity-history-profiles",
 				"reports-component-harness-entity-history-row",
 				"reports-component-harness-entity-history-screen",
-				"reports-component-harness-entity-history-profiles",
 				"reports-component-harness-entity-link",
 				"reports-component-harness-entity-link-labelled",
 				"reports-component-harness-entity-link-long",
@@ -9192,6 +9223,11 @@
 				"reports-component-shared-primitives-code-line-wrap",
 				"reports-component-shared-primitives-code-line-action-focused",
 				"reports-component-shared-primitives-code-line-inspection-open",
+				"reports-component-shared-primitives-compare-panes",
+				"reports-component-shared-primitives-compare-panes-single",
+				"reports-component-shared-primitives-compare-panes-missing-parent",
+				"reports-component-shared-primitives-compare-panes-missing-selected",
+				"reports-component-shared-primitives-compare-panes-details",
 				"reports-component-shared-primitives-data-table",
 				"reports-component-shared-primitives-data-table-empty",
 				"reports-component-shared-primitives-data-table-empty-unprovided",
