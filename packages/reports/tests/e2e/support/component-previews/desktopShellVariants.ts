@@ -1,6 +1,7 @@
 import type { DesktopData } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
 import { text } from './shared';
+import { desktopEntitySectionFixture } from './desktopEntitySectionFixture';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 import { desktopHistoryFixture, earlierDesktopHistoryEvent } from './desktopHistoryFixture';
 
@@ -18,6 +19,7 @@ export function desktopShellVariant(
 	if (name === 'history-panel') return history(props, data, variant);
 	if (name === 'catalog-view') return catalog(props, data, variant);
 	if (name === 'entity-view') {
+		desktopEntitySectionFixture(data, variant);
 		const sections: Record<string, string> = {
 			source: 'source',
 			designs: 'designs',

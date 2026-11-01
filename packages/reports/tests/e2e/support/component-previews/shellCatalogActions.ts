@@ -172,7 +172,7 @@ async function explorerState(component: Locator, id: string, variant: string) {
 	if (['search', 'no-matches'].includes(variant)) {
 		await component
 			.getByRole('searchbox')
-			.fill(variant === 'search' ? 'Order' : 'no-such-recorded-entity');
+			.fill(variant === 'search' ? 'Order' : 'refund policy');
 		if (variant === 'no-matches') await expect(component).toContainText(/No .* match this search/);
 	}
 	if (id.endsWith('explorer-frame') && variant === 'source-open') {

@@ -1,0 +1,60 @@
+{
+	"name": "sol9-composer-final-review",
+	"goal": "Composer captions and approval blockers stay readable at every viewport",
+	"createdAt": "2026-11-01T15:48:19.527Z",
+	"updatedAt": "2026-11-01T16:13:45.972Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-01T16:05:17.914Z",
+			"evidence": "Visual-plan captions overlap the textarea; unapproved Change lacks its blocker. Committed captures reproduce both at all three viewports."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T16:05:18.811Z",
+			"evidence": "Existing catalog cases checked text presence and disabled Send, not caption spacing or a visible approval reason. Strengthened those same viewport cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T16:11:20.121Z",
+			"evidence": "Record 47e6f96eb64a8771a634d332e0e8e51254d12ec6fcbefcc7a508cb1c0cd23835 failed all six frozen Composer cases at a130093e15: caption overlap and absent approval reason."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-01T16:13:44.591Z",
+			"evidence": "Commit 07c9d3406e separates the caption and reuses shared Notice for unapproved Change. Tests and fixture inputs remain unchanged from red."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-01T16:13:45.972Z",
+			"evidence": "Record 35f376dd27587d8fe71680879054a043eb09c24eed3be62e5f141c45aaba5005 passes all six unchanged cases at07c9d3406e. Inspected all six original images."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

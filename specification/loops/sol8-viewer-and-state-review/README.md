@@ -40,3 +40,14 @@ environment. Both sets of original images were inspected. An earlier passing gre
 the mobile Proven label; the final source preserves both value columns and removes the row
 heading's unnecessary minimum width. One desktop viewer image caught a transient loading
 status after opening; the final independent recording must wait for the image controls too.
+
+The independent 54-state catalog at `826a93a89c` passes 162 cases and waits for settled viewer
+controls. Pixel review nevertheless finds that disabled navigation retains its enabled styling.
+The availability guard checked the native disabled state and absent hint, but omitted appearance.
+The named catalog test now also requires both unavailable arrows to use the existing app disabled
+opacity token. This refinement receives another matched pair before its own full viewer recording.
+
+The appearance assertion normalizes the token numerically, because `.45` and `0.45` describe
+the same opacity. The named case also requires exactly the two navigation actions to be disabled.
+This corrected guard is committed and run on the original broken checkpoint, then merged into
+the repair history. No test corpus is changed between that red record and its green descendant.

@@ -74,6 +74,23 @@ async function assertDisplayedRevision(dialog: Locator, revision: string) {
 	await expect(dialog.locator('.viewer-note')).toContainText(`revision ${revision}`);
 }
 
+/** Empty navigation uses the same visible disabled treatment as other unavailable controls. */
+export async function assertViewerNavigationAppearance(
+	component: Locator,
+	id: string,
+	variant: string
+) {
+	if (id !== 'reports.component.evidence-viewer' || variant !== 'no-navigation') return;
+	const opacity = await component.evaluate((node) =>
+		String(Number(getComputedStyle(node).getPropertyValue('--hx-opacity-disabled')))
+	);
+	for (const name of ['Previous image', 'Next image'])
+		await expect(
+			component.getByRole('button', { name }),
+			'Unavailable navigation uses the disabled treatment'
+		).toHaveCSS('opacity', opacity);
+}
+
 /** Preserve close interaction coverage after capturing the default open viewer. */
 export async function assertEvidenceViewerCloses(component: Locator) {
 	const dialog = component.getByRole('dialog');
