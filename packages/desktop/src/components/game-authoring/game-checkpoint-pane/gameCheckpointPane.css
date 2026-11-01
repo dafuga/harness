@@ -68,7 +68,6 @@ textarea {
 .checkpoint-modal .fields > label > textarea {
 	field-sizing: content;
 }
-input:focus-visible,
 textarea:focus-visible {
 	outline: var(--hx-border-thick) solid var(--hx-color-primary);
 }
