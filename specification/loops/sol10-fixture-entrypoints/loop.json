@@ -2,7 +2,7 @@
 	"name": "sol10-fixture-entrypoints",
 	"goal": "Keep raw build setup imports independent of renderer test assertions.",
 	"createdAt": "2026-11-01T21:51:51.767Z",
-	"updatedAt": "2026-11-01T21:56:57.506Z",
+	"updatedAt": "2026-11-01T22:07:10.479Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T22:07:10.479Z",
+			"evidence": "Renderer assertions now belong to their test owner. The unchanged four-case guard and seven source cases pass; the paired recorder freezes the subject fixture."
 		},
 		{
 			"id": "green",
