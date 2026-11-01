@@ -4967,7 +4967,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5002,9 +5002,9 @@
 		{
 			"unit": "reports.function.contract-fields",
 			"name": "contractFields",
-			"commit": "caa32de5d477bfd67fdfca82519d2e1f0fe11ef6",
-			"reason": "Project source-declared shared interfaces and aliases through the existing contract tables under Types without inventing runtime behavior.",
-			"definition": "1e847858bfbc5f1e7cf8e00fd84c1f50f233c8714b4cd8fb0abca8f438bf8e10",
+			"commit": "407f1ab711ea6de6072189dcdad3996d4ae00451",
+			"reason": "Retain input requirements and literal defaults while displaying explicit empty error declarations.",
+			"definition": "7c73aac68623d59ddf67ed70c291afdcb9eb2adca6f2aa9b4337b072a2a60ad9",
 			"previousDefinitions": [
 				{
 					"unit": "reports.function.contract-fields",
@@ -5012,6 +5012,13 @@
 					"commit": "17192fb8f8a3ade93c1b49adcdf8511cb4219ebb",
 					"reason": "Show component Props without derived outputs; omit empty error groups while retaining declared field types and examples.",
 					"definition": "1c01800c390be6754a38e669d381495f57991079333d7f81419630bf0cc3aea6"
+				},
+				{
+					"unit": "reports.function.contract-fields",
+					"name": "contractFields",
+					"commit": "caa32de5d477bfd67fdfca82519d2e1f0fe11ef6",
+					"reason": "Project source-declared shared interfaces and aliases through the existing contract tables under Types without inventing runtime behavior.",
+					"definition": "1e847858bfbc5f1e7cf8e00fd84c1f50f233c8714b4cd8fb0abca8f438bf8e10"
 				}
 			]
 		},
@@ -5583,7 +5590,7 @@
 			"name": "activityDisplay",
 			"commit": "2b750c5dd0f1e8c0a6933ef4dc348ba9cfeca3fb",
 			"definition": "010445fa19c69439c1a3a1d485a73fc8296befffb736991eca733ab66115b1e2",
-			"reason": "Record main\u2019s intentional removal of the repeated agent count from the displayed activity sentence."
+			"reason": "Record main’s intentional removal of the repeated agent count from the displayed activity sentence."
 		},
 		{
 			"unit": "function.unit-identity",
