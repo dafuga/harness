@@ -92,7 +92,17 @@ export async function guidanceProject(states = ['default', 'loading', 'failed'])
 			tests: [
 				{ id: 'catalog', kind: 'e2e', runner: 'playwright', target: 'tests/catalog.spec.ts' }
 			],
-			evidence: [{ id: 'shot', kind: 'screenshot', states: [], viewports, required: true }]
+			evidence: [
+				{
+					id: 'shot',
+					kind: 'screenshot',
+					states: states.map(
+						(state) => `${entity.replaceAll('.', '-')}${state === 'default' ? '' : '-' + state}`
+					),
+					viewports,
+					required: true
+				}
+			]
 		})
 	);
 	await commitGuidance(root);
