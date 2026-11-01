@@ -1,3 +1,4 @@
+import { prepareDesktopHistoryProof } from './desktopHistoryFixture';
 import type { DesktopData } from './desktopData.svelte';
 import { whenReady } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
@@ -115,6 +116,7 @@ function artifact(props: PreviewProps, data: DesktopData, variant: string): Prev
 /** Apply store states after the normal fixture reads settle, before mounting the component. */
 export async function desktopRuntimeReady(id: string, data: DesktopData, variant: string) {
 	await data.ready;
+	if (id === 'desktop.component.history-panel') prepareDesktopHistoryProof(data, variant);
 	if (id === 'desktop.component.runtime-behavior') {
 		if (variant === 'paired') {
 			const result = desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`];

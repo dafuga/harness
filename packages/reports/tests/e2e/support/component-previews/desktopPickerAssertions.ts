@@ -51,7 +51,7 @@ export async function assertPickerPresentation(component: Locator, id: string, v
 		await assertRevisionPresentation(component, variant);
 	if (id === 'desktop.component.game-view-fields' && variant === 'multiple') {
 		await expect(
-			component.getByRole('combobox', { name: 'View', exact: true }),
+			component.getByLabel('View', { exact: true }),
 			'Multiple-view capture shows the selected second level'
 		).toHaveValue('second-level');
 		await expect(component.getByRole('textbox', { name: 'View title', exact: true })).toHaveValue(
