@@ -207,7 +207,14 @@ for (const viewport of [
 		const overflow = await page.evaluate(
 			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 		);
-		expect(overflow).toBeLessThanOrEqual(0);
+		const frame = await Promise.all([
+			page.locator('.revision-picker').boundingBox(),
+			page.locator('.project-switcher').boundingBox()
+		]);
+		expect(
+			overflow,
+			`Workspace header stays within the viewport: ${JSON.stringify(frame)}`
+		).toBeLessThanOrEqual(0);
 		await runtimeEvidence(page, info, 'commit');
 	});
 }
