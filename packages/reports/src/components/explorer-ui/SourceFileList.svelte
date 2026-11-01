@@ -110,7 +110,16 @@
 		}
 		.source-files a,
 		.source-files code {
+			display: block;
 			max-width: 100%;
+			white-space: normal;
+		}
+		/* A phone shows the whole path, wrapped, instead of clipping the file name. */
+		.source-folder,
+		.source-name {
+			display: inline;
+			overflow-wrap: anywhere;
+			text-overflow: clip;
 		}
 	}
 	.source-empty {
