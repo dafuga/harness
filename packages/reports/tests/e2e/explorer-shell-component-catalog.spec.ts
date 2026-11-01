@@ -36,6 +36,7 @@ import { assertShellVisualReview } from './support/component-previews/shellVisua
 import { assertTabOverflowCue } from './support/component-previews/shellVisualReviewAssertions';
 import { assertRequiredStateWords } from './support/component-previews/shellVisualReviewAssertions';
 import { assertViewerReview } from './support/component-previews/evidenceViewerActions';
+import { assertViewerNavigationAppearance } from './support/component-previews/evidenceViewerActions';
 import { assertCatalogItemsFrame } from './support/component-previews/catalogItemsPreviewAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { assertCatalogRegistry } from './support/component-previews/catalogRegistryAssertions';
@@ -188,6 +189,7 @@ for (const viewport of catalogViewports) {
 					/\bactive\b/
 				);
 			await assertViewerReview(component, unit.id, variant);
+			await assertViewerNavigationAppearance(component, unit.id, variant);
 			if (unit.id === 'reports.component.explorer-catalog-items' && variant === 'configs-open')
 				await assertCatalogItemsFrame(component, viewport.id, capture);
 			if (
