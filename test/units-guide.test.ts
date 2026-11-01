@@ -31,6 +31,11 @@ test('guide distinguishes named states and heuristic prop boundaries', async () 
 		{ name: 'Widget.disabled', type: 'boolean', required: false, default: false }
 	];
 	await writeGuidanceFile(root, 'specification/units/component.widget.json', JSON.stringify(unit));
+	await writeGuidanceFile(
+		root,
+		'src/components/Widget.svelte',
+		`<script lang="ts">let { status }: { status: 'loading' | 'unavailable' } = $props();</script>{#if status === 'unavailable'}Unavailable{/if}`
+	);
 	await commitGuidance(root);
 	await measureWorkload(
 		'workflow.development-tooling-guide-units',
@@ -43,6 +48,7 @@ test('guide distinguishes named states and heuristic prop boundaries', async () 
 					expect.objectContaining({ name: 'default', origin: 'REQUIRED' }),
 					expect.objectContaining({ name: 'loading', origin: 'REQUIRED' }),
 					expect.objectContaining({ name: 'failed', origin: 'REQUIRED' }),
+					expect.objectContaining({ name: 'unavailable', origin: 'GUESS' }),
 					...[
 						'without-label',
 						'with-label',
@@ -118,21 +124,22 @@ test('guide rejects partial, stale and uncommitted coverage', async () => {
 
 test('a registry string alone is not a committed test, even with retained shots', async () => {
 	const root = await project(['default', 'loading']);
-	await writeGuidanceFile(
-		root,
-		'tests/catalog.spec.ts',
-		'// loading is mentioned but no test is authored'
-	);
-	await commitGuidance(root);
-	await attachGuidanceShots(root, ['default', 'loading']);
-	const { report, exitCode } = await guidanceJson(root, ['guide', entity]);
-	expect(exitCode).toBe(1);
-	expect(
-		report.states.every(
-			(state: { tests: unknown[]; status: string }) =>
-				state.tests.length === 0 && state.status === 'MISSING'
-		)
-	).toBe(true);
+	for (const text of [
+		'// loading is mentioned but no test is authored',
+		"test.skip('loading', () => expect(true).toBe(true));"
+	]) {
+		await writeGuidanceFile(root, 'tests/catalog.spec.ts', text);
+		await commitGuidance(root);
+		await attachGuidanceShots(root, ['default', 'loading']);
+		const { report, exitCode } = await guidanceJson(root, ['guide', entity]);
+		expect(exitCode).toBe(1);
+		expect(
+			report.states.every(
+				(state: { tests: unknown[]; status: string }) =>
+					state.tests.length === 0 && state.status === 'MISSING'
+			)
+		).toBe(true);
+	}
 });
 
 test('guide rejects unknown identities with a useful diagnostic', async () => {
