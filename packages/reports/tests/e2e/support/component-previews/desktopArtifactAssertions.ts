@@ -1,6 +1,29 @@
 import { expect, type Locator } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
+
+/** Comparison fixtures must paint checked captures from both real evidence contexts. */
+export async function assertDesktopScreenCapture(component: Locator, id: string, variant: string) {
+	if (id !== 'desktop.component.runtime-screens') return;
+	if (!['paired', 'incomparable'].includes(variant)) return;
+	for (const [side, hash] of [
+		['Before', commits.middle],
+		['After', commits.tip]
+	]) {
+		const pane = component.getByRole('figure', {
+			name: `${side} · ${hash.slice(0, 7)}`,
+			exact: true
+		});
+		await expect(pane).toBeVisible();
+		const image = pane.getByRole('img');
+		await expect(image).toBeVisible();
+		expect(
+			await image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0),
+			`${side} screenshot contains decoded original bytes`
+		).toBe(true);
+	}
+}
 
 /** An open disclosure must retain its actual content inside the original recorded crop. */
 export async function assertDesktopArtifactCapture(
@@ -59,4 +82,26 @@ async function assertReadableResult(component: Locator, variant: string) {
 			'Artifact gap message stays beside its status icon'
 		).toBeLessThanOrEqual(separation.gap + 1);
 	}
+}
+
+export async function assertDesktopBehaviorState(component: Locator, variant: string) {
+	if (['', 'paired'].includes(variant)) {
+		await expect(component).toContainText('What a test observed end to end.');
+		await expect(component).toContainText('Order 1042 · Service call');
+	}
+	if (variant === 'paired') {
+		for (const [side, hash] of [
+			['Before', commits.middle],
+			['After', commits.tip]
+		]) {
+			const group = component.getByRole('group', {
+				name: `${side} · ${hash.slice(0, 7)}`,
+				exact: true
+			});
+			await expect(group).toBeVisible();
+			await expect(group).toContainText('What a test observed end to end.');
+		}
+	}
+	if (['loading', 'unreadable'].includes(variant))
+		await expect(component).not.toContainText('What a test observed end to end.');
 }

@@ -191,7 +191,7 @@ function evidenceOf(entityId: string, bridge: DesktopBridge) {
 	return evidence;
 }
 
-async function whenReady(store: ReturnType<typeof createEntityEvidenceStore>) {
+export async function whenReady(store: ReturnType<typeof createEntityEvidenceStore>) {
 	for (let attempt = 0; attempt < 100; attempt++) {
 		if (store.status === 'failed') throw new Error(store.error);
 		if (

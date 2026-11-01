@@ -1,9 +1,12 @@
 import { expect, type Locator } from '@playwright/test';
 import { assertPickerPresentation } from './desktopPickerAssertions';
 import { assertReadonlyGameFields } from './desktopReadonlyAssertions';
-import { assertDesktopArtifactCapture } from './desktopArtifactAssertions';
+import {
+	assertDesktopArtifactCapture,
+	assertDesktopBehaviorState,
+	assertDesktopScreenCapture
+} from './desktopArtifactAssertions';
 import { assertDesktopNavCapture } from './desktopNavAssertions';
-import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 
 /** Check the actual state branches, so a successful screenshot cannot silently show the default. */
 export async function assertDesktopState(component: Locator, id: string, variant: string) {
@@ -36,27 +39,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 }
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	composer,
-	'runtime-behavior': async (component, variant) => {
-		if (['', 'paired'].includes(variant)) {
-			await expect(component).toContainText('What a test observed end to end.');
-			await expect(component).toContainText('Order 1042 · Service call');
-		}
-		if (variant === 'paired') {
-			for (const [side, hash] of [
-				['Before', commits.middle],
-				['After', commits.tip]
-			]) {
-				const group = component.getByRole('group', {
-					name: `${side} · ${hash.slice(0, 7)}`,
-					exact: true
-				});
-				await expect(group).toBeVisible();
-				await expect(group).toContainText('What a test observed end to end.');
-			}
-		}
-		if (['loading', 'unreadable'].includes(variant))
-			await expect(component).not.toContainText('What a test observed end to end.');
-	},
+	'runtime-behavior': assertDesktopBehaviorState,
 	'environment-picker': async (component, variant) => {
 		if (['stage', 'preprod', 'prod'].includes(variant))
 			await expect(component.getByRole('combobox', { name: 'Environment' })).toHaveValue(variant);
@@ -107,6 +90,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertHistoryFixtureContent(component, id, variant);
 	await assertReadonlyGameFields(component, id, variant);
 	await assertDesktopArtifactCapture(component, id, variant);
+	await assertDesktopScreenCapture(component, id, variant);
 	await assertDesktopNavCapture(component, id);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);
