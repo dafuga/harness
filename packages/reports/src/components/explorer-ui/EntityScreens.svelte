@@ -69,7 +69,7 @@
 	function heading(item: Evidence): string {
 		const revision = item.source ?? (item.phase === 'before' ? scope.parent : scope.commit) ?? '';
 		const at = shortCommit(revision);
-		if (item.phase === 'before') return `Before · ${at}`;
+		if (item.phase === 'before') return at ? `Before · ${at}` : 'Before';
 		return paired ? `After · ${at}` : at;
 	}
 </script>
@@ -145,11 +145,11 @@
 		</hx-div>
 	{/if}
 </hx-section>
-<EvidenceViewer
-	items={panes}
-	navigableItems={panes.filter((item) => !item.missing)}
-	selected={viewing}
-	assetBase={mediaBase}
-	onclose={() => (viewing = null)}
-	onselect={(item) => (viewing = item)}
-/>
+{#if viewing}<EvidenceViewer
+		items={panes}
+		navigableItems={panes.filter((item) => !item.missing)}
+		selected={viewing}
+		assetBase={mediaBase}
+		onclose={() => (viewing = null)}
+		onselect={(item) => (viewing = item)}
+	/>{/if}

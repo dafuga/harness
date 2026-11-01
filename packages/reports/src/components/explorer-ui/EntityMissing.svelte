@@ -4,7 +4,6 @@
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
 	import HarnessAction from './HarnessAction.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		title,
 		message,
@@ -27,7 +26,6 @@
 	data-harness-component="harness-entity-missing"
 >
 	<hx-h1 id="ex-missing-title">{title}</hx-h1>
-	<hx-p><HarnessVerdict passed={false} label="Not shown" /></hx-p>
 	<hx-p class="ex-lead">{message}</hx-p>
 	<hx-p class="ex-soft">Nothing from another revision is shown in its place.</hx-p>
 	<HarnessAction href={nav.href(to)} onclick={() => nav.go(to)} lead="arrow-left"

@@ -69,7 +69,7 @@
 			{
 				"name": "ExplorerModuleCard",
 				"type": "markup",
-				"description": "One name or helper invocation, its own image for visual modules, and at most three distinct Used In links followed by an ellipsis when more exist. Unsupported dependencies have no invented detail link."
+				"description": "One name or helper invocation, its own image for visual modules, and at most three distinct Used In links followed by an ellipsis. Page cards omit an empty Used In row. Unsupported dependencies have no invented detail link."
 			}
 		],
 		"errors": [

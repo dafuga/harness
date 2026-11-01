@@ -83,7 +83,7 @@
 			{
 				"name": "EntityScreens",
 				"type": "markup",
-				"description": "Captions show the revision that recorded each screenshot; a comparison retains Before/After labels with each capture's revision. Viewport buttons change only the viewport. Activating an image opens its full-size viewer with provenance. Rejected or absent captures remain explicit gaps."
+				"description": "Captions retain capture revisions without a separator when none exists. Viewport buttons retain scenario and state. Selecting an image mounts its full-size viewer; a closed viewer adds no empty-selection text. Rejected or absent captures remain explicit gaps."
 			}
 		],
 		"errors": [

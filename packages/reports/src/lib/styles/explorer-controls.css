@@ -54,6 +54,16 @@
 	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	overflow-x: auto;
 }
+.hx-tabs::-webkit-scrollbar {
+	height: var(--hx-space-8);
+}
+.hx-tabs::-webkit-scrollbar-track {
+	background: var(--hx-color-background);
+}
+.hx-tabs::-webkit-scrollbar-thumb {
+	border-radius: var(--hx-radius-pill);
+	background: var(--hx-color-border-strong);
+}
 .hx-tabs a,
 .hx-tabs button {
 	display: inline-flex;
