@@ -1,3 +1,4 @@
+import { record } from '../../../reports/test/entityFixture';
 import { expect, test } from 'vitest';
 import { evidenceReading } from '../../src/utils/evidenceReading';
 import { commits, data, evidenceBridge, ids, refusal, scopeOf } from '../evidence-fixture';
@@ -23,8 +24,8 @@ test('results are read by their bindings and compared by what they hold', async 
 	// Six results, each read once and on the side that lists it.
 	const sides = calls.map((call) => `${call.side}|${call.recordId}`).sort();
 	expect(sides).toEqual([
-		...Array(3).fill('after|rec-cccccc-0000'),
-		...Array(3).fill('before|rec-bbbbbb-0000')
+		...Array(3).fill(`after|${record(commits.tip).id}`),
+		...Array(3).fill(`before|${record(commits.middle).id}`)
 	]);
 });
 

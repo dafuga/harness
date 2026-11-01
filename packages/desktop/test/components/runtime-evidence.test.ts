@@ -16,17 +16,21 @@ test('a page is given its screenshot, named a runtime capture and never a design
 	const body = await shown(ids.page);
 	expect(body).toContain('aria-label="Recorded runtime evidence"');
 	expect(body).toContain('Runtime capture');
-	expect(body).toContain('Branch tip · ccccccc');
+	expect(body).toContain(`Branch tip · ${commits.tip.slice(0, 7)}`);
 	expect(body).toContain('Current screenshot');
 	expect(body).not.toMatch(/end-to-end|Committed design|audio/i);
 });
 
 test('a function is given what it did, and no screenshot it never had', async () => {
 	const body = await shown(ids.filter, commits.tip);
-	expect(body).toContain('Commit ccccccc beside its parent bbbbbbb');
+	expect(body).toContain(
+		`Commit ${commits.tip.slice(0, 7)} beside its parent ${commits.middle.slice(0, 7)}`
+	);
 	expect(body).toContain('End-to-end comparison');
 	expect(body).not.toMatch(/screenshot/i);
-	expect(await shown(ids.filter, commits.first)).toContain('Commit aaaaaaa · first commit');
+	expect(await shown(ids.filter, commits.first)).toContain(
+		`Commit ${commits.first.slice(0, 7)} · first commit`
+	);
 });
 
 test('a component with a declared clip is given its screenshot and its audio', async () => {
