@@ -19,7 +19,10 @@ async function designsAt(page: Page, expected: NativeExpected): Promise<void> {
 		'page'
 	);
 	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(expected.commit);
-	const name = expected.state === 'history' ? expected.commit.slice(0, 7) : 'feat/native';
+	const name =
+		expected.state === 'history'
+			? `Historical commit · ${expected.commit.slice(0, 7)}`
+			: 'feat/native';
 	await expect(page.getByLabel('Viewed context', { exact: true }).locator('strong')).toHaveText(
 		name
 	);
