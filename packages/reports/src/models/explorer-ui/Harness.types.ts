@@ -73,7 +73,14 @@ export interface HarnessUnit extends HarnessUnitLimits, UnitMetadata {
 	owns: { source: string[]; symbols: string[] };
 	contract: Record<
 		'inputs' | 'outputs' | 'errors',
-		Array<{ name: string; type: string; description?: string; examples?: unknown[] }>
+		Array<{
+			name: string;
+			type: string;
+			required?: boolean;
+			default?: unknown;
+			description?: string;
+			examples?: unknown[];
+		}>
 	>;
 	runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
 	budgets: {

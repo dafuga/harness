@@ -61,6 +61,7 @@
 						fields: item.fields.map((field) => ({
 							name: field.optional ? `${field.name}?` : field.name,
 							type: typeLabel(field.type),
+							required: !field.optional,
 							source: 'missing' as const,
 							examples: []
 						}))
@@ -77,8 +78,8 @@
 		).filter((group) => !byMethod || group.id !== 'errors')
 	);
 	let serviceErrors = $derived.by(() => {
-		if (!byMethod) return undefined;
-		const group = contractFields(unit, category).find((group) => group.id === 'errors');
+		if (!byMethod && category !== 'types') return undefined;
+		const group = contractFields(unit, 'components').find((group) => group.id === 'errors');
 		return (
 			group && {
 				...group,

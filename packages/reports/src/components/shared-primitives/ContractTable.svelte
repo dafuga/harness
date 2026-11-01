@@ -21,11 +21,16 @@
 	// A row previews its first example, cut short, and names placeholders; the modal shows all.
 	const labels = { illustrative: 'Illustrative', missing: 'Example not recorded' };
 	let named = $derived(!group.hideNames);
+	let metadata = $derived(group.id === 'inputs' || group.inputMetadata === true);
 </script>
 
 <hx-div class="group" data-harness-component="contract-table">
 	{#if !plain}
-		<hx-h3>{group.title} <hx-span class="ex-count">{group.fields.length}</hx-span></hx-h3>
+		<hx-h3
+			>{group.title}
+			{#if group.fields.length > 0}<hx-span class="ex-count">{group.fields.length}</hx-span
+				>{/if}</hx-h3
+		>
 	{:else if group.fields.length > 0 || group.keepEmpty}
 		<hx-p class="label">{group.title}</hx-p>
 	{/if}
@@ -37,19 +42,44 @@
 				<hx-tr>
 					{#if named}<hx-th scope="col" class="leading">Name</hx-th>{/if}
 					<hx-th scope="col" class="leading">Type</hx-th>
+					{#if metadata}
+						<hx-th scope="col">Requirement</hx-th>
+						<hx-th scope="col">Default</hx-th>
+					{/if}
 					<hx-th scope="col">Example</hx-th>
 					<hx-th scope="col" class="act" aria-label="Actions"></hx-th>
 				</hx-tr>
 			{/snippet}
 			{#snippet empty()}
-				<hx-tr><hx-td colspan={named ? 4 : 3} class="ex-note">{group.none}</hx-td></hx-tr>
+				<hx-tr
+					><hx-td colspan={(named ? 4 : 3) + (metadata ? 2 : 0)} class="ex-note">{group.none}</hx-td
+					></hx-tr
+				>
 			{/snippet}
 			{#snippet children()}
 				{#each group.fields as field, position (position)}
 					{@const sample = field.examples[0]}
-					<hx-tr>
+					<hx-tr data-contract-input={metadata ? '' : undefined}>
 						{#if named}<hx-th scope="row">{field.name}</hx-th>{/if}
 						<hx-td><hx-code class="type">{field.type}</hx-code></hx-td>
+						{#if metadata}
+							<hx-td
+								><hx-span class="requirement"
+									>{field.required === true
+										? 'Required'
+										: field.required === false
+											? 'Optional'
+											: 'Requiredness not recorded'}</hx-span
+								></hx-td
+							>
+							<hx-td
+								><hx-span class="default"
+									>{#if Object.hasOwn(field, 'default')}Default: <hx-code
+											>{JSON.stringify(field.default) ?? String(field.default)}</hx-code
+										>{:else}No default{/if}</hx-span
+								></hx-td
+							>
+						{/if}
 						<hx-td>
 							<hx-div class="example">
 								{#if field.source !== 'declared'}<hx-i>{labels[field.source]}</hx-i>{/if}
@@ -142,6 +172,11 @@
 		color: var(--hx-color-text-supporting);
 		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+	.requirement,
+	.default {
+		display: block;
+		overflow-wrap: anywhere;
 	}
 	.act {
 		width: 60px;

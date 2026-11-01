@@ -64,6 +64,8 @@ export function fieldOf(item: Item, unit: HarnessUnit): ContractField {
 	return {
 		name: nameOf(item, unit),
 		type,
+		required: item.required,
+		...(Object.hasOwn(item, 'default') ? { default: item.default } : {}),
 		...(description ? { description } : {}),
 		...examplesOf(item, type)
 	};
@@ -78,10 +80,12 @@ function typeGroups(unit: HarnessUnit): ContractGroup[] {
 			title: item.name,
 			none: 'No fields declared.',
 			keepEmpty: true,
+			inputMetadata: item.fields.length > 0 || item.methods.length > 0,
 			fields: [
 				...item.fields.map((field) => ({
 					name: `${field.name}${field.optional ? '?' : ''}`,
-					type: field.type
+					type: field.type,
+					required: !field.optional
 				})),
 				...item.methods.map((method) => ({
 					name: method.name,
@@ -118,13 +122,12 @@ export function contractFields(unit: HarnessUnit, category: ExplorerCategory): C
 			none: provides ? 'Nothing provided is declared.' : 'No outputs declared.',
 			fields: fields(outputs)
 		});
-	if (errors.length > 0)
-		groups.push({
-			id: 'errors',
-			title: 'Errors',
-			none: 'No errors declared.',
-			fields: fields(errors)
-		});
+	groups.push({
+		id: 'errors',
+		title: 'Errors',
+		none: 'No errors declared.',
+		fields: fields(errors)
+	});
 	return groups;
 }
 
@@ -173,14 +176,13 @@ export function callableContracts(unit: HarnessUnit): CallableContract[] {
 			},
 			{ id: 'outputs', title: 'Returns', none: '', fields: [returned] }
 		];
-		if (errors.length > 0)
-			groups.push({
-				id: 'errors',
-				title: 'Throws',
-				none: 'No errors declared.',
-				fields: errors.map((field) => fieldOf(field, unit)),
-				hideNames: true
-			});
+		groups.push({
+			id: 'errors',
+			title: 'Throws',
+			none: 'No errors declared.',
+			fields: errors.map((field) => fieldOf(field, unit)),
+			hideNames: true
+		});
 		const args = parameters.map((field) => `${field.name}: ${field.type}`).join(', ');
 		return { name: helper.name, signature: `${helper.name}(${args}): ${type}`, groups };
 	});
