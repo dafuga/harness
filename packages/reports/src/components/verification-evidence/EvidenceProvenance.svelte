@@ -4,6 +4,7 @@
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import DetailList from '../shared-primitives/DetailList.svelte';
+	import CodeLine from '../shared-primitives/CodeLine.svelte';
 	let { item }: { item: Evidence } = $props();
 	let facts = $derived(
 		item.provenance?.length
@@ -15,7 +16,11 @@
 <hx-div class="evidence-provenance" data-harness-component="evidence-provenance">
 	<DetailList rows={facts} rowKey={(_fact, position) => position}>
 		{#snippet label(fact: NonNullable<Evidence['provenance']>[number])}{fact.label}{/snippet}
-		{#snippet children(fact: NonNullable<Evidence['provenance']>[number])}{fact.value}{/snippet}
+		{#snippet children(fact: NonNullable<Evidence['provenance']>[number])}
+			{#if /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i.test(fact.value)}
+				<CodeLine text={fact.value} />
+			{:else}{fact.value}{/if}
+		{/snippet}
 	</DetailList>
 </hx-div>
 
