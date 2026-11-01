@@ -12,7 +12,7 @@
 	import type { EntityDetail } from '../../models/development-tooling/Desktop.types';
 	import { evidenceNotice } from '../../utils/verification-evidence/evidenceNotice';
 	import RuntimeBehavior from '../execution-runtimes/RuntimeBehavior.svelte';
-	import StatusIcon from './StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	import RegressionProof from '$shared/verification-evidence/RegressionProof.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	let {
@@ -71,12 +71,18 @@
 			>
 				{notice.text}
 			</hx-p>{:else if side}{#if side.gap}<hx-p class="runtime-gap">
-					<StatusIcon status="failed" reason="Evidence missing" /><hx-span>{side.gap}</hx-span>
+					<Status variant="icon" status="failed" reason="Evidence missing" /><hx-span
+						>{side.gap}</hx-span
+					>
 				</hx-p>{/if}{#each side.coverage as item (item.scenario)}<hx-article
 					class="coverage-scenario"
 				>
 					<hx-h3>
-						<StatusIcon status={mark(item.standing)} reason={told(item.standing, item.reasons)} />
+						<Status
+							variant="icon"
+							status={mark(item.standing)}
+							reason={told(item.standing, item.reasons)}
+						/>
 						{item.title}<hx-span class="chip">{item.kind}</hx-span>{#if item.inheritedFrom}<hx-small
 								>Inherited from {shortCommit(item.inheritedFrom)}</hx-small
 							>{/if}
@@ -104,7 +110,8 @@
 									<hx-td>{state.state}</hx-td>
 									<hx-td>{state.declared}</hx-td>
 									<hx-td
-										><StatusIcon
+										><Status
+											variant="icon"
 											status={mark(state.standing)}
 											reason={told(state.standing, state.reasons)}
 										/></hx-td

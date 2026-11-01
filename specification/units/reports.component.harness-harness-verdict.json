@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-verdict",
 	"kind": "component",
-	"title": "Verification verdict indicator",
-	"responsibility": "Shows whether supplied evidence passed and exposes its explanation in an accessible tooltip.",
+	"title": "Status",
+	"responsibility": "Renders verification verdicts, compact icons, translated badges and cancellable run status with one shared implementation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -11,59 +11,112 @@
 		"uses": [
 			"reports.component.harness-harness-icon",
 			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong"
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte"],
-		"symbols": ["HarnessVerdict"]
+		"source": [
+			"packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"packages/reports/src/components/shared-primitives/status/status.css"
+		],
+		"symbols": [
+			"Status"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HarnessVerdict.passed",
-				"type": "boolean",
-				"required": true,
-				"description": "Required verdict. Only the literal value true is treated as proven."
-			},
-			{
-				"name": "HarnessVerdict.label",
-				"type": "string",
-				"required": false,
-				"description": "Optional. Defaults to JavaScript undefined. Omitted or null labels display Full coverage passed for passed === true, otherwise Verification failed; empty text is retained."
-			},
-			{
-				"name": "HarnessVerdict.reasons",
-				"type": "string[]",
-				"required": false,
-				"default": [],
-				"description": "Optional failure explanations, defaulting to an empty list. Suppressed for a proven verdict."
-			},
-			{
-				"name": "HarnessVerdict.framed",
+				"name": "Status.passed",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional outlined presentation, defaulting to false."
+				"description": "Optional verdict flag, default false. Only literal true is proven; used by verdict mode."
 			},
 			{
-				"name": "HarnessVerdict.bare",
+				"name": "Status.variant",
+				"type": "'verdict' | 'icon' | 'badge' | 'run'",
+				"required": false,
+				"default": "verdict",
+				"description": "Optional mode, default verdict: verdict tooltip, Desktop icon, translated badge, or run progress."
+			},
+			{
+				"name": "Status.status",
+				"type": "string",
+				"required": false,
+				"default": "unknown",
+				"description": "Optional status string, default unknown. Icon passes only for verified; badge translates the declared report status."
+			},
+			{
+				"name": "Status.reason",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Optional icon explanation, default empty; empty displays No verification recorded for this revision."
+			},
+			{
+				"name": "Status.active",
 				"type": "boolean",
 				"required": false,
-				"description": "Optional compatibility input. Defaults to JavaScript undefined. It is ignored and does not change the icon-only presentation."
+				"default": false,
+				"description": "Optional run activity flag, default false. True shows Cancel run."
+			},
+			{
+				"name": "Status.cancel",
+				"type": "() => void",
+				"required": false,
+				"description": "Optional callback, defaults to JavaScript undefined. Called only when Cancel run is clicked; errors propagate."
+			},
+			{
+				"name": "Status.children",
+				"type": "Snippet",
+				"required": false,
+				"description": "Optional run content snippet, defaults to JavaScript undefined. Omitted content displays label; rendering errors propagate."
+			},
+			{
+				"name": "Status.label",
+				"type": "string",
+				"required": false,
+				"description": "Optional words, defaults to JavaScript undefined. Verdict defaults to Full coverage passed or Verification failed; run omits empty labels."
+			},
+			{
+				"name": "Status.reasons",
+				"type": "string[]",
+				"required": false,
+				"default": [],
+				"description": "Optional ordered failure reasons, default []; a successful verdict omits them."
+			},
+			{
+				"name": "Status.framed",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Optional verdict outline, default false; true preserves the framed icon treatment."
+			},
+			{
+				"name": "Status.bare",
+				"type": "boolean",
+				"required": false,
+				"description": "Optional compatibility input, defaults to JavaScript undefined; verdict mode always draws only the icon."
 			}
 		],
 		"outputs": [
 			{
-				"name": "HarnessVerdict",
+				"name": "Status",
 				"type": "markup",
-				"description": "Verdict icon and tooltip anchored to the icon. Hover or keyboard focus reveals the explanation; clicking pins it, while Escape, blur or an outside pointer action closes it. The tooltip stays within the viewport and scrolls only when constrained by available height, with keyboard scrolling for overflowing content."
+				"description": "The requested status treatment: verdict with accessible tooltip, Desktop check or cross, translated badge, or run text with an optional cancellation action. Each mode retains its own existing visual behavior."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Caller rendering or callback error",
+				"type": "propagated",
+				"description": "Errors from run content or cancellation callbacks propagate. Tooltip placement reads only the visible verdict elements."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
@@ -79,6 +132,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
@@ -89,18 +147,28 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.function.report-locale",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.tooltip-place",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
 			"via": "import",
 			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte",
+		"entry": "packages/reports/src/components/shared-primitives/status/Status.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte"
+				"entry": "packages/reports/src/components/shared-primitives/status/Status.svelte"
 			}
 		]
 	},

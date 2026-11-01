@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { BehaviorOutcome, EntityBehavior } from '../../utils/explorer-ui/entityBehavior';
 	import EntityArtifact from './EntityArtifact.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		shown,
 		side,
@@ -39,12 +39,12 @@
 	<hx-header class="ex-pane-head">
 		<hx-strong>{title}</hx-strong>
 		<hx-span class="ex-pill">{role}</hx-span>
-		<HarnessVerdict {passed} label={passed ? 'All results passed' : 'Not all results passed'} />
+		<Status {passed} label={passed ? 'All results passed' : 'Not all results passed'} />
 	</hx-header>
 	{#each shown.groups as group, position (position)}
 		<hx-div class="ex-state">
 			<hx-h3>
-				<HarnessVerdict passed={group[side] === 'passed'} label={said[group[side]]} />
+				<Status passed={group[side] === 'passed'} label={said[group[side]]} />
 				{named(group.scenario)} · {group.state}
 			</hx-h3>
 			<!-- Each result of the state with what it holds, shown without anything to press. -->

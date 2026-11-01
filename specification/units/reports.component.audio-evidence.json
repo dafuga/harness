@@ -10,6 +10,7 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.evidence-provenance",
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-article",
 			"reports.component.shared-primitives-atoms-html-audio",
@@ -22,8 +23,7 @@
 			"reports.component.shared-primitives-atoms-html-summary",
 			"reports.component.shared-primitives-atoms-html-time",
 			"reports.component.shared-primitives-atoms-svg-path",
-			"reports.component.shared-primitives-atoms-svg-svg",
-			"reports.component.status-badge"
+			"reports.component.shared-primitives-atoms-svg-svg"
 		]
 	},
 	"catalog": {
@@ -38,7 +38,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.status-badge"],
+		"primitives": ["reports.component.harness-harness-verdict"],
 		"inputs": [
 			{
 				"name": "AudioEvidence.item",
@@ -75,6 +75,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.evidence-provenance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -140,11 +145,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-svg-svg",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.status-badge",
 			"via": "import",
 			"origin": "derived"
 		},

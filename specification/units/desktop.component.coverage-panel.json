@@ -10,9 +10,9 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.runtime-behavior",
-			"desktop.component.status-icon",
 			"reports.component.browser-errors",
 			"reports.component.entity-states",
+			"reports.component.harness-harness-verdict",
 			"reports.component.regression-proof",
 			"reports.component.shared-primitives-atoms-html-article",
 			"reports.component.shared-primitives-atoms-html-details",
@@ -41,7 +41,10 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.shared-primitives-data-table"],
+		"primitives": [
+			"reports.component.harness-harness-verdict",
+			"reports.component.shared-primitives-data-table"
+		],
 		"inputs": [
 			{
 				"name": "CoveragePanel.entity",
@@ -118,11 +121,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.component.status-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.function.evidence-notice",
 			"via": "import",
 			"origin": "derived"
@@ -149,6 +147,11 @@
 		},
 		{
 			"unit": "reports.component.entity-states",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

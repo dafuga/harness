@@ -170,22 +170,14 @@ export const desktopControls: Record<string, DesktopCase> = {
 		direction: 'used-by'
 	}),
 	'desktop.component.revision-picker': (d) => ({ workspace: d.workspace }),
-	'desktop.component.run-status': (d) => ({
-		text: 'Capturing component screenshots…',
-		active: true,
-		cancel: noop,
-		workspace: d.workspace
-	}),
+
 	'desktop.component.segmented-choice': () => ({
 		value: 'desktop',
 		options: ['desktop', 'tablet', 'mobile'],
 		label: 'Viewport'
 	}),
 	'desktop.component.status-bar': (d) => ({ workspace: d.workspace }),
-	'desktop.component.status-icon': () => ({
-		status: 'verified',
-		reason: 'All required component states passed.'
-	}),
+
 	'desktop.component.thread-history': (d) => ({
 		entity: d.entity,
 		workspace: d.workspace,

@@ -19,7 +19,7 @@
 	import Composer from '../../shared-primitives/Composer.svelte';
 	import MessageList from '../../shared-primitives/MessageList.svelte';
 	import ReferenceText from '../reference-text/ReferenceText.svelte';
-	import RunStatus from '../../shared-primitives/RunStatus.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	import ThreadHistory from '../../git-source-history/ThreadHistory.svelte';
 	import ThreadLinks from '../thread-links/ThreadLinks.svelte';
 	let {
@@ -190,13 +190,14 @@
 				<ReferenceText text={run.streaming} {workspace} {entity} />
 			</hx-p>{/if}
 	</hx-div>
-	<RunStatus
-		text={run.status}
+	<Status
+		variant="run"
+		label={run.status}
 		active={Boolean(run.runId)}
 		cancel={() => void run.cancel()}
-		{workspace}
-		{entity}
-	/>
+	>
+		<ReferenceText text={run.status} {workspace} {entity} />
+	</Status>
 	{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}{#if comments.acknowledged}<hx-p
 			class="comment-saved"
 			role="status"

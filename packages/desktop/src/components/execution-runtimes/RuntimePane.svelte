@@ -5,7 +5,7 @@
 
 	import type { Evidence } from '$reports/models/reports-media/Report.types';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
-	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let {
 		item,
 		title,
@@ -41,9 +41,9 @@
 	<hx-figcaption><hx-strong>{title}</hx-strong><hx-span class="chip">{role}</hx-span></hx-figcaption
 	>
 	{#if item.missing}<hx-p class="runtime-gap">
-			<StatusIcon status="failed" reason="No capture" /><hx-span>{item.note}</hx-span>
+			<Status variant="icon" status="failed" reason="No capture" /><hx-span>{item.note}</hx-span>
 		</hx-p>{:else if problem}<hx-p class="runtime-gap">
-			<StatusIcon status="failed" reason="Not verified" /><hx-span>{problem}</hx-span>
+			<Status variant="icon" status="failed" reason="Not verified" /><hx-span>{problem}</hx-span>
 		</hx-p>{:else if url}<hx-img src={url} alt={`${item.title} at ${item.viewport}`} />
 		<hx-p class="runtime-standing" class:stale={item.standing !== 'Fresh capture'}>
 			{item.standing} · {item.status}

@@ -11,7 +11,7 @@
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessTabs from './HarnessTabs.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		entity,
 		owner,
@@ -44,7 +44,7 @@
 	const row: Record<string, Place> = {
 		overview: {},
 		contract: { tab: 'contract' },
-  permissions: {tab:'permissions'},
+		permissions: { tab: 'permissions' },
 		table: { tab: 'table' },
 		models: { tab: 'models' },
 		apis: { tab: 'apis' },
@@ -60,7 +60,7 @@
 	const labels = [
 		'Overview',
 		'Contract',
-  'Permissions',
+		'Permissions',
 		'APIs',
 		'Table',
 		'Used In',
@@ -78,7 +78,7 @@
 				(label) =>
 					(entity.category !== 'pages' || label !== 'Used In') &&
 					(label !== 'APIs' || entity.category === 'pages') &&
-     (label !== 'Permissions' || entity.category === 'apis') &&
+					(label !== 'Permissions' || entity.category === 'apis') &&
 					(label !== 'Table' || entity.category === 'models') &&
 					(label !== 'Audio' || entity.category === 'components') &&
 					(label !== 'Uses' || usesAvailable)
@@ -146,7 +146,7 @@
 			<hx-span class="ex-pill">{entity.role}</hx-span>
 			{#if entity.change === 'removed'}<hx-span class="ex-pill">Removed at this commit</hx-span
 				>{/if}
-			<HarnessVerdict {...entity.verdict} />
+			<Status {...entity.verdict} />
 		</hx-div>
 		{#if !concise}<hx-p class="ex-lead">{entity.purpose}</hx-p>{/if}
 	</hx-div>

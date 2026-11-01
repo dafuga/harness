@@ -23,7 +23,7 @@
 	import MeasuresPanel from '../../shared-primitives/MeasuresPanel.svelte';
 	import PlanBadge from '../../planning-collaboration/PlanBadge.svelte';
 	import RuntimeEvidence from '../../verification-evidence/RuntimeEvidence.svelte';
-	import StatusIcon from '../../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	import Icon from '../../shared-primitives/Icon.svelte';
 	import WorkspaceLink from '../../projects-sessions/WorkspaceLink.svelte';
 	import EntityExamples from '$shared/explorer-ui/EntityExamples.svelte';
@@ -144,8 +144,11 @@
 			<hx-div>
 				<hx-div class="row">
 					<hx-h1>{name}</hx-h1>
-					<hx-span class="chip">{entity.kind}</hx-span>{#if entity.hasPlan}<PlanBadge
-						/>{/if}<StatusIcon status={verdict.status} reason={verdict.reason} />
+					<hx-span class="chip">{entity.kind}</hx-span>{#if entity.hasPlan}<PlanBadge />{/if}<Status
+						variant="icon"
+						status={verdict.status}
+						reason={verdict.reason}
+					/>
 				</hx-div>
 				<hx-p>{entity.summary}</hx-p>
 				{#if route}<hx-p class="app-route"

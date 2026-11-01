@@ -10,7 +10,7 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.runtime-artifact",
-			"desktop.component.status-icon",
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h4",
 			"reports.component.shared-primitives-atoms-html-p",
@@ -24,6 +24,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.harness-harness-verdict"],
 		"inputs": [
 			{
 				"name": "RuntimeRun.shown",
@@ -86,7 +87,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.component.status-icon",
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

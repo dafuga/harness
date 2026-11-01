@@ -1,5 +1,6 @@
+import { tooltipPlace as publicTooltipPlace } from '../../src/utils/explorer-ui/tooltipPlace';
 import { expect, test } from 'vitest';
-import { tooltipPlace } from '../../src/components/explorer-ui/harness-verdict/tooltipPlace';
+import { tooltipPlace } from '../../src/components/shared-primitives/status/tooltipPlace';
 
 const view = { width: 390, height: 844 };
 const tip = { width: 240, height: 80 };
@@ -7,6 +8,9 @@ const mark = (left: number, top: number) => ({ left, top, width: 32, height: 32 
 
 test('a tooltip sits under its mark, centred on it, with the gap a pointer can cross', () => {
 	expect(tooltipPlace(mark(180, 100), tip, view)).toEqual({ left: 76, top: 140 });
+	expect(publicTooltipPlace(mark(180, 100), tip, view)).toEqual(
+		tooltipPlace(mark(180, 100), tip, view)
+	);
 });
 
 test('near an edge of the screen it stays wholly on the screen instead of centring', () => {

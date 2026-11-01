@@ -11,7 +11,7 @@
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { galleryItems } from '../../utils/explorer-ui/entityScreens';
 	import AudioEvidence from '../verification-evidence/AudioEvidence.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		evidence,
 		scope,
@@ -70,7 +70,7 @@
 				{/snippet}
 				{#snippet gap(pane)}
 					<hx-p class="ex-gap"
-						><HarnessVerdict passed={false} label="No clip" /><hx-span
+						><Status passed={false} label="No clip" /><hx-span
 							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span
 						></hx-p
 					>

@@ -11,7 +11,7 @@
 	import { galleryItems } from '$reports/utils/explorer-ui/entityScreens';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
-	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let { result, evidence }: { result: EntityEvidenceResult; evidence: EntityEvidence } = $props();
 
 	const clips = $derived(
@@ -60,7 +60,7 @@
 						<hx-p class="muted">Reading the clip…</hx-p>
 					{:then url}<hx-audio controls src={url} aria-label={clip.title}></hx-audio>
 					{:catch cause}<hx-p class="runtime-gap"
-							><StatusIcon status="failed" reason="Not verified" /><hx-span
+							><Status variant="icon" status="failed" reason="Not verified" /><hx-span
 								>{errorMessage(cause)}</hx-span
 							></hx-p
 						>{/await}
@@ -69,14 +69,14 @@
 				{/snippet}
 				{#snippet gap(pane)}
 					<hx-p class="runtime-gap"
-						><StatusIcon status="failed" reason="No clip" /><hx-span
+						><Status variant="icon" status="failed" reason="No clip" /><hx-span
 							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span
 						></hx-p
 					>
 				{/snippet}
 			</ComparePanes>
 		{:else}<hx-p class="runtime-gap"
-				><StatusIcon status="failed" reason="No clip" /><hx-span
+				><Status variant="icon" status="failed" reason="No clip" /><hx-span
 					>A clip is declared for this entity, and none is recorded at {shortCommit(
 						result.scope.commit
 					)}.</hx-span

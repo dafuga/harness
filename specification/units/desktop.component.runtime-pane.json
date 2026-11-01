@@ -9,7 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"desktop.component.status-icon",
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-figcaption",
 			"reports.component.shared-primitives-atoms-html-figure",
 			"reports.component.shared-primitives-atoms-html-img",
@@ -24,6 +24,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.harness-harness-verdict"],
 		"inputs": [
 			{
 				"name": "RuntimePane.item",
@@ -63,12 +64,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.component.status-icon",
+			"unit": "desktop.store.entity-evidence",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.store.entity-evidence",
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

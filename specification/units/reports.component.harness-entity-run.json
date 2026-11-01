@@ -26,6 +26,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.harness-harness-verdict"],
 		"inputs": [
 			{
 				"name": "EntityRun.shown",

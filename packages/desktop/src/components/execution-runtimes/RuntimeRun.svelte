@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { BehaviorOutcome, EntityBehavior } from '$reports/utils/entityBehavior';
 	import RuntimeArtifact from './RuntimeArtifact.svelte';
-	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let {
 		shown,
 		side,
@@ -38,14 +38,15 @@
 
 <hx-div class="runtime-pane" role="group" aria-label={title}>
 	<hx-p class="runtime-pane-head">
-		<hx-strong>{title}</hx-strong><hx-span class="chip">{role}</hx-span><StatusIcon
+		<hx-strong>{title}</hx-strong><hx-span class="chip">{role}</hx-span><Status
+			variant="icon"
 			status={passed ? 'verified' : 'failed'}
 			reason={passed ? 'All results passed' : 'Not all results passed'}
 		/>
 	</hx-p>
 	{#each shown.groups as group (`${group.scenario}|${group.state}`)}<hx-div class="runtime-state">
 			<hx-h4>
-				<StatusIcon status={mark(group[side])} reason={said[group[side]]} />
+				<Status variant="icon" status={mark(group[side])} reason={said[group[side]]} />
 				{named(group.scenario)} · {group.state}
 			</hx-h4>
 			{#each group.lines as line (`${line.evidence}|${line.kind}`)}<hx-div class="runtime-result">

@@ -1236,6 +1236,60 @@
 			"specifier": "$shared/shared-primitives/DetailList.svelte",
 			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
 			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimePane.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/EntityCard.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "$shared/shared-primitives/status/Status.svelte",
+			"to": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
 		}
 	]
 }

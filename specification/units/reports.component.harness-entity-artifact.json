@@ -36,7 +36,10 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.shared-primitives-detail-list"],
+		"primitives": [
+			"reports.component.harness-harness-verdict",
+			"reports.component.shared-primitives-detail-list"
+		],
 		"inputs": [
 			{
 				"name": "EntityArtifact.cell",

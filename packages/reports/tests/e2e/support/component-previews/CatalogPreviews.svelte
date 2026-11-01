@@ -89,7 +89,8 @@
 				class:evidence-grid={galleryCard}
 				class:provider-picker={id.includes('provider-picker')}
 				class:account={id === 'hub.component.account-menu'}
-				class:desktop-status={id === 'desktop.component.status-icon'}
+				class:desktop-status={id === 'reports.component.harness-harness-verdict' &&
+					variant.startsWith('icon')}
 				class:ex-content={explorer && !fullFrame}
 				data-preview-unit={unit.id}
 				data-preview-frame={fullFrame ? 'full' : 'component'}

@@ -6,7 +6,7 @@
 	import type { ExplorerArtifactBehavior } from '$reports/models/ExplorerEvidence.types';
 	import type { BehaviorCell } from '$reports/utils/entityBehavior';
 	import { artifactText } from '$reports/utils/explorerArtifact';
-	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let {
 		cell,
 		label,
@@ -77,7 +77,8 @@
 	{#if stated.assertions.length}<hx-h5>Assertions</hx-h5>
 		<hx-ul class="runtime-checks">
 			{#each stated.assertions as item, position (position)}<hx-li>
-					{#if item.passed === null}<hx-span class="muted">Not stated</hx-span>{:else}<StatusIcon
+					{#if item.passed === null}<hx-span class="muted">Not stated</hx-span>{:else}<Status
+							variant="icon"
 							status={item.passed ? 'verified' : 'failed'}
 							reason={item.passed ? 'Held' : 'Failed'}
 						/>{/if}<hx-span>{item.name}</hx-span>{#if item.detail}<hx-pre
@@ -99,13 +100,13 @@
 
 {#if !cell.capture}<hx-p class="muted">Not recorded</hx-p
 	>{:else if cell.capture.media === null}<hx-p class="runtime-gap">
-		<StatusIcon status="failed" reason="Not stored" /><hx-span
+		<Status variant="icon" status="failed" reason="Not stored" /><hx-span
 			>{cell.capture.gap ?? 'Its bytes are not in this history.'}</hx-span
 		>
 	</hx-p>{:else}<hx-div class="runtime-artifact" role="group" aria-label={label}>
 		{#if cell.read === undefined && !lost}<hx-p class="muted">Reading what it holds…</hx-p>
 		{:else if !cell.read?.verified}<hx-p class="runtime-gap">
-				<StatusIcon status="failed" reason="Not verified" /><hx-span
+				<Status variant="icon" status="failed" reason="Not verified" /><hx-span
 					>{refusal ?? cell.read?.problem ?? unverified}</hx-span
 				>
 			</hx-p>
