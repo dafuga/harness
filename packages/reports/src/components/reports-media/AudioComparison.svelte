@@ -76,3 +76,10 @@
 		<hx-h3><hx-a href={'#evidence-' + after.id}>{after.title}</hx-a></hx-h3>
 	</hx-div>
 </hx-article>
+
+<style>
+	.audio-comparison-preview:disabled {
+		opacity: var(--hx-opacity-disabled);
+		cursor: wait;
+	}
+</style>

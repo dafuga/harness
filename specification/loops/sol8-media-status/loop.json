@@ -2,7 +2,7 @@
 	"name": "sol8-media-status",
 	"goal": "Show correct diagnostic counts and empty messages, visible image load/error status, and disabled comparison feedback.",
 	"createdAt": "2026-11-01T04:19:00.287Z",
-	"updatedAt": "2026-11-01T04:19:01.940Z",
+	"updatedAt": "2026-11-01T04:30:32.322Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:30:32.322Z",
+			"evidence": "Record f0b3a10ade2a3b702a7af63a23dccc96be6c2340352aaa98c43d16d38b583af8 at d0fa389701 fails all 15 frozen viewport cases on visible diagnostics, image status and disabled paint."
 		},
 		{
 			"id": "implement",
