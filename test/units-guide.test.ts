@@ -97,6 +97,15 @@ test('guide counts verified shots per state and viewport and reaches DONE', asyn
 	const text = await runHarness(['units', 'guide', entity], root);
 	expect(text.stdout).toContain('ALL DONE');
 	expect(text.stdout).toContain('DONE');
+	await writeGuidanceFile(
+		root,
+		'tests/duplicate/catalog.spec.ts',
+		"test('default', () => expect(true).toBe(true));"
+	);
+	await commitGuidance(root);
+	await attachGuidanceShots(root, ['default', 'loading']);
+	const ambiguous = await guidanceJson(root, ['guide', entity]);
+	expect(ambiguous.report.states[0]).toMatchObject({ tests: [], status: 'MISSING' });
 });
 
 test('guide rejects partial, stale and uncommitted coverage', async () => {
