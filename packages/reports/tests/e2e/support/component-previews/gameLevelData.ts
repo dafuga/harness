@@ -39,7 +39,7 @@ const view = {
 const providers = [
 	{
 		id: 'codex',
-		label: 'Synthetic local provider',
+		label: 'Codex',
 		available: true,
 		reason: null,
 		version: 'fixture',
@@ -47,7 +47,7 @@ const providers = [
 		models: [
 			{
 				id: 'synthetic-fixture',
-				label: 'Synthetic model',
+				label: 'GPT 6.1 Sol',
 				efforts: [],
 				defaultEffort: null,
 				isDefault: true

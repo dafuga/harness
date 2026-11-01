@@ -54,6 +54,8 @@ async function pane(component: Locator, variant: string) {
 		const rules = component.getByRole('region', { name: 'Rules', exact: true });
 		await rules.scrollIntoViewIfNeeded();
 		await expect(rules).toBeVisible();
+		await component.locator('.viewer-content').evaluate((node) => node.scrollTo(0, 0));
+		await expect(component.getByText('Describe your checkpoint', { exact: true })).toBeVisible();
 	}
 	if (variant === 'adding')
 		await expect(component.getByRole('dialog', { name: 'Add checkpoint' })).toBeVisible();

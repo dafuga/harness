@@ -20,7 +20,7 @@ export const providers = [
 		models: [
 			{
 				id: 'preview-model',
-				label: 'Preview model',
+				label: 'GPT 6.1 Sol',
 				efforts: ['high', 'xhigh'],
 				defaultEffort: 'high',
 				isDefault: true

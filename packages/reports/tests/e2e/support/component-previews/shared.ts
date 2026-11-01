@@ -15,13 +15,12 @@ export const image =
 	encodeURIComponent(
 		`<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">
 <rect width="920" height="560" fill="#0e1c29"/>
-<text x="52" y="60" fill="#f3c33b" font-family="sans-serif" font-size="20">SYNTHETIC PREVIEW INPUT</text>
 <text x="52" y="124" fill="#f4f7fb" font-family="sans-serif" font-size="36">Order card</text>
 <g fill="#d8e4ee" font-family="sans-serif" font-size="24">
 <text x="52" y="206">Order #1048</text><text x="650" y="206">$128.00</text>
 <text x="52" y="266">Customer: Alex Example</text>
 <text x="52" y="326">Status: Ready to ship</text>
-</g><text x="52" y="480" fill="#92a6bb" font-family="sans-serif" font-size="20">Fictional input for image-viewer and card fixtures.</text></svg>`
+</g></svg>`
 	);
 /** Fictional layout input, distinct from the orders page and card fixture images. */
 export const layoutImage = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">
