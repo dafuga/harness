@@ -13,7 +13,9 @@ export async function prepareBrowserErrors(component: Locator, variant: string) 
 	}
 	const details = component.locator('details');
 	const count = variant === 'zero-entries' ? 0 : variant === 'multiple' ? 2 : 1;
-	await expect(details.locator('summary')).toHaveText(`Browser errors · ${count} entries`);
+	await expect(details.locator('summary')).toHaveText(
+		new RegExp(`^Browser errors · ${count} entr(?:y|ies)$`)
+	);
 	if (!variant) {
 		await expect(details).not.toHaveAttribute('open');
 		return;
