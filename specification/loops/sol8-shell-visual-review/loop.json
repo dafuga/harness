@@ -2,7 +2,7 @@
 	"name": "sol8-shell-visual-review",
 	"goal": "Render distinct responsive shell previews and readable history, tables and navigation.",
 	"createdAt": "2026-11-01T10:00:58.038Z",
-	"updatedAt": "2026-11-01T10:25:04.309Z",
+	"updatedAt": "2026-11-01T10:26:32.012Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T10:26:32.012Z",
+			"evidence": "669bea550e0493a96668a7704d81d3702b0b0af1eddae407ab15416f836582a1: unchanged command and complete test corpus, 30 passed at 7f6e3362cf."
 		},
 		{
 			"id": "verify",
