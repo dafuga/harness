@@ -162,6 +162,8 @@
 	}
 	@media (max-width: 560px) {
 		.revision-choices :global(button.agent-icon) {
+			align-items: center;
+			justify-content: center;
 			width: var(--hx-space-48);
 			height: var(--hx-space-40);
 			padding: 0;
