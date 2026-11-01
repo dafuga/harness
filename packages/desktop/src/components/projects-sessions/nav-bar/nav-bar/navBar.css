@@ -105,6 +105,27 @@ header.topbar::before {
 	width: var(--hx-space-18);
 	height: var(--hx-space-18);
 }
+/* At narrow tablet widths, keep every category label in a complete compact cell. */
+@media (max-width: 760px) {
+	.topbar nav {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-auto-rows: auto;
+	}
+	.topbar.has-game nav {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+	.topbar nav :global(a) {
+		min-height: var(--hx-space-36);
+		gap: var(--hx-space-2);
+		padding: var(--hx-space-2);
+		font-size: var(--hx-type-size-2xs);
+		line-height: var(--hx-space-12);
+	}
+	.topbar nav :global(svg) {
+		width: var(--hx-space-16);
+		height: var(--hx-space-16);
+	}
+}
 @media (max-width: 560px) {
 	header.topbar,
 	header.topbar.with-account,
@@ -159,24 +180,6 @@ header.topbar::before {
 	}
 	.topbar .topbar-context:has(:global(.go-to-tip)) :global(.revision-summary) {
 		grid-column: 1 / 3;
-	}
-	.topbar nav {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		grid-auto-rows: auto;
-	}
-	.topbar.has-game nav {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
-	.topbar nav :global(a) {
-		min-height: var(--hx-space-36);
-		gap: var(--hx-space-2);
-		padding: var(--hx-space-2);
-		font-size: var(--hx-type-size-2xs);
-		line-height: var(--hx-space-12);
-	}
-	.topbar nav :global(svg) {
-		width: var(--hx-space-16);
-		height: var(--hx-space-16);
 	}
 	.topbar-settings {
 		width: var(--hx-space-32);

@@ -46,7 +46,7 @@ async function opened(page: Page, width: number): Promise<number[]> {
 		exact: true,
 		includeHidden: true
 	});
-	const place = bar(page).locator(':scope > *').filter({ has: searched });
+	const place = bar(page).locator('.topbar-search').filter({ has: searched });
 	await place.evaluate((element: HTMLElement) => (element.style.display = 'none'));
 	const without = await Promise.all(revision(page).map(async (one) => (await box(one)).width));
 	await place.evaluate((element: HTMLElement) => (element.style.display = ''));
