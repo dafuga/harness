@@ -1,14 +1,64 @@
-/* Settings end the search's own place, so they never take a row of their own. */
+/* Project, identity and search share a row; environment and revision form one context rail. */
+header.topbar,
+header.topbar.with-account,
+header.topbar.with-activity {
+	display: grid;
+	grid-template:
+		'brand project account search' auto
+		'context context context context' auto
+		'tools tools tools tools' auto
+		/ auto minmax(0, 1fr) auto auto;
+	align-items: center;
+	gap: var(--hx-space-8) var(--hx-space-16);
+	min-width: 0;
+	padding: var(--hx-space-12) var(--hx-space-26) 0;
+}
+header.topbar::before {
+	content: none;
+}
+.topbar :global(.brand) {
+	grid-area: brand;
+}
+.topbar :global(.project-switcher) {
+	grid-area: project;
+	min-width: 0;
+}
+.topbar-context {
+	grid-area: context;
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-12);
+	min-width: 0;
+}
+.topbar-context :global(.revision-picker) {
+	flex: 0 1 auto;
+	min-width: 0;
+}
 .topbar-search {
+	grid-area: search;
+	display: flex;
+	align-items: center;
 	gap: var(--hx-space-8);
+	justify-self: end;
+}
+.account,
+.topbar > :global(.deployment-activity) {
+	grid-area: account;
+	min-width: 0;
+}
+.account {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-8);
+}
+.account :global(button) {
+	white-space: nowrap;
 }
 .topbar-settings {
 	display: inline-grid;
 	place-items: center;
-	flex: none;
-	align-self: center;
-	width: 40px;
-	height: 40px;
+	width: var(--hx-space-40);
+	height: var(--hx-space-40);
 	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
 	color: inherit;
@@ -18,167 +68,97 @@
 	color: var(--hx-color-primary);
 	border-color: var(--hx-color-primary);
 }
-/* Project, branch, commit, Deploy and Deployments are icons of one size; each opens a dialog. */
 .topbar :global(.agent-icon) {
 	display: inline-grid;
 	place-items: center;
 	flex: none;
-	width: 34px;
-	height: 34px;
+	width: var(--hx-space-32);
+	height: var(--hx-space-32);
 	padding: 0;
 }
-/* Each part has one named place at every width; each layout arranges the places. */
-header.topbar {
-	display: grid;
-}
-.topbar :global(.brand) {
-	grid-area: brand;
-}
-.topbar :global(.project-switcher) {
-	grid-area: project;
-}
-.topbar :global(.environment-picker) {
-	grid-area: environment;
-}
-.topbar :global(.revision-picker) {
-	grid-area: revision;
-}
+/* Every category has a full cell. A game adds its ninth cell on the same desktop/tablet row. */
 .topbar nav {
 	grid-area: tools;
+	display: grid;
+	grid-template-columns: repeat(8, minmax(0, 1fr));
+	justify-self: stretch;
+	width: 100%;
+	min-width: 0;
+	max-width: none;
+	overflow: visible;
 }
-.account,
-.topbar > :global(.deployment-activity) {
-	grid-area: account;
+.topbar.has-game nav {
+	grid-template-columns: repeat(9, minmax(0, 1fr));
 }
-/* Environment and revision share the first row; catalog and search share the last. */
-@media (min-width: 561px) {
-	header.topbar {
-		grid-template:
-			'brand project . environment revision' auto
-			'tools tools tools tools tools' auto
-			/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto;
-		gap: var(--hx-space-8) var(--hx-space-16);
-		padding: var(--hx-space-12) var(--hx-space-26) 0;
-	}
+.topbar nav :global(a) {
+	min-width: 0;
+	min-height: var(--hx-space-50);
+	gap: var(--hx-space-6);
+	padding: var(--hx-space-6) var(--hx-space-4);
+	font-size: var(--hx-type-size-xs);
+	white-space: nowrap;
+}
+.topbar nav :global(svg) {
+	flex: none;
+	width: var(--hx-space-18);
+	height: var(--hx-space-18);
+}
+@media (max-width: 560px) {
+	header.topbar,
 	header.topbar.with-account,
 	header.topbar.with-activity {
 		grid-template:
-			'brand project . environment revision account' auto
-			'tools tools tools tools tools tools' auto
-			/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto auto;
+			'brand project account search' auto
+			'context context context context' auto
+			'tools tools tools tools' auto
+			/ var(--hx-space-26) minmax(0, 1fr) auto auto;
+		gap: var(--hx-space-8) var(--hx-space-6);
+		padding: var(--hx-space-8) var(--hx-space-12) 0;
 	}
-	.topbar :global(.environment-picker) {
-		justify-self: end;
+	.topbar-context {
+		display: grid;
+		grid-template:
+			'environment revision tip' auto
+			'summary summary summary' auto
+			/ max-content minmax(0, 1fr) auto;
+		gap: var(--hx-space-6);
+		padding: var(--hx-space-6);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
+		border-radius: var(--hx-radius-large);
+		background: var(--hx-color-surface);
 	}
-	/* The categories are tabs on the bar's bottom edge. */
+	.topbar .topbar-context :global(.environment-choice),
+	.topbar .topbar-context :global(.revision-choices),
+	.topbar .topbar-context :global(.revision-summary),
+	.topbar .topbar-context :global(.go-to-tip) {
+		margin: 0;
+	}
+	.topbar .topbar-context :global(.revision-summary) {
+		padding: 0;
+	}
 	.topbar nav {
-		justify-self: start;
-		justify-content: flex-start;
-		width: auto;
-		/* Keep both 40px controls and their gaps outside every row of tabs. */
-		max-width: calc(100% - 80px - 2 * var(--hx-space-8));
-		min-width: 0;
-		height: auto;
-		flex-wrap: nowrap;
-		overflow-x: auto;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-auto-rows: auto;
+	}
+	.topbar.has-game nav {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 	.topbar nav :global(a) {
-		min-height: 58px;
+		min-height: var(--hx-space-40);
+		gap: var(--hx-space-2);
+		padding: var(--hx-space-4) var(--hx-space-2);
+		font-size: var(--hx-type-size-2xs);
 	}
-	.topbar-search {
-		grid-area: tools;
-		justify-self: end;
-		width: max-content;
+	.topbar nav :global(svg) {
+		width: var(--hx-space-16);
+		height: var(--hx-space-16);
 	}
-}
-/* Narrower, the environment and the revision take a row of their own under the project. */
-@media (min-width: 561px) and (max-width: 1250px) {
-	.topbar nav :global(a) {
-		min-width: max-content;
-		padding-inline: var(--hx-space-4);
+	.topbar-settings {
+		width: var(--hx-space-32);
+		height: var(--hx-space-32);
 	}
-	.topbar :global(.environment-picker) {
-		justify-self: start;
-	}
-	header.topbar.with-account {
-		grid-template:
-			'brand project . account' auto
-			'environment environment environment revision' auto
-			'tools tools tools tools' auto
-			/ auto minmax(0, max-content) 1fr auto;
+	.account :global(button) {
+		padding: var(--hx-space-6) var(--hx-space-8);
+		font-size: var(--hx-type-size-compact);
 	}
 }
-@media (min-width: 561px) and (max-width: 900px) {
-	header.topbar,
-	header.topbar.with-activity {
-		grid-template:
-			'brand project . account' auto
-			'environment environment environment revision' auto
-			'tools tools tools tools' auto
-			/ auto minmax(0, max-content) 1fr auto;
-	}
-}
-/* Narrower still, the search takes that row and the categories end the bar under it. */
-@media (min-width: 561px) and (max-width: 760px) {
-	.topbar nav {
-		grid-area: 4 / 1 / 5 / -1;
-		max-width: 100%;
-	}
-	.topbar-search {
-		width: 100%;
-	}
-}
-/* Wide enough, a bar without an account is one row, the categories after the project. */
-@media (min-width: 1800px) {
-	header.topbar:not(.with-account) {
-		grid-template:
-			'brand project tools . environment revision search' auto
-			/ auto minmax(0, max-content) auto 1fr max-content auto max-content;
-		column-gap: var(--hx-space-22);
-		padding: 0 var(--hx-space-26);
-	}
-	header.topbar.with-activity {
-		grid-template:
-			'brand project tools . environment revision search account' auto
-			/ auto minmax(0, max-content) auto 1fr max-content auto max-content auto;
-	}
-	.topbar:not(.with-account) nav {
-		height: auto;
-		max-width: none;
-	}
-	.topbar:not(.with-account) .topbar-search {
-		grid-area: search;
-		width: 100%;
-	}
-}
-/* Use the existing top row for phone controls so categories keep the compact header. */
-@media (max-width: 560px) {
-	header.topbar {
-		grid-template-areas:
-			'brand project project search search'
-			'environment environment revision tip tip'
-			'summary summary summary summary summary'
-			'tools tools tools tools tools';
-	}
-	header.topbar.with-activity {
-		grid-template-areas:
-			'brand project search search account'
-			'environment environment revision tip tip'
-			'summary summary summary summary summary'
-			'tools tools tools tools tools';
-	}
-	header.topbar.with-account {
-		row-gap: var(--hx-space-4);
-		grid-template-areas:
-			'brand project project search search'
-			'account account account account account'
-			'environment environment revision tip tip'
-			'summary summary summary summary summary'
-			'tools tools tools tools tools';
-	}
-	.topbar-search {
-		grid-area: search;
-		place-self: center end;
-	}
-}
-/* A phone arranges the same places in rows of its own, in responsive.css. */

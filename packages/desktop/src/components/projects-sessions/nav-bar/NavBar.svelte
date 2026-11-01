@@ -23,28 +23,26 @@
 	const settings = $derived(`/settings?from=${encodeURIComponent(workspace.path())}`);
 	/** Deployments are of this device's host: only a local bridge that reports them shows them. */
 	const activity = $derived(workspace.local && !!workspace.bridge?.deploymentActivities);
-	let tabs = $state<HTMLElement>();
-	/** Where the categories scroll, as on a phone, the shown one is brought to their middle. */
-	$effect(() => {
-		void workspace.category;
-		const shown = tabs?.querySelector('.active')?.getBoundingClientRect();
-		const row = tabs?.getBoundingClientRect();
-		if (!tabs || !shown || !row) return;
-		tabs.scrollLeft += shown.left - row.left - (row.width - shown.width) / 2;
-	});
 	const gameViews = $derived(workspaceGameViews(workspace));
 </script>
 
 <!-- Focus follows the rows: project, environment and revision, categories, then search. -->
-<hx-header class="topbar" class:with-account={!!account} class:with-activity={activity && !account}>
+<hx-header
+	class="topbar"
+	class:has-game={!!gameViews}
+	class:with-account={!!account}
+	class:with-activity={activity && !account}
+>
 	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
 		><hx-span class="brand-mark"><BrandMark /></hx-span>
 		<hx-span class="brand-word">Harness</hx-span></WorkspaceLink
 	>
 	<ProjectSwitcher {workspace} />
-	<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
-	<RevisionPicker {workspace} />
-	<hx-nav aria-label="Catalog categories" bind:this={tabs}>
+	<hx-div class="topbar-context">
+		<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
+		<RevisionPicker {workspace} />
+	</hx-div>
+	<hx-nav aria-label="Catalog categories">
 		{#each categories as category (category)}<WorkspaceLink
 				{workspace}
 				to={workspace.path(category)}
