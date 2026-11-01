@@ -22,7 +22,7 @@ const receipt: DeploymentReceipt = {
 const deployment: DeploymentActivity = {
 	id: 'preview-deployment',
 	projectId: desktopData.project.id,
-	projectName: 'Preview project',
+	projectName: desktopData.project.name,
 	environment: 'prod',
 	sourceEnvironment: 'preprod',
 	commit: commits.tip,
