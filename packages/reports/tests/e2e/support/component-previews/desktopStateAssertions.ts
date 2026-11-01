@@ -39,9 +39,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'Preview artifact is not bound to the selected result.'
 	);
 	if (id.startsWith('desktop.component.'))
-		await expect(component).not.toContainText(
-			/SYNTHETIC PREVIEW INPUT|Synthetic local provider|Synthetic model|Preview (model|agent|project)/i
-		);
+		await expect(component).not.toContainText(/Synthetic|Preview (model|agent|project)/i);
 	await checks[id.replace('desktop.component.', '')]?.(component, variant);
 }
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {

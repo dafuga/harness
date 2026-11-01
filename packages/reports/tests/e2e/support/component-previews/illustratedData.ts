@@ -71,7 +71,12 @@ export async function desktopScreenFixtures(original: Data) {
 			const key = `${unit}|commit|${original.tip}`;
 			const result = structuredClone(original.results[key]);
 			const scenario = name === 'paired' ? 'orders-page' : 'order-card';
-			result.evidence.scenarios = result.evidence.scenarios.filter((item) => item.id === scenario);
+			result.evidence.scenarios = result.evidence.scenarios
+				.filter((item) => item.id === scenario)
+				.map((item) => ({
+					...item,
+					title: name === 'paired' ? 'Orders list' : 'Order card alone'
+				}));
 			for (const side of ['before', 'after'] as const) {
 				const value = result.evidence[side]!;
 				value.captures = value.captures.filter((item) => item.scenario === scenario);
@@ -88,6 +93,13 @@ export async function desktopScreenFixtures(original: Data) {
 					found.inheritedFrom = null;
 					if (found.capture.server) found.capture.server.revision = value.commit;
 				}
+				const record = value.record!;
+				for (const entry of record.scenarios.filter((item) => item.id === scenario)) {
+					entry.inherited = false;
+					entry.testedRevision = value.commit;
+					entry.origin = { ...entry.origin, record: record.id, commit: value.commit };
+				}
+				if (value.detail) value.detail.records = [record];
 				result.evidence[side] = JSON.parse(JSON.stringify(value).replaceAll(old, hash));
 				bytes[hash] = { mediaType: 'image/png', data: [...data] };
 			}
