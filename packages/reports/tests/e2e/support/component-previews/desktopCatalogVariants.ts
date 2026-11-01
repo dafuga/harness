@@ -75,7 +75,7 @@ export const desktopCatalogVariants: Record<string, string[]> = {
 		'recorded-open',
 		'json-open'
 	],
-	'desktop.component.runtime-behavior': ['loading', 'unreadable', 'empty'],
+	'desktop.component.runtime-behavior': ['paired', 'loading', 'unreadable', 'empty'],
 	'desktop.component.runtime-evidence': ['planned', 'unavailable', 'loading', 'error', 'offline'],
 	'desktop.component.runtime-screens': ['empty', 'paired', 'incomparable'],
 	'desktop.component.status-icon': ['failed', 'unverified', 'unknown', 'no-reason', 'open', 'long']

@@ -1,6 +1,10 @@
 import type { DesktopData } from './desktopData.svelte';
+import { whenReady } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
-import { desktopArtifactText } from './desktopFixtureData';
+import { desktopArtifactText, desktopData } from './desktopFixtureData';
+import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
+import { evidenceReading } from '../../../../../desktop/src/utils/verification-evidence/evidenceReading';
+import { screenOptions } from '../../../../src/utils/entityScreens';
 
 export function desktopRuntimeVariant(
 	id: string,
@@ -9,6 +13,8 @@ export function desktopRuntimeVariant(
 	variant: string
 ): PreviewProps | null {
 	if (id === 'desktop.component.runtime-artifact') return artifact(props, data, variant);
+	if (id === 'desktop.component.runtime-behavior') return behavior(props, data, variant);
+	if (id === 'desktop.component.runtime-screens') return screens(props, data, variant);
 	if (id === 'desktop.component.status-icon') {
 		const changes: Record<string, PreviewProps> = {
 			failed: {
@@ -33,21 +39,45 @@ export function desktopRuntimeVariant(
 		};
 		return { ...props, ...changes[variant] };
 	}
-	if (id === 'desktop.component.runtime-screens' && variant === 'empty') {
-		const result = data.visual;
-		const evidence = {
-			...result.evidence,
-			scenarios: [],
-			after: { ...result.evidence.after, captures: [] }
-		};
-		return { ...props, options: [], result: { ...result, evidence } };
-	}
-	if (id === 'desktop.component.runtime-behavior' && variant === 'empty')
-		return {
-			...props,
-			result: { ...data.result, behavior: { ...data.result.behavior, rows: [] } }
-		};
 	return id.includes('.runtime-') ? props : null;
+}
+
+function screens(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
+	const result = ['paired', 'incomparable'].includes(variant)
+		? desktopData.results[`${data.visualEntity.id}|commit|${commits.tip}`]
+		: data.visual;
+	const evidence = { ...result.evidence };
+	if (variant === 'incomparable')
+		evidence.incomparable = ['The two captures were recorded with different runtime profiles.'];
+	if (variant === 'empty') {
+		evidence.scenarios = [];
+		evidence.after = { ...evidence.after, captures: [] };
+	}
+	return { ...props, options: screenOptions(evidence.scenarios), result: { ...result, evidence } };
+}
+
+function behavior(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
+	const result = ['loading', 'paired'].includes(variant)
+		? desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`]
+		: data.result;
+	if (variant === 'empty')
+		return { ...props, result: { ...result, behavior: { ...result.behavior, rows: [] } } };
+	if (variant === 'paired') return { ...props, result };
+	if (!['loading', 'unreadable'].includes(variant)) return props;
+	return {
+		...props,
+		result: {
+			...result,
+			behavior: {
+				...result.behavior,
+				rows: result.behavior.rows.map((row) => ({
+					...row,
+					beforeRead: undefined,
+					afterRead: undefined
+				}))
+			}
+		}
+	};
 }
 function artifact(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
 	const cell = data.cell;
@@ -84,22 +114,41 @@ function artifact(props: PreviewProps, data: DesktopData, variant: string): Prev
 export async function desktopRuntimeReady(id: string, data: DesktopData, variant: string) {
 	await data.ready;
 	if (id === 'desktop.component.runtime-behavior') {
+		if (variant === 'paired') {
+			const result = desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`];
+			const read = await evidenceReading(data.bridge, result, {
+				entityId: data.filterEntity.id,
+				projectId: data.workspace.projectId!,
+				commit: commits.tip,
+				branch: desktopData.branch,
+				mode: 'commit'
+			});
+			data.evidence.read = read.behavior;
+			data.evidence.refusals = read.refusals;
+		}
 		if (variant === 'loading') data.evidence.read = undefined;
 		if (variant === 'unreadable') data.evidence.read = null;
 		if (variant === 'empty') data.evidence.read = { ...data.result.behavior, rows: [] };
 	}
-	prepareScreens(id, data, variant);
+	await prepareScreens(id, data, variant);
 	if (id !== 'desktop.component.runtime-evidence') return;
 	prepareEvidence(data, variant);
 }
 
-function prepareScreens(id: string, data: DesktopData, variant: string) {
+async function prepareScreens(id: string, data: DesktopData, variant: string) {
 	if (id === 'desktop.component.runtime-screens' && ['paired', 'incomparable'].includes(variant)) {
-		data.visual.evidence.mode = 'commit';
-		if (variant === 'incomparable')
-			data.visual.evidence.incomparable = [
-				'The two captures were recorded with different runtime profiles.'
-			];
+		data.visualEvidence.show(data.bridge, {
+			scope: {
+				entityId: data.visualEntity.id,
+				projectId: data.workspace.projectId!,
+				commit: commits.tip,
+				branch: desktopData.branch,
+				mode: 'commit'
+			},
+			planned: false,
+			stamp: 'desktop-screens-comparison'
+		});
+		await whenReady(data.visualEvidence);
 	}
 }
 

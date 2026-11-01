@@ -9,7 +9,12 @@ export async function assertPreviewLoading(content: Locator, id: string, variant
 	}
 	if (id === 'reports.component.harness-entity-artifact' && variant === 'loading')
 		return await expect(content).toContainText('Reading what it holds…');
-	if (id === 'reports.component.harness-entity-behavior' && variant === 'loading')
+	if (
+		['desktop.component.runtime-behavior', 'reports.component.harness-entity-behavior'].includes(
+			id
+		) &&
+		variant === 'loading'
+	)
 		return await expect(content).toContainText('Reading the recorded results…');
 	if (id === 'reports.component.harness-harness-console' && variant.startsWith('loading-'))
 		return await expect(content).toContainText(

@@ -1,7 +1,11 @@
 import { expect, type Locator } from '@playwright/test';
 import { assertPickerPresentation } from './desktopPickerAssertions';
 import { assertReadonlyGameFields } from './desktopReadonlyAssertions';
-import { assertDesktopArtifactCapture } from './desktopArtifactAssertions';
+import {
+	assertDesktopArtifactCapture,
+	assertDesktopBehaviorState,
+	assertDesktopScreenCapture
+} from './desktopArtifactAssertions';
 import { assertDesktopNavCapture } from './desktopNavAssertions';
 
 /** Check the actual state branches, so a successful screenshot cannot silently show the default. */
@@ -21,15 +25,21 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'runtime-artifact:loading': 'Reading what it holds…',
 		'runtime-artifact:unreadable': 'The artifact bytes do not match the recorded hash.',
 		'runtime-artifact:text': 'Recorded plain text output.',
+		'runtime-behavior:loading': 'Reading the recorded results…',
+		'runtime-behavior:unreadable': 'The recorded results could not be read.',
 		'runtime-screens:incomparable': 'different runtime profiles',
 		'runtime-evidence:error': "Couldn't load recorded evidence. Try again.",
 		'runtime-evidence:offline': 'Saved'
 	};
 	if (messages[key]) await expect(component).toContainText(messages[key], { ignoreCase: true });
+	await expect(component).not.toContainText(
+		'Preview artifact is not bound to the selected result.'
+	);
 	await checks[id.replace('desktop.component.', '')]?.(component, variant);
 }
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	composer,
+	'runtime-behavior': assertDesktopBehaviorState,
 	'environment-picker': async (component, variant) => {
 		if (['stage', 'preprod', 'prod'].includes(variant))
 			await expect(component.getByRole('combobox', { name: 'Environment' })).toHaveValue(variant);
@@ -80,6 +90,7 @@ export async function assertDesktopCapturedState(component: Locator, id: string,
 	await assertHistoryFixtureContent(component, id, variant);
 	await assertReadonlyGameFields(component, id, variant);
 	await assertDesktopArtifactCapture(component, id, variant);
+	await assertDesktopScreenCapture(component, id, variant);
 	await assertDesktopNavCapture(component, id);
 	if (id === 'desktop.component.composer') await assertComposerPresentation(component, variant);
 	if (id === 'desktop.component.status-icon') await assertStatusPresentation(component, variant);

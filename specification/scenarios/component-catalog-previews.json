@@ -1603,6 +1603,12 @@
 			"units": ["desktop.component.runtime-behavior"]
 		},
 		{
+			"id": "desktop-component-runtime-behavior-paired",
+			"title": "Runtime behavior: paired",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-behavior"]
+		},
+		{
 			"id": "desktop-component-runtime-behavior-loading",
 			"title": "Runtime behavior: loading",
 			"coverage": "required",
@@ -8228,6 +8234,7 @@
 				"desktop-component-runtime-artifact-json-open",
 				"desktop-component-runtime-audio",
 				"desktop-component-runtime-behavior",
+				"desktop-component-runtime-behavior-paired",
 				"desktop-component-runtime-behavior-loading",
 				"desktop-component-runtime-behavior-unreadable",
 				"desktop-component-runtime-behavior-empty",
