@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-01T02:54:54.200Z","name":"sol8-source-link-hover","goal":"Show a visible hover treatment on linked source filenames in their standard previews","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-01T02:58:58.185Z","loop":"sol8-source-link-hover","step":"spec","evidence":"Source filename hover differs visibly from its resting link. Preserve underlines and complete path semantics."}
+{"event":"step.completed","timestamp":"2026-11-01T02:58:58.795Z","loop":"sol8-source-link-hover","step":"coverage","evidence":"The source-hover case checked only its pseudo state. Check default underlines before hover and verify a real paint change after capture."}
