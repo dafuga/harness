@@ -29,6 +29,9 @@ export async function assertNavContext(component: Locator, width: number) {
 /** A mobile header keeps balanced category rows and its account alongside the project. */
 export async function assertMobileNavLayout(component: Locator, tabs: Locator, width: number) {
 	if (width > 560) return;
+	const name = component.locator('.project-name');
+	const fits = await name.evaluate((node) => node.scrollWidth <= node.clientWidth + 1);
+	expect(fits, 'Project name stays readable beside the mobile account').toBe(true);
 	const counts = await tabs.locator('a').evaluateAll((links) => {
 		const rows = new Map<number, number>();
 		for (const link of links) {
