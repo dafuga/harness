@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../shared-primitives/DataTable.svelte';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type {
 		ProjectDependencies,
@@ -93,42 +94,43 @@
 {#snippet inventory(table: (typeof tables)[number])}
 	<hx-div class="dep-group">
 		<hx-h2>
-			{table.title}<Pill
-				>{table.rows.length}<hx-span class="ex-hidden"> declarations</hx-span></Pill
+			{table.title}<Pill>{table.rows.length}<hx-span class="ex-hidden"> declarations</hx-span></Pill
 			>
 		</hx-h2>
-		<hx-div class="ex-scroll dep-scroll">
-			<hx-table class="ex-table dep-table" aria-label={`${table.title} dependencies`}>
-				<hx-thead>
+		<DataTable
+			label={`${table.title} dependencies`}
+			tableClass="ex-table dep-table"
+			className="ex-scroll dep-scroll"
+		>
+			{#snippet header()}
+				<hx-tr>
+					<hx-th scope="col">Package</hx-th>
+					<hx-th scope="col">Version</hx-th>
+					<hx-th scope="col">Type</hx-th>
+					<hx-th scope="col">Used in</hx-th>
+				</hx-tr>
+			{/snippet}
+			{#snippet children()}
+				{#each table.rows as row (row.key)}
 					<hx-tr>
-						<hx-th scope="col">Package</hx-th>
-						<hx-th scope="col">Version</hx-th>
-						<hx-th scope="col">Type</hx-th>
-						<hx-th scope="col">Used in</hx-th>
+						<hx-th scope="row"><hx-code class="dep-name">{row.entry.name}</hx-code></hx-th>
+						<hx-td data-label="Version"
+							>{#if row.entry.version}<hx-code>{row.entry.version}</hx-code>{:else}<hx-span
+									class="ex-soft">Not declared</hx-span
+								>{/if}</hx-td
+						>
+						<hx-td data-label="Type">{kinds[row.entry.kind]}</hx-td>
+						<hx-td data-label="Used in">
+							<hx-ul class="dep-uses">
+								{#each row.used as use (use.workspace)}
+									<hx-li title={use.sources.join(', ')}>{use.workspace}</hx-li>
+								{/each}
+							</hx-ul>
+						</hx-td>
 					</hx-tr>
-				</hx-thead>
-				<hx-tbody>
-					{#each table.rows as row (row.key)}
-						<hx-tr>
-							<hx-th scope="row"><hx-code class="dep-name">{row.entry.name}</hx-code></hx-th>
-							<hx-td data-label="Version"
-								>{#if row.entry.version}<hx-code>{row.entry.version}</hx-code>{:else}<hx-span
-										class="ex-soft">Not declared</hx-span
-									>{/if}</hx-td
-							>
-							<hx-td data-label="Type">{kinds[row.entry.kind]}</hx-td>
-							<hx-td data-label="Used in">
-								<hx-ul class="dep-uses">
-									{#each row.used as use (use.workspace)}
-										<hx-li title={use.sources.join(', ')}>{use.workspace}</hx-li>
-									{/each}
-								</hx-ul>
-							</hx-td>
-						</hx-tr>
-					{/each}
-				</hx-tbody>
-			</hx-table>
-		</hx-div>
+				{/each}
+			{/snippet}
+		</DataTable>
 	</hx-div>
 {/snippet}
 

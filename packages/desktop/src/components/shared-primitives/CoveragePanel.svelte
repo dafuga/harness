@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '$shared/shared-primitives/DataTable.svelte';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import BrowserErrors from '$shared/shared-primitives/browser-errors/BrowserErrors.svelte';
@@ -90,15 +91,15 @@
 								diagnostics={check.browserErrors}
 							/>{/if}
 					{/each}
-					<hx-table>
-						<hx-thead>
+					<DataTable label="Scenario coverage">
+						{#snippet header()}
 							<hx-tr
 								><hx-th>State</hx-th><hx-th>Declared</hx-th><hx-th>Standing</hx-th><hx-th
 									>Captures</hx-th
 								></hx-tr
 							>
-						</hx-thead>
-						<hx-tbody>
+						{/snippet}
+						{#snippet children()}
 							{#each item.states as state (state.state)}<hx-tr>
 									<hx-td>{state.state}</hx-td>
 									<hx-td>{state.declared}</hx-td>
@@ -110,8 +111,8 @@
 									>
 									<hx-td>{slots(state).join('; ') || 'None declared'}</hx-td>
 								</hx-tr>{/each}
-						</hx-tbody>
-					</hx-table>
+						{/snippet}
+					</DataTable>
 				</hx-article>{/each}{/if}
 		<!-- What the tests were given and what they observed, as the overview shows it; never made up. -->
 		{#if !notice && result}{#if result.behavior.rows.length}<RuntimeBehavior

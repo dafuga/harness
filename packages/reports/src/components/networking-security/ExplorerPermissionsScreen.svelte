@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../shared-primitives/DataTable.svelte';
 	import Card from '../explorer-ui/explorer-kit/Card.svelte';
 	import './ExplorerPermissionsScreen.css';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
@@ -76,28 +77,26 @@
 {#snippet data(rows: DataGrant[], label: string)}
 	{#if rows.length}
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable table must be keyboard reachable.) -->
-		<hx-div class="ex-scroll permission-data" tabindex="0" role="region" aria-label={label}>
-			<hx-table class="ex-table">
-				<hx-thead>
+		<DataTable {label} tableClass="ex-table" className="ex-scroll permission-data">
+			{#snippet header()}
+				<hx-tr>
+					<hx-th scope="col">Model</hx-th>
+					<hx-th scope="col">Actions</hx-th>
+					<hx-th scope="col">Fields</hx-th>
+					<hx-th scope="col">Scope</hx-th>
+				</hx-tr>
+			{/snippet}
+			{#snippet children()}
+				{#each rows as row, position (position)}
 					<hx-tr>
-						<hx-th scope="col">Model</hx-th>
-						<hx-th scope="col">Actions</hx-th>
-						<hx-th scope="col">Fields</hx-th>
-						<hx-th scope="col">Scope</hx-th>
+						<hx-th scope="row">{@render ref(row.resource)}</hx-th>
+						<hx-td data-label="Actions">{row.actions.join(', ')}</hx-td>
+						<hx-td data-label="Fields"><hx-code>{row.fields.join(', ')}</hx-code></hx-td>
+						<hx-td data-label="Scope">{row.scope}</hx-td>
 					</hx-tr>
-				</hx-thead>
-				<hx-tbody>
-					{#each rows as row, position (position)}
-						<hx-tr>
-							<hx-th scope="row">{@render ref(row.resource)}</hx-th>
-							<hx-td data-label="Actions">{row.actions.join(', ')}</hx-td>
-							<hx-td data-label="Fields"><hx-code>{row.fields.join(', ')}</hx-code></hx-td>
-							<hx-td data-label="Scope">{row.scope}</hx-td>
-						</hx-tr>
-					{/each}
-				</hx-tbody>
-			</hx-table>
-		</hx-div>
+				{/each}
+			{/snippet}
+		</DataTable>
 	{:else}
 		<hx-p class="ex-empty">No data access declared.</hx-p>
 	{/if}

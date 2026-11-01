@@ -3,16 +3,16 @@
 	gap: var(--hx-space-10);
 	min-width: 0;
 }
-.dep-scroll {
+:global(.dep-scroll) {
 	overflow-x: auto;
 }
-.dep-table {
+:global(.dep-table) {
 	width: 100%;
 }
-.dep-table thead th:first-child {
+:global(.dep-table) :global(thead) th:first-child {
 	width: 36%;
 }
-.dep-table code {
+:global(.dep-table) code {
 	white-space: nowrap;
 }
 .dep-name {
@@ -51,48 +51,48 @@
 }
 
 @media (max-width: 480px) {
-	.dep-scroll {
+	:global(.dep-scroll) {
 		overflow-x: visible;
 	}
-	.dep-table thead {
+	:global(.dep-table) :global(thead) {
 		position: absolute;
 		width: 1px;
 		height: 1px;
 		overflow: hidden;
 		clip: rect(0 0 0 0);
 	}
-	.dep-table,
-	.dep-table tbody,
-	.dep-table tr {
+	:global(.dep-table),
+	:global(.dep-table) :global(tbody),
+	:global(.dep-table) tr {
 		display: block;
 		width: 100%;
 	}
-	.dep-table tr {
+	:global(.dep-table) tr {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--hx-space-10);
 		padding: var(--hx-space-12) var(--hx-space-16);
 	}
-	.dep-table th,
-	.dep-table td {
+	:global(.dep-table) th,
+	:global(.dep-table) td {
 		display: grid;
 		gap: var(--hx-space-4);
 		padding: 0;
 		border: 0;
 	}
-	.dep-table th[scope='row']::before,
-	.dep-table td::before {
+	:global(.dep-table) th[scope='row']::before,
+	:global(.dep-table) td::before {
 		color: var(--ex-soft);
 		font-size: var(--hx-type-size-sm);
 		font-weight: var(--hx-style-weight-medium);
 	}
-	.dep-table th[scope='row']::before {
+	:global(.dep-table) th[scope='row']::before {
 		content: 'Package';
 	}
-	.dep-table td::before {
+	:global(.dep-table) td::before {
 		content: attr(data-label);
 	}
-	.dep-table code {
+	:global(.dep-table) code {
 		white-space: normal;
 		overflow-wrap: anywhere;
 	}

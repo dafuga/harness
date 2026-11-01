@@ -1134,6 +1134,72 @@
 			"specifier": "../shared-primitives/ComparePanes.svelte",
 			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
 			"reason": "Shared comparison and presentation primitives retain each side context."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityMeasures.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntitySummary.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte",
+			"specifier": "../DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/hub/src/components/shared-primitives/MembersPanel.svelte",
+			"specifier": "$shared/shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
 		}
 	]
 }

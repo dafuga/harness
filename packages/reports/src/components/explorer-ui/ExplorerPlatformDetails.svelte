@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../shared-primitives/DataTable.svelte';
 	import Card from './explorer-kit/Card.svelte';
 	import type { Row } from './ExplorerPlatformDetails.types';
 
@@ -49,24 +50,22 @@
 </script>
 
 {#snippet table(label: string, column: string, rows: Row[])}
-	<hx-div class="ex-scroll">
-		<hx-table class="ex-mini pf-table" aria-label={label}>
-			<hx-thead
-				><hx-tr><hx-th scope="col">Name</hx-th><hx-th scope="col">{column}</hx-th></hx-tr></hx-thead
-			>
-			<hx-tbody>
-				{#each rows as row, position (position)}
-					<hx-tr>
-						<hx-th scope="row">
-							<hx-span>{row.name}</hx-span>
-							{#if row.description}<hx-span class="pf-description">{row.description}</hx-span>{/if}
-						</hx-th>
-						<hx-td><hx-code>{row.value}</hx-code></hx-td>
-					</hx-tr>
-				{/each}
-			</hx-tbody>
-		</hx-table>
-	</hx-div>
+	<DataTable {label} tableClass="ex-mini pf-table" className="ex-scroll">
+		{#snippet header()}<hx-tr
+				><hx-th scope="col">Name</hx-th><hx-th scope="col">{column}</hx-th></hx-tr
+			>{/snippet}
+		{#snippet children()}
+			{#each rows as row, position (position)}
+				<hx-tr>
+					<hx-th scope="row">
+						<hx-span>{row.name}</hx-span>
+						{#if row.description}<hx-span class="pf-description">{row.description}</hx-span>{/if}
+					</hx-th>
+					<hx-td><hx-code>{row.value}</hx-code></hx-td>
+				</hx-tr>
+			{/each}
+		{/snippet}
+	</DataTable>
 {/snippet}
 
 {#snippet sections(declared: PlatformEntry, name: string)}

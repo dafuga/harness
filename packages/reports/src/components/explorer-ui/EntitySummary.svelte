@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../shared-primitives/DataTable.svelte';
 	import Card from './explorer-kit/Card.svelte';
 	import { notMeasured, type EntityMeasure } from '../../utils/explorer-ui/entityMeasure';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
@@ -49,34 +50,32 @@
 			<hx-p class="ex-note"
 				>Compared with first parent {shortCommit(comparison.before.commit)}.</hx-p
 			>
-			<hx-div class="ex-scroll">
-				<hx-table class="ex-mini" aria-label="Performance metric changes">
-					<hx-thead>
+			<DataTable label="Performance metric changes" tableClass="ex-mini" className="ex-scroll">
+				{#snippet header()}
+					<hx-tr>
+						<hx-th scope="col">Metric</hx-th>
+						<hx-th scope="col">Before · {shortCommit(comparison.before.commit)}</hx-th>
+						<hx-th scope="col">After · {shortCommit(comparison.after.commit)}</hx-th>
+						<hx-th scope="col">Change</hx-th>
+					</hx-tr>
+				{/snippet}
+				{#snippet children()}
+					{#each changes as row (row.key)}
 						<hx-tr>
-							<hx-th scope="col">Metric</hx-th>
-							<hx-th scope="col">Before · {shortCommit(comparison.before.commit)}</hx-th>
-							<hx-th scope="col">After · {shortCommit(comparison.after.commit)}</hx-th>
-							<hx-th scope="col">Change</hx-th>
+							<hx-th scope="row">{row.label}</hx-th>
+							<hx-td>
+								{row.before}
+								{#if row.beforeContext}<hx-span class="ex-note">{row.beforeContext}</hx-span>{/if}
+							</hx-td>
+							<hx-td>
+								{row.after}
+								{#if row.afterContext}<hx-span class="ex-note">{row.afterContext}</hx-span>{/if}
+							</hx-td>
+							<hx-td>{row.change}</hx-td>
 						</hx-tr>
-					</hx-thead>
-					<hx-tbody>
-						{#each changes as row (row.key)}
-							<hx-tr>
-								<hx-th scope="row">{row.label}</hx-th>
-								<hx-td>
-									{row.before}
-									{#if row.beforeContext}<hx-span class="ex-note">{row.beforeContext}</hx-span>{/if}
-								</hx-td>
-								<hx-td>
-									{row.after}
-									{#if row.afterContext}<hx-span class="ex-note">{row.afterContext}</hx-span>{/if}
-								</hx-td>
-								<hx-td>{row.change}</hx-td>
-							</hx-tr>
-						{/each}
-					</hx-tbody>
-				</hx-table>
-			</hx-div>
+					{/each}
+				{/snippet}
+			</DataTable>
 		{:else}
 			{#if measure.size.length > 0 || !tabled}
 				<hx-dl class="ex-rows ex-figures">
@@ -143,35 +142,37 @@
 			{#if measure.performance.length === 0}
 				<hx-p class="ex-note">No benchmark is recorded for this revision.</hx-p>
 			{:else if tabled}
-				<hx-div class="ex-scroll">
-					<hx-table class="ex-mini" aria-label="Timings by workload and profile">
-						<hx-thead>
+				<DataTable
+					label="Timings by workload and profile"
+					tableClass="ex-mini"
+					className="ex-scroll"
+				>
+					{#snippet header()}
+						<hx-tr>
+							<hx-th scope="col">Workload</hx-th>
+							<hx-th scope="col">Metric</hx-th>
+							<hx-th scope="col">Target · profile</hx-th>
+							<hx-th scope="col">Value</hx-th>
+							<hx-th scope="col">Tolerance</hx-th>
+						</hx-tr>
+					{/snippet}
+					{#snippet children()}
+						{#each measure.performance as row, position (position)}
 							<hx-tr>
-								<hx-th scope="col">Workload</hx-th>
-								<hx-th scope="col">Metric</hx-th>
-								<hx-th scope="col">Target · profile</hx-th>
-								<hx-th scope="col">Value</hx-th>
-								<hx-th scope="col">Tolerance</hx-th>
+								<hx-td>{row.workload}</hx-td>
+								<hx-td>{row.metric}</hx-td>
+								<hx-td>{where(row)}</hx-td>
+								<hx-td class:unmeasured={row.value === notMeasured} title={row.note}
+									>{row.value}{#if row.note}<hx-span class="ex-note">{row.note}</hx-span
+										>{/if}</hx-td
+								>
+								<hx-td class:over={row.over}
+									>{row.tolerance}{row.over ? ' · above the 5% policy' : ''}</hx-td
+								>
 							</hx-tr>
-						</hx-thead>
-						<hx-tbody>
-							{#each measure.performance as row, position (position)}
-								<hx-tr>
-									<hx-td>{row.workload}</hx-td>
-									<hx-td>{row.metric}</hx-td>
-									<hx-td>{where(row)}</hx-td>
-									<hx-td class:unmeasured={row.value === notMeasured} title={row.note}
-										>{row.value}{#if row.note}<hx-span class="ex-note">{row.note}</hx-span
-											>{/if}</hx-td
-									>
-									<hx-td class:over={row.over}
-										>{row.tolerance}{row.over ? ' · above the 5% policy' : ''}</hx-td
-									>
-								</hx-tr>
-							{/each}
-						</hx-tbody>
-					</hx-table>
-				</hx-div>
+						{/each}
+					{/snippet}
+				</DataTable>
 			{/if}
 		{/if}
 	</Card>
