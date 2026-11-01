@@ -2,7 +2,7 @@
 	"name": "desktop-runtime-screen-gaps",
 	"goal": "Runtime screen gap messages stay beside their icons at every viewport.",
 	"createdAt": "2026-11-01T01:19:50.118Z",
-	"updatedAt": "2026-11-01T01:20:12.462Z",
+	"updatedAt": "2026-11-01T01:22:16.807Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T01:22:16.807Z",
+			"evidence": "4541b396cc record1ad74adba3e9 retains all12 captures:6 adjacency failures and6 passes with the frozen standard matrix."
 		},
 		{
 			"id": "implement",
