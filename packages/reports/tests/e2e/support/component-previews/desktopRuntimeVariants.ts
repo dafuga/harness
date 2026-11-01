@@ -48,12 +48,12 @@ export function desktopRuntimeVariant(
 }
 
 function behavior(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
-	const result =
-		variant === 'loading'
-			? desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`]
-			: data.result;
+	const result = ['loading', 'paired'].includes(variant)
+		? desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`]
+		: data.result;
 	if (variant === 'empty')
 		return { ...props, result: { ...result, behavior: { ...result.behavior, rows: [] } } };
+	if (variant === 'paired') return { ...props, result };
 	if (!['loading', 'unreadable'].includes(variant)) return props;
 	return {
 		...props,
@@ -105,6 +105,9 @@ function artifact(props: PreviewProps, data: DesktopData, variant: string): Prev
 export async function desktopRuntimeReady(id: string, data: DesktopData, variant: string) {
 	await data.ready;
 	if (id === 'desktop.component.runtime-behavior') {
+		if (variant === 'paired')
+			data.evidence.read =
+				desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`].behavior;
 		if (variant === 'loading') data.evidence.read = undefined;
 		if (variant === 'unreadable') data.evidence.read = null;
 		if (variant === 'empty') data.evidence.read = { ...data.result.behavior, rows: [] };
