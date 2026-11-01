@@ -2,7 +2,7 @@
 	"name": "sol8-final-visual-review",
 	"goal": "Keep remaining component states readable, distinct and complete at desktop, tablet and mobile, with anchored controls and truthful loading states.",
 	"createdAt": "2026-11-01T05:44:05.468Z",
-	"updatedAt": "2026-11-01T05:51:50.400Z",
+	"updatedAt": "2026-11-01T06:22:35.159Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T06:22:35.159Z",
+			"evidence": "Admitted red b65178dc6fe774076556ebdb41715bf15d12fa08d216f24669df83d3e858a5de at 912f97be52 retains 15 captures and the exact failing assertion Short contract examples fit without an ellipsis. Frozen focused command and corpus remain unchanged for green."
 		},
 		{
 			"id": "implement",

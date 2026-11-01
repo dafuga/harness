@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import './entitySearch.css';
 	import { tick } from 'svelte';
 	import { entitySearch } from './entitySearch';
 	import { type SearchEntry } from '../../../utils/explorer-ui/entitySearch';
@@ -87,7 +88,7 @@
 		aria-haspopup="dialog"
 		aria-keyshortcuts="Meta+K Control+K"
 		title="Search entities (⌘K)"
-		onclick={show}>{@render glass(18)}</hx-button
+		onclick={show}>{@render glass(18)}<hx-span>Search entities</hx-span></hx-button
 	>
 	<Modal open={searching} title="Search project" variant="text" onClose={hide}>
 		<hx-div class="entity-search-field">
@@ -121,99 +122,3 @@
 		/>
 	</Modal>
 </hx-div>
-
-<style>
-	svg {
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
-		stroke-linecap: round;
-	}
-	.entity-search-trigger,
-	.entity-search :global(.viewer-dialog .viewer-header button) {
-		display: grid;
-		place-items: center;
-		box-sizing: border-box;
-		width: 40px;
-		height: 40px;
-		padding: 0;
-		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
-		border-radius: var(--hx-radius-small);
-		background: none;
-		color: inherit;
-		font-size: var(--hx-type-size-2xl);
-		cursor: pointer;
-	}
-	.entity-search-trigger:hover,
-	.entity-search :global(.viewer-dialog .viewer-header button:hover) {
-		border-color: var(--hx-color-primary);
-		color: var(--hx-color-primary);
-	}
-	.entity-search-trigger:focus-visible,
-	.entity-search :global(.viewer-dialog .viewer-header button:focus-visible),
-	.entity-search-field:focus-within {
-		outline: var(--hx-border-thick) solid var(--hx-color-primary);
-		outline-offset: var(--hx-border-thin);
-	}
-	.entity-search :global(.viewer-dialog[open]) {
-		display: flex;
-		flex-direction: column;
-		width: min(640px, calc(100vw - 24px));
-		max-width: none;
-		height: auto;
-		max-height: calc(100dvh - min(12vh, 96px) - 12px);
-		margin: var(--hx-layout-dialog-offset) auto auto;
-		padding: 0;
-		overflow: hidden;
-		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
-		border-radius: var(--hx-radius-xlarge);
-		background: var(--hx-color-surface, var(--hx-color-surface));
-		color: var(--hx-color-text);
-		font-size: var(--hx-type-size-base);
-		box-shadow: var(--hx-shadow-dialog);
-	}
-	.entity-search :global(.viewer-dialog[open])::backdrop {
-		background: var(--hx-color-scrim);
-	}
-	.entity-search :global(.viewer-dialog .viewer-header) {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: var(--hx-space-8) var(--hx-space-8) var(--hx-space-8) var(--hx-space-18);
-		border-bottom: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
-		background: none;
-	}
-	.entity-search :global(.viewer-dialog h2) {
-		margin: 0;
-		font-size: inherit;
-	}
-	.entity-search-field {
-		display: flex;
-		align-items: center;
-		gap: var(--hx-space-10);
-		padding: 0 var(--hx-space-14);
-		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
-		border-radius: var(--hx-radius);
-		background: var(--hx-color-hover);
-		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
-	}
-	/* Under the field's border, which shows the focus; sixteen pixels, so a phone does not zoom in. */
-	input {
-		flex: 1;
-		min-width: 0;
-		min-height: 44px;
-		padding: 0;
-		border: 0;
-		outline: none;
-		background: none;
-		color: var(--hx-color-text);
-		font: inherit;
-		font-size: var(--hx-type-size-base);
-	}
-	.entity-search :global(.entity-search-field input:focus-visible) {
-		outline: 0;
-	}
-	input::placeholder {
-		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
-	}
-</style>

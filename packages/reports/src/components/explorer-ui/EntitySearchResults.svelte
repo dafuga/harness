@@ -89,9 +89,17 @@
 		flex: 1 1 auto;
 		min-height: 0;
 		overflow-y: auto;
+		scrollbar-gutter: stable;
 		overscroll-behavior: contain;
 		line-height: var(--hx-style-leading-snug);
 		text-align: left;
+	}
+	.entity-search-results::-webkit-scrollbar {
+		width: var(--hx-space-8);
+	}
+	.entity-search-results::-webkit-scrollbar-thumb {
+		border-radius: var(--hx-radius-pill);
+		background: var(--hx-color-border-strong);
 	}
 	.entity-search-note {
 		margin: var(--hx-space-6) var(--hx-space-8);
