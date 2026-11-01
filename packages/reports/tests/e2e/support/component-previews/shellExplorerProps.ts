@@ -1,4 +1,5 @@
 import { desktopData } from './sealedData';
+import { reviewedOrdersEvidence } from './shellArtwork';
 import type { PreviewCases } from './shared';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import type {
@@ -144,7 +145,11 @@ function sectionsHost(): ExplorerScreenProps {
 	const data = desktopData.results[`${d.ids.list}|commit|${d.commits.middle}`];
 	return {
 		...d.host(),
-		lens: { ...d.reading, evidence: () => data.evidence, behavior: () => data.behavior }
+		lens: {
+			...d.reading,
+			evidence: () => reviewedOrdersEvidence(data.evidence),
+			behavior: () => data.behavior
+		}
 	};
 }
 

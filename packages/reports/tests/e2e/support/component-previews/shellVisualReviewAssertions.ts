@@ -181,3 +181,31 @@ async function tabOverflow(component: Locator) {
 		expect(geometry.thumb, 'The scroll thumb differs from its track').not.toBe(geometry.track);
 	}
 }
+
+/** State declarations may wrap at spaces, while every word stays whole in its visible cell. */
+export async function assertRequiredStateWords(component: Locator) {
+	await expect(component).not.toContainText('synthetic orders');
+	const cells = component.locator('table[aria-label^="States of "] tbody td:first-of-type');
+	await expect(cells).not.toHaveCount(0);
+	const broken = await cells.evaluateAll((nodes) =>
+		nodes.flatMap((cell) => {
+			const words: string[] = [];
+			const box = cell.getBoundingClientRect();
+			const frame = cell.closest('.ex-scroll')!.getBoundingClientRect();
+			if (box.left < frame.left - 1 || box.right > frame.right + 1)
+				words.push('Cell outside frame');
+			const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+			let text: Node | null;
+			while ((text = walker.nextNode())) {
+				for (const match of text.textContent!.matchAll(/[A-Za-z]+/g)) {
+					const range = document.createRange();
+					range.setStart(text, match.index!);
+					range.setEnd(text, match.index! + match[0].length);
+					if (range.getClientRects().length > 1) words.push(match[0]);
+				}
+			}
+			return words;
+		})
+	);
+	expect(broken, 'Required declarations do not split inside a word').toEqual([]);
+}

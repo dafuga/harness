@@ -34,6 +34,9 @@ import { assertRecordedValueCapture } from './support/component-previews/recorde
 import { assertShellReview } from './support/component-previews/shellReviewAssertions';
 import { assertShellVisualReview } from './support/component-previews/shellVisualReviewAssertions';
 import { assertTabOverflowCue } from './support/component-previews/shellVisualReviewAssertions';
+import { assertRequiredStateWords } from './support/component-previews/shellVisualReviewAssertions';
+import { assertViewerReview } from './support/component-previews/evidenceViewerActions';
+import { assertCatalogItemsFrame } from './support/component-previews/catalogItemsPreviewAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { assertCatalogRegistry } from './support/component-previews/catalogRegistryAssertions';
 import { catalogFixtureMedia } from './support/component-previews/catalogFixtureMedia';
@@ -180,6 +183,18 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
+			if (unit.id === 'reports.component.harness-entity-screens' && variant === 'viewer-open')
+				await expect(component.getByRole('button', { name: 'View after screenshot' })).toHaveClass(
+					/\bactive\b/
+				);
+			await assertViewerReview(component, unit.id, variant);
+			if (unit.id === 'reports.component.explorer-catalog-items' && variant === 'configs-open')
+				await assertCatalogItemsFrame(component, viewport.id, capture);
+			if (
+				(unit.id === 'reports.component.harness-entity-sections' && variant === 'tests') ||
+				unit.id === 'reports.component.harness-entity-tests'
+			)
+				await assertRequiredStateWords(component);
 			await assertRecordedCompatibility(component, unit.id, variant);
 			await assertTabOverflowCue(component, unit.id);
 			if (unit.id === 'reports.component.harness-entity-artifact' && variant === 'raw-open') {

@@ -1,4 +1,5 @@
 import { shellImage } from './shellArtworkImages';
+import { desktopData } from './sealedData';
 import type {
 	ExplorerEvidence,
 	ExplorerSide
@@ -46,6 +47,30 @@ export function shellEvidence(
 	};
 }
 
+/** Review examples use a scenario name without changing recorded bytes or capture provenance. */
+export function reviewedOrdersEvidence(evidence: ExplorerEvidence): ExplorerEvidence {
+	const name = (title: string) =>
+		title.replaceAll(
+			'Orders page over synthetic orders',
+			'Browse customer orders and delivery status'
+		);
+	const side = (original: ExplorerSide): ExplorerSide => ({
+		...original,
+		coverage: original.coverage.map((scenario) => ({
+			...scenario,
+			title: name(scenario.title),
+			reasons: scenario.reasons.map(name),
+			states: scenario.states.map((state) => ({ ...state, reasons: state.reasons.map(name) }))
+		}))
+	});
+	return {
+		...evidence,
+		scenarios: evidence.scenarios.map((scenario) => ({ ...scenario, title: name(scenario.title) })),
+		before: evidence.before && side(evidence.before),
+		after: side(evidence.after)
+	};
+}
+
 /** Limit artwork substitutions to the shell owners under review, including their nested cards. */
 export function shellArtworkHost(host: ExplorerScreenProps): ExplorerScreenProps {
 	return {
@@ -65,6 +90,7 @@ export function shellArtworkHost(host: ExplorerScreenProps): ExplorerScreenProps
 
 export function shellArtworkProps(id: string, props: PreviewCases[string], variant: string) {
 	if (id.endsWith('harness-harness-navbar')) return navbarPreviewProps(props, variant);
+	if (id === 'reports.component.harness-entity-tests') return entityTestsProps(props);
 	if (id.endsWith('harness-entity-screens'))
 		return {
 			...props,
@@ -111,6 +137,16 @@ export function shellArtworkProps(id: string, props: PreviewCases[string], varia
 			)
 		};
 	return shellArtworkHost(host) as unknown as PreviewCases[string];
+}
+
+function entityTestsProps(props: PreviewCases[string]) {
+	const data = desktopData.results[`${ids.list}|commit|${commits.middle}`];
+	return {
+		...props,
+		evidence: shellEvidence(reviewedOrdersEvidence(data.evidence), ids.list),
+		behavior: data.behavior,
+		mediaBase: ''
+	};
 }
 
 function navbarPreviewProps(props: PreviewCases[string], variant: string) {

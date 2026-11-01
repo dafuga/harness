@@ -80,7 +80,7 @@
 			{
 				"name": "EntityTests",
 				"type": "markup",
-				"description": "Verdict and reasons, scenario/state coverage and underlying check outcomes/durations, removed declarations, behavior and media. Missing records/scenarios remain explicit. Inapplicable states are labeled, and repeated slot reasons are suppressed when the state already says them. Each check with recorded browser diagnostics shows expandable expected, unexpected and missing-expected errors with test-attempt context."
+				"description": "Verdict and reasons, scenario/state coverage and underlying check outcomes/durations, removed declarations, behavior and media. Missing records/scenarios remain explicit. Required declarations wrap between words; inapplicable states retain their full reason. Repeated slot reasons are suppressed when the state already says them. Each check with recorded browser diagnostics shows expandable expected, unexpected and missing-expected errors with test-attempt context."
 			}
 		],
 		"errors": [],
