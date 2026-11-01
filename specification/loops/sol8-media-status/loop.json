@@ -2,7 +2,7 @@
 	"name": "sol8-media-status",
 	"goal": "Show correct diagnostic counts and empty messages, visible image load/error status, and disabled comparison feedback.",
 	"createdAt": "2026-11-01T04:19:00.287Z",
-	"updatedAt": "2026-11-01T04:30:32.322Z",
+	"updatedAt": "2026-11-01T04:34:57.173Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:34:55.676Z",
+			"evidence": "Repairs 46ce75f306 and e19ba569fa correct diagnostic grammar and empty attempts, announce image loading/failure, and paint disabled comparisons in the shared stylesheet."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:34:57.173Z",
+			"evidence": "Unchanged 15-case command passes at e19ba569fa; record 75b47f9829a55b7b9bdf7de2cf060d712f84b755033c2ed51d4d9b79ce1b55b4. Red f0b3a10ade2 fails the same five states at every viewport."
 		},
 		{
 			"id": "verify",
