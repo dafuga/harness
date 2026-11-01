@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { settlePreviewImages } from './previewReadinessAssertions';
 
 /** Named sections show their documented content, rather than only an empty-state notice. */
 export async function assertPopulatedEntitySection(component: Locator, variant: string) {
@@ -37,10 +38,17 @@ export async function assertPopulatedEntitySection(component: Locator, variant: 
 export async function prepareSectionCaptures(component: Locator, variant: string) {
 	if (!['states', 'tests'].includes(variant)) return;
 	const width = component.page().viewportSize()!.width;
-	const viewport = width === 390 ? 'mobile' : width === 768 ? 'tablet' : 'desktop';
+	const devices: Record<number, string> = { 390: 'mobile', 768: 'tablet' };
+	const viewport = devices[width] ?? 'desktop';
 	const select = component.getByRole('combobox', { name: 'Viewport', exact: true });
 	if (await select.locator(`option[value="${viewport}"]`).count())
 		await select.selectOption(viewport);
+	await settlePreviewImages(
+		component.page(),
+		component,
+		'reports.component.harness-entity-sections',
+		variant
+	);
 }
 
 async function assertSectionCaptures(component: Locator, variant: string) {
@@ -54,6 +62,14 @@ async function assertSectionCaptures(component: Locator, variant: string) {
 	expect(
 		await options.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('value')))
 	).toEqual(['desktop', 'tablet', 'mobile']);
+	const selected = await gallery
+		.getByRole('combobox', { name: 'Viewport', exact: true })
+		.inputValue();
+	const sizes: Record<string, number[]> = {
+		desktop: [1440, 900],
+		tablet: [768, 1024],
+		mobile: [390, 844]
+	};
 	for (const title of ['Default', 'Empty']) {
 		const images = gallery.getByRole('article', { name: title, exact: true }).locator('img');
 		await expect(images, `${title} has Before and After images`).toHaveCount(2);
@@ -63,10 +79,9 @@ async function assertSectionCaptures(component: Locator, variant: string) {
 				return [image.naturalWidth, image.naturalHeight];
 			})
 		);
-		const size = component.page().viewportSize()!;
 		expect(dimensions, 'Nested captures use the selected CSS-pixel viewport').toEqual([
-			[size.width, size.height],
-			[size.width, size.height]
+			sizes[selected],
+			sizes[selected]
 		]);
 	}
 	if (variant === 'tests') {
@@ -83,5 +98,6 @@ async function assertSectionContract(component: Locator) {
 	await expect(inputs.locator('.requirement')).toHaveText(['Required', 'Optional']);
 	await expect(inputs.locator('.default')).toContainText(['No default', 'Default: ""']);
 	await expect(component).not.toContainText('Requiredness not recorded');
-	await expect(inputs.getByText('Declared', { exact: true }).first()).toBeVisible();
+	await expect(inputs.first().locator('.example')).toContainText('A-1048');
+	await expect(inputs.locator('td i')).toHaveCount(0);
 }

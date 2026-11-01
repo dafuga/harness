@@ -104,7 +104,9 @@ export function shellArtworkProps(id: string, props: PreviewCases[string], varia
 	if (id.endsWith('harness-entity-sections'))
 		return {
 			...props,
-			host: shellArtworkHost(props.host as ExplorerScreenProps),
+			host: ['states', 'tests'].includes(variant)
+				? props.host
+				: shellArtworkHost(props.host as ExplorerScreenProps),
 			pane: text('<div></div>')
 		};
 	if (

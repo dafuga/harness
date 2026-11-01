@@ -2,6 +2,8 @@ import { permissionProfiles } from '../../../../../../test/support/permissionPro
 import type { ExplorerEntity } from '../../../../src/models/explorer-ui/Explorer.types';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import * as d from './explorerData';
+import { desktopData } from './sealedData';
+import { contractPreviewUnit } from './reportEntityContractVariants';
 
 const orders = [
 	{ id: 'A-1048', name: 'Ada Lovelace' },
@@ -25,6 +27,22 @@ export function populatedEntitySections(
 	host: ExplorerScreenProps,
 	variant: string
 ): { host: ExplorerScreenProps; entity: ExplorerEntity } | null {
+	if (variant === 'contract') {
+		return {
+			host: { ...host, route: { ...host.route, tab: 'contract' } },
+			entity: { ...d.entity, unit: contractPreviewUnit(d.entity.unit) }
+		};
+	}
+	if (variant === 'states' || variant === 'tests') {
+		return {
+			host: {
+				...host,
+				route: { ...host.route, tab: variant },
+				lens: { ...host.lens, evidence: () => desktopData.entitySectionsEvidence }
+			},
+			entity: d.entity
+		};
+	}
 	if (variant === 'audio') return audioSection(host);
 	if (variant === 'examples') {
 		const entity = d.entities.find((item) => item.id === d.ids.filter)!;
