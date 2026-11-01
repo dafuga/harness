@@ -1,3 +1,4 @@
+import { contractPanelPreview } from './presentationProps';
 import type { DesktopCase } from './desktopData.svelte';
 import { desktopHistoryFixture } from './desktopHistoryFixture';
 import { providers } from './desktopData.svelte';
@@ -65,7 +66,7 @@ export const desktopControls: Record<string, DesktopCase> = {
 		comment: done,
 		send: done
 	}),
-	'desktop.component.contract-panel': (d) => ({ contract: d.entity.contract }),
+	'desktop.component.contract-panel': () => ({ contract: contractPanelPreview }),
 	'desktop.component.coverage-panel': (d) => ({
 		entity: d.filterEntity,
 		evidence: d.evidence,

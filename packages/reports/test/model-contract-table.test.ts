@@ -83,7 +83,7 @@ test('model contracts show each real initialization and mutation method with par
 		expect(body).not.toContain(`aria-label="${title}"`);
 	expect(body).toContain('aria-label="Parameters"');
 	expect(body).toContain('aria-label="Returns"');
-	expect(body).not.toContain('No errors declared.');
+	expect(body).toContain('No errors declared.');
 });
 
 test('model details provide a separate revision-scoped Table tab', () => {

@@ -28,3 +28,37 @@ export function presentationVariant(id: string, props: PreviewCases[string], var
 				}));
 	return { ...props, contract: { ...contract, inputs, outputs: [], errors: [] } };
 }
+
+/** A callable contract uses authored input metadata and declared return/error types. */
+export const contractPanelPreview = {
+	inputs: [
+		{
+			name: 'filterOrders.orders',
+			type: 'Order[]',
+			required: true,
+			description: 'Orders to filter.'
+		},
+		{
+			name: 'filterOrders.searchText',
+			type: 'string',
+			required: false,
+			default: '',
+			description: 'Text matched against order identifiers.'
+		}
+	],
+	outputs: [
+		{
+			name: 'filterOrders.matches',
+			type: 'Order[]',
+			description: 'Orders matching the search text.'
+		}
+	],
+	errors: [
+		{
+			name: 'filterOrders.invalidOrders',
+			type: 'TypeError',
+			description: 'Orders must be an array.'
+		}
+	],
+	hash: null
+};
