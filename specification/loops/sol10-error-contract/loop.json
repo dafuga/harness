@@ -2,7 +2,7 @@
 	"name": "sol10-error-contract",
 	"goal": "Declare and test the errorMessage conversion failures accepted by its public contract",
 	"createdAt": "2026-11-01T22:28:58.035Z",
-	"updatedAt": "2026-11-01T22:31:42.993Z",
+	"updatedAt": "2026-11-01T22:33:29.717Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T22:33:29.717Z",
+			"evidence": "Matched environment: d956ce4cc0 red 342763433272152a53b74f812979161e44b39b2fc3a727a8384e58b23f1b54c3; cdc7c8791a green db8d6c43b2ddcdc8a730035117f20dbe2c17ec6b09c865d3ca429e54f4767026. Same unchanged helper test, command and fixtures."
 		},
 		{
 			"id": "verify",
