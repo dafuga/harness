@@ -30,8 +30,14 @@
 				"description": "Error.message for Error instances; String(cause) otherwise. String conversion errors propagate."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Message conversion error",
+				"type": "propagated",
+				"description": "Errors from an Error.message accessor or String(cause) conversion propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "errorMessage",
@@ -50,8 +56,14 @@
 						"description": "Error.message for Error instances; String(cause) otherwise. String conversion errors propagate."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Message conversion error",
+						"type": "propagated",
+						"description": "Errors from an Error.message accessor or String(cause) conversion propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
