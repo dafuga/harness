@@ -1513,6 +1513,12 @@
 			"units": ["desktop.component.revision-picker"]
 		},
 		{
+			"id": "desktop-component-revision-picker-environment",
+			"title": "Revision picker: environment",
+			"coverage": "required",
+			"units": ["desktop.component.revision-picker"]
+		},
+		{
 			"id": "desktop-component-revision-picker-historical",
 			"title": "Revision picker: historical",
 			"coverage": "required",
@@ -8207,6 +8213,7 @@
 				"desktop-component-revision-picker",
 				"desktop-component-revision-picker-branch-open",
 				"desktop-component-revision-picker-commit-open",
+				"desktop-component-revision-picker-environment",
 				"desktop-component-revision-picker-historical",
 				"desktop-component-revision-picker-pinned",
 				"desktop-component-revision-picker-unknown-time",

@@ -171,6 +171,25 @@ const workspaceVariants: Record<
 	},
 	'revision-picker': (props, data, variant) => {
 		const workspace = data.workspace;
+		if (variant === 'environment') {
+			workspace.deployments.statuses = [
+				{
+					environment: 'preprod',
+					available: true,
+					reason: '',
+					receipt: {
+						environment: 'preprod',
+						commit: commits.tip,
+						branch: workspace.snapshot!.revision.branch,
+						updatedAt: '2026-10-20T10:00:00Z',
+						adapter: 'cloudflare',
+						deploymentId: 'orders-preprod-42',
+						url: 'https://orders-preprod.example.invalid'
+					}
+				}
+			];
+			workspace.deployments.choose('preprod');
+		}
 		if (variant === 'pinned' || variant === 'historical') workspace.pinned = true;
 		if (variant === 'historical') {
 			workspace.snapshot!.revision.atTip = false;

@@ -48,7 +48,7 @@
 			{
 				"name": "RevisionPicker",
 				"type": "markup",
-				"description": "Summary of the branch or explicit short commit and timestamp. Environment scope reads Updated at and the deployment time. Icon dialogs display expanded branch and commit listboxes; choosing a row navigates and closes the dialog. Go to tip exits a pinned revision."
+				"description": "Summary of the branch or explicit short commit and timestamp. Environment scope reads Updated at and the deployment time. Icon dialogs display expanded branch and commit listboxes; choosing a row navigates and closes the dialog. Go to tip exits a pinned revision. Renders nothing without a snapshot."
 			}
 		],
 		"errors": [
