@@ -91,6 +91,7 @@ function design(props: PreviewProps, data: DesktopData, variant: string): Previe
 	if (variant === 'long')
 		return {
 			...props,
+			option: 'o1',
 			entity: {
 				...data.entity,
 				versions: data.entity.versions.map((version) => ({
