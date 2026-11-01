@@ -29,7 +29,7 @@
 			{
 				"name": "HtmlAside",
 				"type": "markup",
-				"description": "The actual native aside element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native aside element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop."
 			}
 		],
 		"errors": [
@@ -37,6 +37,11 @@
 				"name": "Caller content or event error",
 				"type": "propagated",
 				"description": "Supplied event handlers and rendered child snippets may throw; the atom does not catch their errors. Void elements ignore the child snippet."
+			},
+			{
+				"name": "Native attribute or property error",
+				"type": "propagated",
+				"description": "Errors raised while evaluating supplied props or setting native attributes/properties propagate. Invalid property values may produce a browser TypeError or DOMException."
 			}
 		],
 		"errorStatus": "declared",
