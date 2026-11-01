@@ -31,7 +31,6 @@
 		/** For an entity the shown commit removed: the parent commit this contract was last held at. */
 		last?: string;
 	} = $props();
-	// A function's callables each show their own signature; whole-module facts say nothing of them.
 	let callables = $derived(category === 'functions' ? callableContracts(unit) : []);
 	// A service or model shows each declared method apart; what no method declares is said once.
 	let service = $derived(
@@ -41,7 +40,6 @@
 				? modelContract(unit)
 				: { methods: [], facts: [] }
 	);
-	// Their declared errors are one table under the methods, never repeated under each method.
 	let byMethod = $derived(category === 'services' || category === 'models');
 	// A model's own declarations, the one its title names first; a field's value is never guessed.
 	let shapes = $derived.by((): CallableContract[] => {
