@@ -60,6 +60,9 @@
 .zoom .stage.dragging {
 	cursor: grabbing;
 	user-select: none;
+	border-color: var(--hx-color-primary);
+	border-width: var(--hx-border-thick);
+	background: var(--hx-color-primary-wash);
 }
 .zoom .stage:focus-visible {
 	outline: var(--hx-border-thick) solid var(--hx-color-primary);

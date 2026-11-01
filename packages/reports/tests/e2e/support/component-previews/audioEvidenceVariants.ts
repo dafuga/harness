@@ -30,8 +30,6 @@ export function audioEvidenceVariant(props: PreviewCases[string], variant: strin
 	if (variant === 'no-details')
 		return { ...props, item: { ...item, transcript: undefined, note: undefined } };
 	if (variant === 'minimal') return { ...props, item: minimalRecording(item) };
-	if (variant === 'duration-loaded')
-		return { ...props, item: { ...item, durationSeconds: undefined } };
 	if (variant.startsWith('phase-'))
 		return { ...props, item: { ...item, phase: variant.slice('phase-'.length) } };
 	if (variant === 'standing')

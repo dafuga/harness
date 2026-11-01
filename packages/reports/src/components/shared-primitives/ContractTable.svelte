@@ -60,7 +60,9 @@
 				{#each group.fields as field, position (position)}
 					{@const sample = field.examples[0]}
 					<hx-tr data-contract-input={metadata ? '' : undefined}>
-						{#if named}<hx-th scope="row">{field.name}</hx-th>{/if}
+						{#if named}<hx-th scope="row"
+								>{#each field.name.split('.') as word, position (position)}{#if position > 0}.<hx-wbr />{/if}{word}{/each}</hx-th
+							>{/if}
 						<hx-td><hx-code class="type">{field.type}</hx-code></hx-td>
 						{#if metadata}
 							<hx-td
@@ -149,6 +151,14 @@
 	.group :global(tbody th) {
 		white-space: normal;
 		overflow-wrap: anywhere;
+	}
+	/* On wide tables a name breaks only after a dot and a type only at its spaces; a word that is
+	   still too long widens its column, and the frame scrolls rather than splitting it. */
+	@media (min-width: 901px) {
+		.group :global(tbody th),
+		.type {
+			overflow-wrap: normal;
+		}
 	}
 	/* Where there is room, name and type keep their width, also when a returns table hides its
 	   names; a longer name or type widens its own column instead. */
