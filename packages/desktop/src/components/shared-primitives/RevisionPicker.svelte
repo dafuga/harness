@@ -146,7 +146,7 @@
 		gap: var(--hx-space-6);
 		flex: 0 1 auto;
 		min-width: 0;
-		max-width: 300px;
+		max-width: 100%;
 		margin-inline-start: var(--hx-space-4);
 		font-size: var(--hx-type-size-compact);
 		line-height: var(--hx-style-leading-snug);
