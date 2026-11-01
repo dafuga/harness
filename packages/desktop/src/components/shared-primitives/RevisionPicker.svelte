@@ -79,10 +79,8 @@
 						onclick={() => chooseBranch(close)}>View branch</hx-button
 					>{/snippet}
 			</ChoiceDialog>
-			<ChoiceDialog label="Choose commit" title="" width={380} maxHeight={320} gap={10}>
-				{#snippet icon()}<Icon name="commit" size={18} /><hx-span
-						>Commit{environment ? ` ${environment}` : ''}</hx-span
-					>{/snippet}
+			<ChoiceDialog label="Choose commit" title="" width={440} maxHeight={320} gap={10}>
+				{#snippet icon()}<Icon name="commit" size={18} /><hx-span>Commit</hx-span>{/snippet}
 				{#snippet children(close: () => void)}<hx-label
 						class="picker-field"
 						onchange={() => chooseCommit(close)}
@@ -154,24 +152,31 @@
 	.picker-field {
 		display: grid;
 		gap: var(--hx-space-6);
-		width: auto;
+		min-width: 0;
 		max-width: none;
 	}
 	.picker-field :global(.report-select) {
 		display: block;
 	}
+	.picker-field :global(.report-select.expanded select) {
+		width: 100%;
+		padding-inline: var(--hx-space-8);
+		font-size: var(--hx-type-size-sm);
+	}
 	@media (max-width: 560px) {
 		.revision-choices :global(button.agent-icon) {
 			align-items: center;
 			justify-content: center;
-			width: var(--hx-space-48);
+			width: var(--hx-space-50);
 			height: var(--hx-space-40);
+			gap: var(--hx-space-2);
 			padding: 0;
-			font-size: var(--hx-type-size-xs);
-			white-space: normal;
+			font-size: var(--hx-type-size-2xs);
+			white-space: nowrap;
 		}
 		.revision-choices :global(svg) {
-			display: none;
+			width: var(--hx-space-12);
+			height: var(--hx-space-12);
 		}
 		.revision-picker {
 			display: contents;
@@ -180,10 +185,8 @@
 			grid-area: revision;
 			display: flex;
 			justify-self: start;
-			margin: var(--hx-space-8) 0 0 calc(-1 * var(--hx-space-1));
-			border-radius: 0 var(--hx-radius-small) var(--hx-radius-small) 0;
-			background: var(--hx-color-surface);
-			box-shadow: inset 0 0 0 var(--hx-border-thin) var(--hx-color-border);
+			gap: var(--hx-space-6);
+			margin: var(--hx-space-8) 0 0;
 		}
 		.revision-summary {
 			grid-area: summary;
@@ -195,7 +198,6 @@
 		}
 		/* A long branch gives way first; what is shown stays whole. */
 		.revision-summary strong {
-			flex: 0 1 auto;
 			font-size: var(--hx-type-size-xs);
 		}
 		.revision-summary small {
@@ -207,7 +209,8 @@
 			justify-self: end;
 			height: 30px;
 			margin: var(--hx-space-8) var(--hx-space-6) 0 0;
-			padding: 0 var(--hx-space-12);
+			padding: 0 var(--hx-space-6);
+			font-size: var(--hx-type-size-2xs);
 			border-radius: var(--hx-radius-xlarge);
 			background: none;
 		}
