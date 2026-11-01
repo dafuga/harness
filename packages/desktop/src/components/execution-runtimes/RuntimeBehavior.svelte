@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import { behaviorDuration, entityBehavior } from '$reports/utils/entityBehavior';
@@ -50,6 +52,13 @@
 			shown.scenarios.map((item) => item.id)
 		)
 	);
+	const panes = $derived(
+		comparisonPanes(
+			{ value: shown, commit: result.scope.parent },
+			{ value: shown, commit: result.scope.commit },
+			paired
+		)
+	);
 </script>
 
 <hx-div class="runtime-card">
@@ -64,25 +73,19 @@
 	</hx-p>
 	{#if shown.groups.length === 0}<hx-p class="empty">
 			No end-to-end result is recorded for this entity at {at}.
-		</hx-p>{:else}<hx-div class="runtime-panes" class:paired>
-			{#if paired}<RuntimeRun
-					{shown}
-					side="before"
-					title={`Before · ${shortCommit(result.scope.parent ?? '')}`}
-					role="Parent commit"
+		</hx-p>{:else}<ComparePanes {panes} className="runtime-panes" framed={false}>
+			{#snippet children(pane)}
+				<RuntimeRun
+					shown={pane.value!}
+					side={pane.side}
+					title={pane.heading}
+					role={pane.role}
 					lost={known === null}
-					refusals={evidence.refusals}
 					{unit}
-				/>{/if}<RuntimeRun
-				{shown}
-				side="after"
-				title={paired ? `After · ${at}` : `Current snapshot · ${at}`}
-				role={paired ? 'Selected commit' : 'Branch tip'}
-				lost={known === null}
-				refusals={evidence.refusals}
-				{unit}
-			/>
-		</hx-div>{/if}
+					refusals={evidence.refusals}
+				/>
+			{/snippet}
+		</ComparePanes>{/if}
 	<hx-dl class="runtime-facts">
 		<hx-dt>End-to-end duration</hx-dt>
 		<hx-dd>{duration ?? 'Not measured'}</hx-dd>
