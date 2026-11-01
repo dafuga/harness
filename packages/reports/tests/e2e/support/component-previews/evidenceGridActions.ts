@@ -61,6 +61,7 @@ async function selectStatus(component: Locator, variant: string) {
 		await expect(
 			component.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
 		).toHaveValue('');
+		await makeRoomBelow(select);
 		await select.click();
 		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	} else {
@@ -94,3 +95,16 @@ async function openImage(component: Locator) {
 	const dialogBox = await dialog.boundingBox();
 	expect(captionBox!.y + captionBox!.height).toBeLessThanOrEqual(dialogBox!.y + dialogBox!.height);
 }
+
+/** A native menu opens upward over the filters when the viewport ends too soon below its select. */
+async function makeRoomBelow(select: Locator) {
+	const page = select.page();
+	const size = page.viewportSize();
+	const box = await select.boundingBox();
+	if (!size || !box) return;
+	const needed = Math.ceil(box.y + box.height + MENU_ROOM);
+	if (needed > size.height) await page.setViewportSize({ ...size, height: needed });
+}
+
+// Six status options at touch size, plus a margin below them.
+const MENU_ROOM = 280;
