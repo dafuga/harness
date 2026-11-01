@@ -135,6 +135,12 @@ function configureWorkspace(
 	bridge: DesktopBridge,
 	id: string
 ) {
+	if (id === 'desktop.component.nav-bar')
+		bridge.deploymentActivities = async () =>
+			(await deploymentBridge.deploymentActivities!()).map((item) => ({
+				...item,
+				projectName: project.name
+			}));
 	workspace.bridge = bridge;
 	workspace.snapshot = {
 		project: { ...project },

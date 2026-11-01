@@ -31,7 +31,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'runtime-behavior:loading': 'Reading the recorded results…',
 		'runtime-behavior:unreadable': 'The recorded results could not be read.',
 		'runtime-screens:incomparable': '1280×900 after',
-		'runtime-evidence:error': "Couldn't load recorded evidence. Try again.",
+		'runtime-evidence:error': 'The saved record is incomplete. Try again.',
 		'runtime-evidence:offline': 'Saved'
 	};
 	if (messages[key]) await expect(component).toContainText(messages[key], { ignoreCase: true });
@@ -39,9 +39,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'Preview artifact is not bound to the selected result.'
 	);
 	if (id.startsWith('desktop.component.'))
-		await expect(component).not.toContainText(
-			/SYNTHETIC PREVIEW INPUT|Synthetic local provider|Synthetic model|Preview model/
-		);
+		await expect(component).not.toContainText(/Synthetic|Preview (model|agent|project)/i);
 	await checks[id.replace('desktop.component.', '')]?.(component, variant);
 }
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {

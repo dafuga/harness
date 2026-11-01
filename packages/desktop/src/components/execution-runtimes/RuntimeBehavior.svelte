@@ -37,7 +37,11 @@
 		return known === null ? 'Behavior unknown' : shown.label;
 	});
 	const why = $derived(
-		known === null ? 'The recorded results could not be read.' : shown.reasons.join('; ')
+		pending
+			? 'Reading both results will show whether behavior changed.'
+			: known === null
+				? 'The recorded results could not be read.'
+				: shown.reasons.join('; ')
 	);
 	const duration = $derived(
 		behaviorDuration(
@@ -87,3 +91,11 @@
 			</hx-dd>{/each}
 	</hx-dl>
 </hx-div>
+
+<style>
+	@media (max-width: 560px) {
+		.runtime-card :global(.runtime-pane-head > strong) {
+			flex-basis: 100%;
+		}
+	}
+</style>

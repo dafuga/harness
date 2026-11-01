@@ -27,9 +27,12 @@ export async function prepareProjectAgentState(
 	let mode = 'Plan';
 	if (state === 'change') mode = 'Change';
 	if (state === 'ask') mode = 'Ask';
+	const message = ['failure', 'running'].includes(state)
+		? 'Please review the Orders page and the archived order-search proposal. Confirm that filterOrders keeps matching orders in their original order, including mixed-case names and empty queries.'
+		: projectConversation;
 	await component.getByRole('button', { name: mode, exact: true }).click();
 	const textbox = component.getByRole('textbox', { name: 'Message' });
-	await textbox.fill('  ' + projectConversation + '  ');
+	await textbox.fill('  ' + message + '  ');
 	await component.locator('button.send').click();
 	await expect
 		.poll(() =>
@@ -40,7 +43,7 @@ export async function prepareProjectAgentState(
 			provider: 'codex',
 			model: 'gpt-6.1-sol',
 			effort: 'high',
-			text: projectConversation
+			text: message
 		});
 	if (state === 'visual-plan') {
 		const request = await page.evaluate(() =>
@@ -48,10 +51,12 @@ export async function prepareProjectAgentState(
 		);
 		expect(request.designOptions).toBe(7);
 	}
-	await outcome(component, state);
+	await outcome(component, state, message);
+	// The captured conversation starts at a message boundary, after normal follow-to-latest behavior.
+	await component.locator('.floating-chat-body').evaluate((node) => (node.scrollTop = 0));
 }
 
-async function outcome(component: Locator, state: ProjectAgentState) {
+async function outcome(component: Locator, state: ProjectAgentState, message: string) {
 	if (state === 'running') {
 		await expect(component).toContainText('Reviewing order search behavior…');
 		await expect(component.getByRole('textbox', { name: 'Message' })).toBeDisabled();
@@ -62,7 +67,7 @@ async function outcome(component: Locator, state: ProjectAgentState) {
 		await expect(component.getByRole('alert')).toHaveText(
 			'The agent connection closed before the review finished. Try again.'
 		);
-		await expect(component.getByRole('textbox')).toHaveValue('  ' + projectConversation + '  ');
+		await expect(component.getByRole('textbox')).toHaveValue('  ' + message + '  ');
 		await expect(component.getByRole('textbox')).toBeEnabled();
 		return;
 	}

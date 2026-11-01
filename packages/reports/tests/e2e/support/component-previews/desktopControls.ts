@@ -34,6 +34,8 @@ export const desktopControls: Record<string, DesktopCase> = {
 				tracking: 'available',
 				roster: live.agents.roster.map((agent) => ({
 					...agent,
+					label: 'Checkout reviewer',
+					task: 'Review the order-card states',
 					state: 'working',
 					units: [ids.card],
 					expiresAt: new Date(Date.now() + 900_000).toISOString()

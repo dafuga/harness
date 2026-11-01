@@ -96,6 +96,7 @@
 				bind:value={() => pick?.viewport ?? '', (viewport) => choose({ viewport })}
 			/><hx-small>{size}</hx-small>
 		</hx-div>{/if}
+	{#if options.length === 1}<hx-p class="muted">One recorded scenario</hx-p>{/if}
 	<hx-div class="runtime-panes" class:paired>
 		{#each panes as item (item.id)}<RuntimePane {item} {evidence} {...heading(item)} />{/each}
 	</hx-div>

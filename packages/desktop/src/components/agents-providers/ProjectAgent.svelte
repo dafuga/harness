@@ -31,13 +31,16 @@
 	}
 </script>
 
-{#snippet line(author: 'user' | 'agent', text: string)}<hx-li class="chat-message {author}">
-		<hx-span class="chat-author">{author === 'user' ? 'You: ' : 'Agent: '}</hx-span><ReferenceText
-			{text}
-			{workspace}
-			history
-		/>
-	</hx-li>{/snippet}
+{#snippet line(
+	author: 'user' | 'agent',
+	text: string
+)}{#if author !== 'agent' || text !== agent.error}<hx-li class="chat-message {author}">
+			<hx-span class="chat-author">{author === 'user' ? 'You: ' : 'Agent: '}</hx-span><ReferenceText
+				{text}
+				{workspace}
+				history
+			/>
+		</hx-li>{/if}{/snippet}
 
 {#snippet tab(name: 'chat' | 'agents', text: string)}
 	<hx-button type="button" aria-pressed={view === name} onclick={() => (view = name)}
