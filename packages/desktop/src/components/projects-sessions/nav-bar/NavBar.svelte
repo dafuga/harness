@@ -26,7 +26,7 @@
 	const gameViews = $derived(workspaceGameViews(workspace));
 </script>
 
-<!-- Focus follows the rows: project, environment and revision, categories, then search. -->
+<!-- Focus follows the visible rows: project and identity, context and search, then categories. -->
 <hx-header
 	class="topbar"
 	class:has-game={!!gameViews}
@@ -41,6 +41,23 @@
 	<hx-div class="topbar-context">
 		<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
 		<RevisionPicker {workspace} />
+
+		<hx-div class="topbar-search">
+			<EntitySearch
+				entries={search.entries}
+				scope={search.scope}
+				href={(entry) => resolve((search.at(entry) ?? workspace.path()) as '/')}
+				open={(entry) => {
+					const path = search.at(entry);
+					if (path) void workspace.navigate(path);
+				}}
+			/>{#if workspace.capabilities.agents}<hx-a
+					class="topbar-settings"
+					href={resolve(settings as '/')}
+					aria-label="Settings"
+					title="Settings"><Icon name="settings" /></hx-a
+				>{/if}
+		</hx-div>
 	</hx-div>
 	<hx-nav aria-label="Catalog categories">
 		{#each categories as category (category)}<WorkspaceLink
@@ -59,22 +76,7 @@
 				><Icon name="game" /><hx-span>Game Views</hx-span></hx-a
 			>{/if}
 	</hx-nav>
-	<hx-div class="topbar-search">
-		<EntitySearch
-			entries={search.entries}
-			scope={search.scope}
-			href={(entry) => resolve((search.at(entry) ?? workspace.path()) as '/')}
-			open={(entry) => {
-				const path = search.at(entry);
-				if (path) void workspace.navigate(path);
-			}}
-		/>{#if workspace.capabilities.agents}<hx-a
-				class="topbar-settings"
-				href={resolve(settings as '/')}
-				aria-label="Settings"
-				title="Settings"><Icon name="settings" /></hx-a
-			>{/if}
-	</hx-div>
+
 	{#if account}<hx-div class="account">
 			{@render account()}{#if activity}<DeploymentActivity {workspace} />{/if}
 		</hx-div>{:else if activity}<DeploymentActivity {workspace} />{/if}

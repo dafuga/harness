@@ -29,6 +29,7 @@ export async function assertNavContext(component: Locator, width: number) {
 /** A mobile header keeps balanced category rows and its account alongside the project. */
 export async function assertMobileNavLayout(component: Locator, tabs: Locator, width: number) {
 	if (width > 560) return;
+	await assertMobileNavControls(component, tabs);
 	const name = component.locator('.project-name');
 	const fits = await name.evaluate((node) => node.scrollWidth <= node.clientWidth + 1);
 	expect(fits, 'Project name stays readable beside the mobile account').toBe(true);
@@ -49,5 +50,27 @@ export async function assertMobileNavLayout(component: Locator, tabs: Locator, w
 			Math.abs(chip.y + chip.height / 2 - project.y - project.height / 2),
 			'Mobile account aligns with the project header'
 		).toBeLessThanOrEqual(8);
+	}
+}
+
+/** The compact rail preserves readable hit targets without taking over the page. */
+async function assertMobileNavControls(component: Locator, tabs: Locator) {
+	const height = (await component.locator('header.topbar').boundingBox())!.height;
+	const game = await tabs.getByRole('link', { name: 'Game Views', exact: true }).count();
+	expect(height, 'Mobile navigation leaves room for project content').toBeLessThanOrEqual(
+		game ? 220 : 184
+	);
+	const search = (await component
+		.getByRole('button', { name: 'Search entities', exact: true })
+		.boundingBox())!;
+	for (const label of ['Choose branch', 'Choose commit']) {
+		const control = component.getByRole('button', { name: label, exact: true });
+		const bounds = (await control.boundingBox())!;
+		expect(
+			bounds.x + bounds.width,
+			'Search does not cover labelled revision controls'
+		).toBeLessThanOrEqual(search.x);
+		const fits = await control.evaluate((node) => node.scrollWidth <= node.clientWidth + 1);
+		expect(fits, 'Revision icons and labels fit inside their own hit target').toBe(true);
 	}
 }

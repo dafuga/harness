@@ -62,11 +62,9 @@ async function assertChatPresentation(component: Locator, variant: string) {
 			ratio: 1
 		});
 		const body = (await component.locator('.floating-chat-body').boundingBox())!;
-		const last = (await component
-			.getByRole('list', { name: 'Agent sessions' })
-			.locator('li')
-			.last()
-			.boundingBox())!;
+		const rows = component.getByRole('list', { name: 'Agent sessions' }).getByRole('listitem');
+		await expect(rows, 'The collapsed preview shows three complete sessions').toHaveCount(3);
+		const last = (await rows.last().boundingBox())!;
 		expect(
 			last.y + last.height,
 			'The session preview ends after a complete row'

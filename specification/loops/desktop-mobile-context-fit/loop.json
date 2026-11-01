@@ -1,0 +1,74 @@
+{
+	"name": "desktop-mobile-context-fit",
+	"goal": "Keep revision and search hit targets separate in a compact mobile header",
+	"createdAt": "2026-11-01T12:17:46.050Z",
+	"updatedAt": "2026-11-01T12:23:50.605Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:18:01.881Z",
+			"evidence": "c09893431e puts search over the commit target at 320px and grows the default mobile header to 212px; normal workspace tests reject both."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:18:02.506Z",
+			"evidence": "The focused catalog pair covered 390px alignment, not target separation or header height. Extend the same NavBar assertions; include the existing 320px workspace cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:19:56.883Z",
+			"evidence": "7ed49d21a4: both workspace cases and all four mobile catalog cases fail. Frozen guards retain the 184px regular header and separate revision hit targets."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:19:57.511Z",
+			"evidence": "Give the mobile context rail explicit labelled-control widths and compact shared-token spacing; keep search beside revision controls and preserve balanced category rows."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:23:47.918Z",
+			"evidence": "92f698d6c5 and 45fdc0f11c reserve labelled-control widths, reduce mobile rail spacing and give the current summary its full row; tests and fixtures stay frozen."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:23:49.266Z",
+			"evidence": "Six unchanged cases pass at 45fdc0f11c; record 9988d95012ca796f2ce4d89f7229f06b477b5797effb3370d2ba6692d2a73759. All four original mobile images were inspected."
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:23:50.605Z",
+			"evidence": "The same six cases fail against isolated 7ed49d21a4; record a4343f2dca97abed6bd1053511011af717b42cc46ae0ec48a2fddce427d18100. Current 45fdc0f11c passes unchanged, with one browser worker."
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
