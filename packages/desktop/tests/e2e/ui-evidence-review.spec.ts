@@ -152,11 +152,15 @@ test('a capture is said to be recorded for the tip, and made where it was made',
 	await page.goto(at(`components/${ids.card}`));
 	const shown = runtime(page);
 	await expect(
-		shown.getByText('Recorded for ccccccc and captured from the build of that commit.')
+		shown.getByText(
+			`Recorded for ${short(commits.tip)} and captured from the build of that commit.`
+		)
 	).toBeVisible();
 	await shown.getByLabel('Scenario', { exact: true }).selectOption(cardScenario);
 	await expect(
-		shown.getByText('Recorded for ccccccc. The capture was made at bbbbbbb and is inherited.')
+		shown.getByText(
+			`Recorded for ${short(commits.tip)}. The capture was made at ${short(commits.middle)} and is inherited.`
+		)
 	).toBeVisible();
 	await expect(
 		shown.getByText(/captured (at|from) the (branch tip|build of that commit)/)
@@ -169,7 +173,7 @@ test('a capture is said to be recorded for the tip, and made where it was made',
 		.getByRole('button', { name: 'mobile' })
 		.click();
 	await expect(
-		shown.getByText('Recorded for ccccccc; no capture of this state stands for it.')
+		shown.getByText(`Recorded for ${short(commits.tip)}; no capture of this state stands for it.`)
 	).toBeVisible();
 });
 
