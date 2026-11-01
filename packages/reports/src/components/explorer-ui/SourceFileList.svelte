@@ -89,6 +89,9 @@
 		text-decoration: underline;
 		text-underline-offset: var(--hx-space-2);
 	}
+	.source-files a:hover {
+		color: var(--hx-color-primary);
+	}
 	.source-files :global(.hx-action) {
 		flex: 0 0 auto;
 		min-height: var(--hx-space-28);
