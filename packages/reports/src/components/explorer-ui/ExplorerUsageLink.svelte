@@ -55,7 +55,6 @@
 		clearTimeout(timer);
 		timer = setTimeout(() => (over = false), 150);
 	}
-	// Fixed positioning avoids clipped ancestors; leaving the viewport closes it.
 	function put() {
 		if (!root || !tip) return;
 		const at = (root.querySelector('a') ?? root).getBoundingClientRect();
@@ -71,9 +70,11 @@
 		const spot = tooltipPlace(at, { width, height: whole }, view);
 		spot.left = Math.max(left, Math.min(spot.left, right - width));
 		const title = owner?.querySelector('h2')?.getBoundingClientRect();
-		if (title && spot.top < title.bottom && spot.top + whole > title.top) {
-			spot.top = Math.max(8, title.top - whole - 8);
-			spot.height = title.top - spot.top - 8;
+		if (title && frame) {
+			const above = title.top - frame.top - 8;
+			const below = frame.bottom - title.bottom - 8;
+			spot.height = Math.min(whole, Math.max(0, above, below));
+			spot.top = above >= below ? title.top - spot.height - 8 : title.bottom + 8;
 		}
 		const cut = spot.height === undefined ? '' : `;max-height:${spot.height}px`;
 		place = `left:${spot.left}px;top:${spot.top}px;width:${width}px${cut}`;

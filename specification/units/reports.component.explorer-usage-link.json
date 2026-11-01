@@ -52,7 +52,7 @@
 			{
 				"name": "ExplorerUsageLink",
 				"type": "markup",
-				"description": "A consumer link or source button, with a hover or keyboard preview bounded horizontally by its owner and positioned clear of a containing card title."
+				"description": "A consumer link or source button with a hover or keyboard preview. Visual-card previews stay inside all four card edges, in the larger clear area above or below the title; other previews stay within their owner width and viewport."
 			}
 		],
 		"errors": [

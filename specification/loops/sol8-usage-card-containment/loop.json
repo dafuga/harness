@@ -2,7 +2,7 @@
 	"name": "sol8-usage-card-containment",
 	"goal": "Keep open visual-card usage previews inside all four card edges while preserving the card title.",
 	"createdAt": "2026-11-01T03:38:50.998Z",
-	"updatedAt": "2026-11-01T03:38:52.248Z",
+	"updatedAt": "2026-11-01T03:40:48.935Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T03:40:48.935Z",
+			"evidence": "The committed three-viewport catalog case rejects both tablet and mobile previews at the card bottom edge; desktop passes."
 		},
 		{
 			"id": "implement",
