@@ -47,15 +47,44 @@ function declaredTestPaths(context: GuidanceContext, unit: ComponentManifest, st
 		(item) => item.units.includes(unit.id) && declaredState(item, unit.id, state)
 	)) {
 		for (const test of scenario.tests) {
-			const path = posix.normalize(posix.join(test.cwd ?? '.', test.target));
-			if (!/\.(?:spec|test)\.[cm]?[tj]s$/.test(path)) continue;
-			paths.set(
-				path,
-				new Set([...(paths.get(path) ?? []), ...scenario.viewports.map((viewport) => viewport.id)])
-			);
+			for (const path of scenarioTestFiles(context, test))
+				paths.set(
+					path,
+					new Set([
+						...(paths.get(path) ?? []),
+						...scenario.viewports.map((viewport) => viewport.id)
+					])
+				);
 		}
 	}
 	return paths;
+}
+
+/** Resolve literal test arguments, including catalog commands, without executing the runner. */
+function scenarioTestFiles(
+	context: GuidanceContext,
+	test: ScenarioManifest['tests'][number]
+): string[] {
+	if (test.runner !== 'command') return [posix.normalize(posix.join(test.cwd ?? '.', test.target))];
+	if (!/\b(?:playwright|vitest)\s+(?:test|run)\b/.test(test.target)) return [];
+	const names = [
+		...test.target.matchAll(/(?:^|[\s"'])([\w./@-]+\.(?:spec|test)\.[cm]?[tj]sx?)(?=$|[\s"'])/g)
+	].map((match) => match[1]);
+	return names.flatMap((name) => scopedTestFile(context, test.cwd ?? '.', name));
+}
+
+function scopedTestFile(context: GuidanceContext, cwd: string, name: string): string[] {
+	const exact = posix.normalize(posix.join(cwd, name));
+	if (context.loaded.index.files.get(exact)?.classification === 'test') return [exact];
+	const directory = posix.normalize(cwd);
+	const prefix = directory === '.' ? '' : `${directory}/`;
+	const candidates = [...context.loaded.index.files.values()].filter(
+		(file) =>
+			file.classification === 'test' &&
+			file.path.startsWith(prefix) &&
+			posix.basename(file.path) === name
+	);
+	return candidates.length === 1 ? [candidates[0].path] : [];
 }
 
 function attributedTests(context: GuidanceContext, unit: ComponentManifest): string[] {

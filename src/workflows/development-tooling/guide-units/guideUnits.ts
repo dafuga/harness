@@ -31,11 +31,12 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 	const missing = states.filter((state) => state.status === 'MISSING');
 	const first = missing[0];
 	const test = states.flatMap((state) => state.tests)[0]?.file;
+	const editPath = (test ?? 'tests/e2e/component-catalog.spec.ts').replaceAll("'", "'\\''");
 	const next = first
 		? {
 				state: first.name,
 				commands: [
-					`\${EDITOR:-vi} '${test ?? 'tests/e2e/component-catalog.spec.ts'}' # Write/extend ${JSON.stringify(first.name)} for ${id}, then commit the test.`,
+					`\${EDITOR:-vi} '${editPath}' # Write/extend ${JSON.stringify(first.name)} for ${id}, then commit the test.`,
 					`harness verify run --priority agent-test --entity ${id}`,
 					`harness units guide ${id}`
 				]

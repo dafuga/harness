@@ -19,3 +19,9 @@ a contract. Heuristics identify gaps for review, not exhaustive correctness.
 Focused command: `bun x vitest run test/units-guide.test.ts test/units-check-contract.test.ts`.
 The initial checkpoint fails because both CLI commands are absent. No Playwright,
 remote laptop, shared preview, publication or push is part of this task.
+
+The real catalog declares its test through a command, not a direct spec path.
+The standard command matrix now covers explicit runner arguments and rejects
+ambiguous basenames. Resolve a committed test within the scenario's cwd without
+executing the command; NEXT should point to that standard test. The strengthened
+matrix first observed MISSING instead of DONE with all verified fixture shots.
