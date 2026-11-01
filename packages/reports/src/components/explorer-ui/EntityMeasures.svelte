@@ -1,6 +1,8 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../shared-primitives/DataTable.svelte';
+	import Card from './explorer-kit/Card.svelte';
 	import type { Line } from './EntityMeasures.types';
 
 	import type { HarnessRecord, HarnessUnit } from '../../models/explorer-ui/Harness.types';
@@ -51,38 +53,32 @@
 	]);
 </script>
 
-<hx-section
-	class="ex-card"
-	aria-labelledby="ex-measures-title"
-	data-harness-component="harness-entity-measures"
->
+<Card as="section" labelledby="ex-measures-title" component="harness-entity-measures">
 	<hx-h2 id="ex-measures-title">Measurements and frozen limits</hx-h2>
 	{#if !record}
 		<hx-p class="ex-soft">No verification record measured this revision.</hx-p>
 	{/if}
-	<hx-div class="ex-scroll">
-		<hx-table class="ex-mini" aria-label="Measurements and frozen limits">
-			<hx-thead>
+	<DataTable label="Measurements and frozen limits" tableClass="ex-mini" className="ex-scroll">
+		{#snippet header()}
+			<hx-tr>
+				<hx-th scope="col">Metric</hx-th>
+				<hx-th scope="col">Measured</hx-th>
+				<hx-th scope="col">Limit</hx-th>
+				<hx-th scope="col">Note</hx-th>
+			</hx-tr>
+		{/snippet}
+		{#snippet children()}
+			{#each lines.map(told) as line, position (position)}
 				<hx-tr>
-					<hx-th scope="col">Metric</hx-th>
-					<hx-th scope="col">Measured</hx-th>
-					<hx-th scope="col">Limit</hx-th>
-					<hx-th scope="col">Note</hx-th>
+					<hx-th scope="row">{line.metric}</hx-th>
+					<hx-td>{line.value}</hx-td>
+					<hx-td>{line.limit}</hx-td>
+					<hx-td>{line.note ?? '—'}</hx-td>
 				</hx-tr>
-			</hx-thead>
-			<hx-tbody>
-				{#each lines.map(told) as line, position (position)}
-					<hx-tr>
-						<hx-th scope="row">{line.metric}</hx-th>
-						<hx-td>{line.value}</hx-td>
-						<hx-td>{line.limit}</hx-td>
-						<hx-td>{line.note ?? '—'}</hx-td>
-					</hx-tr>
-				{/each}
-			</hx-tbody>
-		</hx-table>
-	</hx-div>
+			{/each}
+		{/snippet}
+	</DataTable>
 	{#if unit.budgets.performance.length === 0}
 		<hx-p class="ex-note">No performance budget is declared for it.</hx-p>
 	{/if}
-</hx-section>
+</Card>

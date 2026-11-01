@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
@@ -27,45 +29,57 @@
 		[...new Set(clips.map((item) => item.comparison))].map((key) => {
 			const of = (phase: Evidence['phase']) =>
 				clips.find((item) => item.comparison === key && item.phase === phase);
-			return { key, before: of('before'), after: of('after') ?? of('current') };
+			return {
+				key,
+				panes: comparisonPanes(
+					{ value: of('before'), commit: result.scope.parent },
+					{
+						value: of('after') ?? of('current'),
+						commit: result.scope.commit,
+						currentLabel: 'Current'
+					},
+					paired
+				)
+			};
 		})
 	);
-	const sides = $derived(paired ? (['before', 'after'] as const) : (['after'] as const));
-	const at = (side: 'before' | 'after') =>
-		shortCommit(side === 'before' ? (result.scope.parent ?? '') : result.scope.commit);
 </script>
 
 {#if declared || clips.length}<hx-div class="runtime-card">
 		<hx-h3>{paired ? 'Audio before and after' : 'Current audio'}</hx-h3>
-		{#each pairs as pair (pair.key)}<hx-div class="runtime-panes" class:paired>
-				{#each sides as side (side)}{@const clip = pair[side]}
-					<hx-div
-						class="runtime-pane"
-						role="group"
-						aria-label={`${side === 'before' ? 'Before' : paired ? 'After' : 'Current'} · ${at(side)}`}
+		{#each pairs as pair (pair.key)}
+			<ComparePanes
+				panes={pair.panes}
+				className="runtime-panes"
+				paneClass="runtime-pane"
+				headings={false}
+			>
+				{#snippet children(pane)}
+					{@const clip = pane.value!}
+					{#await evidence.url(pane.side, clip.file)}
+						<hx-p class="muted">Reading the clip…</hx-p>
+					{:then url}<hx-audio controls src={url} aria-label={clip.title}></hx-audio>
+					{:catch cause}<hx-p class="runtime-gap"
+							><StatusIcon status="failed" reason="Not verified" /><hx-span
+								>{errorMessage(cause)}</hx-span
+							></hx-p
+						>{/await}
+					{#if clip.transcript}<hx-p class="runtime-transcript">{clip.transcript}</hx-p>{/if}
+					<hx-p class="runtime-standing">{clip.standing} · {clip.status}</hx-p>
+				{/snippet}
+				{#snippet gap(pane)}
+					<hx-p class="runtime-gap"
+						><StatusIcon status="failed" reason="No clip" /><hx-span
+							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span
+						></hx-p
 					>
-						{#if clip}{#await evidence.url(side, clip.file)}<hx-p class="muted"
-									>Reading the clip…</hx-p
-								>
-							{:then url}<hx-audio controls src={url} aria-label={clip.title}
-								></hx-audio>{:catch cause}<hx-p class="runtime-gap">
-									<StatusIcon status="failed" reason="Not verified" /><hx-span
-										>{errorMessage(cause)}</hx-span
-									>
-								</hx-p>{/await}{#if clip.transcript}<hx-p class="runtime-transcript">
-									{clip.transcript}
-								</hx-p>{/if}
-							<hx-p class="runtime-standing">{clip.standing} · {clip.status}</hx-p>{:else}<hx-p
-								class="runtime-gap"
-							>
-								<StatusIcon status="failed" reason="No clip" /><hx-span
-									>No clip of this state is recorded for {at(side)}.</hx-span
-								>
-							</hx-p>{/if}
-					</hx-div>{/each}
-			</hx-div>{:else}<hx-p class="runtime-gap">
-				<StatusIcon status="failed" reason="No clip" /><hx-span
-					>A clip is declared for this entity, and none is recorded at {at('after')}.</hx-span
-				>
-			</hx-p>{/each}
+				{/snippet}
+			</ComparePanes>
+		{:else}<hx-p class="runtime-gap"
+				><StatusIcon status="failed" reason="No clip" /><hx-span
+					>A clip is declared for this entity, and none is recorded at {shortCommit(
+						result.scope.commit
+					)}.</hx-span
+				></hx-p
+			>{/each}
 	</hx-div>{/if}

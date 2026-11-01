@@ -1,6 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '$shared/shared-primitives/DetailList.svelte';
+	import { deploymentFacts, receiptFacts } from './deploymentFacts';
+	import type { DeploymentFact } from './deploymentFacts.types';
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
 	import { displayTime } from '../../utils/development-tooling/revisionTime';
 	import DeploymentProgress from './DeploymentProgress.svelte';
@@ -18,49 +21,38 @@
 	const receipt = $derived(deployment.phase === 'complete' ? deployment.receipt : null);
 </script>
 
-{#snippet when(name: string, value: string | null)}{#if value}<hx-div>
-			<hx-dt>{name}</hx-dt>
-			<hx-dd><hx-time datetime={value}>{displayTime(value)}</hx-time></hx-dd>
-		</hx-div>{/if}{/snippet}
+{#snippet fact(row: DeploymentFact)}
+	{#if row.format === 'time'}<hx-time datetime={row.value}>{displayTime(row.value)}</hx-time>
+	{:else if row.format === 'code'}<hx-code>{row.value}</hx-code>
+	{:else}{row.value}{/if}
+{/snippet}
 
 <hx-div class="deployment-details">
 	<hx-div class="head">
 		{#if showIdentity}<hx-h2>{deployment.environment} deployment</hx-h2>{/if}
 		<DeploymentRoute {deployment} />
 	</hx-div>
-	{#if showIdentity}<hx-dl class="facts">
-			<hx-div>
-				<hx-dt>Project</hx-dt>
-				<hx-dd>{deployment.projectName}</hx-dd>
-			</hx-div>
-			<hx-div>
-				<hx-dt>Branch</hx-dt>
-				<hx-dd><hx-code>{deployment.branch}</hx-code></hx-dd>
-			</hx-div>
-			<hx-div>
-				<hx-dt>Commit</hx-dt>
-				<hx-dd><hx-code>{deployment.commit}</hx-code></hx-dd>
-			</hx-div>
-			{@render when(
-				deployment.startedAt ? 'Started' : 'Queued',
-				deployment.startedAt ?? deployment.createdAt
-			)}
-			{@render when('Finished', deployment.finishedAt)}
-		</hx-dl>{/if}
+	{#if showIdentity}<DetailList
+			rows={deploymentFacts(deployment)}
+			rowKey={(row) => row.name}
+			className="facts"
+			grouped={false}
+		>
+			{#snippet label(row)}{row.name}{/snippet}
+			{#snippet children(row)}{@render fact(row)}{/snippet}
+		</DetailList>{/if}
 	<DeploymentProgress {deployment} />
 	{#if receipt}<hx-div class="receipt">
 			<hx-h3>Verified receipt</hx-h3>
-			<hx-dl>
-				<hx-div>
-					<hx-dt>Deployment</hx-dt>
-					<hx-dd><hx-code>{receipt.deploymentId}</hx-code></hx-dd>
-				</hx-div>
-				<hx-div>
-					<hx-dt>Address</hx-dt>
-					<hx-dd>{receipt.url}</hx-dd>
-				</hx-div>
-				{@render when('Verified', receipt.updatedAt)}
-			</hx-dl>
+			<DetailList
+				rows={receiptFacts(receipt)}
+				rowKey={(row) => row.name}
+				className="receipt-facts"
+				grouped={false}
+			>
+				{#snippet label(row)}{row.name}{/snippet}
+				{#snippet children(row)}{@render fact(row)}{/snippet}
+			</DetailList>
 		</hx-div>{/if}
 </hx-div>
 
@@ -94,7 +86,7 @@
 		color: var(--hx-color-text-muted);
 	}
 	/* Each name beside its value; a full commit wraps rather than being cut on a phone. */
-	dl {
+	.deployment-details :global(dl) {
 		display: grid;
 		grid-template-columns: max-content minmax(0, 1fr);
 		align-items: baseline;
@@ -102,18 +94,15 @@
 		margin: 0;
 		font-size: var(--hx-type-size-compact);
 	}
-	.facts {
+	.deployment-details :global(.facts) {
 		padding-block: var(--hx-space-10);
 		border-block: var(--hx-border-thin) solid var(--hx-color-border);
 	}
-	dl div {
-		display: contents;
-	}
-	dt {
+	.deployment-details :global(dt) {
 		font-size: var(--hx-type-size-xs);
 		color: var(--hx-color-text-muted);
 	}
-	dd {
+	.deployment-details :global(dd) {
 		margin: 0;
 		color: var(--hx-color-text);
 		overflow-wrap: anywhere;

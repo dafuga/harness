@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.harness-entity-history-row",
 			"reports.component.harness-harness-icon",
 			"reports.component.harness-harness-verdict",
@@ -21,22 +22,23 @@
 			"reports.component.shared-primitives-atoms-html-label",
 			"reports.component.shared-primitives-atoms-html-option",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-table",
-			"reports.component.shared-primitives-atoms-html-tbody",
 			"reports.component.shared-primitives-atoms-html-th",
-			"reports.component.shared-primitives-atoms-html-thead",
-			"reports.component.shared-primitives-atoms-html-tr"
+			"reports.component.shared-primitives-atoms-html-tr",
+			"reports.component.shared-primitives-data-table"
 		]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"],
-		"symbols": ["EntityHistory"]
+		"symbols": ["EntityHistory", "EntityHistory.header", "EntityHistory.children"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.select"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.select",
+			"reports.component.shared-primitives-data-table"
+		],
 		"inputs": [
 			{
 				"name": "EntityHistory.entity",
@@ -96,9 +98,40 @@
 			}
 		],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EntityHistory.header",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EntityHistory.header",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "EntityHistory.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "EntityHistory.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-history-row",
 			"via": "import",
@@ -160,22 +193,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-section",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-table",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-tbody",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -185,12 +203,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-thead",
+			"unit": "reports.component.shared-primitives-atoms-html-tr",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-tr",
+			"unit": "reports.component.shared-primitives-data-table",
 			"via": "import",
 			"origin": "derived"
 		},

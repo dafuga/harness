@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import EntityCases from '$shared/explorer-ui/entity-cases/EntityCases.svelte';
 	import type { ExplorerArtifactBehavior } from '$reports/models/ExplorerEvidence.types';
 	import type { BehaviorCell } from '$reports/utils/entityBehavior';
@@ -60,10 +61,15 @@
 </script>
 
 {#snippet recorded(stated: ExplorerArtifactBehavior)}
-	{#if facts(stated).length}<hx-dl class="runtime-facts">
-			{#each facts(stated) as [name, value] (name)}<hx-dt>{name}</hx-dt>
-				<hx-dd>{value}</hx-dd>{/each}
-		</hx-dl>{/if}
+	{#if facts(stated).length}<DetailList
+			rows={facts(stated)}
+			rowKey={([name]) => String(name)}
+			className="runtime-facts"
+			grouped={false}
+		>
+			{#snippet label([name])}{name}{/snippet}
+			{#snippet children([, value])}{value}{/snippet}
+		</DetailList>{/if}
 	{#if stated.steps.length}<hx-h5>Steps</hx-h5>
 		<hx-ol>
 			{#each stated.steps as step, position (position)}<hx-li>{stepText(step)}</hx-li>{/each}

@@ -190,6 +190,8 @@ for (const viewport of catalogViewports) {
 				);
 			await assertViewerReview(component, unit.id, variant);
 			await assertViewerNavigationAppearance(component, unit.id, variant);
+			if (unit.id === 'reports.component.evidence-viewer' && variant === 'no-navigation')
+				await expect(component.locator('.viewer-actions button[disabled]')).toHaveCount(2);
 			if (unit.id === 'reports.component.explorer-catalog-items' && variant === 'configs-open')
 				await assertCatalogItemsFrame(component, viewport.id, capture);
 			if (

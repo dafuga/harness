@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import type { Workspace } from '../../lib/stores/workspace.svelte';
 	import type {
 		DeploymentPlan,
@@ -78,13 +79,23 @@
 	}
 </script>
 
-{#snippet commit(name: string, item: DeploymentReceipt | null)}<hx-dl>
-		<hx-dt>{name}</hx-dt>
-		{#if item}<hx-dd><hx-code>{item.commit}</hx-code></hx-dd>
-			<hx-dd class="when">
-				Deployed <hx-time datetime={item.updatedAt}>{displayTime(item.updatedAt)}</hx-time>
-			</hx-dd>{:else}<hx-dd class="when">{promotion ? 'Never deployed' : '…'}</hx-dd>{/if}
-	</hx-dl>{/snippet}
+{#snippet commit(name: string, item: DeploymentReceipt | null)}<DetailList
+		rows={[{ name, item }]}
+		rowKey={(row) => row.name}
+		grouped={false}
+		className="deployment-commit"
+		valueClass={(row) => (row.item ? '' : 'when')}
+	>
+		{#snippet label(row)}{row.name}{/snippet}
+		{#snippet children(row)}
+			{#if row.item}<hx-code>{row.item.commit}</hx-code><hx-span class="when"
+					>Deployed <hx-time datetime={row.item.updatedAt}
+						>{displayTime(row.item.updatedAt)}</hx-time
+					></hx-span
+				>
+			{:else}{promotion ? 'Never deployed' : '…'}{/if}
+		{/snippet}
+	</DetailList>{/snippet}
 
 <ChoiceDialog
 	label="Deploy"

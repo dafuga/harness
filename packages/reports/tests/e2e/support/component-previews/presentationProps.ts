@@ -1,3 +1,4 @@
+import { comparePanesPreview } from './comparePanesPreview';
 import { compatibilityVariant } from './compatibilityVariants';
 import { explorerTableVariant } from './explorerTableVariants';
 import type { EntityContract } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -6,6 +7,8 @@ import type { PreviewCases } from './shared';
 const prefix = 'reports.component.shared-primitives-';
 /** Presentation changes use the normal catalog inputs, never a second implementation unit. */
 export function presentationVariant(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.shared-primitives-compare-panes')
+		return comparePanesPreview(variant);
 	const compatibility = compatibilityVariant(id, props, variant);
 	if (compatibility) return compatibility;
 	if (

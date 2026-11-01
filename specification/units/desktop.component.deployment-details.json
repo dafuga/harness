@@ -12,21 +12,27 @@
 			"desktop.component.deployment-progress",
 			"desktop.component.deployment-route",
 			"reports.component.shared-primitives-atoms-html-code",
-			"reports.component.shared-primitives-atoms-html-dd",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-h3",
-			"reports.component.shared-primitives-atoms-html-time"
+			"reports.component.shared-primitives-atoms-html-time",
+			"reports.component.shared-primitives-detail-list"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/development-tooling/DeploymentDetails.svelte"],
-		"symbols": ["DeploymentDetails", "DeploymentDetails.when"]
+		"symbols": [
+			"DeploymentDetails",
+			"DeploymentDetails.fact",
+			"DeploymentDetails.label",
+			"DeploymentDetails.children",
+			"DeploymentDetails.label",
+			"DeploymentDetails.children"
+		]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-detail-list"],
 		"inputs": [
 			{
 				"name": "DeploymentDetails.deployment",
@@ -54,22 +60,89 @@
 		"initialization": [],
 		"snippets": [
 			{
-				"name": "DeploymentDetails.when",
+				"name": "DeploymentDetails.fact",
 				"inputs": [
 					{
-						"name": "DeploymentDetails.when.name",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "DeploymentDetails.when.value",
-						"type": "string | null",
+						"name": "DeploymentDetails.fact.row",
+						"type": "DeploymentFact",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "DeploymentDetails.when",
+						"name": "DeploymentDetails.fact",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DeploymentDetails.label",
+				"inputs": [
+					{
+						"name": "DeploymentDetails.label.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentDetails.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DeploymentDetails.children",
+				"inputs": [
+					{
+						"name": "DeploymentDetails.children.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentDetails.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DeploymentDetails.label",
+				"inputs": [
+					{
+						"name": "DeploymentDetails.label.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentDetails.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DeploymentDetails.children",
+				"inputs": [
+					{
+						"name": "DeploymentDetails.children.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentDetails.children",
 						"type": "markup"
 					}
 				],
@@ -90,6 +163,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.development-tooling-deployment-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.revision-time",
 			"via": "import",
 			"origin": "derived"
@@ -105,22 +183,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -136,6 +199,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-time",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-detail-list",
 			"via": "import",
 			"origin": "derived"
 		}

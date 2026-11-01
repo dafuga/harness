@@ -1,6 +1,7 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import type { Measure } from '../../models/development-tooling/Desktop.types';
 	let { size, performance }: { size: Measure; performance: Measure } = $props();
 </script>
@@ -8,10 +9,16 @@
 <!-- A measure that was not taken says so; nothing is estimated here. -->
 <hx-section class="panel measures-panel">
 	<hx-h2>Size &amp; performance</hx-h2>
-	<hx-dl>
-		<hx-dt>Size</hx-dt>
-		<hx-dd class:measured={size.available}>{size.text || 'Not measured'}</hx-dd>
-		<hx-dt>Performance</hx-dt>
-		<hx-dd class:measured={performance.available}>{performance.text || 'Not measured'}</hx-dd>
-	</hx-dl>
+	<DetailList
+		rows={[
+			{ name: 'Size', measure: size },
+			{ name: 'Performance', measure: performance }
+		]}
+		rowKey={(row) => row.name}
+		grouped={false}
+		valueClass={(row) => (row.measure.available ? 'measured' : '')}
+	>
+		{#snippet label(row)}{row.name}{/snippet}
+		{#snippet children(row)}{row.measure.text || 'Not measured'}{/snippet}
+	</DetailList>
 </hx-section>

@@ -1,0 +1,169 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-compare-panes",
+	"kind": "component",
+	"title": "ComparePanes",
+	"responsibility": "Renders paired revision content with side-bound headings, roles, gaps and metadata slots.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-strong"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/ComparePanes.svelte"],
+		"symbols": ["ComparePanes"]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-pill"
+		],
+		"inputs": [
+			{
+				"name": "ComparePanes.panes",
+				"type": "ComparisonPane<T>[]",
+				"required": true,
+				"description": "Required side contexts produced by comparisonPanes; each retains its own commit, content and evidence gap."
+			},
+			{
+				"name": "ComparePanes.visible",
+				"type": "'both' | 'before' | 'after'",
+				"required": false,
+				"default": "both",
+				"description": "Optional visible side: both by default, before or after. Labels keep their original side in a single-side view."
+			},
+			{
+				"name": "ComparePanes.className",
+				"type": "string",
+				"required": false,
+				"default": "ex-panes",
+				"description": "Optional owner layout classes. Defaults to ex-panes; the app stylesheet controls the responsive column layout."
+			},
+			{
+				"name": "ComparePanes.paneClass",
+				"type": "string",
+				"required": false,
+				"default": "ex-pane",
+				"description": "Optional classes on each side frame. Defaults to ex-pane."
+			},
+			{
+				"name": "ComparePanes.framed",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "True by default to draw each side frame. False lets specialized image/audio/detail children own their semantic frame."
+			},
+			{
+				"name": "ComparePanes.headings",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "True by default to show the side heading and revision role; false preserves a specialized child heading."
+			},
+			{
+				"name": "ComparePanes.contents",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "False by default. True uses display: contents so an existing parent arranges the side boxes."
+			},
+			{
+				"name": "ComparePanes.gap",
+				"type": "Snippet<[ComparisonPane<T>]>",
+				"required": false,
+				"description": "Optional gap-rendering slot for that side. Defaults to JavaScript undefined, using EmptyState with the recorded gap."
+			},
+			{
+				"name": "ComparePanes.children",
+				"type": "Snippet<[ComparisonPane<T>]>",
+				"required": true,
+				"description": "Required content slot receiving exactly one ComparisonPane, including its own value and identity. Rendering errors propagate."
+			},
+			{
+				"name": "ComparePanes.heading",
+				"type": "Snippet<[ComparisonPane<T>]>",
+				"required": false,
+				"description": "Optional heading slot receiving that same side. Defaults to JavaScript undefined, using its shared heading and role."
+			},
+			{
+				"name": "ComparePanes.details",
+				"type": "Snippet<[ComparisonPane<T>]>",
+				"required": false,
+				"description": "Optional provenance/details slot receiving that same side. Defaults to JavaScript undefined, omitting extra details."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ComparePanes",
+				"type": "markup",
+				"description": "Rendered comparison content composed from the selected side contexts and the supplied snippets."
+			}
+		],
+		"errors": [
+			{
+				"name": "Content slot error",
+				"type": "propagated",
+				"description": "Errors from children, heading, details or gap snippets propagate; the comparison does not swap or suppress side data."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.verification-evidence-comparison-panes",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/ComparePanes.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

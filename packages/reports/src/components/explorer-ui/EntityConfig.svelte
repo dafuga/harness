@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '../shared-primitives/DetailList.svelte';
+	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerEntity, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import { humanize } from '../../helpers/strings/humanize';
 	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
@@ -24,10 +26,11 @@
 	const kind = (type: string) => (type.length <= 48 ? type : 'structured value');
 </script>
 
-<hx-section
-	class="ex-card ex-evidence"
-	aria-labelledby="ex-config-title"
-	data-harness-component="harness-entity-config"
+<Card
+	as="section"
+	tone="ex-evidence"
+	labelledby="ex-config-title"
+	component="harness-entity-config"
 >
 	<hx-header class="ex-evidence-head">
 		<hx-div>
@@ -51,18 +54,20 @@
 			{#if entity.unit.contract.outputs.length === 0}
 				<hx-p class="ex-soft">Its contract declares no setting at this revision.</hx-p>
 			{/if}
-			<hx-dl class="ex-rows">
-				{#each entity.unit.contract.outputs as setting, position (position)}
-					<hx-div>
-						<hx-dt>{word(setting.name)}</hx-dt>
-						<hx-dd>{kind(setting.type)}</hx-dd>
-					</hx-div>
-				{/each}
-			</hx-dl>
+			{#if entity.unit.contract.outputs.length}
+				<DetailList
+					rows={entity.unit.contract.outputs}
+					rowKey={(_, position) => position}
+					className="ex-rows"
+				>
+					{#snippet label(setting)}{word(setting.name)}{/snippet}
+					{#snippet children(setting)}{kind(setting.type)}{/snippet}
+				</DetailList>
+			{/if}
 		</hx-div>
 	</hx-div>
 	<hx-p class="ex-note">
 		A config has no screenshot and no benchmark of its own; what it costs is measured on the
 		entities that use it.
 	</hx-p>
-</hx-section>
+</Card>

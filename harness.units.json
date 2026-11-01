@@ -992,10 +992,256 @@
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
+			"from": "packages/reports/src/components/explorer-ui/EntityMissing.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityMeasures.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityFrame.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityScreens.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityAudio.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityConfig.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntitySummary.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityBehavior.svelte",
+			"specifier": "./explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "../explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+			"specifier": "../explorer-ui/explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
+			"from": "packages/reports/src/components/module-system/ExplorerModuleResourcesScreen.svelte",
+			"specifier": "../explorer-ui/explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "Shared Card retains the owning screen structure and accessible name."
+		},
+		{
 			"from": "packages/desktop/src/components/shared-primitives/Composer.svelte",
 			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
 			"reason": "Desktop reuses the shared Notice to explain why an unapproved Change cannot be sent."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$shared/shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$reports/helpers/verification-evidence/comparisonPanes",
+			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$shared/shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/helpers/verification-evidence/comparisonPanes",
+			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$shared/shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$reports/helpers/verification-evidence/comparisonPanes",
+			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"specifier": "../explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "Shared comparison and presentation primitives retain each side context."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"specifier": "../explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Shared comparison and presentation primitives retain each side context."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityScreens.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Shared comparison and presentation primitives retain each side context."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityAudio.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Shared comparison and presentation primitives retain each side context."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityBehavior.svelte",
+			"specifier": "../shared-primitives/ComparePanes.svelte",
+			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
+			"reason": "Shared comparison and presentation primitives retain each side context."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityMeasures.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntitySummary.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte",
+			"specifier": "../DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+			"specifier": "../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/hub/src/components/shared-primitives/MembersPanel.svelte",
+			"specifier": "$shared/shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/helpers/verification-evidence/behaviorFacts",
+			"to": "packages/reports/src/helpers/verification-evidence/behaviorFacts.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDetails.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDialog.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
 		}
 	]
 }

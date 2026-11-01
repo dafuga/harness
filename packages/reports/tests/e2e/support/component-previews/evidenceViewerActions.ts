@@ -82,7 +82,7 @@ export async function assertViewerNavigationAppearance(
 ) {
 	if (id !== 'reports.component.evidence-viewer' || variant !== 'no-navigation') return;
 	const opacity = await component.evaluate((node) =>
-		getComputedStyle(node).getPropertyValue('--hx-opacity-disabled').trim()
+		String(Number(getComputedStyle(node).getPropertyValue('--hx-opacity-disabled')))
 	);
 	for (const name of ['Previous image', 'Next image'])
 		await expect(

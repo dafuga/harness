@@ -1,0 +1,120 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.helper.verification-evidence-comparison-panes",
+	"kind": "helper",
+	"title": "comparisonPanes",
+	"responsibility": "Pairs revision content with its own commit, label, role and explicit evidence gap.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/helpers/verification-evidence/comparisonPanes.ts",
+			"packages/reports/src/helpers/verification-evidence/comparisonPanes.types.ts"
+		],
+		"symbols": ["comparisonPanes", "ComparisonSide", "ComparisonPane"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "comparisonPanes.before",
+				"type": "ComparisonSide<T> | null",
+				"required": true,
+				"description": "Parent revision content, source identity and gap; null means no parent evidence."
+			},
+			{
+				"name": "comparisonPanes.after",
+				"type": "ComparisonSide<T>",
+				"required": true,
+				"description": "Selected revision content, source identity and gap; never substituted from the parent."
+			},
+			{
+				"name": "comparisonPanes.paired",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "True by default for an ordered Before/After pair; false for one current snapshot."
+			}
+		],
+		"outputs": [
+			{
+				"name": "comparisonPanes",
+				"type": "ComparisonPane<T>[]",
+				"description": "Ordered parent and selected panes, or one current pane, each retaining its own value, commit, role, heading and gap."
+			}
+		],
+		"errors": [
+			{
+				"name": "Side access error",
+				"type": "propagated",
+				"description": "Errors from side property getters propagate; values are not cloned or serialized."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "comparisonPanes",
+				"inputs": [
+					{
+						"name": "comparisonPanes.before",
+						"type": "ComparisonSide<T> | null",
+						"required": true,
+						"description": "Parent revision content, source identity and gap; null means no parent evidence."
+					},
+					{
+						"name": "comparisonPanes.after",
+						"type": "ComparisonSide<T>",
+						"required": true,
+						"description": "Selected revision content, source identity and gap; never substituted from the parent."
+					},
+					{
+						"name": "comparisonPanes.paired",
+						"type": "boolean",
+						"required": false,
+						"default": true,
+						"description": "True by default for an ordered Before/After pair; false for one current snapshot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "comparisonPanes",
+						"type": "ComparisonPane<T>[]",
+						"description": "Ordered parent and selected panes, or one current pane, each retaining its own value, commit, role, heading and gap."
+					}
+				],
+				"errors": [
+					{
+						"name": "Side access error",
+						"type": "propagated",
+						"description": "Errors from side property getters propagate; values are not cloned or serialized."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/helpers/verification-evidence/comparisonPanes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/helpers/verification-evidence/comparisonPanes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

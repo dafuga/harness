@@ -1,6 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '../shared-primitives/DetailList.svelte';
+	import DataTable from '../shared-primitives/DataTable.svelte';
+	import Card from './explorer-kit/Card.svelte';
 	import type { Row } from './ExplorerPlatformDetails.types';
 
 	import type { PlatformEntry } from '../../../../../src/core/explorer-ui/Platform.types';
@@ -48,52 +51,50 @@
 </script>
 
 {#snippet table(label: string, column: string, rows: Row[])}
-	<hx-div class="ex-scroll">
-		<hx-table class="ex-mini pf-table" aria-label={label}>
-			<hx-thead
-				><hx-tr><hx-th scope="col">Name</hx-th><hx-th scope="col">{column}</hx-th></hx-tr></hx-thead
-			>
-			<hx-tbody>
-				{#each rows as row, position (position)}
-					<hx-tr>
-						<hx-th scope="row">
-							<hx-span>{row.name}</hx-span>
-							{#if row.description}<hx-span class="pf-description">{row.description}</hx-span>{/if}
-						</hx-th>
-						<hx-td><hx-code>{row.value}</hx-code></hx-td>
-					</hx-tr>
-				{/each}
-			</hx-tbody>
-		</hx-table>
-	</hx-div>
+	<DataTable {label} tableClass="ex-mini pf-table" className="ex-scroll">
+		{#snippet header()}<hx-tr
+				><hx-th scope="col">Name</hx-th><hx-th scope="col">{column}</hx-th></hx-tr
+			>{/snippet}
+		{#snippet children()}
+			{#each rows as row, position (position)}
+				<hx-tr>
+					<hx-th scope="row">
+						<hx-span>{row.name}</hx-span>
+						{#if row.description}<hx-span class="pf-description">{row.description}</hx-span>{/if}
+					</hx-th>
+					<hx-td><hx-code>{row.value}</hx-code></hx-td>
+				</hx-tr>
+			{/each}
+		{/snippet}
+	</DataTable>
 {/snippet}
 
 {#snippet sections(declared: PlatformEntry, name: string)}
 	<hx-div class="pf-sections">
-		<hx-section class="ex-card" aria-labelledby="pf-configuration-title">
+		<Card as="section" labelledby="pf-configuration-title">
 			<hx-h2 id="pf-configuration-title">Deployment configuration</hx-h2>
 			{#if declared.configuration.length}
 				{@render table(`${name} deployment configuration`, 'Value', declared.configuration)}
 			{:else}<hx-p class="ex-soft">No deployment settings are declared for {name}.</hx-p>{/if}
-		</hx-section>
+		</Card>
 		{#if commands.length}
-			<hx-section class="ex-card" aria-labelledby="pf-commands-title">
+			<Card as="section" labelledby="pf-commands-title">
 				<hx-h2 id="pf-commands-title">Commands</hx-h2>
 				{@render table(`${name} commands`, 'Command', commands)}
-			</hx-section>
+			</Card>
 		{/if}
 		{#if declared.requirements.length}
-			<hx-section class="ex-card" aria-labelledby="pf-requirements-title">
+			<Card as="section" labelledby="pf-requirements-title">
 				<hx-h2 id="pf-requirements-title">Release requirements</hx-h2>
 				<hx-ul class="ex-reasons pf-requirements">
 					{#each declared.requirements as requirement, position (position)}
 						<hx-li>{requirement}</hx-li>
 					{/each}
 				</hx-ul>
-			</hx-section>
+			</Card>
 		{/if}
 		{#if declared.sources.length}
-			<hx-section class="ex-card" aria-labelledby="pf-sources-title">
+			<Card as="section" labelledby="pf-sources-title">
 				<hx-h2 id="pf-sources-title">Configuration sources</hx-h2>
 				<SourceFileList files={declared.sources} href={sourceLink}>
 					{#snippet children()}{/snippet}
@@ -103,7 +104,7 @@
 						>GitHub links are unavailable here, so paths are shown as recorded.</hx-p
 					>
 				{/if}
-			</hx-section>
+			</Card>
 		{/if}
 	</hx-div>
 {/snippet}
@@ -136,16 +137,13 @@
 					: 'No platform catalog is indexed at this revision.'}
 			</hx-p>
 			{#if entry}
-				<hx-dl class="pf-meta">
-					<hx-div>
-						<hx-dt>Runtime</hx-dt>
-						<hx-dd>{entry.runtime}</hx-dd>
-					</hx-div>
-					<hx-div>
-						<hx-dt>Declared at</hx-dt>
-						<hx-dd><hx-code>{shortCommit(host.scope.commit)}</hx-code></hx-dd>
-					</hx-div>
-				</hx-dl>
+				<DetailList rows={['Runtime', 'Declared at']} rowKey={(name) => name} className="pf-meta">
+					{#snippet label(name)}{name}{/snippet}
+					{#snippet children(name)}
+						{#if name === 'Runtime'}{entry.runtime}
+						{:else}<hx-code>{shortCommit(host.scope.commit)}</hx-code>{/if}
+					{/snippet}
+				</DetailList>
 				<hx-p class="ex-note">
 					A status is what the repository declares; Harness does not check live deployments.
 				</hx-p>

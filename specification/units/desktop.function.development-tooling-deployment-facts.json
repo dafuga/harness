@@ -1,0 +1,131 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.development-tooling-deployment-facts",
+	"kind": "function",
+	"title": "deploymentFacts",
+	"responsibility": "Formats full deployment identity and verified receipt facts.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/development-tooling/deploymentFacts.ts",
+			"packages/desktop/src/components/development-tooling/deploymentFacts.types.ts"
+		],
+		"symbols": ["deploymentFacts", "receiptFacts", "DeploymentFact"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "deploymentFacts.deployment",
+				"type": "DeploymentActivity",
+				"required": true,
+				"description": "Required deployment activity; only timestamps actually present are included."
+			},
+			{
+				"name": "receiptFacts.receipt",
+				"type": "DeploymentReceipt",
+				"required": true,
+				"description": "Required verified receipt with its full deployment id, address and optional verified time."
+			}
+		],
+		"outputs": [
+			{
+				"name": "deploymentFacts",
+				"type": "DeploymentFact[]",
+				"description": "Ordered project, branch, full commit and present deployment timestamp facts."
+			},
+			{
+				"name": "receiptFacts",
+				"type": "DeploymentFact[]",
+				"description": "Ordered deployment id, address and present verified timestamp facts."
+			}
+		],
+		"errors": [
+			{
+				"name": "Input access error",
+				"type": "propagated",
+				"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "deploymentFacts",
+				"inputs": [
+					{
+						"name": "deploymentFacts.deployment",
+						"type": "DeploymentActivity",
+						"required": true,
+						"description": "Required deployment activity; only timestamps actually present are included."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deploymentFacts",
+						"type": "DeploymentFact[]",
+						"description": "Ordered project, branch, full commit and present deployment timestamp facts."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access error",
+						"type": "propagated",
+						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "receiptFacts",
+				"inputs": [
+					{
+						"name": "receiptFacts.receipt",
+						"type": "DeploymentReceipt",
+						"required": true,
+						"description": "Required verified receipt with its full deployment id, address and optional verified time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "receiptFacts",
+						"type": "DeploymentFact[]",
+						"description": "Ordered deployment id, address and present verified timestamp facts."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access error",
+						"type": "propagated",
+						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/deploymentFacts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/deploymentFacts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

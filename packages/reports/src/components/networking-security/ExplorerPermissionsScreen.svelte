@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../shared-primitives/DataTable.svelte';
+	import Card from '../explorer-ui/explorer-kit/Card.svelte';
 	import './ExplorerPermissionsScreen.css';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import EntityLink from '../explorer-ui/EntityLink.svelte';
@@ -75,28 +77,26 @@
 {#snippet data(rows: DataGrant[], label: string)}
 	{#if rows.length}
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable table must be keyboard reachable.) -->
-		<hx-div class="ex-scroll permission-data" tabindex="0" role="region" aria-label={label}>
-			<hx-table class="ex-table">
-				<hx-thead>
+		<DataTable {label} tableClass="ex-table" className="ex-scroll permission-data">
+			{#snippet header()}
+				<hx-tr>
+					<hx-th scope="col">Model</hx-th>
+					<hx-th scope="col">Actions</hx-th>
+					<hx-th scope="col">Fields</hx-th>
+					<hx-th scope="col">Scope</hx-th>
+				</hx-tr>
+			{/snippet}
+			{#snippet children()}
+				{#each rows as row, position (position)}
 					<hx-tr>
-						<hx-th scope="col">Model</hx-th>
-						<hx-th scope="col">Actions</hx-th>
-						<hx-th scope="col">Fields</hx-th>
-						<hx-th scope="col">Scope</hx-th>
+						<hx-th scope="row">{@render ref(row.resource)}</hx-th>
+						<hx-td data-label="Actions">{row.actions.join(', ')}</hx-td>
+						<hx-td data-label="Fields"><hx-code>{row.fields.join(', ')}</hx-code></hx-td>
+						<hx-td data-label="Scope">{row.scope}</hx-td>
 					</hx-tr>
-				</hx-thead>
-				<hx-tbody>
-					{#each rows as row, position (position)}
-						<hx-tr>
-							<hx-th scope="row">{@render ref(row.resource)}</hx-th>
-							<hx-td data-label="Actions">{row.actions.join(', ')}</hx-td>
-							<hx-td data-label="Fields"><hx-code>{row.fields.join(', ')}</hx-code></hx-td>
-							<hx-td data-label="Scope">{row.scope}</hx-td>
-						</hx-tr>
-					{/each}
-				</hx-tbody>
-			</hx-table>
-		</hx-div>
+				{/each}
+			{/snippet}
+		</DataTable>
 	{:else}
 		<hx-p class="ex-empty">No data access declared.</hx-p>
 	{/if}
@@ -111,10 +111,10 @@
 
 <!-- Drawn inside the endpoint's own frame, so it opens no frame of its own. -->
 {#snippet panel()}
-	<hx-section
-		class="ex-card"
-		aria-labelledby="perm-api"
-		data-harness-component="networking-security-explorer-permissions-screen"
+	<Card
+		as="section"
+		labelledby="perm-api"
+		component="networking-security-explorer-permissions-screen"
 	>
 		{@render heading('Permissions', 'perm-api', false)}
 		{@render gaps()}
@@ -128,7 +128,7 @@
 				{catalog ? 'No access declaration names this endpoint' : none} at this revision.
 			</hx-p>
 		{/each}
-	</hx-section>
+	</Card>
 {/snippet}
 
 {#snippet index()}
@@ -136,10 +136,10 @@
 	<hx-p class="ex-lead">User profiles, and the API, page and data access each one declares.</hx-p>
 	{@render gaps()}
 	{#each profiles as profile (profile.source)}
-		<hx-article class="ex-card">
+		<Card as="article">
 			<hx-h2>{@render link(at(profile.id), profile.title)}</hx-h2>
 			<hx-p class="ex-soft">{profile.description}</hx-p>
-		</hx-article>
+		</Card>
 	{:else}
 		<hx-p class="ex-empty">{none} at this revision.</hx-p>
 		<hx-p class="ex-note">
@@ -153,7 +153,7 @@
 	<hx-p class="ex-lead">{profile.description}</hx-p>
 	<hx-p class="ex-note">Declared in <hx-code>{profile.source}</hx-code></hx-p>
 	{@render gaps()}
-	<hx-section class="ex-card" aria-labelledby="perm-apis">
+	<Card as="section" labelledby="perm-apis">
 		<hx-h2 id="perm-apis">API access</hx-h2>
 		{#each grants(profile, 'api') as grant, position (position)}
 			<hx-article class="ex-stack">
@@ -163,19 +163,19 @@
 		{:else}
 			<hx-p class="ex-empty">No API access declared.</hx-p>
 		{/each}
-	</hx-section>
-	<hx-section class="ex-card" aria-labelledby="perm-pages">
+	</Card>
+	<Card as="section" labelledby="perm-pages">
 		<hx-h2 id="perm-pages">Page access</hx-h2>
 		{#each grants(profile, 'page') as grant, position (position)}
 			<hx-p>{@render ref(grant.resource)} · {grant.actions.join(', ')}</hx-p>
 		{:else}
 			<hx-p class="ex-empty">No page access declared.</hx-p>
 		{/each}
-	</hx-section>
-	<hx-section class="ex-card" aria-labelledby="perm-data">
+	</Card>
+	<Card as="section" labelledby="perm-data">
 		<hx-h2 id="perm-data">Data access</hx-h2>
 		{@render data(grants(profile, 'data'), `${profile.title} data access`)}
-	</hx-section>
+	</Card>
 {/snippet}
 
 {#if host.endpoint !== undefined}
