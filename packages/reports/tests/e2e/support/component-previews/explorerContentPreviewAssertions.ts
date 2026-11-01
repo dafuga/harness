@@ -19,7 +19,10 @@ export async function assertExplorerContentCatalog(
 	);
 	if (variant === 'dependencies') {
 		await expect(component.getByRole('table', { name: 'npm dependencies' })).toBeVisible();
-		await expect(component.getByRole('rowheader', { name: 'zod', exact: true })).toHaveCount(2);
+		const packages = component.getByRole('table', { name: 'npm dependencies' });
+		await expect(packages.getByText('zod', { exact: true })).toHaveCount(2);
+		for (const name of await packages.getByText('zod', { exact: true }).all())
+			await expect(name).toBeVisible();
 		await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toContainText(
 			'serde'
 		);

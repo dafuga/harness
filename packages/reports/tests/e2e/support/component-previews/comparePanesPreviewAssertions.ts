@@ -19,4 +19,15 @@ export async function assertComparePanesPreview(component: Locator, variant: str
 		await expect(after).not.toContainText('orders-parent');
 		await expect(before).not.toContainText('orders-selected');
 	}
+	for (const pane of await component.getByRole('group').all()) {
+		const header = pane.locator('.ex-pane-head');
+		const title = (await header.locator('strong').boundingBox())!;
+		const badge = (await header
+			.getByText(/^(?:Parent commit|Selected commit|Current snapshot)$/)
+			.boundingBox())!;
+		expect(
+			Math.max(badge.x - title.x - title.width, badge.y - title.y - title.height),
+			'The revision role badge is visibly separated from its heading'
+		).toBeGreaterThanOrEqual(1);
+	}
 }
