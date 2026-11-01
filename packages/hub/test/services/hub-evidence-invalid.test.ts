@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { shortCommit } from '../../../reports/src/helpers/strings/shortCommit';
 import {
 	asked,
 	bound,
@@ -10,7 +11,7 @@ import {
 } from '../support/evidenceFixture';
 import { clock, json, png, sha256, stored, verification } from '../support/evidenceRecords';
 
-const brief = (id: string) => id.slice(0, 12);
+const briefRecord = (id: string) => id.slice(0, 12);
 const tipOf = (f: EvidenceFixture) => asked(f.commits.changed, 'verified', 'current');
 /** Replaces one file of a commit, as if the repository answered with other bytes. */
 function replace(f: EvidenceFixture, commit: string, path: string, bytes: Uint8Array) {
@@ -29,7 +30,7 @@ test('a record whose content is not what its id seals stays listed as invalid', 
 	const problem = 'record content does not match its id';
 	expect(scope.summary).toMatchObject({
 		coverage: 'invalid',
-		gaps: [`record ${brief(record.id)}: ${problem}`],
+		gaps: [`record ${briefRecord(record.id)}: ${problem}`],
 		records: [{ id: record.id, valid: false, problems: [problem] }]
 	});
 	expect(evidence.after).toMatchObject({
@@ -103,7 +104,7 @@ test('a pointer outside the pinned evidence is not followed', async () => {
 	const stray = { ...f.pointers.second, commit: f.commits.tip };
 	f.store.note(f.commits.changed, [verification(f.records.second, stray)], true);
 	const { scope, evidence } = await read(f, tipOf(f));
-	const problem = `evidence commit ${brief(f.commits.tip)} is not part of the pinned evidence`;
+	const problem = `evidence commit ${shortCommit(f.commits.tip)} is not part of the pinned evidence`;
 	expect(scope.summary.records).toMatchObject([{ valid: false, problems: [problem] }]);
 	expect(evidence.after).toMatchObject({ record: null, captures: [] });
 });
