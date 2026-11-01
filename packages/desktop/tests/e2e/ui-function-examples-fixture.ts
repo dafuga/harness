@@ -145,6 +145,7 @@ async function recorded(page: Page, name: string): Promise<void> {
  * it shows is judged. SCREENSHOT_LABEL names the phase and FUNCTION_EXAMPLES_SHOTS the folder.
  */
 export async function pictured(page: Page, info: TestInfo, name: string): Promise<void> {
+	await admitViewport(page);
 	await recorded(page, name);
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
 	await page.evaluate(async () => {
@@ -155,4 +156,26 @@ export async function pictured(page: Page, info: TestInfo, name: string): Promis
 	const folder = process.env.FUNCTION_EXAMPLES_SHOTS ?? info.outputDir;
 	const file = `${process.env.SCREENSHOT_LABEL ?? 'run'}-${name}.png`;
 	await page.screenshot({ path: join(folder, file), fullPage: true, animations: 'disabled' });
+}
+
+/** Reject document overflow before a full-page image can acquire the wrong width. */
+async function admitViewport(page: Page): Promise<void> {
+	const layout = await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+		return {
+			width: document.documentElement.scrollWidth,
+			viewport: innerWidth,
+			escaped: [...document.querySelectorAll('body *')]
+				.filter((element) => element.getBoundingClientRect().right > innerWidth)
+				.slice(0, 12)
+				.map((element) => ({
+					tag: element.tagName,
+					classes: element.getAttribute('class'),
+					right: element.getBoundingClientRect().right
+				}))
+		};
+	});
+	if (layout.width > layout.viewport)
+		throw new Error(`Document exceeds the selected viewport: ${JSON.stringify(layout)}`);
 }
