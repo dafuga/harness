@@ -53,8 +53,9 @@ export function earlierDesktopHistoryEvent(): HistoryEvent {
 /** Supply recorded order-search regression examples after the evidence store has settled. */
 export function prepareDesktopHistoryProof(data: DesktopData, variant: string) {
 	const result = data.evidence.result;
-	if (!result?.evidence.after.detail)
-		throw new Error('Order-search evidence must be ready before history is shown.');
+	const detail = result?.evidence.after.detail;
+	if (!result || !detail)
+		throw new Error('Order-search revision evidence must be ready before history is shown.');
 	data.evidence.result = {
 		...result,
 		evidence: {
@@ -62,7 +63,7 @@ export function prepareDesktopHistoryProof(data: DesktopData, variant: string) {
 			after: {
 				...result.evidence.after,
 				detail: {
-					...result.evidence.after.detail,
+					...detail,
 					regressions: variant === 'empty' ? [] : [orderSearchRegression(data.filterEntity.id)]
 				}
 			}

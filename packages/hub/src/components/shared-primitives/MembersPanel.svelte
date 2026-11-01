@@ -30,12 +30,10 @@
 						>Role</hx-th
 					></hx-tr
 				>{/snippet}
-			{#snippet children()}
-				{#each members as item (item.actorId)}<hx-tr
-						><hx-td>{item.name}</hx-td><hx-td>{item.email}</hx-td><hx-td>{item.role}</hx-td></hx-tr
-					>{:else}<hx-tr><hx-td colspan="3" class="muted">No members are listed.</hx-td></hx-tr
-					>{/each}
-			{/snippet}
+			{#each members as item (item.actorId)}<hx-tr
+					><hx-td>{item.name}</hx-td><hx-td>{item.email}</hx-td><hx-td>{item.role}</hx-td></hx-tr
+				>{:else}<hx-tr><hx-td colspan="3" class="muted">No members are listed.</hx-td></hx-tr
+				>{/each}
 		</DataTable>
 	</hx-section>
 	{#if project.role === 'owner'}<InvitationForm {projectId} />{:else}<hx-p class="muted">

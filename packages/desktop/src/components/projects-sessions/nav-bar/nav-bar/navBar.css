@@ -26,8 +26,9 @@ header.topbar::before {
 .topbar-context {
 	grid-area: context;
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	gap: var(--hx-space-12);
+	gap: var(--hx-space-8) var(--hx-space-12);
 	min-width: 0;
 }
 .topbar-context :global(.revision-picker) {

@@ -1,3 +1,4 @@
+import { measureWorkload } from '../support/measureWorkload';
 import { readFile } from 'node:fs/promises';
 import { beforeAll, expect, test } from 'vitest';
 import { WasmModuleRuntimeAdapter } from '../../src/adapters/WasmModuleRuntimeAdapter';
@@ -26,23 +27,25 @@ test('a precompiled module, its bytes and a loader all run the same unit as the 
 });
 
 test('a module without the JSON ABI, or bytes that are not Wasm, are unavailable', async () => {
-	const empty = new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0]);
-	expect(await new WasmModuleRuntimeAdapter(new WebAssembly.Module(empty)).invoke(request)).toEqual(
-		{
+	await measureWorkload('adapter.wasm-module-runtime', 'wasm-loader-failures', async () => {
+		const empty = new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0]);
+		expect(
+			await new WasmModuleRuntimeAdapter(new WebAssembly.Module(empty)).invoke(request)
+		).toEqual({
 			ok: false,
 			error: {
 				code: 'runtime-unavailable',
 				message:
 					'Wasm module does not export the Harness JSON ABI (memory, harness_alloc, harness_free, harness_invoke)'
 			}
-		}
-	);
-	const garbage = await new WasmModuleRuntimeAdapter(new Uint8Array([1, 2, 3])).invoke(request);
-	expect(garbage).toMatchObject({ ok: false, error: { code: 'runtime-unavailable' } });
-	const refused = new WasmModuleRuntimeAdapter(() => Promise.reject(new Error('no module here')));
-	expect(await refused.invoke(request)).toEqual({
-		ok: false,
-		error: { code: 'runtime-failed', message: 'no module here' }
+		});
+		const garbage = await new WasmModuleRuntimeAdapter(new Uint8Array([1, 2, 3])).invoke(request);
+		expect(garbage).toMatchObject({ ok: false, error: { code: 'runtime-unavailable' } });
+		const refused = new WasmModuleRuntimeAdapter(() => Promise.reject(new Error('no module here')));
+		expect(await refused.invoke(request)).toEqual({
+			ok: false,
+			error: { code: 'runtime-failed', message: 'no module here' }
+		});
 	});
 });
 

@@ -1,3 +1,4 @@
+import { errorMessage } from '../../../packages/reports/src/helpers/strings/errorMessage';
 import {
 	defaultRuntimeTimeoutMs,
 	runtimeFailure,
@@ -62,7 +63,7 @@ export class HttpRuntimeAdapter implements UnitRuntime {
 		if (name === 'TimeoutError' || name === 'AbortError') {
 			return runtimeTimeout(this.timeoutMs);
 		}
-		const message = error instanceof Error ? error.message : String(error);
+		const message = errorMessage(error);
 		return runtimeFailure('runtime-unavailable', `cannot reach ${this.url}: ${message}`);
 	}
 }

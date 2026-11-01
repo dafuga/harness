@@ -76,7 +76,7 @@
 				{notice.text}
 			</Notice>{:else if side}{#if side.gap}<Notice
 					as="p"
-					className={'runtime-gap coverage-panel-runtime-gap'}
+					className="runtime-gap coverage-panel-runtime-gap"
 				>
 					<Status variant="icon" status="failed" reason="Evidence missing" /><hx-span
 						>{side.gap}</hx-span
@@ -113,20 +113,18 @@
 								></hx-tr
 							>
 						{/snippet}
-						{#snippet children()}
-							{#each item.states as state (state.state)}<hx-tr>
-									<hx-td>{state.state}</hx-td>
-									<hx-td>{state.declared}</hx-td>
-									<hx-td
-										><Status
-											variant="icon"
-											status={mark(state.standing)}
-											reason={told(state.standing, state.reasons)}
-										/></hx-td
-									>
-									<hx-td>{slots(state).join('; ') || 'None declared'}</hx-td>
-								</hx-tr>{/each}
-						{/snippet}
+						{#each item.states as state (state.state)}<hx-tr>
+								<hx-td>{state.state}</hx-td>
+								<hx-td>{state.declared}</hx-td>
+								<hx-td
+									><Status
+										variant="icon"
+										status={mark(state.standing)}
+										reason={told(state.standing, state.reasons)}
+									/></hx-td
+								>
+								<hx-td>{slots(state).join('; ') || 'None declared'}</hx-td>
+							</hx-tr>{/each}
 					</DataTable>
 				</hx-article>{/each}{/if}
 		<!-- What the tests were given and what they observed, as the overview shows it; never made up. -->
