@@ -35,15 +35,15 @@ async function assertChatPresentation(component: Locator, variant: string) {
 			.soft(fits, 'The complete restored draft is readable without a clipped first line')
 			.toBe(true);
 	}
-	if (variant === 'failure')
-		await expect
-			.soft(
-				component.getByText('The agent connection closed before the review finished. Try again.', {
-					exact: true
-				}),
-				'A failed run presents its error once'
-			)
-			.toHaveCount(1);
+	if (variant === 'failure') {
+		const error = 'The agent connection closed before the review finished. Try again.';
+		const notices = await component.getByRole('alert').filter({ hasText: error }).count();
+		const replies = await component
+			.locator('.chat-message.agent')
+			.filter({ hasText: error })
+			.count();
+		expect.soft(notices + replies, 'A failed run presents its error once').toBe(1);
+	}
 	if (variant === 'visual-plan')
 		await expect(
 			component.getByText('Visual plan · 7 design options', { exact: true })
