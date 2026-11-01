@@ -87,6 +87,13 @@ async function assertGatePresentation(component: Locator, variant: string) {
 	await expect(opening).toHaveAttribute('aria-busy', 'true');
 }
 
+async function assertRevisionContextFits(summary: Locator) {
+	const complete = await summary
+		.locator('strong')
+		.evaluate((node) => node.scrollWidth <= node.clientWidth);
+	expect(complete, 'Complete revision context fits without clipping').toBe(true);
+}
+
 async function assertRevisionPresentation(component: Locator, variant: string) {
 	for (const word of ['Branch', 'Commit']) {
 		const button = component.getByRole('button', {
@@ -102,6 +109,7 @@ async function assertRevisionPresentation(component: Locator, variant: string) {
 		expect(fits, 'The visible revision label fits its trigger').toBe(true);
 	}
 	const summary = component.getByLabel('Viewed context');
+	await assertRevisionContextFits(summary);
 	if (variant === 'environment') {
 		await expect(
 			component.getByRole('button', { name: 'Choose commit', exact: true })
