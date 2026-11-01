@@ -3629,14 +3629,22 @@
 			"unit": "service.attached-record",
 			"from": "src/services/attached-record-service/AttachedRecordService.ts",
 			"to": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-			"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
+			"definition": "f5ad5e8f6027526142594cf95f2e52080a0adf6fb955897a12fe89c6b74ebccb",
 			"relocationDefinition": "b8757575d793690dcd6f3daf521c33ca6d67b2a6d3d63ee7c1f22a002400b992",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "8c5579bf296da31b542d7c7a5dbf5c3e91637e98",
 				"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-				"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "f5ad5e8f6027526142594cf95f2e52080a0adf6fb955897a12fe89c6b74ebccb",
+				"reason": "Use seven-character commit labels while retaining distinct record and content identities."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
+					"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "function.lfs-pointer",
@@ -3673,14 +3681,22 @@
 			"unit": "workflow.run-hooks",
 			"from": "src/workflows/runHooks.ts",
 			"to": "src/cli/program/runHooks.ts",
-			"definition": "eafbdb63c9714886ed1503960c4f58765fca49c4625ceddb4b85e3dafcd95827",
+			"definition": "d738eaa802072953f4362821d98843a8cfbc781230f5e38aa2dbc3fbfc30cd68",
 			"relocationDefinition": "1e216b824dc470d69c4ee5c04a8a9d6f0aa444dfb090eb561e92dd617472bf67",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "8c5579bf296da31b542d7c7a5dbf5c3e91637e98",
 				"path": "src/cli/program/runHooks.ts",
-				"definition": "eafbdb63c9714886ed1503960c4f58765fca49c4625ceddb4b85e3dafcd95827",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "d738eaa802072953f4362821d98843a8cfbc781230f5e38aa2dbc3fbfc30cd68",
+				"reason": "Use seven-character commit labels while retaining distinct record and content identities."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/runHooks.ts",
+					"definition": "eafbdb63c9714886ed1503960c4f58765fca49c4625ceddb4b85e3dafcd95827",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.sync-history",
@@ -4386,13 +4402,13 @@
 			"unit": "service.history-index",
 			"from": "src/services/history-index-service/HistoryIndexService.ts",
 			"to": "src/cli/program/history-index-service/HistoryIndexService.ts",
-			"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
+			"definition": "d3ed00c3859fe9f7144100c4c0d42a2bb37bca2a29e5b11f3c86d51635639fd1",
 			"relocationDefinition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb",
 			"review": {
-				"commit": "58d3f7e0ed7a888438f53413e729ba15f5ae7656",
+				"commit": "8c5579bf296da31b542d7c7a5dbf5c3e91637e98",
 				"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
-				"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "d3ed00c3859fe9f7144100c4c0d42a2bb37bca2a29e5b11f3c86d51635639fd1",
+				"reason": "Use seven-character commit labels while retaining distinct record and content identities."
 			},
 			"previousReviews": [
 				{
@@ -4411,6 +4427,12 @@
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
 					"definition": "0dc664d7a37b7bca22bc00d7a7f1d0fbd99b69f1594779343f1e709a38e22414",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "58d3f7e0ed7a888438f53413e729ba15f5ae7656",
+					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+					"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
@@ -4711,13 +4733,13 @@
 			"unit": "workflow.persist-reasons",
 			"from": "src/workflows/persistReasons.ts",
 			"to": "src/cli/program/persistReasons.ts",
-			"definition": "8a93c6dbdcd7397110ed733b23d3e42aa716b3f765852935f11919acd3fd0166",
+			"definition": "78e288483aa534898044f804560513184aaf127393e89803263fe0bef38a1c20",
 			"relocationDefinition": "cd74c1c03c11931cc13d99f36dae7104f2bd419139d6ffe1ab7e0eb330cdc8bf",
 			"review": {
-				"commit": "f29b931cb13cc0bf1867dcbf03f6bccfcfec9329",
+				"commit": "8c5579bf296da31b542d7c7a5dbf5c3e91637e98",
 				"path": "src/cli/program/persistReasons.ts",
-				"definition": "8a93c6dbdcd7397110ed733b23d3e42aa716b3f765852935f11919acd3fd0166",
-				"reason": "Use the canonical commit formatter while preserving the service operations and their original reviews."
+				"definition": "78e288483aa534898044f804560513184aaf127393e89803263fe0bef38a1c20",
+				"reason": "Use seven-character commit labels while retaining distinct record and content identities."
 			},
 			"previousReviews": [
 				{
@@ -4725,6 +4747,12 @@
 					"path": "src/cli/program/persistReasons.ts",
 					"definition": "c13b1aab841db37e4940af62f50cf5158d2e509ad10e59d1101f55102a490ed3",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "f29b931cb13cc0bf1867dcbf03f6bccfcfec9329",
+					"path": "src/cli/program/persistReasons.ts",
+					"definition": "8a93c6dbdcd7397110ed733b23d3e42aa716b3f765852935f11919acd3fd0166",
+					"reason": "Use the canonical commit formatter while preserving the service operations and their original reviews."
 				}
 			]
 		},
