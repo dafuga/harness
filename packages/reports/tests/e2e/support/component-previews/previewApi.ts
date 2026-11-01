@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogFixtureMedia } from './catalogFixtureMedia';
 import { shellMedia } from './shellArtworkImages';
+import { shellActivity } from './shellCatalogRoutes';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
 
@@ -58,13 +59,6 @@ export async function servePreview(route: Route, home: string, markup = '') {
 		contentType: 'text/html',
 		body: `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Component preview</title><link rel="stylesheet" href="/page.css"></head><body><div id="app">${markup}</div><script src="/page.iife.js"></script></body></html>`
 	});
-}
-
-function shellActivity(route: Route) {
-	const unit = new URL(route.request().frame().page().url()).searchParams.get('unit');
-	return unit === 'reports.component.harness-harness-console'
-		? { ...activity, repository: { ...activity.repository, name: 'Northstar Store' } }
-		: activity;
 }
 
 // Keep one realistic active registration within the chat's short desktop viewport.

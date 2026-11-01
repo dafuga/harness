@@ -19,11 +19,12 @@ async function reportArtifactExamples(data: Awaited<ReturnType<typeof illustrate
 	const row = data.results[`${ids.filter}|commit|${commits.middle}`].behavior.rows.find(
 		(item) => item.state === 'match' && item.kind === 'output'
 	)!;
-	const document = {
+	const document: Record<string, unknown> = {
 		...(row.afterRead!.document as Record<string, unknown>),
 		scenario: 'Search orders by name',
-		fixture: '12 orders with service and product lines'
+		dataset: '12 orders with service and product lines'
 	};
+	delete document.fixture;
 	const long = [
 		'Orders reconciliation · 20 October 2026',
 		'Query: SERVICE · sort: order number · customer account AC-42',
