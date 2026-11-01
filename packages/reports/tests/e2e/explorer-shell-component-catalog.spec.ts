@@ -222,7 +222,9 @@ for (const viewport of catalogViewports) {
 					documentedStyleTokens().length
 				);
 			}
-			for (const field of await component.locator('.hx-revision .has-display select').all()) {
+			for (const field of await component
+				.locator(':is(.hx-revision, .hc-controls) .has-display select')
+				.all()) {
 				await expect(field, 'The full revision remains available as a title').toHaveAttribute(
 					'title',
 					/\S/

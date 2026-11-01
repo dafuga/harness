@@ -58,6 +58,14 @@ async function shortExamples(component: Locator) {
 }
 
 async function selectedLabels(component: Locator) {
+	const altered = await component
+		.locator('.report-select-value')
+		.evaluateAll((nodes) =>
+			nodes
+				.filter((node) => (node as HTMLElement).innerText.trim() !== node.textContent?.trim())
+				.map((node) => node.textContent)
+		);
+	expect(altered, 'Revision summaries preserve the original value case').toEqual([]);
 	const clipped = await component.locator('select').evaluateAll((fields: HTMLSelectElement[]) => {
 		const canvas = document.createElement('canvas').getContext('2d')!;
 		return fields.flatMap((field) => {
