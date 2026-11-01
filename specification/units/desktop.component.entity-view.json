@@ -54,11 +54,22 @@
 			{
 				"name": "EntityView",
 				"type": "markup",
-				"description": "Entity identity, verification and the selected tab, with optional Source and conversation. Components keep their runtime screenshot above every tab; existing evidence and annotation rules remain in force."
+				"description": "Entity identity, verification and the selected tab, with optional Source and conversation. Components keep their runtime screenshot above every tab. Opaque record identifiers wrap within the content frame; existing evidence and annotation rules remain in force."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Missing entity context",
+				"type": "TypeError",
+				"description": "Rendering without a loaded entity violates the workspace input contract and causes entity property reads to fail."
+			},
+			{
+				"name": "Workspace or thread operation failure",
+				"type": "propagated",
+				"description": "Workspace navigation, refresh and bridge thread-operation errors are not caught here. Called panels may handle those operation rejections."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
