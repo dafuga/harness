@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { assertComposerLayout } from './desktopComposerAssertions';
 
 /** Painted captions and reasons distinguish the named catalog states. */
 export async function assertDesktopPresentation(component: Locator, id: string, variant: string) {
@@ -123,6 +124,7 @@ async function assertScreenPresentation(component: Locator, variant: string) {
 }
 
 async function assertComposerPresentation(component: Locator, variant: string) {
+	await assertComposerLayout(component, variant);
 	await expect(component.getByRole('textbox', { name: 'Message' })).not.toHaveValue(
 		/synthetic request kept for this capture/i
 	);
