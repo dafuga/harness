@@ -2,7 +2,7 @@
 	"name": "sol10-error-contract",
 	"goal": "Declare and test the errorMessage conversion failures accepted by its public contract",
 	"createdAt": "2026-11-01T22:28:58.035Z",
-	"updatedAt": "2026-11-01T22:29:27.014Z",
+	"updatedAt": "2026-11-01T22:31:42.993Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T22:30:52.543Z",
+			"evidence": "d956ce4cc0 failed the unchanged helper case with errorMessage declares admitted conversion failures; sealed record 6ad98e9910d312c622877c570fe0f918499b490c13766044a8cf689715f4c24f."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T22:31:42.993Z",
+			"evidence": "Declare propagated message-accessor and String conversion errors at both helper and callable scopes; implementation and strengthened test remain unchanged."
 		},
 		{
 			"id": "green",
