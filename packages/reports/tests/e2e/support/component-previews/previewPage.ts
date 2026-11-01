@@ -150,7 +150,9 @@ export async function capturePreview(
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
 	await settlePreviewAudio(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await frameDesktopCapture(page, id);
-	const clip = await previewCaptureBounds(page, id, variant);
+	const bounds = await previewCaptureBounds(page, id, variant);
+	// A native popup is captured from the visible viewport, so its declared bounds stop there.
+	const clip = nativeOpen ? visibleClip(page, bounds) : bounds;
 	const reportDialog = await reportViewDialog(page, id);
 	const bytes = await page.screenshot({
 		fullPage: !nativeOpen && !reportDialog,
@@ -189,6 +191,11 @@ export async function capturePreview(
 	);
 	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport);
 	return { clip, bytes };
+}
+
+function visibleClip(page: Page, bounds: { x: number; y: number; width: number; height: number }) {
+	const height = page.viewportSize()?.height ?? bounds.height;
+	return { ...bounds, height: Math.max(1, Math.min(bounds.height, height - bounds.y)) };
 }
 
 const nativePopups: Record<string, string[]> = {
