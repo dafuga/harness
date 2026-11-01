@@ -24,7 +24,8 @@
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
-			"reports.component.shared-primitives-atoms-html-summary"
+			"reports.component.shared-primitives-atoms-html-summary",
+			"reports.component.shared-primitives-compare-panes"
 		]
 	},
 	"owns": {
@@ -32,11 +33,14 @@
 			"packages/reports/src/components/verification-evidence/RegressionProof.svelte",
 			"packages/reports/src/components/verification-evidence/regression-proof/regressionProof.css"
 		],
-		"symbols": ["RegressionProof"]
+		"symbols": ["RegressionProof", "RegressionProof.children", "RegressionProof.children"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.harness-harness-verdict"],
+		"primitives": [
+			"reports.component.harness-harness-verdict",
+			"reports.component.shared-primitives-compare-panes"
+		],
 		"inputs": [
 			{
 				"name": "RegressionProof.items",
@@ -84,7 +88,45 @@
 			}
 		],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "RegressionProof.children",
+				"inputs": [
+					{
+						"name": "RegressionProof.children.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RegressionProof.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "RegressionProof.children",
+				"inputs": [
+					{
+						"name": "RegressionProof.children.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RegressionProof.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -173,7 +215,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-compare-panes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.verification-evidence-comparison-panes",
 			"via": "import",
 			"origin": "derived"
 		}

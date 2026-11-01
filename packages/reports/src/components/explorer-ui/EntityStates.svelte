@@ -1,7 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import { shortCommit } from '../../helpers/strings/shortCommit';
+	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
@@ -97,8 +98,12 @@
 		if (item.phase === 'before') return 'Before';
 		return evidence.mode === 'commit' ? 'After' : 'Current';
 	}
-	const revision = (item: Evidence) =>
-		shortCommit((item.phase === 'before' ? scope.parent : scope.commit) ?? '');
+	const statePanes = (items: Evidence[]) =>
+		comparisonPanes(
+			{ value: items.find((item) => item.phase === 'before'), commit: scope.parent },
+			{ value: items.find((item) => item.phase !== 'before'), commit: scope.commit },
+			evidence.mode === 'commit'
+		);
 </script>
 
 <hx-section class="states-gallery" aria-label={`${name} supported states`}>
@@ -150,23 +155,30 @@
 						{words(row.state.coverage)}: {row.state.reason ??
 							'This state has no declared capture coverage.'}
 					</hx-p>{/if}
-				{#if row.state.coverage !== 'inapplicable'}<hx-div class="state-panes">
-						{#each row.items as item (item.id)}
-							{@const shown = prepared(item)}
-							<hx-figure>
-								<hx-figcaption>{phase(item)} <hx-code>{revision(item)}</hx-code></hx-figcaption>
-								{#if shown.missing}<hx-p class="state-gap">
-										{shown.note ?? 'No screenshot was recorded.'}
-									</hx-p>
-								{:else}<EvidenceCard
-										compact
-										item={shown}
-										{assetBase}
-										onopen={() => (viewing = shown)}
-									/>{/if}
-							</hx-figure>
-						{/each}
-					</hx-div>{/if}
+				{#if row.state.coverage !== 'inapplicable'}<ComparePanes
+						panes={statePanes(row.items)}
+						className="state-panes"
+						framed={false}
+					>
+						{#snippet children(pane)}
+							{#if pane.value}
+								{@const item = pane.value}
+								{@const shown = prepared(item)}
+								<hx-figure>
+									<hx-figcaption>{pane.heading}</hx-figcaption>
+									{#if shown.missing}<hx-p class="state-gap">
+											{shown.note ?? 'No screenshot was recorded.'}
+										</hx-p>
+									{:else}<EvidenceCard
+											compact
+											item={shown}
+											{assetBase}
+											onopen={() => (viewing = shown)}
+										/>{/if}
+								</hx-figure>
+							{/if}
+						{/snippet}
+					</ComparePanes>{/if}
 			</hx-article>
 		{/each}
 	</hx-div>

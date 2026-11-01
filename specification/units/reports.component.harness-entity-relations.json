@@ -10,12 +10,12 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.explorer-catalog-items",
+			"reports.component.explorer-ui-explorer-kit-card",
 			"reports.component.explorer-ui-harness-group",
 			"reports.component.harness-harness-icon",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
@@ -27,6 +27,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
 		"inputs": [
 			{
 				"name": "EntityRelations.relations",
@@ -110,6 +111,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.explorer-ui-harness-group",
 			"via": "import",
 			"origin": "derived"
@@ -131,11 +137,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
 		},

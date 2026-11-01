@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '../../shared-primitives/DetailList.svelte';
+	import Card from '../explorer-kit/Card.svelte';
 	import { shortCommit } from '../../../helpers/strings/shortCommit';
 
 	import { tick } from 'svelte';
@@ -113,10 +115,11 @@
 	}
 </script>
 
-<hx-section
-	class="ex-card ex-contract"
-	data-harness-component="entity-contract"
-	aria-label={last ? 'Last contract' : 'Contract'}
+<Card
+	as="section"
+	tone="ex-contract"
+	component="entity-contract"
+	label={last ? 'Last contract' : 'Contract'}
 >
 	<hx-h2><HarnessIcon name="contract" size={24} /> {title}</hx-h2>
 	{#if last}
@@ -146,17 +149,13 @@
 		{/each}
 	{/each}
 	{#if serviceErrors}<ContractTable group={serviceErrors} onexample={openExample} />{/if}
-</hx-section>
+</Card>
 {#snippet summaryRows(rows: ContractRow[])}
 	{#if rows.length > 0}
-		<hx-dl class="ex-rows">
-			{#each rows as row, position (position)}
-				<hx-div>
-					<hx-dt>{row.label}</hx-dt>
-					<hx-dd>{row.value}</hx-dd>
-				</hx-div>
-			{/each}
-		</hx-dl>
+		<DetailList {rows} rowKey={(_, position) => position} className="ex-rows">
+			{#snippet label(row)}{row.label}{/snippet}
+			{#snippet children(row)}{row.value}{/snippet}
+		</DetailList>
 	{/if}
 {/snippet}
 {#snippet callableSection(callable: CallableContract, label: string)}
@@ -186,7 +185,7 @@
 </Modal>
 
 <style>
-	.ex-contract {
+	:global(.ex-contract) {
 		display: grid;
 		gap: var(--hx-space-16);
 		min-width: 0;

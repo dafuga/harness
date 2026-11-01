@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
+	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 
 	import type { RegressionView } from '../../../../../src/core/regressionTypes';
@@ -57,56 +59,65 @@
 							? 'The failure below is historical. The same tests pass at the fix commit.'
 							: 'This records the bug before repair. No passing fix is recorded here.'}
 					</hx-p>
-					<hx-div class="proof-steps">
-						<hx-div class="proof-step failed">
-							<hx-div class="step-heading">
-								<hx-span>Before fix · failed as expected</hx-span><Status
-									passed={false}
-									label="Historical test result: failed before the fix"
-								/>
-							</hx-div>
-							<hx-p class="assertion">{item.red.assertion}</hx-p>
-							<hx-a
-								href={href(item.red.commit)}
-								aria-label="View failing test commit"
-								onclick={(event) => open(event, item.red!.commit)}
-								><hx-code>{shortCommit(item.red.commit)}</hx-code><hx-span
-									>View before-fix commit →</hx-span
-								></hx-a
+
+					{@const panes = comparisonPanes(
+						{ value: item.red, commit: item.red.commit },
+						{ value: item.green, commit: item.green?.commit, gap: 'Awaiting a passing fix commit.' }
+					)}
+					<ComparePanes {panes} className="proof-steps" framed={false}>
+						{#snippet children(pane)}
+							<hx-div
+								class="proof-step"
+								class:failed={pane.side === 'before'}
+								class:passed={pane.side === 'after' && Boolean(pane.value)}
 							>
-						</hx-div>
-						<hx-div class="proof-step" class:passed={Boolean(item.green)}>
-							<hx-div class="step-heading">
-								<hx-span>{item.green ? 'After fix · passed' : 'After fix · pending'}</hx-span
-								>{#if item.green}<Status
-										passed={true}
-										label="The same regression tests passed at the fix commit"
-									/>{/if}
+								<hx-div class="step-heading">
+									<hx-span
+										>{pane.heading} · {pane.side === 'before'
+											? 'failed as expected'
+											: pane.value
+												? 'passed'
+												: 'pending'}</hx-span
+									>
+									{#if pane.value}<Status
+											passed={pane.side === 'after'}
+											label={pane.side === 'before'
+												? 'Historical test result: failed before the fix'
+												: 'The same regression tests passed at the fix commit'}
+										/>{/if}
+								</hx-div>
+								{#if pane.value}<hx-p class="assertion"
+										>{pane.side === 'before'
+											? pane.value.assertion
+											: 'Same tests and command'}</hx-p
+									>
+									<hx-a
+										href={href(pane.commit)}
+										aria-label={pane.side === 'before'
+											? 'View failing test commit'
+											: 'View fix commit'}
+										onclick={(event) => open(event, pane.commit)}
+										><hx-code>{shortCommit(pane.commit)}</hx-code><hx-span
+											>{pane.side === 'before'
+												? 'View before-fix commit →'
+												: 'View fix commit →'}</hx-span
+										></hx-a
+									>
+								{:else}<hx-p>{pane.gap}</hx-p>{/if}
 							</hx-div>
-							{#if item.green}<hx-p class="assertion">Same tests and command</hx-p>
-								<hx-a
-									href={href(item.green.commit)}
-									aria-label="View fix commit"
-									onclick={(event) => open(event, item.green!.commit)}
-									><hx-code>{shortCommit(item.green.commit)}</hx-code><hx-span
-										>View fix commit →</hx-span
-									></hx-a
-								>{:else}<hx-p>Awaiting a passing fix commit.</hx-p>{/if}
-						</hx-div>
-					</hx-div>
+						{/snippet}
+					</ComparePanes>
 					<hx-details ontoggle={(event) => (expanded[index] = event.currentTarget.open)}>
 						<hx-summary>Test command and recorded output</hx-summary>
 						{#if expanded[index]}<hx-code class="command">{item.red.command}</hx-code>
-							<hx-div class="proof-steps">
-								<hx-div>
-									<hx-h4>Before fix · {shortCommit(item.red.commit)}</hx-h4>
-									<hx-pre>{item.red.output}</hx-pre>
-								</hx-div>
-								{#if item.green}<hx-div>
-										<hx-h4>After fix · {shortCommit(item.green.commit)}</hx-h4>
-										<hx-pre>{item.green.output}</hx-pre>
-									</hx-div>{/if}
-							</hx-div>
+
+							<ComparePanes {panes} className="proof-steps" framed={false}>
+								{#snippet children(pane)}
+									{#if pane.value}<hx-div
+											><hx-h4>{pane.heading}</hx-h4><hx-pre>{pane.value.output}</hx-pre></hx-div
+										>{/if}
+								{/snippet}
+							</ComparePanes>
 						{/if}
 					</hx-details>
 				{:else}<hx-p>No failing-test checkpoint is recorded.</hx-p>{/if}
