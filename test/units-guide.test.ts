@@ -76,6 +76,11 @@ test('guide counts verified shots per state and viewport and reaches DONE', asyn
 	const root = await project(['default', 'loading']);
 	await attachGuidanceShots(root, ['default']);
 	let result = await guidanceJson(root, ['guide', entity]);
+	expect(result.report.states[0].status).toBe('DONE');
+	expect(result.report.states[0].tests).toContainEqual({
+		file: 'tests/catalog.spec.ts',
+		viewports: ['desktop', 'tablet', 'mobile']
+	});
 	expect(
 		result.report.states.find((state: { name: string }) => state.name === 'default')
 	).toMatchObject({

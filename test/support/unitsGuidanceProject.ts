@@ -96,7 +96,12 @@ async function writeGuidanceCatalog(root: string, states: string[]) {
 			})),
 			viewports: viewports.map((id) => ({ id, width: 1, height: 1 })),
 			tests: [
-				{ id: 'catalog', kind: 'e2e', runner: 'playwright', target: 'tests/catalog.spec.ts' }
+				{
+					id: 'catalog',
+					kind: 'e2e',
+					runner: 'command',
+					target: 'bun x playwright test --config src/configs/playwrightConfig.ts catalog.spec.ts'
+				}
 			],
 			evidence: [
 				{
