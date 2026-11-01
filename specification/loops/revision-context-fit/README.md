@@ -36,3 +36,8 @@ The all-component capture also exposed an unbroken evidence record ID extending
 beyond EntityView on mobile. The existing artifact assertion now checks painted
 record captions inside the entity panel. Keep both guards in the normal catalog;
 an isolated passing unit record does not establish that all sibling states fit.
+
+Review also found evidence table headings breaking inside short words while the
+document still fit. The same artifact guard now requires each heading's painted
+word to remain whole. The existing overflow frame handles genuinely wide tables;
+ordinary words should use the browser's normal wrapping opportunities.

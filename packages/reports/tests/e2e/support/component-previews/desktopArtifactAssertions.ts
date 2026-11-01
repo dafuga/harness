@@ -78,6 +78,14 @@ async function assertEntityRecordFits(component: Locator) {
 		});
 		expect(fits, 'Full evidence record ID stays inside the entity panel').toBe(true);
 	}
+	for (const heading of await component.locator('.coverage-scenario th:visible').all()) {
+		const lines = await heading.evaluate((node) => {
+			const range = document.createRange();
+			range.selectNodeContents(node);
+			return [...range.getClientRects()].filter((box) => box.width > 0).length;
+		});
+		expect(lines, 'Evidence table header words remain whole').toBe(1);
+	}
 }
 
 async function assertReadableResult(component: Locator, variant: string) {
