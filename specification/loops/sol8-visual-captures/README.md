@@ -28,3 +28,16 @@ still paints a fixture label. The standard artwork guard now covers every catalo
 variant, and pagination assertions retain the visible background distinction.
 The guard must reject the old multiple-card images before the fixture label changes.
 That fixture qualification is separate from the matched product loops.
+
+Item 42 fixture repair `c1ac9c64ac` passes all 39 catalog cases in record
+`70bd4b43c611`. API fetches initially timed out, then succeeded using the existing
+HTTP deadline option. All 39 originals were opened and inspected. Normal recording
+`518eb25330d1` is attached with passing catalog slots; its scoped verdict remains
+partial/failed. No runtime hover or empty-state repair was needed after current-code
+inspection.
+
+Item 43 names the unregistered legacy ExplorerFunctionCard, removed by `2888b45f32`
+before starting base `d6f78bfd27`. Current-source screenshot requests at all three
+viewports return HTTP 400, entity not registered, and create no image. This obsolete
+entrypoint is not restored. Current ExplorerModuleCard captures retain their own
+registered identity and are never relabelled as the removed component.
