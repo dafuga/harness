@@ -67,7 +67,7 @@
 			</hx-nav>
 			<hx-h1 id="translations-title">Translations</hx-h1>
 			<hx-p class="ex-lead">Compare English with a selected language.</hx-p>
-			<hx-div class="ex-translations-controls">
+			<hx-div class="ex-translations-controls" style:--language-row-count={locales.length}>
 				<ExplorerControls noun="translations" bind:filter />
 				{#if locales.length}
 					<hx-label class="ex-translations-language"
@@ -164,7 +164,11 @@
 							class="ex-button ex-translations-more"
 							onclick={() => (limit += 50)}>View More</hx-button
 						>{/if}
-				{:else}<EmptyState>No translations match this search.</EmptyState>{/if}
+				{:else}<EmptyState>
+						{catalog.rows.length
+							? 'No translations match this search.'
+							: 'No translation strings are recorded at this revision.'}
+					</EmptyState>{/if}
 			{/if}
 		</hx-section>
 	{/snippet}

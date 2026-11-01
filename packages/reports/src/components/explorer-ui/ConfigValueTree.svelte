@@ -123,6 +123,11 @@
 		max-width: 100%;
 		list-style-position: outside;
 	}
+	summary.ex-value-line:hover {
+		background: var(--hx-color-hover);
+		text-decoration: underline;
+		text-underline-offset: var(--hx-space-2);
+	}
 	/* Key, shape, count and value run on one line, each a space and a little margin apart. */
 	.ex-value-tree :global(.hx-icon) {
 		display: inline-block;
