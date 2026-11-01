@@ -125,7 +125,10 @@ async function assertContractMetadataGroups(
 	const rows = component.locator('[data-contract-input]');
 	if (id === 'reports.component.entity-contract') {
 		if (variant === 'types')
-			await expect(rows.locator('.requirement')).toHaveText(['Required', 'Optional', 'Required']);
+			await expect(
+				rows.locator('.requirement'),
+				'Source-declared callable fields retain authored Required metadata'
+			).toHaveText(['Required', 'Optional', 'Required']);
 		await expect(
 			component.getByText(/No errors declared\.|TypeError|NotFoundError/).first()
 		).toBeVisible();

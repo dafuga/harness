@@ -1,3 +1,4 @@
+import { typeDeclarations } from '../entityClassFixtures';
 import { contractFields } from '../../src/utils/contractFields';
 import { unit as fixtureUnit } from '../explorerFixture';
 
@@ -58,4 +59,16 @@ export function contractArrayAdmission() {
 	});
 	const value = contractFields(admitted, 'components')[0].fields[0].examples[0].value;
 	return { indexed, species, value };
+}
+
+/** Shared declarations may author requirement flags for callable members explicitly. */
+export function declaredTypeUnit(source: string) {
+	const unit = fixtureUnit('app.model.order-input', 'model', {
+		owns: { source: [source], symbols: ['OrderInput'] },
+		modelDefinitions: typeDeclarations(source)
+	});
+	unit.contract.inputs = [
+		{ name: 'OrderInput.resolve', type: '(key: string): number', required: true }
+	];
+	return unit;
 }

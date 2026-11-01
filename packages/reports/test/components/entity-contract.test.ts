@@ -1,7 +1,5 @@
-import { propContract, contractArrayAdmission } from './entity-contract.fixture';
+import { propContract, contractArrayAdmission, declaredTypeUnit } from './entity-contract.fixture';
 import { contractFields } from '../../src/utils/contractFields';
-import { unit as fixtureUnit } from '../explorerFixture';
-import { typeDeclarations } from '../entityClassFixtures';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { content, words } from '../entityRender';
@@ -81,13 +79,7 @@ test('legacy contract tables retain types and example controls for opaque fields
 	expect(body).toContain('View example for Context');
 	expect(body).toContain('PrivateContext');
 	const source = 'src/models/OrderInput.types.ts';
-	const types = fixtureUnit('app.model.order-input', 'model', {
-		owns: { source: [source], symbols: ['OrderInput'] },
-		modelDefinitions: typeDeclarations(source)
-	});
-	types.contract.inputs = [
-		{ name: 'OrderInput.resolve', type: '(key: string): number', required: true }
-	];
+	const types = declaredTypeUnit(source);
 	const groups = await measureWorkload(
 		'reports.function.contract-fields',
 		'shared-type-declarations',
