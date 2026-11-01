@@ -2,11 +2,9 @@
 	"name": "sol8-open-dialog-capture",
 	"goal": "Capture every visible open dialog completely when its component uses a full preview frame.",
 	"createdAt": "2026-11-01T07:15:42.714Z",
-	"updatedAt": "2026-11-01T07:20:29.405Z",
+	"updatedAt": "2026-11-01T07:35:29.437Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,7 +32,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T07:35:29.437Z",
+			"evidence": "Committed capture helper 7d38c4993e includes visible owned dialogs. All three unchanged Navbar extent assertions pass in dialog74-qualified.json; this is fixture qualification."
 		},
 		{
 			"id": "green",
