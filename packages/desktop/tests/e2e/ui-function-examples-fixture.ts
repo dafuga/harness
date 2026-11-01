@@ -172,6 +172,8 @@ async function admitViewport(page: Page): Promise<void> {
 				.map((element) => ({
 					tag: element.tagName,
 					classes: element.getAttribute('class'),
+					text: element.textContent?.slice(0, 100),
+					parent: element.parentElement?.outerHTML.slice(0, 300),
 					right: element.getBoundingClientRect().right
 				}))
 		};
