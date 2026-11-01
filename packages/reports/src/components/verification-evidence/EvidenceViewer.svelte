@@ -152,6 +152,9 @@
 {#if !selected}<hx-p class="muted">{$t('noScreenshotSelected')}</hx-p>{/if}
 
 <style>
+	.viewer-actions :global(button:disabled) {
+		opacity: var(--hx-opacity-disabled);
+	}
 	/* Give recorded images the space left after the viewer's controls and provenance. */
 	:global(.viewer-dialog.lightbox:has(.viewer-images) .viewer-content) {
 		display: flex;
