@@ -39,7 +39,8 @@ export async function assertDesktopArtifactCapture(
 	id: string,
 	variant: string
 ) {
-	if (id === 'desktop.component.entity-view') await assertEntityRecordFits(component);
+	if (['desktop.component.entity-view', 'desktop.component.runtime-evidence'].includes(id))
+		await assertEvidenceGeometry(component);
 	if (id !== 'desktop.component.runtime-artifact') return;
 	await assertReadableResult(component, variant);
 	if (variant !== 'json-open') return;
@@ -67,7 +68,27 @@ export async function assertDesktopArtifactCapture(
 	).toBeLessThanOrEqual(capture.clip.y + capture.clip.height + 1);
 }
 
-async function assertEntityRecordFits(component: Locator) {
+async function assertEvidenceGeometry(component: Locator) {
+	for (const heading of await component.locator('.panel > .row h2:visible').all()) {
+		const lines = await heading.evaluate((node) => {
+			const texts: Text[] = [];
+			const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+			while (walker.nextNode()) texts.push(walker.currentNode as Text);
+			return texts.flatMap((text) =>
+				[...text.data.matchAll(/\S+/g)].map((word) => {
+					const range = document.createRange();
+					range.setStart(text, word.index);
+					range.setEnd(text, word.index + word[0].length);
+					return [...range.getClientRects()].filter((box) => box.width > 0).length;
+				})
+			);
+		});
+		expect(lines.length).toBeGreaterThan(0);
+		expect(
+			lines.every((count) => count === 1),
+			'Evidence heading words remain whole'
+		).toBe(true);
+	}
 	for (const caption of await component.locator('.coverage-panel > .row > small:visible').all()) {
 		const fits = await caption.evaluate((node) => {
 			const panel = node.closest('.coverage-panel')!.getBoundingClientRect();
