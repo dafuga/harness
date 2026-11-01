@@ -34,8 +34,6 @@ export async function prepareEvidenceGrid(component: Locator, variant: string) {
 		await expect(button).toHaveAttribute('aria-pressed', 'true');
 	}
 	if (variant === 'status' || variant.startsWith('status-')) await selectStatus(component, variant);
-	if (variant.startsWith('upload-')) await openUpload(component, variant);
-	if (variant === 'uploads') await expect(component.locator('.upload-comparison')).toHaveCount(2);
 	if (variant === 'image-open') await openImage(component);
 	if (variant === 'audio-open') {
 		await component
@@ -71,14 +69,6 @@ async function selectStatus(component: Locator, variant: string) {
 		if (status !== 'passed')
 			await expect(component.locator('.evidence-grid .evidence-card')).toHaveCount(1);
 	}
-}
-
-async function openUpload(component: Locator, variant: string) {
-	const detail = component.locator(
-		variant === 'upload-audio-open' ? '.upload-audio' : '.upload-comparison:not(.upload-audio)'
-	);
-	await detail.locator('summary').click();
-	await expect(detail).toHaveAttribute('open', '');
 }
 
 async function openImage(component: Locator) {

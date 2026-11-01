@@ -1,8 +1,7 @@
 import type { PreviewCases } from './shared';
-import { noop } from './shared';
 import type { Evidence, Status } from '../../../../src/models/reports-media/Report.types';
 
-/** Supply empty, screenshot-only and upload-enabled gallery inputs. */
+/** Supply empty, screenshot-only and filtered gallery inputs. */
 export function evidenceGridVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'no-items') return { ...props, items: [] };
 	const status = variant.slice('status-'.length) as Status;
@@ -27,7 +26,5 @@ export function evidenceGridVariant(props: PreviewCases[string], variant: string
 				(item) => item.mediaType !== 'audio'
 			)
 		};
-	if (['uploads', 'upload-comparison-open', 'upload-audio-open'].includes(variant))
-		return { ...props, reportId: 'preview-report', onUploaded: noop, idPrefix: 'upload-' };
 	return props;
 }
