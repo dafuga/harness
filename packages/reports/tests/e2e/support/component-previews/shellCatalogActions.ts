@@ -1,6 +1,7 @@
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
 import { shellCatalogVariants } from './shellCatalogVariants';
 import { commits } from '../../../../test/entityUnits';
+import { prepareSectionCaptures } from './entitySectionsPreviewAssertions';
 
 /** Prepare state through normal controls and assert that the fixture reached its named branch. */
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
@@ -79,6 +80,7 @@ async function screensState(component: Locator, variant: string) {
 	if (variant === 'incomparable') await expect(component).toContainText('Not comparable');
 }
 async function sectionsState(component: Locator, variant: string) {
+	await prepareSectionCaptures(component, variant);
 	if (variant !== 'tests') return;
 	await component.getByText('Verification details', { exact: true }).click();
 	await expect(component.getByText(`Verification at ${commits.middle.slice(0, 7)}`)).toBeVisible();
