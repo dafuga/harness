@@ -1,7 +1,8 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig, type Plugin, type UserConfig } from 'vite';
 import { fileURLToPath } from 'node:url';
-import { buildData } from '../../../tests/e2e/support/component-previews/buildData';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 // One page of the shell fixture as one script and one stylesheet: the shell alone over a made-up
 // history, with no server, no index and no build of the application behind it. The run that
 // builds it names the page and a directory of its own.
@@ -21,7 +22,7 @@ const contextStyles: Plugin = {
 	}
 };
 export default defineConfig(async (): Promise<UserConfig> => {
-	const data = page === 'catalog' ? JSON.stringify(await buildData()) : '';
+	const data = page === 'catalog' ? await loadCatalogData() : '';
 	return {
 		define: {
 			'process.env.NODE_ENV': JSON.stringify('production'),
@@ -67,6 +68,19 @@ export default defineConfig(async (): Promise<UserConfig> => {
 		}
 	};
 });
+
+/** Bun resolves the source snapshot's generated workspace aliases before Vite has a config. */
+async function loadCatalogData(): Promise<string> {
+	const source = fileURLToPath(
+		new URL('../../../tests/e2e/support/component-previews/buildData.ts', import.meta.url)
+	);
+	const script = `import { buildData } from ${JSON.stringify(source)}; process.stdout.write(JSON.stringify(await buildData()));`;
+	const { stdout } = await promisify(execFile)('bun', ['-e', script], {
+		encoding: 'utf8',
+		maxBuffer: 16 * 1024 * 1024
+	});
+	return stdout;
+}
 
 /** Publish the original sealed bytes with the bundle, for its media router and admission check. */
 function fixtureMedia(data: string): Plugin {
