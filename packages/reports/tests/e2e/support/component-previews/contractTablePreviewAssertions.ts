@@ -33,6 +33,8 @@ export async function assertContractTableState(
 		await expect(component.getByRole('rowheader', { name: 'orderStore' })).toBeVisible();
 	}
 	await assertLongTable(component, variant);
+	if (viewport === 'desktop' && ['long', 'multiple'].includes(variant))
+		await assertDesktopWordsIntact(component);
 	if (viewport === 'mobile') await assertMobileContractFields(component);
 }
 
@@ -55,4 +57,30 @@ async function assertExampleButtonsFit(component: Locator) {
 			.map((button) => button.getAttribute('aria-label'));
 	});
 	expect(clipped, 'Example buttons fit inside the visible table frame').toEqual([]);
+}
+
+/** On the wide table a name or type wraps between words and its full example stays readable. */
+async function assertDesktopWordsIntact(component: Locator) {
+	const problems = await component.locator('.frame').evaluate((frame) => {
+		const found: string[] = [];
+		for (const cell of frame.querySelectorAll('tbody th, tbody .type')) {
+			const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+			for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+				for (const match of (node.textContent ?? '').matchAll(/\S+/g)) {
+					const range = document.createRange();
+					range.setStart(node, match.index!);
+					range.setEnd(node, match.index! + match[0].length);
+					const lines = new Set(
+						Array.from(range.getClientRects()).map((rect) => Math.round(rect.top))
+					);
+					if (lines.size > 1) found.push(`split word: ${match[0]}`);
+				}
+			}
+		}
+		for (const example of frame.querySelectorAll<HTMLElement>('.example'))
+			if (example.scrollWidth > example.clientWidth)
+				found.push(`truncated example: ${example.textContent}`);
+		return found;
+	});
+	expect(problems, 'Desktop names, types and examples stay whole').toEqual([]);
 }
