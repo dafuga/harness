@@ -32,7 +32,10 @@ function card(props: PreviewCases[string], variant: string) {
 			...props,
 			as: 'li',
 			children: text(
-				'<h2>Invoice notifications</h2><p>Send an email after an invoice is approved.</p>'
+				`<div>
+					<h2>Invoice notifications</h2>
+					<p>Send an email after an invoice is approved.</p>
+				</div>`
 			)
 		};
 	if (variant === 'module')
@@ -40,7 +43,10 @@ function card(props: PreviewCases[string], variant: string) {
 			...props,
 			variant: 'module',
 			tone: 'ex-function-tile',
-			children: text('<h2>formatDuration</h2><p>Converts seconds to a readable duration.</p>')
+			children: text(`<div>
+				<h2>formatDuration</h2>
+				<p>Converts seconds to a readable duration.</p>
+			</div>`)
 		};
 	if (variant === 'attributes')
 		return {
@@ -49,7 +55,10 @@ function card(props: PreviewCases[string], variant: string) {
 			label: 'Invoice notifications',
 			component: 'explorer-ui-explorer-kit-card',
 			children: text(
-				'<h2>Invoice notifications</h2><p>Approved invoices appear in the activity feed.</p>'
+				`<div>
+					<h2>Invoice notifications</h2>
+					<p>Approved invoices appear in the activity feed.</p>
+				</div>`
 			)
 		};
 	return {
