@@ -145,7 +145,7 @@
 	:global(.runtime-artifact-runtime-gap) {
 		flex-wrap: nowrap;
 	}
-	.runtime-gap > :global(.verification-wrap) {
+	:global(.runtime-artifact-runtime-gap > .verification-wrap) {
 		flex: none;
 	}
 </style>

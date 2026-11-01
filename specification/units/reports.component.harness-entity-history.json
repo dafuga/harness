@@ -30,7 +30,10 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"],
+		"source": [
+			"packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"packages/reports/src/components/explorer-ui/entity-history/entityHistory.css"
+		],
 		"symbols": ["EntityHistory", "EntityHistory.header", "EntityHistory.children"]
 	},
 	"contract": {

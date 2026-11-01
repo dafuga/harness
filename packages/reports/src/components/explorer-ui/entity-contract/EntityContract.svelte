@@ -185,35 +185,5 @@
 </Modal>
 
 <style>
-	:global(.ex-contract) {
-		display: grid;
-		gap: var(--hx-space-16);
-		min-width: 0;
-	}
-	/* Shared callable headings keep method names primary and parameters distinct. */
-	.callable {
-		display: grid;
-		gap: var(--hx-space-10);
-		min-width: 0;
-	}
-	.callable + .callable {
-		padding-top: var(--hx-space-16);
-		border-top: var(--hx-border-thin) solid var(--ex-line);
-	}
-	.call-signature {
-		color: var(--hx-color-text-muted);
-	}
-	.callable-name {
-		color: var(--hx-color-text);
-	}
-	.callable-parameter {
-		color: var(--hx-color-text-supporting);
-	}
-	.callable h3 {
-		margin: 0;
-		color: var(--ex-text);
-		font-size: var(--hx-type-size-base);
-		font-weight: var(--hx-style-weight-semibold);
-		overflow-wrap: anywhere;
-	}
+	@import './entityContract.css';
 </style>

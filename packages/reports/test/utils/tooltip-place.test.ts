@@ -1,3 +1,7 @@
+import { spawnSync } from 'node:child_process';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { tooltipPlace as publicTooltipPlace } from '../../src/utils/explorer-ui/tooltipPlace';
 import { expect, test } from 'vitest';
 import { tooltipPlace } from '../../src/components/shared-primitives/status/tooltipPlace';
@@ -6,11 +10,24 @@ const view = { width: 390, height: 844 };
 const tip = { width: 240, height: 80 };
 const mark = (left: number, top: number) => ({ left, top, width: 32, height: 32 });
 
-test('a tooltip sits under its mark, centred on it, with the gap a pointer can cross', () => {
+test('a tooltip sits under its mark, centred on it, with the gap a pointer can cross', async () => {
 	expect(tooltipPlace(mark(180, 100), tip, view)).toEqual({ left: 76, top: 140 });
 	expect(publicTooltipPlace(mark(180, 100), tip, view)).toEqual(
 		tooltipPlace(mark(180, 100), tip, view)
 	);
+	await measureWorkload('reports.function.tooltip-place', 'cold-public-and-owner-entries', () => {
+		for (const path of [
+			'src/utils/tooltipPlace.ts',
+			'src/utils/explorer-ui/tooltipPlace.ts',
+			'src/components/shared-primitives/status/tooltipPlace.ts'
+		]) {
+			const source = pathToFileURL(resolve(path)).href;
+			const code = `import {tooltipPlace} from ${JSON.stringify(source)}; console.log(JSON.stringify(tooltipPlace({left:180,top:100,width:32,height:32},{width:240,height:80},{width:390,height:844})));`;
+			const child = spawnSync('bun', ['-e', code], { encoding: 'utf8' });
+			expect(child.status, child.stderr).toBe(0);
+			expect(JSON.parse(child.stdout)).toEqual({ left: 76, top: 140 });
+		}
+	});
 });
 
 test('near an edge of the screen it stays wholly on the screen instead of centring', () => {

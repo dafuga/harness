@@ -24,7 +24,10 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte"],
+		"source": [
+			"packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+			"packages/reports/src/components/explorer-ui/entity-contract/entityContract.css"
+		],
 		"symbols": [
 			"EntityContract",
 			"EntityContract.summaryRows",

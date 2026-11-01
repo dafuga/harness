@@ -22,7 +22,10 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte"],
+		"source": [
+			"packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte",
+			"packages/reports/src/components/explorer-ui/explorerModuleCard.css"
+		],
 		"symbols": ["ExplorerModuleCard", "ExplorerModuleCard.picture", "ExplorerModuleCard.usage"]
 	},
 	"contract": {

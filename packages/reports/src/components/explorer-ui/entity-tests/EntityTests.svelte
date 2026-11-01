@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import { testLocation } from './testLocation';
 	import Notice from '../explorer-kit/Notice.svelte';
 	import DataTable from '../../shared-primitives/DataTable.svelte';
 	import Card from '../explorer-kit/Card.svelte';
@@ -11,7 +12,7 @@
 		ExplorerSlotCoverage as Slot,
 		ExplorerScope
 	} from '../../../models/explorer-ui/Explorer.types';
-	import { entityLens, shortCommit, type EntityNav } from '../../../utils/explorer-ui/entityLens';
+	import { shortCommit, type EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import RegressionProof from '../../verification-evidence/RegressionProof.svelte';
 	import { entityRemoved } from './entityRemoved';
 	import { coverageLabels as said } from './coverageLabels';
@@ -60,24 +61,8 @@
 	<RegressionProof
 		items={evidence.after.detail?.regressions ?? []}
 		unit={entity.id}
-		href={(commit) =>
-			nav.href(
-				entityLens(nav.route, {
-					commit,
-					category: entity.category,
-					entity: entity.id,
-					tab: 'tests'
-				})
-			)}
-		follow={(commit) =>
-			nav.go(
-				entityLens(nav.route, {
-					commit,
-					category: entity.category,
-					entity: entity.id,
-					tab: 'tests'
-				})
-			)}
+		href={(commit) => nav.href(testLocation(nav.route, entity, commit))}
+		follow={(commit) => nav.go(testLocation(nav.route, entity, commit))}
 	/>
 	<Card as="section" labelledby="ex-verdict-title">
 		<hx-h2 id="ex-verdict-title">Verification at {shortCommit(scope.commit)}</hx-h2>
