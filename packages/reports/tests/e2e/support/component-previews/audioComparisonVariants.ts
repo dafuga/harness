@@ -20,7 +20,7 @@ export function audioComparisonVariant(props: PreviewCases[string], variant: str
 			before: unavailable(before, compact),
 			after: unavailableAfter(after, compact)
 		};
-	if (variant === 'no-duration')
+	if (variant === 'no-duration' && !compact)
 		return {
 			...props,
 			before: { ...before, durationSeconds: undefined },

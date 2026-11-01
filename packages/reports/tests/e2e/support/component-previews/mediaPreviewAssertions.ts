@@ -1,7 +1,10 @@
 import { expect, type Locator } from '@playwright/test';
+import { assertPreviewAudio } from './audioPreviewReadiness';
+import { assertEvidenceViewerCloses } from './evidenceViewerActions';
 
 /** Assert the visible diagnostic or media state after its canonical capture is retained. */
 export async function assertMediaPreviewState(component: Locator, id: string, variant: string) {
+	await assertPreviewAudio(component, id, variant);
 	if (id === 'reports.component.browser-errors') await assertBrowserDiagnostics(component, variant);
 	if (id === 'reports.component.image-zoom') await assertImageStatus(component, variant);
 	if (id === 'reports.component.audio-comparison' && variant === 'pre-mount')
@@ -13,6 +16,8 @@ export async function assertMediaPreviewState(component: Locator, id: string, va
 			),
 			'Disabled comparison has a visible disabled treatment'
 		).toBeLessThan(1);
+	if (id === 'reports.component.evidence-viewer' && !variant)
+		await assertEvidenceViewerCloses(component);
 }
 
 async function assertBrowserDiagnostics(component: Locator, variant: string) {

@@ -49,7 +49,6 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 	],
 	'reports.component.evidence-viewer': [
 		'unselected',
-		'closed',
 		'before',
 		'compare',
 		'unavailable',

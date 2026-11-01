@@ -5,10 +5,6 @@ export async function prepareEvidenceViewer(component: Locator, variant: string)
 	const dialog = component.getByRole('dialog');
 	if (variant === 'unselected') return assertUnselected(component, dialog);
 	await expect(dialog).toBeVisible();
-	if (variant === 'closed') {
-		await dialog.getByRole('button', { name: 'Close viewer' }).click();
-		return assertUnselected(component, dialog);
-	}
 	if (variant === 'before')
 		await dialog.getByRole('button', { name: 'View before screenshot' }).click();
 	if (variant === 'compare')
@@ -19,7 +15,13 @@ export async function prepareEvidenceViewer(component: Locator, variant: string)
 		await dialog.getByRole('button', { name: 'View tablet screenshots' }).click();
 	if (variant === 'next') await dialog.getByRole('button', { name: 'Next image' }).click();
 	if (variant === 'previous') await dialog.getByRole('button', { name: 'Previous image' }).click();
-	if (variant === 'zoomed') await dialog.getByRole('button', { name: 'Zoom in' }).click();
+	if (variant === 'zoomed') {
+		await dialog.getByRole('button', { name: 'Actual size' }).click();
+		await dialog.getByRole('button', { name: 'Zoom in' }).click();
+		await dialog.getByRole('button', { name: 'Zoom in' }).click();
+		await expect(dialog.locator('output')).toHaveText('150%');
+		await dialog.locator('.stage.zoomed').evaluate((node) => node.scrollTo(0, 0));
+	}
 	if (variant === 'actual-size') await dialog.getByRole('button', { name: 'Actual size' }).click();
 	if (variant === 'no-navigation') await dialog.getByRole('button', { name: 'Next image' }).click();
 	await assertViewerState(dialog, variant);
@@ -32,6 +34,13 @@ export async function prepareEvidenceViewer(component: Locator, variant: string)
 		await image.evaluate((node: HTMLImageElement) => node.decode());
 	}
 	await assertViewerImagesFit(dialog, variant);
+}
+
+/** Preserve close interaction coverage after capturing the default open viewer. */
+export async function assertEvidenceViewerCloses(component: Locator) {
+	const dialog = component.getByRole('dialog');
+	await dialog.getByRole('button', { name: 'Close viewer' }).click();
+	await assertUnselected(component, dialog);
 }
 
 async function assertUnselected(component: Locator, dialog: Locator) {

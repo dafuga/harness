@@ -18,6 +18,7 @@ import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { uploadComparisonPreMount } from './uploadComparisonPreMount';
 import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
+import { settlePreviewAudio } from './audioPreviewReadiness';
 import {
 	prepareDesktopPage,
 	desktopCaptureEvidence,
@@ -148,6 +149,7 @@ export async function capturePreview(
 	const { viewport, variant = '' } = target;
 	const nativeOpen = usesNativePopup(id, variant);
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
+	await settlePreviewAudio(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await frameDesktopCapture(page, id);
 	const clip = await previewCaptureBounds(page, id, variant);
 	const reportDialog = await reportViewDialog(page, id);
