@@ -2,9 +2,11 @@
 	"name": "sol9-agent-runtime-proof",
 	"goal": "Project chat has readable unit references and runtime evidence shows recorded regression proof only after loading",
 	"createdAt": "2026-11-01T19:58:24.299Z",
-	"updatedAt": "2026-11-01T19:58:47.720Z",
+	"updatedAt": "2026-11-01T20:07:33.108Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T20:06:47.744Z",
+			"evidence": "Record49f923fdbeb45463d448f0a9ad0d4db36788a863fc5aee041a95cfa0605ec15e has12 premature-proof failures and6 ready/offline passes. All18 originals inspected; fixture diagnostic retained separately."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T20:07:33.108Z",
+			"evidence": "RuntimeEvidence renders its shared RegressionProof only for loaded records. Default/offline fixtures carry OrderCard proof; project chat uses a readable historical proposal name."
 		},
 		{
 			"id": "green",

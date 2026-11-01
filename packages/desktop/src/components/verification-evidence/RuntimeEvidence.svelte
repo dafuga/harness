@@ -42,15 +42,15 @@
 
 <!-- What verification captured from running software; a planned design is never shown here. -->
 <hx-section class="panel runtime-evidence" aria-label="Recorded runtime evidence">
-	<RegressionProof
-		items={result?.evidence.after.detail?.regressions ?? []}
-		unit={entity.id}
-		href={(commit) => workspace.link({ commit, category: entity.category, entityId: entity.id })}
-		follow={(commit) =>
-			void workspace.navigate(
-				workspace.link({ commit, category: entity.category, entityId: entity.id })
-			)}
-	/>
+	{#if result}<RegressionProof
+			items={result.evidence.after.detail?.regressions ?? []}
+			unit={entity.id}
+			href={(commit) => workspace.link({ commit, category: entity.category, entityId: entity.id })}
+			follow={(commit) =>
+				void workspace.navigate(
+					workspace.link({ commit, category: entity.category, entityId: entity.id })
+				)}
+		/>{/if}
 	<hx-div class="row">
 		<hx-h2>Recorded runtime evidence</hx-h2>
 		<Pill as="span" variant="chip" tone="runtime-chip runtime-evidence-chip">Runtime capture</Pill
