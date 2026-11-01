@@ -2,7 +2,7 @@
 	"name": "desktop-mobile-context-fit",
 	"goal": "Keep revision and search hit targets separate in a compact mobile header",
 	"createdAt": "2026-11-01T12:17:46.050Z",
-	"updatedAt": "2026-11-01T12:18:02.506Z",
+	"updatedAt": "2026-11-01T12:19:57.511Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:19:56.883Z",
+			"evidence": "7ed49d21a4: both workspace cases and all four mobile catalog cases fail. Frozen guards retain the 184px regular header and separate revision hit targets."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:19:57.511Z",
+			"evidence": "Give the mobile context rail explicit labelled-control widths and compact shared-token spacing; keep search beside revision controls and preserve balanced category rows."
 		},
 		{
 			"id": "implement",
