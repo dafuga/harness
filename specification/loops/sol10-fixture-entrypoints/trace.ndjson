@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-01T21:51:51.767Z","name":"sol10-fixture-entrypoints","goal":"Keep raw build setup imports independent of renderer test assertions.","template":"regression-prevention","templateLineage":["regression-prevention"]}
+{"event":"step.completed","timestamp":"2026-11-01T21:53:23.562Z","loop":"sol10-fixture-entrypoints","step":"spec","evidence":"b54e3445bf added renderer imports to data read by plain Bun setup. Setup fails importing archivedSource."}
+{"event":"step.completed","timestamp":"2026-11-01T21:53:24.393Z","loop":"sol10-fixture-entrypoints","step":"coverage","evidence":"Vitest supplied Svelte transforms. The existing preview runner guard now checks plain setup imports without renderer or browser state."}
