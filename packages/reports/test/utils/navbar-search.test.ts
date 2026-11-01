@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { SearchEntry } from '../../src/utils/entitySearch';
 import { navbarSearch } from '../../src/components/explorer-ui/harness-navbar/navbarSearch';
@@ -14,17 +15,18 @@ const entry = (commit: string): SearchEntry => ({
 const tip = shellScope({ branch: shellBranch, commit: null, category: 'pages' });
 const pinned = shellScope({ branch: shellBranch, commit: sha(3), category: 'functions' });
 
-test('at the tip a result leads to the entity at the tip, under its own category', () => {
-	const search = navbarSearch(tip, [entry(sha(5))]);
-	expect(search.entries).toEqual([entry(sha(5))]);
-	expect(search.scope).toEqual({ label: `At the tip of ${shellBranch}`, pinned: null });
-	expect(search.at(entry(sha(5)))).toEqual({
-		branch: shellBranch,
-		commit: null,
-		category: 'layouts',
-		entity: 'app.shell.order-frame'
-	});
-});
+test('at the tip a result leads to the entity at the tip, under its own category', async () =>
+	measureWorkload('reports.function.navbar-search', 'navbar-search-normal-behavior', async () => {
+		const search = navbarSearch(tip, [entry(sha(5))]);
+		expect(search.entries).toEqual([entry(sha(5))]);
+		expect(search.scope).toEqual({ label: `At the tip of ${shellBranch}`, pinned: null });
+		expect(search.at(entry(sha(5)))).toEqual({
+			branch: shellBranch,
+			commit: null,
+			category: 'layouts',
+			entity: 'app.shell.order-frame'
+		});
+	}));
 
 test('with a commit selected a result keeps the full commit', () => {
 	const search = navbarSearch(pinned, [entry(sha(3))]);

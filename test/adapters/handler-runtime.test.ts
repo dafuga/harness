@@ -1,3 +1,4 @@
+import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../../src/adapters/HandlerRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../../src/adapters/ModuleRuntimeAdapter';
@@ -5,15 +6,16 @@ import type { RuntimeHandler } from '../../src/core/runtimeTypes';
 
 const echo: RuntimeHandler = (request) => ({ ok: true, output: request.input });
 
-test('a handler answers through the runtime contract', async () => {
-	const runtime = new HandlerRuntimeAdapter(echo);
-	expect(runtime.kind).toBe('module');
-	expect(await runtime.invoke({ operation: 'echo', input: { size: 3 } })).toEqual({
-		ok: true,
-		output: { size: 3 }
-	});
-	await runtime.close();
-});
+test('a handler answers through the runtime contract', async () =>
+	measureWorkload('adapter.handler-runtime', 'handler-runtime-normal-behavior', async () => {
+		const runtime = new HandlerRuntimeAdapter(echo);
+		expect(runtime.kind).toBe('module');
+		expect(await runtime.invoke({ operation: 'echo', input: { size: 3 } })).toEqual({
+			ok: true,
+			output: { size: 3 }
+		});
+		await runtime.close();
+	}));
 
 test('whatever the handler does wrong becomes a failure with a stable code', async () => {
 	const thrown = new HandlerRuntimeAdapter(() => {

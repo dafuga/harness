@@ -1,3 +1,8 @@
+import { measureWorkload } from '../../../test/support/measureWorkload';
+import { render } from 'svelte/server';
+import { expect } from 'vitest';
+import { words } from './entityRender';
+import EntitySource, { archivedSource } from '../src/components/explorer-ui/EntitySource.svelte';
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { revision } from './entityFixture';
 import { commits, ids } from './entityUnits';
@@ -122,4 +127,27 @@ export function sourceAdmissionArrays(unit: HarnessUnit) {
 		});
 	}
 	return { paths, tests, snapshots, reads };
+}
+
+/** Exercise archived source admission without replaying its normal assertions. */
+export async function sourceAdmission(unit: HarnessUnit): Promise<void> {
+	await measureWorkload('reports.store.source-reader', 'archived-source-admission', async () => {
+		const { paths, tests, snapshots, reads } = sourceAdmissionArrays(unit);
+		const body = render(EntitySource, {
+			props: { unit: { ...unit, owns: { ...unit.owns, source: paths }, testFiles: tests } }
+		}).body;
+		expect(words(body)).toContain('src/services/orders/OrderStore.ts');
+		expect(words(body)).toContain('test/order-store.test.ts');
+		const beforeRead = reads.indexed;
+		const reader = archivedSource({ ...unit, sourceFiles: snapshots, testFiles: tests }, '/media/');
+		expect(reads.indexed, 'source readers keep indexed getters lazy until a read').toBe(beforeRead);
+		await expect(
+			reader.read(paths[0]),
+			'indexed source snapshots retain their recorded gap'
+		).rejects.toThrow('Recorded implementation gap');
+		await expect(reader.read(tests[0].path)).rejects.toThrow('Recorded test gap');
+		expect(reads.indexed).toBeGreaterThan(0);
+		expect(reads.iterated).toBe(0);
+		expect(reads.species).toBe(0);
+	});
 }

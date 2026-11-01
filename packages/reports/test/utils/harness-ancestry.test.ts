@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { HarnessIndex, HarnessRevisionSummary } from '../../src/models/Harness.types';
 import { branchCommits } from '../../src/components/explorer-ui/harness-navbar/harnessAncestry';
@@ -39,22 +40,27 @@ function index(revisions: HarnessRevisionSummary[], heads: Record<string, string
 	};
 }
 
-test('a branch whose commits the index left out is not offered, and never chosen by default', () => {
-	// The index was cut to the newest commits: only the feature branch still has any in it.
-	const truncated = index(
-		[
-			revision('c', { parents: [id('b')], branches: ['feature'] }),
-			revision('b', { parents: [id('a')], branches: ['feature'] })
-		],
-		{ archive: id('z'), feature: id('c'), main: id('y') }
-	);
-	expect(branchNames(truncated)).toEqual(['feature']);
-	expect(defaultCommit(truncated, id('z'))).toBe(id('c'));
-	expect(defaultCommit(truncated, '')).toBe(id('c'));
-	expect(defaultCommit(truncated, id('b'))).toBe(id('b'));
-	expect(branchOf(truncated, id('c'))).toBe('feature');
-	expect(defaultCommit(index([], { main: id('y') }), '')).toBe('');
-});
+test('a branch whose commits the index left out is not offered, and never chosen by default', async () =>
+	measureWorkload(
+		'reports.function.harness-ancestry',
+		'harness-ancestry-normal-behavior',
+		async () => {
+			// The index was cut to the newest commits: only the feature branch still has any in it.
+			const truncated = index(
+				[
+					revision('c', { parents: [id('b')], branches: ['feature'] }),
+					revision('b', { parents: [id('a')], branches: ['feature'] })
+				],
+				{ archive: id('z'), feature: id('c'), main: id('y') }
+			);
+			expect(branchNames(truncated)).toEqual(['feature']);
+			expect(defaultCommit(truncated, id('z'))).toBe(id('c'));
+			expect(defaultCommit(truncated, '')).toBe(id('c'));
+			expect(defaultCommit(truncated, id('b'))).toBe(id('b'));
+			expect(branchOf(truncated, id('c'))).toBe('feature');
+			expect(defaultCommit(index([], { main: id('y') }), '')).toBe('');
+		}
+	));
 
 test('ancestry follows recorded parents, and retained commits form their own entry', () => {
 	const history = index(

@@ -41,7 +41,7 @@
 				"name": "HistoryPanel.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplying project/revision identity, known commits, navigation and an optional history bridge. Only event commits present in the snapshot\u2019s commit list become links."
+				"description": "Workspace supplying project/revision identity, known commits, navigation and an optional history bridge. Only event commits present in the snapshot’s commit list become links."
 			},
 			{
 				"name": "HistoryPanel.evidence",
