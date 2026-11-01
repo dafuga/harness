@@ -49,6 +49,8 @@ export async function prepareProjectAgentState(
 		expect(request.designOptions).toBe(7);
 	}
 	await outcome(component, state);
+	// The captured conversation starts at a message boundary, after normal follow-to-latest behavior.
+	await component.locator('.floating-chat-body').evaluate((node) => (node.scrollTop = 0));
 }
 
 async function outcome(component: Locator, state: ProjectAgentState) {

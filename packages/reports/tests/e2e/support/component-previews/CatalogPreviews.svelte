@@ -148,6 +148,10 @@
 </div>
 
 <style>
+	/* Isolated project chat has no mounted workspace header to reserve clearance for. */
+	.preview-content[data-preview-unit='desktop.component.project-agent'] :global(.project-chat) {
+		--floating-chat-top: var(--hx-space-8);
+	}
 	h1 {
 		overflow-wrap: anywhere;
 	}

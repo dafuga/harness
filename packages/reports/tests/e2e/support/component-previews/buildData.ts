@@ -1,14 +1,15 @@
 import { evidenceData } from '../../../../../desktop/tests/e2e/ui-evidence-data';
 import { explorerArtifact } from '../../../../src/utils/explorerArtifact';
-import { illustratedData } from './illustratedData';
+import { illustratedData, desktopScreenFixtures } from './illustratedData';
 import { desktopArtifactFixtures } from './desktopArtifactFixtures';
 /** The existing sealed synthetic history, including checked JSON results, for browser previews. */
 export async function buildData() {
 	const data = await illustratedData(evidenceData());
 	const desktopArtifacts = await desktopArtifactFixtures(data);
+	const desktopScreens = await desktopScreenFixtures(data);
 	await readResults(data.results, data.bytes);
 	await readResults(desktopArtifacts.results, { ...data.bytes, ...desktopArtifacts.bytes });
-	return { ...data, desktopArtifacts };
+	return { ...data, desktopArtifacts, desktopScreens };
 }
 
 async function readResults(
