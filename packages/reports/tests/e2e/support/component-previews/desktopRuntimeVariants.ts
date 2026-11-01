@@ -43,12 +43,11 @@ export function desktopRuntimeVariant(
 }
 
 function screens(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
+	const entity = variant === 'paired' ? data.entity : data.visualEntity;
 	const result = ['paired', 'incomparable'].includes(variant)
-		? desktopData.results[`${data.visualEntity.id}|commit|${commits.tip}`]
+		? desktopData.results[`${entity.id}|commit|${commits.tip}`]
 		: data.visual;
 	const evidence = { ...result.evidence };
-	if (variant === 'incomparable')
-		evidence.incomparable = ['The two captures were recorded with different runtime profiles.'];
 	if (variant === 'empty') {
 		evidence.scenarios = [];
 		evidence.after = { ...evidence.after, captures: [] };
@@ -139,7 +138,7 @@ async function prepareScreens(id: string, data: DesktopData, variant: string) {
 	if (id === 'desktop.component.runtime-screens' && ['paired', 'incomparable'].includes(variant)) {
 		data.visualEvidence.show(data.bridge, {
 			scope: {
-				entityId: data.visualEntity.id,
+				entityId: variant === 'paired' ? data.entity.id : data.visualEntity.id,
 				projectId: data.workspace.projectId!,
 				commit: commits.tip,
 				branch: desktopData.branch,
