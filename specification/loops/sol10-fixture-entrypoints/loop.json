@@ -2,11 +2,9 @@
 	"name": "sol10-fixture-entrypoints",
 	"goal": "Keep raw build setup imports independent of renderer test assertions.",
 	"createdAt": "2026-11-01T21:51:51.767Z",
-	"updatedAt": "2026-11-01T21:53:24.393Z",
+	"updatedAt": "2026-11-01T21:56:57.506Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T21:56:56.937Z",
+			"evidence": "The unchanged preview runner case fails on the renderer import before repair."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T21:56:57.506Z",
+			"evidence": "Keep renderer admission assertions beside their test owner; retain data fixtures and the plain import guard."
 		},
 		{
 			"id": "implement",
