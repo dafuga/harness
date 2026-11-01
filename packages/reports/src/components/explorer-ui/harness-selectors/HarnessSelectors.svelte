@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../../helpers/strings/shortCommit';
+
 	import type {
 		HarnessIndex,
 		HarnessRevisionSummary
@@ -39,6 +41,7 @@
 		 */
 		tip?: { note: string; viewed: string; href: string | null; onfollow: () => void } | null;
 	} = $props();
+	let branches = $derived(branchNames(index));
 </script>
 
 <hx-div
@@ -55,10 +58,14 @@
 			label="Branch"
 			bind:value={() => branch, onbranch}
 			compact={Boolean(tip)}
-			display={tip ? branch : undefined}
-			title={tip ? `${branch} · ${tip.note}` : undefined}
+			display={branch || undefined}
+			disabled={!branches.length}
+			title={tip ? `${branch} · ${tip.note}` : branch}
 		>
-			{#each branchNames(index) as name (name)}<hx-option value={name}>{name}</hx-option>{/each}
+			{#each branches as name (name)}<hx-option value={name}>{name}</hx-option>{:else}<hx-option
+					value=""
+					disabled>No branches recorded</hx-option
+				>{/each}
 		</Select>
 		{#if tip}<hx-small>{tip.note}</hx-small>{/if}
 	</hx-label>
@@ -72,12 +79,13 @@
 			label="Commit"
 			bind:value={() => commit, oncommit}
 			compact={Boolean(tip)}
-			display={tip ? commit.slice(0, 7) : undefined}
-			title={tip ? `${commit} · ${tip.viewed}` : undefined}
+			display={commit ? shortCommit(commit) : undefined}
+			disabled={!commits.length}
+			title={tip ? `${commit} · ${tip.viewed}` : commit}
 		>
 			{#each commits as item (item.commit)}<hx-option value={item.commit}
 					>{revisionLabel(item)}</hx-option
-				>{/each}
+				>{:else}<hx-option value="" disabled>No commits recorded</hx-option>{/each}
 		</Select>
 		<!-- The closed field has room for the short hash; the whole line of a commit is in its option. -->
 		{#if tip}<hx-small>{tip.viewed}</hx-small>{/if}
@@ -85,10 +93,16 @@
 	{#if bases}
 		<hx-label
 			><hx-span>Base commit</hx-span>
-			<Select label="Base commit" bind:value={() => from, onbase}>
+			<Select
+				label="Base commit"
+				bind:value={() => from, onbase}
+				display={from ? shortCommit(from) : undefined}
+				title={from}
+				disabled={!bases.length}
+			>
 				{#each bases as item (item.commit)}<hx-option value={item.commit}
 						>{revisionLabel(item)}</hx-option
-					>{/each}
+					>{:else}<hx-option value="" disabled>No base commits recorded</hx-option>{/each}
 			</Select>
 		</hx-label>
 	{/if}
@@ -102,3 +116,15 @@
 		>
 	{/if}
 </hx-div>
+
+<style>
+	@media (forced-colors: none) {
+		:global([data-harness-component='harness-harness-selectors'].hc-controls .has-display select) {
+			color: transparent;
+		}
+	}
+	:global([data-harness-component='harness-harness-selectors'].hc-controls .report-select-value) {
+		letter-spacing: var(--hx-style-tracking-normal);
+		text-transform: none;
+	}
+</style>

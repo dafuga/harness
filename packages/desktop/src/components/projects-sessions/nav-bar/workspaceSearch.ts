@@ -1,6 +1,7 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { WorkspaceSearch } from '../../../utils/projects-sessions/workspaceSearch';
-import type { SearchEntry } from '../../../../../reports/src/utils/entitySearch';
-import { explorerName } from '../../../../../reports/src/utils/explorerName';
+import type { SearchEntry } from '$reports/utils/entitySearch';
+import { explorerName } from '$reports/utils/explorerName';
 import {
 	categories,
 	type CatalogEntity,
@@ -28,7 +29,7 @@ export function workspaceSearch(shown: {
 		return { entries: null, scope: { label: 'Reading the project', pinned: null }, at: () => null };
 	const { project, revision } = snapshot;
 	const kept = pinned || !revision.atTip ? revision.commit : null;
-	const commit = kept?.slice(0, 7) ?? null;
+	const commit = kept === null ? null : shortCommit(kept);
 	const label = commit
 		? `${project.name} at commit ${commit}`
 		: `${project.name} at the tip of ${revision.branch}`;

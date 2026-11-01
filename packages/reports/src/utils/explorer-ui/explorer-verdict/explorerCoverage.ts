@@ -1,3 +1,4 @@
+import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { Result } from './explorerCoverage.types';
 import type {
 	ExplorerScenarioCoverage,
@@ -10,8 +11,6 @@ import type {
 } from '../../../models/explorer-ui/Harness.types';
 import { coverageWorst, scenarioFor, type Judged, type Told } from '../explorerState';
 import { explorerState } from './explorerState';
-
-const short = (commit: string) => commit.slice(0, 7);
 
 /**
  * Whether a commit affects a unit, by the impact that applies to the record: the comparison of
@@ -40,7 +39,7 @@ function lineage(judged: Judged, commit: string, affected: boolean | null): Told
 			return ['stale', `${title} is a reference that names no origin.`];
 		return result.testedRevision === commit
 			? null
-			: ['stale', `${title} was tested at ${short(result.testedRevision)}, not here.`];
+			: ['stale', `${title} was tested at ${shortCommit(result.testedRevision)}, not here.`];
 	}
 	const { origin } = result;
 	if (result.status !== 'referenced' || !origin.record || result.testedRevision !== origin.commit) {
@@ -49,11 +48,14 @@ function lineage(judged: Judged, commit: string, affected: boolean | null): Told
 	if (affected === null) {
 		return [
 			'stale',
-			`${title} is inherited from ${short(origin.commit)}, and the history does not record what changed since.`
+			`${title} is inherited from ${shortCommit(origin.commit)}, and the history does not record what changed since.`
 		];
 	}
 	return affected
-		? ['stale', `${title} was inherited from ${short(origin.commit)}, but this commit affects it.`]
+		? [
+				'stale',
+				`${title} was inherited from ${shortCommit(origin.commit)}, but this commit affects it.`
+			]
 		: null;
 }
 

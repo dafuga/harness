@@ -68,7 +68,7 @@
 				"name": "EntityBehavior.reasons",
 				"type": "Reasons",
 				"required": false,
-				"description": "Optional entity change reasons, displayed separately from test observations. Their behavior summary takes precedence over derived comparison explanation. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional entity change reasons, displayed separately from test observations. Supplied behavior text remains visible while recorded results load and takes precedence over derived comparison explanation. Defaults to JavaScript undefined (omitted)."
 			},
 			{
 				"name": "EntityBehavior.duration",
@@ -87,7 +87,7 @@
 			{
 				"name": "EntityBehavior",
 				"type": "markup",
-				"description": "Current or before/after test panel. Reads artifacts when not supplied, ignores completion whose row-hash signature no longer matches, and shows pending or unknown rather than premature comparison. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict is shown only when the helper also reports passing results."
+				"description": "Current or before/after test panel. Reads artifacts when not supplied and ignores completion whose row-hash signature no longer matches. Pending reading omits settled reason-absence text; completed explanations use separate paragraphs. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict requires passing results. Footer outcome values stay together."
 			}
 		],
 		"errors": [

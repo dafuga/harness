@@ -31,14 +31,7 @@ export const shellCatalogVariants: Record<string, string[]> = {
 		'reasons'
 	],
 	'reports.component.harness-entity-details': ['summary', 'source', 'measurements', 'unmeasured'],
-	'reports.component.harness-entity-history': [
-		'empty',
-		'unread',
-		'reading',
-		'unavailable',
-		'long',
-		'profiles'
-	],
+	'reports.component.harness-entity-history': ['empty', 'unread', 'reading', 'long', 'profiles'],
 	'reports.component.harness-entity-link': ['labelled', 'long', 'focused'],
 	'reports.component.harness-entity-missing': ['custom-action', 'long'],
 	'reports.component.harness-entity-relations': [

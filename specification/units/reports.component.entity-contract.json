@@ -54,33 +54,34 @@
 				"name": "EntityContract.last",
 				"type": "string",
 				"required": false,
-				"description": "Optional parent commit when the selected revision removed this entity."
+				"description": "Optional parent commit, defaulting to JavaScript undefined and the current Contract heading. A supplied nonempty commit shows its first seven characters as the last contract."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityContract",
 				"type": "markup",
-				"description": "Component fields and callable contracts with concise colored method and parameter names. Types remain in the tables; declared errors appear once and info controls open full examples."
+				"description": "Component props, source fields and callable parameter/return tables retain requirement/default metadata. Declared errors or their explicit absence appear, and info controls open full examples."
 			}
 		],
 		"errors": [
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "Contract field examples cannot serialize BigInt or circular values."
+				"description": "A literal default or example contains BigInt or circular data that JSON cannot serialize."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "Deeply nested contract examples can exceed the JSON serializer stack."
+				"description": "Deeply nested default or example data exceeds the JSON serializer stack."
 			},
 			{
 				"name": "Getter, proxy or conversion error",
-				"type": "thrown",
-				"description": "Errors from example getters, proxy traps or conversion methods propagate while preparing or displaying examples."
+				"type": "propagated",
+				"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
@@ -210,6 +211,11 @@
 		},
 		{
 			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

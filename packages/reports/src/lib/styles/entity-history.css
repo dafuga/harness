@@ -173,3 +173,44 @@
 		padding: var(--hx-space-12);
 	}
 }
+/* Schema fields keep their labels and values together on phones. */
+@media (max-width: 640px) {
+	.ex-content .schema :is(table, tbody, tr) {
+		display: block;
+		min-width: 0;
+		width: 100%;
+	}
+	.ex-content .schema thead {
+		display: none;
+	}
+	.ex-content .schema td {
+		display: grid;
+		grid-template-columns: minmax(100px, 1fr) minmax(0, 2fr);
+		gap: var(--hx-space-12);
+	}
+	.ex-content .schema td::before {
+		content: attr(data-label);
+		color: var(--hx-color-text-supporting);
+		font-weight: var(--hx-style-weight-semibold);
+	}
+	.ex-content .schema td code {
+		max-width: 100%;
+		overflow-x: auto;
+	}
+}
+
+.ex-content .schema {
+	display: grid;
+	gap: var(--hx-space-10);
+}
+.ex-content .schema td code {
+	white-space: nowrap;
+}
+.ex-content .schema + .schema {
+	padding-top: var(--hx-space-16);
+	border-top: var(--hx-border-thin) solid var(--ex-line);
+}
+.ex-content .schema h3 {
+	color: var(--ex-text);
+	font-weight: var(--hx-style-weight-semibold);
+}

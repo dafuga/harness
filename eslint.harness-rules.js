@@ -1,3 +1,4 @@
+import { sharedReuseRule } from './eslint.reuse-rules.js';
 import { existsSync, readFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -60,6 +61,7 @@ export const layerAllowlist = readLayerAllowlist();
 
 export default {
 	rules: {
+		'shared-reuse': sharedReuseRule,
 		'max-class-lines': {
 			meta: {
 				type: 'suggestion',

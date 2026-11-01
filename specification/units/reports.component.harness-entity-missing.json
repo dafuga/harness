@@ -10,7 +10,6 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.harness-harness-action",
-			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section"
@@ -70,11 +69,6 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-harness-action",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

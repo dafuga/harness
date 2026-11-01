@@ -1,3 +1,4 @@
+import { errorMessage } from '../../../helpers/strings/errorMessage';
 import {
 	defaultRuntimeTimeoutMs,
 	runtimeFailure,
@@ -32,7 +33,7 @@ export class HandlerRuntimeAdapter implements UnitRuntime {
 		const result = Promise.resolve()
 			.then(() => this.handler(request))
 			.then(runtimeResponse, (error: unknown) =>
-				runtimeFailure('runtime-failed', error instanceof Error ? error.message : String(error))
+				runtimeFailure('runtime-failed', errorMessage(error))
 			);
 		return deadline.settle(await Promise.race([result, deadline.expired]));
 	}

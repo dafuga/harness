@@ -82,6 +82,9 @@
 		/>
 	{/if}
 	<!-- A bar without an address offers nothing to choose, so it has nothing to search either. -->
+	{#if revision?.viewed === 'Historical commit'}
+		<hx-span class="hx-history-state">{revision.viewed}</hx-span>
+	{/if}
 	{#if input.scope}
 		<hx-div class="hx-search">
 			<EntitySearch
@@ -101,6 +104,12 @@
 </hx-header>
 
 <style>
+	.hx-history-state {
+		flex-basis: 100%;
+		order: 4;
+		color: var(--hx-color-text-supporting);
+		font-size: var(--hx-type-size-xs);
+	}
 	.hx-search :global(.entity-search-field input) {
 		border: 0;
 		outline: 0;

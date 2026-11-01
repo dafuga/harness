@@ -1,5 +1,5 @@
 import { stamp } from './shared';
-import type { Report, Evidence } from '../../../../src/models/Report.types';
+import type { Report, Evidence } from '../../../../src/models/reports-media/Report.types';
 export const picture: Evidence = {
 	id: 'activity',
 	title: 'Synthetic preview input',
@@ -131,6 +131,8 @@ export const group = {
 		{
 			name: 'seconds',
 			type: 'number',
+			required: false,
+			default: 0,
 			description: 'Duration in seconds.',
 			source: 'declared',
 			examples: [{ form: 'literal', value: 90, text: '90' }]

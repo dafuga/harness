@@ -29,6 +29,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.select"],
 		"inputs": [
 			{
 				"name": "InvitationForm.projectId",
@@ -106,6 +107,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.strings-format-time",
 			"via": "import",
 			"origin": "derived"
 		}

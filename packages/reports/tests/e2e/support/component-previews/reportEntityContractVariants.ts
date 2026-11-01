@@ -6,8 +6,14 @@ import type { PreviewCases } from './shared';
 const sampleOrders = [{ id: 'A-1048', status: 'Ready to ship' }];
 const fields = {
 	inputs: [
-		{ name: 'OrderList.orders', type: 'Order[]', examples: [sampleOrders] },
-		{ name: 'OrderList.searchText', type: 'string', examples: ['A-1048'] }
+		{ name: 'OrderList.orders', type: 'Order[]', required: true, examples: [sampleOrders] },
+		{
+			name: 'OrderList.searchText',
+			type: 'string',
+			required: false,
+			default: '',
+			examples: ['A-1048']
+		}
 	],
 	outputs: [{ name: 'OrderList', type: 'markup' }],
 	errors: []
@@ -21,8 +27,14 @@ export function contractPreviewUnit(unit: HarnessUnit): HarnessUnit {
 function callableUnit(error = false): HarnessUnit {
 	const seed = units.find((unit) => unit.id === ids.filter)!;
 	const inputs = [
-		{ name: 'filterOrders.orders', type: 'Order[]', examples: [sampleOrders] },
-		{ name: 'filterOrders.searchText', type: 'string', examples: ['A-1048'] }
+		{ name: 'filterOrders.orders', type: 'Order[]', required: true, examples: [sampleOrders] },
+		{
+			name: 'filterOrders.searchText',
+			type: 'string',
+			required: false,
+			default: '',
+			examples: ['A-1048']
+		}
 	];
 	return {
 		...seed,
@@ -50,8 +62,18 @@ function serviceUnit(): HarnessUnit {
 		owns: { ...seed.owns, symbols: ['OrderStore', 'OrderStore.read', 'OrderStore.write'] },
 		contract: {
 			inputs: [
-				{ name: 'OrderStore.read.accountId', type: 'string', examples: ['account-42'] },
-				{ name: 'OrderStore.write.orders', type: 'Order[]', examples: [sampleOrders] }
+				{
+					name: 'OrderStore.read.accountId',
+					type: 'string',
+					required: true,
+					examples: ['account-42']
+				},
+				{
+					name: 'OrderStore.write.orders',
+					type: 'Order[]',
+					required: true,
+					examples: [sampleOrders]
+				}
 			],
 			outputs: [
 				{ name: 'OrderStore.read', type: 'Promise<Order[]>', examples: [sampleOrders] },
@@ -88,7 +110,11 @@ function modelUnit(seed: HarnessUnit, bare: boolean): HarnessUnit {
 						]
 			}
 		],
-		contract: { inputs: [], outputs: [], errors: [] }
+		contract: {
+			inputs: bare ? [] : [{ name: 'Order.find.id', type: 'string', required: true }],
+			outputs: [],
+			errors: []
+		}
 	};
 }
 
@@ -144,7 +170,11 @@ function declarationVariant(props: PreviewCases[string], unit: HarnessUnit, vari
 				...unit,
 				title: 'OrderInput',
 				owns: { source: [source], symbols: ['OrderInput'] },
-				modelDefinitions: typeDeclarations(source)
+				modelDefinitions: typeDeclarations(source),
+				contract: {
+					...unit.contract,
+					inputs: [{ name: 'OrderInput.resolve', type: '(key: string): number', required: true }]
+				}
 			},
 			category: 'types',
 			contract: []

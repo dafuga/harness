@@ -56,20 +56,20 @@
 				"name": "ExplorerModuleCard.category",
 				"type": "ExplorerCategory | null",
 				"required": false,
-				"description": "Module category, defaulting to the row category. Visual and nonvisual cards share this renderer."
+				"description": "Optional category, defaulting to JavaScript undefined and the row category when available. Null also uses that fallback. Visual and nonvisual cards share this renderer."
 			},
 			{
 				"name": "ExplorerModuleCard.shot",
 				"type": "Evidence | null",
 				"required": false,
-				"description": "Optional own visual capture. Nonvisual modules omit the image region; missing visual captures remain explicit."
+				"description": "Optional own capture, defaulting to JavaScript undefined. Visual rows then resolve their own capture through lens; null explicitly shows a gap. Nonvisual rows omit the image region."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerModuleCard",
 				"type": "markup",
-				"description": "One name or helper invocation, its own image for visual modules, and at most three distinct Used In links followed by an ellipsis when more exist. Unsupported dependencies have no invented detail link."
+				"description": "One name or helper invocation, its own image for visual modules, and at most three distinct Used In links followed by an ellipsis. Page cards omit an empty Used In row. Unsupported dependencies have no invented detail link."
 			}
 		],
 		"errors": [

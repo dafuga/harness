@@ -219,7 +219,7 @@
 		},
 		{
 			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
-			"specifier": "../../../reports/src/components/BrowserErrors.svelte",
+			"specifier": "$shared/BrowserErrors.svelte",
 			"to": "packages/reports/src/components/browser-errors/BrowserErrors.svelte",
 			"reason": "Component evidence and console tests render the same recorded browser diagnostics."
 		},
@@ -399,21 +399,597 @@
 		},
 		{
 			"from": "packages/desktop/src/components/shared-primitives/ContractPanel.svelte",
-			"specifier": "../../../../reports/src/components/shared-primitives/DetailList.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
 			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
 			"reason": "Desktop uses the canonical shared DetailList implementation; the supported public forwarding entry remains owned by its existing unit."
 		},
 		{
 			"from": "packages/desktop/src/components/agents-providers/AgentControls.svelte",
-			"specifier": "../../../../reports/src/components/shared-primitives/Select.svelte",
+			"specifier": "$shared/shared-primitives/Select.svelte",
 			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
 			"reason": "Desktop uses the canonical shared Select implementation; the supported public forwarding entry remains owned by its existing unit."
 		},
 		{
 			"from": "packages/desktop/src/components/networking-security/RemoteApproval.svelte",
-			"specifier": "../../../../reports/src/components/shared-primitives/Select.svelte",
+			"specifier": "$shared/shared-primitives/Select.svelte",
 			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
 			"reason": "Desktop uses the canonical shared Select implementation; the supported public forwarding entry remains owned by its existing unit."
+		},
+		{
+			"from": "packages/reports/src/components/verification-evidence/EvidenceProvenance.svelte",
+			"specifier": "../shared-primitives/CodeLine.svelte",
+			"to": "packages/reports/src/components/shared-primitives/CodeLine.svelte",
+			"reason": "Provenance hashes reuse the shared single-line source renderer with full-value hover text."
+		},
+		{
+			"from": "packages/desktop/src/lib/atoms/native-elements.d.ts",
+			"specifier": "$reports/lib/atoms/native-elements",
+			"to": "packages/reports/src/lib/atoms/native-elements.d.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/atoms/native-elements.d.ts",
+			"specifier": "$reports/lib/atoms/native-dom",
+			"to": "packages/reports/src/lib/atoms/native-dom.d.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/styles/workspace-0.css",
+			"specifier": "$reports/lib/styles/app-tokens.css",
+			"to": "packages/reports/src/lib/styles/app-tokens.css",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
+			"specifier": "$reports/utils/explorerEvidence",
+			"to": "packages/reports/src/utils/explorerEvidence.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
+			"specifier": "$reports/models/Harness.types",
+			"to": "packages/reports/src/models/Harness.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.types.ts",
+			"specifier": "$reports/models/Harness.types",
+			"to": "packages/reports/src/models/Harness.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/stores/agents-providers/agentRoster.svelte.ts",
+			"specifier": "$reports/utils/projects-sessions/activityReading",
+			"to": "packages/reports/src/utils/projects-sessions/activityReading.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/stores/explorer-ui/entityEvidence.svelte.ts",
+			"specifier": "$reports/helpers/strings/errorMessage",
+			"to": "packages/reports/src/helpers/strings/errorMessage.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/stores/explorer-ui/entityEvidence.svelte.ts",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/agents-providers/ProjectAgent.svelte",
+			"specifier": "$shared/planning-collaboration/FloatingChat.svelte",
+			"to": "packages/reports/src/components/planning-collaboration/FloatingChat.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/agents-providers/ChatAgents.svelte",
+			"specifier": "$shared/projects-sessions/ActivityList.svelte",
+			"to": "packages/reports/src/components/projects-sessions/ActivityList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameWorkspace.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameWorkspace.svelte",
+			"specifier": "$reports/helpers/strings/errorMessage",
+			"to": "packages/reports/src/helpers/strings/errorMessage.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameLevelPlan.svelte",
+			"specifier": "$reports/helpers/strings/errorMessage",
+			"to": "packages/reports/src/helpers/strings/errorMessage.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameCreate.svelte",
+			"specifier": "$reports/helpers/strings/errorMessage",
+			"to": "packages/reports/src/helpers/strings/errorMessage.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$reports/utils/explorer-ui/entityScreens",
+			"to": "packages/reports/src/utils/explorer-ui/entityScreens.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$reports/helpers/strings/errorMessage",
+			"to": "packages/reports/src/helpers/strings/errorMessage.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$reports/models/reports-media/Report.types",
+			"to": "packages/reports/src/models/reports-media/Report.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte",
+			"specifier": "$reports/utils/explorer-ui/entityScreens",
+			"to": "packages/reports/src/utils/explorer-ui/entityScreens.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte",
+			"specifier": "$shared/verification-evidence/RegressionProof.svelte",
+			"to": "packages/reports/src/components/verification-evidence/RegressionProof.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/explorer-ui/EntityStates.svelte",
+			"to": "packages/reports/src/components/explorer-ui/EntityStates.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/verification-evidence/RegressionProof.svelte",
+			"to": "packages/reports/src/components/verification-evidence/RegressionProof.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$reports/utils/explorerName",
+			"to": "packages/reports/src/utils/explorerName.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
+			"specifier": "$shared/shared-primitives/browser-errors/BrowserErrors.svelte",
+			"to": "packages/reports/src/components/shared-primitives/browser-errors/BrowserErrors.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/StatusBar.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/RevisionPicker.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/ContractPanel.svelte",
+			"specifier": "$reports/utils/entityContract",
+			"to": "packages/reports/src/utils/entityContract.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte",
+			"specifier": "$reports/utils/explorerName",
+			"to": "packages/reports/src/utils/explorerName.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$reports/models/ExplorerEvidence.types",
+			"to": "packages/reports/src/models/ExplorerEvidence.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$reports/utils/explorerArtifact",
+			"to": "packages/reports/src/utils/explorerArtifact.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$reports/utils/entityBehavior",
+			"to": "packages/reports/src/utils/entityBehavior.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$shared/explorer-ui/entity-cases/EntityCases.svelte",
+			"to": "packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/utils/entityBehavior",
+			"to": "packages/reports/src/utils/entityBehavior.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte",
+			"specifier": "$reports/utils/entityBehavior",
+			"to": "packages/reports/src/utils/entityBehavior.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimePane.svelte",
+			"specifier": "$reports/helpers/strings/errorMessage",
+			"to": "packages/reports/src/helpers/strings/errorMessage.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimePane.svelte",
+			"specifier": "$reports/models/reports-media/Report.types",
+			"to": "packages/reports/src/models/reports-media/Report.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$reports/utils/explorer-ui/entityScreens",
+			"to": "packages/reports/src/utils/explorer-ui/entityScreens.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$reports/models/reports-media/Report.types",
+			"to": "packages/reports/src/models/reports-media/Report.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/EntityCard.svelte",
+			"specifier": "$reports/utils/explorerName",
+			"to": "packages/reports/src/utils/explorerName.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/CatalogView.svelte",
+			"specifier": "$reports/utils/explorerName",
+			"to": "packages/reports/src/utils/explorerName.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentActivity.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/git-source-history/history-panel/HistoryPanel.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/git-source-history/history-panel/HistoryPanel.svelte",
+			"specifier": "$shared/verification-evidence/RegressionProof.svelte",
+			"to": "packages/reports/src/components/verification-evidence/RegressionProof.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "$reports/utils/explorerName",
+			"to": "packages/reports/src/utils/explorerName.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/evidenceVerdict.ts",
+			"specifier": "$reports/utils/explorer-verdict/explorerVerdict",
+			"to": "packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/evidenceVerdict.ts",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "$reports/utils/explorerName",
+			"to": "packages/reports/src/utils/explorerName.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"specifier": "$shared/explorer-ui/EntityExamples.svelte",
+			"to": "packages/reports/src/components/explorer-ui/EntityExamples.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/explorer-ui/reference-text/unitLinks.ts",
+			"specifier": "$reports/utils/explorerName",
+			"to": "packages/reports/src/utils/explorerName.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/recorded-preview/recordedPreview.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/recorded-preview/recordedPreview.ts",
+			"specifier": "$reports/helpers/strings/errorMessage",
+			"to": "packages/reports/src/helpers/strings/errorMessage.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/nav-bar/workspaceSearch.ts",
+			"specifier": "$reports/utils/explorerName",
+			"to": "packages/reports/src/utils/explorerName.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/nav-bar/workspaceSearch.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/nav-bar/workspaceSearch.ts",
+			"specifier": "$reports/utils/entitySearch",
+			"to": "packages/reports/src/utils/entitySearch.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/hostedArtifact.ts",
+			"specifier": "$reports/helpers/strings/errorMessage",
+			"to": "packages/reports/src/helpers/strings/errorMessage.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/models/verification-evidence/DesktopEvidence.types.ts",
+			"specifier": "$reports/models/ExplorerEvidence.types",
+			"to": "packages/reports/src/models/ExplorerEvidence.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/models/verification-evidence/DesktopEvidence.types.ts",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/projects-sessions/workspaceSearch.ts",
+			"specifier": "$reports/utils/entitySearch",
+			"to": "packages/reports/src/utils/entitySearch.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/reports-media/recordedCapture.types.ts",
+			"specifier": "$reports/models/Harness.types",
+			"to": "packages/reports/src/models/Harness.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/reports-media/recordedCapture.ts",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/verification-evidence/evidenceReading.ts",
+			"specifier": "$reports/utils/explorer-reading/explorerReading",
+			"to": "packages/reports/src/utils/explorer-reading/explorerReading.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/verification-evidence/evidenceReading.ts",
+			"specifier": "$reports/utils/explorerArtifact",
+			"to": "packages/reports/src/utils/explorerArtifact.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/verification-evidence/evidenceReading.ts",
+			"specifier": "$reports/helpers/strings/errorMessage",
+			"to": "packages/reports/src/helpers/strings/errorMessage.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/verification-evidence/evidenceReading.types.ts",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/explorer-ui/catalogUnit.ts",
+			"specifier": "$reports/utils/explorerName",
+			"to": "packages/reports/src/utils/explorerName.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/explorer-ui/catalogUnit.ts",
+			"specifier": "$reports/utils/explorerCategory",
+			"to": "packages/reports/src/utils/explorerCategory.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/timeLabel.ts",
+			"specifier": "$reports/helpers/strings/formatTime",
+			"to": "packages/reports/src/helpers/strings/formatTime.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recordedScope.types.ts",
+			"specifier": "$reports/models/Harness.types",
+			"to": "packages/reports/src/models/Harness.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recordedProjection.ts",
+			"specifier": "$reports/models/Harness.types",
+			"to": "packages/reports/src/models/Harness.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recordedProjection.ts",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/artifactQuery.ts",
+			"specifier": "$reports/models/ExplorerEvidence.types",
+			"to": "packages/reports/src/models/ExplorerEvidence.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/artifactQuery.ts",
+			"specifier": "$reports/utils/harnessEvidence",
+			"to": "packages/reports/src/utils/harnessEvidence.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recordedScope.ts",
+			"specifier": "$reports/models/Harness.types",
+			"to": "packages/reports/src/models/Harness.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recordedScope.ts",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recordedScope.ts",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/revisionTime.ts",
+			"specifier": "$reports/helpers/strings/formatTime",
+			"to": "packages/reports/src/helpers/strings/formatTime.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recordedProjection.types.ts",
+			"specifier": "$reports/models/Harness.types",
+			"to": "packages/reports/src/models/Harness.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/artifact-answer/artifactAnswer.types.ts",
+			"specifier": "$reports/models/Harness.types",
+			"to": "packages/reports/src/models/Harness.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedProjection.ts",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.types.ts",
+			"specifier": "$reports/utils/explorerEvidence",
+			"to": "packages/reports/src/utils/explorerEvidence.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.types.ts",
+			"specifier": "$reports/models/Explorer.types",
+			"to": "packages/reports/src/models/Explorer.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.ts",
+			"specifier": "$reports/utils/explorerEvidence",
+			"to": "packages/reports/src/utils/explorerEvidence.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.ts",
+			"specifier": "$reports/utils/explorerBehavior",
+			"to": "packages/reports/src/utils/explorerBehavior.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
+			"specifier": "$reports/utils/explorerEvidence",
+			"to": "packages/reports/src/utils/explorerEvidence.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/hub/src/lib/atoms/native-elements.d.ts",
+			"specifier": "$reports/lib/atoms/native-elements",
+			"to": "packages/reports/src/lib/atoms/native-elements.d.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/hub/src/lib/atoms/native-elements.d.ts",
+			"specifier": "$reports/lib/atoms/native-dom",
+			"to": "packages/reports/src/lib/atoms/native-dom.d.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/invitation-form/InvitationForm.svelte",
+			"specifier": "$reports/helpers/strings/formatTime",
+			"to": "packages/reports/src/helpers/strings/formatTime.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRevision.ts",
+			"specifier": "$reports/models/Harness.types",
+			"to": "packages/reports/src/models/Harness.types.ts",
+			"reason": "Shared Reports source through the workspace build alias."
 		}
 	]
 }

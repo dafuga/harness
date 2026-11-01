@@ -49,18 +49,24 @@ test('platform declarations remain readable without a source-unit registry', () 
 });
 
 test('a missing declaration never borrows parent or current project settings', () => {
-	const body = screen(
-		ExplorerPlatforms,
-		'commit',
-		{ category: 'platforms', entity: 'web' },
-		{
-			head: revision(commits.middle, []),
-			parent: { ...revision(commits.first, []), platforms: platformFixture }
-		}
-	);
-	expect(words(body)).toContain('No platform configuration is recorded at this revision.');
-	expect(words(body)).not.toContain('orders-web');
-	expect(words(body)).not.toContain('bun run build:web');
+	for (const platforms of [undefined, { entries: [] }]) {
+		const body = screen(
+			ExplorerPlatforms,
+			'commit',
+			{ category: 'platforms', entity: 'web' },
+			{
+				head: { ...revision(commits.middle, []), platforms },
+				parent: { ...revision(commits.first, []), platforms: platformFixture }
+			}
+		);
+		expect(words(body)).toContain(
+			platforms
+				? 'No platform configuration is recorded at this revision.'
+				: 'No platform catalog is indexed at this revision.'
+		);
+		expect(words(body)).not.toContain('orders-web');
+		expect(words(body)).not.toContain('bun run build:web');
+	}
 });
 
 test('the platform catalog propagates a host link generation error', () => {

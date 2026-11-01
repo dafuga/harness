@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { assertScrollbarPaint } from './scrollbarReviewAssertions';
 
 /** Open the real dialog and use its own keyboard interaction to reach each search state. */
 export async function prepareEntitySearchState(component: Locator, variant: string) {
@@ -42,4 +43,53 @@ export async function assertEntitySearchState(
 		const option = dialog.getByRole('option').nth(variant === 'open-second-selected' ? 1 : 0);
 		await expect(option).toHaveAttribute('aria-selected', 'true');
 	}
+}
+
+/** Retain the screenshot before rejecting an extra focus indicator inside the field frame. */
+export async function assertEntitySearchCapture(component: Locator, id: string, variant: string) {
+	if (id !== 'reports.component.entity-search') return;
+	if (!variant) {
+		await expect(component.getByRole('button', { name: 'Search entities' })).toHaveText(
+			'Search entities'
+		);
+		return;
+	}
+	await assertSearchScrollCue(component);
+	const dialog = component.getByRole('dialog', { name: 'Search project' });
+	const field = dialog.getByRole('combobox', { name: 'Search entities' });
+	await expect(field).toBeFocused();
+	const indicators = await field.evaluate((node) => {
+		const style = getComputedStyle(node);
+		return {
+			outline: parseFloat(style.outlineWidth),
+			border: parseFloat(style.borderTopWidth),
+			shadow: style.boxShadow
+		};
+	});
+	expect(indicators, 'Search frame owns the single aligned focus indicator').toEqual({
+		outline: 0,
+		border: 0,
+		shadow: 'none'
+	});
+	const frame = dialog.locator('.entity-search-field');
+	await expect(frame).toHaveCSS('outline-style', 'solid');
+	expect(
+		await frame.evaluate((node) => parseFloat(getComputedStyle(node).outlineWidth))
+	).toBeGreaterThan(0);
+	await expect(dialog.locator('.entity-search-note').first()).toHaveText(
+		variant === 'open-pinned' ? 'Commit 7561ee4' : 'Orders'
+	);
+}
+
+async function assertSearchScrollCue(component: Locator) {
+	const results = component.locator('.entity-search-results');
+	const geometry = await results.evaluate((node: HTMLElement) => ({
+		overflow: node.scrollHeight > node.clientHeight + 1,
+		gutter: node.offsetWidth - node.clientWidth
+	}));
+	if (!geometry.overflow) return;
+	expect(geometry.gutter, 'Overflowing search results have a visible scroll cue').toBeGreaterThan(
+		0
+	);
+	await assertScrollbarPaint(results, geometry.gutter);
 }

@@ -122,7 +122,6 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 		'image-error-open',
 		'function-open',
 		'source-enabled',
-		'source-disabled',
-		'touch'
+		'source-disabled'
 	]
 };

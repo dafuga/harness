@@ -130,7 +130,11 @@
 				<hx-h1>{view.name}</hx-h1>
 				<hx-span class="pf-status" data-status={status.id}>{status.label}</hx-span>
 			</hx-div>
-			<hx-p class="ex-lead">{entry?.summary ?? unrecorded}</hx-p>
+			<hx-p class="ex-lead">
+				{catalog
+					? (entry?.summary ?? unrecorded)
+					: 'No platform catalog is indexed at this revision.'}
+			</hx-p>
 			{#if entry}
 				<hx-dl class="pf-meta">
 					<hx-div>

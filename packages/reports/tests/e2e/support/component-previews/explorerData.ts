@@ -10,9 +10,10 @@ import { entityBehavior } from '../../../../src/utils/entityBehavior';
 import { entityMeasure } from '../../../../src/utils/entityMeasure';
 import { entityReasons } from '../../../../src/utils/entityReasons';
 import { entityCatalog } from '../../../../src/utils/entityCatalog';
-import { screenOptions } from '../../../../src/utils/entityScreens';
+import { screenOptions } from '../../../../src/utils/explorer-ui/entityScreens';
 import { historyDetail } from '../../../../src/utils/explorerHistory';
 import type { ExplorerScreenProps } from '../../../../src/models/ExplorerScreen.types';
+import type { ExplorerSide } from '../../../../src/models/explorer-ui/ExplorerEvidence.types';
 import type { HarnessExplanation } from '../../../../src/models/Harness.types';
 export { index, commits, ids };
 const head = revision(commits.middle, [record(commits.middle)]);
@@ -26,7 +27,32 @@ export const evidence = reading.evidence(entity.unit);
 export const behavior = desktopData.results[`${ids.filter}|commit|${commits.middle}`].behavior;
 export const run = entityBehavior(behavior);
 export const cell = run.groups[0].lines[0].after;
-export const audioEvidence = desktopData.results[`${ids.search}|current|${commits.tip}`].evidence;
+const clips = desktopData.results[`${ids.search}|current|${commits.tip}`].evidence;
+export const audioEvidence = { ...clips, after: recordedAudioSide(clips.after) };
+
+/** Fictional audio recordings name the build and revision their displayed side represents. */
+export function recordedAudioSide(side: ExplorerSide, commit = side.commit): ExplorerSide {
+	return {
+		...side,
+		commit,
+		detail: null,
+		record: side.record && {
+			...side.record,
+			source: { ...side.record.source, commit },
+			scenarios: side.record.scenarios.map((scenario) => ({ ...scenario, testedRevision: commit }))
+		},
+		captures: side.captures.map((found) => ({
+			...found,
+			recordId: undefined,
+			capture: {
+				...found.capture,
+				durationSeconds: 1,
+				provenance: 'actual-capture',
+				server: { buildId: `orders-search-${commit.slice(0, 7)}`, revision: commit }
+			}
+		}))
+	};
+}
 export const contract = entityContract(entity.unit, { category: entity.category });
 export const measure = entityMeasure(entity.unit, head.records[0]);
 export const reasons = entityReasons(head.explanations);

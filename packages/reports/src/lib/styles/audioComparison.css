@@ -35,6 +35,10 @@
 .audio-comparison-card .audio-comparison-preview:hover {
 	box-shadow: var(--hx-shadow-ring-strong);
 }
+.audio-comparison-card .audio-comparison-preview:disabled {
+	opacity: var(--hx-opacity-disabled);
+	cursor: wait;
+}
 .audio-comparison-card .audio-comparison-preview:focus-visible {
 	outline: var(--hx-border-heavy) solid var(--hx-color-primary);
 	outline-offset: var(--hx-border-thick);

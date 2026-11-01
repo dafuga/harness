@@ -10,7 +10,6 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-loading-state",
 			"reports.layout.explorer-layout"
 		]
@@ -69,7 +68,7 @@
 			{
 				"name": "HarnessConsole",
 				"type": "markup",
-				"description": "Explorer header and selected screen, with loading, unavailable-address and missing-registry notices. Index and selected-revision failures show a concise load error with refresh guidance; unavailable parent data becomes null."
+				"description": "Explorer header and selected screen, with loading and unavailable-address notices. Repository identity loads independently of history. The selected screen owns its missing-registry notice. Index/revision failures show refresh guidance; unavailable parent data becomes null."
 			}
 		],
 		"errors": [
@@ -200,11 +199,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

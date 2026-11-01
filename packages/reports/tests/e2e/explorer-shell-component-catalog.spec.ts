@@ -1,4 +1,5 @@
 import { assertPresentationPreview } from './support/component-previews/presentationPreviewAssertions';
+import { assertRecordedCompatibility } from './support/component-previews/compatibilityPreviewAssertions';
 import {
 	assertInlinePluginKitCapture,
 	assertPluginKitPreview
@@ -31,16 +32,28 @@ import { prepareCatalogState } from './support/component-previews/catalogStateAc
 import { assertReportPreviewState } from './support/component-previews/reportPreviewAssertions';
 import { assertRecordedValueCapture } from './support/component-previews/recordedValueCaptureAssertions';
 import { assertShellReview } from './support/component-previews/shellReviewAssertions';
+import { assertShellVisualReview } from './support/component-previews/shellVisualReviewAssertions';
+import { assertTabOverflowCue } from './support/component-previews/shellVisualReviewAssertions';
+import { assertRequiredStateWords } from './support/component-previews/shellVisualReviewAssertions';
+import { assertViewerReview } from './support/component-previews/evidenceViewerActions';
+import { assertViewerNavigationAppearance } from './support/component-previews/evidenceViewerActions';
+import { assertCatalogItemsFrame } from './support/component-previews/catalogItemsPreviewAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { assertCatalogRegistry } from './support/component-previews/catalogRegistryAssertions';
+import { catalogFixtureMedia } from './support/component-previews/catalogFixtureMedia';
+import { assertCatalogFixtureMedia } from './support/component-previews/catalogFixtureAssertions';
 let home = '';
 test.beforeAll(async () => {
 	test.setTimeout(180_000);
 	assertCatalogRegistry();
 	home = buildShellFixture(['catalog']);
+	catalogFixtureMedia(home);
 });
 test.afterAll(() => removeShellFixture(home));
-test('every active visual component has its own required capture state', assertCatalogRegistry);
+test('every active visual component has its own required capture state', () => {
+	assertCatalogRegistry();
+	assertCatalogFixtureMedia(home);
+});
 for (const viewport of catalogViewports) {
 	for (const stage of ['history', 'revision'] as const) {
 		test(`console data loading: ${stage} at ${viewport.id}`, async ({ page }) => {
@@ -171,6 +184,27 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
+			if (unit.id === 'reports.component.harness-entity-screens' && variant === 'viewer-open')
+				await expect(component.getByRole('button', { name: 'View after screenshot' })).toHaveClass(
+					/\bactive\b/
+				);
+			await assertViewerReview(component, unit.id, variant);
+			await assertViewerNavigationAppearance(component, unit.id, variant);
+			if (unit.id === 'reports.component.explorer-catalog-items' && variant === 'configs-open')
+				await assertCatalogItemsFrame(component, viewport.id, capture);
+			if (
+				(unit.id === 'reports.component.harness-entity-sections' && variant === 'tests') ||
+				unit.id === 'reports.component.harness-entity-tests'
+			)
+				await assertRequiredStateWords(component);
+			await assertRecordedCompatibility(component, unit.id, variant);
+			await assertTabOverflowCue(component, unit.id);
+			if (unit.id === 'reports.component.harness-entity-artifact' && variant === 'raw-open') {
+				const original = await component
+					.getByRole('link', { name: 'Open the recorded Assertions' })
+					.evaluate(async (link: HTMLAnchorElement) => (await fetch(link.href)).text());
+				await expect(component.locator('details[open] details[open] pre')).toHaveText(original);
+			}
 			if (
 				unit.id === 'reports.component.explorer-ui-explorer-platforms' &&
 				variant === 'status-options-open'
@@ -184,6 +218,7 @@ for (const viewport of catalogViewports) {
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
 			await assertShellReview(component, unit.id, variant, viewport.id);
+			await assertShellVisualReview(component, unit.id, variant);
 			await assertInlinePluginKitCapture(component, unit.id);
 			await assertPresentationPreview(component, unit.id, variant);
 			await assertRecordedValueCapture(component, unit.id, variant);
@@ -216,7 +251,9 @@ for (const viewport of catalogViewports) {
 					documentedStyleTokens().length
 				);
 			}
-			for (const field of await component.locator('.hx-revision .has-display select').all()) {
+			for (const field of await component
+				.locator(':is(.hx-revision, .hc-controls) .has-display select')
+				.all()) {
 				await expect(field, 'The full revision remains available as a title').toHaveAttribute(
 					'title',
 					/\S/

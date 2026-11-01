@@ -14,7 +14,7 @@ export async function prepareUsagePopover(component: Locator, variant: string) {
 		.poll(() => image.evaluate((node: HTMLImageElement) => node.naturalWidth))
 		.toBeGreaterThan(0);
 	await image.evaluate((node: HTMLImageElement) => node.decode());
-	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('SYNTHETIC ORDER LIST');
+	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('Order management');
 	const id = (await component.getAttribute('data-preview-unit'))!;
 	const clip = await previewCaptureBounds(component.page(), id, variant);
 	const box = (await tip.boundingBox())!;
@@ -27,7 +27,7 @@ export async function prepareUsagePopover(component: Locator, variant: string) {
 
 /** Use the link's own focus and touch handling to reach its preview states. */
 export async function prepareUsageLink(component: Locator, variant: string) {
-	if (variant === 'touch') {
+	if (!variant) {
 		await component.getByRole('link').dispatchEvent('pointerenter', { pointerType: 'touch' });
 		await expect(component.getByRole('tooltip')).toHaveCount(0);
 	}

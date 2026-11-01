@@ -25,6 +25,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.select"],
 		"inputs": [
 			{
 				"name": "SourceViewer.state",
@@ -108,6 +109,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

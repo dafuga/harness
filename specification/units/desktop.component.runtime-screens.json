@@ -30,6 +30,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["desktop.component.segmented-choice", "reports.component.select"],
 		"inputs": [
 			{
 				"name": "RuntimeScreens.result",
@@ -135,6 +136,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

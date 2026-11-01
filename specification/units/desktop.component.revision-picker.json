@@ -37,6 +37,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.select"],
 		"inputs": [
 			{
 				"name": "RevisionPicker.workspace",
@@ -247,6 +248,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-time",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

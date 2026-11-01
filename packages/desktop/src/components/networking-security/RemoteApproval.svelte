@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import Select from '../../../../reports/src/components/shared-primitives/Select.svelte';
+	import Select from '$shared/shared-primitives/Select.svelte';
 	import type { RemoteHost } from '../../lib/stores/networking-security/remoteHost.svelte';
 	import type { RemotePairingRequest } from '../../models/development-tooling/Environment.types';
 	import { identityLabel } from '../../helpers/networking-security/identityLabel';
@@ -35,7 +35,7 @@
 	}
 </script>
 
-<hx-fieldset class="remote-request" aria-label={heading}>
+<hx-fieldset class="remote-request" aria-label={heading} aria-busy={store.busy}>
 	<hx-strong>{heading}</hx-strong>
 	<hx-small class="muted">Key {identityLabel(request.deviceId)} · {request.platform}</hx-small>
 	<hx-span>May access:</hx-span>
@@ -54,7 +54,7 @@
 			type="button"
 			class="primary"
 			disabled={store.busy || !chosen.length}
-			onclick={approve}>Approve</hx-button
+			onclick={approve}>{store.busy ? 'Approving…' : 'Approve'}</hx-button
 		><hx-button
 			type="button"
 			disabled={store.busy}

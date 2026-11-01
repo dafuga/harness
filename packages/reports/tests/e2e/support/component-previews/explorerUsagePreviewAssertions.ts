@@ -19,6 +19,6 @@ export async function assertExplorerUsageState(component: Locator, variant: stri
 	if (limits[variant]) {
 		const [count, label] = limits[variant];
 		await expect(usage.getByRole('link')).toHaveCount(count);
-		await expect(usage.locator('.ex-usage-more')).toHaveText(label);
+		await expect(usage.getByText(label, { exact: true })).toHaveText(label);
 	}
 }

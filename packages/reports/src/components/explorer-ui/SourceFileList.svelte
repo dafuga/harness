@@ -89,6 +89,9 @@
 		text-decoration: underline;
 		text-underline-offset: var(--hx-space-2);
 	}
+	.source-files a:hover {
+		color: var(--hx-color-primary);
+	}
 	.source-files :global(.hx-action) {
 		flex: 0 0 auto;
 		min-height: var(--hx-space-28);
@@ -107,7 +110,16 @@
 		}
 		.source-files a,
 		.source-files code {
+			display: block;
 			max-width: 100%;
+			white-space: normal;
+		}
+		/* A phone shows the whole path, wrapped, instead of clipping the file name. */
+		.source-folder,
+		.source-name {
+			display: inline;
+			overflow-wrap: anywhere;
+			text-overflow: clip;
 		}
 	}
 	.source-empty {

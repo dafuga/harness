@@ -38,6 +38,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.status-badge"],
 		"inputs": [
 			{
 				"name": "AudioEvidence.item",
@@ -67,6 +68,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},

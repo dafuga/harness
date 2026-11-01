@@ -1,7 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import type { Evidence } from '../../../../reports/src/models/Report.types';
+	import { errorMessage } from '$reports/helpers/strings/errorMessage';
+
+	import type { Evidence } from '$reports/models/reports-media/Report.types';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
 	let {
@@ -27,7 +29,7 @@
 		let live = true;
 		evidence.url(phase === 'before' ? 'before' : 'after', file).then(
 			(value) => live && (url = value),
-			(cause: unknown) => live && (problem = cause instanceof Error ? cause.message : String(cause))
+			(cause: unknown) => live && (problem = errorMessage(cause))
 		);
 		return () => {
 			live = false;

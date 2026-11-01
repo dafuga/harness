@@ -1,9 +1,10 @@
 import type { PreviewCases } from './shared';
 import * as d from './explorerData';
 import type { ExplorerEvidence } from '../../../../src/models/explorer-ui/Explorer.types';
+import { desktopData } from './sealedData';
 
 export function artifactProps(props: PreviewCases[string], variant: string) {
-	const cell = d.cell;
+	const cell = desktopData.reportArtifacts.default;
 	if (variant === 'not-recorded') return { ...props, cell: { ...cell, capture: null } };
 	if (variant === 'not-stored')
 		return {
@@ -28,20 +29,7 @@ export function artifactProps(props: PreviewCases[string], variant: string) {
 		};
 	if (variant === 'lost') return { ...props, cell: { ...cell, read: undefined }, lost: true };
 	if (variant === 'plain-text' || variant === 'long')
-		return {
-			...props,
-			cell: {
-				...cell,
-				read: {
-					...cell.read,
-					document: null,
-					text:
-						variant === 'long'
-							? 'Recorded result with complete source provenance.\n'.repeat(300)
-							: 'The recorded command completed successfully.'
-				}
-			}
-		};
+		return { ...props, cell: desktopData.reportArtifacts[variant === 'long' ? 'long' : 'plain'] };
 	return props;
 }
 
@@ -53,7 +41,7 @@ export function audioProps(props: PreviewCases[string], variant: string) {
 			evidence: { ...evidence, before: null, after: { ...evidence.after, captures: [] } },
 			empty: true
 		};
-	const before = { ...evidence.after, commit: d.commits.first };
+	const before = d.recordedAudioSide(evidence.after, d.commits.first);
 	const after = evidence.after;
 	return {
 		...props,

@@ -42,6 +42,7 @@
 		"symbols": [
 			"ExplorerTable",
 			"ExplorerTable.header",
+			"ExplorerTable.empty",
 			"ExplorerTable.children",
 			"Kind",
 			"Column",
@@ -50,6 +51,10 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": [
+			"reports.component.shared-primitives-code-line",
+			"reports.component.shared-primitives-data-table"
+		],
 		"inputs": [
 			{
 				"name": "ExplorerTable.category",
@@ -93,12 +98,12 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision. Empty categories show the DataTable empty message; overflowing columns retain an explicit horizontal scroll hint."
+				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision. Empty categories show a body cell spanning all columns; overflowing columns retain an explicit horizontal scroll hint."
 			},
 			{
 				"name": "ConfigValue",
 				"type": "markup",
-				"description": "Owned private renderer, not another public component unit. Required props: name: string identifies the variable and inspection action; source: string is the exact committed initializer; onview: (event: MouseEvent) => void handles the inspection action. Optional literal: unknown and structure: ConfigValueNode both default to undefined. It renders typed scalar or short-array marks, collection counts, or complete clipped string/expression text. It does not execute initializers. onview callback failures propagate."
+				"description": "Owned private renderer, not another public component unit. Required props: name: string identifies the variable and inspection action; source: string is the exact committed initializer; onview: (event: MouseEvent) => void handles the inspection action. Optional literal: unknown and structure: ConfigValueNode both default to undefined. It renders typed scalar or short-array marks, collection counts, strings with preserved line breaks, or clipped single-line text. It does not execute initializers. onview callback failures propagate."
 			}
 		],
 		"errors": [
@@ -123,6 +128,18 @@
 				"outputs": [
 					{
 						"name": "ExplorerTable.header",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ExplorerTable.empty",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ExplorerTable.empty",
 						"type": "markup"
 					}
 				],

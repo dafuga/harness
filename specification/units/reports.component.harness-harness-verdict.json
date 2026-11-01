@@ -59,7 +59,7 @@
 			{
 				"name": "HarnessVerdict",
 				"type": "markup",
-				"description": "Verdict icon and tooltip. Hover or keyboard focus reveals the explanation; clicking pins it, while Escape, blur or an outside pointer action closes it. The tooltip stays within the viewport and supports keyboard scrolling when its content overflows."
+				"description": "Verdict icon and tooltip anchored to the icon. Hover or keyboard focus reveals the explanation; clicking pins it, while Escape, blur or an outside pointer action closes it. The tooltip stays within the viewport and scrolls only when constrained by available height, with keyboard scrolling for overflowing content."
 			}
 		],
 		"errors": [],

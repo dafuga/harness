@@ -27,6 +27,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.select"],
 		"inputs": [
 			{
 				"name": "HarnessSelectors.index",
@@ -56,7 +57,7 @@
 				"name": "HarnessSelectors.bases",
 				"type": "HarnessRevisionSummary[] | null",
 				"required": true,
-				"description": "Required comparison revisions or null. Null hides the base selector; an empty list leaves it with no revision choices."
+				"description": "Required comparison revisions or null. Null hides the base selector; an empty list disables it with a visible no-base-commits placeholder."
 			},
 			{
 				"name": "HarnessSelectors.from",
@@ -94,7 +95,7 @@
 			{
 				"name": "HarnessSelectors",
 				"type": "markup",
-				"description": "Native branch, commit and optional base selectors. In the navbar they form one compact row with middle-shortened names, short hashes and full hover details. Selecting a value invokes its matching callback."
+				"description": "Native branch, commit and optional base selectors. Closed controls show middle-shortened branch names or seven-character hashes with complete native options and hover details. Empty controls are disabled and state which choices are unrecorded. Selecting a value invokes its matching callback. Only the summary is painted in closed revision controls, preserving the value letter case."
 			}
 		],
 		"errors": [
@@ -146,6 +147,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

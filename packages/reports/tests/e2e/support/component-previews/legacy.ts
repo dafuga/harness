@@ -5,7 +5,7 @@ import ExplorerContent from '../../../../src/components/explorer-ui/ExplorerCont
 const components = '/branch/feature%2Forders/components';
 const navbar = {
 	base: '/harness',
-	repository: 'Preview project',
+	repository: 'Orders',
 	scope: d.shown.scope,
 	index: d.index,
 	commits: d.index.revisions,
@@ -47,11 +47,16 @@ export const legacyCases: PreviewCases = {
 	},
 	'reports.component.harness-harness-shell': { base: '/harness' },
 	'reports.component.harness-harness-tabs': {
-		view: 'contract',
+		view: 'history',
 		tabs: [
 			{ id: 'overview', label: 'Overview' },
 			{ id: 'contract', label: 'Contract' },
-			{ id: 'states', label: 'States' }
+			{ id: 'used-in', label: 'Used In' },
+			{ id: 'uses', label: 'Uses' },
+			{ id: 'audio', label: 'Audio' },
+			{ id: 'states', label: 'States' },
+			{ id: 'history', label: 'History' },
+			{ id: 'source', label: 'Source' }
 		],
 		onview: noop
 	},

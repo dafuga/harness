@@ -48,5 +48,80 @@ async function assertUsageImage(component: Locator, variant: string) {
 	const preview = component.getByRole('tooltip', { name: 'Preview of OrderList' });
 	const image = preview.getByRole('img', { name: 'Screenshot of OrderList' });
 	await expect(image).toHaveAttribute('src', /^data:image\/svg\+xml,/);
-	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('SYNTHETIC ORDER LIST');
+	expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain('Order management');
+}
+
+/** Preview artwork contains product content; fixture provenance stays outside the painted image. */
+export async function assertProductArtwork(component: Locator, id: string, variant: string) {
+	const states: Record<string, string[]> = {
+		'reports.component.explorer-catalog-items': [
+			'',
+			'multiple',
+			'batched',
+			'more',
+			'all',
+			'batch-focused',
+			'batch-hovered',
+			'functions',
+			'pages',
+			'configs',
+			'configs-open',
+			'empty-configs',
+			'unlinked'
+		],
+		'reports.component.explorer-ui-explorer-module-card': [
+			'',
+			'many-usage',
+			'no-usage',
+			'page',
+			'layout',
+			'usage-open'
+		],
+		'reports.component.modal': ['image', 'lightbox'],
+		'reports.component.explorer-usage': ['usage-open'],
+		'reports.component.entity-states': ['', 'current', 'initial', 'viewer-open', 'viewport-mobile']
+	};
+	if (!states[id]?.includes(variant)) return;
+	if (variant === 'usage-open') await assertUsagePreviewBounds(component);
+	const forbidden = /\b(?:synthetic|fictional|fixtures?)\b/i;
+	for (const image of await component.locator('img').all()) {
+		if (!(await image.isVisible())) continue;
+		const content = await image.evaluate(async (node: HTMLImageElement) => {
+			const response = await fetch(node.currentSrc);
+			return { ok: response.ok, text: await response.text() };
+		});
+		expect(content.ok, 'Painted preview artwork is readable').toBe(true);
+		expect(content.text, 'Artwork omits painted fixture labels').not.toMatch(forbidden);
+		expect(await image.getAttribute('alt')).not.toMatch(forbidden);
+	}
+	expect((await component.locator('figcaption').allTextContents()).join(' ')).not.toMatch(
+		forbidden
+	);
+}
+
+/** Fixed previews stay inside their owner horizontally and leave the module title clear. */
+async function assertUsagePreviewBounds(component: Locator) {
+	const preview = component.getByRole('tooltip');
+	const popup = (await preview.boundingBox())!;
+	const article = component.locator('article').first();
+	const owner = (await ((await article.count()) ? article : component).boundingBox())!;
+	expect(popup.x, 'Usage preview stays inside its owner left edge').toBeGreaterThanOrEqual(owner.x);
+	expect(
+		popup.x + popup.width,
+		'Usage preview stays inside its owner right edge'
+	).toBeLessThanOrEqual(owner.x + owner.width);
+	if (await article.count()) {
+		expect(popup.y, 'Usage preview stays inside its card top edge').toBeGreaterThanOrEqual(owner.y);
+		expect(
+			popup.y + popup.height,
+			'Usage preview stays inside its card bottom edge'
+		).toBeLessThanOrEqual(owner.y + owner.height);
+		const title = (await article.getByRole('heading').boundingBox())!;
+		const overlaps =
+			popup.x < title.x + title.width &&
+			popup.x + popup.width > title.x &&
+			popup.y < title.y + title.height &&
+			popup.y + popup.height > title.y;
+		expect(overlaps, 'Usage preview leaves the module title visible').toBe(false);
+	}
 }

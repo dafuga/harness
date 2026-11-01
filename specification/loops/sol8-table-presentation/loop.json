@@ -1,0 +1,60 @@
+{
+	"name": "sol8-table-presentation",
+	"goal": "Render catalog category rows, aligned empty feedback and multiline config strings at every viewport",
+	"createdAt": "2026-10-31T23:10:30.686Z",
+	"updatedAt": "2026-10-31T23:31:15.169Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:11:34.170Z",
+			"evidence": "Current-code API record 9e1f6da63e13 reproduces empty category examples, an empty message outside the frame and flattened multiline strings. README records the retained states."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:11:34.993Z",
+			"evidence": "Existing catalog assertions accepted zero body rows and required nowrap for multiline strings. Existing variants and assertions now require representative rows, a spanning empty body cell and three painted lines."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:16:04.678Z",
+			"evidence": "Record b75608d653a6 at 53a25c7d06: all six cases fail; empty body cell absent and multiline CSS is nowrap at desktop, tablet and mobile."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:31:13.868Z",
+			"evidence": "af1e1c9478 adds a spanning empty body row and preserves multiline literal whitespace; single-line ellipsis and existing actions remain."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:31:15.169Z",
+			"evidence": "f9fc9a1574b7fe360e383f75be0779b406bae0bb75f20961ae38919e7e1f95cc passes all six unchanged empty/multiline cases at desktop, tablet and mobile."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

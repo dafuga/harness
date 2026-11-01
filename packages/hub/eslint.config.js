@@ -1,3 +1,4 @@
+import svelteParser from 'svelte-eslint-parser';
 import eslint from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
@@ -47,6 +48,7 @@ export default [
 			'harness/max-class-lines': 'error',
 			'harness/max-method-lines': 'error',
 			'harness/no-manager-name': 'error',
+			'harness/shared-reuse': 'error',
 			'max-classes-per-file': ['error', harnessRuleLimits.maxClassesPerFile],
 			'max-depth': ['error', harnessRuleLimits.maxNestingDepth],
 			'max-lines': [
@@ -70,5 +72,11 @@ export default [
 				extraFileExtensions: ['.svelte']
 			}
 		}
+	},
+	{
+		files: ['src/**/*.svelte'],
+		languageOptions: { parser: svelteParser, parserOptions: { parser: tsParser } },
+		plugins: { harness },
+		rules: { 'harness/shared-reuse': 'error' }
 	}
 ];

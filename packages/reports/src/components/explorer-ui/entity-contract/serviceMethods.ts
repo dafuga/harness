@@ -191,6 +191,7 @@ export function modelContract(unit: HarnessUnit): ReturnType<typeof serviceContr
 			inputs: methods.flatMap((method) =>
 				method.inputs.map((input) => ({
 					...input,
+					...unit.contract.inputs.find((field) => field.name === `${method.owner}.${input.name}`),
 					name: `${method.owner}.${input.name}`
 				}))
 			),

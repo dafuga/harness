@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
-import type { RecordInput } from '../src/models/Report.types';
+import type { RecordInput } from '../src/models/reports-media/Report.types';
 
 const roots: string[] = [];
 async function fixture() {

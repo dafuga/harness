@@ -5,7 +5,10 @@ import { commits, entities, entity, ids } from './explorerData';
 import { orderListImage } from './reportEntityStatesVariants';
 
 /** The link's preview belongs to the same fictional consumer and its selected revision. */
-export function usageLinkVariant(props: PreviewCases[string], variant: string) {
+export function usageLinkVariant(
+	props: PreviewCases[string],
+	variant: string
+): PreviewCases[string] | null {
 	if (variant === 'function-open')
 		return { ...props, entity: entities.find((item) => item.id === ids.filter) };
 	if (variant.startsWith('source-')) {
@@ -20,7 +23,6 @@ export function usageLinkVariant(props: PreviewCases[string], variant: string) {
 			nav: variant === 'source-enabled' ? { ...nav, source: () => {} } : nav
 		};
 	}
-	if (variant === 'touch') return props;
 	if (
 		!['visual-open', 'hover-open', 'inherited-open', 'missing-open', 'image-error-open'].includes(
 			variant

@@ -80,7 +80,8 @@
 					{
 						"name": "collection.node",
 						"type": "ConfigValueNode",
-						"required": false
+						"required": false,
+						"description": "Optional source node, defaulting to JavaScript undefined; an absent or expression node returns undefined."
 					}
 				],
 				"outputs": [
@@ -105,12 +106,14 @@
 					{
 						"name": "valueMark.node",
 						"type": "ConfigValueNode | undefined",
-						"required": true
+						"required": true,
+						"description": "Required argument; undefined means the text has no structured source node."
 					},
 					{
 						"name": "valueMark.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Required source text used to measure an unstructured value in lines or characters."
 					}
 				],
 				"outputs": [

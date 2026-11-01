@@ -40,22 +40,22 @@ export async function assertMobileContractFields(component: Locator) {
 	const rows = component.locator('[data-harness-component="contract-table"] tbody tr');
 	for (const row of await rows.all()) {
 		const overlaps = await row.evaluate((node) => {
-			const parts = Array.from(node.querySelectorAll('th, .type, .example, button.info')).map(
-				(element) => {
-					const range = document.createRange();
-					range.selectNodeContents(element);
-					const box = element.matches('th')
-						? range.getBoundingClientRect()
-						: element.getBoundingClientRect();
-					return {
-						label: element.textContent?.trim() || element.getAttribute('aria-label') || '',
-						left: box.left,
-						right: box.right,
-						top: box.top,
-						bottom: box.bottom
-					};
-				}
-			);
+			const parts = Array.from(
+				node.querySelectorAll('th, .type, .example, .requirement, .default, button.info')
+			).map((element) => {
+				const range = document.createRange();
+				range.selectNodeContents(element);
+				const box = element.matches('th')
+					? range.getBoundingClientRect()
+					: element.getBoundingClientRect();
+				return {
+					label: element.textContent?.trim() || element.getAttribute('aria-label') || '',
+					left: box.left,
+					right: box.right,
+					top: box.top,
+					bottom: box.bottom
+				};
+			});
 			const conflicts: string[] = [];
 			for (const [index, first] of parts.entries()) {
 				for (const second of parts.slice(index + 1)) {
@@ -72,4 +72,111 @@ export async function assertMobileContractFields(component: Locator) {
 		});
 		expect(overlaps, 'Mobile contract values do not overlap').toEqual([]);
 	}
+}
+
+/** Every declared input keeps requirement/default metadata in the captured contract. */
+export async function assertContractMetadata(component: Locator, id: string, variant: string) {
+	if (
+		![
+			'reports.component.entity-contract',
+			'reports.component.contract-table',
+			'desktop.component.contract-panel'
+		].includes(id)
+	)
+		return;
+	const rows = component.locator('[data-contract-input]');
+	const empty = [
+		'empty',
+		'empty-kept',
+		'plain-empty',
+		'hide-names',
+		'model-bare',
+		'config'
+	].includes(variant);
+	if (!empty)
+		expect(await rows.count(), 'Declared contract inputs expose their metadata').toBeGreaterThan(0);
+	for (const row of await rows.all()) {
+		await expect(row.locator('.requirement')).toHaveText(
+			/^(Required|Optional|Requiredness not recorded)$/
+		);
+		await expect(row.locator('.default')).toContainText(/Default: .+|No default/);
+		const clipped = await row.evaluate((node) =>
+			Array.from(node.querySelectorAll('.requirement, .default')).some((item) => {
+				const box = item.getBoundingClientRect();
+				return (
+					box.left < 0 ||
+					box.right > window.innerWidth + 1 ||
+					item.scrollWidth > item.clientWidth + 1
+				);
+			})
+		);
+		expect(clipped, 'Contract metadata stays readable within the viewport').toBe(false);
+	}
+	await assertContractMetadataGroups(component, id, variant, empty);
+	await assertContractLabels(component);
+}
+
+async function assertContractMetadataGroups(
+	component: Locator,
+	id: string,
+	variant: string,
+	empty: boolean
+) {
+	const rows = component.locator('[data-contract-input]');
+	if (id === 'reports.component.entity-contract') {
+		if (variant === 'types')
+			await expect(
+				rows.locator('.requirement'),
+				'Source-declared callable fields retain authored Required metadata'
+			).toHaveText(['Required', 'Optional', 'Required']);
+		await expect(
+			component.getByText(/No errors declared\.|TypeError|NotFoundError/).first()
+		).toBeVisible();
+		if (variant.startsWith('function'))
+			await expect(component.getByRole('table', { name: 'Returns', exact: true })).toBeVisible();
+	}
+	if (
+		['', 'last', 'function', 'function-error'].includes(variant) &&
+		id === 'reports.component.entity-contract'
+	) {
+		await expect(rows.locator('.requirement')).toHaveText(['Required', 'Optional']);
+		await expect(rows.locator('.default')).toContainText(['No default', 'Default: ""']);
+	}
+	if (id === 'reports.component.contract-table' && !empty) {
+		await expect(
+			component.getByRole('columnheader', { name: 'Requirement', exact: true })
+		).toHaveCount(1);
+		await expect(component.getByRole('columnheader', { name: 'Default', exact: true })).toHaveCount(
+			1
+		);
+	}
+}
+
+/** Provenance is documentation, so only example values may be clipped. */
+async function assertContractLabels(component: Locator) {
+	const clipped = await component.locator('td i').evaluateAll((labels) =>
+		labels
+			.filter((label) => {
+				const frame = label.closest('.example') ?? label.closest('td')!;
+				const bounds = frame.getBoundingClientRect();
+				const range = document.createRange();
+				range.selectNodeContents(label);
+				return Array.from(range.getClientRects()).some(
+					(box) => box.left < bounds.left - 1 || box.right > bounds.right + 1
+				);
+			})
+			.map((label) => label.textContent)
+	);
+	expect(clipped, 'Contract provenance labels remain fully readable').toEqual([]);
+	const broken = await component.locator('thead th, .requirement').evaluateAll((labels) =>
+		labels
+			.filter((label) => {
+				if (!/^[A-Za-z]+$/.test(label.textContent?.trim() ?? '')) return false;
+				const range = document.createRange();
+				range.selectNodeContents(label);
+				return range.getClientRects().length > 1;
+			})
+			.map((label) => label.textContent)
+	);
+	expect(broken, 'Contract headings and requirement words remain readable').toEqual([]);
 }

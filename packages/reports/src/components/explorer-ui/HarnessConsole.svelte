@@ -106,16 +106,16 @@
 	});
 
 	onMount(async () => {
+		// Repository identity does not depend on the history index being ready.
+		void client.activity().then(
+			(activity) => (repository = activity.repository.name),
+			() => (repository = null)
+		);
 		try {
 			index = await client.index();
 		} catch {
 			problem = 'The history could not be loaded. Refresh the page to try again.';
 		}
-		// The name of the repository this history was built from; a history without one names none.
-		repository = await client.activity().then(
-			(activity) => activity.repository.name,
-			() => null
-		);
 	});
 
 	$effect(() => {
@@ -184,12 +184,6 @@
 			<LoadingState label="Loading this revision…" />
 		{/if}
 		{#if shown}
-			{#if !shown.head.registry.available}
-				<hx-p class="hc-notice" role="status">
-					{shown.head.registry.gap ?? 'No unit registry is stored at this revision'}. The registry
-					of another revision is not shown in its place.
-				</hx-p>
-			{/if}
 			<!-- Another category, entity or section opens afresh; a tab of the same page keeps it. -->
 			{#key contentKey}
 				<Content

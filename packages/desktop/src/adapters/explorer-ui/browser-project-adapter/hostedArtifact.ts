@@ -1,3 +1,4 @@
+import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import type { EvidenceArtifactResult } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { artifactAnswer } from '../../../utils/development-tooling/artifact-answer/artifactAnswer';
 
@@ -20,7 +21,7 @@ export async function hostedArtifact(
 	try {
 		result = await artifactAnswer({ kind, mediaType: type, sha256, media: 'stored' }, media.bytes);
 	} catch (error) {
-		const message = error instanceof Error ? error.message : String(error);
+		const message = errorMessage(error);
 		if (message.includes('SHA-256'))
 			throw new Error('This is not the recorded file that was asked for (SHA-256).');
 		if (message.includes('11 MiB')) throw error;

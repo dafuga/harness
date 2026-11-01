@@ -1,6 +1,6 @@
 import type { Shown, Staged, Impact } from './recordedProjection.types';
-import type { ExplorerSide } from '../../../../reports/src/models/Explorer.types';
-import type { HarnessRecord, HarnessRevision } from '../../../../reports/src/models/Harness.types';
+import type { ExplorerSide } from '$reports/models/Explorer.types';
+import type { HarnessRecord, HarnessRevision } from '$reports/models/Harness.types';
 
 const shownOn = (side: ExplorerSide): Shown =>
 	new Map(

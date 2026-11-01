@@ -1,0 +1,62 @@
+{
+	"name": "sol8-usage-card-containment",
+	"goal": "Keep open visual-card usage previews inside all four card edges while preserving the card title.",
+	"createdAt": "2026-11-01T03:38:50.998Z",
+	"updatedAt": "2026-11-01T04:00:10.745Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-01T03:38:51.630Z",
+			"evidence": "Tablet and mobile preview widths now fit, but their bottoms remain outside the visual card. Use the larger clear area beside its title."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T03:38:52.248Z",
+			"evidence": "The existing catalog checked horizontal owner edges and title overlap. Extend that same post-capture assertion with top and bottom owner boundaries."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T03:40:48.935Z",
+			"evidence": "The committed three-viewport catalog case rejects both tablet and mobile previews at the card bottom edge; desktop passes."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-01T04:00:08.803Z",
+			"evidence": "b7e0e87824 selects the larger clear area above or below the card title and keeps the preview inside all four edges."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-01T04:00:10.745Z",
+			"evidence": "a5ee246635 at b7e0e87824 passes the same three viewport tests. Full capture fb9a65267e retains 90 images; all fetched and inspected."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -39,8 +39,8 @@
 			{/each}
 			{#if omitted > 0}
 				<hx-li>
-					<hx-span aria-hidden="true">…</hx-span>
-					<hx-span class="ex-usage-more"
+					{#if items.length > 0}<hx-span aria-hidden="true">…</hx-span>{/if}
+					<hx-span class:ex-usage-more={items.length > 0}
 						>{omitted} more {omitted === 1 ? 'usage' : 'usages'}</hx-span
 					>
 				</hx-li>

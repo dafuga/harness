@@ -1,0 +1,60 @@
+{
+	"name": "sol8-search-focus",
+	"goal": "Keep one aligned search focus ring and realistic project scope at every viewport",
+	"createdAt": "2026-10-31T23:31:57.584Z",
+	"updatedAt": "2026-10-31T23:57:10.629Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:33:18.282Z",
+			"evidence": "Current-code API record b7a7a5b649b8 shows two offset focus outlines and Preview project at desktop, tablet and mobile."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:33:18.987Z",
+			"evidence": "The existing catalog checked query/results but not focus styling. Post-capture assertions now require one wrapper outline and no input outline, border or shadow."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:36:54.363Z",
+			"evidence": "Record 82036765637e at ccbc98db49: all three open states fail because the input outline is 2px rather than 0, with three captures retained."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:55:28.338Z",
+			"evidence": "0ec48f071f explicitly resets the focused input outline width through the search root; the field wrapper retains the visible outline."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-31T23:57:10.629Z",
+			"evidence": "2ff7ff2e4c087425ebea2379fb4f8e80be51dc4dfad3ef25dbd246cec12d7ed5 passes all three unchanged viewport cases with retained captures."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

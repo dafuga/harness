@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
 	import Select from '$shared/Select.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { displayTime, revisionTime } from '../../utils/revisionTime';
@@ -19,9 +21,9 @@
 	/** Names an explicit commit separately from a followed branch. */
 	const viewed = $derived.by(() => {
 		if (!revision) return '';
-		if (!revision.atTip) return `Historical commit · ${revision.commit.slice(0, 7)}`;
+		if (!revision.atTip) return `Historical commit · ${shortCommit(revision.commit)}`;
 		return workspace.pinned
-			? `Pinned commit · ${revision.commit.slice(0, 7)}`
+			? `Pinned commit · ${shortCommit(revision.commit)}`
 			: 'Current · branch tip';
 	});
 	const committed = $derived(snapshot ? revisionTime(snapshot, 'commit') : null);
@@ -51,6 +53,7 @@
 		void workspace.navigate(workspace.link({ branch, commit }));
 	}
 </script>
+
 {#snippet when(label: string, value: string | null)}<hx-small
 		>{label}
 		{#if value}<hx-time datetime={value}>{displayTime(value)}</hx-time>{:else}Unknown{/if}</hx-small
@@ -66,13 +69,13 @@
 						>Branch<Select
 							label="Branch"
 							expanded
-							title={`Tip · ${revision.tip.slice(0, 7)}`}
+							title={`Tip · ${shortCommit(revision.tip)}`}
 							bind:value={branch}
 							>{#each snapshot.branches as item (item.name)}<hx-option value={item.name}
 									>{item.name}</hx-option
 								>{/each}</Select
 						></hx-label
-					>{@render when(`Branch tip ${revision.tip.slice(0, 7)} committed`, tipped)}{/snippet}
+					>{@render when(`Branch tip ${shortCommit(revision.tip)} committed`, tipped)}{/snippet}
 				{#snippet footer(close: () => void)}<hx-button
 						type="button"
 						onclick={() => chooseBranch(close)}>View branch</hx-button
@@ -85,7 +88,7 @@
 						onchange={() => chooseCommit(close)}
 						>Commit<Select expanded label="Commit" title={viewed} bind:value={commit}
 							>{#each snapshot.commits as item (item.hash)}<hx-option value={item.hash}
-									>{item.hash.slice(0, 7)} · {item.subject}</hx-option
+									>{shortCommit(item.hash)} · {item.subject}</hx-option
 								>{/each}</Select
 						></hx-label
 					>{@render when('Commit updated', committed)}{/snippet}

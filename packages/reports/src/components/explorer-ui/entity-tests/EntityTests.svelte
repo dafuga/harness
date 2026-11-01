@@ -128,13 +128,13 @@
 					<hx-tbody>
 						{#each scenario.states as state}
 							<hx-tr>
-								<hx-th scope="row">{state.state}</hx-th>
-								<hx-td
+								<hx-th scope="row" style:min-width="0">{state.state}</hx-th>
+								<hx-td class="state-value"
 									>{state.declared}{declared(scenario.scenario, state.state)
 										? `: ${declared(scenario.scenario, state.state)}`
 										: ''}</hx-td
 								>
-								<hx-td>
+								<hx-td class="state-value">
 									{#if state.standing === 'inapplicable'}
 										<hx-span class="ex-soft">{said.inapplicable}</hx-span>
 									{:else}
@@ -210,3 +210,10 @@
 		<EvidenceGrid items={media} assetBase={mediaBase} idPrefix="entity-" />
 	{/if}
 </hx-div>
+
+<style>
+	.state-value {
+		overflow-wrap: normal;
+		word-break: normal;
+	}
+</style>

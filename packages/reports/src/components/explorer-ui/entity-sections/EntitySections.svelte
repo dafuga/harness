@@ -1,8 +1,10 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '../../../helpers/strings/shortCommit';
+
 	import type { Snippet } from 'svelte';
- import ExplorerPermissionsScreen from '../../networking-security/ExplorerPermissionsScreen.svelte';
+	import ExplorerPermissionsScreen from '../../networking-security/ExplorerPermissionsScreen.svelte';
 	import type { ExplorerEntity } from '../../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../../models/explorer-ui/ExplorerScreen.types';
 	import type { EntityNav } from '../../../utils/explorer-ui/entityLens';
@@ -58,14 +60,18 @@
 	let tableView = $derived(modelTableView(entity.unit));
 	let tables = $derived(tableView.tables);
 	let gaps = $derived(tableView.gaps);
-	let schemaTitle = $derived(entity.lastAt ? `Last table · ${entity.lastAt.slice(0, 7)}` : 'Table');
+	let schemaTitle = $derived(
+		entity.lastAt ? `Last table · ${shortCommit(entity.lastAt)}` : 'Table'
+	);
 </script>
 
 <hx-div class="ex-sections" data-harness-component="harness-entity-sections">
 	<!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
 	{#if entity.category === 'apis' && host.route.tab === 'permissions'}
-  <hx-div role="tabpanel" aria-label={`${entity.name} permissions`}><ExplorerPermissionsScreen {...host} endpoint={entity.id} /></hx-div>
- {:else if related}
+		<hx-div role="tabpanel" aria-label={`${entity.name} permissions`}
+			><ExplorerPermissionsScreen {...host} endpoint={entity.id} /></hx-div
+		>
+	{:else if related}
 		<hx-div role="tabpanel" aria-label={`${entity.name} ${said[related]}`}>
 			<EntityRelations {host} {relations} {nav} show={related} {removed} />
 		</hx-div>
@@ -155,12 +161,12 @@
 								<hx-tbody>
 									{#each item.table.columns as column, columnPosition (columnPosition)}
 										<hx-tr>
-											<hx-td><hx-code>{column.name}</hx-code></hx-td>
-											<hx-td><hx-code>{column.property}</hx-code></hx-td>
-											<hx-td><hx-code>{column.type}</hx-code></hx-td>
-											<hx-td>{column.primaryKey ? 'Yes' : 'No'}</hx-td>
-											<hx-td>{column.nullable ? 'Yes' : 'No'}</hx-td>
-											<hx-td>{column.default ?? 'None'}</hx-td>
+											<hx-td data-label="Column"><hx-code>{column.name}</hx-code></hx-td>
+											<hx-td data-label="Property"><hx-code>{column.property}</hx-code></hx-td>
+											<hx-td data-label="Type"><hx-code>{column.type}</hx-code></hx-td>
+											<hx-td data-label="Primary key">{column.primaryKey ? 'Yes' : 'No'}</hx-td>
+											<hx-td data-label="Nullable">{column.nullable ? 'Yes' : 'No'}</hx-td>
+											<hx-td data-label="Default">{column.default ?? 'None'}</hx-td>
 										</hx-tr>
 									{/each}
 								</hx-tbody>
@@ -199,20 +205,5 @@
 <style>
 	.ex-sections {
 		display: contents;
-	}
-	.schema {
-		display: grid;
-		gap: var(--hx-space-10);
-	}
-	.schema td code {
-		white-space: nowrap;
-	}
-	.schema + .schema {
-		padding-top: var(--hx-space-16);
-		border-top: var(--hx-border-thin) solid var(--ex-line);
-	}
-	.schema h3 {
-		color: var(--ex-text);
-		font-weight: var(--hx-style-weight-semibold);
 	}
 </style>

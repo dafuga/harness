@@ -52,7 +52,7 @@
 				"type": "string",
 				"required": false,
 				"default": "Recorded rows",
-				"description": "Accessible name for nested rows, distinguishing authored examples from recorded data."
+				"description": "Optional accessible name for nested rows. Default: Recorded rows. Distinguishes authored examples from recorded data."
 			}
 		],
 		"outputs": [

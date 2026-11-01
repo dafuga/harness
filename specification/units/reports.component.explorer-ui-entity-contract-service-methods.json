@@ -38,7 +38,7 @@
 			{
 				"name": "modelContract",
 				"type": "{ methods: CallableContract[]; facts: ContractRow[]; }",
-				"description": "Method contracts projected through the same service renderer, without inventing persistence methods or treating constants as returns."
+				"description": "Source-declared model methods projected through the service renderer, retaining authored qualified parameter metadata without inventing methods, defaults or requiredness."
 			}
 		],
 		"errors": [

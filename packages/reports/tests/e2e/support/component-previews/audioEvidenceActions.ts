@@ -11,17 +11,16 @@ export async function prepareAudioEvidence(component: Locator, variant: string) 
 	}
 	if (variant === 'playing') {
 		const audio = component.locator('audio');
+		// Let real playback advance so the player shows elapsed time and progress.
 		await audio.evaluate((element: HTMLAudioElement) => element.play());
+		await expect
+			.poll(() => audio.evaluate((element: HTMLAudioElement) => element.currentTime), {
+				timeout: 20000
+			})
+			.toBeGreaterThan(6);
 		await expect
 			.poll(() => audio.evaluate((element: HTMLAudioElement) => element.paused))
 			.toBe(false);
-	}
-	if (variant === 'duration-loaded') {
-		await component.locator('audio').evaluate(async (element: HTMLAudioElement) => {
-			await element.play();
-			element.pause();
-		});
-		await expect(component.locator('.audio-duration')).toHaveText('0:42');
 	}
 	if (variant === 'audio-error') {
 		await component.locator('audio').evaluate(async (element: HTMLAudioElement) => {
@@ -41,8 +40,7 @@ async function assertAudioEvidence(component: Locator, variant: string) {
 	await expect(component.locator('.audio-card.unavailable')).toHaveCount(missing ? 1 : 0);
 	if (['no-details', 'minimal'].includes(variant))
 		await expect(component.locator('.audio-details')).toHaveCount(0);
-	if (['no-duration', 'minimal'].includes(variant))
-		await expect(component.locator('.audio-duration')).toHaveCount(0);
+	if (variant === 'minimal') await expect(component.locator('.audio-duration')).toHaveText('0:42');
 	if (['notes-closed', 'transcript-closed', 'notes-transcript-closed'].includes(variant))
 		await expect(component.locator('.audio-details')).not.toHaveAttribute('open');
 	if (variant === 'minimal') {

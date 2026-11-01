@@ -57,6 +57,9 @@
 	gap: var(--hx-space-4);
 	margin-block-end: var(--hx-space-4);
 }
+.ex-translations-controls:has(select:open) {
+	padding-block-end: calc(var(--language-row-count) * (1lh + var(--hx-space-4)));
+}
 .ex-translations-controls .ex-controls {
 	flex: 1;
 	margin: 0;

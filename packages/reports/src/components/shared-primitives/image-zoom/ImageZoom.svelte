@@ -6,6 +6,7 @@
 	import { t } from '../../../utils/reports-media/reportLocale';
 	import { imageAnchor, keepPointerInPlace } from './trackpadZoom';
 	import { trackpadZoom } from '../../../utils/shared-primitives/trackpadZoom';
+	import './imageZoom.css';
 	let { src, alt }: { src: string; alt: string } = $props();
 
 	// Scales are multiples of the image's natural pixels; null means fitted to the viewer.
@@ -17,11 +18,20 @@
 	let scale = $state<number | null>(null);
 	let naturalWidth = $state(0);
 	let renderedWidth = $state(0);
+	let loadedSrc = $state<string | null>(null);
+	let failedSrc = $state<string | null>(null);
+	let failed = $derived(failedSrc === src);
+	let loading = $derived(loadedSrc !== src && !failed);
 	let drag = $state<DragStart | null>(null);
 	let fitScale = 1;
 	let zoomed = $derived(scale !== null);
 	let current = $derived(scale ?? (naturalWidth ? renderedWidth / naturalWidth : 1));
-	let percent = $derived(naturalWidth ? `${Math.round(current * 100)}%` : '–');
+	let percent = $derived(loadedSrc === src && naturalWidth ? `${Math.round(current * 100)}%` : '–');
+	function imageReady() {
+		naturalWidth = image?.naturalWidth ?? 0;
+		loadedSrc = src;
+		failedSrc = null;
+	}
 	function viewCenter(element: HTMLElement): Point {
 		return {
 			x: (element.scrollLeft + element.clientWidth / 2) / element.scrollWidth,
@@ -91,7 +101,7 @@
 			aria-disabled={!zoomed}
 			onclick={zoomOut}>−</hx-button
 		>
-		<hx-output class="scale">{percent}</hx-output>
+		<hx-output class="scale" aria-hidden={loading || failed}>{percent}</hx-output>
 		<hx-button
 			class="step"
 			aria-label={$t('zoomIn')}
@@ -105,6 +115,7 @@
 		<hx-button class:active={!zoomed} aria-pressed={!zoomed} onclick={() => zoomTo(null)}
 			>{$t('fitImage')}</hx-button
 		>
+		{#if drag}<hx-span class="drag-hint" role="status">{$t('panning')}</hx-span>{/if}
 	</hx-div>
 	<!-- svelte-ignore a11y_no_static_element_interactions, a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions focusable so keyboards can pan -->
 	<hx-div
@@ -122,98 +133,18 @@
 		onpointerup={endDrag}
 		onpointercancel={endDrag}
 	>
+		{#if loading}<hx-p role="status">Loading image…</hx-p>{/if}
+		{#if failed}<hx-p role="alert">Image could not be loaded.</hx-p>{/if}
 		<hx-img
 			bind:this={image}
 			bind:clientWidth={renderedWidth}
 			{src}
 			{alt}
+			class:failed
 			draggable="false"
 			style:width={scale === null ? null : `${naturalWidth * scale}px`}
-			onload={() => (naturalWidth = image?.naturalWidth ?? 0)}
+			onload={imageReady}
+			onerror={() => (failedSrc = src)}
 		/>
 	</hx-div>
 </hx-div>
-<style>
-	.zoom {
-		--view-height: var(--hx-layout-zoom-view);
-	}
-	.zoom-bar {
-		position: sticky;
-		top: 0;
-		z-index: var(--hx-layer-raised);
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
-		gap: var(--hx-space-6);
-		padding-bottom: var(--hx-space-8);
-		background: var(--hx-color-background);
-	}
-	.zoom-bar button {
-		min-height: 36px;
-		padding: var(--hx-space-6) var(--hx-space-12);
-		font-size: var(--hx-type-size-compact);
-		line-height: var(--hx-style-leading-tight);
-	}
-	.zoom-bar .step {
-		min-width: 40px;
-		padding: var(--hx-space-4) var(--hx-space-10);
-		font-size: var(--hx-type-size-lg);
-	}
-	.zoom-bar .active {
-		border-color: var(--hx-color-primary);
-		background: var(--hx-color-primary);
-		color: var(--hx-color-primary-contrast);
-	}
-	.zoom-bar [aria-disabled='true'] {
-		opacity: var(--hx-opacity-disabled);
-		cursor: not-allowed;
-	}
-	.scale {
-		min-width: 4.5ch;
-		color: var(--hx-color-text);
-		font-size: var(--hx-type-size-compact);
-		font-weight: var(--hx-style-weight-semibold);
-		font-variant-numeric: var(--hx-style-numeric-tabular);
-	}
-	.stage img {
-		max-height: var(--view-height);
-	}
-	.stage.zoomed {
-		max-height: var(--view-height);
-		overflow: auto;
-		overscroll-behavior: contain;
-		border: var(--hx-border-thin) solid var(--hx-color-border);
-		border-radius: var(--hx-radius-small);
-		background: var(--hx-color-background);
-		cursor: grab;
-		scrollbar-color: var(--hx-color-border-strong) transparent;
-	}
-	.stage.zoomed img {
-		max-width: none;
-		max-height: none;
-	}
-	.stage.dragging {
-		cursor: grabbing;
-		user-select: none;
-	}
-	.stage:focus-visible {
-		outline: var(--hx-border-thick) solid var(--hx-color-primary);
-		outline-offset: calc(-1 * var(--hx-space-2));
-	}
-	@media (max-width: 650px) {
-		.zoom {
-			--view-height: var(--hx-layout-zoom-view-compact);
-		}
-		.zoom-bar {
-			gap: var(--hx-space-4);
-		}
-		.zoom-bar button {
-			min-height: 44px;
-			padding: var(--hx-space-6) var(--hx-space-10);
-		}
-		.zoom-bar .step {
-			min-width: 44px;
-		}
-	}
-</style>

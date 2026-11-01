@@ -14,20 +14,48 @@ export async function prepareCatalogItems(component: Locator, variant: string) {
 /** The catalog shows its real rows, pagination or variable table for the selected state. */
 export async function assertCatalogItems(component: Locator, variant: string) {
 	if (!variant) await expect(component.getByRole('article')).toHaveCount(1);
-	if (variant === 'multiple') await expect(component.getByRole('article')).toHaveCount(3);
+	if (variant === 'multiple') {
+		await expect(component.getByRole('article')).toHaveCount(2);
+		await expect(component.getByRole('heading')).toHaveText(['OrderCard', 'OrderList']);
+	}
 	await assertPagination(component, variant);
 	if (variant === 'functions') await expect(component).toContainText('filterOrders');
 	if (variant === 'pages')
 		await expect(component.getByRole('img', { name: 'Screenshot of Orders page' })).toBeVisible();
 	if (variant === 'unlinked') await expect(component).toContainText('Orders styles');
-	if (['configs', 'configs-open', 'empty-configs'].includes(variant)) {
-		await expect(component.getByRole('columnheader')).toHaveText(['Variable', 'Value']);
-		await expect(component.locator('tbody tr')).toHaveCount(variant === 'empty-configs' ? 0 : 4);
-	}
+	if (['configs', 'configs-open', 'empty-configs'].includes(variant))
+		await assertConfigItems(component, variant);
 	if (variant === 'configs-open')
 		await expect(
 			component.getByRole('dialog', { name: 'orderSettings.steps · Value' })
 		).toBeVisible();
+}
+
+/** Open values retain the same catalog context width as the other states. */
+export async function assertCatalogItemsFrame(
+	component: Locator,
+	viewport: string,
+	capture?: { clip: { x: number; y: number; width: number; height: number } }
+) {
+	expect(capture, 'The open config value has a recorded catalog frame').toBeDefined();
+	const widths: Record<string, number> = { desktop: 896, tablet: 752, mobile: 374 };
+	expect(capture!.clip.width).toBe(widths[viewport]);
+	const dialog = await component.getByRole('dialog').boundingBox();
+	expect(dialog).not.toBeNull();
+	const clip = capture!.clip;
+	expect(dialog!.x).toBeGreaterThanOrEqual(clip.x);
+	expect(dialog!.y).toBeGreaterThanOrEqual(clip.y);
+	expect(dialog!.x + dialog!.width).toBeLessThanOrEqual(clip.x + clip.width);
+	expect(dialog!.y + dialog!.height).toBeLessThanOrEqual(clip.y + clip.height);
+}
+
+async function assertConfigItems(component: Locator, variant: string) {
+	await expect(component.getByRole('columnheader')).toHaveText(['Variable', 'Value']);
+	const rows = component.locator('tbody tr');
+	await expect(rows).toHaveCount(variant === 'empty-configs' ? 1 : 4);
+	if (variant !== 'empty-configs') return;
+	await expect(rows.getByRole('cell')).toHaveText('No rows to display.');
+	await expect(rows.getByRole('cell')).toHaveAttribute('colspan', '2');
 }
 
 async function assertPagination(component: Locator, variant: string) {
@@ -45,6 +73,12 @@ async function assertPagination(component: Locator, variant: string) {
 	else await expect(more).toBeVisible();
 	if (variant === 'batch-focused')
 		expect(await more.evaluate((button) => button.matches(':focus-visible'))).toBe(true);
-	if (variant === 'batch-hovered')
+	if (variant === 'batched') await expect(more).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+	if (variant === 'batch-hovered') {
 		expect(await more.evaluate((button) => button.matches(':hover'))).toBe(true);
+		await expect(more, 'Hovered pagination paints its background').not.toHaveCSS(
+			'background-color',
+			'rgba(0, 0, 0, 0)'
+		);
+	}
 }

@@ -165,8 +165,8 @@
 </hx-div>
 
 <style>
-	/* A phone stacks each commit under visible labels; the headers stay for assistive technology. */
-	@media (max-width: 480px) {
+	/* Narrow viewports stack each commit under visible labels; headers remain accessible. */
+	@media (max-width: 800px) {
 		.ex-table.ex-history {
 			overflow: hidden;
 		}

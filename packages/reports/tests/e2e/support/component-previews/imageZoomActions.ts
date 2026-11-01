@@ -36,7 +36,11 @@ export async function prepareImageZoom(component: Locator, variant: string) {
 		await expect(component.locator('output')).toHaveText('100%');
 	}
 	if (variant === 'zoomed') {
+		await component.getByRole('button', { name: 'Actual size' }).click();
 		await plus.click();
+		await plus.click();
+		await expect(component.locator('output')).toHaveText('150%');
+		await component.locator('.stage.zoomed').evaluate((node) => node.scrollTo(0, 0));
 		await expect(minus).toHaveAttribute('aria-disabled', 'false');
 	}
 	if (variant === 'zoom-out') {
@@ -85,10 +89,20 @@ async function panZoom(component: Locator, plus: Locator, variant: string) {
 	await stage.scrollIntoViewIfNeeded();
 	const box = (await stage.boundingBox())!;
 	const page = component.page();
+	const idleBorder = await stage.evaluate((node) => getComputedStyle(node).borderTopColor);
 	await page.mouse.move(box.x + Math.min(80, box.width / 2), box.y + Math.min(120, box.height / 2));
 	await page.mouse.down();
 	await page.mouse.move(box.x + Math.min(80, box.width / 2), box.y + Math.min(60, box.height / 3));
 	await expect.poll(() => stage.evaluate((node) => node.scrollTop)).toBeGreaterThan(0);
-	if (variant === 'dragging') await expect(stage).toHaveClass(/dragging/);
+	if (variant === 'dragging') await expectVisibleDrag(stage, idleBorder);
 	else await page.mouse.up();
+}
+
+/** A drag must be visible in a still image, where the grabbing cursor is not captured. */
+async function expectVisibleDrag(stage: Locator, idleBorder: string) {
+	await expect(stage).toHaveClass(/dragging/);
+	await expect(stage.page().getByRole('status').filter({ hasText: 'Panning' })).toBeVisible();
+	await expect
+		.poll(() => stage.evaluate((node) => getComputedStyle(node).borderTopColor))
+		.not.toBe(idleBorder);
 }

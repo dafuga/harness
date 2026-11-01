@@ -1,0 +1,60 @@
+{
+	"name": "sol8-final-visual-review",
+	"goal": "Keep remaining component states readable, distinct and complete at desktop, tablet and mobile, with anchored controls and truthful loading states.",
+	"createdAt": "2026-11-01T05:44:05.468Z",
+	"updatedAt": "2026-11-01T06:36:34.772Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-01T05:51:49.486Z",
+			"evidence": "Baseline 26b2a8be10f1389b25d6aa21694c8995dca3d1c9ef76254a2e0dc52f8c3222ae at c773aa112f passed 93 browser cases, but fresh API pixel review found remaining clipping, labels, duplicate slots, tooltip and loading defects."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T05:51:50.400Z",
+			"evidence": "Existing catalog checks assert presence but omit scroll cues, short example width, tooltip anchor and overflow, whole artifact extent, and pending absence text. Correct duplicate and contradictory fixtures before freezing stronger standard assertions."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T06:22:35.159Z",
+			"evidence": "Admitted red b65178dc6fe774076556ebdb41715bf15d12fa08d216f24669df83d3e858a5de at 912f97be52 retains 15 captures and the exact failing assertion Short contract examples fit without an ellipsis. Frozen focused command and corpus remain unchanged for green."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-01T06:36:33.037Z",
+			"evidence": "Committed search, value, selector, tooltip, artifact and behavior repairs; 39 owner and 42 registry guards pass."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-01T06:36:34.772Z",
+			"evidence": "Matched stored command passes all 15 browser cases at 920318ae54; record final63-green.json retains unchanged test corpus and environment."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

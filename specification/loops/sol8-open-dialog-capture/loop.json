@@ -1,0 +1,58 @@
+{
+	"name": "sol8-open-dialog-capture",
+	"goal": "Capture every visible open dialog completely when its component uses a full preview frame.",
+	"createdAt": "2026-11-01T07:15:42.714Z",
+	"updatedAt": "2026-11-01T07:35:29.437Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-01T07:15:43.428Z",
+			"evidence": "Navbar search-open API images end at the navbar height and omit the dialog bottom at all viewports, while the actual dialog remains open."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T07:15:44.131Z",
+			"evidence": "Capture framing only measures top-level roots for full frames; extend the standard visual guard to require that visible owned dialogs fit its capture bounds."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T07:20:29.405Z",
+			"evidence": "Admitted dialog74-red.json at 9e6cc82ccc retains all three cropped Navbar dialogs and fails the full-dialog extent assertion before framing repair."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-01T07:35:29.437Z",
+			"evidence": "Committed capture helper 7d38c4993e includes visible owned dialogs. All three unchanged Navbar extent assertions pass in dialog74-qualified.json; this is fixture qualification."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

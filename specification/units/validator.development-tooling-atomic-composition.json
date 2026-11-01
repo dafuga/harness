@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/validators/development-tooling/atomicComposition.ts"],
-		"symbols": ["compositionFindings"]
+		"symbols": ["compositionFindings", "sharedPrimitiveFindings"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -17,11 +17,20 @@
 				"name": "compositionFindings.units",
 				"type": "ComponentManifest[]",
 				"required": true
+			},
+			{
+				"name": "sharedPrimitiveFindings.units",
+				"type": "ComponentManifest[]",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "compositionFindings",
+				"type": "string[]"
+			},
+			{
+				"name": "sharedPrimitiveFindings",
 				"type": "string[]"
 			}
 		],
@@ -45,11 +54,34 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "sharedPrimitiveFindings",
+				"inputs": [
+					{
+						"name": "sharedPrimitiveFindings.units",
+						"type": "ComponentManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sharedPrimitiveFindings",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.development-tooling-composition",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.unit-types",
 			"via": "import",

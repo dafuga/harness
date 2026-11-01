@@ -71,7 +71,11 @@ export function remotePreview() {
 		disconnect: done
 	});
 	const cases: PreviewCases = {
-		'desktop.component.remote-approval': { request, projects, store: host },
+		'desktop.component.remote-approval': {
+			request,
+			projects: [{ id: 'northstar-store', name: 'Northstar Store' }],
+			store: host
+		},
 		'desktop.component.remote-devices': { devices, projects, store: host },
 		'desktop.component.remote-host-panel': { store: host },
 		'desktop.component.remote-offer-code': { offer, store: host },

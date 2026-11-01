@@ -1,0 +1,60 @@
+{
+	"name": "sol8-tab-overflow-cue",
+	"goal": "Keep overflowing entity sections visibly discoverable in mobile and desktop captures.",
+	"createdAt": "2026-11-01T12:16:52.422Z",
+	"updatedAt": "2026-11-01T12:30:35.168Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:17:23.693Z",
+			"evidence": "Content history-mobile still begins inside Used In. Overflow needs a persistent visible cue when native scrollbars are hidden or faded."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:17:24.393Z",
+			"evidence": "The component catalog asserted scrollbar CSS values without requiring visible guidance. Extend its existing overflow matrix and the default Tabs fixture; keep case counts stable."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:21:13.122Z",
+			"evidence": "At 50eda3330d, five standard cases fail for a missing persistent overflow cue; four non-overflow cases pass. The original captures remain in tabcue-red.json."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:30:33.521Z",
+			"evidence": "373f0e7407 adds persistent guidance next to overflowing sections and observes tab widths. Existing focus, selection and horizontal scrollbar behavior are preserved."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-01T12:30:35.168Z",
+			"evidence": "52f04a31cc passes all nine unchanged cases at 373f0e7407, paired with a1f46077d7 at 50eda3330d. Inspected every viewport image, including cue placement."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

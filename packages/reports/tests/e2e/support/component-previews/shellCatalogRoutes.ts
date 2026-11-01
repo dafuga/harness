@@ -1,5 +1,14 @@
-import type { Page } from '@playwright/test';
+import type { Page, Route } from '@playwright/test';
 import { revision, record } from '../../../../test/entityFixture';
+import { activity } from './activity';
+
+/** Repository naming is scoped to this shell's caller; other component fixtures retain their data. */
+export function shellActivity(route: Route) {
+	const unit = new URL(route.request().frame().page().url()).searchParams.get('unit');
+	return unit === 'reports.component.harness-harness-console'
+		? { ...activity, repository: { ...activity.repository, name: 'Northstar Store' } }
+		: activity;
+}
 
 /** Hold or refuse the real data requests before the console mounts. */
 export async function routeShellCatalog(page: Page, id: string, variant: string) {
@@ -35,6 +44,6 @@ export async function routeShellCatalog(page: Page, id: string, variant: string)
 	// An invalid payload exercises the client's handled parsing failure without network console errors.
 	if (variant === 'index-error')
 		await page.route('**/data/activity.json', (route) =>
-			route.fulfill({ json: { repository: { name: 'Preview project' } } })
+			route.fulfill({ json: { repository: { name: 'Northstar Store' } } })
 		);
 }

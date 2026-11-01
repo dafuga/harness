@@ -12,13 +12,16 @@
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-img",
-			"reports.component.shared-primitives-atoms-html-output"
+			"reports.component.shared-primitives-atoms-html-output",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.svelte",
-			"packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.types.ts"
+			"packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.types.ts",
+			"packages/reports/src/components/shared-primitives/image-zoom/imageZoom.css"
 		],
 		"symbols": ["ImageZoom", "Point", "DragStart"]
 	},
@@ -42,10 +45,11 @@
 			{
 				"name": "ImageZoom",
 				"type": "markup",
-				"description": "An image initially fitted to its stage, with fit, actual-size and stepped zoom controls. Zoom preserves the pointer or viewport-center position; an enlarged image can be dragged with the primary mouse button. Trackpad zoom is bounded between fit and four times natural size."
+				"description": "An image initially fitted to its stage, with fit, actual-size and stepped zoom controls. Zoom preserves the pointer or viewport-center position; an enlarged image can be dragged with the primary mouse button. Trackpad zoom is bounded between fit and four times natural size. Loading and failed requests show visible status messages; failed images hide the broken-image placeholder."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
@@ -67,6 +71,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-output",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

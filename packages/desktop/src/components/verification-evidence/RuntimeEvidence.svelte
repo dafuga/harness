@@ -1,7 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import { screenOptions } from '../../../../reports/src/utils/entityScreens';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
+	import { screenOptions } from '$reports/utils/explorer-ui/entityScreens';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type { EntityDetail } from '../../models/development-tooling/Desktop.types';
@@ -10,13 +12,12 @@
 	import RuntimeAudio from '../reports-media/RuntimeAudio.svelte';
 	import RuntimeBehavior from '../execution-runtimes/RuntimeBehavior.svelte';
 	import RuntimeScreens from '../execution-runtimes/RuntimeScreens.svelte';
-	import RegressionProof from '../../../../reports/src/components/verification-evidence/RegressionProof.svelte';
+	import RegressionProof from '$shared/verification-evidence/RegressionProof.svelte';
 	let {
 		entity,
 		workspace,
 		evidence
 	}: { entity: EntityDetail; workspace: Workspace; evidence: EntityEvidence } = $props();
-	const short = (commit: string) => commit.slice(0, 7);
 	const result = $derived(evidence.status === 'ready' ? evidence.result : null);
 	const notice = $derived(evidenceNotice(evidence.status, evidence.error, entity.kind));
 	/** A page or a component is seen; anything else is known by what it did. */
@@ -27,10 +28,10 @@
 	const where = $derived.by(() => {
 		if (!result) return '';
 		const { mode, commit, parent } = result.scope;
-		if (mode === 'current') return `Branch tip · ${short(commit)}`;
+		if (mode === 'current') return `Branch tip · ${shortCommit(commit)}`;
 		return parent
-			? `Commit ${short(commit)} beside its parent ${short(parent)}`
-			: `Commit ${short(commit)} · first commit`;
+			? `Commit ${shortCommit(commit)} beside its parent ${shortCommit(parent)}`
+			: `Commit ${shortCommit(commit)} · first commit`;
 	});
 	const saved = $derived(
 		workspace.offline?.cachedAt ? ` of ${timeLabel(workspace.offline.cachedAt)}` : ''

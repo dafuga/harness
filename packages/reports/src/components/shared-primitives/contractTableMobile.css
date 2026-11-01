@@ -1,5 +1,5 @@
 /* Keep every field legible on a phone while retaining the table's accessible headers. */
-@media (max-width: 480px) {
+@media (max-width: 900px) {
 	[data-harness-component='contract-table'] thead {
 		position: absolute;
 		width: 1px;
@@ -44,7 +44,7 @@
 	}
 	[data-harness-component='contract-table'] tbody .act {
 		grid-column: 2;
-		grid-row: 1 / span 3;
+		grid-row: 1 / span 5;
 		align-self: center;
 		width: auto;
 		padding: var(--hx-space-2);

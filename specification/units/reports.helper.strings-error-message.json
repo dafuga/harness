@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.helper.strings-error-message",
+	"kind": "helper",
+	"title": "errorMessage",
+	"responsibility": "Converts thrown values to readable messages without changing their text.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/helpers/strings/errorMessage.ts",
+			"packages/reports/src/helpers/strings/errorMessage.types.ts"
+		],
+		"symbols": ["errorMessage", "ThrownValue"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "errorMessage.cause",
+				"type": "ThrownValue",
+				"required": true,
+				"description": "Any thrown JavaScript value, including null and undefined."
+			}
+		],
+		"outputs": [
+			{
+				"name": "errorMessage",
+				"type": "string",
+				"description": "Error.message for Error instances; String(cause) otherwise. String conversion errors propagate."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "errorMessage",
+				"inputs": [
+					{
+						"name": "errorMessage.cause",
+						"type": "ThrownValue",
+						"required": true,
+						"description": "Any thrown JavaScript value, including null and undefined."
+					}
+				],
+				"outputs": [
+					{
+						"name": "errorMessage",
+						"type": "string",
+						"description": "Error.message for Error instances; String(cause) otherwise. String conversion errors propagate."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/helpers/strings/errorMessage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/helpers/strings/errorMessage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

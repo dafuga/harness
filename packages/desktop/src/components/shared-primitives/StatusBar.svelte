@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { timeLabel } from '../../utils/development-tooling/timeLabel';
 	import HostedConnection from '../networking-security/HostedConnection.svelte';
@@ -33,6 +35,6 @@
 <hx-footer class="status-bar">
 	<hx-span>{state}</hx-span>{#if cache}<hx-span class="cache-state">{cache}</hx-span
 		>{/if}<HostedConnection {workspace} compact /><RemoteConnection {workspace} compact /><hx-span
-		>{workspace.snapshot?.revision.commit.slice(0, 7)}</hx-span
+		>{shortCommit(workspace.snapshot?.revision.commit ?? '')}</hx-span
 	>
 </hx-footer>

@@ -541,6 +541,24 @@
 			"units": ["desktop.component.choice-dialog"]
 		},
 		{
+			"id": "desktop-component-choice-dialog-closed",
+			"title": "Choice dialog: closed",
+			"coverage": "required",
+			"units": ["desktop.component.choice-dialog"]
+		},
+		{
+			"id": "desktop-component-choice-dialog-empty",
+			"title": "Choice dialog: empty",
+			"coverage": "required",
+			"units": ["desktop.component.choice-dialog"]
+		},
+		{
+			"id": "desktop-component-choice-dialog-disabled",
+			"title": "Choice dialog: disabled",
+			"coverage": "required",
+			"units": ["desktop.component.choice-dialog"]
+		},
+		{
 			"id": "desktop-component-composer",
 			"title": "Composer",
 			"coverage": "required",
@@ -2065,12 +2083,6 @@
 			"units": ["reports.component.audio-comparison-viewer"]
 		},
 		{
-			"id": "reports-component-audio-comparison-viewer-no-duration",
-			"title": "Audio comparison viewer: Durations not recorded",
-			"coverage": "required",
-			"units": ["reports.component.audio-comparison-viewer"]
-		},
-		{
 			"id": "reports-component-audio-comparison-viewer-mixed",
 			"title": "Audio comparison viewer: Different recording results",
 			"coverage": "required",
@@ -2173,12 +2185,6 @@
 			"units": ["reports.component.audio-evidence"]
 		},
 		{
-			"id": "reports-component-audio-evidence-no-duration",
-			"title": "Audio evidence: Duration not recorded",
-			"coverage": "required",
-			"units": ["reports.component.audio-evidence"]
-		},
-		{
 			"id": "reports-component-audio-evidence-audio-error",
 			"title": "Audio evidence: Recording decode error",
 			"coverage": "required",
@@ -2235,12 +2241,6 @@
 		{
 			"id": "reports-component-audio-evidence-minimal",
 			"title": "Audio evidence: Minimal recording",
-			"coverage": "required",
-			"units": ["reports.component.audio-evidence"]
-		},
-		{
-			"id": "reports-component-audio-evidence-duration-loaded",
-			"title": "Audio evidence: Duration from playback",
 			"coverage": "required",
 			"units": ["reports.component.audio-evidence"]
 		},
@@ -3043,12 +3043,6 @@
 			"units": ["reports.component.evidence-grid"]
 		},
 		{
-			"id": "reports-component-evidence-grid-uploads",
-			"title": "Evidence grid: Upload controls",
-			"coverage": "required",
-			"units": ["reports.component.evidence-grid"]
-		},
-		{
 			"id": "reports-component-evidence-grid-image-open",
 			"title": "Evidence grid: Image viewer",
 			"coverage": "required",
@@ -3151,18 +3145,6 @@
 			"units": ["reports.component.evidence-grid"]
 		},
 		{
-			"id": "reports-component-evidence-grid-upload-comparison-open",
-			"title": "Evidence grid: Screenshot upload open",
-			"coverage": "required",
-			"units": ["reports.component.evidence-grid"]
-		},
-		{
-			"id": "reports-component-evidence-grid-upload-audio-open",
-			"title": "Evidence grid: Audio upload open",
-			"coverage": "required",
-			"units": ["reports.component.evidence-grid"]
-		},
-		{
 			"id": "reports-component-evidence-provenance",
 			"title": "Evidence provenance",
 			"coverage": "required",
@@ -3199,12 +3181,6 @@
 			"units": ["reports.component.evidence-provenance"]
 		},
 		{
-			"id": "reports-component-evidence-provenance-absent",
-			"title": "Evidence provenance: absent",
-			"coverage": "required",
-			"units": ["reports.component.evidence-provenance"]
-		},
-		{
 			"id": "reports-component-evidence-viewer",
 			"title": "Evidence viewer",
 			"coverage": "required",
@@ -3213,12 +3189,6 @@
 		{
 			"id": "reports-component-evidence-viewer-unselected",
 			"title": "Evidence viewer: No screenshot selected",
-			"coverage": "required",
-			"units": ["reports.component.evidence-viewer"]
-		},
-		{
-			"id": "reports-component-evidence-viewer-closed",
-			"title": "Evidence viewer: Closed",
 			"coverage": "required",
 			"units": ["reports.component.evidence-viewer"]
 		},
@@ -3519,6 +3489,24 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-kit-card-section",
 			"title": "explorer-ui-explorer-kit-card: section",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-card-list-item",
+			"title": "Explorer card: list item",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-card-module",
+			"title": "Explorer card: module",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-card-attributes",
+			"title": "Explorer card: attributes",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-card"]
 		},
@@ -4027,12 +4015,6 @@
 			"units": ["reports.component.explorer-usage-link"]
 		},
 		{
-			"id": "reports-component-explorer-usage-link-touch",
-			"title": "ExplorerUsageLink: touch without preview",
-			"coverage": "required",
-			"units": ["reports.component.explorer-usage-link"]
-		},
-		{
 			"id": "reports-component-filter-dialog",
 			"title": "Catalog filters",
 			"coverage": "required",
@@ -4317,12 +4299,6 @@
 		{
 			"id": "reports-component-harness-entity-history-reading",
 			"title": "Entity history: reading",
-			"units": ["reports.component.harness-entity-history"],
-			"coverage": "required"
-		},
-		{
-			"id": "reports-component-harness-entity-history-unavailable",
-			"title": "Entity history: unavailable",
 			"units": ["reports.component.harness-entity-history"],
 			"coverage": "required"
 		},
@@ -8083,6 +8059,9 @@
 				"desktop-component-catalog-view-filters-open",
 				"desktop-component-catalog-view-long",
 				"desktop-component-choice-dialog",
+				"desktop-component-choice-dialog-closed",
+				"desktop-component-choice-dialog-empty",
+				"desktop-component-choice-dialog-disabled",
 				"desktop-component-composer",
 				"desktop-component-composer-plan",
 				"desktop-component-composer-ask",
@@ -8317,7 +8296,6 @@
 				"reports-component-audio-comparison-viewer-unavailable",
 				"reports-component-audio-comparison-viewer-after-unavailable",
 				"reports-component-audio-comparison-viewer-both-unavailable",
-				"reports-component-audio-comparison-viewer-no-duration",
 				"reports-component-audio-comparison-viewer-mixed",
 				"reports-component-audio-comparison-viewer-running",
 				"reports-component-audio-comparison-viewer-failed",
@@ -8335,7 +8313,6 @@
 				"reports-component-audio-evidence-notes-transcript",
 				"reports-component-audio-evidence-transcript-closed",
 				"reports-component-audio-evidence-no-details",
-				"reports-component-audio-evidence-no-duration",
 				"reports-component-audio-evidence-audio-error",
 				"reports-component-audio-evidence-playing",
 				"reports-component-audio-evidence-running",
@@ -8346,7 +8323,6 @@
 				"reports-component-audio-evidence-interrupted",
 				"reports-component-audio-evidence-notes-transcript-closed",
 				"reports-component-audio-evidence-minimal",
-				"reports-component-audio-evidence-duration-loaded",
 				"reports-component-audio-evidence-phase-before",
 				"reports-component-audio-evidence-phase-after",
 				"reports-component-audio-evidence-phase-current",
@@ -8480,7 +8456,6 @@
 				"reports-component-evidence-grid",
 				"reports-component-evidence-grid-empty",
 				"reports-component-evidence-grid-audio",
-				"reports-component-evidence-grid-uploads",
 				"reports-component-evidence-grid-image-open",
 				"reports-component-evidence-grid-no-items",
 				"reports-component-evidence-grid-screenshot-only",
@@ -8498,18 +8473,14 @@
 				"reports-component-evidence-grid-status-not-proven",
 				"reports-component-evidence-grid-search",
 				"reports-component-evidence-grid-audio-open",
-				"reports-component-evidence-grid-upload-comparison-open",
-				"reports-component-evidence-grid-upload-audio-open",
 				"reports-component-evidence-provenance",
 				"reports-component-evidence-provenance-extended",
 				"reports-component-evidence-provenance-single",
 				"reports-component-evidence-provenance-long",
 				"reports-component-evidence-provenance-duplicate-labels",
 				"reports-component-evidence-provenance-empty",
-				"reports-component-evidence-provenance-absent",
 				"reports-component-evidence-viewer",
 				"reports-component-evidence-viewer-unselected",
-				"reports-component-evidence-viewer-closed",
 				"reports-component-evidence-viewer-before",
 				"reports-component-evidence-viewer-compare",
 				"reports-component-evidence-viewer-unavailable",
@@ -8560,6 +8531,9 @@
 				"reports-component-explorer-ui-config-value-tree-long-expression",
 				"reports-component-explorer-ui-explorer-kit-card",
 				"reports-component-explorer-ui-explorer-kit-card-section",
+				"reports-component-explorer-ui-explorer-kit-card-list-item",
+				"reports-component-explorer-ui-explorer-kit-card-module",
+				"reports-component-explorer-ui-explorer-kit-card-attributes",
 				"reports-component-explorer-ui-explorer-kit-command-block",
 				"reports-component-explorer-ui-explorer-kit-command-block-long",
 				"reports-component-explorer-ui-explorer-kit-command-block-multiline",
@@ -8644,7 +8618,6 @@
 				"reports-component-explorer-usage-link-function-open",
 				"reports-component-explorer-usage-link-source-enabled",
 				"reports-component-explorer-usage-link-source-disabled",
-				"reports-component-explorer-usage-link-touch",
 				"reports-component-filter-dialog",
 				"reports-component-filter-dialog-active",
 				"reports-component-filter-dialog-open",
@@ -8693,7 +8666,6 @@
 				"reports-component-harness-entity-history-empty",
 				"reports-component-harness-entity-history-unread",
 				"reports-component-harness-entity-history-reading",
-				"reports-component-harness-entity-history-unavailable",
 				"reports-component-harness-entity-history-long",
 				"reports-component-harness-entity-history-row",
 				"reports-component-harness-entity-history-screen",

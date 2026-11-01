@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { previewImages } from './imageZoomActions';
+import { settlePreviewAudio } from './audioPreviewReadiness';
 
 /** Loading states are accepted only for the two previews that request them. */
 export async function assertPreviewLoading(content: Locator, id: string, variant: string) {
@@ -80,6 +81,7 @@ export async function settlePreviewImages(
 	id: string,
 	variant: string
 ) {
+	await settlePreviewAudio(content, id, variant);
 	for (const img of await previewImages(content, id, variant)) {
 		await img.scrollIntoViewIfNeeded();
 		await expect

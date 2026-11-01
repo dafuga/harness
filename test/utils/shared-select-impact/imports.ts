@@ -29,7 +29,7 @@ export function readSelectImports(
 			return entries.includes(to) ? [{ from, specifier: item.specifier, to }] : [];
 		}
 		const path = join('packages', name, target, item.specifier.slice(alias.length + 1));
-		const to = [path, `${path}.ts`].find((candidate) => index.files.has(candidate));
+		const to = [path, `${path}.ts`, `${path}.d.ts`].find((candidate) => index.files.has(candidate));
 		return [{ from, specifier: item.specifier, to }];
 	});
 }

@@ -1,3 +1,4 @@
+import { shortCommit } from '../../helpers/strings/shortCommit';
 import { explorerCategories, explorerKindCategory } from '../../../../../src/utils/explorerRoute';
 import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 import type {
@@ -46,7 +47,7 @@ export function explorerEntity(
 function removedEntity(parent: HarnessRevision, unit: HarnessUnit): ExplorerEntity | null {
 	const last = explorerEntity(parent, unit);
 	if (!last) return null;
-	const why = `This commit removed it; its contract is shown as it last was, at ${parent.commit.slice(0, 7)}.`;
+	const why = `This commit removed it; its contract is shown as it last was, at ${shortCommit(parent.commit)}.`;
 	return {
 		...last,
 		change: 'removed',

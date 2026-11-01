@@ -38,7 +38,7 @@
 				"name": "EvidenceViewer.navigableItems",
 				"type": "Evidence[]",
 				"required": true,
-				"description": "Required ordered subset for previous/next and arrow-key navigation. Empty prevents movement."
+				"description": "Required ordered subset for previous/next and arrow-key navigation. Without an item different from selected, both arrows are disabled and visibly muted, movement is ignored and the navigation hint is hidden."
 			},
 			{
 				"name": "EvidenceViewer.selected",
@@ -69,7 +69,7 @@
 			{
 				"name": "EvidenceViewer",
 				"type": "markup",
-				"description": "An unselected message or a screenshot lightbox initially showing after, with before/compare choices when a partner exists. Previous/next wraps through the navigable subset and resets to after. Viewport switching prefers the same comparison, then category/title, category, then first candidate. Displays provenance, captions, missing notes and image links. Changing image/view recreates zoom state."
+				"description": "An unselected message or a screenshot lightbox initially showing after, with before/compare choices when a partner exists. Previous/next wraps through available neighbours and resets to after. Without neighbours, arrows are disabled and visibly muted, and the navigation hint is hidden. Viewport switching prefers comparison, then category/title, category, then first candidate. Title and top provenance describe the displayed side; comparison uses after metadata and each image retains its own caption and note. Changing image/view recreates zoom state."
 			}
 		],
 		"errors": [

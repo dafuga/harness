@@ -1,2 +1,2 @@
-import '../../../../reports/src/lib/atoms/native-elements';
-import '../../../../reports/src/lib/atoms/native-dom';
+import '$reports/lib/atoms/native-elements';
+import '$reports/lib/atoms/native-dom';

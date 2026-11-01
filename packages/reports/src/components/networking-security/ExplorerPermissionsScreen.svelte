@@ -124,7 +124,9 @@
 				{@render access(grant, `${profile.title} data access`)}
 			</hx-article>
 		{:else}
-			<hx-p class="ex-empty">No access declaration names this endpoint at this revision.</hx-p>
+			<hx-p class="ex-empty">
+				{catalog ? 'No access declaration names this endpoint' : none} at this revision.
+			</hx-p>
 		{/each}
 	</hx-section>
 {/snippet}

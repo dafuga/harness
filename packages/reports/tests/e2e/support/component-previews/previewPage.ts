@@ -18,6 +18,7 @@ import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { uploadComparisonPreMount } from './uploadComparisonPreMount';
 import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
+import { settlePreviewAudio } from './audioPreviewReadiness';
 import {
 	prepareDesktopPage,
 	desktopCaptureEvidence,
@@ -41,7 +42,6 @@ const emptyPreviews = new Set([
 	'reports.component.module-system-plugins-plugin-steps:empty',
 	'reports.component.report-findings:empty',
 	'reports.component.evidence-provenance:empty',
-	'reports.component.evidence-provenance:absent',
 	'reports.component.shared-primitives-detail-list:empty-unprovided'
 ]);
 export async function openPreview(page: Page, home: string, id: string, variant = '') {
@@ -148,8 +148,11 @@ export async function capturePreview(
 	const { viewport, variant = '' } = target;
 	const nativeOpen = usesNativePopup(id, variant);
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
+	await settlePreviewAudio(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await frameDesktopCapture(page, id);
-	const clip = await previewCaptureBounds(page, id, variant);
+	const bounds = await previewCaptureBounds(page, id, variant);
+	// A native popup is captured from the visible viewport, so its declared bounds stop there.
+	const clip = nativeOpen ? visibleClip(page, bounds) : bounds;
 	const reportDialog = await reportViewDialog(page, id);
 	const bytes = await page.screenshot({
 		fullPage: !nativeOpen && !reportDialog,
@@ -188,6 +191,11 @@ export async function capturePreview(
 	);
 	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport);
 	return { clip, bytes };
+}
+
+function visibleClip(page: Page, bounds: { x: number; y: number; width: number; height: number }) {
+	const height = page.viewportSize()?.height ?? bounds.height;
+	return { ...bounds, height: Math.max(1, Math.min(bounds.height, height - bounds.y)) };
 }
 
 const nativePopups: Record<string, string[]> = {

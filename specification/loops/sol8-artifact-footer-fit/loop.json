@@ -1,0 +1,60 @@
+{
+	"name": "sol8-artifact-footer-fit",
+	"goal": "Show complete recorded artifact text and keep mobile behavior status values readable without splitting words.",
+	"createdAt": "2026-11-01T06:53:49.377Z",
+	"updatedAt": "2026-11-01T07:03:05.716Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-01T06:53:50.090Z",
+			"evidence": "API review at c96148736f found six long/raw artifact images clipped inside pre and two mobile behavior statuses split within passed."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-01T06:53:50.753Z",
+			"evidence": "Existing standard catalog guards check outer artifact extent and behavior prose but omit nested pre overflow and single-word footer status geometry."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-01T06:55:45.394Z",
+			"evidence": "Admitted red 69ae83f0bd1aa7cd at 6015e99de0 retains eleven captures, failing nested text extent and mobile status assertions before repair."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-01T07:03:04.270Z",
+			"evidence": "Scoped recorded text to page flow and kept behavior footer values together in 618d9f9c83; 39 owner and 42 shared guards pass."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-01T07:03:05.716Z",
+			"evidence": "Matched eleven cases pass unchanged in record 6068b6e2ddc0b5db at 618d9f9c83, after eight reproduced failures at 6015e99de0."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

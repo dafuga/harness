@@ -108,6 +108,8 @@ export interface ThreadMessage {
 export interface ContractField {
 	name: string;
 	type: string;
+	required?: boolean;
+	default?: unknown;
 	/** What this field means to someone reviewing the behaviour. */
 	description?: string;
 }

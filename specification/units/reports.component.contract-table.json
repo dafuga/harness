@@ -3,7 +3,7 @@
 	"id": "reports.component.contract-table",
 	"kind": "component",
 	"title": "Contract field table",
-	"responsibility": "Display typed contract fields and examples with accessible detail controls.",
+	"responsibility": "Display contract types, input requirements, literal defaults and examples with accessible detail controls.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -25,6 +25,10 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": [
+			"reports.component.shared-primitives-code-line",
+			"reports.component.shared-primitives-data-table"
+		],
 		"inputs": [
 			{
 				"name": "ContractTable.group",
@@ -50,7 +54,7 @@
 			{
 				"name": "ContractTable",
 				"type": "markup",
-				"description": "A field table with unbroken names and types, clipped long examples and keyboard-accessible detail controls; wider tables scroll within their frame and return tables omit names."
+				"description": "A typed table with input Requirement and Default columns. Provenance labels stay readable while long example data is clipped; tablet and mobile stack cells and retain keyboard-accessible detail controls."
 			}
 		],
 		"errors": [
@@ -58,6 +62,21 @@
 				"name": "onexample callback error",
 				"type": "thrown",
 				"description": "An error from the example callback propagates when a field's example button is activated."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A literal default contains BigInt or circular data that JSON cannot serialize."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Deeply nested literal defaults exceed the JSON serializer stack."
+			},
+			{
+				"name": "Getter, proxy or conversion error",
+				"type": "propagated",
+				"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
 			}
 		],
 		"errorStatus": "declared",

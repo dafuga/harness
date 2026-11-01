@@ -41,18 +41,27 @@ export async function assertInlinePluginKitCapture(component: Locator, id: strin
 }
 
 async function card(component: Locator, variant: string) {
-	const tag = variant === 'section' ? 'section' : 'article';
-	const root = component.locator(`${tag}.ex-card`);
+	const states = {
+		'': ['article.ex-card', 'OrderList', 'current orders'],
+		section: ['section.ex-card', 'Plugin setup', 'Configure'],
+		'list-item': ['li.ex-card', 'Invoice notifications', 'invoice is approved'],
+		module: ['article.ex-function-tile', 'formatDuration', 'readable duration'],
+		attributes: ['article#invoice-card', 'Invoice notifications', 'activity feed']
+	};
+	const [selector, heading, detail] = states[variant as keyof typeof states];
+	const root = component.locator(selector);
 	await expect(root).toBeVisible();
-	await expect(root.getByRole('heading')).toHaveText(
-		variant === 'section' ? 'Plugin setup' : 'OrderList'
-	);
-	if (variant === 'section')
+	await expect(root.getByRole('heading')).toHaveText(heading);
+	await expect(root.locator('p')).toContainText(detail);
+	if (variant === 'section') {
 		await expect(root).toHaveAttribute('aria-labelledby', 'kit-card-title');
-	if (variant === 'section') await expect(root).toHaveClass(/mod-card/);
-	await expect(root.locator('p')).toContainText(
-		variant === 'section' ? 'Configure' : 'current orders'
-	);
+		await expect(root).toHaveClass(/mod-card/);
+	}
+	if (variant === 'attributes') {
+		await expect(root).toHaveAttribute('aria-label', 'Invoice notifications');
+		await expect(root).toHaveAttribute('data-harness-component', 'explorer-ui-explorer-kit-card');
+	}
+	if (variant === 'module') await expect(root).not.toHaveClass(/ex-card/);
 }
 
 async function pill(component: Locator, variant: string) {

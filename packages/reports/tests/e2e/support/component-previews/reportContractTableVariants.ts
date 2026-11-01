@@ -4,13 +4,13 @@ import type {
 } from '../../../../src/utils/explorer-ui/contractFields';
 import type { PreviewCases } from './shared';
 
-const order = { id: 'A-1048', status: 'Ready to ship', total: 128 };
 const longField: ContractField = {
-	name: 'OrderStore.find.returnValue',
-	type: 'Promise<Order | undefined>',
-	description: 'The matching order, when one exists.',
+	name: 'OrderStore.find.customerAccountIdentifier',
+	type: 'CustomerAccountIdentifier | undefined',
+	required: false,
+	description: 'The customer account whose order is being retrieved.',
 	source: 'declared',
-	examples: [{ form: 'structure', value: order, text: JSON.stringify(order, null, 2) }]
+	examples: [{ form: 'literal', value: 'account-42', text: '"account-42"' }]
 };
 
 /** Table states preserve their field provenance and the host's empty-group policy. */
@@ -23,7 +23,7 @@ export function contractTableVariant(props: PreviewCases[string], variant: strin
 		return { ...props, group: { ...group, fields: [], keepEmpty: true } };
 	if (variant === 'plain-empty') return { ...props, plain: true, group: { ...group, fields: [] } };
 	if (variant === 'hide-names')
-		return { ...props, group: { ...group, title: 'Returns', hideNames: true } };
+		return { ...props, group: { ...group, id: 'outputs', title: 'Returns', hideNames: true } };
 	if (variant === 'illustrative')
 		return {
 			...props,
@@ -40,7 +40,13 @@ export function contractTableVariant(props: PreviewCases[string], variant: strin
 			group: {
 				...group,
 				fields: [
-					{ ...field, name: 'orderStore', type: 'OrderStore', source: 'missing', examples: [] }
+					{
+						name: 'orderStore',
+						type: 'OrderStore',
+						required: true,
+						source: 'missing',
+						examples: []
+					}
 				]
 			}
 		};

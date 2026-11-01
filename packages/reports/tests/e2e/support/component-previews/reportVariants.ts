@@ -125,7 +125,7 @@ function modalVariant(props: PreviewCases[string], variant: string) {
 		title: 'Order card evidence',
 		variant,
 		children: text(
-			`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · synthetic preview</figcaption></figure></div>`
+			`<div class="viewer-images"><figure><img src="${image}" alt="Order card evidence" /><figcaption>Order A-1048 · Ready to ship</figcaption></figure></div>`
 		)
 	};
 }
@@ -157,7 +157,7 @@ function regressionProofVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'empty') return { ...props, items: [] };
 	if (variant === 'pending') return { ...props, items: [{ ...item, green: undefined }] };
 	if (variant === 'capture-only')
-		return { ...props, items: [{ ...item, loop: 'component-capture', red: null }] };
+		return { ...props, items: [{ ...item, loop: 'checkout-capture', red: null }] };
 	if (variant === 'gap')
 		return {
 			...props,

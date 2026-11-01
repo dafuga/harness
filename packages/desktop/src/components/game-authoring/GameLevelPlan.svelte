@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { errorMessage } from '$reports/helpers/strings/errorMessage';
+
 	import { untrack } from 'svelte';
 	import { LevelValidator } from '../../../../game/src/index';
 	import type { LevelPlanning, LevelProposal } from '../../../../game/src/index';
@@ -43,7 +45,7 @@
 		return stage !== 'brief' && current ? 'review' : 'brief';
 	});
 	const owner = $derived([context.projectId, context.commit, view.id].join(':'));
-	const text = (cause: unknown) => (cause instanceof Error ? cause.message : String(cause));
+
 	/** What a generated result must still match when it returns. */
 	const inputs = () => {
 		const { concept, description } = planning;
@@ -85,7 +87,7 @@
 		void bridge
 			.providers()
 			.then((list) => (providers = list))
-			.catch((cause) => ([providers, error] = [[], text(cause)]));
+			.catch((cause) => ([providers, error] = [[], errorMessage(cause)]));
 	});
 	/** An unusable provider gives way to a usable one, and an unlisted model to the default. */
 	$effect(() => {
@@ -118,7 +120,7 @@
 			if (sent === inputs()) adopt(result.proposal);
 			else error = 'The level changed while generating, so that result was set aside.';
 		} catch (cause) {
-			if (id === generation) error = text(cause);
+			if (id === generation) error = errorMessage(cause);
 		} finally {
 			if (id === generation) busy = false;
 		}

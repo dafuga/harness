@@ -1,7 +1,9 @@
 import type { Page, Route } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { buildData } from './buildData';
+import { catalogFixtureMedia } from './catalogFixtureMedia';
+import { shellMedia } from './shellArtworkImages';
+import { shellActivity } from './shellCatalogRoutes';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
 
@@ -18,8 +20,6 @@ import { consoleProviders } from './consoleProviders';
 import { audioFixture } from '../../../../test/audioFixture';
 import { routeIndex, routeRevision } from './routeHistory';
 import { routePreview } from './visualUnits';
-// Sealed once, when the first preview asks for media; importing this module launches nothing.
-let sealed: ReturnType<typeof buildData> | undefined;
 /** The pages a route module was opened in, by the unit their document asked for. */
 const routed = new WeakSet<Page>();
 const fixtureMedia = new Set(
@@ -40,7 +40,7 @@ export async function servePreview(route: Route, home: string, markup = '') {
 			contentType: file.endsWith('css') ? 'text/css' : 'text/javascript',
 			body: readFileSync(join(home, 'catalog', file))
 		});
-	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
+	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname, home);
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
 	if (url.pathname === '/api/replay-video')
@@ -49,7 +49,7 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
 		'/harness/data/index.json': shown.index,
-		'/harness/data/activity.json': activity
+		'/harness/data/activity.json': shellActivity(route)
 	};
 	if (url.pathname in given) return route.fulfill({ json: given[url.pathname] });
 	const commit = /\/data\/revisions\/([a-f0-9]+)\.json$/.exec(url.pathname)?.[1];
@@ -68,6 +68,7 @@ const consoleActivity = {
 		...live.agents,
 		roster: live.agents.roster.map((agent) => ({
 			...agent,
+			label: 'Orders review',
 			task: '',
 			model: '',
 			provider: '',
@@ -102,7 +103,11 @@ async function consoleAgentFixture(route: Route) {
 	const commit = commits.tip;
 	const writable = variant !== 'read-only' && variant !== 'agents';
 	const snapshot = {
-		project: { id: 'preview-project', root: '/preview', name: 'Preview project' },
+		project: {
+			id: 'northstar-store',
+			root: '/Users/ada/projects/northstar-store',
+			name: 'Northstar Store'
+		},
 		revision: { branch: 'feature/orders', commit, tip: commit, atTip: true },
 		entities: [],
 		writable,
@@ -148,14 +153,14 @@ function historyOf(route: Route, url: URL) {
 	if (routed.has(page)) return { index: routeIndex, revision: routeRevision };
 	return { index, revision: (commit: string) => revision(commit, [record(commit)]) };
 }
-async function media(route: Route, path: string) {
-	const all = await (sealed ??= buildData());
+async function media(route: Route, path: string, home: string) {
+	const all = catalogFixtureMedia(home);
 	const file = path.split('/').pop()!;
 	const artifact = artifactByName(all, file);
 	if (artifact)
 		return route.fulfill({ contentType: artifact.mediaType, body: Buffer.from(artifact.data) });
 	// A sealed result is kept under its hash, as the function results of the route history are.
-	const kept = all.bytes[file.replace(/\.[^.]+$/, '')];
+	const kept = storedMedia(all, file);
 	if (kept) return route.fulfill({ contentType: kept.mediaType, body: Buffer.from(kept.data) });
 	if (file === 'preview.wav')
 		return route.fulfill({ contentType: 'audio/wav', body: audioFixture(42) });
@@ -187,8 +192,17 @@ async function media(route: Route, path: string) {
 	});
 }
 
+/** Additional shell artwork shares the existing immutable-media response path. */
+function storedMedia(all: ReturnType<typeof catalogFixtureMedia>, file: string) {
+	const svg = shellMedia(file);
+	return (
+		all.bytes[file.replace(/\.[^.]+$/, '')] ??
+		(svg ? { mediaType: 'image/svg+xml', data: [...Buffer.from(svg)] } : undefined)
+	);
+}
+
 /** Recorded artifact bytes by their served filename; a declared artifact cannot fall back to a stand-in. */
-function artifactByName(all: Awaited<ReturnType<typeof buildData>>, file: string) {
+function artifactByName(all: ReturnType<typeof catalogFixtureMedia>, file: string) {
 	for (const result of Object.values(all.results)) {
 		for (const row of result.behavior.rows) {
 			for (const capture of [row.before, row.after]) {

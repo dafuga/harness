@@ -1,6 +1,10 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { errorMessage } from '$reports/helpers/strings/errorMessage';
+
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+
 	import type { Source } from './GameWorkspace.types';
 	import { resolve } from '$app/paths';
 	import { untrack } from 'svelte';
@@ -38,7 +42,7 @@
 	const savable = $derived(editable && dirty && !busy && !problems.length);
 	const view = $derived(doc?.views.find((item) => item.id === viewId) ?? doc?.views[0]);
 	const checkpoint = $derived(view?.checkpoints.find((item) => item.id === selected));
-	const text = (cause: unknown) => (cause instanceof Error ? cause.message : String(cause));
+
 	/** A planned level shows its plan until it is built; Mechanics stays open throughout. */
 	const section = $derived.by<GameSection>(() => {
 		if (!view?.planning) return tab === 'Level' ? 'Checkpoints' : tab;
@@ -63,7 +67,7 @@
 			const result = await bridge.gameRead({ projectId, ...(commit ? { commit } : {}) });
 			if (id === request) open(result.document, result.revision);
 		} catch (cause) {
-			if (id === request) error = text(cause);
+			if (id === request) error = errorMessage(cause);
 		} finally {
 			if (id === request) busy = false;
 		}
@@ -86,7 +90,7 @@
 			revision = (await bridge.gameSave(input)).revision;
 			dirty = doc !== sent;
 		} catch (cause) {
-			error = text(cause);
+			error = errorMessage(cause);
 			conflict = /revision|conflict|stale|changed/i.test(error);
 		} finally {
 			busy = false;
@@ -145,7 +149,7 @@
 	<hx-header class="row" style="flex-wrap:wrap">
 		<hx-h1 style="flex:1;margin:0">Game Views</hx-h1>
 		{#if demo}<hx-span class="chip gold">Demo</hx-span>{/if}
-		{#if commit}<hx-span class="chip">History · {commit.slice(0, 8)}</hx-span>{/if}
+		{#if commit}<hx-span class="chip">History · {shortCommit(commit)}</hx-span>{/if}
 		{#if readonly && !commit}<hx-span class="chip">Read-only</hx-span>{/if}
 		{#if dirty}<hx-span class="chip gold">Unsaved changes</hx-span>{/if}
 		{#if !demo && editable}

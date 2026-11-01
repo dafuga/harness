@@ -27,6 +27,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.status-badge"],
 		"inputs": [
 			{
 				"name": "AudioComparison.before",
@@ -44,7 +45,7 @@
 				"name": "AudioComparison.onopen",
 				"type": "() => void",
 				"required": true,
-				"description": "Required callback for opening the comparison viewer. Its button is disabled until mount completes."
+				"description": "Required callback for opening the comparison viewer. Its button is disabled until mount completes. The disabled pre-mount button has a muted appearance and waiting cursor."
 			}
 		],
 		"outputs": [

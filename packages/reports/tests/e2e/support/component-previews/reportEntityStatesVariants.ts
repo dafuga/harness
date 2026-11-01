@@ -5,7 +5,7 @@ import type {
 import type { Evidence } from '../../../../src/models/reports-media/Report.types';
 import type { PreviewCases } from './shared';
 
-/** Synthetic, visibly labelled fixture images show the matching populated or empty order list. */
+/** Controlled order-list artwork matches each populated or empty preview state. */
 export function orderListImage(empty: boolean, compact = false, mobile = false) {
 	const firstRow = compact ? 155 : 230;
 	const secondRow = compact ? 196 : 290;
@@ -18,7 +18,7 @@ export function orderListImage(empty: boolean, compact = false, mobile = false) 
 	const height = mobile ? 844 : compact ? 230 : 560;
 	const header = compact ? 40 : 60;
 	const title = compact ? 95 : 125;
-	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="#0e1c29"/><g font-family="sans-serif"><text x="${left}" y="${header}" fill="#f3c33b" font-size="20">SYNTHETIC ORDER LIST</text><text x="${left}" y="${title}" fill="#f4f7fb" font-size="36">Orders</text>${body}</g></svg>`;
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="#0e1c29"/><g font-family="sans-serif"><text x="${left}" y="${header}" fill="#f3c33b" font-size="20">Order management</text><text x="${left}" y="${title}" fill="#f4f7fb" font-size="36">Orders</text>${body}</g></svg>`;
 	return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 

@@ -4,7 +4,11 @@ import { atomicComponents } from '../../src/templates/development-tooling/atomic
 export default {
 	kit: {
 		adapter: adapter(),
-		alias: { $desktop: '../desktop/src', $shared: '../reports/src/components' }
+		alias: {
+			$reports: '../reports/src',
+			$desktop: '../desktop/src',
+			$shared: '../reports/src/components'
+		}
 	},
 	preprocess: [atomicComponents(), vitePreprocess()]
 };

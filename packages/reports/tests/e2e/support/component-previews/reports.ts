@@ -75,7 +75,7 @@ export const reportCases: PreviewCases = {
 	},
 	'reports.component.entity-search': {
 		entries,
-		scope: { label: 'Preview project', pinned: null },
+		scope: { label: 'Orders', pinned: null },
 		href: () => '/components',
 		open: noop
 	},
@@ -85,7 +85,7 @@ export const reportCases: PreviewCases = {
 		active: 0,
 		loading: false,
 		query: 'order',
-		scope: 'Preview project',
+		scope: 'Northstar Store',
 		href: () => '/components',
 		choose: noop
 	},
@@ -143,17 +143,18 @@ export const reportCases: PreviewCases = {
 		href: () => '/history',
 		items: [
 			{
-				loop: 'component-previews',
+				loop: 'checkout-declined-payment',
 				units: [d.ids.list],
 				red: {
 					commit: 'a71f5d4e9271dc1d5be988c980d99c808b23f041',
-					assertion: 'Requires its own screenshot.',
-					command: 'harness verify run',
-					output: 'Expected screenshot to exist.'
+					assertion: 'Declined payment keeps the checkout error visible.',
+					command: 'bunx playwright test tests/checkout.spec.ts --grep "declined payment"',
+					output:
+						'Expected: "Your card was declined. Try another payment method."\nReceived: ""\nAt tests/checkout.spec.ts:42:7'
 				},
 				green: {
 					commit: 'd5c82a9b1e7f3d44c2a98e609b7f4a33cc140df2',
-					output: 'Required screenshots passed.'
+					output: '1 passed: declined payment retains its visible error.'
 				}
 			}
 		]

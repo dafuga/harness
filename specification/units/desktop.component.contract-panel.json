@@ -16,6 +16,7 @@
 			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
 			"reports.component.shared-primitives-atoms-html-summary",
 			"reports.component.shared-primitives-detail-list"
@@ -32,19 +33,20 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-detail-list"],
 		"inputs": [
 			{
 				"name": "ContractPanel.contract",
 				"type": "EntityContract",
 				"required": true,
-				"description": "Required contract containing input, output and error arrays. Each field supplies its name and type and may supply a description. Missing descriptions are shown explicitly; this panel does not derive an explanation from the type. Each group requires distinct field names because both readable and technical rows are keyed by name."
+				"description": "Required contract with distinct input/output/error names, public types and optional descriptions. Input required flags and own literal defaults remain visible; absent metadata and descriptions are stated explicitly."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ContractPanel",
 				"type": "markup",
-				"description": "Accepts, Returns and Can fail with sections. Uses a readable form of the final part of each field name and its recorded description, or “No description recorded.” when absent. Empty groups show “Nothing declared.” An expandable Technical contract section shows the full names and types."
+				"description": "Accepts, Returns and Can fail with sections show field descriptions and types. Inputs show Required/Optional or missing metadata, plus exact literal defaults or No default. Empty groups say Nothing declared. Technical contract expands full names and types."
 			}
 		],
 		"errors": [
@@ -52,6 +54,21 @@
 				"name": "Duplicate row key",
 				"type": "Svelte keyed-each error",
 				"description": "Repeated field names within a group are rejected by Svelte keyed-list updates."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A literal default contains BigInt or circular data that JSON cannot serialize."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Deeply nested literal defaults exceed the JSON serializer stack."
+			},
+			{
+				"name": "Getter, proxy or conversion error",
+				"type": "propagated",
+				"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
 			}
 		],
 		"errorStatus": "declared",
@@ -146,6 +163,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

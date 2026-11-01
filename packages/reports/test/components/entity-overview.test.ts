@@ -142,6 +142,7 @@ test('a function at a selected commit shows its end-to-end results before and af
 	expect(words(body)).not.toContain('Behavior unchanged');
 	expect(words(body)).toContain('Search across synthetic orders · match');
 	expect(words(body)).toContain('Matches orders regardless of case.');
+	expect(words(body)).not.toContain('No reason is recorded for this entity here.');
 	expect(body).toContain('href="/harness/media/8b41d07-match-output.json"');
 	expect(count(body, /<img/g)).toBe(0);
 });

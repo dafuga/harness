@@ -33,6 +33,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.select"],
 		"inputs": [
 			{
 				"name": "EntityStates.name",
@@ -65,7 +66,7 @@
 				"name": "EntityStates.resolveImage",
 				"type": "(item: Evidence) => Promise<string>",
 				"required": false,
-				"description": "Optional bridge callback that returns an image URL only after validating the artifact bytes."
+				"description": "Optional bridge callback, defaulting to JavaScript undefined. When omitted, mediaBase resolves image paths. Rejected callback promises become visible missing-capture notes."
 			}
 		],
 		"outputs": [
@@ -163,6 +164,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

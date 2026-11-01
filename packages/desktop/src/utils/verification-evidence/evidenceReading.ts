@@ -1,6 +1,7 @@
+import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import type { EvidenceRead } from './evidenceReading.types';
-import type { ArtifactFetcher } from '../../../../reports/src/utils/explorerArtifact';
-import { explorerReading } from '../../../../reports/src/utils/explorer-reading/explorerReading';
+import type { ArtifactFetcher } from '$reports/utils/explorerArtifact';
+import { explorerReading } from '$reports/utils/explorer-reading/explorerReading';
 import type { DesktopBridge } from '../../models/development-tooling/DesktopBridge.types';
 import type {
 	EntityEvidenceQuery,
@@ -11,7 +12,6 @@ import { artifactQuery } from '../development-tooling/artifactQuery';
 /** Only a name: `explorerReading` asks for `base + file`, and no address is made of it. */
 const base = 'artifact:';
 const unread = { ok: false, status: 0, arrayBuffer: async () => new ArrayBuffer(0) };
-const words = (cause: unknown) => (cause instanceof Error ? cause.message : String(cause));
 
 /**
  * The recorded behaviour of an evidence answer with every result read through the bridge. The
@@ -35,7 +35,7 @@ export async function evidenceReading(
 			const body = new Uint8Array(bytes).buffer;
 			return { ok: true, status: 200, arrayBuffer: async () => body };
 		} catch (cause) {
-			refusals[query.sha256] = words(cause);
+			refusals[query.sha256] = errorMessage(cause);
 			return unread;
 		}
 	};

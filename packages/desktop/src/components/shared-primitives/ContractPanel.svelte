@@ -2,8 +2,8 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { EntityContract } from '../../models/development-tooling/Desktop.types';
-	import { humanize } from '../../../../reports/src/utils/entityContract';
-	import DetailList from '../../../../reports/src/components/shared-primitives/DetailList.svelte';
+	import { humanize } from '$reports/utils/entityContract';
+	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	let { contract }: { contract: EntityContract } = $props();
 	const groups = [
 		['inputs', 'Accepts'],
@@ -20,8 +20,28 @@
 			{#snippet label(field: EntityContract['inputs'][number])}{humanize(
 					field.name.split('.').at(-1)!
 				)}{/snippet}
-			{#snippet children(field: EntityContract['inputs'][number])}{field.description ??
-					'No description recorded.'}{/snippet}
+			{#snippet children(field: EntityContract['inputs'][number])}
+				{#if group === 'inputs'}
+					<hx-div data-contract-input="" class="input-metadata">
+						<hx-span class="requirement"
+							>{field.required === true
+								? 'Required'
+								: field.required === false
+									? 'Optional'
+									: 'Requiredness not recorded'}</hx-span
+						>
+						<hx-span class="default"
+							>{#if Object.hasOwn(field, 'default')}Default: <hx-code
+									>{JSON.stringify(field.default) ?? String(field.default)}</hx-code
+								>{:else}No default{/if}</hx-span
+						>
+					</hx-div>
+				{/if}
+				<hx-div
+					><hx-code>{field.type}</hx-code> · {field.description ??
+						'No description recorded.'}</hx-div
+				>
+			{/snippet}
 			{#snippet empty()}<hx-p>Nothing declared.</hx-p>{/snippet}
 		</DetailList>
 	{/each}
@@ -61,6 +81,14 @@
 		cursor: pointer;
 		color: var(--hx-color-text-muted);
 		padding: var(--hx-space-8) 0;
+	}
+	.input-metadata {
+		display: grid;
+		gap: var(--hx-space-5);
+		margin-bottom: var(--hx-space-5);
+	}
+	.panel :global(dd) {
+		overflow-wrap: anywhere;
 	}
 	.contract-field {
 		flex-wrap: wrap;
