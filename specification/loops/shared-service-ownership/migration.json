@@ -1739,13 +1739,13 @@
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "d279b407c37eb745bef7b25692bb61f60392d100c6cad729a990c77b34578097",
+			"definition": "391ea01f2ae84e149a1c01b8b78dd4c788220872db1e5cdfe8fca5aa078d0fd4",
 			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
 			"review": {
-				"commit": "aeadc55b9de2d7165ce4a79de5ce2ad404093b68",
+				"commit": "49eb75429b2197c6c4aa2b496fe3f7a22fd97c97",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-				"definition": "d279b407c37eb745bef7b25692bb61f60392d100c6cad729a990c77b34578097",
-				"reason": "Derive grouped source contracts from the registered runtime entry, preserving declared explanations and canonical manifest ordering."
+				"definition": "391ea01f2ae84e149a1c01b8b78dd4c788220872db1e5cdfe8fca5aa078d0fd4",
+				"reason": "Declare shared primitive contracts and preserve registered owner identity through forwarding imports."
 			},
 			"previousReviews": [
 				{
@@ -1783,6 +1783,12 @@
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
 					"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
 					"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
+				},
+				{
+					"commit": "aeadc55b9de2d7165ce4a79de5ce2ad404093b68",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"definition": "d279b407c37eb745bef7b25692bb61f60392d100c6cad729a990c77b34578097",
+					"reason": "Derive grouped source contracts from the registered runtime entry, preserving declared explanations and canonical manifest ordering."
 				}
 			]
 		},
