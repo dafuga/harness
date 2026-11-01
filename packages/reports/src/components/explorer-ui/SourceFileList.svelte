@@ -110,11 +110,16 @@
 		}
 		.source-files a,
 		.source-files code {
-			display: block;
 			max-width: 100%;
+		}
+	}
+	/* Phones and tablets show the whole path, wrapped, instead of clipping its folders or name. */
+	@media (max-width: 800px) {
+		.source-files a,
+		.source-files code {
+			display: block;
 			white-space: normal;
 		}
-		/* A phone shows the whole path, wrapped, instead of clipping the file name. */
 		.source-folder,
 		.source-name {
 			display: inline;
