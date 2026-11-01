@@ -115,6 +115,7 @@
 		<hx-button class:active={!zoomed} aria-pressed={!zoomed} onclick={() => zoomTo(null)}
 			>{$t('fitImage')}</hx-button
 		>
+		{#if drag}<hx-span class="drag-hint" role="status">{$t('panning')}</hx-span>{/if}
 	</hx-div>
 	<!-- svelte-ignore a11y_no_static_element_interactions, a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions focusable so keyboards can pan -->
 	<hx-div

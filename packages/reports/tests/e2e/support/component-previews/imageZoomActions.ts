@@ -101,6 +101,7 @@ async function panZoom(component: Locator, plus: Locator, variant: string) {
 /** A drag must be visible in a still image, where the grabbing cursor is not captured. */
 async function expectVisibleDrag(stage: Locator, idleBorder: string) {
 	await expect(stage).toHaveClass(/dragging/);
+	await expect(stage.page().getByRole('status').filter({ hasText: 'Panning' })).toBeVisible();
 	await expect
 		.poll(() => stage.evaluate((node) => getComputedStyle(node).borderTopColor))
 		.not.toBe(idleBorder);
