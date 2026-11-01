@@ -8,7 +8,7 @@ export const projectConversation =
 export const projectReply =
 	'The search matches order names without regard to letter case and preserves their order. An empty query returns every order. Add checks for mixed-case names and no matches before approving the change.';
 
-const savedReply = 'Review completed. The proposed checks are ready.';
+const savedReply = 'The review draft is ready.';
 
 /** Synthetic request, event and comment ports stop every operation before a provider or host. */
 export function projectAgentRunFixture(data: DesktopData, state: ProjectAgentState): void {
@@ -107,7 +107,7 @@ function respond(
 	emit({
 		runId,
 		kind: 'finished',
-		summary: savedReply,
+		summary: 'Review completed. The proposed checks are ready.',
 		verified: false,
 		...(created ? { created } : {})
 	});
