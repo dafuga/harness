@@ -42,15 +42,17 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 			await expect(component).toContainText('Order 1042 · Service call');
 		}
 		if (variant === 'paired') {
-			await expect(
-				component.getByRole('group', {
-					name: `Before · ${commits.middle.slice(0, 7)}`,
+			for (const [side, hash] of [
+				['Before', commits.middle],
+				['After', commits.tip]
+			]) {
+				const group = component.getByRole('group', {
+					name: `${side} · ${hash.slice(0, 7)}`,
 					exact: true
-				})
-			).toBeVisible();
-			await expect(
-				component.getByRole('group', { name: `After · ${commits.tip.slice(0, 7)}`, exact: true })
-			).toBeVisible();
+				});
+				await expect(group).toBeVisible();
+				await expect(group).toContainText('What a test observed end to end.');
+			}
 		}
 		if (['loading', 'unreadable'].includes(variant))
 			await expect(component).not.toContainText('What a test observed end to end.');

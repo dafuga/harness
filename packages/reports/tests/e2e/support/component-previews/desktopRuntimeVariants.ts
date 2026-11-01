@@ -2,6 +2,7 @@ import type { DesktopData } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
 import { desktopArtifactText, desktopData } from './desktopFixtureData';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
+import { evidenceReading } from '../../../../../desktop/src/utils/verification-evidence/evidenceReading';
 
 export function desktopRuntimeVariant(
 	id: string,
@@ -105,9 +106,18 @@ function artifact(props: PreviewProps, data: DesktopData, variant: string): Prev
 export async function desktopRuntimeReady(id: string, data: DesktopData, variant: string) {
 	await data.ready;
 	if (id === 'desktop.component.runtime-behavior') {
-		if (variant === 'paired')
-			data.evidence.read =
-				desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`].behavior;
+		if (variant === 'paired') {
+			const result = desktopData.results[`${data.filterEntity.id}|commit|${commits.tip}`];
+			const read = await evidenceReading(data.bridge, result, {
+				entityId: data.filterEntity.id,
+				projectId: data.workspace.projectId!,
+				commit: commits.tip,
+				branch: result.scope.branch,
+				mode: 'commit'
+			});
+			data.evidence.read = read.behavior;
+			data.evidence.refusals = read.refusals;
+		}
 		if (variant === 'loading') data.evidence.read = undefined;
 		if (variant === 'unreadable') data.evidence.read = null;
 		if (variant === 'empty') data.evidence.read = { ...data.result.behavior, rows: [] };
