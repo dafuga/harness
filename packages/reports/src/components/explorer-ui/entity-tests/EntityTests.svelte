@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import DataTable from '../../shared-primitives/DataTable.svelte';
 	import Card from '../explorer-kit/Card.svelte';
 	import type {
 		ExplorerBehavior,
@@ -117,50 +118,48 @@
 					{#each scenario.reasons as reason}<hx-li>{reason}</hx-li>{/each}
 				</hx-ul>
 			{/if}
-			<hx-div class="ex-scroll">
-				<hx-table class="ex-mini" aria-label={`States of ${scenario.title}`}>
-					<hx-thead>
+			<DataTable label={`States of ${scenario.title}`} tableClass="ex-mini" className="ex-scroll">
+				{#snippet header()}
+					<hx-tr>
+						<hx-th scope="col">State</hx-th>
+						<hx-th scope="col">Required</hx-th>
+						<hx-th scope="col">Proven</hx-th>
+					</hx-tr>
+				{/snippet}
+				{#snippet children()}
+					{#each scenario.states as state}
 						<hx-tr>
-							<hx-th scope="col">State</hx-th>
-							<hx-th scope="col">Required</hx-th>
-							<hx-th scope="col">Proven</hx-th>
+							<hx-th scope="row" style:min-width="0">{state.state}</hx-th>
+							<hx-td class="state-value"
+								>{state.declared}{declared(scenario.scenario, state.state)
+									? `: ${declared(scenario.scenario, state.state)}`
+									: ''}</hx-td
+							>
+							<hx-td class="state-value">
+								{#if state.standing === 'inapplicable'}
+									<hx-span class="ex-soft">{said.inapplicable}</hx-span>
+								{:else}
+									<Status
+										passed={state.standing === 'passed'}
+										label={said[state.standing]}
+										reasons={state.reasons}
+									/>
+								{/if}
+								<!-- Sentences and slots in the order the host gave them; none is a key. -->
+								{#each state.reasons as reason}
+									<hx-span class="ex-soft ex-block">{reason}</hx-span>
+								{/each}
+								<!-- A slot is told where the state has not already said the same of it. -->
+								{#each state.slots.filter((slot) => untold(state.reasons, slot)) as slot}
+									<hx-span class="ex-soft ex-block"
+										>{where(slot)}: {slot.reason ?? said[slot.standing]}</hx-span
+									>
+								{/each}
+							</hx-td>
 						</hx-tr>
-					</hx-thead>
-					<hx-tbody>
-						{#each scenario.states as state}
-							<hx-tr>
-								<hx-th scope="row" style:min-width="0">{state.state}</hx-th>
-								<hx-td class="state-value"
-									>{state.declared}{declared(scenario.scenario, state.state)
-										? `: ${declared(scenario.scenario, state.state)}`
-										: ''}</hx-td
-								>
-								<hx-td class="state-value">
-									{#if state.standing === 'inapplicable'}
-										<hx-span class="ex-soft">{said.inapplicable}</hx-span>
-									{:else}
-										<Status
-											passed={state.standing === 'passed'}
-											label={said[state.standing]}
-											reasons={state.reasons}
-										/>
-									{/if}
-									<!-- Sentences and slots in the order the host gave them; none is a key. -->
-									{#each state.reasons as reason}
-										<hx-span class="ex-soft ex-block">{reason}</hx-span>
-									{/each}
-									<!-- A slot is told where the state has not already said the same of it. -->
-									{#each state.slots.filter((slot) => untold(state.reasons, slot)) as slot}
-										<hx-span class="ex-soft ex-block"
-											>{where(slot)}: {slot.reason ?? said[slot.standing]}</hx-span
-										>
-									{/each}
-								</hx-td>
-							</hx-tr>
-						{/each}
-					</hx-tbody>
-				</hx-table>
-			</hx-div>
+					{/each}
+				{/snippet}
+			</DataTable>
 			<hx-ul class="ex-checks" aria-label="Checks">
 				{#each scenario.tests as test}
 					<hx-li>
