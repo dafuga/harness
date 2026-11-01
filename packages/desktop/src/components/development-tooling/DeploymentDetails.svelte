@@ -27,6 +27,9 @@
 	{:else}{row.value}{/if}
 {/snippet}
 
+{#snippet factName(row: DeploymentFact)}{row.name}{/snippet}
+{#snippet factValue(row: DeploymentFact)}{@render fact(row)}{/snippet}
+
 <hx-div class="deployment-details">
 	<hx-div class="head">
 		{#if showIdentity}<hx-h2>{deployment.environment} deployment</hx-h2>{/if}
@@ -37,10 +40,9 @@
 			rowKey={(row) => row.name}
 			className="facts"
 			grouped={false}
-		>
-			{#snippet label(row)}{row.name}{/snippet}
-			{#snippet children(row)}{@render fact(row)}{/snippet}
-		</DetailList>{/if}
+			label={factName}
+			children={factValue}
+		/>{/if}
 	<DeploymentProgress {deployment} />
 	{#if receipt}<hx-div class="receipt">
 			<hx-h3>Verified receipt</hx-h3>
@@ -49,10 +51,9 @@
 				rowKey={(row) => row.name}
 				className="receipt-facts"
 				grouped={false}
-			>
-				{#snippet label(row)}{row.name}{/snippet}
-				{#snippet children(row)}{@render fact(row)}{/snippet}
-			</DetailList>
+				label={factName}
+				children={factValue}
+			/>
 		</hx-div>{/if}
 </hx-div>
 
@@ -60,13 +61,13 @@
 	.deployment-details {
 		display: grid;
 		gap: var(--hx-space-14);
+		padding-block-start: var(--hx-space-12);
 	}
 	/* Named by its destination with its route under it, as in the list it was chosen from. */
 	.head {
 		display: grid;
 		justify-items: start;
 		gap: var(--hx-space-6);
-		padding-block-start: var(--hx-space-4);
 		font-size: var(--hx-type-size-xs);
 	}
 	h2 {
