@@ -10,6 +10,7 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.game-level-preview",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -32,6 +33,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "GameLevelReview.proposal",
@@ -119,6 +121,11 @@
 		},
 		{
 			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},

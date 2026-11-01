@@ -12,13 +12,14 @@
 			"desktop.component.runtime-audio",
 			"desktop.component.runtime-behavior",
 			"desktop.component.runtime-screens",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.regression-proof",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-small",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-small"
 		]
 	},
 	"owns": {
@@ -27,6 +28,10 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.explorer-ui-explorer-kit-pill"
+		],
 		"inputs": [
 			{
 				"name": "RuntimeEvidence.entity",
@@ -101,6 +106,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.regression-proof",
 			"via": "import",
 			"origin": "derived"
@@ -127,11 +142,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-small",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

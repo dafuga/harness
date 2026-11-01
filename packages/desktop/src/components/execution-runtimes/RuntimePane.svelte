@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 
 	import type { Evidence } from '$reports/models/reports-media/Report.types';
@@ -38,7 +39,10 @@
 </script>
 
 <hx-figure class="runtime-pane" aria-label={title}>
-	<hx-figcaption><hx-strong>{title}</hx-strong><hx-span class="chip">{role}</hx-span></hx-figcaption
+	<hx-figcaption
+		><hx-strong>{title}</hx-strong><Pill as="span" variant="chip" tone="runtime-pane-chip"
+			>{role}</Pill
+		></hx-figcaption
 	>
 	{#if item.missing}<hx-p class="runtime-gap">
 			<Status variant="icon" status="failed" reason="No capture" /><hx-span>{item.note}</hx-span>

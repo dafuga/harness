@@ -2,11 +2,41 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	/** Says that there is nothing to show here, and why. */
-	let { children }: { children: Snippet } = $props();
+	let {
+		as = 'p',
+		className = 'ex-empty',
+		role = undefined,
+		id,
+		label,
+		component,
+		children
+	}: {
+		/** Semantic paragraph or block container; defaults to p. */
+		as?: 'p' | 'div';
+		/** Existing owner treatment; defaults to ex-empty. */
+		className?: string;
+		/** Optional semantic role. Defaults to JavaScript undefined, omitting role.
+		 */
+		role?: 'note' | 'status' | 'alert';
+		/** Optional native id. Defaults to JavaScript undefined. */
+		id?: string;
+		/** Optional accessible name. Defaults to JavaScript undefined. */
+		label?: string;
+		/** Optional owner attribution. Defaults to JavaScript undefined. */
+		component?: string;
+		/** Required explanation or empty-state content; snippet errors propagate. */
+		children: Snippet;
+	} = $props();
 </script>
 
-<hx-p class="ex-empty">{@render children()}</hx-p>
+<hx-element
+	this={as}
+	class={className}
+	{role}
+	{id}
+	aria-label={label}
+	data-harness-component={component}>{@render children()}</hx-element
+>
 
 <style>
 	.ex-empty :global(a) {

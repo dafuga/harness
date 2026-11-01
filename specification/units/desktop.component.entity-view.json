@@ -22,6 +22,7 @@
 			"desktop.component.thread-panel",
 			"desktop.component.workspace-link",
 			"reports.component.entity-examples",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-code",
@@ -42,7 +43,10 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.harness-harness-verdict"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.harness-harness-verdict"
+		],
 		"inputs": [
 			{
 				"name": "EntityView.workspace",
@@ -177,6 +181,11 @@
 		},
 		{
 			"unit": "reports.component.entity-examples",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},

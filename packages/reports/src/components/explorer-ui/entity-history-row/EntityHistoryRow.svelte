@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '../explorer-kit/Pill.svelte';
 	import { writingLimits } from '../../../../../../src/utils/writing-limits/writingLimits';
 	import type {
 		ExplorerHistoryDetail,
@@ -58,7 +59,9 @@
 	>
 	<hx-td>
 		<EntityLink {to} {nav} class="ex-hash">{hash}</EntityLink>
-		{#if viewed}<hx-span class="ex-pill gold">Viewed commit</hx-span>{/if}
+		{#if viewed}<Pill as="span" variant="explorer" tone="gold entity-history-row-ex-pill"
+				>Viewed commit</Pill
+			>{/if}
 		<EntityReasons {reasons} />
 	</hx-td>
 	<hx-td class="ex-said">
@@ -68,7 +71,9 @@
 		{size === null ? notMeasured : byteSize(size)}
 		<hx-span class="ex-soft ex-block">{signedBytes(row.sizeChange)}</hx-span>
 		{#if row.reviews.some((review) => review.type === 'approval')}
-			<hx-span class="ex-pill gold wraps">Budget increase approved</hx-span>
+			<Pill as="span" variant="explorer" tone="gold wraps entity-history-row-ex-pill"
+				>Budget increase approved</Pill
+			>
 		{/if}
 	</hx-td>
 	<hx-td class:unmeasured={complexity === null}>

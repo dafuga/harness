@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from './explorer-kit/Pill.svelte';
 	import type { Place } from './EntityHeader.types';
 
 	import type { Snippet } from 'svelte';
@@ -143,8 +144,11 @@
 	<hx-div class="ex-head-main">
 		<hx-div class="ex-head-title">
 			<hx-h1>{entity.name}</hx-h1>
-			<hx-span class="ex-pill">{entity.role}</hx-span>
-			{#if entity.change === 'removed'}<hx-span class="ex-pill">Removed at this commit</hx-span
+			<Pill as="span" variant="explorer" tone="entity-header-ex-pill">{entity.role}</Pill>
+			{#if entity.change === 'removed'}<Pill
+					as="span"
+					variant="explorer"
+					tone="entity-header-ex-pill">Removed at this commit</Pill
 				>{/if}
 			<Status {...entity.verdict} />
 		</hx-div>

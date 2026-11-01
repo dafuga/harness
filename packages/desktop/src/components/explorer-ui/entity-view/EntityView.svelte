@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import type { Section } from './EntityView.types';
 
 	import { onDestroy, onMount, untrack } from 'svelte';
@@ -144,7 +145,8 @@
 			<hx-div>
 				<hx-div class="row">
 					<hx-h1>{name}</hx-h1>
-					<hx-span class="chip">{entity.kind}</hx-span>{#if entity.hasPlan}<PlanBadge />{/if}<Status
+					<Pill as="span" variant="chip" tone="entity-view-chip">{entity.kind}</Pill
+					>{#if entity.hasPlan}<PlanBadge />{/if}<Status
 						variant="icon"
 						status={verdict.status}
 						reason={verdict.reason}

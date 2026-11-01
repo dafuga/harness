@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from './explorer-kit/EmptyState.svelte';
+	import Notice from './explorer-kit/Notice.svelte';
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import type { Card } from './ExplorerPlatforms.types';
 
@@ -133,8 +135,8 @@
 					deployment.
 				</hx-p>
 				{#if gap}
-					<hx-p class="pf-notice"
-						><HarnessIcon name="info" size={18} /><hx-span>{gap}</hx-span></hx-p
+					<Notice as="p" className="pf-notice explorer-platforms-pf-notice"
+						><HarnessIcon name="info" size={18} /><hx-span>{gap}</hx-span></Notice
 					>
 				{/if}
 				<hx-div class="pf-controls">
@@ -151,12 +153,12 @@
 						{#each listed as card (card.id)}{@render platformCard(card, nav)}{/each}
 					</hx-div>
 				{:else}
-					<hx-p class="ex-empty">
+					<EmptyState as="p" className="ex-empty explorer-platforms-ex-empty">
 						No platforms match this search or filter.
 						<hx-button type="button" class="ex-text-button" onclick={showAll}
 							>Show all platforms</hx-button
 						>
-					</hx-p>
+					</EmptyState>
 				{/if}
 			</hx-section>
 		{/if}

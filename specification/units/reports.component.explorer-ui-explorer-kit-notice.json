@@ -8,7 +8,7 @@
 	"status": "active",
 	"composition": {
 		"level": "molecule",
-		"uses": ["reports.component.shared-primitives-atoms-html-p"]
+		"uses": ["reports.component.shared-primitives-atoms-html-element"]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte"],
@@ -18,24 +18,63 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "Notice.as",
+				"type": "'p' | 'div'",
+				"required": false,
+				"default": "p",
+				"description": "Optional semantic element. Defaults to p, with div for block content."
+			},
+			{
+				"name": "Notice.className",
+				"type": "string",
+				"required": false,
+				"default": "ex-notice",
+				"description": "Optional existing owner classes. Defaults to ex-notice."
+			},
+			{
+				"name": "Notice.role",
+				"type": "'note' | 'status' | 'alert'",
+				"required": false,
+				"default": "note",
+				"description": "Optional semantic role. Defaults to note."
+			},
+			{
+				"name": "Notice.id",
+				"type": "string",
+				"required": false,
+				"description": "Optional native id. Defaults to JavaScript undefined."
+			},
+			{
+				"name": "Notice.label",
+				"type": "string",
+				"required": false,
+				"description": "Optional accessible name. Defaults to JavaScript undefined, omitting aria-label."
+			},
+			{
+				"name": "Notice.component",
+				"type": "string",
+				"required": false,
+				"description": "Optional owner attribution. Defaults to JavaScript undefined."
+			},
+			{
 				"name": "Notice.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "The note."
+				"description": "Required caller content. Rendering errors propagate without replacing or suppressing its values."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Notice",
 				"type": "markup",
-				"description": "A paragraph with role note in quiet supporting text."
+				"description": "Semantic Notice markup retaining caller content, native accessibility and the selected existing treatment."
 			}
 		],
 		"errors": [
 			{
-				"name": "Child snippet error",
+				"name": "Content rendering error",
 				"type": "propagated",
-				"description": "Errors thrown while rendering the required children snippet propagate to the caller."
+				"description": "Errors from the required content snippet propagate to the owner."
 			}
 		],
 		"errorStatus": "declared",
@@ -44,7 +83,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"unit": "reports.component.shared-primitives-atoms-html-element",
 			"via": "import",
 			"origin": "derived"
 		}

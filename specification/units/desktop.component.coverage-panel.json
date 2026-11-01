@@ -12,6 +12,9 @@
 			"desktop.component.runtime-behavior",
 			"reports.component.browser-errors",
 			"reports.component.entity-states",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-harness-verdict",
 			"reports.component.regression-proof",
 			"reports.component.shared-primitives-atoms-html-article",
@@ -42,6 +45,9 @@
 	"contract": {
 		"origin": "declared",
 		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-data-table"
 		],
@@ -147,6 +153,21 @@
 		},
 		{
 			"unit": "reports.component.entity-states",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},

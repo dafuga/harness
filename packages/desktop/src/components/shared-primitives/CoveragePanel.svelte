@@ -1,6 +1,9 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
+	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import DataTable from '$shared/shared-primitives/DataTable.svelte';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
@@ -59,18 +62,19 @@
 			/>{/if}
 		<hx-div class="row">
 			<hx-h2>Evidence</hx-h2>
-			<hx-span class="chip runtime-chip">Runtime capture</hx-span>{#if side}<hx-small
+			<Pill as="span" variant="chip" tone="runtime-chip coverage-panel-chip">Runtime capture</Pill
+			>{#if side}<hx-small
 					>Recorded for {shortCommit(side.commit)}{side.record
 						? ` · record ${side.record.id}`
 						: ''}</hx-small
 				>{/if}
 		</hx-div>
-		{#if notice}<hx-p
-				class={notice.alert ? 'error' : 'empty'}
+		{#if notice}<Notice
+				className={notice.alert ? 'error' : 'empty'}
 				role={notice.alert ? 'alert' : 'status'}
 			>
 				{notice.text}
-			</hx-p>{:else if side}{#if side.gap}<hx-p class="runtime-gap">
+			</Notice>{:else if side}{#if side.gap}<hx-p class="runtime-gap">
 					<Status variant="icon" status="failed" reason="Evidence missing" /><hx-span
 						>{side.gap}</hx-span
 					>
@@ -83,7 +87,8 @@
 							status={mark(item.standing)}
 							reason={told(item.standing, item.reasons)}
 						/>
-						{item.title}<hx-span class="chip">{item.kind}</hx-span>{#if item.inheritedFrom}<hx-small
+						{item.title}<Pill as="span" variant="chip" tone="coverage-panel-chip">{item.kind}</Pill
+						>{#if item.inheritedFrom}<hx-small
 								>Inherited from {shortCommit(item.inheritedFrom)}</hx-small
 							>{/if}
 					</hx-h3>
@@ -126,9 +131,9 @@
 					{result}
 					{evidence}
 					unit={entity.category === 'functions' ? entity.id : undefined}
-				/>{:else}<hx-p class="empty">
+				/>{:else}<EmptyState as="p" className="empty coverage-panel-empty">
 					No test recorded an input and an observed output for this entity at
 					{shortCommit(result.scope.commit)}.
-				</hx-p>{/if}{/if}
+				</EmptyState>{/if}{/if}
 	</hx-section>
 {/snippet}

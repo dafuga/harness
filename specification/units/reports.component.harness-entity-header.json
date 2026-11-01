@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-entity-link",
 			"reports.component.harness-harness-icon",
 			"reports.component.harness-harness-tabs",
@@ -32,7 +33,10 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.harness-harness-verdict"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.harness-harness-verdict"
+		],
 		"inputs": [
 			{
 				"name": "EntityHeader.entity",
@@ -78,6 +82,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-link",
 			"via": "import",

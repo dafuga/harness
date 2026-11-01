@@ -3491,6 +3491,18 @@
 			"units": ["reports.component.explorer-ui-explorer-kit-empty-state"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-kit-empty-state-block",
+			"title": "empty-state: block",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-empty-state"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-empty-state-status",
+			"title": "empty-state: status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-empty-state"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-kit-notice",
 			"title": "Explorer notice",
 			"coverage": "required",
@@ -3499,6 +3511,18 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-kit-notice-long",
 			"title": "explorer-ui-explorer-kit-notice: long",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-notice-alert",
+			"title": "notice: alert",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-notice-block",
+			"title": "notice: block",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
 		},
@@ -3517,6 +3541,30 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-kit-pill-tone",
 			"title": "explorer-ui-explorer-kit-pill: tone",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-list-item",
+			"title": "pill: list-item",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-compact",
+			"title": "pill: compact",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-chip",
+			"title": "pill: chip",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-attributes",
+			"title": "pill: attributes",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
 		},
@@ -8577,11 +8625,19 @@
 				"reports-component-explorer-ui-explorer-kit-command-block-multiline",
 				"reports-component-explorer-ui-explorer-kit-empty-state",
 				"reports-component-explorer-ui-explorer-kit-empty-state-action",
+				"reports-component-explorer-ui-explorer-kit-empty-state-block",
+				"reports-component-explorer-ui-explorer-kit-empty-state-status",
 				"reports-component-explorer-ui-explorer-kit-notice",
 				"reports-component-explorer-ui-explorer-kit-notice-long",
+				"reports-component-explorer-ui-explorer-kit-notice-alert",
+				"reports-component-explorer-ui-explorer-kit-notice-block",
 				"reports-component-explorer-ui-explorer-kit-pill",
 				"reports-component-explorer-ui-explorer-kit-pill-state",
 				"reports-component-explorer-ui-explorer-kit-pill-tone",
+				"reports-component-explorer-ui-explorer-kit-pill-list-item",
+				"reports-component-explorer-ui-explorer-kit-pill-compact",
+				"reports-component-explorer-ui-explorer-kit-pill-chip",
+				"reports-component-explorer-ui-explorer-kit-pill-attributes",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
 				"reports-component-explorer-ui-explorer-module-card-image-error",

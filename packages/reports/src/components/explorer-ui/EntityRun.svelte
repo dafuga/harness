@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from './explorer-kit/Pill.svelte';
 	import type { BehaviorOutcome, EntityBehavior } from '../../utils/explorer-ui/entityBehavior';
 	import EntityArtifact from './EntityArtifact.svelte';
 	import Status from '../shared-primitives/status/Status.svelte';
@@ -38,7 +39,7 @@
 <hx-section class="ex-pane" aria-label={title} data-harness-component="harness-entity-run">
 	<hx-header class="ex-pane-head">
 		<hx-strong>{title}</hx-strong>
-		<hx-span class="ex-pill">{role}</hx-span>
+		<Pill as="span" variant="explorer" tone="entity-run-ex-pill">{role}</Pill>
 		<Status {passed} label={passed ? 'All results passed' : 'Not all results passed'} />
 	</hx-header>
 	{#each shown.groups as group, position (position)}

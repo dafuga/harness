@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import GameLevelPreview from './GameLevelPreview.svelte';
 	import type { GameLevelReviewProps as Props } from './GameLevelReview.types';
 	/**
@@ -37,8 +38,10 @@
 	<hx-div class="details">
 		<hx-p class="summary">{proposal.summary}</hx-p>
 		<hx-p class="meta">
-			<hx-span class="chip">{proposal.dimension.toUpperCase()}</hx-span>
-			<hx-span class="chip">{source}</hx-span>
+			<Pill as="span" variant="chip" tone="game-level-review-chip"
+				>{proposal.dimension.toUpperCase()}</Pill
+			>
+			<Pill as="span" variant="chip" tone="game-level-review-chip">{source}</Pill>
 		</hx-p>
 		<hx-details>
 			<hx-summary
