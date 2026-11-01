@@ -2,7 +2,7 @@
 	"name": "desktop-final-visual-review",
 	"goal": "Every Desktop chat, runtime and navigation state reads clearly at all three viewports",
 	"createdAt": "2026-11-01T11:44:32.786Z",
-	"updatedAt": "2026-11-01T11:45:46.444Z",
+	"updatedAt": "2026-11-01T12:49:36.352Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T12:49:36.352Z",
+			"evidence": "e6ce9156bb: the corrected existing search matrix passes29 cases and clips Components at561px. Record effa70fc026c822ed251eb22121a5f27105615459ff32ff8d496daa94219d879."
 		},
 		{
 			"id": "implement",
