@@ -2,7 +2,7 @@
 	"name": "sol8-artifact-footer-fit",
 	"goal": "Show complete recorded artifact text and keep mobile behavior status values readable without splitting words.",
 	"createdAt": "2026-11-01T06:53:49.377Z",
-	"updatedAt": "2026-11-01T06:53:50.753Z",
+	"updatedAt": "2026-11-01T06:55:45.394Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T06:55:45.394Z",
+			"evidence": "Admitted red 69ae83f0bd1aa7cd at 6015e99de0 retains eleven captures, failing nested text extent and mobile status assertions before repair."
 		},
 		{
 			"id": "implement",

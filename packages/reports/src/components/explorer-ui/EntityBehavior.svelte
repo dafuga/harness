@@ -183,6 +183,9 @@
 </hx-section>
 
 <style>
+	.ex-inline dd {
+		white-space: nowrap;
+	}
 	.ex-change-reasons {
 		flex: 1 0 100%;
 		display: grid;

@@ -87,7 +87,7 @@
 			{
 				"name": "EntityBehavior",
 				"type": "markup",
-				"description": "Current or before/after test panel. Reads artifacts when not supplied and ignores completion whose row-hash signature no longer matches. Pending reading omits settled reason-absence text; completed explanations use separate paragraphs. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict requires passing results."
+				"description": "Current or before/after test panel. Reads artifacts when not supplied and ignores completion whose row-hash signature no longer matches. Pending reading omits settled reason-absence text; completed explanations use separate paragraphs. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict requires passing results. Footer outcome values stay together."
 			}
 		],
 		"errors": [
