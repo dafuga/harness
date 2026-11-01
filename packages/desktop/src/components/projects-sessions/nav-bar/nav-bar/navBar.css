@@ -114,8 +114,8 @@ header.topbar::before {
 			'context context context' auto
 			'tools tools tools' auto
 			/ var(--hx-space-26) minmax(0, 1fr) auto;
-		gap: var(--hx-space-8) var(--hx-space-6);
-		padding: var(--hx-space-8) var(--hx-space-12) 0;
+		gap: var(--hx-space-4) var(--hx-space-6);
+		padding: var(--hx-space-4) var(--hx-space-12) 0;
 	}
 	.topbar-context {
 		display: grid;
@@ -123,11 +123,29 @@ header.topbar::before {
 			'environment revision search' auto
 			'summary summary tip' auto
 			/ max-content minmax(0, 1fr) auto;
-		gap: var(--hx-space-6);
-		padding: var(--hx-space-6);
+		gap: var(--hx-space-4);
+		padding: var(--hx-space-4);
 		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
 		background: var(--hx-color-surface);
+	}
+	header.topbar .topbar-context :global(.environment-choice) {
+		width: calc(var(--hx-space-64) + var(--hx-space-40));
+	}
+	header.topbar .topbar-context :global(.environment-choice select) {
+		padding-inline: var(--hx-space-6) var(--hx-space-20);
+	}
+	header.topbar .topbar-context :global(.revision-choices button.agent-icon) {
+		width: var(--hx-space-50);
+		height: var(--hx-space-32);
+	}
+	header.topbar .topbar-search {
+		gap: var(--hx-space-4);
+	}
+	header.topbar .topbar-search :global(.entity-search-trigger),
+	header.topbar .topbar-search .topbar-settings {
+		width: var(--hx-space-32);
+		height: var(--hx-space-32);
 	}
 	.topbar .topbar-context :global(.environment-choice),
 	.topbar .topbar-context :global(.revision-choices),
@@ -146,10 +164,11 @@ header.topbar::before {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 	.topbar nav :global(a) {
-		min-height: var(--hx-space-40);
+		min-height: var(--hx-space-36);
 		gap: var(--hx-space-2);
-		padding: var(--hx-space-4) var(--hx-space-2);
+		padding: var(--hx-space-2);
 		font-size: var(--hx-type-size-2xs);
+		line-height: var(--hx-space-12);
 	}
 	.topbar nav :global(svg) {
 		width: var(--hx-space-16);
