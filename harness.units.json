@@ -1206,6 +1206,42 @@
 			"specifier": "$shared/shared-primitives/DataTable.svelte",
 			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
 			"reason": "Shared DataTable retains semantic rows and keyboard-scrollable content."
+		},
+		{
+			"from": "packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/helpers/verification-evidence/behaviorFacts",
+			"to": "packages/reports/src/helpers/verification-evidence/behaviorFacts.ts",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDetails.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/DeploymentDialog.svelte",
+			"specifier": "$shared/shared-primitives/DetailList.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
 		}
 	]
 }

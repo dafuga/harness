@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../atoms -->
 <script lang="ts">
+	import DetailList from '../DetailList.svelte';
 	import DataTable from '../DataTable.svelte';
 	import { humanize } from '../../../helpers/strings/humanize';
 	import { recordedValue } from './recordedValue';
@@ -16,7 +17,7 @@
 		rowsLabel?: string;
 	} = $props();
 	let view = $derived(recordedValue(value));
-	const label = (name: string) => {
+	const fieldLabel = (name: string) => {
 		const words = humanize(name);
 		return words ? words[0].toUpperCase() + words.slice(1) : 'Empty field name';
 	};
@@ -33,14 +34,15 @@
 	{:else if node.kind === 'notice'}
 		<hx-span class="value-note">{node.text}</hx-span>
 	{:else if node.kind === 'fields'}
-		<hx-dl class="fields">
-			{#each node.fields as field (field.name)}
-				<hx-div>
-					<hx-dt title={field.name}>{label(field.name)}</hx-dt>
-					<hx-dd>{@render present(field.node)}</hx-dd>
-				</hx-div>
-			{/each}
-		</hx-dl>
+		<DetailList
+			rows={node.fields}
+			rowKey={(field) => field.name}
+			termTitle={(field) => field.name}
+			className="fields"
+		>
+			{#snippet label(field)}{fieldLabel(field.name)}{/snippet}
+			{#snippet children(field)}{@render present(field.node)}{/snippet}
+		</DetailList>
 		{#if node.remaining}<hx-p class="value-note">
 				{node.remaining} more fields in {fullValuesLabel}.
 			</hx-p>{/if}
@@ -56,12 +58,12 @@
 		<DataTable label={rowsLabel} tableClass="recorded-value-table" className="value-scroll">
 			{#snippet header()}<hx-tr
 					>{#each node.columns as column (column)}<hx-th scope="col" title={column}
-							>{label(column)}</hx-th
+							>{fieldLabel(column)}</hx-th
 						>{/each}</hx-tr
 				>{/snippet}
 			{#snippet children()}{#each node.rows as row, position (position)}<hx-tr
-						>{#each row as cell, column (column)}<hx-td data-field={label(node.columns[column])}
-								>{@render present(cell)}</hx-td
+						>{#each row as cell, column (column)}<hx-td
+								data-field={fieldLabel(node.columns[column])}>{@render present(cell)}</hx-td
 							>{/each}</hx-tr
 					>{/each}{/snippet}
 		</DataTable>
@@ -80,30 +82,31 @@
 		font: var(--hx-style-body-small);
 		color: var(--hx-color-text-supporting);
 	}
-	.fields {
+	.recorded-value :global(.fields) {
 		display: block;
 		margin: 0;
 	}
-	.fields > div {
+	.recorded-value :global(.fields > div) {
+		display: block;
 		padding: var(--hx-space-9) 0;
 		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	}
-	.fields > div:first-child {
+	.recorded-value :global(.fields > div:first-child) {
 		padding-top: 0;
 	}
-	.fields > div:last-child {
+	.recorded-value :global(.fields > div:last-child) {
 		padding-bottom: 0;
 		border: 0;
 	}
-	dt {
+	.recorded-value :global(dt) {
 		margin-bottom: var(--hx-space-5);
 		font-weight: var(--hx-style-weight-semibold);
 		color: var(--hx-color-text);
 	}
-	dd {
+	.recorded-value :global(dd) {
 		margin: 0;
 	}
-	dd .fields {
+	.recorded-value :global(dd .fields) {
 		padding-left: var(--hx-space-12);
 		border-left: var(--hx-border-thick) solid var(--hx-color-border-strong);
 	}

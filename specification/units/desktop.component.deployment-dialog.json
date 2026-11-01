@@ -14,16 +14,14 @@
 			"desktop.component.icon",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-code",
-			"reports.component.shared-primitives-atoms-html-dd",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-time",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-detail-list"
 		]
 	},
 	"owns": {
@@ -34,12 +32,15 @@
 		"symbols": [
 			"DeploymentDialog",
 			"DeploymentDialog.commit",
+			"DeploymentDialog.label",
+			"DeploymentDialog.children",
 			"DeploymentDialog.icon",
 			"DeploymentDialog.footer"
 		]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-detail-list"],
 		"inputs": [
 			{
 				"name": "DeploymentDialog.workspace",
@@ -76,6 +77,42 @@
 				"outputs": [
 					{
 						"name": "DeploymentDialog.commit",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DeploymentDialog.label",
+				"inputs": [
+					{
+						"name": "DeploymentDialog.label.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentDialog.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DeploymentDialog.children",
+				"inputs": [
+					{
+						"name": "DeploymentDialog.children.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeploymentDialog.children",
 						"type": "markup"
 					}
 				],
@@ -150,22 +187,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -196,6 +218,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-detail-list",
 			"via": "import",
 			"origin": "derived"
 		}

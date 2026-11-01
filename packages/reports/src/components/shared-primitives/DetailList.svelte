@@ -8,7 +8,11 @@
 		label,
 		children,
 		empty,
-		className = ''
+		className = '',
+		grouped = true,
+		termTitle,
+		valueTitle,
+		valueClass
 	}: {
 		/** Rows in their display order; labels and values remain domain-owned. */
 		rows: Row[];
@@ -22,8 +26,21 @@
 		empty?: Snippet;
 		/** Optional feature-owned classes; defaults to an empty string. */
 		className?: string;
+		/** Wrap each term/value pair in a row container; defaults to true. False preserves flat lists. */
+		grouped?: boolean;
+		/** Optional term tooltip callback; defaults to undefined, omitting title. */
+		termTitle?: (row: Row) => string | undefined;
+		/** Optional value tooltip callback; defaults to undefined, omitting title. */
+		valueTitle?: (row: Row) => string | undefined;
+		/** Optional value class callback; defaults to undefined, omitting additional classes. */
+		valueClass?: (row: Row) => string;
 	} = $props();
 </script>
+
+{#snippet definition(row: Row)}
+	<hx-dt title={termTitle?.(row)}>{@render label(row)}</hx-dt>
+	<hx-dd title={valueTitle?.(row)} class={valueClass?.(row)}>{@render children(row)}</hx-dd>
+{/snippet}
 
 {#if rows.length === 0}
 	{#if empty}{@render empty()}{:else}
@@ -35,10 +52,8 @@
 {:else}
 	<hx-dl class="detail-list {className}" data-harness-component="shared-primitives-detail-list">
 		{#each rows as row, position (rowKey(row, position))}
-			<hx-div class="detail-row">
-				<hx-dt>{@render label(row)}</hx-dt>
-				<hx-dd>{@render children(row)}</hx-dd>
-			</hx-div>
+			{#if grouped}<hx-div class="detail-row">{@render definition(row)}</hx-div>
+			{:else}{@render definition(row)}{/if}
 		{/each}
 	</hx-dl>
 {/if}

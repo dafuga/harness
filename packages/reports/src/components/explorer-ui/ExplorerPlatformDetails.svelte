@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '../shared-primitives/DetailList.svelte';
 	import DataTable from '../shared-primitives/DataTable.svelte';
 	import Card from './explorer-kit/Card.svelte';
 	import type { Row } from './ExplorerPlatformDetails.types';
@@ -136,16 +137,13 @@
 					: 'No platform catalog is indexed at this revision.'}
 			</hx-p>
 			{#if entry}
-				<hx-dl class="pf-meta">
-					<hx-div>
-						<hx-dt>Runtime</hx-dt>
-						<hx-dd>{entry.runtime}</hx-dd>
-					</hx-div>
-					<hx-div>
-						<hx-dt>Declared at</hx-dt>
-						<hx-dd><hx-code>{shortCommit(host.scope.commit)}</hx-code></hx-dd>
-					</hx-div>
-				</hx-dl>
+				<DetailList rows={['Runtime', 'Declared at']} rowKey={(name) => name} className="pf-meta">
+					{#snippet label(name)}{name}{/snippet}
+					{#snippet children(name)}
+						{#if name === 'Runtime'}{entry.runtime}
+						{:else}<hx-code>{shortCommit(host.scope.commit)}</hx-code>{/if}
+					{/snippet}
+				</DetailList>
 				<hx-p class="ex-note">
 					A status is what the repository declares; Harness does not check live deployments.
 				</hx-p>

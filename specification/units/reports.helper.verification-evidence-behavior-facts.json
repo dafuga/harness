@@ -1,0 +1,132 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.helper.verification-evidence-behavior-facts",
+	"kind": "helper",
+	"title": "behaviorFacts",
+	"responsibility": "Formats duration and ordered scenario outcomes for Reports and Desktop.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/helpers/verification-evidence/behaviorFacts.ts",
+			"packages/reports/src/helpers/verification-evidence/behaviorFacts.types.ts"
+		],
+		"symbols": ["behaviorFacts", "BehaviorFact", "BehaviorFactOptions", "BehaviorScenario"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "behaviorFacts.duration",
+				"type": "string | null",
+				"required": true,
+				"description": "Required duration text, or null for Not measured; zero-duration text is retained."
+			},
+			{
+				"name": "behaviorFacts.scenarios",
+				"type": "BehaviorScenario[]",
+				"required": true,
+				"description": "Required ordered scenario records; numeric array access preserves custom iterator and species admission."
+			},
+			{
+				"name": "behaviorFacts.paired",
+				"type": "boolean",
+				"required": true,
+				"description": "Required comparison flag; true includes the parent outcome and arrow."
+			},
+			{
+				"name": "behaviorFacts.options",
+				"type": "BehaviorFactOptions",
+				"required": false,
+				"default": {},
+				"description": "Optional display settings, default {}; durationLabel defaults to E2E duration and highlight defaults to false."
+			}
+		],
+		"outputs": [
+			{
+				"name": "behaviorFacts",
+				"type": "BehaviorFact[]",
+				"description": "Duration followed by scenario facts, with stable keys, labels, literal outcomes and optional status classes."
+			}
+		],
+		"errors": [
+			{
+				"name": "Input access error",
+				"type": "propagated",
+				"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "behaviorFacts",
+				"inputs": [
+					{
+						"name": "behaviorFacts.duration",
+						"type": "string | null",
+						"required": true,
+						"description": "Required duration text, or null for Not measured; zero-duration text is retained."
+					},
+					{
+						"name": "behaviorFacts.scenarios",
+						"type": "BehaviorScenario[]",
+						"required": true,
+						"description": "Required ordered scenario records; numeric array access preserves custom iterator and species admission."
+					},
+					{
+						"name": "behaviorFacts.paired",
+						"type": "boolean",
+						"required": true,
+						"description": "Required comparison flag; true includes the parent outcome and arrow."
+					},
+					{
+						"name": "behaviorFacts.options",
+						"type": "BehaviorFactOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional display settings, default {}; durationLabel defaults to E2E duration and highlight defaults to false."
+					}
+				],
+				"outputs": [
+					{
+						"name": "behaviorFacts",
+						"type": "BehaviorFact[]",
+						"description": "Duration followed by scenario facts, with stable keys, labels, literal outcomes and optional status classes."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access error",
+						"type": "propagated",
+						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/helpers/verification-evidence/behaviorFacts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/helpers/verification-evidence/behaviorFacts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

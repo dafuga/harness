@@ -7,21 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
+		"level": "organism",
 		"uses": [
-			"reports.component.shared-primitives-atoms-html-dd",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt",
 			"reports.component.shared-primitives-atoms-html-h2",
-			"reports.component.shared-primitives-atoms-html-section"
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-detail-list"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte"],
-		"symbols": ["MeasuresPanel"]
+		"symbols": ["MeasuresPanel", "MeasuresPanel.label", "MeasuresPanel.children"]
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.shared-primitives-detail-list"],
 		"inputs": [
 			{
 				"name": "MeasuresPanel.size",
@@ -45,26 +44,49 @@
 		],
 		"errors": [],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "MeasuresPanel.label",
+				"inputs": [
+					{
+						"name": "MeasuresPanel.label.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "MeasuresPanel.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "MeasuresPanel.children",
+				"inputs": [
+					{
+						"name": "MeasuresPanel.children.row",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "MeasuresPanel.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "desktop.model.desktop-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -75,6 +97,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-detail-list",
 			"via": "import",
 			"origin": "derived"
 		}

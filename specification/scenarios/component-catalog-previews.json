@@ -5595,7 +5595,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen · Playwright empty",
+			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -5649,13 +5649,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen · playwright",
+			"title": "ExplorerModulesScreen \u00b7 playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen · headless-audio",
+			"title": "ExplorerModulesScreen \u00b7 headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -7556,6 +7556,18 @@
 			"units": ["reports.component.shared-primitives-detail-list"]
 		},
 		{
+			"id": "reports-component-shared-primitives-detail-list-flat",
+			"title": "DetailList: flat",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-detail-list"]
+		},
+		{
+			"id": "reports-component-shared-primitives-detail-list-attributes",
+			"title": "DetailList: attributes",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-detail-list"]
+		},
+		{
 			"id": "reports-component-shared-primitives-loading-state",
 			"title": "Accessible data loading status",
 			"coverage": "required",
@@ -9239,6 +9251,8 @@
 				"reports-component-shared-primitives-detail-list-long",
 				"reports-component-shared-primitives-detail-list-values",
 				"reports-component-shared-primitives-detail-list-duplicate-labels",
+				"reports-component-shared-primitives-detail-list-flat",
+				"reports-component-shared-primitives-detail-list-attributes",
 				"reports-component-shared-primitives-loading-state",
 				"reports-component-shared-primitives-loading-state-default-label",
 				"reports-component-shared-primitives-loading-state-long",

@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '$shared/shared-primitives/DetailList.svelte';
+	import { behaviorFacts } from '$reports/helpers/verification-evidence/behaviorFacts';
 	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
@@ -86,14 +88,18 @@
 				/>
 			{/snippet}
 		</ComparePanes>{/if}
-	<hx-dl class="runtime-facts">
-		<hx-dt>End-to-end duration</hx-dt>
-		<hx-dd>{duration ?? 'Not measured'}</hx-dd>
-		{#each shown.scenarios as scenario (scenario.id)}<hx-dt>{scenario.title}</hx-dt>
-			<hx-dd>
-				{paired ? `${scenario.before ?? 'not run'} → ` : ''}{scenario.after ?? 'not run'}
-			</hx-dd>{/each}
-	</hx-dl>
+	<DetailList
+		rows={behaviorFacts(duration, shown.scenarios, paired, {
+			durationLabel: 'End-to-end duration'
+		})}
+		rowKey={(row) => row.key}
+		className="runtime-facts"
+		grouped={false}
+		valueClass={(row) => row.className}
+	>
+		{#snippet label(row)}{row.label}{/snippet}
+		{#snippet children(row)}{row.value}{/snippet}
+	</DetailList>
 </hx-div>
 
 <style>

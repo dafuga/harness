@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms atoms -->
 <script lang="ts">
+	import DetailList from './DetailList.svelte';
 	import type {
 		ContractExample as Example,
 		ContractField
@@ -31,18 +32,18 @@
 {/snippet}
 
 <hx-div class="contract-example" data-harness-component="contract-example">
-	<hx-dl class="about">
-		<hx-div>
-			<hx-dt>Type</hx-dt>
-			<hx-dd><hx-code class="type">{field.type}</hx-code></hx-dd>
-		</hx-div>
-		<hx-div>
-			<hx-dt>Description</hx-dt>
-			<hx-dd class:none={!field.description}
-				>{field.description ?? 'No description recorded.'}</hx-dd
-			>
-		</hx-div>
-	</hx-dl>
+	<DetailList
+		rows={['Type', 'Description']}
+		rowKey={(name) => name}
+		className="about"
+		valueClass={(name) => (name === 'Description' && !field.description ? 'none' : '')}
+	>
+		{#snippet label(name)}{name}{/snippet}
+		{#snippet children(name)}
+			{#if name === 'Type'}<hx-code class="type">{field.type}</hx-code>
+			{:else}{field.description ?? 'No description recorded.'}{/if}
+		{/snippet}
+	</DetailList>
 	<hx-div class="examples">
 		<hx-h3>
 			{#if field.source === 'missing'}
@@ -70,26 +71,26 @@
 		min-width: 0;
 		overflow-wrap: anywhere;
 	}
-	.about {
+	.contract-example :global(.about) {
 		display: grid;
 		gap: var(--hx-space-10);
 		margin: 0;
 	}
-	.about > div {
+	.contract-example :global(.about > div) {
 		display: grid;
 		grid-template-columns: 7rem minmax(0, 1fr);
 		align-items: baseline;
 		gap: var(--hx-space-4) var(--hx-space-12);
 	}
-	dt {
+	.contract-example :global(dt) {
 		color: var(--hx-color-text-supporting);
 		font-size: var(--hx-type-size-sm);
 	}
-	dd {
+	.contract-example :global(dd) {
 		min-width: 0;
 		margin: 0;
 	}
-	.none,
+	.contract-example :global(.none),
 	.note {
 		color: var(--hx-color-text-supporting);
 	}
@@ -160,7 +161,7 @@
 		margin-top: var(--hx-space-6);
 	}
 	@media (max-width: 480px) {
-		.about > div {
+		.contract-example :global(.about > div) {
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}

@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import DetailList from '../shared-primitives/DetailList.svelte';
+	import { behaviorFacts } from '../../helpers/verification-evidence/behaviorFacts';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 	import Card from './explorer-kit/Card.svelte';
@@ -167,25 +169,21 @@
 			</hx-div>
 		{/if}
 		{#if reasons}<EntityReasons {reasons} />{/if}
-		<hx-dl class="ex-inline">
-			<hx-div>
-				<hx-dt>E2E duration</hx-dt>
-				<hx-dd class:unmeasured={duration === notMeasured}>{duration}</hx-dd>
-			</hx-div>
-			{#each shown.scenarios as scenario (scenario.id)}
-				<hx-div>
-					<hx-dt>{scenario.title}</hx-dt>
-					<hx-dd class:failed={scenario.after !== 'passed'}>
-						{paired ? `${scenario.before ?? 'not run'} → ` : ''}{scenario.after ?? 'not run'}
-					</hx-dd>
-				</hx-div>
-			{/each}
-		</hx-dl>
+		<DetailList
+			rows={behaviorFacts(duration, shown.scenarios, paired, { highlight: true })}
+			rowKey={(row) => row.key}
+			className="ex-inline"
+			grouped={true}
+			valueClass={(row) => row.className}
+		>
+			{#snippet label(row)}{row.label}{/snippet}
+			{#snippet children(row)}{row.value}{/snippet}
+		</DetailList>
 	</hx-div>
 </Card>
 
 <style>
-	.ex-inline dd {
+	:global(.ex-inline dd) {
 		white-space: nowrap;
 	}
 	.ex-change-reasons {
