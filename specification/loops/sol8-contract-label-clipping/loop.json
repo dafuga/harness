@@ -2,7 +2,7 @@
 	"name": "sol8-contract-label-clipping",
 	"goal": "Keep contract provenance labels readable when table columns or viewport widths change",
 	"createdAt": "2026-11-01T00:36:28.754Z",
-	"updatedAt": "2026-11-01T00:38:06.840Z",
+	"updatedAt": "2026-11-01T00:39:30.264Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,17 +39,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:39:27.266Z",
+			"evidence": "15220ee6d4 renders source provenance outside the example ellipsis box. The shared post-capture bounds assertion runs for all three contract components."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:39:28.859Z",
+			"evidence": "The unchanged frozen three-viewport command passes at 15220ee6d4; immutable record 24b3739754eb retains all three screenshots."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:39:30.264Z",
+			"evidence": "Isolated committed-source snapshots prove the guard rejects clipped desktop labels at c46fd364dd (73c7e7e92d3b) and accepts the repair at 15220ee6d4 (24b3739754eb)."
 		},
 		{
 			"id": "verify",
