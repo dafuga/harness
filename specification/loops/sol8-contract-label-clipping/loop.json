@@ -2,7 +2,7 @@
 	"name": "sol8-contract-label-clipping",
 	"goal": "Keep contract provenance labels readable when table columns or viewport widths change",
 	"createdAt": "2026-11-01T00:36:28.754Z",
-	"updatedAt": "2026-11-01T00:36:28.754Z",
+	"updatedAt": "2026-11-01T00:38:06.840Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -11,22 +11,30 @@
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:38:03.644Z",
+			"evidence": "407f1ab711 adds metadata columns, narrowing the clipped example cell; API image 91ddf92f92 cuts Illustrative. Existing code clipped its provenance label together with example data."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:38:04.796Z",
+			"evidence": "Existing catalog checks assert text presence and control fit, but not painted provenance bounds. Extend the shared post-capture contract assertion across all states and viewports without adding cases."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:38:06.040Z",
+			"evidence": "At c46fd364dd, immutable record 73c7e7e92d3b fails the desktop illustrative case on clipped label bounds and retains all three viewport captures."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T00:38:06.840Z",
+			"evidence": "Move provenance outside the clipped example preview. Retain data ellipsis and exercise the shared glyph-bound guard through the same catalog matrix."
 		},
 		{
 			"id": "implement",
