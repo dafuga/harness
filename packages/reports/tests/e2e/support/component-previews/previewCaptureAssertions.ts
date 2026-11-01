@@ -1,4 +1,5 @@
 import { assertNativeAtomState } from './atomicCatalog';
+import { assertNativePresentation } from './nativeAtomPresentationAssertions';
 import { expect, type Page, type Locator } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -23,6 +24,7 @@ export async function assertComponentCapture(
 	variant = ''
 ) {
 	assertCaptureSlot(id, viewport, variant);
+	await assertNativePresentation(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await assertDesktopCapturedState(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await assertAudioViewerCapture(page, id, viewport);
 	await assertDefaultAgents(page, id, variant);
