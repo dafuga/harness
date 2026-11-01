@@ -27,7 +27,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'runtime-artifact:text': 'Recorded plain text output.',
 		'runtime-behavior:loading': 'Reading the recorded results…',
 		'runtime-behavior:unreadable': 'The recorded results could not be read.',
-		'runtime-screens:incomparable': 'different runtime profiles',
+		'runtime-screens:incomparable': '1280×900 after',
 		'runtime-evidence:error': "Couldn't load recorded evidence. Try again.",
 		'runtime-evidence:offline': 'Saved'
 	};

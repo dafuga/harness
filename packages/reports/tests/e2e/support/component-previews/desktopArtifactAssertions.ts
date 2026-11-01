@@ -6,7 +6,15 @@ import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
 /** Comparison fixtures must paint checked captures from both real evidence contexts. */
 export async function assertDesktopScreenCapture(component: Locator, id: string, variant: string) {
 	if (id !== 'desktop.component.runtime-screens') return;
+	for (const gap of await component.locator('p.runtime-gap, .runtime-gap li').all())
+		await assertGapMessage(gap);
 	if (!['paired', 'incomparable'].includes(variant)) return;
+	await expect(
+		component.getByRole('heading', {
+			name: variant === 'paired' ? 'Before and after' : 'Before and after, not alike',
+			exact: true
+		})
+	).toBeVisible();
 	for (const [side, hash] of [
 		['Before', commits.middle],
 		['After', commits.tip]
@@ -72,16 +80,19 @@ async function assertReadableResult(component: Locator, variant: string) {
 		).not.toMatch(/synthetic orders|taken for [a-f\d]{7}/i);
 	}
 	if (['unreadable', 'unstored'].includes(variant)) {
-		const separation = await component.locator('.runtime-gap').evaluate((node) => {
-			const icon = node.querySelector('button')!.getBoundingClientRect();
-			const message = node.lastElementChild!.getBoundingClientRect();
-			return { actual: message.left - icon.right, gap: parseFloat(getComputedStyle(node).gap) };
-		});
-		expect(
-			separation.actual,
-			'Artifact gap message stays beside its status icon'
-		).toBeLessThanOrEqual(separation.gap + 1);
+		await assertGapMessage(component.locator('.runtime-gap'));
 	}
+}
+
+async function assertGapMessage(row: Locator) {
+	const separation = await row.evaluate((node) => {
+		const icon = node.querySelector('button')!.getBoundingClientRect();
+		const message = node.lastElementChild!.getBoundingClientRect();
+		return { actual: message.left - icon.right, gap: parseFloat(getComputedStyle(node).gap) };
+	});
+	expect(separation.actual, 'Runtime gap message stays beside its status icon').toBeLessThanOrEqual(
+		separation.gap + 1
+	);
 }
 
 export async function assertDesktopBehaviorState(component: Locator, variant: string) {
