@@ -1,4 +1,5 @@
-import { rm } from 'node:fs/promises';
+import { readFile, rm } from 'node:fs/promises';
+import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
 import { runHarness } from './support/cli';
 import { measureWorkload } from './support/measureWorkload';
@@ -22,6 +23,28 @@ async function project(states?: string[]) {
 	return root;
 }
 
+async function addWorkspaceScenario(root: string) {
+	const scenario = JSON.parse(
+		await readFile(join(root, 'specification/scenarios/widget-catalog.json'), 'utf8')
+	);
+	scenario.id = 'workspace-coverage';
+	scenario.units = [entity, 'component.other'];
+	scenario.states = [
+		{
+			id: 'workspace-current',
+			title: 'Workspace context',
+			coverage: 'required',
+			units: scenario.units
+		}
+	];
+	scenario.evidence[0].states = ['workspace-current'];
+	await writeGuidanceFile(
+		root,
+		'specification/scenarios/workspace-coverage.json',
+		JSON.stringify(scenario)
+	);
+}
+
 test('guide distinguishes named states and heuristic prop boundaries', async () => {
 	const root = await project();
 	const unit = widgetManifest();
@@ -36,6 +59,7 @@ test('guide distinguishes named states and heuristic prop boundaries', async () 
 		'src/components/Widget.svelte',
 		`<script lang="ts">let { status }: { status: 'loading' | 'unavailable' } = $props();</script>{#if status === 'unavailable'}Unavailable{/if}`
 	);
+	await addWorkspaceScenario(root);
 	await commitGuidance(root);
 	await measureWorkload(
 		'workflow.development-tooling-guide-units',
@@ -43,11 +67,13 @@ test('guide distinguishes named states and heuristic prop boundaries', async () 
 		async () => {
 			const { report, exitCode } = await guidanceJson(root, ['guide', entity]);
 			expect(exitCode).toBe(1);
-			expect(report.states).toEqual(
+			expect(report.states.map((state: { name: string }) => state.name)).toEqual([
+				'default',
+				'loading',
+				'failed'
+			]);
+			expect(report.guesses).toEqual(
 				expect.arrayContaining([
-					expect.objectContaining({ name: 'default', origin: 'REQUIRED' }),
-					expect.objectContaining({ name: 'loading', origin: 'REQUIRED' }),
-					expect.objectContaining({ name: 'failed', origin: 'REQUIRED' }),
 					expect.objectContaining({ name: 'unavailable', origin: 'GUESS' }),
 					...[
 						'without-label',
@@ -74,6 +100,13 @@ test('guide distinguishes named states and heuristic prop boundaries', async () 
 
 test('guide counts verified shots per state and viewport and reaches DONE', async () => {
 	const root = await project(['default', 'loading']);
+	const unit = widgetManifest();
+	unit.contract.inputs = [
+		{ name: 'Widget.label', type: 'string', required: false, default: '' },
+		{ name: 'Widget.mode', type: "'idle' | 'busy'", required: true }
+	];
+	await writeGuidanceFile(root, 'specification/units/component.widget.json', JSON.stringify(unit));
+	await commitGuidance(root);
 	await attachGuidanceShots(root, ['default']);
 	let result = await guidanceJson(root, ['guide', entity]);
 	expect(result.report.states[0].status).toBe('DONE');
@@ -94,6 +127,13 @@ test('guide counts verified shots per state and viewport and reaches DONE', asyn
 		exitCode: 0,
 		report: { next: null, summary: { done: 2, missing: 0 } }
 	});
+	expect(result.report.guesses).toEqual(
+		expect.arrayContaining(
+			['without-label', 'with-label', 'idle', 'busy'].map((name) =>
+				expect.objectContaining({ name, origin: 'GUESS' })
+			)
+		)
+	);
 	const text = await runHarness(['units', 'guide', entity], root);
 	expect(text.stdout).toContain('ALL DONE');
 	expect(text.stdout).toContain('DONE');

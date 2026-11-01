@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-01T23:53:28.566Z","name":"sol-12-cli-startup","goal":"Keep CLI startup independent of generated app configs and block guide completion only on named unit states","template":"regression-prevention","templateLineage":["regression-prevention"]}
+{"event":"step.completed","timestamp":"2026-11-01T23:57:37.593Z","loop":"sol-12-cli-startup","step":"spec","evidence":"8d405f736e introduced Desktop imports; fresh CLI now fails before argument dispatch. Main alone starts."}
+{"event":"step.completed","timestamp":"2026-11-01T23:57:38.316Z","loop":"sol-12-cli-startup","step":"coverage","evidence":"Root setup generated app configs before collection. Strengthened the existing config-readiness and units-guide cases without adding cases."}
