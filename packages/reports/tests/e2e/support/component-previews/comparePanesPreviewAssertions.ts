@@ -23,7 +23,7 @@ export async function assertComparePanesPreview(component: Locator, variant: str
 		const header = pane.locator('.ex-pane-head');
 		const title = (await header.locator('strong').boundingBox())!;
 		const badge = (await header
-			.getByText(/^(?:Parent commit|Selected commit|Current snapshot)$/)
+			.getByText(/^(?:Parent commit|Selected commit|Current snapshot|Branch tip)$/)
 			.boundingBox())!;
 		expect(
 			Math.max(badge.x - title.x - title.width, badge.y - title.y - title.height),
