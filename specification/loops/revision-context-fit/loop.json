@@ -2,7 +2,7 @@
 	"name": "revision-context-fit",
 	"goal": "Keep complete revision labels and short commit identifiers visible at every viewport",
 	"createdAt": "2026-11-01T04:12:48.618Z",
-	"updatedAt": "2026-11-01T04:15:25.174Z",
+	"updatedAt": "2026-11-01T04:16:36.226Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,17 +39,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:16:32.878Z",
+			"evidence": "Replaced only the 300px summary cap with the container boundary. The frozen catalog geometry assertion is unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:16:34.565Z",
+			"evidence": "All21 unchanged revision cases pass at96cc9da1b9. Opened all6 Historical and Pinned after-images; complete short IDs remain visible at every viewport."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T04:16:36.226Z",
+			"evidence": "The isolated49286a4709 snapshot retains the original cap and fails4 cases; the unchanged guard passes all21 after restoration in96cc9da1b9."
 		},
 		{
 			"id": "verify",
