@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 
 	import type { SourceState } from '../../lib/explorer-ui/stores/sourceReader.svelte';
@@ -38,12 +39,23 @@
 			</hx-span>
 		{/if}
 	</hx-div>
-	{#if state.loading}<hx-p class="source-note" role="status">Loading source…</hx-p>
+	{#if state.loading}<Notice
+			as="p"
+			className={'source-note source-viewer-source-note'}
+			role="status">Loading source…</Notice
+		>
 	{:else if state.error}<hx-p class="source-error" role="alert">{state.error}</hx-p>
-	{:else if state.files.length === 0}<hx-p class="source-note">{empty}</hx-p>{/if}
+	{:else if state.files.length === 0}<Notice
+			as="p"
+			className={'source-note source-viewer-source-note'}>{empty}</Notice
+		>{/if}
 	<!-- The text is the file and nothing else: no line numbers and no markup are added to it. -->
 	{#if readable}
-		{#if state.text === ''}<hx-p class="source-note" role="status">This file is empty.</hx-p>
+		{#if state.text === ''}<Notice
+				as="p"
+				className={'source-note source-viewer-source-note'}
+				role="status">This file is empty.</Notice
+			>
 		{:else}<hx-pre class="source-code"><hx-code>{state.text}</hx-code></hx-pre>{/if}
 	{/if}
 </hx-div>
@@ -77,8 +89,8 @@
 		color: var(--ex-text, inherit);
 		font-family: var(--hx-font-family-code);
 	}
-	.source-note,
-	.source-error {
+	:global(.source-viewer-source-note),
+	:global(.source-error) {
 		margin: 0;
 		color: var(--ex-muted, var(--hx-color-text-muted));
 	}

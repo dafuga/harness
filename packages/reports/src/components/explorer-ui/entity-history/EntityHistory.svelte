@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '../explorer-kit/Notice.svelte';
 	import DataTable from '../../shared-primitives/DataTable.svelte';
 	import Card from '../explorer-kit/Card.svelte';
 	import { untrack } from 'svelte';
@@ -120,10 +121,10 @@
 			{/if}
 		</hx-header>
 		{#if found.listed.length === 0}
-			<hx-p class="ex-gap">
+			<Notice as="p" className={'ex-gap entity-history-ex-gap'}>
 				<Status passed={false} label="No recorded change" />
 				<hx-span>No commit read so far is recorded as a change of this entity.</hx-span>
-			</hx-p>
+			</Notice>
 		{:else}
 			<hx-div style:--ex-profile={JSON.stringify(shown && ` (${shown})`)}>
 				<DataTable

@@ -10,6 +10,7 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.entity-cases",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -36,6 +37,7 @@
 	"contract": {
 		"origin": "declared",
 		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-detail-list"
 		],
@@ -142,6 +144,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.entity-cases",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import BrandMark from '../shared-primitives/BrandMark.svelte';
 	import type { HarnessNavbarInput } from '../../utils/explorer-ui/harnessShell';
 	import HarnessNavbar from './harness-navbar/HarnessNavbar.svelte';
@@ -38,13 +39,15 @@
 		</hx-nav>
 	</hx-header>
 {/if}
-{#if problem}<hx-p class="hc-notice" role="alert">{problem}</hx-p>{/if}
+{#if problem}<Notice as="p" className={'hc-notice harness-header-hc-notice'} role="alert"
+		>{problem}</Notice
+	>{/if}
 {#if missing}
-	<hx-p class="hc-notice" role="alert">
+	<Notice as="p" className={'hc-notice harness-header-hc-notice'} role="alert">
 		{missing.message}
 		{#if missing.home}<hx-a class="hc-link" href={base + missing.home}>Open the newest commit</hx-a
 			>{/if}
-	</hx-p>
+	</Notice>
 {/if}
 
 <style>
@@ -56,7 +59,7 @@
 	:global(.hx-shell) > .hx-header {
 		overflow-wrap: inherit;
 	}
-	:global(.hx-shell) > .hx-header + .hc-notice {
+	:global(.hx-shell) > .hx-header + :global(.harness-header-hc-notice) {
 		margin-top: var(--hx-space-20);
 	}
 </style>

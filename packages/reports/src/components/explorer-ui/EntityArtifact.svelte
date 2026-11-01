@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import type { BehaviorCell } from '../../utils/explorer-ui/entityBehavior';
 	import { artifactText } from '../../utils/explorer-ui/explorerArtifact';
@@ -92,10 +93,10 @@
 {#if !cell.capture}
 	<hx-p class="ex-soft" data-harness-component="harness-entity-artifact">Not recorded</hx-p>
 {:else if cell.capture.media === null}
-	<hx-p class="ex-gap" data-harness-component="harness-entity-artifact">
+	<Notice as="p" className={'ex-gap entity-artifact-ex-gap'} component="harness-entity-artifact">
 		<Status passed={false} label="Not stored" />
 		<hx-span>{cell.capture.gap ?? 'Its bytes are not in this history.'}</hx-span>
-	</hx-p>
+	</Notice>
 {:else}
 	<hx-div
 		class="ex-artifact"
@@ -106,12 +107,12 @@
 		{#if cell.read === undefined && !lost}
 			<hx-p class="ex-soft" role="status">Reading what it holds…</hx-p>
 		{:else if !cell.read || !cell.read.verified}
-			<hx-p class="ex-gap">
+			<Notice as="p" className={'ex-gap entity-artifact-ex-gap'}>
 				<Status passed={false} label="Not verified" />
 				<hx-span
 					>{cell.read?.problem ?? 'It could not be read and checked against its hash.'}</hx-span
 				>
-			</hx-p>
+			</Notice>
 		{:else}
 			<!-- A result is shown by its rows; what else was recorded stays behind a disclosure. -->
 			<EntityCases document={cell.read.document} {unit} callable={unit !== undefined} />

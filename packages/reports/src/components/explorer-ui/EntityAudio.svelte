@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 	import Card from './explorer-kit/Card.svelte';
@@ -69,10 +70,10 @@
 						/>{/if}
 				{/snippet}
 				{#snippet gap(pane)}
-					<hx-p class="ex-gap"
+					<Notice as="p" className={'ex-gap entity-audio-ex-gap'}
 						><Status passed={false} label="No clip" /><hx-span
 							>No clip of this state is recorded for {shortCommit(pane.commit)}.</hx-span
-						></hx-p
+						></Notice
 					>
 				{/snippet}
 			</ComparePanes>

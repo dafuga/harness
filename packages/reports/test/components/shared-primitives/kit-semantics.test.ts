@@ -41,4 +41,15 @@ test('Kit primitives retain native semantics, owner classes and accessible names
 		expect(body).toContain('data-harness-component="invoice-review"');
 		expect(body).toContain('Invoice approval');
 	}
+	const list = render(Notice, {
+		props: {
+			as: 'ul',
+			role: 'list',
+			children: createRawSnippet(() => ({
+				render: () => '<li>No approved invoices recorded.</li>'
+			}))
+		}
+	}).body;
+	expect(list).toContain('role="list"');
+	expect(list).toContain('<li>No approved invoices recorded.</li>');
 });

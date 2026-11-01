@@ -7,12 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
+		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-li",
-			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-ul"
 		]
@@ -23,6 +23,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "SourceFileList.files",
@@ -84,6 +85,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
@@ -95,11 +101,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-li",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

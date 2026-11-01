@@ -19,10 +19,10 @@
 		"inputs": [
 			{
 				"name": "Notice.as",
-				"type": "'p' | 'div'",
+				"type": "'p' | 'div' | 'ul'",
 				"required": false,
 				"default": "p",
-				"description": "Optional semantic element. Defaults to p, with div for block content."
+				"description": "Optional semantic paragraph, block or list element. Defaults to p; ul keeps a list when role is list."
 			},
 			{
 				"name": "Notice.className",
@@ -33,10 +33,10 @@
 			},
 			{
 				"name": "Notice.role",
-				"type": "'note' | 'status' | 'alert'",
+				"type": "'note' | 'status' | 'alert' | 'list'",
 				"required": false,
 				"default": "note",
-				"description": "Optional semantic role. Defaults to note."
+				"description": "Optional semantic role. Defaults to note; list preserves the native list treatment when as is ul."
 			},
 			{
 				"name": "Notice.id",

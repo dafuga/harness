@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-figcaption",
@@ -26,6 +27,7 @@
 	"contract": {
 		"origin": "declared",
 		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-harness-verdict"
 		],
@@ -69,6 +71,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.store.entity-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '../explorer-kit/Notice.svelte';
 	import DataTable from '../../shared-primitives/DataTable.svelte';
 	import Card from '../explorer-kit/Card.svelte';
 	import type {
@@ -91,10 +92,10 @@
 		{/if}
 	</Card>
 	{#if coverage.length === 0}
-		<hx-p class="ex-gap">
+		<Notice as="p" className={'ex-gap entity-tests-ex-gap'}>
 			<Status passed={false} label="Evidence missing" />
 			<hx-span>No scenario names this entity, so nothing proves it here.</hx-span>
-		</hx-p>
+		</Notice>
 	{/if}
 	{#each coverage as scenario, position (position)}
 		<Card as="section" label={scenario.title}>

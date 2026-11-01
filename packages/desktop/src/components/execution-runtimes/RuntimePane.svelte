@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 
@@ -44,11 +45,11 @@
 			>{role}</Pill
 		></hx-figcaption
 	>
-	{#if item.missing}<hx-p class="runtime-gap">
+	{#if item.missing}<Notice as="p" className={'runtime-gap runtime-pane-runtime-gap'}>
 			<Status variant="icon" status="failed" reason="No capture" /><hx-span>{item.note}</hx-span>
-		</hx-p>{:else if problem}<hx-p class="runtime-gap">
+		</Notice>{:else if problem}<Notice as="p" className={'runtime-gap runtime-pane-runtime-gap'}>
 			<Status variant="icon" status="failed" reason="Not verified" /><hx-span>{problem}</hx-span>
-		</hx-p>{:else if url}<hx-img src={url} alt={`${item.title} at ${item.viewport}`} />
+		</Notice>{:else if url}<hx-img src={url} alt={`${item.title} at ${item.viewport}`} />
 		<hx-p class="runtime-standing" class:stale={item.standing !== 'Fresh capture'}>
 			{item.standing} · {item.status}
 		</hx-p>{:else}<hx-p class="muted">Reading the capture…</hx-p>{/if}

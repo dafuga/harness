@@ -10,6 +10,7 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-entity-reasons",
 			"reports.component.harness-entity-run",
 			"reports.component.harness-harness-action",
@@ -38,6 +39,7 @@
 		"origin": "declared",
 		"primitives": [
 			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-compare-panes",
 			"reports.component.shared-primitives-detail-list"
@@ -169,6 +171,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},

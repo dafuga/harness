@@ -11,13 +11,13 @@
 		component,
 		children
 	}: {
-		/** Semantic paragraph or block container; defaults to p. */
-		as?: 'p' | 'div';
+		/** Semantic paragraph, block or list container; defaults to p. Use list role for ul. */
+		as?: 'p' | 'div' | 'ul';
 		/** Existing owner treatment; defaults to ex-notice. */
 		className?: string;
 		/** Optional semantic role. Defaults to note.
 		 */
-		role?: 'note' | 'status' | 'alert';
+		role?: 'note' | 'status' | 'alert' | 'list';
 		/** Optional native id. Defaults to JavaScript undefined. */
 		id?: string;
 		/** Optional accessible name. Defaults to JavaScript undefined. */

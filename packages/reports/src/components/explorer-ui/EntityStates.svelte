@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
 
@@ -139,11 +140,12 @@
 			{/if}
 		</hx-div>
 	</hx-header>
-	{#if evidence.incomparable.length}<hx-p class="state-gap">{evidence.incomparable.join(' ')}</hx-p
+	{#if evidence.incomparable.length}<Notice as="p" className={'state-gap entity-states-state-gap'}
+			>{evidence.incomparable.join(' ')}</Notice
 		>{/if}
-	{#if !rows.length}<hx-p class="state-gap">
+	{#if !rows.length}<Notice as="p" className={'state-gap entity-states-state-gap'}>
 			No visual states are declared for this entity at this revision.
-		</hx-p>{/if}
+		</Notice>{/if}
 	<hx-div class="state-grid" class:paired={evidence.mode === 'commit'}>
 		{#each rows as row (`${scenario.id}-${row.state.id}-${screen?.id}`)}
 			<hx-article class="state-card" aria-label={row.title}>
@@ -151,10 +153,13 @@
 					<hx-h3>{row.title}</hx-h3>
 					<hx-small>{screen?.width} × {screen?.height}</hx-small>
 				</hx-div>
-				{#if row.state.coverage !== 'required'}<hx-p class="state-gap">
+				{#if row.state.coverage !== 'required'}<Notice
+						as="p"
+						className={'state-gap entity-states-state-gap'}
+					>
 						{words(row.state.coverage)}: {row.state.reason ??
 							'This state has no declared capture coverage.'}
-					</hx-p>{/if}
+					</Notice>{/if}
 				{#if row.state.coverage !== 'inapplicable'}<ComparePanes
 						panes={statePanes(row.items)}
 						className="state-panes"
@@ -166,9 +171,9 @@
 								{@const shown = prepared(item)}
 								<hx-figure>
 									<hx-figcaption>{pane.heading}</hx-figcaption>
-									{#if shown.missing}<hx-p class="state-gap">
+									{#if shown.missing}<Notice as="p" className={'state-gap entity-states-state-gap'}>
 											{shown.note ?? 'No screenshot was recorded.'}
-										</hx-p>
+										</Notice>
 									{:else}<EvidenceCard
 											compact
 											item={shown}

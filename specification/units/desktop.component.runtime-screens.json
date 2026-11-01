@@ -11,6 +11,7 @@
 		"uses": [
 			"desktop.component.runtime-pane",
 			"desktop.component.segmented-choice",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-harness-verdict",
 			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -21,7 +22,6 @@
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-ul",
 			"reports.component.shared-primitives-compare-panes"
 		]
 	},
@@ -33,6 +33,7 @@
 		"origin": "declared",
 		"primitives": [
 			"desktop.component.segmented-choice",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-harness-verdict",
 			"reports.component.select",
 			"reports.component.shared-primitives-compare-panes"
@@ -111,6 +112,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
@@ -157,11 +163,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
 		},

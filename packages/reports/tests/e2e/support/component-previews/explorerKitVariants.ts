@@ -6,7 +6,7 @@ export const explorerKitVariants: Record<string, string[]> = {
 	[`${prefix}card`]: ['section', 'list-item', 'module', 'attributes'],
 	[`${prefix}pill`]: ['state', 'tone', 'list-item', 'compact', 'chip', 'attributes'],
 	[`${prefix}empty-state`]: ['action', 'block', 'status'],
-	[`${prefix}notice`]: ['long', 'alert', 'block'],
+	[`${prefix}notice`]: ['long', 'alert', 'block', 'list'],
 	[`${prefix}command-block`]: ['long', 'multiline']
 };
 
@@ -99,6 +99,16 @@ function emptyState(props: PreviewCases[string], variant: string) {
 	};
 }
 function noticeState(props: PreviewCases[string], variant: string) {
+	if (variant === 'list')
+		return {
+			...props,
+			as: 'ul',
+			role: 'list',
+			className: 'ex-notice',
+			children: text(
+				'<li>No selected mobile capture is retained.</li><li>The parent screenshot is available in history.</li>'
+			)
+		};
 	if (variant !== 'long')
 		return {
 			...props,

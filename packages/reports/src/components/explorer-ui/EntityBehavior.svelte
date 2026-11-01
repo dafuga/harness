@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import { behaviorFacts } from '../../helpers/verification-evidence/behaviorFacts';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
@@ -133,10 +134,10 @@
 		{/if}
 	</hx-header>
 	{#if shown.groups.length === 0}
-		<hx-p class="ex-gap ex-unrecorded">
+		<Notice as="p" className={'ex-gap ex-unrecorded entity-behavior-ex-gap'}>
 			<Status passed={false} label="Evidence missing" />
 			<hx-span>No end-to-end result is recorded for this entity at {at}.</hx-span>
-		</hx-p>
+		</Notice>
 	{:else}
 		<ComparePanes {panes} className="ex-panes" framed={false}>
 			{#snippet children(pane)}
@@ -194,7 +195,7 @@
 	.ex-change-reasons p {
 		margin: 0;
 	}
-	.ex-gap.ex-unrecorded {
+	:global(.entity-behavior-ex-gap.ex-unrecorded) {
 		border-color: var(--hx-color-border);
 		color: var(--hx-color-text-muted);
 	}

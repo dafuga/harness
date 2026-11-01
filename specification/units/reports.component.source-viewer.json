@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-harness-icon",
 			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-code",
@@ -25,7 +26,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.select"],
+		"primitives": ["reports.component.explorer-ui-explorer-kit-notice", "reports.component.select"],
 		"inputs": [
 			{
 				"name": "SourceViewer.state",
@@ -72,6 +73,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-harness-icon",
 			"via": "import",

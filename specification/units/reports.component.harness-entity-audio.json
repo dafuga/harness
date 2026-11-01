@@ -11,6 +11,7 @@
 		"uses": [
 			"reports.component.audio-evidence",
 			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
@@ -31,6 +32,7 @@
 		"origin": "declared",
 		"primitives": [
 			"reports.component.explorer-ui-explorer-kit-card",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-compare-panes"
 		],
@@ -119,6 +121,11 @@
 		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -3533,6 +3533,12 @@
 			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-kit-notice-list",
+			"title": "Notice: list",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-kit-pill",
 			"title": "Explorer pill",
 			"coverage": "required",
@@ -5694,7 +5700,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen · Playwright empty",
+			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -5748,13 +5754,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen · playwright",
+			"title": "ExplorerModulesScreen \u00b7 playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen · headless-audio",
+			"title": "ExplorerModulesScreen \u00b7 headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -8638,6 +8644,7 @@
 				"reports-component-explorer-ui-explorer-kit-notice-long",
 				"reports-component-explorer-ui-explorer-kit-notice-alert",
 				"reports-component-explorer-ui-explorer-kit-notice-block",
+				"reports-component-explorer-ui-explorer-kit-notice-list",
 				"reports-component-explorer-ui-explorer-kit-pill",
 				"reports-component-explorer-ui-explorer-kit-pill-state",
 				"reports-component-explorer-ui-explorer-kit-pill-tone",

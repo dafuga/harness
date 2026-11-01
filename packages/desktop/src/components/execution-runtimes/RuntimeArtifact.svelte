@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import EntityCases from '$shared/explorer-ui/entity-cases/EntityCases.svelte';
 	import type { ExplorerArtifactBehavior } from '$reports/models/ExplorerEvidence.types';
@@ -99,17 +100,23 @@
 {/snippet}
 
 {#if !cell.capture}<hx-p class="muted">Not recorded</hx-p
-	>{:else if cell.capture.media === null}<hx-p class="runtime-gap">
+	>{:else if cell.capture.media === null}<Notice
+		as="p"
+		className={'runtime-gap runtime-artifact-runtime-gap'}
+	>
 		<Status variant="icon" status="failed" reason="Not stored" /><hx-span
 			>{cell.capture.gap ?? 'Its bytes are not in this history.'}</hx-span
 		>
-	</hx-p>{:else}<hx-div class="runtime-artifact" role="group" aria-label={label}>
+	</Notice>{:else}<hx-div class="runtime-artifact" role="group" aria-label={label}>
 		{#if cell.read === undefined && !lost}<hx-p class="muted">Reading what it holds…</hx-p>
-		{:else if !cell.read?.verified}<hx-p class="runtime-gap">
+		{:else if !cell.read?.verified}<Notice
+				as="p"
+				className={'runtime-gap runtime-artifact-runtime-gap'}
+			>
 				<Status variant="icon" status="failed" reason="Not verified" /><hx-span
 					>{refusal ?? cell.read?.problem ?? unverified}</hx-span
 				>
-			</hx-p>
+			</Notice>
 		{:else}
 			<!-- A result is shown by its rows; what else was recorded stays behind a disclosure. -->
 			{#if showCases}<EntityCases
@@ -135,7 +142,7 @@
 	</hx-div>{/if}
 
 <style>
-	.runtime-gap {
+	:global(.runtime-artifact-runtime-gap) {
 		flex-wrap: nowrap;
 	}
 	.runtime-gap > :global(.verification-wrap) {

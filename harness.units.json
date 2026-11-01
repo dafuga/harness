@@ -38,15 +38,8 @@
 			"root": "packages/game"
 		}
 	],
-	"tests": [
-		"test/",
-		"tests/"
-	],
-	"global": [
-		"**/.prettierignore",
-		"tsconfig.api.json",
-		"specification/measurements/"
-	],
+	"tests": ["test/", "tests/"],
+	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
 	"ignored": [
 		"**/*.md",
 		"specification/features/",
@@ -1999,6 +1992,120 @@
 			"specifier": "../../shared-primitives/DetailList.svelte",
 			"to": "packages/reports/src/components/shared-primitives/DetailList.svelte",
 			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityStates.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityScreens.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityAudio.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceViewer.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceFileList.svelte",
+			"specifier": "./explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityExamples.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/HarnessHeader.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityBehavior.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityArtifact.svelte",
+			"specifier": "./explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"specifier": "../explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "../explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimePane.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Use the shared label and message primitives while preserving feature semantics."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/EntityExamples.svelte",
+			"specifier": "../shared-primitives/usage-examples/UsageExamples.svelte",
+			"to": "packages/reports/src/components/shared-primitives/usage-examples/UsageExamples.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/HarnessHeader.svelte",
+			"specifier": "../shared-primitives/BrandMark.svelte",
+			"to": "packages/reports/src/components/shared-primitives/BrandMark.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"specifier": "../../shared-primitives/DataTable.svelte",
+			"to": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+			"reason": "Declare the canonical shared component used by this owner."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Notice.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+			"reason": "Shared Reports source through the workspace build alias."
 		}
 	]
 }

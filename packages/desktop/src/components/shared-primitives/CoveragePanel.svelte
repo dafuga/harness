@@ -74,11 +74,14 @@
 				role={notice.alert ? 'alert' : 'status'}
 			>
 				{notice.text}
-			</Notice>{:else if side}{#if side.gap}<hx-p class="runtime-gap">
+			</Notice>{:else if side}{#if side.gap}<Notice
+					as="p"
+					className={'runtime-gap coverage-panel-runtime-gap'}
+				>
 					<Status variant="icon" status="failed" reason="Evidence missing" /><hx-span
 						>{side.gap}</hx-span
 					>
-				</hx-p>{/if}{#each side.coverage as item (item.scenario)}<hx-article
+				</Notice>{/if}{#each side.coverage as item (item.scenario)}<hx-article
 					class="coverage-scenario"
 				>
 					<hx-h3>

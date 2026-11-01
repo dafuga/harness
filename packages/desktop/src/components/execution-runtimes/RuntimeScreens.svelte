@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
 	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
@@ -73,13 +74,18 @@
 		{:else if unlike.length}The two sides were not recorded alike, so they are not compared.
 		{:else}The same scenario, state and viewport at the parent and at the commit.{/if}
 	</hx-p>
-	{#if unlike.length}<hx-ul class="runtime-gap" aria-label="Why the two sides are not compared">
+	{#if unlike.length}<Notice
+			as="ul"
+			role="list"
+			className="runtime-gap"
+			label="Why the two sides are not compared"
+		>
 			{#each unlike as reason (reason)}<hx-li>
 					<Status variant="icon" status="failed" reason="Not comparable" /><hx-span
 						>{reason}</hx-span
 					>
 				</hx-li>{/each}
-		</hx-ul>{/if}
+		</Notice>{/if}
 	{#if pick && option}<hx-div class="runtime-controls">
 			<hx-label
 				>Scenario<Select
@@ -115,11 +121,11 @@
 
 <style>
 	.runtime-card :global(p.runtime-gap),
-	.runtime-gap :global(li) {
+	:global(.runtime-gap li) {
 		flex-wrap: nowrap;
 	}
 	.runtime-card :global(p.runtime-gap > .verification-wrap),
-	.runtime-gap :global(li > .verification-wrap) {
+	:global(.runtime-gap li > .verification-wrap) {
 		flex: none;
 	}
 </style>

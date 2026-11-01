@@ -11,6 +11,7 @@
 		"uses": [
 			"reports.component.evidence-card",
 			"reports.component.evidence-viewer",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-article",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -33,7 +34,11 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.select", "reports.component.shared-primitives-compare-panes"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.select",
+			"reports.component.shared-primitives-compare-panes"
+		],
 		"inputs": [
 			{
 				"name": "EntityStates.name",
@@ -114,6 +119,11 @@
 		},
 		{
 			"unit": "reports.component.evidence-viewer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},

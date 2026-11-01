@@ -1,6 +1,7 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from './explorer-kit/EmptyState.svelte';
 	import type { Snippet } from 'svelte';
 	let {
 		files,
@@ -42,7 +43,9 @@
 			</hx-li>
 		{/each}
 	</hx-ul>
-{:else}<hx-p class="source-empty">{empty}</hx-p>{/if}
+{:else}<EmptyState as="p" className={'source-empty source-file-list-source-empty'}
+		>{empty}</EmptyState
+	>{/if}
 
 <style>
 	.source-files {
@@ -127,7 +130,7 @@
 			text-overflow: clip;
 		}
 	}
-	.source-empty {
+	:global(.source-file-list-source-empty) {
 		color: var(--ex-muted, var(--hx-color-text-muted));
 	}
 </style>
