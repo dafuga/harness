@@ -100,7 +100,7 @@ test('component contracts expose Props and keep verification states on States', 
 	await expect(contract.getByRole('table', { name: 'Inputs', exact: true })).toHaveCount(0);
 	await expect(contract.getByRole('table', { name: 'Outputs', exact: true })).toHaveCount(0);
 	await expect(contract.getByRole('table', { name: 'Errors', exact: true })).toHaveCount(0);
-	await expect(contract).not.toContainText('No errors declared.');
+	await expect(contract).toContainText('No errors declared.');
 	await expect(contract).toContainText('Orders');
 	await expect(contract).toContainText('Search text');
 

@@ -74,7 +74,8 @@ test('model contracts show each real initialization and mutation method with par
 		'find(id)',
 		'update(id, input)',
 		'delete(id)',
-		'initialize(adapter)'
+		'initialize(adapter)',
+		'Errors'
 	]);
 	const displayed = words(body).replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 	for (const type of ['PersistenceAdapter', 'OrderInput', 'Promise<Order>'])
