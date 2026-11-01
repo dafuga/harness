@@ -2,7 +2,7 @@
 	"name": "sol8-shell-visual-review",
 	"goal": "Render distinct responsive shell previews and readable history, tables and navigation.",
 	"createdAt": "2026-11-01T10:00:58.038Z",
-	"updatedAt": "2026-11-01T10:25:02.515Z",
+	"updatedAt": "2026-11-01T10:25:04.309Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-01T10:25:04.309Z",
+			"evidence": "7f6e3362cf fixes screenshot captions and viewer mounting, historical status, phone schema rows, registry notices and tab scroll affordances."
 		},
 		{
 			"id": "green",
