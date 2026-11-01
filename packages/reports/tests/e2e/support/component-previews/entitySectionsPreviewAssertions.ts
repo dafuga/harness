@@ -37,7 +37,8 @@ export async function assertPopulatedEntitySection(component: Locator, variant: 
 export async function prepareSectionCaptures(component: Locator, variant: string) {
 	if (!['states', 'tests'].includes(variant)) return;
 	const width = component.page().viewportSize()!.width;
-	const viewport = width === 390 ? 'mobile' : width === 768 ? 'tablet' : 'desktop';
+	const devices: Record<number, string> = { 390: 'mobile', 768: 'tablet' };
+	const viewport = devices[width] ?? 'desktop';
 	const select = component.getByRole('combobox', { name: 'Viewport', exact: true });
 	if (await select.locator(`option[value="${viewport}"]`).count())
 		await select.selectOption(viewport);
