@@ -20,7 +20,7 @@
 	import Select from '../../shared-primitives/Select.svelte';
 	import EntityHistoryRow from '../entity-history-row/EntityHistoryRow.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
-	import HarnessVerdict from '../harness-verdict/HarnessVerdict.svelte';
+	import Status from '../../shared-primitives/status/Status.svelte';
 	import RegressionProof from '../../verification-evidence/RegressionProof.svelte';
 	let {
 		entity,
@@ -121,7 +121,7 @@
 		</hx-header>
 		{#if found.listed.length === 0}
 			<hx-p class="ex-gap">
-				<HarnessVerdict passed={false} label="No recorded change" />
+				<Status passed={false} label="No recorded change" />
 				<hx-span>No commit read so far is recorded as a change of this entity.</hx-span>
 			</hx-p>
 		{:else}

@@ -10,4 +10,4 @@ export const compositionSchema = z.strictObject({
 
 /** Canonical reusable UI contracts; native element atoms retain their own composition graph. */
 export const sharedPrimitivePath =
-	/\/components\/(?:shared-primitives|explorer-ui\/explorer-kit)\/(?:Card|Pill|Notice|EmptyState|DataTable|DetailList|CodeLine|Select|SegmentedChoice|Status|StatusBadge|ComparePanes)\.svelte$/;
+	/\/components\/(?:shared-primitives|explorer-ui\/explorer-kit)\/(?:[^/]+\/)*(?:Card|Pill|Notice|EmptyState|DataTable|DetailList|CodeLine|Select|SegmentedChoice|Status|StatusBadge|ComparePanes)\.svelte$/;

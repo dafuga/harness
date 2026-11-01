@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import { behaviorFacts } from '$reports/helpers/verification-evidence/behaviorFacts';
 	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
@@ -73,9 +74,9 @@
 	<hx-p class="runtime-verdict">
 		<hx-strong role="status">{label}</hx-strong>{#if why}<hx-span>{why}</hx-span>{/if}
 	</hx-p>
-	{#if shown.groups.length === 0}<hx-p class="empty">
+	{#if shown.groups.length === 0}<EmptyState as="p" className="empty runtime-behavior-empty">
 			No end-to-end result is recorded for this entity at {at}.
-		</hx-p>{:else}<ComparePanes {panes} className="runtime-panes" framed={false}>
+		</EmptyState>{:else}<ComparePanes {panes} className="runtime-panes" framed={false}>
 			{#snippet children(pane)}
 				<RuntimeRun
 					shown={pane.value!}

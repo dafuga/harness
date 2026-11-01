@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import type { RemoteHost } from '../../lib/stores/networking-security/remoteHost.svelte';
 	import type { RemoteDeviceInfo } from '../../models/development-tooling/Environment.types';
 	import { grantLabel } from '../../utils/networking-security/remoteLabels';
@@ -22,8 +23,10 @@
 
 {#if devices.length}<hx-ul class="remote-devices" aria-label="Approved phones">
 		{#each devices as item (item.deviceId)}<hx-li>
-				<hx-strong>{item.name}</hx-strong>{#each item.projectIds as id (id)}<hx-span class="chip"
-						>{names.get(id) ?? 'Project no longer listed'}</hx-span
+				<hx-strong>{item.name}</hx-strong>{#each item.projectIds as id (id)}<Pill
+						as="span"
+						variant="chip"
+						tone="remote-devices-chip">{names.get(id) ?? 'Project no longer listed'}</Pill
 					>{/each}<hx-span>{grantLabel(item)}</hx-span><hx-span class="muted"
 					>{item.online ? 'Connected' : seen(item)}</hx-span
 				><hx-button

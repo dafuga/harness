@@ -9,8 +9,8 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"desktop.component.status-icon",
 			"reports.component.entity-cases",
+			"reports.component.harness-harness-verdict",
 			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h5",
@@ -35,7 +35,10 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.shared-primitives-detail-list"],
+		"primitives": [
+			"reports.component.harness-harness-verdict",
+			"reports.component.shared-primitives-detail-list"
+		],
 		"inputs": [
 			{
 				"name": "RuntimeArtifact.cell",
@@ -138,12 +141,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.component.status-icon",
+			"unit": "reports.component.entity-cases",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.entity-cases",
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '../explorer-kit/Pill.svelte';
 	import type { ConfigValueNode } from '../../../../../../src/utils/explorer-ui/unitMetadata';
 	import { collection, valueMark } from '../ConfigValueTree.svelte';
 	import HarnessAction from '../HarnessAction.svelte';
@@ -44,30 +45,39 @@
 		</hx-span>
 	{/if}
 	{#if typeof literal === 'boolean'}
-		<hx-span class="pill" class:on={literal} role="img" aria-label={`Boolean ${literal}`}
-			><HarnessIcon name={literal ? 'passed' : 'failed'} size={14} />{String(literal)}</hx-span
+		<Pill
+			as="span"
+			variant="compact"
+			tone={'config-value-pill' + (literal ? ' on' : '')}
+			role="img"
+			label={`Boolean ${literal}`}
+			><HarnessIcon name={literal ? 'passed' : 'failed'} size={14} />{String(literal)}</Pill
 		>
 	{:else if typeof literal === 'number'}
 		<hx-span class="number" role="img" aria-label={`Number ${literal}`}>{literal}</hx-span>
 	{:else if literal === null}
 		<hx-span class="keyword" role="img" aria-label="Null">null</hx-span>
 	{:else if literal === ''}
-		<hx-span class="chip blank" role="img" aria-label="Empty string">Empty string</hx-span>
+		<Pill as="span" variant="chip" tone="blank config-value-chip" role="img" label="Empty string"
+			>Empty string</Pill
+		>
 	{:else if items}
 		<hx-ul
 			class="items"
 			aria-label={`Array, ${items.length} ${items.length === 1 ? 'item' : 'items'}`}
 		>
 			{#each items as item, position (position)}
-				<hx-li
-					class="chip"
-					class:number={typeof item === 'number'}
-					class:keyword={item === null || typeof item === 'boolean'}
-					class:blank={item === ''}
+				<Pill
+					as="li"
+					variant="chip"
+					tone={'config-value-chip' +
+						(typeof item === 'number' ? ' number' : '') +
+						(item === null || typeof item === 'boolean' ? ' keyword' : '') +
+						(item === '' ? ' blank' : '')}
 				>
 					{shown(item)}
-				</hx-li>
-			{:else}<hx-li class="chip blank">Empty array</hx-li>{/each}
+				</Pill>
+			{:else}<Pill as="li" variant="chip" tone="blank config-value-chip">Empty array</Pill>{/each}
 		</hx-ul>
 	{:else if typeof literal === 'string'}
 		<hx-span class="string" role="img" aria-label={`String ${literal}`}
@@ -96,7 +106,7 @@
 		width: 44px;
 		padding: 0;
 	}
-	.pill {
+	:global(.config-value-pill) {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--hx-space-6);
@@ -108,15 +118,15 @@
 		font-family: var(--hx-font-family-code);
 		font-size: var(--hx-type-size-sm);
 	}
-	.pill :global(.hx-icon) {
+	:global(.config-value-pill .hx-icon) {
 		color: var(--ex-muted);
 	}
-	.pill.on {
+	:global(.config-value-pill.on) {
 		border-color: color-mix(in srgb, var(--ex-pass) 45%, transparent);
 		background: color-mix(in srgb, var(--ex-pass) 12%, transparent);
 		color: var(--ex-pass);
 	}
-	.pill.on :global(.hx-icon) {
+	:global(.config-value-pill.on .hx-icon) {
 		color: inherit;
 	}
 	/* The items of a short list, each a chip that keeps the mark of its own type. */
@@ -126,7 +136,7 @@
 		gap: var(--hx-space-6);
 		min-width: 0;
 	}
-	.chip {
+	:global(.config-value-chip) {
 		padding: 0 var(--hx-space-8);
 		border: var(--hx-border-thin) solid var(--ex-line-strong);
 		border-radius: var(--hx-radius-small);
@@ -135,23 +145,27 @@
 		font-size: var(--hx-type-size-sm);
 		overflow-wrap: anywhere;
 	}
-	.chip.blank {
+	:global(.config-value-chip.blank) {
 		border-style: dashed;
 		background: transparent;
 		color: var(--ex-muted);
 		font-style: var(--hx-style-font-italic);
 	}
+	:global(.config-value-chip.number),
 	.number,
+	:global(.config-value-chip.keyword),
 	.keyword,
 	.cv :global(.source) {
 		font-family: var(--hx-font-family-code);
 		font-size: var(--hx-type-size-sm);
 	}
-	.number {
+	.number,
+	:global(.config-value-chip.number) {
 		color: var(--hx-color-info);
 		font-variant-numeric: var(--hx-style-numeric-tabular);
 	}
-	.keyword {
+	.keyword,
+	:global(.config-value-chip.keyword) {
 		color: var(--ex-muted);
 	}
 	.string,

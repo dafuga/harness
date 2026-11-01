@@ -17,6 +17,7 @@
 			"desktop.component.game-preview",
 			"desktop.component.game-trace",
 			"desktop.component.game-view-fields",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-h1",
@@ -36,6 +37,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "GameWorkspace.projectId",
@@ -123,6 +125,11 @@
 		},
 		{
 			"unit": "game.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,0 +1,90 @@
+/* A verdict is red unless it passed; there is no colour for anything in between. */
+.hx-verdict {
+	display: inline-flex;
+	align-items: center;
+	color: var(--hx-color-error);
+	vertical-align: middle;
+}
+.hx-verdict.unknown {
+	color: var(--hx-color-text-muted);
+}
+.hx-verdict.passed {
+	color: var(--hx-color-success);
+}
+.hx-verdict button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 32px;
+	min-height: 32px;
+	padding: 0;
+	border: 0;
+	border-radius: var(--hx-radius-pill);
+	background: none;
+	color: inherit;
+	cursor: help;
+}
+/* The mark stays small in a row; what a finger can press around it is larger. */
+.hx-verdict button::after {
+	content: '';
+	position: absolute;
+	inset: -6px;
+}
+.framed button {
+	min-width: 36px;
+	min-height: 36px;
+	border: var(--hx-border-thin) solid currentColor;
+	border-radius: var(--hx-radius-small);
+}
+/* Placed against the screen, so no column, row or scrolling wrapper cuts it. It scrolls when
+	   it is longer than its room, and is no stop of its own for the keyboard: the mark is. */
+.hx-tip {
+	position: fixed;
+	z-index: var(--hx-layer-popover);
+	top: 0;
+	left: 0;
+	display: grid;
+	gap: var(--hx-space-4);
+	width: max-content;
+	max-width: min(320px, calc(100vw - 16px));
+	padding: var(--hx-space-10) var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-surface-raised);
+	box-shadow: var(--hx-shadow-popover);
+	color: var(--hx-color-text-supporting);
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-regular);
+	line-height: var(--hx-style-leading-snug);
+	text-align: left;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	overflow-y: visible;
+	overscroll-behavior: contain;
+}
+.hx-tip[style*='max-height'] {
+	overflow-y: auto;
+	scrollbar-gutter: stable;
+}
+.hx-tip::-webkit-scrollbar {
+	width: var(--hx-space-8);
+}
+.hx-tip::-webkit-scrollbar-thumb {
+	border-radius: var(--hx-radius-pill);
+	background: var(--hx-color-border-strong);
+}
+.hx-tip[hidden] {
+	display: none;
+}
+.hx-tip strong {
+	color: var(--hx-color-text);
+	font-weight: var(--hx-style-weight-semibold);
+}
+/* The gap to the mark belongs to the tooltip, so a pointer can cross it without closing it. */
+.hx-tip::before {
+	content: '';
+	position: absolute;
+	inset: -9px 0;
+	z-index: var(--hx-layer-behind);
+}

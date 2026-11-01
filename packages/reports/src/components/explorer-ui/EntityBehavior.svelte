@@ -18,7 +18,7 @@
 	import EntityRun from './EntityRun.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		behavior,
 		read = null,
@@ -134,7 +134,7 @@
 	</hx-header>
 	{#if shown.groups.length === 0}
 		<hx-p class="ex-gap ex-unrecorded">
-			<HarnessVerdict passed={false} label="Evidence missing" />
+			<Status passed={false} label="Evidence missing" />
 			<hx-span>No end-to-end result is recorded for this entity at {at}.</hx-span>
 		</hx-p>
 	{:else}
@@ -156,9 +156,9 @@
 		{#if pending}
 			<HarnessIcon name="clock" size={22} />
 		{:else if unknown}
-			<HarnessVerdict passed={false} {label} reasons={why} />
+			<Status passed={false} {label} reasons={why} />
 		{:else if settled}
-			<HarnessVerdict passed={true} {label} />
+			<Status passed={true} {label} />
 		{:else}
 			<HarnessIcon name="change" size={22} />
 		{/if}

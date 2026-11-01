@@ -171,7 +171,7 @@ test('a cleaned message that is still too long or has no prefix is refused, and 
 	// Made without the hook, the same message is stored, and the stored message is measured.
 	const bypassed = commit(long, { flags: ['--no-verify'] });
 	expect(bypassed.exitCode).toBe(0);
-	const short = git(['rev-parse', 'HEAD']).slice(0, 12);
+	const short = git(['rev-parse', 'HEAD']).slice(0, 7);
 	expect(await new CommitMessageService(root).stored(head, 'HEAD')).toEqual([
 		`commit ${short}: body has 401 characters; the limit is 400.`
 	]);

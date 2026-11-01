@@ -78,6 +78,5 @@ export const desktopCatalogVariants: Record<string, string[]> = {
 	],
 	'desktop.component.runtime-behavior': ['paired', 'loading', 'unreadable', 'empty'],
 	'desktop.component.runtime-evidence': ['planned', 'unavailable', 'loading', 'error', 'offline'],
-	'desktop.component.runtime-screens': ['empty', 'paired', 'incomparable'],
-	'desktop.component.status-icon': ['failed', 'unverified', 'unknown', 'no-reason', 'open', 'long']
+	'desktop.component.runtime-screens': ['empty', 'paired', 'incomparable']
 };

@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import Select from '$shared/Select.svelte';
 	import SegmentedChoice from '../../shared-primitives/SegmentedChoice.svelte';
 	import type {
@@ -109,9 +111,9 @@
 <hx-section class="panel design-panel">
 	<hx-div class="row">
 		<hx-h2>{headless ? 'Plan' : entity.planned ? 'Proposed ' + entity.kind : 'Design'}</hx-h2>
-		{#if current}{#if !headless}<hx-span class="chip">{current.generator}</hx-span>{/if}<Select
-				label={headless ? 'Plan version' : 'Design version'}
-				bind:value={version}
+		{#if current}{#if !headless}<Pill as="span" variant="chip" tone="design-panel-chip"
+					>{current.generator}</Pill
+				>{/if}<Select label={headless ? 'Plan version' : 'Design version'} bind:value={version}
 				>{#each entity.versions as v (v.version)}<hx-option value={v.version}
 						>{imageLabel(v)}</hx-option
 					>{/each}</Select
@@ -158,15 +160,17 @@
 					writable={annotatable}
 					{comment}
 					select={onthread}
-				/>{:else}<hx-p class="empty">{error || 'Loading design image…'}</hx-p>{/if}
+				/>{:else}<EmptyState as="p" className="empty design-panel-empty"
+					>{error || 'Loading design image…'}</EmptyState
+				>{/if}
 		</hx-div>{:else if current}<hx-article class="behavior-notes">
 			<hx-h3>Planned behavior</hx-h3>
 			<hx-p>{current.notes || 'No behavior notes recorded for this version.'}</hx-p>
 			{#if headless}<hx-p class="muted">{proposed}{current.images.length ? earlier : ''}</hx-p>{/if}
-		</hx-article>{:else}<hx-div class="empty">
+		</hx-article>{:else}<EmptyState as="div" className="empty design-panel-empty">
 			<hx-h3>{headless ? 'No plan yet' : 'No design image yet'}</hx-h3>
 			<hx-p>{workspace.capabilities.planning ? empty.planning : empty.committed}</hx-p>
-		</hx-div>{/if}
+		</EmptyState>{/if}
 	{#if error && url}<hx-p class="error" role="alert">{error}</hx-p>{/if}
 	{#if entity.category === 'pages'}<hx-div class="row measures">
 			<hx-span>Size · {entity.size.text || 'Not measured'}</hx-span><hx-span

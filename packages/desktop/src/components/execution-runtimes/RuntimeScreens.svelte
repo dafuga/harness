@@ -17,7 +17,7 @@
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
 	import RuntimePane from './RuntimePane.svelte';
 	import SegmentedChoice from '../shared-primitives/SegmentedChoice.svelte';
-	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let {
 		result,
 		options,
@@ -75,7 +75,9 @@
 	</hx-p>
 	{#if unlike.length}<hx-ul class="runtime-gap" aria-label="Why the two sides are not compared">
 			{#each unlike as reason (reason)}<hx-li>
-					<StatusIcon status="failed" reason="Not comparable" /><hx-span>{reason}</hx-span>
+					<Status variant="icon" status="failed" reason="Not comparable" /><hx-span
+						>{reason}</hx-span
+					>
 				</hx-li>{/each}
 		</hx-ul>{/if}
 	{#if pick && option}<hx-div class="runtime-controls">

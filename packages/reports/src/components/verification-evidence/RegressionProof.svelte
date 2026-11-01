@@ -4,7 +4,7 @@
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 
 	import type { RegressionView } from '../../../../../src/core/regressionTypes';
-	import HarnessVerdict from '../explorer-ui/harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		items = [],
 		unit,
@@ -60,7 +60,7 @@
 					<hx-div class="proof-steps">
 						<hx-div class="proof-step failed">
 							<hx-div class="step-heading">
-								<hx-span>Before fix · failed as expected</hx-span><HarnessVerdict
+								<hx-span>Before fix · failed as expected</hx-span><Status
 									passed={false}
 									label="Historical test result: failed before the fix"
 								/>
@@ -78,7 +78,7 @@
 						<hx-div class="proof-step" class:passed={Boolean(item.green)}>
 							<hx-div class="step-heading">
 								<hx-span>{item.green ? 'After fix · passed' : 'After fix · pending'}</hx-span
-								>{#if item.green}<HarnessVerdict
+								>{#if item.green}<Status
 										passed={true}
 										label="The same regression tests passed at the fix commit"
 									/>{/if}

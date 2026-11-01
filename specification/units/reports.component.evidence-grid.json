@@ -12,6 +12,7 @@
 			"reports.component.audio-comparison-viewer",
 			"reports.component.evidence-card",
 			"reports.component.evidence-viewer",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -32,7 +33,10 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.select"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.select"
+		],
 		"inputs": [
 			{
 				"name": "EvidenceGrid.items",
@@ -84,6 +88,11 @@
 		},
 		{
 			"unit": "reports.component.evidence-viewer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
 		},

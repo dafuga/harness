@@ -192,14 +192,7 @@ const variants: Record<string, string[]> = {
 	// Dense, display-label and disabled controls expose the select's distinct field treatments.
 	'reports.component.select': ['compact', 'display', 'disabled', 'open'],
 	// The default shows a passed badge; each other status is its own example.
-	'reports.component.status-badge': [
-		'running',
-		'failed',
-		'blocked',
-		'skipped',
-		'not-proven',
-		'interrupted'
-	],
+
 	'desktop.component.project-agent': [
 		'closed',
 		'read-only',

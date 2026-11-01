@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from '../../explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { Media } from './EvidenceGrid.types';
 
 	import type { Evidence } from '../../../models/reports-media/Report.types';
@@ -172,7 +173,9 @@
 				onopen={() => openItem(item)}
 			/>{/each}
 	</hx-div>
-	{#if !filtered.length}<hx-p class="empty">{$t('noEvidence')}</hx-p>{/if}
+	{#if !filtered.length}<EmptyState as="p" className="empty evidence-grid-empty"
+			>{$t('noEvidence')}</EmptyState
+		>{/if}
 </hx-section>
 {#if selectedImage}<EvidenceViewer
 		items={images}

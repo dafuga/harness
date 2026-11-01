@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import Notice from './explorer-kit/Notice.svelte';
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import DataTable from '../shared-primitives/DataTable.svelte';
 	import Card from './explorer-kit/Card.svelte';
@@ -155,6 +156,8 @@
 	{#if entry}
 		{@render sections(entry, view.name)}
 	{:else if gap}
-		<hx-p class="pf-notice"><HarnessIcon name="info" size={18} /><hx-span>{gap}</hx-span></hx-p>
+		<Notice as="p" className="pf-notice explorer-platform-details-pf-notice"
+			><HarnessIcon name="info" size={18} /><hx-span>{gap}</hx-span></Notice
+		>
 	{/if}
 {/if}

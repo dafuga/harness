@@ -1,3 +1,4 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import { readFile } from 'node:fs/promises';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { evidenceMarker } from '../../../core/git-source-history/historyTypes';
@@ -54,7 +55,7 @@ export class CommitMessageService {
 			if (!(await this.held(`${commit}:`))) continue;
 			const message = await this.git.run(['log', '-1', '--format=%B', commit]);
 			for (const problem of commitMessage(message))
-				problems.push(`commit ${commit.slice(0, 12)}: ${problem}`);
+				problems.push(`commit ${shortCommit(commit)}: ${problem}`);
 		}
 		return problems;
 	}

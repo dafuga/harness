@@ -1,3 +1,4 @@
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { PersistedReasons } from './persistReasons.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
@@ -36,7 +37,7 @@ export async function persistReasons(
 
 export function renderReasons(result: PersistedReasons): string {
 	const from = result.base ? result.base.slice(0, 12) : 'an empty tree';
-	const head = `${result.attached} reasons for ${from}..${result.commit.slice(0, 12)} are kept in notes.`;
+	const head = `${result.attached} reasons for ${from}..${shortCommit(result.commit)} are kept in notes.`;
 	return [head, ...result.missing.map((failure) => `  ${failure}`)].join('\n');
 }
 

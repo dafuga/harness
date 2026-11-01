@@ -8,7 +8,7 @@
 	import AudioEvidence from './AudioEvidence.svelte';
 	import AudioComparison from '../reports-media/AudioComparison.svelte';
 	import EvidenceProvenance from './EvidenceProvenance.svelte';
-	import StatusBadge from '../shared-primitives/StatusBadge.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		item,
 		before,
@@ -54,7 +54,8 @@
 			</hx-details>
 		{:else}<hx-div class="card-body">
 				<hx-div class="card-kicker">
-					<hx-span>{item.category}</hx-span><StatusBadge
+					<hx-span>{item.category}</hx-span><Status
+						variant="badge"
 						status={missing ? 'not-proven' : item.status}
 					/>
 				</hx-div>

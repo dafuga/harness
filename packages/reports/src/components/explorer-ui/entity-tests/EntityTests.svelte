@@ -17,7 +17,7 @@
 	import EvidenceGrid from '../../verification-evidence/evidence-grid/EvidenceGrid.svelte';
 	import BrowserErrors from '../../shared-primitives/browser-errors/BrowserErrors.svelte';
 	import EntityBehavior from '../EntityBehavior.svelte';
-	import HarnessVerdict from '../harness-verdict/HarnessVerdict.svelte';
+	import Status from '../../shared-primitives/status/Status.svelte';
 	let {
 		entity,
 		scope,
@@ -79,7 +79,7 @@
 	/>
 	<Card as="section" labelledby="ex-verdict-title">
 		<hx-h2 id="ex-verdict-title">Verification at {shortCommit(scope.commit)}</hx-h2>
-		<hx-p><HarnessVerdict {...entity.verdict} /></hx-p>
+		<hx-p><Status {...entity.verdict} /></hx-p>
 		{#if entity.verdict.reasons.length}
 			<hx-ul class="ex-reasons" aria-label="Why it is not proven">
 				{#each entity.verdict.reasons as reason, position (position)}<hx-li>{reason}</hx-li>{/each}
@@ -91,7 +91,7 @@
 	</Card>
 	{#if coverage.length === 0}
 		<hx-p class="ex-gap">
-			<HarnessVerdict passed={false} label="Evidence missing" />
+			<Status passed={false} label="Evidence missing" />
 			<hx-span>No scenario names this entity, so nothing proves it here.</hx-span>
 		</hx-p>
 	{/if}
@@ -99,7 +99,7 @@
 		<Card as="section" label={scenario.title}>
 			<hx-h2>{scenario.title}</hx-h2>
 			<hx-p>
-				<HarnessVerdict
+				<Status
 					passed={scenario.standing === 'passed'}
 					label={scenario.standing === 'passed'
 						? 'Every required state is proven'
@@ -139,7 +139,7 @@
 									{#if state.standing === 'inapplicable'}
 										<hx-span class="ex-soft">{said.inapplicable}</hx-span>
 									{:else}
-										<HarnessVerdict
+										<Status
 											passed={state.standing === 'passed'}
 											label={said[state.standing]}
 											reasons={state.reasons}
@@ -164,10 +164,7 @@
 			<hx-ul class="ex-checks" aria-label="Checks">
 				{#each scenario.tests as test}
 					<hx-li>
-						<HarnessVerdict
-							passed={test.status === 'passed'}
-							label={test.status ?? 'not in the record'}
-						/>
+						<Status passed={test.status === 'passed'} label={test.status ?? 'not in the record'} />
 						<hx-span>{test.id}</hx-span>
 						<hx-span class="ex-soft">{test.status ?? 'not in the record'}</hx-span>
 						{#if job(scenario.scenario, test.id)}

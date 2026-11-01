@@ -5716,6 +5716,15 @@
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
 			"ownerSource": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
 			"reason": "Declare shared primitive contracts, including public forwarding imports."
+		},
+		{
+			"unit": "reports.function.tooltip-place",
+			"name": "tooltipPlace",
+			"commit": "06a3066f8798b89709c7b52905f1956816a21dfe",
+			"definition": "72da54d7da3dd6518c39557f45e9ca722e15b035eec4d4120e603872af7bb8c1",
+			"to": "packages/reports/src/components/shared-primitives/status/tooltipPlace.ts",
+			"ownerSource": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"reason": "Consolidate status rendering while retaining the original tooltip definition beside its canonical Status owner."
 		}
 	],
 	"retiredOwners": [

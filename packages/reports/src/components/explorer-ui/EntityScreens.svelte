@@ -19,7 +19,7 @@
 	import EntityReasons from './entity-reasons/EntityReasons.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		options,
 		evidence,
@@ -111,7 +111,7 @@
 	</hx-header>
 	{#if unlike.length}
 		<hx-div class="ex-gap">
-			<HarnessVerdict passed={false} label="Not comparable" reasons={unlike} />
+			<Status passed={false} label="Not comparable" reasons={unlike} />
 			<hx-ul class="ex-reasons" aria-label="Why the two sides are not compared">
 				{#each unlike as reason}<hx-li>{reason}</hx-li>{/each}
 			</hx-ul>
@@ -127,7 +127,7 @@
 				</hx-figcaption>
 				{#if item.missing}
 					<hx-p class="ex-gap">
-						<HarnessVerdict passed={false} label="No capture" />
+						<Status passed={false} label="No capture" />
 						<hx-span>{item.note}</hx-span>
 					</hx-p>
 				{:else}

@@ -1,11 +1,12 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 
 	import type { Evidence } from '$reports/models/reports-media/Report.types';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
-	import StatusIcon from '../shared-primitives/StatusIcon.svelte';
+	import Status from '$shared/shared-primitives/status/Status.svelte';
 	let {
 		item,
 		title,
@@ -38,12 +39,15 @@
 </script>
 
 <hx-figure class="runtime-pane" aria-label={title}>
-	<hx-figcaption><hx-strong>{title}</hx-strong><hx-span class="chip">{role}</hx-span></hx-figcaption
+	<hx-figcaption
+		><hx-strong>{title}</hx-strong><Pill as="span" variant="chip" tone="runtime-pane-chip"
+			>{role}</Pill
+		></hx-figcaption
 	>
 	{#if item.missing}<hx-p class="runtime-gap">
-			<StatusIcon status="failed" reason="No capture" /><hx-span>{item.note}</hx-span>
+			<Status variant="icon" status="failed" reason="No capture" /><hx-span>{item.note}</hx-span>
 		</hx-p>{:else if problem}<hx-p class="runtime-gap">
-			<StatusIcon status="failed" reason="Not verified" /><hx-span>{problem}</hx-span>
+			<Status variant="icon" status="failed" reason="Not verified" /><hx-span>{problem}</hx-span>
 		</hx-p>{:else if url}<hx-img src={url} alt={`${item.title} at ${item.viewport}`} />
 		<hx-p class="runtime-standing" class:stale={item.standing !== 'Fresh capture'}>
 			{item.standing} · {item.status}

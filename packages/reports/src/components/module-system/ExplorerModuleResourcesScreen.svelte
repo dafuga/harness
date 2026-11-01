@@ -1,6 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import EmptyState from '../explorer-ui/explorer-kit/EmptyState.svelte';
+	import Pill from '../explorer-ui/explorer-kit/Pill.svelte';
 	import Card from '../explorer-ui/explorer-kit/Card.svelte';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
@@ -67,7 +69,11 @@
 	<hx-ul class="ex-reasons res-text">
 		{#each kind.instructions as line, position (position)}<hx-li>{line}</hx-li>{/each}
 	</hx-ul>
-	<hx-h2 id="res-made">Generated <hx-span class="ex-pill">{listed.length}</hx-span></hx-h2>
+	<hx-h2 id="res-made"
+		>Generated <Pill as="span" variant="explorer" tone="explorer-module-resources-screen-ex-pill"
+			>{listed.length}</Pill
+		></hx-h2
+	>
 	{#if listed.length}
 		<hx-ul class="res-list" aria-labelledby="res-made">
 			{#each listed as item, position (position)}
@@ -80,16 +86,18 @@
 			{/each}
 		</hx-ul>
 	{:else}
-		<hx-p class="ex-empty">Nothing generated yet. Run the command above to add one.</hx-p>
+		<EmptyState as="p" className="ex-empty explorer-module-resources-screen-ex-empty"
+			>Nothing generated yet. Run the command above to add one.</EmptyState
+		>
 	{/if}
 {/snippet}
 
 <!-- Generation needs the module installed, so the type is unavailable until it is. -->
 {#snippet unavailable(found: ModuleEntry, kind: ModuleResource)}
 	<hx-h1 id="res-title">{kind.title}</hx-h1>
-	<hx-p class="ex-empty">
+	<EmptyState as="p" className="ex-empty explorer-module-resources-screen-ex-empty">
 		Unavailable: {found.definition.title} is not installed at this revision.
-	</hx-p>
+	</EmptyState>
 	{@render command('Install', `harness module add ${found.definition.id}`)}
 {/snippet}
 
@@ -117,7 +125,9 @@
 				{@render unavailable(entry, resource)}
 			{:else}
 				<hx-h1 id="res-title">Resource type not found</hx-h1>
-				<hx-p class="ex-empty">{absence()}</hx-p>
+				<EmptyState as="p" className="ex-empty explorer-module-resources-screen-ex-empty"
+					>{absence()}</EmptyState
+				>
 			{/if}
 		</hx-section>
 	{/snippet}

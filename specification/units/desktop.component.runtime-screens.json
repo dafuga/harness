@@ -11,7 +11,7 @@
 		"uses": [
 			"desktop.component.runtime-pane",
 			"desktop.component.segmented-choice",
-			"desktop.component.status-icon",
+			"reports.component.harness-harness-verdict",
 			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h3",
@@ -33,6 +33,7 @@
 		"origin": "declared",
 		"primitives": [
 			"desktop.component.segmented-choice",
+			"reports.component.harness-harness-verdict",
 			"reports.component.select",
 			"reports.component.shared-primitives-compare-panes"
 		],
@@ -100,17 +101,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.component.status-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.model.desktop-evidence-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.store.entity-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

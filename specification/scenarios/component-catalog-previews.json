@@ -66,7 +66,6 @@
 		"desktop.component.remote-offer-code",
 		"desktop.component.remote-phone-panel",
 		"desktop.component.revision-picker",
-		"desktop.component.run-status",
 		"desktop.component.runtime-artifact",
 		"desktop.component.runtime-audio",
 		"desktop.component.runtime-behavior",
@@ -76,7 +75,6 @@
 		"desktop.component.runtime-screens",
 		"desktop.component.segmented-choice",
 		"desktop.component.status-bar",
-		"desktop.component.status-icon",
 		"desktop.component.thread-history",
 		"desktop.component.thread-links",
 		"desktop.component.thread-panel",
@@ -336,7 +334,6 @@
 		"reports.component.source-dialog",
 		"reports.component.source-file-list",
 		"reports.component.source-viewer",
-		"reports.component.status-badge",
 		"reports.component.usage-examples-usage-examples",
 		"reports.layout.explorer-layout",
 		"reports.page.harness-branch-branch-at-apis",
@@ -1556,12 +1553,6 @@
 			"units": ["desktop.component.revision-picker"]
 		},
 		{
-			"id": "desktop-component-run-status",
-			"title": "Run status",
-			"coverage": "required",
-			"units": ["desktop.component.run-status"]
-		},
-		{
 			"id": "desktop-component-runtime-artifact",
 			"title": "Runtime artifact",
 			"coverage": "required",
@@ -1734,48 +1725,6 @@
 			"title": "Status bar",
 			"coverage": "required",
 			"units": ["desktop.component.status-bar"]
-		},
-		{
-			"id": "desktop-component-status-icon",
-			"title": "Status icon",
-			"coverage": "required",
-			"units": ["desktop.component.status-icon"]
-		},
-		{
-			"id": "desktop-component-status-icon-failed",
-			"title": "Status icon: failed",
-			"coverage": "required",
-			"units": ["desktop.component.status-icon"]
-		},
-		{
-			"id": "desktop-component-status-icon-unverified",
-			"title": "Status icon: unverified",
-			"coverage": "required",
-			"units": ["desktop.component.status-icon"]
-		},
-		{
-			"id": "desktop-component-status-icon-unknown",
-			"title": "Status icon: unknown",
-			"coverage": "required",
-			"units": ["desktop.component.status-icon"]
-		},
-		{
-			"id": "desktop-component-status-icon-no-reason",
-			"title": "Status icon: no-reason",
-			"coverage": "required",
-			"units": ["desktop.component.status-icon"]
-		},
-		{
-			"id": "desktop-component-status-icon-open",
-			"title": "Status icon: open",
-			"coverage": "required",
-			"units": ["desktop.component.status-icon"]
-		},
-		{
-			"id": "desktop-component-status-icon-long",
-			"title": "Status icon: long",
-			"coverage": "required",
-			"units": ["desktop.component.status-icon"]
 		},
 		{
 			"id": "desktop-component-thread-history",
@@ -3266,6 +3215,12 @@
 			"units": ["reports.component.evidence-viewer"]
 		},
 		{
+			"id": "reports-component-evidence-viewer-missing-after",
+			"title": "Evidence viewer: missing after recording",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
 			"id": "reports-component-explorer-catalog-items",
 			"title": "ExplorerCatalogItems",
 			"coverage": "required",
@@ -3542,6 +3497,18 @@
 			"units": ["reports.component.explorer-ui-explorer-kit-empty-state"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-kit-empty-state-block",
+			"title": "empty-state: block",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-empty-state"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-empty-state-status",
+			"title": "empty-state: status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-empty-state"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-kit-notice",
 			"title": "Explorer notice",
 			"coverage": "required",
@@ -3550,6 +3517,18 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-kit-notice-long",
 			"title": "explorer-ui-explorer-kit-notice: long",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-notice-alert",
+			"title": "notice: alert",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-notice-block",
+			"title": "notice: block",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
 		},
@@ -3568,6 +3547,30 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-kit-pill-tone",
 			"title": "explorer-ui-explorer-kit-pill: tone",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-list-item",
+			"title": "pill: list-item",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-compact",
+			"title": "pill: compact",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-chip",
+			"title": "pill: chip",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-attributes",
+			"title": "pill: attributes",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
 		},
@@ -5504,6 +5507,102 @@
 			"coverage": "required"
 		},
 		{
+			"id": "reports-component-harness-harness-verdict-icon",
+			"title": "Status: icon",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-icon-failed",
+			"title": "Status: icon failed",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-icon-unverified",
+			"title": "Status: icon unverified",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-icon-unknown",
+			"title": "Status: icon unknown",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-icon-no-reason",
+			"title": "Status: icon no reason",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-icon-open",
+			"title": "Status: icon open",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-icon-long",
+			"title": "Status: icon long",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-badge-passed",
+			"title": "Status: badge passed",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-badge-running",
+			"title": "Status: badge running",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-badge-failed",
+			"title": "Status: badge failed",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-badge-blocked",
+			"title": "Status: badge blocked",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-badge-skipped",
+			"title": "Status: badge skipped",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-badge-not-proven",
+			"title": "Status: badge not proven",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-badge-interrupted",
+			"title": "Status: badge interrupted",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-run",
+			"title": "Status: run",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-run-idle",
+			"title": "Status: run idle",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
 			"id": "reports-component-harness-screen",
 			"title": "Explorer route screen",
 			"coverage": "required",
@@ -5595,7 +5694,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
+			"title": "ExplorerModuleResourcesScreen · Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -5649,13 +5748,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen \u00b7 playwright",
+			"title": "ExplorerModulesScreen · playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen \u00b7 headless-audio",
+			"title": "ExplorerModulesScreen · headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -7748,48 +7847,6 @@
 			"units": ["reports.component.source-viewer"]
 		},
 		{
-			"id": "reports-component-status-badge",
-			"title": "Report status badge",
-			"coverage": "required",
-			"units": ["reports.component.status-badge"]
-		},
-		{
-			"id": "reports-component-status-badge-running",
-			"title": "Report status badge: Running status",
-			"coverage": "required",
-			"units": ["reports.component.status-badge"]
-		},
-		{
-			"id": "reports-component-status-badge-failed",
-			"title": "Report status badge: Failed status",
-			"coverage": "required",
-			"units": ["reports.component.status-badge"]
-		},
-		{
-			"id": "reports-component-status-badge-blocked",
-			"title": "Report status badge: Blocked status",
-			"coverage": "required",
-			"units": ["reports.component.status-badge"]
-		},
-		{
-			"id": "reports-component-status-badge-skipped",
-			"title": "Report status badge: Skipped status",
-			"coverage": "required",
-			"units": ["reports.component.status-badge"]
-		},
-		{
-			"id": "reports-component-status-badge-not-proven",
-			"title": "Report status badge: Not proven status",
-			"coverage": "required",
-			"units": ["reports.component.status-badge"]
-		},
-		{
-			"id": "reports-component-status-badge-interrupted",
-			"title": "Report status badge: Interrupted status",
-			"coverage": "required",
-			"units": ["reports.component.status-badge"]
-		},
-		{
 			"id": "reports-component-usage-examples-usage-examples",
 			"title": "Function usage examples",
 			"coverage": "required",
@@ -8251,7 +8308,6 @@
 				"desktop-component-revision-picker-historical",
 				"desktop-component-revision-picker-pinned",
 				"desktop-component-revision-picker-unknown-time",
-				"desktop-component-run-status",
 				"desktop-component-runtime-artifact",
 				"desktop-component-runtime-artifact-output",
 				"desktop-component-runtime-artifact-missing",
@@ -8281,13 +8337,6 @@
 				"desktop-component-runtime-screens-incomparable",
 				"desktop-component-segmented-choice",
 				"desktop-component-status-bar",
-				"desktop-component-status-icon",
-				"desktop-component-status-icon-failed",
-				"desktop-component-status-icon-unverified",
-				"desktop-component-status-icon-unknown",
-				"desktop-component-status-icon-no-reason",
-				"desktop-component-status-icon-open",
-				"desktop-component-status-icon-long",
 				"desktop-component-thread-history",
 				"desktop-component-thread-links",
 				"desktop-component-thread-panel",
@@ -8536,6 +8585,7 @@
 				"reports-component-evidence-viewer-previous",
 				"reports-component-evidence-viewer-zoomed",
 				"reports-component-evidence-viewer-actual-size",
+				"reports-component-evidence-viewer-missing-after",
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-catalog-items-multiple",
 				"reports-component-explorer-catalog-items-batched",
@@ -8582,11 +8632,19 @@
 				"reports-component-explorer-ui-explorer-kit-command-block-multiline",
 				"reports-component-explorer-ui-explorer-kit-empty-state",
 				"reports-component-explorer-ui-explorer-kit-empty-state-action",
+				"reports-component-explorer-ui-explorer-kit-empty-state-block",
+				"reports-component-explorer-ui-explorer-kit-empty-state-status",
 				"reports-component-explorer-ui-explorer-kit-notice",
 				"reports-component-explorer-ui-explorer-kit-notice-long",
+				"reports-component-explorer-ui-explorer-kit-notice-alert",
+				"reports-component-explorer-ui-explorer-kit-notice-block",
 				"reports-component-explorer-ui-explorer-kit-pill",
 				"reports-component-explorer-ui-explorer-kit-pill-state",
 				"reports-component-explorer-ui-explorer-kit-pill-tone",
+				"reports-component-explorer-ui-explorer-kit-pill-list-item",
+				"reports-component-explorer-ui-explorer-kit-pill-compact",
+				"reports-component-explorer-ui-explorer-kit-pill-chip",
+				"reports-component-explorer-ui-explorer-kit-pill-attributes",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
 				"reports-component-explorer-ui-explorer-module-card-image-error",
@@ -8909,6 +8967,22 @@
 				"reports-component-harness-harness-verdict-failed-open",
 				"reports-component-harness-harness-verdict-unknown-open",
 				"reports-component-harness-harness-verdict-long-open",
+				"reports-component-harness-harness-verdict-icon",
+				"reports-component-harness-harness-verdict-icon-failed",
+				"reports-component-harness-harness-verdict-icon-unverified",
+				"reports-component-harness-harness-verdict-icon-unknown",
+				"reports-component-harness-harness-verdict-icon-no-reason",
+				"reports-component-harness-harness-verdict-icon-open",
+				"reports-component-harness-harness-verdict-icon-long",
+				"reports-component-harness-harness-verdict-badge-passed",
+				"reports-component-harness-harness-verdict-badge-running",
+				"reports-component-harness-harness-verdict-badge-failed",
+				"reports-component-harness-harness-verdict-badge-blocked",
+				"reports-component-harness-harness-verdict-badge-skipped",
+				"reports-component-harness-harness-verdict-badge-not-proven",
+				"reports-component-harness-harness-verdict-badge-interrupted",
+				"reports-component-harness-harness-verdict-run",
+				"reports-component-harness-harness-verdict-run-idle",
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
 				"reports-component-image-zoom-loading",
@@ -9283,13 +9357,6 @@
 				"reports-component-source-viewer-list-error",
 				"reports-component-source-viewer-empty",
 				"reports-component-source-viewer-empty-file",
-				"reports-component-status-badge",
-				"reports-component-status-badge-running",
-				"reports-component-status-badge-failed",
-				"reports-component-status-badge-blocked",
-				"reports-component-status-badge-skipped",
-				"reports-component-status-badge-not-proven",
-				"reports-component-status-badge-interrupted",
 				"reports-component-usage-examples-usage-examples",
 				"reports-component-usage-examples-usage-examples-setup",
 				"reports-component-usage-examples-usage-examples-inline-setup",

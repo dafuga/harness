@@ -1,6 +1,7 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import type { GameControlsProps as Props } from './GameControls.types';
 	/**
 	 * The player's position and movement. A built level moves in four directions from its spawn;
@@ -22,12 +23,20 @@
 
 <hx-div data-harness-component="game-controls">
 	<hx-div class="row">
-		<hx-span class="chip">x {fixed(run.state.x)} · y {fixed(run.state.y)}</hx-span>
+		<Pill as="span" variant="chip" tone="game-controls-chip"
+			>x {fixed(run.state.x)} · y {fixed(run.state.y)}</Pill
+		>
 		{#if !world}
-			<hx-span class="chip">{run.state.hasKey ? 'Key held' : 'No key yet'}</hx-span>
-			<hx-span class="chip">{run.state.doorOpen ? 'Door open' : 'Door locked'}</hx-span>
+			<Pill as="span" variant="chip" tone="game-controls-chip"
+				>{run.state.hasKey ? 'Key held' : 'No key yet'}</Pill
+			>
+			<Pill as="span" variant="chip" tone="game-controls-chip"
+				>{run.state.doorOpen ? 'Door open' : 'Door locked'}</Pill
+			>
 		{/if}
-		{#if run.state.outcome}<hx-span class="chip gold">Reached the {run.state.outcome}</hx-span>{/if}
+		{#if run.state.outcome}<Pill as="span" variant="chip" tone="gold game-controls-chip"
+				>Reached the {run.state.outcome}</Pill
+			>{/if}
 	</hx-div>
 	<hx-div class="row">
 		{#each buttons as move (move.name)}

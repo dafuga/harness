@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
@@ -148,10 +149,15 @@
 	>
 	<hx-header class="row" style="flex-wrap:wrap">
 		<hx-h1 style="flex:1;margin:0">Game Views</hx-h1>
-		{#if demo}<hx-span class="chip gold">Demo</hx-span>{/if}
-		{#if commit}<hx-span class="chip">History · {shortCommit(commit)}</hx-span>{/if}
-		{#if readonly && !commit}<hx-span class="chip">Read-only</hx-span>{/if}
-		{#if dirty}<hx-span class="chip gold">Unsaved changes</hx-span>{/if}
+		{#if demo}<Pill as="span" variant="chip" tone="gold game-workspace-chip">Demo</Pill>{/if}
+		{#if commit}<Pill as="span" variant="chip" tone="game-workspace-chip"
+				>History · {shortCommit(commit)}</Pill
+			>{/if}
+		{#if readonly && !commit}<Pill as="span" variant="chip" tone="game-workspace-chip"
+				>Read-only</Pill
+			>{/if}
+		{#if dirty}<Pill as="span" variant="chip" tone="gold game-workspace-chip">Unsaved changes</Pill
+			>{/if}
 		{#if !demo && editable}
 			<hx-button class="primary" disabled={!savable} onclick={save}>Save</hx-button>
 		{/if}

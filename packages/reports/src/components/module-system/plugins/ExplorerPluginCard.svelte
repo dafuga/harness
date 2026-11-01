@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
+	import Pill from '../../explorer-ui/explorer-kit/Pill.svelte';
 	import type { Snippet } from 'svelte';
 	import type { ModuleEntry } from '../../../../../../src/services/module-system/moduleDefinition.types';
 	import Card from '../../explorer-ui/explorer-kit/Card.svelte';
@@ -19,7 +20,7 @@
 	<hx-p class="mod-text">{module.description}</hx-p>
 	<hx-ul class="mod-kinds" aria-label={`${module.title} resource types`}>
 		{#each module.resources as resource (resource.id)}
-			<hx-li class="ex-pill">{resource.title}</hx-li>
+			<Pill as="li" variant="explorer" tone="explorer-plugin-card-ex-pill">{resource.title}</Pill>
 		{/each}
 	</hx-ul>
 	{#if !entry.installed}<CommandBlock
