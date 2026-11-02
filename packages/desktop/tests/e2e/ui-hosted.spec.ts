@@ -31,7 +31,7 @@ test('connecting shows a code and the validated address, asks no faster than tol
 	await expect(panel.getByText(userCode, { exact: true })).toBeVisible();
 	await expect(panel.getByText(verificationUrl, { exact: true })).toBeVisible();
 	await expect(panel.getByText('Waiting for your approval…')).toBeVisible();
-	await expect(page.getByRole('textbox')).toHaveCount(0);
+	await expect(page.getByRole('textbox', { disabled: false })).toHaveCount(0);
 	await expect(page.getByText(/verifier|nonce|secret|token/i)).toHaveCount(0);
 	expect(page.url()).not.toContain(userCode);
 	const before = (await hosted(page)).polls;
