@@ -33,7 +33,6 @@ export class RecordAssemblyService {
 	constructor(private readonly context: AssemblyContext) {}
 	async assemble(input: AssemblyInput): Promise<VerificationRecord> {
 		const { context } = this;
-		const { outcomes } = input.executed;
 		const measurements = this.measurements(input.executed);
 		const budgets = await this.budgets(measurements);
 		const reasons = await context.explained();
@@ -41,6 +40,7 @@ export class RecordAssemblyService {
 		const failures = Object.values(gates).flat();
 		return sealRecord({
 			schemaVersion: 1,
+			componentSchemaVersion: 2,
 			repository: context.root,
 			source: source(context),
 			profile: context.profile,
@@ -55,7 +55,7 @@ export class RecordAssemblyService {
 			),
 			measurements,
 			impact: recordedImpact(context.impact),
-			tests: outcomes
+			tests: input.executed.outcomes
 				.filter((item) => !item.check.id.startsWith('setup-'))
 				.map((item) => item.entry),
 			scenarios: judgedScenarios(input),
