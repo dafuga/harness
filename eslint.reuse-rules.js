@@ -19,6 +19,8 @@ const classes = [
 	]
 ];
 
+const relativeReports = /\b(?:from|import)\s*\(?\s*['"](?:\.\.\/)+reports\/src\//g;
+
 /** Shared primitives own their markup; feature source composes them. */
 export function reuseFindings(filename, source) {
 	const file = filename.replaceAll('\\', '/');
@@ -30,6 +32,9 @@ export function reuseFindings(filename, source) {
 	))
 		if (!/sha256\s*\$\{\s*$/.test(source.slice(Math.max(0, match.index - 24), match.index)))
 			found.push({ kind: 'commit', index: match.index });
+	if (/\/packages\/(?:desktop|hub)\/src\//.test('/' + file))
+		for (const match of source.matchAll(relativeReports))
+			found.push({ kind: 'alias', index: match.index });
 	return found.sort((left, right) => left.index - right.index);
 }
 
@@ -79,7 +84,8 @@ export const sharedReuseRule = {
 		type: 'problem',
 		messages: {
 			inline:
-				'Reuse the shared {{kind}} primitive instead of hand-written markup or commit shortening.'
+				'Reuse the shared {{kind}} primitive instead of hand-written markup or commit shortening.',
+			alias: 'Import Reports source through the $reports or $shared alias, not a relative path.'
 		}
 	},
 	create(context) {
@@ -95,7 +101,7 @@ export const sharedReuseRule = {
 					if (count > (allowlist[key] ?? 0))
 						context.report({
 							loc: source.getLocFromIndex(finding.index),
-							messageId: 'inline',
+							messageId: finding.kind === 'alias' ? 'alias' : 'inline',
 							data: finding
 						});
 				}

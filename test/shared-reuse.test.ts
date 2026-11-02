@@ -61,6 +61,26 @@ test('feature source must reuse shared markup and commit shortening', () => {
 		).toEqual([expect.stringContaining('commit')]);
 });
 
+test('app source imports Reports through aliases while scripts and Reports keep relative paths', () => {
+	const relative =
+		"import { errorMessage } from '../../../reports/src/helpers/strings/errorMessage';";
+	for (const file of [
+		'packages/desktop/src/utils/unlisted.ts',
+		'packages/hub/src/utils/unlisted.ts'
+	])
+		expect(lint(file, relative)).toEqual([expect.stringContaining('$reports')]);
+	expect(
+		lint('packages/desktop/src/utils/unlisted.ts', "export { a } from '../../../reports/src/a';")
+	).toEqual([expect.stringContaining('$reports')]);
+	expect(
+		lint(
+			'packages/desktop/src/utils/unlisted.ts',
+			"import { errorMessage } from '$reports/helpers/strings/errorMessage';"
+		)
+	).toEqual([]);
+	expect(lint('packages/desktop/scripts/unlisted.ts', relative)).toEqual([]);
+});
+
 test('shared primitive implementation and unrelated collection or date slices stay admitted', () => {
 	expect(
 		lint(
