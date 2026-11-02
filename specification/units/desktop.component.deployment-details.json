@@ -36,24 +36,25 @@
 				"name": "DeploymentDetails.deployment",
 				"type": "DeploymentActivity",
 				"required": true,
-				"description": "Deployment job or route whose source, destination and recorded progress are displayed."
+				"description": "Deployment job or route whose source, destination and recorded progress are displayed. Its phase is one of queued, preparing, checking, building, uploading, verifying, complete or failed; a complete deployment with a receipt shows the verified receipt, and a failed one shows its error text."
 			},
 			{
 				"name": "DeploymentDetails.showIdentity",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Whether to include the project, branch, commit and start time alongside progress."
+				"description": "Whether to include the project, branch, commit and start time alongside progress. Defaults to true; the no-identity catalog state hides these rows and the environment heading."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentDetails",
 				"type": "markup",
-				"description": "Presents deployment identity, source-to-destination route, current status and shared progress steps."
+				"description": "Presents deployment identity, source-to-destination route, current status and shared progress steps. Catalog states: default (in progress), failed (the build error notice), succeeded (the verified receipt) and no-identity (showIdentity false)."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
