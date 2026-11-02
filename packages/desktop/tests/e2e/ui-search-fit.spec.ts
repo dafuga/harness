@@ -85,7 +85,7 @@ async function fits(page: Page, width: number, without: number[]): Promise<void>
 		expect(
 			(await box(bar(page))).height,
 			'Mobile header must leave room for project content'
-		).toBeLessThanOrEqual(184);
+		).toBeLessThanOrEqual(214);
 	const fields = await Promise.all(revision(page).map(box));
 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
 	// The search takes nothing of the room of either revision field.

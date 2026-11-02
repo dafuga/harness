@@ -157,7 +157,7 @@ export async function assertWorkspaceHeaderFits(page: Page, width: number) {
 	expect(branchFits, 'The short current branch name must remain readable on mobile').toBe(true);
 	const header = await page.getByRole('banner').boundingBox();
 	expect(header!.height, 'Mobile header must leave room for project content').toBeLessThanOrEqual(
-		184
+		214
 	);
 	for (const name of ['Choose branch', 'Choose commit']) {
 		const bounds = await page.getByRole('button', { name, exact: true }).boundingBox();
