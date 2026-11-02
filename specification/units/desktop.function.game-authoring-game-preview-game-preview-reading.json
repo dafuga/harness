@@ -1,0 +1,166 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.game-authoring-game-preview-game-preview-reading",
+	"kind": "function",
+	"title": "gamePreviewReading",
+	"responsibility": "Reads GamePreview state: the AI video summary line, held arrow keys as a direction and a run's placement at its level spawn.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/game-authoring/game-preview/gamePreviewReading.ts"],
+		"symbols": ["PreviewSummaryInput", "previewSummary", "arrowDirection", "levelKey", "atSpawn"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "previewSummary.input",
+				"type": "PreviewSummaryInput",
+				"required": true
+			},
+			{
+				"name": "arrowDirection.held",
+				"type": "{ has(key: string): boolean }",
+				"required": true
+			},
+			{
+				"name": "levelKey.view",
+				"type": "GameView",
+				"required": true
+			},
+			{
+				"name": "atSpawn.next",
+				"type": "GameRun",
+				"required": true
+			},
+			{
+				"name": "atSpawn.view",
+				"type": "GameView",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "previewSummary",
+				"type": "string"
+			},
+			{
+				"name": "arrowDirection",
+				"type": "{ x: number; y: number }"
+			},
+			{
+				"name": "levelKey",
+				"type": "string"
+			},
+			{
+				"name": "atSpawn",
+				"type": "GameRun"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "previewSummary",
+				"inputs": [
+					{
+						"name": "previewSummary.input",
+						"type": "PreviewSummaryInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "previewSummary",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "arrowDirection",
+				"inputs": [
+					{
+						"name": "arrowDirection.held",
+						"type": "{ has(key: string): boolean }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "arrowDirection",
+						"type": "{ x: number; y: number }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "levelKey",
+				"inputs": [
+					{
+						"name": "levelKey.view",
+						"type": "GameView",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "levelKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "atSpawn",
+				"inputs": [
+					{
+						"name": "atSpawn.next",
+						"type": "GameRun",
+						"required": true
+					},
+					{
+						"name": "atSpawn.view",
+						"type": "GameView",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "atSpawn",
+						"type": "GameRun"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/game-preview/gamePreviewReading.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/game-preview/gamePreviewReading.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
