@@ -54,18 +54,27 @@
 		{#if framed}
 			<hx-div class={paneClass} role="group" aria-label={pane.heading}>
 				{#if headings}
-					{#if heading}{@render heading(pane)}{:else}
+					{#if heading}
+						{@render heading(pane)}
+					{:else}
 						<hx-p class="ex-pane-head"
 							><hx-strong>{pane.heading}</hx-strong><Pill>{pane.role}</Pill></hx-p
 						>
 					{/if}
 				{/if}
-				{#if pane.value === undefined && pane.gap}{#if gap}{@render gap(pane)}{:else}<EmptyState
-							>{pane.gap}</EmptyState
-						>{/if}
-				{:else}{@render children(pane)}{/if}
+				{#if pane.value === undefined && pane.gap}
+					{#if gap}
+						{@render gap(pane)}
+					{:else}
+						<EmptyState>{pane.gap}</EmptyState>
+					{/if}
+				{:else}
+					{@render children(pane)}
+				{/if}
 				{@render details?.(pane)}
 			</hx-div>
-		{:else}{@render children(pane)}{/if}
+		{:else}
+			{@render children(pane)}
+		{/if}
 	{/each}
 </hx-div>

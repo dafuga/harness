@@ -43,7 +43,9 @@
 {/snippet}
 
 {#if rows.length === 0}
-	{#if empty}{@render empty()}{:else}
+	{#if empty}
+		{@render empty()}
+	{:else}
 		<hx-p
 			class="detail-list empty-detail-list {className}"
 			data-harness-component="shared-primitives-detail-list">No details to display.</hx-p
@@ -52,8 +54,11 @@
 {:else}
 	<hx-dl class="detail-list {className}" data-harness-component="shared-primitives-detail-list">
 		{#each rows as row, position (rowKey(row, position))}
-			{#if grouped}<hx-div class="detail-row">{@render definition(row)}</hx-div>
-			{:else}{@render definition(row)}{/if}
+			{#if grouped}
+				<hx-div class="detail-row">{@render definition(row)}</hx-div>
+			{:else}
+				{@render definition(row)}
+			{/if}
 		{/each}
 	</hx-dl>
 {/if}
