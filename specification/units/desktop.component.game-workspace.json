@@ -70,10 +70,11 @@
 			{
 				"name": "GameWorkspace",
 				"type": "markup",
-				"description": "Own game documents, optimistic saves, runtime progress and checkpoint modal lifecycle."
+				"description": "Own game documents, optimistic saves, runtime progress and checkpoint modal lifecycle. Catches read and save failures and shows them in an alert; throws nothing itself. Catalog states: default (demo, nothing saved), project (saved project), loading (read pending), error (read failed), readonly (Read-only chip, no Save) and history (a commit shown as History)."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
