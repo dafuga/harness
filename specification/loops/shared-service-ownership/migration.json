@@ -2624,15 +2624,21 @@
 			"unit": "command.units",
 			"from": "src/commands/UnitsCommand.ts",
 			"to": "src/cli/program/UnitsCommand.ts",
-			"definition": "d2968313141b533f9261c51cda4669ee84922a4a956eb97eaa73bbc4dc56ef66",
+			"definition": "c84fcf1f1aa6d17698fff5b8638ca2600d9f85219263505dfe737fe80c9a0f87",
 			"relocationDefinition": "56b7063d4a3eaae60eab61f13b0a1da62432d13e4f6ee5e0cd0cc25f997289b0",
 			"review": {
-				"commit": "8d405f736ee2e050da6f1e419382c216da566765",
+				"commit": "c2bbf44122",
 				"path": "src/cli/program/UnitsCommand.ts",
-				"definition": "d2968313141b533f9261c51cda4669ee84922a4a956eb97eaa73bbc4dc56ef66",
-				"reason": "Registers unit state guidance and contract checking through the existing units command."
+				"definition": "c84fcf1f1aa6d17698fff5b8638ca2600d9f85219263505dfe737fe80c9a0f87",
+				"reason": "Register the units uid-backfill command."
 			},
 			"previousReviews": [
+				{
+					"commit": "8d405f736ee2e050da6f1e419382c216da566765",
+					"path": "src/cli/program/UnitsCommand.ts",
+					"definition": "d2968313141b533f9261c51cda4669ee84922a4a956eb97eaa73bbc4dc56ef66",
+					"reason": "Registers unit state guidance and contract checking through the existing units command."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "src/cli/program/UnitsCommand.ts",
