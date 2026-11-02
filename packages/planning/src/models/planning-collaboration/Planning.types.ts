@@ -1,4 +1,3 @@
-import type { ChangeRecord } from './HostFileChange.types';
 export type { HostFileChange, ChangeTarget, ChangeRecord } from './HostFileChange.types';
 import type { DesignOption } from './DesignOption.types';
 export type { DesignOption, DesignOptionInput } from './DesignOption.types';
@@ -129,89 +128,5 @@ export interface ApprovalRecord {
 	/** Derived: it binds the latest version, its exact files and its contract. */
 	current: boolean;
 }
-
-export interface ThreadAnchor {
-	version: string;
-	file: string;
-	imageSha256: Sha256;
-	state: string;
-	viewport: PlanViewport;
-	/** `null` anchors the whole image. */
-	region: NormalizedRegion | null;
-	/** The option holding the image, derived from the stored version, when it has options. */
-	option?: string;
-}
-
-export type ArtifactReference =
-	| { kind: 'image'; version: string; file: string; sha256: Sha256; option?: string }
-	| { kind: 'notes'; version: string; sha256: Sha256 }
-	| { kind: 'approval'; approvalId: string };
-
-export interface ThreadMessage {
-	id: string;
-	unitId: string;
-	threadId: string;
-	/** 1 for the first message of the thread. */
-	sequence: number;
-	/** SHA-256 of the previous line, or of `thread.json` for the first message. */
-	previous: Sha256;
-	at: IsoTime;
-	author: PlanAuthor;
-	mode: MessageMode;
-	agent: AgentRef | null;
-	body: string;
-	references: ArtifactReference[];
-	change: ChangeRecord | null;
-}
-
-export interface PlanThread {
-	id: string;
-	unitId: string;
-	/** The number shown on the image, counted per unit. */
-	pin: number;
-	title: string;
-	anchor: ThreadAnchor | null;
-	/** The revision the reviewer was looking at. */
-	viewedRevision: CommitId;
-	createdAt: IsoTime;
-	createdBy: PlanAuthor;
-	/** Derived: the commit that opened the thread. */
-	commit: CommitId;
-	messages: ThreadMessage[];
-}
-
-export interface PlanSummary {
-	/** Existing canonical identity, or `<category>.<slug>` for a new draft. */
-	unitId: string;
-	category: PlanCategory;
-	slug: string;
-	title: string;
-	goal: string;
-	createdAt: IsoTime;
-	createdBy: PlanAuthor;
-	baseRevision: CommitId;
-	/** The unit folder, relative to the repository root. */
-	path: string;
-	/** Derived: the commit that created the plan. */
-	commit: CommitId;
-	lifecycle: PlanLifecycle;
-	/** Derived: `specification/units/<unitId>.json` exists at this revision. */
-	registered: boolean;
-	/** Planning never verifies anything at runtime and never says that it did. */
-	verified: false;
-	latestVersion: string | null;
-	/** The contract of the latest version, or of the plan while it has none. */
-	contract: PlanContract;
-	contractHash: Sha256;
-	/** The approval that is current, if any. */
-	approval: ApprovalRecord | null;
-	versionCount: number;
-	threadCount: number;
-}
-
-export interface PlanDetail extends PlanSummary {
-	versions: DesignVersion[];
-	/** Every approval ever recorded, oldest first; superseded ones stay. */
-	approvals: ApprovalRecord[];
-	threads: PlanThread[];
-}
+export type * from './PlanThread.types';
+export type * from './PlanSummary.types';

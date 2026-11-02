@@ -2,6 +2,7 @@ import './ios-acceptance-quiet';
 import { createRemoteDebugger } from 'appium-remote-debugger';
 import type { RemoteDebugger } from 'appium-remote-debugger';
 import { pagePrelude } from './ios-acceptance-prelude';
+import { errorMessage } from '../../reports/src/helpers/strings/errorMessage';
 
 /** The logger of the package is chosen by now; nothing started from here inherits its mode. */
 delete process.env._TESTING;
@@ -37,7 +38,7 @@ export class SimulatorPage {
 				const value = await inspector.execute(`(() => { ${pagePrelude}${expression} })()`, true);
 				return typeof value === 'object' && value ? JSON.stringify(value) : String(value ?? '');
 			} catch (error) {
-				failure = error instanceof Error ? error.message : String(error);
+				failure = errorMessage(error);
 				await this.reset();
 				await pause(1500);
 			}

@@ -4,8 +4,8 @@
 	import type { ExplorerEntity } from '../../models/Explorer.types';
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';
 	import { entityLens, shortCommit, type EntityLens, type EntityNav } from '../../utils/entityLens';
-	import { tooltipPlace } from '../../utils/tooltipPlace';
 	import EntityLink from './EntityLink.svelte';
+	import { usagePreviewStyle } from './usagePreviewStyle';
 	let {
 		entity,
 		nav,
@@ -57,27 +57,10 @@
 	}
 	function put() {
 		if (!root || !tip) return;
-		const at = (root.querySelector('a') ?? root).getBoundingClientRect();
 		const view = { width: document.documentElement.clientWidth, height: innerHeight };
-		if (at.bottom < 0 || at.top > view.height) return close();
-		const owner = root.closest('.ex-page-card, .ex-function-tile') ?? root.closest('.ex-usage');
-		const frame = owner?.getBoundingClientRect();
-		const left = Math.max(8, frame?.left ?? 8);
-		const right = Math.min(view.width - 8, frame?.right ?? view.width - 8);
-		const width = Math.min(280, right - left);
-		tip.style.width = `${width}px`;
-		const whole = tip.scrollHeight + tip.offsetHeight - tip.clientHeight;
-		const spot = tooltipPlace(at, { width, height: whole }, view);
-		spot.left = Math.max(left, Math.min(spot.left, right - width));
-		const title = owner?.querySelector('h2')?.getBoundingClientRect();
-		if (title && frame) {
-			const above = title.top - frame.top - 8;
-			const below = frame.bottom - title.bottom - 8;
-			spot.height = Math.min(whole, Math.max(0, above, below));
-			spot.top = above >= below ? title.top - spot.height - 8 : title.bottom + 8;
-		}
-		const cut = spot.height === undefined ? '' : `;max-height:${spot.height}px`;
-		place = `left:${spot.left}px;top:${spot.top}px;width:${width}px${cut}`;
+		const style = usagePreviewStyle(root, tip, view);
+		if (style === null) return close();
+		place = style;
 	}
 	function loaded(image: EventTarget & Element) {
 		if (image instanceof HTMLImageElement && image.naturalWidth) put();

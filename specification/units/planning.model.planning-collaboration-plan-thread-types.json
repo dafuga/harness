@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"id": "planning.model.planning-collaboration-plan-thread-types",
+	"kind": "model",
+	"title": "PlanThread",
+	"responsibility": "Owns the PlanThread data model.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/planning/src/models/planning-collaboration/PlanThread.types.ts"],
+		"symbols": ["ThreadAnchor", "ArtifactReference", "ThreadMessage", "PlanThread"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "planning.model.host-file-change-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/planning/src/models/planning-collaboration/PlanThread.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/planning/src/models/planning-collaboration/PlanThread.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

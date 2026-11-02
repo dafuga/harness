@@ -1,0 +1,208 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.agents-providers-provider-picker-provider-picker-reading",
+	"kind": "function",
+	"title": "providerPickerReading",
+	"responsibility": "Reads model picker responses: snapshots, queued sessions, selection labels and failure text.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/agents-providers/provider-picker/providerPickerReading.ts"
+		],
+		"symbols": ["isSnapshot", "readSessions", "selectionLabel", "failureText"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "isSnapshot.data",
+				"type": "object | null",
+				"required": true,
+				"description": "A picker response, or null."
+			},
+			{
+				"name": "readSessions.data",
+				"type": "object | null",
+				"required": true,
+				"description": "A response to a request for queued sessions, or null."
+			},
+			{
+				"name": "selectionLabel.models",
+				"type": "PickerModel[]",
+				"required": true,
+				"description": "The catalog models."
+			},
+			{
+				"name": "selectionLabel.target",
+				"type": "ProviderSelection",
+				"required": true,
+				"description": "The provider and model of a queued switch."
+			},
+			{
+				"name": "failureText.cause",
+				"type": "ThrownValue",
+				"required": true,
+				"description": "Whatever was thrown."
+			},
+			{
+				"name": "failureText.fallback",
+				"type": "string",
+				"required": true,
+				"description": "The text to use when the thrown value is not an Error."
+			}
+		],
+		"outputs": [
+			{
+				"name": "isSnapshot",
+				"type": "data is PickerSnapshot",
+				"description": "True when the response names the default provider and so is a picker snapshot."
+			},
+			{
+				"name": "readSessions",
+				"type": "SwitchRequest[] | null",
+				"description": "The queued sessions, or null when the response holds no list."
+			},
+			{
+				"name": "selectionLabel",
+				"type": "string",
+				"description": "The catalog label of the model, or the model id when the catalog does not list it."
+			},
+			{
+				"name": "failureText",
+				"type": "string",
+				"description": "The error message, or the fallback."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "isSnapshot",
+				"inputs": [
+					{
+						"name": "isSnapshot.data",
+						"type": "object | null",
+						"required": true,
+						"description": "A picker response, or null."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isSnapshot",
+						"type": "data is PickerSnapshot",
+						"description": "True when the response names the default provider and so is a picker snapshot."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "readSessions",
+				"inputs": [
+					{
+						"name": "readSessions.data",
+						"type": "object | null",
+						"required": true,
+						"description": "A response to a request for queued sessions, or null."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readSessions",
+						"type": "SwitchRequest[] | null",
+						"description": "The queued sessions, or null when the response holds no list."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "selectionLabel",
+				"inputs": [
+					{
+						"name": "selectionLabel.models",
+						"type": "PickerModel[]",
+						"required": true,
+						"description": "The catalog models."
+					},
+					{
+						"name": "selectionLabel.target",
+						"type": "ProviderSelection",
+						"required": true,
+						"description": "The provider and model of a queued switch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "selectionLabel",
+						"type": "string",
+						"description": "The catalog label of the model, or the model id when the catalog does not list it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "failureText",
+				"inputs": [
+					{
+						"name": "failureText.cause",
+						"type": "ThrownValue",
+						"required": true,
+						"description": "Whatever was thrown."
+					},
+					{
+						"name": "failureText.fallback",
+						"type": "string",
+						"required": true,
+						"description": "The text to use when the thrown value is not an Error."
+					}
+				],
+				"outputs": [
+					{
+						"name": "failureText",
+						"type": "string",
+						"description": "The error message, or the fallback."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.picker-model-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.picker-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.strings-error-message",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/agents-providers/provider-picker/providerPickerReading.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/agents-providers/provider-picker/providerPickerReading.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,5 +1,6 @@
 import type { AcceptanceCheck } from './ios-acceptance-record.types';
 import { redacted } from './ios-acceptance-guards';
+import { errorMessage } from '../../reports/src/helpers/strings/errorMessage';
 
 /**
  * TEST ONLY. What a native acceptance run found: every assertion by name, passed or failed. It
@@ -35,7 +36,7 @@ export class AcceptanceRecord {
 
 	/** A phase that could not go on is a failed check, with the reason. */
 	stopped(error: unknown): void {
-		const reason = error instanceof Error ? error.message : String(error);
+		const reason = errorMessage(error);
 		this.check(false, `the phase stopped: ${reason.split('\n')[0].slice(0, 240)}`);
 	}
 

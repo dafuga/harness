@@ -26,13 +26,6 @@
 			"GrantLease",
 			"GrantStore",
 			"ExchangeStore",
-			"EmailProofRecord",
-			"EmailCodeIssue",
-			"EmailCodeAttempt",
-			"EmailProofStore",
-			"EmailSendWindow",
-			"VerifiedEmailRecord",
-			"EmailLedgerStore",
 			"AuthStore"
 		]
 	},
@@ -46,6 +39,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.model.accounts-access-hub-email-store-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.model.hub-auth-types",
 			"via": "import",

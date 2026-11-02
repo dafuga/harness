@@ -57,11 +57,6 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.picker-model-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.picker-types",
 			"via": "import",
 			"origin": "derived"
@@ -138,6 +133,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.agents-providers-provider-picker-provider-picker-defaults",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.agents-providers-provider-picker-provider-picker-reading",
 			"via": "import",
 			"origin": "derived"
 		},

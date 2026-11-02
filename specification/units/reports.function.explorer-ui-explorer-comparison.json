@@ -1,0 +1,247 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-ui-explorer-comparison",
+	"kind": "function",
+	"title": "explorerComparison",
+	"responsibility": "Compares the two sides of an entity's evidence: the scenarios covering a unit, their united entries and why the sides are not like for like.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorer-ui/explorerComparison.ts"],
+		"symbols": ["covering", "united", "merged", "incomparable"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "covering.detail",
+				"type": "HarnessRevision | null",
+				"required": true,
+				"description": "The revision whose registry is read; null when it is not available."
+			},
+			{
+				"name": "covering.unit",
+				"type": "string",
+				"required": true,
+				"description": "The id of the unit."
+			},
+			{
+				"name": "united.now",
+				"type": "Item[]",
+				"required": true,
+				"description": "The entries of the first side."
+			},
+			{
+				"name": "united.was",
+				"type": "Item[]",
+				"required": true,
+				"description": "The entries of the second side."
+			},
+			{
+				"name": "merged.now",
+				"type": "HarnessScenario",
+				"required": true,
+				"description": "The scenario as the first side declares it."
+			},
+			{
+				"name": "merged.was",
+				"type": "HarnessScenario | undefined",
+				"required": true,
+				"description": "The same scenario on the other side, if it has one."
+			},
+			{
+				"name": "incomparable.before",
+				"type": "ExplorerSide",
+				"required": true,
+				"description": "The earlier side of the comparison."
+			},
+			{
+				"name": "incomparable.after",
+				"type": "ExplorerSide",
+				"required": true,
+				"description": "The later side of the comparison."
+			},
+			{
+				"name": "incomparable.unit",
+				"type": "string",
+				"required": true,
+				"description": "The id of the unit compared."
+			}
+		],
+		"outputs": [
+			{
+				"name": "covering",
+				"type": "unknown",
+				"description": "The scenarios that cover the unit, each with the states that show it; empty without a revision."
+			},
+			{
+				"name": "united",
+				"type": "Item[]",
+				"description": "Every entry once: those of the first list, then those only the second has."
+			},
+			{
+				"name": "merged",
+				"type": "HarnessScenario",
+				"description": "The scenario with the states, viewports and evidence of both sides, so what one dropped stays."
+			},
+			{
+				"name": "incomparable",
+				"type": "string[]",
+				"description": "The reasons the sides are not like for like, such as other profiles, viewport sizes or tests; empty when they are."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "covering",
+				"inputs": [
+					{
+						"name": "covering.detail",
+						"type": "HarnessRevision | null",
+						"required": true,
+						"description": "The revision whose registry is read; null when it is not available."
+					},
+					{
+						"name": "covering.unit",
+						"type": "string",
+						"required": true,
+						"description": "The id of the unit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "covering",
+						"type": "unknown",
+						"description": "The scenarios that cover the unit, each with the states that show it; empty without a revision."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "united",
+				"inputs": [
+					{
+						"name": "united.now",
+						"type": "Item[]",
+						"required": true,
+						"description": "The entries of the first side."
+					},
+					{
+						"name": "united.was",
+						"type": "Item[]",
+						"required": true,
+						"description": "The entries of the second side."
+					}
+				],
+				"outputs": [
+					{
+						"name": "united",
+						"type": "Item[]",
+						"description": "Every entry once: those of the first list, then those only the second has."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "merged",
+				"inputs": [
+					{
+						"name": "merged.now",
+						"type": "HarnessScenario",
+						"required": true,
+						"description": "The scenario as the first side declares it."
+					},
+					{
+						"name": "merged.was",
+						"type": "HarnessScenario | undefined",
+						"required": true,
+						"description": "The same scenario on the other side, if it has one."
+					}
+				],
+				"outputs": [
+					{
+						"name": "merged",
+						"type": "HarnessScenario",
+						"description": "The scenario with the states, viewports and evidence of both sides, so what one dropped stays."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "incomparable",
+				"inputs": [
+					{
+						"name": "incomparable.before",
+						"type": "ExplorerSide",
+						"required": true,
+						"description": "The earlier side of the comparison."
+					},
+					{
+						"name": "incomparable.after",
+						"type": "ExplorerSide",
+						"required": true,
+						"description": "The later side of the comparison."
+					},
+					{
+						"name": "incomparable.unit",
+						"type": "string",
+						"required": true,
+						"description": "The id of the unit compared."
+					}
+				],
+				"outputs": [
+					{
+						"name": "incomparable",
+						"type": "string[]",
+						"description": "The reasons the sides are not like for like, such as other profiles, viewport sizes or tests; empty when they are."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.explorer-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorer-ui/explorerComparison.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorer-ui/explorerComparison.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

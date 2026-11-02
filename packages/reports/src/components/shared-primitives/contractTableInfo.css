@@ -1,0 +1,28 @@
+/* The button that opens a field's full example. */
+[data-harness-component='contract-table'] .info {
+	display: inline-grid;
+	place-items: center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: var(--hx-border-thin) solid transparent;
+	border-radius: var(--hx-radius-compact);
+	background: none;
+	color: var(--hx-color-text-supporting);
+	cursor: pointer;
+}
+[data-harness-component='contract-table'] .info:hover,
+[data-harness-component='contract-table'] .info:focus-visible {
+	border-color: var(--hx-color-border);
+	color: var(--hx-color-primary);
+}
+[data-harness-component='contract-table'] .info:focus-visible {
+	outline: var(--hx-border-thick) solid var(--hx-color-primary);
+	outline-offset: var(--hx-border-thin);
+}
+@media (pointer: coarse) {
+	[data-harness-component='contract-table'] .info {
+		width: 44px;
+		height: 44px;
+	}
+}

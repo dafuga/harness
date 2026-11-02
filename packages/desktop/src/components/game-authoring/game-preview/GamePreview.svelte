@@ -8,6 +8,7 @@
 	import GameLiveVideo from '../GameLiveVideo.svelte';
 	import GameControls from '../GameControls.svelte';
 	import { gameRenderOptions } from './gameRenderOptions';
+	import { arrowDirection, atSpawn, levelKey, previewSummary } from './gamePreviewReading';
 	const models = gameRenderOptions();
 	import { createRun, create3d, draw2d, stepGame } from '../../../../../game/src/index';
 	import type { GameInput, GameRun } from '../../../../../game/src/index';
@@ -34,14 +35,19 @@
 		Boolean(aiVideo.decartTransportReady() && !readonly && projectId && bridge?.gameRender)
 	);
 	const busy = $derived(status !== 'off');
-	const scope = $derived(view.id + ':' + view.dimension + ':' + view.planning?.built);
-	const summary = $derived.by(() => {
-		if (readonly) return 'AI video is disabled in this read-only preview.';
-		if (!aiVideo.decartTransportReady()) return 'Live AI is not configured for this build.';
-		if (!available) return 'AI video needs a saved project open in the desktop app.';
-		if (busy) return status === 'live' ? `Live · ${left} s left` : 'Starting the AI video…';
-		return note || `Runs at most ${cap} s, so it costs at most $${pick.rate.toFixed(2)}.`;
-	});
+	const scope = $derived(levelKey(view) + ':' + view.dimension);
+	const summary = $derived(
+		previewSummary({
+			readonly,
+			transportReady: aiVideo.decartTransportReady(),
+			available,
+			status,
+			left,
+			note,
+			limit: cap,
+			rate: pick.rate
+		})
+	);
 	$effect(() => {
 		const style = view.style;
 		untrack(() => live?.setPrompt(style));
@@ -55,19 +61,6 @@
 		run = createRun(1, view);
 		onRun(run);
 	}
-	function atSpawn(next: GameRun): GameRun {
-		if (!view.world || next.state.level === view.id + ':' + view.planning?.built) return next;
-		const { spawn } = view.world;
-		const state = {
-			...next.state,
-			x: spawn.x,
-			y: spawn.z,
-			level: view.id + ':' + view.planning?.built,
-			view: view.id
-		};
-		return { ...next, viewId: view.id, state };
-	}
-
 	function keydown(event: KeyboardEvent) {
 		const target = event.target instanceof Element ? event.target : null;
 		if (!event.key.startsWith('Arrow') || target?.matches('input, textarea, select')) return;
@@ -80,8 +73,7 @@
 	function loop(now: number) {
 		carry = Math.min(Math.max(0, carry + now - last), tick * 4);
 		last = now;
-		const x = Number(held.has('ArrowRight')) - Number(held.has('ArrowLeft'));
-		const y = Number(held.has('ArrowDown')) - Number(held.has('ArrowUp'));
+		const { x, y } = arrowDirection(held);
 		for (; carry >= tick; carry -= tick) if (x || y) step({ x: x * speed, y: y * speed });
 		frame = held.size ? requestAnimationFrame(loop) : 0;
 	}
@@ -157,7 +149,7 @@
 		shown = scope;
 		untrack(() => {
 			halt('');
-			run = atSpawn(initialRun ?? createRun(1, view));
+			run = atSpawn(initialRun ?? createRun(1, view), view);
 			onRun(run);
 		});
 	});

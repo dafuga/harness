@@ -1,7 +1,8 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts" generics="Item">
 	import type { Snippet } from 'svelte';
+	import EmptyState from '../explorer-ui/explorer-kit/EmptyState.svelte';
 	let {
 		items,
 		label,
@@ -30,7 +31,7 @@
 	{/each}
 </hx-element>
 {#if !items.length}
-	<hx-element this={'p'} class="pa-empty" role="status">No {noun}.</hx-element>
+	<EmptyState className="pa-empty" role="status">No {noun}.</EmptyState>
 {/if}
 {#if items.length > preview}
 	<hx-button

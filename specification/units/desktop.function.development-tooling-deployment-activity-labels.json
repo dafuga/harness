@@ -1,0 +1,246 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.development-tooling-deployment-activity-labels",
+	"kind": "function",
+	"title": "deploymentActivityLabels",
+	"responsibility": "Words and lights of the deployment activity: standing failures, summary, the overall light, each deployment's phase and its list light.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/development-tooling/deploymentActivityLabels.ts"],
+		"symbols": [
+			"DeploymentLight",
+			"standingFailures",
+			"activitySummary",
+			"activityLight",
+			"phaseLabel",
+			"itemLight"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "standingFailures.items",
+				"type": "DeploymentActivity[]",
+				"required": true,
+				"description": "The deployments of this device, newest first."
+			},
+			{
+				"name": "activitySummary.activeCount",
+				"type": "number",
+				"required": true,
+				"description": "How many deployments are queued or running."
+			},
+			{
+				"name": "activitySummary.failed",
+				"type": "number",
+				"required": true,
+				"description": "How many failed deployments still stand."
+			},
+			{
+				"name": "activityLight.activeCount",
+				"type": "number",
+				"required": true,
+				"description": "How many deployments are queued or running."
+			},
+			{
+				"name": "activityLight.failed",
+				"type": "number",
+				"required": true,
+				"description": "How many failed deployments still stand."
+			},
+			{
+				"name": "activityLight.total",
+				"type": "number",
+				"required": true,
+				"description": "How many deployments are listed in all."
+			},
+			{
+				"name": "phaseLabel.item",
+				"type": "DeploymentActivity",
+				"required": true,
+				"description": "The deployment to describe, with its phase, current step and steps."
+			},
+			{
+				"name": "itemLight.item",
+				"type": "DeploymentActivity",
+				"required": true,
+				"description": "The deployment whose list light is wanted."
+			}
+		],
+		"outputs": [
+			{
+				"name": "standingFailures",
+				"type": "number",
+				"description": "The number of failed deployments with no newer deployment to the same project and environment."
+			},
+			{
+				"name": "activitySummary",
+				"type": "string",
+				"description": "A sentence counting active deployments, followed by the failures that stand when there are any."
+			},
+			{
+				"name": "activityLight",
+				"type": "DeploymentLight",
+				"description": "active while any deployment is under way, else failed after a standing failure, else recent once any exists, else idle."
+			},
+			{
+				"name": "phaseLabel",
+				"type": "string",
+				"description": "Queued, Deployed, Failed (at the failing step when known) or the title of the step under way; Starting when none is known."
+			},
+			{
+				"name": "itemLight",
+				"type": "DeploymentLight",
+				"description": "queued or failed for those phases, recent once complete, otherwise active."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "standingFailures",
+				"inputs": [
+					{
+						"name": "standingFailures.items",
+						"type": "DeploymentActivity[]",
+						"required": true,
+						"description": "The deployments of this device, newest first."
+					}
+				],
+				"outputs": [
+					{
+						"name": "standingFailures",
+						"type": "number",
+						"description": "The number of failed deployments with no newer deployment to the same project and environment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "activitySummary",
+				"inputs": [
+					{
+						"name": "activitySummary.activeCount",
+						"type": "number",
+						"required": true,
+						"description": "How many deployments are queued or running."
+					},
+					{
+						"name": "activitySummary.failed",
+						"type": "number",
+						"required": true,
+						"description": "How many failed deployments still stand."
+					}
+				],
+				"outputs": [
+					{
+						"name": "activitySummary",
+						"type": "string",
+						"description": "A sentence counting active deployments, followed by the failures that stand when there are any."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "activityLight",
+				"inputs": [
+					{
+						"name": "activityLight.activeCount",
+						"type": "number",
+						"required": true,
+						"description": "How many deployments are queued or running."
+					},
+					{
+						"name": "activityLight.failed",
+						"type": "number",
+						"required": true,
+						"description": "How many failed deployments still stand."
+					},
+					{
+						"name": "activityLight.total",
+						"type": "number",
+						"required": true,
+						"description": "How many deployments are listed in all."
+					}
+				],
+				"outputs": [
+					{
+						"name": "activityLight",
+						"type": "DeploymentLight",
+						"description": "active while any deployment is under way, else failed after a standing failure, else recent once any exists, else idle."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "phaseLabel",
+				"inputs": [
+					{
+						"name": "phaseLabel.item",
+						"type": "DeploymentActivity",
+						"required": true,
+						"description": "The deployment to describe, with its phase, current step and steps."
+					}
+				],
+				"outputs": [
+					{
+						"name": "phaseLabel",
+						"type": "string",
+						"description": "Queued, Deployed, Failed (at the failing step when known) or the title of the step under way; Starting when none is known."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "itemLight",
+				"inputs": [
+					{
+						"name": "itemLight.item",
+						"type": "DeploymentActivity",
+						"required": true,
+						"description": "The deployment whose list light is wanted."
+					}
+				],
+				"outputs": [
+					{
+						"name": "itemLight",
+						"type": "DeploymentLight",
+						"description": "queued or failed for those phases, recent once complete, otherwise active."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/deploymentActivityLabels.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/deploymentActivityLabels.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
