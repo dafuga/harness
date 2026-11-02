@@ -196,33 +196,20 @@
 		"reports.component.regression-proof",
 		"reports.component.select",
 		"reports.component.shared-primitives-atoms-html-a",
-		"reports.component.shared-primitives-atoms-html-abbr",
-		"reports.component.shared-primitives-atoms-html-address",
 		"reports.component.shared-primitives-atoms-html-article",
 		"reports.component.shared-primitives-atoms-html-aside",
 		"reports.component.shared-primitives-atoms-html-audio",
-		"reports.component.shared-primitives-atoms-html-b",
-		"reports.component.shared-primitives-atoms-html-bdi",
-		"reports.component.shared-primitives-atoms-html-bdo",
 		"reports.component.shared-primitives-atoms-html-blockquote",
 		"reports.component.shared-primitives-atoms-html-button",
 		"reports.component.shared-primitives-atoms-html-canvas",
-		"reports.component.shared-primitives-atoms-html-caption",
-		"reports.component.shared-primitives-atoms-html-cite",
 		"reports.component.shared-primitives-atoms-html-code",
-		"reports.component.shared-primitives-atoms-html-colgroup",
-		"reports.component.shared-primitives-atoms-html-data",
 		"reports.component.shared-primitives-atoms-html-dd",
-		"reports.component.shared-primitives-atoms-html-del",
 		"reports.component.shared-primitives-atoms-html-details",
-		"reports.component.shared-primitives-atoms-html-dfn",
 		"reports.component.shared-primitives-atoms-html-dialog",
 		"reports.component.shared-primitives-atoms-html-div",
 		"reports.component.shared-primitives-atoms-html-dl",
 		"reports.component.shared-primitives-atoms-html-dt",
 		"reports.component.shared-primitives-atoms-html-element",
-		"reports.component.shared-primitives-atoms-html-em",
-		"reports.component.shared-primitives-atoms-html-embed",
 		"reports.component.shared-primitives-atoms-html-fieldset",
 		"reports.component.shared-primitives-atoms-html-figcaption",
 		"reports.component.shared-primitives-atoms-html-figure",
@@ -233,12 +220,8 @@
 		"reports.component.shared-primitives-atoms-html-h3",
 		"reports.component.shared-primitives-atoms-html-h4",
 		"reports.component.shared-primitives-atoms-html-h5",
-		"reports.component.shared-primitives-atoms-html-h6",
 		"reports.component.shared-primitives-atoms-html-header",
-		"reports.component.shared-primitives-atoms-html-hgroup",
-		"reports.component.shared-primitives-atoms-html-hr",
 		"reports.component.shared-primitives-atoms-html-i",
-		"reports.component.shared-primitives-atoms-html-iframe",
 		"reports.component.shared-primitives-atoms-html-img",
 		"reports.component.shared-primitives-atoms-html-input",
 		"reports.component.shared-primitives-atoms-html-input-button",
@@ -262,52 +245,33 @@
 		"reports.component.shared-primitives-atoms-html-input-time",
 		"reports.component.shared-primitives-atoms-html-input-url",
 		"reports.component.shared-primitives-atoms-html-input-week",
-		"reports.component.shared-primitives-atoms-html-ins",
 		"reports.component.shared-primitives-atoms-html-kbd",
 		"reports.component.shared-primitives-atoms-html-label",
 		"reports.component.shared-primitives-atoms-html-legend",
 		"reports.component.shared-primitives-atoms-html-li",
 		"reports.component.shared-primitives-atoms-html-main",
-		"reports.component.shared-primitives-atoms-html-mark",
-		"reports.component.shared-primitives-atoms-html-menu",
-		"reports.component.shared-primitives-atoms-html-meter",
 		"reports.component.shared-primitives-atoms-html-nav",
-		"reports.component.shared-primitives-atoms-html-object",
 		"reports.component.shared-primitives-atoms-html-ol",
 		"reports.component.shared-primitives-atoms-html-optgroup",
 		"reports.component.shared-primitives-atoms-html-option",
 		"reports.component.shared-primitives-atoms-html-output",
 		"reports.component.shared-primitives-atoms-html-p",
-		"reports.component.shared-primitives-atoms-html-picture",
 		"reports.component.shared-primitives-atoms-html-pre",
-		"reports.component.shared-primitives-atoms-html-progress",
-		"reports.component.shared-primitives-atoms-html-q",
-		"reports.component.shared-primitives-atoms-html-rp",
-		"reports.component.shared-primitives-atoms-html-rt",
-		"reports.component.shared-primitives-atoms-html-ruby",
-		"reports.component.shared-primitives-atoms-html-s",
-		"reports.component.shared-primitives-atoms-html-samp",
-		"reports.component.shared-primitives-atoms-html-search",
 		"reports.component.shared-primitives-atoms-html-section",
 		"reports.component.shared-primitives-atoms-html-select",
 		"reports.component.shared-primitives-atoms-html-small",
 		"reports.component.shared-primitives-atoms-html-span",
 		"reports.component.shared-primitives-atoms-html-strong",
-		"reports.component.shared-primitives-atoms-html-sub",
 		"reports.component.shared-primitives-atoms-html-summary",
-		"reports.component.shared-primitives-atoms-html-sup",
 		"reports.component.shared-primitives-atoms-html-table",
 		"reports.component.shared-primitives-atoms-html-tbody",
 		"reports.component.shared-primitives-atoms-html-td",
 		"reports.component.shared-primitives-atoms-html-textarea",
-		"reports.component.shared-primitives-atoms-html-tfoot",
 		"reports.component.shared-primitives-atoms-html-th",
 		"reports.component.shared-primitives-atoms-html-thead",
 		"reports.component.shared-primitives-atoms-html-time",
 		"reports.component.shared-primitives-atoms-html-tr",
-		"reports.component.shared-primitives-atoms-html-u",
 		"reports.component.shared-primitives-atoms-html-ul",
-		"reports.component.shared-primitives-atoms-html-var",
 		"reports.component.shared-primitives-atoms-html-video",
 		"reports.component.shared-primitives-atoms-svg-circle",
 		"reports.component.shared-primitives-atoms-svg-ellipse",
@@ -6551,18 +6515,6 @@
 			"coverage": "required"
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-abbr",
-			"title": "HtmlAbbr",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-abbr"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-address",
-			"title": "HtmlAddress",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-address"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-article",
 			"title": "HtmlArticle",
 			"coverage": "required",
@@ -6597,24 +6549,6 @@
 			"title": "HtmlAudio: unavailable",
 			"units": ["reports.component.shared-primitives-atoms-html-audio"],
 			"coverage": "required"
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-b",
-			"title": "HtmlB",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-b"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-bdi",
-			"title": "HtmlBdi",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-bdi"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-bdo",
-			"title": "HtmlBdo",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-bdo"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-blockquote",
@@ -6653,18 +6587,6 @@
 			"units": ["reports.component.shared-primitives-atoms-html-canvas"]
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-caption",
-			"title": "HtmlCaption",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-caption"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-cite",
-			"title": "HtmlCite",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-cite"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-code",
 			"title": "HtmlCode",
 			"coverage": "required",
@@ -6675,18 +6597,6 @@
 			"title": "HtmlCode: long",
 			"units": ["reports.component.shared-primitives-atoms-html-code"],
 			"coverage": "required"
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-colgroup",
-			"title": "HtmlColgroup",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-colgroup"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-data",
-			"title": "HtmlData",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-data"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-dd",
@@ -6701,12 +6611,6 @@
 			"coverage": "required"
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-del",
-			"title": "HtmlDel",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-del"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-details",
 			"title": "HtmlDetails",
 			"coverage": "required",
@@ -6717,12 +6621,6 @@
 			"title": "HtmlDetails: closed",
 			"units": ["reports.component.shared-primitives-atoms-html-details"],
 			"coverage": "required"
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-dfn",
-			"title": "HtmlDfn",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-dfn"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-dialog",
@@ -6777,24 +6675,6 @@
 			"title": "HtmlElement: long",
 			"units": ["reports.component.shared-primitives-atoms-html-element"],
 			"coverage": "required"
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-em",
-			"title": "HtmlEm",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-em"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-em-long",
-			"title": "HtmlEm: long",
-			"units": ["reports.component.shared-primitives-atoms-html-em"],
-			"coverage": "required"
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-embed",
-			"title": "HtmlEmbed",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-embed"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-fieldset",
@@ -6905,12 +6785,6 @@
 			"units": ["reports.component.shared-primitives-atoms-html-h5"]
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-h6",
-			"title": "HtmlH6",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-h6"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-header",
 			"title": "HtmlHeader",
 			"coverage": "required",
@@ -6923,28 +6797,10 @@
 			"coverage": "required"
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-hgroup",
-			"title": "HtmlHgroup",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-hgroup"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-hr",
-			"title": "HtmlHr",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-hr"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-i",
 			"title": "HtmlI",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-i"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-iframe",
-			"title": "HtmlIframe",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-iframe"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-img",
@@ -7103,12 +6959,6 @@
 			"units": ["reports.component.shared-primitives-atoms-html-input-week"]
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-ins",
-			"title": "HtmlIns",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-ins"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-kbd",
 			"title": "HtmlKbd",
 			"coverage": "required",
@@ -7163,24 +7013,6 @@
 			"coverage": "required"
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-mark",
-			"title": "HtmlMark",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-mark"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-menu",
-			"title": "HtmlMenu",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-menu"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-meter",
-			"title": "HtmlMeter",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-meter"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-nav",
 			"title": "HtmlNav",
 			"coverage": "required",
@@ -7191,12 +7023,6 @@
 			"title": "HtmlNav: long",
 			"units": ["reports.component.shared-primitives-atoms-html-nav"],
 			"coverage": "required"
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-object",
-			"title": "HtmlObject",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-object"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-ol",
@@ -7253,12 +7079,6 @@
 			"coverage": "required"
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-picture",
-			"title": "HtmlPicture",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-picture"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-pre",
 			"title": "HtmlPre",
 			"coverage": "required",
@@ -7269,54 +7089,6 @@
 			"title": "HtmlPre: long",
 			"units": ["reports.component.shared-primitives-atoms-html-pre"],
 			"coverage": "required"
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-progress",
-			"title": "HtmlProgress",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-progress"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-q",
-			"title": "HtmlQ",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-q"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-rp",
-			"title": "HtmlRp",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-rp"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-rt",
-			"title": "HtmlRt",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-rt"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-ruby",
-			"title": "HtmlRuby",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-ruby"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-s",
-			"title": "HtmlS",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-s"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-samp",
-			"title": "HtmlSamp",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-samp"]
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-search",
-			"title": "HtmlSearch",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-search"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-section",
@@ -7373,12 +7145,6 @@
 			"coverage": "required"
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-sub",
-			"title": "HtmlSub",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-sub"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-summary",
 			"title": "HtmlSummary",
 			"coverage": "required",
@@ -7389,12 +7155,6 @@
 			"title": "HtmlSummary: closed",
 			"units": ["reports.component.shared-primitives-atoms-html-summary"],
 			"coverage": "required"
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-sup",
-			"title": "HtmlSup",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-sup"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-table",
@@ -7451,12 +7211,6 @@
 			"coverage": "required"
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-tfoot",
-			"title": "HtmlTfoot",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-tfoot"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-th",
 			"title": "HtmlTh",
 			"coverage": "required",
@@ -7505,12 +7259,6 @@
 			"coverage": "required"
 		},
 		{
-			"id": "reports-component-shared-primitives-atoms-html-u",
-			"title": "HtmlU",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-u"]
-		},
-		{
 			"id": "reports-component-shared-primitives-atoms-html-ul",
 			"title": "HtmlUl",
 			"coverage": "required",
@@ -7521,12 +7269,6 @@
 			"title": "HtmlUl: long",
 			"units": ["reports.component.shared-primitives-atoms-html-ul"],
 			"coverage": "required"
-		},
-		{
-			"id": "reports-component-shared-primitives-atoms-html-var",
-			"title": "HtmlVar",
-			"coverage": "required",
-			"units": ["reports.component.shared-primitives-atoms-html-var"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-video",
@@ -9255,35 +8997,24 @@
 				"reports-component-shared-primitives-atoms-html-a",
 				"reports-component-shared-primitives-atoms-html-a-unlinked",
 				"reports-component-shared-primitives-atoms-html-a-long",
-				"reports-component-shared-primitives-atoms-html-abbr",
-				"reports-component-shared-primitives-atoms-html-address",
 				"reports-component-shared-primitives-atoms-html-article",
 				"reports-component-shared-primitives-atoms-html-article-long",
 				"reports-component-shared-primitives-atoms-html-aside",
 				"reports-component-shared-primitives-atoms-html-aside-long",
 				"reports-component-shared-primitives-atoms-html-audio",
 				"reports-component-shared-primitives-atoms-html-audio-unavailable",
-				"reports-component-shared-primitives-atoms-html-b",
-				"reports-component-shared-primitives-atoms-html-bdi",
-				"reports-component-shared-primitives-atoms-html-bdo",
 				"reports-component-shared-primitives-atoms-html-blockquote",
 				"reports-component-shared-primitives-atoms-html-blockquote-long",
 				"reports-component-shared-primitives-atoms-html-button",
 				"reports-component-shared-primitives-atoms-html-button-disabled",
 				"reports-component-shared-primitives-atoms-html-button-long",
 				"reports-component-shared-primitives-atoms-html-canvas",
-				"reports-component-shared-primitives-atoms-html-caption",
-				"reports-component-shared-primitives-atoms-html-cite",
 				"reports-component-shared-primitives-atoms-html-code",
 				"reports-component-shared-primitives-atoms-html-code-long",
-				"reports-component-shared-primitives-atoms-html-colgroup",
-				"reports-component-shared-primitives-atoms-html-data",
 				"reports-component-shared-primitives-atoms-html-dd",
 				"reports-component-shared-primitives-atoms-html-dd-long",
-				"reports-component-shared-primitives-atoms-html-del",
 				"reports-component-shared-primitives-atoms-html-details",
 				"reports-component-shared-primitives-atoms-html-details-closed",
-				"reports-component-shared-primitives-atoms-html-dfn",
 				"reports-component-shared-primitives-atoms-html-dialog",
 				"reports-component-shared-primitives-atoms-html-div",
 				"reports-component-shared-primitives-atoms-html-div-long",
@@ -9293,9 +9024,6 @@
 				"reports-component-shared-primitives-atoms-html-dt-long",
 				"reports-component-shared-primitives-atoms-html-element",
 				"reports-component-shared-primitives-atoms-html-element-long",
-				"reports-component-shared-primitives-atoms-html-em",
-				"reports-component-shared-primitives-atoms-html-em-long",
-				"reports-component-shared-primitives-atoms-html-embed",
 				"reports-component-shared-primitives-atoms-html-fieldset",
 				"reports-component-shared-primitives-atoms-html-figcaption",
 				"reports-component-shared-primitives-atoms-html-figcaption-long",
@@ -9314,13 +9042,9 @@
 				"reports-component-shared-primitives-atoms-html-h4",
 				"reports-component-shared-primitives-atoms-html-h4-long",
 				"reports-component-shared-primitives-atoms-html-h5",
-				"reports-component-shared-primitives-atoms-html-h6",
 				"reports-component-shared-primitives-atoms-html-header",
 				"reports-component-shared-primitives-atoms-html-header-long",
-				"reports-component-shared-primitives-atoms-html-hgroup",
-				"reports-component-shared-primitives-atoms-html-hr",
 				"reports-component-shared-primitives-atoms-html-i",
-				"reports-component-shared-primitives-atoms-html-iframe",
 				"reports-component-shared-primitives-atoms-html-img",
 				"reports-component-shared-primitives-atoms-html-img-alt-only",
 				"reports-component-shared-primitives-atoms-html-input",
@@ -9347,7 +9071,6 @@
 				"reports-component-shared-primitives-atoms-html-input-time",
 				"reports-component-shared-primitives-atoms-html-input-url",
 				"reports-component-shared-primitives-atoms-html-input-week",
-				"reports-component-shared-primitives-atoms-html-ins",
 				"reports-component-shared-primitives-atoms-html-kbd",
 				"reports-component-shared-primitives-atoms-html-kbd-long",
 				"reports-component-shared-primitives-atoms-html-label",
@@ -9357,12 +9080,8 @@
 				"reports-component-shared-primitives-atoms-html-li-long",
 				"reports-component-shared-primitives-atoms-html-main",
 				"reports-component-shared-primitives-atoms-html-main-long",
-				"reports-component-shared-primitives-atoms-html-mark",
-				"reports-component-shared-primitives-atoms-html-menu",
-				"reports-component-shared-primitives-atoms-html-meter",
 				"reports-component-shared-primitives-atoms-html-nav",
 				"reports-component-shared-primitives-atoms-html-nav-long",
-				"reports-component-shared-primitives-atoms-html-object",
 				"reports-component-shared-primitives-atoms-html-ol",
 				"reports-component-shared-primitives-atoms-html-ol-long",
 				"reports-component-shared-primitives-atoms-html-optgroup",
@@ -9372,17 +9091,8 @@
 				"reports-component-shared-primitives-atoms-html-output-long",
 				"reports-component-shared-primitives-atoms-html-p",
 				"reports-component-shared-primitives-atoms-html-p-long",
-				"reports-component-shared-primitives-atoms-html-picture",
 				"reports-component-shared-primitives-atoms-html-pre",
 				"reports-component-shared-primitives-atoms-html-pre-long",
-				"reports-component-shared-primitives-atoms-html-progress",
-				"reports-component-shared-primitives-atoms-html-q",
-				"reports-component-shared-primitives-atoms-html-rp",
-				"reports-component-shared-primitives-atoms-html-rt",
-				"reports-component-shared-primitives-atoms-html-ruby",
-				"reports-component-shared-primitives-atoms-html-s",
-				"reports-component-shared-primitives-atoms-html-samp",
-				"reports-component-shared-primitives-atoms-html-search",
 				"reports-component-shared-primitives-atoms-html-section",
 				"reports-component-shared-primitives-atoms-html-section-long",
 				"reports-component-shared-primitives-atoms-html-select",
@@ -9392,10 +9102,8 @@
 				"reports-component-shared-primitives-atoms-html-span-long",
 				"reports-component-shared-primitives-atoms-html-strong",
 				"reports-component-shared-primitives-atoms-html-strong-long",
-				"reports-component-shared-primitives-atoms-html-sub",
 				"reports-component-shared-primitives-atoms-html-summary",
 				"reports-component-shared-primitives-atoms-html-summary-closed",
-				"reports-component-shared-primitives-atoms-html-sup",
 				"reports-component-shared-primitives-atoms-html-table",
 				"reports-component-shared-primitives-atoms-html-table-long",
 				"reports-component-shared-primitives-atoms-html-tbody",
@@ -9405,7 +9113,6 @@
 				"reports-component-shared-primitives-atoms-html-textarea",
 				"reports-component-shared-primitives-atoms-html-textarea-filled",
 				"reports-component-shared-primitives-atoms-html-textarea-disabled",
-				"reports-component-shared-primitives-atoms-html-tfoot",
 				"reports-component-shared-primitives-atoms-html-th",
 				"reports-component-shared-primitives-atoms-html-th-long",
 				"reports-component-shared-primitives-atoms-html-thead",
@@ -9414,10 +9121,8 @@
 				"reports-component-shared-primitives-atoms-html-time-long",
 				"reports-component-shared-primitives-atoms-html-tr",
 				"reports-component-shared-primitives-atoms-html-tr-long",
-				"reports-component-shared-primitives-atoms-html-u",
 				"reports-component-shared-primitives-atoms-html-ul",
 				"reports-component-shared-primitives-atoms-html-ul-long",
-				"reports-component-shared-primitives-atoms-html-var",
 				"reports-component-shared-primitives-atoms-html-video",
 				"reports-component-shared-primitives-atoms-svg-circle",
 				"reports-component-shared-primitives-atoms-svg-circle-outlined",
