@@ -5,7 +5,7 @@
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
-	import { timeLabel } from '../../utils/development-tooling/timeLabel';
+	import { timeLabel } from '../../utils/shared-primitives/timeLabel';
 	import HostedConnection from '../networking-security/HostedConnection.svelte';
 	import RemoteConnection from '../networking-security/RemoteConnection.svelte';
 	let { workspace }: { workspace: Workspace } = $props();

@@ -9,19 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.ts",
-			"packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.types.ts",
 			"packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
+			"packages/desktop/src/utils/recorded-answer/recordedAnswer.types.ts",
 			"packages/desktop/src/utils/recordedAnswer.ts"
 		],
-		"symbols": [
-			"recordedAnswer",
-			"AnswerInput",
-			"AnswerInput",
-			"recordedAnswer",
-			"AnswerInput",
-			"recordedAnswer"
-		]
+		"symbols": ["recordedAnswer", "AnswerInput", "AnswerInput", "AnswerInput", "recordedAnswer"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -94,21 +86,6 @@
 		},
 		{
 			"unit": "remote.entry.index",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.explorer-behavior",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.explorer-evidence",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.model.explorer-types",
 			"via": "import",
 			"origin": "derived"
 		}

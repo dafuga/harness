@@ -9,7 +9,7 @@ import type {
 import {
 	repositoryLease,
 	type RepositoryLease
-} from '../../../utils/development-tooling/repositoryLease';
+} from '../../../utils/projects-sessions/repositoryLease';
 import { designCount } from '../../../utils/planning-collaboration/designCount';
 import type { RunContext } from '../../../models/development-tooling/RunContext.types';
 import type { ImageGenerator } from '../../../models/agents-providers/AgentRunner.types';

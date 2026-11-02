@@ -6,7 +6,7 @@
 	import type { RemoteHost } from '../../lib/stores/networking-security/remoteHost.svelte';
 	import type { RemoteDeviceInfo } from '../../models/development-tooling/Environment.types';
 	import { grantLabel } from '../../utils/networking-security/remoteLabels';
-	import { timeLabel } from '../../utils/development-tooling/timeLabel';
+	import { timeLabel } from '../../utils/shared-primitives/timeLabel';
 	let {
 		devices,
 		projects,

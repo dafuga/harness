@@ -15,8 +15,8 @@ import type {
 } from '../../../../../remote/src/index';
 import { LocalTransportClientService } from './LocalTransportClientService';
 import type { LocalSocketPort } from './LocalTransportClientService';
-import { binaryArtifact } from '../../../utils/development-tooling/binaryArtifact';
-import { bootstrapChannel } from '../../../utils/development-tooling/desktopIpc';
+import { binaryArtifact } from '../../../utils/reports-media/binaryArtifact';
+import { bootstrapChannel } from '../../../utils/agents-providers/desktopIpc';
 import { remoteBinary } from '../../../utils/networking-security/remoteBinary';
 /**
  * The page talks to the main process over a loopback socket. Its one-use ticket is asked for

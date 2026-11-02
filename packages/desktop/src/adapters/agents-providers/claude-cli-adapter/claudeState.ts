@@ -1,7 +1,7 @@
 // @harness-uid u_cr7t4ul7ap
 import type { CliCommand } from '../../../models/agents-providers/AgentRunner.types';
 import type { ProviderState } from '../../../models/development-tooling/Desktop.types';
-import { cliProcess } from '../../../utils/development-tooling/cliProcess';
+import { cliProcess } from '../../../utils/agents-providers/cliProcess';
 
 export async function claudeState(command: CliCommand): Promise<ProviderState> {
 	const base: ProviderState = {

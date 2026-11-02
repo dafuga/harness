@@ -1,12 +1,12 @@
 // @harness-uid u_lyv6pkc24d
 import { createHash } from 'node:crypto';
-import { artifactLimit } from '../../utils/development-tooling/artifactMedia';
-import { artifactMedia } from '../../utils/development-tooling/artifact-answer/artifactMedia';
+import { artifactLimit } from '../../utils/reports-media/artifactMedia';
+import { artifactMedia } from '../../utils/artifact-answer/artifactMedia';
 import type { EvidenceArtifactResult } from '../../models/verification-evidence/DesktopEvidence.types';
 import {
 	hostedAttestation,
 	unshownHostedArtifact as unshown
-} from '../../utils/development-tooling/hostedAttestation';
+} from '../../utils/networking-security/hostedAttestation';
 /** Rehash every online or saved artifact and require an exactly supported MIME attestation. */
 export class HostedArtifactValidator {
 	artifact(

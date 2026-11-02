@@ -3,11 +3,11 @@ import { promoteChange } from '../../../../utils/promoteChange';
 import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
 import type { ProjectTaskContext } from '../../../../utils/agents-providers/prepareProjectTask';
 import { sourceSnapshot } from '../../../../utils/verification-evidence/sourceSnapshot';
-import { sourceChanges } from '../../../../utils/development-tooling/sourceChanges';
-import { changedUnits } from '../../../../utils/development-tooling/changedUnits';
-import { hostChanges } from '../../../../utils/development-tooling/hostChanges';
+import { sourceChanges } from '../../../../utils/git-source-history/sourceChanges';
+import { changedUnits } from '../../../../utils/git-source-history/changedUnits';
+import { hostChanges } from '../../../../utils/git-source-history/hostChanges';
 import { taskUnits } from './proposalUnits';
-import { referencePrompt } from '../../../../utils/development-tooling/referencePrompt';
+import { referencePrompt } from '../../../../utils/agents-providers/referencePrompt';
 import { unitOwners } from '../../../../../../../src/utils/unitOwners';
 import { bugRepairPolicy } from '../../../../../../../src/utils/bugRepairPolicy';
 

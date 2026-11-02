@@ -5,7 +5,7 @@
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type { CatalogEntity } from '../../models/development-tooling/Desktop.types';
 	import type { ThreadEntry } from '../../utils/explorer-ui/commentEntries';
-	import { timeLabel } from '../../utils/development-tooling/timeLabel';
+	import { timeLabel } from '../../utils/shared-primitives/timeLabel';
 	import ReferenceText from '../explorer-ui/reference-text/ReferenceText.svelte';
 	let {
 		messages,

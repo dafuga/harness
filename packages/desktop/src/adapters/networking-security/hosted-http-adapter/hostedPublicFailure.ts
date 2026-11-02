@@ -1,6 +1,6 @@
 // @harness-uid u_7a4yfvreos
 import { HostedFailureValidator } from '../../../validators/development-tooling/HostedFailureValidator';
-import { hostedResponse } from '../../../utils/development-tooling/hostedResponse';
+import { hostedResponse } from '../../../utils/networking-security/hostedResponse';
 
 const codes = new Set([
 	'evidence-stale',

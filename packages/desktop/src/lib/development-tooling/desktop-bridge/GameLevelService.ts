@@ -8,7 +8,7 @@ import { GameDocumentRepository } from '../../../../../game/src/repositories/gam
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 import type { ProviderDiscoveryService } from '../../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import { sourceSnapshot } from '../../../utils/verification-evidence/sourceSnapshot';
-import { sourceChanges } from '../../../utils/development-tooling/sourceChanges';
+import { sourceChanges } from '../../../utils/git-source-history/sourceChanges';
 const active = new Set<string>();
 /** A read-only model turn returns a proposal; approval and build belong to the human editor. */
 export class GameLevelService {

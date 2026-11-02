@@ -1,6 +1,6 @@
 // @harness-uid u_kht2hkorux
 import type { Canvas } from './brandIcon.types';
-import type { BrandIconVariant } from '../../src/utils/development-tooling/brandIcon';
+import type { BrandIconVariant } from '../../src/utils/reports-media/brandIcon';
 import { deflateSync } from 'node:zlib';
 import { brandColors, brandGrid, brandTiles } from '../../../reports/src/utils/brandMark';
 

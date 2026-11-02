@@ -1,6 +1,6 @@
 // @harness-uid u_dzcerery3f
-import type { DesktopIpcPort } from '../../../../utils/development-tooling/desktopIpc';
-import { bootstrapChannel } from '../../../../utils/development-tooling/desktopIpc';
+import type { DesktopIpcPort } from '../../../../utils/agents-providers/desktopIpc';
+import { bootstrapChannel } from '../../../../utils/agents-providers/desktopIpc';
 import type { LocalBootstrap } from '../../../../../../remote/src/index';
 
 /** `bootstrap` answers for the trusted top frame of a window and returns null for anyone else. */

@@ -1,5 +1,5 @@
 // @harness-uid u_zidyszpjkb
-import { cloudflareSafety } from './cloudflareSafety';
+import { cloudflareSafety } from '../networking-security/cloudflareSafety';
 import { createHash } from 'node:crypto';
 import { readFile, realpath } from 'node:fs/promises';
 import { resolve, relative } from 'node:path';

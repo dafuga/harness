@@ -2,7 +2,7 @@
 import type { Query, Media } from './RemoteArtifactCacheService.types';
 import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';
 import { HostedArtifactValidator } from '../../../../validators/development-tooling/HostedArtifactValidator';
-import { artifactLimit } from '../../../../utils/development-tooling/artifactMedia';
+import { artifactLimit } from '../../../../utils/reports-media/artifactMedia';
 import type { HostedReadService } from '../../../../services/development-tooling/HostedReadService';
 /** Pinned identities authorize cache provenance; only the server authorizes online bytes. */
 export class RemoteArtifactCacheService {

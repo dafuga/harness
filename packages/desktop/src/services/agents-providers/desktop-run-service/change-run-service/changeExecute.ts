@@ -4,13 +4,13 @@ import { join } from 'node:path';
 import { unitOwners } from '../../../../../../../src/utils/unitOwners';
 import type { RunContext } from '../../../../models/development-tooling/RunContext.types';
 import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
-import { changedUnits } from '../../../../utils/development-tooling/changedUnits';
+import { changedUnits } from '../../../../utils/git-source-history/changedUnits';
 import { isUnitId } from '../../../../utils/explorer-ui/entityReferences';
-import { runContext } from '../../../../utils/development-tooling/runContext';
+import { runContext } from '../../../../utils/projects-sessions/runContext';
 import { sourceSnapshot } from '../../../../utils/verification-evidence/sourceSnapshot';
 import type { SourceSnapshot } from '../../../../utils/verification-evidence/sourceSnapshot';
-import { sourceChanges } from '../../../../utils/development-tooling/sourceChanges';
-import type { hostChanges } from '../../../../utils/development-tooling/hostChanges';
+import { sourceChanges } from '../../../../utils/git-source-history/sourceChanges';
+import type { hostChanges } from '../../../../utils/git-source-history/hostChanges';
 
 /** What the agent of a change said in public, kept for its notice also when the run failed. */
 const replies = new WeakMap<RunContext, string>();

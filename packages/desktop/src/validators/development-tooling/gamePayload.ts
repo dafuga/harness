@@ -4,7 +4,7 @@ import {
 	textField,
 	enumField,
 	commitPattern
-} from '../../utils/development-tooling/ipcFields';
+} from '../../utils/ipc-payload/ipcFields';
 import { assertDocument } from '../../../../game/src/validators/game-authoring/gameDocument';
 import { validateSession } from '../../../../game/src/adapters/agents-providers/DecartAdapter';
 import type { RenderSessionRequest } from '../../../../game/src/models/game-authoring/Game.types';

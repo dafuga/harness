@@ -6,7 +6,7 @@ import {
 	idPattern,
 	nullableText,
 	textField
-} from '../development-tooling/ipcFields';
+} from '../ipc-payload/ipcFields';
 
 const modes = ['current', 'commit'] as const;
 const sides = ['before', 'after'] as const;

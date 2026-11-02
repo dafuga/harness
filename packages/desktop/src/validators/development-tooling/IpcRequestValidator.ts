@@ -1,7 +1,7 @@
 // @harness-uid u_bn3rvwai33
 import { ProjectContextValidator } from '../projects-sessions/ProjectContextValidator';
 import { channels } from '../../models/development-tooling/DesktopBridge.types';
-import { ipcPayload } from '../../utils/development-tooling/ipc-payload/ipcPayload';
+import { ipcPayload } from '../../utils/ipc-payload/ipcPayload';
 import { gamePayload } from './gamePayload';
 export class IpcRequestValidator {
 	parse(channel: string, input: unknown): unknown {

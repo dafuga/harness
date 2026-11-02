@@ -13,7 +13,7 @@ import type { RemoteMethod, WireRequest } from '../../../../../../../remote/src/
 import type { ProjectSnapshot } from '../../../../../models/development-tooling/Desktop.types';
 import { channels } from '../../../../../models/development-tooling/DesktopBridge.types';
 import type { EvidenceArtifactResult as Artifact } from '../../../../../models/verification-evidence/DesktopEvidence.types';
-import { binaryAnswer } from '../../../../../utils/development-tooling/binaryAnswer';
+import { binaryAnswer } from '../../../../../utils/reports-media/binaryAnswer';
 import { deviceCapabilities } from './deviceCapabilities';
 import { gitRead } from '../../../../../utils/projects-sessions/gitRead';
 import { IpcRequestValidator } from '../../../../../validators/development-tooling/IpcRequestValidator';

@@ -6,7 +6,7 @@ import type {
 	RunRequest
 } from '../../../../models/development-tooling/DesktopBridge.types';
 import type { RunContext } from '../../../../models/development-tooling/RunContext.types';
-import { hostChanges } from '../../../../utils/development-tooling/hostChanges';
+import { hostChanges } from '../../../../utils/git-source-history/hostChanges';
 import { planDesign } from '../../../../utils/planning-collaboration/plan-design/planDesign';
 import type { ProjectRunContext } from '../../../../utils/agents-providers/prepareProjectRun';
 import {
@@ -17,7 +17,7 @@ import {
 import { projectProposal, proposalPrompt } from './projectProposal';
 import { type ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
 import { proposalUnits } from './proposalUnits';
-import { sourceChanges } from '../../../../utils/development-tooling/sourceChanges';
+import { sourceChanges } from '../../../../utils/git-source-history/sourceChanges';
 import {
 	sourceSnapshot,
 	type SourceSnapshot

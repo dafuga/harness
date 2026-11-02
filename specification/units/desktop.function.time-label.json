@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/development-tooling/timeLabel.ts",
+			"packages/desktop/src/utils/shared-primitives/timeLabel.ts",
 			"packages/desktop/src/utils/timeLabel.ts"
 		],
 		"symbols": ["timeLabel", "timeLabel"]
@@ -57,20 +57,14 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [
-		{
-			"unit": "reports.helper.strings-format-time",
-			"via": "import",
-			"origin": "derived"
-		}
-	],
+	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/timeLabel.ts",
+		"entry": "packages/desktop/src/utils/shared-primitives/timeLabel.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/timeLabel.ts"
+				"entry": "packages/desktop/src/utils/shared-primitives/timeLabel.ts"
 			}
 		]
 	},

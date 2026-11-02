@@ -10,7 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/binaryArtifact.ts",
-			"packages/desktop/src/utils/development-tooling/binaryArtifact.ts"
+			"packages/desktop/src/utils/reports-media/binaryArtifact.ts"
 		],
 		"symbols": ["binaryArtifact", "binaryArtifact"]
 	},
@@ -86,11 +86,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/binaryArtifact.ts",
+		"entry": "packages/desktop/src/utils/binaryArtifact.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/binaryArtifact.ts"
+				"entry": "packages/desktop/src/utils/binaryArtifact.ts"
 			}
 		]
 	},

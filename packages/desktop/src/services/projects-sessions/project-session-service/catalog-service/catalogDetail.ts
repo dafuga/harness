@@ -8,7 +8,7 @@ import type {
 } from '../../../../models/development-tooling/Desktop.types';
 import type { GitSourceAdapter } from '../git-source-adapter/GitSourceAdapter';
 import { catalogHistory } from './catalogHistory';
-import { categoryOf } from '../../../../utils/development-tooling/categoryOf';
+import { categoryOf } from '../../../../utils/shared-primitives/categoryOf';
 
 export async function catalogDetail(
 	context: DetailContext,

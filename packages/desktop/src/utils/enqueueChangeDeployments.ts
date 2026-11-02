@@ -1,3 +1,3 @@
 // @harness-uid u_idkkpeldgg
-export { enqueueChangeDeployments } from './development-tooling/enqueueChangeDeployments';
-export * from './development-tooling/enqueueChangeDeployments';
+export { enqueueChangeDeployments } from './projects-sessions/enqueueChangeDeployments';
+export * from './projects-sessions/enqueueChangeDeployments';

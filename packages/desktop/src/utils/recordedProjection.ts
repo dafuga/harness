@@ -1,4 +1,4 @@
 // @harness-uid u_xjxqzbfms6
-export { recordedProjection } from './development-tooling/recordedProjection';
-export { side } from './development-tooling/recordedProjection';
-export * from './development-tooling/recordedProjection';
+export { recordedProjection } from './reports-media/recordedProjection';
+export { side } from './reports-media/recordedProjection';
+export * from './reports-media/recordedProjection';

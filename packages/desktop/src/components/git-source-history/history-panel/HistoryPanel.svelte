@@ -10,7 +10,7 @@
 		HistoryEvent
 	} from '../../../models/development-tooling/Desktop.types';
 	import { historyPages } from './historyPages';
-	import { timeLabel } from '../../../utils/development-tooling/timeLabel';
+	import { timeLabel } from '../../../utils/shared-primitives/timeLabel';
 	import WorkspaceLink from '../../projects-sessions/WorkspaceLink.svelte';
 	import RegressionProof from '$shared/verification-evidence/RegressionProof.svelte';
 	import LoadingState from '$reports/components/shared-primitives/LoadingState.svelte';

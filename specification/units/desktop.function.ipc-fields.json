@@ -9,13 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/development-tooling/ipc-payload/regionField.ts",
-			"packages/desktop/src/utils/development-tooling/ipcFields.ts",
+			"packages/desktop/src/utils/ipc-payload/ipcFields.ts",
 			"packages/desktop/src/utils/ipc-payload/regionField.ts",
 			"packages/desktop/src/utils/ipcFields.ts"
 		],
 		"symbols": [
-			"regionField",
 			"ipcFields",
 			"textField",
 			"nullableText",
@@ -40,12 +38,6 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
-			{
-				"name": "regionField.value",
-				"type": "unknown",
-				"required": true,
-				"description": "Either null or an image rectangle with finite x, y, width and height fractions from 0 to 1. Width and height must be positive and the rectangle must stay inside the image, allowing a 0.000001 edge tolerance."
-			},
 			{
 				"name": "ipcFields.value",
 				"type": "unknown",
@@ -94,6 +86,12 @@
 				"type": "readonly T[]",
 				"required": true,
 				"description": "The exact values permitted for the selection."
+			},
+			{
+				"name": "regionField.value",
+				"type": "unknown",
+				"required": true,
+				"description": "Either null or an image rectangle with finite x, y, width and height fractions from 0 to 1. Width and height must be positive and the rectangle must stay inside the image, allowing a 0.000001 edge tolerance."
 			}
 		],
 		"outputs": [
@@ -151,31 +149,6 @@
 			}
 		],
 		"operations": [
-			{
-				"name": "regionField",
-				"inputs": [
-					{
-						"name": "regionField.value",
-						"type": "unknown",
-						"required": true,
-						"description": "Either null or an image rectangle with finite x, y, width and height fractions from 0 to 1. Width and height must be positive and the rectangle must stay inside the image, allowing a 0.000001 edge tolerance."
-					}
-				],
-				"outputs": [
-					{
-						"name": "regionField",
-						"type": "Region | null",
-						"description": "Null or a new rectangle containing only x, y, width and height."
-					}
-				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown"
-					}
-				],
-				"errorStatus": "unknown"
-			},
 			{
 				"name": "ipcFields",
 				"inputs": [
@@ -295,6 +268,31 @@
 					}
 				],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "regionField",
+				"inputs": [
+					{
+						"name": "regionField.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Either null or an image rectangle with finite x, y, width and height fractions from 0 to 1. Width and height must be positive and the rectangle must stay inside the image, allowing a 0.000001 edge tolerance."
+					}
+				],
+				"outputs": [
+					{
+						"name": "regionField",
+						"type": "Region | null",
+						"description": "Null or a new rectangle containing only x, y, width and height."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -308,11 +306,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/ipcFields.ts",
+		"entry": "packages/desktop/src/utils/ipc-payload/ipcFields.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/ipcFields.ts"
+				"entry": "packages/desktop/src/utils/ipc-payload/ipcFields.ts"
 			}
 		]
 	},

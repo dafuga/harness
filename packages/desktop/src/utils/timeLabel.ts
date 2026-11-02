@@ -1,3 +1,3 @@
 // @harness-uid u_f4kksj6lzg
-export { timeLabel } from './development-tooling/timeLabel';
-export * from './development-tooling/timeLabel';
+export { timeLabel } from './shared-primitives/timeLabel';
+export * from './shared-primitives/timeLabel';

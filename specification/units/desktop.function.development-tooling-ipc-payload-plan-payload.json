@@ -8,7 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/development-tooling/ipc-payload/planPayload.ts"],
+		"source": ["packages/desktop/src/utils/ipc-payload/planPayload.ts"],
 		"symbols": ["planPayload"]
 	},
 	"contract": {
@@ -78,11 +78,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/ipc-payload/planPayload.ts",
+		"entry": "packages/desktop/src/utils/ipc-payload/planPayload.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/ipc-payload/planPayload.ts"
+				"entry": "packages/desktop/src/utils/ipc-payload/planPayload.ts"
 			}
 		]
 	},

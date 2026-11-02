@@ -13,7 +13,7 @@
 		ThreadInfo
 	} from '../../../models/development-tooling/Desktop.types';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
-	import { imageUrl } from '../../../utils/development-tooling/imageUrl';
+	import { imageUrl } from '../../../utils/reports-media/imageUrl';
 	import { priorImage } from './priorImage';
 	import {
 		imageTarget,

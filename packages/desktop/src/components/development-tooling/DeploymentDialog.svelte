@@ -8,7 +8,7 @@
 		DeploymentPlan,
 		DeploymentReceipt
 	} from '../../models/development-tooling/Deployment.types';
-	import { displayTime } from '../../utils/development-tooling/revisionTime';
+	import { displayTime } from '../../utils/shared-primitives/revisionTime';
 	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';
 	import DeploymentDetails from './DeploymentDetails.svelte';
 	import Icon from '../shared-primitives/Icon.svelte';

@@ -3,7 +3,7 @@ import type { ResourceContext } from '../../../../../../src/core/execution-runti
 import type { ResourceQueueService } from '../../../../../../src/services/execution-runtimes/ResourceQueueService';
 import type { AgentTurn, CliCommand } from '../../../models/agents-providers/AgentRunner.types';
 import { managedAgentTurn } from '../../../utils/agents-providers/managedAgentTurn';
-import { cliProcess } from '../../../utils/development-tooling/cliProcess';
+import { cliProcess } from '../../../utils/agents-providers/cliProcess';
 import { publicCliEvents } from './publicCliEvents';
 export async function claudeTurn(
 	command: CliCommand,

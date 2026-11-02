@@ -16,11 +16,11 @@ import type {
 	EvidenceArtifactQuery,
 	EvidenceArtifactResult
 } from '../../../models/verification-evidence/DesktopEvidence.types';
-import { artifactAnswer } from '../../../utils/development-tooling/artifact-answer/artifactAnswer';
+import { artifactAnswer } from '../../../utils/artifact-answer/artifactAnswer';
 import { gitRead } from '../../../utils/gitRead';
-import { recordedAnswer } from '../../../utils/development-tooling/recorded-answer/recordedAnswer';
+import { recordedAnswer } from '../../../utils/recorded-answer/recordedAnswer';
 import { recordedCapture } from '../../../utils/reports-media/recordedCapture';
-import { recordedScope, recordedTip } from '../../../utils/development-tooling/recordedScope';
+import { recordedScope, recordedTip } from '../../../utils/reports-media/recordedScope';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 const unbranched = 'Select a local branch to read recorded evidence on.';
 

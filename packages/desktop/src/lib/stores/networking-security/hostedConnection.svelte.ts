@@ -7,7 +7,7 @@ import {
 	everyProject,
 	forgetShared
 } from '../../../utils/projects-sessions/cache-status/cacheStatus';
-import { hostedAddress } from '../../../utils/development-tooling/hostedAddress';
+import { hostedAddress } from '../../../utils/networking-security/hostedAddress';
 
 /**
  * This device's connection to the hosted projects. The main process owns the origin, the

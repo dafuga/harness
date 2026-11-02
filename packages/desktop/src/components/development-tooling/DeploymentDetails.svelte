@@ -6,7 +6,7 @@
 	import { deploymentFacts, receiptFacts } from './deploymentFacts';
 	import type { DeploymentFact } from './deploymentFacts.types';
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
-	import { displayTime } from '../../utils/development-tooling/revisionTime';
+	import { displayTime } from '../../utils/shared-primitives/revisionTime';
 	import DeploymentProgress from './DeploymentProgress.svelte';
 	import DeploymentRoute from './DeploymentRoute.svelte';
 	/**

@@ -7,7 +7,7 @@ import { GameImageService } from './GameImageService';
 import { GameProjectService } from './GameProjectService';
 import { GameRenderService } from './GameRenderService';
 import { DeploymentService } from '../../../services/DeploymentService';
-import { repositoryLease } from '../../../utils/development-tooling/repositoryLease';
+import { repositoryLease } from '../../../utils/projects-sessions/repositoryLease';
 import { ProjectImageCacheService } from './ProjectImageCacheService';
 import { ProjectOperationsService } from './ProjectOperationsService';
 import { RecordedEvidenceService } from './RecordedEvidenceService';

@@ -1,11 +1,11 @@
 // @harness-uid u_odjexl5pmp
-import { promoteChange } from '../../../../utils/development-tooling/promoteChange';
+import { promoteChange } from '../../../../utils/projects-sessions/promoteChange';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { RunContext } from '../../../../models/development-tooling/RunContext.types';
 import { sourceSnapshot } from '../../../../utils/verification-evidence/sourceSnapshot';
-import { hostChanges } from '../../../../utils/development-tooling/hostChanges';
+import { hostChanges } from '../../../../utils/git-source-history/hostChanges';
 import { changeExecute, recordChange } from './changeExecute';
 
 export class ChangeRunService {

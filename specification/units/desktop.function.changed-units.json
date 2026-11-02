@@ -10,7 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/changedUnits.ts",
-			"packages/desktop/src/utils/development-tooling/changedUnits.ts"
+			"packages/desktop/src/utils/git-source-history/changedUnits.ts"
 		],
 		"symbols": ["changedUnits", "changedUnits"]
 	},
@@ -77,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/changedUnits.ts",
+		"entry": "packages/desktop/src/utils/changedUnits.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/changedUnits.ts"
+				"entry": "packages/desktop/src/utils/changedUnits.ts"
 			}
 		]
 	},

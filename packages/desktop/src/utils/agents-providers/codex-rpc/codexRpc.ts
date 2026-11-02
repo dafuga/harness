@@ -3,9 +3,9 @@ import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
 import { resourceEnvironment } from '../../../../../../src/utils/execution-runtimes/resourceEnvironment';
 import type { CliCommand } from '../../../models/agents-providers/AgentRunner.types';
-import { cliEnvironment } from '../../development-tooling/cli-environment/cliEnvironment';
-import { killOwnedProcess } from '../../development-tooling/cliProcess';
-import { streamLines } from '../../development-tooling/streamLines';
+import { cliEnvironment } from '../../cli-environment/cliEnvironment';
+import { killOwnedProcess } from '../cliProcess';
+import { streamLines } from '../../shared-primitives/streamLines';
 import type { RpcEvent, RpcPending } from '../rpcMessages';
 import { rpcMessages, rpcRequest } from './rpcMessages';
 /** Consumes diagnostics without exposing raw output or private reasoning to the renderer. */

@@ -9,7 +9,7 @@ import { remoteMethods } from '../../../../../remote/src/index';
 import type { RemoteMethod, WireRequest } from '../../../../../remote/src/index';
 import { channels } from '../../../models/development-tooling/DesktopBridge.types';
 import type { EvidenceArtifactResult as Artifact } from '../../../models/verification-evidence/DesktopEvidence.types';
-import { binaryAnswer } from '../../../utils/development-tooling/binaryAnswer';
+import { binaryAnswer } from '../../../utils/reports-media/binaryAnswer';
 import { IpcRequestValidator } from '../../../validators/development-tooling/IpcRequestValidator';
 const controls: Record<string, keyof LocalControl> = {
 	'remote.status': 'status',

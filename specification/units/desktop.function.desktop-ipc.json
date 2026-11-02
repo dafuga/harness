@@ -12,20 +12,20 @@
 			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/desktopIpc.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopIpc.ts",
 			"packages/desktop/src/lib/initialize-desktop/desktopIpc.ts",
-			"packages/desktop/src/utils/desktopIpc.ts",
-			"packages/desktop/src/utils/development-tooling/desktopIpc.ts",
-			"packages/desktop/src/utils/development-tooling/desktopIpc.types.ts"
+			"packages/desktop/src/utils/agents-providers/desktopIpc.ts",
+			"packages/desktop/src/utils/agents-providers/desktopIpc.types.ts",
+			"packages/desktop/src/utils/desktopIpc.ts"
 		],
 		"symbols": [
 			"desktopIpc",
 			"desktopIpc",
 			"desktopIpc",
-			"desktopIpc",
-			"bootstrapChannel",
 			"bootstrapChannel",
 			"desktopIpc",
 			"DesktopIpcPort",
-			"DesktopIpcPort"
+			"DesktopIpcPort",
+			"desktopIpc",
+			"bootstrapChannel"
 		]
 	},
 	"contract": {
@@ -102,11 +102,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/desktopIpc.ts",
+		"entry": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/desktopIpc.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/desktopIpc.ts"
+				"entry": "packages/desktop/src/lib/desktop-initialization/initialize-desktop/desktopIpc.ts"
 			}
 		]
 	},

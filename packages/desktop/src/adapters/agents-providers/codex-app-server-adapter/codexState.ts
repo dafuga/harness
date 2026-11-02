@@ -1,7 +1,7 @@
 // @harness-uid u_gtvislzzn2
 import type { CliCommand } from '../../../models/agents-providers/AgentRunner.types';
 import type { ProviderState } from '../../../models/development-tooling/Desktop.types';
-import { cliProcess } from '../../../utils/development-tooling/cliProcess';
+import { cliProcess } from '../../../utils/agents-providers/cliProcess';
 import { codexRpc } from '../../../utils/agents-providers/codex-rpc/codexRpc';
 import { providerModels } from './providerModels';
 

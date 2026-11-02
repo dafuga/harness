@@ -10,11 +10,11 @@ import type {
 } from '../../models/development-tooling/Deployment.types';
 import type { ProjectContext } from '../../models/ProjectContext.types';
 import type { ProjectSessionService } from '../ProjectSessionService';
-import { deploymentCurrent } from '../../utils/development-tooling/deploymentProof';
-import { deploymentStatus } from '../../utils/development-tooling/deploymentState';
-import { deploymentExecution } from '../../utils/development-tooling/deploymentExecution';
-import { reviewDeployment } from '../../utils/development-tooling/reviewDeployment';
-import { enqueueChangeDeployments } from '../../utils/development-tooling/enqueueChangeDeployments';
+import { deploymentCurrent } from '../../utils/projects-sessions/deploymentProof';
+import { deploymentStatus } from '../../utils/projects-sessions/deploymentState';
+import { deploymentExecution } from '../../utils/projects-sessions/deploymentExecution';
+import { reviewDeployment } from '../../utils/projects-sessions/reviewDeployment';
+import { enqueueChangeDeployments } from '../../utils/projects-sessions/enqueueChangeDeployments';
 /** Read-only plans and short admissions; every actual deployment belongs to the host job registry. */
 export class DeploymentService {
 	private plans = new Map<string, ReviewedDeployment>();

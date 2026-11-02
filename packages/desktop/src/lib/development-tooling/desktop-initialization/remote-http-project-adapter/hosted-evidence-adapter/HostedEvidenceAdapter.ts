@@ -6,8 +6,8 @@ import {
 	type RemoteHttpOptions
 } from '../../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import { hostedEvidencePath } from './hostedEvidencePath';
-import { hostedResponse } from '../../../../../utils/development-tooling/hostedResponse';
-import { artifactLimit } from '../../../../../utils/development-tooling/artifactMedia';
+import { hostedResponse } from '../../../../../utils/networking-security/hostedResponse';
+import { artifactLimit } from '../../../../../utils/reports-media/artifactMedia';
 import { HostedFailureValidator } from '../../../../../validators/development-tooling/HostedFailureValidator';
 
 /** One authenticated bounded transport for the evidence service, without cache policy. */

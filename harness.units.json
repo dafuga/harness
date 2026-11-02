@@ -866,103 +866,103 @@
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/timeLabel.ts",
+			"from": "packages/desktop/src/utils/shared-primitives/timeLabel.ts",
 			"specifier": "$reports/helpers/strings/formatTime",
 			"to": "packages/reports/src/helpers/strings/formatTime.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recordedScope.types.ts",
+			"from": "packages/desktop/src/utils/reports-media/recordedScope.types.ts",
 			"specifier": "$reports/models/Harness.types",
 			"to": "packages/reports/src/models/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recordedProjection.ts",
+			"from": "packages/desktop/src/utils/reports-media/recordedProjection.ts",
 			"specifier": "$reports/models/Harness.types",
 			"to": "packages/reports/src/models/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recordedProjection.ts",
+			"from": "packages/desktop/src/utils/reports-media/recordedProjection.ts",
 			"specifier": "$reports/models/Explorer.types",
 			"to": "packages/reports/src/models/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/artifactQuery.ts",
+			"from": "packages/desktop/src/utils/reports-media/artifactQuery.ts",
 			"specifier": "$reports/models/ExplorerEvidence.types",
 			"to": "packages/reports/src/models/ExplorerEvidence.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/artifactQuery.ts",
+			"from": "packages/desktop/src/utils/reports-media/artifactQuery.ts",
 			"specifier": "$reports/utils/harnessEvidence",
 			"to": "packages/reports/src/utils/harnessEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recordedScope.ts",
+			"from": "packages/desktop/src/utils/reports-media/recordedScope.ts",
 			"specifier": "$reports/models/Harness.types",
 			"to": "packages/reports/src/models/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recordedScope.ts",
+			"from": "packages/desktop/src/utils/reports-media/recordedScope.ts",
 			"specifier": "$reports/helpers/strings/shortCommit",
 			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recordedScope.ts",
+			"from": "packages/desktop/src/utils/reports-media/recordedScope.ts",
 			"specifier": "$reports/models/Explorer.types",
 			"to": "packages/reports/src/models/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/revisionTime.ts",
+			"from": "packages/desktop/src/utils/shared-primitives/revisionTime.ts",
 			"specifier": "$reports/helpers/strings/formatTime",
 			"to": "packages/reports/src/helpers/strings/formatTime.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recordedProjection.types.ts",
+			"from": "packages/desktop/src/utils/reports-media/recordedProjection.types.ts",
 			"specifier": "$reports/models/Harness.types",
 			"to": "packages/reports/src/models/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/artifact-answer/artifactAnswer.types.ts",
+			"from": "packages/desktop/src/utils/artifact-answer/artifactAnswer.types.ts",
 			"specifier": "$reports/models/Harness.types",
 			"to": "packages/reports/src/models/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedProjection.ts",
+			"from": "packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
 			"specifier": "$reports/models/Explorer.types",
 			"to": "packages/reports/src/models/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.types.ts",
+			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.types.ts",
 			"specifier": "$reports/utils/explorerEvidence",
 			"to": "packages/reports/src/utils/explorerEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.types.ts",
+			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.types.ts",
 			"specifier": "$reports/models/Explorer.types",
 			"to": "packages/reports/src/models/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.ts",
+			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
 			"specifier": "$reports/utils/explorerEvidence",
 			"to": "packages/reports/src/utils/explorerEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.ts",
+			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
 			"specifier": "$reports/utils/explorerBehavior",
 			"to": "packages/reports/src/utils/explorerBehavior.ts",
 			"reason": "Shared Reports source through the workspace build alias."

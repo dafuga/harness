@@ -1,7 +1,7 @@
 // @harness-uid u_5nouewhdog
 import type { Options } from './CloudflareDeployAdapter.types';
-import { deploymentConfig } from '../../utils/development-tooling/deploymentConfig';
-import { deploymentCommand } from '../../utils/development-tooling/deploymentCommand';
+import { deploymentConfig } from '../../utils/projects-sessions/deploymentConfig';
+import { deploymentCommand } from '../../utils/projects-sessions/deploymentCommand';
 import type {
 	CloudflareTarget,
 	DeploymentPlugin

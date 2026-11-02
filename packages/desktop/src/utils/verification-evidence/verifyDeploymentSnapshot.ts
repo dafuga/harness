@@ -5,8 +5,8 @@ import type {
 } from '../../models/development-tooling/Deployment.types';
 import { deploymentEnvironments } from '../../models/development-tooling/Deployment.types';
 import type { ReviewedDeployment } from '../../services/development-tooling/DeploymentService';
-import { deploymentProof } from './deploymentProof';
-import { deploymentState } from './deploymentState';
+import { deploymentProof } from '../projects-sessions/deploymentProof';
+import { deploymentState } from '../projects-sessions/deploymentState';
 import { gitRead, gitRevision } from '../gitRead';
 
 async function configuration(root: string, reviewed: ReviewedDeployment, plugin: DeploymentPlugin) {

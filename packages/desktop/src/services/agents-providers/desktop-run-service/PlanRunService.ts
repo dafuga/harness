@@ -1,8 +1,8 @@
 // @harness-uid u_vw6hylhmj7
 import type { RunContext } from '../../../models/development-tooling/RunContext.types';
-import { runContext } from '../../../utils/development-tooling/runContext';
+import { runContext } from '../../../utils/projects-sessions/runContext';
 import { sourceSnapshot } from '../../../utils/verification-evidence/sourceSnapshot';
-import { sourceChanges } from '../../../utils/development-tooling/sourceChanges';
+import { sourceChanges } from '../../../utils/git-source-history/sourceChanges';
 import { planDesign } from '../../../utils/planning-collaboration/plan-design/planDesign';
 export class PlanRunService {
 	async run(context: RunContext) {

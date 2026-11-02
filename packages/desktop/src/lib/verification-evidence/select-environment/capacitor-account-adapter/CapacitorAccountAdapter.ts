@@ -13,7 +13,7 @@ import type {
 	DesktopProject,
 	NativeHostedStatus
 } from '../../../../models/projects-sessions/ProjectContext.types';
-import { artifactLimit } from '../../../../utils/development-tooling/artifactMedia';
+import { artifactLimit } from '../../../../utils/reports-media/artifactMedia';
 import { everyProject } from '../../../../utils/projects-sessions/cache-status/cacheStatus';
 import {
 	accountIdentity,

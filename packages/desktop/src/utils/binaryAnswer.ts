@@ -1,3 +1,3 @@
 // @harness-uid u_xrxidbdjrz
-export { binaryAnswer } from './development-tooling/binaryAnswer';
-export * from './development-tooling/binaryAnswer';
+export { binaryAnswer } from './reports-media/binaryAnswer';
+export * from './reports-media/binaryAnswer';

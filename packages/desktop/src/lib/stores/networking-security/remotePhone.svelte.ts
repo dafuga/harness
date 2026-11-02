@@ -19,8 +19,8 @@ import {
 	phoneName,
 	scanFailure,
 	scanNotice
-} from '../../../utils/development-tooling/scan-notice/scanNotice';
-import type { ScanFailure } from '../../../utils/development-tooling/scan-notice/scanNotice';
+} from '../../../utils/scan-notice/scanNotice';
+import type { ScanFailure } from '../../../utils/scan-notice/scanNotice';
 import { isWorkspacePath } from '../../../utils/projects-sessions/workspaceRoute';
 /** Paired, but the computer cannot be asked right now. */
 const away: State[] = ['offline', 'connecting'];

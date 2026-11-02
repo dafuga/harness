@@ -9,7 +9,7 @@ import type {
 	ProjectRunRequest,
 	ProposedContract
 } from '../../../../models/development-tooling/DesktopBridge.types';
-import { referencePrompt } from '../../../../utils/development-tooling/referencePrompt';
+import { referencePrompt } from '../../../../utils/agents-providers/referencePrompt';
 
 const most = { answer: 20_000, title: 160, goal: 600, proposal: 6000 } as const;
 

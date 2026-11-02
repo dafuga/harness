@@ -8,7 +8,7 @@ import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult
 } from '../../models/verification-evidence/DesktopEvidence.types';
-import { artifactQuery } from '../development-tooling/artifactQuery';
+import { artifactQuery } from '../reports-media/artifactQuery';
 
 /** Only a name: `explorerReading` asks for `base + file`, and no address is made of it. */
 const base = 'artifact:';

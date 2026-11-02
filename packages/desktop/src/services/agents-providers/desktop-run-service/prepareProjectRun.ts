@@ -3,7 +3,7 @@ import type { ProjectRunContext } from '../../../utils/agents-providers/prepareP
 import { randomUUID } from 'node:crypto';
 import { RunCancelled } from '../../../models/agents-providers/AgentRunner.types';
 import type { ProjectRunRequest } from '../../../models/development-tooling/DesktopBridge.types';
-import { creationProject } from '../../../utils/development-tooling/ipc-payload/ipcPayload';
+import { creationProject } from '../../../utils/ipc-payload/ipcPayload';
 import type { Preparation } from '../../../utils/agents-providers/prepareRun';
 
 /**

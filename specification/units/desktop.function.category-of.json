@@ -10,7 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/categoryOf.ts",
-			"packages/desktop/src/utils/development-tooling/categoryOf.ts"
+			"packages/desktop/src/utils/shared-primitives/categoryOf.ts"
 		],
 		"symbols": ["categoryOf", "categoryOf"]
 	},
@@ -65,11 +65,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/categoryOf.ts",
+		"entry": "packages/desktop/src/utils/categoryOf.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/categoryOf.ts"
+				"entry": "packages/desktop/src/utils/categoryOf.ts"
 			}
 		]
 	},

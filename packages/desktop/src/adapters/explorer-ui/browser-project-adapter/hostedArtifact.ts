@@ -1,7 +1,7 @@
 // @harness-uid u_si33ircueg
 import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import type { EvidenceArtifactResult } from '../../../models/verification-evidence/DesktopEvidence.types';
-import { artifactAnswer } from '../../../utils/development-tooling/artifact-answer/artifactAnswer';
+import { artifactAnswer } from '../../../utils/artifact-answer/artifactAnswer';
 
 /** The kinds this app shows, each with the media types the hosted service may attest for it. */
 const shown: Array<[kind: string, types: string[]]> = [

@@ -11,7 +11,7 @@
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type { EntityDetail } from '../../models/development-tooling/Desktop.types';
 	import { evidenceNotice } from '../../utils/verification-evidence/evidenceNotice';
-	import { timeLabel } from '../../utils/development-tooling/timeLabel';
+	import { timeLabel } from '../../utils/shared-primitives/timeLabel';
 	import RuntimeAudio from '../reports-media/RuntimeAudio.svelte';
 	import RuntimeBehavior from '../execution-runtimes/RuntimeBehavior.svelte';
 	import RuntimeScreens from '../execution-runtimes/RuntimeScreens.svelte';

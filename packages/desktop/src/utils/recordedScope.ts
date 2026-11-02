@@ -1,3 +1,3 @@
 // @harness-uid u_2rustlmo6g
-export { recordedTip, recordedScope } from './development-tooling/recordedScope';
-export * from './development-tooling/recordedScope';
+export { recordedTip, recordedScope } from './reports-media/recordedScope';
+export * from './reports-media/recordedScope';

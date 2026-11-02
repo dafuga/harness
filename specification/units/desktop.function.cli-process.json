@@ -9,17 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/cliProcess.ts",
-			"packages/desktop/src/utils/development-tooling/cliProcess.ts",
-			"packages/desktop/src/utils/development-tooling/cliProcess.types.ts"
+			"packages/desktop/src/utils/agents-providers/cliProcess.ts",
+			"packages/desktop/src/utils/agents-providers/cliProcess.types.ts",
+			"packages/desktop/src/utils/cliProcess.ts"
 		],
 		"symbols": [
+			"ProcessOptions",
 			"killOwnedProcess",
 			"cliProcess",
 			"ProcessOptions",
 			"killOwnedProcess",
-			"cliProcess",
-			"ProcessOptions"
+			"cliProcess"
 		]
 	},
 	"contract": {
@@ -149,11 +149,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/cliProcess.ts",
+		"entry": "packages/desktop/src/utils/agents-providers/cliProcess.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/cliProcess.ts"
+				"entry": "packages/desktop/src/utils/agents-providers/cliProcess.ts"
 			}
 		]
 	},

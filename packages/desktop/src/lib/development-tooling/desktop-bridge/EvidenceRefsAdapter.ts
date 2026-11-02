@@ -1,7 +1,7 @@
 // @harness-uid u_tsnp64xshg
 import type { CurrentRefs, PinnedRevisions } from './EvidenceRefsAdapter.types';
 import { createHash } from 'node:crypto';
-import { commitPattern } from '../../../utils/development-tooling/ipcFields';
+import { commitPattern } from '../../../utils/ipc-payload/ipcFields';
 import { gitRead } from '../../../utils/projects-sessions/gitRead';
 
 export const notesRef = 'refs/notes/harness';

@@ -48,7 +48,7 @@ export async function observedProviderExit(runtime: string, transport: string, d
 
 function providerExitScript(transport: string, delay: number): string {
 	const cli = fileURLToPath(
-		new URL('../src/utils/development-tooling/cliProcess.ts', import.meta.url)
+		new URL('../src/utils/agents-providers/cliProcess.ts', import.meta.url)
 	);
 	const rpc = fileURLToPath(
 		new URL('../src/utils/agents-providers/codex-rpc/codexRpc.ts', import.meta.url)

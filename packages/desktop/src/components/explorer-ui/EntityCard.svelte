@@ -5,7 +5,7 @@
 	import { explorerName } from '$reports/utils/explorerName';
 	import type { CatalogEntity } from '../../models/development-tooling/Desktop.types';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
-	import { imageUrl } from '../../utils/development-tooling/imageUrl';
+	import { imageUrl } from '../../utils/reports-media/imageUrl';
 	import PlanBadge from '../planning-collaboration/PlanBadge.svelte';
 	import Status from '$shared/shared-primitives/status/Status.svelte';
 	import WorkspaceLink from '../projects-sessions/WorkspaceLink.svelte';

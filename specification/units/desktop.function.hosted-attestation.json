@@ -9,8 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/development-tooling/hostedAttestation.ts",
-			"packages/desktop/src/utils/hostedAttestation.ts"
+			"packages/desktop/src/utils/hostedAttestation.ts",
+			"packages/desktop/src/utils/networking-security/hostedAttestation.ts"
 		],
 		"symbols": [
 			"unshownHostedArtifact",
@@ -80,11 +80,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/hostedAttestation.ts",
+		"entry": "packages/desktop/src/utils/hostedAttestation.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/hostedAttestation.ts"
+				"entry": "packages/desktop/src/utils/hostedAttestation.ts"
 			}
 		]
 	},

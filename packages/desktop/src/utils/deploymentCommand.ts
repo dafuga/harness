@@ -1,3 +1,3 @@
 // @harness-uid u_el27gksita
-export { deploymentCommand } from './development-tooling/deploymentCommand';
-export * from './development-tooling/deploymentCommand';
+export { deploymentCommand } from './projects-sessions/deploymentCommand';
+export * from './projects-sessions/deploymentCommand';

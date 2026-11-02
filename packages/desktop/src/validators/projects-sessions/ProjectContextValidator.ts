@@ -1,6 +1,6 @@
 // @harness-uid u_cx6ay75f2w
-import { ipcFields, textField, commitPattern } from '../../utils/development-tooling/ipcFields';
-import { threadPayload } from '../../utils/development-tooling/ipc-payload/ipcPayload';
+import { ipcFields, textField, commitPattern } from '../../utils/ipc-payload/ipcFields';
+import { threadPayload } from '../../utils/ipc-payload/ipcPayload';
 const projectPattern = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$/;
 const uuidPattern = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 export class ProjectContextValidator {

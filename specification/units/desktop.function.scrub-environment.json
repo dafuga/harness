@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/cli-environment/scrubEnvironment.ts",
-			"packages/desktop/src/utils/development-tooling/cli-environment/scrubEnvironment.ts",
 			"packages/desktop/src/utils/scrubEnvironment.ts"
 		],
-		"symbols": ["scrubEnvironment", "scrubEnvironment", "scrubEnvironment"]
+		"symbols": ["scrubEnvironment", "scrubEnvironment"]
 	},
 	"contract": {
 		"origin": "declared",

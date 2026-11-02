@@ -3,7 +3,7 @@
 <!-- @harness-uid u_itpnebfaet -->
 <script lang="ts">
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
-	import { imageUrl } from '../../utils/development-tooling/imageUrl';
+	import { imageUrl } from '../../utils/reports-media/imageUrl';
 	let {
 		workspace,
 		entityId,

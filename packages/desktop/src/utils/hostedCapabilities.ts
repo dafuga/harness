@@ -1,3 +1,3 @@
 // @harness-uid u_wn2754hxmh
-export { hostedCapabilities } from './development-tooling/hostedCapabilities';
-export * from './development-tooling/hostedCapabilities';
+export { hostedCapabilities } from './networking-security/hostedCapabilities';
+export * from './networking-security/hostedCapabilities';

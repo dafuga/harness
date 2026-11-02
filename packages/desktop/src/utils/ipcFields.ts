@@ -1,5 +1,5 @@
 // @harness-uid u_gnssflbak6
-export { regionField } from './development-tooling/ipcFields';
+export { regionField } from './ipc-payload/ipcFields';
 export {
 	ipcFields,
 	textField,
@@ -9,5 +9,5 @@ export {
 	idPattern,
 	versionPattern,
 	enumField
-} from './development-tooling/ipcFields';
-export * from './development-tooling/ipcFields';
+} from './ipc-payload/ipcFields';
+export * from './ipc-payload/ipcFields';

@@ -1,3 +1,3 @@
 // @harness-uid u_fsp2zysbtg
-export { reviewDeployment } from './development-tooling/reviewDeployment';
-export * from './development-tooling/reviewDeployment';
+export { reviewDeployment } from './projects-sessions/reviewDeployment';
+export * from './projects-sessions/reviewDeployment';

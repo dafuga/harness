@@ -96,7 +96,7 @@ export function side(whole: ExplorerSide, entity: string): ExplorerSide {
 	return { ...whole, detail: projected, record: judged };
 }
 
-export { recordedProjection } from './recorded-answer/recordedProjection';
+export { recordedProjection } from '../recorded-answer/recordedProjection';
 
 function ownPoint(
 	point: NonNullable<HarnessRevision['regressions']>[number]['red'],

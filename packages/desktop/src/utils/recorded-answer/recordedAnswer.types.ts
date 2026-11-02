@@ -1,6 +1,6 @@
 // @harness-uid u_lkzrod2wrf
 import type { ExplorerScope } from '$reports/models/Explorer.types';
-import type { CacheIdentity } from '../../../../../collaboration/src/models/Collaboration.types';
+import type { CacheIdentity } from '../../../../collaboration/src/models/Collaboration.types';
 import type { ExplorerRevisions } from '$reports/utils/explorerEvidence';
 
 export interface AnswerInput {

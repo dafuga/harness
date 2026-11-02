@@ -10,7 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/deploymentConfig.ts",
-			"packages/desktop/src/utils/development-tooling/deploymentConfig.ts"
+			"packages/desktop/src/utils/projects-sessions/deploymentConfig.ts"
 		],
 		"symbols": ["deploymentConfig", "deploymentPath", "deploymentConfig"]
 	},
@@ -134,11 +134,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/development-tooling/deploymentConfig.ts",
+		"entry": "packages/desktop/src/utils/deploymentConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/development-tooling/deploymentConfig.ts"
+				"entry": "packages/desktop/src/utils/deploymentConfig.ts"
 			}
 		]
 	},

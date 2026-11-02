@@ -8,7 +8,7 @@ import type {
 	EntityEvidenceResult
 } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { artifactBytes } from '../../../components/shared-primitives/recorded-preview/artifactBytes';
-import { artifactQuery, type EvidenceSide } from '../../../utils/development-tooling/artifactQuery';
+import { artifactQuery, type EvidenceSide } from '../../../utils/reports-media/artifactQuery';
 import type { EvidenceStatus } from '../../../utils/verification-evidence/evidenceNotice';
 import { evidenceReading } from '../../../utils/verification-evidence/evidenceReading';
 

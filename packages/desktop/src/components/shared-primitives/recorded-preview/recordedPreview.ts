@@ -12,7 +12,7 @@ import type {
 	EntityEvidenceResult
 } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { artifactBytes } from './artifactBytes';
-import { artifactQuery } from '../../../utils/development-tooling/artifactQuery';
+import { artifactQuery } from '../../../utils/reports-media/artifactQuery';
 import { evidenceQuery } from '../../../utils/verification-evidence/evidenceQuery';
 
 const empty = (status: PreviewState['status'], reason = ''): PreviewState => ({

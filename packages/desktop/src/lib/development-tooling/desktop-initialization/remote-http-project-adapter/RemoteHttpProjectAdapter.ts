@@ -1,7 +1,7 @@
 // @harness-uid u_mieomomrtw
 import { AgentHttpAdapter } from '../../../../adapters/agents-providers/AgentHttpAdapter';
 import { hostedImage } from './hostedImage';
-import { hostedCapabilities } from '../../../../utils/development-tooling/hostedCapabilities';
+import { hostedCapabilities } from '../../../../utils/networking-security/hostedCapabilities';
 import { HostedEvidenceAdapter } from './hosted-evidence-adapter/HostedEvidenceAdapter';
 import { HostedEvidenceService } from './HostedEvidenceService';
 import type {
