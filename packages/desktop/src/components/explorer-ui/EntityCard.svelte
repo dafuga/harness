@@ -94,6 +94,10 @@
 </hx-article>
 
 <style>
+	h2 {
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
 	:global(.entity-card .helper-card-link) {
 		display: block;
 		min-width: 0;

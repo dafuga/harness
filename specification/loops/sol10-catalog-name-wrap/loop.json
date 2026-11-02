@@ -2,7 +2,7 @@
 	"name": "sol10-catalog-name-wrap",
 	"goal": "Keep realistic component names inside the mobile catalog viewport",
 	"createdAt": "2026-11-02T09:24:46.066Z",
-	"updatedAt": "2026-11-02T09:25:38.825Z",
+	"updatedAt": "2026-11-02T09:46:45.137Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T09:46:45.137Z",
+			"evidence": "Formal red f60330ff367abfaaa8bd447f1d1cdcc441ffdc8a730ad01ce4592488d62cd29a at 9e99161805 fails the strengthened card-boundary assertion at all three viewports. The mobile document also remains 533px wide against 390px. No product source changed."
 		},
 		{
 			"id": "implement",

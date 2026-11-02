@@ -60,4 +60,12 @@ async function assertCatalogNames(component: Locator, id: string, variant: strin
 	await expect(title).toBeVisible();
 	const fits = await title.evaluate((node) => node.scrollWidth <= node.clientWidth);
 	expect(fits, 'The complete long component name wraps within its card').toBe(true);
+	const withinCard = await title.evaluate((node) => {
+		const card = node.closest('article');
+		if (!card) return false;
+		const titleBounds = node.getBoundingClientRect();
+		const cardBounds = card.getBoundingClientRect();
+		return titleBounds.left >= cardBounds.left && titleBounds.right <= cardBounds.right;
+	});
+	expect.soft(withinCard, 'The long component heading stays inside its card').toBe(true);
 }
