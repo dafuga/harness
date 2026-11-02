@@ -49,10 +49,17 @@
 			{
 				"name": "RuntimeAudio",
 				"type": "markup",
-				"description": "Audio panel when clips exist or audio is declared. Commit mode pairs before/after; other modes show current. Includes playback controls, transcript when present, standing/status and reading/error states. Missing sides and declared-but-absent clips are explicit gaps."
+				"description": "Audio panel when clips exist or audio is declared. Commit mode pairs before/after; other modes show current. Includes playback controls, transcript when present, standing/status and reading/error states. Missing sides and declared-but-absent clips are explicit gaps. Catalog states: default (current clip), paired (commit before/after), missing-before (a side without its clip), declared-absent (a declared clip not recorded), unverified (a clip whose read failed) and reading (a clip still being read)."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Clip read failure",
+				"type": "caught",
+				"description": "A rejected clip URL promise is caught and shown as an unverified clip with the error message."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
