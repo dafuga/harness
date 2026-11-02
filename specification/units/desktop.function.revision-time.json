@@ -105,6 +105,11 @@
 			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.strings-format-time",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

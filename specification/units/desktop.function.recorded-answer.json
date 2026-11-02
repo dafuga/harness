@@ -88,6 +88,21 @@
 			"unit": "remote.entry.index",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-behavior",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

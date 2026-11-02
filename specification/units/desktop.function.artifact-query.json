@@ -98,6 +98,16 @@
 			"unit": "desktop.model.desktop-evidence-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-evidence-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
