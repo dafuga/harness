@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
-		"uses": []
+		"level": "organism",
+		"uses": ["reports.component.explorer-ui-explorer-kit-pill"]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/game-authoring/GameWorkspaceChips.svelte"],
@@ -16,6 +16,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "GameWorkspaceChips.demo",
@@ -54,7 +55,18 @@
 		"operations": [],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/components/game-authoring/GameWorkspaceChips.svelte",

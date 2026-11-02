@@ -27,6 +27,7 @@
 		"desktop.component.entity-view",
 		"desktop.component.environment-picker",
 		"desktop.component.game-authoring-game-graph-fit",
+		"desktop.component.game-authoring-game-workspace-chips",
 		"desktop.component.game-checkpoint-editor",
 		"desktop.component.game-checkpoint-image",
 		"desktop.component.game-checkpoint-pane",
@@ -861,6 +862,12 @@
 			"title": "GameGraphFit",
 			"coverage": "required",
 			"units": ["desktop.component.game-authoring-game-graph-fit"]
+		},
+		{
+			"id": "desktop-component-game-authoring-game-workspace-chips",
+			"title": "GameWorkspaceChips",
+			"coverage": "required",
+			"units": ["desktop.component.game-authoring-game-workspace-chips"]
 		},
 		{
 			"id": "desktop-component-game-checkpoint-editor",
@@ -8075,6 +8082,7 @@
 				"desktop-component-environment-picker-prod",
 				"desktop-component-environment-picker-with-action",
 				"desktop-component-game-authoring-game-graph-fit",
+				"desktop-component-game-authoring-game-workspace-chips",
 				"desktop-component-game-checkpoint-editor",
 				"desktop-component-game-checkpoint-editor-empty",
 				"desktop-component-game-checkpoint-editor-readonly",
