@@ -536,9 +536,9 @@
 			"id": "browser-checkpoint-review",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun ../../test/verification-output.ts playwright tests/e2e/game-authoring.spec.ts -g 'game authoring exposes independent mechanics and executable checkpoint graph'",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/game-authoring.spec.ts",
 			"cwd": "packages/desktop",
-			"timeoutMs": 180000
+			"timeoutMs": 300000
 		},
 		{
 			"id": "level-lifecycle",
