@@ -19,6 +19,12 @@
 				"type": "PlannedFile[]",
 				"required": true,
 				"description": "The planned files of one scaffold."
+			},
+			{
+				"name": "annotateUnitFiles.root",
+				"type": "string",
+				"required": true,
+				"description": "The project root, where files that already exist are looked up to keep their uid."
 			}
 		],
 		"outputs": [
@@ -39,6 +45,12 @@
 						"type": "PlannedFile[]",
 						"required": true,
 						"description": "The planned files of one scaffold."
+					},
+					{
+						"name": "annotateUnitFiles.root",
+						"type": "string",
+						"required": true,
+						"description": "The project root, where files that already exist are looked up to keep their uid."
 					}
 				],
 				"outputs": [

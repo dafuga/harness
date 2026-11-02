@@ -44,7 +44,7 @@ export async function generateModel(input: GenerateModelInput): Promise<Generate
 	const selection = generationGroup(root, input);
 	const planned = [
 		...adapterTypeFiles(),
-		...annotateUnitFiles(modelFiles({ name, fields: parseFields(input.rawFields), adapter }))
+		...annotateUnitFiles(modelFiles({ name, fields: parseFields(input.rawFields), adapter }), root)
 	];
 	const { files, paths } = groupedFiles(planned, selection?.group.id);
 
@@ -81,7 +81,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const grouped = groupedFiles(pieces, selection?.group.id);
 	const atoms = missingAtoms(root, input.kind, library);
 	const files = separateTypeDeclarations([
-		...annotateUnitFiles(grouped.files),
+		...annotateUnitFiles(grouped.files, root),
 		...support,
 		...atoms
 	]);
