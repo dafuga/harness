@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-remote-control",
+	"kind": "module",
+	"title": "remoteControl",
+	"responsibility": "Binds the remote host's status, enable, disable and device pairing operations as the controls a window's client may call.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/remoteControl.ts"
+		],
+		"symbols": ["remoteControl"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "remoteControl.remote",
+				"type": "RemoteHostService",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "remoteControl",
+				"type": "LocalControl"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "remoteControl",
+				"inputs": [
+					{
+						"name": "remoteControl.remote",
+						"type": "RemoteHostService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "remoteControl",
+						"type": "LocalControl"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.service.local-operations",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.remote-host",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/remoteControl.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/remoteControl.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

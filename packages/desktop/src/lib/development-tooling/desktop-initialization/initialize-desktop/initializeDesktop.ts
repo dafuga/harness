@@ -17,7 +17,6 @@ import type { IpcMainInvokeEvent } from 'electron';
 import { resolve } from 'node:path';
 import type { LocalBootstrap } from '../../../../../../remote/src/index';
 import { LocalClientService } from '../LocalClientService';
-import type { LocalControl } from '../LocalOperationsService';
 import { LocalTransportService } from '../../../../services/LocalTransportService';
 import { ProviderDiscoveryService } from '../../../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import { RemoteHostService } from '../../../../services/networking-security/remote-host-service/RemoteHostService';
@@ -29,8 +28,10 @@ import { NativeSessionAdapter } from '../../../../adapters/networking-security/N
 import { RelaySocketAdapter } from '../../../../adapters/networking-security/RelaySocketAdapter';
 import { RemoteHostStoreAdapter } from '../../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { RemoteRegistrationAdapter } from '../RemoteRegistrationAdapter';
+import { chooseProject } from './chooseProject';
 import { confirmUnload } from './confirmUnload';
 import { desktopIpc } from './desktopIpc';
+import { remoteControl } from './remoteControl';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
 import { NavigationValidator } from '../../../../validators/explorer-ui/NavigationValidator';
@@ -154,20 +155,6 @@ function appLifecycle(backend: Backend): void {
 	});
 }
 
-function remoteControl(remote: RemoteHostService): LocalControl {
-	const { devices } = remote;
-	return {
-		status: () => remote.status(),
-		enable: () => remote.enable(),
-		disable: () => remote.disable(),
-		createPairing: () => devices.createPairing(),
-		closePairing: () => devices.closePairing(),
-		approvePairing: (input) => devices.approvePairing(input),
-		denyPairing: (input) => devices.denyPairing(input),
-		revokeDevice: (input) => devices.revokeDevice(input)
-	};
-}
-
 async function openWindow(backend: Backend): Promise<BrowserWindow> {
 	const window = new BrowserWindow({
 		title: 'Harness',
@@ -190,13 +177,7 @@ async function openWindow(backend: Backend): Promise<BrowserWindow> {
 		if (!gate.validate(url)) event.preventDefault();
 	});
 	window.webContents.on('will-attach-webview', (event) => event.preventDefault());
-	const choose = async () => {
-		const result = await dialog.showOpenDialog(window, {
-			title: 'Open a Harness project',
-			properties: ['openDirectory']
-		});
-		return result.canceled ? null : (result.filePaths[0] ?? null);
-	};
+	const choose = () => chooseProject(window, dialog);
 	/* The window's own client: its session and runs, served over the loopback socket. */
 	const control = remoteControl(backend.remote),
 		client = new LocalClientService({ shared: backend.shared, choose, control });

@@ -97,6 +97,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-choose-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-remote-control",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.module.initialize-desktop-confirm-unload",
 			"via": "import",
 			"origin": "derived"
@@ -108,11 +118,6 @@
 		},
 		{
 			"unit": "desktop.service.local-client",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.service.local-operations",
 			"via": "import",
 			"origin": "derived"
 		},
