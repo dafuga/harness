@@ -1583,6 +1583,12 @@
 			"units": ["desktop.component.remote-approval"]
 		},
 		{
+			"id": "desktop-component-remote-approval-unselected",
+			"title": "Remote approval: unselected",
+			"coverage": "required",
+			"units": ["desktop.component.remote-approval"]
+		},
+		{
 			"id": "desktop-component-remote-approval-no-projects",
 			"title": "Remote approval: no-projects",
 			"coverage": "required",
@@ -8421,6 +8427,7 @@
 				"desktop-component-reference-text",
 				"desktop-component-relationships-panel",
 				"desktop-component-remote-approval",
+				"desktop-component-remote-approval-unselected",
 				"desktop-component-remote-approval-no-projects",
 				"desktop-component-remote-approval-busy",
 				"desktop-component-remote-approval-read",

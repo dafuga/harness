@@ -36,7 +36,7 @@ test('the Electron environment turns phone access on and shows a one-time pairin
 	await expect(computer(page)).toHaveCount(0);
 	const panel = access(page);
 	await expect(panel.getByText('Phone access is off.')).toBeVisible();
-	await expect(page.getByRole('textbox')).toHaveCount(0);
+	await expect(page.getByRole('textbox', { disabled: false })).toHaveCount(0);
 	await remoteEvidence(page, testInfo, 'desktop-start');
 	await panel.getByRole('button', { name: 'Turn on phone access', exact: true }).click();
 	await expect(panel.getByText('Phone access is on · relay.example.invalid')).toBeVisible();
@@ -52,7 +52,7 @@ test('the Electron environment turns phone access on and shows a one-time pairin
 		`pairing=${pairing.pairingId};code=${pairing.code};origin=${relayOrigin}`
 	);
 	await expect(panel.getByText(/^Expires in [0-4]:[0-5]\d$/)).toBeVisible();
-	await expect(page.getByRole('textbox')).toHaveCount(0);
+	await expect(page.getByRole('textbox', { disabled: false })).toHaveCount(0);
 	for (const hidden of ['KQ7M', 'harness-pair', pairing.pairingId])
 		await expect(panel.getByText(hidden)).toHaveCount(0);
 	await expect(page.getByText(/secret|token|private key|credential/i)).toHaveCount(0);

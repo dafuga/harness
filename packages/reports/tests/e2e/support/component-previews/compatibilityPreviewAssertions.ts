@@ -6,7 +6,8 @@ export async function prepareCompatibilityState(component: Locator, id: string, 
 		await component.getByRole('button', { name: 'Choose a model', exact: true }).click();
 		await expect(component.getByRole('dialog', { name: 'Choose a model' })).toBeVisible();
 	}
-	if (id !== 'desktop.component.remote-approval' || variant === 'no-projects') return;
+	if (id !== 'desktop.component.remote-approval' || ['no-projects', 'unselected'].includes(variant))
+		return;
 	await component.getByRole('checkbox').first().check();
 	if (['read', 'write'].includes(variant))
 		await component.getByRole('combobox', { name: 'Device access' }).selectOption(variant);
@@ -24,7 +25,7 @@ export async function assertCompatibilityPreview(component: Locator, id: string,
 	if (variant === 'no-projects')
 		await expect(component).toContainText('Add a local project first.');
 	const approve = component.getByRole('button', { name: /^Approv/ });
-	if (variant === 'no-projects' || variant === 'busy') await expect(approve).toBeDisabled();
+	if (['no-projects', 'unselected', 'busy'].includes(variant)) await expect(approve).toBeDisabled();
 	else await expect(approve).toBeEnabled();
 	if (['read', 'write'].includes(variant)) {
 		await expect(component.getByRole('combobox', { name: 'Device access' })).toHaveValue(variant);

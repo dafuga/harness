@@ -52,7 +52,7 @@
 			{
 				"name": "RemoteApproval",
 				"type": "markup",
-				"description": "A device request with project checkboxes, initially unselected, and Device access initially Comment. Read grants browsing only; Comment also grants comments; Write also permits AI requests. Approve is disabled while busy or without projects selected; Deny is disabled while busy. Busy requests expose aria-busy and label the approval action Approving. Approval includes both displayed identities and the exact selected project IDs."
+				"description": "A device request with project checkboxes, initially unselected, and Device access initially Comment. Read grants browsing only; Comment also grants comments; Write also permits AI requests. Approve is disabled while busy or without projects selected; Deny is disabled while busy. Busy requests expose aria-busy and label the approval action Approving. Approval includes both displayed identities and the exact selected project IDs. Catalog states: default (a project chosen, Approve enabled), unselected (none chosen, Approve disabled), no-projects (the local-project note, Approve disabled), busy (Approving…, aria-busy, Deny disabled) and the read and write access presentations."
 			}
 		],
 		"errors": [
