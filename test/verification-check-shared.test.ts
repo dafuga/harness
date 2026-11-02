@@ -10,7 +10,7 @@ import legacy from './fixtures/verification-v1.json';
 import type { StoredRecord } from '../src/repositories/VerificationStoreRepository';
 import type { VerificationRecord } from '../src/core/verificationTypes';
 import { CommitTreeAdapter } from '../src/adapters/git-source-history/CommitTreeAdapter';
-import { SourceIndexService } from '../src/services/SourceIndexService';
+import { SourceIndexService } from '../src/services/development-tooling/source-index-service/SourceIndexService';
 import { componentVersion } from '../src/utils/componentVersion';
 import { loadSide } from '../src/workflows/loadRevisions';
 import { VerificationRecordValidator } from '../src/validators/VerificationRecordValidator';
