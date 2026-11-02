@@ -4,7 +4,7 @@ import { presentationVariants } from './presentationVariants';
 import { explorerKitVariants } from './explorerKitVariants';
 import { pluginVariants } from './pluginVariants';
 import { activityCatalogVariants } from './activityCatalogVariants';
-import { providerPickerStates } from './providerPickerVariants';
+import { conversationCatalogVariants } from './conversationCatalogVariants';
 import { audioCatalogVariants } from './audioCatalogVariants';
 import { evidenceCatalogVariants } from './evidenceCatalogVariants';
 import { explorerCatalogVariants } from './explorerCatalogVariants';
@@ -41,42 +41,7 @@ const variants: Record<string, string[]> = {
 	'reports.component.image-zoom': imageZoomStates,
 
 	'reports.component.browser-errors': browserErrorsStates,
-	// The console connects on open and exposes its access, roster and composer states.
-	'reports.component.console-chat': [
-		'open',
-		'populated',
-		'loading',
-		'connection-error',
-		'read-only',
-		'agents',
-		'ask',
-		'change',
-		'comment',
-		'model-open',
-		'model-selected',
-		'effort-open',
-		'effort-selected'
-	],
-	// Floating chat exposes its launcher, notice, navigation and conversation-follow modes.
-	'reports.component.floating-chat': [
-		'closed',
-		'notice',
-		'navigation',
-		'following',
-		'not-following'
-	],
-	// Connection, session, queue and selection branches are exercised through the picker client.
-	'reports.component.provider-picker': providerPickerStates,
-	// Active observations and every switch status have distinct card presentations.
-	'reports.component.provider-picker-cards': [
-		'unknown',
-		'in-use',
-		'applying',
-		'applied',
-		'failed',
-		'cancelled',
-		'locked'
-	],
+	...conversationCatalogVariants,
 	// Examples distinguish provenance, value shape and the expanded full JSON.
 	'reports.component.contract-example': [
 		'illustrative',
