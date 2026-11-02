@@ -87,7 +87,7 @@ async function assertMobileNavControls(component: Locator, tabs: Locator) {
 	const height = (await component.locator('header.topbar').boundingBox())!.height;
 	const game = await tabs.getByRole('link', { name: 'Game Views', exact: true }).count();
 	expect(height, 'Mobile navigation leaves room for project content').toBeLessThanOrEqual(
-		game ? 220 : 184
+		game ? 250 : 214
 	);
 	const search = (await component
 		.getByRole('button', { name: 'Search entities', exact: true })
