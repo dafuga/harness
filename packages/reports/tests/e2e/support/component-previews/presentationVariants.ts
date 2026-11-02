@@ -16,7 +16,7 @@ export const presentationVariants: Record<string, string[]> = {
 	],
 	'desktop.component.agent-controls': ['compact', 'empty', 'unavailable'],
 	'desktop.component.choice-dialog': ['closed', 'empty', 'disabled'],
-	'desktop.component.remote-approval': ['no-projects', 'busy', 'read', 'write'],
+	'desktop.component.remote-approval': ['unselected', 'no-projects', 'busy', 'read', 'write'],
 	'desktop.component.contract-panel': ['empty', 'missing-description', 'long', 'technical-open'],
 	'reports.component.harness-explorer-table': [
 		'empty',
