@@ -4967,7 +4967,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5597,7 +5597,7 @@
 			"name": "activityDisplay",
 			"commit": "2b750c5dd0f1e8c0a6933ef4dc348ba9cfeca3fb",
 			"definition": "010445fa19c69439c1a3a1d485a73fc8296befffb736991eca733ab66115b1e2",
-			"reason": "Record main\u2019s intentional removal of the repeated agent count from the displayed activity sentence."
+			"reason": "Record main’s intentional removal of the repeated agent count from the displayed activity sentence."
 		},
 		{
 			"unit": "function.unit-identity",
@@ -5806,6 +5806,13 @@
 			"to": "packages/desktop/src/utils/cli-environment/scrubEnvironment.ts",
 			"ownerSource": "packages/desktop/src/utils/cli-environment/cliEnvironment.ts",
 			"reason": "Relocated to its feature folder; unchanged."
+		},
+		{
+			"unit": "function.scan-component",
+			"name": "scanComponent",
+			"commit": "8ff37d22dec778b84fa2a943573e9724a963dbc9",
+			"definition": "f65112a7deea343c60bfb6c86ad22ad7f714ef0aed5f7f5726ede4bde9e13030",
+			"reason": "Document omitted optional props through the owned syntax scanner while preserving requiredness and literal defaults."
 		}
 	],
 	"retiredOwners": [
