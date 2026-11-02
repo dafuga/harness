@@ -2,7 +2,7 @@
 	"name": "sol-12-cli-startup",
 	"goal": "Keep CLI startup independent of generated app configs and block guide completion only on named unit states",
 	"createdAt": "2026-11-01T23:53:28.566Z",
-	"updatedAt": "2026-11-02T00:12:13.164Z",
+	"updatedAt": "2026-11-02T00:17:26.223Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T00:17:23.883Z",
+			"evidence": "de053adc0a passes the unchanged 12-case matrix in the same environment as red 68d25e32a4; sealed green b757a219c8dd."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T00:17:26.223Z",
+			"evidence": "In an isolated export, restoring the 68d25e32a4 unitShots imports fails the existing config-readiness case (exit 1). Restored repair passes (exit 0); tracked drift is empty."
 		},
 		{
 			"id": "verify",
