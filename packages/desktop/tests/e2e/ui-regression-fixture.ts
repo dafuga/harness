@@ -64,21 +64,22 @@ export async function reviewRegression(page: Page, info: TestInfo): Promise<void
 		await runtimeEvidence(page, info, 'regression-proof');
 		await expect(proof).toBeVisible({ timeout: 1500 });
 		await expect(proof.getByText('Regression fixed', { exact: true })).toBeVisible();
+		const beforeStep = proof.locator('.proof-step.failed');
+		const afterStep = proof.locator('.proof-step.passed');
 		await expect(
-			proof.getByText(`Before · ${commits.middle.slice(0, 7)} · failed as expected`, {
+			beforeStep.getByText(`Before · ${commits.middle.slice(0, 7)} · failed as expected`, {
 				exact: true
 			})
 		).toBeVisible();
 		await expect(
-			proof.getByText(`After · ${commits.tip.slice(0, 7)} · passed`, { exact: true })
+			afterStep.getByText(`After · ${commits.tip.slice(0, 7)} · passed`, { exact: true })
 		).toBeVisible();
 		await expect(proof.getByText('Expected 1 order; received 0', { exact: true })).toBeVisible();
 		await expect(proof.getByText('Same tests and command', { exact: true })).toBeVisible();
-		await expect(proof.getByRole('link', { name: 'View failing test commit' })).toHaveAttribute(
-			'href',
-			`${root}/commit/${commits.middle}/${entity}`
-		);
-		await expect(proof.getByRole('link', { name: 'View fix commit' })).toHaveAttribute(
+		await expect(
+			beforeStep.getByRole('link', { name: 'View failing test commit' })
+		).toHaveAttribute('href', `${root}/commit/${commits.middle}/${entity}`);
+		await expect(afterStep.getByRole('link', { name: 'View fix commit' })).toHaveAttribute(
 			'href',
 			`${root}/commit/${commits.tip}/${entity}`
 		);
