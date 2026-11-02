@@ -168,8 +168,8 @@
 					{/if}
 					<hx-figcaption>
 						{pane.heading}{#if item}
-							· {item.title}{#if item.viewport}
-								· {item.viewport}{/if}
+							{' · '}{item.title}{#if item.viewport}
+								{' · '}{item.viewport}{/if}
 							{#if item.standing}<hx-span> · {item.standing}</hx-span>{/if}
 							{#if !item.missing && item.note}<hx-p class="viewer-note">{item.note}</hx-p>{/if}
 						{/if}
