@@ -49,8 +49,19 @@
 		update(patch);
 		close();
 	}
+	/** Focus the first field once the pane is drawn, unless the author has already chosen another field to type in. */
 	function focusFirst(field: HTMLElement, enabled: boolean) {
-		if (enabled) requestAnimationFrame(() => field.focus());
+		if (!enabled) return;
+		requestAnimationFrame(() => {
+			const chosen = document.activeElement;
+			if (
+				chosen &&
+				chosen !== field &&
+				chosen.matches('input, textarea, select, [contenteditable]')
+			)
+				return;
+			field.focus();
+		});
 	}
 </script>
 
