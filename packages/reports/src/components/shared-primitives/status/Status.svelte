@@ -124,14 +124,26 @@
 			onfocus={() => (iconOpen = true)}
 			onmouseenter={() => (iconOpen = true)}
 			onmouseleave={() => (iconOpen = false)}>{status === 'verified' ? '✓' : '×'}</hx-button
-		>{#if iconOpen}<hx-span class="reason" role="status">{description}</hx-span>{/if}</hx-span
-	>
+		>
+		{#if iconOpen}
+			<hx-span class="reason" role="status">{description}</hx-span>
+		{/if}
+	</hx-span>
 {:else if variant === 'run'}
-	{#if label}<hx-div class="run-status" role="status"
-			><hx-span
-				>{#if children}{@render children()}{:else}{label}{/if}</hx-span
-			>{#if active}<hx-button onclick={cancel}>Cancel run</hx-button>{/if}</hx-div
-		>{/if}
+	{#if label}
+		<hx-div class="run-status" role="status">
+			<hx-span>
+				{#if children}
+					{@render children()}
+				{:else}
+					{label}
+				{/if}
+			</hx-span>
+			{#if active}
+				<hx-button onclick={cancel}>Cancel run</hx-button>
+			{/if}
+		</hx-div>
+	{/if}
 {:else}
 	<hx-span
 		class="hx-verdict"
@@ -165,10 +177,12 @@
 			bind:this={tip}
 			onpointerenter={(event) => hovered(event, 'tip', true)}
 			onpointerleave={(event) => hovered(event, 'tip', false)}
-			><hx-strong>{words}</hx-strong>{#each why as reason, position (position)}<hx-span
-					>{reason}</hx-span
-				>{/each}</hx-span
 		>
+			<hx-strong>{words}</hx-strong>
+			{#each why as reason, position (position)}
+				<hx-span>{reason}</hx-span>
+			{/each}
+		</hx-span>
 	</hx-span>
 {/if}
 

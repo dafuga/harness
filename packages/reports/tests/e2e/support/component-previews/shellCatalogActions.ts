@@ -100,28 +100,8 @@ async function verdictState(component: Locator, variant: string) {
 		await expect(component.locator('.badge')).toBeVisible();
 		return;
 	}
-	if (variant.startsWith('run')) {
-		await expect(component.getByRole('status')).toContainText('Invoice approval review');
-		await expect(component.getByRole('button', { name: 'Cancel run' })).toHaveCount(
-			variant === 'run' ? 1 : 0
-		);
-		return;
-	}
-	if (variant.startsWith('icon')) {
-		const failed = [
-			'icon-failed',
-			'icon-unverified',
-			'icon-unknown',
-			'icon-no-reason',
-			'icon-long'
-		].includes(variant);
-		await expect(component.getByRole('button')).toHaveText(failed ? '×' : '✓');
-		if (variant !== 'icon') {
-			await component.getByRole('button').focus();
-			await expect(component.getByRole('status')).toBeVisible();
-		}
-		return;
-	}
+	if (variant.startsWith('run')) return runStatusState(component, variant);
+	if (variant.startsWith('icon')) return verificationIconState(component, variant);
 
 	if (variant.endsWith('-open')) {
 		await component.getByRole('button').click();
@@ -131,6 +111,30 @@ async function verdictState(component: Locator, variant: string) {
 	if (variant.startsWith('unknown')) state = 'unknown';
 	if (variant.startsWith('failed') || variant === 'long-open') state = 'failed';
 	await expect(component.locator('.hx-verdict')).toHaveClass(new RegExp(state));
+}
+async function runStatusState(component: Locator, variant: string) {
+	await expect(component.getByRole('status')).toContainText('Invoice approval review');
+	await expect(component.locator('.run-status')).toHaveCSS('display', 'flex');
+	await expect(component.locator('.run-status')).toHaveCSS('justify-content', 'space-between');
+	await expect(component.getByRole('button', { name: 'Cancel run' })).toHaveCount(
+		variant === 'run' ? 1 : 0
+	);
+}
+async function verificationIconState(component: Locator, variant: string) {
+	const failed = [
+		'icon-failed',
+		'icon-unverified',
+		'icon-unknown',
+		'icon-no-reason',
+		'icon-long'
+	].includes(variant);
+	await expect(component.getByRole('button')).toHaveText(failed ? '×' : '✓');
+	await expect(component.getByRole('button')).toHaveCSS('width', '24px');
+	await expect(component.getByRole('button')).toHaveCSS('height', '24px');
+	if (variant !== 'icon') {
+		await component.getByRole('button').focus();
+		await expect(component.getByRole('status')).toBeVisible();
+	}
 }
 async function navbarState(component: Locator, variant: string) {
 	if (variant !== 'search-open') return;

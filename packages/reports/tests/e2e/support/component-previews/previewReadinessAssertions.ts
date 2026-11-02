@@ -41,6 +41,17 @@ export function previewWaitUntil(id: string, variant: string) {
 		: 'load';
 }
 
+/** State transitions finish before pixels are recorded, rather than only before later assertions. */
+export async function assertPreviewCaptureState(content: Locator, id: string, variant: string) {
+	if (id !== 'reports.component.harness-harness-verdict') return;
+	const message = 'The entered Status state is ready for capture';
+	if (variant.startsWith('icon')) {
+		if (variant !== 'icon') await expect(content.getByRole('status'), message).toBeVisible();
+		return;
+	}
+	if (variant.endsWith('-open')) await expect(content.getByRole('tooltip'), message).toBeVisible();
+}
+
 /** Expected gaps are explicit; other unavailable content must not become a capture. */
 export async function assertPreviewMessages(content: Locator, id: string, variant: string) {
 	const moduleCard = id === 'reports.component.explorer-ui-explorer-module-card';

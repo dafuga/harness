@@ -1,12 +1,13 @@
+import { assertKitPill, assertKitEmpty, assertKitNotice } from './kitPrimitivePreviewAssertions';
 import { expect, type Locator } from '@playwright/test';
 
 const kit = 'reports.component.explorer-ui-explorer-kit-';
 const plugins = 'reports.component.module-system-plugins-';
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	[`${kit}card`]: card,
-	[`${kit}pill`]: pill,
-	[`${kit}empty-state`]: empty,
-	[`${kit}notice`]: notice,
+	[`${kit}pill`]: assertKitPill,
+	[`${kit}empty-state`]: assertKitEmpty,
+	[`${kit}notice`]: assertKitNotice,
 	[`${kit}command-block`]: command,
 	[`${plugins}explorer-plugin-card`]: plugin,
 	[`${plugins}plugin-resource-card`]: resource,
@@ -23,7 +24,7 @@ export async function assertPluginKitPreview(component: Locator, id: string, var
 export async function assertInlinePluginKitCapture(component: Locator, id: string) {
 	if (id === `${kit}empty-state`) await separatedEmptyAction(component);
 	if (![`${kit}pill`, `${plugins}plugin-state-pills`].includes(id)) return;
-	for (const pill of await component.locator('.ex-pill').all()) {
+	for (const pill of await component.locator('.ex-pill, .pill, .chip').all()) {
 		const excess = await pill.evaluate((node) => {
 			const range = document.createRange();
 			range.selectNodeContents(node);
@@ -62,48 +63,6 @@ async function card(component: Locator, variant: string) {
 		await expect(root).toHaveAttribute('data-harness-component', 'explorer-ui-explorer-kit-card');
 	}
 	if (variant === 'module') await expect(root).not.toHaveClass(/ex-card/);
-}
-
-async function pill(component: Locator, variant: string) {
-	const root = component.locator('.ex-pill');
-	await expect(root).toHaveText(variant === 'state' ? 'Available' : 'Installed');
-	if (variant)
-		await expect(root).toHaveAttribute(
-			'data-state',
-			variant === 'state' ? 'Available' : 'Installed'
-		);
-	else await expect(root).not.toHaveAttribute('data-state');
-	if (variant === 'tone') {
-		await expect(root).toHaveClass(/mod-state/);
-		const colors = await root.evaluate((node) => {
-			const style = getComputedStyle(node);
-			const context = document.createElement('canvas').getContext('2d')!;
-			context.fillStyle = style.color;
-			const actual = context.fillStyle;
-			context.fillStyle = style.getPropertyValue('--ex-soft');
-			return { actual, plain: context.fillStyle };
-		});
-		expect(colors.actual, 'Pill tone changes the painted label color').not.toBe(colors.plain);
-	}
-}
-
-async function empty(component: Locator, variant: string) {
-	await expect(component.locator('p.ex-empty')).toContainText('No dependencies recorded');
-	const action = component.getByRole('link', { name: 'Browse components' });
-	await expect(action).toHaveCount(variant === 'action' ? 1 : 0);
-	if (variant === 'action') {
-		await expect(action).toHaveAttribute('href', '/harness/components');
-		await action.focus();
-		await expect(action).toBeFocused();
-	}
-}
-
-async function notice(component: Locator, variant: string) {
-	const root = component.getByRole('note');
-	await expect(root).toContainText('Some dependencies could not be read');
-	if (variant === 'long') await expect(root).toContainText('AgentControls.svelte');
-	await expect(root).not.toContainText('source/source/');
-	expect(await root.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
 }
 
 async function command(component: Locator, variant: string) {

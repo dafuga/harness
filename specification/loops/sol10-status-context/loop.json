@@ -1,0 +1,64 @@
+{
+	"name": "sol10-status-context",
+	"goal": "Retain the Desktop caller styles for every icon and run mode of the shared Status catalog.",
+	"createdAt": "2026-11-02T02:21:16.961Z",
+	"updatedAt": "2026-11-02T02:21:38.907Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-11-02T02:21:38.209Z",
+			"evidence": "The retained c205 API icon/run images use Reports default buttons. Desktop supplies 24px circular verification marks and flex run rows; catalogEntry only selects styles from the shared Reports unit prefix."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-11-02T02:21:38.907Z",
+			"evidence": "The existing Status mode cases assert words, roles, focus and cancellation presence but not the actual caller dimensions or flex row. Add painted assertions to those same 72 cases and preserve their count."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

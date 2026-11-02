@@ -26,6 +26,7 @@ import {
 } from './desktopStateActions';
 
 import {
+	assertPreviewCaptureState,
 	assertPreviewLoading,
 	assertPreviewMessages,
 	previewWaitUntil,
@@ -148,6 +149,7 @@ export async function capturePreview(
 	const { viewport, variant = '' } = target;
 	const nativeOpen = usesNativePopup(id, variant);
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
+	await assertPreviewCaptureState(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await settlePreviewAudio(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await frameDesktopCapture(page, id);
 	const bounds = await previewCaptureBounds(page, id, variant);

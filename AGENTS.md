@@ -105,6 +105,14 @@ the shared primitives each component uses. Extend the shared folder when a capab
 is missing instead of writing the primitive's markup inline. Existing inline exceptions
 live in eslint.reuse-allowlist.json; entries and counts may only shrink.
 
+Shared component preview states use their actual caller's stylesheet. At the catalog
+review checkpoint, assert the painted treatment of visual variants; tag, class and
+text assertions alone do not prove that the intended styles loaded.
+After consolidating components across apps, review every retained variant's caller
+context; a shared unit's app prefix does not establish it.
+State actions finish before capture. The capture helper checks the entered state's
+visible marker; a later passing DOM assertion cannot validate pixels recorded earlier.
+
 ## Code Rules
 
 - Compose UI as atoms → molecules → organisms → layouts/templates → pages. Reuse the canonical native element atoms and existing shared controls; native markup belongs inside atoms. Declare `@harness-tier` and the relative `@harness-atoms` library directory. Native atom calls preserve bindings/actions and scoped CSS through `atomicComponents()`; keep generated native typings installed. Feature categories and stable unit IDs remain independent of composition level. Run the atomic audit, registry composition guard and normal interaction/catalog coverage. `harness info component` documents the supported APIs.
