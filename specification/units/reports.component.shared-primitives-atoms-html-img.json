@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlImg",
 				"type": "markup",
-				"description": "The actual native img element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native img element, with forwarded attributes and content and no additional wrapper. States: alt-only: The source is omitted and the browser displays the supplied No image available alternative text."
 			}
 		],
 		"errors": [

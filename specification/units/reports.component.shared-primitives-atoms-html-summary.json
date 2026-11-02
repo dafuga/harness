@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlSummary",
 				"type": "markup",
-				"description": "The actual native summary element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native summary element, with forwarded attributes and content and no additional wrapper. States: closed: The summary remains visible while its parent disclosure is collapsed."
 			}
 		],
 		"errors": [

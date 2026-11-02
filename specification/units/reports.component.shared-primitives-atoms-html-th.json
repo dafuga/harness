@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlTh",
 				"type": "markup",
-				"description": "The actual native th element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop. The caller supplies a table row context."
+				"description": "The actual native th element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop. The caller supplies a table row context. States: long: The native th element retains long caller content in its normal semantic context."
 			}
 		],
 		"errors": [

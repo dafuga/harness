@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlTextarea",
 				"type": "markup",
-				"description": "The actual native textarea element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native textarea element, with forwarded attributes and content and no additional wrapper. States: filled: The native textarea displays the supplied saved multiline-message value. disabled: The native textarea displays its supplied text while editing is disabled."
 			}
 		],
 		"errors": [

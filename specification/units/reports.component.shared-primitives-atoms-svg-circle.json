@@ -30,7 +30,7 @@
 			{
 				"name": "SvgCircle",
 				"type": "markup",
-				"description": "The actual native circle element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native circle element, with forwarded attributes and content and no additional wrapper. States: outlined: The SVG circle has no fill and uses the current-color stroke."
 			}
 		],
 		"errors": [

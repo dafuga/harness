@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlButton",
 				"type": "markup",
-				"description": "The actual native button element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native button element, with forwarded attributes and content and no additional wrapper. States: disabled: The native button has its disabled attribute and rejects activation. long: The native button element retains long caller content in its normal semantic context."
 			}
 		],
 		"errors": [

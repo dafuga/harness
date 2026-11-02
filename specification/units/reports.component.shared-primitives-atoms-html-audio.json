@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlAudio",
 				"type": "markup",
-				"description": "The actual native audio element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native audio element, with forwarded attributes and content and no additional wrapper. States: unavailable: The native audio controls have no source and cannot play a recording."
 			}
 		],
 		"errors": [

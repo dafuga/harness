@@ -37,7 +37,7 @@
 			{
 				"name": "HtmlElement",
 				"type": "markup",
-				"description": "The actual native selected element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop."
+				"description": "The actual native selected element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop. States: long: The native element element retains long caller content in its normal semantic context."
 			}
 		],
 		"errors": [

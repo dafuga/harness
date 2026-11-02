@@ -30,7 +30,7 @@
 			{
 				"name": "SvgPath",
 				"type": "markup",
-				"description": "The actual native path element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop. The caller supplies its SVG parent context."
+				"description": "The actual native path element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop. The caller supplies its SVG parent context. States: filled: The SVG path uses the current-color fill rather than an unfilled outline."
 			}
 		],
 		"errors": [

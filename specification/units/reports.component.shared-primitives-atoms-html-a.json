@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlA",
 				"type": "markup",
-				"description": "The actual native a element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop."
+				"description": "The actual native a element, with forwarded attributes and content and no additional wrapper. All remaining caller props are optional forwarded native attributes, DOM properties, data/aria values and event handlers. Omitted keys are not set by the atom, leaving browser defaults; supply them directly rather than through a nested attributes prop. States: unlinked: An anchor without href displays caller text without a navigation target. long: The native anchor displays a long caller-supplied link label."
 			}
 		],
 		"errors": [

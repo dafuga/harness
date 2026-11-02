@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlTbody",
 				"type": "markup",
-				"description": "The actual native tbody element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native tbody element, with forwarded attributes and content and no additional wrapper. States: long: The native tbody element retains long caller content in its normal semantic context."
 			}
 		],
 		"errors": [

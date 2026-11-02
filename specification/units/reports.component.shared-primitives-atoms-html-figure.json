@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlFigure",
 				"type": "markup",
-				"description": "The actual native figure element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native figure element, with forwarded attributes and content and no additional wrapper. States: long: The native figure element retains long caller content in its normal semantic context."
 			}
 		],
 		"errors": [

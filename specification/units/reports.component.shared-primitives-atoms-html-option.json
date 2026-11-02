@@ -30,7 +30,7 @@
 			{
 				"name": "HtmlOption",
 				"type": "markup",
-				"description": "The actual native option element, with forwarded attributes and content and no additional wrapper."
+				"description": "The actual native option element, with forwarded attributes and content and no additional wrapper. States: disabled: The native option is disabled and unavailable for selection."
 			}
 		],
 		"errors": [
