@@ -1716,6 +1716,36 @@
 			"units": ["desktop.component.runtime-audio"]
 		},
 		{
+			"id": "desktop-component-runtime-audio-paired",
+			"title": "Runtime audio: before and after",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-audio"]
+		},
+		{
+			"id": "desktop-component-runtime-audio-missing-before",
+			"title": "Runtime audio: missing before clip",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-audio"]
+		},
+		{
+			"id": "desktop-component-runtime-audio-declared-absent",
+			"title": "Runtime audio: declared clip absent",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-audio"]
+		},
+		{
+			"id": "desktop-component-runtime-audio-unverified",
+			"title": "Runtime audio: unverified clip",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-audio"]
+		},
+		{
+			"id": "desktop-component-runtime-audio-reading",
+			"title": "Runtime audio: reading clip",
+			"coverage": "required",
+			"units": ["desktop.component.runtime-audio"]
+		},
+		{
 			"id": "desktop-component-runtime-behavior",
 			"title": "Runtime behavior",
 			"coverage": "required",
@@ -8204,6 +8234,11 @@
 				"desktop-component-runtime-artifact-recorded-open",
 				"desktop-component-runtime-artifact-json-open",
 				"desktop-component-runtime-audio",
+				"desktop-component-runtime-audio-paired",
+				"desktop-component-runtime-audio-missing-before",
+				"desktop-component-runtime-audio-declared-absent",
+				"desktop-component-runtime-audio-unverified",
+				"desktop-component-runtime-audio-reading",
 				"desktop-component-runtime-behavior",
 				"desktop-component-runtime-behavior-paired",
 				"desktop-component-runtime-behavior-loading",

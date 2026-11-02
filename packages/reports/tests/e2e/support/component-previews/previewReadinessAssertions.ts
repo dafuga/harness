@@ -53,6 +53,9 @@ export async function assertPreviewCaptureState(content: Locator, id: string, va
 /** Expected gaps are explicit; other unavailable content must not become a capture. */
 export async function assertPreviewMessages(content: Locator, id: string, variant: string) {
 	const moduleCard = id === 'reports.component.explorer-ui-explorer-module-card';
+	// An unverified clip and a clip still being read are the states this presentation shows.
+	if (id === 'desktop.component.runtime-audio' && ['unverified', 'reading'].includes(variant))
+		return;
 	if (moduleCard && variant === 'image-error')
 		await expect(content.locator('.ex-thumb-gap')).toBeVisible();
 	if (

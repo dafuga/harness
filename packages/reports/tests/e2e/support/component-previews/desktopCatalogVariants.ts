@@ -85,6 +85,13 @@ export const desktopCatalogVariants: Record<string, string[]> = {
 		'recorded-open',
 		'json-open'
 	],
+	'desktop.component.runtime-audio': [
+		'paired',
+		'missing-before',
+		'declared-absent',
+		'unverified',
+		'reading'
+	],
 	'desktop.component.runtime-behavior': ['paired', 'loading', 'unreadable', 'empty'],
 	'desktop.component.runtime-evidence': ['planned', 'unavailable', 'loading', 'error', 'offline'],
 	'desktop.component.runtime-screens': ['empty', 'paired', 'incomparable']

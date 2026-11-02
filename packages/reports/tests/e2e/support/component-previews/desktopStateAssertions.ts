@@ -1,5 +1,6 @@
 import { expect, type Locator } from '@playwright/test';
 import { assertPickerPresentation } from './desktopPickerAssertions';
+import { assertRuntimeAudioPresentation } from './desktopAudioAssertions';
 import { assertReadonlyGameFields } from './desktopReadonlyAssertions';
 import {
 	assertDesktopArtifactCapture,
@@ -100,6 +101,7 @@ async function composer(component: Locator, variant: string) {
 /** Validate painted state markers after capture, rather than accepting hidden state alone. */
 export async function assertDesktopCapturedState(component: Locator, id: string, variant: string) {
 	await assertPickerPresentation(component, id, variant);
+	await assertRuntimeAudioPresentation(component, id, variant);
 	await assertLoadedHistory(component, id, variant);
 	await assertLongCatalogContent(component, id, variant);
 	await assertArtDirectionFits(component, id, variant);

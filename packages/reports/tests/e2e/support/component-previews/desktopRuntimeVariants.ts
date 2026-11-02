@@ -5,6 +5,7 @@ import { whenReady } from './desktopData.svelte';
 import type { PreviewProps } from './shared.types';
 import { desktopArtifactText, desktopData } from './desktopFixtureData';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
+import { recordedAudioSide } from './explorerData';
 import { evidenceReading } from '../../../../../desktop/src/utils/verification-evidence/evidenceReading';
 import { screenOptions } from '../../../../src/utils/explorer-ui/entityScreens';
 
@@ -17,6 +18,7 @@ export function desktopRuntimeVariant(
 	if (id === 'desktop.component.runtime-artifact') return artifact(props, data, variant);
 	if (id === 'desktop.component.runtime-behavior') return behavior(props, data, variant);
 	if (id === 'desktop.component.runtime-screens') return screens(props, data, variant);
+	if (id === 'desktop.component.runtime-audio') return audio(props, data, variant);
 	if (id === 'desktop.component.status-icon') {
 		const changes: Record<string, PreviewProps> = {
 			failed: {
@@ -111,6 +113,43 @@ function artifact(props: PreviewProps, data: DesktopData, variant: string): Prev
 				...desktopArtifactText
 			}
 		}
+	};
+	return { ...props, ...changes[variant] };
+}
+/** Commit pairing, a missing side, a declared clip that is absent, and clip reads that fail or wait. */
+function audio(props: PreviewProps, data: DesktopData, variant: string): PreviewProps {
+	const result = data.audioResult;
+	const evidence = result.evidence;
+	const pairedScope = {
+		...result.scope,
+		mode: 'commit' as const,
+		parent: commits.first,
+		commit: commits.tip
+	};
+	const before = recordedAudioSide(evidence.after, commits.first);
+	const after = recordedAudioSide(evidence.after, commits.tip);
+	const paired = { ...evidence, mode: 'commit' as const, before, after };
+	// A recorded side is the same listed clip bytes; the store only knows the current result.
+	const bytes = { url: (_side: unknown, file: string) => data.audioEvidence.url('after', file) };
+	const changes: Record<string, PreviewProps> = {
+		paired: { result: { ...result, scope: pairedScope, evidence: paired }, evidence: bytes },
+		'missing-before': {
+			result: {
+				...result,
+				scope: pairedScope,
+				evidence: { ...paired, before: { ...before, captures: [] } }
+			},
+			evidence: bytes
+		},
+		'declared-absent': {
+			result: { ...result, evidence: { ...evidence, after: { ...evidence.after, captures: [] } } }
+		},
+		unverified: {
+			evidence: {
+				url: () => Promise.reject(new Error('The clip bytes do not match the recorded hash.'))
+			}
+		},
+		reading: { evidence: { url: () => new Promise<string>(() => {}) } }
 	};
 	return { ...props, ...changes[variant] };
 }
