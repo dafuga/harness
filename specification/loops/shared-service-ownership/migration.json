@@ -1572,15 +1572,21 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "3f641a8d687006a3b8a4a12bccd84abb9dc14ea1704e76cc53af5f77581e6cfa",
+			"definition": "97d9f4a4a730affc84f1a186d3778d40a16b08239e3852c6d7b6fea181cc4fd7",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "07511ea946a971e687682ff5c8abf43e93e0cac8",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "3f641a8d687006a3b8a4a12bccd84abb9dc14ea1704e76cc53af5f77581e6cfa",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "97d9f4a4a730affc84f1a186d3778d40a16b08239e3852c6d7b6fea181cc4fd7",
+				"reason": "Moves remote controls and the project chooser into sibling modules; behavior unchanged."
 			},
 			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "3f641a8d687006a3b8a4a12bccd84abb9dc14ea1704e76cc53af5f77581e6cfa",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
