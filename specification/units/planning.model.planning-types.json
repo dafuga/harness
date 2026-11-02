@@ -35,13 +35,7 @@
 			"StoredFile",
 			"DesignSource",
 			"DesignVersion",
-			"ApprovalRecord",
-			"ThreadAnchor",
-			"ArtifactReference",
-			"ThreadMessage",
-			"PlanThread",
-			"PlanSummary",
-			"PlanDetail"
+			"ApprovalRecord"
 		]
 	},
 	"contract": {
@@ -61,7 +55,17 @@
 		},
 		{
 			"unit": "planning.model.host-file-change-types",
-			"via": "import",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-collaboration-plan-summary-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-collaboration-plan-thread-types",
+			"via": "reexport",
 			"origin": "derived"
 		}
 	],
