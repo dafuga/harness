@@ -14,6 +14,38 @@ const host = (entity?: string) => {
 	props.head = { ...props.head, permissions: permissionProfiles };
 	return props;
 };
+function assertPermissionUnitRoutes() {
+	const props = host('member'),
+		events: string[] = [];
+	const context = {
+		get entities() {
+			events.push('entities');
+			return props.entities;
+		},
+		get route() {
+			events.push('route');
+			return props.route;
+		}
+	};
+	const entity = props.entities[0];
+	expect(permissionUnitLocation(context, entity.id)).toEqual({
+		branch: props.route.branch,
+		commit: props.route.commit,
+		category: entity.category,
+		entity: entity.id
+	});
+	expect(events).toEqual(['entities', 'route']);
+	events.length = 0;
+	expect(permissionUnitLocation(context, 'unregistered')).toBeNull();
+	expect(events).toEqual(['entities', 'route']);
+	const failure = new Error('Route unavailable');
+	Object.defineProperty(context, 'route', {
+		get: () => {
+			throw failure;
+		}
+	});
+	expect(() => permissionUnitLocation(context, 'unregistered')).toThrow(failure);
+}
 test('profile links propagate host URL generation errors', async () => {
 	await measureWorkload(
 		'reports.function.networking-security-profile-grants',
@@ -83,38 +115,7 @@ test('a profile page lists only its endpoint methods, page access and data bound
 	await measureWorkload(
 		'reports.function.networking-security-permission-unit-location',
 		'permission-unit-routes',
-		() => {
-			const props = host('member'),
-				events: string[] = [];
-			const context = {
-				get entities() {
-					events.push('entities');
-					return props.entities;
-				},
-				get route() {
-					events.push('route');
-					return props.route;
-				}
-			};
-			const entity = props.entities[0];
-			expect(permissionUnitLocation(context, entity.id)).toEqual({
-				branch: props.route.branch,
-				commit: props.route.commit,
-				category: entity.category,
-				entity: entity.id
-			});
-			expect(events).toEqual(['entities', 'route']);
-			events.length = 0;
-			expect(permissionUnitLocation(context, 'unregistered')).toBeNull();
-			expect(events).toEqual(['entities', 'route']);
-			const failure = new Error('Route unavailable');
-			Object.defineProperty(context, 'route', {
-				get: () => {
-					throw failure;
-				}
-			});
-			expect(() => permissionUnitLocation(context, 'unregistered')).toThrow(failure);
-		}
+		assertPermissionUnitRoutes
 	);
 	const body = render(ExplorerPermissionsScreen, { props: host('member') }).body;
 	const shown = words(body);
