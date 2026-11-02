@@ -1,3 +1,4 @@
+// @harness-uid u_ns5pi3bjv5
 import type { PickerClient } from '../../../utils/agents-providers/providerPickerClient';
 import { App } from '@modelcontextprotocol/ext-apps';
 import type { PickerSnapshot } from '../../../../../../src/core/pickerTypes';

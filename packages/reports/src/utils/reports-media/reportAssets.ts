@@ -1,3 +1,4 @@
+// @harness-uid u_wonpnpcvnk
 import { lstat, realpath, mkdir, writeFile } from 'node:fs/promises';
 import { join, extname, sep } from 'node:path';
 import { createHash } from 'node:crypto';

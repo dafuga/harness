@@ -1,3 +1,4 @@
+// @harness-uid u_reyvc3kz4b
 import type { CleanCodePrinciple } from './cleanCodeRubric.types';
 import type { JevQuestions } from './cleanCodeTypes';
 

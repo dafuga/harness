@@ -1,3 +1,4 @@
+// @harness-uid u_3dzonor3ao
 import type { UnitFlags } from './generate.types';
 import type { Command } from 'commander';
 import {

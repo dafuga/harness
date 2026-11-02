@@ -1,3 +1,4 @@
+// @harness-uid u_uss455qboj
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 const destination = 'dist/reports';
 await rm(destination, { recursive: true, force: true });

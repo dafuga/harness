@@ -1,3 +1,4 @@
+// @harness-uid u_35yiqbgq22
 import type { D1EmailStores } from '../../../../utils/networking-security/d1EmailStores';
 import type { D1Like } from './D1AuthStoreAdapter';
 import type {

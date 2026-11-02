@@ -1,3 +1,4 @@
+// @harness-uid u_fgzryupsgn
 import type { RequestEvent } from '@sveltejs/kit';
 import { consoleServer } from '../../../../utils/explorer-ui/console-server/consoleServer';
 export const GET = (event: RequestEvent) => consoleServer().json(event, event.params.path ?? '');

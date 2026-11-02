@@ -1,3 +1,4 @@
+// @harness-uid u_6shfrcvyqy
 import type { z } from 'zod';
 import type {
 	contractItemSchema,

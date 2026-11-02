@@ -1,3 +1,4 @@
+// @harness-uid u_b22codgvrd
 import type { ShellsSeed } from './harness-shells-seed.types';
 /**
  * Adds to the synthetic history a frame that puts the title list under a heading, and how it

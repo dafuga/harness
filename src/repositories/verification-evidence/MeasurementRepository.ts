@@ -1,3 +1,4 @@
+// @harness-uid u_sl4ucvq4xs
 import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';

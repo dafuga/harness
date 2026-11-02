@@ -1,3 +1,4 @@
+// @harness-uid u_ja5eu5lu77
 import type { SourceNesting } from './sourceNesting.types';
 
 /** Computes bracket depths over masked source so literal contents never count. */

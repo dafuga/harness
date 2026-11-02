@@ -1,3 +1,4 @@
+// @harness-uid u_qmvy2dcazs
 import { toCamelCase, toKebabCase, toPascalCase } from '../../../helpers/strings/case';
 import type { ExportPlan } from '../../../core/projects-sessions/exports';
 import type { AdapterName } from '../../../templates/development-tooling/model';

@@ -1,3 +1,4 @@
+// @harness-uid u_kgduig2tln
 import { z } from 'zod';
 export type {
 	ResourceConfig,

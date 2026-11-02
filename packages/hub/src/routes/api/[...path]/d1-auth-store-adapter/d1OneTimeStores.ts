@@ -1,3 +1,4 @@
+// @harness-uid u_dr3b33ngdf
 import type { D1OneTimeStores } from '../../../../utils/networking-security/d1OneTimeStores';
 import type { D1Like } from './D1AuthStoreAdapter';
 import type {

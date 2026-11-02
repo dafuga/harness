@@ -1,3 +1,4 @@
+// @harness-uid u_jvuiwy5szk
 import type { Options } from './hubOptions.types';
 import { hubFail } from '../../development-tooling/hubJson';
 import type { HubDesign } from '../../development-tooling/hubSchemas';

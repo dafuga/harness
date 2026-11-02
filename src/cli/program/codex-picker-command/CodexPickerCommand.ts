@@ -1,3 +1,4 @@
+// @harness-uid u_t7huiti2ln
 import type { Command } from 'commander';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';

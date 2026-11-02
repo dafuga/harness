@@ -1,3 +1,4 @@
+// @harness-uid u_isaq7qlshl
 import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/EvidenceTreeAdapter';
 import { LfsAdapter } from '../../adapters/git-source-history/LfsAdapter';
 import type { LegacyEntry, LegacyMedia } from '../../core/git-source-history/historyIndexTypes';

@@ -1,3 +1,4 @@
+// @harness-uid u_2aiqknb67u
 import { z } from 'zod';
 const hash = z.string().regex(/^[a-f0-9]{64}$/),
 	sha = z.string().regex(/^[a-f0-9]{40}$/);

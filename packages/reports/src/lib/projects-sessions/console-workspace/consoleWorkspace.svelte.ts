@@ -1,3 +1,4 @@
+// @harness-uid u_yrmepyd4oo
 import { explorerRoute, explorerRoutePath } from '../../../../../../src/utils/explorerRoute';
 import { createWorkspaceStore } from '../../../../../desktop/src/lib/stores/workspace.svelte';
 import { ConsoleBridgeAdapter } from './ConsoleBridgeAdapter';

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.resource-cpu",
+	"uid": "u_hna6b35jba",
 	"kind": "function",
 	"title": "resourceCpu",
 	"responsibility": "Converts host and quota counter intervals into currently available cores, respecting affinity and quota saturation.",

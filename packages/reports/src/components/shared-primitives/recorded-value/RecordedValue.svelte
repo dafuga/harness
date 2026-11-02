@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../atoms -->
+<!-- @harness-uid u_ui4g5eenml -->
 <script lang="ts">
 	import DetailList from '../DetailList.svelte';
 	import DataTable from '../DataTable.svelte';

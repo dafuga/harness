@@ -1,3 +1,4 @@
+// @harness-uid u_66fcrvj52i
 import type { AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
 import type { TaskUsage } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { AnalyticsRepository } from '../../repositories/reports-media/AnalyticsRepository';

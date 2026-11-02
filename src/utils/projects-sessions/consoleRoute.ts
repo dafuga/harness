@@ -1,3 +1,4 @@
+// @harness-uid u_5fizv7gdp4
 export const consoleViews = ['map', 'compare', 'history', 'growth', 'activity'] as const;
 
 export { consoleRoute } from './console-canonical/consoleRoute';

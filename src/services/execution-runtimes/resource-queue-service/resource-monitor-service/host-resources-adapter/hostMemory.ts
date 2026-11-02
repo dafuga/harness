@@ -1,3 +1,4 @@
+// @harness-uid u_zv3wkcwxsy
 import { execFile } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { freemem, platform, totalmem } from 'node:os';

@@ -1,3 +1,4 @@
+// @harness-uid u_gdnv3z63vh
 function waveChunks(bytes: Buffer) {
 	const chunks = new Map<string, Buffer>();
 	const limit = bytes.readUInt32LE(4) + 8;

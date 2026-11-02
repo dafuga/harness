@@ -1,3 +1,4 @@
+// @harness-uid u_7jaayjx2iw
 import type { SecureFailureReason } from './RemoteSecure.types';
 /** A violation of the secure channel. The connection is closed; nothing is answered. */
 export class SecureFailure extends Error {

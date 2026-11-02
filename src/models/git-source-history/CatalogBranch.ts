@@ -1,3 +1,4 @@
+// @harness-uid u_w5a5tl3hd5
 import type { PersistenceAdapter, SqliteModel } from '../../core/development-tooling/sqliteTypes';
 import type {
 	CatalogBranchAttributes,

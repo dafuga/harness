@@ -1,3 +1,4 @@
+// @harness-uid u_33ugo6gwgh
 import type { AssemblyContext, AssemblyInput } from './RecordAssemblyService.types';
 export type { AssemblyContext, AssemblyInput } from './RecordAssemblyService.types';
 import type { ImpactReport } from '../../../../../core/development-tooling/impactTypes';

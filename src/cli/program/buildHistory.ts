@@ -1,3 +1,4 @@
+// @harness-uid u_avag2hi7wd
 import type { BuildOptions } from './buildHistory.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';

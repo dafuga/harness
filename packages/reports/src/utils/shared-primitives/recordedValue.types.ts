@@ -1,3 +1,4 @@
+// @harness-uid u_brvpiodn4p
 /** A bounded reading of already-parsed evidence; original values are never rewritten. */
 export type RecordedNode =
 	| { kind: 'scalar'; type: string; text: string; shortened?: boolean }

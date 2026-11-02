@@ -1,3 +1,4 @@
+// @harness-uid u_22yv5hmamk
 export const allowedSrcFolders = new Set([
 	'adapters',
 	'app',

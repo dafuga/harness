@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_buhh4n6rui -->
 <script lang="ts">
 	import DataTable from '../shared-primitives/DataTable.svelte';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';

@@ -1,3 +1,4 @@
+// @harness-uid u_pxp6bdo5z4
 import type { ProjectSummary } from 'collaboration';
 import type { Actor } from 'collaboration';
 import type { CollaborationApi } from 'collaboration';

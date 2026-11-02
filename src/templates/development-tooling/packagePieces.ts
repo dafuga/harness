@@ -1,3 +1,4 @@
+// @harness-uid u_jucgsgpmih
 import type { EntityFileInput } from './packagePieces.types';
 import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';

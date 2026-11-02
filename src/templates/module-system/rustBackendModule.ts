@@ -1,3 +1,4 @@
+// @harness-uid u_qvebburpah
 import type { ModuleDefinition } from '../../services/module-system/moduleDefinition.types';
 export const rustBackendModule: ModuleDefinition = {
 	schemaVersion: 1,

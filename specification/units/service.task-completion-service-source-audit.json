@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.task-completion-service-source-audit",
+	"uid": "u_jb5xarruxe",
 	"kind": "service",
 	"title": "sourceAudit",
 	"responsibility": "Verifies clean committed task source while allowing only bookkeeping changes to an unchanged declared loop contract.",

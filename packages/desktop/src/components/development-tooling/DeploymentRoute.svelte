@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_b2rsa6gq24 -->
 <script lang="ts">
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
 	let {

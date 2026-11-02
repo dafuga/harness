@@ -1,3 +1,4 @@
+// @harness-uid u_amgyfn4sxl
 export {
 	ComponentManifestValidator,
 	wellFormed,

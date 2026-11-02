@@ -1,3 +1,4 @@
+// @harness-uid u_3tv26h7hgz
 import type { HarnessCapture } from '../../models/explorer-ui/Harness.types';
 import type { ExplorerArtifact } from '../../models/explorer-ui/Explorer.types';
 import type { ExplorerBehaviorRow } from '../../models/explorer-ui/Explorer.types';

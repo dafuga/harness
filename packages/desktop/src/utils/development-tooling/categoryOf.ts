@@ -1,3 +1,4 @@
+// @harness-uid u_xg5rtvcpzd
 import type { Category } from '../../models/development-tooling/Desktop.types';
 export function categoryOf(kind: string): Category | null {
 	const kinds: Record<string, Category> = {

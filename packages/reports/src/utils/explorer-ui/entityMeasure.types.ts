@@ -1,3 +1,4 @@
+// @harness-uid u_qspboqkqoj
 export interface MeasureRow {
 	label: string;
 	value: string;

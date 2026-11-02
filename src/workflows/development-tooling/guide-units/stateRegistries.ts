@@ -1,3 +1,4 @@
+// @harness-uid u_4jvfrzel5f
 import ts from 'typescript';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';

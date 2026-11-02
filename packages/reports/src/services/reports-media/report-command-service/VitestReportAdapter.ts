@@ -1,3 +1,4 @@
+// @harness-uid u_iipf5x3qea
 import type { VitestData, VitestFile, VitestCase } from './VitestReportAdapter.types';
 import { readFile } from 'node:fs/promises';
 import type { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';

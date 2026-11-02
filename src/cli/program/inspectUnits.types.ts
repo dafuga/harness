@@ -1,3 +1,4 @@
+// @harness-uid u_76b76sztpq
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type { ComponentVersion } from '../../utils/development-tooling/componentVersion';
 import type { TestAttribution } from './testAttribution.types';

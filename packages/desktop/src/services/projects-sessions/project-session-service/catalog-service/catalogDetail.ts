@@ -1,3 +1,4 @@
+// @harness-uid u_uhs2ykpale
 import type { DetailContext, DetailData } from './catalogDetail.types';
 import type { ComponentManifest } from '../../../../../../../src/lib/contracts';
 import type {

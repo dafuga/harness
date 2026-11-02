@@ -1,3 +1,4 @@
+// @harness-uid u_dilltr2si4
 /** JSON with object keys in sorted order at every depth: equal values give equal text. */
 export function stableJson(value: unknown): string {
 	if (Array.isArray(value)) return '[' + value.map(stableJson).join(',') + ']';

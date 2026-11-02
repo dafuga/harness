@@ -1,3 +1,4 @@
+// @harness-uid u_jqqdhrwai3
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 const destination = 'plugins/claude-picker/dist';

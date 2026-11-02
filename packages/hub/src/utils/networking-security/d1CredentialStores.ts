@@ -1,3 +1,4 @@
+// @harness-uid u_nxgkfvplrk
 import type { SessionStore } from '../../models/accounts-access/HubAuthStore.types';
 
 export interface D1CredentialStores {

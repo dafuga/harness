@@ -1,3 +1,4 @@
+// @harness-uid u_iw2ceqwbol
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { PersistedReasons } from './persistReasons.types';
 import { resolve } from 'node:path';

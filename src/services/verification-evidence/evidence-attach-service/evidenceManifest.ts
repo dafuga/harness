@@ -1,3 +1,4 @@
+// @harness-uid u_4jgwbpywc5
 import { recordFiles } from '../../../utils/verification-evidence/evidenceManifest';
 import { createHash } from 'node:crypto';
 import type { EvidenceManifest } from '../../../core/git-source-history/historyTypes';

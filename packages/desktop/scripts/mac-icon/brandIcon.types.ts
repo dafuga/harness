@@ -1,3 +1,4 @@
+// @harness-uid u_kht2hkorux
 export interface Canvas {
 	size: number;
 	mac: boolean;

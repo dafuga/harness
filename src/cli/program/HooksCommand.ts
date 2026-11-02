@@ -1,3 +1,4 @@
+// @harness-uid u_it4kkyq44d
 import type { Flags } from './HooksCommand.types';
 import type { Command } from 'commander';
 import { checkMessage, manageHooks, renderHookOutcome, renderHooks, runHook } from './runHooks';

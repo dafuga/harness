@@ -1,3 +1,4 @@
+// @harness-uid u_3gvbdqzjg2
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { antelopeDappAdapter } from './antelopeDapp';

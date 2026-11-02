@@ -1,3 +1,4 @@
+// @harness-uid u_fsvifdgvmp
 import type { RevisionRegistry } from './revisionRegistry.types';
 import { createHash } from 'node:crypto';
 import type {

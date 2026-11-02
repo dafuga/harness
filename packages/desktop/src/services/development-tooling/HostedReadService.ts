@@ -1,3 +1,4 @@
+// @harness-uid u_qqalll47m3
 import type { HostedReadOptions, ReadContext } from './HostedReadService.types';
 import type { CacheIdentity } from '../../../../collaboration/src/models/Collaboration.types';
 import { HostedFailureValidator } from '../../validators/development-tooling/HostedFailureValidator';

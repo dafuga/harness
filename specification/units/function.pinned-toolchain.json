@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.pinned-toolchain",
+	"uid": "u_tfty5sagnp",
 	"kind": "function",
 	"title": "Pinned Rust tool selection",
 	"responsibility": "Resolves a Rust executable from the nearest declared toolchain and isolates child compilation from host compiler overrides.",

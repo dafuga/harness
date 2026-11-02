@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_qtuglj46dj -->
 <script lang="ts">
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import EmptyState from '../explorer-ui/explorer-kit/EmptyState.svelte';

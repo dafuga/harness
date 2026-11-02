@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "workflow.development-tooling-check-unit-contracts",
+	"uid": "u_2vijyzl6y3",
 	"kind": "workflow",
 	"title": "checkUnitContracts",
 	"responsibility": "Compares stored contracts with indexed source and state inventories, reporting located heuristic gaps and per-entity totals without rewriting contracts.",

@@ -1,3 +1,4 @@
+// @harness-uid u_vjbhjbnbwe
 import type { ProviderState } from '../../../models/development-tooling/Desktop.types';
 import type {
 	CreatedEntity,

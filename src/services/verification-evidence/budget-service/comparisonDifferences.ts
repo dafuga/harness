@@ -1,3 +1,4 @@
+// @harness-uid u_5ecw5iztql
 import type {
 	MeasuredDefinition,
 	ComparisonVerdict

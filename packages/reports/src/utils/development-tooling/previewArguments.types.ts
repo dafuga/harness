@@ -1,3 +1,4 @@
+// @harness-uid u_ahz5lbsfax
 export interface PreviewArguments {
 	root: string;
 	configFile?: string;

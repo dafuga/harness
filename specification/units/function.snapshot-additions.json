@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.snapshot-additions",
+	"uid": "u_bvg2zmvogi",
 	"kind": "function",
 	"title": "Undeclared snapshot files",
 	"responsibility": "Finds files created outside tracked source, declared outputs and shared links in a verification snapshot.",

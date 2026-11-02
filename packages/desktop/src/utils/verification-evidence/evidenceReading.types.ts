@@ -1,3 +1,4 @@
+// @harness-uid u_6vsxioocte
 import type { ExplorerBehavior } from '$reports/models/Explorer.types';
 
 export interface EvidenceRead {

@@ -1,3 +1,4 @@
+// @harness-uid u_plxodrc2ry
 export type Guess = { value: unknown } | undefined;
 
 /** One example of a field, with the exact text it is shown as. */

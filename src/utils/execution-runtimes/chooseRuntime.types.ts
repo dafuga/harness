@@ -1,3 +1,4 @@
+// @harness-uid u_wujyhbpeba
 import type { Measurement } from '../../core/verification-evidence/verificationTypes';
 import type { RuntimeKind } from '../../core/development-tooling/unitTypes';
 

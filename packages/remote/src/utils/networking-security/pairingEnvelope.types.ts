@@ -1,3 +1,4 @@
+// @harness-uid u_yy3k3smxbp
 export interface PairingContext {
 	hostId: string;
 	pairingId: string;

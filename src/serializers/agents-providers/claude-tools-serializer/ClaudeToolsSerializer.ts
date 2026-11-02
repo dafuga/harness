@@ -1,3 +1,4 @@
+// @harness-uid u_cfyfexqum2
 import { gatewayToolDefinitions } from '../../../utils/development-tooling/gatewayToolDefinitions';
 import { randomUUID } from 'node:crypto';
 import { createSdkMcpServer, tool } from '@anthropic-ai/claude-agent-sdk';

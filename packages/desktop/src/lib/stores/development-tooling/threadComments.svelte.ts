@@ -1,3 +1,4 @@
+// @harness-uid u_s25qff72z4
 import type { CommentInput } from './threadComments.svelte.types';
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 import type { HumanCommentResult } from '../../../models/projects-sessions/ProjectContext.types';

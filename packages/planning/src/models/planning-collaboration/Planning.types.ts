@@ -1,3 +1,4 @@
+// @harness-uid u_d5oknerikb
 export type { HostFileChange, ChangeTarget, ChangeRecord } from './HostFileChange.types';
 import type { DesignOption } from './DesignOption.types';
 export type { DesignOption, DesignOptionInput } from './DesignOption.types';

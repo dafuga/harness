@@ -1,3 +1,4 @@
+// @harness-uid u_ufspv6cpnj
 import type { Fields } from './artifactCases.types';
 import { caseForm } from '../../../utils/explorer-ui/artifactCases';
 import type {

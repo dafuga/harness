@@ -1,3 +1,4 @@
+// @harness-uid u_vusx2wyapy
 import type { Route, Call } from './HubRemoteController.types';
 import type { Actor } from 'collaboration';
 import type { RemoteHostRegistration } from '../../../../../../remote/src/models/RemoteRelay.types';

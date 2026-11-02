@@ -1,3 +1,4 @@
+// @harness-uid u_vwqx4shw5t
 import type { TaskCheckpointInput } from './ModuleTaskWorktreeAdapter.types';
 import { mkdtemp, realpath, rm } from 'node:fs/promises';
 import { resolve, join } from 'node:path';

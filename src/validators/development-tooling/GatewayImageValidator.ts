@@ -1,3 +1,4 @@
+// @harness-uid u_5dsgdum6si
 import type { GatewayImage } from './GatewayImageValidator.types';
 import { gatewayContentError } from '../../utils/development-tooling/gatewayContentError';
 const signatures = {

@@ -1,3 +1,4 @@
+// @harness-uid u_223hb4ugjg
 import type { Evidence } from '../../models/reports-media/Report.types';
 
 export interface ReplayFrame {

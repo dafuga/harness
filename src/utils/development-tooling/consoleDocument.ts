@@ -1,3 +1,4 @@
+// @harness-uid u_suu3cz4j5c
 import type { ConsoleAssets, ConsoleDocumentOptions } from './consoleDocument.types';
 
 function escapeHtml(value: string): string {

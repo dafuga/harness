@@ -1,3 +1,4 @@
+// @harness-uid u_76b76sztpq
 import type { UnitDetail } from './inspectUnits.types';
 import { z } from 'zod';
 import { fail } from '../../core/development-tooling/errors';

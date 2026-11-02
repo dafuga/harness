@@ -1,3 +1,4 @@
+// @harness-uid u_375c7frogd
 import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { Found, Slot } from './harnessComparison.types';
 import type {

@@ -1,3 +1,4 @@
+// @harness-uid u_wsfesi2kjo
 import type { BenchmarkRunners, PreparedBenchmark } from './benchmarkDefinition.types';
 export type { BenchmarkRunners, PreparedBenchmark } from './benchmarkDefinition.types';
 import { readFile, realpath } from 'node:fs/promises';

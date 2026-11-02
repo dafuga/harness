@@ -1,3 +1,4 @@
+// @harness-uid u_7kd6hzjalj
 import { createRequire } from 'node:module';
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
 

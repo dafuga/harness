@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "remote.function.seal-packet",
+	"uid": "u_krmdtvf2qy",
 	"kind": "function",
 	"title": "Authenticate encrypted packets",
 	"responsibility": "Seal packet bytes with AES-GCM and bind them to direction, counter and continuation flag.",

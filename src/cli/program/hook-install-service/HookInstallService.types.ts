@@ -1,3 +1,4 @@
+// @harness-uid u_a2ul3xybcy
 import type { HookStage } from '../../../utils/development-tooling/hookScript';
 
 /** One stage as this worktree has it: its shared wrapper, and whether it was asked for here. */

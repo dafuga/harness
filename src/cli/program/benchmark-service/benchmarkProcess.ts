@@ -1,3 +1,4 @@
+// @harness-uid u_ppagdjm4wo
 import type { BenchmarkProcessInput, BenchmarkProcessResult } from './benchmarkProcess.types';
 export type { BenchmarkProcessInput, BenchmarkProcessResult } from './benchmarkProcess.types';
 import { spawn } from 'node:child_process';

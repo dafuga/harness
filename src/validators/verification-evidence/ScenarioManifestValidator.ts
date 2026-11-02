@@ -1,3 +1,4 @@
+// @harness-uid u_hfud4vng54
 import {
 	scenarioManifestSchema,
 	type ScenarioManifest

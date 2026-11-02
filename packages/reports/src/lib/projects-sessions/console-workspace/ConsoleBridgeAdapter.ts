@@ -1,3 +1,4 @@
+// @harness-uid u_i4ujwaodpy
 import type { EventBatch } from './ConsoleBridgeAdapter.types';
 import {
 	agentRequestKey,

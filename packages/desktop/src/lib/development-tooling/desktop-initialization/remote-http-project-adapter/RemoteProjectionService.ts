@@ -1,3 +1,4 @@
+// @harness-uid u_l2kesnyfm7
 import type { ProjectSnapshot } from '../../../../models/development-tooling/Desktop.types';
 import type { HostedHttpAdapter } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import { RemoteProjectResponseValidator } from '../../../../validators/projects-sessions/RemoteProjectResponseValidator';

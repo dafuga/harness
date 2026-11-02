@@ -1,3 +1,4 @@
+// @harness-uid u_3b2qhm7yob
 import type { LoopInput } from '../../workflows/development-tooling/loop-state/loopState';
 
 export interface CreateLoopInput extends LoopInput {

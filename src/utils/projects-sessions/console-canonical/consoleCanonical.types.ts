@@ -1,3 +1,4 @@
+// @harness-uid u_trcwsrgqgr
 /** The parts of a history index that say where a commit is. */
 export interface IndexedHistory {
 	branches: Array<{ name: string; head: string }>;

@@ -1,3 +1,4 @@
+// @harness-uid u_fypq7d6v2c
 import type { Context } from './HubApiController.types';
 import { hostedCapabilities } from '../../../../../../desktop/src/utils/hostedCapabilities';
 import type { Actor, CollaborationApi, AddCommentInput } from 'collaboration';

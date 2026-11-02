@@ -1,3 +1,4 @@
+// @harness-uid u_bvg2zmvogi
 import type { SnapshotBounds } from '../../../utils/verification-evidence/snapshotAdditions';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_v4r6unildz
 import { separateTypeDeclarations } from '../development-tooling/separateTypeDeclarations';
 import type { ProjectTemplateInput } from './project.types';
 import { appTestFiles } from './projectTests';

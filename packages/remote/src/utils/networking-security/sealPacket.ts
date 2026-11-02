@@ -1,3 +1,4 @@
+// @harness-uid u_krmdtvf2qy
 import type { SecureDirection } from '../../models/networking-security/RemoteSecure.types';
 
 export interface SealContext {

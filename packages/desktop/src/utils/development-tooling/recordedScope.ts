@@ -1,3 +1,4 @@
+// @harness-uid u_2rustlmo6g
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Asked, ScopeFacts } from './recordedScope.types';
 import type { ExplorerScope } from '$reports/models/Explorer.types';

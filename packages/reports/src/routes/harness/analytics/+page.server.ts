@@ -1,3 +1,4 @@
+// @harness-uid u_rbjqnc7oeg
 import { redirect } from '@sveltejs/kit';
 /** The console has no analytics page; its address opens the explorer. */
 export function load() {

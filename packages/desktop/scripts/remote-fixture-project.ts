@@ -1,3 +1,4 @@
+// @harness-uid u_zypmpr5kbi
 import { execFileSync } from 'node:child_process';
 import { mkdir, mkdtemp, realpath, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';

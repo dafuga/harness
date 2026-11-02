@@ -1,3 +1,4 @@
+// @harness-uid u_hwwecdfxu6
 import { ConsoleAgentController } from './ConsoleAgentController';
 import type { Handle } from '@sveltejs/kit';
 import { consoleServer } from '../../../utils/explorer-ui/console-server/consoleServer';

@@ -1,3 +1,4 @@
+// @harness-uid u_4yahoallyx
 import { fail } from '../../../core/development-tooling/errors';
 import type { ImpactReport, ImpactSide } from '../../../core/development-tooling/impactTypes';
 import type {

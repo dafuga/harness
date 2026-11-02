@@ -1,3 +1,4 @@
+// @harness-uid u_lmgpxev3yy
 import type { Buffer } from 'node:buffer';
 import { createHash } from 'node:crypto';
 import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';

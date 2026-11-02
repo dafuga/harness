@@ -1,3 +1,4 @@
+// @harness-uid u_hrx55rezfw
 import { DurableObject } from 'cloudflare:workers';
 import { PublicRelayController } from './lib/networking-security/relay/PublicRelayController';
 import type { RelayEnv } from './models/networking-security/RelayHost.types';

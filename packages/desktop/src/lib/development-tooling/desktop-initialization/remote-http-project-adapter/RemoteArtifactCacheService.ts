@@ -1,3 +1,4 @@
+// @harness-uid u_pusbp2fy7z
 import type { Query, Media } from './RemoteArtifactCacheService.types';
 import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';
 import { HostedArtifactValidator } from '../../../../validators/development-tooling/HostedArtifactValidator';

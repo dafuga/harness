@@ -1,3 +1,4 @@
+// @harness-uid u_44u5mzzjmu
 import type { RevisionRegistry } from '../../../utils/revisionRegistry';
 import type { HelperFacts } from '../../../utils/explorer-ui/helperReferences';
 import type { HelperBinding } from '../../../utils/explorer-ui/helperReferences';

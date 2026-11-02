@@ -1,3 +1,4 @@
+// @harness-uid u_u5at6ac7ul
 import type { z } from 'zod';
 import type {
 	resourceConfigSchema,

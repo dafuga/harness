@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_tyg7yyuvji -->
 <script lang="ts">
 	import BrandMark from '../../shared-primitives/BrandMark.svelte';
 	import type { ExplorerLocation } from '../../../models/explorer-ui/Explorer.types';

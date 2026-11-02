@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_4xehomolte -->
 <script lang="ts">
 	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';

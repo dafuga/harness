@@ -1,3 +1,4 @@
+// @harness-uid u_dhwgyywtay
 import type { RemoteDesktopControl } from '../../../../../remote/src/index';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 

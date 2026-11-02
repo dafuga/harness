@@ -1,3 +1,4 @@
+// @harness-uid u_6a6rhnbyql
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 import type { BrowserDiagnostic } from '../../core/development-tooling/browserDiagnostics';
 

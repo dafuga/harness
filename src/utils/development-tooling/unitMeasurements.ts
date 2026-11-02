@@ -1,3 +1,4 @@
+// @harness-uid u_pdrdl3nkuf
 import type { BuiltArtifacts, Static, ArtifactEntry } from './unitMeasurements.types';
 import type { SourceFile } from '../../core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';

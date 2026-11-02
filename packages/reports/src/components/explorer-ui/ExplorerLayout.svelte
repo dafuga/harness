@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_z7x4ahsaak -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HarnessNavbarInput } from '../../utils/explorer-ui/harnessShell';

@@ -1,3 +1,4 @@
+// @harness-uid u_wa26dzwmqo
 import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';
 

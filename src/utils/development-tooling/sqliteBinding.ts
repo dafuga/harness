@@ -1,3 +1,4 @@
+// @harness-uid u_sggnkny4w3
 import type { SqliteField, SqliteValue } from '../../core/development-tooling/sqliteTypes';
 export function sqliteBinding(value: unknown, field: SqliteField): SqliteValue {
 	if (value === null && field.nullable) return null;

@@ -1,3 +1,4 @@
+// @harness-uid u_dcsz7wgczx
 import { resolve, sep } from 'node:path';
 import { tmpdir } from 'node:os';
 import { r2ScreenshotConfig } from '../../adapters/reports-media/R2ScreenshotStoreAdapter';

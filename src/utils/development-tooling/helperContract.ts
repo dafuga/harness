@@ -1,3 +1,4 @@
+// @harness-uid u_qzcp26iqli
 import type { CallableContract } from './helperContract.types';
 
 /** Eligibility is shared by all renderers; missing contracts are never assumed pure. */

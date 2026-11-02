@@ -1,3 +1,4 @@
+// @harness-uid u_6kqi4css5l
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 export function reportRuntimeRoot() {

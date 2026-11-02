@@ -1,3 +1,4 @@
+// @harness-uid u_m3b6bsf3br
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type { Field } from './renderUnit.types';
 import { errorRows, fields, indent, operationRows, storageRows } from './contractRows';

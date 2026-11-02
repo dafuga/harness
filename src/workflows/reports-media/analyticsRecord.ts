@@ -1,3 +1,4 @@
+// @harness-uid u_rtalczfelr
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { randomUUID, createHash } from 'node:crypto';

@@ -1,3 +1,4 @@
+// @harness-uid u_3xmxpxa3oo
 import type { Database } from 'bun:sqlite';
 import { createRequire } from 'node:module';
 import { mkdirSync, chmodSync } from 'node:fs';

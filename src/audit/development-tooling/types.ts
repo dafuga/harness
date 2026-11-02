@@ -1,3 +1,4 @@
+// @harness-uid u_s6xovwpmk7
 export interface AuditFinding {
 	path: string;
 	rule: string;

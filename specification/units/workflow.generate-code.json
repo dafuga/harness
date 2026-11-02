@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "workflow.generate-code",
+	"uid": "u_gze65qn66u",
 	"kind": "workflow",
 	"title": "generateCode",
 	"responsibility": "Plans and writes categorized model or scaffold files, preserving overwrite protection, project eligibility, dependencies and public library exports.",
@@ -671,6 +672,11 @@
 		},
 		{
 			"unit": "workflow.export-plans",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.projects-sessions-generate-code-annotate-unit-files",
 			"via": "import",
 			"origin": "derived"
 		},

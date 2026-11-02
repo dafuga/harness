@@ -1,3 +1,4 @@
+// @harness-uid u_ahpj5uz5nh
 import type { SearchLoopsInput, LoopSearchResult } from './loopSearch.types';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_irobwzevdt
 import type { Guide } from '../development-tooling/guide';
 
 export const benchmarkGuide: Guide = {

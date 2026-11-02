@@ -1,3 +1,4 @@
+// @harness-uid u_5fizv7gdp4
 import type { ConsoleRoute } from '../../../../../../src/utils/consoleRoute';
 
 const encode = (text: string) => text.split('/').map(encodeURIComponent).join('/');

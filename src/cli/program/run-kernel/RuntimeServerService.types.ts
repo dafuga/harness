@@ -1,3 +1,4 @@
+// @harness-uid u_xmn4jkulxq
 export interface ServedRuntime {
 	url: string;
 	close(): Promise<void>;

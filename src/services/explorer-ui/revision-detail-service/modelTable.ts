@@ -1,3 +1,4 @@
+// @harness-uid u_dr2xl6z3dy
 import ts from 'typescript';
 import type { ModelDefinition, ModelTable } from '../../../utils/explorer-ui/unitMetadata';
 import type { SqliteModel, SqliteField } from '../../../core/development-tooling/sqliteTypes';

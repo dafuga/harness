@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_ccoo7xabwn -->
 <script lang="ts">
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { explorerName } from '$reports/utils/explorerName';

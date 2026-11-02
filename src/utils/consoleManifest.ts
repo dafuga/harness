@@ -1,3 +1,4 @@
+// @harness-uid u_y4otjucbb7
 export {
 	consoleManifestFile,
 	consoleManifest,

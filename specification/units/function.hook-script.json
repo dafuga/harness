@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.hook-script",
+	"uid": "u_rbr6adpyv2",
 	"kind": "function",
 	"title": "Managed Git hook text",
 	"responsibility": "Renders stage-specific hook wrappers that chain existing hooks and run Harness only in opted-in worktrees.",

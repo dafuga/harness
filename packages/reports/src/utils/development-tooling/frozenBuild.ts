@@ -1,3 +1,4 @@
+// @harness-uid u_3zhubpdjiy
 import type { FrozenBuild } from './frozenBuild.types';
 import { cp, rm } from 'node:fs/promises';
 import { BuildIdentityService } from '../../../../../src/services/BuildIdentityService';

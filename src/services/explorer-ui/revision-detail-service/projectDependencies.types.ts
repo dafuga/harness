@@ -1,3 +1,4 @@
+// @harness-uid u_x5bcnj5gs4
 export interface ProjectDependency {
 	name: string;
 	version: string;

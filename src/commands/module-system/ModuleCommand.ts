@@ -1,3 +1,4 @@
+// @harness-uid u_axtb65npsa
 import { TestingPluginService } from './module-command/TestingPluginService';
 import type { Command } from 'commander';
 import { ModuleCatalogService } from '../../services/module-system/ModuleCatalogService';

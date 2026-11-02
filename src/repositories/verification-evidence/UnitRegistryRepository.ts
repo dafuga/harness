@@ -1,3 +1,4 @@
+// @harness-uid u_xkavxxtat4
 import type { RegistryRead } from './UnitRegistryRepository.types';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';

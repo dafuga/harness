@@ -1,3 +1,4 @@
+// @harness-uid u_dluvqzqdcs
 import type { RepositoryLease } from './repositoryLease.types';
 import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile, unlink } from 'node:fs/promises';

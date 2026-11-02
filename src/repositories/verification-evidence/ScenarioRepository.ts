@@ -1,3 +1,4 @@
+// @harness-uid u_5qi3u7uxnr
 import type { ScenarioRead } from './ScenarioRepository.types';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';

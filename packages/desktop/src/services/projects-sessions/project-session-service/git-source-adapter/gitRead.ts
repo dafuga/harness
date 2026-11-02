@@ -1,3 +1,4 @@
+// @harness-uid u_rnymveoz42
 import { gitRead, gitRevision } from '../../../../utils/projects-sessions/gitRead';
 
 export async function gitFiles(root: string, revision: string): Promise<string[]> {

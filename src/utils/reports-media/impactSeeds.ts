@@ -1,3 +1,4 @@
+// @harness-uid u_5xyk6edmo2
 import type { ChangedFile } from '../../core/development-tooling/impactTypes';
 import type { UncertainNode } from '../../core/development-tooling/sourceTypes';
 

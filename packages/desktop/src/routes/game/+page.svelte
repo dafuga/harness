@@ -1,5 +1,6 @@
 <!-- @harness-tier page -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_gxjyzxj4fx -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';

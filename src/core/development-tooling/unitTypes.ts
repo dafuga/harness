@@ -1,3 +1,4 @@
+// @harness-uid u_6shfrcvyqy
 import { z } from 'zod';
 import { compositionSchema } from './composition';
 import { sourceContractSchema } from './contractSchemas';

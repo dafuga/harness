@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.module-system-module-writes",
+	"uid": "u_q4pgeipyxk",
 	"kind": "service",
 	"title": "moduleWrites",
 	"responsibility": "Preflight all module outputs and roll back task-owned writes when a write fails.",

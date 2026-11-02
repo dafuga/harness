@@ -1,3 +1,4 @@
+// @harness-uid u_ve2uweiif4
 /** The bounds the contract leaves to the relay. Protocol limits are `remoteLimits`. */
 export const relayConfig = {
 	/** Where a host object is addressed. Never resolved: a namespace binding carries the request. */

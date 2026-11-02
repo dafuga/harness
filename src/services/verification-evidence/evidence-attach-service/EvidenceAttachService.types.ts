@@ -1,3 +1,4 @@
+// @harness-uid u_rfumv65ikl
 import type { EvidencePointer } from '../../../core/git-source-history/historyTypes';
 
 export interface Attached {

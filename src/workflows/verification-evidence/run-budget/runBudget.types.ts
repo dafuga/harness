@@ -1,3 +1,4 @@
+// @harness-uid u_ddbikxbwhi
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import type { BudgetEvent } from '../../../core/verification-evidence/budgetTypes';
 import type { UnitBaseline } from '../../../services/verification-evidence/budget-service/BudgetService';

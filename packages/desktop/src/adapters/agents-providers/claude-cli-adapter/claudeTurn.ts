@@ -1,3 +1,4 @@
+// @harness-uid u_tfsynmwn64
 import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
 import type { ResourceQueueService } from '../../../../../../src/services/execution-runtimes/ResourceQueueService';
 import type { AgentTurn, CliCommand } from '../../../models/agents-providers/AgentRunner.types';

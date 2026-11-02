@@ -1,3 +1,4 @@
+// @harness-uid u_5n4kormezg
 export interface HarnessRuleLimits {
 	maxFileLines: number;
 	maxFunctionLines: number;

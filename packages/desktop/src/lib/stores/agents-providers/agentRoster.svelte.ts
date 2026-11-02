@@ -1,3 +1,4 @@
+// @harness-uid u_xyz56zfu2d
 import type { AgentEntry } from '../../../../../../src/core/activityTypes';
 import { SvelteMap } from 'svelte/reactivity';
 import { activityReading } from '$reports/utils/projects-sessions/activityReading';

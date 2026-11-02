@@ -1,3 +1,4 @@
+// @harness-uid u_5lbtt7fx6n
 import type { CreatedEntity } from '../../../../models/development-tooling/DesktopBridge.types';
 import type { RunContext } from '../../../../models/development-tooling/RunContext.types';
 import type { hostChanges } from '../../../../utils/development-tooling/hostChanges';

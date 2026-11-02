@@ -1,3 +1,4 @@
+// @harness-uid u_vb356v5djk
 import { execFileSync } from 'node:child_process';
 import type { ProcessFacts } from '../../../utils/agents-providers/agentLiveness';
 

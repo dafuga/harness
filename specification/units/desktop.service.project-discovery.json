@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.service.project-discovery",
+	"uid": "u_gegtad6hae",
 	"kind": "service",
 	"title": "Find account projects",
 	"responsibility": "Lists owned and joined projects, avoids repeated snapshot reads, and removes revoked offline copies.",

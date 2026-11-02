@@ -1,3 +1,4 @@
+// @harness-uid u_vyqjqceknl
 import type { GameRun, GameView } from '../../../../../game/src/models/game-authoring/Game.types';
 
 /** What decides the line under the AI video control. */

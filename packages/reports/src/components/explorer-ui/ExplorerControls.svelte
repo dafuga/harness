@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_yocob4btjw -->
 <script lang="ts">
 	import type { CatalogFilter } from '../../utils/explorer-ui/entityCatalog';
 	import HarnessIcon from './HarnessIcon.svelte';

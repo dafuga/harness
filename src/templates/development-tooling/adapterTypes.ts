@@ -1,3 +1,4 @@
+// @harness-uid u_crrdvxvcr4
 import type { PlannedFile } from '../../core/development-tooling/files';
 
 export function adapterTypeFiles(): PlannedFile[] {

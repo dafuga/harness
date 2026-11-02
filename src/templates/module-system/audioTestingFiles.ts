@@ -1,3 +1,4 @@
+// @harness-uid u_bfg7cmuknt
 import { browserTestFiles } from '../development-tooling/browserTest';
 
 /** Provider-free deterministic playout follows Nudge's queue/clear/WAV boundary. */

@@ -1,3 +1,4 @@
+// @harness-uid u_as2uhkqkal
 import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 
 /** An immutable design has one introduction. Rewrites or gaps do not attest a comparison. */

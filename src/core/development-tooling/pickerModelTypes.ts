@@ -1,3 +1,4 @@
+// @harness-uid u_riakl65jnq
 import type { ProviderSelection } from './pickerModelTypes.types';
 
 export function sameSelection(a: ProviderSelection, b: ProviderSelection): boolean {

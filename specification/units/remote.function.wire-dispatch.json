@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "remote.function.wire-dispatch",
+	"uid": "u_2nmyqw5urc",
 	"kind": "function",
 	"title": "Dispatch authorized wire requests",
 	"responsibility": "Apply connection policy and deadlines, then execute requests with mutation replay tracking.",

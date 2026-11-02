@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_fuy5emshdu -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { ProjectSummary } from 'collaboration';

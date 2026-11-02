@@ -1,3 +1,4 @@
+// @harness-uid u_7nghhlp6ww
 import type {
 	RemoteSocket,
 	Reply,

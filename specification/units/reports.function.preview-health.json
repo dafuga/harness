@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.function.preview-health",
+	"uid": "u_ouedfqze7m",
 	"kind": "function",
 	"title": "Check preview worker health",
 	"responsibility": "Authenticates private worker health probes, observes repeated server failures and reports whether project agents are active.",

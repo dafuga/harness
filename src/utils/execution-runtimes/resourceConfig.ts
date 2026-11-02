@@ -1,3 +1,4 @@
+// @harness-uid u_rg25h2fxpr
 import { randomUUID } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';

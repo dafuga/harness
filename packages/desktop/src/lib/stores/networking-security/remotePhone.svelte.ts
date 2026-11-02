@@ -1,3 +1,4 @@
+// @harness-uid u_mnuf3gopy6
 import type { State } from './remotePhone.svelte.types';
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 import type {

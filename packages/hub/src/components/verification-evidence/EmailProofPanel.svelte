@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_ihu6stkgde -->
 <script lang="ts">
 	import { timeLabel } from '$desktop/utils/timeLabel';
 	import type { EmailProofStatus } from '../../models/accounts-access/HubAuth.types';

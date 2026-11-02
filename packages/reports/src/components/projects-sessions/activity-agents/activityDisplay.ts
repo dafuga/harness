@@ -1,3 +1,4 @@
+// @harness-uid u_ohctlckx5a
 import type { AgentRoster } from '../../../../../../src/core/activityTypes';
 
 /** How many agents are working, in words; not knowing is said, and is never a number. */

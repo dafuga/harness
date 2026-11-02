@@ -1,3 +1,4 @@
+// @harness-uid u_bvwdaizyn4
 import type { remoteScanFailures } from './RemoteControlValues';
 /** The checked-out branch and its tip, as the client last saw them. */
 export interface RemoteRevision {

@@ -1,3 +1,4 @@
+// @harness-uid u_pauxu7ew4i
 import type { HarnessRecord } from '../../models/explorer-ui/Harness.types';
 
 export type Measurement = HarnessRecord['measurements'][number];

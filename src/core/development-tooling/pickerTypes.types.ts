@@ -1,3 +1,4 @@
+// @harness-uid u_ayrroml572
 import type { ProviderSelection } from './pickerModelTypes';
 import type { PickerModel } from './pickerModelTypes';
 

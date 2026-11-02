@@ -1,3 +1,4 @@
+// @harness-uid u_uhs2ykpale
 import type { GitSourceAdapter } from '../git-source-adapter/GitSourceAdapter';
 import type { PlanningPort } from '../../../../models/planning-collaboration/PlanningPort.types';
 import type { PlanRecord } from '../../../../models/planning-collaboration/PlanningPort.types';

@@ -1,3 +1,4 @@
+// @harness-uid u_wri2ddoz2t
 import { setImmediate } from 'node:timers';
 import type { SourceTree, TreeEntry } from '../../core/development-tooling/sourceTypes';
 import { fail } from '../../core/development-tooling/errors';

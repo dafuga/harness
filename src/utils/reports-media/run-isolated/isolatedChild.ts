@@ -1,3 +1,4 @@
+// @harness-uid u_lwt5whel3o
 import { spawn, type ChildProcess } from 'node:child_process';
 import type { IsolatedRun } from './runIsolated';
 export function isolatedChild(run: IsolatedRun): ChildProcess {

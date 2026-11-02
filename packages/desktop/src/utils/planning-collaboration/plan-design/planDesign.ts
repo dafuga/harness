@@ -1,3 +1,4 @@
+// @harness-uid u_w4s75s2hsf
 import type { Ask } from './planDesign.types';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';

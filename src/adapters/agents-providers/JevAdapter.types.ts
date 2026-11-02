@@ -1,3 +1,4 @@
+// @harness-uid u_wbj45qwkyz
 import type { Fetch } from '@typesafe-ai/sdk';
 
 export interface JevAdapterConfig {

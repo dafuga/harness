@@ -1,3 +1,4 @@
+// @harness-uid u_hv3a6p454a
 import type { AuthSecrets } from '../../../../utils/verification-evidence/authSecrets';
 import { encoder } from '../../../../utils/verification-evidence/authSecrets';
 import { base64url } from 'jose';

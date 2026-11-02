@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_krlip5am3u -->
 <script lang="ts" module>
 	export { archivedSource } from '../../lib/explorer-ui/stores/sourceReader.svelte';
 </script>

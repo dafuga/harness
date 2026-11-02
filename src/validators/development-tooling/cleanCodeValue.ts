@@ -1,3 +1,4 @@
+// @harness-uid u_7hhjt3llmx
 export function recordValue(value: unknown): Record<string, unknown> {
 	if (value === null || typeof value !== 'object' || Array.isArray(value))
 		throw new Error('Invalid Jev response');

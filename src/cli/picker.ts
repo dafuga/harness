@@ -1,3 +1,4 @@
+// @harness-uid u_yyikcmz6e6
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pickerPaths } from './program/codex-picker-command/pickerPaths';

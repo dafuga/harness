@@ -1,3 +1,4 @@
+// @harness-uid u_ofkseawr2w
 export function hubRecordJson(bytes: Uint8Array): unknown {
 	try {
 		return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));

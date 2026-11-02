@@ -1,3 +1,4 @@
+// @harness-uid u_6spijgxvl2
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 import { closedCapabilities } from '../projects-sessions/projectCapabilities';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_bvyeh6e6n2
 import type { LegacyRun } from './LegacyReportRepository.types';
 import { readdir, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_5hlw2jcv7w
 /** An identifier of any casing as the words it is made of. */
 /** @pure */
 export function humanize(name: string): string {

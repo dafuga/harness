@@ -1,3 +1,4 @@
+// @harness-uid u_mipcl7wzlj
 export interface ImportOptions {
 	root?: string;
 	/** Directory of the old report store; it is only read. */

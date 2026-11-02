@@ -1,3 +1,4 @@
+// @harness-uid u_27wtour6hj
 import type { ScaffoldDetail } from '../development-tooling/scaffoldDetailTypes';
 const entry = (
 	kind: ScaffoldDetail['kind'],

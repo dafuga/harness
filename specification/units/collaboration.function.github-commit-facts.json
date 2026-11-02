@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "collaboration.function.github-commit-facts",
+	"uid": "u_55pg2wt6xh",
 	"kind": "function",
 	"title": "Read immutable commit facts",
 	"responsibility": "Fetch and verify a GitHub commit before returning its tree, parents and summary metadata.",

@@ -1,3 +1,4 @@
+// @harness-uid u_7gepqx2gll
 export const growthMetrics = ['source-bytes', 'complexity', 'dependencies'] as const;
 
 export function signed(delta: number | undefined): string {

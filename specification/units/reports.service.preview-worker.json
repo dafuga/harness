@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.service.preview-worker",
+	"uid": "u_edxqiri65j",
 	"kind": "service",
 	"title": "Recover the owned preview worker",
 	"responsibility": "Runs one Node worker, detects crashes, hangs and repeated server errors, and replaces it with bounded backoff at the same address.",

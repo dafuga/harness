@@ -1,3 +1,4 @@
+// @harness-uid u_mrt5j3ty2a
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig, type Plugin, type UserConfig } from 'vite';
 import { fileURLToPath } from 'node:url';

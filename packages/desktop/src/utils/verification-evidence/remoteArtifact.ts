@@ -1,3 +1,4 @@
+// @harness-uid u_5lok5ze2s3
 /** The most raw bytes of one recorded artifact. A larger one is refused, never cut. */
 export const artifactLimit = 11 * 1024 * 1024;
 

@@ -1,3 +1,4 @@
+// @harness-uid u_vmwj4hjwje
 export interface Indexed {
 	ids: string[];
 	index: Map<string, number>;

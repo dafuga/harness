@@ -1,3 +1,4 @@
+// @harness-uid u_ioz2iepk5w
 import type { CleanCodeSettings } from './cleanCodeTypes';
 import type { CleanCodeOptions } from './cleanCodeTypes';
 import type { FileReview } from './cleanCodeTypes';

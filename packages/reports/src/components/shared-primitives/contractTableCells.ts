@@ -1,3 +1,4 @@
+// @harness-uid u_6ezvhmletj
 import type { ContractField } from '../../utils/explorer-ui/contractFields';
 
 /** @pure What a field says about being required, naming a field that does not record it. */

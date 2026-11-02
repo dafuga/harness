@@ -1,3 +1,4 @@
+// @harness-uid u_pgi2mlfbhx
 import type { BuildObservation } from './ios-build-observation.types';
 
 /** Rejection or timeout sticks as failure; a late probe cannot start another or clear it. */

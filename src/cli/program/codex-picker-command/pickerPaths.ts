@@ -1,3 +1,4 @@
+// @harness-uid u_gxxocusnn2
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 

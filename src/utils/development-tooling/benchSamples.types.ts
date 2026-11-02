@@ -1,3 +1,4 @@
+// @harness-uid u_eakvmkvycc
 export interface WarmResult {
 	medianMs: number;
 	opsPerSecond: number;

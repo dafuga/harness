@@ -1,3 +1,4 @@
+// @harness-uid u_edxqiri65j
 import { spawn, type ChildProcess } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';

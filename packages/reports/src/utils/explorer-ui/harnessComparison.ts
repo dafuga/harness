@@ -1,3 +1,4 @@
+// @harness-uid u_375c7frogd
 import type { HarnessRecord, HarnessRevision } from '../../models/explorer-ui/Harness.types';
 
 /** One revision of a comparison and the record of it that is looked at, if it has any. */

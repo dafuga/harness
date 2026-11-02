@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_5zhjx5ed4y -->
 <script lang="ts">
 	import Notice from './explorer-kit/Notice.svelte';
 	import { shortCommit } from '../../helpers/strings/shortCommit';

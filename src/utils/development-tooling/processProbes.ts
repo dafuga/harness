@@ -1,3 +1,4 @@
+// @harness-uid u_5g22klsioo
 import type { ProcessProbes, ProcessFacts, ProbeLimits } from './processProbes.types';
 import { execFile } from 'node:child_process';
 import { realpathSync } from 'node:fs';

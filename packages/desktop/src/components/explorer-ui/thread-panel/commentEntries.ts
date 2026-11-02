@@ -1,3 +1,4 @@
+// @harness-uid u_4rhacyzgf2
 import type { PendingComment, ThreadEntry } from '../../../utils/explorer-ui/commentEntries';
 import type { CommittedThread } from '../../../../../collaboration/src/models/Collaboration.types';
 import type { DesignVersion, ThreadInfo } from '../../../models/development-tooling/Desktop.types';

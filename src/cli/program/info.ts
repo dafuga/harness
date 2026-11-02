@@ -1,3 +1,4 @@
+// @harness-uid u_fznijol6b6
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
 import { availableGuideTopics, findGuide } from '../../guides/development-tooling/guide';

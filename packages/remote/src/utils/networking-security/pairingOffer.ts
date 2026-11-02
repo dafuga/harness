@@ -1,3 +1,4 @@
+// @harness-uid u_slsujlaboc
 import type { OfferEnvironment, PairingOffer } from './pairingOffer.types';
 import { normalizeCode } from './remoteIdentity';
 

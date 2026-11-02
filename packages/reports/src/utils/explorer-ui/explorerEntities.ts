@@ -1,3 +1,4 @@
+// @harness-uid u_mxnjmp5njy
 import { shortCommit } from '../../helpers/strings/shortCommit';
 import { explorerCategories, explorerKindCategory } from '../../../../../src/utils/explorerRoute';
 import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';

@@ -1,3 +1,4 @@
+// @harness-uid u_rnafd4d6rs
 import { associatedTests, testImporters } from './associatedTests';
 import type { StoredSide } from '../../../utils/explorer-ui/sideImpact';
 import type { Unit } from './SourceArchiveService.types';

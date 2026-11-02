@@ -1,3 +1,4 @@
+// @harness-uid u_v4qln4pccs
 import type { ApiRequest, ApiResponse, HarnessHttpAdapterConfig } from './HarnessHttpAdapter.types';
 import { fail } from '../../core/development-tooling/errors';
 

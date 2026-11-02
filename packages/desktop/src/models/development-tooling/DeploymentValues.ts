@@ -1,3 +1,4 @@
+// @harness-uid u_mdfd7rgejp
 export const deploymentEnvironments = ['dev', 'stage', 'preprod', 'prod'] as const;
 export const deploymentSteps = [
 	{ id: 'preparing', title: 'Prepare source' },

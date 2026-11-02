@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_sabimz2fns -->
 <script lang="ts">
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import GameLevelPreview from './GameLevelPreview.svelte';

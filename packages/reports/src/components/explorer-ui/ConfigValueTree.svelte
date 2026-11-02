@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_aqokuxsnj3 -->
 <script lang="ts" module>
 	import type { ConfigCollection, ConfigValueMark } from './ConfigValueTree.module.types';
 

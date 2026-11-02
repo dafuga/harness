@@ -1,3 +1,4 @@
+// @harness-uid u_2ufdy5twoi
 import type { RemoteGrant } from './RemoteControl.types';
 import type {
 	remoteLimits,

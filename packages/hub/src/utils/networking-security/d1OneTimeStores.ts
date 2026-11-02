@@ -1,3 +1,4 @@
+// @harness-uid u_dr3b33ngdf
 import type {
 	ChallengeRecord,
 	ExchangeStore,

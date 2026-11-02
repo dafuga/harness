@@ -1,3 +1,4 @@
+// @harness-uid u_33ugo6gwgh
 import type { ImpactReport } from '../../../../../core/development-tooling/impactTypes';
 import type {
 	ScenarioResult,

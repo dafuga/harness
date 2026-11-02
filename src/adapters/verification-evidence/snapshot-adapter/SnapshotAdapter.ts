@@ -1,3 +1,4 @@
+// @harness-uid u_l3f5bpp55y
 import type { SnapshotDrift } from './SnapshotAdapter.types';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';

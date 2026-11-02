@@ -1,3 +1,4 @@
+// @harness-uid u_3hzspzg455
 import type { Command } from 'commander';
 import {
 	renderImpact,

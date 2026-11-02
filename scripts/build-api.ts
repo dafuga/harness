@@ -1,3 +1,4 @@
+// @harness-uid u_gq3kw7cl76
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 
 /** Builds the side-effect-free public API, its declarations and the shipped kernel artifacts. */

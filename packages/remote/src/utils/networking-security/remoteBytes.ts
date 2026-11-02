@@ -1,3 +1,4 @@
+// @harness-uid u_dilltr2si4
 import type { CryptoSource } from './remoteBytes.types';
 const encoder = new TextEncoder();
 

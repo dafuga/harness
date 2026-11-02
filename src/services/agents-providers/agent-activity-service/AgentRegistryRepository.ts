@@ -1,3 +1,4 @@
+// @harness-uid u_6yahturtpz
 import type { StoredAgent } from './AgentRegistryRepository.types';
 import { randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';

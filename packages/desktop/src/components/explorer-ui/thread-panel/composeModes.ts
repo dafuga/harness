@@ -1,3 +1,4 @@
+// @harness-uid u_vyxmx65wyw
 import type { ComposeMode } from '../../../utils/explorer-ui/composeModes';
 import type { ProjectCapabilities } from '../../../models/projects-sessions/ProjectContext.types';
 

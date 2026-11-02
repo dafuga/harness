@@ -1,3 +1,4 @@
+// @harness-uid u_ogvkrmzclw
 /** What an owner may say about an agent, as the command line gives it. */
 export interface AgentInput {
 	id?: string;

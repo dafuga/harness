@@ -1,3 +1,4 @@
+// @harness-uid u_l2la5zvioj
 import type { HarnessClient } from './harnessClient.types';
 import type { ProjectActivity } from '../../../../../src/core/activityTypes';
 import type { StoredSide } from '../../../../../src/utils/sideImpact';

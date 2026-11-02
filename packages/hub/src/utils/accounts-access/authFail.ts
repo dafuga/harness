@@ -1,3 +1,4 @@
+// @harness-uid u_ebszp5bidi
 import type { AuthFailureCode } from '../../models/accounts-access/HubAuth.types';
 
 const statuses: Record<AuthFailureCode, number> = {

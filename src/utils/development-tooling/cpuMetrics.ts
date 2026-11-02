@@ -1,3 +1,4 @@
+// @harness-uid u_yscgsfsrql
 import type { CpuProcess } from './cpuProcesses';
 
 export interface CpuReading {

@@ -1,3 +1,4 @@
+// @harness-uid u_5oqwb7ybmj
 import type { ProjectAgent } from '../../../lib/stores/agents-providers/projectAgent.svelte';
 import type { RunEvent } from '../../../models/development-tooling/DesktopBridge.types';
 import { rememberCreatedThread } from './rememberCreatedThread';

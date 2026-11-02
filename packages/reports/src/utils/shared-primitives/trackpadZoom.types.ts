@@ -1,3 +1,4 @@
+// @harness-uid u_rptchqt5ts
 export type Point = { x: number; y: number };
 
 export type ZoomControls = {

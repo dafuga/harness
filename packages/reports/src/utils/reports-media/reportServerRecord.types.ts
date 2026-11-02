@@ -1,3 +1,4 @@
+// @harness-uid u_q2jxaxczl7
 /** The server a report store started on one port: which process, and since when. */
 export interface ServerRecord {
 	pid: number;

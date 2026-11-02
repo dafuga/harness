@@ -1,3 +1,4 @@
+// @harness-uid u_nlyj7f3xm4
 import type { HarnessIconName } from './harnessIcons.types';
 import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 

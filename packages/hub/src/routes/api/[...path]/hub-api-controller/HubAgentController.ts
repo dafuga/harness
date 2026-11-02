@@ -1,3 +1,4 @@
+// @harness-uid u_pxp6bdo5z4
 import type { Context } from './HubAgentController.types';
 import { IpcRequestValidator } from '../../../../../../desktop/src/validators/IpcRequestValidator';
 import { channels } from '../../../../../../desktop/src/models/DesktopBridge.types';

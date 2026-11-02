@@ -1,3 +1,4 @@
+// @harness-uid u_oh7ut73h75
 import { createHash } from 'node:crypto';
 import { copyFile, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';

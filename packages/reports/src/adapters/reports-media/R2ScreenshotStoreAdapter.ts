@@ -1,3 +1,4 @@
+// @harness-uid u_pefjibbljk
 import type { R2ScreenshotStoreAdapterConfig } from './R2ScreenshotStoreAdapter.types';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { readFileSync } from 'node:fs';

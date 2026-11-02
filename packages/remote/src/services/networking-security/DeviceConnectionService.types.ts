@@ -1,3 +1,4 @@
+// @harness-uid u_7nghhlp6ww
 import type { DeviceCredentials } from './device-pairing-service/DevicePairingService';
 import type { AttachInput } from '../../models/networking-security/Remote.types';
 import type { WireClientService } from './WireClientService';

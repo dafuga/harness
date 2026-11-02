@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_rzfode2npe -->
 <script lang="ts">
 	import { entityLabels } from '../../utils/explorer-ui/entityLens';
 	import type { SearchEntry } from '../../utils/explorer-ui/entitySearch';

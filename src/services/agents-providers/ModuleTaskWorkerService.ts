@@ -1,3 +1,4 @@
+// @harness-uid u_b4uzqkb2i6
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskRunnerAdapter } from '../../adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { ModuleTaskAnalyticsService } from './ModuleTaskAnalyticsService';

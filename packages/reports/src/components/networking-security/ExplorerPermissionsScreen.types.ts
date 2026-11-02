@@ -1,3 +1,4 @@
+// @harness-uid u_6f72xgfvyo
 import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 export interface ExplorerPermissionsScreenProps extends ExplorerScreenProps {
 	/** Restricts the screen to the API access every profile declares for this endpoint unit ID. */

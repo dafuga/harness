@@ -1,3 +1,4 @@
+// @harness-uid u_y4nci7t4uw
 import type { TopicEntry } from './topics.types';
 
 export function availableGuideTopics(entries: TopicEntry[]): string[] {

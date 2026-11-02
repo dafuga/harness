@@ -1,3 +1,4 @@
+// @harness-uid u_ohtelrq27t
 import type { CommitContext } from '../planCommit';
 import { stageFiles } from '../planCommit';
 import { Buffer } from 'node:buffer';

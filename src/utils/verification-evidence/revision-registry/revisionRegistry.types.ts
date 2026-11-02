@@ -1,3 +1,4 @@
+// @harness-uid u_fsvifdgvmp
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import type { ScenarioManifest } from '../../../core/development-tooling/unitTypes';
 import type { PublicHelper } from '../../explorer-ui/unitMetadata';

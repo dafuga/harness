@@ -1,3 +1,4 @@
+// @harness-uid u_6ldic3kgck
 import type { ProjectRegistryService } from '../../../projects-sessions/ProjectRegistryService';
 import type { CommentOutboxService } from '../../../projects-sessions/CommentOutboxService';
 import type { RepositoryArbiterService } from '../../../projects-sessions/RepositoryArbiterService';

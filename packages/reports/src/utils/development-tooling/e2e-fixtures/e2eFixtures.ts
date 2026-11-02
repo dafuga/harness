@@ -1,3 +1,4 @@
+// @harness-uid u_nsxu3st5to
 import type { Environment, E2eFixtures } from './e2eFixtures.types';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';

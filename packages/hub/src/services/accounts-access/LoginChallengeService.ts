@@ -1,3 +1,4 @@
+// @harness-uid u_ndxuxc3hzl
 import type { LoginChallengeOptions, IssuedChallenge } from './LoginChallengeService.types';
 import { authFail } from '../../utils/accounts-access/authFail';
 import { randomToken, safeEqual } from '../../utils/verification-evidence/authSecrets';

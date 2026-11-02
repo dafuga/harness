@@ -1,3 +1,4 @@
+// @harness-uid u_6mimpi5byo
 import type { EntityMeasure, PerformanceRow } from '../../utils/explorer-ui/entityMeasure.types';
 import type { SummaryFact } from './entitySummaryFacts.types';
 import { notMeasured } from '../../utils/explorer-ui/entityMeasure';

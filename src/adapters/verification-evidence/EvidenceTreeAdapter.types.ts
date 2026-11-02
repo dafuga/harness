@@ -1,3 +1,4 @@
+// @harness-uid u_pkblm2rnm6
 export interface TreeFile {
 	/** Path inside the tree. */
 	path: string;

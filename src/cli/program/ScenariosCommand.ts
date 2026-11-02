@@ -1,3 +1,4 @@
+// @harness-uid u_tghxzhqmwm
 import type { Flags } from './ScenariosCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';

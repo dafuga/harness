@@ -1,3 +1,4 @@
+// @harness-uid u_riakl65jnq
 export interface ProviderSelection {
 	provider: 'openai' | 'harness-claude';
 	model: string;

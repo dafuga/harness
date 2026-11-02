@@ -1,3 +1,4 @@
+// @harness-uid u_t5m7azkv7c
 import type { CliOptions } from '../../../utils/reports-media/reportCli';
 import { parseArgs } from 'node:util';
 import { readFile } from 'node:fs/promises';

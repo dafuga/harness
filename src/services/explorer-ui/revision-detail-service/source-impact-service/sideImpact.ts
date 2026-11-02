@@ -1,3 +1,4 @@
+// @harness-uid u_a5cgg6lwr7
 import type { StoredSide } from '../../../../utils/explorer-ui/sideImpact';
 import type { ImpactSide } from '../../../../core/development-tooling/impactTypes';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_bk2lhjywud
 /** Reusable SQLite support with no driver, filesystem or CLI side effects on import. */
 export {
 	SqliteAdapter,

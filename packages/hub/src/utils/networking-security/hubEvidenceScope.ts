@@ -1,3 +1,4 @@
+// @harness-uid u_onugbhqua5
 import type { CollaborationApi, CollaborationCache, SourceHistoryAdapter } from 'collaboration';
 
 export interface HubEvidenceDependencies {

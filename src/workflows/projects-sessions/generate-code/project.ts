@@ -1,3 +1,4 @@
+// @harness-uid u_647rlbmk5r
 import type { PackageManifest } from './project.types';
 import type { DetectedProjectKind } from '../../../core/projects-sessions/project';
 import { access, readFile } from 'node:fs/promises';

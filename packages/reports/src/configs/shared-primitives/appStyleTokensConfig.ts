@@ -1,3 +1,4 @@
+// @harness-uid u_aownyn25pz
 /** The tokens each group owns, in the order Styles shows them: the purpose-named choices first, then
  *  the foundation scales they draw from. */
 const groupPrefixes = {

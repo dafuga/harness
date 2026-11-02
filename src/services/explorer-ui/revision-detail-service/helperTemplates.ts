@@ -1,3 +1,4 @@
+// @harness-uid u_pmmqyzltyo
 import type { Node } from './helperTemplates.types';
 import { parse } from 'svelte/compiler';
 import { svelteScripts } from '../../../utils/development-tooling/scanImports';

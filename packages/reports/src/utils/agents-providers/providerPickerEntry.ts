@@ -1,3 +1,4 @@
+// @harness-uid u_pwdso3npph
 import { mount } from 'svelte';
 import ProviderPicker from '../../components/agents-providers/provider-picker/ProviderPicker.svelte';
 import '../../lib/styles/base.css';

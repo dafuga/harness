@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.deployment-proof",
+	"uid": "u_chssxwles4",
 	"kind": "function",
 	"title": "deploymentProof",
 	"responsibility": "Hashes the complete deployment configuration so a plan cannot outlive a changed environment mapping.",

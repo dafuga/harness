@@ -1,3 +1,4 @@
+// @harness-uid u_dtbpqjz2rx
 import type { Waiting, Listener, WireClientOptions } from './WireClientService.types';
 import {
 	REMOTE_PROTOCOL,

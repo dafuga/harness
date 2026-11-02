@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "hub.function.github-app-jwt",
+	"uid": "u_f2aqlilc6u",
 	"kind": "function",
 	"title": "Sign a Git Hub App assertion",
 	"responsibility": "Import an RSA app key and sign a short-lived GitHub App JWT.",

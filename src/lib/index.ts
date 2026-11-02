@@ -1,3 +1,4 @@
+// @harness-uid u_ht7a4w5sqq
 /** Public API of Harness. The CLI lives in the `harness` binary and is never started from here. */
 export * from './contracts';
 export * from './runtime';

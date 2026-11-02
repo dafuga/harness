@@ -1,3 +1,4 @@
+// @harness-uid u_ftnul333yg
 import { unitIdPattern } from '../../../../../src/lib/contracts';
 import { z } from 'zod';
 export const id = z.uuid();

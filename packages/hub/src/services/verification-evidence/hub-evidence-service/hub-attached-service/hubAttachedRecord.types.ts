@@ -1,3 +1,4 @@
+// @harness-uid u_ofkseawr2w
 import type { HubAttachedRecord } from '../../../../utils/verification-evidence/hubAttachedRecord';
 
 export type Manifest = NonNullable<HubAttachedRecord['manifest']>;

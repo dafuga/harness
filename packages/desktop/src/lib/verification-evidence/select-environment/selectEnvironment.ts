@@ -1,3 +1,4 @@
+// @harness-uid u_hecyjh7fon
 import { CapacitorEnvironmentAdapter } from './CapacitorEnvironmentAdapter';
 import { ElectronEnvironmentAdapter } from './ElectronEnvironmentAdapter';
 import type {

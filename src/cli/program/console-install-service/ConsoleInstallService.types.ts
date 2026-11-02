@@ -1,3 +1,4 @@
+// @harness-uid u_abp43v6l4r
 import type { ConsoleChange } from '../../../utils/consoleManifest';
 import type { ConsoleStorage } from '../../../utils/consoleManifest';
 import type { ConsoleFileEntry } from '../../../utils/consoleManifest';

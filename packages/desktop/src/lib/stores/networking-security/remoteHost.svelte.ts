@@ -1,3 +1,4 @@
+// @harness-uid u_j7is42yfqi
 import type { Approval } from './remoteHost.svelte.types';
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 import type {

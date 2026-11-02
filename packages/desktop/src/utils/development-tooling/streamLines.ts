@@ -1,3 +1,4 @@
+// @harness-uid u_ysfqmpzs3l
 /** Decode bounded newline-delimited messages while retaining an incomplete final line. */
 export function streamLines(options: {
 	onLine: (line: string) => void;

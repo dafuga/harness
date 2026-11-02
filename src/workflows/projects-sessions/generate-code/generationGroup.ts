@@ -1,3 +1,4 @@
+// @harness-uid u_gze65qn66u
 import type { Selection } from './generationGroup.types';
 import { writeFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';

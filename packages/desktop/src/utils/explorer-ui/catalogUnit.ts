@@ -1,3 +1,4 @@
+// @harness-uid u_k4gv6lw2oq
 import { helperContract } from '../../../../../src/utils/helperContract';
 import { explorerName } from '$reports/utils/explorerName';
 import type { ComponentManifest } from '../../../../../src/lib/contracts';

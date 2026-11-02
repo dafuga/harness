@@ -1,3 +1,4 @@
+// @harness-uid u_jmb3kpgden
 import type { BenchOptions } from './runKernelBench.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';

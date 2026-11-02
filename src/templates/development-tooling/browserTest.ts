@@ -1,3 +1,4 @@
+// @harness-uid u_helj4uvpho
 import type { PlannedFile } from '../../core/development-tooling/files';
 
 const browserTestSource =

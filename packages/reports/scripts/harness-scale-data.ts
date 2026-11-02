@@ -1,3 +1,4 @@
+// @harness-uid u_phdcou5q3p
 import type { Unit, Detail } from './harness-scale-data.types';
 /**
  * Copies the console data of the synthetic history and gives its newest revision a registry

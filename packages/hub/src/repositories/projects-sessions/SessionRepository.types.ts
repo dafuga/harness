@@ -1,3 +1,4 @@
+// @harness-uid u_znrbtnptwg
 import type { SessionStore } from '../../models/accounts-access/HubAuthStore.types';
 import type { SessionKind } from '../../models/accounts-access/HubAuthStore.types';
 import type { SessionRecord } from '../../models/accounts-access/HubAuthStore.types';

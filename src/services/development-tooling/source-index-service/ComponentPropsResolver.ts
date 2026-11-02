@@ -1,3 +1,4 @@
+// @harness-uid u_ude6avnxc2
 import ts from 'typescript';
 import type { SourceFile, SourceTree } from '../../../core/development-tooling/sourceTypes';
 import type { ContractItem } from '../../../core/development-tooling/unitTypes';

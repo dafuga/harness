@@ -1,3 +1,4 @@
+// @harness-uid u_mcam3kerc7
 import type { PermissionCatalog } from '../../services/networking-security/PermissionCatalogService.types';
 import type { Command } from 'commander';
 import { resolve } from 'node:path';

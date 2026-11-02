@@ -1,3 +1,4 @@
+// @harness-uid u_2yc4hkb5oi
 import type { GatewaySession } from '../../../utils/development-tooling/gatewayTypes';
 
 export class GatewayEventsService {

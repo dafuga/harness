@@ -1,3 +1,4 @@
+// @harness-uid u_tfty5sagnp
 /** A pinned tool and its child environment. */
 export interface PinnedTool {
 	command: string;

@@ -1,3 +1,4 @@
+// @harness-uid u_3xal7xfwu7
 import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 import type {
 	CacheStatus,

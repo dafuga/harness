@@ -1,3 +1,4 @@
+// @harness-uid u_4y3dfozg2z
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 

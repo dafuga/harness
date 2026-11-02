@@ -1,3 +1,4 @@
+// @harness-uid u_7okxhscew6
 import type { Environment, KernelArtifacts, KernelBuild } from './kernelArtifacts.types';
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';

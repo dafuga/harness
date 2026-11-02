@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_abu4bjyhp4 -->
 <script lang="ts">
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import type { RemoteHost } from '../../lib/stores/networking-security/remoteHost.svelte';

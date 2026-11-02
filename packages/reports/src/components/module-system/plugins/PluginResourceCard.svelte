@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_ptpw6waing -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type {

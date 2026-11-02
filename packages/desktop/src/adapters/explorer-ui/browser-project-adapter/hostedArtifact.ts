@@ -1,3 +1,4 @@
+// @harness-uid u_si33ircueg
 import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import type { EvidenceArtifactResult } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { artifactAnswer } from '../../../utils/development-tooling/artifact-answer/artifactAnswer';

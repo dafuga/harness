@@ -1,3 +1,4 @@
+// @harness-uid u_slsujuvfgt
 import { createHash } from 'node:crypto';
 import { arch, cpus, platform, totalmem } from 'node:os';
 import type { VerificationProfile } from '../../core/verification-evidence/verificationTypes';

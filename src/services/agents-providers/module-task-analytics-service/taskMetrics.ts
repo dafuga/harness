@@ -1,3 +1,4 @@
+// @harness-uid u_nlvnkjdcje
 import type { AnalyticsEvent } from '../../../core/reports-media/analyticsTypes';
 export function taskMetrics(events: AnalyticsEvent[]) {
 	const unique = [

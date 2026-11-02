@@ -1,3 +1,4 @@
+// @harness-uid u_cbbdjfnu6i
 import type { SecurePacket } from './RemoteSecure.types';
 
 export type RelayErrorCode =

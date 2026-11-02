@@ -1,3 +1,4 @@
+// @harness-uid u_vcr3nrovbe
 import type { ComparisonPane, ComparisonSide } from './comparisonPanes.types';
 import { shortCommit } from '../strings/shortCommit';
 

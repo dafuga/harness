@@ -1,3 +1,4 @@
+// @harness-uid u_wtlwl3ldsd
 import type { GroupTiming } from '../groupTeardown';
 import { signalGroup } from '../groupTeardown';
 import type { ChildProcess } from 'node:child_process';

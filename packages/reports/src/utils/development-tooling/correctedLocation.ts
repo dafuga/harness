@@ -1,3 +1,4 @@
+// @harness-uid u_bt2wantmmz
 import type { ExplorerEntity, ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 
 /**

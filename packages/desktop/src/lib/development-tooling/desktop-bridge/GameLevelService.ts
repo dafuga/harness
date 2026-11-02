@@ -1,3 +1,4 @@
+// @harness-uid u_mzhcxeicv4
 import { createHash } from 'node:crypto';
 import type { LevelRequest } from './GameLevelService.types';
 import type { LevelProposal } from '../../../../../game/src/models/game-authoring/Game.types';

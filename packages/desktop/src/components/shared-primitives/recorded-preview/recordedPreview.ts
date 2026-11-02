@@ -1,3 +1,4 @@
+// @harness-uid u_rqnpef7fhf
 import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { PreviewPick } from './recordedPreview.types';

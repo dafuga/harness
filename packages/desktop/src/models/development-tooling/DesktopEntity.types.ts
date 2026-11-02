@@ -1,3 +1,4 @@
+// @harness-uid u_ppc5mrepmj
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
 import type { UnitDocumentation } from '../../../../../src/utils/unit-documentation/unitDocumentation';
 import type { DesignVersion } from '../DesignVersion.types';

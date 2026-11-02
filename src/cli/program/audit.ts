@@ -1,3 +1,4 @@
+// @harness-uid u_whx442iisn
 import { analyticsOptions } from '../../utils/reports-media/analyticsOptions';
 import type { Command } from 'commander';
 import { runAudit, type AuditCommandOptions } from './runAudit';

@@ -1,3 +1,4 @@
+// @harness-uid u_a3ytqsxx4a
 import type { CachedEvaluation } from './cleanCodeCache.types';
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, realpath, rename, writeFile } from 'node:fs/promises';

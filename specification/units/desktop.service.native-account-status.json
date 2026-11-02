@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.service.native-account-status",
+	"uid": "u_fnvtwr6rqr",
 	"kind": "service",
 	"title": "Check device sign-in",
 	"responsibility": "Rechecks the saved Google identity and clears revoked access while preserving login during temporary outages.",

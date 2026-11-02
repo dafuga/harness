@@ -1,3 +1,4 @@
+// @harness-uid u_rfumv65ikl
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Attached } from './EvidenceAttachService.types';
 import { createHash } from 'node:crypto';

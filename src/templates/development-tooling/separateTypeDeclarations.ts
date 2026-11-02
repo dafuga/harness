@@ -1,3 +1,4 @@
+// @harness-uid u_xlz4u2fh72
 import ts from 'typescript';
 import { basename } from 'node:path';
 import type { PlannedFile } from '../../core/development-tooling/files';

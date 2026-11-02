@@ -1,3 +1,4 @@
+// @harness-uid u_3pfwjgdn2z
 import type {
 	HelperFacts,
 	HelperBinding,

@@ -1,3 +1,4 @@
+// @harness-uid u_tagxmpm4v4
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Report } from '../../models/reports-media/Report.types';

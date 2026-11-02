@@ -1,3 +1,4 @@
+// @harness-uid u_lvq6oinwwb
 import type { ComponentVersion } from './componentVersion.types';
 import { createHash } from 'node:crypto';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';

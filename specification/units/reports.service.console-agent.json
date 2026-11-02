@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.service.console-agent",
+	"uid": "u_i5scgbpvjs",
 	"kind": "service",
 	"title": "Local chat sessions",
 	"responsibility": "Keeps bounded owner conversations, validates bridge operations and prevents a retried request from starting duplicate work.",

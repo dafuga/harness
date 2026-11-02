@@ -1,3 +1,4 @@
+// @harness-uid u_xe57mnla2t
 import ts from 'typescript';
 import { scanExports } from '../../../utils/development-tooling/scanExports';
 import type { ExportPlan } from '../../../core/projects-sessions/exports';

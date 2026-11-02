@@ -1,3 +1,4 @@
+// @harness-uid u_2kqdk2v3f6
 import { createHash } from 'node:crypto';
 import { extname } from 'node:path';
 import { mediaMime } from '../../verification-evidence/evidenceMedia';

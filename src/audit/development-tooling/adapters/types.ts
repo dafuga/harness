@@ -1,3 +1,4 @@
+// @harness-uid u_ezqv7gb6yy
 import type { AuditFinding } from '../types';
 import type { HarnessRuleLimits } from '../../../rules/explorer-ui/catalog';
 import type { CleanCodeConfig, CleanCodeOptions, CleanCodeReport } from '../cleanCodeTypes';

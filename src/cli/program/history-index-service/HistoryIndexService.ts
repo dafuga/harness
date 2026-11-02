@@ -1,3 +1,4 @@
+// @harness-uid u_xd7bcjvsli
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { LegacyReader, BuiltHistory, Built } from './HistoryIndexService.types';
 import { createHash } from 'node:crypto';

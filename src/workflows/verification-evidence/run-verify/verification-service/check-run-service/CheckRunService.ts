@@ -1,3 +1,4 @@
+// @harness-uid u_3flwsx2557
 import type { RunContext, CheckOutcome } from './CheckRunService.types';
 export type { RunContext, CheckOutcome } from './CheckRunService.types';
 import { readFile } from 'node:fs/promises';

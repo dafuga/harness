@@ -1,3 +1,4 @@
+// @harness-uid u_vywguk6j2s
 export class ExpectedCliError extends Error {
 	override name = 'ExpectedCliError';
 }

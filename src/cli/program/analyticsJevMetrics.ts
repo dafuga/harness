@@ -1,3 +1,4 @@
+// @harness-uid u_xj5rgegbz5
 import type { AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
 const assessed = new Set(['satisfied', 'clean', 'violations', 'needs-review']);
 export function jevMetrics(

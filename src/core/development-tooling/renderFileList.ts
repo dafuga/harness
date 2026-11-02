@@ -1,3 +1,4 @@
+// @harness-uid u_64mql5f5ei
 import type { FileWriteResult, FileWriteStatus } from './files.types';
 
 export function renderFileList(files: FileWriteResult[]): string {

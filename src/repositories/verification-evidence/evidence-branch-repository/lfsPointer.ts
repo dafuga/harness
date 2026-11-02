@@ -1,3 +1,4 @@
+// @harness-uid u_ij32lmvgck
 import { mediaExtensions } from '../../../utils/verification-evidence/lfsPointer';
 
 /** The `.gitattributes` of the evidence branch, so ordinary LFS clients see the same files. */

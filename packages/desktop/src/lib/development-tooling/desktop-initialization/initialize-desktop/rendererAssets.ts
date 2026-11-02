@@ -1,3 +1,4 @@
+// @harness-uid u_zbb5krf6rd
 import { readFile, realpath, stat } from 'node:fs/promises';
 import { resolve, relative, extname } from 'node:path';
 import { createHash } from 'node:crypto';

@@ -1,3 +1,4 @@
+// @harness-uid u_ignqe37br6
 import { join } from 'node:path';
 import { ModuleCatalogService } from '../../../services/module-system/ModuleCatalogService';
 import { ModuleInstallService } from '../../../services/module-system/ModuleInstallService';

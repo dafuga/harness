@@ -1,3 +1,4 @@
+// @harness-uid u_qnclp3cc2r
 import type { SourceHistoryAdapter } from 'collaboration';
 import type { Project } from 'collaboration';
 import type { SourceEntry } from 'collaboration';

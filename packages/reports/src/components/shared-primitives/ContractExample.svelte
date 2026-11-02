@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms atoms -->
+<!-- @harness-uid u_z3fe2l5db4 -->
 <script lang="ts">
 	import DetailList from './DetailList.svelte';
 	import type {

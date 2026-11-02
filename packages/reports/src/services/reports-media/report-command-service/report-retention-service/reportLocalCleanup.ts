@@ -1,3 +1,4 @@
+// @harness-uid u_e5zlumk3sp
 import { lstat, readdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 

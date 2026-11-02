@@ -1,3 +1,4 @@
+// @harness-uid u_uh7qunakpj
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { atomicSyntax } from '../../../templates/development-tooling/atomicSyntax.js';

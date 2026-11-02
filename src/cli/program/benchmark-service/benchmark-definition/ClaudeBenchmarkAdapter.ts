@@ -1,3 +1,4 @@
+// @harness-uid u_zynlj7sdh7
 import type {
 	BenchmarkCandidate,
 	BenchmarkRunner,

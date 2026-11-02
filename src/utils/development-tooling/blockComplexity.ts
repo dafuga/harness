@@ -1,3 +1,4 @@
+// @harness-uid u_thb4yiznxp
 const decisions = /\b(?:if|for|while|case|catch)\b|&&|\|\||\?\?|(?<![?])\?(?![?.:,)\]=>;])/g;
 
 /** Counts decision points in masked source; functions start from a base of one. */

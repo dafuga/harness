@@ -1,3 +1,4 @@
+// @harness-uid u_5hlw2jcv7w
 import type { Field } from './entityContract.types';
 import type { ContractRow, ContractFacts } from '../../../utils/explorer-ui/entityContract';
 import { humanize } from '../../../helpers/strings/humanize';

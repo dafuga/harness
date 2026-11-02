@@ -1,3 +1,4 @@
+// @harness-uid u_jzuoc2wrjm
 import type { RemoteBinary } from '../../models/development-tooling/Environment.types';
 
 export const unreadableMedia = 'The computer sent media this app cannot read.';

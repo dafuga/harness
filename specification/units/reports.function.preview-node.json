@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.function.preview-node",
+	"uid": "u_senandtdez",
 	"kind": "function",
 	"title": "Run the managed preview with Node",
 	"responsibility": "Starts the single managed preview with the runtime used by SvelteKit sync, then removes its temporary launcher on exit.",

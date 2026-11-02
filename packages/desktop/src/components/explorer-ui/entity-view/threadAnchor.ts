@@ -1,3 +1,4 @@
+// @harness-uid u_c2t7k34ez4
 import { designOption } from '../../../utils/explorer-ui/threadAnchor';
 import type { DesignVersion } from '../../../models/development-tooling/Desktop.types';
 

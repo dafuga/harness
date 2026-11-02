@@ -1,3 +1,4 @@
+// @harness-uid u_tm2cqtmoei
 import { toCamelCase, toKebabCase } from '../../helpers/strings/case';
 import { fail } from './errors';
 import { validateName } from './fields/validateName';

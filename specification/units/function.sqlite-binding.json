@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.sqlite-binding",
+	"uid": "u_sggnkny4w3",
 	"kind": "function",
 	"title": "sqliteBinding",
 	"responsibility": "Converts a model field value to a SQLite binding, serializing JSON and booleans and rejecting incompatible values.",

@@ -1,3 +1,4 @@
+// @harness-uid u_5mcsb4jhic
 const subcommands: Record<string, string[]> = {
 	benchmark: ['validate', 'run', 'results'],
 	resources: ['status', 'configure', 'run'],

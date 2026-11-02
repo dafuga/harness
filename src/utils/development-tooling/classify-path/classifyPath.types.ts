@@ -1,3 +1,4 @@
+// @harness-uid u_6ds5upyt32
 import type { FileClass } from '../../../core/development-tooling/sourceTypes';
 import type { UnitIdentity } from './unitIdentity.types';
 

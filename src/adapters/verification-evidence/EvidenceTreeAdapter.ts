@@ -1,3 +1,4 @@
+// @harness-uid u_pkblm2rnm6
 import type { TreeCommit, TreeFile } from './EvidenceTreeAdapter.types';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';

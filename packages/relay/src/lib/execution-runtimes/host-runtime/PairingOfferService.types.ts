@@ -1,3 +1,4 @@
+// @harness-uid u_m6g57qzeqs
 export interface Approval {
 	pairingId: string;
 	deviceId: string;

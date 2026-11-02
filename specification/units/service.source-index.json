@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.source-index",
+	"uid": "u_ude6avnxc2",
 	"kind": "service",
 	"title": "SourceIndexService",
 	"responsibility": "Indexes revision-bound source, imports, declarations, storage syntax and execution facts, resolving component props and caching parsed blobs with bounded reads.",

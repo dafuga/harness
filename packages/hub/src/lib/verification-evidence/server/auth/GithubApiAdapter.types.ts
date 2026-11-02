@@ -1,3 +1,4 @@
+// @harness-uid u_qrjfwyzum2
 export interface GithubApiOptions {
 	fetch: typeof fetch;
 }

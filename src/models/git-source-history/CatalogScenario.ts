@@ -1,3 +1,4 @@
+// @harness-uid u_xhour6mlxy
 import type { PersistenceAdapter, SqliteModel } from '../../core/development-tooling/sqliteTypes';
 import type {
 	CatalogScenarioAttributes,

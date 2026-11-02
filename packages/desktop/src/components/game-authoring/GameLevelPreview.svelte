@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_uef2rd54m2 -->
 <script lang="ts">
 	import type { Action } from 'svelte/action';
 	import { create2d, create3d, createRun } from '../../../../game/src/index';

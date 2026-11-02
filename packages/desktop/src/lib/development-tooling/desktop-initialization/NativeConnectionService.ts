@@ -1,3 +1,4 @@
+// @harness-uid u_u5rrzn7a6a
 import type { NativeConnectionOptions } from './NativeConnectionService.types';
 import {
 	NativeSessionAdapter,

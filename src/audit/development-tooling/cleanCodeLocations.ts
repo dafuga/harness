@@ -1,3 +1,4 @@
+// @harness-uid u_3y24rfrsmd
 import type { LocationPlan } from './cleanCodeLocations.types';
 import type { JevEvaluation, PrincipleAssessment, ReviewLocation } from './cleanCodeTypes';
 import { maxReviewStateBytes } from '../verification-evidence/cleanCodeSnapshot';

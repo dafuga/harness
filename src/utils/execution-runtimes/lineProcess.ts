@@ -1,3 +1,4 @@
+// @harness-uid u_n3nlghudto
 import { runtimeFailure, type RuntimeResponse } from '../../core/execution-runtimes/runtimeTypes';
 
 export function unavailable(command: string, error: Error): RuntimeResponse {

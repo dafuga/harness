@@ -1,3 +1,4 @@
+// @harness-uid u_qnsxtzzzdq
 import type { AgentRunner, ImageGenerator } from '../agents-providers/AgentRunner.types';
 import type { Category, DesignImage, SourceChange, EntityDetail, Revision } from './Desktop.types';
 import type { RunRequest } from './DesktopBridge.types';

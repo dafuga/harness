@@ -1,3 +1,4 @@
+// @harness-uid u_jv6fst3qm3
 import type { ConsoleRequest } from './consolePolicy';
 
 /** Where console data comes from: a directory, or modules bundled into the server. */

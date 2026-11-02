@@ -1,3 +1,4 @@
+// @harness-uid u_3kkfli5otz
 import type { RemotePairInput } from '../../../models/networking-security/RemoteControl.types';
 import type { PairingSecret } from '../../../models/networking-security/RemoteSecure.types';
 import type { RemoteKeyPair } from '../../../models/networking-security/RemoteSecure.types';

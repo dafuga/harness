@@ -1,3 +1,4 @@
+// @harness-uid u_qhtw3ssuhz
 import { componentManifestSchema } from '../../../../../src/core/unitTypes';
 import { hubRead } from './hubSource';
 import type { HubSourceContext } from './hubSource';

@@ -1,3 +1,4 @@
+// @harness-uid u_m3rqfrppy7
 import electron from 'electron';
 import { cp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';

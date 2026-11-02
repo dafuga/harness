@@ -1,3 +1,4 @@
+// @harness-uid u_m4fecbvf3h
 import type { ComponentManifest } from '../../../../../../../src/lib/contracts';
 
 /** Put units named in the question, or described by it, ahead of the bounded prompt list. */

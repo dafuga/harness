@@ -1,3 +1,4 @@
+// @harness-uid u_i3fro6o4fu
 import type { EmailProofControllerOptions } from './EmailProofController.types';
 import type { SignInResult } from '../../../../models/accounts-access/HubAuth.types';
 import { BROWSER_TTL } from '../../../../repositories/projects-sessions/SessionRepository';

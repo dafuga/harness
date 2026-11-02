@@ -1,3 +1,4 @@
+// @harness-uid u_amgyfn4sxl
 import type { ComponentManifest, ContractItem } from '../../core/development-tooling/unitTypes';
 
 /** Contract readability is checked separately from the backward-compatible storage schema. */

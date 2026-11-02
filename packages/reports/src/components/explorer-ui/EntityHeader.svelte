@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_fagdosmioc -->
 <script lang="ts">
 	import Pill from './explorer-kit/Pill.svelte';
 	import type { Place } from './EntityHeader.types';

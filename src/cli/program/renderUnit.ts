@@ -1,3 +1,4 @@
+// @harness-uid u_m3b6bsf3br
 import type { UnitDetail } from './inspectUnits.types';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import { indent } from './contractRows';

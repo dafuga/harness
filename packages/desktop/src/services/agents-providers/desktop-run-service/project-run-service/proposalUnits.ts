@@ -1,3 +1,4 @@
+// @harness-uid u_m4fecbvf3h
 import {
 	categories,
 	type CatalogEntity

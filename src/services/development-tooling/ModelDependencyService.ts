@@ -1,3 +1,4 @@
+// @harness-uid u_33orhudyzp
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import packageInfo from '../../../package.json';

@@ -1,3 +1,4 @@
+// @harness-uid u_2yhhk7b4j4
 export interface HostFile {
 	/** Path inside the host project. */
 	path: string;

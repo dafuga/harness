@@ -1,3 +1,4 @@
+// @harness-uid u_2ufdy5twoi
 import type { RemoteMethod, RemoteErrorCode } from './Remote.types';
 export type { RemoteConnectionEvent, RemoteGrant, RemoteRevision } from './RemoteControl.types';
 

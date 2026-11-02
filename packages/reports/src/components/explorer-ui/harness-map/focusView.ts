@@ -1,3 +1,4 @@
+// @harness-uid u_fyidtoqkl6
 import type { MapView } from '../../../utils/explorer-ui/focusView';
 import { wholeView, pad } from '../../../utils/explorer-ui/focusView';
 import {

@@ -1,3 +1,4 @@
+// @harness-uid u_5hlw2jcv7w
 import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 
 export interface ContractRow {

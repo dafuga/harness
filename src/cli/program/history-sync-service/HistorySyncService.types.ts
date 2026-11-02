@@ -1,3 +1,4 @@
+// @harness-uid u_qk76co4yyg
 export type RefChange = 'absent' | 'unchanged' | 'created' | 'fast-forwarded' | 'merged';
 
 export interface Synced {

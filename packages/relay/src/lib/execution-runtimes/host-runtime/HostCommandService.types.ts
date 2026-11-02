@@ -1,3 +1,4 @@
+// @harness-uid u_gzun7zkojm
 import type { RelayHostCommand } from '../../../../../remote/src/index';
 
 export type Acknowledged = Extract<RelayHostCommand, { ref: string }>;

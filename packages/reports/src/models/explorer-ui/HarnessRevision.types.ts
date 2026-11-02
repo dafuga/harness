@@ -1,3 +1,4 @@
+// @harness-uid u_7ypwlyjf7m
 import type { PermissionCatalog } from '../../../../../src/services/networking-security/PermissionCatalogService.types';
 import type { ProjectDependencies } from '../../../../../src/services/explorer-ui/revision-detail-service/projectDependencies.types';
 import type { ModuleCatalog } from '../../../../../src/services/module-system/moduleDefinition.types';

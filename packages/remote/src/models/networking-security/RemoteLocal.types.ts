@@ -1,3 +1,4 @@
+// @harness-uid u_vxsaomwp3o
 /** What the preload is given over IPC to open its socket. Valid once, for a few seconds. */
 export interface LocalBootstrap {
 	port: number;

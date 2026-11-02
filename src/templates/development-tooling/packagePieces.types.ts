@@ -1,3 +1,4 @@
+// @harness-uid u_jucgsgpmih
 export interface EntityFileInput {
 	folder: string;
 	fileName: string;

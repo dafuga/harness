@@ -1,3 +1,4 @@
+// @harness-uid u_nxgkfvplrk
 import type { D1CredentialStores } from '../../../../utils/networking-security/d1CredentialStores';
 import type { D1Like } from './D1AuthStoreAdapter';
 import type { SessionStore } from '../../../../models/accounts-access/HubAuthStore.types';

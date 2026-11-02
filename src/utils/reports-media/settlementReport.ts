@@ -1,3 +1,4 @@
+// @harness-uid u_xmtlj2tftm
 import type { Settlement } from './settlementReport.types';
 
 /** The answer when what was left could not be established: nothing passes on it. */

@@ -1,3 +1,4 @@
+// @harness-uid u_2mmtddfrmp
 /**
  * Adds to the synthetic history what the explorer has to be able to show: a page that contains
  * a component, which contains another, which uses a function; a config; and two scenarios of

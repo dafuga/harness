@@ -1,3 +1,4 @@
+// @harness-uid u_gvtvivvpb2
 import type { Assembly } from './impactReport.types';
 import { graphTests, testFile } from '../../../utils/reports-media/impactReport';
 import type { ImpactReport } from '../../../core/development-tooling/impactTypes';

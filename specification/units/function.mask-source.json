@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.mask-source",
+	"uid": "u_md2b3ep6wf",
 	"kind": "function",
 	"title": "Source text masking",
 	"responsibility": "Replaces comments and optional literal contents with spaces while retaining offsets, line breaks and template expressions for source analysis.",

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_kz3pplxh6v -->
 <script lang="ts">
 	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';

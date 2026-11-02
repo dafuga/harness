@@ -1,3 +1,4 @@
+// @harness-uid u_24crdv7kqx
 import type { AuditResult } from './adapters/types';
 import type { CleanCodeReport, FileReview } from './cleanCodeTypes';
 

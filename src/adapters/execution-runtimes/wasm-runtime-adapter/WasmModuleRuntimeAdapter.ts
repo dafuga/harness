@@ -1,3 +1,4 @@
+// @harness-uid u_hqa74vec52
 import { errorMessage } from '../../../../packages/reports/src/helpers/strings/errorMessage';
 import type { WasmSource, WasmLoader, JsonAbi } from './WasmModuleRuntimeAdapter.types';
 import {

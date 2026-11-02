@@ -1,3 +1,4 @@
+// @harness-uid u_plxodrc2ry
 import type { Item, CallableContract } from './contractFields.types';
 import type {
 	ContractExample,

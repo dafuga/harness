@@ -1,3 +1,4 @@
+// @harness-uid u_qrci5ngoec
 const OPAQUE_BEARER = /^Bearer ([A-Za-z0-9_-]{32,128})$/;
 
 export function sameOrigin(request: Request, origin: string): boolean {

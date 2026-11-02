@@ -1,3 +1,4 @@
+// @harness-uid u_rkgbv34krx
 import { type Category } from '../../models/development-tooling/Desktop.types';
 import type { ProposedContract } from '../../models/development-tooling/DesktopBridge.types';
 

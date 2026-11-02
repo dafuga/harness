@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_rfd2oyknrt -->
 <script lang="ts">
 	import { behaviorDuration } from '../../utils/explorer-ui/entityBehavior';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';

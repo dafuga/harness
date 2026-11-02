@@ -1,3 +1,4 @@
+// @harness-uid u_m36pubk4sx
 import type { BlockCandidate } from './blockHelpers.types';
 import { harnessRuleLimits, type HarnessRuleLimits } from '../../../rules/explorer-ui/catalog';
 import type { AuditFinding } from '../types';

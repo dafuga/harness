@@ -1,3 +1,4 @@
+// @harness-uid u_tifhg2ffwr
 import type { Fields } from './explorerReading.types';
 import type {
 	ExplorerArtifact,

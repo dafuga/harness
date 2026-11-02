@@ -1,3 +1,4 @@
+// @harness-uid u_nqck3zl3ci
 import { browserTestFiles } from '../development-tooling/browserTest';
 
 /** Dedicated config preserves the application's existing Playwright settings. */

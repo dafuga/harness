@@ -1,3 +1,4 @@
+// @harness-uid u_5hbkzkvulq
 import type { Flags } from './VerifyCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';

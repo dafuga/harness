@@ -1,3 +1,4 @@
+// @harness-uid u_shto7r4hzo
 import type { HostRuntime } from './hostRuntime.types';
 import { HostSocketsAdapter } from './HostSocketsAdapter';
 import { HostStorageAdapter } from './HostStorageAdapter';

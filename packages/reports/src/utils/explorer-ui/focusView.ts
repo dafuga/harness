@@ -1,3 +1,4 @@
+// @harness-uid u_fyidtoqkl6
 import type { MapView } from './focusView.types';
 import { type HarnessLayout } from './harnessLayout';
 

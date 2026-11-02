@@ -1,3 +1,4 @@
+// @harness-uid u_6cuzswxej5
 export interface BoundedText {
 	text: string;
 	/** True when the text is only the start of what was written. */

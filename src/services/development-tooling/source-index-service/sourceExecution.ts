@@ -1,3 +1,4 @@
+// @harness-uid u_ude6avnxc2
 import ts from 'typescript';
 import type { SourceFile } from '../../../core/development-tooling/sourceTypes';
 import type { SourceLanguage } from '../../../utils/development-tooling/scanImports.types';

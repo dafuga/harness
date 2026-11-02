@@ -1,3 +1,4 @@
+// @harness-uid u_5oh2kzpy56
 /** The time an offer has left, as minutes and seconds; never less than nothing. */
 export function timeLeft(milliseconds: number): string {
 	const seconds = Math.max(0, Math.ceil(milliseconds / 1000));

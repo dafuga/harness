@@ -1,3 +1,4 @@
+// @harness-uid u_bine3tddnk
 import type { SourceIndex } from '../../../../services/development-tooling/source-index-service/SourceIndexService';
 import type { ComponentManifest } from '../../../../core/development-tooling/unitTypes';
 

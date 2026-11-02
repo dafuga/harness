@@ -1,3 +1,4 @@
+// @harness-uid u_wlq5ngskje
 export interface Flags {
 	json?: boolean;
 	write?: boolean;

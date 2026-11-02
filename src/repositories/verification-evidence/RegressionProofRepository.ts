@@ -1,3 +1,4 @@
+// @harness-uid u_4de62mowqb
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { RegressionNote } from './RegressionProofRepository.types';
 import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/EvidenceTreeAdapter';

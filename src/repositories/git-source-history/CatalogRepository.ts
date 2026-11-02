@@ -1,3 +1,4 @@
+// @harness-uid u_63clvffenx
 import type { CatalogQuery } from './CatalogRepository.types';
 import { createSqliteAdapter } from '../../adapters/development-tooling/SqliteAdapter';
 import type { HistoryIndex, IndexedRevision } from '../../core/historyIndexTypes';

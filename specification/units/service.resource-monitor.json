@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.resource-monitor",
+	"uid": "u_o3ryl56fze",
 	"kind": "service",
 	"title": "ResourceMonitorService",
 	"responsibility": "Refreshes telemetry, heartbeats running work and waits for admission while checking cancellation and parent lifetime.",

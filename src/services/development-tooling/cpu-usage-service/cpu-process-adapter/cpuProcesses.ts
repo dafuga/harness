@@ -1,3 +1,4 @@
+// @harness-uid u_5dgj3cj7nh
 import type { CpuProcess, CpuRole } from '../../../../utils/development-tooling/cpuProcesses';
 import { basename } from 'node:path';
 

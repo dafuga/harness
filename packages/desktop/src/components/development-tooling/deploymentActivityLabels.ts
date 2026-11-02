@@ -1,3 +1,4 @@
+// @harness-uid u_kpiaoij5h4
 import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
 
 export type DeploymentLight = 'active' | 'failed' | 'recent' | 'idle' | 'queued';

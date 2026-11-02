@@ -1,3 +1,4 @@
+// @harness-uid u_577fmnpc3w
 export const offlineModule = {
 	schemaVersion: 1,
 	id: 'offline',

@@ -1,3 +1,4 @@
+// @harness-uid u_dpouni2chr
 /**
  * Server-side contracts of the Harness console: the host policy that every page, data and media
  * request must pass, and the two ways data reaches the handlers. Everything here uses only Web

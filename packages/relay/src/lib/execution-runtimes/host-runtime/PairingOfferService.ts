@@ -1,3 +1,4 @@
+// @harness-uid u_m6g57qzeqs
 import type { Approval } from './PairingOfferService.types';
 import { remoteLimits, safeEqual } from '../../../../../remote/src/index';
 import type { RelayErrorCode } from '../../../../../remote/src/index';

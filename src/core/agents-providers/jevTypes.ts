@@ -1,3 +1,4 @@
+// @harness-uid u_gp2sxuiw23
 import type { ChoiceQuestion } from '@typesafe-ai/sdk';
 
 export interface JevChoice {

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.function.report-local-cleanup",
+	"uid": "u_e5zlumk3sp",
 	"kind": "function",
 	"title": "Local report retention cleanup",
 	"responsibility": "Removes old nonreserved files and untracked run contents while preserving known runs and symlinks.",

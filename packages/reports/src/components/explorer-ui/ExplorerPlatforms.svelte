@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_wr4lrmblp5 -->
 <script lang="ts">
 	import EmptyState from './explorer-kit/EmptyState.svelte';
 	import Notice from './explorer-kit/Notice.svelte';

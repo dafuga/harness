@@ -1,3 +1,4 @@
+// @harness-uid u_dp5dwz2v6j
 const objects = new Map<string, { bytes: Uint8Array; mime: string }>();
 
 Bun.serve({

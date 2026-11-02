@@ -1,3 +1,4 @@
+// @harness-uid u_o4a4sfshto
 import type { HarnessReview } from '../../models/explorer-ui/HarnessBudget.types';
 
 export interface EmittedCell {

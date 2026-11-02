@@ -1,3 +1,4 @@
+// @harness-uid u_dxeucuj4p2
 export interface Statement {
 	all(...args: (string | number)[]): unknown[];
 	get(...args: (string | number)[]): unknown;

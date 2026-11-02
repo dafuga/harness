@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.files",
+	"uid": "u_64mql5f5ei",
 	"kind": "function",
 	"title": "Planned file writes",
 	"responsibility": "Preserves planned-file write operations and status formatting, with filesystem effects behind a generation adapter and formatting in a core value leaf.",

@@ -1,3 +1,4 @@
+// @harness-uid u_qgemzfnn3s
 import type { Authority } from './remoteAuthority.types';
 import type { RemoteMobileStatus } from '../../models/development-tooling/Environment.types';
 export const noAuthority: Authority = { holder: null, grant: '' };

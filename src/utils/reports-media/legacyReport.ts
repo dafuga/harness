@@ -1,3 +1,4 @@
+// @harness-uid u_l4gfzyogu3
 import type { LegacyRecord } from '../../core/git-source-history/historyTypes';
 
 export interface LegacyReport {

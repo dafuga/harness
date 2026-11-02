@@ -1,3 +1,4 @@
+// @harness-uid u_dvhqqgtjas
 import type { Check } from './HostCommandValidator.types';
 import { remotePatterns, SecurePacketValidator } from '../../../../remote/src/index';
 import type { RelayHostCommand } from '../../../../remote/src/index';

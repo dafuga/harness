@@ -1,3 +1,4 @@
+// @harness-uid u_a7rs3z4f6t
 import type { CheckReport } from './VerificationCheckService.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';

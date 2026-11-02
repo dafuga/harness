@@ -1,3 +1,4 @@
+// @harness-uid u_sl6jhpdbx4
 import type { CredentialBinding } from './remoteIdentity.types';
 import { fromBase64Url, randomBytes, remoteBytes, sha256, toBase64Url, toHex } from './remoteBytes';
 

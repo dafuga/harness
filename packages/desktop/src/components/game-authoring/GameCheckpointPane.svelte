@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_ymw7zx5anc -->
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import Modal from '$shared/Modal.svelte';

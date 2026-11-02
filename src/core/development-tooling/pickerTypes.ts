@@ -1,3 +1,4 @@
+// @harness-uid u_ayrroml572
 import type { SwitchRequest } from './pickerTypes.types';
 
 export const desktopControlUnavailable =

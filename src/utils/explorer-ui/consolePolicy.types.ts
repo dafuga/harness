@@ -1,3 +1,4 @@
+// @harness-uid u_qz7bs2ymbn
 /** What a policy may look at: the request and whatever the host put on it server-side. */
 export interface ConsoleRequest {
 	request: Request;

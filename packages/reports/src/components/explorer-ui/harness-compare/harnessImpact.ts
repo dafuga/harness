@@ -1,3 +1,4 @@
+// @harness-uid u_rkcb47gqa3
 import type { Groups } from './harnessImpact.types';
 import type { ComparedSides, HarnessImpact } from '../../../utils/explorer-ui/harnessImpact';
 import { sideImpact } from './sideImpact';

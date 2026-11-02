@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-response",
+	"uid": "u_bj3fwkgoh5",
 	"kind": "function",
 	"title": "Read a bounded hosted response",
 	"responsibility": "Reads response bytes while enforcing a maximum size even when Content-Length is missing.",

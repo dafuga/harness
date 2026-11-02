@@ -1,3 +1,4 @@
+// @harness-uid u_plxodrc2ry
 import type { Guess } from './contractFields.types';
 
 /** Placeholders for types whose every value is plain data: nothing meaningful is invented. */

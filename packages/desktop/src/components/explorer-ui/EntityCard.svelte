@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_wdrbpttpis -->
 <script lang="ts">
 	import { explorerName } from '$reports/utils/explorerName';
 	import type { CatalogEntity } from '../../models/development-tooling/Desktop.types';

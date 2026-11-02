@@ -1,3 +1,4 @@
+// @harness-uid u_gk6ius7tb2
 import type { CatalogSection } from './catalogGroups.types';
 import type { CatalogRow } from '../../../utils/explorer-ui/entityCatalog';
 

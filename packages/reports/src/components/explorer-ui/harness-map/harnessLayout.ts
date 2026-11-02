@@ -1,3 +1,4 @@
+// @harness-uid u_pawbmjkgrx
 import type { HarnessLayout, PlacedUnit } from '../../../utils/explorer-ui/harnessLayout';
 import { nodeSize } from '../../../utils/explorer-ui/harnessLayout';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';

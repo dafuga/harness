@@ -1,3 +1,4 @@
+// @harness-uid u_zdot5r53tl
 import type {
 	CollaborationScope,
 	GithubAppConfig,

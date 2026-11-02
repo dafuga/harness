@@ -1,3 +1,4 @@
+// @harness-uid u_42k3qjz7iu
 import type { AnalyticsContext } from '../../core/reports-media/analyticsTypes';
 
 export interface AuditCommandOptions extends AnalyticsContext {

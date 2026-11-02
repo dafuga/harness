@@ -1,3 +1,4 @@
+// @harness-uid u_fsmxd7qrg5
 import { randomUUID } from 'node:crypto';
 import type { GatewayCall, GatewayItem } from '../../utils/development-tooling/gatewayTypes';
 

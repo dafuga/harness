@@ -1,3 +1,4 @@
+// @harness-uid u_3njglpaoku
 import type { Request, GitHubTransport } from './githubTransport.types';
 import { z } from 'zod';
 import type { GitHubOptions } from '../../models/planning-collaboration/Collaboration.types';

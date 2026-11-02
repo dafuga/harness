@@ -1,3 +1,4 @@
+// @harness-uid u_plxodrc2ry
 export {
 	typeLabel,
 	contractFields,

@@ -1,3 +1,4 @@
+// @harness-uid u_x6wpxjpmml
 export function parameterCount(line: string): number {
 	const match = line.match(/\(([^)]*)\)/);
 	if (!match?.[1].trim()) return 0;

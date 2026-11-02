@@ -1,3 +1,4 @@
+// @harness-uid u_dmvu5todfr
 import type { Invitation } from 'collaboration';
 
 /** The link an owner hands over. It holds two identifiers; the code travels apart from it. */

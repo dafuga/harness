@@ -1,3 +1,4 @@
+// @harness-uid u_nuuiwcqrxl
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';

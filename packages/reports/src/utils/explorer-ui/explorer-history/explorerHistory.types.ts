@@ -1,3 +1,4 @@
+// @harness-uid u_e6xbaornin
 import type { ExplorerHistoryRow } from '../../../models/explorer-ui/Explorer.types';
 
 export type Measured = NonNullable<ExplorerHistoryRow['measured']>;

@@ -1,3 +1,4 @@
+// @harness-uid u_46mac3pmth
 import type { ResolvedAuditConfig } from './config.types';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';

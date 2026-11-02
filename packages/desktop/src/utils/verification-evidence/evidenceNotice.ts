@@ -1,3 +1,4 @@
+// @harness-uid u_dpuekdwiia
 import type { EvidenceStatus, EvidenceNotice } from './evidenceNotice.types';
 
 export const unavailableEvidence = 'Recorded runtime evidence is not available on this connection.';

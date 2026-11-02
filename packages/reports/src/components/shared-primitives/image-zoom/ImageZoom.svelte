@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../atoms -->
+<!-- @harness-uid u_vy373725he -->
 <script lang="ts">
 	import type { DragStart, Point } from './ImageZoom.types';
 	import { tick } from 'svelte';

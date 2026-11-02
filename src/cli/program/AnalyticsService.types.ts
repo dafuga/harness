@@ -1,3 +1,4 @@
+// @harness-uid u_2uvstowd5m
 import type { AnalyticsFilter } from '../../core/reports-media/analyticsTypes';
 
 export interface AnalyticsOptions extends AnalyticsFilter {

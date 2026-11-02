@@ -1,3 +1,4 @@
+// @harness-uid u_o3x6y5zawv
 import type { ProjectSnapshot } from '../../models/development-tooling/Desktop.types';
 import type { ProjectContext } from '../../models/projects-sessions/ProjectContext.types';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_l3vsbup3df
 /** Resource context is propagated separately from a subprocess's application configuration. */
 export function resourceEnvironment(
 	env: Record<string, string | undefined> = process.env

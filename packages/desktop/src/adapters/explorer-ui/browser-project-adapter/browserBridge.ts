@@ -1,3 +1,4 @@
+// @harness-uid u_4fbefo5t7a
 import type { Listener, Guard, Reads, Denied } from './browserBridge.types';
 import { AgentHttpAdapter } from '../../agents-providers/AgentHttpAdapter';
 import { browserEvidenceReads } from './browserEvidenceReads';

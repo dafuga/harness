@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_eelycvv7m7 -->
 <script lang="ts">
 	import type { Region, ThreadInfo } from '../../models/development-tooling/Desktop.types';
 	let {

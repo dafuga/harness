@@ -1,3 +1,4 @@
+// @harness-uid u_77iip254x7
 import { scaffoldKinds } from '../development-tooling/scaffoldTypes';
 import type { ModuleDefinition } from '../../services/module-system/moduleDefinition.types';
 const moduleIds: Record<string, string> = { functions: 'helpers', 'module-library': 'modules' };

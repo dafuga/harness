@@ -1,3 +1,4 @@
+// @harness-uid u_gknev2kbvx
 import type { appStyleTokensConfig } from '../../configs/shared-primitives/appStyleTokensConfig';
 
 /** A catalog group declared by the shared app style token config. */

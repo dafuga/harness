@@ -1,3 +1,4 @@
+// @harness-uid u_awgc7bxsts
 import type { HubAgentPort } from '../../routes/api/[...path]/hub-api-controller/HubAgentController';
 import type { CollaborationApi } from 'collaboration';
 import type { HubProjectionService } from '../../routes/api/[...path]/hub-projection-service/HubProjectionService';

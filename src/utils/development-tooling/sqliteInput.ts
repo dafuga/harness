@@ -1,3 +1,4 @@
+// @harness-uid u_ofidpk73mq
 import type { SqliteModel } from '../../core/development-tooling/sqliteTypes';
 import { sqliteColumn, sqliteIdentifier } from './sqliteTableSql';
 import { sqliteBinding } from './sqliteBinding';

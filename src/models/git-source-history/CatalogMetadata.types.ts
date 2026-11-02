@@ -1,3 +1,4 @@
+// @harness-uid u_burc3b5edi
 export interface CatalogMetadataAttributes {
 	id: string;
 	schemaVersion: number;

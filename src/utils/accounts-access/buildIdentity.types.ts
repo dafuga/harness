@@ -1,3 +1,4 @@
+// @harness-uid u_hxz45jcw2t
 export interface BuiltFile {
 	/** Path inside the build directory, with forward slashes. */
 	path: string;

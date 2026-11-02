@@ -1,3 +1,4 @@
+// @harness-uid u_aqgw2ebixh
 import { z } from 'zod';
 
 const errorType = z.enum(['console', 'pageerror']);

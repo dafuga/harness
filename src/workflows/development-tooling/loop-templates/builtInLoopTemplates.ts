@@ -1,3 +1,4 @@
+// @harness-uid u_tifxybybje
 import type { LoopTemplate } from './loopTemplates';
 
 export const builtInTemplates: LoopTemplate[] = [

@@ -1,3 +1,4 @@
+// @harness-uid u_fjag4sxuai
 import { chmodSync, mkdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';

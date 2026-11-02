@@ -1,3 +1,4 @@
+// @harness-uid u_svhvvukfpr
 import type { PathChange, Checkout } from './ProjectWorkRepository.types';
 import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';

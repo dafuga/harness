@@ -1,3 +1,4 @@
+// @harness-uid u_z5ens2b66y
 import type { RequestSessionOptions } from './RequestSessionService.types';
 import type { SessionRecord } from '../../../../../models/accounts-access/HubAuthStore.types';
 import { SESSION_COOKIE, authCookies } from '../../../../../utils/accounts-access/authCookies';

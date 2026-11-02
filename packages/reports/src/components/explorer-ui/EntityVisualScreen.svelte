@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_2bsn62t2p2 -->
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import { screenOptions } from '../../utils/explorer-ui/entityScreens';

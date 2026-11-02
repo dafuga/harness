@@ -1,3 +1,4 @@
+// @harness-uid u_kl5coeje2e
 import type { RemoteHostAccess } from './RemotePairingControlService.types';
 import { RemoteInputValidator, offerEnvironment } from '../../../../../remote/src/index';
 import type {

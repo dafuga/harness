@@ -1,3 +1,4 @@
+// @harness-uid u_32tx5fixvb
 import type {
 	Report,
 	RecordInput,

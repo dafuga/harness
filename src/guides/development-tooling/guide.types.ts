@@ -1,3 +1,4 @@
+// @harness-uid u_jblqm64oc6
 export interface Guide {
 	topic: string;
 	summary: string;

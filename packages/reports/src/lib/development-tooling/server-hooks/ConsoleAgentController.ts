@@ -1,3 +1,4 @@
+// @harness-uid u_6pu7b34r7u
 import { consoleAgent } from '../../../services/ConsoleAgentService';
 /** The owner guard covers this route. Mutation additionally requires browser same-origin JSON. */
 export class ConsoleAgentController {

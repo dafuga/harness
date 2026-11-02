@@ -1,3 +1,4 @@
+// @harness-uid u_dvnkqsclwa
 import { errorMessage } from '../../../helpers/strings/errorMessage';
 import type { SourceState, SourceRead, SourceFiles } from './sourceReader.svelte.types';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';

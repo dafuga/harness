@@ -1,3 +1,4 @@
+// @harness-uid u_kpmmczkxlh
 import type { GatewaySession } from '../../../../utils/development-tooling/gatewayTypes';
 
 export function gatewayTypes(id: string): GatewaySession {

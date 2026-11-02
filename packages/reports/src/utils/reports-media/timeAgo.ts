@@ -1,3 +1,4 @@
+// @harness-uid u_5ujwyb3myc
 export function timeAgo(
 	value: string,
 	now = Date.now(),

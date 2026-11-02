@@ -1,3 +1,4 @@
+// @harness-uid u_b5quvbjmrl
 /** Google's own script, from its fixed address. No other identity script is ever loaded. */
 export const googleIdentityScript = 'https://accounts.google.com/gsi/client';
 

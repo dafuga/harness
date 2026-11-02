@@ -1,3 +1,4 @@
+// @harness-uid u_c7eopi546m
 export type PowerEvent = 'suspend' | 'resume' | 'lock-screen' | 'unlock-screen';
 
 /** Electron's powerMonitor in the app; an emitter in tests. */

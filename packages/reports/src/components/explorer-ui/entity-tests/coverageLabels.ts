@@ -1,3 +1,4 @@
+// @harness-uid u_43fsvvh46u
 import type { CoverageStanding } from '../../../models/explorer-ui/Explorer.types';
 
 export const coverageLabels: Record<CoverageStanding, string> = {

@@ -1,3 +1,4 @@
+// @harness-uid u_5gsnsmohic
 import type { AgentCall } from './AgentHttpAdapter.types';
 import type { RunEvent, RevisionQuery } from '../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../models/development-tooling/Desktop.types';

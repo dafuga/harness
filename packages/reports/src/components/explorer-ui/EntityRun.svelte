@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_nhikskphkm -->
 <script lang="ts">
 	import Pill from './explorer-kit/Pill.svelte';
 	import type { BehaviorOutcome, EntityBehavior } from '../../utils/explorer-ui/entityBehavior';

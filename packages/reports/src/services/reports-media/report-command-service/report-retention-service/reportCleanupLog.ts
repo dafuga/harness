@@ -1,3 +1,4 @@
+// @harness-uid u_6y7cr2odui
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { reportLifetimeMs } from '../../../../utils/reports-media/reportRetention';

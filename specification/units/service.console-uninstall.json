@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.console-uninstall",
+	"uid": "u_zhppzmmkjl",
 	"kind": "service",
 	"title": "ConsoleUninstallService",
 	"responsibility": "Removes an installed console from a host, puts back what the install replaced, and never removes edited files unasked.",

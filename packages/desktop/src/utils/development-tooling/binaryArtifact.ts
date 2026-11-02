@@ -1,3 +1,4 @@
+// @harness-uid u_2evzki4xia
 import type { RemoteBinary } from '../../../../remote/src/index';
 import type { EvidenceArtifactResult } from '../../models/verification-evidence/DesktopEvidence.types';
 import { remoteBinary, unreadableMedia } from '../networking-security/remoteBinary';

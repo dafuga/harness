@@ -1,3 +1,4 @@
+// @harness-uid u_q3je7xl46r
 import type { Checkpoint } from '../../../../../game/src/index';
 
 /** @pure The checkpoints with the one named id replaced by its edited node. */

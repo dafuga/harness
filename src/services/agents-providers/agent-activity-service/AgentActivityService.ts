@@ -1,3 +1,4 @@
+// @harness-uid u_azxzrv7f6j
 import type { RosterContext } from './AgentActivityService.types';
 import { randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';

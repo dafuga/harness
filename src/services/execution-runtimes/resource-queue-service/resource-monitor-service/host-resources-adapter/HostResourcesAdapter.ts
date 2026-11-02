@@ -1,3 +1,4 @@
+// @harness-uid u_dlhorjqopc
 import { setTimeout } from 'node:timers/promises';
 import type { ResourceSnapshot } from '../../../../../core/execution-runtimes/resourceTypes';
 import { hostMemory } from './hostMemory';

@@ -1,3 +1,4 @@
+// @harness-uid u_w23bvdp4xr
 import type { GameRun, GameView } from '../../../../game/src/models/game-authoring/Game.types';
 import type { DesktopBridge } from '../development-tooling/DesktopBridge.types';
 

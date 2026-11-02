@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_wjn5al64ct -->
 <script lang="ts">
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import type { GameControlsProps as Props } from './GameControls.types';

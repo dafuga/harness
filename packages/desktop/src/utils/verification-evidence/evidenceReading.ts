@@ -1,3 +1,4 @@
+// @harness-uid u_6vsxioocte
 import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import type { EvidenceRead } from './evidenceReading.types';
 import type { ArtifactFetcher } from '$reports/utils/explorerArtifact';

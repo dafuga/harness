@@ -1,3 +1,4 @@
+// @harness-uid u_2g6cqdem3r
 import { resolve } from 'node:path';
 import { WorkingTreeAdapter } from '../../adapters/git-source-history/WorkingTreeAdapter';
 import { fail } from '../../core/development-tooling/errors';

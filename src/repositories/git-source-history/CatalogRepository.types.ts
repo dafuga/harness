@@ -1,3 +1,4 @@
+// @harness-uid u_63clvffenx
 export interface CatalogQuery {
 	commit?: string;
 	kind?: string;

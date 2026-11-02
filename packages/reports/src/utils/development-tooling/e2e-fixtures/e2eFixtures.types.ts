@@ -1,3 +1,4 @@
+// @harness-uid u_nsxu3st5to
 export type Environment = Record<string, string | undefined>;
 
 /** Where one browser run keeps everything it seeds; no two runs share any of it. */

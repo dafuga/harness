@@ -1,3 +1,4 @@
+// @harness-uid u_ohta5yagly
 import type { IosBuildPlan } from './ios-build-options.types';
 import { fileURLToPath } from 'node:url';
 

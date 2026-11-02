@@ -1,3 +1,4 @@
+// @harness-uid u_gze65qn66u
 import { existsSync, readdirSync } from 'node:fs';
 import { join, relative, basename } from 'node:path';
 import { fail } from '../../../core/development-tooling/errors';

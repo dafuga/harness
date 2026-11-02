@@ -1,3 +1,4 @@
+// @harness-uid u_5kqofa6wua
 import type { Known, Pinned, CommitFacts, PinnedRevision } from './PinnedHistoryAdapter.types';
 import { SourceHistoryRepository } from '../../../../../../src/repositories/source-history-repository/SourceHistoryRepository';
 import { HistoryStatusService } from '../../../../../../src/services/history-status-service/HistoryStatusService';

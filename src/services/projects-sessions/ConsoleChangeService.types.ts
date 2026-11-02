@@ -1,3 +1,4 @@
+// @harness-uid u_hkeec7apit
 export type FileState =
 	/** Nothing is there, or it already holds exactly the wanted content. */
 	| { kind: 'free' }

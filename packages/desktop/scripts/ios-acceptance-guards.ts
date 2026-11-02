@@ -1,3 +1,4 @@
+// @harness-uid u_ril3sjm5nl
 /**
  * TEST ONLY. The guards of the native acceptance run that hold without a simulator: where it may
  * talk to, and what it may never print or write.

@@ -1,3 +1,4 @@
+// @harness-uid u_34vimjiiwv
 import { componentManifestSchema } from '../../../../../../src/lib/contracts';
 import { z } from 'zod';
 import type {

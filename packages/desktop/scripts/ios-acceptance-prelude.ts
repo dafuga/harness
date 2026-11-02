@@ -1,3 +1,4 @@
+// @harness-uid u_k5whr4stty
 /**
  * TEST ONLY. What every expression that the native acceptance run evaluates in the page of the
  * app may use: text of the page, a field by its label, a control by its name. It is JavaScript

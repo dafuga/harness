@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.claude-turn",
+	"uid": "u_tfsynmwn64",
 	"kind": "function",
 	"title": "Run one Claude request",
 	"responsibility": "Runs the requested Claude model, forwards public output and reports only a completed matching-model result.",

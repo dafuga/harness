@@ -1,3 +1,4 @@
+// @harness-uid u_wov6x2s4uf
 export interface CatalogRevisionEntityAttributes {
 	id: string;
 	commit: string;

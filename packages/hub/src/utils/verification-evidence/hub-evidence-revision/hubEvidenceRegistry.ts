@@ -1,3 +1,4 @@
+// @harness-uid u_srxjffvzdb
 import { scenarioManifestSchema } from '../../../../../../src/core/unitTypes';
 import { budgetEventSchema, type BudgetEvent } from '../../../../../../src/core/budgetTypes';
 import { budgetsLedger } from '../../../../../../src/core/unitsConfig';

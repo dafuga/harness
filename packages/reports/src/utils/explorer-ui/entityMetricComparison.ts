@@ -1,3 +1,4 @@
+// @harness-uid u_dzfpa6ezzo
 import type { MetricHost } from './entityMetricComparison.types';
 import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 import type { EntityMeasure } from './entityMeasure';

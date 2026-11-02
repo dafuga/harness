@@ -1,3 +1,4 @@
+// @harness-uid u_wbx7usmkro
 import { error, isHttpError, type RequestEvent } from '@sveltejs/kit';
 import { reportFile } from './reportHttp';
 

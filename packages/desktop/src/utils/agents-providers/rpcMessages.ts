@@ -1,3 +1,4 @@
+// @harness-uid u_5nixbr5ktz
 export interface RpcEvent {
 	method?: string;
 	params?: Record<string, unknown>;

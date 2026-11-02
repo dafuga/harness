@@ -1,3 +1,4 @@
+// @harness-uid u_xmyi56nsex
 import type {
 	GameDocument,
 	LevelProposal,

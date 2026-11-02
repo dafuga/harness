@@ -1,3 +1,4 @@
+// @harness-uid u_sqjyroicr2
 import type { ProjectSyncOptions } from './ProjectSyncService.types';
 
 /**

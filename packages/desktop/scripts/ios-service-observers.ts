@@ -1,3 +1,4 @@
+// @harness-uid u_idcdl5fjlo
 import type { SeenService, WatchedService } from './ios-service-observers.types';
 import { buildObservation, type BuildObservation } from './ios-build-observation';
 import { join } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_jblqm64oc6
 import { modulesGuide } from '../module-system/modules';
 import { resourcesGuide } from '../execution-runtimes/resources';
 import type { Guide } from './guide.types';

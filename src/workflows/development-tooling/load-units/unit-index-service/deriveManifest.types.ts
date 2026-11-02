@@ -1,3 +1,4 @@
+// @harness-uid u_adiz32coug
 import type { ComponentManifest } from '../../../../core/development-tooling/unitTypes';
 
 export type Declared = Pick<

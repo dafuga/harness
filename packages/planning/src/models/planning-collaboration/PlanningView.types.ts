@@ -1,3 +1,4 @@
+// @harness-uid u_eiirtojshx
 /** What the facade reads back: revisions, snapshots, history, images and failures. */
 
 import type { CommitId, IsoTime, PlanDetail, PlanViewport, Sha256 } from './Planning.types';

@@ -1,3 +1,4 @@
+// @harness-uid u_cnnuwtc4nu
 import { closedCapabilities } from '../projectCapabilities';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../../models/development-tooling/Desktop.types';

@@ -1,3 +1,4 @@
+// @harness-uid u_cy5r7zckyu
 import type { ModelChoice } from '../../../models/development-tooling/Desktop.types';
 
 export function validateModel(models: ModelChoice[], model: string, effort: string | null): void {

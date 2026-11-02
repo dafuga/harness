@@ -1,3 +1,4 @@
+// @harness-uid u_42xqi7lk5v
 import { z } from 'zod';
 
 export const moduleGroupsFile = 'harness.groups.json';

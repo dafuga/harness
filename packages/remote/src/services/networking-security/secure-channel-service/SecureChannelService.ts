@@ -1,3 +1,4 @@
+// @harness-uid u_tn23yux4pc
 import type { SecureChannelOptions } from './SecureChannelService.types';
 import { remoteLimits } from '../../../models/networking-security/Remote.types';
 import { SecureFailure } from '../../../models/networking-security/RemoteSecure.types';

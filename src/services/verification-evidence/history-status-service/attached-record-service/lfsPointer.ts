@@ -1,3 +1,4 @@
+// @harness-uid u_ij32lmvgck
 import type { LfsObject } from '../../../../utils/verification-evidence/lfsPointer';
 
 /** Reads a pointer; anything else, including real media, is not one. */

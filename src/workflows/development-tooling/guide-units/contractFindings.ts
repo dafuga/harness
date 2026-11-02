@@ -1,3 +1,4 @@
+// @harness-uid u_xeepnh3rwx
 import type { ComponentManifest, ContractItem } from '../../../core/development-tooling/unitTypes';
 import type { ContractFinding, ContractScope } from './guideUnits.types';
 

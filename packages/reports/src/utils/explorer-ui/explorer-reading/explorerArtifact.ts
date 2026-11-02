@@ -1,3 +1,4 @@
+// @harness-uid u_vden63272o
 import type { Assertion, Fields } from './explorerArtifact.types';
 import type { ArtifactFetcher } from '../explorerArtifact';
 import type {

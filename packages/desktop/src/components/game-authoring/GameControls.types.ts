@@ -1,3 +1,4 @@
+// @harness-uid u_wjn5al64ct
 import type {
 	GameInput,
 	GameRun,

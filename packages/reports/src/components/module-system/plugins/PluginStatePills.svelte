@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_5zpcvhjtv7 -->
 <script lang="ts">
 	import type { ModuleEntry } from '../../../../../../src/services/module-system/moduleDefinition.types';
 	import Pill from '../../explorer-ui/explorer-kit/Pill.svelte';

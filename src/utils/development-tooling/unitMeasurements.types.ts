@@ -1,3 +1,4 @@
+// @harness-uid u_pdrdl3nkuf
 import type { Measurement } from '../../core/verification-evidence/verificationTypes';
 
 /** Size and hash of each declared artifact that exists, by path. */

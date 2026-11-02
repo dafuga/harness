@@ -1,3 +1,4 @@
+// @harness-uid u_ackrkfrpbm
 import type { AnalyticsEvent } from '../../core/analyticsTypes';
 export interface AnalyticsEventAttributes {
 	id: string;

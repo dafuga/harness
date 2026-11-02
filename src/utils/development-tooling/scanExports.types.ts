@@ -1,3 +1,4 @@
+// @harness-uid u_vkx5vqjo6s
 import type { ExportedSymbol } from '../../core/development-tooling/sourceTypes';
 import type { SourceNesting } from './sourceNesting';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_62hgz5o7bv
 import type { Recorded, ServiceClass, Item } from './serviceMethods.types';
 import type { ContractGroup } from '../../../utils/explorer-ui/contractFields';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';

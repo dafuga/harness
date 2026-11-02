@@ -1,3 +1,4 @@
+// @harness-uid u_c2t7k34ez4
 import type { ThreadTarget, CommentAnchor } from '../../../utils/explorer-ui/threadAnchor';
 import { optionImages, imageTarget, entityTarget } from '../../../utils/explorer-ui/threadAnchor';
 import type { DesignVersion, Revision } from '../../../models/development-tooling/Desktop.types';

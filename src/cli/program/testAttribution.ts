@@ -1,3 +1,4 @@
+// @harness-uid u_76b76sztpq
 import type { TestAttribution, TestDependency } from './testAttribution.types';
 import type { GraphEdge, SourceGraph } from '../../core/development-tooling/sourceTypes';
 import type { ComponentManifest, ScenarioManifest } from '../../core/development-tooling/unitTypes';

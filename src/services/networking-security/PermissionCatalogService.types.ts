@@ -1,3 +1,4 @@
+// @harness-uid u_jpdkjh3qxl
 import type { z } from 'zod';
 import type { profileSchema } from './PermissionCatalogService';
 export type PermissionProfile = z.infer<typeof profileSchema>;

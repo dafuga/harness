@@ -1,3 +1,4 @@
+// @harness-uid u_hv3a6p454a
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
 /** Eight characters a person types from the desktop app into the approval page. */

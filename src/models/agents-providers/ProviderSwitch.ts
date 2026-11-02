@@ -1,3 +1,4 @@
+// @harness-uid u_oetonmyf76
 import type { PersistenceAdapter, SqliteModel } from '../../core/development-tooling/sqliteTypes';
 import type {
 	ProviderSwitchAttributes,

@@ -1,3 +1,4 @@
+// @harness-uid u_xetkmrxgc7
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { AttachedRecord } from './AttachedRecordService.types';
 import { createHash } from 'node:crypto';

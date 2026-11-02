@@ -1,3 +1,4 @@
+// @harness-uid u_ixaylt5rrr
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import type {
 	BudgetEvent,

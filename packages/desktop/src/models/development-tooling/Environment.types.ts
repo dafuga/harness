@@ -1,3 +1,4 @@
+// @harness-uid u_uhyljnc37o
 import type { RemoteDesktopControl } from '../../../../remote/src/models/RemoteControl.types';
 import type { RemoteMobileControl } from '../../../../remote/src/models/RemoteControl.types';
 import type { RemoteMobileStatus } from '../../../../remote/src/models/RemoteControl.types';

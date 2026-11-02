@@ -1,3 +1,4 @@
+// @harness-uid u_h4oaqyfwx2
 /**
  * The runtime contract for platforms without a file system or child processes, such as
  * Cloudflare Workers: a handler in the same isolate, a precompiled core Wasm module, or a unit

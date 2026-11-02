@@ -1,3 +1,4 @@
+// @harness-uid u_u3ui3ii2hx
 import type { LocalClientOptions } from './LocalClientService.types';
 import { hostname } from 'node:os';
 import {

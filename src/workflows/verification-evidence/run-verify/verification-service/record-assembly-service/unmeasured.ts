@@ -1,3 +1,4 @@
+// @harness-uid u_ttqhpyami4
 import type { Measurement } from '../../../../../core/verification-evidence/verificationTypes';
 
 /** Performance and memory nothing measured are recorded as unavailable, never omitted. */

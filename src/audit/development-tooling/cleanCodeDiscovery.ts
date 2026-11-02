@@ -1,3 +1,4 @@
+// @harness-uid u_3tqecbjzkv
 import { spawnSync } from 'node:child_process';
 import { basename, relative } from 'node:path';
 import type { CollectedFiles } from './collect';

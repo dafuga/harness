@@ -1,3 +1,4 @@
+// @harness-uid u_u3grbhg5f7
 import { moduleCategoryFindings } from './moduleCategoryFindings';
 import { planningArtifactPaths } from './planningArtifactPaths';
 import type { AuditStructure } from '../adapters/types';

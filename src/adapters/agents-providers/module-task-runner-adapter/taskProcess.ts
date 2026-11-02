@@ -1,3 +1,4 @@
+// @harness-uid u_rw64iex44n
 import { spawn } from 'node:child_process';
 import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TaskProcessResult } from '../ModuleTaskRunnerAdapter.types';

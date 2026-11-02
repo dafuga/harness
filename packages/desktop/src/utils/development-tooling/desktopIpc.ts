@@ -1,3 +1,4 @@
+// @harness-uid u_dzcerery3f
 /**
  * The one channel the main process answers over IPC: the bootstrap of the caller's own loopback
  * socket. Every project operation and the control port travel over that socket.

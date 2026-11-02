@@ -1,3 +1,4 @@
+// @harness-uid u_qnclp3cc2r
 import type { HubSourceContext } from './hubSource.types';
 import { hubRaw, hubMaterializedHash, hubBlobProfile } from './hubRaw';
 import { readCache, writeCache } from 'collaboration';

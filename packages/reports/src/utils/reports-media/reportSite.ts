@@ -1,3 +1,4 @@
+// @harness-uid u_jrm3xgajpk
 import type { ReportSite } from './reportSite.types';
 import { execFileSync } from 'node:child_process';
 import { basename, resolve } from 'node:path';

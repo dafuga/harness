@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.commit-identity",
+	"uid": "u_ekuqujldi3",
 	"kind": "function",
 	"title": "Evidence commit identity",
 	"responsibility": "Reads the repository’s configured Git identity and supplies fallback author and committer environment values without changing Git configuration.",

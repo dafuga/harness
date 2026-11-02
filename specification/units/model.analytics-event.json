@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "model.analytics-event",
+	"uid": "u_ackrkfrpbm",
 	"kind": "model",
 	"title": "AnalyticsEvent",
 	"responsibility": "Stores timestamped analytics event payloads in events through a supplied persistence adapter.",

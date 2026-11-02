@@ -1,3 +1,4 @@
+// @harness-uid u_xulmnocumh
 import type { BrowserProjects } from '../../../utils/projects-sessions/browserProjects';
 
 /** In words, what a device asks to read: every project of the person, or one that is named. */

@@ -1,3 +1,4 @@
+// @harness-uid u_f2aqlilc6u
 export interface GithubAppJwtInput {
 	appId: string;
 	key: CryptoKey;

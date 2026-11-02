@@ -1,3 +1,4 @@
+// @harness-uid u_b7hlwurone
 import type { ProcessOptions } from './cliProcess.types';
 export type { ProcessOptions } from './cliProcess.types';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';

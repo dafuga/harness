@@ -1,3 +1,4 @@
+// @harness-uid u_gz5ds4kmey
 export {
 	agentRegistrationSchema,
 	agentBeatSchema,

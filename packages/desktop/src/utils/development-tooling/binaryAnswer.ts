@@ -1,3 +1,4 @@
+// @harness-uid u_xrxidbdjrz
 import { createHash } from 'node:crypto';
 import { toBase64 } from '../../../../remote/src/index';
 import type { RemoteBinary } from '../../../../remote/src/index';

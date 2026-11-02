@@ -1,3 +1,4 @@
+// @harness-uid u_efbatyiinb
 import type { Guide } from '../development-tooling/guide';
 
 export const modulesGuide: Guide = {

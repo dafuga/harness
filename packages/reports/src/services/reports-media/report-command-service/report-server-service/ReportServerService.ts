@@ -1,3 +1,4 @@
+// @harness-uid u_ngkz2frp4i
 import { reportBuildIdentity } from '../../../../utils/reports-media/reportBuildIdentity';
 import { resolve } from 'node:path';
 import { spawn } from 'node:child_process';

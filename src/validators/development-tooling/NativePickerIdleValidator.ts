@@ -1,3 +1,4 @@
+// @harness-uid u_uxnchg6toq
 import type { NativePickerIdleValidatorResult } from './NativePickerIdleValidator.types';
 
 export class NativePickerIdleValidator {

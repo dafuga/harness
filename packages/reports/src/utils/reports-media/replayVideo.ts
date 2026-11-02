@@ -1,3 +1,4 @@
+// @harness-uid u_4daf3p2ift
 import { createHash } from 'node:crypto';
 import type { Report } from '../../models/reports-media/Report.types';
 import { replayFrames } from './replayFrames';

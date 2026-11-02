@@ -1,3 +1,4 @@
+// @harness-uid u_ennjoyfyx2
 import type { Handle } from '@sveltejs/kit';
 import { HubResponsesMiddleware } from './HubResponsesMiddleware';
 

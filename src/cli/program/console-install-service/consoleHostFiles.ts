@@ -1,3 +1,4 @@
+// @harness-uid u_2yhhk7b4j4
 import type {
 	ConsoleHostOptions,
 	HostFile

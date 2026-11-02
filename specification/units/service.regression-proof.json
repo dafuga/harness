@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.regression-proof",
+	"uid": "u_5n3y7cwxsh",
 	"kind": "service",
 	"title": "Run a committed regression",
 	"responsibility": "Run committed regressions in isolated snapshots. Retain decoded screenshots for their declared units before cleanup and bind actual captures to the exact served revision.",

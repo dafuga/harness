@@ -1,3 +1,4 @@
+// @harness-uid u_cuvjo3ktd5
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Context } from './HubAttachedService.types';
 import {

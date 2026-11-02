@@ -1,3 +1,4 @@
+// @harness-uid u_3w3al22pzx
 export const desktopPatchConfig = {
 	version: '26.1002.52244',
 	assets: {

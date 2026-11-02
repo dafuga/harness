@@ -1,3 +1,4 @@
+// @harness-uid u_uktom4mbzh
 import { posix } from 'node:path';
 import { atomicSyntax, walkAtomicMarkup } from './atomicSyntax.js';
 import { atomTag, nativeAtoms } from './htmlElements.js';

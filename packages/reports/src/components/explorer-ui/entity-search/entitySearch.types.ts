@@ -1,3 +1,4 @@
+// @harness-uid u_iam4aai4s2
 /** An entry as a query reads it: every text in lower case, its id and name also in parts. */
 export interface Read {
 	name: string;

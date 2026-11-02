@@ -1,3 +1,4 @@
+// @harness-uid u_dr2xl6z3dy
 import type { Callable } from './pureHelpers.types';
 import ts from 'typescript';
 import { pureHelperCalls, pureGlobals } from './pureHelperCalls';

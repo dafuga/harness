@@ -1,3 +1,4 @@
+// @harness-uid u_2uvstowd5m
 import type { AnalyticsOptions } from './AnalyticsService.types';
 import { projectIdentity } from '../../workflows/reports-media/analyticsRecord';
 import { resolve } from 'node:path';

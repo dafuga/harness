@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../atoms -->
+<!-- @harness-uid u_6gaxiij3cs -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { t } from '../../../utils/reports-media/reportLocale';

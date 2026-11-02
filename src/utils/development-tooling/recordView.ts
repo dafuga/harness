@@ -1,3 +1,4 @@
+// @harness-uid u_6a6rhnbyql
 import type { MediaResolver, DiagnosticTest, RecordView } from './recordView.types';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_a5cgg6lwr7
 import type { StoredSide, SourceImpact } from '../../../../../../src/utils/sideImpact';
 import { impactView } from '../../../../../../src/utils/sideImpact';
 import { HandlerRuntimeAdapter } from './HandlerRuntimeAdapter';

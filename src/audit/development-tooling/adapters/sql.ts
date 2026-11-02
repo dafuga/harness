@@ -1,3 +1,4 @@
+// @harness-uid u_sddlhgobo4
 import { auditFileLength } from '../commonRules';
 import { auditSqlNaming } from '../namingRules';
 import type { AuditAdapter, AuditFile } from './types';

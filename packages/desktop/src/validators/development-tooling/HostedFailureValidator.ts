@@ -1,3 +1,4 @@
+// @harness-uid u_eanikwmfvv
 /** Safe transport errors retain only the category needed for cache policy. */
 export class HostedFailureValidator extends Error {
 	constructor(

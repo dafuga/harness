@@ -1,3 +1,4 @@
+// @harness-uid u_dv2rsodrxm
 import { defineConfig } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
 import { freePorts } from '../../utils/development-tooling/e2e-fixtures/e2eFixtures';

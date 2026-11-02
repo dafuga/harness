@@ -1,3 +1,4 @@
+// @harness-uid u_pauxu7ew4i
 import type { Measurement, EmittedLine } from './harnessEmitted.types';
 import type { HarnessRecord, HarnessUnit } from '../../models/explorer-ui/Harness.types';
 

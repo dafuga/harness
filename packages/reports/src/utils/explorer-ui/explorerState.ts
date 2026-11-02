@@ -1,3 +1,4 @@
+// @harness-uid u_i4vqq2pyhj
 import type { Users } from './explorerState.types';
 import type { CoverageStanding } from '../../models/explorer-ui/Explorer.types';
 import type { HarnessScenario, HarnessUnit } from '../../models/explorer-ui/Harness.types';

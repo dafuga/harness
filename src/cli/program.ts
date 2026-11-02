@@ -1,3 +1,4 @@
+// @harness-uid u_3tibsmkofv
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
 import { registerTaskCommand } from './program/TaskCommand';
 import { ModuleCommand } from '../commands/module-system/ModuleCommand';

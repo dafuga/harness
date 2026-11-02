@@ -1,3 +1,4 @@
+// @harness-uid u_o235z3op66
 import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 import type { SearchEntry } from './entitySearch';
 

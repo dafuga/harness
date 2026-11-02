@@ -1,3 +1,4 @@
+// @harness-uid u_sabimz2fns
 import type { LevelProposal } from '../../../../game/src/models/game-authoring/Game.types';
 import type { ProviderState } from '../../models/development-tooling/Desktop.types';
 import type { LevelStatus } from './GameLevelPlan.types';

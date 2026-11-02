@@ -1,3 +1,4 @@
+// @harness-uid u_3kkcfvw2wo
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 import { workspacePath } from './workspaceRoute';
 

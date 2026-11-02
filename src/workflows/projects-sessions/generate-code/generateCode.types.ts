@@ -1,3 +1,4 @@
+// @harness-uid u_gze65qn66u
 import type { PieceKind } from '../../../templates/development-tooling/pieces';
 import type { FileWriteResult } from '../../../core/development-tooling/files';
 

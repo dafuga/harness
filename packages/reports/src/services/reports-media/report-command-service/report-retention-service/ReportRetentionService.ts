@@ -1,3 +1,4 @@
+// @harness-uid u_xy4emhngag
 import { lstat, mkdir, rm, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../../../repositories/reports-media/report-repository/ReportRepository';

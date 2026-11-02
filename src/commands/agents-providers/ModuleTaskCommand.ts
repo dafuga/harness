@@ -1,3 +1,4 @@
+// @harness-uid u_gop636dbcf
 import { readFile } from 'node:fs/promises';
 import { setTimeout } from 'node:timers/promises';
 import type { Command } from 'commander';

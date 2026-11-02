@@ -1,3 +1,4 @@
+// @harness-uid u_mieomomrtw
 import { AgentHttpAdapter } from '../../../../adapters/agents-providers/AgentHttpAdapter';
 import { hostedImage } from './hostedImage';
 import { hostedCapabilities } from '../../../../utils/development-tooling/hostedCapabilities';

@@ -1,3 +1,4 @@
+// @harness-uid u_dr2xl6z3dy
 import ts from 'typescript';
 export const pureGlobals = new Set([
 	'String',

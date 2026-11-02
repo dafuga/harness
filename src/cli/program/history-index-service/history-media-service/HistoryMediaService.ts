@@ -1,3 +1,4 @@
+// @harness-uid u_likyx5aalf
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { mediaPlace } from './mediaPlace';

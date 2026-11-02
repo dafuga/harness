@@ -1,3 +1,4 @@
+// @harness-uid u_ison4efe66
 /**
  * The operations of the planning facade, their inputs, and the envelope a bridge carries
  * them in. Inputs are plain data, so a main process can receive them over IPC and hand

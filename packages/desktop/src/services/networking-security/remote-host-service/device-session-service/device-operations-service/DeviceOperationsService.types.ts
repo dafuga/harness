@@ -1,3 +1,4 @@
+// @harness-uid u_c37vr4cyvl
 import type { ClientProjectsService } from '../ClientProjectsService';
 import type { ProviderDiscoveryService } from '../../../../agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import type { RepositoryArbiterService } from '../../../../projects-sessions/RepositoryArbiterService';

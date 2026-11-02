@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_pmdjhvtebz -->
 <script lang="ts">
 	import DataTable from '$shared/shared-primitives/DataTable.svelte';
 	import { onMount } from 'svelte';

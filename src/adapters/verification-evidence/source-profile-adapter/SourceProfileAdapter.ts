@@ -1,3 +1,4 @@
+// @harness-uid u_bn7p57ftpt
 import { realpathSync } from 'node:fs';
 import { isAbsolute, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';

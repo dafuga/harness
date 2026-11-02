@@ -1,3 +1,4 @@
+// @harness-uid u_rbr6adpyv2
 /** Text that marks a hook file as written by Harness. */
 export const hookMarker = 'harness-managed hook';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_4oijppigay
 import type { Database } from 'bun:sqlite';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);

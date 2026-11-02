@@ -1,3 +1,4 @@
+// @harness-uid u_ku5wto7lcs
 import type { ConsoleRoute } from '../consoleRoute';
 import { explorerKindCategory, type ExplorerLocation } from '../../explorer-ui/explorerRoute';
 

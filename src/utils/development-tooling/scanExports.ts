@@ -1,3 +1,4 @@
+// @harness-uid u_vkx5vqjo6s
 import type { ExportScan, Source, Located } from './scanExports.types';
 import type { ExportedSymbol } from '../../core/development-tooling/sourceTypes';
 import type { ContractItem } from '../../core/development-tooling/unitTypes';

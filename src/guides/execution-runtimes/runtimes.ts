@@ -1,3 +1,4 @@
+// @harness-uid u_abgrfpgkt2
 import type { Guide } from '../development-tooling/guide';
 
 const runtimeGuide: Guide = {

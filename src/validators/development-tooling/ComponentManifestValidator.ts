@@ -1,3 +1,4 @@
+// @harness-uid u_amgyfn4sxl
 import type { ManifestValidation } from './ComponentManifestValidator.types';
 import type { z } from 'zod';
 import {

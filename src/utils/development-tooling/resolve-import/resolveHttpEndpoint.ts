@@ -1,3 +1,4 @@
+// @harness-uid u_hb2vpdavcx
 import { posix } from 'node:path';
 import type { SourceReference } from '../scanImports';
 import type { ResolveContext } from '../resolveImport.types';

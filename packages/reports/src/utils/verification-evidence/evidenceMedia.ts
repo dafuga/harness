@@ -1,3 +1,4 @@
+// @harness-uid u_nyfobmqpe6
 import type { Evidence } from '../../models/reports-media/Report.types';
 const mimes: Record<string, string> = {
 	'.png': 'image/png',

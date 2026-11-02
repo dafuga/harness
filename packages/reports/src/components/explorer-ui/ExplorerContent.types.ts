@@ -1,3 +1,4 @@
+// @harness-uid u_otqg2us4aa
 import type { Component } from 'svelte';
 import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_wonpnpcvnk
 import { imageAsset, writeImageAsset } from '../../../utils/reports-media/reportAssets';
 import { lstat, readFile } from 'node:fs/promises';
 import { audioAsset } from '../../../utils/reports-media/audio-asset/audioAsset';

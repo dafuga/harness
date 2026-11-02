@@ -1,3 +1,4 @@
+// @harness-uid u_ejm6j7oia3
 export type Status =
 	| 'running'
 	| 'passed'

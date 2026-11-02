@@ -1,3 +1,4 @@
+// @harness-uid u_dmvu5todfr
 import type { Invitation, Member, ProjectSummary, Role } from 'collaboration';
 import type { GithubRepositories, GithubStatus } from '../models/accounts-access/HubAuth.types';
 import type { BrowserApi } from '../utils/browserApi';

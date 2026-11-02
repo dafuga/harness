@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_gbxgja2x6q -->
 <script lang="ts">
 	import type { AudioEvent } from './AudioEvidence.types';
 

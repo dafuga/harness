@@ -1,3 +1,4 @@
+// @harness-uid u_shto7r4hzo
 import type { HostObjectController } from './HostObjectController';
 import type { SocketFrameService } from './socket-frame-service/SocketFrameService';
 import type { PairingOfferService } from './PairingOfferService';

@@ -1,3 +1,4 @@
+// @harness-uid u_vyxmx65wyw
 /** What a Plan may ask for: 1 to 10 design options, 3 unless the person chooses another. */
 export const designCounts = Array.from({ length: 10 }, (_, index) => index + 1);
 

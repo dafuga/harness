@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_cjl5w5l4gh -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import WorkspaceShell from '$desktop/components/projects-sessions/WorkspaceShell.svelte';

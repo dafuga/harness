@@ -1,3 +1,4 @@
+// @harness-uid u_qrci5ngoec
 import type { AuthHttpOptions } from './authHttp.types';
 import { AuthFailure, authFail } from '../accounts-access/authFail';
 

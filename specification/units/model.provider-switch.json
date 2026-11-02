@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "model.provider-switch",
+	"uid": "u_oetonmyf76",
 	"kind": "model",
 	"title": "ProviderSwitch",
 	"responsibility": "Wraps provider-switch records in switches and delegates queries and mutations to a supplied persistence adapter.",

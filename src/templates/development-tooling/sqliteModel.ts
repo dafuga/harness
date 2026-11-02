@@ -1,3 +1,4 @@
+// @harness-uid u_dkz2nuvlmu
 import type { Field } from '../../core/development-tooling/fields/fields';
 
 export function sqliteModelDefinition(table: string, fields: Field[]): string {

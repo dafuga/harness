@@ -1,3 +1,4 @@
+// @harness-uid u_xxnguxn63c
 import { open, readFile, stat, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 async function recoverDeadLock(path: string) {

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.console-access",
+	"uid": "u_jv6fst3qm3",
 	"kind": "function",
 	"title": "Protected console handlers",
 	"responsibility": "Creates console handlers that check host policy before releasing stored JSON, media, build identity or downloadable reports.",

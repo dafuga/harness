@@ -1,3 +1,4 @@
+// @harness-uid u_udzepyd23h
 import type { IndexedRevision } from '../../core/git-source-history/historyIndexTypes';
 import type { RecordView } from './recordView';
 

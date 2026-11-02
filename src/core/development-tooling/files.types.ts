@@ -1,3 +1,4 @@
+// @harness-uid u_64mql5f5ei
 export interface PlannedFile {
 	path: string;
 	contents: string;

@@ -1,3 +1,4 @@
+// @harness-uid u_x6slskmk4r
 import { planImageCodec } from '../../../../planning/src/lib/planning/index';
 export class ImageBytesValidator {
 	validate(value: Uint8Array): Uint8Array {

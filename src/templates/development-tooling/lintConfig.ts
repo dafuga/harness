@@ -1,3 +1,4 @@
+// @harness-uid u_itjtt2pfdh
 import type { PlannedFile } from '../../core/development-tooling/files';
 
 export function lintConfigFiles(): PlannedFile[] {

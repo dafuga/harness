@@ -1,3 +1,4 @@
+// @harness-uid u_aqxpffqh4c
 import type { ExplorerEntity, ExplorerSupport } from '../../models/explorer-ui/Explorer.types';
 import type { HarnessIconName } from './harnessIcons';
 

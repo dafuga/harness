@@ -1,3 +1,4 @@
+// @harness-uid u_hf3mh6nbh4
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { evidenceRef, notesRef } from '../../../core/git-source-history/historyTypes';
 import { HistoryStatusService } from '../../../services/verification-evidence/history-status-service/HistoryStatusService';

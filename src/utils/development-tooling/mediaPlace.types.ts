@@ -1,3 +1,4 @@
+// @harness-uid u_zzisonyldv
 import type { ResolvedMedia } from './recordView';
 
 /** One file of a record whose bytes are placed: where it is in the record, and its hash. */

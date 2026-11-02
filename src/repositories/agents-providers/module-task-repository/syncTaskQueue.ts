@@ -1,3 +1,4 @@
+// @harness-uid u_bya7wvvkm5
 import { randomUUID } from 'node:crypto';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 /** Exchange the explicit task ref without merging conflicting claims or changing source branches. */

@@ -1,3 +1,4 @@
+// @harness-uid u_4qj6ygg6sz
 import type { AuditFile } from './adapters/types';
 import { escapeRegExp, fileName, isCamelCase, isPascalCase } from './namePatterns';
 import type { AuditFinding } from './types';

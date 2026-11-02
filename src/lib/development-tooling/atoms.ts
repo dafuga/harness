@@ -1,3 +1,4 @@
+// @harness-uid u_o24smmnra4
 /** Svelte build integration for Harness native element atoms. */
 import { atomicComponents as preprocess } from '../../templates/development-tooling/atomicPreprocess.js';
 import type { PreprocessorGroup } from 'svelte/compiler';

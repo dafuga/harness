@@ -1,3 +1,4 @@
+// @harness-uid u_nlhdvyuce3
 export const htmlElements: string[];
 export const svgElements: string[];
 export const inputTypes: string[];

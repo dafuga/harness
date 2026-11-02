@@ -1,3 +1,4 @@
+// @harness-uid u_amf56p7jb6
 import { readCache, writeCache } from 'collaboration';
 import type { SourceEntry } from 'collaboration';
 import type { HubSourceContext } from './hubSource';

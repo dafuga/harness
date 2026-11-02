@@ -1,3 +1,4 @@
+// @harness-uid u_fneuhmeeho
 export type Role = 'owner' | 'writer' | 'commenter' | 'viewer';
 export interface Actor {
 	id: string;

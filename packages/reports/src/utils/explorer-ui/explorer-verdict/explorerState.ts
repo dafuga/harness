@@ -1,3 +1,4 @@
+// @harness-uid u_i4vqq2pyhj
 import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { Judged, Told } from '../explorerState';
 import { reasonText, coverageWorst } from '../explorerState';

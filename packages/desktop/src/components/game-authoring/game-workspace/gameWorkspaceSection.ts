@@ -1,3 +1,4 @@
+// @harness-uid u_6gjk2wweth
 import { LevelValidator } from '../../../../../game/src/index';
 import type { GameView } from '../../../../../game/src/index';
 import type { GameSection } from '../GameViewFields.types';

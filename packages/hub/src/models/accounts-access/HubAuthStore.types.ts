@@ -1,3 +1,4 @@
+// @harness-uid u_d3q2svhmgn
 import type { EmailProofStore, EmailLedgerStore } from './HubEmailStore.types';
 import type { Actor } from 'collaboration';
 import type { HubEnvironment } from './HubAuth.types';

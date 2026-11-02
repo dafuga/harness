@@ -1,3 +1,4 @@
+// @harness-uid u_mqlnjtpu6l
 import type { LineageSource, Soundness } from './recordLineage.types';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 import { canonicalJson } from './canonicalJson';

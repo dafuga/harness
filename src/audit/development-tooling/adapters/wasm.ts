@@ -1,3 +1,4 @@
+// @harness-uid u_t65w3hzixs
 import { existsSync } from 'node:fs';
 import { dirname, join, parse } from 'node:path';
 import type { AuditAdapter, AuditFile } from './types';

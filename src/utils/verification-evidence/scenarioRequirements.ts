@@ -1,3 +1,4 @@
+// @harness-uid u_ibondlpf2o
 import type { ScenarioRequirements, RequiredCapture } from './scenarioRequirements.types';
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
 

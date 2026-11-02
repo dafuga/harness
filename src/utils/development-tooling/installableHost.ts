@@ -1,3 +1,4 @@
+// @harness-uid u_iwsuwwcp27
 export interface HostRequest {
 	host: string;
 	policy: string;

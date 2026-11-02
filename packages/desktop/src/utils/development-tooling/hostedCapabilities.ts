@@ -1,3 +1,4 @@
+// @harness-uid u_wn2754hxmh
 import type { ProjectCapabilities } from '../../models/projects-sessions/ProjectContext.types';
 import { responseRecord } from '../../validators/projects-sessions/RemoteProjectResponseValidator';
 export function hostedCapabilities(value: unknown, projectId: string): ProjectCapabilities {

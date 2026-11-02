@@ -1,3 +1,4 @@
+// @harness-uid u_kncajdgbbv
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import type { SourceFile } from '../../../core/development-tooling/sourceTypes';
 

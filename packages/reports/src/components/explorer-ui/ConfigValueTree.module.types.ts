@@ -1,3 +1,4 @@
+// @harness-uid u_aqokuxsnj3
 import type { ConfigValueNode } from '../../../../../src/utils/explorer-ui/unitMetadata';
 import type { HarnessIconName } from '../../utils/explorer-ui/harnessIcons';
 

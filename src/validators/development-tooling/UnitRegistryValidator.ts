@@ -1,3 +1,4 @@
+// @harness-uid u_kncajdgbbv
 import type { SourceFile } from '../../core/development-tooling/sourceTypes';
 import { registryOwnershipFindings } from './unit-registry-validator/registryOwnershipFindings';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';

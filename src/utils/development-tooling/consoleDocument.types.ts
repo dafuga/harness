@@ -1,3 +1,4 @@
+// @harness-uid u_suu3cz4j5c
 /** The compiled console: one script and one stylesheet, as text. */
 export interface ConsoleAssets {
 	script: string;

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.source-impact",
+	"uid": "u_3y4rvzj5sx",
 	"kind": "service",
 	"title": "SourceImpactService",
 	"responsibility": "Computes what a commit changed against its first parent from the two stored trees, and which of those changes need a reason, with no record or working tree involved.",

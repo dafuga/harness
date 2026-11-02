@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.prepare-run",
+	"uid": "u_fq2qh7235c",
 	"kind": "function",
 	"title": "Prepare an entity’s agent run",
 	"responsibility": "Checks the writable project, chosen runner, thread and approval, then records the user request before a run starts.",

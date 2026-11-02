@@ -1,3 +1,4 @@
+// @harness-uid u_6yzc5wxfxm
 /** A process owns the preview slot until it exits; this endpoint can only read its status. */
 export interface PreviewOwner {
 	protocol: 'harness-preview-v1';

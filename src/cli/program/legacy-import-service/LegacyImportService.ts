@@ -1,3 +1,4 @@
+// @harness-uid u_zokxbdpdqy
 import type { LegacyImport } from './LegacyImportService.types';
 import { createHash } from 'node:crypto';
 import { realpathSync } from 'node:fs';

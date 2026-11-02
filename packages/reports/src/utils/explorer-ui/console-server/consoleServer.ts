@@ -1,3 +1,4 @@
+// @harness-uid u_i5h5ojst2d
 import { readFile } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
 import {

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.sqlite-row",
+	"uid": "u_hz4b2ps734",
 	"kind": "function",
 	"title": "sqliteRow",
 	"responsibility": "Decodes a SQLite result row into model properties, restoring JSON values and booleans.",

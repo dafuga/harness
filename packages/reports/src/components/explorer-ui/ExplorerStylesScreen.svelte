@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_gknev2kbvx -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { appStyleTokensConfig } from '../../configs/shared-primitives/appStyleTokensConfig';

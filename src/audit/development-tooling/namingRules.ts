@@ -1,3 +1,4 @@
+// @harness-uid u_manzbeqzgb
 import type { AuditFile } from './adapters/types';
 import { auditFunctionNames } from './functionNamingRules';
 import { fileName, fileNameFinding } from './namePatterns';

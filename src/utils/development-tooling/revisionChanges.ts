@@ -1,3 +1,4 @@
+// @harness-uid u_fp54ndg4ns
 export type Kind = 'direct' | 'added' | 'removed';
 
 /** The part of a stored registry that says which units a revision has, and in which version. */

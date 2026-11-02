@@ -1,3 +1,4 @@
+// @harness-uid u_q3g6hgpawh
 import type { HistoryNote } from '../../core/git-source-history/historyTypes';
 import type { RegressionRecord } from '../../core/verification-evidence/regressionTypes';
 

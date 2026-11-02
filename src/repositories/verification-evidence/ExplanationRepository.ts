@@ -1,3 +1,4 @@
+// @harness-uid u_35tkewsc3r
 import { existsSync, readFileSync } from 'node:fs';
 import { appendFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';

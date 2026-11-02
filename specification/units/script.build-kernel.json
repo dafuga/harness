@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "script.build-kernel",
+	"uid": "u_oh7ut73h75",
 	"kind": "script",
 	"title": "build-kernel",
 	"responsibility": "Builds the native and Wasm kernels with the pinned toolchain and records their sizes and hashes.",

@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_67k6l3kimp -->
 <script lang="ts">
 	import type { Mark } from './DeploymentProgress.types';
 

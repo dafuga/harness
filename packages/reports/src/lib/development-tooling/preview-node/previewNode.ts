@@ -1,3 +1,4 @@
+// @harness-uid u_senandtdez
 import { mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';

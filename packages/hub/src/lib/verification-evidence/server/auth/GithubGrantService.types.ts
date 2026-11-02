@@ -1,3 +1,4 @@
+// @harness-uid u_pevhznyz2e
 import type { GithubAppConfig } from '../../../../utils/verification-evidence/authConfig';
 import type { GithubApiAdapter } from './GithubApiAdapter';
 import type { AuthStore } from '../../../../models/accounts-access/HubAuthStore.types';

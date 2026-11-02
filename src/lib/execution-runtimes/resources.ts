@@ -1,3 +1,4 @@
+// @harness-uid u_zbyxsa3dbq
 /** Machine-wide admission for Bun and Node 22.13+ hosts; no work starts on import. */
 export {
 	resourceConfigSchema,

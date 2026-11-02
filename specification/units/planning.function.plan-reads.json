@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "planning.function.plan-reads",
+	"uid": "u_e26z3m4mhv",
 	"kind": "function",
 	"title": "Reuse immutable planning reads",
 	"responsibility": "Cache successful reads pinned to full commit IDs for one planning operation.",

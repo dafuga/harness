@@ -1,3 +1,4 @@
+// @harness-uid u_4kd3zh6kzu
 import type {
 	RepositoryIdentity,
 	SourceAdapter,

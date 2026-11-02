@@ -1,3 +1,4 @@
+// @harness-uid u_iykl2n2kxj
 import type { ExplorerCategory } from '../explorer-route/explorerTabs';
 import type { ExplorerTab } from '../explorer-route/explorerTabs';
 import type { explorerSections } from './explorerRoute';

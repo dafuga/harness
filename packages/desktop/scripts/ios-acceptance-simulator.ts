@@ -1,3 +1,4 @@
+// @harness-uid u_bit6m3gnax
 import type { Runtime, Device } from './ios-acceptance-simulator.types';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';

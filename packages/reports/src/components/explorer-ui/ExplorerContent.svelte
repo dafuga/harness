@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_otqg2us4aa -->
 <script lang="ts">
 	import ExplorerPermissionsScreen from '../networking-security/ExplorerPermissionsScreen.svelte';
 	import type { Screen } from './ExplorerContent.types';

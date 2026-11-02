@@ -1,3 +1,4 @@
+// @harness-uid u_zf52hz6yfu
 import type { RuntimeKind } from '../../../core/development-tooling/unitTypes';
 import type { WasmRuntimeAdapter } from '../../../adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
 import type { ProcessRuntimeAdapter } from '../../../adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';

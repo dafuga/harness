@@ -1,3 +1,4 @@
+// @harness-uid u_3ersk4crkf
 import type { GuidanceOptions, GuideReport, GuideState } from './guideUnits.types';
 import { allUnitStates, guidanceContext, guidanceUnit } from './guidanceContext';
 import { unitStateName } from './contractStates';

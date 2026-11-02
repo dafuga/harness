@@ -1,3 +1,4 @@
+// @harness-uid u_adiz32coug
 import type { SourceFile } from '../../core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 

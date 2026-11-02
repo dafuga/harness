@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_mvjgiiexfb -->
 <script lang="ts">
 	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';

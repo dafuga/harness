@@ -1,3 +1,4 @@
+// @harness-uid u_oiafoy4z3i
 import { open, type FileHandle } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { createHash } from 'node:crypto';

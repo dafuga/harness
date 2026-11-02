@@ -1,3 +1,4 @@
+// @harness-uid u_wlgpcxynzh
 import type { ModelInput, AdapterName } from './model.types';
 import { separateTypeDeclarations } from './separateTypeDeclarations';
 import { toKebabCase, toPascalCase, toSnakeCase } from '../../helpers/strings/case';

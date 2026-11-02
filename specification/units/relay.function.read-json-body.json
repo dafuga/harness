@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "relay.function.read-json-body",
+	"uid": "u_eg7s4pxxy2",
 	"kind": "function",
 	"title": "Bounded relay JSON body",
 	"responsibility": "Reads a bounded JSON object while rejecting unsupported public content types and oversized bodies.",

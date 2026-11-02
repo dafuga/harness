@@ -1,3 +1,4 @@
+// @harness-uid u_ir745per4i
 import type { SourceChange } from '../../models/development-tooling/Desktop.types';
 import type { SourceSnapshot } from '../verification-evidence/sourceSnapshot';
 export function sourceChanges(before: SourceSnapshot, after: SourceSnapshot): SourceChange[] {

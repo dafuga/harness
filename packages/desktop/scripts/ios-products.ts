@@ -1,3 +1,4 @@
+// @harness-uid u_co6mnqn5s7
 import type { ProductChange } from './ios-products.types';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';

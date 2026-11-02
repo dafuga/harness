@@ -1,3 +1,4 @@
+// @harness-uid u_slsujlaboc
 /** The one-time offer a computer shows as a QR code: what a phone asks with, and no credential. */
 export interface PairingOffer {
 	origin: string;

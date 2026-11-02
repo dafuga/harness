@@ -1,3 +1,4 @@
+// @harness-uid u_7yr6rf2tjr
 import {
 	harnessModuleGroupRules,
 	harnessNamingRules,

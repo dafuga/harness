@@ -1,3 +1,4 @@
+// @harness-uid u_h3o6k5lkxv
 import type { CatalogOrder, Relations, CatalogRow } from './entityCatalog.types';
 import { helperContract } from '../../../../../src/utils/helperContract';
 import { explorerCategory } from './explorerCategory';

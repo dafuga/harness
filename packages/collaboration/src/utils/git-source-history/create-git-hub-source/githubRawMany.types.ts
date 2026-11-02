@@ -1,3 +1,4 @@
+// @harness-uid u_5tivdvcxfo
 import type { SourceAdapter } from '../../../models/planning-collaboration/Collaboration.types';
 import type { GitHubOptions } from '../../../models/planning-collaboration/Collaboration.types';
 import type { RepositoryIdentity } from '../../../models/planning-collaboration/Collaboration.types';

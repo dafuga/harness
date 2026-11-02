@@ -1,3 +1,4 @@
+// @harness-uid u_s5x3qhn6gc
 import type { SvelteHTMLElements as NativeElements } from 'svelte/elements';
 
 declare module 'svelte/elements' {

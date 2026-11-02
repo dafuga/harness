@@ -1,3 +1,4 @@
+// @harness-uid u_okh4ii7vrv
 import type { StoredRecord } from './VerificationStoreRepository.types';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';

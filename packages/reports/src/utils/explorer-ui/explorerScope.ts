@@ -1,3 +1,4 @@
+// @harness-uid u_4sdldoj7zk
 import type { ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 
 export type ExplorerResolved =

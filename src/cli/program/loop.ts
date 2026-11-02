@@ -1,3 +1,4 @@
+// @harness-uid u_bupajbnjit
 import type { Command } from 'commander';
 import {
 	recordRegression,

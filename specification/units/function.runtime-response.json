@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.runtime-response",
+	"uid": "u_z23yrl2ebv",
 	"kind": "function",
 	"title": "Runtime envelopes and deadlines",
 	"responsibility": "Validates runtime response envelopes and applies a timeout to both yielded and thread-blocking calls.",

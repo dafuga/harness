@@ -1,3 +1,4 @@
+// @harness-uid u_hz4b2ps734
 import type { SqliteField, SqliteModel } from '../../core/development-tooling/sqliteTypes';
 import { sqliteColumn } from './sqliteTableSql';
 export function sqliteRow<T>(model: SqliteModel, row: unknown): T | null {

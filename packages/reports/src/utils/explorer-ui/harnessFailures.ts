@@ -1,3 +1,4 @@
+// @harness-uid u_kvp5hiaazm
 export interface FailureCause {
 	/** The failure as recorded; for a cause several subjects share, the words they share. */
 	text: string;

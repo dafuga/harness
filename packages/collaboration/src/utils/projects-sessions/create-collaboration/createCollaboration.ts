@@ -1,3 +1,4 @@
+// @harness-uid u_ovyqzbakzh
 import { z } from 'zod';
 import type {
 	CollaborationApi,

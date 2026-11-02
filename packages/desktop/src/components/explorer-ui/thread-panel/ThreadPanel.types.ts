@@ -1,3 +1,4 @@
+// @harness-uid u_25nqchdxgq
 import type { EntityDetail, ThreadInfo } from '../../../models/Desktop.types';
 import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 import type { ThreadTarget } from '../../../utils/explorer-ui/threadAnchor';

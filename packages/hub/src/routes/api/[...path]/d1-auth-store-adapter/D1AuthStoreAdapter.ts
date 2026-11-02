@@ -1,3 +1,4 @@
+// @harness-uid u_qym3at4l2e
 import type { D1Like } from './D1AuthStoreAdapter.types';
 import type {
 	AuthStore,

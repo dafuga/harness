@@ -1,3 +1,4 @@
+// @harness-uid u_6ep3zibrhj
 import type { ContractRow } from './entityContract';
 import type { EntityMeasure } from './entityMeasure';
 import type { HarnessRecord } from '../../models/explorer-ui/Harness.types';

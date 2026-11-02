@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "planning.function.plan-write",
+	"uid": "u_nedvauz2kc",
 	"kind": "function",
 	"title": "Serialize planning writes",
 	"responsibility": "Queue planning work per repository, guard artifact cleanliness and commit only the prepared files.",

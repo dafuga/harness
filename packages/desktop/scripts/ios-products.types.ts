@@ -1,3 +1,4 @@
+// @harness-uid u_co6mnqn5s7
 export interface ProductChange {
 	/**
 	 * Plain http to this machine is let through by the system. A Debug fixture copy needs it to

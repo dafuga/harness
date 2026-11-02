@@ -1,3 +1,4 @@
+// @harness-uid u_bn7p57ftpt
 import { createHash } from 'node:crypto';
 import ts from 'typescript';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';

@@ -1,3 +1,4 @@
+// @harness-uid u_qspboqkqoj
 import type { Measurement, Budget } from './entityMeasure.types';
 import type {
 	MeasureRow,

@@ -1,3 +1,4 @@
+// @harness-uid u_d6lx2moqv4
 import type { ModuleCatalog, ModuleDefinition, ModuleState } from './moduleDefinition.types';
 import type { SourceTree } from '../../core/development-tooling/sourceTypes';
 import { moduleDefinitionSchema, moduleStateFile, moduleStateSchema } from './moduleDefinition';

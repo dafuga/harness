@@ -1,3 +1,4 @@
+// @harness-uid u_nla26g7nzv
 import { z } from 'zod';
 import { hostedEvidenceFields } from './hostedEvidenceFields';
 const { s, name, sha, hash, array, names, obj, bool, num, mode, passed, capture, scenario } =

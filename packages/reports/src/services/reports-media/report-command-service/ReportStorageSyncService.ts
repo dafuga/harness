@@ -1,3 +1,4 @@
+// @harness-uid u_hia5m25mf6
 import type { StorageSyncOptions } from './ReportStorageSyncService.types';
 import { readdir, lstat } from 'node:fs/promises';
 import { join } from 'node:path';

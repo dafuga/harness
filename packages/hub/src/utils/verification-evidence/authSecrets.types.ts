@@ -1,3 +1,4 @@
+// @harness-uid u_hv3a6p454a
 export interface AuthSecrets {
 	/** Keyed lookup hash, stored in place of an opaque secret. */
 	hash(purpose: string, value: string): Promise<string>;

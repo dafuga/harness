@@ -1,3 +1,4 @@
+// @harness-uid u_kdscle2c2t
 import type { ResourceQueueService } from '../../../../../../src/services/execution-runtimes/ResourceQueueService';
 import type {
 	AgentRunner,

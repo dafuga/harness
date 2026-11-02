@@ -1,3 +1,4 @@
+// @harness-uid u_s57l555a7w
 /** Allowlist public assistant text. Private reasoning and tool bodies never cross IPC. */
 export function publicCliEvents(value: unknown): string[] {
 	if (!value || typeof value !== 'object') return [];

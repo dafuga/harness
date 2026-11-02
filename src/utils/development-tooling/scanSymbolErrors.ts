@@ -1,3 +1,4 @@
+// @harness-uid u_vkx5vqjo6s
 import ts from 'typescript';
 import type { ExportedSymbol } from '../../core/development-tooling/sourceTypes';
 

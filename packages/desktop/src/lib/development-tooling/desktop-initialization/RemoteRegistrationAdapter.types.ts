@@ -1,3 +1,4 @@
+// @harness-uid u_l76zx7vxgv
 import type { NativeHostedCredential } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 
 export interface RemoteRegistrationAdapterConfig {

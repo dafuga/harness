@@ -1,3 +1,4 @@
+// @harness-uid u_dvnkqsclwa
 export interface SourceState {
 	files: string[];
 	path: string;

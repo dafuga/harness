@@ -1,3 +1,4 @@
+// @harness-uid u_yqkz5s6pgq
 import type { PlanDetail } from '../../../../../planning/src/lib/planning/index';
 import type { EntityContract } from '../../../models/development-tooling/Desktop.types';
 

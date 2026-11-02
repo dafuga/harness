@@ -1,3 +1,4 @@
+// @harness-uid u_5ecw5iztql
 /** The part of a measurement or of a frozen baseline that says what was measured, and how. */
 export interface MeasuredDefinition {
 	unitOfMeasure?: string;

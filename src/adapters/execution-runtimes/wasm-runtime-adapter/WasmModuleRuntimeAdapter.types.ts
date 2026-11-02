@@ -1,3 +1,4 @@
+// @harness-uid u_hqa74vec52
 export interface JsonAbi {
 	memory: WebAssembly.Memory;
 	harness_alloc(length: number): number;

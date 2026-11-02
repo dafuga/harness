@@ -1,3 +1,4 @@
+// @harness-uid u_6yabo6xkdu
 import type { HarnessUnit } from '../../models/explorer-ui/Harness.types';
 import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';

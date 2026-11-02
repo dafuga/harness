@@ -1,3 +1,4 @@
+// @harness-uid u_l76zx7vxgv
 import type { RemoteRegistrationAdapterConfig } from './RemoteRegistrationAdapter.types';
 import type {
 	RemoteHostRegisterInput,

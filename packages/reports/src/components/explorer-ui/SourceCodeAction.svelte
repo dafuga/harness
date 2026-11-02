@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_waon772qjd -->
 <script lang="ts">
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import type { EntityNav } from '../../utils/explorer-ui/entityLens';

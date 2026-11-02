@@ -1,3 +1,4 @@
+// @harness-uid u_xetkmrxgc7
 import type { EvidencePointer } from '../../../../core/git-source-history/historyTypes';
 import type { EvidenceManifest } from '../../../../core/git-source-history/historyTypes';
 import type { VerificationRecord } from '../../../../core/verification-evidence/verificationTypes';

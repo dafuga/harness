@@ -1,3 +1,4 @@
+// @harness-uid u_tpfkg5xomt
 export type * from './models/game-authoring/Game.types';
 export { createRun, stepGame, enterView } from './utils/game-authoring/gameStep';
 export { exampleDocument, keyDoor } from './utils/game-authoring/keyDoor';

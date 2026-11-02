@@ -1,3 +1,4 @@
+// @harness-uid u_dr2xl6z3dy
 import type { DeclarationRole } from './declarationRole.types';
 
 /** Classify source facts independently of immutable unit IDs and directory-derived kinds. */

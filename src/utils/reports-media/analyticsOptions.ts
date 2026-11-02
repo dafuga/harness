@@ -1,3 +1,4 @@
+// @harness-uid u_wfk7euc55m
 import type { Command } from 'commander';
 export function analyticsOptions(command: Command): Command {
 	return command

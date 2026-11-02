@@ -1,3 +1,4 @@
+// @harness-uid u_bmhuaurn2d
 import type { PwSuite, PwSpec, Context, Meta } from './PlaywrightReportAdapter.types';
 import { dirname, resolve, extname } from 'node:path';
 import { readFile } from 'node:fs/promises';

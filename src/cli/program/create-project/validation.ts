@@ -1,3 +1,4 @@
+// @harness-uid u_tm2cqtmoei
 import { validateName } from '../../../core/development-tooling/validation';
 
 export function validateProjectName(name: string): string {

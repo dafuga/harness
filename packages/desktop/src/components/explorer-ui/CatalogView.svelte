@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_lo2f475bxn -->
 <script lang="ts">
 	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { helperContract } from '../../../../../src/utils/helperContract';

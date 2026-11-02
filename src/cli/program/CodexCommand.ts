@@ -1,3 +1,4 @@
+// @harness-uid u_edyoybfg3o
 import type { Command } from 'commander';
 import { readFile, stat } from 'node:fs/promises';
 import { CodexGatewayService } from './codex-gateway-service/CodexGatewayService';

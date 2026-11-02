@@ -1,3 +1,4 @@
+// @harness-uid u_bit6m3gnax
 export interface Device {
 	name: string;
 	udid: string;

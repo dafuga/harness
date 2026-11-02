@@ -1,3 +1,4 @@
+// @harness-uid u_cgercf3i3t
 /** The unit id grammar of the registry: lower-case dotted segments, at most 200 characters. */
 const unitId = /^[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)+$/;
 

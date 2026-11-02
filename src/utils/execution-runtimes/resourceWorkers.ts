@@ -1,3 +1,4 @@
+// @harness-uid u_oqgfr3u2od
 /** Test runners honor the managed command's reservation instead of all logical host CPUs. */
 export function resourceWorkers(
 	env: Record<string, string | undefined> = process.env,

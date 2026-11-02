@@ -1,3 +1,4 @@
+// @harness-uid u_jyqw3fptyh
 import type { AgentEntry } from '../../../../../src/core/activityTypes';
 
 export interface ActivityReading {

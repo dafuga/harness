@@ -1,3 +1,4 @@
+// @harness-uid u_ase4dftv54
 import type { Git } from './planGit.types';
 import type { Buffer } from 'node:buffer';
 import { lstat, readFile } from 'node:fs/promises';

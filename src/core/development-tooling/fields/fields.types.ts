@@ -1,3 +1,4 @@
+// @harness-uid u_l64sqhkgzn
 export type FieldType = 'string' | 'text' | 'number' | 'boolean' | 'date' | 'json';
 
 export interface Field {

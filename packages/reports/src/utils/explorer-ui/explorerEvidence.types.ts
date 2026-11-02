@@ -1,3 +1,4 @@
+// @harness-uid u_rmnp3bbpgy
 import type { HarnessRevision } from '../../models/explorer-ui/Harness.types';
 
 /** The stored revisions a page has read: the shown one, and its first parent when it has one. */

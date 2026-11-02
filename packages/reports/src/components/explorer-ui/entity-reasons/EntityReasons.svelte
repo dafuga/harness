@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_mfstqz2je6 -->
 <script lang="ts">
 	import { reasonUses } from './entityReasons';
 	import { type EntityReasons } from '../../../utils/explorer-ui/entityReasons';

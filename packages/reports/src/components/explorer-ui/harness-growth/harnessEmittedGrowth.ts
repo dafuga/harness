@@ -1,3 +1,4 @@
+// @harness-uid u_o4a4sfshto
 import type { Point } from './harnessEmittedGrowth.types';
 import type {
 	EmittedReview,

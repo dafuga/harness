@@ -1,3 +1,4 @@
+// @harness-uid u_x2petdgrbl
 import type { BrowserWindow, IpcMainInvokeEvent } from 'electron';
 import { NavigationValidator } from '../../../../validators/explorer-ui/NavigationValidator';
 

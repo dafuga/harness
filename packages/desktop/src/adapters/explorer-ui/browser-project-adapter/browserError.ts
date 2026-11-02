@@ -1,3 +1,4 @@
+// @harness-uid u_bgv5sfvgt5
 const explained: Record<string, string> = {
 	'session-required': 'Sign in to continue.',
 	forbidden: 'You do not have access to this.',

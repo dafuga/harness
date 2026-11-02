@@ -1,3 +1,4 @@
+// @harness-uid u_5dgj3cj7nh
 export type CpuRole = 'codex' | 'harness' | 'agent';
 
 export interface CpuProcess {

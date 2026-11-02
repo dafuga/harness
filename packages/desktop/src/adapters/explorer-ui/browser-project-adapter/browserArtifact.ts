@@ -1,3 +1,4 @@
+// @harness-uid u_ex7sjre6fh
 import { artifactMediaTypes } from '../../../utils/verification-evidence/remoteArtifact';
 import { hostedArtifact } from './hostedArtifact';
 

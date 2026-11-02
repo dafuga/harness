@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.commit-message",
+	"uid": "u_kcabxdowsl",
 	"kind": "service",
 	"title": "CommitMessageService",
 	"responsibility": "Measures commit messages of a repository against the writing limits: the staged message of a commit in the making, and the stored messages of a range of source commits, where the committed tree declares the limits.",

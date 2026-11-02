@@ -1,3 +1,4 @@
+// @harness-uid u_qxcowf3xsl
 import type { LoopTemplate, ResolvedLoopTemplate, LoopTemplateStep } from './loopTemplates.types';
 import { builtInTemplates } from './builtInLoopTemplates';
 import { readdir, readFile } from 'node:fs/promises';

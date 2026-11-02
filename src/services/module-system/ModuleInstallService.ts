@@ -1,3 +1,4 @@
+// @harness-uid u_pyec4qoa2y
 import { ModuleCatalogService } from './ModuleCatalogService';
 import { moduleTree } from './moduleTree';
 import { moduleStateFile } from './moduleDefinition';

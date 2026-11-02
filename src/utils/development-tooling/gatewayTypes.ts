@@ -1,3 +1,4 @@
+// @harness-uid u_kpmmczkxlh
 export type GatewayItem = Record<string, unknown>;
 
 export interface GatewayRequest {

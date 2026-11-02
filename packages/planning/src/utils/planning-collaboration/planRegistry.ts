@@ -1,3 +1,4 @@
+// @harness-uid u_owefphhfum
 /** Artifact folders are planning history, never active implementation units. */
 export const planningIgnores = [
 	'pages',

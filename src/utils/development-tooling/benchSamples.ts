@@ -1,3 +1,4 @@
+// @harness-uid u_eakvmkvycc
 import type { RoundResult } from './benchSamples.types';
 import { performance } from 'node:perf_hooks';
 import { warmupCalls } from '../../core/development-tooling/comparisonTypes';

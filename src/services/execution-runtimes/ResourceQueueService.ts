@@ -1,3 +1,4 @@
+// @harness-uid u_hlwlmsclx6
 import { randomUUID } from 'node:crypto';
 import { resolve } from 'node:path';
 import { clearInterval, setInterval } from 'node:timers';

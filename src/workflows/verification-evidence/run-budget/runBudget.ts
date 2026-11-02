@@ -1,3 +1,4 @@
+// @harness-uid u_ddbikxbwhi
 import type { Loaded, BenchInput } from './runBudget.types';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "adapter.lfs",
+	"uid": "u_g7ripp5ebu",
 	"kind": "adapter",
 	"title": "LfsAdapter",
 	"responsibility": "Stores and reads Git LFS objects by content hash and transfers them with a remote.",

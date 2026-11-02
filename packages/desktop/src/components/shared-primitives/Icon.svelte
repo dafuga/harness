@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_wqe3wsnqzb -->
 <script lang="ts">
 	let { name, size = 22 }: { name: string; size?: number } = $props();
 	const paths: Record<string, string> = {

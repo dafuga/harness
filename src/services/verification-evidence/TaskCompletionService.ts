@@ -1,3 +1,4 @@
+// @harness-uid u_vcijuxvzhw
 import { posix } from 'node:path';
 import { CommitTreeAdapter } from '../../adapters/git-source-history/CommitTreeAdapter';
 import { planAudit, type TaskCheck } from './task-completion-service/planAudit';

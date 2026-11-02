@@ -1,3 +1,4 @@
+// @harness-uid u_ktscntl2sd
 /**
  * TEST ONLY. The native acceptance of the iOS app, repeatable on one machine:
  *

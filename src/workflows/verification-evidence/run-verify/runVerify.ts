@@ -1,3 +1,4 @@
+// @harness-uid u_srtmrphmgz
 import { scopedVerify, timer, verifyEnv, renderAttachment } from './scopedVerify';
 import type { VerifyOptions, VerifyResult } from './runVerify.types';
 export type { VerifyOptions } from './runVerify.types';

@@ -1,3 +1,4 @@
+// @harness-uid u_sntz6luf5m
 import type { InstallationTokenOptions } from './InstallationTokenService.types';
 import type { RepositoryIdentity } from 'collaboration';
 import type { InstallationScope } from '../GithubApiAdapter';

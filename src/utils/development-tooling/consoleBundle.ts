@@ -1,3 +1,4 @@
+// @harness-uid u_azhinxezrt
 import type { ConsoleModules, Loader } from './consoleBundle.types';
 import type { ConsoleData } from '../explorer-ui/consoleAccess';
 

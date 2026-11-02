@@ -1,3 +1,4 @@
+// @harness-uid u_srtmrphmgz
 import type { StoredRecord } from '../../../repositories/verification-evidence/VerificationStoreRepository';
 
 /** Attachment is separate from the sealed record: focused proof is never a full pass. */

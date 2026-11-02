@@ -1,3 +1,4 @@
+// @harness-uid u_fnrimfuaqb
 import type { ComponentManifest } from '../../../core/unitTypes';
 import { explorerCategories } from '../../../utils/explorerRoute';
 import type { HarnessApiService } from '../../../services/networking-security/HarnessApiService';

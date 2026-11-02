@@ -1,3 +1,4 @@
+// @harness-uid u_bohfxf5fxx
 import type { EntityEvidenceQuery } from '../../../models/verification-evidence/DesktopEvidence.types';
 import type { createEntityEvidenceStore } from './entityEvidence.svelte';
 

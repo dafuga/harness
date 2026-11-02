@@ -1,3 +1,4 @@
+// @harness-uid u_ekuqujldi3
 import type { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 
 /**

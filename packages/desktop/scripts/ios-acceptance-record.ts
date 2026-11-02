@@ -1,3 +1,4 @@
+// @harness-uid u_kx2c6yoekb
 import type { AcceptanceCheck } from './ios-acceptance-record.types';
 import { redacted } from './ios-acceptance-guards';
 import { errorMessage } from '../../reports/src/helpers/strings/errorMessage';

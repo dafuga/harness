@@ -1,3 +1,4 @@
+// @harness-uid u_gz5ds4kmey
 import type { z } from 'zod';
 import type { agentRegistrationSchema, agentBeatSchema, agentEndSchema } from './activityTypes';
 

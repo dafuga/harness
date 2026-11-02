@@ -1,3 +1,4 @@
+// @harness-uid u_xd7bcjvsli
 import type { HistoryIndex } from '../../../core/git-source-history/historyIndexTypes';
 import type { LegacyEntry } from '../../../core/git-source-history/historyIndexTypes';
 import type { HistoryMediaService } from './history-media-service/HistoryMediaService';

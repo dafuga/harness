@@ -1,3 +1,4 @@
+// @harness-uid u_ns7tf5n6nq
 /** Node ids plus edges as `[dependent, dependency]` indexes into `nodes`. */
 export interface KernelGraph {
 	nodes: string[];

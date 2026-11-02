@@ -1,3 +1,4 @@
+// @harness-uid u_kzlvamifcc
 import type { CommittedThread } from 'collaboration';
 import type { ComponentManifest } from '../../../../../../../src/core/unitTypes';
 import type { EntityDetail } from '../../../../../../desktop/src/models/Desktop.types';

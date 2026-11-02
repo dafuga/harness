@@ -1,3 +1,4 @@
+// @harness-uid u_v4qln4pccs
 export interface HarnessHttpAdapterConfig {
 	url: string;
 	token?: string;

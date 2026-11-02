@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_fh6z4cz4om -->
 <script lang="ts">
 	import type { Props } from './GameCheckpointEditor.types';
 

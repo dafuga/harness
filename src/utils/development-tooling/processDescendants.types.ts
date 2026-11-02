@@ -1,3 +1,4 @@
+// @harness-uid u_frwvu2ncek
 /** One process as the system names it: reused ids differ in their start time. */
 export interface TrackedProcess {
 	pid: number;

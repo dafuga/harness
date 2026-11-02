@@ -1,3 +1,4 @@
+// @harness-uid u_yckomncarv
 import type { ThrownValue } from '../../../helpers/strings/errorMessage.types';
 import type { PickerModel, ProviderSelection } from '../../../../../../src/core/pickerModelTypes';
 import type { PickerSnapshot, SwitchRequest } from '../../../../../../src/core/pickerTypes';

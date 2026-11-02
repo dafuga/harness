@@ -1,3 +1,4 @@
+// @harness-uid u_o2hqwn6yf3
 /**
  * Public verification contracts of Harness: reasons, budgets, the evidence protocol and the
  * rules that judge them. Importing this module has no side effects.

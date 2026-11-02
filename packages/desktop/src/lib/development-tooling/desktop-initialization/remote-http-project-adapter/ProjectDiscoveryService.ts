@@ -1,3 +1,4 @@
+// @harness-uid u_gegtad6hae
 import type { SnapshotPort, HeldDiscovery } from './ProjectDiscoveryService.types';
 import { createHash } from 'node:crypto';
 import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';

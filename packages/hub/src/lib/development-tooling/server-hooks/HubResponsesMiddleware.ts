@@ -1,3 +1,4 @@
+// @harness-uid u_4czze4jood
 /** The hosted workspace and browser approval flow cannot be embedded by another site. */
 export class HubResponsesMiddleware {
 	handle(response: Response): Response {

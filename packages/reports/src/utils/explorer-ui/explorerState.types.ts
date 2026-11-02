@@ -1,3 +1,4 @@
+// @harness-uid u_i4vqq2pyhj
 import type { HarnessRecord } from '../../models/explorer-ui/Harness.types';
 import type { HarnessScenario } from '../../models/explorer-ui/Harness.types';
 import type { CoverageStanding } from '../../models/explorer-ui/Explorer.types';

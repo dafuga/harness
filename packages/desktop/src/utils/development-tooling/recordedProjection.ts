@@ -1,3 +1,4 @@
+// @harness-uid u_xjxqzbfms6
 import type { Shown, Staged, Impact } from './recordedProjection.types';
 import type { ExplorerSide } from '$reports/models/Explorer.types';
 import type { HarnessRecord, HarnessRevision } from '$reports/models/Harness.types';

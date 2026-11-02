@@ -1,3 +1,4 @@
+// @harness-uid u_rp545ji5cr
 import type { Relay, Running, RemoteFixtureOptions } from './remote-fixture-host.types';
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';

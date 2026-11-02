@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ./atoms -->
+<!-- @harness-uid u_6g24e7bvrs -->
 <script lang="ts" generics="T">
 	import type { Snippet } from 'svelte';
 	import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';

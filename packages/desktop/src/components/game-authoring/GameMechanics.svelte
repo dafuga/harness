@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_pgwr2tke37 -->
 <script lang="ts">
 	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { MechanicDefinition } from '../../../../game/src/index';

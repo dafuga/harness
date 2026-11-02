@@ -1,3 +1,4 @@
+// @harness-uid u_tsnp64xshg
 /** The notes commit and the evidence commit of one read; null where there is no such ref. */
 export interface PinnedRevisions {
 	notesRevision: string | null;

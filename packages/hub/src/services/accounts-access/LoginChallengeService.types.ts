@@ -1,3 +1,4 @@
+// @harness-uid u_ndxuxc3hzl
 import type { OneTimeStore } from '../../models/accounts-access/HubAuthStore.types';
 import type { ChallengeRecord } from '../../models/accounts-access/HubAuthStore.types';
 import type { AuthSecrets } from '../../utils/verification-evidence/authSecrets';

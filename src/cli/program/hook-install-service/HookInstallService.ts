@@ -1,3 +1,4 @@
+// @harness-uid u_a2ul3xybcy
 import type { HookStatus } from './HookInstallService.types';
 import { existsSync } from 'node:fs';
 import { chmod, mkdir, readFile, readdir, rename, rm, writeFile } from 'node:fs/promises';

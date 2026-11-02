@@ -1,3 +1,4 @@
+// @harness-uid u_3lt66als72
 import { chmod, mkdtemp, rename, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { openSqlite } from '../../adapters/development-tooling/openSqlite';

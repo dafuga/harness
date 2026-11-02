@@ -1,3 +1,4 @@
+// @harness-uid u_eymqu7nm4p
 import type { TurnItem, TurnResult, TurnOptions } from './codexTurn.types';
 export type { TurnItem, TurnResult, TurnOptions } from './codexTurn.types';
 import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';

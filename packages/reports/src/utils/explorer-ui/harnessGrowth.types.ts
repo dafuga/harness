@@ -1,3 +1,4 @@
+// @harness-uid u_7gepqx2gll
 import type { growthMetrics } from './harnessGrowth';
 
 export type GrowthMetric = (typeof growthMetrics)[number];

@@ -1,3 +1,4 @@
+// @harness-uid u_ulqlhgs3lj
 import type { FrozenLimits, EmittedLimits } from '../budgetReviews';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import { frozenMetrics, type BudgetBaseline } from '../budgetFindings';

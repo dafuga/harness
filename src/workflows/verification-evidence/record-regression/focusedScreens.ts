@@ -1,3 +1,4 @@
+// @harness-uid u_5n3y7cwxsh
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fail } from '../../../core/errors';

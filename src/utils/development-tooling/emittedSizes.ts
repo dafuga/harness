@@ -1,3 +1,4 @@
+// @harness-uid u_ob66wz7kqc
 import type { Sized } from './emittedSizes.types';
 import type { RuntimeKind } from '../../core/development-tooling/unitTypes';
 

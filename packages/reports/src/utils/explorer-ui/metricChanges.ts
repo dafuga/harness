@@ -1,3 +1,4 @@
+// @harness-uid u_cenkvbz3f4
 import type { Sample, MetricChangeRow } from './metricChanges.types';
 import type { EntityMeasure, MeasureRow, PerformanceRow } from './entityMeasure';
 import { byteSize, notMeasured } from './entityMeasure';

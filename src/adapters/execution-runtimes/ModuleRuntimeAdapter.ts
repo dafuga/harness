@@ -1,3 +1,4 @@
+// @harness-uid u_sqcojf7oam
 import { pathToFileURL } from 'node:url';
 import {
 	runtimeFailure,

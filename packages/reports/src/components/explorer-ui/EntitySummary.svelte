@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_beggntnzh2 -->
 <script lang="ts">
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import { entitySummaryFacts, measurementLocation as where } from './entitySummaryFacts';

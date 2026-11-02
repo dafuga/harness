@@ -1,3 +1,4 @@
+/* @harness-uid u_jefq7zcvpn */
 .floating-chat {
 	--fc-right: calc(
 		var(--floating-chat-right, min(var(--hx-space-20), 3vw)) + env(safe-area-inset-right, 0)

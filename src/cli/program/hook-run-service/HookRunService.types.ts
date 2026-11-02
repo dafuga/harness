@@ -1,3 +1,4 @@
+// @harness-uid u_o3qsjcczaz
 export interface HookOutcome {
 	/** Commits that may be pushed, each with the record that proves it. */
 	verified: Array<{ commit: string; record: string }>;

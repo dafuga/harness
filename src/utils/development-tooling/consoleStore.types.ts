@@ -1,3 +1,4 @@
+// @harness-uid u_ockbixrlal
 /** One stored object; R2 objects have this shape. */
 export interface ConsoleObject {
 	text(): Promise<string>;

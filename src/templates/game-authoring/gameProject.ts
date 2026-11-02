@@ -1,3 +1,4 @@
+// @harness-uid u_rjlaph7pm7
 import type { PlannedFile } from '../../core/development-tooling/files';
 import type { ProjectTemplateInput } from '../projects-sessions/project';
 import { exampleDocument } from '../../../packages/game/src/utils/game-authoring/keyDoor';

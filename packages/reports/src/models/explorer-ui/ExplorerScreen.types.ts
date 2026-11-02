@@ -1,3 +1,4 @@
+// @harness-uid u_fq7yw374on
 import type { Component } from 'svelte';
 import type { EntityLens } from '../../utils/explorer-ui/entityLens';
 import type { HarnessClient } from '../../utils/explorer-ui/harnessClient';

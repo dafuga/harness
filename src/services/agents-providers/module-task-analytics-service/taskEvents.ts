@@ -1,3 +1,4 @@
+// @harness-uid u_x665iye7um
 import type { ModuleTask } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { AnalyticsEvent } from '../../../core/reports-media/analyticsTypes';
 import { fingerprint } from '../../../workflows/reports-media/analyticsRecord';

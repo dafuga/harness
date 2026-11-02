@@ -1,3 +1,4 @@
+// @harness-uid u_rbmqui6qut
 export interface RecordRegressionInput {
 	root?: string;
 	loop: string;

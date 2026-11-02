@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_f7c2abzw5n -->
 <script lang="ts">
 	import Pill from '../explorer-kit/Pill.svelte';
 	import { writingLimits } from '../../../../../../src/utils/writing-limits/writingLimits';

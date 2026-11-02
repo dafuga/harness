@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_63vqm6mmxf -->
 <script lang="ts">
 	import { sourceFileParts } from './sourceFileParts';
 	import EmptyState from './explorer-kit/EmptyState.svelte';

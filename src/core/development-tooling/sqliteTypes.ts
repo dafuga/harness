@@ -1,3 +1,4 @@
+// @harness-uid u_dwcaxutyo6
 /** The small synchronous boundary implemented by Bun SQLite and Node DatabaseSync. */
 export type SqliteValue = string | number | bigint | Uint8Array | null;
 export interface SqliteStatement {

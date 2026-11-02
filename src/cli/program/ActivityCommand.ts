@@ -1,3 +1,4 @@
+// @harness-uid u_vpruw6tz63
 import type { Flags } from './ActivityCommand.types';
 import type { Command } from 'commander';
 import {

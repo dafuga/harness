@@ -1,3 +1,4 @@
+// @harness-uid u_wp5yfuo763
 import type { RemoteHostState, RemoteHostStoreAdapterConfig } from './RemoteHostStoreAdapter.types';
 import { mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_apj5u4ylpy
 import { workspaceSections as sections } from '../../../utils/projects-sessions/workspaceRoute';
 import type { Section } from './EntityView.types';
 import type { EntitySectionsContext } from './entityViewSections.types';

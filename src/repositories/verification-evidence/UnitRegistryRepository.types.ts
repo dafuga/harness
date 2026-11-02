@@ -1,3 +1,4 @@
+// @harness-uid u_xkavxxtat4
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 
 export interface RegistryRead {

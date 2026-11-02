@@ -1,3 +1,4 @@
+// @harness-uid u_gcfdbrl6ku
 export interface HarnessLegacyMedia {
 	id: string;
 	title: string;

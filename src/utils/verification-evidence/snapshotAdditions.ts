@@ -1,3 +1,4 @@
+// @harness-uid u_bvg2zmvogi
 export interface SnapshotBounds {
 	/** Every path the exported commit contains. */
 	tracked: Set<string>;

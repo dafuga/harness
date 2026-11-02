@@ -1,3 +1,4 @@
+// @harness-uid u_ja5eu5lu77
 export interface SourceNesting {
 	/** Curly-brace depth before each character. */
 	brace: Int32Array;

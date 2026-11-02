@@ -1,3 +1,4 @@
+// @harness-uid u_iewc6drdd6
 import { httpReferences } from './httpReferences';
 import type { LiteralPattern, Found } from './scanImports.types';
 import type {

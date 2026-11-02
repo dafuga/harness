@@ -1,3 +1,4 @@
+// @harness-uid u_h7xitjdym5
 import type { SourceTree } from '../../core/development-tooling/sourceTypes';
 
 /** Read in bounded groups so snapshot adapters can batch Git objects without losing path order. */

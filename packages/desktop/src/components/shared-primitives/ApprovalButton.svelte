@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_42vbf34xkt -->
 <script lang="ts">
 	import type { DesignVersion, EntityDetail } from '../../models/development-tooling/Desktop.types';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';

@@ -1,3 +1,4 @@
+// @harness-uid u_cl3xfr2ge6
 import type { Actor } from 'collaboration';
 
 export interface EmailProofRecord {

@@ -1,3 +1,4 @@
+// @harness-uid u_n3nlghudto
 import type { LineProcess, ProcessReply } from '../../../utils/execution-runtimes/lineProcess';
 import { unavailable, exited } from '../../../utils/execution-runtimes/lineProcess';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';

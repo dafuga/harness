@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_ubshldh7p3 -->
 <script lang="ts">
 	import EmptyState from '../../explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { Media } from './EvidenceGrid.types';

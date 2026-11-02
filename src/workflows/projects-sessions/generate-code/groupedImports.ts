@@ -1,3 +1,4 @@
+// @harness-uid u_gze65qn66u
 import ts from 'typescript';
 import { posix } from 'node:path';
 

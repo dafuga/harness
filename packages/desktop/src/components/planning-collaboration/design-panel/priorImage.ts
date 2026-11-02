@@ -1,3 +1,4 @@
+// @harness-uid u_wmgv4w2b52
 import type { PriorImage } from '../../../utils/planning-collaboration/priorImage';
 import type { DesignImage, DesignVersion } from '../../../models/development-tooling/Desktop.types';
 

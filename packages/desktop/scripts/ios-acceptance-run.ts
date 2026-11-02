@@ -1,3 +1,4 @@
+// @harness-uid u_fppws53qsn
 import type { FixtureView, Acceptance, PairingOffer } from './ios-acceptance-run.types';
 import { resolve } from 'node:path';
 import { localOrigin, loopbackArgument, scanArgument } from './ios-acceptance-guards';

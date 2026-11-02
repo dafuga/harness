@@ -1,3 +1,4 @@
+// @harness-uid u_fxl4vmvk4n
 import type { FileClass, SourceGraph, TreeEntry, UncertainNode } from './sourceTypes';
 import type { ComponentManifest, RuntimeKind, ScenarioManifest } from './unitTypes';
 import type { UnitsConfig } from './unitsConfig';

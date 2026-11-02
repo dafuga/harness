@@ -1,3 +1,4 @@
+// @harness-uid u_nderpae3fq
 import type { Restored } from './EvidenceRestoreService.types';
 import { randomUUID } from 'node:crypto';
 import { mkdir, rename, writeFile } from 'node:fs/promises';

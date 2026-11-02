@@ -1,3 +1,4 @@
+// @harness-uid u_jdyxyps5fe
 import { createHash } from 'node:crypto';
 import {
 	roundsProtocol,

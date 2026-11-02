@@ -1,3 +1,4 @@
+// @harness-uid u_7pcvf7nfhp
 import type { LiveActivity } from '../../../../../src/core/activityTypes';
 import type { ProjectContext } from '../projects-sessions/ProjectContext.types';
 import type { CacheStatus } from '../projects-sessions/ProjectContext.types';

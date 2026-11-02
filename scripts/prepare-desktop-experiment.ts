@@ -1,3 +1,4 @@
+// @harness-uid u_3acu64764j
 import { join, resolve } from 'node:path';
 import { homedir } from 'node:os';
 import { access, mkdir, rename } from 'node:fs/promises';

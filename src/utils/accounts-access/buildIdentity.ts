@@ -1,3 +1,4 @@
+// @harness-uid u_hxz45jcw2t
 import type { BuiltFile } from './buildIdentity.types';
 import { createHash } from 'node:crypto';
 import { buildStamp, buildStampPattern, emptyBuildStamp } from '../development-tooling/buildStamp';

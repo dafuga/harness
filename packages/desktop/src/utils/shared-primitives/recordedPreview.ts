@@ -1,3 +1,4 @@
+// @harness-uid u_rqnpef7fhf
 import type { Thumbnail } from '../../models/development-tooling/Desktop.types';
 
 export type RecordedThumbnail = Extract<Thumbnail, { source: 'recorded' }>;

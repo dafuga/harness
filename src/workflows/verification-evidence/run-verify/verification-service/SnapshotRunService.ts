@@ -1,3 +1,4 @@
+// @harness-uid u_x7kddegtw2
 import type { SnapshotRun, Executed } from './SnapshotRunService.types';
 import { SnapshotAdapter } from '../../../../adapters/verification-evidence/snapshot-adapter/SnapshotAdapter';
 import { verifyConfigFile } from '../../../../core/verification-evidence/verifyTypes';

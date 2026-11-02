@@ -1,3 +1,4 @@
+// @harness-uid u_vv2ogthipg
 import type { Command } from 'commander';
 import { createProject, renderCreateProject } from './create-project/createProject';
 import type { ProjectKind } from './create-project/createProject';

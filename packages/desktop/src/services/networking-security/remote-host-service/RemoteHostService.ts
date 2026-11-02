@@ -1,3 +1,4 @@
+// @harness-uid u_ddpgjue5tc
 import type { RemoteHostOptions } from './RemoteHostService.types';
 import { hostname } from 'node:os';
 import type { RemoteHostStatus, RemoteKeyPair } from '../../../../../remote/src/index';

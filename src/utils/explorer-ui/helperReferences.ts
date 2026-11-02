@@ -1,3 +1,4 @@
+// @harness-uid u_3pfwjgdn2z
 export interface HelperBinding {
 	specifier?: string;
 	imported: string;

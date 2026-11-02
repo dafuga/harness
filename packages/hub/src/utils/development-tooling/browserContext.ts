@@ -1,3 +1,4 @@
+// @harness-uid u_6gjx245voi
 import type { HostedBrowser } from './browserContext.types';
 import { getContext } from 'svelte';
 import {} from '../../lib/stores/projects-sessions/session.svelte';

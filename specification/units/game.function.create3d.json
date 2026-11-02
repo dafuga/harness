@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "game.function.create3d",
+	"uid": "u_f4rv3pncdu",
 	"kind": "adapter",
 	"title": "ThreeSceneAdapter",
 	"responsibility": "Create a native Three.js scene with dimensional cameras and a software fallback when WebGL is unavailable.",

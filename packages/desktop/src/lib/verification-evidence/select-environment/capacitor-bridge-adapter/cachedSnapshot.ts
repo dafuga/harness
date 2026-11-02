@@ -1,3 +1,4 @@
+// @harness-uid u_4t5hat4ixp
 import type { SavedCopy } from '../../../../utils/verification-evidence/cachedSnapshot';
 import type { ProjectSnapshot } from '../../../../models/development-tooling/Desktop.types';
 

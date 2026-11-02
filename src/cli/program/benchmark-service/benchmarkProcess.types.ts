@@ -1,3 +1,4 @@
+// @harness-uid u_i5lew455cw
 export interface BenchmarkProcessInput {
 	command: string[];
 	cwd: string;

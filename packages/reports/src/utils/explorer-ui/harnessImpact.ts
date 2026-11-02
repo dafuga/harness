@@ -1,3 +1,4 @@
+// @harness-uid u_rkcb47gqa3
 import type { HarnessMark, HarnessRevision } from '../../models/explorer-ui/Harness.types';
 
 export interface HarnessImpact {

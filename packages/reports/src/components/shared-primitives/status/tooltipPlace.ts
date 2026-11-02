@@ -1,3 +1,4 @@
+// @harness-uid u_szrepznmwg
 import type { TooltipMark, TooltipSize } from '../../../utils/explorer-ui/tooltipPlace';
 
 /** The space kept between a tooltip and its mark, and between a tooltip and the screen's edge. */

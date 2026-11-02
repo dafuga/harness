@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_wa26dzwmqo -->
 <script lang="ts">
 	import Pill from '../explorer-kit/Pill.svelte';
 	import type { ConfigValueNode } from '../../../../../../src/utils/explorer-ui/unitMetadata';

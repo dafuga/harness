@@ -1,3 +1,4 @@
+// @harness-uid u_ic3av7l4nf
 export type Query = Record<string, string | null | undefined>;
 
 export interface BrowserApi {

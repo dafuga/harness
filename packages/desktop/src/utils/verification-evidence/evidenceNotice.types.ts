@@ -1,3 +1,4 @@
+// @harness-uid u_dpuekdwiia
 export type EvidenceStatus = 'idle' | 'planned' | 'unavailable' | 'loading' | 'ready' | 'failed';
 
 export interface EvidenceNotice {

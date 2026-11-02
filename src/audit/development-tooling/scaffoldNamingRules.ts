@@ -1,3 +1,4 @@
+// @harness-uid u_nkugirqyl3
 import type { FunctionFileRule } from './scaffoldNamingRules.types';
 import { toCamelCase, toPascalCase } from '../../helpers/strings/case';
 import { harnessClassFileRules } from '../../rules/explorer-ui/catalog';

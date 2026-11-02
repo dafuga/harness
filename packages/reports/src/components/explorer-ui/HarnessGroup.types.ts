@@ -1,3 +1,4 @@
+// @harness-uid u_lirnuc45of
 import type { Snippet } from 'svelte';
 import type { HarnessIconName } from '../../utils/explorer-ui/harnessIcons';
 

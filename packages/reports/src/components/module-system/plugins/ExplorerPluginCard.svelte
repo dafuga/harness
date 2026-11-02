@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_cl5o34voyf -->
 <script lang="ts">
 	import Pill from '../../explorer-ui/explorer-kit/Pill.svelte';
 	import type { Snippet } from 'svelte';

@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_ccqetvpngy -->
 <script lang="ts" generics="View extends string">
 	import { plainClick, type HarnessTab } from '../../utils/explorer-ui/harnessShell';
 	let {

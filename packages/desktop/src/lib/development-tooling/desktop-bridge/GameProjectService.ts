@@ -1,3 +1,4 @@
+// @harness-uid u_2kfhf7xn2l
 import { mkdir, rm } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';

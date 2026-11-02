@@ -1,3 +1,4 @@
+// @harness-uid u_c4yj5yva5y
 import { query, type SDKMessage } from '@anthropic-ai/claude-agent-sdk';
 import type {
 	GatewayRequest,

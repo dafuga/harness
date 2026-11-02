@@ -1,3 +1,4 @@
+// @harness-uid u_os2copoqdn
 import { z } from 'zod';
 
 /** Composition is independent from the responsibility category and stable unit identity. */

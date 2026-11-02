@@ -1,3 +1,4 @@
+// @harness-uid u_pedr2qeylx
 import type { ProviderState } from '../development-tooling/Desktop.types';
 
 /** How a local CLI is started. Tests inject a deterministic fake here; the app never does. */

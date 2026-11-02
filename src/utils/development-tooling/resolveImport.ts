@@ -1,3 +1,4 @@
+// @harness-uid u_hb2vpdavcx
 import { resolveHttpEndpoint } from './resolve-import/resolveHttpEndpoint';
 import type { ResolveContext } from './resolveImport.types';
 import { posix } from 'node:path';

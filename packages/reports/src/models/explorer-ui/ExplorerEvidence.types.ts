@@ -1,3 +1,4 @@
+// @harness-uid u_oqltuh6mzh
 import type { CaptureStanding } from '../../utils/reports-media/captureProvenance';
 import type { BrowserDiagnostic } from '../../../../../src/core/browserDiagnostics';
 import type {

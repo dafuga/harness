@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_tpeglzwz3m -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { browserContext } from '../../utils/development-tooling/browserContext';

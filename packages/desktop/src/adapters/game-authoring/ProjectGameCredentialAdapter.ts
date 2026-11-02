@@ -1,3 +1,4 @@
+// @harness-uid u_d7cchzyjdp
 import type { GameCredentialName } from './ProjectGameCredentialAdapter.types';
 import { readFile, lstat } from 'node:fs/promises';
 import { join } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_qskt73z7qu
 import type { Guide } from './guide';
 
 export function renderGuide(guide: Guide): string {

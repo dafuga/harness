@@ -1,3 +1,4 @@
+// @harness-uid u_dr2xl6z3dy
 import type { Bindings, CollectionNode } from './configValueStructure.types';
 import ts from 'typescript';
 import type { ConfigValueNode } from '../../../utils/explorer-ui/unitMetadata';

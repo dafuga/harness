@@ -1,3 +1,4 @@
+// @harness-uid u_pvqb5am3ao
 import { remotePatterns } from '../../../../remote/src/index';
 import type {
 	RelayManageDevice,

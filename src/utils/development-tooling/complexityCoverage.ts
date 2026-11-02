@@ -1,3 +1,4 @@
+// @harness-uid u_b5bb2mkplt
 import { extname } from 'node:path';
 
 const named: Record<string, string> = {

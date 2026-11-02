@@ -1,3 +1,4 @@
+// @harness-uid u_ab6cguggdk
 import type { AuditAdapter, AuditStructure } from './types';
 import type { AuditFinding } from '../types';
 

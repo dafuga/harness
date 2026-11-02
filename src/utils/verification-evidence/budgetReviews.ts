@@ -1,3 +1,4 @@
+// @harness-uid u_ulqlhgs3lj
 import type { BudgetEvent } from '../../core/verification-evidence/budgetTypes';
 
 /** One reviewed line of the ledger as a history shows it, at the commit whose record it cites. */

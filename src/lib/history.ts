@@ -1,3 +1,4 @@
+// @harness-uid u_otvnobnggx
 /**
  * Public history contracts of Harness: how records, evidence and reasons are kept in Git and
  * what the portable history index contains. Importing this module has no side effects and

@@ -1,3 +1,4 @@
+// @harness-uid u_fiwwor3rve
 import type { SourceFileParts } from './sourceFileParts.types';
 /** @pure Split one source path after removing only its exact owner prefix. */
 export function sourceFileParts(path: string, relativeTo: string): SourceFileParts {

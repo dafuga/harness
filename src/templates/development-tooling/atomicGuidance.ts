@@ -1,3 +1,4 @@
+// @harness-uid u_3x5bsabjmp
 /** Shared policy emitted into tenant agent rules and the Harness skill. */
 export function atomicComponentRules(): string {
 	return `## Atomic UI composition

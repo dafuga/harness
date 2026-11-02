@@ -1,3 +1,4 @@
+// @harness-uid u_qg6uyc7scc
 import type { BudgetBaseline } from '../../../utils/verification-evidence/budgetFindings';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import type { BudgetFinding } from '../../../core/verification-evidence/verificationTypes';

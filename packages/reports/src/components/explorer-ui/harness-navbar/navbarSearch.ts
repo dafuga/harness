@@ -1,3 +1,4 @@
+// @harness-uid u_kb4zsslujm
 import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { NavbarSearch } from '../../../utils/explorer-ui/navbarSearch';
 import type { ExplorerScope } from '../../../models/explorer-ui/Explorer.types';

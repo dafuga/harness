@@ -1,3 +1,4 @@
+// @harness-uid u_kcmwm6nql2
 import type { DeploymentConfig } from '../../models/development-tooling/Deployment.types';
 /** Route overlap is an environment boundary, independent of a Worker's name. */
 export function cloudflareSafety(

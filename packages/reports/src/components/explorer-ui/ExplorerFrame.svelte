@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_5y3ttkckm2 -->
 <script lang="ts">
 	import type { Opened } from './ExplorerFrame.types';
 

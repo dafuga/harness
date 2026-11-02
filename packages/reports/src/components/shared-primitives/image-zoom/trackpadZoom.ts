@@ -1,3 +1,4 @@
+// @harness-uid u_rptchqt5ts
 import type { Point } from '../../../utils/shared-primitives/trackpadZoom';
 
 export function imageAnchor(image: HTMLImageElement, pointer: Point): Point {

@@ -1,3 +1,4 @@
+// @harness-uid u_m5t4f2avi2
 import type { ImpactSide } from '../../core/development-tooling/impactTypes';
 import type { SourceIndex } from '../../services/development-tooling/source-index-service/SourceIndexService';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';

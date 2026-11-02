@@ -1,3 +1,4 @@
+// @harness-uid u_hx2qv7yk3g
 /**
  * TEST ONLY. To be imported before `appium-remote-debugger`. That package logs every message it
  * exchanges with WebKit's inspector, the answers of the page included, through a logger that is

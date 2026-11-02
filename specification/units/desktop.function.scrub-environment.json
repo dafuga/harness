@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.scrub-environment",
+	"uid": "u_452rexl4x3",
 	"kind": "function",
 	"title": "Filter agent environment",
 	"responsibility": "Copy environment variables while removing provider credentials and the Electron Node-mode flag.",

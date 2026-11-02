@@ -1,3 +1,4 @@
+// @harness-uid u_wc2qeqx5mz
 import type { Actor } from 'collaboration';
 import type { RepositoryIdentity } from 'collaboration';
 import type { NATIVE_AUDIENCE } from './HubAuthValues';

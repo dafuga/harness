@@ -1,3 +1,4 @@
+// @harness-uid u_xjlm4ifrmq
 import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { HarnessRevisionSummary } from '../../../models/explorer-ui/Harness.types';
 

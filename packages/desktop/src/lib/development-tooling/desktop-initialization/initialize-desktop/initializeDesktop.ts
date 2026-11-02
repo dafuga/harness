@@ -1,3 +1,4 @@
+// @harness-uid u_3en7p2purk
 import type { Backend } from './initializeDesktop.types';
 import { NativeConnectionService } from '../NativeConnectionService';
 import { ProjectRegistryService } from '../../../../services/projects-sessions/ProjectRegistryService';

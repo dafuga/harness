@@ -1,3 +1,4 @@
+// @harness-uid u_oaixfe7pzs
 import type { ContractItem } from '../../core/development-tooling/unitTypes';
 import ts from 'typescript';
 import { parameterDefault, parameterType } from './parameterDefault';

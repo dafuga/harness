@@ -1,3 +1,4 @@
+// @harness-uid u_bn7p57ftpt
 import { fileURLToPath, URL } from 'node:url';
 import process from 'node:process';
 

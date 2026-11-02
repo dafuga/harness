@@ -1,3 +1,4 @@
+// @harness-uid u_qwjc25bvkr
 import { randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';

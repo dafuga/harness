@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.hosted-public-failure",
+	"uid": "u_7a4yfvreos",
 	"kind": "function",
 	"title": "Describe a hosted read failure",
 	"responsibility": "Turns a failed hosted response into a bounded public error without repeating arbitrary server prose.",

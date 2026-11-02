@@ -1,3 +1,4 @@
+// @harness-uid u_3uqh5cdml5
 import type { Sink, WireSessionOptions, WireLink } from './WireSessionService.types';
 import {
 	REMOTE_PROTOCOL,

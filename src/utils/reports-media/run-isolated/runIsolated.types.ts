@@ -1,3 +1,4 @@
+// @harness-uid u_2nxcdxdgzt
 import type { ChildProcess } from 'node:child_process';
 import type {
 	processDescendants,

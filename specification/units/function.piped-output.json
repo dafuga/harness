@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.piped-output",
+	"uid": "u_gubrqjsdip",
 	"kind": "function",
 	"title": "Buffered console output",
 	"responsibility": "Routes console.log through the stdout stream so large piped output is queued instead of truncated at a direct-write buffer boundary.",

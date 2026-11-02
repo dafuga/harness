@@ -1,3 +1,4 @@
+// @harness-uid u_pv45ayumau
 import ts from 'typescript';
 import type { ContractItem } from '../../../core/development-tooling/unitTypes';
 import { parseParameters } from '../../../utils/development-tooling/parseParameters';

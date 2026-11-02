@@ -1,3 +1,4 @@
+// @harness-uid u_46fofihbu6
 import { addMessages, init } from 'svelte-i18n';
 import english from './report-locale/en.json' with { type: 'json' };
 import french from './report-locale/fr.json' with { type: 'json' };

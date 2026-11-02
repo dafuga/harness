@@ -1,3 +1,4 @@
+// @harness-uid u_nyfobmqpe6
 /** @pure */
 export function formatDuration(seconds?: number): string {
 	if (seconds === undefined || !Number.isFinite(seconds) || seconds < 0) return '';

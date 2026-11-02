@@ -1,3 +1,4 @@
+// @harness-uid u_gm4ebrqczq
 import type { PieceKind } from './scaffoldTypes.types';
 export const scaffoldKinds = [
 	'game-view',

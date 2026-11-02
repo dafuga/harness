@@ -1,3 +1,4 @@
+// @harness-uid u_fea5xwbuen
 export function sanitize(value: string): string {
 	return value
 		.replace(/(?:Bearer|Basic)\s+[A-Za-z0-9._~+/=-]+/gi, '[REDACTED]')

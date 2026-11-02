@@ -1,3 +1,4 @@
+// @harness-uid u_fqxwxwlo4d
 import { z } from 'zod';
 import { captureSchema, measurementSchema } from './verificationTypes';
 

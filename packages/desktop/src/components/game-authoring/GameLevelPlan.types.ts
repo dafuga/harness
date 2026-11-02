@@ -1,3 +1,4 @@
+// @harness-uid u_vykgriv3t5
 import type {
 	GameDocument,
 	GameRun,

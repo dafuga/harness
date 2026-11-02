@@ -1,3 +1,4 @@
+// @harness-uid u_b5quvbjmrl
 export interface GoogleIdentity {
 	initialize(options: {
 		client_id: string;

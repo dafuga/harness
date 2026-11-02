@@ -1,3 +1,4 @@
+// @harness-uid u_gjvlcv5jlh
 import type { SideLoader, ReasonRange } from './ReasonPathService.types';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import type { Explanation } from '../../core/development-tooling/explanationTypes';

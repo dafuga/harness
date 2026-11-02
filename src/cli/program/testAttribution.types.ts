@@ -1,3 +1,4 @@
+// @harness-uid u_76b76sztpq
 import type { GraphEdge } from '../../core/development-tooling/sourceTypes';
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
 

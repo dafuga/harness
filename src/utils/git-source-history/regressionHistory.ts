@@ -1,3 +1,4 @@
+// @harness-uid u_q3g6hgpawh
 import type { Loader, RegressionNote, Loaded } from './regressionHistory.types';
 import { createHash } from 'node:crypto';
 import { fail } from '../../core/development-tooling/errors';

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_qhdnroxe2e -->
 <script lang="ts">
 	// The shared dialog's own sheet, so the desktop host draws it as the reports do.
 	import '../../lib/styles/gallery.css';

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.gateway-stream",
+	"uid": "u_bymyow3dlf",
 	"kind": "function",
 	"title": "Gateway event stream",
 	"responsibility": "Connects session events to a Responses-style server-sent event response and cancels unfinished sessions when the client disconnects.",

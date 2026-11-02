@@ -1,3 +1,4 @@
+// @harness-uid u_g2ewj4qonb
 import { emittedMetric } from '../development-tooling/emittedSizes';
 
 export const frozenMetrics = ['source-bytes', 'complexity', 'dependencies'] as const;

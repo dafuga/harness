@@ -1,3 +1,4 @@
+// @harness-uid u_5nouewhdog
 import type { Options } from './CloudflareDeployAdapter.types';
 import { deploymentConfig } from '../../utils/development-tooling/deploymentConfig';
 import { deploymentCommand } from '../../utils/development-tooling/deploymentCommand';

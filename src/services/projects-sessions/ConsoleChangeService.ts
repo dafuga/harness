@@ -1,3 +1,4 @@
+// @harness-uid u_hkeec7apit
 import type { FileState } from './ConsoleChangeService.types';
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';

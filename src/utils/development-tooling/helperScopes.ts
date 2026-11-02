@@ -1,3 +1,4 @@
+// @harness-uid u_lkfz6v5tm6
 import ts from 'typescript';
 
 function functionName(node: ts.Node): string | undefined {

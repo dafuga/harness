@@ -1,3 +1,4 @@
+// @harness-uid u_syyrkcnw52
 import type { ProjectTaskContext } from '../../../utils/agents-providers/prepareProjectTask';
 import { randomUUID } from 'node:crypto';
 import type { ProjectTaskRequest } from '../../../models/development-tooling/DesktopBridge.types';

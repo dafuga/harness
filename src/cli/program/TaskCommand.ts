@@ -1,3 +1,4 @@
+// @harness-uid u_ktnibwveor
 import type { Command } from 'commander';
 import {
 	TaskCompletionService,

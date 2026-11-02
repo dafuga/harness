@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.cpu-processes",
+	"uid": "u_5dgj3cj7nh",
 	"kind": "function",
 	"title": "Process CPU parsing",
 	"responsibility": "Parses process-list rows into CPU totals and recognized application roles without returning command arguments.",

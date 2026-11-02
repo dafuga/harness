@@ -1,3 +1,4 @@
+// @harness-uid u_e6ppqxpxuf
 import type { Category } from '../../models/development-tooling/Desktop.types';
 import type { routeSuffixes } from './workspaceRoute';
 

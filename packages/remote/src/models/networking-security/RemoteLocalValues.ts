@@ -1,3 +1,4 @@
+// @harness-uid u_vxsaomwp3o
 /**
  * How the Electron renderer reaches its own main process: a WebSocket that never leaves the
  * machine, carrying the same wire messages as a phone's channel, in plain text frames.

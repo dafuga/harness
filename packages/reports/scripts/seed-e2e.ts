@@ -1,3 +1,4 @@
+// @harness-uid u_mu6dzauhov
 import { e2eFixtures } from '../src/utils/development-tooling/e2e-fixtures/e2eFixtures';
 import { mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, join } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_5n3y7cwxsh
 import type { RegressionPhase } from '../../../core/verification-evidence/regressionTypes';
 import type { RegressionRecord } from '../../../core/verification-evidence/regressionTypes';
 import type { runIsolated } from '../../../utils/reports-media/run-isolated/runIsolated';

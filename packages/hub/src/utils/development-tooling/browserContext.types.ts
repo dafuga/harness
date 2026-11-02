@@ -1,3 +1,4 @@
+// @harness-uid u_6gjx245voi
 import type { BrowserApi } from '../browserApi';
 import type { Session } from '../../lib/stores/projects-sessions/session.svelte';
 import type { BrowserProjects } from '../projects-sessions/browserProjects';

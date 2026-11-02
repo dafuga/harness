@@ -1,3 +1,4 @@
+// @harness-uid u_7rjvjay6lk
 import type { GameDocument, GameView } from '../../../../../game/src/index';
 
 export function patchGameView(

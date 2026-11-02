@@ -1,3 +1,4 @@
+// @harness-uid u_trg35uiv2b
 import type { PeakMemory } from '../../../../utils/development-tooling/peakMemory';
 import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';

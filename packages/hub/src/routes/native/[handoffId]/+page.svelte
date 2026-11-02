@@ -1,5 +1,6 @@
 <!-- @harness-tier page -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_ubktxpp6mt -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import HubFrame from '../../../components/shared-primitives/HubFrame.svelte';

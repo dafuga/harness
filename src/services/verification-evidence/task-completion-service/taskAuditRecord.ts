@@ -1,3 +1,4 @@
+// @harness-uid u_44r7y7ov4v
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';

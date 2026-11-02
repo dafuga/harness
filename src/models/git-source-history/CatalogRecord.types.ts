@@ -1,3 +1,4 @@
+// @harness-uid u_vs4ec2th7z
 import type { IndexedRecord } from '../../core/historyIndexTypes';
 export interface CatalogRecordAttributes {
 	id: string;

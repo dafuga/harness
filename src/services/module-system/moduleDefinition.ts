@@ -1,3 +1,4 @@
+// @harness-uid u_jakx6ccyyc
 import { z } from 'zod';
 import { scaffoldKinds } from '../../templates/development-tooling/scaffoldTypes';
 

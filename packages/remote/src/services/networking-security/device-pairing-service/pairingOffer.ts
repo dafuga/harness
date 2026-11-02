@@ -1,3 +1,4 @@
+// @harness-uid u_slsujlaboc
 import type {
 	OfferReading,
 	OfferRefusal,

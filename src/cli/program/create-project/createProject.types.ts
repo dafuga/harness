@@ -1,3 +1,4 @@
+// @harness-uid u_7u5aguih6c
 import type { ProjectKind } from '../../../templates/projects-sessions/project';
 import type { FileWriteResult } from '../../../core/development-tooling/files';
 

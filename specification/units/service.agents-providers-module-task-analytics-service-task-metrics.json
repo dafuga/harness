@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.agents-providers-module-task-analytics-service-task-metrics",
+	"uid": "u_nlvnkjdcje",
 	"kind": "service",
 	"title": "taskMetrics",
 	"responsibility": "Aggregates deduplicated module-task events into review, failure, usage and cost totals, grouped by reported or requested model identity.",

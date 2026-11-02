@@ -1,3 +1,4 @@
+// @harness-uid u_vlhaifn5rz
 import { atomicSyntax } from '../../templates/development-tooling/atomicSyntax.js';
 import type { AuditFile } from './adapters/types';
 import type { AuditFinding } from './types';

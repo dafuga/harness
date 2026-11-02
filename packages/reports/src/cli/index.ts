@@ -1,3 +1,4 @@
+// @harness-uid u_krsh6nqlba
 import { ReportCommandService } from '../services/reports-media/report-command-service/ReportCommandService';
 try {
 	const result = await new ReportCommandService().execute(process.argv.slice(2));

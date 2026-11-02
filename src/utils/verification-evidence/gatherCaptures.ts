@@ -1,3 +1,4 @@
+// @harness-uid u_3exag5gqwq
 import { type CaptureLine } from '../../core/verification-evidence/verifyTypes';
 import type { Capture } from '../../core/verification-evidence/verificationTypes';
 import { type MediaFacts } from './mediaFacts';

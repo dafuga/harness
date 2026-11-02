@@ -1,3 +1,4 @@
+// @harness-uid u_nnmmkqsish
 import { sharedPrimitivePath } from '../../core/development-tooling/composition';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 

@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_xhd7vbnks3 -->
 <script lang="ts">
 	let { stream }: { stream?: MediaStream } = $props();
 	let video = $state<HTMLVideoElement>();

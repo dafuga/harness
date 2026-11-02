@@ -1,3 +1,4 @@
+// @harness-uid u_hna6b35jba
 import { availableParallelism, cpus } from 'node:os';
 import { performance } from 'node:perf_hooks';
 import { hostResourceLimits } from './hostResourceLimits';

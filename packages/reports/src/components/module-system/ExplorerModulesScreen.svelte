@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_ka2gle2p6v -->
 <script lang="ts">
 	import { moduleResourceLocation } from '../../../../../src/helpers/module-system/moduleResourceLocation';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';

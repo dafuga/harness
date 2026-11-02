@@ -1,3 +1,4 @@
+// @harness-uid u_poh4z5oled
 import type { ComponentManifest } from '../../../../../../../src/lib/contracts';
 import { gitRead } from '../../../../utils/projects-sessions/gitRead';
 

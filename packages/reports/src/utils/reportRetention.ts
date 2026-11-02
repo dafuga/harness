@@ -1,3 +1,4 @@
+// @harness-uid u_segcni47nz
 export {
 	reportLifetimeMs,
 	reportCloudPrefixes,

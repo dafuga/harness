@@ -1,3 +1,4 @@
+// @harness-uid u_rud45b6pse
 export interface ConsoleInstallFlags {
 	host: string;
 	policy: string;

@@ -1,3 +1,4 @@
+// @harness-uid u_4n3szslobj
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';

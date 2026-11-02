@@ -1,3 +1,4 @@
+// @harness-uid u_cnblsilnmz
 /** How Git cleans a message file before it stores the message. */
 export interface MessageCleanup {
 	/** `commit.cleanup` of the repository; an edited message is stripped unless this says otherwise. */

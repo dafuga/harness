@@ -1,3 +1,4 @@
+// @harness-uid u_4tf66ojpp6
 import { createHash } from 'node:crypto';
 import { desktopPatchConfig } from '../../src/configs/development-tooling/desktopPatchConfig';
 

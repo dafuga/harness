@@ -1,3 +1,4 @@
+// @harness-uid u_vewltn2rny
 import type { ModuleDefinition } from '../../services/module-system/moduleDefinition.types';
 export const rustWasmModule: ModuleDefinition = {
 	schemaVersion: 1,

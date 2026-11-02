@@ -1,3 +1,4 @@
+// @harness-uid u_v6xb64kqcy
 import type { Flags } from './KernelCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "adapter.wasm-module-runtime",
+	"uid": "u_hqa74vec52",
 	"kind": "adapter",
 	"title": "WasmModuleRuntimeAdapter",
 	"responsibility": "Runs a compiled or precompiled core Wasm module that implements the Harness JSON ABI, without touching a file system.",

@@ -1,3 +1,4 @@
+// @harness-uid u_hb2vpdavcx
 export interface ResolveContext {
 	/** Every repository-relative path in the tree being indexed. */
 	files: ReadonlySet<string>;

@@ -1,3 +1,4 @@
+// @harness-uid u_jnxt3bwfam
 import type { SocketAttachment } from '../../../models/networking-security/RelayHost.types';
 
 /** `WebSocket.OPEN`: the only state in which a socket still counts. */

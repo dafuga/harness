@@ -1,3 +1,4 @@
+// @harness-uid u_mxpn3qt4sq
 import type { ExplorerScope } from '../../../models/explorer-ui/Explorer.types';
 
 export type HarnessPage =

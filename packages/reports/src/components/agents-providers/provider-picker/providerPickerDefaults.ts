@@ -1,3 +1,4 @@
+// @harness-uid u_rdrykga3no
 import type { PickerModel } from '../../../../../../src/core/pickerModelTypes';
 
 /** What a picker shows once a provider is chosen: a catalog model and one of its efforts. */

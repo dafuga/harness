@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.deployment-command",
+	"uid": "u_el27gksita",
 	"kind": "function",
 	"title": "deploymentCommand",
 	"responsibility": "Runs a bounded deployment subprocess without a shell or inherited Cloudflare credentials; returns stdout.",

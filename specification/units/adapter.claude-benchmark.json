@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "adapter.claude-benchmark",
+	"uid": "u_zynlj7sdh7",
 	"kind": "adapter",
 	"title": "ClaudeBenchmarkAdapter",
 	"responsibility": "Invokes the configured Claude CLI and validates its completed benchmark turn and reported model.",

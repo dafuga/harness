@@ -1,3 +1,4 @@
+// @harness-uid u_jllfqln26c
 import type { ClassEntityTemplate, FunctionTemplate } from './railsPieces.types';
 import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';

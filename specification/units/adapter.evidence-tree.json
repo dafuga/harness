@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "adapter.evidence-tree",
+	"uid": "u_pkblm2rnm6",
 	"kind": "adapter",
 	"title": "EvidenceTreeAdapter",
 	"responsibility": "Builds commits on a Git ref from blobs with plumbing, without a working tree, updating the ref only if it has not moved.",

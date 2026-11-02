@@ -1,3 +1,4 @@
+// @harness-uid u_gg52rgzyer
 export interface CatalogDependencyAttributes {
 	id: string;
 	entityId: string;

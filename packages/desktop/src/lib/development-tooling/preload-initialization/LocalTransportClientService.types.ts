@@ -1,3 +1,4 @@
+// @harness-uid u_ycbuxdmxoz
 import type { LocalBootstrap } from '../../../../../remote/src/index';
 
 /** The WebSocket of a page, or anything shaped like it. */

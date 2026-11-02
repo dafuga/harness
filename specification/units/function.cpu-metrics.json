@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.cpu-metrics",
+	"uid": "u_yscgsfsrql",
 	"kind": "function",
 	"title": "CPU interval accounting",
 	"responsibility": "Converts two CPU readings into machine use and process groups, assigning descendants to their nearest recognized owner without counting lifetime CPU for new processes.",

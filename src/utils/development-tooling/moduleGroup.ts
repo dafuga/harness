@@ -1,3 +1,4 @@
+// @harness-uid u_byjlhnogcj
 import type { ModuleGroup } from '../../configs/development-tooling/moduleGroupsConfig';
 
 /** Scaffold roots precede category folders; route groups preserve public URLs. */

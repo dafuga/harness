@@ -1,3 +1,4 @@
+// @harness-uid u_ug7ppzqfpp
 /**
  * The Harness mark, a modular H: five equal square tiles on a 32-unit grid, at the four corners
  * and the centre of a 3 by 3 lattice, with gaps a tenth of a tile. Every surface draws this.

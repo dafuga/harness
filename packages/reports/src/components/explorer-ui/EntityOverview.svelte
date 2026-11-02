@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_wzmr2v55uw -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';

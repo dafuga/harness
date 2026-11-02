@@ -1,3 +1,4 @@
+// @harness-uid u_ctpqa7c3se
 import { reportsEnvironment } from './reportsEnvironment';
 import { spawn } from 'node:child_process';
 import { dirname } from 'node:path';

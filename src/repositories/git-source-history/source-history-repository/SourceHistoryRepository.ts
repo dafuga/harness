@@ -1,3 +1,4 @@
+// @harness-uid u_3k6zz4zozx
 import type { SourceHistory, SourceRevision } from './SourceHistoryRepository.types';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { refKind } from '../../../utils/git-source-history/historyRefs';

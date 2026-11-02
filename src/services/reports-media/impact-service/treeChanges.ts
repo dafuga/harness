@@ -1,3 +1,4 @@
+// @harness-uid u_lhuhmdnkjv
 import type { TreeChange } from '../../../utils/reports-media/treeChanges';
 import type { TreeEntry } from '../../../core/development-tooling/sourceTypes';
 

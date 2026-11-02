@@ -1,3 +1,4 @@
+// @harness-uid u_oaixfe7pzs
 import ts from 'typescript';
 import type { ContractItem } from '../../core/development-tooling/unitTypes';
 

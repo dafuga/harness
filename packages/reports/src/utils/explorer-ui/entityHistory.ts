@@ -1,3 +1,4 @@
+// @harness-uid u_oe3xhm2dqy
 import { byteSize } from './entityMeasure';
 
 const sign = (delta: number) => (delta > 0 ? '+' : '−');

@@ -1,3 +1,4 @@
+// @harness-uid u_mxiq5qhuz7
 import type { Flags } from './ConsoleCommand.types';
 import type { Command } from 'commander';
 import {

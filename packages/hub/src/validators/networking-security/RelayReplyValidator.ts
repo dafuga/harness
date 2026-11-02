@@ -1,3 +1,4 @@
+// @harness-uid u_is7zwhy6fa
 import type { Fields, Device } from './RelayReplyValidator.types';
 import type {
 	RelayRegistered,

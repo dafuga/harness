@@ -1,3 +1,4 @@
+// @harness-uid u_wcoqscxpf4
 import type { RemoteHostRegisterInput, RemoteHostRegistration } from '../../../../remote/src/index';
 
 export type RegisterRemoteHost = (

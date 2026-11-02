@@ -1,3 +1,4 @@
+// @harness-uid u_vden63272o
 /** What a recorded value reads as: a sentence as it is, anything structured as indented JSON. */
 export function artifactText(value: unknown): string {
 	if (value === undefined) return 'Not recorded';

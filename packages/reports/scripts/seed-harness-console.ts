@@ -1,3 +1,4 @@
+// @harness-uid u_so5sz7vzkk
 /**
  * Builds the fixed synthetic history the /harness browser acceptance inspects: a throwaway Git
  * repository with a shared function, a service, a page scenario at three viewports and an audio

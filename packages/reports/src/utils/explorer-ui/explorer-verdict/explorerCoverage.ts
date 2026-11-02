@@ -1,3 +1,4 @@
+// @harness-uid u_fw3beua6vw
 import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { Result } from './explorerCoverage.types';
 import type {

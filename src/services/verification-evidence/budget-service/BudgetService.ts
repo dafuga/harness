@@ -1,3 +1,4 @@
+// @harness-uid u_qg6uyc7scc
 import type { UnitBaseline, BudgetSubject, BudgetReport } from './BudgetService.types';
 import type { BudgetEvent } from '../../../core/verification-evidence/budgetTypes';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';

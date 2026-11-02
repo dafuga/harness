@@ -1,3 +1,4 @@
+// @harness-uid u_ofwymwt4ge
 import type { Read } from './readBrowserDiagnostics.types';
 import { lstatSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';

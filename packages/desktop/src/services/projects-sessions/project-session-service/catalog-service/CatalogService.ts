@@ -1,3 +1,4 @@
+// @harness-uid u_jm2pfkr6vq
 import type { CatalogEntity } from '../../../../models/development-tooling/Desktop.types';
 import type { PlanningPort } from '../../../../models/planning-collaboration/PlanningPort.types';
 import type { GitSourceAdapter } from '../git-source-adapter/GitSourceAdapter';

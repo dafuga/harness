@@ -1,3 +1,4 @@
+// @harness-uid u_2tlcn5ckwe
 // Generated from the maintained native atom compiler; standard template tests check parity.
 export const atomicRuntimeSources: Record<string, string> = {
 	'atomicComponents.js':

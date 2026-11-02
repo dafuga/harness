@@ -1,3 +1,4 @@
+// @harness-uid u_nf25ajpffl
 import type { Environment } from './recordCapture.types';
 import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';

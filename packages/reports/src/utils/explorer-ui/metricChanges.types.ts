@@ -1,3 +1,4 @@
+// @harness-uid u_cenkvbz3f4
 import type { EntityMeasure } from './entityMeasure';
 
 export interface MetricChangeRow {

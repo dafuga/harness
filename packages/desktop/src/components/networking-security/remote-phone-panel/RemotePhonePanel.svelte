@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_q7k4xia3g7 -->
 <script lang="ts">
 	import type { RemotePhone } from '../../../lib/stores/networking-security/remotePhone.svelte';
 	import { grantSummary, remoteLabels } from './remoteLabels';

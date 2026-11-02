@@ -1,3 +1,4 @@
+// @harness-uid u_ohtelrq27t
 import type { Git } from './planGit';
 import { safePath } from './planGit';
 import type { Files } from './plan-write/clean';

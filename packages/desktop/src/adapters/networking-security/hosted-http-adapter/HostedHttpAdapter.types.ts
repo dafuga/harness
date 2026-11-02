@@ -1,3 +1,4 @@
+// @harness-uid u_3aonxezbbl
 export interface NativeHostedCredential {
 	origin: string;
 	principalId: string;

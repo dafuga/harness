@@ -1,3 +1,4 @@
+// @harness-uid u_6yabo6xkdu
 import type { Graph, Edges, Reached, Entity, RelationsReader } from './explorerRelations.types';
 import type {
 	ExplorerCategory,

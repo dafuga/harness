@@ -1,3 +1,4 @@
+// @harness-uid u_vcr3nrovbe
 /** One revision owns its content, source identity and any stated evidence gap. */
 export interface ComparisonSide<T> {
 	value?: T;

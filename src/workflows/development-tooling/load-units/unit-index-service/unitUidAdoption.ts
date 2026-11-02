@@ -1,3 +1,4 @@
+// @harness-uid u_ivdxmstz3m
 import type { Group, Registry } from './UnitIndexService.types';
 import type { SourceFile } from '../../../../core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../../../core/development-tooling/unitTypes';

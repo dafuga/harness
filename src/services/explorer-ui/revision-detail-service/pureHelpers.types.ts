@@ -1,3 +1,4 @@
+// @harness-uid u_dr2xl6z3dy
 import type ts from 'typescript';
 
 // A declared contract is required. This conservative guard rejects unsupported operations;

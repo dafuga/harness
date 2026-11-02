@@ -1,3 +1,4 @@
+// @harness-uid u_b5quvbjmrl
 import type { GoogleIdentity } from './googleButton.types';
 import type { GoogleButton } from '../../../utils/accounts-access/googleButton';
 import { googleIdentityScript } from '../../../utils/accounts-access/googleButton';

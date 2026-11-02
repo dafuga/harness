@@ -1,3 +1,4 @@
+// @harness-uid u_jcmx2ztqg2
 import type { Actor } from 'collaboration';
 import type { HubProjectionService } from '../hub-projection-service/HubProjectionService';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_qyefu2ej4z
 import type { PlatformView } from './platformStatus.types';
 import type { PlatformEntry } from '../../../../../../src/core/explorer-ui/Platform.types';
 /** The four platforms every revision is read for; their names belong to this view. */

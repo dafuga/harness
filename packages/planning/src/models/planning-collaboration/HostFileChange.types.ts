@@ -1,3 +1,4 @@
+// @harness-uid u_32db2lnwfn
 import type { ChangeStatus, Sha256 } from './Planning.types';
 /** Observed structured CLI file operations; shell-write coverage is explicitly incomplete. */
 export interface HostFileChange {

@@ -1,3 +1,4 @@
+// @harness-uid u_djg3cju4tr
 import type { Query } from '../../../../models/development-tooling/BrowserApi.types';
 import { browserError } from '../../../../adapters/explorer-ui/browser-project-adapter/browserError';
 import type {

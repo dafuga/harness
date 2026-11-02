@@ -1,3 +1,4 @@
+// @harness-uid u_way5pzkggx
 import { readFile, writeFile } from 'node:fs/promises';
 import { posix } from 'node:path';
 import { format } from 'prettier';

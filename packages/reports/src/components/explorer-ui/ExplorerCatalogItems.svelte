@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_l6e66dcjtd -->
 <script lang="ts">
 	import { tick } from 'svelte';
 	import type { ExplorerCategory } from '../../models/Explorer.types';

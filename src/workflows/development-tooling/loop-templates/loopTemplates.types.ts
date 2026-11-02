@@ -1,3 +1,4 @@
+// @harness-uid u_qxcowf3xsl
 import type { LoopEvaluator } from '../loop-state/loopState';
 
 export interface LoopTemplateStep {

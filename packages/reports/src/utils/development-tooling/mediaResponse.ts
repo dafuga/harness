@@ -1,3 +1,4 @@
+// @harness-uid u_bmo4vdrovh
 function parseRange(range: string) {
 	const match = /^bytes=(\d*)-(\d*)$/.exec(range);
 	if (!match || (!match[1] && !match[2])) return null;

@@ -1,3 +1,4 @@
+// @harness-uid u_hx3ugezczr
 import type { AuditFile } from './adapters/types';
 import type { AuditFinding } from './types';
 

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.commit-message",
+	"uid": "u_cnblsilnmz",
 	"kind": "function",
 	"title": "Commit message validation",
 	"responsibility": "Cleans a hook message as Git would and reports stored-message prefix and length violations.",

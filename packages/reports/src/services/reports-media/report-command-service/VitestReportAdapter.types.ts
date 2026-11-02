@@ -1,3 +1,4 @@
+// @harness-uid u_iipf5x3qea
 export type VitestCase = { fullName?: string; title?: string; status?: string; duration?: number };
 
 export type VitestFile = { name?: string; assertionResults?: VitestCase[] };

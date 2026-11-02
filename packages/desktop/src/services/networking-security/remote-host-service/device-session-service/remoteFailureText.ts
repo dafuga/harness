@@ -1,3 +1,4 @@
+// @harness-uid u_aqhdyqcx6h
 import { homedir } from 'node:os';
 import { RemoteFailure, remoteErrorMessages } from '../../../../../../remote/src/index';
 import type { RemoteError } from '../../../../../../remote/src/index';

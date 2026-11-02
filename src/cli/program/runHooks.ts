@@ -1,3 +1,4 @@
+// @harness-uid u_waaxqvz65j
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Action } from './runHooks.types';
 import { resolve } from 'node:path';

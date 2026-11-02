@@ -1,3 +1,4 @@
+// @harness-uid u_wugtubbkbv
 import type { ResourceSnapshot } from '../../core/execution-runtimes/resourceTypes';
 
 export interface RunOptions {

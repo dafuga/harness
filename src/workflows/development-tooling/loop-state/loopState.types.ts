@@ -1,3 +1,4 @@
+// @harness-uid u_2h4nm5fwn7
 import type { LoopState } from '../../../core/development-tooling/loopTypes';
 export type {
 	LoopStep,

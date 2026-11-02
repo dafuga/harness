@@ -1,3 +1,4 @@
+// @harness-uid u_sndntdius2
 import type { RelayHostCommand } from '../../../../../../remote/src/index';
 import type { RemoteSocket } from '../../../../../../remote/src/index';
 import type { RelayHostFrame } from '../../../../../../remote/src/index';

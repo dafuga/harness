@@ -1,3 +1,4 @@
+// @harness-uid u_2fbh7fqvlr
 import { relayHeaders, remotePatterns } from '../../../../remote/src/index';
 import type { ConnectClaims } from '../../models/networking-security/RelayHost.types';
 import { matchesPattern } from './matchesPattern';

@@ -1,3 +1,4 @@
+// @harness-uid u_5vkgo7ewns
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 import type { RunEvent, RunRequest } from '../../../models/development-tooling/DesktopBridge.types';
 

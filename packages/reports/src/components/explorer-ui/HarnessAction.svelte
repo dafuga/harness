@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_levoxv565r -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HarnessIconName } from '../../utils/explorer-ui/harnessIcons';

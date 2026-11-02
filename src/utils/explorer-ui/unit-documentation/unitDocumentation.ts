@@ -1,3 +1,4 @@
+// @harness-uid u_lyivsufqmy
 import type { UnitDocumentation } from './unitDocumentation.types';
 import { z } from 'zod';
 import { usageExampleSchema } from '../../../core/development-tooling/unitTypes';

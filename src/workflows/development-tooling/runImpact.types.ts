@@ -1,3 +1,4 @@
+// @harness-uid u_5bmqugtgcc
 export interface ImpactOptions {
 	root?: string;
 	/** Revision to compare from; defaults to `HEAD`. */

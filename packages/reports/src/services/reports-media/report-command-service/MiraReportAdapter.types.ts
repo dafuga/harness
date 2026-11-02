@@ -1,3 +1,4 @@
+// @harness-uid u_arxzzgdklm
 export type MiraAsset = {
 	number: number;
 	file: string;

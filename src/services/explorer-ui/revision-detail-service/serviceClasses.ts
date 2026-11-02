@@ -1,3 +1,4 @@
+// @harness-uid u_44u5mzzjmu
 import type { Facts, Lookup, Definition, Unit, ProofContext } from './serviceClasses.types';
 import type { HelperConsumer } from '../../../utils/explorer-ui/helperConsumers';
 import type { PublicServiceClass } from '../../../utils/explorer-ui/unitMetadata';

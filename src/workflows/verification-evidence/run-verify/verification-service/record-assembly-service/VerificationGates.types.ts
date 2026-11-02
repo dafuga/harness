@@ -1,3 +1,4 @@
+// @harness-uid u_fkuot3slc7
 import type { ComponentManifest } from '../../../../../core/development-tooling/unitTypes';
 import type { ScenarioManifest } from '../../../../../core/development-tooling/unitTypes';
 

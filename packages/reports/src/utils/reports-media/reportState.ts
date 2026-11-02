@@ -1,3 +1,4 @@
+// @harness-uid u_62ienadhbw
 import type { Report, Status } from '../../models/reports-media/Report.types';
 
 export function resultStatus(report: Report): Status {

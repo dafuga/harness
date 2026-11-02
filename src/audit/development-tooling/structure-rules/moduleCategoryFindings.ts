@@ -1,3 +1,4 @@
+// @harness-uid u_u3grbhg5f7
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import { relative, resolve } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_2nphyrs2wz
 import type { AgentSettingsAdapterConfig } from './AgentSettingsAdapter.types';
 import { defaultDesignCount, designCounts } from '../../../utils/explorer-ui/composeModes';
 

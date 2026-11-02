@@ -1,3 +1,4 @@
+// @harness-uid u_u4ayhuatau
 import type { ProjectSnapshot } from '../../../models/development-tooling/Desktop.types';
 import type { EntityDetail } from '../../../models/development-tooling/Desktop.types';
 import type { ProjectCapabilities } from '../../../models/projects-sessions/ProjectContext.types';

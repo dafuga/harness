@@ -1,3 +1,4 @@
+// @harness-uid u_aotujotljx
 import { z } from 'zod';
 import { browserDiagnosticSchema } from '../../../../../src/core/browserDiagnostics';
 import { hostedEvidenceFields } from './hostedEvidenceFields';

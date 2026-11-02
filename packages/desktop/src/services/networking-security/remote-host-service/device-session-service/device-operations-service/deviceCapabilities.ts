@@ -1,3 +1,4 @@
+// @harness-uid u_otth6jzaug
 import type { ProjectCapabilities } from '../../../../../models/projects-sessions/ProjectContext.types';
 
 /** What an approved phone may do in a granted project: everything, or reading and comments. */

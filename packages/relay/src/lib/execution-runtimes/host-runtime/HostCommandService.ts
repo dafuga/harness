@@ -1,3 +1,4 @@
+// @harness-uid u_gzun7zkojm
 import type { Acknowledged, Address } from './HostCommandService.types';
 import { relayCloseCodes } from '../../../../../remote/src/index';
 import type { RelayErrorCode, RelayHostCommand } from '../../../../../remote/src/index';

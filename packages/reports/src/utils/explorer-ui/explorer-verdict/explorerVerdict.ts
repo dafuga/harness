@@ -1,3 +1,4 @@
+// @harness-uid u_ezy6h4qban
 import type { Kind, Reason } from './explorerVerdict.types';
 import type {
 	ExplorerScenarioCoverage,

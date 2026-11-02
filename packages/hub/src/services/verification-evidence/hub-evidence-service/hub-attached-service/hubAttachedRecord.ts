@@ -1,3 +1,4 @@
+// @harness-uid u_ofkseawr2w
 import type { Sealed, Manifest } from './hubAttachedRecord.types';
 import type { HubAttachedRecord } from '../../../../utils/verification-evidence/hubAttachedRecord';
 import { hubRecordJson } from '../../../../utils/verification-evidence/hubAttachedRecord';

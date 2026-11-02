@@ -1,3 +1,4 @@
+// @harness-uid u_g2f36bptng
 import type { DesignImageInput } from '../../models/planning-collaboration/PlanningBridge.types';
 import type { DesignImage } from '../../models/planning-collaboration/Planning.types';
 

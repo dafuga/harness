@@ -1,3 +1,4 @@
+// @harness-uid u_udwbgdiocs
 /** Only our packaged renderer can call privileged project operations. */
 export class NavigationValidator {
 	validate(value: unknown): boolean {

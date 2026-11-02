@@ -1,3 +1,4 @@
+// @harness-uid u_d5g3iozj6t
 import type { SDKUserMessage } from '@anthropic-ai/claude-agent-sdk';
 import { GatewayContentSerializer } from '../../../../serializers/development-tooling/GatewayContentSerializer';
 import type { GatewayRequest } from '../../../../utils/development-tooling/gatewayTypes';

@@ -1,3 +1,4 @@
+// @harness-uid u_slsujlaboc
 import type { PairingOffer } from '../../../../../remote/src/utils/pairingOffer';
 import {
 	offerEnvironment,

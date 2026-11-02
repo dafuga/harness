@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_xq6fcp7bqo -->
 <script lang="ts">
 	import FloatingChat from '$shared/planning-collaboration/FloatingChat.svelte';
 	import { onMount, untrack } from 'svelte';

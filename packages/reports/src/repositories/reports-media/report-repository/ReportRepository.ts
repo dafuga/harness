@@ -1,3 +1,4 @@
+// @harness-uid u_supmadumal
 import { mkdir, readdir, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { BeginInput, RecordInput, Report } from '../../../models/reports-media/Report.types';

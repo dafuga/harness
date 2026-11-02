@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.console-policy",
+	"uid": "u_qz7bs2ymbn",
 	"kind": "function",
 	"title": "Local console access policy",
 	"responsibility": "Admits local owner requests only when owner mode, loopback binding and the actual peer address all qualify.",

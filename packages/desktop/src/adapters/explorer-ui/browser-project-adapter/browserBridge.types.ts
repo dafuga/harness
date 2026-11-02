@@ -1,3 +1,4 @@
+// @harness-uid u_4fbefo5t7a
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import type { ProjectContext } from '../../../models/projects-sessions/ProjectContext.types';

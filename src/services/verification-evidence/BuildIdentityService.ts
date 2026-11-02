@@ -1,3 +1,4 @@
+// @harness-uid u_6m35pivy2l
 import type {
 	DeclaredBuild,
 	BuiltIdentity,

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "hub.function.hub-rate-limit",
+	"uid": "u_ruaztk6e5y",
 	"kind": "function",
 	"title": "Limit public authentication requests",
 	"responsibility": "Count selected POST requests in a per-address, per-route one-minute database window.",

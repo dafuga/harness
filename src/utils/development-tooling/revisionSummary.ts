@@ -1,3 +1,4 @@
+// @harness-uid u_udzepyd23h
 import type { Viewed, RevisionRecords } from './revisionSummary.types';
 import type { IndexedRevision } from '../../core/git-source-history/historyIndexTypes';
 import type { CommitStatus } from '../../services/verification-evidence/history-status-service/HistoryStatusService';

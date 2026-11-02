@@ -1,3 +1,4 @@
+// @harness-uid u_oe3xhm2dqy
 import type { Coverage } from './entityHistory.types';
 import type { HistoryTiming } from '../../../utils/explorer-ui/entityHistory';
 import type {

@@ -1,5 +1,6 @@
 <!-- @harness-tier page -->
 <!-- @harness-atoms ../../../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_bysgczr2l6 -->
 <script lang="ts">
 	import HostedWorkspace from '../../../../../components/projects-sessions/HostedWorkspace.svelte';
 	import HubFrame from '../../../../../components/shared-primitives/HubFrame.svelte';

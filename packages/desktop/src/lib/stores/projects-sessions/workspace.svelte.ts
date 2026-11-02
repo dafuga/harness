@@ -1,3 +1,4 @@
+// @harness-uid u_jxgvjzp27i
 import type { Workspace } from './workspace.svelte.types';
 import { createDeploymentActivityStore } from '../deploymentActivity.svelte';
 import { createDeploymentsStore } from '../deployments.svelte';

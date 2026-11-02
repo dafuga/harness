@@ -1,3 +1,4 @@
+// @harness-uid u_vi67dqgbdy
 import { Buffer } from 'node:buffer';
 import { createHash, randomUUID } from 'node:crypto';
 import { chmod, lstat, readFile, rename, rm, writeFile } from 'node:fs/promises';

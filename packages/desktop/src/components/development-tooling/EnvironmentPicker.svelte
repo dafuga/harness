@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_cpbpxt6ttd -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import { untrack, type Snippet } from 'svelte';

@@ -1,3 +1,4 @@
+// @harness-uid u_7ypwlyjf7m
 import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
 import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from '../reports-media/Report.types';

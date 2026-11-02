@@ -1,3 +1,4 @@
+// @harness-uid u_g67t5ir5f2
 import type { Category } from '../../models/development-tooling/Desktop.types';
 
 export interface RendererRoute {

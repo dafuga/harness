@@ -1,3 +1,4 @@
+// @harness-uid u_sntz6luf5m
 import type { GithubAppConfig } from '../../../../../utils/verification-evidence/authConfig';
 import type { GithubApiAdapter } from '../GithubApiAdapter';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_wjeav4pmf3
 import { existsSync, readFileSync } from 'node:fs';
 import { platform } from 'node:os';
 import { dirname, resolve } from 'node:path';

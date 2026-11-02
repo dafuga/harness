@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.cloudflare-safety",
+	"uid": "u_kcmwm6nql2",
 	"kind": "function",
 	"title": "cloudflareSafety",
 	"responsibility": "Rejects lower Worker targets whose routes overlap production or contain ambiguous wildcard hosts.",

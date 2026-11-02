@@ -1,3 +1,4 @@
+// @harness-uid u_bj3fwkgoh5
 const mebibytes = (limit: number) => (limit === 11534336 ? '11' : '16');
 
 /** Reads every chunk and counts as it goes: the first byte over the limit ends the read. */

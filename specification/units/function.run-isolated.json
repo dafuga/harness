@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.run-isolated",
+	"uid": "u_2nxcdxdgzt",
 	"kind": "function",
 	"title": "Isolated verification command",
 	"responsibility": "Runs a bounded command, captures its log and settles descendants before deciding whether the check passed.",

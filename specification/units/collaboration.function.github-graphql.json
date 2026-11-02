@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "collaboration.function.github-graphql",
+	"uid": "u_qrn437ccqa",
 	"kind": "function",
 	"title": "Fetch a verified blob batch",
 	"responsibility": "Read a bounded batch of GitHub text blobs and verify their sizes and Git hashes.",

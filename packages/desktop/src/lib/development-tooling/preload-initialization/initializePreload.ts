@@ -1,3 +1,4 @@
+// @harness-uid u_u5ye4kbgg5
 import type { Input } from './initializePreload.types';
 import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import { contextBridge, ipcRenderer } from 'electron';

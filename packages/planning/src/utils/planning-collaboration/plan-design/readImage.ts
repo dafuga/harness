@@ -1,3 +1,4 @@
+// @harness-uid u_ylixwcfuzh
 import { planImageCodec as decode } from '../planImageCodec';
 import type { ReadImageInput } from '../../../models/planning-collaboration/PlanningBridge.types';
 import { heldBy } from './heldBy';

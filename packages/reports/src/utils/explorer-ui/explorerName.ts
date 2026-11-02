@@ -1,3 +1,4 @@
+// @harness-uid u_zklrpmbvoe
 import type { Named } from './explorerName.types';
 import { explorerCategories } from '../../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../../models/explorer-ui/Harness.types';

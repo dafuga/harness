@@ -1,3 +1,4 @@
+// @harness-uid u_pevhznyz2e
 import type { GithubGrantOptions, GrantProof, Lifetime } from './GithubGrantService.types';
 import type { Actor } from 'collaboration';
 import type { GithubStatus } from '../../../../models/accounts-access/HubAuth.types';

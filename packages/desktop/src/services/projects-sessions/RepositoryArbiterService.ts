@@ -1,3 +1,4 @@
+// @harness-uid u_qzvup2alvr
 /**
  * What every client of one computer shares about a repository: who runs an agent in it, and the
  * order of its planning writes. A window and a phone each have their own session; this is common.

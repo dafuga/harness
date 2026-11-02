@@ -1,3 +1,4 @@
+// @harness-uid u_zsqsqqm6ni
 import type { ThrownValue } from './errorMessage.types';
 
 /** @pure Convert a thrown value to its readable message without changing its text. */

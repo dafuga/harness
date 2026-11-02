@@ -1,3 +1,4 @@
+// @harness-uid u_jb3ndhqgrw
 /**
  * One bound for a piece of cleanup, shared by everything that works under it: reads are raced
  * against it, pauses end with it, and whoever is about to act asks it first. Once it is over,

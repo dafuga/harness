@@ -1,3 +1,4 @@
+// @harness-uid u_qobpg6kdmx
 export function gameRenderOptions() {
 	return {
 		restyle: { label: 'Lucy Restyle', model: 'lucy-restyle-2', fast: false, rate: 0.6 },

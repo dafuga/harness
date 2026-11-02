@@ -1,3 +1,4 @@
+// @harness-uid u_qpli4rkgw2
 import type { ElectronEnvironmentAdapterConfig } from './ElectronEnvironmentAdapter.types';
 import type {
 	Environment,

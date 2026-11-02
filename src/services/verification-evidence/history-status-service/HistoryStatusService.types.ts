@@ -1,3 +1,4 @@
+// @harness-uid u_hs46i3q25s
 import type { HistoryNote } from '../../../core/git-source-history/historyTypes';
 
 export type VerificationNote = Extract<HistoryNote, { kind: 'verification' }>;

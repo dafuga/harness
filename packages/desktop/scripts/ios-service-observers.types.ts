@@ -1,3 +1,4 @@
+// @harness-uid u_idcdl5fjlo
 import type { TrackedProcess } from '../../../src/utils/processDescendants';
 import type { processDescendants } from '../../../src/utils/processDescendants';
 

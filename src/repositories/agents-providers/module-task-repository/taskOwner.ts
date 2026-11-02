@@ -1,3 +1,4 @@
+// @harness-uid u_bya7wvvkm5
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';

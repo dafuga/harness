@@ -1,3 +1,4 @@
+// @harness-uid u_nke6ll4pq5
 import type { ApiSession } from './ApiSessionRepository.types';
 import { createHash, randomUUID } from 'node:crypto';
 import { lstat, mkdir, open, readFile, rename, rm, writeFile } from 'node:fs/promises';

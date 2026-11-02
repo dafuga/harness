@@ -1,3 +1,4 @@
+// @harness-uid u_adpj7wy2m3
 import { panelText, restart } from './ios-acceptance-run';
 import type { Acceptance } from './ios-acceptance-run';
 import { cameraOnly } from './ios-acceptance-scanning';

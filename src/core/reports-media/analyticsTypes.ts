@@ -1,3 +1,4 @@
+// @harness-uid u_i5xblbhhog
 import type { TaskAnalyticsDetail } from '../../services/agents-providers/ModuleTaskAnalyticsService.types';
 export interface AnalyticsContext {
 	loop?: string;

@@ -1,3 +1,4 @@
+// @harness-uid u_eh2fwx6jhk
 const harnessCliPath = process.env.HARNESS_CLI_PATH;
 const args = harnessCliPath
 	? ['bun', harnessCliPath, 'audit', '.', '--profile', 'app']

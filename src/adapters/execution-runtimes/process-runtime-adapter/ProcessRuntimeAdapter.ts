@@ -1,3 +1,4 @@
+// @harness-uid u_amfxab2pi4
 import type { ProcessRuntimeConfig } from './ProcessRuntimeAdapter.types';
 import { spawn } from 'node:child_process';
 import { clearTimeout, setTimeout } from 'node:timers';

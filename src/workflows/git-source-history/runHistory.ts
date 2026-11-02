@@ -1,3 +1,4 @@
+// @harness-uid u_num6plgqhn
 import type { HistoryOptions } from './runHistory.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';

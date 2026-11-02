@@ -1,3 +1,4 @@
+// @harness-uid u_4sdldoj7zk
 import { shortCommit } from '../../../helpers/strings/shortCommit';
 import type { ExplorerResolved } from '../explorerScope';
 import type { ExplorerLocation, ExplorerScope } from '../../../models/explorer-ui/Explorer.types';

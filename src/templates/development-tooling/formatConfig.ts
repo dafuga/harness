@@ -1,3 +1,4 @@
+// @harness-uid u_deaad7txr3
 import type { PlannedFile } from '../../core/development-tooling/files';
 
 export function formatConfigFiles(): PlannedFile[] {

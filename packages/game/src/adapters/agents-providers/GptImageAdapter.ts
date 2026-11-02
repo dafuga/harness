@@ -1,3 +1,4 @@
+// @harness-uid u_w75k4d2324
 import type { ImageFetch } from './GptImageAdapter.types';
 import { Buffer } from 'node:buffer';
 /** One explicit image request; authentication stays in the backend header. */

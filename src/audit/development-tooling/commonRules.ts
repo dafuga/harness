@@ -1,3 +1,4 @@
+// @harness-uid u_xyuh55z3kw
 import { harnessRuleLimits, type HarnessRuleLimits } from '../../rules/explorer-ui/catalog';
 import type { AuditFinding } from './types';
 

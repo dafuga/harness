@@ -1,3 +1,4 @@
+// @harness-uid u_gndb6l2t6f
 export interface TranslationRegistration {
 	locale: string;
 	messages?: Record<string, string>;

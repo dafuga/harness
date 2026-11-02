@@ -1,3 +1,4 @@
+// @harness-uid u_df7q4rc4w6
 import type { Guide } from '../development-tooling/guide';
 
 export const activityGuide: Guide = {

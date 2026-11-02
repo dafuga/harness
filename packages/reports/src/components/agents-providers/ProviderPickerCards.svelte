@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_7maphq7blx -->
 <script lang="ts">
 	import { formatTime } from '../../helpers/strings/formatTime';
 	import type { SessionObservation, SwitchRequest } from '../../../../../src/core/pickerTypes';

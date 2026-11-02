@@ -1,3 +1,4 @@
+// @harness-uid u_3aidhamjcd
 /**
  * What sets each design option apart. The first follows the proposal most directly; each other one
  * takes it somewhere the others do not, so that no two options are the same image asked twice.

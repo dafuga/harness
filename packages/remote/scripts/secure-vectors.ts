@@ -1,3 +1,4 @@
+// @harness-uid u_ibn42bcwsk
 /**
  * Writes test/support/secure-vectors.json with node:crypto only, so the vectors do not come from
  * the WebCrypto implementation they check. Run once; the file is frozen and the Swift side must

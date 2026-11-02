@@ -1,3 +1,4 @@
+// @harness-uid u_xxzm5nt5s6
 /** One ref as Git lists it; `symbolic` is the ref it points to when it has no tip of its own. */
 export interface ListedRef {
 	ref: string;

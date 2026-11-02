@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.process-descendants",
+	"uid": "u_frwvu2ncek",
 	"kind": "function",
 	"title": "Process descendant tracking",
 	"responsibility": "Tracks a command’s process identities through parent and group observations and signals only still-matching tracked processes.",

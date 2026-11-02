@@ -1,3 +1,4 @@
+// @harness-uid u_b4uzqkb2i6
 import { randomUUID } from 'node:crypto';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type {

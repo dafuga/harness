@@ -1,3 +1,4 @@
+// @harness-uid u_zjw7simv34
 import type {
 	CompactReasonManifest,
 	ReasonManifest,

@@ -1,3 +1,4 @@
+// @harness-uid u_bjqublt2hl
 import type { QrSymbol } from '../../../utils/networking-security/qrSymbol';
 import { qrLimits } from '../../../utils/networking-security/qrSymbol';
 import { create } from 'qrcode';

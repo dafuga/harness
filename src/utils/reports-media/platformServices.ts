@@ -1,3 +1,4 @@
+// @harness-uid u_xahm4so2wv
 import type { Verdict, ServiceContext, ServiceAuthority, Facts } from './platformServices.types';
 import { execFileSync } from 'node:child_process';
 import { realpathSync, statSync } from 'node:fs';

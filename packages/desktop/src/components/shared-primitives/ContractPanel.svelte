@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_lall66omcz -->
 <script lang="ts">
 	import type { EntityContract } from '../../models/development-tooling/Desktop.types';
 	import { humanize } from '$reports/utils/entityContract';

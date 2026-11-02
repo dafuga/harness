@@ -1,3 +1,4 @@
+// @harness-uid u_fawu7azj7f
 import type { PlannedFile } from '../../core/development-tooling/files';
 import type { ProjectKind } from '../projects-sessions/project';
 

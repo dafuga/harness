@@ -1,3 +1,4 @@
+// @harness-uid u_vdkwct7hdk
 export interface CollectedFile {
 	path: string;
 	extension: string;

@@ -1,3 +1,4 @@
+// @harness-uid u_ir26hm4fci
 import type { CacheIdentity } from '../../../../collaboration/src/models/Collaboration.types';
 import type { ImageQuery } from '../../models/development-tooling/DesktopBridge.types';
 import type { ProjectionCacheService } from '../../lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';

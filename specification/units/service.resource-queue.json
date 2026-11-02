@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.resource-queue",
+	"uid": "u_hlwlmsclx6",
 	"kind": "service",
 	"title": "ResourceQueueService",
 	"responsibility": "Validates and owns queued or running leases, enforces inherited reservations and releases them after any outcome.",

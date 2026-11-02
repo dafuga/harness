@@ -1,3 +1,4 @@
+// @harness-uid u_rypbc675b6
 import type {
 	DeploymentPlugin,
 	DeploymentReceipt

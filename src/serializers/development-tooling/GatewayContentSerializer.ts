@@ -1,3 +1,4 @@
+// @harness-uid u_6xxb46n3uq
 import {
 	GatewayImageValidator,
 	type GatewayImage

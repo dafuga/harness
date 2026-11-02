@@ -1,3 +1,4 @@
+// @harness-uid u_7k62o465ly
 import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 

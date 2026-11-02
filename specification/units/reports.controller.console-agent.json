@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.controller.console-agent",
+	"uid": "u_6pu7b34r7u",
 	"kind": "controller",
 	"title": "Protect local chat requests",
 	"responsibility": "Accepts bounded same-origin JSON requests behind the local owner guard; other origins cannot start models.",

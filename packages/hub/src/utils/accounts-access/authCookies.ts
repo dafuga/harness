@@ -1,3 +1,4 @@
+// @harness-uid u_nmyn4yxn6k
 import type { CookieOptions } from './authCookies.types';
 export const SESSION_COOKIE = '__Host-harness_session';
 export const CHALLENGE_COOKIE = '__Host-harness_challenge';

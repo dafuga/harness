@@ -1,3 +1,4 @@
+// @harness-uid u_tikw6g3kij
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Flags } from './HistoryCommand.types';
 import type { Command } from 'commander';

@@ -1,3 +1,4 @@
+// @harness-uid u_a556ymjyde
 import type { RelaySocketAdapterConfig, HeaderSocketConstructor } from './RelaySocketAdapter.types';
 import type { RemoteSocket } from '../../../../remote/src/index';
 const open = 1;

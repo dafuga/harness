@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_u35itj74jk -->
 <script lang="ts">
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
 

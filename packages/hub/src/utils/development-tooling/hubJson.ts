@@ -1,3 +1,4 @@
+// @harness-uid u_ocykouvtlq
 import { canonicalJson } from '../../../../../src/utils/canonicalJson';
 export function hubJson(bytes: Uint8Array): unknown {
 	try {

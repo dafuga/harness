@@ -1,3 +1,4 @@
+// @harness-uid u_lnqhwcablp
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
 import type { Gathered } from './gatherCaptures';
 import type { ScenarioResult } from '../../core/verification-evidence/verificationTypes';

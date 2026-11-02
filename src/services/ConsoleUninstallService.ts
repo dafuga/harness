@@ -1,3 +1,4 @@
+// @harness-uid u_zhppzmmkjl
 export { ConsoleUninstallService } from '../cli/program/ConsoleUninstallService';
 export type {
 	ConsoleUninstallOptions,

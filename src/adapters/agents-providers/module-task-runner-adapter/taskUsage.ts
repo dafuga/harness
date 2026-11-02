@@ -1,3 +1,4 @@
+// @harness-uid u_oasyrh3ely
 import type { TaskPublicEvent } from '../ModuleTaskRunnerAdapter.types';
 import type { TaskUsage } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 const number = (value: unknown): number | null =>

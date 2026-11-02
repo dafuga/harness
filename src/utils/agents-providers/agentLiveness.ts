@@ -1,3 +1,4 @@
+// @harness-uid u_sujxq5mw5i
 export interface AgentFacts {
 	registeredAt: string;
 	heartbeatAt: string;

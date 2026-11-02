@@ -1,4 +1,5 @@
 #!/usr/bin/env bun
+// @harness-uid u_lt35mxvvrg
 import { CommanderError } from 'commander';
 import { commandAction } from './utils/development-tooling/commandAction';
 import { buildProgram } from './cli/program';

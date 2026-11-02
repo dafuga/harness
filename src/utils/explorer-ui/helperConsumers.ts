@@ -1,3 +1,4 @@
+// @harness-uid u_44u5mzzjmu
 import type { SourceTree } from '../../core/development-tooling/sourceTypes';
 
 export type HelperTree = Pick<SourceTree, 'read'> & Partial<Pick<SourceTree, 'list'>>;

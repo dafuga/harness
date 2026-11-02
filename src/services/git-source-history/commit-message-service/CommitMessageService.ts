@@ -1,3 +1,4 @@
+// @harness-uid u_kcabxdowsl
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import { readFile } from 'node:fs/promises';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';

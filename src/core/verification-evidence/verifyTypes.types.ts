@@ -1,3 +1,4 @@
+// @harness-uid u_wwu3xgisul
 import type { z } from 'zod';
 import type { verifyConfigSchema, captureLineSchema, workloadSchema } from './verifyTypes';
 

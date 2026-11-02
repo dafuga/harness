@@ -1,3 +1,4 @@
+// @harness-uid u_3njglpaoku
 import type { githubTransport } from './githubTransport';
 
 export type Request = { method?: string; body?: unknown; statuses?: number[] };

@@ -1,3 +1,4 @@
+// @harness-uid u_svhvvukfpr
 export interface Checkout {
 	path: string;
 	branch: string | null;

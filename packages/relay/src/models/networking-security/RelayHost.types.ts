@@ -1,3 +1,4 @@
+// @harness-uid u_uypudg5llb
 import type { RelayPairingState } from '../../../../remote/src/index';
 
 /** Bindings and variables of the relay Worker (`wrangler.jsonc`). */

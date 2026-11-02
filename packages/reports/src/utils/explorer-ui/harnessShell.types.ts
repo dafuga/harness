@@ -1,3 +1,4 @@
+// @harness-uid u_qbwbdqj43j
 import type { ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';

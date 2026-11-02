@@ -1,3 +1,4 @@
+// @harness-uid u_inny3zqpds
 import type { Runtime, Captured } from './deploymentExecution.types';
 import type { ReviewedDeployment } from '../../services/development-tooling/DeploymentService';
 import { deploymentWorktree } from './deploymentWorktree';

@@ -1,3 +1,4 @@
+// @harness-uid u_whsort2vvn
 import type { CapacitorEnvironmentAdapterConfig } from './CapacitorEnvironmentAdapter.types';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { CapacitorAccountAdapter } from './capacitor-account-adapter/CapacitorAccountAdapter';

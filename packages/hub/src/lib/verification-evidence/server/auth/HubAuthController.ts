@@ -1,3 +1,4 @@
+// @harness-uid u_z3vfxlrgpp
 import type { HubAuthControllerOptions } from './HubAuthController.types';
 import type { Actor } from 'collaboration';
 import type { AuthStatus, SignInResult } from '../../../../models/accounts-access/HubAuth.types';

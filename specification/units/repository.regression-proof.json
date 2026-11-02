@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "repository.regression-proof",
+	"uid": "u_4de62mowqb",
 	"kind": "repository",
 	"title": "Regression evidence store",
 	"responsibility": "Preserve regression records without changing their source commits. Retains original focused screenshot bytes, validates hashes and decoding, and survives Git history rebuilds.",

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_v5g3hq6gh3 -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import ProjectAgent from '../../../../desktop/src/components/agents-providers/ProjectAgent.svelte';

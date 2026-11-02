@@ -1,3 +1,4 @@
+// @harness-uid u_m23c4atyz5
 import type { SourceSnapshot } from './sourceSnapshot.types';
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';

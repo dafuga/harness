@@ -1,3 +1,4 @@
+// @harness-uid u_wjuptfssn5
 import type { PickerData } from './nativePickerProtocol.types';
 
 export function nativePickerProtocol(value: unknown): PickerData {

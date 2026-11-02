@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_jzx4ov2pkk -->
 <script lang="ts">
 	import DataTable from '../shared-primitives/DataTable.svelte';
 	import Card from './explorer-kit/Card.svelte';

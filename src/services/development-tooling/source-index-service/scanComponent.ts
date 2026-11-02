@@ -1,3 +1,4 @@
+// @harness-uid u_pv45ayumau
 import type { ExportedSymbol } from '../../../core/development-tooling/sourceTypes';
 import { scanExports, type ExportScan } from '../../../utils/development-tooling/scanExports';
 import { svelteScripts } from '../../../utils/development-tooling/scanImports';

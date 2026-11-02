@@ -1,3 +1,4 @@
+// @harness-uid u_pzkbjhveqf
 /** Shared rules for reported bugs in generated projects and app agent runs. */
 export function bugRepairPolicy(): string[] {
 	return [

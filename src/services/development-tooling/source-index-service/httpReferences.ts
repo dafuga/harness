@@ -1,3 +1,4 @@
+// @harness-uid u_iewc6drdd6
 import ts from 'typescript';
 import type { Found } from './scanImports.types';
 

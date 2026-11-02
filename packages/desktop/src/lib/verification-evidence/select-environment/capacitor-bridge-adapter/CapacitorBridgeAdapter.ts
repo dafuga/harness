@@ -1,3 +1,4 @@
+// @harness-uid u_2jn5g5w42t
 import type {
 	CapacitorBridgeAdapterConfig,
 	Operation,

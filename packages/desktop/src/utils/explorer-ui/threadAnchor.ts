@@ -1,3 +1,4 @@
+// @harness-uid u_c2t7k34ez4
 import type { ThreadTarget } from './threadAnchor.types';
 import type { DesignImage, DesignVersion } from '../../models/development-tooling/Desktop.types';
 

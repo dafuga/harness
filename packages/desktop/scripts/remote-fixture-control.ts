@@ -1,3 +1,4 @@
+// @harness-uid u_nmxl4zx5tk
 import type { FixtureAction } from './remote-fixture-control.types';
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';

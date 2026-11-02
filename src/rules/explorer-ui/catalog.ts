@@ -1,3 +1,4 @@
+// @harness-uid u_5n4kormezg
 import type { HarnessRuleLimits } from './catalog.types';
 import type { PieceKind } from '../../templates/development-tooling/scaffoldTypes';
 

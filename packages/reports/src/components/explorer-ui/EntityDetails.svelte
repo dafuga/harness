@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_socehk5ovr -->
 <script lang="ts">
 	import type { ExplorerEntity, ExplorerTab } from '../../models/explorer-ui/Explorer.types';
 	import type { HarnessRecord } from '../../models/explorer-ui/Harness.types';

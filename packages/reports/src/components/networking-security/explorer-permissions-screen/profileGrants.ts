@@ -1,3 +1,4 @@
+// @harness-uid u_akeaixll3y
 import type { ProfileEntry, ProfileGrant, GrantOfKind } from '../ExplorerPermissionsScreen.types';
 
 export function profileGrants<K extends ProfileGrant['kind']>(

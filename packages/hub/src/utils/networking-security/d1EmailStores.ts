@@ -1,3 +1,4 @@
+// @harness-uid u_35yiqbgq22
 export const EMAIL_PURGES = [
 	'DELETE FROM auth_email_proofs WHERE expires_at <= ?',
 	'DELETE FROM auth_email_verified WHERE expires_at <= ?',

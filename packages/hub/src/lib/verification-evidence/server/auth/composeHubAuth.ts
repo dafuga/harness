@@ -1,3 +1,4 @@
+// @harness-uid u_g2p3qabyj2
 import type { HubAuthParts } from '../../../../utils/verification-evidence/composeHubAuth';
 import { GithubApiAdapter } from './GithubApiAdapter';
 import { EmailProofController } from './EmailProofController';

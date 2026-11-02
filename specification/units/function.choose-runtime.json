@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.choose-runtime",
+	"uid": "u_wujyhbpeba",
 	"kind": "function",
 	"title": "Measured runtime selection",
 	"responsibility": "Chooses the simplest runtime within tolerance of the fastest matching cold-latency measurement and explains omitted candidates.",

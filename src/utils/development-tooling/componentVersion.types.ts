@@ -1,3 +1,4 @@
+// @harness-uid u_lvq6oinwwb
 export interface ComponentVersion {
 	unit: string;
 	/** sha256 of the canonical manifest. */

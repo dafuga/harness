@@ -1,3 +1,4 @@
+// @harness-uid u_xwobc3h5sb
 import type { LoginChallenge, NativeRequest } from './browserAuth.types';
 import type { AuthStatus, SignInResult } from '../../models/accounts-access/HubAuth.types';
 import type { BrowserApi } from '../browserApi';

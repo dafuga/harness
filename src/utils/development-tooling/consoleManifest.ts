@@ -1,3 +1,4 @@
+// @harness-uid u_y4otjucbb7
 import type { ConsoleManifest } from './consoleManifest.types';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';

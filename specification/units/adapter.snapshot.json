@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "adapter.snapshot",
+	"uid": "u_l3f5bpp55y",
 	"kind": "adapter",
 	"title": "SnapshotAdapter",
 	"responsibility": "Exports one exact commit into a clean directory outside every repository and detects files a check changed.",

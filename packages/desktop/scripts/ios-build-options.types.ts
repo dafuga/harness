@@ -1,3 +1,4 @@
+// @harness-uid u_ohta5yagly
 /** What one simulator build is asked to be. */
 export interface IosBuildPlan {
 	configuration: 'Debug' | 'Release';

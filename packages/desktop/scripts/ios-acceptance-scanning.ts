@@ -1,3 +1,4 @@
+// @harness-uid u_xkqlj7tw7h
 import { expiredOffer, otherVersion } from './ios-acceptance-guards';
 import { control, offered, panelText, restart, scanPressed, shot } from './ios-acceptance-run';
 import type { Acceptance } from './ios-acceptance-run';

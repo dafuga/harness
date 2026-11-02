@@ -1,3 +1,4 @@
+// @harness-uid u_x5gskwhgd7
 export interface Entry {
 	digest: string;
 	answer: Promise<unknown>;

@@ -1,3 +1,4 @@
+// @harness-uid u_kb4zsslujm
 import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 import type { SearchEntry } from './entitySearch';
 

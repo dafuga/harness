@@ -1,3 +1,4 @@
+// @harness-uid u_cgercf3i3t
 import type { ReferencePart } from '../../../utils/explorer-ui/entityReferences';
 import { isUnitId } from '../../../utils/explorer-ui/entityReferences';
 

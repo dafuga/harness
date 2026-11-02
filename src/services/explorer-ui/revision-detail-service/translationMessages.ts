@@ -1,3 +1,4 @@
+// @harness-uid u_gndb6l2t6f
 import ts from 'typescript';
 import type { TranslationRegistration, TranslationSource } from './translationMessages.types';
 

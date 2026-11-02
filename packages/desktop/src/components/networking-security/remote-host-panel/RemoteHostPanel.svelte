@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_pqvytes3sn -->
 <script lang="ts">
 	import type { RemoteHost } from '../../../lib/stores/networking-security/remoteHost.svelte';
 	import { hostLine, hostSummary } from './remoteLabels';

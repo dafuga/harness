@@ -1,3 +1,4 @@
+// @harness-uid u_d27vkdvynl
 import type { z } from 'zod';
 import type {
 	captureSchema,

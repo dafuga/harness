@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.host-resource-limits",
+	"uid": "u_wjeav4pmf3",
 	"kind": "function",
 	"title": "hostResourceLimits",
 	"responsibility": "Reads hierarchical Linux cgroup-v2 CPU and memory quotas without treating host capacity as container capacity.",

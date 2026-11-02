@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_udj6fpm6tw -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	/** Shared card structure with the owner's accessible name, attribution and visual variant. */

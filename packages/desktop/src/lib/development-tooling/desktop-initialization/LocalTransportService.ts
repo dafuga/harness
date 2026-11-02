@@ -1,3 +1,4 @@
+// @harness-uid u_gnxqoqxlzz
 import type {
 	LocalSocket,
 	Ticket,

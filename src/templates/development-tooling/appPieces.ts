@@ -1,3 +1,4 @@
+// @harness-uid u_37kfijfvml
 import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 

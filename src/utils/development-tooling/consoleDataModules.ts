@@ -1,3 +1,4 @@
+// @harness-uid u_qbmntcgc42
 export interface IndexFile {
 	/** Path inside the history index: `index.json`, `revisions/<commit>.json` or `media/<name>`. */
 	path: string;

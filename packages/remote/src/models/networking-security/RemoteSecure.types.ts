@@ -1,3 +1,4 @@
+// @harness-uid u_7jaayjx2iw
 import type { RemoteGrant } from './Remote.types';
 
 /** A P-256 key-agreement pair. `publicKey` is the 65-byte X9.63 uncompressed point. */

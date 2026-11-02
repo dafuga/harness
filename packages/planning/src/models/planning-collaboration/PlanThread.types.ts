@@ -1,3 +1,4 @@
+// @harness-uid u_vft5k3ncei
 import type { ChangeRecord } from './HostFileChange.types';
 import type {
 	AgentRef,

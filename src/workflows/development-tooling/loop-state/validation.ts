@@ -1,3 +1,4 @@
+// @harness-uid u_tm2cqtmoei
 import { fail } from '../../../core/development-tooling/errors';
 
 export function validateKebabName(name: string, label: string): string {

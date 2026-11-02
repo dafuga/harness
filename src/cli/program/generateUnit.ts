@@ -1,3 +1,4 @@
+// @harness-uid u_fr4fss7mlm
 import type { GenerateUnitInput } from './generateUnit.types';
 import { fail } from '../../core/development-tooling/errors';
 import type { FileWriteStatus } from '../../core/development-tooling/files';

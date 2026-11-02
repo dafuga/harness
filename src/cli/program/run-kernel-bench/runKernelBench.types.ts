@@ -1,3 +1,4 @@
+// @harness-uid u_jmb3kpgden
 export interface BenchOptions {
 	root?: string;
 	quick?: boolean;

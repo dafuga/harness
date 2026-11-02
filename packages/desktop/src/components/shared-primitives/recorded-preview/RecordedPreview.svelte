@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_l6wkjrdjlf -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';

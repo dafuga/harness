@@ -1,3 +1,4 @@
+// @harness-uid u_r7rfahmvr5
 import type { ReadNote } from './noteCommit.types';
 import { historyNoteSchema, type HistoryNote } from '../../../core/git-source-history/historyTypes';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_gnssflbak6
 export function ipcFields(value: unknown): Record<string, unknown> {
 	if (!value || typeof value !== 'object' || Array.isArray(value))
 		throw new Error('Expected an object.');

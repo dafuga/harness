@@ -1,3 +1,4 @@
+// @harness-uid u_hnvgstio73
 import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';

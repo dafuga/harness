@@ -1,3 +1,4 @@
+// @harness-uid u_dye5qghokk
 import { realpath } from 'node:fs/promises';
 import { basename } from 'node:path';
 import { createHash } from 'node:crypto';

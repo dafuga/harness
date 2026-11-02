@@ -1,3 +1,4 @@
+// @harness-uid u_sqjyroicr2
 /** What one surface reads again to stay current, and how often while it is shown. */
 export interface ProjectSyncOptions {
 	/** One read of who is signed in and of their projects; it reports its own failures. */

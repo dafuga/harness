@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms atoms -->
+<!-- @harness-uid u_3bme4zikv6 -->
 <script lang="ts">
 	import './contractTableMobile.css';
 	import './contractTableInfo.css';

@@ -1,3 +1,4 @@
+// @harness-uid u_bnkwt2w55f
 import type { Measurement, Finding, Reviewed, FrozenLine } from './harnessBudget.types';
 
 /**

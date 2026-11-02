@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_cq64eg3f5u -->
 <script lang="ts">
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';

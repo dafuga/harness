@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.evidence-attach",
+	"uid": "u_rfumv65ikl",
 	"kind": "service",
 	"title": "EvidenceAttachService",
 	"responsibility": "Validates a verification record and its dependencies and persists them to the evidence branch, notes and archive refs.",

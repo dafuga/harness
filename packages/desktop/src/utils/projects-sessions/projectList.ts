@@ -1,3 +1,4 @@
+// @harness-uid u_rmhnwxbfm6
 import type { DesktopBridge } from '../../models/development-tooling/DesktopBridge.types';
 import type { DesktopProject } from '../../models/projects-sessions/ProjectContext.types';
 

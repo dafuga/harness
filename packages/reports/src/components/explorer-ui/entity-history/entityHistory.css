@@ -1,3 +1,4 @@
+/* @harness-uid u_spk6hidfpd */
 /* Narrow viewports stack each commit under visible labels; headers remain accessible. */
 @media (max-width: 800px) {
 	:global(.ex-table.ex-history) {

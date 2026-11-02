@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_xj7a4ijomv -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { browserAuth } from '../../../utils/accounts-access/browserAuth';

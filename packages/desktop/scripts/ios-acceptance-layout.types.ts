@@ -1,3 +1,4 @@
+// @harness-uid u_2gvhdtaw5d
 /** What the page measures of itself: the safe area, the strip that covers it, the status bar. */
 export interface Measured {
 	inset: number;

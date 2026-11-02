@@ -1,3 +1,4 @@
+// @harness-uid u_bs7eidbdol
 import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';
 import type { Evidence } from '../../models/reports-media/Report.types';
 

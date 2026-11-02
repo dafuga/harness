@@ -1,3 +1,4 @@
+// @harness-uid u_ukpwwmuqet
 import type { ResponseCriterion } from '../../core/verification-evidence/responseCheckTypes';
 
 export class ResponseCheckInputValidator {

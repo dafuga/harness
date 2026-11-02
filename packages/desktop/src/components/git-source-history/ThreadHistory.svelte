@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_6glb3pdmbi -->
 <script lang="ts">
 	import ImageThumbnail from '../shared-primitives/ImageThumbnail.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';

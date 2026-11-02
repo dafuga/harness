@@ -1,3 +1,4 @@
+// @harness-uid u_bya7wvvkm5
 import type { ModuleTaskQueue } from './ModuleTaskRepository.types';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { stableJson } from '../../utils/development-tooling/stableJson';

@@ -1,3 +1,4 @@
+// @harness-uid u_sujxq5mw5i
 import type { AgentFacts, ProcessFacts } from '../../../utils/agents-providers/agentLiveness';
 import type { AgentState } from '../../../core/projects-sessions/activityTypes';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_vqrlkwaaur
 import type { RelayHostFrame, RelayNotice } from '../../../../../remote/src/index';
 import type { HostSocketsAdapter } from './HostSocketsAdapter';
 import type { HostStorageAdapter } from './HostStorageAdapter';

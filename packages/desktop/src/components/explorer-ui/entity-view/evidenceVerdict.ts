@@ -1,3 +1,4 @@
+// @harness-uid u_atu2hngej7
 import type { Judged } from './evidenceVerdict.types';
 import type { EntityVerdict, EvidenceRead } from '../../../utils/explorer-ui/evidenceVerdict';
 import type { ExplorerSide } from '$reports/models/Explorer.types';

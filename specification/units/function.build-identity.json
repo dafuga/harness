@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.build-identity",
+	"uid": "u_hxz45jcw2t",
 	"kind": "function",
 	"title": "Compiled build identity",
 	"responsibility": "Hashes a build’s paths and content identities, ignoring embedded stamp values so stamping does not change the build identity.",

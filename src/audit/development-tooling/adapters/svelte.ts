@@ -1,3 +1,4 @@
+// @harness-uid u_mnlvukvqc6
 import { auditBlocks } from '../blockRules';
 import { auditTypePlacement } from '../architectureRules';
 import { auditFileLength } from '../commonRules';

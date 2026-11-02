@@ -1,3 +1,4 @@
+// @harness-uid u_adiz32coug
 import { sharedPrimitivePath } from '../../../../core/development-tooling/composition';
 import type { Declared } from './deriveManifest.types';
 import type { DeriveInput } from '../../../../utils/development-tooling/deriveManifest';

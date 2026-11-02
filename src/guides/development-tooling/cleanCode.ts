@@ -1,3 +1,4 @@
+// @harness-uid u_azvnxdlopj
 import type { Guide } from './guide';
 
 export const cleanCodeGuide: Guide = {

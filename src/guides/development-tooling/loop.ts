@@ -1,3 +1,4 @@
+// @harness-uid u_s74fqeh5uv
 import type { Guide } from './guide';
 import { bugRepairPolicy } from '../../utils/development-tooling/bugRepairPolicy';
 

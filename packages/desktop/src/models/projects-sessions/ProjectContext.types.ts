@@ -1,3 +1,4 @@
+// @harness-uid u_xaer6ryhck
 import type { DesktopBridge } from '../development-tooling/DesktopBridge.types';
 import type {
 	EntityEvidenceQuery,

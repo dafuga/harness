@@ -1,3 +1,4 @@
+// @harness-uid u_zyofsmwx6b
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { toKebabCase, toCamelCase, toPascalCase } from '../../helpers/strings/case';
 import { fail } from '../../core/development-tooling/errors';

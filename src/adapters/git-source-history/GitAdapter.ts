@@ -1,3 +1,4 @@
+// @harness-uid u_pghy4246hw
 import type { GitRunOptions, GitResult } from './GitAdapter.types';
 import { spawn } from 'node:child_process';
 

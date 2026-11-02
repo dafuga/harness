@@ -1,3 +1,4 @@
+// @harness-uid u_5oixa73vmg
 export interface SourceBlock {
 	/** Function name, `Class.method`, or a `<module>`, `<template>` or `<style>` remainder. */
 	name: string;

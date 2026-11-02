@@ -1,3 +1,4 @@
+// @harness-uid u_a556ymjyde
 export interface SocketEvent {
 	data?: unknown;
 	code?: number;

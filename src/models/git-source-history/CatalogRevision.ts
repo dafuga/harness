@@ -1,3 +1,4 @@
+// @harness-uid u_gosvnlkmtd
 import type { PersistenceAdapter, SqliteModel } from '../../core/development-tooling/sqliteTypes';
 import type {
 	CatalogRevisionAttributes,

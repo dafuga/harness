@@ -1,3 +1,4 @@
+// @harness-uid u_u5rrzn7a6a
 import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import type { ProjectionCacheService } from './projection-cache-service/ProjectionCacheService';
 

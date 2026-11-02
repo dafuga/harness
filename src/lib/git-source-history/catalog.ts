@@ -1,3 +1,4 @@
+// @harness-uid u_b4kqcsszuu
 /** The local, rebuildable SQL projection of portable Harness history. */
 export { CatalogRepository } from '../../repositories/git-source-history/CatalogRepository';
 export type { CatalogQuery } from '../../repositories/git-source-history/CatalogRepository';

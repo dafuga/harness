@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.deployment-worktree",
+	"uid": "u_4zfjruy4dq",
 	"kind": "function",
 	"title": "deploymentWorktree",
 	"responsibility": "Runs deployment work in an isolated checkout of an immutable commit and removes that checkout afterward.",

@@ -1,3 +1,4 @@
+// @harness-uid u_lhd454hsdp
 import type { ModuleResource } from '../../services/module-system/moduleDefinition.types';
 import type { ExplorerLocation } from '../../utils/explorerRoute';
 /** @pure Resolve a declared resource destination while retaining only revision scope. */

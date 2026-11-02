@@ -1,3 +1,4 @@
+// @harness-uid u_g2f36bptng
 import type {
 	AgentRef,
 	DesignVersion,

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.catalog-write",
+	"uid": "u_j3jguhuan6",
 	"kind": "service",
 	"title": "CatalogWriteService",
 	"responsibility": "Atomically projects revision snapshots into SQLite, preserving entity metadata and distinct dependency relations.",

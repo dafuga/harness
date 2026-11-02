@@ -1,3 +1,4 @@
+// @harness-uid u_jcfr2dqydh
 import type { Actor } from 'collaboration';
 import type {
 	EntityEvidenceQuery,

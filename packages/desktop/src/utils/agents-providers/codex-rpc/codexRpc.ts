@@ -1,3 +1,4 @@
+// @harness-uid u_cb75ddl7us
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
 import { resourceEnvironment } from '../../../../../../src/utils/execution-runtimes/resourceEnvironment';

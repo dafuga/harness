@@ -1,3 +1,4 @@
+// @harness-uid u_pul5lyuaxa
 import type { GatewayRequest } from '../../../../utils/development-tooling/gatewayTypes';
 
 export function gatewayPrompt(request: GatewayRequest): string {

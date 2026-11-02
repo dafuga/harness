@@ -1,3 +1,4 @@
+// @harness-uid u_5oh2kzpy56
 export const lockNote =
 	'Approved phones keep working while this Mac is locked and awake. A sleeping Mac is offline.';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_iam4aai4s2
 import type { Read } from './entitySearch.types';
 import type { SearchEntry } from '../../../utils/explorer-ui/entitySearch';
 import { explorerCategories } from '../../../../../../src/utils/explorerRoute';

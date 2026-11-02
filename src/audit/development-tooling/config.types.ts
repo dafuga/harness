@@ -1,3 +1,4 @@
+// @harness-uid u_46mac3pmth
 import type { CleanCodeSettings } from './cleanCodeTypes';
 import type { AuditIgnore } from './adapters/types';
 import type { HarnessRuleLimits } from '../../rules/explorer-ui/catalog';

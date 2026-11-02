@@ -1,3 +1,4 @@
+// @harness-uid u_ude6avnxc2
 import type { SourceIndex, Parsed } from './SourceIndexService.types';
 export type { SourceIndex, Parsed } from './SourceIndexService.types';
 import { extname } from 'node:path';

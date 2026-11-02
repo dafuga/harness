@@ -1,3 +1,4 @@
+// @harness-uid u_yoy5rq7wgd
 import { relayCloseCodes, SecurePacketValidator } from '../../../../../../remote/src/index';
 import type { RelayNotice, SecureHello, SecureSealed } from '../../../../../../remote/src/index';
 import type { HostSocketsAdapter } from '../HostSocketsAdapter';

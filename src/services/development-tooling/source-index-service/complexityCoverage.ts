@@ -1,3 +1,4 @@
+// @harness-uid u_b5bb2mkplt
 import type { ComplexityCoverage } from '../../../utils/development-tooling/complexityCoverage';
 import { extname } from 'node:path';
 

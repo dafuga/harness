@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "adapter.networking-security-harness-http",
+	"uid": "u_v4qln4pccs",
 	"kind": "adapter",
 	"title": "HarnessHttpAdapter",
 	"responsibility": "Calls one Harness HTTP origin with private bearer transport, bounded requests, exact binary replies and no redirect forwarding.",

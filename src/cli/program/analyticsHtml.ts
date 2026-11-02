@@ -1,3 +1,4 @@
+// @harness-uid u_hpq3thsme3
 import type { analyticsSnapshot } from './analyticsMetrics';
 export function analyticsHtml(snapshot: ReturnType<typeof analyticsSnapshot>): string {
 	const data = JSON.stringify(snapshot).replace(/</g, '\\u003c');

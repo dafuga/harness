@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.canonical-json",
+	"uid": "u_ba5zbksv6k",
 	"kind": "function",
 	"title": "Canonical JSON serialization",
 	"responsibility": "Serializes JSON-shaped values with sorted object keys at every depth while preserving array order.",

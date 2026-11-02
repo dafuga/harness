@@ -1,3 +1,4 @@
+// @harness-uid u_ihkfgi6ia3
 import type { ExplorerCapture, ExplorerSide } from '../../../models/Explorer.types';
 import type { HarnessRevision, HarnessScenario } from '../../../models/Harness.types';
 

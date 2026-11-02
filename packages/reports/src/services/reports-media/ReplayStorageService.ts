@@ -1,3 +1,4 @@
+// @harness-uid u_fcsung7usu
 import type { Receipts } from './ReplayStorageService.types';
 import { createHash } from 'node:crypto';
 import { lstat, readFile, writeFile } from 'node:fs/promises';

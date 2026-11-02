@@ -1,3 +1,4 @@
+// @harness-uid u_gnxqoqxlzz
 export { LocalTransportService } from '../lib/development-tooling/desktop-initialization/LocalTransportService';
 export type {
 	LocalSocket,

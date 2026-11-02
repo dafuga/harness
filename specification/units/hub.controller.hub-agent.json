@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "hub.controller.hub-agent",
+	"uid": "u_pxp6bdo5z4",
 	"kind": "controller",
 	"title": "Authorize shared AI requests",
 	"responsibility": "Checks current Write membership and the exact project revision before handing a request to its connected executor.",

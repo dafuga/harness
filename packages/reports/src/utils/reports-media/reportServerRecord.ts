@@ -1,3 +1,4 @@
+// @harness-uid u_q2jxaxczl7
 import type { ServerRecord } from './reportServerRecord.types';
 import { execFile } from 'node:child_process';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';

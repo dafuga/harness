@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_hhxe77xo3a -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import { createHostedConnectionStore } from '../../lib/stores/networking-security/hostedConnection.svelte';

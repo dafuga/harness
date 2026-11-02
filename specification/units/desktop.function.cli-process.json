@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.cli-process",
+	"uid": "u_b7hlwurone",
 	"kind": "function",
 	"title": "Run an owned CLI process",
 	"responsibility": "Runs a CLI command with bounded output and time, forwarding complete output lines and supporting cancellation.",

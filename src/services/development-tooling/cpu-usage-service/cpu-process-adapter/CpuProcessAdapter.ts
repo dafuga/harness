@@ -1,3 +1,4 @@
+// @harness-uid u_3wlbqeyf7m
 import { performance } from 'node:perf_hooks';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';

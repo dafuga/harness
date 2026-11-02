@@ -1,3 +1,4 @@
+// @harness-uid u_hv3a6p454a
 import { base64url } from 'jose';
 
 export const encoder = new TextEncoder();

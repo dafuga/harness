@@ -1,3 +1,4 @@
+// @harness-uid u_4rhacyzgf2
 import type { ThreadMessage } from '../../models/development-tooling/Desktop.types';
 import type { HumanCommentResult } from '../../models/projects-sessions/ProjectContext.types';
 

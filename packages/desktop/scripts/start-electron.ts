@@ -1,3 +1,4 @@
+// @harness-uid u_y6qmwwx6ld
 import electron from 'electron';
 import { spawn } from 'node:child_process';
 const child = spawn(electron as unknown as string, [process.cwd()], {

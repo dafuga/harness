@@ -1,3 +1,4 @@
+// @harness-uid u_3dmfoj4dph
 import { toSnakeCase } from '../../core/case';
 import type { SqliteField, SqliteModel } from '../../core/development-tooling/sqliteTypes';
 

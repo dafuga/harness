@@ -1,3 +1,4 @@
+// @harness-uid u_qbmntcgc42
 import type { IndexFile, BundledSize } from '../../../utils/development-tooling/consoleDataModules';
 import { gzipSync } from 'node:zlib';
 import {

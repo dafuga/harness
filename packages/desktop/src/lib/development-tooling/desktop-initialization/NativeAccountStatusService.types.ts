@@ -1,3 +1,4 @@
+// @harness-uid u_fnvtwr6rqr
 import type { HostedHttpAdapter } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import type { NativeSessionAdapter } from '../../../adapters/networking-security/NativeSessionAdapter';
 

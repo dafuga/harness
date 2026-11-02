@@ -1,3 +1,4 @@
+// @harness-uid u_mzxzutsjlc
 import type { NativeAuthService } from '../../../lib/development-tooling/desktop-initialization/NativeAuthService';
 import type { RemoteProjectPort } from '../../../models/projects-sessions/ProjectContext.types';
 import { CommentOutboxService } from '../CommentOutboxService';

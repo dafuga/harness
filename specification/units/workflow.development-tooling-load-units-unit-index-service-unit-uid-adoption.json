@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+	"uid": "u_ivdxmstz3m",
 	"kind": "workflow",
 	"title": "unitUidAdoption",
 	"responsibility": "Joins source files to registered units by the uid they announce, so a moved or renamed file keeps its unit.",

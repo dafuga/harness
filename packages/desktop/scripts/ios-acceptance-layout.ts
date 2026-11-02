@@ -1,3 +1,4 @@
+// @harness-uid u_2gvhdtaw5d
 import type { Measured } from './ios-acceptance-layout.types';
 import { shot } from './ios-acceptance-run';
 import type { Acceptance } from './ios-acceptance-run';

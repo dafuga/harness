@@ -1,3 +1,4 @@
+// @harness-uid u_xwobc3h5sb
 import type { browserAuth } from './browserAuth';
 
 export interface LoginChallenge {

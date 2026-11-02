@@ -1,3 +1,4 @@
+// @harness-uid u_vtjauhb7is
 import type { ProjectAgent } from '../../lib/stores/agents-providers/projectAgent.svelte';
 import type { RunDraft } from '../explorer-ui/composeModes';
 /** Starts one explicitly selected project request; retains its text until acknowledged. */

@@ -1,3 +1,4 @@
+// @harness-uid u_5y3ttkckm2
 import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 
 export interface Opened {

@@ -1,3 +1,4 @@
+// @harness-uid u_okh4ii7vrv
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 
 export interface StoredRecord {

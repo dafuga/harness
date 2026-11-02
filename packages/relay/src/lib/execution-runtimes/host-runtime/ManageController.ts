@@ -1,3 +1,4 @@
+// @harness-uid u_x6cd7l3yp6
 import { remoteIdentity } from '../../../../../remote/src/index';
 import type { RelayManageDevice, RelayManageOwner } from '../../../../../remote/src/index';
 import type { HostStorageAdapter } from './HostStorageAdapter';

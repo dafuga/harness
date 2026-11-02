@@ -1,3 +1,4 @@
+// @harness-uid u_7z6h2dqold
 import { unreadArtifact, damagedArtifact } from '../../../utils/shared-primitives/artifactBytes';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type {

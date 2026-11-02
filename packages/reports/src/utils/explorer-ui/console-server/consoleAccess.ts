@@ -1,3 +1,4 @@
+// @harness-uid u_jv6fst3qm3
 import type {
 	ConsoleSource,
 	ConsoleHost,

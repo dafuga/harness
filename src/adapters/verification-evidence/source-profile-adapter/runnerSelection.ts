@@ -1,3 +1,4 @@
+// @harness-uid u_bn7p57ftpt
 import { existsSync, readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';

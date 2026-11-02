@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_u5pi6k26zn -->
 <script lang="ts">
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import { deploymentFacts, receiptFacts } from './deploymentFacts';

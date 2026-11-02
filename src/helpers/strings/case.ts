@@ -1,3 +1,4 @@
+// @harness-uid u_3tsoxiqggd
 /** @pure */
 export function toKebabCase(textToConvert: string): string {
 	return words(textToConvert).join('-');

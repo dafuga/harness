@@ -1,3 +1,4 @@
+// @harness-uid u_ckhgd3sfgc
 import type { BlockSpan, Scope } from './blockSpans.types';
 import { bodyEnd, matchingBrace, sourceNesting } from '../sourceNesting';
 import { statementEnd } from './statementEnd';

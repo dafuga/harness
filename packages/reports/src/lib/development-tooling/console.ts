@@ -1,3 +1,4 @@
+// @harness-uid u_yipz33fbi6
 import type {} from './console.types';
 import { mount } from 'svelte';
 import ConsoleShell from '../../components/explorer-ui/HarnessShell.svelte';

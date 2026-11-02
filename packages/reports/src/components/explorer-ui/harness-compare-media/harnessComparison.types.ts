@@ -1,3 +1,4 @@
+// @harness-uid u_375c7frogd
 import type { HarnessRecord } from '../../../models/explorer-ui/Harness.types';
 import type { HarnessCapture } from '../../../models/explorer-ui/Harness.types';
 

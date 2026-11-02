@@ -1,3 +1,4 @@
+// @harness-uid u_fypq7d6v2c
 import type { HubAgentPort } from './HubAgentController';
 import type { CollaborationApi } from 'collaboration';
 import type { Actor } from 'collaboration';

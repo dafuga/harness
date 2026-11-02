@@ -1,3 +1,4 @@
+// @harness-uid u_jrm3xgajpk
 export interface ReportSite {
 	/** The checkout this server is hosted for. */
 	root: string;

@@ -1,3 +1,4 @@
+// @harness-uid u_md2b3ep6wf
 export interface MaskOptions {
 	/** Blank string, template and regular-expression contents as well as comments. */
 	strings?: boolean;

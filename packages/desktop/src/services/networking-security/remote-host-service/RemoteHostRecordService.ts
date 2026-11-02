@@ -1,3 +1,4 @@
+// @harness-uid u_rssbwzqpw6
 import type { RemoteHostEnrolment } from './RemoteHostRecordService.types';
 import type {
 	RemoteHostState,

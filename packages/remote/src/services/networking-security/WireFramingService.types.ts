@@ -1,3 +1,4 @@
+// @harness-uid u_d3gl6olc5i
 export interface WireFramingOptions {
 	/** Writes one text frame to the transport. */
 	write: (frame: string) => void;

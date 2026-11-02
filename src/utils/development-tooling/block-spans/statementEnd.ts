@@ -1,3 +1,4 @@
+// @harness-uid u_ja5eu5lu77
 import type { SourceNesting } from '../sourceNesting';
 
 const statementStarts =

@@ -1,3 +1,4 @@
+// @harness-uid u_b5quvbjmrl
 export interface GoogleButton {
 	clientId: string;
 	/** Of a fresh challenge: the server accepts the credential only with this nonce inside. */

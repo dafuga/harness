@@ -1,3 +1,4 @@
+// @harness-uid u_fkuot3slc7
 import type { Registry } from './VerificationGates.types';
 import type { LedgerRead } from '../../../../../repositories/verification-evidence/BudgetLedgerRepository';
 import type { VerificationStoreRepository } from '../../../../../repositories/verification-evidence/VerificationStoreRepository';

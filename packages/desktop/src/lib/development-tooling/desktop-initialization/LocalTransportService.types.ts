@@ -1,3 +1,4 @@
+// @harness-uid u_gnxqoqxlzz
 /** One accepted socket, as the client it belongs to sees it. Text frames only. */
 export interface LocalSocket {
 	send(text: string): void;

@@ -1,3 +1,4 @@
+// @harness-uid u_ra27dwoz42
 import type {
 	ScenarioResult,
 	VerificationRecord

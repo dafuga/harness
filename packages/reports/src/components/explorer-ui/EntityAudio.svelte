@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_bs7eidbdol -->
 <script lang="ts">
 	import Notice from './explorer-kit/Notice.svelte';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';

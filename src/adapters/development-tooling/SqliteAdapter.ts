@@ -1,3 +1,4 @@
+// @harness-uid u_rbabjoss2e
 import type {
 	PersistenceAdapter,
 	SqliteDatabase,

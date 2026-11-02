@@ -1,3 +1,4 @@
+// @harness-uid u_g23u3cx5qx
 import type { ScreenshotUploadInput } from './ScreenshotUploadService.types';
 import { randomUUID } from 'node:crypto';
 import type { Evidence } from '../../../models/reports-media/Report.types';

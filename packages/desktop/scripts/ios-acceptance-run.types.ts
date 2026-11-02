@@ -1,3 +1,4 @@
+// @harness-uid u_fppws53qsn
 import type { AcceptanceRecord } from './ios-acceptance-record';
 import type { SimulatorPage } from './ios-acceptance-page';
 

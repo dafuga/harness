@@ -1,3 +1,4 @@
+// @harness-uid u_dz7jicmcxy
 import type { HistoryEvent } from '../../../models/development-tooling/Desktop.types';
 
 /** Pages of one entity's history in the order they were read; an event is listed once. */

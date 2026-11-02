@@ -1,3 +1,4 @@
+// @harness-uid u_dfas6iiqrt
 import type { VerifyRepo } from '../../../test/support/verifyRepo';
 import type { VerifyOutcome } from '../../../test/support/verifyRepo';
 

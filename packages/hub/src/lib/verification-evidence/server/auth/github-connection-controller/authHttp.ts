@@ -1,3 +1,4 @@
+// @harness-uid u_qrci5ngoec
 import { baseHeaders, withCookies } from '../../../../../utils/verification-evidence/authHttp';
 
 export function authRedirect(location: string, cookies: string[] = []): Response {

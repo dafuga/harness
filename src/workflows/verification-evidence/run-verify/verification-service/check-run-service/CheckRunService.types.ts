@@ -1,3 +1,4 @@
+// @harness-uid u_3flwsx2557
 import type { VerificationRecord } from '../../../../../core/verification-evidence/verificationTypes';
 import type { Gathered } from '../../../../../utils/verification-evidence/gatherCaptures';
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';

@@ -1,3 +1,4 @@
+// @harness-uid u_el27gksita
 import { cliEnvironment } from '../cliEnvironment';
 import { killOwnedProcess } from '../cliProcess';
 import { spawn } from 'node:child_process';

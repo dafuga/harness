@@ -1,3 +1,4 @@
+// @harness-uid u_ase4dftv54
 import type { Buffer } from 'node:buffer';
 
 export interface Git {

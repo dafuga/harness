@@ -1,3 +1,4 @@
+// @harness-uid u_i4ujwaodpy
 import type { RunEvent } from '../../../../../desktop/src/models/DesktopBridge.types';
 
 export interface EventBatch {

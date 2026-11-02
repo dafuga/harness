@@ -1,3 +1,4 @@
+// @harness-uid u_x5bcnj5gs4
 import type { PermissionCatalog } from '../../networking-security/PermissionCatalogService.types';
 import type { TranslationCatalog } from '../../../core/explorer-ui/Translation.types';
 import type { PlatformCatalog } from '../../../core/explorer-ui/Platform.types';

@@ -1,3 +1,4 @@
+// @harness-uid u_6jdexldwxi
 import { spawnSync } from 'node:child_process';
 const cli = process.env.HARNESS_CLI_PATH;
 const args = cli

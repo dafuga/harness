@@ -1,3 +1,4 @@
+// @harness-uid u_zlaf4ygivg
 import type { PieceKind } from './scaffoldTypes';
 export interface ScaffoldDetail {
 	kind: PieceKind;

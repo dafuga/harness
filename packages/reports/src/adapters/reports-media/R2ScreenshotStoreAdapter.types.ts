@@ -1,3 +1,4 @@
+// @harness-uid u_pefjibbljk
 export interface R2ScreenshotStoreAdapterConfig {
 	accountId: string;
 	bucket: string;

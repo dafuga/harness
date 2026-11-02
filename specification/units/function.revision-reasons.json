@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.revision-reasons",
+	"uid": "u_jyutqfhgad",
 	"kind": "function",
 	"title": "Commit-specific explanations",
 	"responsibility": "Selects reasons that explain a commit’s own first-parent changes rather than merely belonging to a longer verification range.",

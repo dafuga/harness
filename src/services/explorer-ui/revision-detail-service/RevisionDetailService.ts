@@ -1,3 +1,4 @@
+// @harness-uid u_x5bcnj5gs4
 import { PermissionCatalogService } from '../../networking-security/PermissionCatalogService';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import { translationCatalog } from './translationCatalog';

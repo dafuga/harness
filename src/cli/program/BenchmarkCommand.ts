@@ -1,3 +1,4 @@
+// @harness-uid u_r5h4a3mkwb
 import type { Command } from 'commander';
 import { BenchmarkService } from './benchmark-service/BenchmarkService';
 

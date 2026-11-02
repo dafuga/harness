@@ -1,3 +1,4 @@
+// @harness-uid u_pl6vleondd
 /** A character below space, or delete: nothing a stored path may hold. */
 function controlled(path: string): boolean {
 	for (let index = 0; index < path.length; index += 1) {

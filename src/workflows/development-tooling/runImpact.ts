@@ -1,3 +1,4 @@
+// @harness-uid u_5bmqugtgcc
 import type { ImpactOptions } from './runImpact.types';
 import { fail } from '../../core/development-tooling/errors';
 import type { ImpactReport } from '../../core/development-tooling/impactTypes';

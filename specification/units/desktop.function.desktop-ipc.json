@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.desktop-ipc",
+	"uid": "u_dzcerery3f",
 	"kind": "function",
 	"title": "Register desktop connection bootstrap",
 	"responsibility": "Registers the single IPC operation that supplies a trusted renderer with its local socket connection details.",

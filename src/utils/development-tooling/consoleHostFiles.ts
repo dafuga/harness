@@ -1,3 +1,4 @@
+// @harness-uid u_2yhhk7b4j4
 /** Where the generated server module and the data modules live in the host. */
 export const consoleServerDirectory = 'src/lib/server/harness';
 

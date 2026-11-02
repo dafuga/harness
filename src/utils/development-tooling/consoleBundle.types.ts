@@ -1,3 +1,4 @@
+// @harness-uid u_azhinxezrt
 export type Loader = () => Promise<unknown>;
 
 export interface ConsoleModules {

@@ -1,3 +1,4 @@
+// @harness-uid u_2alg3pplzk
 import type { DeploymentEnvironment } from '../../models/development-tooling/Deployment.types';
 /** Automatic changes never cross the explicit-deployment boundary. */
 export function changeEnvironment(environment: DeploymentEnvironment): DeploymentEnvironment[] {

@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_pju7q7booq -->
 <script lang="ts">
 	import type { Candidate } from './GameCheckpointImage.types';
 	import type {

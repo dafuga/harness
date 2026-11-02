@@ -1,3 +1,4 @@
+// @harness-uid u_gvtvivvpb2
 import type { SourceGraph } from '../../core/development-tooling/sourceTypes';
 
 export const testFile = /\.(?:test|spec)\.[cm]?[jt]sx?$/;

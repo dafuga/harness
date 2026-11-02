@@ -1,3 +1,4 @@
+// @harness-uid u_jtvwvk5o56
 import type { AnalyticsSnapshot } from './HarnessAnalyticsService.types';
 import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';

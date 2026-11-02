@@ -1,3 +1,4 @@
+// @harness-uid u_lu75xupxt4
 import type {
 	SessionControl,
 	SessionObservation,

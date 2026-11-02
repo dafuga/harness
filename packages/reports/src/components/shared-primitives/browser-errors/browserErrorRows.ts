@@ -1,3 +1,4 @@
+// @harness-uid u_j2ecxfaukv
 import type { Expected } from './browserErrorRows.types';
 import type { BrowserErrorRow, Observed } from '../../../utils/shared-primitives/browserErrorRows';
 import type { BrowserDiagnostic } from '../../../../../../src/core/browserDiagnostics';

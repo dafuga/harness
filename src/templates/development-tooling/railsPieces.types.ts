@@ -1,3 +1,4 @@
+// @harness-uid u_jllfqln26c
 export interface ClassEntityTemplate {
 	folder: string;
 	fileName: string;

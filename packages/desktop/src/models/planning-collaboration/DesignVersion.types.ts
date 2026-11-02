@@ -1,3 +1,4 @@
+// @harness-uid u_2m55dk65li
 import type { ApprovalInfo, Region } from '../development-tooling/Desktop.types';
 
 /** One image of a design version; `option` names the design option holding it, when it has one. */

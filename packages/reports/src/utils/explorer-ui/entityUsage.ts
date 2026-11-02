@@ -1,3 +1,4 @@
+// @harness-uid u_aqxpffqh4c
 import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 import type { HarnessRevision } from '../../models/explorer-ui/Harness.types';
 import { explorerChange, explorerEntity } from './explorerEntities';

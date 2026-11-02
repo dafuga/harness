@@ -1,3 +1,4 @@
+// @harness-uid u_iykl2n2kxj
 import type { ExplorerCategory, ExplorerTab } from './explorerTabs.types';
 import type { ExplorerLocation } from '../../explorerRoute';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_a5cgg6lwr7
 import type { UnitsConfig } from '../../core/development-tooling/unitsConfig';
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
 import type { GraphNode } from '../../core/development-tooling/sourceTypes';

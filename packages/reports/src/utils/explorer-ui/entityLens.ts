@@ -1,3 +1,4 @@
+// @harness-uid u_qxgb3xxvab
 import type { EntityLabel, Target } from './entityLens.types';
 import type { ExplorerCategory, ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 

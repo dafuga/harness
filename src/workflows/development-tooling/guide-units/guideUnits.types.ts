@@ -1,3 +1,4 @@
+// @harness-uid u_3ersk4crkf
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import type { SourceTree, SourceGraph } from '../../../core/development-tooling/sourceTypes';
 import type { TestAttribution } from '../../../cli/program/testAttribution.types';

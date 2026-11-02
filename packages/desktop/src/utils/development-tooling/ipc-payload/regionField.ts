@@ -1,3 +1,4 @@
+// @harness-uid u_gnssflbak6
 import { ipcFields } from '../ipcFields';
 import type { Region } from '../../../models/development-tooling/Desktop.types';
 

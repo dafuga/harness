@@ -1,3 +1,4 @@
+// @harness-uid u_faqaizysmt
 /** One reviewed line of the budget ledger, at the commit whose record it cites. */
 export interface HarnessReview {
 	type: 'baseline' | 'approval';

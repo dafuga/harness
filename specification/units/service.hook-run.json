@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.hook-run",
+	"uid": "u_o3qsjcczaz",
 	"kind": "service",
 	"title": "HookRunService",
 	"responsibility": "Runs the pre-push gate: each pushed source commit must have a passing verification, which is then attached.",

@@ -1,3 +1,4 @@
+// @harness-uid u_ynp4jjvmfd
 import type { Guide } from '../development-tooling/guide';
 export const resourcesGuide: Guide = {
 	topic: 'resources',

@@ -1,3 +1,4 @@
+// @harness-uid u_eihpbevkoq
 import type { MeasureContext, Entry } from './benchMeasurement.types';
 import type { BenchMeasurement } from '../../core/development-tooling/benchmarkTypes';
 import type { RuntimeKind } from '../../core/development-tooling/unitTypes';

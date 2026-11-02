@@ -1,3 +1,4 @@
+// @harness-uid u_5fizv7gdp4
 import type { consoleViews } from './consoleRoute';
 
 export type ConsoleView = (typeof consoleViews)[number];

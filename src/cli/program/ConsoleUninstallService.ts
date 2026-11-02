@@ -1,3 +1,4 @@
+// @harness-uid u_zhppzmmkjl
 import type {
 	ConsoleUninstallOptions,
 	ConsoleUninstallResult,

@@ -1,3 +1,4 @@
+// @harness-uid u_zjw7simv34
 import type { SourceBlock } from '../sourceBlocks';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import type { WritingVersion } from '../../git-source-history/writing-limits/writingLimits';

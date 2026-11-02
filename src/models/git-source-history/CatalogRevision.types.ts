@@ -1,3 +1,4 @@
+// @harness-uid u_gosvnlkmtd
 import type { IndexedRevision } from '../../core/historyIndexTypes';
 export interface CatalogRevisionAttributes {
 	id: string;

@@ -1,3 +1,4 @@
+// @harness-uid u_dhurrtwh3i
 import type { GameView } from '../../../../game/src/models/game-authoring/Game.types';
 
 /** A section of the game workspace; Level belongs to planned levels only. */

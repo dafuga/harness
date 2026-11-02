@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "collaboration.function.github-lfs",
+	"uid": "u_bfvbahdkna",
 	"kind": "function",
 	"title": "Materialize Git LFS bytes",
 	"responsibility": "Recognize Git LFS pointers and download content only from permitted HTTPS locations with matching size and hash.",

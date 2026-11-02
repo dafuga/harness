@@ -1,3 +1,4 @@
+// @harness-uid u_jyqw3fptyh
 /** A reading older than this says nothing about who is working now. */
 export const readingAge = 60_000;
 

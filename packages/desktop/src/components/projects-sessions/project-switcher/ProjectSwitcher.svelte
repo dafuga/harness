@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_hdzxlphy4k -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';

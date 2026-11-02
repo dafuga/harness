@@ -1,3 +1,4 @@
+// @harness-uid u_zhodap7eys
 import { hubFail } from '../../development-tooling/hubJson';
 
 export async function hubBodyBytes(request: Request): Promise<Uint8Array> {

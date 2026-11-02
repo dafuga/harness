@@ -1,3 +1,4 @@
+// @harness-uid u_md2b3ep6wf
 import type { MaskOptions, Cursor } from './maskSource.types';
 
 const openBrace = '\x7b';

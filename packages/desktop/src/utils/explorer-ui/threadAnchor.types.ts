@@ -1,3 +1,4 @@
+// @harness-uid u_c2t7k34ez4
 import type { ThreadInfo } from '../../models/development-tooling/Desktop.types';
 import type { HumanCommentDraft } from '../../models/projects-sessions/ProjectContext.types';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_d3gl6olc5i
 import type { Outgoing, Assembly, WireFramingOptions } from './WireFramingService.types';
 import { RemoteFailure, remoteLimits } from '../../models/networking-security/Remote.types';
 import { localTransport } from '../../models/networking-security/RemoteLocal.types';

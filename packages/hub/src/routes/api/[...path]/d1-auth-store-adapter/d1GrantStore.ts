@@ -1,3 +1,4 @@
+// @harness-uid u_z42ol4yton
 import type { D1Like } from './D1AuthStoreAdapter';
 import type {
 	GithubGrantRecord,

@@ -1,3 +1,4 @@
+// @harness-uid u_5oh2kzpy56
 import type { Words } from './remoteLabels.types';
 import {
 	grantLabel,

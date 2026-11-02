@@ -1,3 +1,4 @@
+// @harness-uid u_dwdcw3dtre
 import type { SeedAttach } from './harness-seed-attacher.types';
 import { createHash } from 'node:crypto';
 import { readdir, readFile, realpath, stat } from 'node:fs/promises';

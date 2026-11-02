@@ -1,3 +1,4 @@
+// @harness-uid u_eytjsijdsm
 import { readFile } from 'node:fs/promises';
 import { fail } from '../../../core/development-tooling/errors';
 

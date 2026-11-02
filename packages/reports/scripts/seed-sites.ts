@@ -1,3 +1,4 @@
+// @harness-uid u_5h44vokp4f
 /**
  * Two synthetic applications for the report and analytics fixtures, both started from one
  * template so they share its history. The site under test is one of them; the other fixture

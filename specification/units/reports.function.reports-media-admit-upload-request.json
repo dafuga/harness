@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.function.reports-media-admit-upload-request",
+	"uid": "u_usrudrxset",
 	"kind": "function",
 	"title": "admitUploadRequest",
 	"responsibility": "Rejects cross-origin, non-multipart or oversized upload headers before any body read, using each endpoint’s explicit limit.",

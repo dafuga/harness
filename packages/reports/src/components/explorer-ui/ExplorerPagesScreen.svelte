@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_n5rcsahfa7 -->
 <script lang="ts">
 	import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';
 	import type { EntityNav } from '../../utils/explorer-ui/entityLens';

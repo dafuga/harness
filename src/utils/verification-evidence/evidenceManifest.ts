@@ -1,3 +1,4 @@
+// @harness-uid u_4jgwbpywc5
 import type { RecordFile } from './evidenceManifest.types';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 

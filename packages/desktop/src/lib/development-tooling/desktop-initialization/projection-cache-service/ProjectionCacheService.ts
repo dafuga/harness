@@ -1,3 +1,4 @@
+// @harness-uid u_3ziialfqrc
 import { projectionCacheDiscard } from './projectionCacheDiscard';
 import { projectionCachePurge } from './projectionCachePurge';
 import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_kr5llhk653 -->
 <script lang="ts">
 	import type { ProviderId, ProviderState } from '../../models/development-tooling/Desktop.types';
 	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';

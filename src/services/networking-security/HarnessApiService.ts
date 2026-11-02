@@ -1,3 +1,4 @@
+// @harness-uid u_iv22myh4wi
 import type { ApiSnapshot, HarnessApiOptions } from './HarnessApiService.types';
 import type { ApiResponse } from '../../adapters/networking-security/HarnessHttpAdapter.types';
 import { HarnessHttpAdapter } from '../../adapters/networking-security/HarnessHttpAdapter';

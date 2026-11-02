@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "workflow.run-hooks",
+	"uid": "u_waaxqvz65j",
 	"kind": "workflow",
 	"title": "runHooks",
 	"responsibility": "Installs, removes, reports and runs the opt-in hooks of a worktree: the pre-push verification gate and the commit-msg gate that measures a commit message.",

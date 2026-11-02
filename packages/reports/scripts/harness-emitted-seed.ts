@@ -1,3 +1,4 @@
+// @harness-uid u_dfas6iiqrt
 import type { EmittedSeed } from './harness-emitted-seed.types';
 /**
  * Adds to the synthetic history a unit that is built for two execution targets, and takes it

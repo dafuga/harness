@@ -1,3 +1,4 @@
+// @harness-uid u_n2cftv3ush
 /** What an earlier report address is known to name: the report, and the revision it recorded. */
 export interface NamedReport {
 	id: string;

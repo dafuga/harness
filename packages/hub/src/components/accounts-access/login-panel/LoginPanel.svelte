@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_eet4jbpzn4 -->
 <script lang="ts">
 	import { browserContext } from '../../../utils/development-tooling/browserContext';
 	import { googleButton } from './googleButton';

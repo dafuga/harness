@@ -1,3 +1,4 @@
+// @harness-uid u_gcekeayfpt
 import type { Aim } from './createdThread.types';
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 

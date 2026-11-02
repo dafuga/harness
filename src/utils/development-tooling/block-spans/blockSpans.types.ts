@@ -1,3 +1,4 @@
+// @harness-uid u_ckhgd3sfgc
 import type { SourceNesting } from '../sourceNesting';
 
 export interface BlockSpan {

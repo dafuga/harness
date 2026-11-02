@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.verification-note-identity",
+	"uid": "u_emck5mljof",
 	"kind": "function",
 	"title": "Verification note identity checks",
 	"responsibility": "Detects contradictions between a stored verification record, its indexing note and the actual commit tree.",

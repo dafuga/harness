@@ -1,3 +1,4 @@
+// @harness-uid u_ytwarm6wyy
 import type { NativeEncryption } from './NativeSessionAdapter.types';
 import { mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';

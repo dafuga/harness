@@ -1,3 +1,4 @@
+// @harness-uid u_kaw2alsjie
 /** Whether a name is declared under a member: `Class.method.name`, or `Class.method` itself. */
 export const within = (name: string, owner: string, whole: boolean): boolean =>
 	name.startsWith(`${owner}.`) || (whole && name === owner);

@@ -1,3 +1,4 @@
+// @harness-uid u_gkpndve22h
 import { auditArchitecture, auditTypePlacement } from '../architectureRules';
 import { auditBlocks } from '../blockRules';
 import { auditClassCount, auditFileLength } from '../commonRules';

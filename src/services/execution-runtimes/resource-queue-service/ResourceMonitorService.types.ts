@@ -1,3 +1,4 @@
+// @harness-uid u_ujcyf3vpby
 import type { ResourceSnapshot } from '../../../core/execution-runtimes/resourceTypes';
 import type { ResourceQueueRepository } from './ResourceQueueRepository';
 

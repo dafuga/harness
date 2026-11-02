@@ -1,3 +1,4 @@
+// @harness-uid u_xhour6mlxy
 import type { RevisionRegistry } from '../../utils/revisionRegistry';
 export interface CatalogScenarioAttributes {
 	id: string;

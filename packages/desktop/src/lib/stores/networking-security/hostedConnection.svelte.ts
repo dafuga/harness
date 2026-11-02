@@ -1,3 +1,4 @@
+// @harness-uid u_stl7guxarm
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type { NativeHostedStatus } from '../../../models/projects-sessions/ProjectContext.types';

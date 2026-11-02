@@ -1,3 +1,4 @@
+// @harness-uid u_44r267q43e
 import type { ResourceContext, ResourceRequest } from '../../core/execution-runtimes/resourceTypes';
 import { ProcessIdentityAdapter } from '../../services/agents-providers/agent-activity-service/ProcessIdentityAdapter';
 import type { ResourceQueueRepository } from '../../services/execution-runtimes/resource-queue-service/ResourceQueueRepository';

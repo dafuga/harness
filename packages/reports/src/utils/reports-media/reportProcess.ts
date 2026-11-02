@@ -1,3 +1,4 @@
+// @harness-uid u_qkovg6ptm7
 import { spawn } from 'node:child_process';
 export async function reportProcess(
 	command: string,

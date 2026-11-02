@@ -1,3 +1,4 @@
+// @harness-uid u_kqcz5yforb
 import type { RelayManageAdapterConfig, Operation } from './RelayManageAdapter.types';
 import type {
 	RelayManageDevice,

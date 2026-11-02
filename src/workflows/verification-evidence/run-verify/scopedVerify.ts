@@ -1,3 +1,4 @@
+// @harness-uid u_hmagdhwxab
 import { resourcePriority } from '../../../core/execution-runtimes/resourceTypes';
 import type { ImpactReport } from '../../../core/development-tooling/impactTypes';
 import type { StoredRecord } from '../../../repositories/verification-evidence/VerificationStoreRepository';

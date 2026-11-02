@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_qmlfwe5rfm -->
 <script lang="ts">
 	import Notice from './explorer-kit/Notice.svelte';
 	import type { UnitDocumentation } from '../../../../../src/utils/unit-documentation/unitDocumentation';

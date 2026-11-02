@@ -1,3 +1,4 @@
+// @harness-uid u_j7is42yfqi
 import type { RemoteDesktopControl } from '../../../models/development-tooling/Environment.types';
 import type { RemoteHostState } from './remoteHost.svelte';
 

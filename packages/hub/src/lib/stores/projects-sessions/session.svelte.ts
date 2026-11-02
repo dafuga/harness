@@ -1,3 +1,4 @@
+// @harness-uid u_yz656jlmvp
 import type { BrowserAuth } from '../../../utils/accounts-access/browserAuth';
 import type { AuthStatus } from '../../../models/accounts-access/HubAuth.types';
 

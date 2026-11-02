@@ -1,3 +1,4 @@
+// @harness-uid u_abp43v6l4r
 import type {
 	ConsoleInstallOptions,
 	ConsoleInstallResult,

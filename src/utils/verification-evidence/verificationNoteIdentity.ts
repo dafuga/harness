@@ -1,3 +1,4 @@
+// @harness-uid u_emck5mljof
 import type { Note } from './verificationNoteIdentity.types';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 

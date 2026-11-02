@@ -1,3 +1,4 @@
+// @harness-uid u_iwsuwwcp27
 import type { HostRequest } from '../../../utils/development-tooling/installableHost';
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';

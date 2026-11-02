@@ -1,3 +1,4 @@
+// @harness-uid u_bn7p57ftpt
 import { plugin } from 'bun';
 import { realpathSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

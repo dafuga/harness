@@ -1,3 +1,4 @@
+// @harness-uid u_zhppzmmkjl
 import type { ConsoleChange } from '../../utils/development-tooling/consoleManifest';
 import type { ConsoleFileEntry } from '../../utils/development-tooling/consoleManifest';
 

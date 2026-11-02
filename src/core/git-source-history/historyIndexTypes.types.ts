@@ -1,3 +1,4 @@
+// @harness-uid u_wtckykeaaj
 import type { z } from 'zod';
 import type {
 	indexedRecordSchema,

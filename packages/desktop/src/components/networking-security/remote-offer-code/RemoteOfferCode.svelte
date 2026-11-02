@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_tfokwl5icy -->
 <script lang="ts">
 	import type { RemoteHost } from '../../../lib/stores/networking-security/remoteHost.svelte';
 	import type { RemotePairingOffer } from '../../../models/development-tooling/Environment.types';

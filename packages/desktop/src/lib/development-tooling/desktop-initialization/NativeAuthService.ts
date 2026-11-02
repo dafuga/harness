@@ -1,3 +1,4 @@
+// @harness-uid u_bt6e76o6y5
 import type { Pending, AuthOptions } from './NativeAuthService.types';
 import { randomBytes, createHash } from 'node:crypto';
 import type { NativeHostedStatus } from '../../../models/projects-sessions/ProjectContext.types';

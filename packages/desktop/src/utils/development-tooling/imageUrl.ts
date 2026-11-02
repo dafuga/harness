@@ -1,3 +1,4 @@
+// @harness-uid u_rew7vwrdfr
 import type { ImageRequest } from './imageUrl.types';
 import { tick } from 'svelte';
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';

@@ -1,3 +1,4 @@
+// @harness-uid u_h3yv5bbvdi
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { VerificationStoreRepository } from '../../../repositories/verification-evidence/VerificationStoreRepository';

@@ -1,3 +1,4 @@
+// @harness-uid u_rzc2b4zacv
 import type { BoundaryBenchmark } from './runKernelBoundary.types';
 import { ProcessRuntimeAdapter } from '../../adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
 import { representativeWorkload } from '../../core/development-tooling/benchmarkTypes';

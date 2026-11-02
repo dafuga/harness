@@ -1,3 +1,4 @@
+// @harness-uid u_hx2sts7clp
 import { kernelContract } from '../../../core/execution-runtimes/kernelTypes';
 import {
 	runtimeFailure,

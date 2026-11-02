@@ -1,3 +1,4 @@
+// @harness-uid u_qamdbkttr6
 import { homedir } from 'node:os';
 import { delimiter, join } from 'node:path';
 import { scrubEnvironment } from './scrubEnvironment';

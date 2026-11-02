@@ -1,3 +1,4 @@
+// @harness-uid u_fisdurqqbv
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { nativeAtoms, nativeAtomSource, atomTag, htmlElements } from './htmlElements.js';
 import { atomicRuntimeSources } from './atomicRuntimeSources';

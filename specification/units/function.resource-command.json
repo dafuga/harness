@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.resource-command",
+	"uid": "u_6hqybwhp3m",
 	"kind": "function",
 	"title": "resourceCommand",
 	"responsibility": "Runs an admitted command with inherited streams and bounded lifetime, retaining ownership-aware cleanup failures.",

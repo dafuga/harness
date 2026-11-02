@@ -1,3 +1,4 @@
+// @harness-uid u_rw64iex44n
 export interface TaskProcessResult {
 	code: number;
 	stdout: string;

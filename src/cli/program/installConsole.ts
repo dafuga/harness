@@ -1,3 +1,4 @@
+// @harness-uid u_rud45b6pse
 import type { ConsoleInstallFlags, ConsoleObjectEntry } from './installConsole.types';
 import { join, resolve } from 'node:path';
 import {

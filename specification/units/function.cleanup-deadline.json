@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.cleanup-deadline",
+	"uid": "u_jb3ndhqgrw",
 	"kind": "function",
 	"title": "Bounded cleanup time",
 	"responsibility": "Creates a shared deadline that ends waits and supplies fallback answers when cleanup work fails or takes too long.",

@@ -1,3 +1,4 @@
+// @harness-uid u_dr2xl6z3dy
 import type { Unit } from './unitMetadata.types';
 import { explorerKindCategory } from '../../../utils/explorer-ui/explorerRoute';
 import { pureHelpers } from './pureHelpers';

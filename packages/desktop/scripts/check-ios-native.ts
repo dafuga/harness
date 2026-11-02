@@ -1,3 +1,4 @@
+// @harness-uid u_dvbdzhr2nv
 import { mkdirSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 

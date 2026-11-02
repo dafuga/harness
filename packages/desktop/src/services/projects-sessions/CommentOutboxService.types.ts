@@ -1,3 +1,4 @@
+// @harness-uid u_jrtyisgjb5
 import type { HumanCommentResult } from '../../models/projects-sessions/ProjectContext.types';
 
 export type PendingComment = Extract<HumanCommentResult, { kind: 'pending' }>;

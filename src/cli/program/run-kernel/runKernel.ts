@@ -1,3 +1,4 @@
+// @harness-uid u_zf52hz6yfu
 import type { ParityCases, ParityReport, ByteRuntime, DefaultReport } from './runKernel.types';
 import { performance } from 'node:perf_hooks';
 import { isDeepStrictEqual } from 'node:util';

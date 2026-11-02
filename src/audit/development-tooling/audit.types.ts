@@ -1,3 +1,4 @@
+// @harness-uid u_3mhqxui72b
 import type { AuditResult } from './adapters/types';
 import type { HarnessRuleLimits } from '../../rules/explorer-ui/catalog';
 

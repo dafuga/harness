@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.group-teardown",
+	"uid": "u_wtlwl3ldsd",
 	"kind": "function",
 	"title": "Child process group cleanup",
 	"responsibility": "Stops a command’s process group and follows surviving descendants that moved outside the group.",

@@ -1,3 +1,4 @@
+// @harness-uid u_cmdiu5nich
 import type { GatewayItem } from './gatewayTypes';
 export function gatewayToolDefinitions(definitions: GatewayItem[]): GatewayItem[] {
 	return definitions.flatMap((definition) => {

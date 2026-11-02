@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_g632tfjxuh -->
 <script lang="ts">
 	import type { GameRun, GameView } from '../../../../game/src/models/game-authoring/Game.types';
 	let { run, view }: { run: GameRun; view: GameView } = $props();

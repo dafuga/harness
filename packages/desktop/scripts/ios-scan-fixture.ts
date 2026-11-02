@@ -1,3 +1,4 @@
+// @harness-uid u_xop3oggsaf
 import { cpSync, readFileSync, rmSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { scanMarker } from './ios-acceptance-guards';

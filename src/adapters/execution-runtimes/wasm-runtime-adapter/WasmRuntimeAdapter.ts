@@ -1,3 +1,4 @@
+// @harness-uid u_xmgy3lysbk
 import { readFile } from 'node:fs/promises';
 import type { RuntimeOptions } from '../../../core/execution-runtimes/runtimeTypes';
 import { WasmModuleRuntimeAdapter, wasmUnavailable } from './WasmModuleRuntimeAdapter';

@@ -1,3 +1,4 @@
+// @harness-uid u_j3jguhuan6
 import type { CatalogSnapshot } from './CatalogWriteService.types';
 import { createHash } from 'node:crypto';
 import type { SqliteAdapter } from '../../adapters/development-tooling/SqliteAdapter';

@@ -1,3 +1,4 @@
+// @harness-uid u_2knliavbo7
 import type { Sign, Recorded } from './artifactMedia.types';
 
 /** True when the bytes hold these values from an offset on; a string stands for its characters. */

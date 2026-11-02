@@ -1,3 +1,4 @@
+// @harness-uid u_edyj4ckweh
 import type { SourceEntry } from 'collaboration';
 
 /** Text metadata only; image bytes and owned source remain on their individual read paths. */

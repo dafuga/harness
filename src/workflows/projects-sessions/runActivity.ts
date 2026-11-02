@@ -1,3 +1,4 @@
+// @harness-uid u_7iaicyupoc
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Shown } from './runActivity.types';
 import { resolve } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_ouedfqze7m
 export const path = '/__harness_worker__';
 
 export {

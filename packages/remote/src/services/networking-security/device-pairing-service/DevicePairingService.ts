@@ -1,3 +1,4 @@
+// @harness-uid u_3kkfli5otz
 import type {
 	DevicePairingInput,
 	ScanningDevice,

@@ -1,3 +1,4 @@
+// @harness-uid u_bn7p57ftpt
 import type ts from 'typescript';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_oelsya3cz4
 import { appendFile, mkdir } from 'node:fs/promises';
 import { isAbsolute, relative, resolve } from 'node:path';
 import { fileHash } from '../verification-evidence/sourceSnapshot';

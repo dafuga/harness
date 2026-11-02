@@ -1,3 +1,4 @@
+// @harness-uid u_qbwbdqj43j
 import {} from './harnessIcons';
 
 /** Whether a click is one the application follows itself: plain, primary and not yet handled. */

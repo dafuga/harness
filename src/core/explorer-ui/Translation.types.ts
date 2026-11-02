@@ -1,3 +1,4 @@
+// @harness-uid u_gndb6l2t6f
 /** A static dictionary row and its verified runtime callers at one source revision. */
 export interface TranslationRow {
 	scope: string;

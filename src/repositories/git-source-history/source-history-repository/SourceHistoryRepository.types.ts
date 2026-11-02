@@ -1,3 +1,4 @@
+// @harness-uid u_3k6zz4zozx
 export interface SourceRevision {
 	commit: string;
 	tree: string;

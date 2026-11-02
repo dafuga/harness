@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.line-process",
+	"uid": "u_n3nlghudto",
 	"kind": "function",
 	"title": "Persistent line process",
 	"responsibility": "Keeps a lazily started child process for sequential line exchanges and converts startup, exit and timeout failures to runtime responses.",

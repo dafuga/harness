@@ -1,3 +1,4 @@
+// @harness-uid u_3kd7nnqwh4
 import { relayCloseCodes } from '../../../../../remote/src/index';
 import type {
 	RelayManageRegister,

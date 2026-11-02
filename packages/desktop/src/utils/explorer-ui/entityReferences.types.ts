@@ -1,3 +1,4 @@
+// @harness-uid u_cgercf3i3t
 /** A piece of agent text: words as written, or a reference to a unit by its registered id. */
 export type ReferencePart =
 	| { kind: 'text'; text: string }

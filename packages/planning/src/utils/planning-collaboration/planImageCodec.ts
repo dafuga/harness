@@ -1,3 +1,4 @@
+// @harness-uid u_rtav2csilj
 import { Buffer } from 'node:buffer';
 import { PNG } from 'pngjs';
 import { fail } from './planData';

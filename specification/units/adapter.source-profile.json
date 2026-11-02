@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "adapter.source-profile",
+	"uid": "u_bn7p57ftpt",
 	"kind": "adapter",
 	"title": "SourceProfileAdapter",
 	"responsibility": "Observes registered source operations in supported test runners while preserving call semantics, startup isolation and uninstrumented production builds.",

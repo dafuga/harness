@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_hbyhwry7b7 -->
 <script lang="ts">
 	import BrandMark from '$shared/BrandMark.svelte';
 	import { resolve } from '$app/paths';

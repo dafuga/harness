@@ -1,3 +1,4 @@
+// @harness-uid u_l6w3l34t4a
 import { execFileSync } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
 const jsoncParser: Bun.BunPlugin = {

@@ -1,3 +1,4 @@
+// @harness-uid u_xxzceoo5bx
 import { createHash } from 'node:crypto';
 import { basename } from 'node:path';
 import { componentManifestSchema } from '../../../../../../../src/lib/contracts';

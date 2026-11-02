@@ -1,3 +1,4 @@
+// @harness-uid u_4kuxhelnsj
 const kinds = new Map([
 	['image/png', 'screenshot'],
 	['image/jpeg', 'screenshot'],

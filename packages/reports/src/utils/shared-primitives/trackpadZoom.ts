@@ -1,3 +1,4 @@
+// @harness-uid u_rptchqt5ts
 import type { ZoomControls, Gesture, Point } from './trackpadZoom.types';
 
 // Chrome sends a pinch as Ctrl+wheel with deltaY = -100·ln(scale), so zoom follows the fingers;

@@ -1,3 +1,4 @@
+// @harness-uid u_n3nlghudto
 import type { RuntimeResponse } from '../../core/execution-runtimes/runtimeTypes';
 
 export type ProcessReply = { text: string } | { failure: RuntimeResponse };

@@ -1,3 +1,4 @@
+// @harness-uid u_x7hpszfzaq
 import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 
 export function hubSize(context: HubSourceContext, paths: string[]) {

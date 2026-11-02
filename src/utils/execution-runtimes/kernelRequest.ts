@@ -1,3 +1,4 @@
+// @harness-uid u_i5bs2phohi
 import type { Fields } from './kernelRequest.types';
 
 export function isObject(value: unknown): value is Fields {

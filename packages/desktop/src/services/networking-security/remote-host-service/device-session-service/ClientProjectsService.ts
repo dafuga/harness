@@ -1,3 +1,4 @@
+// @harness-uid u_6ldic3kgck
 import type { ClientProject, ClientProjectsOptions } from './ClientProjectsService.types';
 import { desktopBridge } from '../../../../lib/development-tooling/desktop-bridge/desktopBridge';
 import { DesktopRunService } from '../../../agents-providers/desktop-run-service/DesktopRunService';

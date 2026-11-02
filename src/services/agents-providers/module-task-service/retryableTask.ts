@@ -1,3 +1,4 @@
+// @harness-uid u_rmurdehorf
 import type { ModuleTask } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ProcessIdentityAdapter } from '../agent-activity-service/ProcessIdentityAdapter';
 export function retryableTask(task: ModuleTask, workspace: string): boolean {

@@ -1,3 +1,4 @@
+// @harness-uid u_yptvetzrar
 import type { AuditFinding, AuditResult } from './audit';
 
 export function renderAudit(findings: AuditFinding[]): string {

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_bmfjvxz4dh -->
 <script lang="ts">
 	import DataTable from '../../shared-primitives/DataTable.svelte';
 	import type { Row } from './EntityCases.types';

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_ay5ohu5w4p -->
 <script lang="ts">
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { evidenceMedia } from '../../utils/verification-evidence/evidenceMedia';

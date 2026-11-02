@@ -1,3 +1,4 @@
+// @harness-uid u_eisvkkusk2
 import type { Classified } from './explorerCategory.types';
 import { declarationRole } from '../../../../../src/services/explorer-ui/revision-detail-service/declarationRole';
 import { helperContract } from '../../../../../src/utils/helperContract';

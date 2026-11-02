@@ -1,3 +1,4 @@
+// @harness-uid u_tjbpffdxmq
 import type { SourceReading } from './ios-acceptance-source.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';

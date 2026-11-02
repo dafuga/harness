@@ -1,3 +1,4 @@
+// @harness-uid u_ceiamj74gt
 import type { CommittedThread } from 'collaboration';
 import type { ThreadMessage } from '../../../../../../desktop/src/models/Desktop.types';
 

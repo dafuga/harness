@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.stream-lines",
+	"uid": "u_ysfqmpzs3l",
 	"kind": "function",
 	"title": "Split an output stream into lines",
 	"responsibility": "Decode UTF-8 chunks and deliver complete lines while bounding the buffered text.",

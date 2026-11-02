@@ -1,3 +1,4 @@
+// @harness-uid u_jfnzmu243b
 import type { DeviceSessionOptions } from './DeviceSessionService.types';
 import { WireSessionService } from '../../../../../../remote/src/index';
 import { remoteFailureText } from './remoteFailureText';

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_nwjtpm36bt -->
 <script lang="ts">
 	import EmptyState from '../../explorer-ui/explorer-kit/EmptyState.svelte';
 	/** The written steps for setting up a plugin or generating one of its resources. */

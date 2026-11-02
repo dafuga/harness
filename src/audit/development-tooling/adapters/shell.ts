@@ -1,3 +1,4 @@
+// @harness-uid u_tl7hmt6j6h
 import { auditFileLength } from '../commonRules';
 import { auditCurlyFunctions } from './blockHelpers';
 import type { AuditAdapter, AuditFile } from './types';

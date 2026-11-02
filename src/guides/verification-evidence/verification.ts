@@ -1,3 +1,4 @@
+// @harness-uid u_pfos3yxjq2
 import type { Guide } from '../development-tooling/guide';
 
 const scenarioGuide: Guide = {

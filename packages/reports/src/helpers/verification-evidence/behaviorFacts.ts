@@ -1,3 +1,4 @@
+// @harness-uid u_ksqsigwxbb
 import type { BehaviorFact, BehaviorFactOptions, BehaviorScenario } from './behaviorFacts.types';
 /** @pure Format duration and scenario outcomes without consulting an input array's iterator or species. */
 export function behaviorFacts(

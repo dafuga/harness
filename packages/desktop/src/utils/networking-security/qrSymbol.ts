@@ -1,3 +1,4 @@
+// @harness-uid u_bjqublt2hl
 /** What may be drawn: plain text of a bounded length, at one correction level. */
 export const qrLimits = { maxBytes: 320, quiet: 4, maxModules: 77, level: 'M' } as const;
 

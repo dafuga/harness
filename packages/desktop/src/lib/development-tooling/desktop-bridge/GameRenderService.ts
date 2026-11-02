@@ -1,3 +1,4 @@
+// @harness-uid u_7wdnzhrfl5
 import { DecartAdapter } from '../../../../../game/src/adapters/agents-providers/DecartAdapter';
 import type { RenderSessionRequest } from '../../../../../game/src/models/game-authoring/Game.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';

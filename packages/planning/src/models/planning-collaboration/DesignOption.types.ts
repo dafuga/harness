@@ -1,3 +1,4 @@
+// @harness-uid u_z45eud3h42
 import type { AgentRef, ImageBinding, StoredFile } from './Planning.types';
 import type { DesignImageInput } from './PlanningBridge.types';
 

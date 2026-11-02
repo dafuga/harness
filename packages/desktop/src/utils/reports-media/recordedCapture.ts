@@ -1,3 +1,4 @@
+// @harness-uid u_23u6t7kx2y
 import type { CaptureBinding, ListedCapture } from './recordedCapture.types';
 import type { ExplorerEvidence } from '$reports/models/Explorer.types';
 

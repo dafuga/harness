@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.function.entity-shown",
+	"uid": "u_6ep3zibrhj",
 	"kind": "function",
 	"title": "Entity overview data",
 	"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",

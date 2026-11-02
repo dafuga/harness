@@ -1,3 +1,4 @@
+// @harness-uid u_l2la5zvioj
 import type { HarnessIndex } from '../../models/explorer-ui/Harness.types';
 import type { HarnessRevision } from '../../models/explorer-ui/Harness.types';
 import type { StoredSide } from '../../../../../src/utils/sideImpact';

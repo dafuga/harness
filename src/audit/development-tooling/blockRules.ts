@@ -1,3 +1,4 @@
+// @harness-uid u_zcmp3korbn
 import { harnessRuleLimits, type HarnessRuleLimits } from '../../rules/explorer-ui/catalog';
 import { capitalize, complexityPoints, count, maxDepth, parameterCount } from './blockMetrics';
 import type { AuditFinding, Block } from './types';

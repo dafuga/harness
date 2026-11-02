@@ -1,3 +1,4 @@
+// @harness-uid u_dtddquqpwx
 import type { EmailProofOptions, Pending } from './EmailProofService.types';
 import type { Actor } from 'collaboration';
 import type {

@@ -1,3 +1,4 @@
+// @harness-uid u_tjettsj4ws
 export interface FolderKind {
 	kind: string;
 	suffix?: string;

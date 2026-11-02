@@ -1,3 +1,4 @@
+// @harness-uid u_vdkwct7hdk
 import type { CollectedFiles } from './collect.types';
 import { lstat, readdir } from 'node:fs/promises';
 import { extname } from 'node:path';

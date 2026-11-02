@@ -1,3 +1,4 @@
+// @harness-uid u_gstm2koub7
 import { chmod, cp, lstat, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';

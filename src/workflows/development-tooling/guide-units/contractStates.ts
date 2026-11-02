@@ -1,3 +1,4 @@
+// @harness-uid u_7b5ruejirf
 import type { ComponentManifest, ContractItem } from '../../../core/development-tooling/unitTypes';
 import type { UnitState } from './guideUnits.types';
 

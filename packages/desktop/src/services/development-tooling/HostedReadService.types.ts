@@ -1,3 +1,4 @@
+// @harness-uid u_qqalll47m3
 import type { RemoteHttpOptions } from '../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import type { ProjectionCacheService } from '../../lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
 import type { CacheStatus } from '../../models/projects-sessions/ProjectContext.types';

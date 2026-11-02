@@ -1,3 +1,4 @@
+// @harness-uid u_3xal7xfwu7
 import type { OfflineView } from '../cache-status/cacheStatus';
 import type { ProjectSnapshot } from '../../../models/development-tooling/Desktop.types';
 

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_sti57vivfr -->
 <script lang="ts">
 	import type { ExplorerEntity } from '../../models/Explorer.types';
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';

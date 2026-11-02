@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_ttl26nd5p5 -->
 <script lang="ts">
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import type { Measure } from '../../models/development-tooling/Desktop.types';

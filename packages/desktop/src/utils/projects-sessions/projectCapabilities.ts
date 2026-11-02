@@ -1,3 +1,4 @@
+// @harness-uid u_cnnuwtc4nu
 import type { ProjectCapabilities } from '../../models/projects-sessions/ProjectContext.types';
 
 /** What is assumed when nothing proves more: reading only. */

@@ -1,3 +1,4 @@
+// @harness-uid u_jhkmgylw3b
 import { Buffer } from 'node:buffer';
 import { createHash } from 'node:crypto';
 import type { PlanningErrorCode } from '../../models/planning-collaboration/PlanningView.types';

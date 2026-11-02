@@ -1,3 +1,4 @@
+// @harness-uid u_nedvauz2kc
 import { mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Git } from '../../../../utils/planning-collaboration/planGit';

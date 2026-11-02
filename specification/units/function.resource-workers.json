@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "function.resource-workers",
+	"uid": "u_oqgfr3u2od",
 	"kind": "function",
 	"title": "resourceWorkers",
 	"responsibility": "Bounds test and native worker concurrency by the managed CPU reservation and partitions memory for child workers.",

@@ -1,3 +1,4 @@
+// @harness-uid u_cmhcvcbkcz
 export interface RunnerEvent {
 	type?: string;
 	subtype?: string;

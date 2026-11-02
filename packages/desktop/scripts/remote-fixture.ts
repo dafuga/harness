@@ -1,3 +1,4 @@
+// @harness-uid u_vl65zt7f6z
 /**
  * TEST ONLY. Runs the disposable remote fixture until it is told to stop.
  *

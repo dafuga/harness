@@ -1,3 +1,4 @@
+// @harness-uid u_uo6mdaup3p
 import type { Guard } from './browserEvidenceReads.types';
 import { evidencePayload } from '../../../utils/verification-evidence/evidencePayload';
 import { browserArtifact } from './browserArtifact';

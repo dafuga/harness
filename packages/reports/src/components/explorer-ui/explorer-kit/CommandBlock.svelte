@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
+<!-- @harness-uid u_chfbh7n647 -->
 <script lang="ts">
 	/** A labelled command for the reader to copy and run. */
 	let { label, command }: { label: string; command: string } = $props();

@@ -1,3 +1,4 @@
+// @harness-uid u_lyivsufqmy
 export interface UsageExample {
 	name: string;
 	description?: string;

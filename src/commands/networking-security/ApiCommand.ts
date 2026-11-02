@@ -1,3 +1,4 @@
+// @harness-uid u_wwm52olrk7
 import { PermissionsCommand } from './PermissionsCommand';
 import type { Command } from 'commander';
 import { runApi } from '../../workflows/networking-security/runApi';

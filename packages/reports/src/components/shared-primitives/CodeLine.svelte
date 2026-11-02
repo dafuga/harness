@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ./atoms -->
+<!-- @harness-uid u_tbet4rd6sx -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	let {

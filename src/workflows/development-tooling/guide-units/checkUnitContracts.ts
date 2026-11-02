@@ -1,3 +1,4 @@
+// @harness-uid u_2vijyzl6y3
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import type {
 	ContractCheckReport,

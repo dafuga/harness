@@ -1,3 +1,4 @@
+// @harness-uid u_vhwqsfglmz
 import { redirect, type ServerLoadEvent } from '@sveltejs/kit';
 import {
 	consoleCanonical,

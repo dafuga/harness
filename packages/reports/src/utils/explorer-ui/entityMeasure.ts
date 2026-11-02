@@ -1,3 +1,4 @@
+// @harness-uid u_qspboqkqoj
 export const notMeasured = 'Not measured';
 
 /** The most a timing may worsen against its baseline under the recorded policy. */

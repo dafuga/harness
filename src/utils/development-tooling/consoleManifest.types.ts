@@ -1,3 +1,4 @@
+// @harness-uid u_y4otjucbb7
 export interface ConsoleFileEntry {
 	path: string;
 	/** Content the file had when this record was written. */

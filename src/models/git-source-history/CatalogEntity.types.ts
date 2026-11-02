@@ -1,3 +1,4 @@
+// @harness-uid u_vcjxqjnsy2
 import type { RevisionRegistry } from '../../utils/revisionRegistry';
 export interface CatalogEntityAttributes {
 	id: string;

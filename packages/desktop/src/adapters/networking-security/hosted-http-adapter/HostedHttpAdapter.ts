@@ -1,3 +1,4 @@
+// @harness-uid u_3aonxezbbl
 import type { RemoteHttpOptions, NativeHostedCredential } from './HostedHttpAdapter.types';
 import { hostedPublicFailure } from './hostedPublicFailure';
 import { HostedFailureValidator } from '../../../validators/development-tooling/HostedFailureValidator';

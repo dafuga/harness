@@ -1,3 +1,4 @@
+// @harness-uid u_clpbugoauy
 import type { Flags } from './ExplainCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';

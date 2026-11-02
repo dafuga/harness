@@ -1,3 +1,4 @@
+// @harness-uid u_wxvvjf6ytk
 import { defineConfig } from '@playwright/test';
 // The shell is looked at alone: its specs build their fixture pages themselves and answer their
 // requests from those files, so this run starts no server, seeds nothing and builds no application.

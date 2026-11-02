@@ -1,3 +1,4 @@
+// @harness-uid u_num6plgqhn
 export interface HistoryOptions {
 	root?: string;
 	/** Source commit; `HEAD` by default. */

@@ -1,3 +1,4 @@
+// @harness-uid u_647rlbmk5r
 export interface PackageManifest {
 	harness?: {
 		kind?: string;

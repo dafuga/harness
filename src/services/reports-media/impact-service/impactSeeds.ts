@@ -1,3 +1,4 @@
+// @harness-uid u_5xyk6edmo2
 import type { Sides } from './impactSeeds.types';
 import type { ImpactSeeds } from '../../../utils/reports-media/impactSeeds';
 import type { ImpactSide } from '../../../core/development-tooling/impactTypes';

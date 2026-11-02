@@ -1,3 +1,4 @@
+// @harness-uid u_jam4h5qd3c
 import type { BrowserWindow, Dialog } from 'electron';
 
 /**

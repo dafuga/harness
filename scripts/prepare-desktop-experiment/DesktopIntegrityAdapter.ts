@@ -1,3 +1,4 @@
+// @harness-uid u_l7px42gm2o
 import {
 	calculateIntegrityDigestForApp,
 	getStoredIntegrityDigestForApp,

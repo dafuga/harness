@@ -1,3 +1,4 @@
+// @harness-uid u_trkn3na7a6
 const purposes: Record<string, string> = {
 	adapter: 'integration boundary',
 	audit: 'audit rule',

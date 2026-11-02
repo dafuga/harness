@@ -1,3 +1,4 @@
+// @harness-uid u_u4ayhuatau
 import type { ProjectSelection, LoadedWorkspace } from './loadWorkspace.types';
 import { offlineCapabilities } from '../cache-status/cacheStatus';
 import { offlineView } from './offlineView';

@@ -1,3 +1,4 @@
+// @harness-uid u_bogxsnokin
 import type { Guide } from './guide';
 
 const unitGuide: Guide = {

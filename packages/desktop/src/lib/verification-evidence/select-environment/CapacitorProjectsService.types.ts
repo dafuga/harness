@@ -1,3 +1,4 @@
+// @harness-uid u_ksys4ssrwt
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 
 export interface CapacitorProjectsServiceConfig {

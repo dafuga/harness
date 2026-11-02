@@ -1,3 +1,4 @@
+// @harness-uid u_nfkgpmxa2k
 import type { Shown } from '../../../../../../src/workflows/runActivity';
 
 /** How often an open, visible page reads the activity again. */

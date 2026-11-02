@@ -1,3 +1,4 @@
+// @harness-uid u_jgq6f7vugv
 import type { AuditProfile } from './adapters/types';
 import { fail } from '../../core/development-tooling/errors';
 

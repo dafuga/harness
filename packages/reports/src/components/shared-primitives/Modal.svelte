@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms atoms -->
+<!-- @harness-uid u_f6xsfq2f7u -->
 <script lang="ts">
 	import { t } from '../../utils/reports-media/reportLocale';
 	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';

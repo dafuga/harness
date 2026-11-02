@@ -1,3 +1,4 @@
+// @harness-uid u_apgazitbvy
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { PlannedFile } from '../../core/development-tooling/files';

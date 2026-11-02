@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_dnjoijyxdh -->
 <script lang="ts">
 	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';
 	import Icon from '../shared-primitives/Icon.svelte';

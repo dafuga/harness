@@ -1,3 +1,4 @@
+// @harness-uid u_w644fgsfkp
 const marker = 'harness-build:';
 
 /** Every stamp slot, filled or empty, in emitted text. */

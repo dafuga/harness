@@ -1,3 +1,4 @@
+// @harness-uid u_pwz45or2gk
 import { readFile, readdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';

@@ -1,3 +1,4 @@
+// @harness-uid u_k4g4widopi
 import type { UnitsOptions, IndexReport, CheckReport } from './manageUnits.types';
 import { fail } from '../../core/development-tooling/errors';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';

@@ -1,3 +1,4 @@
+// @harness-uid u_whjk3tinmf
 import type { BrowserWindow, Dialog } from 'electron';
 
 /** The folder a person picks to open as a project, or null when they cancel. */

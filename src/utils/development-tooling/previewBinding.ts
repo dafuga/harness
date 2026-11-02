@@ -1,3 +1,4 @@
+// @harness-uid u_ng3nnm43em
 import type { PreviewUnit } from './previewBinding.types';
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_loznhwt6rd
 import type {
 	AddCommentInput,
 	CommittedThread

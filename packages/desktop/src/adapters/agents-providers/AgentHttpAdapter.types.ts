@@ -1,3 +1,4 @@
+// @harness-uid u_5gsnsmohic
 export interface AgentCall {
 	method: string;
 	input: unknown;

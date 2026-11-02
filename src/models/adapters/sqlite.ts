@@ -1,3 +1,4 @@
+// @harness-uid u_xpj75g7lc6
 import { createSqliteAdapter as createAdapter } from '../../adapters/development-tooling/SqliteAdapter';
 import type { SqliteDatabase, SqliteModel } from '../../core/development-tooling/sqliteTypes';
 

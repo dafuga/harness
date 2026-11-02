@@ -1,3 +1,4 @@
+// @harness-uid u_uieudvnyn4
 import { execFileSync } from 'node:child_process';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';

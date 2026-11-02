@@ -1,3 +1,4 @@
+// @harness-uid u_br2qr2lnu4
 import type { Guide } from './guide';
 
 const consoleGuide: Guide = {

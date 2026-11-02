@@ -1,3 +1,4 @@
+// @harness-uid u_23u6t7kx2y
 import type { EvidenceArtifactQuery } from '../../models/verification-evidence/DesktopEvidence.types';
 import type { HarnessCapture } from '$reports/models/Harness.types';
 

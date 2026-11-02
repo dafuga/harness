@@ -1,3 +1,4 @@
+// @harness-uid u_zokxbdpdqy
 export interface LegacyImport {
 	imported: Array<{
 		id: string;

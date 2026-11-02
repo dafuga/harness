@@ -1,3 +1,4 @@
+// @harness-uid u_arxzzgdklm
 import type { MiraAsset, MiraFinding } from './MiraReportAdapter.types';
 import { dirname, join } from 'node:path';
 import { readFile } from 'node:fs/promises';

@@ -1,3 +1,4 @@
+// @harness-uid u_jeu6jsmjv2
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { ModuleDefinition } from './moduleDefinition.types';

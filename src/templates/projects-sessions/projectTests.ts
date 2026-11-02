@@ -1,3 +1,4 @@
+// @harness-uid u_lvygt5wabn
 import { browserTestFiles } from '../development-tooling/browserTest';
 import type { PlannedFile } from '../../core/development-tooling/files';
 export function appTestFiles(): PlannedFile[] {

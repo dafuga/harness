@@ -1,3 +1,4 @@
+// @harness-uid u_gcekeayfpt
 import { pending } from '../../../utils/explorer-ui/createdThread';
 import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 import type { EntityDetail, ThreadInfo } from '../../../models/development-tooling/Desktop.types';

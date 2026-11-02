@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_lirnuc45of -->
 <script lang="ts">
 	import type { HarnessGroupProps } from './HarnessGroup.types';
 	import HarnessIcon from './HarnessIcon.svelte';

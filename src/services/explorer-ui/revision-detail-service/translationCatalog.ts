@@ -1,3 +1,4 @@
+// @harness-uid u_gndb6l2t6f
 import type { TranslationScan } from './translationCatalog.types';
 import { posix } from 'node:path';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';

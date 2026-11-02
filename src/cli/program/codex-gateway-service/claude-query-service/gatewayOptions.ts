@@ -1,3 +1,4 @@
+// @harness-uid u_yd66khjflp
 import type { Options } from '@anthropic-ai/claude-agent-sdk';
 import type { GatewaySession } from '../../../../utils/development-tooling/gatewayTypes';
 

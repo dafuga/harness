@@ -1,3 +1,4 @@
+// @harness-uid u_yy3k3smxbp
 import type { PairingContext, PairingKeys, PairingKind } from './pairingEnvelope.types';
 import {
 	bytesText,

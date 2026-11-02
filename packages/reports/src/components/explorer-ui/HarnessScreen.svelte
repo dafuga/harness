@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_fc4w36sfvc -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';

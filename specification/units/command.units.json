@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "command.units",
+	"uid": "u_wlq5ngskje",
 	"kind": "command",
 	"title": "UnitsCommand",
 	"responsibility": "Owns the UnitsCommand command registration.",
@@ -57,6 +58,11 @@
 	"dependencies": [
 		{
 			"unit": "entry.program-units-guidance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "entry.program-units-uid",
 			"via": "import",
 			"origin": "derived"
 		},

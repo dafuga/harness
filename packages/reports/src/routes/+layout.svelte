@@ -1,5 +1,6 @@
 <!-- @harness-tier layout -->
 <!-- @harness-atoms ../components/shared-primitives/atoms -->
+<!-- @harness-uid u_3vi7lc3waa -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';

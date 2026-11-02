@@ -1,3 +1,4 @@
+// @harness-uid u_qlooojeoiy
 import { execFileSync } from 'node:child_process';
 import { readlinkSync } from 'node:fs';
 import type { CpuSnapshot } from '../../../../../../src/utils/cpuMetrics';

@@ -1,3 +1,4 @@
+// @harness-uid u_jyqw3fptyh
 import type { ActivityReading } from '../../../utils/projects-sessions/activityReading';
 import { readingAge } from '../../../utils/projects-sessions/activityReading';
 import type { AgentEntry, AgentRoster } from '../../../../../../src/core/activityTypes';

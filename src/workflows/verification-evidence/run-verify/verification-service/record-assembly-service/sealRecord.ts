@@ -1,3 +1,4 @@
+// @harness-uid u_ra27dwoz42
 import type { Side } from './sealRecord.types';
 import type { ImpactReport } from '../../../../../core/development-tooling/impactTypes';
 import type {

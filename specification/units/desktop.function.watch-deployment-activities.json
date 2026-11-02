@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.watch-deployment-activities",
+	"uid": "u_y3zhqkah5v",
 	"kind": "function",
 	"title": "watchDeploymentActivities",
 	"responsibility": "Polls host-wide deployment jobs, rejects stale replies and returns a cleanup function.",

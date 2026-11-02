@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_ddz5km6hyp -->
 <script lang="ts">
 	let { label = 'Plan' }: { label?: string } = $props();
 </script>

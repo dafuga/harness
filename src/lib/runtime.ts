@@ -1,3 +1,4 @@
+// @harness-uid u_cdjnlfhfw6
 /**
  * Public runtime contract of Harness: one typed request and response, carried by a module,
  * a core Wasm module, a native JSON process or an HTTP service.

@@ -1,3 +1,4 @@
+// @harness-uid u_kcfdbqf67h
 import { relayCloseCodes } from '../../../../../remote/src/index';
 import type { HostSocketsAdapter } from './HostSocketsAdapter';
 import type { HostStorageAdapter } from './HostStorageAdapter';

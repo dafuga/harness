@@ -1,3 +1,4 @@
+// @harness-uid u_b7hlwurone
 import type { ResourceContext } from '../../../../../src/core/execution-runtimes/resourceTypes';
 
 export interface ProcessOptions {

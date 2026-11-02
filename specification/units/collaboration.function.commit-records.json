@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "collaboration.function.commit-records",
+	"uid": "u_lm4mwu7z3a",
 	"kind": "function",
 	"title": "Create a collaboration records commit",
 	"responsibility": "Write serialized records as a Git blob and tree, then create a commit without moving a branch.",

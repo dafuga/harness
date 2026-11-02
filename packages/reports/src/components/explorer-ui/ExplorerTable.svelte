@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_wa26dzwmqo -->
 <script lang="ts">
 	import '../../lib/styles/gallery.css';
 	import { tick } from 'svelte';

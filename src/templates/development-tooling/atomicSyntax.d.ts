@@ -1,3 +1,4 @@
+// @harness-uid u_gdranbq6zx
 import type { AST } from 'svelte/compiler';
 export function atomicSyntax(content: string): {
 	tree: AST.Root;

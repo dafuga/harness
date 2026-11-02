@@ -1,3 +1,4 @@
+// @harness-uid u_3kncmpwgff
 import type { RecordInput } from '../../models/reports-media/Report.types';
 import { safeId } from '../../utils/reports-media/reportFiles';
 const kinds = new Set([

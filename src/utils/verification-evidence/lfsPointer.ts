@@ -1,3 +1,4 @@
+// @harness-uid u_ij32lmvgck
 import type { LfsObject } from './lfsPointer.types';
 const header = 'version https://git-lfs.github.com/spec/v1';
 

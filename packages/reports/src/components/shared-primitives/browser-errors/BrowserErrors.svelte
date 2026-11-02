@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../atoms -->
+<!-- @harness-uid u_mhwfmcdigo -->
 <script lang="ts">
 	import type { BrowserDiagnostic } from '../../../../../../src/core/browserDiagnostics';
 	import { browserErrorRows } from './browserErrorRows';

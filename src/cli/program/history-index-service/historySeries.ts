@@ -1,3 +1,4 @@
+// @harness-uid u_2bddrhsdeo
 import type { Growth, Point, Head, Line } from './historySeries.types';
 import type { BenchmarkSeries } from '../../../core/git-source-history/historyIndexTypes';
 import type {

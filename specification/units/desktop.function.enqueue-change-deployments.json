@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.function.enqueue-change-deployments",
+	"uid": "u_idkkpeldgg",
 	"kind": "function",
 	"title": "enqueueChangeDeployments",
 	"responsibility": "Queues an ordered automatic deployment chain for a verified source commit, capped at preprod.",

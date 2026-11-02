@@ -1,3 +1,4 @@
+// @harness-uid u_4egzpjwwgu
 import type { ProjectIdentity } from '../ProjectContext.types';
 import type { ProjectCapabilities } from '../ProjectContext.types';
 import type { CacheProvenance } from '../ProjectContext.types';

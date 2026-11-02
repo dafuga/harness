@@ -1,3 +1,4 @@
+// @harness-uid u_bcyhhxpyew
 import { rmSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { scanMarker } from './ios-acceptance-guards';

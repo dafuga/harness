@@ -1,3 +1,4 @@
+// @harness-uid u_2nxcdxdgzt
 import type { IsolatedRun, IsolatedResult, Outcome, Running } from './runIsolated.types';
 export type { IsolatedRun, IsolatedResult, Outcome, Followed, Running } from './runIsolated.types';
 import { createHash } from 'node:crypto';

@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_rraeioaknx -->
 <script lang="ts">
 	import type { ThreadInfo } from '../../../models/development-tooling/Desktop.types';
 	import { sameImage } from './threadAnchor';

@@ -1,3 +1,4 @@
+// @harness-uid u_c2t7k34ez4
 import type { ThreadTarget } from '../../../utils/explorer-ui/threadAnchor';
 
 export function sameImage(left: ThreadTarget | null, right: ThreadTarget): boolean {

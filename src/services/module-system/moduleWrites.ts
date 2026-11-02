@@ -1,3 +1,4 @@
+// @harness-uid u_q4pgeipyxk
 import { lstat, readFile, realpath, mkdir, writeFile, unlink } from 'node:fs/promises';
 import { dirname, join, resolve, relative } from 'node:path';
 import type { PlannedFile } from '../../core/development-tooling/files';

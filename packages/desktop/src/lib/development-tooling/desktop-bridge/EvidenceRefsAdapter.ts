@@ -1,3 +1,4 @@
+// @harness-uid u_tsnp64xshg
 import type { CurrentRefs, PinnedRevisions } from './EvidenceRefsAdapter.types';
 import { createHash } from 'node:crypto';
 import { commitPattern } from '../../../utils/development-tooling/ipcFields';

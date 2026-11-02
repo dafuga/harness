@@ -1,3 +1,4 @@
+// @harness-uid u_iw2ceqwbol
 export interface PersistedReasons {
 	commit: string;
 	/** The revision the changes are measured from; null for an empty starting point. */

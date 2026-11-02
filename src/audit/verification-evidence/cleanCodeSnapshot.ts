@@ -1,3 +1,4 @@
+// @harness-uid u_i6qsyhxhun
 import type { SnapshotInput, ReviewSnapshot, SnapshotState } from './cleanCodeSnapshot.types';
 import { extname } from 'node:path';
 import {

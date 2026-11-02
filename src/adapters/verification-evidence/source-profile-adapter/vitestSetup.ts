@@ -1,3 +1,4 @@
+// @harness-uid u_bn7p57ftpt
 import { afterAll } from 'vitest';
 import { flushSourceProfiles } from './profileRuntime';
 

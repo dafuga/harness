@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "collaboration.function.github-raw-many",
+	"uid": "u_5tivdvcxfo",
 	"kind": "function",
 	"title": "Batch immutable source reads",
 	"responsibility": "Build a batched raw reader that shares cached promises with single-file reads.",

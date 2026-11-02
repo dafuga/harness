@@ -1,3 +1,4 @@
+// @harness-uid u_3mhqxui72b
 import { ModuleCatalogService } from '../../services/module-system/ModuleCatalogService';
 import type { ModuleCatalog } from '../../services/module-system/moduleDefinition.types';
 import { moduleOutputPath } from '../../services/module-system/moduleWrites';

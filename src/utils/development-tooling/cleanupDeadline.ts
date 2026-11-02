@@ -1,3 +1,4 @@
+// @harness-uid u_jb3ndhqgrw
 import type { CleanupDeadline } from './cleanupDeadline.types';
 import { clearTimeout, setTimeout } from 'node:timers';
 

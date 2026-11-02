@@ -1,3 +1,4 @@
+// @harness-uid u_avag2hi7wd
 export interface BuildOptions {
 	root?: string;
 	/** Output directory for the index, the revision details and the media. */

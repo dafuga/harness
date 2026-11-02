@@ -1,3 +1,4 @@
+// @harness-uid u_at4omr5js3
 import type {
 	Offer,
 	HostPairingOptions,

@@ -1,3 +1,4 @@
+// @harness-uid u_e6xbaornin
 import type { Measured, Told } from './explorerHistory.types';
 import type { ExplorerHistoryRow, ExplorerScope } from '../../../models/explorer-ui/Explorer.types';
 import type {

@@ -1,3 +1,4 @@
+// @harness-uid u_5g22klsioo
 /** One process as the system shows it at this moment. */
 export interface ProcessFacts {
 	parent: number;

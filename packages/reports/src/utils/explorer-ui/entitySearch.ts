@@ -1,3 +1,4 @@
+// @harness-uid u_iam4aai4s2
 import { type ExplorerCategory } from '../../../../../src/utils/explorerRoute';
 
 /** What one entity of one revision offers to be searched: never a source path. */

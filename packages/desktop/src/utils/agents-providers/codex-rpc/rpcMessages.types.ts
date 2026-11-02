@@ -1,3 +1,4 @@
+// @harness-uid u_5nixbr5ktz
 import type { RpcPending } from '../rpcMessages';
 import type { RpcEvent } from '../rpcMessages';
 

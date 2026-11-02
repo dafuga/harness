@@ -1,3 +1,4 @@
+// @harness-uid u_7vkwwelmby
 import type { ProjectActivity } from '../../core/projects-sessions/activityTypes';
 import type { LoopState } from '../../core/development-tooling/loopTypes';
 

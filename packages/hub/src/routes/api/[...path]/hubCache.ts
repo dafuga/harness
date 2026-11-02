@@ -1,3 +1,4 @@
+// @harness-uid u_uzcs7tu4po
 import type { CacheEntry, CollaborationCache } from 'collaboration';
 
 /** R2 is a disposable projection store. Authority always comes from GitHub before use. */

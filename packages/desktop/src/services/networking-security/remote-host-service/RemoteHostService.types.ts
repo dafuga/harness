@@ -1,3 +1,4 @@
+// @harness-uid u_ddpgjue5tc
 import type { RemoteHostStoreAdapter } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 import type { RegisterRemoteHost } from '../../../utils/networking-security/remoteHostIdentity';
 import type { RemoteSocket } from '../../../../../remote/src/index';

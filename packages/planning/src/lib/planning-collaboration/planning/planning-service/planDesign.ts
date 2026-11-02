@@ -1,3 +1,4 @@
+// @harness-uid u_ylixwcfuzh
 import { readImage } from '../../../../utils/planning-collaboration/plan-design/readImage';
 import { planIdentity } from '../../../../utils/planning-collaboration/planIdentity';
 import { planImageCodec as decode } from '../../../../utils/planning-collaboration/planImageCodec';

@@ -1,3 +1,4 @@
+// @harness-uid u_awgc7bxsts
 import type { HubApiRuntime } from '../../../utils/networking-security/hubRuntime';
 import { createCollaboration, createGitHubRepository, createGitHubSource } from 'collaboration';
 import type { HubEnv } from '../../../configs/development-tooling/hubEnvConfig';

@@ -1,3 +1,4 @@
+// @harness-uid u_gubrqjsdip
 import { format } from 'node:util';
 
 /**

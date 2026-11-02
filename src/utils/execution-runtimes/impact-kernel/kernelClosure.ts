@@ -1,3 +1,4 @@
+// @harness-uid u_vmwj4hjwje
 import type { Reached, Indexed } from './kernelClosure.types';
 import type {
 	AffectedNode,

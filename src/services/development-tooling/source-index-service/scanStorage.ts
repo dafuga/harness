@@ -1,3 +1,4 @@
+// @harness-uid u_ude6avnxc2
 import ts from 'typescript';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import { parameterDefault } from '../../../utils/development-tooling/parameterDefault';

@@ -1,3 +1,4 @@
+// @harness-uid u_nmkar6fhpv
 import type { ExplorerLocation } from '../../../models/explorer-ui/Explorer.types';
 
 /** No helper, section or tab is carried over from the selected route. */

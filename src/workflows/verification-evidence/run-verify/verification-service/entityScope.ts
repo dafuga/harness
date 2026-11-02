@@ -1,3 +1,4 @@
+// @harness-uid u_7qp73gyvnu
 import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
 import type { PlannedCheck } from '../../../../utils/verification-evidence/verifyPlan';
 import { fail } from '../../../../core/development-tooling/errors';

@@ -1,3 +1,4 @@
+// @harness-uid u_fcrdtoyvut
 import type { Command } from 'commander';
 import { runReport } from './run-report/runReport';
 export function registerReportCommand(program: Command): void {

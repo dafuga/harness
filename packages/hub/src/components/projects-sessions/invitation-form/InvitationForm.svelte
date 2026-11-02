@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_fawmjo2keq -->
 <script lang="ts">
 	import { formatTime } from '$reports/helpers/strings/formatTime';
 	import Select from '$shared/Select.svelte';

@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
+<!-- @harness-uid u_xfqts6732t -->
 <script lang="ts">
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';

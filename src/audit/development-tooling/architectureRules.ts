@@ -1,3 +1,4 @@
+// @harness-uid u_nvhh255spf
 import { join } from 'node:path';
 import type { AuditFinding } from './types';
 import ts from 'typescript';

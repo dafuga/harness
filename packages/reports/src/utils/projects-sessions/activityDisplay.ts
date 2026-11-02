@@ -1,3 +1,4 @@
+// @harness-uid u_ohctlckx5a
 import type { AgentState } from '../../../../../src/core/activityTypes';
 
 /** What each state of a registered agent is called. */

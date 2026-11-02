@@ -1,3 +1,4 @@
+// @harness-uid u_7534zuwg3x
 /** @pure Format a recorded instant in the reader's locale, retaining the caller's fallback. */
 export function formatTime(
 	instant: string | null,

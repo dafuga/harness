@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "collaboration.function.create-git-hub-repository",
+	"uid": "u_psyobbtuku",
 	"kind": "function",
 	"title": "Store collaboration records on a private branch",
 	"responsibility": "Build a repository adapter that reads validated records and updates their branch with compare-and-swap writes.",

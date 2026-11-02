@@ -1,3 +1,4 @@
+// @harness-uid u_jrtyisgjb5
 import type { PendingComment } from './CommentOutboxService.types';
 import { randomUUID } from 'node:crypto';
 import { LocalDocumentAdapter } from '../../adapters/reports-media/LocalDocumentAdapter';

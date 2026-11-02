@@ -1,3 +1,4 @@
+// @harness-uid u_qym3at4l2e
 export {
 	D1AuthStoreAdapter,
 	createD1AuthStore
