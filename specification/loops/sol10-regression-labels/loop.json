@@ -2,7 +2,7 @@
 	"name": "sol10-regression-labels",
 	"goal": "Preserve historical fix labels and side-bound commit links through ComparePanes.",
 	"createdAt": "2026-11-02T04:22:36.833Z",
-	"updatedAt": "2026-11-02T04:22:38.265Z",
+	"updatedAt": "2026-11-02T04:40:28.239Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T04:40:07.525Z",
+			"evidence": "Formal red 4473a040ed5eaa17a12205755efd1c9c03ef75bc8b02456816adcb1290858a50 at 7007da196c fails the preserved Before fix and After fix labels across all viewports; side commit links and clicked destination stay asserted."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T04:40:28.239Z",
+			"evidence": "RegressionProof keeps Before fix and After fix status and output labels. Both labels, hashes and links still derive from each ComparePanes side context; strengthened tests are unchanged."
 		},
 		{
 			"id": "green",
