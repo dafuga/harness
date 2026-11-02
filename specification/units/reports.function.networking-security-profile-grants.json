@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.networking-security-profile-grants",
+	"kind": "function",
+	"title": "profileGrants",
+	"responsibility": "Selects permission declarations of one grant kind without inferring access.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/networking-security/explorer-permissions-screen/profileGrants.ts"
+		],
+		"symbols": ["profileGrants"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "profileGrants.profile",
+				"type": "ProfileEntry",
+				"required": true,
+				"description": "Profile whose own grant list is filtered; no inheritance or normalization is performed."
+			},
+			{
+				"name": "profileGrants.kind",
+				"type": "K",
+				"required": true,
+				"description": "Exact grant discriminator to select; no default is supplied."
+			}
+		],
+		"outputs": [
+			{
+				"name": "profileGrants",
+				"type": "GrantOfKind<K>[]",
+				"description": "Native filtered collection containing only the requested kind, preserving filter method and species behavior."
+			}
+		],
+		"errors": [
+			{
+				"name": "Input access failure",
+				"type": "propagated",
+				"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "profileGrants",
+				"inputs": [
+					{
+						"name": "profileGrants.profile",
+						"type": "ProfileEntry",
+						"required": true,
+						"description": "Profile whose own grant list is filtered; no inheritance or normalization is performed."
+					},
+					{
+						"name": "profileGrants.kind",
+						"type": "K",
+						"required": true,
+						"description": "Exact grant discriminator to select; no default is supplied."
+					}
+				],
+				"outputs": [
+					{
+						"name": "profileGrants",
+						"type": "GrantOfKind<K>[]",
+						"description": "Native filtered collection containing only the requested kind, preserving filter method and species behavior."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access failure",
+						"type": "propagated",
+						"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/networking-security/explorer-permissions-screen/profileGrants.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/networking-security/explorer-permissions-screen/profileGrants.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

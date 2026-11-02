@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.networking-security-permission-profile-location",
+	"kind": "function",
+	"title": "permissionProfileLocation",
+	"responsibility": "Links a permission profile in the shown branch and revision.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/networking-security/explorer-permissions-screen/permissionProfileLocation.ts"
+		],
+		"symbols": ["permissionProfileLocation"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "permissionProfileLocation.route",
+				"type": "ExplorerLocation",
+				"required": true,
+				"description": "Shown branch and revision; all other route fields are omitted."
+			},
+			{
+				"name": "permissionProfileLocation.entity",
+				"type": "string",
+				"required": false,
+				"description": "Optional declared profile ID. Omitted or empty selects the profile index."
+			}
+		],
+		"outputs": [
+			{
+				"name": "permissionProfileLocation",
+				"type": "ExplorerLocation",
+				"description": "A Pages permission route scoped to the same branch and commit, with a truthy profile ID when provided."
+			}
+		],
+		"errors": [
+			{
+				"name": "Input access failure",
+				"type": "propagated",
+				"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "permissionProfileLocation",
+				"inputs": [
+					{
+						"name": "permissionProfileLocation.route",
+						"type": "ExplorerLocation",
+						"required": true,
+						"description": "Shown branch and revision; all other route fields are omitted."
+					},
+					{
+						"name": "permissionProfileLocation.entity",
+						"type": "string",
+						"required": false,
+						"description": "Optional declared profile ID. Omitted or empty selects the profile index."
+					}
+				],
+				"outputs": [
+					{
+						"name": "permissionProfileLocation",
+						"type": "ExplorerLocation",
+						"description": "A Pages permission route scoped to the same branch and commit, with a truthy profile ID when provided."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access failure",
+						"type": "propagated",
+						"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/networking-security/explorer-permissions-screen/permissionProfileLocation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/networking-security/explorer-permissions-screen/permissionProfileLocation.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

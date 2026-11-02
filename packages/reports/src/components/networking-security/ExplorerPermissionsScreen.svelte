@@ -6,16 +6,17 @@
 	import DataTable from '../shared-primitives/DataTable.svelte';
 	import Card from '../explorer-ui/explorer-kit/Card.svelte';
 	import './ExplorerPermissionsScreen.css';
+	import { profileGrants } from './explorer-permissions-screen/profileGrants';
+	import { permissionProfileLocation } from './explorer-permissions-screen/permissionProfileLocation';
+	import { permissionUnitLocation } from './explorer-permissions-screen/permissionUnitLocation';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import EntityLink from '../explorer-ui/EntityLink.svelte';
 	import ExplorerFrame from '../explorer-ui/ExplorerFrame.svelte';
 	import type {
 		ApiGrant,
 		DataGrant,
-		GrantOfKind,
-		ExplorerPermissionsScreenProps,
 		ProfileEntry,
-		ProfileGrant
+		ExplorerPermissionsScreenProps
 	} from './ExplorerPermissionsScreen.types';
 	let host: ExplorerPermissionsScreenProps = $props();
 	let navigation = $derived({ route: host.route, href: host.lens.href, go: host.onroute });
@@ -28,26 +29,13 @@
 	// Every declaration naming the endpoint, each under the profile that makes it.
 	let declared = $derived(
 		profiles.flatMap((profile) =>
-			grants(profile, 'api')
+			profileGrants(profile, 'api')
 				.filter((grant) => grant.resource === host.endpoint)
 				.map((grant) => ({ profile, grant }))
 		)
 	);
-	function grants<K extends ProfileGrant['kind']>(profile: ProfileEntry, kind: K) {
-		return profile.grants.filter((grant): grant is GrantOfKind<K> => grant.kind === kind);
-	}
-	/** A profile screen at the shown branch and commit; no helper, section or tab is carried over. */
-	function at(entity?: string): ExplorerLocation {
-		const { branch, commit } = host.route;
-		const to: ExplorerLocation = { branch, commit, category: 'pages', screen: 'permissions' };
-		return entity ? { ...to, entity } : to;
-	}
-	/** The page of a unit this revision registers, under its own category; null for any other ID. */
-	function unit(id: string): ExplorerLocation | null {
-		const entity = host.entities.find((item) => item.id === id);
-		const { branch, commit } = host.route;
-		return entity ? { branch, commit, category: entity.category, entity: id } : null;
-	}
+	const at = (entity?: string) => permissionProfileLocation(host.route, entity);
+	const unit = (id: string) => permissionUnitLocation(host, id);
 </script>
 
 {#snippet link(to: ExplorerLocation, text: string, code = false)}
@@ -167,7 +155,7 @@
 	{@render gaps()}
 	<Card as="section" labelledby="perm-apis">
 		<hx-h2 id="perm-apis">API access</hx-h2>
-		{#each grants(profile, 'api') as grant, position (position)}
+		{#each profileGrants(profile, 'api') as grant, position (position)}
 			<hx-article class="ex-stack">
 				<hx-h3>{@render ref(grant.resource)}</hx-h3>
 				{@render access(grant, `${grant.resource} data access`)}
@@ -180,7 +168,7 @@
 	</Card>
 	<Card as="section" labelledby="perm-pages">
 		<hx-h2 id="perm-pages">Page access</hx-h2>
-		{#each grants(profile, 'page') as grant, position (position)}
+		{#each profileGrants(profile, 'page') as grant, position (position)}
 			<hx-p>{@render ref(grant.resource)} · {grant.actions.join(', ')}</hx-p>
 		{:else}
 			<EmptyState as="p" className="ex-empty explorer-permissions-screen-ex-empty"
@@ -190,7 +178,7 @@
 	</Card>
 	<Card as="section" labelledby="perm-data">
 		<hx-h2 id="perm-data">Data access</hx-h2>
-		{@render data(grants(profile, 'data'), `${profile.title} data access`)}
+		{@render data(profileGrants(profile, 'data'), `${profile.title} data access`)}
 	</Card>
 {/snippet}
 
