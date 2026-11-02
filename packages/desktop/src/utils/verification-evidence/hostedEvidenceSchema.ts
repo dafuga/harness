@@ -43,6 +43,7 @@ const side = obj({
 			scenario: name,
 			state: name,
 			capture,
+			recordId: s.optional(),
 			standing: z.enum(['fresh', 'inherited', 'rejected', 'unvalidated']),
 			usable: bool,
 			current: bool,
