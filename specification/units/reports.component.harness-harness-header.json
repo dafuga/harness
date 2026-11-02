@@ -66,7 +66,7 @@
 			{
 				"name": "HarnessHeader",
 				"type": "markup",
-				"description": "Navigation bar or legacy heading, followed by problem and missing-address alerts. It renders supplied state and performs no data fetching. States: missing-no-home: The missing-revision notice has no newest-commit recovery link. long-repository: The explorer navbar retains a long repository name."
+				"description": "Navigation bar or legacy heading, followed by problem and missing-address alerts. It renders supplied state and performs no data fetching. States: missing-no-home: The missing-revision notice has no newest-commit recovery link. long-repository: The explorer navbar retains a long repository name. base: Without navbar input, the header shows the Harness title, brand and Other views links."
 			}
 		],
 		"errors": [

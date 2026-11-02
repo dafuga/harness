@@ -28,6 +28,7 @@ function loadingStateProps(props: PreviewCases[string], variant: string) {
 }
 function actionProps(props: PreviewCases[string], variant: string) {
 	const changes: Record<string, object> = {
+		gold: { tone: 'gold' },
 		button: { href: undefined },
 		disabled: { disabled: true },
 		plain: { tone: 'plain' },
@@ -42,6 +43,7 @@ function iconProps(props: PreviewCases[string], variant: string) {
 	return { ...props, name: variant.replace('icon-', '') };
 }
 function verdictProps(props: PreviewCases[string], variant: string) {
+	if (variant === 'verdict') return { ...props, variant: 'verdict' };
 	const mode = statusModeProps(variant);
 	if (mode) return mode;
 	const failed = variant.startsWith('failed') || variant === 'long-open';

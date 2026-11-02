@@ -35,6 +35,7 @@ export const shellCatalogVariants: Record<string, string[]> = {
 	'reports.component.harness-entity-link': ['labelled', 'long', 'focused'],
 	'reports.component.harness-entity-missing': ['custom-action', 'long'],
 	'reports.component.harness-entity-relations': [
+		'both',
 		'empty',
 		'removed',
 		'used-in',
@@ -99,6 +100,7 @@ export const shellCatalogVariants: Record<string, string[]> = {
 	],
 	'reports.component.harness-explorer-pages-screen': ['empty', 'unindexed', 'search', 'no-matches'],
 	'reports.component.harness-harness-action': [
+		'gold',
 		'button',
 		'disabled',
 		'plain',
@@ -115,6 +117,7 @@ export const shellCatalogVariants: Record<string, string[]> = {
 		'unindexed'
 	],
 	'reports.component.harness-harness-header': [
+		'base',
 		'problem',
 		'missing',
 		'missing-no-home',
@@ -137,6 +140,8 @@ export const shellCatalogVariants: Record<string, string[]> = {
 	],
 	'reports.component.harness-harness-selectors': ['comparison', 'empty', 'tip', 'at-tip', 'long'],
 	'reports.component.harness-harness-verdict': [
+		'verdict',
+		'badge',
 		'failed',
 		'unknown',
 		'framed',

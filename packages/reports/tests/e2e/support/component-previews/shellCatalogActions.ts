@@ -96,7 +96,7 @@ async function sectionsState(component: Locator, variant: string) {
 	);
 }
 async function verdictState(component: Locator, variant: string) {
-	if (variant.startsWith('badge-')) {
+	if (variant === 'badge' || variant.startsWith('badge-')) {
 		await expect(component.locator('.badge')).toBeVisible();
 		return;
 	}

@@ -11,6 +11,7 @@ export const shellNavProps: Record<
 };
 
 function harnessHarnessHeaderProps(props: PreviewCases[string], variant: string) {
+	if (variant === 'base') return { ...props, navbar: null };
 	if (variant === 'problem')
 		return { ...props, problem: 'The selected history could not be loaded.' };
 	if (variant.startsWith('missing'))

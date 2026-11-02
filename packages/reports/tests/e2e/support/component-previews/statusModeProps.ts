@@ -2,6 +2,7 @@ import type { PreviewProps } from './shared.types';
 import { noop, text } from './shared';
 /** Preserve each former status renderer's realistic catalog inputs under one unit. */
 export function statusModeProps(variant: string): PreviewProps | null {
+	if (variant === 'badge') return { variant: 'badge', status: 'passed' };
 	if (variant.startsWith('badge-')) return { variant: 'badge', status: variant.slice(6) };
 	if (variant === 'run' || variant === 'run-idle')
 		return {

@@ -21,6 +21,7 @@ export async function assertCatalogBeforeCapture({
 		await expect(component.getByRole('link')).toHaveText(
 			'Review every recorded result for this selected revision'
 		);
+	await assertRequiredShellState(component, unit.id, variant);
 	await assertCatalogNames(component, unit.id, variant);
 	await assertCatalogState(component, unit.id, variant, viewport.id);
 	await assertPluginKitPreview(component, unit.id, variant);
@@ -68,4 +69,35 @@ async function assertCatalogNames(component: Locator, id: string, variant: strin
 		return titleBounds.left >= cardBounds.left && titleBounds.right <= cardBounds.right;
 	});
 	expect.soft(withinCard, 'The long component heading stays inside its card').toBe(true);
+}
+
+/** Each required prop state joins the normal desktop/tablet/mobile catalog test matrix. */
+async function assertRequiredShellState(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.harness-entity-relations' && variant === 'both') {
+		await expect(component.getByRole('region', { name: 'Used In', exact: true })).toBeVisible();
+		await expect(component.getByRole('region', { name: 'Uses', exact: true })).toBeVisible();
+	}
+	if (id === 'reports.component.harness-harness-action' && variant === 'gold') {
+		const action = component.getByRole('link');
+		await expect(action).toHaveClass(/\bgold\b/);
+		await expect(action).toHaveAttribute('href', /\S+/);
+		await expect(action).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+	}
+	if (id === 'reports.component.harness-harness-header' && variant === 'base') {
+		await expect(component.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
+		await expect(component.getByRole('navigation', { name: 'Other views' })).toBeVisible();
+		await expect(component.locator('.hx-navbar')).toHaveCount(0);
+	}
+	if (id === 'reports.component.harness-harness-verdict' && variant === 'verdict') {
+		const mark = component.locator('.hx-verdict');
+		await expect(mark).toHaveClass(/\bpassed\b/);
+		await expect(mark.getByRole('button')).toHaveAttribute('aria-expanded', 'false');
+		await expect(component.locator('.badge')).toHaveCount(0);
+	}
+	if (id === 'reports.component.harness-harness-verdict' && variant === 'badge') {
+		await expect(component.locator('.badge')).toHaveClass(/\bpassed\b/);
+		await expect(component.locator('.badge')).toContainText('Passed');
+		await expect(component.locator('.badge [aria-hidden="true"]')).toHaveText('●');
+		await expect(component.locator('.hx-verdict')).toHaveCount(0);
+	}
 }

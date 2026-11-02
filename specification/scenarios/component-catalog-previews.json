@@ -4530,6 +4530,12 @@
 			"units": ["reports.component.harness-entity-relations"]
 		},
 		{
+			"id": "reports-component-harness-entity-relations-both",
+			"title": "Used In and Uses: both",
+			"coverage": "required",
+			"units": ["reports.component.harness-entity-relations"]
+		},
+		{
 			"id": "reports-component-harness-entity-relations-empty",
 			"title": "Used In and Uses: empty",
 			"units": ["reports.component.harness-entity-relations"],
@@ -5070,6 +5076,12 @@
 			"units": ["reports.component.harness-harness-action"]
 		},
 		{
+			"id": "reports-component-harness-harness-action-gold",
+			"title": "Explorer action: gold",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-action"]
+		},
+		{
 			"id": "reports-component-harness-harness-action-button",
 			"title": "Explorer action: button",
 			"units": ["reports.component.harness-harness-action"],
@@ -5150,6 +5162,12 @@
 		{
 			"id": "reports-component-harness-harness-header",
 			"title": "Explorer header and notices",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-header"]
+		},
+		{
+			"id": "reports-component-harness-harness-header-base",
+			"title": "Explorer header and notices: base",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-header"]
 		},
@@ -5580,6 +5598,18 @@
 			"units": ["reports.component.harness-harness-verdict"]
 		},
 		{
+			"id": "reports-component-harness-harness-verdict-verdict",
+			"title": "Status: verdict",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-harness-verdict-badge",
+			"title": "Status: badge",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
 			"id": "reports-component-harness-harness-verdict-failed",
 			"title": "Verification verdict indicator: failed",
 			"units": ["reports.component.harness-harness-verdict"],
@@ -5809,7 +5839,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen · Playwright empty",
+			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -5863,13 +5893,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen · playwright",
+			"title": "ExplorerModulesScreen \u00b7 playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen · headless-audio",
+			"title": "ExplorerModulesScreen \u00b7 headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -8703,6 +8733,7 @@
 				"reports-component-harness-entity-overview",
 				"reports-component-harness-entity-reasons",
 				"reports-component-harness-entity-relations",
+				"reports-component-harness-entity-relations-both",
 				"reports-component-harness-entity-relations-empty",
 				"reports-component-harness-entity-relations-removed",
 				"reports-component-harness-entity-relations-used-in",
@@ -8793,6 +8824,7 @@
 				"reports-component-harness-explorer-table-apis",
 				"reports-component-harness-explorer-table-platforms",
 				"reports-component-harness-harness-action",
+				"reports-component-harness-harness-action-gold",
 				"reports-component-harness-harness-action-button",
 				"reports-component-harness-harness-action-disabled",
 				"reports-component-harness-harness-action-plain",
@@ -8807,6 +8839,7 @@
 				"reports-component-harness-harness-console-missing",
 				"reports-component-harness-harness-console-unindexed",
 				"reports-component-harness-harness-header",
+				"reports-component-harness-harness-header-base",
 				"reports-component-harness-harness-header-problem",
 				"reports-component-harness-harness-header-missing",
 				"reports-component-harness-harness-header-missing-no-home",
@@ -8878,6 +8911,8 @@
 				"reports-component-harness-harness-shell",
 				"reports-component-harness-harness-tabs",
 				"reports-component-harness-harness-verdict",
+				"reports-component-harness-harness-verdict-verdict",
+				"reports-component-harness-harness-verdict-badge",
 				"reports-component-harness-harness-verdict-failed",
 				"reports-component-harness-harness-verdict-unknown",
 				"reports-component-harness-harness-verdict-framed",
