@@ -13,6 +13,7 @@ import { desktopControls } from './desktopControls';
 import { desktopRuntime, gameCases } from './desktopRuntime';
 import { deploymentCases, deploymentVariantProps } from './deployments';
 import { coveragePanelVariantProps } from './coveragePanelVariants';
+import { measuresPanelVariantProps } from './measuresPanelVariants';
 import { remotePreview } from './remote.svelte';
 import { hubPreview } from './hub.svelte';
 import { routeFixture } from './routePages';
@@ -119,6 +120,7 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (presentation) return presentation;
 	if (id === 'desktop.component.deployment-details') return deploymentVariantProps(props, variant);
 	if (id === 'desktop.component.coverage-panel') return coveragePanelVariantProps(props, variant);
+	if (id === 'desktop.component.measures-panel') return measuresPanelVariantProps(props, variant);
 	if (id.startsWith('desktop.component.')) return props;
 	const report = reportVariantProps(id, props, variant);
 	if (report) return report;
