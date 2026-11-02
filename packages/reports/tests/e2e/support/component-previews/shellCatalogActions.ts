@@ -99,6 +99,8 @@ async function verdictState(component: Locator, variant: string) {
 	}
 	if (variant.startsWith('run')) {
 		await expect(component.getByRole('status')).toContainText('Invoice approval review');
+		await expect(component.locator('.run-status')).toHaveCSS('display', 'flex');
+		await expect(component.locator('.run-status')).toHaveCSS('justify-content', 'space-between');
 		await expect(component.getByRole('button', { name: 'Cancel run' })).toHaveCount(
 			variant === 'run' ? 1 : 0
 		);
@@ -113,6 +115,8 @@ async function verdictState(component: Locator, variant: string) {
 			'icon-long'
 		].includes(variant);
 		await expect(component.getByRole('button')).toHaveText(failed ? '×' : '✓');
+		await expect(component.getByRole('button')).toHaveCSS('width', '24px');
+		await expect(component.getByRole('button')).toHaveCSS('height', '24px');
 		if (variant !== 'icon') {
 			await component.getByRole('button').focus();
 			await expect(component.getByRole('status')).toBeVisible();

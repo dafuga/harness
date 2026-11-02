@@ -105,6 +105,8 @@ live in eslint.reuse-allowlist.json; entries and counts may only shrink.
 Shared component preview states use their actual caller's stylesheet. At the catalog
 review checkpoint, assert the painted treatment of visual variants; tag, class and
 text assertions alone do not prove that the intended styles loaded.
+After consolidating components across apps, review every retained variant's caller
+context; a shared unit's app prefix does not establish it.
 
 ## Code Rules
 
