@@ -2,6 +2,8 @@ import { z } from 'zod';
 import { compositionSchema } from './composition';
 import { sourceContractSchema } from './contractSchemas';
 
+/** The stable id of a unit: `u_` and ten base32 letters. */
+export const uidPattern = /^u_[a-z2-7]{10}$/;
 export const unitIdPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const identifier = z
 	.string()
@@ -102,6 +104,8 @@ export const executionTargetSchema = z.strictObject({
 export const componentManifestSchema = z.strictObject({
 	schemaVersion: z.literal(1),
 	id: identifier,
+	/** Stable identity written in the unit's source files; paths and ids may change around it. */
+	uid: z.string().regex(uidPattern, 'must be u_ and ten base32 letters').optional(),
 	kind: identifier,
 	title: text,
 	responsibility: text,

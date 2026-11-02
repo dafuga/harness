@@ -54,6 +54,8 @@ export interface SourceFile {
 	language: SourceLanguage;
 	classification: FileClass;
 	workspace: string;
+	/** The unit uid the file announces in its first lines. */
+	uid?: string;
 	/** Conventional unit identity of a source file, before registry ownership is applied. */
 	identity?: { id: string; kind: string; name: string };
 	/** False when the file was not read: nothing is known about its content, not even its size. */

@@ -10,6 +10,7 @@ export interface SourceIndex {
 export interface Parsed {
 	storage?: SourceFile['storage'];
 	composition?: SourceFile['composition'];
+	uid?: string;
 	execution: NonNullable<SourceFile['execution']>;
 	bytes: number;
 	lines: number;

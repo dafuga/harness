@@ -11,6 +11,7 @@ import type { SourceIndex } from '../../../../services/development-tooling/sourc
 export class UnitIndexService {
 	index(index: SourceIndex, existing: ComponentManifest[]): UnitIndexResult {
 		const registry = this.registry(modelCompanions(index, existing));
+		this.adoptUids(registry, index);
 		const pending = this.claim(registry, this.groups(index));
 		this.place(registry, pending, index);
 		this.refresh(registry, index);
@@ -47,9 +48,33 @@ export class UnitIndexService {
 			const identity = companionIdentity(file, index);
 			const group = groups.get(identity.id) ?? { ...identity, files: [] };
 			group.files.push(file);
+			if (file.uid && !group.uid) group.uid = file.uid;
 			groups.set(identity.id, group);
 		}
-		return [...groups.values()].sort((left, right) => (left.id < right.id ? -1 : 1));
+		return mergedByUid([...groups.values()].sort((left, right) => (left.id < right.id ? -1 : 1)));
+	}
+
+	/**
+	 * A file that announces the uid of a registered unit belongs to that unit wherever it lies, so
+	 * a moved or renamed file keeps its unit. A unit file that vanished is reported as moved.
+	 */
+	private adoptUids(registry: Registry, index: SourceIndex): void {
+		const byUid = new Map(
+			[...registry.byId.values()].flatMap((unit) =>
+				unit.status === 'active' && unit.uid ? [[unit.uid, unit] as const] : []
+			)
+		);
+		const arrived = new Map<string, string[]>();
+		for (const file of index.files.values()) {
+			const unit = file.uid && file.classification === 'source' ? byUid.get(file.uid) : undefined;
+			if (!unit || registry.owners.get(file.path) === unit.id) continue;
+			registry.owners.set(file.path, unit.id);
+			arrived.set(unit.id, [...(arrived.get(unit.id) ?? []), file.path]);
+		}
+		for (const [id, paths] of arrived) {
+			const gone = registry.byId.get(id)?.owns.source.find((path) => !index.files.has(path));
+			if (gone) registry.result.moved.push({ id, from: gone, to: paths.sort()[0] });
+		}
 	}
 
 	/** Attaches unowned files to a sibling owner or a retired owner; returns the rest. */
@@ -75,7 +100,8 @@ export class UnitIndexService {
 		const orphans = [...registry.byId.values()].filter(
 			(unit) => unit.status === 'active' && unit.owns.source.every((path) => !index.files.has(path))
 		);
-		const matches = (group: Group) => orphans.filter((unit) => sameSymbols(unit, group));
+		const matches = (group: Group) =>
+			group.uid ? [] : orphans.filter((unit) => sameSymbols(unit, group));
 		for (const group of pending) {
 			const [orphan, ...others] = matches(group);
 			const rivals = orphan ? pending.filter((other) => matches(other).includes(orphan)) : [];
@@ -117,6 +143,7 @@ export class UnitIndexService {
 				id,
 				deriveManifest({
 					id,
+					uid: unitUid(registry.byId.get(id), registry.groups.get(id), files),
 					kind: registry.groups.get(id)?.kind ?? 'module',
 					files,
 					owners: registry.owners,
@@ -126,6 +153,32 @@ export class UnitIndexService {
 			);
 		}
 	}
+}
+
+/** Groups announcing one uid are one unit: a forwarding entry and its implementation. */
+function mergedByUid(groups: Group[]): Group[] {
+	const byUid = new Map<string, Group>();
+	return groups.filter((group) => {
+		const first = group.uid ? byUid.get(group.uid) : undefined;
+		if (!first) {
+			if (group.uid) byUid.set(group.uid, group);
+			return true;
+		}
+		first.files.push(...group.files);
+		return false;
+	});
+}
+
+/** The uid a unit keeps: the registered one, else the one its files agree on. */
+function unitUid(
+	previous: ComponentManifest | undefined,
+	group: Group | undefined,
+	files: SourceFile[]
+): string | undefined {
+	if (previous?.uid) return previous.uid;
+	if (group?.uid) return group.uid;
+	const announced = new Set(files.flatMap((file) => (file.uid ? [file.uid] : [])));
+	return announced.size === 1 ? [...announced][0] : undefined;
 }
 
 /** New companion files join their concrete sibling; explicit registry ownership still wins. */

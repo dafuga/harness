@@ -13,6 +13,7 @@ import {
 	type PathClass
 } from '../../../utils/development-tooling/classify-path/classifyPath';
 import { resolveImport } from '../../../utils/development-tooling/resolveImport';
+import { readUid } from '../../../utils/development-tooling/unitUid';
 import { scanExports } from '../../../utils/development-tooling/scanExports';
 import {
 	type SourceLanguage,
@@ -81,6 +82,7 @@ export class SourceIndexService {
 			classification: placed.classification,
 			workspace: placed.workspace,
 			identity: placed.identity,
+			...(parsed.uid ? { uid: parsed.uid } : {}),
 			...(parsed.composition ? { composition: parsed.composition } : {}),
 			...(parsed.storage?.length ? { storage: parsed.storage } : {}),
 			references: parsed.references.map((reference) =>
@@ -144,7 +146,9 @@ function parseText(code: string, language: SourceLanguage, path: string): Parsed
 	const scan = exportsOf(code, language, path);
 	const syntax =
 		language === 'svelte' && code.includes('@harness-tier') ? atomicSyntax(code) : undefined;
+	const uid = readUid(code);
 	return {
+		...(uid ? { uid } : {}),
 		...(/(?:^|\/)models\/.*\.ts$/.test(path) && !path.endsWith('.types.ts')
 			? { storage: scanStorage(code) }
 			: {}),

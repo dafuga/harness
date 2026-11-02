@@ -18,6 +18,8 @@ export interface UnitIndexResult {
 
 export interface Group {
 	id: string;
+	/** The uid its files announce, when they do. */
+	uid?: string;
 	kind: string;
 	files: SourceFile[];
 }

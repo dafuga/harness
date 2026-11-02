@@ -31,6 +31,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 	return {
 		schemaVersion: 1,
 		id: input.id,
+		...(input.uid ? { uid: input.uid } : {}),
 		kind: kept.kind,
 		title: kept.title,
 		responsibility:

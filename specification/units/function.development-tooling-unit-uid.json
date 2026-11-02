@@ -1,0 +1,171 @@
+{
+	"schemaVersion": 1,
+	"id": "function.development-tooling-unit-uid",
+	"kind": "function",
+	"title": "unitUid",
+	"responsibility": "Reads and writes the stable uid a unit's source files announce in their first lines.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/development-tooling/unitUid.ts"],
+		"symbols": ["readUid", "uidComment", "withUid"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readUid.code",
+				"type": "string",
+				"required": true,
+				"description": "The text of a source file."
+			},
+			{
+				"name": "uidComment.path",
+				"type": "string",
+				"required": true,
+				"description": "The repository path, whose extension decides the comment style."
+			},
+			{
+				"name": "uidComment.uid",
+				"type": "string",
+				"required": true,
+				"description": "The uid to announce."
+			},
+			{
+				"name": "withUid.path",
+				"type": "string",
+				"required": true,
+				"description": "The repository path of the file."
+			},
+			{
+				"name": "withUid.code",
+				"type": "string",
+				"required": true,
+				"description": "The current text of the file."
+			},
+			{
+				"name": "withUid.uid",
+				"type": "string",
+				"required": true,
+				"description": "The uid to add."
+			}
+		],
+		"outputs": [
+			{
+				"name": "readUid",
+				"type": "string | undefined",
+				"description": "The uid announced in the first 1000 characters, or undefined when there is none or it is malformed."
+			},
+			{
+				"name": "uidComment",
+				"type": "string | undefined",
+				"description": "The one comment line in the file kind's own syntax, or undefined for a kind that takes no comment."
+			},
+			{
+				"name": "withUid",
+				"type": "string",
+				"description": "The text with the line added after a shebang or leading harness comments; unchanged when it already announces a uid or takes no comment."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "readUid",
+				"inputs": [
+					{
+						"name": "readUid.code",
+						"type": "string",
+						"required": true,
+						"description": "The text of a source file."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readUid",
+						"type": "string | undefined",
+						"description": "The uid announced in the first 1000 characters, or undefined when there is none or it is malformed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "uidComment",
+				"inputs": [
+					{
+						"name": "uidComment.path",
+						"type": "string",
+						"required": true,
+						"description": "The repository path, whose extension decides the comment style."
+					},
+					{
+						"name": "uidComment.uid",
+						"type": "string",
+						"required": true,
+						"description": "The uid to announce."
+					}
+				],
+				"outputs": [
+					{
+						"name": "uidComment",
+						"type": "string | undefined",
+						"description": "The one comment line in the file kind's own syntax, or undefined for a kind that takes no comment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "withUid",
+				"inputs": [
+					{
+						"name": "withUid.path",
+						"type": "string",
+						"required": true,
+						"description": "The repository path of the file."
+					},
+					{
+						"name": "withUid.code",
+						"type": "string",
+						"required": true,
+						"description": "The current text of the file."
+					},
+					{
+						"name": "withUid.uid",
+						"type": "string",
+						"required": true,
+						"description": "The uid to add."
+					}
+				],
+				"outputs": [
+					{
+						"name": "withUid",
+						"type": "string",
+						"description": "The text with the line added after a shebang or leading harness comments; unchanged when it already announces a uid or takes no comment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/development-tooling/unitUid.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/development-tooling/unitUid.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
