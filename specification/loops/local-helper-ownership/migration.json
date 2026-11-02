@@ -4967,7 +4967,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5597,7 +5597,7 @@
 			"name": "activityDisplay",
 			"commit": "2b750c5dd0f1e8c0a6933ef4dc348ba9cfeca3fb",
 			"definition": "010445fa19c69439c1a3a1d485a73fc8296befffb736991eca733ab66115b1e2",
-			"reason": "Record main’s intentional removal of the repeated agent count from the displayed activity sentence."
+			"reason": "Record main\u2019s intentional removal of the repeated agent count from the displayed activity sentence."
 		},
 		{
 			"unit": "function.unit-identity",
@@ -5725,6 +5725,15 @@
 			"to": "packages/reports/src/components/shared-primitives/status/tooltipPlace.ts",
 			"ownerSource": "packages/reports/src/components/shared-primitives/status/Status.svelte",
 			"reason": "Consolidate status rendering while retaining the original tooltip definition beside its canonical Status owner."
+		},
+		{
+			"unit": "function.derive-manifest",
+			"name": "deriveManifest",
+			"commit": "41a1c4bb6c6305c37b7e39927e215c54afe21a03",
+			"definition": "b04b2f49c624a6fcdb023303f656b78b6d80c18b52e86e384126e3dae806034f",
+			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+			"ownerSource": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
+			"reason": "Carry the unit uid into the derived manifest."
 		}
 	],
 	"retiredOwners": [

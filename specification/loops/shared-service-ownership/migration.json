@@ -1718,15 +1718,21 @@
 			"unit": "service.unit-index",
 			"from": "src/services/unit-index-service/UnitIndexService.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
-			"definition": "8108618e245acc0b8491b8a8982d367712c8227949313998ff42a3186cbcd036",
+			"definition": "cabdd432f69b2ece2db33d18963f86d5ddaf7cff71fb860ea117838253e8924e",
 			"relocationDefinition": "778cb54bcdb5124bbba4a4a7713eb68ba9bbc398edbbb93f94edd04daad12a03",
 			"review": {
-				"commit": "a2cbc15b070ceb40f4e369f023be426cfeeb6993",
+				"commit": "41a1c4bb6c6305c37b7e39927e215c54afe21a03",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
-				"definition": "8108618e245acc0b8491b8a8982d367712c8227949313998ff42a3186cbcd036",
-				"reason": "Merge separately registered persisted-model type companions while retaining retired identities and source ownership."
+				"definition": "cabdd432f69b2ece2db33d18963f86d5ddaf7cff71fb860ea117838253e8924e",
+				"reason": "Join moved files to their unit by announced uid."
 			},
 			"previousReviews": [
+				{
+					"commit": "a2cbc15b070ceb40f4e369f023be426cfeeb6993",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
+					"definition": "8108618e245acc0b8491b8a8982d367712c8227949313998ff42a3186cbcd036",
+					"reason": "Merge separately registered persisted-model type companions while retaining retired identities and source ownership."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
@@ -1745,15 +1751,21 @@
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "391ea01f2ae84e149a1c01b8b78dd4c788220872db1e5cdfe8fca5aa078d0fd4",
+			"definition": "9c2542f2aa8efe56d53f6fa5307c68a168caf51c702a2617aba5c084a108c485",
 			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
 			"review": {
-				"commit": "49eb75429b2197c6c4aa2b496fe3f7a22fd97c97",
+				"commit": "41a1c4bb6c6305c37b7e39927e215c54afe21a03",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-				"definition": "391ea01f2ae84e149a1c01b8b78dd4c788220872db1e5cdfe8fca5aa078d0fd4",
-				"reason": "Declare shared primitive contracts and preserve registered owner identity through forwarding imports."
+				"definition": "9c2542f2aa8efe56d53f6fa5307c68a168caf51c702a2617aba5c084a108c485",
+				"reason": "Join moved files to their unit by announced uid."
 			},
 			"previousReviews": [
+				{
+					"commit": "49eb75429b2197c6c4aa2b496fe3f7a22fd97c97",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"definition": "391ea01f2ae84e149a1c01b8b78dd4c788220872db1e5cdfe8fca5aa078d0fd4",
+					"reason": "Declare shared primitive contracts and preserve registered owner identity through forwarding imports."
+				},
 				{
 					"commit": "1bf1e0acb343c3894a34781787bd67cd41c57317",
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
