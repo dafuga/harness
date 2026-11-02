@@ -42,8 +42,7 @@ export function desktopShellVariant(
 function catalog(props: PreviewProps, data: DesktopData, variant: string) {
 	if (variant === 'empty') data.workspace.snapshot!.entities = [];
 	if (variant === 'long')
-		data.workspace.snapshot!.entities[0].title =
-			'A component with a long descriptive name for catalog wrapping';
+		data.workspace.snapshot!.entities[0].title = 'SubscriptionRenewalNotificationPreferencesPanel';
 	return props;
 }
 
@@ -165,7 +164,7 @@ const workspaceVariants: Record<
 			};
 		}
 		return variant === 'account'
-			? { ...props, account: text('<button type="button">Ada Example</button>') }
+			? { ...props, account: text('<button type="button">Ada Morgan</button>') }
 			: props;
 	},
 	'project-switcher': (props, data, variant) => {

@@ -21,6 +21,7 @@ export async function assertCatalogBeforeCapture({
 		await expect(component.getByRole('link')).toHaveText(
 			'Review every recorded result for this selected revision'
 		);
+	await assertCatalogNames(component, unit.id, variant);
 	await assertCatalogState(component, unit.id, variant, viewport.id);
 	await assertPluginKitPreview(component, unit.id, variant);
 	if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
@@ -44,4 +45,19 @@ async function assertAgentPreview(page: Page, component: Locator, variant: strin
 		await expect(panel).toBeHidden();
 	} else await expect(panel).toBeVisible();
 	await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
+}
+
+async function assertCatalogNames(component: Locator, id: string, variant: string) {
+	if (id.startsWith('desktop.component.') || id.startsWith('hub.component.'))
+		await expect(component, 'Catalog identities use realistic names').not.toContainText(
+			/A component with a long descriptive name|Preview project|\bAda Example\b/
+		);
+	if (id !== 'desktop.component.catalog-view' || variant !== 'long') return;
+	const title = component.getByRole('heading', {
+		name: 'SubscriptionRenewalNotificationPreferencesPanel',
+		exact: true
+	});
+	await expect(title).toBeVisible();
+	const fits = await title.evaluate((node) => node.scrollWidth <= node.clientWidth);
+	expect(fits, 'The complete long component name wraps within its card').toBe(true);
 }

@@ -3,10 +3,10 @@ import type { PreviewCases } from './shared';
 import { desktopData } from './sealedData';
 import { workspacePath } from '../../../../../desktop/src/utils/projects-sessions/workspaceRoute';
 import type { ProjectSnapshot } from '../../../../../desktop/src/models/Desktop.types';
-const actor = { id: 'preview-person', name: 'Ada Example', email: 'ada@example.invalid' };
+const actor = { id: 'preview-person', name: 'Ada Morgan', email: 'ada@example.invalid' };
 const project = {
 	id: 'preview-project',
-	name: 'Preview project',
+	name: 'Northstar Store',
 	role: 'owner',
 	sourceRepository: { owner: 'preview', name: 'example', fullName: 'preview/example' },
 	createdAt: stamp

@@ -42,7 +42,7 @@ const message = {
 const hosted = {
 	configured: true,
 	state: 'signed-in',
-	actor: { id: 'preview-person', name: 'Ada Example', email: 'ada@example.invalid' },
+	actor: { id: 'preview-person', name: 'Ada Morgan', email: 'ada@example.invalid' },
 	handoff: null
 };
 export function createDesktopData(id: string) {
