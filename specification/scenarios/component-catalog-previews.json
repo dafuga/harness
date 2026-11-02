@@ -689,6 +689,12 @@
 			"units": ["desktop.component.coverage-panel"]
 		},
 		{
+			"id": "desktop-component-coverage-panel-without-workspace",
+			"title": "Coverage panel: without workspace",
+			"coverage": "required",
+			"units": ["desktop.component.coverage-panel"]
+		},
+		{
 			"id": "desktop-component-deployment-activity",
 			"title": "DeploymentActivity",
 			"coverage": "required",

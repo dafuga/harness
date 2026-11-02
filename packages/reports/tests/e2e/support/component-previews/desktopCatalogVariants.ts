@@ -27,7 +27,13 @@ export const desktopCatalogVariants: Record<string, string[]> = {
 		'compact',
 		'retry'
 	],
-	'desktop.component.coverage-panel': ['loading', 'failed', 'unavailable', 'planned'],
+	'desktop.component.coverage-panel': [
+		'loading',
+		'failed',
+		'unavailable',
+		'planned',
+		'without-workspace'
+	],
 	'desktop.component.deployment-details': ['failed', 'succeeded', 'no-identity'],
 	'desktop.component.design-panel': [
 		'empty',
