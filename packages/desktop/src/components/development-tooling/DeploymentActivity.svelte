@@ -9,6 +9,13 @@
 	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';
 	import DeploymentDetails from './DeploymentDetails.svelte';
 	import DeploymentRoute from './DeploymentRoute.svelte';
+	import {
+		activityLight,
+		activitySummary,
+		itemLight,
+		phaseLabel,
+		standingFailures
+	} from './deploymentActivityLabels';
 	/**
 	 * The light of the deployments of this device's projects, whichever project is shown. It pulses
 	 * while one is queued or runs and opens the active and recent ones, newest first; choosing one
@@ -17,38 +24,13 @@
 	let { workspace }: { workspace: Workspace } = $props();
 	const activity = $derived(workspace.activity);
 	const items = $derived(activity.items);
-	const destination = (item: DeploymentActivity) => `${item.projectId}:${item.environment}`;
-	/** A failure stands until a newer deployment to the same destination follows it. */
-	function stands(item: DeploymentActivity) {
-		return items.find((one) => destination(one) === destination(item)) === item;
-	}
-	const failed = $derived(items.filter((item) => item.phase === 'failed' && stands(item)).length);
-	const summary = $derived.by(() => {
-		const count = activity.activeCount;
-		const running = `${count || 'No'} active deployment${count === 1 ? '' : 's'}`;
-		return failed ? `${running} · ${failed} failed` : running;
-	});
-	/** Idle ring, dot after a deployment, diamond after a failure, haloed dot while one is under way. */
-	const light = $derived.by(() => {
-		if (activity.activeCount) return 'active';
-		if (failed) return 'failed';
-		return items.length ? 'recent' : 'idle';
-	});
+	const failed = $derived(standingFailures(items));
+	const summary = $derived(activitySummary(activity.activeCount, failed));
+	const light = $derived(activityLight(activity.activeCount, failed, items.length));
 	const title = $derived.by(() => {
 		const said = light === 'idle' ? 'No deployments yet; local ones show here' : summary;
 		return activity.error ? `${said}. ${activity.error}` : said;
 	});
-	function phase(item: DeploymentActivity) {
-		const step = item.steps.find((one) => one.id === item.step)?.title;
-		if (item.phase === 'queued') return 'Queued';
-		if (item.phase === 'complete') return 'Deployed';
-		if (item.phase === 'failed') return step ? `Failed at ${step}` : 'Failed';
-		return step ?? 'Starting';
-	}
-	function lightState(item: DeploymentActivity) {
-		if (item.phase === 'queued' || item.phase === 'failed') return item.phase;
-		return item.phase === 'complete' ? 'recent' : 'active';
-	}
 	let chosen = $state<string | null>(null);
 	/** The chosen deployment as it is now: it is followed live while it is shown. */
 	const selected = $derived(items.find((item) => item.id === chosen) ?? null);
@@ -97,21 +79,21 @@
 		{:else}<hx-h2>Deployments</hx-h2>
 			<hx-small role="status">{summary}</hx-small>
 			{#if items.length}<hx-ul bind:this={list}>
-					{#each items as item (item.id)}{@const state = lightState(item)}
+					{#each items as item (item.id)}{@const state = itemLight(item)}
 						<hx-li>
 							<hx-button
 								type="button"
 								class="job"
 								data-id={item.id}
 								aria-label="{item.environment} deployment, from {item.sourceEnvironment ??
-									item.branch} to {item.environment}, {item.projectName}, {phase(item)}"
+									item.branch} to {item.environment}, {item.projectName}, {phaseLabel(item)}"
 								onclick={() => void choose(item.id)}
 							>
 								<hx-span class="light" data-state={state} aria-hidden="true"></hx-span>
 								<hx-strong>{item.environment} deployment</hx-strong>
 								<hx-small><DeploymentRoute deployment={item} /></hx-small>
 								<hx-small
-									><hx-span data-state={state}>{phase(item)}</hx-span> · {item.projectName} ·
+									><hx-span data-state={state}>{phaseLabel(item)}</hx-span> · {item.projectName} ·
 									{shortCommit(item.commit)}</hx-small
 								>
 							</hx-button>
