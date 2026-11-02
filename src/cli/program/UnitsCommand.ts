@@ -5,7 +5,7 @@ import { fail } from '../../core/development-tooling/errors';
 import { listUnits, renderUnit, showUnit, unitSchema, unitsGraph } from './inspectUnits';
 import { checkUnits, indexUnits, renderCheck, renderIndex, retireUnit } from './manageUnits';
 import { registerUnitsGuidance } from './unitsGuidance';
-import { registerUnitsUid } from './unitsUid';
+import { registerUnitsRename, registerUnitsUid } from './unitsUid';
 
 export function registerUnitsCommand(program: Command): void {
 	const units = program
@@ -43,6 +43,7 @@ export function registerUnitsCommand(program: Command): void {
 	registerInspection(units);
 	registerUnitsGuidance(units);
 	registerUnitsUid(units);
+	registerUnitsRename(units);
 }
 
 function registerInspection(units: Command): void {

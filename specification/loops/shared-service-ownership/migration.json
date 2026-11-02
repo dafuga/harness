@@ -2965,15 +2965,21 @@
 			"unit": "workflow.manage-units",
 			"from": "src/workflows/manageUnits.ts",
 			"to": "src/cli/program/manageUnits.ts",
-			"definition": "ec29a089393b4e07c6bb5d6cf0bcd9ca45b84dfbf1a3b1bc1b52daa2bec3e2a2",
+			"definition": "47681cf8af14b3c81b5c7b90b4f4ce019d36795f3961baaddc323baf30c14110",
 			"relocationDefinition": "9724dcb63f8d4269c25b93b40fe77fac47ecd44518b088f3f0e8b47a79c03353",
 			"review": {
-				"commit": "43b6f023cd4ccc8ee1ba474852b9f60382fb5153",
+				"commit": "3e76af50b0853dcf8626be85cb6ee5d2e061883b",
 				"path": "src/cli/program/manageUnits.ts",
-				"definition": "ec29a089393b4e07c6bb5d6cf0bcd9ca45b84dfbf1a3b1bc1b52daa2bec3e2a2",
-				"reason": "Validate duplicate active identities and reviewed canonical backedges using indexed source facts."
+				"definition": "47681cf8af14b3c81b5c7b90b4f4ce019d36795f3961baaddc323baf30c14110",
+				"reason": "Report missing, copied and duplicate unit uids in units check."
 			},
 			"previousReviews": [
+				{
+					"commit": "43b6f023cd4ccc8ee1ba474852b9f60382fb5153",
+					"path": "src/cli/program/manageUnits.ts",
+					"definition": "ec29a089393b4e07c6bb5d6cf0bcd9ca45b84dfbf1a3b1bc1b52daa2bec3e2a2",
+					"reason": "Validate duplicate active identities and reviewed canonical backedges using indexed source facts."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "src/cli/program/manageUnits.ts",

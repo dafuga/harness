@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program/unitsUid.ts"],
-		"symbols": ["registerUnitsUid"]
+		"symbols": ["registerUnitsUid", "registerUnitsRename"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -18,11 +18,20 @@
 				"name": "registerUnitsUid.units",
 				"type": "Command",
 				"required": true
+			},
+			{
+				"name": "registerUnitsRename.units",
+				"type": "Command",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerUnitsUid",
+				"type": "void"
+			},
+			{
+				"name": "registerUnitsRename",
 				"type": "void"
 			}
 		],
@@ -46,6 +55,24 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "registerUnitsRename",
+				"inputs": [
+					{
+						"name": "registerUnitsRename.units",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerUnitsRename",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -53,6 +80,11 @@
 	"dependencies": [
 		{
 			"unit": "workflow.development-tooling-backfill-uids-backfill-uids",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-rename-unit-rename-unit",
 			"via": "import",
 			"origin": "derived"
 		}

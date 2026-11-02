@@ -17,7 +17,14 @@ async function indexed(files: Record<string, string>, uids: Record<string, strin
 
 test('a unit without a uid, or a commentable file that does not announce it, is reported', async () => {
 	const { files, manifests } = await indexed({ 'src/utils/one.ts': code() }, {});
-	expect(uidFindings(manifests, files).map((found) => found.kind)).toEqual(['uid-missing']);
+	expect(uidFindings(manifests, files), 'a registry without uids has not adopted them').toEqual([]);
+	const mixed = await indexed(
+		{ 'src/utils/one.ts': code(), 'src/utils/two.ts': code(a) },
+		{ 'function.two': a }
+	);
+	expect(uidFindings(mixed.manifests, mixed.files).map((found) => found.unit)).toEqual([
+		'function.one'
+	]);
 	const stamped = await indexed({ 'src/utils/one.ts': code() }, { 'function.one': a });
 	expect(uidFindings(stamped.manifests, stamped.files)).toEqual([
 		expect.objectContaining({ kind: 'uid-missing', where: 'src/utils/one.ts' })

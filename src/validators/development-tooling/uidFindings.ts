@@ -12,7 +12,8 @@ export interface UidFinding {
 
 /**
  * Where a unit's stable uid is missing, disagrees with its source or is held twice. Only active
- * units are reviewed, and only files that take a comment need to announce it.
+ * units are reviewed, and only files that take a comment need to announce it. A registry in which
+ * no unit has a uid yet has not adopted them, and is not reviewed until it is backfilled.
  */
 export function uidFindings(
 	units: ComponentManifest[],
@@ -20,6 +21,7 @@ export function uidFindings(
 	scope: ReadonlySet<string> | undefined = undefined
 ): UidFinding[] {
 	const active = units.filter((unit) => unit.status === 'active');
+	if (!active.some((unit) => unit.uid)) return [];
 	const holders = new Map<string, string[]>();
 	for (const unit of active)
 		if (unit.uid) holders.set(unit.uid, [...(holders.get(unit.uid) ?? []), unit.id]);
