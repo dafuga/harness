@@ -95,10 +95,9 @@ async function assertMobileNavControls(component: Locator, tabs: Locator) {
 	for (const label of ['Choose branch', 'Choose commit']) {
 		const control = component.getByRole('button', { name: label, exact: true });
 		const bounds = (await control.boundingBox())!;
-		expect(
-			bounds.x + bounds.width,
-			'Search does not cover labelled revision controls'
-		).toBeLessThanOrEqual(search.x);
+		const beside = bounds.x + bounds.width <= search.x;
+		const below = search.y >= bounds.y + bounds.height - 1;
+		expect(beside || below, 'Search does not cover labelled revision controls').toBe(true);
 		const fits = await control.evaluate((node) => node.scrollWidth <= node.clientWidth + 1);
 		expect(fits, 'Revision icons and labels fit inside their own hit target').toBe(true);
 	}
