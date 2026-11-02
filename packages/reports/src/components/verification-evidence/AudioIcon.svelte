@@ -1,6 +1,10 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <!-- @harness-uid u_qsl3uqe4gl -->
+<script lang="ts">
+	// This decorative glyph accepts no props.
+</script>
+
 <hx-span class="audio-icon" aria-hidden="true" data-harness-component="verification-evidence-audio-icon"
 	><hx-svg
 		viewBox="0 0 24 24"
