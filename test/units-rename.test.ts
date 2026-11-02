@@ -1,4 +1,4 @@
-import { readdir, rename, mkdir } from 'node:fs/promises';
+import { readdir, rename, mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { unitProject } from './support/unitProject';
@@ -42,6 +42,42 @@ test('a renamed unit keeps its uid and contract, leaves a tombstone and survives
 	const moved = await project.json<Stored>(`specification/units/${newId}.json`);
 	expect(moved.owns.source).toContain(to);
 	expect(await listed()).toEqual(expect.arrayContaining([oldFile, `${newId}.json`]));
+});
+
+test('a rename rewrites referencing unit specs only and leaves loops, scenarios and evidence as written', async () => {
+	const project = await unitProject('app');
+	await project.harness(['generate', 'component', 'AppFrame']);
+	await project.harness(['units', 'index', '--write']);
+	const oldId = (await readdir(join(project.root, 'specification/units')))
+		.find((name) => name.includes('app-frame'))!
+		.replace(/\.json$/, '');
+	const history: Record<string, string> = {
+		'specification/loops/demo/loop.json': JSON.stringify({ unit: oldId, note: oldId }, null, 2),
+		'specification/loops/demo/trace.ndjson': JSON.stringify({ unit: oldId }) + '\n',
+		'specification/scenarios/demo.json': JSON.stringify({ units: [oldId] }),
+		'specification/evidence/record.json': JSON.stringify({ unit: oldId }, null, 2)
+	};
+	for (const [path, text] of Object.entries(history)) await project.write(path, text);
+	const consumer = join(project.root, 'specification/units/component.consumer.json');
+	const spec = await project.json<Record<string, unknown> & { dependencies: unknown[] }>(
+		`specification/units/${oldId}.json`
+	);
+	await writeFile(
+		consumer,
+		JSON.stringify({
+			...spec,
+			id: 'component.consumer',
+			owns: { source: [], symbols: [] },
+			dependencies: [{ unit: oldId, via: 'import', origin: 'declared' }]
+		})
+	);
+	await project.harness(['units', 'rename', oldId, 'component.window-frame']);
+	for (const [path, text] of Object.entries(history))
+		expect(await project.read(path), path).toBe(text);
+	const after = await project.json<{ dependencies: Array<{ unit: string }> }>(
+		'specification/units/component.consumer.json'
+	);
+	expect(after.dependencies.map((item) => item.unit)).toEqual(['component.window-frame']);
 });
 
 test('renaming refuses unknown units, invalid ids and ids that were ever used', async () => {

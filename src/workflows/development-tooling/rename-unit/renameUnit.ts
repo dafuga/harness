@@ -5,12 +5,12 @@ import { join, relative } from 'node:path';
 import { fail } from '../../../core/development-tooling/errors';
 import { unitIdPattern, type ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import { unitsDirectory } from '../../../core/development-tooling/unitsConfig';
+import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { loadUnits } from '../load-units/loadUnits';
 
 /**
  * Gives a unit another readable id. The uid, contract and history stay with it: the old id remains
- * as a retired tombstone the new unit continues, and every reference in the specification files
- * follows the unit. Source files are untouched, because they announce the uid and not the id.
+ * as a retired tombstone the new unit continues, and the unit specs that refer to it follow the unit. Source files are untouched, because they announce the uid and not the id.
  */
 export async function renameUnit(
 	from: string,
@@ -31,7 +31,7 @@ export async function renameUnit(
 		join(loaded.root, unitsDirectory, `${from}.json`),
 		join(loaded.root, unitsDirectory, `${to}.json`)
 	);
-	await loaded.repository.write([{ ...renamed, id: to }, tombstone(unit, to, at)]);
+	await loaded.repository.write([renamed, tombstone(unit, to, at)]);
 	return { from, to, rewritten };
 }
 
@@ -50,20 +50,31 @@ function tombstone(unit: ComponentManifest, to: string, at: string): ComponentMa
 	};
 }
 
-/** Replaces the id wherever a specification file holds it as a whole JSON string. */
+/**
+ * Points the unit specs that refer to the old id at the new one: their dependencies, composition,
+ * primitives and lineage. Scenarios, loops and evidence records are history and stay as written.
+ */
 async function rewriteReferences(root: string, from: string, to: string): Promise<string[]> {
-	const directory = join(root, 'specification');
-	const files = (await readdir(directory, { recursive: true })).filter((name) =>
-		name.endsWith('.json')
-	);
+	const directory = join(root, unitsDirectory);
 	const changed: string[] = [];
-	for (const name of files) {
+	for (const name of (await readdir(directory)).filter((item) => item.endsWith('.json'))) {
 		const path = join(directory, name);
 		const text = await readFile(path, 'utf8');
-		const next = text.replaceAll(`"${from}"`, `"${to}"`);
-		if (next === text) continue;
-		await writeFile(path, next);
+		const spec = JSON.parse(text) as ComponentManifest;
+		if (!retarget(spec, from, to)) continue;
+		await writeFile(path, stableJson(spec));
 		changed.push(relative(root, path));
 	}
 	return changed.sort();
+}
+
+/** Replaces the id in the known reference fields of one spec; true when anything changed. */
+function retarget(spec: ComponentManifest, from: string, to: string): boolean {
+	const lists = [spec.composition?.uses, spec.contract.primitives];
+	const holds = (ids: string[] | undefined) => ids?.includes(from) === true;
+	const changed = spec.dependencies.some((item) => item.unit === from) || lists.some(holds);
+	for (const dependency of spec.dependencies) if (dependency.unit === from) dependency.unit = to;
+	for (const ids of lists.filter((list) => list !== undefined))
+		for (const [index, id] of ids.entries()) if (id === from) ids[index] = to;
+	return changed;
 }
