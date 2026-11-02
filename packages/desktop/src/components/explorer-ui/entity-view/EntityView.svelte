@@ -11,6 +11,7 @@
 	import type { ThreadInfo } from '../../../models/development-tooling/Desktop.types';
 	import { evidenceQuery } from '../../../utils/verification-evidence/evidenceQuery';
 	import { evidenceVerdict } from './evidenceVerdict';
+	import { entityViewSections } from './entityViewSections';
 	import { createdThread } from './createdThread';
 	import { versionOption } from './threadAnchor';
 	import { type ThreadTarget } from '../../../utils/explorer-ui/threadAnchor';
@@ -38,15 +39,7 @@
 		['pages', 'components', 'layouts'].includes(workspace.entity?.category ?? '')
 	);
 	/** Only a page lists the APIs it requests, directly or through what it uses. */
-	const names = $derived(
-		(Object.keys(sections) as Section[]).filter(
-			(name) =>
-				name !== (headless ? 'Designs' : 'Plan') &&
-				name !== (visual ? 'Evidence' : 'States') &&
-				name !== (headless ? 'Evidence' : 'Examples') &&
-				(name !== 'APIs' || workspace.entity?.category === 'pages')
-		)
-	);
+	const names = $derived(entityViewSections(workspace, headless, visual));
 	let tab = $state<Section>('Overview');
 	let conversation = $state(true);
 	let thread = $state<ThreadInfo | null>(null);

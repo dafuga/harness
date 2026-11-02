@@ -108,6 +108,7 @@ test('regression history links the committed failing test and unchanged passing 
 	page
 }, info) => {
 	await reviewRegression(page, info);
+	await expect.poll(() => path(page)).toBe(at(filter, commits.middle));
 });
 
 test('the status beside the name is the verdict of the record that was read, or says why there is none', async ({

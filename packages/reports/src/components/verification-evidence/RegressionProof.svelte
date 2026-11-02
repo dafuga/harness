@@ -73,7 +73,7 @@
 							>
 								<hx-div class="step-heading">
 									<hx-span
-										>{pane.heading} · {pane.side === 'before'
+										>{pane.side === 'before' ? 'Before fix' : 'After fix'} · {pane.side === 'before'
 											? 'failed as expected'
 											: pane.value
 												? 'passed'
@@ -114,7 +114,11 @@
 							<ComparePanes {panes} className="proof-steps" framed={false}>
 								{#snippet children(pane)}
 									{#if pane.value}<hx-div
-											><hx-h4>{pane.heading}</hx-h4><hx-pre>{pane.value.output}</hx-pre></hx-div
+											><hx-h4
+												>{pane.side === 'before' ? 'Before fix' : 'After fix'} · {shortCommit(
+													pane.commit
+												)}</hx-h4
+											><hx-pre>{pane.value.output}</hx-pre></hx-div
 										>{/if}
 								{/snippet}
 							</ComparePanes>
