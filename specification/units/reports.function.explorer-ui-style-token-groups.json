@@ -1,0 +1,209 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-ui-style-token-groups",
+	"kind": "function",
+	"title": "styleTokenGroups",
+	"responsibility": "Groups the app style tokens by their declared prefixes, assigns them to documented roles and says how each token is drawn.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/explorer-ui/styleTokenGroups.ts"],
+		"symbols": [
+			"unclassified",
+			"roles",
+			"drawings",
+			"groupFor",
+			"groupTokens",
+			"assignRoles",
+			"sample",
+			"headingId"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "groupFor.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "groupTokens.list",
+				"type": "StyleToken[]",
+				"required": true
+			},
+			{
+				"name": "assignRoles.group",
+				"type": "StyleTokenGroup",
+				"required": true
+			},
+			{
+				"name": "sample.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "headingId.name",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "unclassified",
+				"type": "UnclassifiedGroupName"
+			},
+			{
+				"name": "roles",
+				"type": "Partial<Record<string, readonly StyleRole[]>>"
+			},
+			{
+				"name": "drawings",
+				"type": "[RegExp, StyleSpecimen, string][]"
+			},
+			{
+				"name": "groupFor",
+				"type": "StyleGroupName | UnclassifiedGroupName"
+			},
+			{
+				"name": "groupTokens",
+				"type": "StyleTokenGroup[]"
+			},
+			{
+				"name": "assignRoles",
+				"type": "StyleRoleCard[]"
+			},
+			{
+				"name": "sample",
+				"type": "unknown"
+			},
+			{
+				"name": "headingId",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "groupFor",
+				"inputs": [
+					{
+						"name": "groupFor.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupFor",
+						"type": "StyleGroupName | UnclassifiedGroupName"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "groupTokens",
+				"inputs": [
+					{
+						"name": "groupTokens.list",
+						"type": "StyleToken[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupTokens",
+						"type": "StyleTokenGroup[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "assignRoles",
+				"inputs": [
+					{
+						"name": "assignRoles.group",
+						"type": "StyleTokenGroup",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assignRoles",
+						"type": "StyleRoleCard[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "sample",
+				"inputs": [
+					{
+						"name": "sample.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sample",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "headingId",
+				"inputs": [
+					{
+						"name": "headingId.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "headingId",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-harness-explorer-styles-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.config.shared-primitives-app-style-tokens",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/styleTokenGroups.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/styleTokenGroups.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
