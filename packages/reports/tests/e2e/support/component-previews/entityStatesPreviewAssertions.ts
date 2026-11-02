@@ -60,12 +60,20 @@ export async function assertEntityStates(component: Locator, variant: string) {
 	};
 	if (words[variant])
 		await expect(component.getByText(words[variant], { exact: false }).first()).toBeVisible();
-	if (variant === 'initial')
-		await expect(component.locator('.state-card figcaption code').first()).toHaveText('');
+	if (variant === 'initial') {
+		const before = component.getByRole('figure', { name: 'Before', exact: true });
+		await expect(before).toHaveCount(2);
+		await expect(before.first().locator('figcaption')).toHaveText('Before');
+		await expect(before.locator('img')).toHaveCount(0);
+	}
 	if (variant === 'loading')
 		await expect(component.locator('.state-panes .state-gap').first()).toHaveText(
 			'Loading recorded capture…'
 		);
+	await assertGallerySelection(component, variant);
+}
+
+async function assertGallerySelection(component: Locator, variant: string) {
 	if (variant === 'scenario-selected')
 		await expect(component.getByRole('heading', { name: 'Archived', exact: true })).toBeVisible();
 	if (variant === 'viewport-mobile') {

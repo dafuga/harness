@@ -91,6 +91,10 @@ for (const viewport of catalogViewports) {
 			await test.step('Prepare state', () => prepareCatalogState(component, unit.id, variant));
 			await assertCatalogBeforeCapture(context);
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
+			if (unit.id === 'reports.component.evidence-viewer' && !variant)
+				await expect
+					.soft(component.locator('.viewer-images figcaption').first())
+					.toContainText('After · b56de78 · Checkout after release · Desktop');
 			await assertCatalogAfterCapture({ ...context, capture });
 			await assertCatalogPresentation(context);
 			await assertCatalogControls(context);
