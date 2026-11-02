@@ -107,6 +107,8 @@ review checkpoint, assert the painted treatment of visual variants; tag, class a
 text assertions alone do not prove that the intended styles loaded.
 After consolidating components across apps, review every retained variant's caller
 context; a shared unit's app prefix does not establish it.
+State actions finish before capture. The capture helper checks the entered state's
+visible marker; a later passing DOM assertion cannot validate pixels recorded earlier.
 
 ## Code Rules
 

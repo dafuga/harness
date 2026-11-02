@@ -1,0 +1,64 @@
+{
+	"name": "sol10-status-capture-state",
+	"goal": "Capture each shared Status state only after its interaction and visible open-state marker.",
+	"createdAt": "2026-11-02T03:07:42.162Z",
+	"updatedAt": "2026-11-02T03:09:29.536Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-11-02T03:09:28.916Z",
+			"evidence": "Commit 0ef7333339 added shared Status to the early capture list. The f6 API record c19fff7c has open-state images identical to closed states because capture precedes click/focus. Product behavior is correct; fixture ordering is wrong."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-11-02T03:09:29.536Z",
+			"evidence": "Later DOM assertions checked the opened state but never tied it to saved pixels. Extend the existing capture readiness helper and existing catalog case to require visible open markers and the post-action capture object; keep all 72 cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

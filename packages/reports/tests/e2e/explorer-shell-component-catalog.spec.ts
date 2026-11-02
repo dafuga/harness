@@ -1,4 +1,5 @@
 import { assertPresentationPreview } from './support/component-previews/presentationPreviewAssertions';
+import { evidenceRequested } from '../../../../src/utils/record-capture/recordCapture';
 import { assertRecordedCompatibility } from './support/component-previews/compatibilityPreviewAssertions';
 import {
 	assertInlinePluginKitCapture,
@@ -186,6 +187,12 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			const capture = early ? undefined : await preview.capturePreview(page, home, unit.id, target);
+			if (
+				evidenceRequested() &&
+				unit.id === 'reports.component.harness-harness-verdict' &&
+				(variant.endsWith('-open') || (variant.startsWith('icon') && variant !== 'icon'))
+			)
+				expect(capture, 'Status state capture follows its interaction').toBeDefined();
 			if (unit.id === 'reports.component.harness-entity-screens' && variant === 'viewer-open')
 				await expect(component.getByRole('button', { name: 'View after screenshot' })).toHaveClass(
 					/\bactive\b/
