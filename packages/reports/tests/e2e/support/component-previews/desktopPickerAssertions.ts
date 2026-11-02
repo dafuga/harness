@@ -1,5 +1,6 @@
 import { expect, type Locator } from '@playwright/test';
 import { desktopFixtureCommits as commits } from './desktopFixtureCommits';
+import { assertRevisionTriggerContent } from './desktopRevisionTriggerAssertions';
 
 async function assertPickerReview(component: Locator, id: string, variant: string) {
 	if (id === 'desktop.component.project-switcher') {
@@ -194,6 +195,7 @@ async function assertPickerFrame(component: Locator, id: string, variant: string
 		}
 	}
 	if (id.endsWith('revision-picker')) {
+		await assertRevisionTriggerContent(component, component.page().viewportSize()!.width);
 		const buttons = component.locator('.revision-choices > button');
 		const first = (await buttons.nth(0).boundingBox())!,
 			second = (await buttons.nth(1).boundingBox())!;
