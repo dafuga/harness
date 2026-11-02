@@ -96,6 +96,56 @@ test('check-contract accepts explicit none errors, outputs and complete state co
 	});
 });
 
+test('native element atoms skip guesses but retain explicitly required state gaps', async () => {
+	const root = await project();
+	const unit = widgetManifest();
+	unit.contract.inputs = [
+		{ name: 'Widget.children', type: 'Snippet', required: false, default: 'undefined (omitted)' }
+	];
+	unit.contract.errors = [{ name: 'Caller content error', type: 'propagated' }];
+	for (const element of ['div', 'svg', undefined]) {
+		unit.composition = { level: 'atom', ...(element ? { element } : {}) };
+		await writeGuidanceFile(
+			root,
+			'specification/units/component.widget.json',
+			JSON.stringify(unit)
+		);
+		const { report } = await measureWorkload(
+			'workflow.development-tooling-check-unit-contracts',
+			'native-and-custom-atom-states',
+			() => guidanceJson(root, ['check-contract', entity])
+		);
+		if (element) expect(report.findings, element).toEqual([]);
+		else
+			expect(report.findings).toEqual(
+				expect.arrayContaining([
+					expect.objectContaining({
+						kind: 'untested-state',
+						detail: expect.stringContaining('without-children')
+					}),
+					expect.objectContaining({
+						kind: 'untested-state',
+						detail: expect.stringContaining('error')
+					})
+				])
+			);
+	}
+	unit.composition = { level: 'atom', element: 'div' };
+	unit.contract.inputs.push({ name: 'Widget.mode', type: "'base' | 'active'", required: true });
+	unit.contract.outputs[0].description = 'Renders base or active content.';
+	await writeGuidanceFile(root, 'specification/units/component.widget.json', JSON.stringify(unit));
+	const { report } = await guidanceJson(root, ['check-contract', entity]);
+	expect(report.findings).toContainEqual(
+		expect.objectContaining({
+			kind: 'untested-state',
+			detail: expect.stringContaining('active (REQUIRED)')
+		})
+	);
+	expect(
+		report.findings.some((finding: { detail: string }) => finding.detail.includes('(GUESS)'))
+	).toBe(false);
+});
+
 test('check-contract --all summarises active identities without hiding findings', async () => {
 	const root = await project();
 	const second = {
