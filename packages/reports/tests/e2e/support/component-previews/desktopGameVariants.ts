@@ -31,6 +31,7 @@ export const desktopGameCatalogVariants: Record<string, string[]> = {
 		'no-providers'
 	],
 	'desktop.component.game-preview': ['three-dimensional', 'readonly', 'reset'],
+	'desktop.component.game-workspace': ['project', 'loading', 'error', 'readonly', 'history'],
 	'desktop.component.game-view-fields': ['settings-open', 'readonly', 'gated', 'multiple']
 };
 
@@ -41,6 +42,7 @@ export function desktopGameVariant(id: string, props: PreviewProps, variant: str
 	if (name === 'game-level-brief') return brief(props, variant);
 	if (name === 'game-checkpoint-editor') return checkpoint(props, variant);
 	if (name === 'game-level-review') return review(props, variant);
+	if (name === 'game-workspace') return workspace(props, variant);
 	if (name === 'game-checkpoint-pane') return pane(props, variant);
 	if (name === 'game-view-fields') return fields(props, variant);
 	if (name !== 'game-preview') return null;
@@ -67,6 +69,30 @@ function review(props: PreviewProps, variant: string): PreviewProps | null {
 		'no-providers': { providers: null, proposal: { ...proposal, model: 'gpt-6.1-sol' } }
 	};
 	return changes[variant] ? { ...props, ...changes[variant] } : null;
+}
+/** A saved project is read from the bridge; each presentation changes how that read or the view of it looks. */
+function workspace(props: PreviewProps, variant: string): PreviewProps | null {
+	const document = exampleDocument('2d');
+	const saved = {
+		gameRead: async () => ({ document, revision: 'a1b2c3d4e5' }),
+		gameSave: async () => ({ revision: 'f6e5d4c3b2' })
+	};
+	const project = { projectId: 'garden-trail', bridge: saved };
+	const variants: Record<string, PreviewProps> = {
+		project,
+		loading: { projectId: 'garden-trail', bridge: { gameRead: () => new Promise(() => {}) } },
+		error: {
+			projectId: 'garden-trail',
+			bridge: {
+				gameRead: async () => {
+					throw new Error('The game project could not be read from this device.');
+				}
+			}
+		},
+		readonly: { ...project, readonly: true },
+		history: { ...project, commit: 'c725e9337e913674d8b859665a97c2ea5d62c2da' }
+	};
+	return variants[variant] ?? null;
 }
 function creation(props: PreviewProps, variant: string): PreviewProps {
 	if (variant === 'unavailable') return { ...props, bridge: {} };

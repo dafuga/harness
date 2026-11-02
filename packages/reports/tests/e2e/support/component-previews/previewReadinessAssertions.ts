@@ -85,6 +85,7 @@ async function assertPreviewReadFailure(content: Locator, id: string, variant: s
 		'desktop.component.runtime-evidence': ['error'],
 		'desktop.component.runtime-behavior': ['unreadable'],
 		'desktop.component.coverage-panel': ['failed'],
+		'desktop.component.game-workspace': ['error'],
 		'reports.component.explorer-ui-explorer-kit-notice': ['', 'long'],
 		'reports.component.activity-agents': ['failed-read', 'unreadable'],
 		'reports.component.project-activity': ['failed-read'],

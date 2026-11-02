@@ -1211,6 +1211,36 @@
 			"units": ["desktop.component.game-workspace"]
 		},
 		{
+			"id": "desktop-component-game-workspace-project",
+			"title": "Game workspace: project",
+			"coverage": "required",
+			"units": ["desktop.component.game-workspace"]
+		},
+		{
+			"id": "desktop-component-game-workspace-loading",
+			"title": "Game workspace: loading",
+			"coverage": "required",
+			"units": ["desktop.component.game-workspace"]
+		},
+		{
+			"id": "desktop-component-game-workspace-error",
+			"title": "Game workspace: error",
+			"coverage": "required",
+			"units": ["desktop.component.game-workspace"]
+		},
+		{
+			"id": "desktop-component-game-workspace-readonly",
+			"title": "Game workspace: read-only",
+			"coverage": "required",
+			"units": ["desktop.component.game-workspace"]
+		},
+		{
+			"id": "desktop-component-game-workspace-history",
+			"title": "Game workspace: history",
+			"coverage": "required",
+			"units": ["desktop.component.game-workspace"]
+		},
+		{
 			"id": "desktop-component-history-panel",
 			"title": "History panel",
 			"coverage": "required",
@@ -8337,6 +8367,11 @@
 				"desktop-component-game-view-fields-gated",
 				"desktop-component-game-view-fields-multiple",
 				"desktop-component-game-workspace",
+				"desktop-component-game-workspace-project",
+				"desktop-component-game-workspace-loading",
+				"desktop-component-game-workspace-error",
+				"desktop-component-game-workspace-readonly",
+				"desktop-component-game-workspace-history",
 				"desktop-component-history-panel",
 				"desktop-component-history-panel-empty",
 				"desktop-component-history-panel-incomplete",
