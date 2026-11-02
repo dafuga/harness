@@ -176,6 +176,11 @@
 			"unit": "service.source-index",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

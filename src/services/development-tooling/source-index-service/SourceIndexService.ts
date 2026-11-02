@@ -146,9 +146,8 @@ function parseText(code: string, language: SourceLanguage, path: string): Parsed
 	const scan = exportsOf(code, language, path);
 	const syntax =
 		language === 'svelte' && code.includes('@harness-tier') ? atomicSyntax(code) : undefined;
-	const uid = readUid(code);
 	return {
-		...(uid ? { uid } : {}),
+		...uidField(code),
 		...(/(?:^|\/)models\/.*\.ts$/.test(path) && !path.endsWith('.types.ts')
 			? { storage: scanStorage(code) }
 			: {}),
@@ -170,6 +169,12 @@ function parseText(code: string, language: SourceLanguage, path: string): Parsed
 		read: true,
 		scripted: language === 'other' && /<script\b/i.test(code)
 	};
+}
+
+/** The uid a file announces, as the field the index keeps. */
+function uidField(code: string): { uid?: string } {
+	const uid = readUid(code);
+	return uid ? { uid } : {};
 }
 
 function exportsOf(code: string, language: SourceLanguage, path: string) {

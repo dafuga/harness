@@ -1,0 +1,194 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption",
+	"kind": "workflow",
+	"title": "unitUidAdoption",
+	"responsibility": "Joins source files to registered units by the uid they announce, so a moved or renamed file keeps its unit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts"
+		],
+		"symbols": ["adoptUids", "mergedByUid", "unitUid"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "adoptUids.registry",
+				"type": "Registry",
+				"required": true,
+				"description": "The registry being reconciled, with the owner of each path from the stored units."
+			},
+			{
+				"name": "adoptUids.index",
+				"type": "SourceIndex",
+				"required": true,
+				"description": "The indexed source files, some announcing a uid."
+			},
+			{
+				"name": "mergedByUid.all",
+				"type": "Group[]",
+				"required": true,
+				"description": "The path-derived groups of source files."
+			},
+			{
+				"name": "unitUid.previous",
+				"type": "ComponentManifest | undefined",
+				"required": true,
+				"description": "The stored unit, if there is one."
+			},
+			{
+				"name": "unitUid.group",
+				"type": "Group | undefined",
+				"required": true,
+				"description": "The group of files the unit is derived from, if any."
+			},
+			{
+				"name": "unitUid.files",
+				"type": "SourceFile[]",
+				"required": true,
+				"description": "The files the unit owns."
+			}
+		],
+		"outputs": [
+			{
+				"name": "adoptUids",
+				"type": "Registry",
+				"description": "The same registry, with each uid-announcing file owned by the unit of that uid and the vanished files of moved units reported as moves."
+			},
+			{
+				"name": "mergedByUid",
+				"type": "Group[]",
+				"description": "The groups in id order, with the groups that announce one uid joined into the first."
+			},
+			{
+				"name": "unitUid",
+				"type": "string | undefined",
+				"description": "The registered uid, else the uid of the group, else the one uid all files agree on; undefined when none."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "adoptUids",
+				"inputs": [
+					{
+						"name": "adoptUids.registry",
+						"type": "Registry",
+						"required": true,
+						"description": "The registry being reconciled, with the owner of each path from the stored units."
+					},
+					{
+						"name": "adoptUids.index",
+						"type": "SourceIndex",
+						"required": true,
+						"description": "The indexed source files, some announcing a uid."
+					}
+				],
+				"outputs": [
+					{
+						"name": "adoptUids",
+						"type": "Registry",
+						"description": "The same registry, with each uid-announcing file owned by the unit of that uid and the vanished files of moved units reported as moves."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "mergedByUid",
+				"inputs": [
+					{
+						"name": "mergedByUid.all",
+						"type": "Group[]",
+						"required": true,
+						"description": "The path-derived groups of source files."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mergedByUid",
+						"type": "Group[]",
+						"description": "The groups in id order, with the groups that announce one uid joined into the first."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "unitUid",
+				"inputs": [
+					{
+						"name": "unitUid.previous",
+						"type": "ComponentManifest | undefined",
+						"required": true,
+						"description": "The stored unit, if there is one."
+					},
+					{
+						"name": "unitUid.group",
+						"type": "Group | undefined",
+						"required": true,
+						"description": "The group of files the unit is derived from, if any."
+					},
+					{
+						"name": "unitUid.files",
+						"type": "SourceFile[]",
+						"required": true,
+						"description": "The files the unit owns."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitUid",
+						"type": "string | undefined",
+						"description": "The registered uid, else the uid of the group, else the one uid all files agree on; undefined when none."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.source-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.unit-index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
