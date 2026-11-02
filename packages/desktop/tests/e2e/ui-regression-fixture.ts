@@ -67,13 +67,9 @@ export async function reviewRegression(page: Page, info: TestInfo): Promise<void
 		const beforeStep = proof.locator('.proof-step.failed');
 		const afterStep = proof.locator('.proof-step.passed');
 		await expect(
-			beforeStep.getByText(`Before · ${commits.middle.slice(0, 7)} · failed as expected`, {
-				exact: true
-			})
+			beforeStep.getByText('Before fix · failed as expected', { exact: true })
 		).toBeVisible();
-		await expect(
-			afterStep.getByText(`After · ${commits.tip.slice(0, 7)} · passed`, { exact: true })
-		).toBeVisible();
+		await expect(afterStep.getByText('After fix · passed', { exact: true })).toBeVisible();
 		await expect(proof.getByText('Expected 1 order; received 0', { exact: true })).toBeVisible();
 		await expect(proof.getByText('Same tests and command', { exact: true })).toBeVisible();
 		await expect(
