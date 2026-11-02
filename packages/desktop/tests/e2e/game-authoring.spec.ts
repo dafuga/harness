@@ -215,3 +215,36 @@ test('held arrow keys animate the 3D game through the vault branch', async ({ pa
 	await expect(page.getByText('Reached the vault', { exact: true })).toBeVisible();
 	await capture(page, 'game-keyboard-playthrough');
 });
+test('a new checkpoint does not take focus from the field the author already chose', async ({
+	page
+}) => {
+	await page.addInitScript(() => {
+		const held: FrameRequestCallback[] = [];
+		const original = window.requestAnimationFrame.bind(window);
+		let holding = false;
+		window.requestAnimationFrame = (callback) => {
+			if (!holding) return original(callback);
+			held.push(callback);
+			return held.length;
+		};
+		Object.assign(window, {
+			holdFrames: () => (holding = true),
+			releaseFrames: () => {
+				holding = false;
+				for (const callback of held.splice(0)) callback(performance.now());
+			}
+		});
+	});
+	await page.goto('/game');
+	await page.evaluate(() => (window as unknown as { holdFrames(): void }).holdFrames());
+	await page.getByRole('button', { name: 'Add checkpoint', exact: true }).click();
+	const title = page.getByLabel('Checkpoint title', { exact: true });
+	await title.focus();
+	// The pane's first-field focus is scheduled for the next frame; it runs between the title being
+	// chosen and the author's text arriving, exactly as it does between a fill's focus and its input.
+	await page.evaluate(() => (window as unknown as { releaseFrames(): void }).releaseFrames());
+	await page.keyboard.insertText('After the garden');
+	await expect(title, 'text typed after choosing the title lands in the title').toHaveValue(
+		'After the garden'
+	);
+});
