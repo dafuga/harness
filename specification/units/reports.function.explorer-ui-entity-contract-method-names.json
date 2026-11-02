@@ -1,0 +1,163 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-ui-entity-contract-method-names",
+	"kind": "function",
+	"title": "methodNames",
+	"responsibility": "Names the methods a service contract declares under a class and puts them in create, read, update, delete order.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/explorer-ui/entity-contract/methodNames.ts"],
+		"symbols": ["within", "methodsNamed", "orderedMethods"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "within.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "within.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "within.whole",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "methodsNamed.names",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "methodsNamed.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "methodsNamed.whole",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "orderedMethods.methods",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "within",
+				"type": "boolean"
+			},
+			{
+				"name": "methodsNamed",
+				"type": "string[]"
+			},
+			{
+				"name": "orderedMethods",
+				"type": "string[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "within",
+				"inputs": [
+					{
+						"name": "within.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "within.owner",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "within.whole",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "within",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "methodsNamed",
+				"inputs": [
+					{
+						"name": "methodsNamed.names",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "methodsNamed.owner",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "methodsNamed.whole",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "methodsNamed",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "orderedMethods",
+				"inputs": [
+					{
+						"name": "orderedMethods.methods",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "orderedMethods",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/entity-contract/methodNames.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/entity-contract/methodNames.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
