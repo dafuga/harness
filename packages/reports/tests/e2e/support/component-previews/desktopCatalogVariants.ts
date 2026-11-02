@@ -35,6 +35,7 @@ export const desktopCatalogVariants: Record<string, string[]> = {
 		'without-workspace'
 	],
 	'desktop.component.deployment-details': ['failed', 'succeeded', 'no-identity'],
+	'desktop.component.measures-panel': ['not-measured', 'mixed'],
 	'desktop.component.design-panel': [
 		'empty',
 		'headless',

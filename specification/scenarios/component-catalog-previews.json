@@ -1307,6 +1307,18 @@
 			"units": ["desktop.component.measures-panel"]
 		},
 		{
+			"id": "desktop-component-measures-panel-not-measured",
+			"title": "Measures panel: not measured",
+			"coverage": "required",
+			"units": ["desktop.component.measures-panel"]
+		},
+		{
+			"id": "desktop-component-measures-panel-mixed",
+			"title": "Measures panel: mixed",
+			"coverage": "required",
+			"units": ["desktop.component.measures-panel"]
+		},
+		{
 			"id": "desktop-component-message-list",
 			"title": "Message list",
 			"coverage": "required",
@@ -8383,6 +8395,8 @@
 				"desktop-component-icon",
 				"desktop-component-image-thumbnail",
 				"desktop-component-measures-panel",
+				"desktop-component-measures-panel-not-measured",
+				"desktop-component-measures-panel-mixed",
 				"desktop-component-message-list",
 				"desktop-component-nav-bar",
 				"desktop-component-nav-bar-readonly",

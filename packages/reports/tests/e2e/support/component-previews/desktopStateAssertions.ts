@@ -39,6 +39,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'runtime-screens:incomparable': '1280×900 after',
 		'runtime-evidence:error': 'The saved record is incomplete. Try again.',
 		'runtime-evidence:offline': 'Saved',
+		'measures-panel:mixed': '2 KB',
 		'game-workspace:loading': 'Loading the game…',
 		'game-workspace:error': 'could not be read from this device',
 		'game-workspace:readonly': 'Read-only',
@@ -61,6 +62,12 @@ export async function assertDesktopState(component: Locator, id: string, variant
 }
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	composer,
+	'measures-panel': async (component, variant) => {
+		if (variant === 'not-measured')
+			await expect(component.getByText('Not measured', { exact: true })).toHaveCount(2);
+		if (variant === 'mixed')
+			await expect(component.getByText('Not measured', { exact: true })).toHaveCount(1);
+	},
 	'game-level-review': assertGameLevelReviewState,
 	'runtime-behavior': assertDesktopBehaviorState,
 	'environment-picker': async (component, variant) => {
