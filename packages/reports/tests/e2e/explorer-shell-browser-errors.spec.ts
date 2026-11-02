@@ -3,6 +3,7 @@ import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, openShellPage, removeShellFixture } from './support/shellFixture';
+import { commits } from '../../test/entityUnits';
 
 let home = '';
 test.beforeAll(() => {
@@ -15,7 +16,9 @@ for (const width of [1440, 390]) {
 	}) => {
 		await page.setViewportSize({ width, height: 1000 });
 		await openShellPage(page, home, 'errors');
-		await expect(page.getByRole('heading', { name: 'Verification at ccccccc' })).toBeVisible();
+		await expect(
+			page.getByRole('heading', { name: `Verification at ${commits.tip.slice(0, 7)}`, exact: true })
+		).toBeVisible();
 		const logs = page.getByRole('group', { name: 'Browser errors' });
 		if (await logs.count()) await logs.locator('summary').click();
 		if (process.env.TAKE_SCREENSHOT === 'true') {

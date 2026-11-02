@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-02T00:28:51.216Z","name":"sol-13-attach-gate","goal":"Both pre-existing evidence scenarios pass without weakened assertions","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-02T00:30:57.080Z","loop":"sol-13-attach-gate","step":"spec","evidence":"Main reproduced: stale review labels and console hash; strict hosted schema rejects projected capture recordId."}
+{"event":"step.completed","timestamp":"2026-11-02T00:30:57.728Z","loop":"sol-13-attach-gate","step":"coverage","evidence":"Existing review and console scenarios retained stale labels; hosted positive case lacked explicit recordId preservation and legacy/type checks."}

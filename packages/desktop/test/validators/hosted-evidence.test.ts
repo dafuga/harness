@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { HostedEvidenceValidator } from '../../src/validators/HostedEvidenceValidator';
 import { asked, hubAnswer, type AnswerAt } from '../hosted-evidence-fixture';
 
@@ -20,22 +21,30 @@ function changed(path: string, value: unknown, at: Partial<AnswerAt> = {}): unkn
 	return answer;
 }
 
-test('the answer of the hub to exactly what was asked is accepted as it is', () => {
-	for (const mode of ['commit', 'current'] as const) {
-		const answer = hubAnswer({ mode });
-		expect(validator.evidence(answer, { ...asked, mode })).toBe(answer);
-	}
-	const results = hubAnswer({ entityId: feed });
-	expect(validator.evidence(results, { ...asked, entityId: feed }).behavior.rows).toHaveLength(1);
-	// A repository without notes or evidence refs is read at no revision of either.
-	const bare = hubAnswer({ notesRevision: null, evidenceRevision: null });
-	expect(validator.evidence(bare, asked).identity).toMatchObject({
-		notesRevision: null,
-		evidenceRevision: null
-	});
-	const legacy = changed('identity.collaborationRevision', undefined);
-	expect(validator.evidence(legacy, asked)).toBe(legacy);
-});
+test('the answer of the hub to exactly what was asked is accepted as it is', () =>
+	measureWorkload('desktop.function.hosted-evidence-schema', 'hosted-evidence-validation', () => {
+		for (const mode of ['commit', 'current'] as const) {
+			const answer = hubAnswer({ mode });
+			expect(validator.evidence(answer, { ...asked, mode })).toBe(answer);
+			for (const side of [answer.evidence.after, answer.evidence.before]) {
+				if (side) expect(side.captures[0].recordId).toBe(side.record!.id);
+			}
+		}
+		const results = hubAnswer({ entityId: feed });
+		expect(validator.evidence(results, { ...asked, entityId: feed }).behavior.rows).toHaveLength(1);
+		// A repository without notes or evidence refs is read at no revision of either.
+		const bare = hubAnswer({ notesRevision: null, evidenceRevision: null });
+		expect(validator.evidence(bare, asked).identity).toMatchObject({
+			notesRevision: null,
+			evidenceRevision: null
+		});
+		const legacy = changed('identity.collaborationRevision', undefined);
+		expect(validator.evidence(legacy, asked)).toBe(legacy);
+		const withoutRecord = hubAnswer();
+		for (const side of [withoutRecord.evidence.after, withoutRecord.evidence.before])
+			if (side) delete side.captures[0].recordId;
+		expect(validator.evidence(withoutRecord, asked)).toBe(withoutRecord);
+	}));
 
 test('hosted records retain current and inherited browser diagnostics and reject malformed logs', () => {
 	const answer = hubAnswer();
@@ -106,6 +115,8 @@ test('an answer that is not exactly recorded evidence is refused', () => {
 		['scope.path', '/etc/passwd'],
 		['evidence.address', 'https://example.invalid/x'],
 		['evidence.after.captures', {}],
+		['evidence.after.captures.0.recordId', 7],
+		['evidence.before.captures.0.recordId', null],
 		['evidence.after.captures.0.capture.sha256', 'c'.repeat(63)],
 		['evidence.after.captures.0.capture.media', 7],
 		['evidence.after.captures.0.scenario', null],
