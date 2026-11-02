@@ -25,8 +25,11 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte"],
-		"symbols": ["ThreadPanel"]
+		"source": [
+			"packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.types.ts"
+		],
+		"symbols": ["ThreadPanel", "ThreadPanelProps"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -5,9 +5,9 @@
 
 	import { onMount, untrack } from 'svelte';
 	import { explorerName } from '$reports/utils/explorerName';
-	import type { EntityDetail, ProviderState, ThreadInfo } from '../../../models/Desktop.types';
+	import type { ProviderState } from '../../../models/Desktop.types';
+	import type { ThreadPanelProps } from './ThreadPanel.types';
 	import type { RunEvent } from '../../../models/development-tooling/DesktopBridge.types';
-	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 	import { createThreadCommentsStore } from '../../../lib/stores/development-tooling/threadComments.svelte';
 	import { createThreadRunStore } from '../../../lib/stores/development-tooling/threadRun.svelte';
 	import { pendingEntries, requestEntry, threadInfo } from './commentEntries';
@@ -30,17 +30,7 @@
 		version = $bindable(''),
 		option = $bindable(''),
 		close
-	}: {
-		entity: EntityDetail;
-		workspace: Workspace;
-		thread?: ThreadInfo | null;
-		/** A region or image that was selected where no thread is opened for it yet. */
-		target?: ThreadTarget | null;
-		version?: string;
-		/** The design option in view; empty for a design without options. */
-		option?: string;
-		close: () => void;
-	} = $props();
+	}: ThreadPanelProps = $props();
 	/** One workspace store lives as long as the page; its run and comments belong to this view. */
 	const store = untrack(() => workspace);
 	const run = createThreadRunStore(store);

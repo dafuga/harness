@@ -1,0 +1,105 @@
+.revision-picker {
+	display: flex;
+	min-width: 0;
+	align-items: center;
+	gap: var(--hx-space-8);
+}
+.revision-choices {
+	display: contents;
+}
+.revision-choices :global(button.agent-icon) {
+	display: inline-flex;
+	width: auto;
+	padding-inline: var(--hx-space-8);
+	gap: var(--hx-space-6);
+}
+
+.revision-summary {
+	display: flex;
+	align-items: baseline;
+	gap: var(--hx-space-6);
+	flex: 0 1 auto;
+	min-width: 0;
+	max-width: 100%;
+	margin-inline-start: var(--hx-space-4);
+	font-size: var(--hx-type-size-compact);
+	line-height: var(--hx-style-leading-snug);
+}
+.revision-summary > * {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.revision-summary strong {
+	min-width: 0;
+}
+.revision-summary small {
+	flex: none;
+	line-height: var(--hx-style-leading-snug);
+}
+.picker-field {
+	display: grid;
+	gap: var(--hx-space-6);
+	min-width: 0;
+	max-width: none;
+}
+.picker-field :global(.report-select) {
+	display: block;
+}
+.picker-field :global(.report-select.expanded select) {
+	width: 100%;
+	padding-inline: var(--hx-space-8);
+	font-size: var(--hx-type-size-sm);
+}
+@media (max-width: 560px) {
+	.revision-choices :global(button.agent-icon) {
+		align-items: center;
+		justify-content: center;
+		width: var(--hx-space-50);
+		height: var(--hx-space-40);
+		gap: var(--hx-space-2);
+		padding: 0;
+		font-size: var(--hx-type-size-2xs);
+		white-space: nowrap;
+	}
+	.revision-choices :global(svg) {
+		width: var(--hx-space-12);
+		height: var(--hx-space-12);
+	}
+	.revision-picker {
+		display: contents;
+	}
+	.revision-choices {
+		grid-area: revision;
+		display: flex;
+		justify-self: start;
+		gap: var(--hx-space-6);
+		margin: var(--hx-space-8) 0 0;
+	}
+	.revision-summary {
+		grid-area: summary;
+		gap: var(--hx-space-8);
+		max-width: none;
+		margin: var(--hx-space-2) 0 var(--hx-space-8);
+		padding-inline: var(--hx-space-6);
+		line-height: var(--hx-space-13);
+	}
+	/* A long branch gives way first; what is shown stays whole. */
+	.revision-summary strong {
+		font-size: var(--hx-type-size-xs);
+	}
+	.revision-summary small {
+		font-size: var(--hx-type-size-2xs);
+		line-height: var(--hx-space-13);
+	}
+	.go-to-tip {
+		grid-area: tip;
+		justify-self: end;
+		height: 30px;
+		margin: var(--hx-space-8) var(--hx-space-6) 0 0;
+		padding: 0 var(--hx-space-6);
+		font-size: var(--hx-type-size-2xs);
+		border-radius: var(--hx-radius-xlarge);
+		background: none;
+	}
+}

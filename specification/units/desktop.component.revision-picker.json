@@ -23,7 +23,10 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/components/shared-primitives/RevisionPicker.svelte"],
+		"source": [
+			"packages/desktop/src/components/shared-primitives/RevisionPicker.svelte",
+			"packages/desktop/src/components/shared-primitives/revision-picker/revisionPicker.css"
+		],
 		"symbols": [
 			"RevisionPicker",
 			"RevisionPicker.when",
