@@ -15,16 +15,18 @@ import hub from '../../../../../hub/src/lib/styles/hub.css?inline';
 document.body.dataset.pickerPreview = 'true';
 const parameters = new URLSearchParams(location.search);
 const unitId = parameters.get('unit') ?? 'reports.component.activity-list';
+const variant = parameters.get('variant') ?? '';
 const desktopContext =
 	unitId.startsWith('desktop.') ||
-	(unitId === 'reports.component.explorer-ui-explorer-kit-pill' &&
-		parameters.get('variant') === 'chip');
+	(unitId === 'reports.component.explorer-ui-explorer-kit-pill' && variant === 'chip') ||
+	(unitId === 'reports.component.harness-harness-verdict' &&
+		(variant.startsWith('icon') || variant.startsWith('run')));
 const preMounted =
 	[
 		'reports.component.audio-comparison',
 		'reports.component.upload-comparison',
 		'reports.component.upload-audio'
-	].includes(unitId) && parameters.get('variant') === 'pre-mount';
+	].includes(unitId) && variant === 'pre-mount';
 // Preserve the document's original unit before real route fixtures replace the visible URL.
 window.previewDocument = Object.freeze({ unit: unitId, timeOrigin: performance.timeOrigin });
 let styles = [base, base2, base3, harness, gallery, gallery2, picker, analytics];
