@@ -1,4 +1,4 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts" generics="Item">
 	import type { Snippet } from 'svelte';
