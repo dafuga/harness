@@ -49,7 +49,7 @@
 			{
 				"name": "ExplorerFrame.screenRoot",
 				"type": "markup",
-				"description": "The root of a screen with the styles of the explorer."
+				"description": "The root of a screen with the styles of the explorer. States: unindexed: A required missing registry displays the selected-revision registry notice. registry-optional: The frame renders its content even when the optional registry is unavailable. source-open: The source viewer dialog is open for the selected entity."
 			}
 		],
 		"errors": [

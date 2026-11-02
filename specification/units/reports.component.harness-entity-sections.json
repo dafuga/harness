@@ -79,7 +79,7 @@
 			{
 				"name": "EntitySections.entityTabPanel",
 				"type": "markup",
-				"description": "The selected overview, contract, relationships, recordings, examples, permissions, source or source-declared model table. Phone schema rows retain Column, Property, Type, Primary key, Nullable and Default labels; long identifiers scroll within their cells. No database is queried."
+				"description": "The selected overview, contract, relationships, recordings, examples, permissions, source or source-declared model table. Phone schema rows retain Column, Property, Type, Primary key, Nullable and Default labels; long identifiers scroll within their cells. No database is queried. States: used-in: The selected section lists entities that consume this entity. uses: The selected section lists this entity's recorded dependencies. audio: The selected section displays recorded audio evidence and transcripts. states: The selected section displays declared behavior states. tests: The selected section displays verification tests and expandable verification details. table-empty: The model Table tab explains that no committed storage table is declared."
 			}
 		],
 		"errors": [

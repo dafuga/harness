@@ -92,7 +92,7 @@
 			{
 				"name": "ExplorerCatalogScreen.collection",
 				"type": "markup",
-				"description": "Responsive grids show component screenshots, helper calls and service names with usage links. Search, filters and navigation preserve branch and commit. Shells, configs and models use tables."
+				"description": "Responsive grids show component screenshots, helper calls and service names with usage links. Search, filters and navigation preserve branch and commit. Shells, configs and models use tables. States: empty: The selected collection contains no registered entities. unindexed: The selected revision has no registry and the screen explains the gap. no-matches: A search with no results displays the no-matching-entities message. functions: The collection displays callable entries with their selected-revision identities. layouts: The collection displays layout cards and their child-content previews."
 			}
 		],
 		"errors": [

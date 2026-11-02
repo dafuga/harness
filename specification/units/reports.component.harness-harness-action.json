@@ -77,7 +77,7 @@
 			{
 				"name": "HarnessAction",
 				"type": "markup",
-				"description": "Styled action with leading/trailing icons at size 18. Complete caller content wraps within the available width. Buttons have type button. Handler failures are not caught."
+				"description": "Styled action with leading/trailing icons at size 18. Complete caller content wraps within the available width. Buttons have type button. Handler failures are not caught. States: trailing-icon: The action shows its icon after the text without a leading icon. long: The complete long action label wraps within the available control width. focused: The action retains its visible keyboard-focus treatment."
 			}
 		],
 		"errors": [

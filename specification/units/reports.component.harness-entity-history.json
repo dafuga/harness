@@ -94,7 +94,7 @@
 			{
 				"name": "EntityHistory",
 				"type": "markup",
-				"description": "Shows changed commits with direct links, relative dates, source size, complexity and profile-scoped latency. Phone rows stack under visible field labels; longer change reasons remain in an inline disclosure."
+				"description": "Shows changed commits with direct links, relative dates, source size, complexity and profile-scoped latency. Phone rows stack under visible field labels; longer change reasons remain in an inline disclosure. States: empty: The history list shows that no commit has been read so far. reading: The next-history read is pending and the Reading control is disabled. long: The history entries retain long change explanations in expandable details."
 			}
 		],
 		"errors": [

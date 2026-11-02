@@ -40,7 +40,7 @@
 			{
 				"name": "LoadingState",
 				"type": "markup",
-				"description": "A polite, atomic status with a decorative ring and label. Defaults to a viewport-centered ring with its label below; inline mode places a smaller ring beside the label in document flow. Pointer events pass through and reduced motion keeps the ring still."
+				"description": "A polite, atomic status with a decorative ring and label. Defaults to a viewport-centered ring with its label below; inline mode places a smaller ring beside the label in document flow. Pointer events pass through and reduced motion keeps the ring still. States: default-label: The centered progress indicator uses the default Loading label. long: A long caller label wraps beside the progress indicator."
 			}
 		],
 		"errors": [],

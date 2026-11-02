@@ -102,7 +102,7 @@
 			{
 				"name": "ExplorerContent.anyExplorerScreen",
 				"type": "markup",
-				"description": "The one screen the address is, for a host without a page for each screen."
+				"description": "The one screen the address is, for a host without a page for each screen. States: catalog: The content area displays the component collection. pages: The content area displays the Pages collection. missing: The requested entity is absent and its recovery notice is shown. configs: The content area displays source-based configuration tables. functions: The content area displays the callable collection. styles: The content area displays the shared style inventory. dependencies: The content area displays the dependency inventory. translations: The content area displays the translation inventory. modules: The content area displays the module inventory. permissions: The content area displays declared permissions. platforms: The content area displays supported platforms."
 			}
 		],
 		"errors": [

@@ -60,7 +60,7 @@
 			{
 				"name": "EntityMissing",
 				"type": "markup",
-				"description": "Not shown verdict, supplied explanation, statement that another revision is not substituted, and return action."
+				"description": "Not shown verdict, supplied explanation, statement that another revision is not substituted, and return action. States: custom-action: The missing-entity notice uses the caller-supplied recovery-action text. long: A lengthy missing-entity explanation wraps while retaining the recovery link."
 			}
 		],
 		"errors": [],

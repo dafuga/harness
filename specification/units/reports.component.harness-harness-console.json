@@ -69,7 +69,7 @@
 			{
 				"name": "HarnessConsole",
 				"type": "markup",
-				"description": "Explorer header and selected screen, with loading and unavailable-address notices. Repository identity loads independently of history. The selected screen owns its missing-registry notice. Index/revision failures show refresh guidance; unavailable parent data becomes null."
+				"description": "Explorer header and selected screen, with loading and unavailable-address notices. Repository identity loads independently of history. The selected screen owns its missing-registry notice. Index/revision failures show refresh guidance; unavailable parent data becomes null. States: loading-history: The frame displays Loading history while its index request is pending. loading-revision: The frame displays Loading this revision while selected source data is pending. index-error: An alert explains that history could not be loaded and suggests refreshing. revision-error: An alert explains that the revision could not be loaded and suggests refreshing. unindexed: The loaded revision displays its missing-registry notice."
 			}
 		],
 		"errors": [

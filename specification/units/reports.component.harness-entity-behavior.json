@@ -100,7 +100,7 @@
 			{
 				"name": "EntityBehavior",
 				"type": "markup",
-				"description": "Current or before/after test panel. Reads artifacts when not supplied and ignores completion whose row-hash signature no longer matches. Pending reading omits settled reason-absence text; completed explanations use separate paragraphs. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict requires passing results. Footer outcome values stay together."
+				"description": "Current or before/after test panel. Reads artifacts when not supplied and ignores completion whose row-hash signature no longer matches. Pending reading omits settled reason-absence text; completed explanations use separate paragraphs. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict requires passing results. Footer outcome values stay together. States: initial: The selected initial commit is shown without a parent comparison. empty: No behavior rows or scenarios are recorded and an empty message is shown. changed: The comparison highlights changed output fields between the two revisions. loading: The panel shows pending artifact reads instead of verified behavior contents."
 			}
 		],
 		"errors": [

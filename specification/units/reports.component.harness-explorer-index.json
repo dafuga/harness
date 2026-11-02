@@ -76,7 +76,7 @@
 			{
 				"name": "ExplorerIndex",
 				"type": "markup",
-				"description": "Searchable alphabetical catalog with one source-file section per config and responsibility sections for other kinds. Retains count status, explicit empty states and a clear-search action. Catalog rows are presented without a standalone proof legend footer."
+				"description": "Searchable alphabetical catalog with one source-file section per config and responsibility sections for other kinds. Retains count status, explicit empty states and a clear-search action. Catalog rows are presented without a standalone proof legend footer. States: search: The entered query filters the registered rows. no-matches: No rows match the selected search or filters and Show all is offered. layouts: Layout groups include guidance about the highlighted child-content slot. configs: Configuration rows are grouped into one source-file section each."
 			}
 		],
 		"errors": [

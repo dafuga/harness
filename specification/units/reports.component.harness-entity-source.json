@@ -60,7 +60,7 @@
 			{
 				"name": "EntitySource",
 				"type": "markup",
-				"description": "Lists implementation and associated test files separately. Service labels omit the implied src/services/ root while file links and code actions retain complete paths. The modal reads archived committed text; unavailable revisions state gaps."
+				"description": "Lists implementation and associated test files separately. Service labels omit the implied src/services/ root while file links and code actions retain complete paths. The modal reads archived committed text; unavailable revisions state gaps. States: empty: The source section explains that no source paths are recorded. linked: Source paths link to the repository at the selected commit. tests: Associated archived test files appear alongside the implementation files. long: Long committed source paths remain inspectable without losing their complete filename."
 			}
 		],
 		"errors": [

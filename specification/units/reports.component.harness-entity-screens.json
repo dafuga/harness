@@ -91,7 +91,7 @@
 			{
 				"name": "EntityScreens",
 				"type": "markup",
-				"description": "Captions retain capture revisions without a separator when none exists. Viewport buttons retain scenario and state. Selecting an image mounts its full-size viewer; a closed viewer adds no empty-selection text. Rejected or absent captures remain explicit gaps."
+				"description": "Captions retain capture revisions without a separator when none exists. Viewport buttons retain scenario and state. Selecting an image mounts its full-size viewer; a closed viewer adds no empty-selection text. Rejected or absent captures remain explicit gaps. States: current: The current revision is shown without a parent pane. incomparable: A notice explains incompatible capture dimensions while retaining the evidence. viewer-open: The screenshot viewer dialog is open with decoded image content and zoom controls. mobile-selected: The Mobile device control is selected and displays its recorded capture."
 			}
 		],
 		"errors": [

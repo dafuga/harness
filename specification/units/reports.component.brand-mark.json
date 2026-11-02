@@ -40,7 +40,7 @@
 			{
 				"name": "BrandMark",
 				"type": "markup",
-				"description": "Nonfocusable tiled H SVG using shared tile geometry and currentColor. Supplies no navigation behavior."
+				"description": "Nonfocusable tiled H SVG using shared tile geometry and currentColor. Supplies no navigation behavior. States: inline: The brand mark renders at one em to align with surrounding text. large: The same brand mark renders at six rem."
 			}
 		],
 		"errors": [],

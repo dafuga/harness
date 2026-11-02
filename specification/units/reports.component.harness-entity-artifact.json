@@ -80,7 +80,7 @@
 			{
 				"name": "EntityArtifact",
 				"type": "markup",
-				"description": "Recorded cases plus expandable assertions, facts, steps, trace and other content after verification. Steps and assertion rows share consistent spacing. Unknown assertions stay Not stated. Formatted values are shortened after 12,000 characters with a file-opening reminder. Raw JSON is inserted only while expanded. A stored capture always gets an original-file link, including while pending or unverified."
+				"description": "Recorded cases plus expandable assertions, facts, steps, trace and other content after verification. Steps and assertion rows share consistent spacing. Unknown assertions stay Not stated. Formatted values are shortened after 12,000 characters with a file-opening reminder. Raw JSON is inserted only while expanded. A stored capture always gets an original-file link, including while pending or unverified. States: not-recorded: The artifact has no capture and displays Not recorded. not-stored: The capture exists but its original bytes are unavailable, so Not stored is shown. loading: The artifact displays the reading notice while its bytes are pending. raw-open: The recorded JSON disclosure is expanded beneath the artifact summary. plain-text: The expanded artifact displays the recorded command output as text. long: Long recorded content is shortened with a link to open the complete recorded file."
 			}
 		],
 		"errors": [],

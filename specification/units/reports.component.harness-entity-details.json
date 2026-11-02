@@ -77,7 +77,7 @@
 			{
 				"name": "EntityDetails",
 				"type": "markup",
-				"description": "Renders source files, measured detail, the standalone performance summary, or the default contract with its summary. On phones, measurement fields stack with visible labels and whole-word values."
+				"description": "Renders source files, measured detail, the standalone performance summary, or the default contract with its summary. On phones, measurement fields stack with visible labels and whole-word values. States: unmeasured: The measurements tab explains missing observations without inventing zero values."
 			}
 		],
 		"errors": [

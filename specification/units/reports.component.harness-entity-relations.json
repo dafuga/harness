@@ -67,7 +67,7 @@
 			{
 				"name": "EntityRelations",
 				"type": "markup",
-				"description": "Counted Uses and Used In groups render every dependency through shared module cards, including private callables, config modules and unclassified support. Cards omit verification marks and retain scoped navigation."
+				"description": "Counted Uses and Used In groups render every dependency through shared module cards, including private callables, config modules and unclassified support. Cards omit verification marks and retain scoped navigation. States: empty: Both relationship sections display their no-recorded-relations messages."
 			}
 		],
 		"errors": [],

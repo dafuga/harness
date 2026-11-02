@@ -88,7 +88,7 @@
 			{
 				"name": "ExplorerPagesScreen.pageCards",
 				"type": "markup",
-				"description": "Page screenshot cards selected from the shown revision, with the original capture commit visible. Validated unchanged captures may be reused; missing or rejected evidence stays an explicit gap. Search, changed-only, ordering and links retain the selected scope."
+				"description": "Page screenshot cards selected from the shown revision, with the original capture commit visible. Validated unchanged captures may be reused; missing or rejected evidence stays an explicit gap. Search, changed-only, ordering and links retain the selected scope. States: empty: No registered pages exist at this revision. unindexed: The selected revision predates the registry and displays its registry gap. no-matches: The entered query matches no pages and the search-empty message is shown."
 			}
 		],
 		"errors": [

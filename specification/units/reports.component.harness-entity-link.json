@@ -47,7 +47,7 @@
 			{
 				"name": "EntityLink",
 				"type": "markup",
-				"description": "Anchor with a real href. A plain click prevents document navigation and calls nav.go; modified/nonprimary clicks keep native behavior. Does not catch navigation errors."
+				"description": "Anchor with a real href. A plain click prevents document navigation and calls nav.go; modified/nonprimary clicks keep native behavior. Does not catch navigation errors. States: labelled: Short visible link content has a fuller accessible destination label. long: The complete long entity-link text wraps within the available width. focused: Keyboard focus visibly identifies the navigable entity link."
 			}
 		],
 		"errors": [
