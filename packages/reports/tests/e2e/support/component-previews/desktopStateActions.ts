@@ -198,7 +198,7 @@ async function roster(component: Locator, variant: string) {
 		loading: 'Reading agent activity…',
 		unavailable: 'Live agent activity is unavailable',
 		empty: 'No sessions are registered',
-		unreadable: '1 unreadable registrations',
+		unreadable: '1 unreadable registration is not counted.',
 		stale: 'Stale',
 		historical: 'Live activity · independent of this revision',
 		many: '8 working'
