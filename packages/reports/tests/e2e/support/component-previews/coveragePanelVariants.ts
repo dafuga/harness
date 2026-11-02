@@ -5,10 +5,12 @@ const absent: Record<string, { status: string; error: string }> = {
 	unavailable: { status: 'unavailable', error: '' },
 	planned: { status: 'planned', error: '' }
 };
-export function coveragePanelVariantProps<T extends { evidence?: unknown }>(
+export function coveragePanelVariantProps<T extends { evidence?: unknown; workspace?: unknown }>(
 	props: T,
 	variant: string
 ) {
+	// Optional workspace: without it the regression proof section is not offered at all.
+	if (variant === 'without-workspace') return { ...props, workspace: undefined };
 	const state = absent[variant];
 	if (!state) return props;
 	return { ...props, evidence: { ...state, result: null, url: () => '' } };
