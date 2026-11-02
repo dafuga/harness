@@ -2,7 +2,7 @@
 	"name": "historical-evidence",
 	"goal": "Verify historical contracts in their committed schema and reject tampering",
 	"createdAt": "2026-11-02T09:35:16.890Z",
-	"updatedAt": "2026-11-02T09:35:42.628Z",
+	"updatedAt": "2026-11-02T09:49:09.513Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T09:44:01.079Z",
+			"evidence": "Committed 3f94aa15f7 fails on the authentic stableJson legacy component hash; immutable red checkpoint retained."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T09:49:08.053Z",
+			"evidence": "427a38c585 selects committed legacy or source-derived schema 2 identities without a hash fallback."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T09:49:09.513Z",
+			"evidence": "Unchanged regression passes at 427a38c585; matching direct-Bun environment retained for both checkpoints."
 		},
 		{
 			"id": "verify",

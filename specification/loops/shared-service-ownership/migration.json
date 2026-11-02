@@ -2768,13 +2768,13 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "002c5b0b24a4d6660f5c151d8e9d297e68345aadc596bd11ad452e44494adeb1",
+			"definition": "e14baa2aef4dfe2844469c25187534f635897ea8b60bcba78c5bfdc94c4dee4b",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "e2851bc0f1946cff58cc105f1eb9966d575fa6bf",
+				"commit": "427a38c585a23252fc6c2fe24479623627e28719",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "002c5b0b24a4d6660f5c151d8e9d297e68345aadc596bd11ad452e44494adeb1",
-				"reason": "Seal measured and removed unit versions with their retained source hashes."
+				"definition": "e14baa2aef4dfe2844469c25187534f635897ea8b60bcba78c5bfdc94c4dee4b",
+				"reason": "Mark newly assembled component identities as source-contract schema 2 for explicit historical verification."
 			},
 			"previousReviews": [
 				{
@@ -2794,6 +2794,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "621bfc86dd6c9e81c8e8cc09bd3b64d6efcfd9755e7822acdd0934863c485bf2",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "e2851bc0f1946cff58cc105f1eb9966d575fa6bf",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "002c5b0b24a4d6660f5c151d8e9d297e68345aadc596bd11ad452e44494adeb1",
+					"reason": "Seal measured and removed unit versions with their retained source hashes."
 				}
 			]
 		},
