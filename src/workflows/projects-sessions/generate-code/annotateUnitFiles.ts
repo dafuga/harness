@@ -1,3 +1,4 @@
+// @harness-uid u_yaf6sntjte
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { PlannedFile } from '../../../core/development-tooling/files';

@@ -4,6 +4,7 @@ import { fail } from '../../core/development-tooling/errors';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type { UnitIndexResult } from '../../workflows/development-tooling/load-units/unit-index-service/UnitIndexService';
 import { UnitRegistryValidator } from '../../validators/development-tooling/UnitRegistryValidator';
+import { uidFindings } from '../../validators/development-tooling/uidFindings';
 import { previewBinding } from '../../utils/development-tooling/previewBinding';
 import {
 	contractFailureCounts,
@@ -52,6 +53,9 @@ export function registryErrors(loaded: LoadedUnits): string[] {
 			.filter((unit) => unit.status === 'active')
 			.flatMap((unit) => previewBinding(unit, loaded.scenarios)),
 		...new UnitRegistryValidator().validate(loaded.stored, files, loaded.index.files),
+		...uidFindings(loaded.stored, loaded.index.files).map(
+			(found) => `${found.unit}: ${found.kind} ${found.detail}`
+		),
 		...loaded.scenarios.flatMap((scenario) =>
 			scenario.units
 				.filter((unit) => !known.has(unit))

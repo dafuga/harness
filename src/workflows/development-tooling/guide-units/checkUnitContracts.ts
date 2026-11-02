@@ -17,6 +17,7 @@ import {
 	sourceUnitStates
 } from './guidanceContext';
 import { stateTests } from './stateTests';
+import { uidFindings } from '../../../validators/development-tooling/uidFindings';
 
 export async function checkUnitContracts(
 	id: string | undefined,
@@ -33,7 +34,7 @@ export async function checkUnitContracts(
 		const own = unit.owns.source.flatMap((path) => context.loaded.index.files.get(path) ?? []);
 		const direct = contractFindings(unit, deriveContract(own, unit.runtime.entry));
 		const states = await stateFindings(context, unit);
-		const current = [...direct, ...states];
+		const current = [...direct, ...states, ...uids(context, unit)];
 		findings.push(...current);
 		counts.push({ entity: unit.id, findings: current.length });
 	}
@@ -43,6 +44,17 @@ export async function checkUnitContracts(
 		counts,
 		summary: { entities: units.length, findings: findings.length }
 	};
+}
+
+/** The uid findings of one unit, as contract findings. */
+function uids(context: GuidanceContext, unit: ComponentManifest): ContractFinding[] {
+	const { stored, index } = context.loaded;
+	return uidFindings(stored, index.files, new Set([unit.id])).map((found) => ({
+		entity: found.unit,
+		kind: found.kind,
+		detail: found.detail,
+		where: found.where
+	}));
 }
 
 async function stateFindings(

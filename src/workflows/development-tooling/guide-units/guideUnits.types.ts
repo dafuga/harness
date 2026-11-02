@@ -64,7 +64,11 @@ export interface ContractFinding {
 		| 'undocumented-prop'
 		| 'undocumented-state'
 		| 'untested-state'
-		| 'required-states-incomplete';
+		| 'required-states-incomplete'
+		| 'uid-missing'
+		| 'uid-mismatch'
+		| 'uid-duplicate'
+		| 'uid-copied';
 	detail: string;
 	where: string;
 }
