@@ -1,0 +1,115 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.game-authoring-patch-game-view",
+	"kind": "function",
+	"title": "patchGameView",
+	"responsibility": "Copies a game document with the selected view patch while preserving other views.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/game-authoring/game-workspace/patchGameView.ts"],
+		"symbols": ["patchGameView"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "patchGameView.doc",
+				"type": "GameDocument | undefined",
+				"required": true,
+				"description": "Current document; undefined returns undefined without accessing views."
+			},
+			{
+				"name": "patchGameView.current",
+				"type": "GameView | undefined",
+				"required": true,
+				"description": "Selected view; undefined returns undefined without mapping."
+			},
+			{
+				"name": "patchGameView.patch",
+				"type": "Partial<GameView>",
+				"required": true,
+				"description": "Fields spread into matching views. No default is supplied."
+			}
+		],
+		"outputs": [
+			{
+				"name": "patchGameView",
+				"type": "GameDocument | undefined",
+				"description": "A document copy with mapped views, preserving nonmatching view references and native map/species/spread behavior; undefined when doc or current is absent."
+			}
+		],
+		"errors": [
+			{
+				"name": "Input access failure",
+				"type": "propagated",
+				"description": "Errors from supplied map methods, species constructors, getters or spread access propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "patchGameView",
+				"inputs": [
+					{
+						"name": "patchGameView.doc",
+						"type": "GameDocument | undefined",
+						"required": true,
+						"description": "Current document; undefined returns undefined without accessing views."
+					},
+					{
+						"name": "patchGameView.current",
+						"type": "GameView | undefined",
+						"required": true,
+						"description": "Selected view; undefined returns undefined without mapping."
+					},
+					{
+						"name": "patchGameView.patch",
+						"type": "Partial<GameView>",
+						"required": true,
+						"description": "Fields spread into matching views. No default is supplied."
+					}
+				],
+				"outputs": [
+					{
+						"name": "patchGameView",
+						"type": "GameDocument | undefined",
+						"description": "A document copy with mapped views, preserving nonmatching view references and native map/species/spread behavior; undefined when doc or current is absent."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access failure",
+						"type": "propagated",
+						"description": "Errors from supplied map methods, species constructors, getters or spread access propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/game-workspace/patchGameView.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/game-workspace/patchGameView.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
