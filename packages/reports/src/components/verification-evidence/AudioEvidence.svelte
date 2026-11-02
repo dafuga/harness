@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <!-- @harness-uid u_gbxgja2x6q -->
 <script lang="ts">
+	import AudioIcon from './AudioIcon.svelte';
 	import type { AudioEvent } from './AudioEvidence.types';
 
 	import { onDestroy } from 'svelte';
@@ -78,21 +79,7 @@
 <hx-article class="evidence-card audio-card" class:unavailable={missing} id={idPrefix + item.id}>
 	<hx-div class="audio-stage">
 		<hx-div class="audio-identity">
-			<hx-span class="audio-icon" aria-hidden="true"
-				><hx-svg
-					viewBox="0 0 24 24"
-					width="18"
-					height="18"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="1.8"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					><hx-svg-path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" /><hx-svg-path
-						d="M15.5 9a4 4 0 0 1 0 6"
-					/><hx-svg-path d="M18.5 6.5a7.5 7.5 0 0 1 0 11" /></hx-svg
-				></hx-span
-			>
+			<AudioIcon />
 			<hx-span>
 				<hx-span class="audio-kind"
 					>{$t('audio')}{#if item.standing}

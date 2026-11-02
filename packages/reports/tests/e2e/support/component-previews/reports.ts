@@ -20,6 +20,7 @@ import { contractPreviewUnit } from './reportEntityContractVariants';
 import { resolveStateImage } from './reportEntityStatesVariants';
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
 export const reportCases: PreviewCases = {
+	'reports.component.verification-evidence-audio-icon': {},
 	'reports.component.audio-comparison': {
 		before: baselineNarration,
 		after: releaseNarration,

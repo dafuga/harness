@@ -21,6 +21,7 @@ export async function assertCatalogBeforeCapture({
 		await expect(component.getByRole('link')).toHaveText(
 			'Review every recorded result for this selected revision'
 		);
+	await assertAudioIconState(component, unit.id);
 	await assertRequiredShellState(component, unit.id, variant);
 	await assertCatalogNames(component, unit.id, variant);
 	await assertCatalogState(component, unit.id, variant, viewport.id);
@@ -100,4 +101,16 @@ async function assertRequiredShellState(component: Locator, id: string, variant:
 		await expect(component.locator('.badge [aria-hidden="true"]')).toHaveText('●');
 		await expect(component.locator('.hx-verdict')).toHaveCount(0);
 	}
+}
+
+/** The shared speaker retains the original card glyph and caller stylesheet. */
+async function assertAudioIconState(component: Locator, id: string) {
+	if (id !== 'reports.component.verification-evidence-audio-icon') return;
+	const icon = component.locator('.audio-icon');
+	await expect(icon).toHaveAttribute('aria-hidden', 'true');
+	await expect(icon).toHaveCSS('width', '40px');
+	await expect(icon).toHaveCSS('height', '40px');
+	await expect(icon.locator('svg')).toHaveAttribute('viewBox', '0 0 24 24');
+	await expect(icon.locator('svg')).toHaveAttribute('width', '18');
+	await expect(icon.locator('path')).toHaveCount(3);
 }
