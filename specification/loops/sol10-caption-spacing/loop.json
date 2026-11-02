@@ -2,7 +2,7 @@
 	"name": "sol10-caption-spacing",
 	"goal": "Keep readable separators and same-side metadata in comparison viewer captions.",
 	"createdAt": "2026-11-02T05:30:13.319Z",
-	"updatedAt": "2026-11-02T05:30:14.585Z",
+	"updatedAt": "2026-11-02T05:38:56.098Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T05:38:53.302Z",
+			"evidence": "Red 572286f5 at 53f140f6f1 fails the unchanged viewer consumer caption assertion; missing separator spaces are observed in rendered markup."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T05:38:54.488Z",
+			"evidence": "033b33a002 preserves explicit separator spaces in EvidenceViewer without changing side labels, metadata, fixtures or assertions."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T05:38:56.098Z",
+			"evidence": "Paired green 0fa6c427 at 033b33a002 passes the same single standardized ComparePanes test, paired to red 572286f5 at 53f140f6f1 with identical command, test corpus and environment."
 		},
 		{
 			"id": "verify",
