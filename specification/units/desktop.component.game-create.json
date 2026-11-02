@@ -47,11 +47,17 @@
 			{
 				"name": "GameCreate",
 				"type": "markup",
-				"description": "Create an app or dimensional game through the local host and open its resulting workspace. Renders reactive UI and publishes edits through its callbacks. Creation, callback and navigation failures are caught and displayed in the form alert."
+				"description": "Create an app or dimensional game through the local host and open its resulting workspace. Renders reactive UI and publishes edits through its callbacks. Creation, callback and navigation failures are caught and displayed in the form alert. Catalog states: default (empty form), filled (name entered), game-2d and game-3d (dimension chosen), unavailable (no host to create through), busy (creation in progress) and error (a failed creation shown in the alert). Creation, callback and navigation failures are caught here and displayed; none propagate."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "The new game came back without a project id",
+				"type": "Error",
+				"description": "Thrown when a created game has no project id, so no workspace can open. Caught by submit and shown in the form alert."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
