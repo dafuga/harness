@@ -41,3 +41,10 @@ before starting base `d6f78bfd27`. Current-source screenshot requests at all thr
 viewports return HTTP 400, entity not registered, and create no image. This obsolete
 entrypoint is not restored. Current ExplorerModuleCard captures retain their own
 registered identity and are never relabelled as the removed component.
+
+# State coverage guidance
+
+Run `harness units guide <id>`, write and commit the standard test for NEXT, run
+`harness verify run --priority agent-test --entity <id>`, and repeat the guide until
+DONE. Run `harness units check-contract <id>` when writing/changing a contract.
+Review guessed boundaries; only committed tests and attached verified shots count.

@@ -1,0 +1,181 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-check-unit-contracts",
+	"kind": "workflow",
+	"title": "checkUnitContracts",
+	"responsibility": "Compares stored contracts with indexed source and state inventories, reporting located heuristic gaps and per-entity totals without rewriting contracts.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/development-tooling/guide-units/checkUnitContracts.ts"],
+		"symbols": ["checkUnitContracts", "renderContractCheck"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "checkUnitContracts.id",
+				"type": "string | undefined",
+				"required": true,
+				"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+			},
+			{
+				"name": "checkUnitContracts.options",
+				"type": "GuidanceOptions & { all?: boolean }",
+				"required": false,
+				"default": {},
+				"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+			},
+			{
+				"name": "renderContractCheck.report",
+				"type": "ContractCheckReport",
+				"required": true,
+				"description": "Completed structured report to render without recomputing source or upgrading proof."
+			}
+		],
+		"outputs": [
+			{
+				"name": "checkUnitContracts",
+				"type": "Promise<ContractCheckReport>",
+				"description": "Selected active entities, located finding records, per-entity counts and total findings. Findings are heuristic, not exhaustive proof."
+			},
+			{
+				"name": "renderContractCheck",
+				"type": "string",
+				"description": "Human per-entity counts followed by each finding kind, detail, location and total."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Rejects invalid selection, unknown identities, malformed inventories or invalid registry data with the specific CLI diagnostic."
+			},
+			{
+				"name": "Dependency failure",
+				"type": "thrown",
+				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "checkUnitContracts",
+				"inputs": [
+					{
+						"name": "checkUnitContracts.id",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+					},
+					{
+						"name": "checkUnitContracts.options",
+						"type": "GuidanceOptions & { all?: boolean }",
+						"required": false,
+						"default": {},
+						"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkUnitContracts",
+						"type": "Promise<ContractCheckReport>",
+						"description": "Selected active entities, located finding records, per-entity counts and total findings. Findings are heuristic, not exhaustive proof."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid selection, missing source or malformed inventory produces the corresponding CLI diagnostic."
+					},
+					{
+						"name": "Dependency failure",
+						"type": "thrown",
+						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "renderContractCheck",
+				"inputs": [
+					{
+						"name": "renderContractCheck.report",
+						"type": "ContractCheckReport",
+						"required": true,
+						"description": "Completed structured report to render without recomputing source or upgrading proof."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderContractCheck",
+						"type": "string",
+						"description": "Human per-entity counts followed by each finding kind, detail, location and total."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.derive-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-contract-findings",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-contract-states",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-guidance-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-state-tests",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/guide-units/checkUnitContracts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/guide-units/checkUnitContracts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

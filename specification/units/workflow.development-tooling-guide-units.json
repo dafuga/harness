@@ -1,0 +1,187 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-guide-units",
+	"kind": "workflow",
+	"title": "guideUnits",
+	"responsibility": "Checks committed named unit states against authored tests and verified device captures; reports inferred boundaries separately as advisory guesses.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/development-tooling/guide-units/guideUnits.ts",
+			"src/workflows/development-tooling/guide-units/guideUnits.types.ts"
+		],
+		"symbols": [
+			"guideUnits",
+			"renderUnitsGuide",
+			"GuidanceOptions",
+			"StateRegistry",
+			"UnitState",
+			"GuidanceContext",
+			"StateTest",
+			"GuideState",
+			"GuideReport",
+			"ContractFinding",
+			"ContractCheckReport",
+			"ContractScope"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "guideUnits.id",
+				"type": "string",
+				"required": true,
+				"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+			},
+			{
+				"name": "guideUnits.options",
+				"type": "GuidanceOptions",
+				"required": false,
+				"default": {},
+				"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+			},
+			{
+				"name": "renderUnitsGuide.report",
+				"type": "GuideReport",
+				"required": true,
+				"description": "Completed structured report to render without recomputing source or upgrading proof."
+			}
+		],
+		"outputs": [
+			{
+				"name": "guideUnits",
+				"type": "Promise<GuideReport>",
+				"description": "Selected HEAD, required named unit states with tests and per-device proof, separate advisory guesses, required-state totals and NEXT. Guesses never block DONE until declared as unit states."
+			},
+			{
+				"name": "renderUnitsGuide",
+				"type": "string",
+				"description": "Human required-state checklist, proof gaps, required-state totals and NEXT, followed by a separate advisory guesses section."
+			}
+		],
+		"errors": [
+			{
+				"name": "Dependency failure",
+				"type": "thrown",
+				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "guideUnits",
+				"inputs": [
+					{
+						"name": "guideUnits.id",
+						"type": "string",
+						"required": true,
+						"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+					},
+					{
+						"name": "guideUnits.options",
+						"type": "GuidanceOptions",
+						"required": false,
+						"default": {},
+						"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+					}
+				],
+				"outputs": [
+					{
+						"name": "guideUnits",
+						"type": "Promise<GuideReport>",
+						"description": "Selected HEAD, required named unit states with tests and per-device proof, separate advisory guesses, required-state totals and NEXT. Guesses never block DONE until declared as unit states."
+					}
+				],
+				"errors": [
+					{
+						"name": "Dependency failure",
+						"type": "thrown",
+						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "renderUnitsGuide",
+				"inputs": [
+					{
+						"name": "renderUnitsGuide.report",
+						"type": "GuideReport",
+						"required": true,
+						"description": "Completed structured report to render without recomputing source or upgrading proof."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderUnitsGuide",
+						"type": "string",
+						"description": "Human required-state checklist, proof gaps, required-state totals and NEXT, followed by a separate advisory guesses section."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-contract-states",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-guidance-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-state-tests",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-unit-shots",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.inspect-units",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/guide-units/guideUnits.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/guide-units/guideUnits.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

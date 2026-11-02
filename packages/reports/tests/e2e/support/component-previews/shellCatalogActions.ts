@@ -1,3 +1,6 @@
+// Before adding states: harness units guide <id>; write/commit the test for NEXT;
+// harness verify run --priority agent-test --entity <id>; rerun guide until DONE.
+// When writing/changing the contract: harness units check-contract <id>.
 import { expect, type Locator } from '../../../../../../test/support/browserTest';
 import { shellCatalogVariants } from './shellCatalogVariants';
 import { commits } from '../../../../test/entityUnits';

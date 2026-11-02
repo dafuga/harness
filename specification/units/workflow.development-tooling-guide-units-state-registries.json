@@ -1,0 +1,137 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-guide-units-state-registries",
+	"kind": "workflow",
+	"title": "stateRegistries",
+	"responsibility": "Reads catalog and preview declarations as TypeScript syntax and required-state inventories as JSON without importing executable fixture modules.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/development-tooling/guide-units/stateRegistries.ts"],
+		"symbols": ["stateRegistries"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "stateRegistries.tree",
+				"type": "SourceTree",
+				"required": true,
+				"description": "Readable committed or working source tree supplying only the selected revision declarations."
+			},
+			{
+				"name": "stateRegistries.root",
+				"type": "string",
+				"required": true,
+				"description": "Project directory used for external inventory paths or read-only Git evidence access."
+			},
+			{
+				"name": "stateRegistries.extra",
+				"type": "string[]",
+				"required": false,
+				"default": [],
+				"description": "Additional JSON inventory paths, absolute or relative to root; defaults to an empty list."
+			}
+		],
+		"outputs": [
+			{
+				"name": "stateRegistries",
+				"type": "Promise<StateRegistry[]>",
+				"description": "Entity-scoped state inventories with their source paths and catalog or required-state classification."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Rejects invalid selection, unknown identities, malformed inventories or invalid registry data with the specific CLI diagnostic."
+			},
+			{
+				"name": "Dependency failure",
+				"type": "thrown",
+				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "stateRegistries",
+				"inputs": [
+					{
+						"name": "stateRegistries.tree",
+						"type": "SourceTree",
+						"required": true,
+						"description": "Readable committed or working source tree supplying only the selected revision declarations."
+					},
+					{
+						"name": "stateRegistries.root",
+						"type": "string",
+						"required": true,
+						"description": "Project directory used for external inventory paths or read-only Git evidence access."
+					},
+					{
+						"name": "stateRegistries.extra",
+						"type": "string[]",
+						"required": false,
+						"default": [],
+						"description": "Additional JSON inventory paths, absolute or relative to root; defaults to an empty list."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stateRegistries",
+						"type": "Promise<StateRegistry[]>",
+						"description": "Entity-scoped state inventories with their source paths and catalog or required-state classification."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid selection, missing source or malformed inventory produces the corresponding CLI diagnostic."
+					},
+					{
+						"name": "Dependency failure",
+						"type": "thrown",
+						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/guide-units/stateRegistries.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/guide-units/stateRegistries.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

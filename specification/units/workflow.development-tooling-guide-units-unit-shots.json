@@ -1,0 +1,153 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-guide-units-unit-shots",
+	"kind": "workflow",
+	"title": "unitShots",
+	"responsibility": "Reads pinned verified Git captures through root history services without Desktop runtime imports or generated application configuration.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/development-tooling/guide-units/unitShots.ts",
+			"src/workflows/development-tooling/guide-units/unitShots.types.ts"
+		],
+		"symbols": ["unitShots", "UnitShots"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "unitShots.root",
+				"type": "string",
+				"required": true,
+				"description": "Project directory used for external inventory paths or read-only Git evidence access."
+			},
+			{
+				"name": "unitShots.entity",
+				"type": "string",
+				"required": true,
+				"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+			},
+			{
+				"name": "unitShots.commit",
+				"type": "string",
+				"required": true,
+				"description": "Exact source commit whose evidence is requested; the proof reader validates tree identity and retained bytes."
+			}
+		],
+		"outputs": [
+			{
+				"name": "unitShots",
+				"type": "Promise<UnitShots>",
+				"description": "Original captures and gaps projected from pinned root HistoryStatusService and RevisionDetailService reads using the same evidence selector as the screenshot API; absent refs return no captures."
+			}
+		],
+		"errors": [
+			{
+				"name": "Dependency failure",
+				"type": "thrown",
+				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "unitShots",
+				"inputs": [
+					{
+						"name": "unitShots.root",
+						"type": "string",
+						"required": true,
+						"description": "Project directory used for external inventory paths or read-only Git evidence access."
+					},
+					{
+						"name": "unitShots.entity",
+						"type": "string",
+						"required": true,
+						"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+					},
+					{
+						"name": "unitShots.commit",
+						"type": "string",
+						"required": true,
+						"description": "Exact source commit whose evidence is requested; the proof reader validates tree identity and retained bytes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitShots",
+						"type": "Promise<UnitShots>",
+						"description": "Original captures and gaps projected from pinned root HistoryStatusService and RevisionDetailService reads using the same evidence selector as the screenshot API; absent refs return no captures."
+					}
+				],
+				"errors": [
+					{
+						"name": "Dependency failure",
+						"type": "thrown",
+						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-place",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.revision-detail",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/guide-units/unitShots.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/guide-units/unitShots.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

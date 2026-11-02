@@ -9,9 +9,12 @@ const unitGuide: Guide = {
 		'Declare dependencies that cross a runtime boundary: process, HTTP, Wasm or contract.',
 		'Before changing code, name the units you change and read only their source.',
 		'Read dependency contracts with harness units show instead of their implementations.',
+		'Run harness units check-contract <id> when writing or changing a contract; review each heuristic finding.',
+		'Run harness units guide <id>, write and commit the standard test for NEXT, run harness verify run --priority agent-test --entity <id>, and repeat the guide until DONE.',
 		'Re-index after every source change and commit the manifests with the code.'
 	],
 	rules: [
+		'Guide completion covers named unit catalog and dedicated scenario states. Guesses are advisory; declare a justified guess as a unit state to require its proof.',
 		'Manifests live in specification/units, one canonical JSON file per unit.',
 		'An identity never changes and is never given to different source.',
 		'Moving source keeps the identity; recreating retired source revives it with its baseline.',
@@ -39,6 +42,10 @@ const unitGuide: Guide = {
 		'harness generate unit Billing --kind service --responsibility "Charges an invoice once."',
 		'harness units index --write',
 		'harness units show service.billing',
+		'harness units check-contract component.price-quote',
+		'harness units check-contract --all --json',
+		'harness units guide component.price-quote',
+		'harness verify run --priority agent-test --entity component.price-quote',
 		'harness units check',
 		'harness units schema ComponentManifest'
 	]

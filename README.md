@@ -216,10 +216,31 @@ harness units index --write                      # reconcile manifests with sour
 harness units check                              # fail on invalid, inconsistent or stale manifests
 harness units list --kind service
 harness units show service.billing               # contract, version hashes, consumers, tests
+harness units guide component.price-quote          # REQUIRED/GUESS states, committed tests, verified shots, NEXT
+harness units check-contract component.price-quote # heuristic contract gaps and locations
+harness units check-contract --all --json          # findings and counts for every active entity
 harness units graph --json                       # files, units, scenarios and uncertain references
 harness units retire function.slugify --reason "Inlined into titles"
 harness units schema ComponentManifest           # also ScenarioManifest, VerificationRecord
 ```
+
+For component work, run `harness units guide <id>`, write and commit the standard
+test for NEXT, run `harness verify run --priority agent-test --entity <id>`, then
+repeat the guide until DONE. Each named required state needs a committed test and usable attached
+desktop, tablet and mobile proof from Harness's Git evidence store. Scratch files
+do not count. Unit catalog states and dedicated scenario declarations are REQUIRED.
+Prop boundaries, contract enums and source hints appear separately as advisory
+GUESSES; they do not block DONE until justified and declared as a unit state.
+Broader application scenario labels do not become component states. The guide
+reads HEAD, so uncommitted tests cannot complete it.
+
+Run `harness units check-contract <id>` when writing or changing a contract. It
+reviews the working contract against source props, errors, function/snippet outputs
+and state declarations. Both commands accept `--json` and exit non-zero while gaps
+remain. `check-contract --all` summarises findings per entity. Add external state
+inventories with `--required-states path/to/widget-required-states.json`; repository
+`*required-states*.json` files and catalog/preview scenario registries are discovered
+automatically. Findings are heuristic review prompts, not a completeness proof.
 
 - `harness.units.json` names the workspaces, test folders, global files and ignored paths.
 - An identity never changes. Moving source keeps it, and recreating retired source at its old
