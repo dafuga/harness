@@ -2,7 +2,7 @@
 	"name": "sol10-catalog-name-wrap",
 	"goal": "Keep realistic component names inside the mobile catalog viewport",
 	"createdAt": "2026-11-02T09:24:46.066Z",
-	"updatedAt": "2026-11-02T09:46:45.137Z",
+	"updatedAt": "2026-11-02T09:57:51.639Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T09:57:01.211Z",
+			"evidence": "f0c4dd3184 changes only EntityCard h2 CSS: min-width 0 and overflow-wrap anywhere. The full strengthened test corpus and all fixture inputs remain unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T09:57:51.639Z",
+			"evidence": "Paired green df61ef430ab9f35d8a51ba8f4ac32ab5c27d56d33fc7469e84046a993ea50e17 at f0c4dd3184 passes all unchanged catalog cases with the same command and profile as red f60330ff. All 15 API-fetched images were inspected; complete long names now wrap inside their cards at every viewport."
 		},
 		{
 			"id": "verify",
