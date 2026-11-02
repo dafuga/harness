@@ -45,15 +45,16 @@
 			{
 				"name": "NavBar.account",
 				"type": "Snippet",
+				"default": "undefined (omitted)",
 				"required": false,
-				"description": "Optional content supplied by the host for account controls, such as the signed-in identity. When omitted, no account container is rendered; this component does not supply sign-in or sign-out behavior itself. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional content supplied by the host for account controls, such as the signed-in identity. When omitted, no account container is rendered; this component does not supply sign-in or sign-out behavior itself. Defaults to JavaScript undefined (omitted), not the literal string. An explicit null is treated the same as omitted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "NavBar",
 				"type": "markup",
-				"description": "Top bar with project, search and optional account controls; one grouped environment and revision rail; a complete category row on desktop and tablet; and evenly filled mobile category cells with icons, including Game Views. Search uses the current workspace context."
+				"description": "Top bar with project, search and optional account controls; one grouped environment and revision rail; a complete category row on desktop and tablet; and evenly filled mobile category cells with icons, including Game Views. Search uses the current workspace context. Catalog states: default (no account), account (host account content beside the project), readonly (agent capability off, so Settings is absent) and game (Game Views in the category row)."
 			}
 		],
 		"errors": [
