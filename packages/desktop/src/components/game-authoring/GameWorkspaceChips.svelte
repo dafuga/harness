@@ -11,7 +11,7 @@
 	}: {
 		/** An in-memory example, not a saved project. */
 		demo: boolean;
-		/** The historical commit shown. Defaults to undefined, showing no history chip. */
+		/** The historical commit shown. Defaults to JavaScript undefined, showing no history chip. */
 		commit?: string;
 		readonly: boolean;
 		/** Edits not saved yet. */
