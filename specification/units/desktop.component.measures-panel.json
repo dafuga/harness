@@ -39,10 +39,11 @@
 			{
 				"name": "MeasuresPanel",
 				"type": "markup",
-				"description": "Size & performance panel with the two supplied values. Does not calculate measurements or infer availability from displayed text."
+				"description": "Size & performance panel with the two supplied values. Does not calculate measurements or infer availability from displayed text. Throws nothing: a measure without text is shown as Not measured. Catalog states: default (both measured), not-measured (both not taken) and mixed (size measured, performance not taken)."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
