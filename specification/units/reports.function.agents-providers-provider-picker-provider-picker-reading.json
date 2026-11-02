@@ -1,0 +1,188 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.agents-providers-provider-picker-provider-picker-reading",
+	"kind": "function",
+	"title": "providerPickerReading",
+	"responsibility": "Reads model picker responses: snapshots, queued sessions, selection labels and failure text.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/agents-providers/provider-picker/providerPickerReading.ts"
+		],
+		"symbols": ["isSnapshot", "readSessions", "selectionLabel", "failureText"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "isSnapshot.data",
+				"type": "object | null",
+				"required": true
+			},
+			{
+				"name": "readSessions.data",
+				"type": "object | null",
+				"required": true
+			},
+			{
+				"name": "selectionLabel.models",
+				"type": "PickerModel[]",
+				"required": true
+			},
+			{
+				"name": "selectionLabel.target",
+				"type": "ProviderSelection",
+				"required": true
+			},
+			{
+				"name": "failureText.cause",
+				"type": "ThrownValue",
+				"required": true
+			},
+			{
+				"name": "failureText.fallback",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "isSnapshot",
+				"type": "data is PickerSnapshot"
+			},
+			{
+				"name": "readSessions",
+				"type": "SwitchRequest[] | null"
+			},
+			{
+				"name": "selectionLabel",
+				"type": "string"
+			},
+			{
+				"name": "failureText",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "isSnapshot",
+				"inputs": [
+					{
+						"name": "isSnapshot.data",
+						"type": "object | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isSnapshot",
+						"type": "data is PickerSnapshot"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "readSessions",
+				"inputs": [
+					{
+						"name": "readSessions.data",
+						"type": "object | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readSessions",
+						"type": "SwitchRequest[] | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "selectionLabel",
+				"inputs": [
+					{
+						"name": "selectionLabel.models",
+						"type": "PickerModel[]",
+						"required": true
+					},
+					{
+						"name": "selectionLabel.target",
+						"type": "ProviderSelection",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "selectionLabel",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "failureText",
+				"inputs": [
+					{
+						"name": "failureText.cause",
+						"type": "ThrownValue",
+						"required": true
+					},
+					{
+						"name": "failureText.fallback",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "failureText",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.picker-model-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.picker-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.helper.strings-error-message",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/agents-providers/provider-picker/providerPickerReading.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/agents-providers/provider-picker/providerPickerReading.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

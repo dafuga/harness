@@ -5,9 +5,10 @@
 	import Select from '../../shared-primitives/Select.svelte';
 	import ProviderPickerCards from '../ProviderPickerCards.svelte';
 	import { providerPickerClient } from './providerPickerClient';
+	import { pickerDefault } from './providerPickerDefaults';
+	import { failureText, isSnapshot, readSessions, selectionLabel } from './providerPickerReading';
 	import { type PickerClient } from '../../../utils/agents-providers/providerPickerClient';
 	import type { PickerSnapshot, SwitchRequest } from '../../../../../../src/core/pickerTypes';
-	import type { ProviderSelection } from '../../../../../../src/core/pickerModelTypes';
 	import '../../../lib/styles/provider-picker.css';
 	let { label = 'Model picker' }: { label?: string } = $props();
 
@@ -42,23 +43,13 @@
 	// A new provider picks its preferred catalog model; a new model picks its default effort.
 	$effect.pre(() => {
 		if (provider !== seen.provider || !current) {
-			const opus = choices.find((item) => /opus[\s-]*5[.-]5/i.test(`${item.model} ${item.label}`));
-			const next = (provider === 'harness-claude' && opus) || choices[0];
-			const xhigh = provider === 'harness-claude' && next?.efforts.includes('xhigh');
-			model = next?.model ?? '';
-			effort = xhigh ? 'xhigh' : (next?.defaultEffort ?? '');
+			({ model, effort } = pickerDefault(provider, choices));
 		} else if (model !== seen.model || !current.efforts.includes(effort)) {
 			effort = current.defaultEffort;
 		}
 		seen = { provider, model };
 	});
 
-	function labelFor(target: ProviderSelection): string {
-		const known = models.find(
-			(item) => item.provider === target.provider && item.model === target.model
-		);
-		return known?.label ?? target.model;
-	}
 	function receive(data: PickerSnapshot) {
 		if (!snapshot) provider = data.defaultProvider;
 		snapshot = data;
@@ -74,11 +65,10 @@
 		error = '';
 		try {
 			const data = await client.call(name, args);
-			if (data && typeof data === 'object' && 'defaultProvider' in data)
-				receive(data as PickerSnapshot);
+			if (isSnapshot(data as object | null)) receive(data as PickerSnapshot);
 			done?.(data);
 		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Request failed.';
+			error = failureText(cause, 'Request failed.');
 		} finally {
 			busy = '';
 		}
@@ -103,9 +93,9 @@
 	}
 	function loadSessions() {
 		void run('Loading queued sessions…', 'list_observed_sessions', {}, (data) => {
-			const list = (data as { sessions?: unknown } | null)?.sessions;
-			if (!Array.isArray(list)) throw new Error('Queued sessions could not be read.');
-			sessions = list as SwitchRequest[];
+			const list = readSessions(data as object | null);
+			if (!list) throw new Error('Queued sessions could not be read.');
+			sessions = list;
 		});
 	}
 	onMount(async () => {
@@ -114,7 +104,7 @@
 			if (closed) await opened.close();
 			else client = opened;
 		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Could not connect to the model picker.';
+			error = failureText(cause, 'Could not connect to the model picker.');
 		}
 	});
 	onDestroy(() => {
@@ -202,7 +192,7 @@
 			{#each sessions ?? [] as item (item.id)}
 				<hx-p>
 					<hx-code>{item.sessionId}</hx-code>
-					{labelFor(item.target)} · {item.target.effort} effort · {item.status}
+					{selectionLabel(models, item.target)} · {item.target.effort} effort · {item.status}
 				</hx-p>
 			{:else}
 				{#if sessions}<hx-p>No queued sessions.</hx-p>{/if}

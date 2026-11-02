@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.agents-providers-provider-picker-provider-picker-defaults",
+	"kind": "function",
+	"title": "providerPickerDefaults",
+	"responsibility": "The model and reasoning effort the model picker selects for a provider from the catalog.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/agents-providers/provider-picker/providerPickerDefaults.ts"
+		],
+		"symbols": ["PickerDefault", "pickerDefault"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "pickerDefault.provider",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "pickerDefault.choices",
+				"type": "PickerModel[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "pickerDefault",
+				"type": "PickerDefault"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "pickerDefault",
+				"inputs": [
+					{
+						"name": "pickerDefault.provider",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "pickerDefault.choices",
+						"type": "PickerModel[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pickerDefault",
+						"type": "PickerDefault"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.picker-model-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/agents-providers/provider-picker/providerPickerDefaults.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/agents-providers/provider-picker/providerPickerDefaults.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
