@@ -53,11 +53,16 @@ async function assertFreshCliStartup(): Promise<void> {
 	});
 	await symlink(join(source, 'node_modules'), join(fresh, 'node_modules'), 'dir');
 	expect(unsyncedKitPackages(fresh)).toContain('desktop');
-	const started = await runCommand(['bun', 'src/index.ts', 'units', '--help'], fresh, false);
-	expect(started.exitCode, `Fresh CLI must start before SvelteKit sync:\n${started.stderr}`).toBe(
-		0
-	);
-	expect(started.stdout).toContain('check-contract');
+	for (const args of [
+		['units', '--help'],
+		['info', 'units', '--json']
+	]) {
+		const started = await runCommand(['bun', 'src/index.ts', ...args], fresh, false);
+		expect(started.exitCode, `Fresh CLI must start before SvelteKit sync:\n${started.stderr}`).toBe(
+			0
+		);
+		expect(started.stdout).toContain('check-contract');
+	}
 	expect(unsyncedKitPackages(fresh)).toContain('desktop');
 }
 
