@@ -64,8 +64,14 @@ export async function reviewRegression(page: Page, info: TestInfo): Promise<void
 		await runtimeEvidence(page, info, 'regression-proof');
 		await expect(proof).toBeVisible({ timeout: 1500 });
 		await expect(proof.getByText('Regression fixed', { exact: true })).toBeVisible();
-		await expect(proof.getByText('Before fix · failed as expected')).toBeVisible();
-		await expect(proof.getByText('After fix · passed', { exact: true })).toBeVisible();
+		await expect(
+			proof.getByText(`Before · ${commits.middle.slice(0, 7)} · failed as expected`, {
+				exact: true
+			})
+		).toBeVisible();
+		await expect(
+			proof.getByText(`After · ${commits.tip.slice(0, 7)} · passed`, { exact: true })
+		).toBeVisible();
 		await expect(proof.getByText('Expected 1 order; received 0', { exact: true })).toBeVisible();
 		await expect(proof.getByText('Same tests and command', { exact: true })).toBeVisible();
 		await expect(proof.getByRole('link', { name: 'View failing test commit' })).toHaveAttribute(
