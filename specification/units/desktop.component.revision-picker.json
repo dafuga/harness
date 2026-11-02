@@ -53,7 +53,7 @@
 			{
 				"name": "RevisionPicker",
 				"type": "markup",
-				"description": "Readable branch/commit triggers and the selected branch, historical or pinned commit, or named deployment environment with its update time. Expanded choices navigate and close their dialog. Go to tip exits history; Follow branch resumes a pinned tip. Renders nothing without a snapshot."
+				"description": "Readable branch/commit triggers and the selected branch, historical or pinned commit, or named deployment environment with its update time; a missing time reads Unknown. Expanded choices navigate and close their dialog. Go to tip exits history; Follow branch resumes a pinned tip. Renders nothing without a snapshot. Catalog states: default, branch-open and commit-open (expanded choice dialogs), environment, historical, pinned and unknown-time."
 			}
 		],
 		"errors": [
