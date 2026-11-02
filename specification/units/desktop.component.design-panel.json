@@ -64,14 +64,14 @@
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Bindable version identifier, empty by default. If it does not identify one of the entity’s versions, it is replaced with the last version in the supplied list, or empty when there are none. Selecting a version updates this binding."
+				"description": "Bindable version identifier, empty by default. If it does not identify one of the entity’s versions, it is replaced with the last version in the supplied list, or empty when there are none. Selecting a version updates this binding. The parent chooses which version is bound; the catalog covers the default unbound and bound presentations through its states rather than one state per version value."
 			},
 			{
 				"name": "DesignPanel.option",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Bindable design-option identifier, empty by default. Determines which option’s images and direction are shown. Selecting an option updates this value; the parent is responsible for providing the intended selection when a version contains alternatives."
+				"description": "Bindable design-option identifier, empty by default. Determines which option’s images and direction are shown. Selecting an option updates this value; the parent is responsible for providing the intended selection when a version contains alternatives. The parent chooses which option is bound; a single option is shown without a selector, and the catalog covers the default presentation rather than one state per option value."
 			},
 			{
 				"name": "DesignPanel.onthread",
@@ -90,7 +90,7 @@
 			{
 				"name": "DesignPanel",
 				"type": "markup",
-				"description": "Version and option selectors, available viewport and image-state selectors, and the selected annotated image, with a prior image when available. Viewport and state selections fall back to available images. Displays loading or image errors explicitly. A version without a displayed image shows its behavior notes or a missing-notes message; no version shows planning guidance or a no-committed-plan/design message. Function plans distinguish proposals from observed test results."
+				"description": "Version and option selectors, available viewport and image-state selectors, and the selected annotated image, with a prior image when available. Viewport and state selections fall back to available images. Displays loading or image errors explicitly. A version without a displayed image shows its behavior notes or a missing-notes message; no version shows planning guidance or a no-committed-plan/design message. Function plans distinguish proposals from observed test results. Catalog states: default (committed image), empty (no version; use Plan), headless (no plan yet), headless-plan (a plan with no behavior notes), loading (image being read), error (image could not be read), readonly (annotation controls disabled) and long (a long option description that wraps)."
 			}
 		],
 		"errors": [
