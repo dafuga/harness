@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"desktop.component.game-authoring-game-workspace-chips",
 			"desktop.component.game-checkpoint-pane",
 			"desktop.component.game-graph",
 			"desktop.component.game-level-plan",
@@ -17,7 +18,6 @@
 			"desktop.component.game-preview",
 			"desktop.component.game-trace",
 			"desktop.component.game-view-fields",
-			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-h1",
@@ -37,7 +37,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
+		"primitives": [],
 		"inputs": [
 			{
 				"name": "GameWorkspace.projectId",
@@ -80,6 +80,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.game-authoring-game-workspace-chips",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.game-checkpoint-pane",
 			"via": "import",
 			"origin": "derived"
@@ -120,6 +125,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.game-authoring-game-workspace-checkpoint-edits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.game-authoring-game-workspace-section",
 			"via": "import",
 			"origin": "derived"
@@ -136,11 +146,6 @@
 		},
 		{
 			"unit": "game.entry.index",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.explorer-ui-explorer-kit-pill",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -176,11 +181,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

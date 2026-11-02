@@ -1,9 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
-	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 	import type { Source } from './GameWorkspace.types';
 	import { resolve } from '$app/paths';
 	import { untrack } from 'svelte';
@@ -20,8 +18,10 @@
 	import GameMechanics from './GameMechanics.svelte';
 	import GamePreview from './game-preview/GamePreview.svelte';
 	import GameTrace from './GameTrace.svelte';
+	import GameWorkspaceChips from './GameWorkspaceChips.svelte';
 	import { gameWorkspaceSection } from './game-workspace/gameWorkspaceSection';
 	import { patchGameView } from './game-workspace/patchGameView';
+	import { isRevisionConflict, replaceCheckpoint, withoutCheckpoint } from './game-workspace/checkpointEdits';
 	let { projectId = null, commit, readonly = false, bridge }: Props = $props();
 	let doc = $state.raw<GameDocument>();
 	let revision = $state<string>();
@@ -87,7 +87,7 @@
 			dirty = doc !== sent;
 		} catch (cause) {
 			error = errorMessage(cause);
-			conflict = /revision|conflict|stale|changed/i.test(error);
+			conflict = isRevisionConflict(error);
 		} finally {
 			busy = false;
 		}
@@ -100,8 +100,7 @@
 	const editView = (patch: Partial<GameView>) => edit(patchGameView(doc, view, patch));
 	function editCheckpoint(node: Checkpoint) {
 		if (!view || !editable) return;
-		const nodes = view.checkpoints.map((item) => (item.id === selected ? node : item));
-		editView({ checkpoints: nodes });
+		editView({ checkpoints: replaceCheckpoint(view.checkpoints, selected, node) });
 		selected = node.id;
 	}
 	function addCheckpoint(node: Checkpoint) {
@@ -118,10 +117,8 @@
 	function removeCheckpoint() {
 		const id = selected;
 		if (added || !view || !id) return closeCheckpoint(true);
-		const rest = view.checkpoints.filter((c) => c.id !== id);
-		const unlinked = rest.map((c) => ({ ...c, requires: c.requires.filter((r) => r !== id) }));
 		closeCheckpoint();
-		editView({ checkpoints: unlinked });
+		editView({ checkpoints: withoutCheckpoint(view.checkpoints, id) });
 	}
 	function editMechanics(list: GameDocument['mechanics']) {
 		if (doc) edit({ ...doc, mechanics: list });
@@ -139,15 +136,7 @@
 	>
 	<hx-header class="row" style="flex-wrap:wrap">
 		<hx-h1 style="flex:1;margin:0">Game Views</hx-h1>
-		{#if demo}<Pill as="span" variant="chip" tone="gold game-workspace-chip">Demo</Pill>{/if}
-		{#if commit}<Pill as="span" variant="chip" tone="game-workspace-chip"
-				>History · {shortCommit(commit)}</Pill
-			>{/if}
-		{#if readonly && !commit}<Pill as="span" variant="chip" tone="game-workspace-chip"
-				>Read-only</Pill
-			>{/if}
-		{#if dirty}<Pill as="span" variant="chip" tone="gold game-workspace-chip">Unsaved changes</Pill
-			>{/if}
+		<GameWorkspaceChips {demo} {commit} {readonly} {dirty} />
 		{#if !demo && editable}
 			<hx-button class="primary" disabled={!savable} onclick={save}>Save</hx-button>
 		{/if}

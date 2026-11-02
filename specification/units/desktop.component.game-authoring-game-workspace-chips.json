@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-authoring-game-workspace-chips",
+	"kind": "component",
+	"title": "GameWorkspaceChips",
+	"responsibility": "Owns the GameWorkspaceChips Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/game-authoring/GameWorkspaceChips.svelte"],
+		"symbols": ["GameWorkspaceChips"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GameWorkspaceChips.demo",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "GameWorkspaceChips.commit",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "GameWorkspaceChips.readonly",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "GameWorkspaceChips.dirty",
+				"type": "boolean",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameWorkspaceChips",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/GameWorkspaceChips.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/GameWorkspaceChips.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
