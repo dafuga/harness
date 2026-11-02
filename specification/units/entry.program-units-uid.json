@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "entry.program-units-uid",
+	"uid": "u_ttba2jnp37",
+	"kind": "entry",
+	"title": "unitsUid",
+	"responsibility": "Owns the unitsUid entry point.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/program/unitsUid.ts"],
+		"symbols": ["registerUnitsUid"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "registerUnitsUid.units",
+				"type": "Command",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "registerUnitsUid",
+				"type": "void"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "registerUnitsUid",
+				"inputs": [
+					{
+						"name": "registerUnitsUid.units",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerUnitsUid",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "workflow.development-tooling-backfill-uids-backfill-uids",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/unitsUid.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/unitsUid.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

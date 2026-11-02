@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-backfill-uids-backfill-uids",
+	"uid": "u_ycgebzbwzx",
+	"kind": "workflow",
+	"title": "backfillUids",
+	"responsibility": "Gives every active unit a stable uid in its registry file and in its commentable source files, changing nothing else.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/development-tooling/backfill-uids/backfillUids.ts",
+			"src/workflows/development-tooling/backfill-uids/backfillUids.types.ts"
+		],
+		"symbols": ["backfillUids", "BackfillOptions", "BackfillReport"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "backfillUids.options",
+				"type": "BackfillOptions",
+				"required": false,
+				"default": {},
+				"description": "The project root and whether to write; without write it only reports."
+			}
+		],
+		"outputs": [
+			{
+				"name": "backfillUids",
+				"type": "Promise<BackfillReport>",
+				"description": "A report of the units given a uid, the files annotated, the units kept in the registry only and the units whose files disagree."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "backfillUids",
+				"inputs": [
+					{
+						"name": "backfillUids.options",
+						"type": "BackfillOptions",
+						"required": false,
+						"default": {},
+						"description": "The project root and whether to write; without write it only reports."
+					}
+				],
+				"outputs": [
+					{
+						"name": "backfillUids",
+						"type": "Promise<BackfillReport>",
+						"description": "A report of the units given a uid, the files annotated, the units kept in the registry only and the units whose files disagree."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.development-tooling-unit-uid",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-backfill-uids-mint-uid",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/backfill-uids/backfillUids.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/backfill-uids/backfillUids.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

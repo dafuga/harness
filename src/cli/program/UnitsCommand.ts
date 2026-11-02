@@ -1,9 +1,11 @@
+// @harness-uid u_wlq5ngskje
 import type { Flags } from './UnitsCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
 import { listUnits, renderUnit, showUnit, unitSchema, unitsGraph } from './inspectUnits';
 import { checkUnits, indexUnits, renderCheck, renderIndex, retireUnit } from './manageUnits';
 import { registerUnitsGuidance } from './unitsGuidance';
+import { registerUnitsUid } from './unitsUid';
 
 export function registerUnitsCommand(program: Command): void {
 	const units = program
@@ -40,6 +42,7 @@ export function registerUnitsCommand(program: Command): void {
 		});
 	registerInspection(units);
 	registerUnitsGuidance(units);
+	registerUnitsUid(units);
 }
 
 function registerInspection(units: Command): void {

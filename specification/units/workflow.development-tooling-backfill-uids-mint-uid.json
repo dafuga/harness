@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-backfill-uids-mint-uid",
+	"uid": "u_an4bempa7l",
+	"kind": "workflow",
+	"title": "mintUid",
+	"responsibility": "Mints a fresh random unit uid that no existing unit holds.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/development-tooling/backfill-uids/mintUid.ts"],
+		"symbols": ["mintUid"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "mintUid.taken",
+				"type": "Set<string>",
+				"required": true,
+				"description": "The uids already in use; the new one is added to it."
+			}
+		],
+		"outputs": [
+			{
+				"name": "mintUid",
+				"type": "string",
+				"description": "A new uid of u_ and ten base32 letters."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "mintUid",
+				"inputs": [
+					{
+						"name": "mintUid.taken",
+						"type": "Set<string>",
+						"required": true,
+						"description": "The uids already in use; the new one is added to it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mintUid",
+						"type": "string",
+						"description": "A new uid of u_ and ten base32 letters."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/backfill-uids/mintUid.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/backfill-uids/mintUid.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

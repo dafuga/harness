@@ -1,3 +1,4 @@
+// @harness-uid u_gze65qn66u
 import type { GenerateModelInput, GenerateResult, GeneratePieceInput } from './generateCode.types';
 import { applyExports } from './exports';
 import { existsSync } from 'node:fs';
@@ -28,6 +29,7 @@ import { ModelDependencyService } from '../../../services/development-tooling/Mo
 import { separateTypeDeclarations } from '../../../templates/development-tooling/separateTypeDeclarations';
 import { atomicComponentFiles } from '../../../templates/development-tooling/atomicComponents';
 import { atomLibrary, useAtomLibrary } from './atomLibrary';
+import { annotateUnitFiles } from './annotateUnitFiles';
 
 export { scaffoldKinds };
 
@@ -42,7 +44,7 @@ export async function generateModel(input: GenerateModelInput): Promise<Generate
 	const selection = generationGroup(root, input);
 	const planned = [
 		...adapterTypeFiles(),
-		...modelFiles({ name, fields: parseFields(input.rawFields), adapter })
+		...annotateUnitFiles(modelFiles({ name, fields: parseFields(input.rawFields), adapter }))
 	];
 	const { files, paths } = groupedFiles(planned, selection?.group.id);
 
@@ -78,7 +80,11 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const pieces = useAtomLibrary(planned, library);
 	const grouped = groupedFiles(pieces, selection?.group.id);
 	const atoms = missingAtoms(root, input.kind, library);
-	const files = separateTypeDeclarations([...grouped.files, ...support, ...atoms]);
+	const files = separateTypeDeclarations([
+		...annotateUnitFiles(grouped.files),
+		...support,
+		...atoms
+	]);
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
