@@ -4,34 +4,32 @@ import { settlePreviewAudio } from './audioPreviewReadiness';
 
 /** Loading states are accepted only for the two previews that request them. */
 export async function assertPreviewLoading(content: Locator, id: string, variant: string) {
-	if (id === 'desktop.component.runtime-artifact' && variant === 'loading') {
-		await expect(content).toContainText('Reading what it holds…');
+	const message = previewLoadingMessage(id, variant);
+	if (message) {
+		await expect(content).toContainText(message);
 		return;
 	}
-	if (id === 'reports.component.harness-entity-artifact' && variant === 'loading')
-		return await expect(content).toContainText('Reading what it holds…');
-	if (
-		['desktop.component.runtime-behavior', 'reports.component.harness-entity-behavior'].includes(
-			id
-		) &&
-		variant === 'loading'
-	)
-		return await expect(content).toContainText('Reading the recorded results…');
-	if (id === 'reports.component.harness-harness-console' && variant.startsWith('loading-'))
-		return await expect(content).toContainText(
-			variant === 'loading-history' ? 'Loading history…' : 'Loading this revision…'
-		);
-	const loading: Record<string, string> = {
-		'reports.component.analytics-cpu': 'Sampling CPU…',
-		'reports.component.gameplay-replay': 'Loading screenshot…',
-		'reports.component.entity-states': 'Loading recorded capture…'
-	};
-	if (variant === 'loading' && loading[id]) return await expect(content).toContainText(loading[id]);
 	await expect(content).not.toContainText(
 		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Loading history…|Loading this revision…|Sampling CPU…|Checking sign-in…|Reading the request…/
 	);
 	if (id === 'reports.component.entity-states')
 		await expect(content).not.toContainText('Loading recorded capture…');
+}
+
+function previewLoadingMessage(id: string, variant: string): string | undefined {
+	if (id === 'reports.component.harness-harness-console' && variant.startsWith('loading-'))
+		return variant === 'loading-history' ? 'Loading history…' : 'Loading this revision…';
+	if (variant !== 'loading') return;
+	const loading: Record<string, string> = {
+		'desktop.component.runtime-artifact': 'Reading what it holds…',
+		'reports.component.harness-entity-artifact': 'Reading what it holds…',
+		'desktop.component.runtime-behavior': 'Reading the recorded results…',
+		'reports.component.harness-entity-behavior': 'Reading the recorded results…',
+		'reports.component.analytics-cpu': 'Sampling CPU…',
+		'reports.component.gameplay-replay': 'Loading screenshot…',
+		'reports.component.entity-states': 'Loading recorded capture…'
+	};
+	return loading[id];
 }
 
 export function previewWaitUntil(id: string, variant: string) {
@@ -71,6 +69,17 @@ export async function assertPreviewMessages(content: Locator, id: string, varian
 		!(moduleCard && ['missing', 'page-missing', 'layout-missing', 'image-error'].includes(variant))
 	)
 		await expect(content).not.toContainText(/No screenshot (?:is )?recorded/);
+	await assertPreviewReadFailure(content, id, variant);
+}
+
+/** Declared failed reads show their precise explanation; ordinary states may not show one. */
+async function assertPreviewReadFailure(content: Locator, id: string, variant: string) {
+	if (`${id}:${variant}` === 'desktop.component.coverage-panel:failed') {
+		await expect(content.getByRole('alert')).toHaveText(
+			'Recorded evidence could not be read: The evidence store did not answer the request.'
+		);
+		return;
+	}
 	const expected: Record<string, string[]> = {
 		'desktop.component.design-panel': ['error'],
 		'desktop.component.runtime-evidence': ['error'],

@@ -19,7 +19,11 @@ Object.assign(record.tests[0], {
 			project: 'chromium',
 			retry: 0,
 			errors: [
-				{ type: 'console', message: 'Orders unavailable', page: 'https://fixture.test/orders' }
+				{
+					type: 'console',
+					message: 'Orders unavailable',
+					page: 'https://orders.example.test/orders'
+				}
 			],
 			expected: [
 				{ type: 'console', message: 'Orders unavailable', reason: 'Tests the retry state.' },
