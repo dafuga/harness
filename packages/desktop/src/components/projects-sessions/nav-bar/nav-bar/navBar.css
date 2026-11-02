@@ -159,7 +159,7 @@ header.topbar::before {
 		padding-inline: var(--hx-space-6) var(--hx-space-20);
 	}
 	header.topbar .topbar-context :global(.revision-choices button.agent-icon) {
-		width: var(--hx-space-50);
+		width: auto;
 		height: var(--hx-space-32);
 	}
 	header.topbar .topbar-search {
