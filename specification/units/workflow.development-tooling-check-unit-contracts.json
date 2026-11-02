@@ -38,7 +38,7 @@
 			{
 				"name": "checkUnitContracts",
 				"type": "Promise<ContractCheckReport>",
-				"description": "Selected active entities, located finding records, per-entity counts and total findings. Findings are heuristic, not exhaustive proof."
+				"description": "Selected active entities, located finding records, per-entity counts and total findings. Findings are heuristic, not exhaustive proof. Native element atoms skip advisory contract guesses; explicit literal-union states, source/registry documentation and other contract findings remain checked."
 			},
 			{
 				"name": "renderContractCheck",

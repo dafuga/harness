@@ -4,7 +4,8 @@ import type {
 	ContractCheckReport,
 	ContractFinding,
 	GuidanceContext,
-	GuidanceOptions
+	GuidanceOptions,
+	UnitState
 } from './guideUnits.types';
 import { fail } from '../../../core/development-tooling/errors';
 import { deriveContract } from '../load-units/unit-index-service/deriveContract';
@@ -69,12 +70,16 @@ async function stateFindings(
 	const sourceStates = await sourceUnitStates(context, unit);
 	const registryStates = namedUnitStates(context, unit);
 	findings.push(...undocumentedStates(unit, [...sourceStates, ...registryStates]));
-	const implied = contractStates(unit.contract);
+	const native = unit.composition?.level === 'atom' && Boolean(unit.composition.element);
+	const implied = contractStates(unit.contract).filter(
+		(state) => !native || state.origin === 'REQUIRED'
+	);
 	findings.push(
 		...(await untestedStates(
 			context,
 			unit,
-			registryStates.map((state) => state.name)
+			registryStates.map((state) => state.name),
+			implied
 		))
 	);
 	for (const registry of registries) {
@@ -115,10 +120,11 @@ function undocumentedStates(
 async function untestedStates(
 	context: GuidanceContext,
 	unit: ComponentManifest,
-	registered: string[]
+	registered: string[],
+	states: UnitState[]
 ) {
 	const findings: ContractFinding[] = [];
-	for (const state of contractStates(unit.contract)) {
+	for (const state of states) {
 		const catalog = registered.includes(state.name);
 		const tests = catalog ? await stateTests(context, unit, state.name) : [];
 		if (!catalog || !tests.length)
