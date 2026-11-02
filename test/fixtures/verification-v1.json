@@ -1,0 +1,68 @@
+{
+	"provenance": {
+		"commit": "70a1cba771914c37b8aa25aa37cad84339ba74f5",
+		"record": "7b510360a453ae6950146dbd54adbab0245c5c42dc7eab0e4c0e7efbdddf66fd"
+	},
+	"component": {
+		"unit": "function.stable-json",
+		"change": "added",
+		"target": "module",
+		"manifest": "0a9a26f982e5c39a6314e41af33d86b8377638b4a232650071210360bb8f384b",
+		"source": "0fdc101bd1109779c44dc788a38b9bfbb04571d79602510177e7c5bd562ef896",
+		"contract": "217a944bfd927f720bc32871bb8e6b719cc9af5be919da7a6ab330584f1c8b44",
+		"runtime": "b5f06807c9ab2e80487612054e0e344982ecba9f03244f42b8d47342aeb241a1",
+		"files": [
+			{
+				"path": "src/utils/stableJson.ts",
+				"hash": "e07200b37a580e1c54f858e159fa0e0e4fc97e40"
+			}
+		]
+	},
+	"manifest": {
+		"schemaVersion": 1,
+		"id": "function.stable-json",
+		"kind": "function",
+		"title": "stableJson",
+		"responsibility": "Owns the stableJson shared function.",
+		"responsibilityOrigin": "derived",
+		"status": "active",
+		"owns": {
+			"source": ["src/utils/stableJson.ts"],
+			"symbols": ["stableJson"]
+		},
+		"contract": {
+			"origin": "derived",
+			"inputs": [
+				{
+					"name": "stableJson.value",
+					"type": "unknown"
+				}
+			],
+			"outputs": [
+				{
+					"name": "stableJson",
+					"type": "string"
+				}
+			],
+			"errors": []
+		},
+		"dependencies": [],
+		"runtime": {
+			"kind": "module",
+			"entry": "src/utils/stableJson.ts",
+			"targets": [
+				{
+					"kind": "module",
+					"entry": "src/utils/stableJson.ts"
+				}
+			]
+		},
+		"scenarios": [],
+		"budgets": {
+			"size": "frozen",
+			"complexity": "frozen",
+			"performance": []
+		}
+	},
+	"source": "const printWidth = 100;\nconst tabWidth = 2;\n\ninterface Position {\n\tindent: number;\n\t/** Characters already on the line before the value, plus a trailing comma when present. */\n\treserved: number;\n}\n\n/** Serializes JSON in the project Prettier style so generated files pass format checks. */\nexport function stableJson(value: unknown): string {\n\treturn `${render(value, { indent: 0, reserved: 0 })}\\n`;\n}\n\nfunction render(value: unknown, position: Position): string {\n\tif (Array.isArray(value)) return renderArray(value, position);\n\tif (value && typeof value === 'object') return renderObject(value, position.indent);\n\treturn JSON.stringify(value ?? null);\n}\n\nfunction renderArray(items: unknown[], position: Position): string {\n\tif (items.length === 0) return '[]';\n\tconst flat = `[${items.map((item) => JSON.stringify(item ?? null)).join(', ')}]`;\n\tconst width = position.indent * tabWidth + position.reserved + flat.length;\n\tif (items.every(isPrimitive) && width <= printWidth) return flat;\n\tconst inner = position.indent + 1;\n\tconst lines = items.map((item, index) => {\n\t\tconst reserved = index < items.length - 1 ? 1 : 0;\n\t\treturn `${tabs(inner)}${render(item, { indent: inner, reserved })}`;\n\t});\n\treturn `[\\n${lines.join(',\\n')}\\n${tabs(position.indent)}]`;\n}\n\nfunction renderObject(value: object, indent: number): string {\n\tconst entries = Object.entries(value).filter(([, item]) => item !== undefined);\n\tif (entries.length === 0) return '{}';\n\tconst inner = indent + 1;\n\tconst lines = entries.map(([key, item], index) => {\n\t\tconst label = `${JSON.stringify(key)}: `;\n\t\tconst reserved = label.length + (index < entries.length - 1 ? 1 : 0);\n\t\treturn `${tabs(inner)}${label}${render(item, { indent: inner, reserved })}`;\n\t});\n\treturn `{\\n${lines.join(',\\n')}\\n${tabs(indent)}}`;\n}\n\nfunction isPrimitive(value: unknown): boolean {\n\treturn value === null || typeof value !== 'object';\n}\n\nfunction tabs(count: number): string {\n\treturn '\\t'.repeat(count);\n}\n"
+}

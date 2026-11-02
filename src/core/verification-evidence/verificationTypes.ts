@@ -131,6 +131,8 @@ export const measurementSchema = z.strictObject({
 
 export const verificationRecordSchema = z.strictObject({
 	schemaVersion: z.literal(1),
+	/** Source-rederived component contracts; absent legacy formats come from the source registry. */
+	componentSchemaVersion: z.literal(2).optional(),
 	id: text,
 	repository: text,
 	source: z.strictObject({

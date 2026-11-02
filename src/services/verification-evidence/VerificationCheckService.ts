@@ -94,10 +94,22 @@ export class VerificationCheckService {
 	private async components(commit: string, record: VerificationRecord): Promise<string[]> {
 		const tree = await CommitTreeAdapter.open(this.root, commit);
 		const head = await loadSide(this.root, tree, this.indexer);
+		const derived = new Map(head.manifests.map((unit) => [unit.id, unit]));
+		const committed = new Map(head.stored.map((unit) => [unit.id, unit]));
 		return record.components
 			.filter((component) => component.change !== 'removed')
 			.filter((component) => {
-				const manifest = head.manifests.find((unit) => unit.id === component.unit);
+				const stored = committed.get(component.unit);
+				// Before source-fact contracts, v1 hashed the committed three-array contract.
+				// Infer that format only from the immutable registry, never from a hash match.
+				const contract = stored?.contract;
+				const legacy =
+					record.componentSchemaVersion === undefined &&
+					contract &&
+					['errorStatus', 'operations', 'initialization', 'snippets', 'storage'].every(
+						(key) => !Object.hasOwn(contract, key)
+					);
+				const manifest = legacy ? stored : derived.get(component.unit);
 				const actual = manifest ? componentVersion(manifest, head.index.files) : undefined;
 				const same = (key: 'manifest' | 'source' | 'contract' | 'runtime') =>
 					actual?.[key] === component[key];
