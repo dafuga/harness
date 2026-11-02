@@ -32,7 +32,7 @@
 			{
 				"name": "AgentSettings",
 				"type": "markup",
-				"description": "Agents section with a Design options dropdown populated from supported counts. Loads the shared device preference on mount and sends changes to its settings store. The preference applies across projects and composers. If saving fails, shows an alert that the choice resets on reload."
+				"description": "Agents section with a Design options dropdown populated from supported counts. Loads the shared device preference on mount and sends changes to its settings store. The preference applies across projects and composers. If saving fails, shows an alert that the choice resets on reload. States: selected: The design-options selector shows the chosen device preference. not-saved: An alert says the choice was not saved and will reset on reload."
 			}
 		],
 		"errors": [],

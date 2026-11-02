@@ -111,7 +111,7 @@
 			{
 				"name": "GameLevelBrief",
 				"type": "markup",
-				"description": "Collect the level description, dimension and selected local model."
+				"description": "Collect the level description, dimension and selected local model. States: empty: The concept step shows blank concept and description fields. readonly: The brief remains visible while editing and proposal actions are disabled. busy: The proposal is being generated and authoring controls are disabled. no-model: The provider/model controls have no available choice and show the supplied reason. long: The concept and level-description fields retain a lengthy authored brief."
 			}
 		],
 		"errors": [

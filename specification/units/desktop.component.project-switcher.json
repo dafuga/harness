@@ -42,7 +42,7 @@
 			{
 				"name": "ProjectSwitcher",
 				"type": "markup",
-				"description": "Project name and an icon opening a grouped listbox of local-device/connected-computer and Shared projects. With no projects, the dialog shows a normal No projects yet notice without a choice field. Busy state shows Loading project and disables opening choices and Add local project. Selection calls switchProject, then resets to the resulting project id. Local Add is shown only with a local bridge."
+				"description": "Project name and an icon opening a grouped listbox of local-device/connected-computer and Shared projects. With no projects, the dialog shows a normal No projects yet notice without a choice field. Busy state shows Loading project and disables opening choices and Add local project. Selection calls switchProject, then resets to the resulting project id. Local Add is shown only with a local bridge. States: open: The project menu is expanded with the available project choices. empty: No project is selected or available and the switcher offers its empty-project actions. long: The selected long project name stays within the switcher control."
 			}
 		],
 		"errors": [

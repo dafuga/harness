@@ -43,7 +43,7 @@
 			{
 				"name": "ChatAgents",
 				"type": "markup",
-				"description": "Main session tasks and statuses plus modules grouped by current declared owners. Missing tracking remains unknown; stale readings lose current ownership claims."
+				"description": "Main session tasks and statuses plus modules grouped by current declared owners. Missing tracking remains unknown; stale readings lose current ownership claims. States: loading: A loading notice appears while the activity bridge responds. unavailable: The panel explains that this host cannot read live agent activity. empty: The roster has no agents and the working count is zero. never-used: Tracking has never been used, so the working count is unknown rather than zero. unreadable: A warning identifies unreadable activity records alongside readable agents. stale-reading: The old sampling time is shown with a warning that the reading is stale. many: The first agents and an overflow control summarize the larger roster. historical: The panel distinguishes current live agents from the pinned historical revision. refresh-error: The prior reading remains visible with a failed-refresh warning."
 			}
 		],
 		"errors": [],

@@ -41,7 +41,7 @@
 			{
 				"name": "EnvironmentPicker",
 				"type": "markup",
-				"description": "Selects the environment scope for changes and switches the shared header summary to that environment."
+				"description": "Selects the environment scope for changes and switches the shared header summary to that environment. States: stage: The selector shows the stage deployment and its availability. preprod: The selector shows the preprod deployment and its availability. prod: The selector shows the production deployment and its availability. with-action: Caller child content adds a deployment-review action beside the environment control."
 			}
 		],
 		"errors": [

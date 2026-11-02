@@ -59,7 +59,7 @@
 			{
 				"name": "GameCheckpointEditor",
 				"type": "markup",
-				"description": "Edit advanced checkpoint prerequisites, repeatability, conditions and actions without changing independent mechanics."
+				"description": "Edit advanced checkpoint prerequisites, repeatability, conditions and actions without changing independent mechanics. States: empty: No checkpoint is selected, so the selection prompt replaces the editor. empty-rules: The selected checkpoint has no conditions or actions and their editable empty collections are shown. long: Long condition fields and action payloads remain visible with the repeatable setting and prerequisites."
 			}
 		],
 		"errors": [

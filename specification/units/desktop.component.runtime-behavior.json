@@ -61,7 +61,7 @@
 			{
 				"name": "RuntimeBehavior",
 				"type": "markup",
-				"description": "Current or compared behavior with verdict/reasons, result groups, recorded duration and scenario outcomes. Pending reads show a reading verdict unless already fixed as not-compared or unknown with a reason. Failed reads say Behavior unknown. Missing groups or duration are explicitly marked absent."
+				"description": "Current or compared behavior with verdict/reasons, result groups, recorded duration and scenario outcomes. Pending reads show a reading verdict unless already fixed as not-compared or unknown with a reason. Failed reads say Behavior unknown. Missing groups or duration are explicitly marked absent. States: paired: The selected commit and its parent appear in before/after behavior panes. loading: Recorded behavior is still being read and the waiting state is shown. unreadable: The behavior read is unavailable and the panel explains the evidence gap. empty: No recorded behavior rows or scenarios exist and the panel shows its empty state."
 			}
 		],
 		"errors": [],

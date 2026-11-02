@@ -47,7 +47,7 @@
 			{
 				"name": "CatalogView",
 				"type": "markup",
-				"description": "Local search and one filter icon above the catalog. The shared modal holds filters and ordering."
+				"description": "Local search and one filter icon above the catalog. The shared modal holds filters and ordering. States: search-empty: The entered search has no matches and the catalog displays its empty result. filters-open: The filter dialog exposes the catalog filtering controls. long: The catalog retains a long component name within its row or card."
 			}
 		],
 		"errors": [],

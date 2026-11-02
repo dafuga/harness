@@ -72,7 +72,7 @@
 			{
 				"name": "GamePreview",
 				"type": "markup",
-				"description": "Interactive 2D or 3D gameplay canvas, movement and reset controls, current run readout and optional AI video controls. A read-only preview explains that AI generation is disabled. Initial, movement and reset run snapshots are published through onRun."
+				"description": "Interactive 2D or 3D gameplay canvas, movement and reset controls, current run readout and optional AI video controls. A read-only preview explains that AI generation is disabled. Initial, movement and reset run snapshots are published through onRun. States: off: The game canvas and controls remain visible with Start AI video rather than a live stream. three-dimensional: A 3D level renders through its canvas and retains the same game controls."
 			}
 		],
 		"errors": [

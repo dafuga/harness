@@ -79,7 +79,7 @@
 			{
 				"name": "ProjectGate",
 				"type": "markup",
-				"description": "Harness welcome screen with a local Open Project button, explanatory preview/connection text, optional recent projects and supplied extra content. Open is disabled while unavailable or busy; recent-project choices are disabled while busy. Choosing a project invokes the supplied chooser. Shared entries say Shared project; others show their root or device location."
+				"description": "Harness welcome screen with a local Open Project button, explanatory preview/connection text, optional recent projects and supplied extra content. Open is disabled while unavailable or busy; recent-project choices are disabled while busy. Choosing a project invokes the supplied chooser. Shared entries say Shared project; others show their root or device location. States: remote-empty: The remote gate has no shared projects and shows the remote empty-state guidance. remote-projects: The remote gate lists shared projects that can be opened."
 			}
 		],
 		"errors": [

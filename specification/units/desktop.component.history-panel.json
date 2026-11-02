@@ -55,7 +55,7 @@
 			{
 				"name": "HistoryPanel",
 				"type": "markup",
-				"description": "Timeline with names, formatted dates, details and commit references, or an empty-history message. Load more requires incomplete history, a next page and bridge support and is disabled during loading. Discards responses for another view; displays current-view errors as alerts. Incomplete history without a usable next-page operation is explicitly labeled not loaded. A shared inline loading indicator and label identify pending page reads; the history region reports aria-busy."
+				"description": "Timeline with names, formatted dates, details and commit references, or an empty-history message. Load more requires incomplete history, a next page and bridge support and is disabled during loading. Discards responses for another view; displays current-view errors as alerts. Incomplete history without a usable next-page operation is explicitly labeled not loaded. A shared inline loading indicator and label identify pending page reads; the history region reports aria-busy. States: ready: The loaded entity history is shown with its recorded change and evidence details. empty: The panel explains that no entity history is available. error: A failed earlier-history read displays a retryable error while retaining loaded entries. long: Long change notes remain readable within their history entries."
 			}
 		],
 		"errors": [],

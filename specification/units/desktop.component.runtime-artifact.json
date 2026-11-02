@@ -78,7 +78,7 @@
 			{
 				"name": "RuntimeArtifact",
 				"type": "markup",
-				"description": "Verified recorded contents with readable case rows, assertions and lazily opened original JSON. Assertion captures use Assertions and recorded result; output captures use Recorded output details. Missing, unstored, pending and unreadable cells retain explicit messages."
+				"description": "Verified recorded contents with readable case rows, assertions and lazily opened original JSON. Assertion captures use Assertions and recorded result; output captures use Recorded output details. Missing, unstored, pending and unreadable cells retain explicit messages. States: text: The recorded result is shown as plain text rather than JSON fields. recorded-open: The recorded-result disclosure is expanded to show the artifact contents. json-open: The recorded JSON disclosure is expanded inside the result."
 			}
 		],
 		"errors": [],

@@ -104,7 +104,7 @@
 			{
 				"name": "Composer",
 				"type": "markup",
-				"description": "Message form with permitted mode choices, agent controls for Ask, Plan and Change, and a send button. Blocks submission without a mode, with blank text, while running, without an agent choice for a request, or for an unapproved Change. Loads device agent settings on mount. Comments use the comment callback and never start an agent through this component. False callback results retain the message and show a retry notice unless the parent reports the failure. Visual plans show the device option count. Visual-plan captions occupy a separate line below the message field. Unapproved Change requests display the shared Notice explaining that the current exact design needs approval."
+				"description": "Message form with permitted mode choices, agent controls for Ask, Plan and Change, and a send button. Blocks submission without a mode, with blank text, while running, without an agent choice for a request, or for an unapproved Change. Loads device agent settings on mount. Comments use the comment callback and never start an agent through this component. False callback results retain the message and show a retry notice unless the parent reports the failure. Visual plans show the device option count. Visual-plan captions occupy a separate line below the message field. Unapproved Change requests display the shared Notice explaining that the current exact design needs approval. States: no-modes: No permitted request mode is available, so the composer cannot start a request. no-provider: The selected agent mode has no available provider and sending is blocked. long: A long contextual notice wraps above the request controls."
 			}
 		],
 		"errors": [
