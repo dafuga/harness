@@ -139,7 +139,6 @@ for (const viewport of catalogViewports) {
 			const early =
 				[
 					'reports.component.explorer-ui-explorer-kit-pill',
-					'reports.component.harness-harness-verdict',
 					'reports.component.shared-primitives-atoms-html-a',
 					'reports.component.shared-primitives-atoms-html-ol',
 					'reports.component.shared-primitives-atoms-html-li',

@@ -2,7 +2,7 @@
 	"name": "sol10-status-capture-state",
 	"goal": "Capture each shared Status state only after its interaction and visible open-state marker.",
 	"createdAt": "2026-11-02T03:07:42.162Z",
-	"updatedAt": "2026-11-02T03:09:29.536Z",
+	"updatedAt": "2026-11-02T03:22:09.478Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T03:21:57.659Z",
+			"evidence": "Formal red 8cb327bbfaa10ecb5ad861f4951d315347f7f9cc920695363242c6d0694e39d7 at this exact 2b51961f13 commit fails the entered-state readiness assertion for passed-open at desktop, tablet and mobile."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T03:21:58.433Z",
+			"evidence": "Remove Status from the early capture list so its existing click/focus preparation finishes before the normal screenshot. Retain the shared entered-state and capture-object guards unchanged."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T03:22:09.478Z",
+			"evidence": "Status uses the normal post-interaction capture path. The capture-time open marker and post-action evidence-object assertions remain unchanged, so reintroducing the early list entry is rejected."
 		},
 		{
 			"id": "green",
