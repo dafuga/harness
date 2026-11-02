@@ -27,15 +27,6 @@
 			"ApprovalInfo",
 			"ThreadInfo",
 			"ThreadMessage",
-			"ContractField",
-			"EntityContract",
-			"Relationship",
-			"HistoryEvent",
-			"DesignThumbnail",
-			"Thumbnail",
-			"CatalogEntity",
-			"Measure",
-			"EntityDetail",
 			"ProjectSnapshot",
 			"SourceChange",
 			"DesignImage",
@@ -67,21 +58,16 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.design-version-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.development-tooling-desktop-entity-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.model.project-context-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.unit-documentation",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "module.contracts",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.model.development-tooling-desktop-entity-types",
+	"kind": "model",
+	"title": "DesktopEntity",
+	"responsibility": "Owns the DesktopEntity data model.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/models/development-tooling/DesktopEntity.types.ts"],
+		"symbols": [
+			"ContractField",
+			"EntityContract",
+			"Relationship",
+			"HistoryEvent",
+			"DesignThumbnail",
+			"Thumbnail",
+			"CatalogEntity",
+			"Measure",
+			"EntityDetail"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.design-version-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-documentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.contracts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/models/development-tooling/DesktopEntity.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/models/development-tooling/DesktopEntity.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
