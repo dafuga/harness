@@ -239,9 +239,9 @@ test('a new checkpoint does not take focus from the field the author already cho
 	await page.evaluate(() => (window as unknown as { holdFrames(): void }).holdFrames());
 	await page.getByRole('button', { name: 'Add checkpoint', exact: true }).click();
 	const title = page.getByLabel('Checkpoint title', { exact: true });
-	await title.focus();
+	await title.selectText();
 	// The pane's first-field focus is scheduled for the next frame; it runs between the title being
-	// chosen and the author's text arriving, exactly as it does between a fill's focus and its input.
+	// chosen and selected and the author's text arriving, as it does between a fill's focus and its input.
 	await page.evaluate(() => (window as unknown as { releaseFrames(): void }).releaseFrames());
 	await page.keyboard.insertText('After the garden');
 	await expect(title, 'text typed after choosing the title lands in the title').toHaveValue(
