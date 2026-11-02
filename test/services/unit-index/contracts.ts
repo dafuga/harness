@@ -72,10 +72,10 @@ function assertComponentContracts(indexed: Indexed): void {
 	expect(panel.inputs, 'No-fallback bindable props retain source requiredness').toEqual([
 		{ name: 'Panel.title', type: 'string', required: true },
 		{ name: 'Panel.size', type: 'number', required: false, default: 16 },
-		{ name: 'Panel.children', type: 'Snippet', required: false },
+		{ name: 'Panel.children', type: 'Snippet', required: false, default: 'undefined (omitted)' },
 		{ name: 'Panel.value', type: 'string', required: true },
 		{ name: 'Panel.current', type: 'string', required: true },
-		{ name: 'Panel.optional', type: 'string', required: false },
+		{ name: 'Panel.optional', type: 'string', required: false, default: 'undefined (omitted)' },
 		{ name: 'Panel.fallback', type: 'string', required: false, default: 'ready' }
 	]);
 	expect(panel.snippets?.[0]).toMatchObject({

@@ -36,6 +36,9 @@ export async function assertContractDocumentation(
 			description: 'Root used by the store.'
 		}
 	]);
+	expect(unitOf(again, 'component.panel').contract.inputs).toContainEqual(
+		expect.objectContaining({ name: 'Panel.children', default: 'undefined (omitted)' })
+	);
 	expect((await indexFiles(files, again.result.manifests)).result.updated).toEqual([]);
 }
 
