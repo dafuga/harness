@@ -55,14 +55,15 @@
 	.revision-choices :global(button.agent-icon) {
 		align-items: center;
 		justify-content: center;
-		width: var(--hx-space-50);
+		width: auto;
 		height: var(--hx-space-40);
 		gap: var(--hx-space-2);
-		padding: 0;
+		padding-inline: var(--hx-space-8);
 		font-size: var(--hx-type-size-2xs);
 		white-space: nowrap;
 	}
 	.revision-choices :global(svg) {
+		flex: none;
 		width: var(--hx-space-12);
 		height: var(--hx-space-12);
 	}
