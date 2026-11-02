@@ -1,5 +1,5 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import type { Revision } from './entity-screens.test.types';
+import { evidence } from './entityScreenFixture';
 import { expect, test } from 'vitest';
 import {
 	catalogShot,
@@ -8,10 +8,8 @@ import {
 	screenOptions,
 	screenPick
 } from '../../src/utils/explorer-ui/entityScreens';
-import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import { record, revision } from '../entityFixture';
 import { withInherited } from '../entityPreviewData';
-import { scope } from '../entityPlaces';
 import { commits, ids, scenarios, units } from '../entityUnits';
 import { withFocused } from '../entityStates';
 import { withoutViewportSuffix } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
@@ -68,13 +66,6 @@ test('device states share a picker while original metadata and missing-device ga
 	).toBe(true);
 });
 const options = screenOptions(scenarios.filter((item) => item.units.includes(ids.page)));
-/** What the host gives for the page: the tip alone, or a commit beside the parent it names. */
-function evidence(_unit: typeof page, shown: Revision, parent?: Revision | null) {
-	if (parent === undefined)
-		return explorerEvidence(scope('current'), { head: shown, parent: null }, page);
-	const at = { ...scope('commit'), parent: parent ? parent.commit : null };
-	return explorerEvidence(at, { head: shown, parent }, page);
-}
 test('a visual entity offers the states and viewports its scenario declares; a function offers none', () => {
 	expect(options).toEqual([
 		{

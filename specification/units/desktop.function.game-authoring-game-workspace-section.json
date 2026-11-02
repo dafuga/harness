@@ -1,0 +1,110 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.game-authoring-game-workspace-section",
+	"kind": "function",
+	"title": "gameWorkspaceSection",
+	"responsibility": "Selects the workspace section allowed by the current level plan.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/game-authoring/game-workspace/gameWorkspaceSection.ts"
+		],
+		"symbols": ["gameWorkspaceSection"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "gameWorkspaceSection.view",
+				"type": "GameView | undefined",
+				"required": true,
+				"description": "Current level; undefined means no plan. No default is supplied."
+			},
+			{
+				"name": "gameWorkspaceSection.tab",
+				"type": "GameSection",
+				"required": true,
+				"description": "Requested workspace section; no default is supplied."
+			}
+		],
+		"outputs": [
+			{
+				"name": "gameWorkspaceSection",
+				"type": "GameSection",
+				"description": "Requested section when allowed, otherwise Level for an unfinished plan or Checkpoints for an unplanned Level tab."
+			}
+		],
+		"errors": [
+			{
+				"name": "Input access failure",
+				"type": "propagated",
+				"description": "Errors from supplied planning getters or LevelValidator access propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "gameWorkspaceSection",
+				"inputs": [
+					{
+						"name": "gameWorkspaceSection.view",
+						"type": "GameView | undefined",
+						"required": true,
+						"description": "Current level; undefined means no plan. No default is supplied."
+					},
+					{
+						"name": "gameWorkspaceSection.tab",
+						"type": "GameSection",
+						"required": true,
+						"description": "Requested workspace section; no default is supplied."
+					}
+				],
+				"outputs": [
+					{
+						"name": "gameWorkspaceSection",
+						"type": "GameSection",
+						"description": "Requested section when allowed, otherwise Level for an unfinished plan or Checkpoints for an unplanned Level tab."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access failure",
+						"type": "propagated",
+						"description": "Errors from supplied planning getters or LevelValidator access propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.game-view-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/game-workspace/gameWorkspaceSection.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/game-workspace/gameWorkspaceSection.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

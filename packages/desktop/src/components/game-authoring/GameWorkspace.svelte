@@ -3,9 +3,7 @@
 <script lang="ts">
 	import Pill from '$shared/explorer-ui/explorer-kit/Pill.svelte';
 	import { errorMessage } from '$reports/helpers/strings/errorMessage';
-
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
-
 	import type { Source } from './GameWorkspace.types';
 	import { resolve } from '$app/paths';
 	import { untrack } from 'svelte';
@@ -14,7 +12,7 @@
 	import GameViewFields from './GameViewFields.svelte';
 	import type { GameSection } from './GameViewFields.types';
 	import GameLevelPlan from './GameLevelPlan.svelte';
-	import { createRun, enterView, LevelValidator } from '../../../../game/src/index';
+	import { createRun, enterView } from '../../../../game/src/index';
 	import { exampleDocument, validateDocument } from '../../../../game/src/index';
 	import type { Checkpoint, GameDocument, GameRun, GameView } from '../../../../game/src/index';
 	import GameCheckpointPane from './GameCheckpointPane.svelte';
@@ -22,6 +20,8 @@
 	import GameMechanics from './GameMechanics.svelte';
 	import GamePreview from './game-preview/GamePreview.svelte';
 	import GameTrace from './GameTrace.svelte';
+	import { gameWorkspaceSection } from './game-workspace/gameWorkspaceSection';
+	import { patchGameView } from './game-workspace/patchGameView';
 	let { projectId = null, commit, readonly = false, bridge }: Props = $props();
 	let doc = $state.raw<GameDocument>();
 	let revision = $state<string>();
@@ -43,12 +43,7 @@
 	const savable = $derived(editable && dirty && !busy && !problems.length);
 	const view = $derived(doc?.views.find((item) => item.id === viewId) ?? doc?.views[0]);
 	const checkpoint = $derived(view?.checkpoints.find((item) => item.id === selected));
-
-	/** A planned level shows its plan until it is built; Mechanics stays open throughout. */
-	const section = $derived.by<GameSection>(() => {
-		if (!view?.planning) return tab === 'Level' ? 'Checkpoints' : tab;
-		return tab === 'Mechanics' || (tab !== 'Level' && LevelValidator.isReady(view)) ? tab : 'Level';
-	});
+	const section = $derived(gameWorkspaceSection(view, tab));
 	function track(next: GameRun) {
 		const target = String(next.state.view ?? '');
 		const changed = next.tick > run.tick && target !== run.state.view;
@@ -97,17 +92,12 @@
 			busy = false;
 		}
 	}
-	function edit(next: GameDocument) {
-		if (!editable) return;
+	function edit(next?: GameDocument) {
+		if (!editable || !next) return;
 		doc = next;
 		dirty = true;
 	}
-	function editView(patch: Partial<GameView>) {
-		const current = view;
-		if (!doc || !current) return;
-		const views = doc.views.map((item) => (item.id === current.id ? { ...item, ...patch } : item));
-		edit({ ...doc, views });
-	}
+	const editView = (patch: Partial<GameView>) => edit(patchGameView(doc, view, patch));
 	function editCheckpoint(node: Checkpoint) {
 		if (!view || !editable) return;
 		const nodes = view.checkpoints.map((item) => (item.id === selected ? node : item));

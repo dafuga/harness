@@ -1,29 +1,21 @@
+import { previewMountMarkup } from './previewMountMarkup';
+import { recordPreviewCapture } from './recordPreviewCapture';
+import { captureClip, usesNativePopup } from './previewCapturePolicy';
 import { routeShellCatalog } from './shellCatalogRoutes';
 import type { PreviewCaptureTarget } from './previewPage.types';
 import { expect, type Page } from '@playwright/test';
 import { join } from 'node:path';
 import { mkdirSync } from 'node:fs';
-import { BuildIdentityService } from '../../../../../../src/services/BuildIdentityService';
-import {
-	evidenceRequested,
-	recordCapture
-} from '../../../../../../src/utils/record-capture/recordCapture';
+import { evidenceRequested } from '../../../../../../src/utils/record-capture/recordCapture';
 import { previewOrigin, servePreview } from './previewApi';
 import { catalogUnits, previewState } from './catalogUnits';
 import { previewNavigation } from './previewNavigation';
 import { previewCaptureBounds, reportViewDialog } from './previewCaptureBounds';
 import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 import { applyActivityPreviewContext } from './activityPreviewContext';
-import { audioComparisonPreMount } from './audioComparisonPreMount';
-import { uploadComparisonPreMount } from './uploadComparisonPreMount';
-import { uploadAudioPreMount } from './uploadAudioPreMount';
 import { routeLoadingZoom } from './imageZoomActions';
 import { settlePreviewAudio } from './audioPreviewReadiness';
-import {
-	prepareDesktopPage,
-	desktopCaptureEvidence,
-	frameDesktopCapture
-} from './desktopStateActions';
+import { prepareDesktopPage, frameDesktopCapture } from './desktopStateActions';
 
 import {
 	assertPreviewCaptureState,
@@ -54,14 +46,7 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 		const cdp = await page.context().newCDPSession(page);
 		await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
 	}
-	const markup =
-		id === 'reports.component.audio-comparison' && variant === 'pre-mount'
-			? await audioComparisonPreMount()
-			: id === 'reports.component.upload-comparison' && variant === 'pre-mount'
-				? await uploadComparisonPreMount()
-				: id === 'reports.component.upload-audio' && variant === 'pre-mount'
-					? await uploadAudioPreMount()
-					: '';
+	const markup = await previewMountMarkup(id, variant);
 	await page.route('**/*', (route) => servePreview(route, home, markup));
 	await routeLoadingZoom(page, id, variant);
 	await routeShellCatalog(page, id, variant);
@@ -148,10 +133,10 @@ export async function capturePreview(
 ) {
 	const { viewport, variant = '' } = target;
 	const nativeOpen = usesNativePopup(id, variant);
-	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
 	await assertPreviewCaptureState(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await settlePreviewAudio(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await frameDesktopCapture(page, id);
+	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
 	const bounds = await previewCaptureBounds(page, id, variant);
 	// A native popup is captured from the visible viewport, so its declared bounds stop there.
 	const clip = captureClip(page, bounds, nativeOpen);
@@ -170,54 +155,7 @@ export async function capturePreview(
 		);
 	}
 	if (!evidenceRequested()) return { clip, bytes };
-	const served = await new BuildIdentityService().identify(home);
-	recordCapture(
-		{
-			evidence: desktopCaptureEvidence(id, variant),
-			kind: 'screenshot',
-			state,
-			viewport,
-			clip,
-			file: `${state}-${viewport}.png`,
-			mediaType: 'image/png',
-			provenance: 'actual-capture',
-			note: reportDialog
-				? 'Visible viewport with the report dialog open. Synthetic representative inputs; real backend and native-device behavior are not reproduced.'
-				: previewCaptureNote(id, variant),
-			server: {
-				buildId: served?.buildId ?? 'not-built',
-				revision: process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40)
-			}
-		},
-		bytes
-	);
+	await recordPreviewCapture(home, { id, variant, viewport, clip, bytes, reportDialog });
 	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport);
 	return { clip, bytes };
-}
-
-function captureClip(
-	page: Page,
-	bounds: { x: number; y: number; width: number; height: number },
-	nativeOpen: boolean
-) {
-	if (!nativeOpen) return bounds;
-	const height = page.viewportSize()?.height ?? bounds.height;
-	return { ...bounds, height: Math.max(1, Math.min(bounds.height, height - bounds.y)) };
-}
-
-const nativePopups: Record<string, string[]> = {
-	'reports.component.evidence-grid': ['status-open'],
-
-	'reports.component.explorer-ui-explorer-platforms': ['status-options-open'],
-	'reports.component.explorer-ui-explorer-translations-screen': ['language-open']
-};
-
-function usesNativePopup(id: string, variant: string) {
-	return nativePopups[id]?.includes(variant) ?? false;
-}
-
-function previewCaptureNote(id: string, variant: string) {
-	return id === 'reports.component.evidence-grid' && ['image-open', 'audio-open'].includes(variant)
-		? 'Rendered dialog bounds without preview-only canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.'
-		: 'Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.';
 }

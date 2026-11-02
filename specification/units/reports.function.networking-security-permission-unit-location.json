@@ -1,0 +1,110 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.networking-security-permission-unit-location",
+	"kind": "function",
+	"title": "permissionUnitLocation",
+	"responsibility": "Links only units registered in the shown permission revision.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/networking-security/explorer-permissions-screen/permissionUnitLocation.ts"
+		],
+		"symbols": ["permissionUnitLocation"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "permissionUnitLocation.host",
+				"type": "Pick<ExplorerPermissionsScreenProps, 'entities' | 'route'>",
+				"required": true,
+				"description": "Shown registry and route; entities are searched before reading the route, including when no unit matches."
+			},
+			{
+				"name": "permissionUnitLocation.id",
+				"type": "string",
+				"required": true,
+				"description": "Exact registered unit ID; no default or inferred category is supplied."
+			}
+		],
+		"outputs": [
+			{
+				"name": "permissionUnitLocation",
+				"type": "ExplorerLocation | null",
+				"description": "The registered unit route under its own category at the shown branch and commit; null when absent."
+			}
+		],
+		"errors": [
+			{
+				"name": "Input access failure",
+				"type": "propagated",
+				"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "permissionUnitLocation",
+				"inputs": [
+					{
+						"name": "permissionUnitLocation.host",
+						"type": "Pick<ExplorerPermissionsScreenProps, 'entities' | 'route'>",
+						"required": true,
+						"description": "Shown registry and route; entities are searched before reading the route, including when no unit matches."
+					},
+					{
+						"name": "permissionUnitLocation.id",
+						"type": "string",
+						"required": true,
+						"description": "Exact registered unit ID; no default or inferred category is supplied."
+					}
+				],
+				"outputs": [
+					{
+						"name": "permissionUnitLocation",
+						"type": "ExplorerLocation | null",
+						"description": "The registered unit route under its own category at the shown branch and commit; null when absent."
+					}
+				],
+				"errors": [
+					{
+						"name": "Input access failure",
+						"type": "propagated",
+						"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/networking-security/explorer-permissions-screen/permissionUnitLocation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/networking-security/explorer-permissions-screen/permissionUnitLocation.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

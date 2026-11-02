@@ -13,6 +13,16 @@ const content = createRawSnippet<[ComparisonPane<unknown>]>((pane) => ({
 }));
 test('comparison labels and metadata come from the same side in every view', async () => {
 	assertComparisonLabels();
+	const [before, after] = invoiceEvidence();
+	const caption = viewer([before, after], after).match(
+		/<figcaption\b[^>]*>([\s\S]*?)<\/figcaption>/
+	)?.[1];
+	expect(
+		caption
+			?.replace(/<!--[^]*?-->/g, '')
+			.replace(/<[^>]+>/g, '')
+			.trim()
+	).toBe('After · b56de78 · Invoice approved · desktop');
 	await measureWorkload(
 		'reports.component.evidence-viewer',
 		'side-bound-viewer-provenance',
