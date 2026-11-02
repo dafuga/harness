@@ -96,10 +96,11 @@
 			{
 				"name": "GameLevelReview",
 				"type": "markup",
-				"description": "Review generated geometry, request revisions and explicitly approve a level."
+				"description": "Review generated geometry, request revisions and explicitly approve a level. Throws nothing itself: a status error is shown in an alert beside the level, and the approve, build and regenerate callbacks are the parent’s responsibility."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
