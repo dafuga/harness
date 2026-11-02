@@ -9,6 +9,7 @@ import {
 } from './desktopArtifactAssertions';
 import { assertDesktopNavCapture } from './desktopNavAssertions';
 import { assertComposerCaptions } from './projectAgentStateAssertions';
+import { assertGameLevelReviewState } from './gameLevelReviewAssertions';
 import { assertDesktopPresentation } from './desktopPresentationAssertions';
 import { assertCheckpointCapture } from './desktopCheckpointAssertions';
 import {
@@ -37,7 +38,13 @@ export async function assertDesktopState(component: Locator, id: string, variant
 		'runtime-behavior:unreadable': 'The recorded results could not be read.',
 		'runtime-screens:incomparable': '1280×900 after',
 		'runtime-evidence:error': 'The saved record is incomplete. Try again.',
-		'runtime-evidence:offline': 'Saved'
+		'runtime-evidence:offline': 'Saved',
+		'game-level-review:approved': 'Approved. Build the level to unlock its checkpoints.',
+		'game-level-review:built': 'Built. Preview and Checkpoints are open for this level.',
+		'game-level-review:regenerating': 'Generating a new proposal. This can take a minute.',
+		'game-level-review:error': 'The provider returned a layout without a spawn point.',
+		'game-level-review:unavailable': 'No model provider is available on this device.',
+		'game-level-review:no-providers': 'codex · gpt-6.1-sol'
 	};
 	if (messages[key]) await expect(component).toContainText(messages[key], { ignoreCase: true });
 	await expect(component).not.toContainText(
@@ -49,6 +56,7 @@ export async function assertDesktopState(component: Locator, id: string, variant
 }
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	composer,
+	'game-level-review': assertGameLevelReviewState,
 	'runtime-behavior': assertDesktopBehaviorState,
 	'environment-picker': async (component, variant) => {
 		if (['stage', 'preprod', 'prod'].includes(variant))

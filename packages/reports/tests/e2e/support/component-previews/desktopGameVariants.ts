@@ -3,6 +3,7 @@ import type {
 	Checkpoint,
 	GameView
 } from '../../../../../game/src/models/game-authoring/Game.types';
+import type { LevelProposal } from '../../../../../game/src/index';
 import type { PreviewProps } from './shared.types';
 import { noop } from './shared';
 import { commits } from '../../../../test/entityUnits';
@@ -21,6 +22,14 @@ export const desktopGameCatalogVariants: Record<string, string[]> = {
 		'no-model',
 		'long'
 	],
+	'desktop.component.game-level-review': [
+		'approved',
+		'built',
+		'regenerating',
+		'error',
+		'unavailable',
+		'no-providers'
+	],
 	'desktop.component.game-preview': ['three-dimensional', 'readonly', 'reset'],
 	'desktop.component.game-view-fields': ['settings-open', 'readonly', 'gated', 'multiple']
 };
@@ -31,11 +40,33 @@ export function desktopGameVariant(id: string, props: PreviewProps, variant: str
 	if (name === 'game-create') return creation(props, variant);
 	if (name === 'game-level-brief') return brief(props, variant);
 	if (name === 'game-checkpoint-editor') return checkpoint(props, variant);
+	if (name === 'game-level-review') return review(props, variant);
 	if (name === 'game-checkpoint-pane') return pane(props, variant);
 	if (name === 'game-view-fields') return fields(props, variant);
 	if (name !== 'game-preview') return null;
 	if (variant === 'three-dimensional') return { ...props, view: exampleDocument('3d').views[0] };
 	return { ...props, readonly: variant === 'readonly' };
+}
+/** Each presentation changes one input of the same proposal; the default keeps the synthetic fixture unchanged. */
+function review(props: PreviewProps, variant: string): PreviewProps | null {
+	const status = { busy: false, readonly: false, reason: '', error: '' };
+	const proposal = props.proposal as LevelProposal;
+	const changes: Record<string, PreviewProps> = {
+		approved: { approved: true },
+		built: { built: true },
+		regenerating: { status: { ...status, busy: true } },
+		error: {
+			status: {
+				...status,
+				error: 'The provider returned a layout without a spawn point. Regenerate to try again.'
+			}
+		},
+		unavailable: {
+			status: { ...status, reason: 'No model provider is available on this device.' }
+		},
+		'no-providers': { providers: null, proposal: { ...proposal, model: 'gpt-6.1-sol' } }
+	};
+	return changes[variant] ? { ...props, ...changes[variant] } : null;
 }
 function creation(props: PreviewProps, variant: string): PreviewProps {
 	if (variant === 'unavailable') return { ...props, bridge: {} };
