@@ -59,7 +59,7 @@
 			{
 				"name": "EntityView",
 				"type": "markup",
-				"description": "Entity identity, verification and the selected tab, with optional Source and conversation. Components keep their runtime screenshot above every tab. Opaque record identifiers wrap within the content frame; existing evidence and annotation rules remain in force."
+				"description": "Entity identity, verification and the selected tab, with optional Source and conversation. Components keep their runtime screenshot above every tab. Opaque record identifiers wrap within the content frame; existing evidence and annotation rules remain in force. Catalog states: default (Overview), source (Source files), designs (Design with its viewport and state controls), used-in (dependents), uses (APIs and components this entity uses), apis (the APIs section), states (recorded screenshots of each supported state), history (entity history), conversation-closed (the Conversation button alone), and helper-examples (a function Examples tab with recorded evidence)."
 			}
 		],
 		"errors": [
