@@ -2,7 +2,7 @@
 	"name": "sol10-pill-context",
 	"goal": "Retain the real Desktop stylesheet and painted chip treatment in the shared Pill catalog state.",
 	"createdAt": "2026-11-02T01:21:37.749Z",
-	"updatedAt": "2026-11-02T01:23:40.858Z",
+	"updatedAt": "2026-11-02T02:05:15.986Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T02:05:13.385Z",
+			"evidence": "Formal red record c77868eded3c79045b8faafd56bad63b69222e5a4ad26d79312dee78014e9c60: the unchanged Pill chip assertions fail with paddingLeft 0 at all three viewports."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T02:05:14.697Z",
+			"evidence": "Use the real Desktop caller stylesheet for the shared Pill chip variant. The existing three-viewport catalog case now requires positive painted padding."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T02:05:15.986Z",
+			"evidence": "catalogEntry selects the existing Desktop styles for the shared chip variant and reuses the parsed query parameters. No Pill implementation or design tokens changed."
 		},
 		{
 			"id": "green",

@@ -13,21 +13,25 @@ import workspace from '../../../../../desktop/src/lib/styles/workspace.css?inlin
 import design from '../../../../../desktop/src/lib/styles/design.css?inline';
 import hub from '../../../../../hub/src/lib/styles/hub.css?inline';
 document.body.dataset.pickerPreview = 'true';
-const unitId =
-	new URLSearchParams(location.search).get('unit') ?? 'reports.component.activity-list';
+const parameters = new URLSearchParams(location.search);
+const unitId = parameters.get('unit') ?? 'reports.component.activity-list';
+const desktopContext =
+	unitId.startsWith('desktop.') ||
+	(unitId === 'reports.component.explorer-ui-explorer-kit-pill' &&
+		parameters.get('variant') === 'chip');
 const preMounted =
 	[
 		'reports.component.audio-comparison',
 		'reports.component.upload-comparison',
 		'reports.component.upload-audio'
-	].includes(unitId) && new URLSearchParams(location.search).get('variant') === 'pre-mount';
+	].includes(unitId) && parameters.get('variant') === 'pre-mount';
 // Preserve the document's original unit before real route fixtures replace the visible URL.
 window.previewDocument = Object.freeze({ unit: unitId, timeOrigin: performance.timeOrigin });
 let styles = [base, base2, base3, harness, gallery, gallery2, picker, analytics];
-if (unitId.startsWith('desktop.')) styles = [workspace, design];
+if (desktopContext) styles = [workspace, design];
 if (unitId.startsWith('hub.')) styles = [workspace, design, hub];
 const contextStyle = document.createElement('style');
-contextStyle.dataset.previewApp = unitId.split('.')[0];
+contextStyle.dataset.previewApp = desktopContext ? 'desktop' : unitId.split('.')[0];
 contextStyle.textContent = styles.join('\n');
 document.head.prepend(contextStyle);
 let mounted: ReturnType<typeof mount> | undefined;
