@@ -1091,6 +1091,42 @@
 			"units": ["desktop.component.game-level-review"]
 		},
 		{
+			"id": "desktop-component-game-level-review-approved",
+			"title": "Level review: approved",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-review"]
+		},
+		{
+			"id": "desktop-component-game-level-review-built",
+			"title": "Level review: built",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-review"]
+		},
+		{
+			"id": "desktop-component-game-level-review-regenerating",
+			"title": "Level review: regenerating",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-review"]
+		},
+		{
+			"id": "desktop-component-game-level-review-error",
+			"title": "Level review: error",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-review"]
+		},
+		{
+			"id": "desktop-component-game-level-review-unavailable",
+			"title": "Level review: unavailable",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-review"]
+		},
+		{
+			"id": "desktop-component-game-level-review-no-providers",
+			"title": "Level review: no providers",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-review"]
+		},
+		{
 			"id": "desktop-component-game-live-video",
 			"title": "GameLiveVideo",
 			"coverage": "required",
@@ -5724,7 +5760,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
+			"title": "ExplorerModuleResourcesScreen · Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -5778,13 +5814,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen \u00b7 playwright",
+			"title": "ExplorerModulesScreen · playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen \u00b7 headless-audio",
+			"title": "ExplorerModulesScreen · headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -8281,6 +8317,12 @@
 				"desktop-component-game-level-plan",
 				"desktop-component-game-level-preview",
 				"desktop-component-game-level-review",
+				"desktop-component-game-level-review-approved",
+				"desktop-component-game-level-review-built",
+				"desktop-component-game-level-review-regenerating",
+				"desktop-component-game-level-review-error",
+				"desktop-component-game-level-review-unavailable",
+				"desktop-component-game-level-review-no-providers",
 				"desktop-component-game-live-video",
 				"desktop-component-game-mechanics",
 				"desktop-component-game-preview",

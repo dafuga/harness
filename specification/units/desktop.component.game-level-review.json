@@ -96,7 +96,7 @@
 			{
 				"name": "GameLevelReview",
 				"type": "markup",
-				"description": "Review generated geometry, request revisions and explicitly approve a level. Throws nothing itself: a status error is shown in an alert beside the level, and the approve, build and regenerate callbacks are the parent’s responsibility."
+				"description": "Review generated geometry, request revisions and explicitly approve a level. Throws nothing itself: a status error is shown in an alert beside the level, and the approve, build and regenerate callbacks are the parent’s responsibility. Catalog states: default (proposal ready to approve or regenerate), approved (Build level enabled, Approve spent), built (the built note replaces the controls), regenerating (a pending request disables regenerate and the requested-changes field), error (the status error alert), unavailable (a status reason disables regenerate), and no-providers (providers null, so the chip names the raw provider and model ids)."
 			}
 		],
 		"errors": [],
