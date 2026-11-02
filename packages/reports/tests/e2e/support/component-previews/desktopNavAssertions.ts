@@ -5,6 +5,7 @@ import {
 	assertMobileNavLayout,
 	assertGameNavGlyph
 } from './desktopNavLayoutAssertions';
+import { assertRevisionTriggerContent } from './desktopRevisionTriggerAssertions';
 
 /** Catalog navigation keeps its context rail and icon labels aligned across viewport sizes. */
 export async function assertDesktopNavCapture(component: Locator, id: string) {
@@ -13,6 +14,7 @@ export async function assertDesktopNavCapture(component: Locator, id: string) {
 	const width = component.page().viewportSize()!.width;
 	await assertNavContext(component, width);
 	await assertNavContextClear(component, width);
+	await assertRevisionTriggerContent(component, width);
 	await assertMobileNavLayout(component, tabs, width);
 	await expect(
 		tabs.locator('a').first(),
