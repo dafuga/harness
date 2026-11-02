@@ -1,6 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { isWorkspacePath, workspacePath, workspaceRoute } from '../../src/utils/workspaceRoute';
+import { entityViewSections } from '../../src/components/explorer-ui/entity-view/entityViewSections';
 
 const commit = 'a'.repeat(40);
 
@@ -87,7 +88,63 @@ test('an abbreviated commit, an unknown category and a foreign address are refus
 	expect(isWorkspacePath('/')).toBe(false);
 });
 
-test('every section of an entity has an address of its own, and its overview has none', () => {
+function assertSectionChoices() {
+	let reads = 0;
+	const context = {
+		get entity() {
+			reads++;
+			return { category: 'pages' };
+		}
+	};
+	expect(entityViewSections(context, false, true)).toEqual([
+		'Overview',
+		'APIs',
+		'Designs',
+		'Used In',
+		'Uses',
+		'States',
+		'History',
+		'Source'
+	]);
+	expect(reads).toBe(1);
+	expect(entityViewSections({ entity: { category: 'functions' } }, true, false)).toEqual([
+		'Overview',
+		'Plan',
+		'Used In',
+		'Uses',
+		'Examples',
+		'History',
+		'Source'
+	]);
+	expect(entityViewSections({ entity: null }, false, false)).toEqual([
+		'Overview',
+		'Designs',
+		'Used In',
+		'Uses',
+		'Evidence',
+		'History',
+		'Source'
+	]);
+	const failure = new Error('Category access refused');
+	expect(() =>
+		entityViewSections(
+			{
+				get entity(): never {
+					throw failure;
+				}
+			},
+			false,
+			true
+		)
+	).toThrow(failure);
+}
+
+test('every section of an entity has an address of its own, and its overview has none', async () => {
+	await measureWorkload(
+		'desktop.function.explorer-ui-entity-view-sections',
+		'entity-section-category-matrix',
+		assertSectionChoices
+	);
 	const entity = '/projects/p/harness/branch/main/pages/page%3Aactivity';
 	for (const suffix of ['designs', 'relationships', 'evidence', 'history', 'source'] as const) {
 		const route = workspaceRoute(`${entity}/${suffix}`);

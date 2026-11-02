@@ -1,0 +1,123 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.explorer-ui-entity-view-sections",
+	"kind": "function",
+	"title": "entityViewSections",
+	"responsibility": "Selects the existing entity sections for its visual and headless presentation context.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/explorer-ui/entity-view/entityViewSections.ts",
+			"packages/desktop/src/components/explorer-ui/entity-view/entityViewSections.types.ts"
+		],
+		"symbols": ["entityViewSections", "EntitySectionsContext"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "entityViewSections.context",
+				"type": "EntitySectionsContext",
+				"required": true,
+				"description": "Entity category context; its entity and category getters are read only for the APIs section, after the existing headless and visual checks."
+			},
+			{
+				"name": "entityViewSections.headless",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether this entity uses a plan instead of designs; supplied from the existing owner state."
+			},
+			{
+				"name": "entityViewSections.visual",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether this entity uses States instead of Evidence; supplied from the existing owner state."
+			}
+		],
+		"outputs": [
+			{
+				"name": "entityViewSections",
+				"type": "Section[]",
+				"description": "A fresh list in canonical section order, preserving existing feature and category exclusions. No context or section table is changed."
+			}
+		],
+		"errors": [
+			{
+				"name": "Context access failure",
+				"type": "propagated",
+				"description": "Errors from supplied entity/category getters or proxy traps propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "entityViewSections",
+				"inputs": [
+					{
+						"name": "entityViewSections.context",
+						"type": "EntitySectionsContext",
+						"required": true,
+						"description": "Entity category context; its entity and category getters are read only for the APIs section, after the existing headless and visual checks."
+					},
+					{
+						"name": "entityViewSections.headless",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether this entity uses a plan instead of designs; supplied from the existing owner state."
+					},
+					{
+						"name": "entityViewSections.visual",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether this entity uses States instead of Evidence; supplied from the existing owner state."
+					}
+				],
+				"outputs": [
+					{
+						"name": "entityViewSections",
+						"type": "Section[]",
+						"description": "A fresh list in canonical section order, preserving existing feature and category exclusions. No context or section table is changed."
+					}
+				],
+				"errors": [
+					{
+						"name": "Context access failure",
+						"type": "propagated",
+						"description": "Errors from supplied entity/category getters or proxy traps propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.entity-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.workspace-route",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/explorer-ui/entity-view/entityViewSections.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/explorer-ui/entity-view/entityViewSections.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
