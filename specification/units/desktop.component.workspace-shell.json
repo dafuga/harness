@@ -36,6 +36,7 @@
 				"name": "WorkspaceShell.account",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional host-account content forwarded to the navigation bar. Omitted means no supplied account controls."
 			}
 		],

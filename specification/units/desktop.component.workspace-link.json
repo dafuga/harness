@@ -41,12 +41,14 @@
 				"name": "WorkspaceLink.label",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional screen-reader name when the visible content does not explain the action."
 			},
 			{
 				"name": "WorkspaceLink.title",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional short tooltip shown when the pointer rests over the link."
 			},
 			{

@@ -28,6 +28,7 @@
 				"name": "SvgAnimateTransform.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native animateTransform element; native HTML content rules still apply."
 			}
 		],

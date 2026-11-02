@@ -49,6 +49,7 @@
 				"name": "EntityHeader.owner",
 				"type": "ExplorerEntity",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Sole recorded consumer for a private function breadcrumb; absent when ownership is unknown or not unique."
 			},
 			{
@@ -61,6 +62,7 @@
 				"name": "EntityHeader.preview",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional component screenshot shown above every tab."
 			},
 			{

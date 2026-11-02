@@ -23,6 +23,7 @@
 				"name": "HtmlInputUrl.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
 			}
 		],

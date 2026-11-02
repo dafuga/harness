@@ -66,6 +66,7 @@
 				"name": "RegressionProof.follow",
 				"type": "(commit: string) => void",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional client-side commit navigation callback. Default: undefined, preserving ordinary links. Unmodified primary clicks call it when supplied; modified clicks keep normal link behavior."
 			}
 		],

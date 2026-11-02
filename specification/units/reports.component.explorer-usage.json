@@ -52,6 +52,7 @@
 				"name": "ExplorerUsage.layout",
 				"type": "'grouped' | 'flat'",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional compatibility input. Defaults to JavaScript undefined. Its value is ignored: every footer remains a flat list."
 			},
 			{

@@ -51,12 +51,14 @@
 				"name": "EntityHistoryRow.verdict",
 				"type": "Pick<ExplorerVerdict, 'passed' | 'label'> & { reasons?: string[] }",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional legacy verdict input; this compact commit row does not render a verdict."
 			},
 			{
 				"name": "EntityHistoryRow.selected",
 				"type": "boolean",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional legacy selection input; the row uses viewed to identify the displayed commit."
 			},
 			{
@@ -81,6 +83,7 @@
 				"name": "EntityHistoryRow.onselect",
 				"type": "(full: boolean) => void",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional legacy selection callback retained by the input type; the row navigates through its entity link."
 			}
 		],

@@ -28,6 +28,7 @@
 				"name": "SvgFeDisplacementMap.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native feDisplacementMap element; native HTML content rules still apply."
 			}
 		],

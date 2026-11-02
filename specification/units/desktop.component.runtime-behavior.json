@@ -54,6 +54,7 @@
 				"name": "RuntimeBehavior.unit",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional function identifier forwarded to result rows on both sides. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],

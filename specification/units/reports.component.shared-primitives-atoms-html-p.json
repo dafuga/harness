@@ -23,6 +23,7 @@
 				"name": "HtmlP.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native p element; native HTML content rules still apply. Defaults to JavaScript undefined (no child snippet)."
 			}
 		],

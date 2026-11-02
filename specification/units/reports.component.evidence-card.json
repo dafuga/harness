@@ -45,6 +45,7 @@
 				"name": "EvidenceCard.before",
 				"type": "Evidence",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional original recording. Default: undefined. For audio items, presence selects a paired comparison card; otherwise audio is rendered individually. Ignored for screenshots."
 			},
 			{

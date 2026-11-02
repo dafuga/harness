@@ -33,6 +33,7 @@
 				"name": "HarnessNavbar.modules",
 				"type": "ModuleCatalog",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional selected-revision module catalog. Installed resources supply Code tabs; omitted catalogs use included standard modules. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
@@ -81,6 +82,7 @@
 				"name": "HarnessNavbar.search",
 				"type": "{ entries: SearchEntry[] | null }",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional searchable entities for the viewed revision, or null entries while loading. The search helper excludes entries for a mismatched revision. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],

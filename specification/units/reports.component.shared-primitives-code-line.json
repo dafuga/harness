@@ -38,6 +38,7 @@
 				"name": "CodeLine.action",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional snippet containing an existing inspection action; its callback, dialog and focus return remain caller-owned."
 			},
 			{

@@ -39,6 +39,7 @@
 				"name": "HarnessTabs.tabs",
 				"type": "Array<HarnessTab<View>>",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional tab definitions, defaulting to JavaScript undefined (omitted). Omission uses map, compare, history, growth and activity; an explicitly empty list renders no tabs. Definitions may provide destinations and disabled state. Tab identifiers must be distinct."
 			},
 			{

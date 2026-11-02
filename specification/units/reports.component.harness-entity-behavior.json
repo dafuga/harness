@@ -81,18 +81,21 @@
 				"name": "EntityBehavior.reasons",
 				"type": "Reasons",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional entity change reasons, displayed separately from test observations. Supplied behavior text remains visible while recorded results load and takes precedence over derived comparison explanation. Defaults to JavaScript undefined (omitted)."
 			},
 			{
 				"name": "EntityBehavior.duration",
 				"type": "string",
 				"required": false,
+				"default": "Not measured",
 				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it. Defaults to Not measured."
 			},
 			{
 				"name": "EntityBehavior.unit",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional function identifier passed to run/artifact case rendering. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
@@ -105,11 +108,17 @@
 		],
 		"errors": [
 			{
-				"name": "Navigation callback error",
+				"name": "Recorded result read failure",
+				"type": "handled",
+				"description": "A rejected artifact read produces Behavior unknown and the recorded-results read gap; it is not reported as unchanged behavior."
+			},
+			{
+				"name": "Caller navigation or rendering error",
 				"type": "propagated",
-				"description": "Errors from nav.href while rendering links or nav.go when following them propagate. Rejected recorded-artifact reads become an unknown behavior state."
+				"description": "Exceptions in caller navigation or rendered dependencies propagate; this component is not an error boundary."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
@@ -252,11 +261,6 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-measure",
 			"via": "import",
 			"origin": "derived"
 		},

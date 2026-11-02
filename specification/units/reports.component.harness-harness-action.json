@@ -26,12 +26,14 @@
 				"name": "HarnessAction.href",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional address. Nonempty and enabled renders an anchor; otherwise a button. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "HarnessAction.onclick",
 				"type": "(event: MouseEvent) => void",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional handler. For links, only plain clicks are intercepted; other clicks remain native. Buttons invoke it directly if supplied. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
@@ -52,18 +54,21 @@
 				"name": "HarnessAction.icon",
 				"type": "HarnessIconName",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional trailing icon. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "HarnessAction.lead",
 				"type": "HarnessIconName",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional leading icon. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
 				"name": "HarnessAction.label",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional fuller accessible name. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{

@@ -52,12 +52,14 @@
 				"name": "EntityDetails.tab",
 				"type": "ExplorerTab | 'summary'",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional. Defaults to JavaScript undefined and shows the contract with its measurement summary. source selects source files; measurements selects measured detail; summary selects only the performance summary."
 			},
 			{
 				"name": "EntityDetails.repository",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional. Defaults to JavaScript undefined. Source files then remain plain paths without GitHub links."
 			},
 			{
@@ -70,6 +72,7 @@
 				"name": "EntityDetails.nav",
 				"type": "EntityNav",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional. Defaults to JavaScript undefined. Without revision-scoped navigation, the Source tab omits code-opening actions."
 			}
 		],

@@ -43,24 +43,28 @@
 				"name": "Pill.state",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional styling state. Defaults to JavaScript undefined, omitting data-state."
 			},
 			{
 				"name": "Pill.role",
 				"type": "'img' | 'status'",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional semantic role. Defaults to JavaScript undefined, omitting role."
 			},
 			{
 				"name": "Pill.label",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional accessible name. Defaults to JavaScript undefined, omitting aria-label."
 			},
 			{
 				"name": "Pill.title",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional native tooltip. Defaults to JavaScript undefined, omitting title."
 			},
 			{

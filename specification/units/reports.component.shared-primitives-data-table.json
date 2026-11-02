@@ -46,6 +46,7 @@
 				"name": "DataTable.empty",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional complete empty rows and cell spans. Defaults to JavaScript undefined; when isEmpty is true and this snippet is omitted, shows No rows to display. beneath the table."
 			},
 			{

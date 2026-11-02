@@ -23,6 +23,7 @@
 				"name": "SvgImage.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native image element; native HTML content rules still apply."
 			}
 		],

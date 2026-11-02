@@ -13,7 +13,6 @@
 	import { entityBehavior } from '../../utils/explorer-ui/entityBehavior';
 	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
-	import { notMeasured } from '../../utils/explorer-ui/entityMeasure';
 	import type { EntityReasons as Reasons } from '../../utils/explorer-ui/entityReasons';
 	import { explorerReading } from '../../utils/explorer-ui/explorer-reading/explorerReading';
 	import EntityReasons from './entity-reasons/EntityReasons.svelte';
@@ -28,7 +27,7 @@
 		mediaBase,
 		nav,
 		reasons,
-		duration = notMeasured,
+		duration = 'Not measured',
 		unit
 	}: {
 		/** The recorded results of both sides as the host found them, before any is read. */

@@ -47,24 +47,28 @@
 				"name": "Card.id",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional native id. Defaults to JavaScript undefined, omitting the attribute."
 			},
 			{
 				"name": "Card.label",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional accessible name. Defaults to JavaScript undefined, omitting aria-label."
 			},
 			{
 				"name": "Card.labelledby",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional. Defaults to JavaScript undefined, omitting aria-labelledby. Supply the heading id when the card should be named."
 			},
 			{
 				"name": "Card.component",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional owning component id suffix for evidence attribution. Defaults to JavaScript undefined, omitting data-harness-component."
 			},
 			{

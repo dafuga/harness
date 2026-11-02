@@ -23,6 +23,7 @@
 				"name": "HtmlI.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native i element; native HTML content rules still apply."
 			}
 		],
@@ -33,7 +34,14 @@
 				"description": "The actual native i element, with forwarded attributes and content and no additional wrapper."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Caller content or native property error",
+				"type": "propagated",
+				"description": "Errors in supplied child snippets, event handlers or native property evaluation propagate; this forwarding atom does not catch them."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

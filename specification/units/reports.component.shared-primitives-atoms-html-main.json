@@ -23,6 +23,7 @@
 				"name": "HtmlMain.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native main element; native HTML content rules still apply. Defaults to JavaScript undefined (no child snippet)."
 			}
 		],

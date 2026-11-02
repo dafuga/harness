@@ -55,18 +55,21 @@
 				"name": "GameCheckpointImage.projectId",
 				"type": "string | null",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Selected local project identity used to bind host reads and writes."
 			},
 			{
 				"name": "GameCheckpointImage.revision",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Expected document hash used to reject stale image generation or saves."
 			},
 			{
 				"name": "GameCheckpointImage.commit",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional immutable Git revision for reading historical image bytes."
 			},
 			{
@@ -80,6 +83,7 @@
 				"name": "GameCheckpointImage.bridge",
 				"type": "DesktopBridge",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Local desktop host operations for project creation, persistence and explicit image generation."
 			},
 			{

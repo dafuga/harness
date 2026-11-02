@@ -41,12 +41,14 @@
 				"name": "UsageExamples.setup",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional legacy setup included inside each code block without executing it."
 			},
 			{
 				"name": "UsageExamples.setupTitle",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional heading for setup rendered once before the example snippets."
 			}
 		],

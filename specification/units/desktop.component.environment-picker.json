@@ -34,6 +34,7 @@
 				"name": "EnvironmentPicker.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional action rendered beside the environment choice, such as production promotion. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],

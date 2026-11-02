@@ -71,11 +71,12 @@
 		],
 		"errors": [
 			{
-				"name": "Navbar callback error",
+				"name": "Caller navbar or child rendering error",
 				"type": "propagated",
-				"description": "When navbar is supplied, errors from its href or onroute callbacks propagate through the rendered navigation bar. This header supplies no error boundary."
+				"description": "Errors from supplied navbar navigation callbacks or rendered child components propagate. Supplied problem and missing-address data render notices rather than throw."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

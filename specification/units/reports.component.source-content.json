@@ -40,6 +40,7 @@
 				"name": "SourceContent.empty",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional no-files explanation. Defaults to JavaScript undefined, using SourceViewer's No source files recorded at this revision. message."
 			}
 		],

@@ -23,6 +23,7 @@
 				"name": "HtmlH5.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native h5 element; native HTML content rules still apply."
 			}
 		],

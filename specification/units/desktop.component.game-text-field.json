@@ -34,6 +34,7 @@
 				"name": "GameTextField.label",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional explicit accessible label; surrounding label content is otherwise used."
 			},
 			{

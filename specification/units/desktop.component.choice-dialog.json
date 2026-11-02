@@ -45,6 +45,7 @@
 				"name": "ChoiceDialog.activeCount",
 				"type": "number",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional count forwarded to the trigger data-active attribute. Defaults to JavaScript undefined, omitting the attribute."
 			},
 			{
@@ -76,6 +77,7 @@
 				"name": "ChoiceDialog.onopen",
 				"type": "() => void",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional callback called after showing the dialog; returned work is not awaited. Defaults to JavaScript undefined, with no callback."
 			},
 			{
@@ -88,6 +90,7 @@
 				"name": "ChoiceDialog.footer",
 				"type": "Snippet<[close: () => void]>",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional sticky action-row snippet receiving the close callback. Defaults to JavaScript undefined, with no footer."
 			}
 		],

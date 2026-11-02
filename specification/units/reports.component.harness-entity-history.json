@@ -99,11 +99,17 @@
 		],
 		"errors": [
 			{
-				"name": "Reader or navigation callback error",
+				"name": "Revision read rejection",
+				"type": "handled",
+				"description": "A rejected revision request leaves that commit unread while retaining previously read history; no fabricated change or measurement is shown."
+			},
+			{
+				"name": "Caller reader or navigation error",
 				"type": "propagated",
-				"description": "Synchronous errors from client.revision, nav.href or nav.go propagate. Rejected revision promises are handled and leave the corresponding detail unknown."
+				"description": "Synchronous errors in supplied revision readers, navigation or rendered dependencies propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [

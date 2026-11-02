@@ -45,8 +45,8 @@
 			{
 				"name": "NavBar.account",
 				"type": "Snippet",
-				"default": "undefined (omitted)",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content supplied by the host for account controls, such as the signed-in identity. When omitted, no account container is rendered; this component does not supply sign-in or sign-out behavior itself. Defaults to JavaScript undefined (omitted), not the literal string. An explicit null is treated the same as omitted."
 			}
 		],

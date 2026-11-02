@@ -38,18 +38,21 @@
 				"name": "Select.id",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional HTML identifier. Defaults to JavaScript undefined, omitting id."
 			},
 			{
 				"name": "Select.name",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional form field name. Defaults to JavaScript undefined, omitting name."
 			},
 			{
 				"name": "Select.required",
 				"type": "boolean",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional native required flag. Defaults to JavaScript undefined, omitting the attribute; the browser does not require a selection."
 			},
 			{
@@ -77,12 +80,14 @@
 				"name": "Select.display",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional closed-field label. Defaults to JavaScript undefined, showing the native selection. Supplied labels over 16 characters show their first and last six characters; expanded mode shows complete native options instead."
 			},
 			{
 				"name": "Select.title",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional hover text. Defaults to JavaScript undefined, falling back to the full display label when supplied; otherwise title is omitted."
 			},
 			{

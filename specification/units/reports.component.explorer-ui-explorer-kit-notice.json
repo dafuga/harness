@@ -43,18 +43,21 @@
 				"name": "Notice.id",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional native id. Defaults to JavaScript undefined."
 			},
 			{
 				"name": "Notice.label",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional accessible name. Defaults to JavaScript undefined, omitting aria-label."
 			},
 			{
 				"name": "Notice.component",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional owner attribution. Defaults to JavaScript undefined."
 			},
 			{

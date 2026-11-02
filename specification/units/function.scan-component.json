@@ -126,7 +126,7 @@
 			{
 				"name": "scanComponent",
 				"type": "ExportScan",
-				"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input."
+				"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input. Optional props with no binding fallback explicitly use the documentation marker undefined (omitted); required props retain no default and literal fallbacks retain their source value."
 			}
 		],
 		"errors": [],
@@ -282,7 +282,8 @@
 				"outputs": [
 					{
 						"name": "boundProps",
-						"type": "ContractItem[]"
+						"type": "ContractItem[]",
+						"description": " Optional props with no binding fallback explicitly use the documentation marker undefined (omitted); required props retain no default and literal fallbacks retain their source value."
 					}
 				],
 				"errors": [],
@@ -333,7 +334,7 @@
 					{
 						"name": "scanComponent",
 						"type": "ExportScan",
-						"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input."
+						"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input. Optional props with no binding fallback explicitly use the documentation marker undefined (omitted); required props retain no default and literal fallbacks retain their source value."
 					}
 				],
 				"errors": [],

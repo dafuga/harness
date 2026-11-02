@@ -26,6 +26,7 @@
 				"name": "AccountMenu.projectId",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional project identifier. When a person is signed in and this value is nonempty, adds a Members link for that project; otherwise omits that link."
 			}
 		],

@@ -12,7 +12,7 @@
 		busy,
 		open,
 		projects = [],
-		choose = () => {},
+		choose,
 		children
 	}: {
 		available: boolean;
@@ -53,7 +53,7 @@
 					type="button"
 					disabled={busy}
 					aria-label={`Open ${item.name}`}
-					onclick={() => choose(item.id)}
+					onclick={() => choose?.(item.id)}
 					><hx-strong>{item.name}</hx-strong><hx-small
 						>{item.kind === 'shared' ? 'Shared project' : item.root || place}</hx-small
 					></hx-button

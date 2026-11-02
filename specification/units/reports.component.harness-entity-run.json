@@ -74,6 +74,7 @@
 				"name": "EntityRun.unit",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional function identifier passed through to callable case rows."
 			}
 		],

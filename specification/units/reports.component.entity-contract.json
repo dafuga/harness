@@ -66,6 +66,7 @@
 				"name": "EntityContract.last",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional parent commit, defaulting to JavaScript undefined and the current Contract heading. A supplied nonempty commit shows its first seven characters as the last contract."
 			}
 		],

@@ -38,6 +38,7 @@
 				"name": "HarnessIcon.label",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional accessible label. A nonempty label makes the SVG an image; otherwise it is hidden from assistive technology. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],

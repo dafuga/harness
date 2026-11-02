@@ -26,6 +26,7 @@
 				"name": "SvgFeComposite.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native feComposite element; native HTML content rules still apply."
 			}
 		],

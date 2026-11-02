@@ -39,18 +39,21 @@
 				"name": "EntityCases.document",
 				"type": "unknown",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional. Defaults to JavaScript undefined, producing an explicit missing-result message when examples are also omitted."
 			},
 			{
 				"name": "EntityCases.examples",
 				"type": "UsageExample[]",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional. Defaults to JavaScript undefined and reads document instead. An explicit empty array shows the no-documented-examples message."
 			},
 			{
 				"name": "EntityCases.unit",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional. Defaults to JavaScript undefined, leaving recorded invocation rows unrestricted by unit identifier."
 			},
 			{

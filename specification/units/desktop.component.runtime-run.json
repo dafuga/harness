@@ -71,6 +71,7 @@
 				"name": "RuntimeRun.unit",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional function identifier forwarded to artifact case rendering."
 			}
 		],

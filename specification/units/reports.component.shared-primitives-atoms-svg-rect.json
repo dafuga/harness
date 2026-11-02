@@ -23,6 +23,7 @@
 				"name": "SvgRect.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native rect element; native HTML content rules still apply."
 			}
 		],

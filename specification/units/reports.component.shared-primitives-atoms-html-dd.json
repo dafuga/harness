@@ -23,6 +23,7 @@
 				"name": "HtmlDd.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native dd element; native HTML content rules still apply. Defaults to JavaScript undefined (no child snippet)."
 			}
 		],

@@ -80,6 +80,7 @@
 				"name": "ComparePanes.gap",
 				"type": "Snippet<[ComparisonPane<T>]>",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional gap-rendering slot for that side. Defaults to JavaScript undefined, using EmptyState with the recorded gap."
 			},
 			{
@@ -92,12 +93,14 @@
 				"name": "ComparePanes.heading",
 				"type": "Snippet<[ComparisonPane<T>]>",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional heading slot receiving that same side. Defaults to JavaScript undefined, using its shared heading and role."
 			},
 			{
 				"name": "ComparePanes.details",
 				"type": "Snippet<[ComparisonPane<T>]>",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional provenance/details slot receiving that same side. Defaults to JavaScript undefined, omitting extra details."
 			}
 		],

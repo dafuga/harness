@@ -42,18 +42,21 @@
 				"name": "EmptyState.id",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional native id. Defaults to JavaScript undefined."
 			},
 			{
 				"name": "EmptyState.label",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional accessible name. Defaults to JavaScript undefined, omitting aria-label."
 			},
 			{
 				"name": "EmptyState.component",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional owner attribution. Defaults to JavaScript undefined."
 			},
 			{

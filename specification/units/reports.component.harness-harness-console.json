@@ -56,6 +56,7 @@
 				"name": "HarnessConsole.links",
 				"type": "Array<{ label: string; href: string }>",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional compatibility input. Defaults to JavaScript undefined. It is neither read nor rendered."
 			},
 			{
@@ -99,7 +100,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "consoleRelations",
@@ -131,7 +132,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "consoleView",
@@ -187,7 +188,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

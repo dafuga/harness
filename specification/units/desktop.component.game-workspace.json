@@ -51,6 +51,7 @@
 				"name": "GameWorkspace.commit",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional historical commit to load; omitted for the current editable document."
 			},
 			{
@@ -64,6 +65,7 @@
 				"name": "GameWorkspace.bridge",
 				"type": "DesktopBridge",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional native bridge used to read and save game documents."
 			}
 		],

@@ -23,6 +23,7 @@
 				"name": "HtmlH4.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native h4 element; native HTML content rules still apply. Defaults to JavaScript undefined (no child snippet)."
 			}
 		],

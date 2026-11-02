@@ -72,6 +72,7 @@
 				"name": "FloatingChat.navigation",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional caller-styled navigation below the header, outside the scrolling conversation. Defaults to JavaScript undefined, with no navigation."
 			},
 			{

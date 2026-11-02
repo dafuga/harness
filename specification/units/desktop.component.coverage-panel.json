@@ -64,6 +64,7 @@
 				"name": "CoveragePanel.workspace",
 				"type": "Workspace",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional current workspace used to resolve recorded evidence and regression links. Undefined by default: the regression proof section is then not offered. The default catalog state passes it, and the without-workspace state omits it."
 			}
 		],

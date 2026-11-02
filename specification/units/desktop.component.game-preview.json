@@ -40,6 +40,7 @@
 				"name": "GamePreview.initialRun",
 				"type": "GameRun",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional saved gameplay state; without it a fresh run starts at the view spawn. Defaults to JavaScript undefined (omitted), not the literal string."
 			},
 			{
@@ -65,6 +66,7 @@
 				"name": "GamePreview.bridge",
 				"type": "DesktopBridge",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional native bridge providing the authorized game rendering operation. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],

@@ -93,7 +93,11 @@ export function boundProps(
 		return {
 			...item,
 			name: `${owner}.${item.name}`,
-			...(fallback ? { required: false, ...parameterDefault(fallback) } : {})
+			...(fallback
+				? { required: false, ...parameterDefault(fallback) }
+				: item.required === false
+					? { default: 'undefined (omitted)' }
+					: {})
 		};
 	});
 }

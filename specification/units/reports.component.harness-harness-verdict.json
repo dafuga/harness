@@ -66,18 +66,21 @@
 				"name": "Status.cancel",
 				"type": "() => void",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional callback. Defaults to JavaScript undefined. Called only when Cancel run is clicked; errors propagate."
 			},
 			{
 				"name": "Status.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional run content snippet. Defaults to JavaScript undefined. Omitted content displays label; rendering errors propagate."
 			},
 			{
 				"name": "Status.label",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional words. Defaults to JavaScript undefined. Verdict defaults to Full coverage passed or Verification failed; run omits empty labels."
 			},
 			{
@@ -98,6 +101,7 @@
 				"name": "Status.bare",
 				"type": "boolean",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional compatibility input. Defaults to JavaScript undefined; verdict mode always draws only the icon."
 			}
 		],

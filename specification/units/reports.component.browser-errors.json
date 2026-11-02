@@ -34,6 +34,7 @@
 				"name": "BrowserErrors.diagnostics",
 				"type": "BrowserDiagnostic[]",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional recorded test-attempt diagnostics. Default: undefined (unavailable). An empty array has no recorded entries. Supplied attempts may contain observations, expectations or both."
 			}
 		],

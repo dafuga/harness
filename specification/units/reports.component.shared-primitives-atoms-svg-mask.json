@@ -26,6 +26,7 @@
 				"name": "SvgMask.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native mask element; native HTML content rules still apply."
 			}
 		],

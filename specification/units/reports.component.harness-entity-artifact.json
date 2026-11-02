@@ -73,6 +73,7 @@
 				"name": "EntityArtifact.unit",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional function identifier limiting direct-call rows; absent uses general recorded-case presentation. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],

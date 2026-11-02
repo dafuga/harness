@@ -35,12 +35,14 @@
 				"name": "GameCreate.bridge",
 				"type": "DesktopBridge",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Local desktop host operations for project creation, persistence and explicit image generation. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, uses window.harness after mount; without gameCreate creation stays disabled."
 			},
 			{
 				"name": "GameCreate.created",
 				"type": "(snapshot: ProjectSnapshot) => void",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional callback receiving the created project snapshot instead of full-page navigation. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, successful creation navigates to /harness for an app or /game?projectId=... for a game."
 			}
 		],

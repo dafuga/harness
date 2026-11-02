@@ -66,12 +66,14 @@
 				"name": "ProjectGate.choose",
 				"type": "(projectId: string) => void",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional callback receiving a selected recent-project identifier. Defaults to a no-op, so selecting a listed project does nothing when omitted. Defaults to a no-op callback."
 			},
 			{
 				"name": "ProjectGate.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional additional content rendered after recent projects. Omitted content renders nothing. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],

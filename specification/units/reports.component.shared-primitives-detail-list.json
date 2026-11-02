@@ -52,6 +52,7 @@
 				"name": "DetailList.empty",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content shown instead of a definition list when rows is empty. Defaults to JavaScript undefined, showing No details to display. for empty rows."
 			},
 			{
@@ -72,18 +73,21 @@
 				"name": "DetailList.termTitle",
 				"type": "(row: Row) => string | undefined",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional callback returning a term tooltip string or undefined. Defaults to JavaScript undefined, omitting title. Callback errors propagate."
 			},
 			{
 				"name": "DetailList.valueTitle",
 				"type": "(row: Row) => string | undefined",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional callback returning a value tooltip string or undefined. Defaults to JavaScript undefined, omitting title. Callback errors propagate."
 			},
 			{
 				"name": "DetailList.valueClass",
 				"type": "(row: Row) => string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional callback returning the value element class string. Defaults to JavaScript undefined, omitting additional classes. Callback errors propagate."
 			}
 		],

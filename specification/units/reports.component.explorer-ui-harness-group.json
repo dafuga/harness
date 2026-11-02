@@ -45,18 +45,21 @@
 				"name": "HarnessGroup.icon",
 				"type": "HarnessIconName",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional shared icon identifying the group."
 			},
 			{
 				"name": "HarnessGroup.source",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional source attribution displayed with the group heading."
 			},
 			{
 				"name": "HarnessGroup.description",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional explanatory text beneath the group title."
 			},
 			{

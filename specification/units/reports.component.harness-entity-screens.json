@@ -84,6 +84,7 @@
 				"name": "EntityScreens.preview",
 				"type": "ScreenPick",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Exact optional scenario, state and initial viewport declared for this page. Viewport buttons preserve its scenario and state. Defaults to JavaScript undefined (omitted), not the literal string."
 			}
 		],
@@ -96,11 +97,12 @@
 		],
 		"errors": [
 			{
-				"name": "Navigation callback error",
+				"name": "Caller navigation or rendering error",
 				"type": "propagated",
-				"description": "Errors from nav.href while rendering the comparison link or nav.go when following it propagate; missing screenshots remain visible gaps."
+				"description": "Errors in supplied navigation and rendered viewer dependencies propagate. Missing, lost or incomparable captures instead render their documented evidence-gap notices."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [

@@ -61,12 +61,14 @@
 				"name": "ExplorerModuleCard.category",
 				"type": "ExplorerCategory | null",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional category, defaulting to JavaScript undefined and the row category when available. Null also uses that fallback. Visual and nonvisual cards share this renderer."
 			},
 			{
 				"name": "ExplorerModuleCard.shot",
 				"type": "Evidence | null",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional own capture, defaulting to JavaScript undefined. Visual rows then resolve their own capture through lens; null explicitly shows a gap. Nonvisual rows omit the image region."
 			}
 		],

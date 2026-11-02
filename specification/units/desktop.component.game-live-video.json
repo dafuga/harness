@@ -26,6 +26,7 @@
 				"name": "GameLiveVideo.stream",
 				"type": "MediaStream",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Remote video stream explicitly provided by a running optional AI connection."
 			}
 		],

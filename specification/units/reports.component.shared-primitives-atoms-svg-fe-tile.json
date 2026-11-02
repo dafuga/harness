@@ -26,6 +26,7 @@
 				"name": "SvgFeTile.children",
 				"type": "Snippet",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Optional content within the native feTile element; native HTML content rules still apply."
 			}
 		],
