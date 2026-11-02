@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.shared-primitives-contract-table-cells",
+	"kind": "function",
+	"title": "contractTableCells",
+	"responsibility": "Words a contract table row shows for a field: its requirement, its recorded default as source text, and its name split at dots.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/contractTableCells.ts"],
+		"symbols": ["requirementLabel", "defaultText", "nameWords"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "requirementLabel.field",
+				"type": "ContractField",
+				"required": true
+			},
+			{
+				"name": "defaultText.field",
+				"type": "ContractField",
+				"required": true
+			},
+			{
+				"name": "nameWords.name",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "requirementLabel",
+				"type": "string"
+			},
+			{
+				"name": "defaultText",
+				"type": "string | null"
+			},
+			{
+				"name": "nameWords",
+				"type": "string[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "requirementLabel",
+				"inputs": [
+					{
+						"name": "requirementLabel.field",
+						"type": "ContractField",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requirementLabel",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "defaultText",
+				"inputs": [
+					{
+						"name": "defaultText.field",
+						"type": "ContractField",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "defaultText",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "nameWords",
+				"inputs": [
+					{
+						"name": "nameWords.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nameWords",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.contract-fields",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/contractTableCells.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/contractTableCells.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

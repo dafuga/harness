@@ -133,6 +133,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-contract-table-info",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-contract-table-mobile",
 			"via": "import",
 			"origin": "derived"
@@ -144,6 +149,11 @@
 		},
 		{
 			"unit": "reports.function.contract-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.shared-primitives-contract-table-cells",
 			"via": "import",
 			"origin": "derived"
 		}

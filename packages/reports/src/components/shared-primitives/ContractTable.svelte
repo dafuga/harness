@@ -2,10 +2,12 @@
 <!-- @harness-atoms atoms -->
 <script lang="ts">
 	import './contractTableMobile.css';
+	import './contractTableInfo.css';
 	import type { ContractField, ContractGroup } from '../../utils/explorer-ui/contractFields';
 	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
 	import DataTable from './DataTable.svelte';
 	import CodeLine from './CodeLine.svelte';
+	import { defaultText, nameWords, requirementLabel } from './contractTableCells';
 	/** One group of contract fields as a table: name, type, a clipped example and its info control. */
 	let {
 		group,
@@ -59,25 +61,19 @@
 			{#snippet children()}
 				{#each group.fields as field, position (position)}
 					{@const sample = field.examples[0]}
+					{@const defaultValue = defaultText(field)}
 					<hx-tr data-contract-input={metadata ? '' : undefined}>
 						{#if named}<hx-th scope="row"
-								>{#each field.name.split('.') as word, position (position)}{#if position > 0}.<hx-wbr />{/if}{word}{/each}</hx-th
+								>{#each nameWords(field.name) as word, position (position)}{#if position > 0}.<hx-wbr />{/if}{word}{/each}</hx-th
 							>{/if}
 						<hx-td><hx-code class="type">{field.type}</hx-code></hx-td>
 						{#if metadata}
 							<hx-td
-								><hx-span class="requirement"
-									>{field.required === true
-										? 'Required'
-										: field.required === false
-											? 'Optional'
-											: 'Requiredness not recorded'}</hx-span
-								></hx-td
+								><hx-span class="requirement">{requirementLabel(field)}</hx-span></hx-td
 							>
 							<hx-td
 								><hx-span class="default"
-									>{#if Object.hasOwn(field, 'default')}Default: <hx-code
-											>{JSON.stringify(field.default) ?? String(field.default)}</hx-code
+									>{#if defaultValue !== null}Default: <hx-code>{defaultValue}</hx-code
 										>{:else}No default{/if}</hx-span
 								></hx-td
 							>
@@ -197,32 +193,5 @@
 		width: 60px;
 		padding: var(--hx-space-2) var(--hx-space-8);
 		text-align: end;
-	}
-	.info {
-		display: inline-grid;
-		place-items: center;
-		width: 32px;
-		height: 32px;
-		padding: 0;
-		border: var(--hx-border-thin) solid transparent;
-		border-radius: var(--hx-radius-compact);
-		background: none;
-		color: var(--hx-color-text-supporting);
-		cursor: pointer;
-	}
-	.info:hover,
-	.info:focus-visible {
-		border-color: var(--hx-color-border);
-		color: var(--hx-color-primary);
-	}
-	.info:focus-visible {
-		outline: var(--hx-border-thick) solid var(--hx-color-primary);
-		outline-offset: var(--hx-border-thin);
-	}
-	@media (pointer: coarse) {
-		.info {
-			width: 44px;
-			height: 44px;
-		}
 	}
 </style>
