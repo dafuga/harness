@@ -12,6 +12,12 @@ export async function assertKitPill(component: Locator, variant: string) {
 		const root = component.locator(selector);
 		await expect(root).toBeVisible();
 		await expect(root).toHaveText(label);
+		if (variant === 'chip') {
+			await expect(root).toHaveCSS('border-top-style', 'solid');
+			expect(
+				await root.evaluate((node) => Number.parseFloat(getComputedStyle(node).paddingLeft))
+			).toBeGreaterThan(0);
+		}
 		if (variant === 'attributes') {
 			await expect(root).toHaveAttribute('role', 'img');
 			await expect(root).toHaveAttribute('aria-label', 'Invoice approved');
