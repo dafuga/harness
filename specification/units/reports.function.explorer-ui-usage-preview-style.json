@@ -16,23 +16,27 @@
 			{
 				"name": "usagePreviewStyle.root",
 				"type": "HTMLElement",
-				"required": true
+				"required": true,
+				"description": "The element holding the usage link."
 			},
 			{
 				"name": "usagePreviewStyle.tip",
 				"type": "HTMLElement",
-				"required": true
+				"required": true,
+				"description": "The preview element; its width is set while measuring."
 			},
 			{
 				"name": "usagePreviewStyle.view",
 				"type": "{ width: number; height: number }",
-				"required": true
+				"required": true,
+				"description": "The width and height of the screen."
 			}
 		],
 		"outputs": [
 			{
 				"name": "usagePreviewStyle",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "The inline left, top, width and optional max-height style; null when the link is off screen."
 			}
 		],
 		"errors": [],
@@ -44,23 +48,27 @@
 					{
 						"name": "usagePreviewStyle.root",
 						"type": "HTMLElement",
-						"required": true
+						"required": true,
+						"description": "The element holding the usage link."
 					},
 					{
 						"name": "usagePreviewStyle.tip",
 						"type": "HTMLElement",
-						"required": true
+						"required": true,
+						"description": "The preview element; its width is set while measuring."
 					},
 					{
 						"name": "usagePreviewStyle.view",
 						"type": "{ width: number; height: number }",
-						"required": true
+						"required": true,
+						"description": "The width and height of the screen."
 					}
 				],
 				"outputs": [
 					{
 						"name": "usagePreviewStyle",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "The inline left, top, width and optional max-height style; null when the link is off screen."
 					}
 				],
 				"errors": [],

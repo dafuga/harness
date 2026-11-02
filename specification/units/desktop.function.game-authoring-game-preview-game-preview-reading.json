@@ -16,45 +16,54 @@
 			{
 				"name": "previewSummary.input",
 				"type": "PreviewSummaryInput",
-				"required": true
+				"required": true,
+				"description": "Whether the preview is read-only, whether live AI is configured and available, the video status, seconds left, a note, the time limit and the cost rate."
 			},
 			{
 				"name": "arrowDirection.held",
 				"type": "{ has(key: string): boolean }",
-				"required": true
+				"required": true,
+				"description": "The set of keys currently held; only the four arrow keys are read."
 			},
 			{
 				"name": "levelKey.view",
 				"type": "GameView",
-				"required": true
+				"required": true,
+				"description": "The game view whose level and build are identified."
 			},
 			{
 				"name": "atSpawn.next",
 				"type": "GameRun",
-				"required": true
+				"required": true,
+				"description": "The run to place."
 			},
 			{
 				"name": "atSpawn.view",
 				"type": "GameView",
-				"required": true
+				"required": true,
+				"description": "The view whose world spawn point and level key the run is placed by."
 			}
 		],
 		"outputs": [
 			{
 				"name": "previewSummary",
-				"type": "string"
+				"type": "string",
+				"description": "The sentence under the AI video control: the first reason it cannot run, its live or starting state, a note, or the maximum cost."
 			},
 			{
 				"name": "arrowDirection",
-				"type": "{ x: number; y: number }"
+				"type": "{ x: number; y: number }",
+				"description": "A direction of -1, 0 or 1 on each axis; opposite keys cancel."
 			},
 			{
 				"name": "levelKey",
-				"type": "string"
+				"type": "string",
+				"description": "The view id and its planning build joined by a colon."
 			},
 			{
 				"name": "atSpawn",
-				"type": "GameRun"
+				"type": "GameRun",
+				"description": "The same run when the view has no world or it already belongs to this level and build; otherwise a copy placed at the spawn point."
 			}
 		],
 		"errors": [],
@@ -66,13 +75,15 @@
 					{
 						"name": "previewSummary.input",
 						"type": "PreviewSummaryInput",
-						"required": true
+						"required": true,
+						"description": "Whether the preview is read-only, whether live AI is configured and available, the video status, seconds left, a note, the time limit and the cost rate."
 					}
 				],
 				"outputs": [
 					{
 						"name": "previewSummary",
-						"type": "string"
+						"type": "string",
+						"description": "The sentence under the AI video control: the first reason it cannot run, its live or starting state, a note, or the maximum cost."
 					}
 				],
 				"errors": [],
@@ -84,13 +95,15 @@
 					{
 						"name": "arrowDirection.held",
 						"type": "{ has(key: string): boolean }",
-						"required": true
+						"required": true,
+						"description": "The set of keys currently held; only the four arrow keys are read."
 					}
 				],
 				"outputs": [
 					{
 						"name": "arrowDirection",
-						"type": "{ x: number; y: number }"
+						"type": "{ x: number; y: number }",
+						"description": "A direction of -1, 0 or 1 on each axis; opposite keys cancel."
 					}
 				],
 				"errors": [],
@@ -102,13 +115,15 @@
 					{
 						"name": "levelKey.view",
 						"type": "GameView",
-						"required": true
+						"required": true,
+						"description": "The game view whose level and build are identified."
 					}
 				],
 				"outputs": [
 					{
 						"name": "levelKey",
-						"type": "string"
+						"type": "string",
+						"description": "The view id and its planning build joined by a colon."
 					}
 				],
 				"errors": [],
@@ -120,18 +135,21 @@
 					{
 						"name": "atSpawn.next",
 						"type": "GameRun",
-						"required": true
+						"required": true,
+						"description": "The run to place."
 					},
 					{
 						"name": "atSpawn.view",
 						"type": "GameView",
-						"required": true
+						"required": true,
+						"description": "The view whose world spawn point and level key the run is placed by."
 					}
 				],
 				"outputs": [
 					{
 						"name": "atSpawn",
-						"type": "GameRun"
+						"type": "GameRun",
+						"description": "The same run when the view has no world or it already belongs to this level and build; otherwise a copy placed at the spawn point."
 					}
 				],
 				"errors": [],

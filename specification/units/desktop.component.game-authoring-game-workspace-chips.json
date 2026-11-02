@@ -3,8 +3,8 @@
 	"id": "desktop.component.game-authoring-game-workspace-chips",
 	"kind": "component",
 	"title": "GameWorkspaceChips",
-	"responsibility": "Owns the GameWorkspaceChips Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows the status chips in the Game Views header: demo, the historical commit, read-only and unsaved changes.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -15,33 +15,38 @@
 		"symbols": ["GameWorkspaceChips"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameWorkspaceChips.demo",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether the game is an in-memory example; true shows a Demo chip."
 			},
 			{
 				"name": "GameWorkspaceChips.commit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "The historical commit being shown; when given, a History chip names its short id. Defaults to undefined, which shows no history chip."
 			},
 			{
 				"name": "GameWorkspaceChips.readonly",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether editing is disabled; true shows a Read-only chip unless a commit is shown."
 			},
 			{
 				"name": "GameWorkspaceChips.dirty",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether there are edits not yet saved; true shows an Unsaved changes chip."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameWorkspaceChips",
-				"type": "markup"
+				"type": "markup",
+				"description": "The chips that apply, in order, rendered as inline pills; none when nothing applies."
 			}
 		],
 		"errors": [],

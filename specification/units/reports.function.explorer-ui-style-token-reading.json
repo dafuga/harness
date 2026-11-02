@@ -16,7 +16,8 @@
 		"outputs": [
 			{
 				"name": "discoverTokens",
-				"type": "StyleToken[]"
+				"type": "StyleToken[]",
+				"description": "The custom properties published by the :root rules of the page stylesheets, in declared order, each with its declared and resolved value and its group."
 			}
 		],
 		"errors": [],
@@ -28,7 +29,8 @@
 				"outputs": [
 					{
 						"name": "discoverTokens",
-						"type": "StyleToken[]"
+						"type": "StyleToken[]",
+						"description": "The custom properties published by the :root rules of the page stylesheets, in declared order, each with its declared and resolved value and its group."
 					}
 				],
 				"errors": [],

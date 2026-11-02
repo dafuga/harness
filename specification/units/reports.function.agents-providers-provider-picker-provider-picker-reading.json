@@ -18,50 +18,60 @@
 			{
 				"name": "isSnapshot.data",
 				"type": "object | null",
-				"required": true
+				"required": true,
+				"description": "A picker response, or null."
 			},
 			{
 				"name": "readSessions.data",
 				"type": "object | null",
-				"required": true
+				"required": true,
+				"description": "A response to a request for queued sessions, or null."
 			},
 			{
 				"name": "selectionLabel.models",
 				"type": "PickerModel[]",
-				"required": true
+				"required": true,
+				"description": "The catalog models."
 			},
 			{
 				"name": "selectionLabel.target",
 				"type": "ProviderSelection",
-				"required": true
+				"required": true,
+				"description": "The provider and model of a queued switch."
 			},
 			{
 				"name": "failureText.cause",
 				"type": "ThrownValue",
-				"required": true
+				"required": true,
+				"description": "Whatever was thrown."
 			},
 			{
 				"name": "failureText.fallback",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text to use when the thrown value is not an Error."
 			}
 		],
 		"outputs": [
 			{
 				"name": "isSnapshot",
-				"type": "data is PickerSnapshot"
+				"type": "data is PickerSnapshot",
+				"description": "True when the response names the default provider and so is a picker snapshot."
 			},
 			{
 				"name": "readSessions",
-				"type": "SwitchRequest[] | null"
+				"type": "SwitchRequest[] | null",
+				"description": "The queued sessions, or null when the response holds no list."
 			},
 			{
 				"name": "selectionLabel",
-				"type": "string"
+				"type": "string",
+				"description": "The catalog label of the model, or the model id when the catalog does not list it."
 			},
 			{
 				"name": "failureText",
-				"type": "string"
+				"type": "string",
+				"description": "The error message, or the fallback."
 			}
 		],
 		"errors": [],
@@ -73,13 +83,15 @@
 					{
 						"name": "isSnapshot.data",
 						"type": "object | null",
-						"required": true
+						"required": true,
+						"description": "A picker response, or null."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isSnapshot",
-						"type": "data is PickerSnapshot"
+						"type": "data is PickerSnapshot",
+						"description": "True when the response names the default provider and so is a picker snapshot."
 					}
 				],
 				"errors": [],
@@ -91,13 +103,15 @@
 					{
 						"name": "readSessions.data",
 						"type": "object | null",
-						"required": true
+						"required": true,
+						"description": "A response to a request for queued sessions, or null."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readSessions",
-						"type": "SwitchRequest[] | null"
+						"type": "SwitchRequest[] | null",
+						"description": "The queued sessions, or null when the response holds no list."
 					}
 				],
 				"errors": [],
@@ -109,18 +123,21 @@
 					{
 						"name": "selectionLabel.models",
 						"type": "PickerModel[]",
-						"required": true
+						"required": true,
+						"description": "The catalog models."
 					},
 					{
 						"name": "selectionLabel.target",
 						"type": "ProviderSelection",
-						"required": true
+						"required": true,
+						"description": "The provider and model of a queued switch."
 					}
 				],
 				"outputs": [
 					{
 						"name": "selectionLabel",
-						"type": "string"
+						"type": "string",
+						"description": "The catalog label of the model, or the model id when the catalog does not list it."
 					}
 				],
 				"errors": [],
@@ -132,18 +149,21 @@
 					{
 						"name": "failureText.cause",
 						"type": "ThrownValue",
-						"required": true
+						"required": true,
+						"description": "Whatever was thrown."
 					},
 					{
 						"name": "failureText.fallback",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text to use when the thrown value is not an Error."
 					}
 				],
 				"outputs": [
 					{
 						"name": "failureText",
-						"type": "string"
+						"type": "string",
+						"description": "The error message, or the fallback."
 					}
 				],
 				"errors": [],

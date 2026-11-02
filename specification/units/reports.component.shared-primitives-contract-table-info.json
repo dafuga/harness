@@ -3,15 +3,15 @@
 	"id": "reports.component.shared-primitives-contract-table-info",
 	"kind": "component",
 	"title": "contractTableInfo",
-	"responsibility": "Owns the contractTableInfo Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Styles the info button that opens the full example of a contract field, including its larger touch target.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/shared-primitives/contractTableInfo.css"],
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],

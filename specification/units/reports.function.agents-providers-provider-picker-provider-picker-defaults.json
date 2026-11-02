@@ -18,18 +18,21 @@
 			{
 				"name": "pickerDefault.provider",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The provider whose default selection is wanted, such as openai or harness-claude."
 			},
 			{
 				"name": "pickerDefault.choices",
 				"type": "PickerModel[]",
-				"required": true
+				"required": true,
+				"description": "The catalog models of that provider, in catalog order."
 			}
 		],
 		"outputs": [
 			{
 				"name": "pickerDefault",
-				"type": "PickerDefault"
+				"type": "PickerDefault",
+				"description": "The model and reasoning effort to select: Opus 5.5 at xhigh for Claude when offered, else the first model and its default effort; both empty without models."
 			}
 		],
 		"errors": [],
@@ -41,18 +44,21 @@
 					{
 						"name": "pickerDefault.provider",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The provider whose default selection is wanted, such as openai or harness-claude."
 					},
 					{
 						"name": "pickerDefault.choices",
 						"type": "PickerModel[]",
-						"required": true
+						"required": true,
+						"description": "The catalog models of that provider, in catalog order."
 					}
 				],
 				"outputs": [
 					{
 						"name": "pickerDefault",
-						"type": "PickerDefault"
+						"type": "PickerDefault",
+						"description": "The model and reasoning effort to select: Opus 5.5 at xhigh for Claude when offered, else the first model and its default effort; both empty without models."
 					}
 				],
 				"errors": [],

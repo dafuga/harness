@@ -16,46 +16,55 @@
 			{
 				"name": "replaceCheckpoint.checkpoints",
 				"type": "Checkpoint[]",
-				"required": true
+				"required": true,
+				"description": "The checkpoints of the view, in order."
 			},
 			{
 				"name": "replaceCheckpoint.id",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "The id of the checkpoint to replace; null replaces none."
 			},
 			{
 				"name": "replaceCheckpoint.node",
 				"type": "Checkpoint",
-				"required": true
+				"required": true,
+				"description": "The edited checkpoint that takes the place of the one with that id."
 			},
 			{
 				"name": "withoutCheckpoint.checkpoints",
 				"type": "Checkpoint[]",
-				"required": true
+				"required": true,
+				"description": "The checkpoints of the view, in order."
 			},
 			{
 				"name": "withoutCheckpoint.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the checkpoint to remove."
 			},
 			{
 				"name": "isRevisionConflict.message",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text of a failed save."
 			}
 		],
 		"outputs": [
 			{
 				"name": "replaceCheckpoint",
-				"type": "Checkpoint[]"
+				"type": "Checkpoint[]",
+				"description": "The checkpoints in the same order with only the matching one replaced."
 			},
 			{
 				"name": "withoutCheckpoint",
-				"type": "Checkpoint[]"
+				"type": "Checkpoint[]",
+				"description": "The checkpoints without the removed one, and with its id removed from every requirement."
 			},
 			{
 				"name": "isRevisionConflict",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the message says the revision, a conflict, a stale state or a change."
 			}
 		],
 		"errors": [],
@@ -67,23 +76,27 @@
 					{
 						"name": "replaceCheckpoint.checkpoints",
 						"type": "Checkpoint[]",
-						"required": true
+						"required": true,
+						"description": "The checkpoints of the view, in order."
 					},
 					{
 						"name": "replaceCheckpoint.id",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "The id of the checkpoint to replace; null replaces none."
 					},
 					{
 						"name": "replaceCheckpoint.node",
 						"type": "Checkpoint",
-						"required": true
+						"required": true,
+						"description": "The edited checkpoint that takes the place of the one with that id."
 					}
 				],
 				"outputs": [
 					{
 						"name": "replaceCheckpoint",
-						"type": "Checkpoint[]"
+						"type": "Checkpoint[]",
+						"description": "The checkpoints in the same order with only the matching one replaced."
 					}
 				],
 				"errors": [],
@@ -95,18 +108,21 @@
 					{
 						"name": "withoutCheckpoint.checkpoints",
 						"type": "Checkpoint[]",
-						"required": true
+						"required": true,
+						"description": "The checkpoints of the view, in order."
 					},
 					{
 						"name": "withoutCheckpoint.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the checkpoint to remove."
 					}
 				],
 				"outputs": [
 					{
 						"name": "withoutCheckpoint",
-						"type": "Checkpoint[]"
+						"type": "Checkpoint[]",
+						"description": "The checkpoints without the removed one, and with its id removed from every requirement."
 					}
 				],
 				"errors": [],
@@ -118,13 +134,15 @@
 					{
 						"name": "isRevisionConflict.message",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text of a failed save."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isRevisionConflict",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the message says the revision, a conflict, a stale state or a change."
 					}
 				],
 				"errors": [],

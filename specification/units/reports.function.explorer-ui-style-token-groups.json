@@ -25,61 +25,74 @@
 			{
 				"name": "groupFor.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A custom property name such as --hx-color-primary."
 			},
 			{
 				"name": "groupTokens.list",
 				"type": "StyleToken[]",
-				"required": true
+				"required": true,
+				"description": "The discovered tokens, each with its group."
 			},
 			{
 				"name": "assignRoles.group",
 				"type": "StyleTokenGroup",
-				"required": true
+				"required": true,
+				"description": "A token group whose tokens are shown by role."
 			},
 			{
 				"name": "sample.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A token name."
 			},
 			{
 				"name": "headingId.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A heading text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unclassified",
-				"type": "UnclassifiedGroupName"
+				"type": "UnclassifiedGroupName",
+				"description": "The name of the last group, for tokens no declared prefix claims."
 			},
 			{
 				"name": "roles",
-				"type": "Partial<Record<string, readonly StyleRole[]>>"
+				"type": "Partial<Record<string, readonly StyleRole[]>>",
+				"description": "The documented roles of each group, from the shared app style tokens config."
 			},
 			{
 				"name": "drawings",
-				"type": "[RegExp, StyleSpecimen, string][]"
+				"type": "[RegExp, StyleSpecimen, string][]",
+				"description": "The ordered rules that say how a token is drawn: the first matching prefix, its specimen kind and its style template."
 			},
 			{
 				"name": "groupFor",
-				"type": "StyleGroupName | UnclassifiedGroupName"
+				"type": "StyleGroupName | UnclassifiedGroupName",
+				"description": "The first declared group whose prefix claims the name, else the unclassified group."
 			},
 			{
 				"name": "groupTokens",
-				"type": "StyleTokenGroup[]"
+				"type": "StyleTokenGroup[]",
+				"description": "Every declared group with its tokens, plus the unclassified group when it has any."
 			},
 			{
 				"name": "assignRoles",
-				"type": "StyleRoleCard[]"
+				"type": "StyleRoleCard[]",
+				"description": "Each token once under the first role that names it; tokens no role names are listed under the unassigned card."
 			},
 			{
 				"name": "sample",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Two lines of numerals for leading and numeral tokens, otherwise Aa Bb 0123."
 			},
 			{
 				"name": "headingId",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The text in lower case with each run of non-word characters as a hyphen, after the prefix styles-group-."
 			}
 		],
 		"errors": [],
@@ -91,13 +104,15 @@
 					{
 						"name": "groupFor.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A custom property name such as --hx-color-primary."
 					}
 				],
 				"outputs": [
 					{
 						"name": "groupFor",
-						"type": "StyleGroupName | UnclassifiedGroupName"
+						"type": "StyleGroupName | UnclassifiedGroupName",
+						"description": "The first declared group whose prefix claims the name, else the unclassified group."
 					}
 				],
 				"errors": [],
@@ -109,13 +124,15 @@
 					{
 						"name": "groupTokens.list",
 						"type": "StyleToken[]",
-						"required": true
+						"required": true,
+						"description": "The discovered tokens, each with its group."
 					}
 				],
 				"outputs": [
 					{
 						"name": "groupTokens",
-						"type": "StyleTokenGroup[]"
+						"type": "StyleTokenGroup[]",
+						"description": "Every declared group with its tokens, plus the unclassified group when it has any."
 					}
 				],
 				"errors": [],
@@ -127,13 +144,15 @@
 					{
 						"name": "assignRoles.group",
 						"type": "StyleTokenGroup",
-						"required": true
+						"required": true,
+						"description": "A token group whose tokens are shown by role."
 					}
 				],
 				"outputs": [
 					{
 						"name": "assignRoles",
-						"type": "StyleRoleCard[]"
+						"type": "StyleRoleCard[]",
+						"description": "Each token once under the first role that names it; tokens no role names are listed under the unassigned card."
 					}
 				],
 				"errors": [],
@@ -145,13 +164,15 @@
 					{
 						"name": "sample.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A token name."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sample",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Two lines of numerals for leading and numeral tokens, otherwise Aa Bb 0123."
 					}
 				],
 				"errors": [],
@@ -163,13 +184,15 @@
 					{
 						"name": "headingId.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A heading text."
 					}
 				],
 				"outputs": [
 					{
 						"name": "headingId",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The text in lower case with each run of non-word characters as a hyphen, after the prefix styles-group-."
 					}
 				],
 				"errors": [],

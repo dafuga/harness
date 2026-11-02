@@ -16,65 +16,78 @@
 			{
 				"name": "covering.detail",
 				"type": "HarnessRevision | null",
-				"required": true
+				"required": true,
+				"description": "The revision whose registry is read; null when it is not available."
 			},
 			{
 				"name": "covering.unit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the unit."
 			},
 			{
 				"name": "united.now",
 				"type": "Item[]",
-				"required": true
+				"required": true,
+				"description": "The entries of the first side."
 			},
 			{
 				"name": "united.was",
 				"type": "Item[]",
-				"required": true
+				"required": true,
+				"description": "The entries of the second side."
 			},
 			{
 				"name": "merged.now",
 				"type": "HarnessScenario",
-				"required": true
+				"required": true,
+				"description": "The scenario as the first side declares it."
 			},
 			{
 				"name": "merged.was",
 				"type": "HarnessScenario | undefined",
-				"required": true
+				"required": true,
+				"description": "The same scenario on the other side, if it has one."
 			},
 			{
 				"name": "incomparable.before",
 				"type": "ExplorerSide",
-				"required": true
+				"required": true,
+				"description": "The earlier side of the comparison."
 			},
 			{
 				"name": "incomparable.after",
 				"type": "ExplorerSide",
-				"required": true
+				"required": true,
+				"description": "The later side of the comparison."
 			},
 			{
 				"name": "incomparable.unit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the unit compared."
 			}
 		],
 		"outputs": [
 			{
 				"name": "covering",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The scenarios that cover the unit, each with the states that show it; empty without a revision."
 			},
 			{
 				"name": "united",
-				"type": "Item[]"
+				"type": "Item[]",
+				"description": "Every entry once: those of the first list, then those only the second has."
 			},
 			{
 				"name": "merged",
-				"type": "HarnessScenario"
+				"type": "HarnessScenario",
+				"description": "The scenario with the states, viewports and evidence of both sides, so what one dropped stays."
 			},
 			{
 				"name": "incomparable",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The reasons the sides are not like for like, such as other profiles, viewport sizes or tests; empty when they are."
 			}
 		],
 		"errors": [],
@@ -86,18 +99,21 @@
 					{
 						"name": "covering.detail",
 						"type": "HarnessRevision | null",
-						"required": true
+						"required": true,
+						"description": "The revision whose registry is read; null when it is not available."
 					},
 					{
 						"name": "covering.unit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the unit."
 					}
 				],
 				"outputs": [
 					{
 						"name": "covering",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The scenarios that cover the unit, each with the states that show it; empty without a revision."
 					}
 				],
 				"errors": [],
@@ -109,18 +125,21 @@
 					{
 						"name": "united.now",
 						"type": "Item[]",
-						"required": true
+						"required": true,
+						"description": "The entries of the first side."
 					},
 					{
 						"name": "united.was",
 						"type": "Item[]",
-						"required": true
+						"required": true,
+						"description": "The entries of the second side."
 					}
 				],
 				"outputs": [
 					{
 						"name": "united",
-						"type": "Item[]"
+						"type": "Item[]",
+						"description": "Every entry once: those of the first list, then those only the second has."
 					}
 				],
 				"errors": [],
@@ -132,18 +151,21 @@
 					{
 						"name": "merged.now",
 						"type": "HarnessScenario",
-						"required": true
+						"required": true,
+						"description": "The scenario as the first side declares it."
 					},
 					{
 						"name": "merged.was",
 						"type": "HarnessScenario | undefined",
-						"required": true
+						"required": true,
+						"description": "The same scenario on the other side, if it has one."
 					}
 				],
 				"outputs": [
 					{
 						"name": "merged",
-						"type": "HarnessScenario"
+						"type": "HarnessScenario",
+						"description": "The scenario with the states, viewports and evidence of both sides, so what one dropped stays."
 					}
 				],
 				"errors": [],
@@ -155,23 +177,27 @@
 					{
 						"name": "incomparable.before",
 						"type": "ExplorerSide",
-						"required": true
+						"required": true,
+						"description": "The earlier side of the comparison."
 					},
 					{
 						"name": "incomparable.after",
 						"type": "ExplorerSide",
-						"required": true
+						"required": true,
+						"description": "The later side of the comparison."
 					},
 					{
 						"name": "incomparable.unit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the unit compared."
 					}
 				],
 				"outputs": [
 					{
 						"name": "incomparable",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The reasons the sides are not like for like, such as other profiles, viewport sizes or tests; empty when they are."
 					}
 				],
 				"errors": [],

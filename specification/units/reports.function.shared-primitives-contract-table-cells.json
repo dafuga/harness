@@ -16,31 +16,37 @@
 			{
 				"name": "requirementLabel.field",
 				"type": "ContractField",
-				"required": true
+				"required": true,
+				"description": "The contract field."
 			},
 			{
 				"name": "defaultText.field",
 				"type": "ContractField",
-				"required": true
+				"required": true,
+				"description": "The contract field."
 			},
 			{
 				"name": "nameWords.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A dotted field name."
 			}
 		],
 		"outputs": [
 			{
 				"name": "requirementLabel",
-				"type": "string"
+				"type": "string",
+				"description": "Required, Optional, or that requiredness is not recorded."
 			},
 			{
 				"name": "defaultText",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "The default as JSON text (undefined as the word), or null when the field declares none."
 			},
 			{
 				"name": "nameWords",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The words of the name between dots."
 			}
 		],
 		"errors": [],
@@ -52,13 +58,15 @@
 					{
 						"name": "requirementLabel.field",
 						"type": "ContractField",
-						"required": true
+						"required": true,
+						"description": "The contract field."
 					}
 				],
 				"outputs": [
 					{
 						"name": "requirementLabel",
-						"type": "string"
+						"type": "string",
+						"description": "Required, Optional, or that requiredness is not recorded."
 					}
 				],
 				"errors": [],
@@ -70,13 +78,15 @@
 					{
 						"name": "defaultText.field",
 						"type": "ContractField",
-						"required": true
+						"required": true,
+						"description": "The contract field."
 					}
 				],
 				"outputs": [
 					{
 						"name": "defaultText",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "The default as JSON text (undefined as the word), or null when the field declares none."
 					}
 				],
 				"errors": [],
@@ -88,13 +98,15 @@
 					{
 						"name": "nameWords.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A dotted field name."
 					}
 				],
 				"outputs": [
 					{
 						"name": "nameWords",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The words of the name between dots."
 					}
 				],
 				"errors": [],

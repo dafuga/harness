@@ -16,51 +16,61 @@
 			{
 				"name": "within.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A declared name such as Class.method.input."
 			},
 			{
 				"name": "within.owner",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The class or member the name may be declared under."
 			},
 			{
 				"name": "within.whole",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether the owner name itself also counts as within it."
 			},
 			{
 				"name": "methodsNamed.names",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The declared names of a contract."
 			},
 			{
 				"name": "methodsNamed.owner",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The class whose methods are wanted."
 			},
 			{
 				"name": "methodsNamed.whole",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether a bare Class.method name counts, or only names under a method."
 			},
 			{
 				"name": "orderedMethods.methods",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Method names, possibly repeated."
 			}
 		],
 		"outputs": [
 			{
 				"name": "within",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the name is under the owner, or is the owner when whole is set."
 			},
 			{
 				"name": "methodsNamed",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The method names the declared names place on the class, in the order given."
 			},
 			{
 				"name": "orderedMethods",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Each method once, create first, then read, find, update, delete, constructor, and the rest in their order."
 			}
 		],
 		"errors": [],
@@ -72,23 +82,27 @@
 					{
 						"name": "within.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A declared name such as Class.method.input."
 					},
 					{
 						"name": "within.owner",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The class or member the name may be declared under."
 					},
 					{
 						"name": "within.whole",
 						"type": "boolean",
-						"required": true
+						"required": true,
+						"description": "Whether the owner name itself also counts as within it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "within",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the name is under the owner, or is the owner when whole is set."
 					}
 				],
 				"errors": [],
@@ -100,23 +114,27 @@
 					{
 						"name": "methodsNamed.names",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The declared names of a contract."
 					},
 					{
 						"name": "methodsNamed.owner",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The class whose methods are wanted."
 					},
 					{
 						"name": "methodsNamed.whole",
 						"type": "boolean",
-						"required": true
+						"required": true,
+						"description": "Whether a bare Class.method name counts, or only names under a method."
 					}
 				],
 				"outputs": [
 					{
 						"name": "methodsNamed",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The method names the declared names place on the class, in the order given."
 					}
 				],
 				"errors": [],
@@ -128,13 +146,15 @@
 					{
 						"name": "orderedMethods.methods",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Method names, possibly repeated."
 					}
 				],
 				"outputs": [
 					{
 						"name": "orderedMethods",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Each method once, create first, then read, find, update, delete, constructor, and the rest in their order."
 					}
 				],
 				"errors": [],
