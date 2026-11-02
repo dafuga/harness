@@ -75,7 +75,7 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Screenshot Evidence
 
-- Run `harness units guide <id>` before writing component state tests. Write and commit the standard test for NEXT, run `harness verify run --priority agent-test --entity <id>`, then repeat the guide until DONE. REQUIRED states are repo declarations; GUESSES need review and explicit coverage. DONE requires committed tests and verified attached shots at desktop, tablet and mobile, not scratch images.
+- Run `harness units guide <id>` before writing component state tests. Write and commit the standard test for NEXT, run `harness verify run --priority agent-test --entity <id>`, then repeat the guide until DONE. REQUIRED states are named unit catalog or dedicated scenario declarations. GUESSES are advisory and do not block DONE until justified and declared as unit states. DONE requires committed tests and verified attached shots at desktop, tablet and mobile, not scratch images.
 - Run `harness units check-contract <id>` whenever writing or changing a contract. Review props, defaults, errors, outputs and implied states; use `--all --json` for an inventory. Heuristic success does not prove that a contract is exhaustive.
 
 - Write and commit the entity's standard Playwright tests for every declared state and desktop/tablet/mobile viewport, then run `bun src/index.ts verify run --priority agent-test --entity <id>`. Complete passing entity checks automatically attach screenshots and their record link to Git evidence. Agents need no manual attachment command. Failed or incomplete entity runs attach nothing; uncommitted tests are excluded. Fetch the attached captures with `harness api screenshot`; scoped proof never grants whole-commit verification.

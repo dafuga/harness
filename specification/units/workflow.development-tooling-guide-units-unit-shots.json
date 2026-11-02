@@ -3,7 +3,7 @@
 	"id": "workflow.development-tooling-guide-units-unit-shots",
 	"kind": "workflow",
 	"title": "unitShots",
-	"responsibility": "Reads the API-backed pinned Git proof store for one entity and revision, retaining only the reader verdicts and provenance of its original captures.",
+	"responsibility": "Reads pinned verified Git captures through root history services without Desktop runtime imports or generated application configuration.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -39,7 +39,7 @@
 			{
 				"name": "unitShots",
 				"type": "Promise<UnitShots>",
-				"description": "Captures and evidence gap from the same pinned proof reader used by the screenshot API; missing evidence returns no captures."
+				"description": "Original captures and gaps projected from pinned root HistoryStatusService and RevisionDetailService reads using the same evidence selector as the screenshot API; absent refs return no captures."
 			}
 		],
 		"errors": [
@@ -77,7 +77,7 @@
 					{
 						"name": "unitShots",
 						"type": "Promise<UnitShots>",
-						"description": "Captures and evidence gap from the same pinned proof reader used by the screenshot API; missing evidence returns no captures."
+						"description": "Original captures and gaps projected from pinned root HistoryStatusService and RevisionDetailService reads using the same evidence selector as the screenshot API; absent refs return no captures."
 					}
 				],
 				"errors": [
@@ -94,17 +94,17 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.adapter.evidence-refs",
+			"unit": "adapter.git",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.adapter.pinned-history",
+			"unit": "function.history-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.function.recorded-scope",
+			"unit": "function.media-place",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -115,6 +115,21 @@
 		},
 		{
 			"unit": "reports.model.explorer-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.revision-detail",
 			"via": "import",
 			"origin": "derived"
 		}

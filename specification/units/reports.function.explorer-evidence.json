@@ -25,9 +25,9 @@
 		"inputs": [
 			{
 				"name": "explorerEvidence.scope",
-				"type": "ExplorerScope",
+				"type": "Pick<ExplorerScope, 'commit' | 'mode' | 'parent'>",
 				"required": true,
-				"description": "Resolved branch/current-or-commit scope and first-parent identifier."
+				"description": "Selected commit, current/commit mode and first-parent identifier; no application scope or generated routing state is required."
 			},
 			{
 				"name": "explorerEvidence.revisions",
@@ -56,9 +56,9 @@
 				"inputs": [
 					{
 						"name": "explorerEvidence.scope",
-						"type": "ExplorerScope",
+						"type": "Pick<ExplorerScope, 'commit' | 'mode' | 'parent'>",
 						"required": true,
-						"description": "Resolved branch/current-or-commit scope and first-parent identifier."
+						"description": "Selected commit, current/commit mode and first-parent identifier; no application scope or generated routing state is required."
 					},
 					{
 						"name": "explorerEvidence.revisions",

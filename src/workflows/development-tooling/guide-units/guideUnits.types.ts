@@ -46,6 +46,8 @@ export interface GuideReport {
 	entity: string;
 	commit: string;
 	states: GuideState[];
+	/** Advisory boundaries, promoted to required only by a named unit declaration. */
+	guesses: UnitState[];
 	summary: { done: number; missing: number };
 	next: { state: string; commands: string[] } | null;
 	proof: { store: 'git'; gap: string | null };

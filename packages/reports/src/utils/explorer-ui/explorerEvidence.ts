@@ -190,7 +190,7 @@ function incomparable(before: ExplorerSide, after: ExplorerSide, unit: string): 
  * of a result that does not stand stay listed and unusable.
  */
 export function explorerEvidence(
-	scope: ExplorerScope,
+	scope: Pick<ExplorerScope, 'commit' | 'mode' | 'parent'>,
 	revisions: ExplorerRevisions,
 	unit: Pick<HarnessUnit, 'id'>
 ): ExplorerEvidence {

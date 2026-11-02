@@ -14,6 +14,7 @@ const unitGuide: Guide = {
 		'Re-index after every source change and commit the manifests with the code.'
 	],
 	rules: [
+		'Guide completion covers named unit catalog and dedicated scenario states. Guesses are advisory; declare a justified guess as a unit state to require its proof.',
 		'Manifests live in specification/units, one canonical JSON file per unit.',
 		'An identity never changes and is never given to different source.',
 		'Moving source keeps the identity; recreating retired source revives it with its baseline.',

@@ -50,7 +50,12 @@ export function namedUnitStates(context: GuidanceContext, unit: ComponentManifes
 	for (const scenario of context.loaded.scenarios.filter((row) => row.units.includes(unit.id))) {
 		const specific = scenario.states.some((state) => state.units?.includes(unit.id));
 		for (const state of scenario.states.filter(
-			(state) => state.coverage !== 'inapplicable' && (!specific || state.units?.includes(unit.id))
+			(state) =>
+				state.coverage !== 'inapplicable' &&
+				(!specific || state.units?.includes(unit.id)) &&
+				(scenario.units.length === 1 ||
+					state.id === unit.id.replaceAll('.', '-') ||
+					state.id.startsWith(`${unit.id.replaceAll('.', '-')}-`))
 		))
 			states.push({
 				name: unitStateName(unit.id, state.id),
@@ -80,13 +85,9 @@ export async function sourceUnitStates(
 function sourceStatePaths(context: GuidanceContext, unit: ComponentManifest): Set<string> {
 	const paths = new Set(unit.owns.source);
 	for (const path of unit.owns.source)
-		for (const dependency of stateReferences(
-			context,
-			path,
-			/(?:\.types\.ts|[Nn]otice\.ts|Progress\.svelte)$/
-		))
+		for (const dependency of stateReferences(context, path, /(?:[Nn]otice\.ts|Progress\.svelte)$/))
 			paths.add(dependency);
-	for (const path of [...paths])
+	for (const path of [...paths].filter((path) => !unit.owns.source.includes(path)))
 		for (const dependency of stateReferences(context, path, /\.types\.ts$/)) paths.add(dependency);
 	return paths;
 }
@@ -124,7 +125,7 @@ export async function allUnitStates(
 ): Promise<UnitState[]> {
 	return mergeUnitStates([
 		namedUnitStates(context, unit),
-		contractStates(unit.contract),
+		contractStates(unit.contract).map((state) => ({ ...state, origin: 'GUESS' })),
 		await sourceUnitStates(context, unit)
 	]);
 }

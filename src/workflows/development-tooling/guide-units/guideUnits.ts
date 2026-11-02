@@ -11,7 +11,8 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 	const unit = guidanceUnit(context, id);
 	const shots = await unitShots(context.loaded.root, id, context.tree.revision);
 	const states: GuideState[] = [];
-	for (const state of await allUnitStates(context, unit)) {
+	const derived = await allUnitStates(context, unit);
+	for (const state of derived.filter((item) => item.origin === 'REQUIRED')) {
 		const tests = await stateTests(context, unit, state.name);
 		const viewports: GuideState['viewports'] = {};
 		for (const viewport of devices)
@@ -46,6 +47,7 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 		entity: id,
 		commit: context.tree.revision,
 		states,
+		guesses: derived.filter((state) => state.origin === 'GUESS'),
 		summary: { done: states.length - missing.length, missing: missing.length },
 		next,
 		proof: { store: 'git', gap: shots.gap }
@@ -59,12 +61,18 @@ export function renderUnitsGuide(report: GuideReport): string {
 	);
 	return [
 		`${report.entity} @ ${report.commit}`,
-		'REQUIRED = repo declarations; GUESS = heuristic boundary to review.',
+		'REQUIRED = named unit states; guesses are advisory and do not block DONE.',
 		...rows,
 		`${report.summary.done}/${report.states.length} DONE.`,
 		...(report.proof.gap ? [`Proof: ${report.proof.gap}`] : []),
 		...(report.next
 			? [`NEXT: ${report.next.state}`, ...report.next.commands]
-			: ['ALL DONE: inspect each retained screenshot before accepting the UI.'])
+			: ['ALL DONE: inspect each retained screenshot before accepting the UI.']),
+		...(report.guesses.length
+			? [
+					'GUESSES (advisory; declare a catalog state if justified):',
+					...report.guesses.map((guess) => `  ? ${guess.name}: ${guess.reasons.join('; ')}`)
+				]
+			: [])
 	].join('\n');
 }

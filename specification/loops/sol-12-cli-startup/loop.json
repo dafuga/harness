@@ -2,7 +2,7 @@
 	"name": "sol-12-cli-startup",
 	"goal": "Keep CLI startup independent of generated app configs and block guide completion only on named unit states",
 	"createdAt": "2026-11-01T23:53:28.566Z",
-	"updatedAt": "2026-11-01T23:57:38.316Z",
+	"updatedAt": "2026-11-02T00:12:13.164Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T00:05:13.777Z",
+			"evidence": "68d25e32a4 sealed three failing cases, including the exact fresh CLI shortCommit alias error."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T00:05:14.464Z",
+			"evidence": "Read proofs through root history services; narrow selector input to revision fields. Keep named states required and guesses advisory. Enforce unsynced startup in normal config-readiness coverage."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-02T00:12:13.164Z",
+			"evidence": "Root proof services replace Desktop imports. Named states alone determine DONE; guesses are separate. All 35 owning and 12 selector cases pass."
 		},
 		{
 			"id": "green",

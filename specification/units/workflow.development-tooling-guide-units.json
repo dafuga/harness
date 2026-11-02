@@ -3,7 +3,7 @@
 	"id": "workflow.development-tooling-guide-units",
 	"kind": "workflow",
 	"title": "guideUnits",
-	"responsibility": "Builds a committed-state checklist from declarations and heuristic boundaries, requiring authored tests and verified retained screenshots at every device viewport.",
+	"responsibility": "Checks committed named unit states against authored tests and verified device captures; reports inferred boundaries separately as advisory guesses.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -53,12 +53,12 @@
 			{
 				"name": "guideUnits",
 				"type": "Promise<GuideReport>",
-				"description": "Entity and tested HEAD, ordered REQUIRED/GUESS states with reasons, authored tests, device shot status, totals, NEXT commands and proof gaps."
+				"description": "Selected HEAD, required named unit states with tests and per-device proof, separate advisory guesses, required-state totals and NEXT. Guesses never block DONE until declared as unit states."
 			},
 			{
 				"name": "renderUnitsGuide",
 				"type": "string",
-				"description": "Human checklist with per-device DONE/MISSING, test files, derivation reasons, totals and executable NEXT instructions."
+				"description": "Human required-state checklist, proof gaps, required-state totals and NEXT, followed by a separate advisory guesses section."
 			}
 		],
 		"errors": [
@@ -91,7 +91,7 @@
 					{
 						"name": "guideUnits",
 						"type": "Promise<GuideReport>",
-						"description": "Entity and tested HEAD, ordered REQUIRED/GUESS states with reasons, authored tests, device shot status, totals, NEXT commands and proof gaps."
+						"description": "Selected HEAD, required named unit states with tests and per-device proof, separate advisory guesses, required-state totals and NEXT. Guesses never block DONE until declared as unit states."
 					}
 				],
 				"errors": [
@@ -117,7 +117,7 @@
 					{
 						"name": "renderUnitsGuide",
 						"type": "string",
-						"description": "Human checklist with per-device DONE/MISSING, test files, derivation reasons, totals and executable NEXT instructions."
+						"description": "Human required-state checklist, proof gaps, required-state totals and NEXT, followed by a separate advisory guesses section."
 					}
 				],
 				"errors": [],

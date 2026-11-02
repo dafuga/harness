@@ -7,7 +7,9 @@ committed-test attribution, or verified screenshot checklist. These new command
 matrices cover that missing category without changing browser tests.
 
 Guide states come from catalog/preview registries, scenario declarations, props
-and contracts. Repo declarations are REQUIRED; inferred boundaries are GUESSES.
+and contracts. Named unit declarations are REQUIRED; inferred boundaries are
+advisory GUESSES and do not block DONE until justified and declared as unit states.
+Broader application scenario coverage does not enlarge a component's state list.
 DONE requires a committed test and intact attached proof at every viewport.
 The real proof reader must reject partial, stale and uncommitted coverage.
 

@@ -112,7 +112,7 @@
 			{
 				"name": "namedUnitStates",
 				"type": "UnitState[]",
-				"description": "Default plus applicable registry and scenario declarations, excluding inapplicable or other-unit states."
+				"description": "Default and named catalog or dedicated/unit-qualified scenario states; broader application coverage labels and inapplicable states are excluded."
 			},
 			{
 				"name": "sourceUnitStates",
@@ -122,7 +122,7 @@
 			{
 				"name": "allUnitStates",
 				"type": "Promise<UnitState[]>",
-				"description": "Ordered union of default, applicable named declarations, contract boundaries and source hints with explicit provenance."
+				"description": "Named required unit states plus advisory contract/source boundaries, preserving provenance and upgrading a guess only when a unit declaration names it."
 			}
 		],
 		"errors": [
@@ -265,7 +265,7 @@
 					{
 						"name": "namedUnitStates",
 						"type": "UnitState[]",
-						"description": "Default plus applicable registry and scenario declarations, excluding inapplicable or other-unit states."
+						"description": "Default and named catalog or dedicated/unit-qualified scenario states; broader application coverage labels and inapplicable states are excluded."
 					}
 				],
 				"errors": [],
@@ -323,7 +323,7 @@
 					{
 						"name": "allUnitStates",
 						"type": "Promise<UnitState[]>",
-						"description": "Ordered union of default, applicable named declarations, contract boundaries and source hints with explicit provenance."
+						"description": "Named required unit states plus advisory contract/source boundaries, preserving provenance and upgrading a guess only when a unit declaration names it."
 					}
 				],
 				"errors": [

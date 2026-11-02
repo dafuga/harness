@@ -226,10 +226,13 @@ harness units schema ComponentManifest           # also ScenarioManifest, Verifi
 
 For component work, run `harness units guide <id>`, write and commit the standard
 test for NEXT, run `harness verify run --priority agent-test --entity <id>`, then
-repeat the guide until DONE. Each state needs a committed test and usable attached
+repeat the guide until DONE. Each named required state needs a committed test and usable attached
 desktop, tablet and mobile proof from Harness's Git evidence store. Scratch files
-do not count. Repo-named states are REQUIRED; inferred prop boundaries are GUESSES
-to review. The guide reads HEAD, so uncommitted tests cannot complete it.
+do not count. Unit catalog states and dedicated scenario declarations are REQUIRED.
+Prop boundaries, contract enums and source hints appear separately as advisory
+GUESSES; they do not block DONE until justified and declared as a unit state.
+Broader application scenario labels do not become component states. The guide
+reads HEAD, so uncommitted tests cannot complete it.
 
 Run `harness units check-contract <id>` when writing or changing a contract. It
 reviews the working contract against source props, errors, function/snippet outputs
