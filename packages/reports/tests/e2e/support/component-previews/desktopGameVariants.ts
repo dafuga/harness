@@ -9,6 +9,7 @@ import { noop } from './shared';
 import { commits } from '../../../../test/entityUnits';
 
 export const desktopGameCatalogVariants: Record<string, string[]> = {
+	'desktop.component.game-authoring-game-workspace-chips': ['demo', 'readonly', 'with-commit'],
 	'desktop.component.game-checkpoint-editor': ['empty', 'readonly', 'empty-rules', 'long'],
 	'desktop.component.game-checkpoint-pane': ['adding', 'readonly', 'advanced', 'long'],
 	'desktop.component.game-create': ['filled', 'game-2d', 'game-3d', 'unavailable', 'busy', 'error'],
@@ -43,6 +44,7 @@ export function desktopGameVariant(id: string, props: PreviewProps, variant: str
 	if (name === 'game-checkpoint-editor') return checkpoint(props, variant);
 	if (name === 'game-level-review') return review(props, variant);
 	if (name === 'game-workspace') return workspace(props, variant);
+	if (name === 'game-authoring-game-workspace-chips') return chips(variant);
 	if (name === 'game-checkpoint-pane') return pane(props, variant);
 	if (name === 'game-view-fields') return fields(props, variant);
 	if (name !== 'game-preview') return null;
@@ -91,6 +93,15 @@ function workspace(props: PreviewProps, variant: string): PreviewProps | null {
 		},
 		readonly: { ...project, readonly: true },
 		history: { ...project, commit: 'c725e9337e913674d8b859665a97c2ea5d62c2da' }
+	};
+	return variants[variant] ?? null;
+}
+/** Each chip state changes only the inputs that produce its chip; the default keeps the unsaved-changes example. */
+function chips(variant: string): PreviewProps | null {
+	const variants: Record<string, PreviewProps> = {
+		demo: { demo: true, readonly: false, dirty: false },
+		readonly: { demo: false, readonly: true, dirty: false },
+		'with-commit': { demo: false, readonly: true, dirty: false, commit: commits.tip }
 	};
 	return variants[variant] ?? null;
 }

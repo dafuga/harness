@@ -871,6 +871,24 @@
 			"units": ["desktop.component.game-authoring-game-workspace-chips"]
 		},
 		{
+			"id": "desktop-component-game-authoring-game-workspace-chips-demo",
+			"title": "GameWorkspaceChips: demo",
+			"coverage": "required",
+			"units": ["desktop.component.game-authoring-game-workspace-chips"]
+		},
+		{
+			"id": "desktop-component-game-authoring-game-workspace-chips-readonly",
+			"title": "GameWorkspaceChips: read-only",
+			"coverage": "required",
+			"units": ["desktop.component.game-authoring-game-workspace-chips"]
+		},
+		{
+			"id": "desktop-component-game-authoring-game-workspace-chips-with-commit",
+			"title": "GameWorkspaceChips: with commit",
+			"coverage": "required",
+			"units": ["desktop.component.game-authoring-game-workspace-chips"]
+		},
+		{
 			"id": "desktop-component-game-checkpoint-editor",
 			"title": "GameCheckpointEditor",
 			"coverage": "required",
@@ -8150,6 +8168,9 @@
 				"desktop-component-environment-picker-with-action",
 				"desktop-component-game-authoring-game-graph-fit",
 				"desktop-component-game-authoring-game-workspace-chips",
+				"desktop-component-game-authoring-game-workspace-chips-demo",
+				"desktop-component-game-authoring-game-workspace-chips-readonly",
+				"desktop-component-game-authoring-game-workspace-chips-with-commit",
 				"desktop-component-game-checkpoint-editor",
 				"desktop-component-game-checkpoint-editor-empty",
 				"desktop-component-game-checkpoint-editor-readonly",

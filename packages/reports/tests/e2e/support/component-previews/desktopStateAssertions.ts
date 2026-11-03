@@ -2,6 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 import { assertPickerPresentation } from './desktopPickerAssertions';
 import { assertRuntimeAudioPresentation } from './desktopAudioAssertions';
 import { assertReadonlyGameFields } from './desktopReadonlyAssertions';
+import { assertGameWorkspaceChips } from './desktopGameChipsAssertions';
 import {
 	assertDesktopArtifactCapture,
 	assertDesktopBehaviorCapture,
@@ -69,6 +70,7 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 		if (variant === 'mixed')
 			await expect(component.getByText('Not measured', { exact: true })).toHaveCount(1);
 	},
+	'game-authoring-game-workspace-chips': assertGameWorkspaceChips,
 	'game-level-review': assertGameLevelReviewState,
 	'runtime-behavior': assertDesktopBehaviorState,
 	'environment-picker': async (component, variant) => {

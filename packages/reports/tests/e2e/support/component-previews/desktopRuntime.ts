@@ -10,6 +10,11 @@ const run = stepGame(createRun(), { x: 2.5, y: 0 }, view);
 export const gameCases: PreviewCases = {
 	...gameLevelCases,
 	'desktop.component.game-authoring-game-graph-fit': {},
+	'desktop.component.game-authoring-game-workspace-chips': {
+		demo: false,
+		readonly: false,
+		dirty: true
+	},
 	'desktop.component.game-checkpoint-editor': { checkpoint: view.checkpoints[1], change: noop },
 	'desktop.component.game-checkpoint-image': {
 		checkpoint: view.checkpoints[0],
