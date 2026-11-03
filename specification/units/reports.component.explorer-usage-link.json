@@ -53,7 +53,7 @@
 			{
 				"name": "ExplorerUsageLink",
 				"type": "markup",
-				"description": "A consumer link or source button with a hover or keyboard preview. Visual-card previews stay inside all four card edges, in the larger clear area above or below the title; other previews stay within their owner width and viewport."
+				"description": "A consumer link or source button with a hover or keyboard preview. Visual-card previews stay inside all four card edges, in the larger clear area above or below the title; other previews stay within their owner width and viewport. Catalog states: default (a consumer link), visual-open (visual card preview), hover-open, inherited-open, missing-open, image-error-open, function-open, source-enabled and source-disabled (the source button)."
 			}
 		],
 		"errors": [
