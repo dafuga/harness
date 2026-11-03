@@ -64,9 +64,9 @@
 				"description": "Thrown when queued sessions cannot be read; the request handler catches it and shows it as error text."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
-		"initialization": [],
-		"errorStatus": "declared"
+		"initialization": []
 	},
 	"dependencies": [
 		{
