@@ -52,9 +52,21 @@
 				"description": "Connects to the picker client on mount and closes that connection on destruction. Displays session status and active/queued selections, allows binding a trimmed session identifier, refreshes state, and queues supported model/effort selections. Queuing does not immediately change the observed active model or global defaults. Operation failures appear as error text and controls lock while an operation runs."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Connection or request failure",
+				"type": "caught",
+				"description": "A rejected connection, status read or model switch request is caught and shown as error text; the controls unlock."
+			},
+			{
+				"name": "Error",
+				"type": "caught",
+				"description": "Thrown when queued sessions cannot be read; the request handler catches it and shows it as error text."
+			}
+		],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "declared"
 	},
 	"dependencies": [
 		{
