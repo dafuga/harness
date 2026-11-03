@@ -82,7 +82,7 @@
 			{
 				"name": "ActivityList",
 				"type": "markup",
-				"description": "Accessible list with hidden overflow rows and a toggle only when item count exceeds preview. Starts collapsed. Row content is not lazily created on expansion. An empty list shows a status message using the supplied item name.",
+				"description": "Accessible list with hidden overflow rows and a toggle only when item count exceeds preview. Starts collapsed. Row content is not lazily created on expansion. An empty list shows a status message using the supplied item name. Catalog states: default (collapsed), expanded (rest shown), short (fewer items than the preview), empty, ordered and error (caller-supplied error row).",
 				"examples": [
 					"<ul aria-label=\"Recent activity\"><li>First activity</li><li>Second activity</li></ul>"
 				]
@@ -90,13 +90,14 @@
 		],
 		"errors": [
 			{
-				"name": "row snippet error",
-				"type": "thrown",
-				"description": "Any value thrown by the caller-supplied row snippet propagates while rendering that item."
+				"name": "Row snippet error",
+				"type": "propagated",
+				"description": "Errors thrown while the caller row snippet renders propagate; this component does not catch them."
 			}
 		],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "declared"
 	},
 	"dependencies": [
 		{
