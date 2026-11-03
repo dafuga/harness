@@ -2,6 +2,7 @@ import { expect, type Locator, type Page } from '@playwright/test';
 import { desktopCatalogVariants } from './desktopCatalogVariants';
 import { desktopGameCatalogVariants } from './desktopGameVariants';
 import { frameCheckpointCapture } from './desktopCheckpointAssertions';
+import { loadChipCallerStyles } from './desktopChipsCallerStyles';
 
 /** Reach stateful Desktop presentations through their normal controls before capture. */
 export async function prepareDesktopState(component: Locator, id: string, variant: string) {
@@ -25,6 +26,8 @@ export function desktopCaptureDirectory(id: string) {
 /** Frame isolated Desktop surfaces and omit fixture-only headings. */
 export async function frameDesktopCapture(page: Page, id: string) {
 	await frameCheckpointCapture(page, id);
+	if (id === 'desktop.component.game-authoring-game-workspace-chips')
+		await loadChipCallerStyles(page);
 	if (id === 'desktop.component.thread-panel')
 		await page
 			.locator(`[data-preview-unit="${id}"] .thread-panel`)
