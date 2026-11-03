@@ -126,6 +126,7 @@
 				"description": "Errors from the host-supplied index, revision and lens readers propagate; the screen does not catch them."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
@@ -188,8 +189,7 @@
 				"errors": [],
 				"errorStatus": "none-found"
 			}
-		],
-		"errorStatus": "declared"
+		]
 	},
 	"dependencies": [
 		{
