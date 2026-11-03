@@ -7,6 +7,7 @@ export async function assertRuntimeAudioPresentation(
 	variant: string
 ) {
 	if (id !== 'desktop.component.runtime-audio') return;
+	await assertNoticeBesideGlyph(component, variant);
 	const clips = component.locator('audio');
 	if (variant === 'default') {
 		await expect(component.getByText('Current audio', { exact: true })).toBeVisible();
@@ -48,4 +49,17 @@ export async function assertRuntimeAudioPresentation(
 		await expect(component.getByText('Reading the clip…', { exact: true })).toBeVisible();
 		await expect(clips).toHaveCount(0);
 	}
+}
+
+/** A notice's status glyph sits beside its message, not at the far edge of the card. */
+async function assertNoticeBesideGlyph(component: Locator, variant: string) {
+	if (!['missing-before', 'declared-absent', 'unverified'].includes(variant)) return;
+	const notice = component.locator('.runtime-audio-runtime-gap').first();
+	const parts = notice.locator(':scope > *');
+	const glyph = (await notice.locator('button').first().boundingBox())!;
+	const message = (await parts.nth(1).boundingBox())!;
+	expect(
+		message.x - (glyph.x + glyph.width),
+		'The status glyph sits right beside its message'
+	).toBeLessThanOrEqual(16);
 }

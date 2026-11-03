@@ -85,3 +85,10 @@
 				></Notice
 			>{/each}
 	</hx-div>{/if}
+
+<style>
+	/* The status glyph keeps its own width, so its message sits beside it rather than across the card. */
+	:global(p.runtime-audio-runtime-gap > span:first-child) {
+		flex: none;
+	}
+</style>
