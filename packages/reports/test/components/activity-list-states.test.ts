@@ -9,5 +9,5 @@ test('the component state fixture renders real list content, including caller-su
 	expect(body('empty')).toContain('No activities.');
 	expect(body('ordered')).toContain('<ol');
 	expect(body('error')).toContain('role="alert"');
-	expect(body('error')).toContain('does not fetch data or create errors');
+	expect(body('error')).toContain('Could not read recent activity.');
 });
