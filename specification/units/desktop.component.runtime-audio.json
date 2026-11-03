@@ -17,12 +17,13 @@
 			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong",
 			"reports.component.shared-primitives-compare-panes"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/reports-media/RuntimeAudio.svelte"],
-		"symbols": ["RuntimeAudio", "RuntimeAudio.children", "RuntimeAudio.gap"]
+		"symbols": ["RuntimeAudio", "RuntimeAudio.heading", "RuntimeAudio.children", "RuntimeAudio.gap"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -162,6 +163,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
 		},
