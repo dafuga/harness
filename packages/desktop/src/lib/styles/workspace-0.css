@@ -109,7 +109,8 @@ small {
 	border-color: var(--hx-color-primary);
 	font-weight: var(--hx-style-weight-semibold);
 }
-.gold {
+.gold,
+.chip.gold {
 	color: var(--hx-color-primary);
 	border-color: var(--hx-color-primary);
 }
