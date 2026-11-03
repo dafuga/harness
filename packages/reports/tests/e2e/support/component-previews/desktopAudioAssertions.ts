@@ -43,11 +43,13 @@ export async function assertRuntimeAudioPresentation(
 			'A clip that cannot be read names why it is unverified'
 		).toBeVisible();
 		await expect(clips).toHaveCount(0);
+		await expect(component.getByText('Fresh capture', { exact: false })).toHaveCount(0);
 		return;
 	}
 	if (variant === 'reading') {
 		await expect(component.getByText('Reading the clip…', { exact: true })).toBeVisible();
 		await expect(clips).toHaveCount(0);
+		await expect(component.getByText('Fresh capture', { exact: false })).toHaveCount(0);
 	}
 }
 

@@ -60,14 +60,15 @@
 					{@const clip = pane.value!}
 					{#await evidence.url(pane.side, clip.file)}
 						<hx-p class="muted">Reading the clip…</hx-p>
-					{:then url}<hx-audio controls src={url} aria-label={clip.title}></hx-audio>
+					{:then url}<hx-audio controls src={url} aria-label={clip.title}
+						></hx-audio>{#if clip.transcript}<hx-p class="runtime-transcript"
+								>{clip.transcript}</hx-p
+							>{/if}<hx-p class="runtime-standing">{clip.standing} · {clip.status}</hx-p>
 					{:catch cause}<Notice as="p" className="runtime-gap runtime-audio-runtime-gap"
 							><Status variant="icon" status="failed" reason="Not verified" /><hx-span
 								>{errorMessage(cause)}</hx-span
 							></Notice
 						>{/await}
-					{#if clip.transcript}<hx-p class="runtime-transcript">{clip.transcript}</hx-p>{/if}
-					<hx-p class="runtime-standing">{clip.standing} · {clip.status}</hx-p>
 				{/snippet}
 				{#snippet gap(pane)}
 					<Notice as="p" className="runtime-gap runtime-audio-runtime-gap"
