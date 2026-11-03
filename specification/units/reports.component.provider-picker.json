@@ -49,7 +49,7 @@
 			{
 				"name": "ProviderPicker",
 				"type": "markup",
-				"description": "Connects to the picker client on mount and closes that connection on destruction. Displays session status and active/queued selections, allows binding a trimmed session identifier, refreshes state, and queues supported model/effort selections. Queuing does not immediately change the observed active model or global defaults. Operation failures appear as error text and controls lock while an operation runs."
+				"description": "Connects to the picker client on mount and closes that connection on destruction. Displays session status and active/queued selections, allows binding a trimmed session identifier, refreshes state, and queues supported model/effort selections. Queuing does not immediately change the observed active model or global defaults. Operation failures appear as error text and controls lock while an operation runs. Catalog states: default, connection and loading (loading, connection-error, unbound, unobserved, control-unavailable, refreshing), provider-claude, queue and switch (queue-empty, queue-populated, queue-error, cancelled, applying, applied, failed, request-cancelled, queueing, cancelling, loading-queue), binding (bind-ready, binding), no-models and in-use."
 			}
 		],
 		"errors": [
