@@ -17,6 +17,14 @@ export async function assertRuntimeAudioPresentation(
 	if (variant === 'paired') {
 		await expect(component.getByText('Audio before and after', { exact: true })).toBeVisible();
 		await expect(clips, 'A commit comparison shows both clips').toHaveCount(2);
+		await expect(
+			component.getByText('Before', { exact: true }),
+			'The earlier card is labelled Before'
+		).toBeVisible();
+		await expect(
+			component.getByText('After', { exact: true }),
+			'The later card is labelled After'
+		).toBeVisible();
 		return;
 	}
 	if (variant === 'missing-before') {

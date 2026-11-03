@@ -54,8 +54,13 @@
 				panes={pair.panes}
 				className="runtime-panes"
 				paneClass="runtime-pane"
-				headings={false}
+				headings={paired}
 			>
+				{#snippet heading(pane)}
+					<hx-p class="ex-pane-head"
+						><hx-strong>{pane.side === 'before' ? 'Before' : 'After'}</hx-strong></hx-p
+					>
+				{/snippet}
 				{#snippet children(pane)}
 					{@const clip = pane.value!}
 					{#await evidence.url(pane.side, clip.file)}
