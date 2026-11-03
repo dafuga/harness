@@ -55,7 +55,7 @@
 			{
 				"name": "ContractTable",
 				"type": "markup",
-				"description": "A typed table with input Requirement and Default columns. Provenance labels stay readable while long example data is clipped; tablet and mobile stack cells and retain keyboard-accessible detail controls."
+				"description": "A typed table with input Requirement and Default columns. Provenance labels stay readable while long example data is clipped; tablet and mobile stack cells and retain keyboard-accessible detail controls. Catalog states: default, plain (compact labels under a callable heading), empty, empty-kept (empty group that keeps its heading), plain-empty, hide-names (Returns without field names), illustrative, missing (example not recorded), long, multiple, focused and hovered (the example control)."
 			}
 		],
 		"errors": [
