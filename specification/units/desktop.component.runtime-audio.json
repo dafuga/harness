@@ -49,7 +49,7 @@
 			{
 				"name": "RuntimeAudio",
 				"type": "markup",
-				"description": "Audio panel when clips exist or audio is declared. Commit mode pairs before/after; other modes show current. Includes playback controls, transcript when present, standing/status and reading/error states. Missing sides and declared-but-absent clips are explicit gaps. Catalog states: default (current clip), paired (commit before/after), missing-before (a side without its clip), declared-absent (a declared clip not recorded), unverified (a clip whose read failed) and reading (a clip still being read)."
+				"description": "Audio panel when clips exist or audio is declared. Commit mode pairs before/after; other modes show current. Paired side cards are labelled Before and After. Includes playback controls, transcript and standing/status for a loaded clip; reading and unverified notices show no standing line. Reading/error states. Missing sides and declared-but-absent clips are explicit gaps. Catalog states: default (current clip), paired (commit before/after), missing-before (a side without its clip), declared-absent (a declared clip not recorded), unverified (a clip whose read failed) and reading (a clip still being read)."
 			}
 		],
 		"errors": [
@@ -63,6 +63,24 @@
 		"operations": [],
 		"initialization": [],
 		"snippets": [
+			{
+				"name": "RuntimeAudio.heading",
+				"inputs": [
+					{
+						"name": "RuntimeAudio.heading.pane",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RuntimeAudio.heading",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "RuntimeAudio.children",
 				"inputs": [
