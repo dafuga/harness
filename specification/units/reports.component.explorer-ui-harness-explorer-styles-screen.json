@@ -114,7 +114,18 @@
 				"description": "Each semantic color, typography and spacing role shows its variable, resolved assignment, specimen and usage; supported foundation tokens appear exactly once and legacy aliases are omitted."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Cross-origin stylesheet",
+				"type": "caught",
+				"description": "A stylesheet whose rules the page cannot read is skipped without an error; its tokens are not listed."
+			},
+			{
+				"name": "Host reader error",
+				"type": "propagated",
+				"description": "Errors from the host-supplied index, revision and lens readers propagate; the screen does not catch them."
+			}
+		],
 		"operations": [],
 		"initialization": [],
 		"snippets": [
@@ -177,7 +188,8 @@
 				"errors": [],
 				"errorStatus": "none-found"
 			}
-		]
+		],
+		"errorStatus": "declared"
 	},
 	"dependencies": [
 		{
