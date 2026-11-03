@@ -29,6 +29,7 @@
 				"name": "GameWorkspaceChips.commit",
 				"type": "string",
 				"required": false,
+				"default": "undefined",
 				"description": "The historical commit being shown; when given, a History chip names its short id. Defaults to undefined, which shows no history chip."
 			},
 			{
