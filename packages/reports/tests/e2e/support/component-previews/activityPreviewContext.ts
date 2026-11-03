@@ -14,7 +14,8 @@ let parentCss: string | undefined;
 export async function applyActivityPreviewContext(page: Page, content: Locator, id: string) {
 	const list = id === 'reports.component.activity-list';
 	if (!activityCards.has(id) && !list) return;
-	if (!(await page.locator('style[data-activity-preview]').count())) {
+	// The list has no Project Activity parent left to borrow styles from; only the cards do.
+	if (!list && !(await page.locator('style[data-activity-preview]').count())) {
 		const style = await page.addStyleTag({ content: projectActivityCss() });
 		await style.evaluate((node) =>
 			(node as HTMLStyleElement).setAttribute('data-activity-preview', '')
