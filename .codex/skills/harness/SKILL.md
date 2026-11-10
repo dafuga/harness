@@ -29,6 +29,10 @@ Choose component colors from Styles → Colors, defined in `appStyleTokensConfig
 
 When projecting provenance-rich dependencies into query indexes, preserve raw records and cover repeated logical edges, distinct relation types and rollback in the existing catalog boundary tests.
 
+## Orchestrating Work
+
+When you orchestrate (Zenith root, or any session that hands work to workers), run independent work in parallel by default: draft, review and implement independent units concurrently. Use `depends_on` only for real ordering, never to queue independent units. Sample memory and CPU while workers run, stay under any memory cap the mission sets, and lower concurrency only when they get tight. Review each result as it lands instead of waiting for the whole batch.
+
 ## Configuration review
 
 Expose only important controls a user, operator or app developer actually needs to change. Before adding one, identify who changes it, the behavior they need to control and the sensible default; prefer a fixed implementation value when no tuning need exists. Public config units declare exact source/value names, audience and purpose in `configControls`. Run `units check` to reject missing, duplicate, unowned or unresolved controls, and verify re-indexing preserves the declarations.
