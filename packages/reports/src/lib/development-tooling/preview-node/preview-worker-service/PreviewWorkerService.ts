@@ -109,6 +109,17 @@ export class PreviewWorkerService {
 function previewWorkerEnvironment(token: string): Record<string, string | undefined> {
 	const env = commandEnvironment({ HARNESS_PREVIEW_WORKER_TOKEN: token });
 	for (const key of [
+		'BODY_SIZE_LIMIT',
+		'HOST',
+		'PORT',
+		'ORIGIN',
+		'ADDRESS_HEADER',
+		'PROTOCOL_HEADER',
+		'HOST_HEADER',
+		'PORT_HEADER',
+		'XFF_DEPTH',
+		'SHUTDOWN_TIMEOUT',
+		'IDLE_TIMEOUT',
 		'NODE_ENV',
 		'NO_COLOR',
 		'FORCE_COLOR',

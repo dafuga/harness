@@ -28,7 +28,7 @@ export class GitAdapter {
 			...options,
 			cwd: this.root,
 			maxBuffer: options.maxBuffer ?? 128 * 1024 * 1024,
-			env: { ...options.env, GIT_TERMINAL_PROMPT: '0' }
+			env: gitEnvironment(options.env)
 		});
 	}
 
@@ -38,3 +38,11 @@ export class GitAdapter {
 }
 
 export type { GitRunOptions, GitResult } from './GitAdapter.types';
+
+/** Authentication transport belongs only to Git, never generic evaluator children. */
+function gitEnvironment(extra: Record<string, string> = {}): Record<string, string> {
+	const inherited: Record<string, string> = {};
+	for (const key of ['SSH_AUTH_SOCK', 'GIT_SSH', 'GIT_SSH_COMMAND'])
+		if (process.env[key] !== undefined) inherited[key] = process.env[key];
+	return { ...inherited, ...extra, GIT_TERMINAL_PROMPT: '0' };
+}

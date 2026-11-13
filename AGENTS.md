@@ -200,3 +200,9 @@ Keep named interfaces and type aliases in a sibling `<module>.types.ts` file bes
 Source tabs list implementation files, sibling type files and associated tests from the selected revision. Resolve tests from direct source imports or authored scenario coverage; retain their committed bytes and gaps, and reuse the shared file list and code viewer. Never substitute working-copy or newer test contents.
 
 When changing a shared Game renderer, include the root `test/game-runtime.test.ts` consumer guard in owning qualification, even when full CLI/native suites are deferred. Verify semantic object visibility and retained references; inactive scene containers must not change what a visibility assertion means.
+
+## Child Command Acceptance
+
+Before changing a child environment allowlist, inventory configuration read by the child, its launcher and framework adapter. Strengthen the existing command-boundary cases to prove required synthetic configuration still arrives and unrelated synthetic credentials do not. Keep authentication transport specific to the command that owns it.
+
+Before changing command deadlines, include a nested child in the existing cleanup case. Prove both the wrapper and descendant stop on timeout; stopping the immediate child alone does not establish process-tree cleanup. Preserve protected platform-service rules.

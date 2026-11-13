@@ -47,8 +47,10 @@ test('async commands stop on deadline, output overflow, cancellation or failed l
 });
 test('inherited environment includes only explicitly allowed operating-system keys', () => {
 	vi.stubEnv('HARNESS_BOUNDED_SECRET_FIXTURE', 'synthetic');
+	vi.stubEnv('SSH_AUTH_SOCK', '/fixture/ssh-agent.sock');
 	try {
-		expect(commandEnvironment()).not.toHaveProperty('HARNESS_BOUNDED_SECRET_FIXTURE');
+		expect(Object.hasOwn(commandEnvironment(), 'HARNESS_BOUNDED_SECRET_FIXTURE')).toBe(false);
+		expect(Object.hasOwn(commandEnvironment(), 'SSH_AUTH_SOCK')).toBe(false);
 	} finally {
 		vi.unstubAllEnvs();
 	}
