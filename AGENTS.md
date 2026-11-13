@@ -115,6 +115,8 @@ visible marker; a later passing DOM assertion cannot validate pixels recorded ea
 
 ## Code Rules
 
+The root audit limits are configured in `harness.audit.json`. Its workspace ignores cover Reports, Planning, Desktop, Collaboration, Hub, Remote and Relay; the root check chain delegates to those workspaces' own configured audits. `work/mobile/` holds simulator captures and diagnostics.
+
 - Compose UI as atoms → molecules → organisms → layouts/templates → pages. Reuse the canonical native element atoms and existing shared controls; native markup belongs inside atoms. Declare `@harness-tier` and the relative `@harness-atoms` library directory. Native atom calls preserve bindings/actions and scoped CSS through `atomicComponents()`; keep generated native typings installed. Feature categories and stable unit IDs remain independent of composition level. Run the atomic audit, registry composition guard and normal interaction/catalog coverage. `harness info component` documents the supported APIs.
 
 - Scheduler changes must prove progress across mixed nesting depths, occupied ancestor budgets and pending siblings while preserving priority and headroom.
