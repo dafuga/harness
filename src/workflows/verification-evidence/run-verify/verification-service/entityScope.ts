@@ -16,7 +16,10 @@ export function scopedScenarios(scenarios: ScenarioManifest[], entity: string): 
 	const covering = scenarios.filter((scenario) => scenario.units.includes(entity));
 	if (covering.length === 0) fail(`No scenario covers ${entity}; nothing can be verified for it.`);
 	return covering.map((scenario) => {
-		const states = scenario.states.filter((state) => (state.units ?? []).includes(entity));
+		const explicit = scenario.states.some((state) => (state.units ?? []).includes(entity));
+		const states = explicit
+			? scenario.states.filter((state) => (state.units ?? []).includes(entity))
+			: scenario.states;
 		const shown = new Set(states.map((state) => state.id));
 		return {
 			...scenario,
