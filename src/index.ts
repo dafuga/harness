@@ -215,3 +215,4 @@ export { PermissionCatalogService } from './services/networking-security/Permiss
 export { PermissionsCommand } from './commands/networking-security/PermissionsCommand';
 export { BoundedCommandAdapter } from './adapters/execution-runtimes/BoundedCommandAdapter';
 export { staleBuild } from './utils/development-tooling/staleBuild';
+export { scenarioHealth } from './utils/verification-evidence/scenarioHealth';

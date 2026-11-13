@@ -2,6 +2,7 @@
 import type { Flags } from './ScenariosCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
+import { renderScenarioHealth } from '../../utils/verification-evidence/scenarioHealth';
 import { checkScenarios, listScenarios, showScenario } from './inspectScenarios';
 
 export function registerScenariosCommand(program: Command): void {
@@ -42,10 +43,18 @@ export function registerScenariosCommand(program: Command): void {
 		});
 	scenarios
 		.command('check')
+		.option('--json', 'Print validation and report-only coverage diagnostics.')
 		.description('Fail when a scenario contract is invalid or misstates its coverage.')
-		.action(async () => {
+		.action(async (flags: Flags) => {
 			const result = await checkScenarios();
+			if (flags.json) console.log(JSON.stringify(result, null, 2));
 			if (result.errors.length > 0) fail(result.errors.join('\n'));
-			console.log(`Scenario contracts are valid: ${result.scenarios} scenarios.`);
+			if (!flags.json)
+				console.log(
+					[
+						`Scenario contracts are valid: ${result.scenarios} scenarios.`,
+						...renderScenarioHealth(result.health)
+					].join('\n')
+				);
 		});
 }

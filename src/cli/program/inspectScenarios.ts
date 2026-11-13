@@ -1,5 +1,7 @@
 // @harness-uid u_2g6cqdem3r
 import { resolve } from 'node:path';
+import { scenarioHealth } from '../../utils/verification-evidence/scenarioHealth';
+import type { ScenarioHealth } from '../../utils/verification-evidence/scenarioHealth.types';
 import { WorkingTreeAdapter } from '../../adapters/git-source-history/WorkingTreeAdapter';
 import { fail } from '../../core/development-tooling/errors';
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
@@ -15,7 +17,11 @@ async function load(root = process.cwd()) {
 	const tree = new WorkingTreeAdapter(absolute);
 	const scenarios = await new ScenarioRepository(absolute).read(tree);
 	const units = await new UnitRegistryRepository(absolute).read(tree);
-	return { scenarios, units: new Set(units.manifests.map((unit) => unit.id)) };
+	return {
+		scenarios,
+		units: new Set(units.manifests.map((unit) => unit.id)),
+		manifests: units.manifests
+	};
 }
 
 export async function listScenarios(root?: string) {
@@ -52,12 +58,16 @@ export async function showScenario(
 /** Schema and honesty problems in scenario contracts, plus references to unknown units. */
 export async function checkScenarios(
 	root?: string
-): Promise<{ scenarios: number; errors: string[] }> {
-	const { scenarios, units } = await load(root);
+): Promise<{ scenarios: number; errors: string[]; health: ScenarioHealth }> {
+	const { scenarios, units, manifests } = await load(root);
 	const unknown = scenarios.manifests.flatMap((scenario) =>
 		scenario.units
 			.filter((unit) => !units.has(unit))
 			.map((unit) => `${scenario.id} covers unknown unit ${unit}`)
 	);
-	return { scenarios: scenarios.manifests.length, errors: [...scenarios.errors, ...unknown] };
+	return {
+		scenarios: scenarios.manifests.length,
+		errors: [...scenarios.errors, ...unknown],
+		health: scenarioHealth({ scenarios: scenarios.manifests, units: manifests })
+	};
 }
