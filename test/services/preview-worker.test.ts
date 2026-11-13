@@ -16,6 +16,7 @@ afterEach(() => {
 test('start passes only required environment to the worker and close stops it', async () => {
 	vi.stubEnv('HARNESS_SECRET_FIXTURE', 'synthetic');
 	vi.stubEnv('HARNESS_CONSOLE_DATA', 'fixture-history');
+	vi.stubEnv('BODY_SIZE_LIMIT', '110M');
 	const child = Object.assign(new EventEmitter(), {
 		pid: 123,
 		exitCode: null,
@@ -37,7 +38,10 @@ test('start passes only required environment to the worker and close stops it', 
 	try {
 		const options = vi.mocked(spawn).mock.calls[0][2];
 		expect(Object.hasOwn(options?.env ?? {}, 'HARNESS_SECRET_FIXTURE')).toBe(false);
-		expect(options?.env).toMatchObject({ HARNESS_CONSOLE_DATA: 'fixture-history' });
+		expect(options?.env).toMatchObject({
+			HARNESS_CONSOLE_DATA: 'fixture-history',
+			BODY_SIZE_LIMIT: '110M'
+		});
 		expect(options?.env?.HARNESS_PREVIEW_WORKER_TOKEN).toEqual(expect.any(String));
 	} finally {
 		await handle.close();

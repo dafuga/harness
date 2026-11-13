@@ -1,12 +1,15 @@
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, expect, test } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
+import { BoundedCommandAdapter } from '../../src/adapters/execution-runtimes/BoundedCommandAdapter';
 import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
 
 // Initial method matrix: run/bytes/attempt/exec/isRepository and bounded errors.
 const roots: string[] = [];
 afterEach(async () => {
+	vi.restoreAllMocks();
+	vi.unstubAllEnvs();
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
 async function fixture() {
@@ -16,7 +19,16 @@ async function fixture() {
 }
 test('run returns trimmed text and bytes preserves binary data', async () => {
 	const git = await fixture();
+	vi.stubEnv('SSH_AUTH_SOCK', '/fixture/ssh-agent.sock');
+	vi.stubEnv('HARNESS_UNRELATED_SECRET', 'synthetic');
+	const run = vi.spyOn(BoundedCommandAdapter.prototype, 'run');
 	expect(await git.run(['--version'])).toMatch(/^git version /);
+	expect(
+		run.mock.calls.some((call) => call[2]?.env?.SSH_AUTH_SOCK === '/fixture/ssh-agent.sock')
+	).toBe(true);
+	expect(
+		run.mock.calls.some((call) => Object.hasOwn(call[2]?.env ?? {}, 'HARNESS_UNRELATED_SECRET'))
+	).toBe(false);
 	expect(await git.bytes(['hash-object', '--stdin'], { input: 'hello' })).toEqual(
 		Buffer.from('b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\n')
 	);
