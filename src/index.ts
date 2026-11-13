@@ -1,6 +1,8 @@
 #!/usr/bin/env bun
 // @harness-uid u_lt35mxvvrg
 import { CommanderError } from 'commander';
+import { fileURLToPath } from 'node:url';
+import { staleBuild } from './utils/development-tooling/staleBuild';
 import { commandAction } from './utils/development-tooling/commandAction';
 import { buildProgram } from './cli/program';
 import { recordAnalytics } from './workflows/reports-media/analyticsRecord';
@@ -10,6 +12,8 @@ import { isExpectedCliError } from './core/development-tooling/errors';
 import { pipedOutput } from './utils/development-tooling/pipedOutput';
 
 pipedOutput();
+const buildWarning = staleBuild(fileURLToPath(import.meta.url));
+if (buildWarning) console.error(buildWarning);
 const startedAt = Date.now();
 try {
 	await buildProgram().exitOverride().parseAsync(process.argv);
@@ -216,3 +220,4 @@ export { moduleResourceLocation } from './helpers/module-system/moduleResourceLo
 export { PermissionCatalogService } from './services/networking-security/PermissionCatalogService';
 export { PermissionsCommand } from './commands/networking-security/PermissionsCommand';
 export { BoundedCommandAdapter } from './adapters/execution-runtimes/BoundedCommandAdapter';
+export { staleBuild } from './utils/development-tooling/staleBuild';
