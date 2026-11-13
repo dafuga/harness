@@ -54,11 +54,11 @@ function registerPruneCommand(analytics: Command): void {
 		.description('Preview analytics retention; deletion requires --apply.')
 		.option('--older-than <days>', 'Keep this many days (positive whole number).', '90')
 		.option('--apply', 'Delete matching events from the local analytics store.')
-		.action((options: { olderThan: string; apply?: boolean }) => {
+		.action(async (options: { olderThan: string; apply?: boolean }) => {
 			const days = Number(options.olderThan);
 			if (!Number.isSafeInteger(days) || days < 1 || days > 36500)
 				throw new Error('--older-than must be between 1 and 36500 whole days.');
-			const repository = new AnalyticsRepository();
+			const repository = await AnalyticsRepository.open();
 			try {
 				console.log(
 					JSON.stringify(

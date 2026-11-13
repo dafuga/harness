@@ -7,7 +7,7 @@ import type { AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
 import { fingerprint, projectIdentity } from './analyticsRecord';
 
 export async function importAnalytics(root: string, historical = true): Promise<number> {
-	const repository = new AnalyticsRepository();
+	const repository = await AnalyticsRepository.open();
 	try {
 		return await importDirectory(resolve(root), repository, historical);
 	} finally {

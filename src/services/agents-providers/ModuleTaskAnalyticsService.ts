@@ -7,10 +7,15 @@ import { projectIdentity } from '../../workflows/reports-media/analyticsRecord';
 import { taskEvents } from './module-task-analytics-service/taskEvents';
 import { taskMetrics } from './module-task-analytics-service/taskMetrics';
 import { taskApiCost } from './module-task-analytics-service/taskPricing';
-import type { TaskAnalyticsStore } from './ModuleTaskAnalyticsService.types';
+import type {
+	TaskAnalyticsStore,
+	TaskAnalyticsStoreFactory
+} from './ModuleTaskAnalyticsService.types';
 /** Price task attempts and reconcile committed submissions/reviews into existing analytics. */
 export class ModuleTaskAnalyticsService {
-	constructor(private readonly store: () => TaskAnalyticsStore = () => new AnalyticsRepository()) {}
+	constructor(
+		private readonly store: TaskAnalyticsStoreFactory = () => AnalyticsRepository.open()
+	) {}
 	quote(model: string, usage?: TaskUsage) {
 		return taskApiCost(model, usage);
 	}
@@ -23,7 +28,7 @@ export class ModuleTaskAnalyticsService {
 			const queue = await new ModuleTaskRepository(root).read();
 			if (!queue.data.tasks.length) return 0;
 			const events = taskEvents(queue.data.tasks, await projectIdentity(root));
-			const repository = this.store();
+			const repository: TaskAnalyticsStore = await this.store();
 			try {
 				for (const event of events) repository.recordImported(event);
 			} finally {

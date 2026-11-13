@@ -24,13 +24,17 @@ export class AnalyticsService {
 		}
 		const filter = await normalizeFilter(options);
 		await new ModuleTaskAnalyticsService().sync(options.site ?? options.project ?? process.cwd());
-		const repository = new AnalyticsRepository();
+		const repository = await AnalyticsRepository.open();
 		// A site sees its own repository and nothing else, whatever other filter is asked for.
-		const events = options.site
-			? repository.events().filter((event) => sameSite(options.site ?? '', event.project))
-			: repository.events();
-		const snapshot = analyticsSnapshot(events, filter);
-		repository.close();
+		let snapshot: ReturnType<typeof analyticsSnapshot>;
+		try {
+			const events = options.site
+				? repository.events().filter((event) => sameSite(options.site ?? '', event.project))
+				: repository.events();
+			snapshot = analyticsSnapshot(events, filter);
+		} finally {
+			repository.close();
+		}
 		if (operation === 'export') {
 			if (!options.output) throw new Error('--output is required.');
 			await writeFile(resolve(options.output), analyticsHtml(snapshot), { mode: 0o600 });

@@ -42,7 +42,7 @@ export async function recordAnalytics(
 ): Promise<void> {
 	if (process.env.HARNESS_ANALYTICS_DISABLED === '1') return;
 	try {
-		const repository = new AnalyticsRepository();
+		const repository = await AnalyticsRepository.open();
 		try {
 			repository.record({
 				...event,

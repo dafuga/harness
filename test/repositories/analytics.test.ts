@@ -1,10 +1,8 @@
-import { mkdir, mkdtemp, rm } from 'node:fs/promises';
-import { Database } from 'bun:sqlite';
+import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand } from '../support/cli';
-import { AnalyticsRepository } from '../../src/repositories/reports-media/AnalyticsRepository';
 test('durable analytics supports concurrent writers and duplicate identities', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'analytics-store-'));
 	const module = join(process.cwd(), 'src/repositories/AnalyticsRepository.ts');
@@ -39,33 +37,18 @@ test('durable analytics supports concurrent writers and duplicate identities', a
 			applied: { matching: 1, deleted: 1, dryRun: false },
 			remaining: 0
 		});
-		const factory = (
-			AnalyticsRepository as unknown as {
-				open?: (home: string) => Promise<AnalyticsRepository>;
-			}
-		).open;
-		expect(factory).toBeTypeOf('function');
 		const lockedRoot = join(root, 'async-open');
-		await mkdir(lockedRoot);
-		const lockPath = join(lockedRoot, 'analytics.sqlite');
-		const holder = new Database(lockPath, { create: true });
-		holder.exec('PRAGMA busy_timeout=0; BEGIN EXCLUSIVE;');
-		let timerProgressed = false;
-		let opened: AnalyticsRepository | undefined;
-		const release = setTimeout(() => {
-			timerProgressed = true;
-			holder.exec('ROLLBACK;');
-		}, 100);
-		try {
-			opened = await factory!(lockedRoot);
-		} finally {
-			clearTimeout(release);
-			if (holder.inTransaction) holder.exec('ROLLBACK;');
-			holder.close();
-		}
-		expect(timerProgressed).toBe(true);
-		expect(opened!.events()).toEqual([]);
-		opened!.close();
+		const openedUnderLock = await runCommand(
+			[
+				'bun',
+				'-e',
+				`import { Database } from 'bun:sqlite'; import { mkdirSync } from 'node:fs'; import { join } from 'node:path'; import { AnalyticsRepository } from ${JSON.stringify(module)}; const root=${JSON.stringify(lockedRoot)}; mkdirSync(root,{recursive:true}); const holder=new Database(join(root,'analytics.sqlite'),{create:true}); holder.exec('PRAGMA busy_timeout=0; BEGIN EXCLUSIVE;'); let timerProgressed=false; let repository; const release=setTimeout(()=>{timerProgressed=true; holder.exec('ROLLBACK;');},100); try { repository=await AnalyticsRepository.open(root); console.log(JSON.stringify({timerProgressed,events:repository.events()})); } finally { clearTimeout(release); if(holder.inTransaction) holder.exec('ROLLBACK;'); holder.close(); repository?.close(); }`
+			],
+			root,
+			false
+		);
+		expect(openedUnderLock.exitCode, openedUnderLock.stderr).toBe(0);
+		expect(JSON.parse(openedUnderLock.stdout)).toEqual({ timerProgressed: true, events: [] });
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}

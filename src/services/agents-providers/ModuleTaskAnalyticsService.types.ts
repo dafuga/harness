@@ -5,6 +5,7 @@ import type {
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { AnalyticsRepository } from '../../repositories/reports-media/AnalyticsRepository';
 export type TaskAnalyticsStore = Pick<AnalyticsRepository, 'recordImported' | 'close'>;
+export type TaskAnalyticsStoreFactory = () => TaskAnalyticsStore | Promise<TaskAnalyticsStore>;
 export interface TaskAnalyticsDetail {
 	attempt: string;
 	feature: string;
