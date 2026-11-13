@@ -21,8 +21,11 @@ test('the guard catches a forward that stops resolving to its registered canonic
 			source,
 			'// @harness-uid u_fixture\nexport * from "../verification-evidence/run-verify/verify";\n'
 		);
-		await writeFile(target, '// @harness-uid u_fixture\nexport const verify = true;\n');
-		await writeFile(other, '// @harness-uid u_other\nexport const verify = false;\n');
+		await writeFile(
+			target,
+			'// @harness-uid u_fixture\nexport const verify = true;\nexport * from "../../other";\n'
+		);
+		await writeFile(other, '// @harness-uid u_other\nexport const helper = false;\n');
 		const entry = {
 			path: 'src/workflows/run-verify/forward.ts',
 			target: 'src/workflows/verification-evidence/run-verify/verify.ts',
@@ -31,9 +34,24 @@ test('the guard catches a forward that stops resolving to its registered canonic
 		};
 		await writeFile(registry, JSON.stringify({ schemaVersion: 1, forwards: [entry] }));
 		expect(checkVerificationForwards(root)).toEqual([]);
+		await writeFile(
+			source,
+			'// @harness-uid u_fixture\nexport * from "../verification-evidence/run-verify/verify";\nexport function hidden() { return true; }\n'
+		);
+		expect(checkVerificationForwards(root)).toContain(
+			`${entry.path} contains runtime implementation; deprecated forwards may contain only type declarations and export declarations`
+		);
 		await writeFile(source, '// @harness-uid u_fixture\nexport * from "../other";\n');
 		expect(checkVerificationForwards(root)).toContain(
 			`${entry.path} resolves to src/workflows/other.ts, not ${entry.target}`
+		);
+		await writeFile(source, '// @harness-uid u_fixture\nexport * from "./cycle";\n');
+		await writeFile(
+			join(root, 'src/workflows/run-verify/cycle.ts'),
+			'export * from "./forward";\n'
+		);
+		expect(checkVerificationForwards(root).some((issue) => issue.includes('cyclic forward'))).toBe(
+			true
 		);
 	});
 });
