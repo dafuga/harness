@@ -1,7 +1,7 @@
 # Canonical architecture boundaries
 
-Sol-4 implements report-2 items 02-09 against `3b4acbe070`. This map consumes the
-merged source-fact extraction; it does not replace its parsers or recreate sol-1.
+Valid at commit: `f199918f143b6d945966c952aa0c6697a3b8fa28`.
+
 Registry IDs, public forwards and original ownership proofs remain authoritative.
 
 | Registered owner                                                      | Canonical responsibility                                                                                                                                                                                              | Compatibility boundary                                                                                                         |
@@ -31,10 +31,7 @@ impact edges. Neither direct imports nor authored scenarios establish assertion
 coverage, a passing execution or a full verification verdict.
 
 Private operations have no confirmed public Explorer card. Their links above point
-to source instead of inventing pages. Branch publication and live entity History
-readback are pending coordinated integration; this worktree does not publish or
-change the shared preview. Phase 3 presentation and Phase 4 audit/duplication work
-remain outside this branch's scope.
+to source instead of inventing pages.
 
 Owner-private leaves extend existing units rather than introducing new scaffold IDs.
 The first contract cohort covers 20 owners; remaining derived responsibilities retain
