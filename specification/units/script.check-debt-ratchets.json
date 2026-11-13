@@ -8,13 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/check-debt-ratchets.ts"],
+		"source": ["scripts/check-debt-ratchets.ts", "scripts/check-debt-ratchets.types.ts"],
 		"symbols": [
+			"TemporaryCallBaseline",
 			"layerRatchet",
 			"reuseRatchet",
-			"TemporaryCallBaseline",
 			"mkdtempCallCount",
-			"temporaryCallRatchet"
+			"temporaryCallRatchet",
+			"LayerEdge",
+			"ReuseBaseline",
+			"TemporaryCallBaseline",
+			"TemporaryCallNames"
 		]
 	},
 	"contract": {

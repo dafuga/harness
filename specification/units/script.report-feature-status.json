@@ -8,8 +8,23 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/report-feature-status.ts"],
-		"symbols": ["featureStatusReport", "linkedUnits", "verifiedUnitsInHistory"]
+		"source": [
+			"scripts/report-feature-status.ts",
+			"scripts/report-feature-status/featureStatusReport.ts",
+			"scripts/report-feature-status/featureStatusSources.ts"
+		],
+		"symbols": [
+			"featureStatusReport",
+			"linkedUnits",
+			"verifiedUnitsInHistory",
+			"featureStatusReport",
+			"linkedUnits",
+			"verifiedUnitsInHistory",
+			"main",
+			"featureDocuments",
+			"completeLoopsFor",
+			"filesBelow"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -43,6 +58,30 @@
 				"type": "ReadonlySet<string>",
 				"required": true,
 				"description": "Unit IDs to search for in committed passed verification records; history is only a warning signal, not shipment proof."
+			},
+			{
+				"name": "featureDocuments.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository root whose root and package planned/implemented feature documents are read."
+			},
+			{
+				"name": "completeLoopsFor.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository root whose root and package loop folders are inspected."
+			},
+			{
+				"name": "completeLoopsFor.docPath",
+				"type": "string",
+				"required": true,
+				"description": "Relative feature-document path matched by loop name or stored loop/trace references."
+			},
+			{
+				"name": "filesBelow.directory",
+				"type": "string",
+				"required": true,
+				"description": "Directory to recursively list; unreadable or missing directories are treated as empty."
 			}
 		],
 		"outputs": [
@@ -60,6 +99,26 @@
 				"name": "verifiedUnitsInHistory",
 				"type": "Set<string>",
 				"description": "Set of requested unit IDs found in passed committed history records; this signal does not establish shipment."
+			},
+			{
+				"name": "main",
+				"type": "void",
+				"description": "Prints the current project feature-status report, explicit unit links, history signals and the unknown owner/date qualification without modifying documents."
+			},
+			{
+				"name": "featureDocuments",
+				"type": "Array<{ path: string; status: 'planned' | 'implemented'; metadata: { status: string | undefined; owner: string | null | undefined; reviewedAt: string | null | undefined; unitIds: string[] } }>",
+				"description": "Feature document paths, folder status and parsed frontmatter signals; absent owner/date evidence remains undefined or null."
+			},
+			{
+				"name": "completeLoopsFor",
+				"type": "string[]",
+				"description": "Relative paths of matching loops with a nonempty step list whose steps are all complete; invalid or incomplete evidence is ignored."
+			},
+			{
+				"name": "filesBelow",
+				"type": "string[]",
+				"description": "Recursively discovered regular-file paths; symlinks and unreadable directory entries do not contribute."
 			}
 		],
 		"errors": [
@@ -94,7 +153,13 @@
 						"description": "Counts planned and implemented feature docs, reports folder/frontmatter mismatches, potential stale planned labels, and absent ownership or review-date evidence."
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Feature documentation read failure",
+						"type": "thrown",
+						"description": "Unexpected feature-document read failures can throw; malformed historical evidence is ignored by the history lookup."
+					}
+				],
 				"errorStatus": "declared"
 			},
 			{
@@ -138,6 +203,97 @@
 						"name": "verifiedUnitsInHistory",
 						"type": "Set<string>",
 						"description": "Set of requested unit IDs found in passed committed history records; this signal does not establish shipment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "main",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "main",
+						"type": "void",
+						"description": "Prints the current project feature-status report, explicit unit links, history signals and the unknown owner/date qualification without modifying documents."
+					}
+				],
+				"errors": [
+					{
+						"name": "Feature documentation read failure",
+						"type": "thrown",
+						"description": "Unexpected feature-document read failures can throw; malformed historical evidence is ignored by the history lookup."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "featureDocuments",
+				"inputs": [
+					{
+						"name": "featureDocuments.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository root whose root and package planned/implemented feature documents are read."
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureDocuments",
+						"type": "Array<{ path: string; status: 'planned' | 'implemented'; metadata: { status: string | undefined; owner: string | null | undefined; reviewedAt: string | null | undefined; unitIds: string[] } }>",
+						"description": "Feature document paths, folder status and parsed frontmatter signals; absent owner/date evidence remains undefined or null."
+					}
+				],
+				"errors": [
+					{
+						"name": "Feature documentation read failure",
+						"type": "thrown",
+						"description": "Unexpected feature-document read failures can throw; malformed historical evidence is ignored by the history lookup."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "completeLoopsFor",
+				"inputs": [
+					{
+						"name": "completeLoopsFor.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository root whose root and package loop folders are inspected."
+					},
+					{
+						"name": "completeLoopsFor.docPath",
+						"type": "string",
+						"required": true,
+						"description": "Relative feature-document path matched by loop name or stored loop/trace references."
+					}
+				],
+				"outputs": [
+					{
+						"name": "completeLoopsFor",
+						"type": "string[]",
+						"description": "Relative paths of matching loops with a nonempty step list whose steps are all complete; invalid or incomplete evidence is ignored."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "filesBelow",
+				"inputs": [
+					{
+						"name": "filesBelow.directory",
+						"type": "string",
+						"required": true,
+						"description": "Directory to recursively list; unreadable or missing directories are treated as empty."
+					}
+				],
+				"outputs": [
+					{
+						"name": "filesBelow",
+						"type": "string[]",
+						"description": "Recursively discovered regular-file paths; symlinks and unreadable directory entries do not contribute."
 					}
 				],
 				"errors": [],

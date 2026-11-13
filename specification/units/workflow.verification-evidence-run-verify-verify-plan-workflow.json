@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/verification-evidence/run-verify/verifyPlanWorkflow.ts"],
-		"symbols": ["verifyPlan"]
+		"source": [
+			"src/workflows/verification-evidence/run-verify/verifyPlanWorkflow.ts",
+			"src/workflows/verification-evidence/run-verify/verifyPlanWorkflow.types.ts"
+		],
+		"symbols": ["verifyPlan", "LocalPlanInput"]
 	},
 	"contract": {
 		"origin": "declared",

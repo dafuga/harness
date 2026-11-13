@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"src/utils/accounts-access/repository-identity/repositoryIdentity.ts",
+			"src/utils/accounts-access/repository-identity/repositoryIdentity.types.ts",
 			"src/utils/repository-identity/repositoryIdentity.ts",
 			"src/utils/repositoryIdentity.ts"
 		],
@@ -17,6 +18,8 @@
 			"repositoryIdentity",
 			"sameRepository",
 			"sameSite",
+			"RepositoryIdentityCache",
+			"RepositoryIdentityCacheEntry",
 			"repositoryIdentity",
 			"sameRepository",
 			"sameSite",
