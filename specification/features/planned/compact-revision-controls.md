@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Feature: Compact revision controls
 
 Branch and commit selectors share one compact row inspired by GitHub repository controls. Keep the full native options, values, keyboard navigation and branch/commit URLs.

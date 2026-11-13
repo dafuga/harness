@@ -1,3 +1,10 @@
+---
+status: implemented
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Feature: Harness CLI Scaffold Coverage
 
 ## Overview

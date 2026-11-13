@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Harness API CLI
 
 Users query the same APIs as the app from any directory. `harness api` supports

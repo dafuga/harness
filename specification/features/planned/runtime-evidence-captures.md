@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Feature: Runtime Evidence Captures
 
 The runtime evidence viewer must produce required Harness evidence from the compiled renderer, in addition to its existing browser assertions. The viewer's orders history, hashes, records and audio remain explicitly synthetic fixtures; the outer screenshot build identity and verification revision belong to the actual tested renderer.

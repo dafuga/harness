@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Feature: Navbar search and catalog filters
 
 ## Outcome

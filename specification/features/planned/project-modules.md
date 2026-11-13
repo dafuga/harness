@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Project modules
 
 Projects install built-in or project-local capability modules. A module declares resource types, generators and instructions. Installed types appear under Code; Modules lists available and installed capabilities at the selected revision.

@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: ["reports.function.preview-arguments", "reports.function.preview-owner", "reports.initializer.initialize-preview", "reports.service.preview-server"]
+owner: null
+reviewedAt: null
+---
 # One managed preview server
 
 Status: implemented

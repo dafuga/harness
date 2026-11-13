@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Translations catalog
 
 Browse registered app strings in English and French at the selected source revision.

@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Feature: Codex Provider Picker
 
 ## Authorized delivery slice (2026-10-08)

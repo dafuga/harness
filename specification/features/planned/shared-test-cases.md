@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Feature: shared test cases
 
 Show recorded test inputs beside their observed outputs through EntityCases in both Harness viewers, including Tests and the workspace Evidence tab. Keep the exact selected revision and its parent separate; a branch tip has only its current cases.

@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Persistent project chat and access levels
 
 Status: implemented locally; full repository verification remains pending

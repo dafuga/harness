@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Shared service ownership
 
 Services uses the existing name and Used In cards. Only services with two distinct active runtime owners enter the collection; the same resolved owner set supplies the links. Indirect pages, types, unused imports and forwarding exports do not establish sharing.

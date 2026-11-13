@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Feature: Codex Claude Gateway and Monitoring Plugins
 
 ## Goal and first delivery gate

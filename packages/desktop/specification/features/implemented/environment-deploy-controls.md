@@ -1,3 +1,10 @@
+---
+status: implemented
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Environment and deployment controls
 
 Commit, Branch and workbench/project selectors start closed behind labelled icon buttons. Existing selectors retain their keyboard, navigation and read-only behavior. Escape closes the dialog and restores focus. Dev, stage, preprod and prod remain directly selectable.

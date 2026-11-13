@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # Required callable usage examples
 
 Every public helper callable has committed usage examples, including an invocation, concrete argument values and expected return or error. Examples belong to one callable, remain available without verification results, and come from the viewed commit. Missing examples fail normal registry validation; indexing preserves authored values without inventing outcomes. Old commits remain readable and explicit about missing documentation.

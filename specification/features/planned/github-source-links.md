@@ -1,3 +1,10 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
 # GitHub source links
 
 The Source tab contains only links to owned files on the project GitHub repository, pinned to the selected commit. It omits symbols, execution targets, internal identity and version metadata.
