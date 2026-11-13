@@ -32,6 +32,13 @@ const loopStateSchema = z
 				plan: z.string().optional()
 			})
 			.optional(),
+		closed: z
+			.object({
+				status: z.literal('abandoned'),
+				reason: z.string().min(1),
+				closedAt: z.string().min(1)
+			})
+			.optional(),
 		steps: z.array(
 			z
 				.object({

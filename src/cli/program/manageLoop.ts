@@ -1,4 +1,5 @@
 // @harness-uid u_3b2qhm7yob
+import { loopSummaryLines } from '../../workflows/development-tooling/loop-lifecycle/loopActivity';
 import type {
 	CreateLoopInput,
 	AddLoopStepInput,
@@ -118,11 +119,12 @@ export async function readLoopStatus(input: ReadLoopInput): Promise<LoopStatus> 
 	return { state, tracePath: paths.traceRelative };
 }
 
-export function renderLoopStatus(status: LoopStatus): string {
+export function renderLoopStatus(status: LoopStatus, now = new Date().toISOString()): string {
 	const lines = [
 		`Loop: ${status.state.name}`,
 		`Goal: ${status.state.goal}`,
 		`Trace: ${status.tracePath}`,
+		...loopSummaryLines(status.state, now),
 		'',
 		'Steps:'
 	];

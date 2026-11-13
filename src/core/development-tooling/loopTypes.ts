@@ -14,6 +14,12 @@ export interface LoopEvaluator {
 	step?: string;
 }
 
+export interface LoopClosure {
+	status: 'abandoned';
+	reason: string;
+	closedAt: string;
+}
+
 export interface LoopState {
 	/** Completion policy is versioned; old traces are not rewritten as new evidence. */
 	completion?: { version: 1; kind: 'coding' | 'planning'; plan?: string };
@@ -29,4 +35,5 @@ export interface LoopState {
 	regressionCommits?: 1;
 	steps: LoopStep[];
 	evaluators?: LoopEvaluator[];
+	closed?: LoopClosure;
 }

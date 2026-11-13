@@ -5,6 +5,7 @@ import {
 	type RecordRegressionInput
 } from '../../workflows/verification-evidence/record-regression/recordRegression';
 import { evaluateLoop, renderLoopEvaluation } from './loopEvaluate';
+import { registerLoopLifecycleCommands } from './loopLifecycle';
 import { nextLoopStep, renderNextLoopStep } from './loopNext';
 import { renderLoopSearchResults, searchLoops } from './loopSearch';
 import {
@@ -19,6 +20,7 @@ export function registerLoopCommand(program: Command): void {
 	const command = program
 		.command('loop')
 		.description('Define and trace verifiable agent work loops.');
+	registerLoopLifecycleCommands(command);
 	registerRegressionCommand(command);
 	registerCreateCommand(command);
 
