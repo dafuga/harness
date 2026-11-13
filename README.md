@@ -349,6 +349,8 @@ need `moduleResolution` set to `bundler`, `node16` or `nodenext`.
 
 ## Scenarios, verification, reasons and budgets
 
+`harness scenarios check --json` includes report-only viewport conflicts, unknown viewport IDs and active units without scenarios, split by kind. Reports identify gaps; they do not add or enforce new scenario semantics. Authored states declare `coverage` (`required`, `missing` or `inapplicable`). A state's `status` is not an authored schema field: verification computes capture outcomes from the actual checks and evidence. A missing `status` in source manifests is therefore not missing authored coverage.
+
 ```bash
 harness scenarios list|show <id>|check     # states, viewports, checks and required evidence
 harness explain list|add|check             # a reason for every changed function or unit
