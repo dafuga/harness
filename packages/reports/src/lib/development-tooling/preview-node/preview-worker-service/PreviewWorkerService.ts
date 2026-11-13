@@ -1,6 +1,7 @@
 // @harness-uid u_edxqiri65j
 import { spawn, type ChildProcess } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
+import { commandEnvironment } from '../../../../../../../src/adapters/execution-runtimes/BoundedCommandAdapter';
 import { setTimeout as delay } from 'node:timers/promises';
 import { readPreviewHealth } from './previewHealth';
 import type { PreviewHandle } from '../../../../services/accounts-access/preview-server-service/PreviewServerService';
@@ -35,7 +36,7 @@ export class PreviewWorkerService {
 		this.token = randomUUID();
 		const child = spawn('node', [this.entry, ...this.args], {
 			stdio: 'inherit',
-			env: { ...process.env, HARNESS_PREVIEW_WORKER_TOKEN: this.token }
+			env: previewWorkerEnvironment(this.token)
 		});
 		this.child = child;
 		let failure = '';
@@ -102,4 +103,33 @@ export class PreviewWorkerService {
 			child.kill('SIGTERM');
 		});
 	}
+}
+
+/** Deliberate preview configuration only; provider credentials stay in scoped stores. */
+function previewWorkerEnvironment(token: string): Record<string, string | undefined> {
+	const env = commandEnvironment({ HARNESS_PREVIEW_WORKER_TOKEN: token });
+	for (const key of [
+		'NODE_ENV',
+		'NO_COLOR',
+		'FORCE_COLOR',
+		'HARNESS_ANALYTICS_HOME',
+		'HARNESS_BIND',
+		'HARNESS_BUN_PATH',
+		'HARNESS_CLI_PATH',
+		'HARNESS_CONSOLE_DATA',
+		'HARNESS_OWNER_MODE',
+		'HARNESS_PREVIEW_OWNER_PORT',
+		'HARNESS_REPORTS_RUNTIME_ROOT',
+		'HARNESS_SITE_ROOT',
+		'HARNESS_VERIFY',
+		'HARNESS_VERIFY_REVISION',
+		'PROJECT_REPORTS_ASSET_STORAGE',
+		'PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME',
+		'PROJECT_REPORTS_CONFIG_FILE',
+		'PROJECT_REPORTS_FFMPEG',
+		'PROJECT_REPORTS_HOME',
+		'PROJECT_REPORTS_PAGES_PROJECT'
+	])
+		if (process.env[key] !== undefined) env[key] = process.env[key];
+	return env;
 }

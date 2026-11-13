@@ -26,7 +26,12 @@ test('start passes only required environment to the worker and close stops it', 
 		})
 	});
 	vi.mocked(spawn).mockReturnValue(child as unknown as ReturnType<typeof spawn>);
-	vi.mocked(readPreviewHealth).mockResolvedValue({ pid: 123, errors: 0, busy: false });
+	vi.mocked(readPreviewHealth).mockResolvedValue({
+		protocol: 'harness-worker-v1',
+		pid: 123,
+		errors: 0,
+		busy: false
+	});
 	const service = new PreviewWorkerService('fixture.mjs', [], 'http://127.0.0.1:12345');
 	const handle = await service.start();
 	try {
