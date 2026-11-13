@@ -40,21 +40,9 @@ export function gatherCaptures(
 			result.failures.push(`declared capture ${parsed.data.file} but wrote no file`);
 		else {
 			try {
-				const stat = lstatSync(file);
-				if (!stat.isFile()) throw new Error('Capture must be a regular file, not a symlink.');
-				const refused =
-					oversizeCapture(parsed.data.file, stat.size, limits) ??
-					budget.refusal(`${recordPath}/${parsed.data.file}`, stat.size);
-				if (refused) result.failures.push(refused);
-				else {
-					const remaining = budget.remaining();
-					const cap = Math.min(limits.maxCaptureBytes ?? Infinity, remaining ?? Infinity);
-					const item = inspect(parsed.data, file, recordPath, {
-						maxCaptureBytes: Number.isFinite(cap) ? cap : undefined
-					});
-					budget.retain(item.capture.bytes);
-					result.gathered.push(item);
-				}
+				const item = inspectBudgeted(parsed.data, file, recordPath, limits, budget);
+				if (typeof item === 'string') result.failures.push(item);
+				else result.gathered.push(item);
 			} catch (error) {
 				result.failures.push(
 					`could not inspect capture ${parsed.data.file}: ${error instanceof Error ? error.message : 'read failed'}`
@@ -63,6 +51,27 @@ export function gatherCaptures(
 		}
 	}
 	return result;
+}
+
+function inspectBudgeted(
+	line: CaptureLine,
+	file: string,
+	recordPath: string,
+	limits: CaptureLimits,
+	budget: RecordBudget
+): Gathered | string {
+	const stat = lstatSync(file);
+	if (!stat.isFile()) throw new Error('Capture must be a regular file, not a symlink.');
+	const refused =
+		oversizeCapture(line.file, stat.size, limits) ??
+		budget.refusal(`${recordPath}/${line.file}`, stat.size);
+	if (refused) return refused;
+	const cap = Math.min(limits.maxCaptureBytes ?? Infinity, budget.remaining() ?? Infinity);
+	const item = inspect(line, file, recordPath, {
+		maxCaptureBytes: Number.isFinite(cap) ? cap : undefined
+	});
+	budget.retain(item.capture.bytes);
+	return item;
 }
 
 function inspect(

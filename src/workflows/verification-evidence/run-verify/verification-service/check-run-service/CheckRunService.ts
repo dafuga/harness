@@ -54,7 +54,7 @@ export class CheckRunService {
 		return {
 			check,
 			passed,
-			entry: this.entry(check, result, diagnostics, passed),
+			entry: checkEntry(check, result, diagnostics, passed, this.context.directory),
 			gathered: captures.gathered,
 			failures
 		};
@@ -108,24 +108,6 @@ export class CheckRunService {
 		return firstPrintedLine(printed);
 	}
 
-	private entry(
-		check: PlannedCheck,
-		result: IsolatedResult,
-		diagnostics: ReturnType<typeof readBrowserDiagnostics>,
-		passed: boolean
-	): CheckOutcome['entry'] {
-		return {
-			id: check.id,
-			kind: check.kind,
-			runner: check.runner,
-			target: check.target,
-			status: passed ? 'passed' : 'failed',
-			...(diagnostics.browserErrors ? { browserErrors: diagnostics.browserErrors } : {}),
-			durationMs: Math.round(result.durationMs),
-			log: { ...result.log, path: relative(this.context.directory, result.log.path) }
-		};
-	}
-
 	/** `harness verify` always requests captures; ordinary suites opt in with TAKE_SCREENSHOT. */
 	private environment(check: PlannedCheck, evidence: string): Record<string, string | undefined> {
 		return {
@@ -176,4 +158,23 @@ function firstPrintedLine(printed: string): string | undefined {
 		.split('\n')
 		.find((line) => line.trim() !== '')
 		?.trim();
+}
+
+function checkEntry(
+	check: PlannedCheck,
+	result: IsolatedResult,
+	diagnostics: ReturnType<typeof readBrowserDiagnostics>,
+	passed: boolean,
+	directory: string
+): CheckOutcome['entry'] {
+	return {
+		id: check.id,
+		kind: check.kind,
+		runner: check.runner,
+		target: check.target,
+		status: passed ? 'passed' : 'failed',
+		...(diagnostics.browserErrors ? { browserErrors: diagnostics.browserErrors } : {}),
+		durationMs: Math.round(result.durationMs),
+		log: { ...result.log, path: relative(directory, result.log.path) }
+	};
 }
