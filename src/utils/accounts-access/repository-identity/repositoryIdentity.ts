@@ -4,6 +4,10 @@ import { createHash } from 'node:crypto';
 import { realpathSync } from 'node:fs';
 import { isAbsolute, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import type {
+	RepositoryIdentityCache,
+	RepositoryIdentityCacheEntry
+} from './repositoryIdentity.types';
 
 const MAX_KNOWN_CACHE_ENTRIES = 256;
 const MAX_PLAIN_CACHE_ENTRIES = 512;
@@ -16,7 +20,12 @@ function readLru<K, V>(cache: Map<K, V>, key: K): { hit: boolean; value?: V } {
 	return { hit: true, value };
 }
 
-function writeLru<K, V>(cache: Map<K, V>, key: K, value: V, maxEntries: number): void {
+function writeLru(
+	cache: RepositoryIdentityCache,
+	entry: RepositoryIdentityCacheEntry,
+	maxEntries: number
+): void {
+	const [key, value] = entry;
 	cache.delete(key);
 	cache.set(key, value);
 	if (cache.size <= maxEntries) return;
@@ -24,7 +33,7 @@ function writeLru<K, V>(cache: Map<K, V>, key: K, value: V, maxEntries: number):
 	if (oldest !== undefined) cache.delete(oldest);
 }
 
-const known = new Map<string, string | null>();
+const known: RepositoryIdentityCache = new Map();
 
 /** A clone of a clone of a clone is followed this far, and no further. */
 const maxHops = 5;
@@ -93,7 +102,7 @@ export function repositoryIdentity(directory: string): string | null {
 	if (cached.hit) return cached.value ?? null;
 	const identity = identify(directory, 0);
 	const result = identity && createHash('sha256').update(identity).digest('hex');
-	writeLru(known, directory, result, MAX_KNOWN_CACHE_ENTRIES);
+	writeLru(known, [directory, result], MAX_KNOWN_CACHE_ENTRIES);
 	return result;
 }
 
@@ -122,7 +131,7 @@ export function sameSite(site: string, directory: string): boolean {
 	return own !== null && realDirectory(directory) === own;
 }
 
-const plain = new Map<string, string | null>();
+const plain: RepositoryIdentityCache = new Map();
 
 /**
  * The real directory of a site that is in no repository, decided once: a filter asks this for
@@ -135,6 +144,6 @@ function plainSite(site: string): string | null {
 	const own = realDirectory(site);
 	const outside = own !== undefined && git(own, ['rev-parse', '--git-dir']) === undefined;
 	const result = outside ? own : null;
-	writeLru(plain, site, result, MAX_PLAIN_CACHE_ENTRIES);
+	writeLru(plain, [site, result], MAX_PLAIN_CACHE_ENTRIES);
 	return result;
 }

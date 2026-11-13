@@ -17,21 +17,7 @@ import { openRange } from '../../development-tooling/loadRevisions';
 import { runtimeKind } from '../../development-tooling/runImpact';
 import { VerificationService } from './verification-service/VerificationService';
 import { verifyPlanReport, type VerifyPlanReport } from './verification-service/verifyPlanReport';
-
-interface LocalPlanInput {
-	git: GitAdapter;
-	commit: string;
-	options: VerifyOptions & { root: string };
-	runtime: ReturnType<UnitRuntimeService['kernel']>;
-	context: {
-		baseCommit: string | null;
-		baseRecord: string | undefined;
-		requestedBase: string | null;
-		base: Awaited<ReturnType<typeof openRange>>['base'];
-		head: Awaited<ReturnType<typeof openRange>>['head'];
-		entity?: string;
-	};
-}
+import type { LocalPlanInput } from './verifyPlanWorkflow.types';
 
 /** Computes selected checks without restoring evidence or running any planned check commands. */
 export async function verifyPlan(options: VerifyOptions = {}): Promise<VerifyPlanReport> {
