@@ -538,6 +538,11 @@ file before inspection (and bounds streamed reads), and `maxRecordBytes` caps th
 bytes admitted across a record, checked before inspection. Either cap bounds individual encoded
 reads; the record cap also preserves remaining capacity across checks.
 Media and benchmark captures are decoded in memory; other capture hashes use fixed-size chunks.
+This repository sets 64 MiB per capture and 1 GiB per record. A bounded read-only sample of
+3,763 cached record manifests from eight earlier worktrees had a largest declared capture of
+1,488,988 bytes and largest declared record total of 60,662,263 bytes, including duplicate
+records across checkouts. The configured limits leave substantial headroom; full-run qualification
+remains separate from this sample.
 These are encoded byte limits, not whole-process or decoded image memory limits. Capture directories
 must be regular directories; capture files and the index must be regular files; the index has a fixed 2,000,000-byte bound. A refused capture
 fails its check, including setup, and cannot appear as a passed individual test row. Attached Git
