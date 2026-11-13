@@ -1,4 +1,5 @@
 import type { Manifest } from './self-verify-config.test.types';
+import checksBaseline from './fixtures/verify-checks-baseline.json';
 import { spawnSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -47,6 +48,17 @@ test('this repository keeps source read-only and required scenario evidence comp
 		scenarios.errors,
 		'Every required repository scenario state has required evidence'
 	).toEqual([]);
+});
+
+test('named check profiles preserve all existing check IDs, commands and effective timeouts', () => {
+	const config = verifyConfigSchema.parse(JSON.parse(readFileSync('harness.verify.json', 'utf8')));
+	const actual = config.checks.map((check) => ({
+		id: check.path,
+		command: check.command,
+		timeoutMs: check.timeoutMs ?? config.timeouts.test
+	}));
+	expect(actual).toHaveLength(40);
+	expect(actual).toEqual(checksBaseline);
 });
 
 test('standalone evidence fixtures load outside the test runner', () => {

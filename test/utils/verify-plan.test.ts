@@ -74,3 +74,101 @@ test('a test file that needs its own command gets it, and every other file keeps
 	const invalid = { ...defaultVerifyConfig, checks: [{ path: '', command: 'true' }] };
 	expect(verifyConfigSchema.safeParse(invalid).success).toBe(false);
 });
+
+test('old configs without profiles remain valid and default to an empty profile map', () => {
+	const config = verifyConfigSchema.parse({
+		schemaVersion: 1,
+		setup: [],
+		link: [],
+		runners: defaultVerifyConfig.runners,
+		checks: [{ path: 'test/legacy.test.ts', command: 'bun x vitest run {target}' }],
+		timeouts: { test: 5_000 }
+	});
+	expect(config.profiles).toEqual({});
+	expect(config.checks).toMatchObject([
+		{ path: 'test/legacy.test.ts', command: 'bun x vitest run {target}' }
+	]);
+});
+
+test('profile defaults expand and explicit check fields override them', () => {
+	const config = verifyConfigSchema.parse({
+		...defaultVerifyConfig,
+		profiles: {
+			focused: { command: 'bun x vitest run {target} --testTimeout 20000', timeoutMs: 90_000 }
+		},
+		checks: [
+			{ path: 'test/utils/case.test.ts', profile: 'focused' },
+			{
+				path: 'test/utils/other.test.ts',
+				profile: 'focused',
+				command: 'bun x vitest run {target} --reporter=dot',
+				timeoutMs: 15_000
+			},
+			{ path: 'test/utils/command.test.ts', profile: 'focused', timeoutMs: 30_000 }
+		]
+	});
+	expect(
+		config.checks.map(({ path, command, timeoutMs }) => ({ path, command, timeoutMs }))
+	).toEqual([
+		{
+			path: 'test/utils/case.test.ts',
+			command: 'bun x vitest run {target} --testTimeout 20000',
+			timeoutMs: 90_000
+		},
+		{
+			path: 'test/utils/other.test.ts',
+			command: 'bun x vitest run {target} --reporter=dot',
+			timeoutMs: 15_000
+		},
+		{
+			path: 'test/utils/command.test.ts',
+			command: 'bun x vitest run {target} --testTimeout 20000',
+			timeoutMs: 30_000
+		}
+	]);
+});
+
+test('unknown named profiles are rejected', () => {
+	const result = verifyConfigSchema.safeParse({
+		...defaultVerifyConfig,
+		checks: [{ path: 'test/utils/case.test.ts', profile: 'missing' }]
+	});
+	expect(result.success).toBe(false);
+	if (!result.success)
+		expect(result.error.issues.map((issue) => issue.message)).toContain(
+			'Unknown verify check profile "missing".'
+		);
+});
+
+test('literal test file arguments must match check.path while placeholders and commands stay valid', () => {
+	const mismatch = verifyConfigSchema.safeParse({
+		...defaultVerifyConfig,
+		checks: [
+			{
+				path: picker,
+				command: 'bun x playwright test tests/e2e/different.spec.ts'
+			}
+		]
+	});
+	expect(mismatch.success).toBe(false);
+	if (!mismatch.success)
+		expect(mismatch.error.issues.map((issue) => issue.message)).toContain(
+			`Command test path "tests/e2e/different.spec.ts" does not match check path "${picker}".`
+		);
+	const valid = verifyConfigSchema.parse({
+		...defaultVerifyConfig,
+		checks: [
+			{
+				path: picker,
+				command: 'bun x playwright test --config src/config.ts provider-picker.spec.ts'
+			},
+			{ path: 'test/utils/case.test.ts', command: 'bun x vitest run {target}' },
+			{ path: 'test/utils/custom.test.ts', command: 'bun run check:fast' }
+		]
+	});
+	expect(valid.checks.map((check) => check.command)).toEqual([
+		'bun x playwright test --config src/config.ts provider-picker.spec.ts',
+		'bun x vitest run {target}',
+		'bun run check:fast'
+	]);
+});

@@ -115,98 +115,79 @@
 		},
 		{
 			"path": "packages/planning/test/planning-canonical.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/planning/test/planning-change.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/planning/test/planning-conflicts.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/planning/test/planning-history.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/planning/test/planning-images.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/planning/test/planning-integration.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/planning/test/utils/plan-data.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/planning/test/utils/plan-image-codec.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/planning/test/utils/plan-validate.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/desktop/test/cli-integration.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/desktop/test/project-integration.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/desktop/test/run-integration.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/desktop/test/backend-boundaries.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/desktop/test/stores/workspace.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/desktop/tests/e2e/ui-workspace.spec.ts",
-			"command": "CI=1 bun x playwright test {target}",
-			"timeoutMs": 180000
+			"profile": "desktop-ci-playwright"
 		},
 		{
 			"path": "packages/desktop/tests/e2e/ui-designs.spec.ts",
-			"command": "CI=1 bun x playwright test {target}",
-			"timeoutMs": 180000
+			"profile": "desktop-ci-playwright"
 		},
 		{
 			"path": "packages/desktop/tests/e2e/native-desktop.spec.ts",
-			"command": "CI=1 bun x playwright test {target}",
-			"timeoutMs": 180000
+			"profile": "desktop-ci-playwright"
 		},
 		{
 			"path": "packages/planning/test/planning-registry.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/planning/test/notes-reference.test.ts",
-			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
-			"timeoutMs": 180000
+			"profile": "extended-vitest"
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell.spec.ts",
@@ -238,39 +219,39 @@
 		},
 		{
 			"path": "packages/reports/test/entity-preview-actions.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/test/entity-preview.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-marks.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-captures.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-metric-diff.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-words.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-test-cases.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-shells.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-source.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-browser-errors.spec.ts",
@@ -283,11 +264,11 @@
 		},
 		{
 			"path": "packages/reports/test/entity-preview-groups.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-platforms.spec.ts",
-			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+			"profile": "entity-preview-playwright"
 		}
 	],
 	"tools": [
@@ -353,5 +334,18 @@
 			"directory": "packages/reports/output/entity-preview"
 		}
 	],
-	"writing": 2
+	"writing": 2,
+	"profiles": {
+		"extended-vitest": {
+			"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+			"timeoutMs": 180000
+		},
+		"desktop-ci-playwright": {
+			"command": "CI=1 bun x playwright test {target}",
+			"timeoutMs": 180000
+		},
+		"entity-preview-playwright": {
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+		}
+	}
 }

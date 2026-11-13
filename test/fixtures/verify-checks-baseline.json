@@ -1,0 +1,202 @@
+[
+	{
+		"id": "packages/reports/tests/e2e/provider-picker.spec.ts",
+		"command": "bun x playwright test --config src/configs/pickerPlaywrightConfig.ts",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/planning/test/planning-canonical.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/planning-change.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/planning-conflicts.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/planning-history.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/planning-images.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/planning-integration.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/utils/plan-data.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/utils/plan-image-codec.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/utils/plan-validate.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/desktop/test/cli-integration.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/desktop/test/project-integration.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/desktop/test/run-integration.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/desktop/test/backend-boundaries.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/desktop/test/stores/workspace.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/desktop/tests/e2e/ui-workspace.spec.ts",
+		"command": "CI=1 bun x playwright test {target}",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/desktop/tests/e2e/ui-designs.spec.ts",
+		"command": "CI=1 bun x playwright test {target}",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/desktop/tests/e2e/native-desktop.spec.ts",
+		"command": "CI=1 bun x playwright test {target}",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/planning-registry.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/planning/test/notes-reference.test.ts",
+		"command": "bun x vitest run {target} --testTimeout 20000 --hookTimeout 20000",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/reports/tests/e2e/explorer-shell.spec.ts",
+		"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell.spec.ts",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/tests/e2e/explorer-shell-pieces.spec.ts",
+		"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-pieces.spec.ts",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/tests/e2e/explorer-shell-verdict.spec.ts",
+		"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-verdict.spec.ts",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/tests/e2e/explorer-shell-search.spec.ts",
+		"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-search.spec.ts",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/tests/e2e/explorer-shell-search-scope.spec.ts",
+		"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-search-scope.spec.ts",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts",
+		"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-search-fit.spec.ts",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/tests/e2e/explorer-shell-capture-readiness.spec.ts",
+		"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-actions.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-marks.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-captures.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-metric-diff.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-words.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-test-cases.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-shells.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-source.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/tests/e2e/explorer-shell-browser-errors.spec.ts",
+		"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-browser-errors.spec.ts",
+		"timeoutMs": 180000
+	},
+	{
+		"id": "packages/reports/tests/e2e/explorer-shell-activity-list.spec.ts",
+		"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-groups.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-platforms.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
+	}
+]

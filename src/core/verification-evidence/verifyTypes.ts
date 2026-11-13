@@ -1,6 +1,7 @@
 // @harness-uid u_wwu3xgisul
 import type { VerifyConfig } from './verifyTypes.types';
 import { z } from 'zod';
+import { posix } from 'node:path';
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { runtimeKinds, unitIdPattern } from '../development-tooling/unitTypes';
 import { captureRegionSchema } from './verificationTypes';
@@ -13,9 +14,19 @@ export const captureIndex = 'captures.ndjson';
 
 const text = z.string().min(1);
 const identifier = z.string().regex(unitIdPattern);
+const checkProfileSchema = z.strictObject({
+	command: text.optional(),
+	timeoutMs: z.number().int().positive().optional()
+});
+const checkSchema = z.strictObject({
+	path: text,
+	profile: text.min(1).optional(),
+	command: text.optional(),
+	timeoutMs: z.number().int().positive().optional()
+});
 
 /** How this repository's checks run inside a verification snapshot. */
-export const verifyConfigSchema = z.strictObject({
+const verifyConfigInputSchema = z.strictObject({
 	schemaVersion: z.literal(1),
 	/** New task contracts require profiling even when no performance budget is declared. */
 	performanceRequired: z.literal(1).optional(),
@@ -51,17 +62,11 @@ export const verifyConfigSchema = z.strictObject({
 	runners: z.record(z.string(), text),
 	/**
 	 * Test files that need a command of their own, for example another configuration of the
-	 * same runner. `path` is the tracked file; the command runs in its workspace.
+	 * same runner. `path` is the tracked file; the command runs in its workspace. Profiles provide
+	 * shared defaults and check-local command/timeout fields override them.
 	 */
-	checks: z
-		.array(
-			z.strictObject({
-				path: text,
-				command: text,
-				timeoutMs: z.number().int().positive().optional()
-			})
-		)
-		.default([]),
+	profiles: z.record(z.string().min(1), checkProfileSchema).default({}),
+	checks: z.array(checkSchema).default([]),
 	timeouts: z.strictObject({ test: z.number().int().positive() }),
 	/**
 	 * Optional byte caps on captured evidence; with neither declared nothing is capped. A single
@@ -72,6 +77,66 @@ export const verifyConfigSchema = z.strictObject({
 	maxRecordBytes: z.number().int().positive().optional()
 });
 
+/** Test files named literally in file-runner commands must agree with the check's tracked path. */
+function literalTestPaths(command: string): string[] {
+	const tokens = command.match(/"[^"\n]*"|'[^'\n]*'|[^\s]+/g) ?? [];
+	return tokens
+		.map((token) => token.replace(/^["']|["']$/g, ''))
+		.filter((token) => !token.startsWith('-') && /\.(?:test|spec)\.[cm]?[jt]sx?$/.test(token));
+}
+
+function matchesCheckPath(literal: string, checkPath: string): boolean {
+	const normalize = (path: string) => posix.normalize(path.replace(/^\.\//, ''));
+	const actual = normalize(literal);
+	const expected = normalize(checkPath);
+	if (actual === expected || actual === normalize(posix.basename(expected))) return true;
+	const workspaceRelative = expected.replace(/^packages\/[^/]+\//, '');
+	return actual === workspaceRelative;
+}
+
+export const verifyConfigSchema = verifyConfigInputSchema
+	.superRefine((config, context) => {
+		for (const [index, check] of config.checks.entries()) {
+			const profile = check.profile ? config.profiles[check.profile] : undefined;
+			if (check.profile && !profile) {
+				context.addIssue({
+					code: 'custom',
+					path: ['checks', index, 'profile'],
+					message: `Unknown verify check profile "${check.profile}".`
+				});
+			}
+			const command = check.command ?? profile?.command;
+			if (!command) {
+				context.addIssue({
+					code: 'custom',
+					path: ['checks', index, 'command'],
+					message: 'A check command or profile command is required.'
+				});
+				continue;
+			}
+			for (const literal of literalTestPaths(command)) {
+				if (!matchesCheckPath(literal, check.path)) {
+					context.addIssue({
+						code: 'custom',
+						path: ['checks', index, 'command'],
+						message: `Command test path "${literal}" does not match check path "${check.path}".`
+					});
+				}
+			}
+		}
+	})
+	.transform((config) => ({
+		...config,
+		checks: config.checks.map((check) => {
+			const profile = check.profile ? config.profiles[check.profile] : undefined;
+			return {
+				...profile,
+				...check,
+				command: check.command ?? profile?.command ?? ''
+			};
+		})
+	}));
+
 export const defaultVerifyConfig: VerifyConfig = {
 	schemaVersion: 1,
 	setup: [],
@@ -79,6 +144,7 @@ export const defaultVerifyConfig: VerifyConfig = {
 	outputs: [],
 	builds: [],
 	tools: [],
+	profiles: {},
 	checks: [],
 	runners: {
 		vitest: 'bun x vitest run {target}',
