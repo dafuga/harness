@@ -2,6 +2,8 @@
 import { scopedVerify, timer, verifyEnv, renderAttachment } from './scopedVerify';
 import type { VerifyOptions, VerifyResult } from './runVerify.types';
 export type { VerifyOptions } from './runVerify.types';
+export type { VerifyPlanReport } from './verification-service/verifyPlanReport.types';
+export { verifyPlan } from './verifyPlanWorkflow';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../../core/development-tooling/errors';

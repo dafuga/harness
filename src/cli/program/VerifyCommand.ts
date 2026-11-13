@@ -6,6 +6,7 @@ import {
 	renderVerify,
 	verifyCheck,
 	verifyIdentity,
+	verifyPlan,
 	verifyRun,
 	verifyStamp
 } from '../../workflows/verification-evidence/run-verify/runVerify';
@@ -42,6 +43,7 @@ export function registerVerifyCommand(program: Command): void {
 		.option('--json', 'Print the record and its directory.')
 		.description('Run the affected checks and scenarios and store the record, pass or fail.')
 		.action(runVerification);
+	registerPlan(verify);
 	verify
 		.command('check')
 		.option('--commit <revision>', 'Commit the record must prove.', 'HEAD')
@@ -57,6 +59,49 @@ export function registerVerifyCommand(program: Command): void {
 				console.log(`Commit ${report.commit} is verified by ${report.record.slice(0, 12)}.`);
 		});
 	registerIdentity(verify);
+}
+
+function registerPlan(verify: Command): void {
+	verify
+		.command('plan')
+		.option(
+			'--commit <revision>',
+			'Commit to plan; uncommitted changes are never included.',
+			'HEAD'
+		)
+		.option(
+			'--base <revision>',
+			'Revision to compare against, used only if a passing record proves it; default first parent.'
+		)
+		.option(
+			'--runtime <kind>',
+			'Local kernel runtime for impact: default, module, wasm or process; http is disallowed.'
+		)
+		.option('--test-timeout <ms>', 'Hard limit for each check, overriding the configured one.')
+		.option('--entity <id>', 'Report only this entity’s scenario checks.')
+		.option('--json', 'Print the report as JSON.')
+		.description('Report selected checks and grouping candidates without running checks.')
+		.action(async (flags: Flags) => {
+			const report = await verifyPlan(flags);
+			console.log(flags.json ? JSON.stringify(report, null, 2) : renderPlan(report));
+		});
+}
+
+function renderPlan(report: Awaited<ReturnType<typeof verifyPlan>>): string {
+	return [
+		`Verification plan for ${report.source.commit} (${report.mode}; checks executed: 0).`,
+		`Base: ${report.source.baseResolution}. ${report.source.selectionNote}`,
+		report.sideEffects,
+		`Selected ${report.plannedChecks} checks; ${report.candidateGroups} candidate groups cover ${report.candidateChecks} checks.`,
+		`${report.singletons} singletons; ${report.ineligible} checks could not be grouped safely.`,
+		...report.candidates.map(
+			(candidate) =>
+				`  ${candidate.id}: ${candidate.checks.length} ${candidate.runner} checks, cwd ${candidate.cwd}, timeout ${candidate.timeoutMs} ms`
+		),
+		...report.checks
+			.filter((check) => check.decision !== 'candidate')
+			.map((check) => `  ${check.decision}: ${check.id} (${check.reason})`)
+	].join('\n');
 }
 
 async function runVerification(flags: Flags): Promise<void> {

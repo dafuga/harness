@@ -134,7 +134,7 @@ export function scopedContext(context: Base): Base {
 	return { ...context, base: context.head };
 }
 
-function scopedImpact(head: string, runtime: ImpactReport['runtime']): ImpactReport {
+export function scopedImpact(head: string, runtime: ImpactReport['runtime']): ImpactReport {
 	const units = { direct: [], indirect: [], added: [], removed: [] };
 	const tests = { selected: [], excluded: [], removed: [] };
 	const scenarios = { affected: [], unaffected: [] };

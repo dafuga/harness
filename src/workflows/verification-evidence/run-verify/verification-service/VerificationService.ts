@@ -4,6 +4,7 @@ export type { VerifyContext } from './VerificationService.types';
 
 import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
 import type { ScenarioResult } from '../../../../core/verification-evidence/verificationTypes';
+import type { PlannedCheck } from '../../../../utils/verification-evidence/verifyPlan';
 
 import {
 	VerificationStoreRepository,
@@ -33,6 +34,26 @@ export class VerificationService {
 		const { context } = this;
 		const startedAt = new Date().toISOString();
 		const directory = this.store.directoryFor(context.commit, startedAt);
+		const { plan, referenced, rerun } = this.selection();
+		const executed = await this.snapshotRun(directory).execute(plan, this.artifactPaths());
+		const scenarios = rerun.map((scenario) => this.judge(scenario, executed));
+		const assembly = new RecordAssemblyService({
+			...context,
+			profile: this.profile,
+			store: this.store
+		});
+		const record = await assembly.assemble({ startedAt, executed, scenarios, referenced });
+		await this.store.save(record, directory);
+		return { record, directory };
+	}
+
+	/** Builds exactly the check list used by run(), without creating a snapshot or executing it. */
+	plan(): PlannedCheck[] {
+		return this.selection().plan;
+	}
+
+	private selection() {
+		const { context } = this;
 		const { entity } = context;
 		const referenced = entity ? [] : this.referenced();
 		const kept = new Set(referenced.map((scenario) => scenario.id));
@@ -46,17 +67,11 @@ export class VerificationService {
 			unitsConfig: context.head.config,
 			testTimeoutMs: context.testTimeoutMs
 		});
-		const plan = entity ? planned.map((check) => scopedCheck(check, entity)) : planned;
-		const executed = await this.snapshotRun(directory).execute(plan, this.artifactPaths());
-		const scenarios = rerun.map((scenario) => this.judge(scenario, executed));
-		const assembly = new RecordAssemblyService({
-			...context,
-			profile: this.profile,
-			store: this.store
-		});
-		const record = await assembly.assemble({ startedAt, executed, scenarios, referenced });
-		await this.store.save(record, directory);
-		return { record, directory };
+		return {
+			plan: entity ? planned.map((check) => scopedCheck(check, entity)) : planned,
+			referenced,
+			rerun
+		};
 	}
 
 	/** Files that declared Wasm and process targets build, to be measured in the snapshot. */
