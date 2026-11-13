@@ -30,7 +30,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Budget ledger stream failure",
 				"type": "thrown",
 				"description": "An unreadable budget-ledger stream rejects the report; missing files/directories are treated as zero or empty by the stat/list helpers."
 			}

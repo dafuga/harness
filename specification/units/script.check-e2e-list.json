@@ -47,7 +47,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid test script configuration or discovery failure",
 				"type": "thrown",
 				"description": "The CLI throws when package.json lacks either required script; file or JSON reads can also fail."
 			}

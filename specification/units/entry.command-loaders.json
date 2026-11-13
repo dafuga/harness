@@ -23,7 +23,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Command family loading failure",
 				"type": "thrown",
 				"description": "A selected loader can reject if its dynamic import fails or its command-family registration throws."
 			}

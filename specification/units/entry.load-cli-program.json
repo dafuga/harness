@@ -30,7 +30,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Selected command registration failure",
 				"type": "thrown",
 				"description": "A selected command family import or registration failure rejects the returned promise."
 			}
@@ -56,7 +56,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Selected command registration failure",
 						"type": "thrown",
 						"description": "Loading a selected command family can reject if its dynamic import or registration fails."
 					}

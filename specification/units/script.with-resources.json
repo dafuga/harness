@@ -36,7 +36,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid resource wrapper arguments",
 				"type": "thrown",
 				"description": "Throws a Usage error unless a supported priority, `--` separator, and nonempty command are supplied."
 			}
@@ -68,7 +68,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid resource wrapper arguments",
 						"type": "thrown",
 						"description": "Throws a Usage error unless a supported priority, `--` separator, and nonempty command are supplied."
 					}

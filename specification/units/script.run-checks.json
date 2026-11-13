@@ -47,7 +47,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Check runner callback or launcher failure",
 				"type": "thrown",
 				"description": "A throwing report callback is not caught and can reject runSteps; CLI spawn or package-script failures may also reject."
 			}
@@ -85,7 +85,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Check runner callback or launcher failure",
 						"type": "thrown",
 						"description": "A throwing report callback propagates; exceptions from the run callback are converted to exit status 1."
 					}

@@ -30,7 +30,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unexpected command or finalization failure",
 				"type": "thrown",
 				"description": "Unexpected command, analytics, or activity-hook failures are rethrown after the finalization attempt."
 			}
@@ -56,7 +56,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unexpected command or finalization failure",
 						"type": "thrown",
 						"description": "Unexpected parsing or finalization failures are rethrown; failures in the finalization hooks can reject the returned promise."
 					}

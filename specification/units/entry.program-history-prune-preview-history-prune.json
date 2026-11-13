@@ -71,7 +71,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid retention bounds or cache inventory failure",
 				"type": "thrown",
 				"description": "Invalid keep-last or age bounds throw; underlying Git or filesystem operations may also reject."
 			}
@@ -115,7 +115,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid retention bounds or cache inventory failure",
 						"type": "thrown",
 						"description": "Invalid retention bounds throw before scanning; Git adapter or cache-scan failures can reject the promise."
 					}
