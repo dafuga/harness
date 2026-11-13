@@ -31,7 +31,7 @@ When projecting provenance-rich dependencies into query indexes, preserve raw re
 
 ## Orchestrating Work
 
-When you orchestrate (Zenith root, or any session that hands work to workers), run independent work in parallel by default: draft, review and implement independent units concurrently. Use `depends_on` only for real ordering, never to queue independent units. Sample memory and CPU while workers run, stay under any memory cap the mission sets, and lower concurrency only when they get tight. Review each result as it lands instead of waiting for the whole batch.
+When you orchestrate (Zenith root, or any session that hands work to workers), run independent work in parallel by default: draft, review and implement independent units concurrently. Use `depends_on` only for real ordering, never to queue independent units. Serialize broad checks, builds and history prebuilds as required by the project instructions. Sample memory and CPU while workers run, stay under any memory cap the mission sets, and lower concurrency only when they get tight. Review each result as it lands instead of waiting for the whole batch.
 
 ## Configuration review
 
@@ -43,11 +43,15 @@ Keep schemas, protocol invariants, lookup tables, fixture/build machinery and do
 
 - Land completed work on the common `main` codebase. Fetch and safely incorporate remote `main`, preserve unrelated work and source history, and give the coordinated merger a frozen source head until its merge callback.
 - Show the actual merged `main` version with the change: verify runtime source and served revision data, select current `main`, then capture and inspect fresh pixels. Report pending merge or publication separately; an older commit or feature fixture is not current-main delivery.
-- Keep one persistent Harness browsing preview across chats and worktrees. The shared endpoint is currently `http://127.0.0.1:5690`, with ownership status at `http://127.0.0.1:47840/__harness_preview__`. Verify the live owner and served source/history; Platforms currently owns updates.
+- Keep one persistent Harness browsing preview across chats and worktrees. Verify the configured endpoint's live owner and served source/history; coordinate updates with its owner.
 - Reuse that preview. When a different revision or data set is needed, coordinate its update with the owner; do not describe an older served build as proof of unmerged work.
 - Do not evade the singleton through `HARNESS_PREVIEW_OWNER_PORT`, another free port, direct Vite or `build/index.js` launches, or `report serve`. An additional persistent preview requires Daniel's explicit request.
 - Isolated automated test servers are allowed only for their fixture lifetime. Use existing test configuration, retain task-owned process handles, and tear down in `finally` on success, failure, timeout and cancellation. Do not leave a fixture detached for browsing or stop another task's server.
 - Preserve the shared preview and all source/history/evidence. After authorized cleanup, re-inventory listeners and check ownership, HTTP readiness and the browser; a stopped worker may otherwise respawn under its supervisor.
+
+### Local machine-specific preview endpoint
+
+On Daniel's Mac, the shared preview is `http://127.0.0.1:5690` and ownership status is `http://127.0.0.1:47840/__harness_preview__`. Platforms owns updates to this preview.
 
 ## Service Ownership
 

@@ -1027,17 +1027,7 @@ do not inflate usage counts.
 
 ## Bug and Regression Loops
 
-- First explain why existing tests missed a reported bug. Identify the responsible standardized test or scenario and the missing inputs, lifecycle, fixture or assertion.
-- Strengthen that existing test and its shared coverage in Harness's normal format. If a category is missing, extend reusable standardized coverage; do not add a one-off bug-specific test.
-- Prove the strengthened test fails before repairing the product, then prove the same unchanged test passes afterward. New `bug-fix`, `fix`, and `regression-prevention` loops enforce step order, including coverage diagnosis before repair; existing loop records keep their history.
-- Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
-- Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
-- Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
-- Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
-- For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
-- Normal browser flows, including screenshot and video runs, require zero unexpected `console.error` or `pageerror` events. Generated apps use `tests/e2e/support/browserTest.ts`; Harness suites use `test/support/browserTest.ts`. The automatic fixture saves a `browser-errors` JSON attachment when errors occur, and adds nothing on a clean run.
-- Deliberate error cases call `browserErrors.expectError({ type: 'console', message: 'exact message', source: 'exact source URL', reason: 'what this test deliberately fails' })` before the action. `source` is optional; each declaration permits exactly one event. Missing, additional and unrelated errors fail. Keep application logging intact and repair unexpected errors with the same unchanged red-green regression.
-- Call `browserErrors.watch(context)` before navigating manually created contexts or Electron windows. Tests using Playwright directly outside its test runner can create `browserErrorCollector()`, watch their contexts, and call `finish()` in teardown; failures include the captured diagnostics.
+Follow the canonical [bug and regression loop rules](AGENTS.md#bug-and-regression-loops) and [browser error rules](.codex/skills/harness/SKILL.md#bug-and-regression-loops).
 
 ### Experimental Codex gateway
 
