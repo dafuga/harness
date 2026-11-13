@@ -10,27 +10,30 @@ import { beatFromEnvironment } from './workflows/projects-sessions/runActivity';
 import { isExpectedCliError } from './core/development-tooling/errors';
 import { pipedOutput } from './utils/development-tooling/pipedOutput';
 
-pipedOutput();
-const buildWarning = staleBuild(fileURLToPath(import.meta.url));
-if (buildWarning) console.error(buildWarning);
-const startedAt = Date.now();
-try {
-	await buildProgram().exitOverride().parseAsync(process.argv);
-} catch (error) {
-	if (error instanceof CommanderError) process.exitCode = error.exitCode;
-	else {
-		process.exitCode = 1;
-		if (isExpectedCliError(error)) console.error(`Error: ${error.message}`);
-		else throw error;
-	}
-} finally {
-	await recordCommandAnalytics(process.argv.slice(2), startedAt, process.exitCode);
-	await beatFromEnvironment();
-	if (process.argv[2] === 'loop') {
-		try {
-			await importAnalytics(process.cwd(), false);
-		} catch {
-			console.error('Warning: loop analytics could not be synchronized.');
+// Compatibility exports stay importable without invoking the command-line application.
+if (import.meta.main) {
+	pipedOutput();
+	const buildWarning = staleBuild(fileURLToPath(import.meta.url));
+	if (buildWarning) console.error(buildWarning);
+	const startedAt = Date.now();
+	try {
+		await buildProgram().exitOverride().parseAsync(process.argv);
+	} catch (error) {
+		if (error instanceof CommanderError) process.exitCode = error.exitCode;
+		else {
+			process.exitCode = 1;
+			if (isExpectedCliError(error)) console.error(`Error: ${error.message}`);
+			else throw error;
+		}
+	} finally {
+		await recordCommandAnalytics(process.argv.slice(2), startedAt, process.exitCode);
+		await beatFromEnvironment();
+		if (process.argv[2] === 'loop') {
+			try {
+				await importAnalytics(process.cwd(), false);
+			} catch {
+				console.error('Warning: loop analytics could not be synchronized.');
+			}
 		}
 	}
 }
