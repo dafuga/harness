@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Feature: Relation Catalog Cards
 
 Uses and Used In share the item renderer used by the collection pages. Component and page relationships use their existing screenshot cards; helpers use their existing example-call cards. Models, services, shells and configs retain their collection tables. Relationship items omit verification marks and preserve the current branch and commit. Private callables in Other and unknown support dependencies remain accessible.

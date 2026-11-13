@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Feature: Service examples
 
 A service's evidence tab is named Examples. It explains how to create the service and then how its supported public instance methods are called, from documentation committed to the same Git tree as the service. Recorded verification stays available beside the examples, clearly separate, and never lends them a verdict.

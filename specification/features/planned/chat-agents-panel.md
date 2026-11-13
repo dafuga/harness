@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Chat agents panel
 
 Project chat offers Chat and Agents views. Switching views and following a module preserves the current message draft.

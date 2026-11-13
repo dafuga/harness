@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Compact commit history
 
 History lists Date, Commit, Behavior change, Size, Complexity and Latency. Commit hashes open the entity at that revision, retaining helper identity. Dates use relative words and expose the exact date on hover. Remove the selected-change panel, attempts column, evidence column and redundant revision links. Full long reasons remain available inline in their row.

@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Feature: Global Search
 
 ## Overview

@@ -150,7 +150,8 @@ function completeLoopsFor(root: string, docPath: string): string[] {
 function parseMetadata(text: string) {
 	const match = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(text);
 	const values = new Map<string, string>();
-	for (const line of match?.[1].split(/\r?\n/) ?? []) {
+	const lines = match?.[1].split(/\r?\n/) ?? [];
+	for (const line of lines) {
 		const field = /^([A-Za-z][\w]*):\s*(.*)$/.exec(line);
 		if (field) values.set(field[1], field[2]);
 	}
@@ -160,7 +161,9 @@ function parseMetadata(text: string) {
 		if (Array.isArray(parsed))
 			unitIds = parsed.filter((id): id is string => typeof id === 'string');
 	} catch {
-		// Missing/invalid IDs remain unknown; this report does not repair feature metadata.
+		unitIds = lines
+			.filter((line) => /^\s+-\s+/.test(line))
+			.map((line) => line.replace(/^\s+-\s+/, '').replace(/^['"]|['"]$/g, ''));
 	}
 	return {
 		status: values.get('status'),

@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Remote Harness companion
 
 Use the same Svelte workspace, routes, image threads, and controls in Electron and Capacitor iOS. Environment adapters provide the typed DesktopBridge; web collaboration remains human comments only.

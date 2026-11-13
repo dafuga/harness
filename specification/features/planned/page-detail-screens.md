@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Feature: Concise page details
 
 After squash landing, focused screenshots may be retained only when the complete

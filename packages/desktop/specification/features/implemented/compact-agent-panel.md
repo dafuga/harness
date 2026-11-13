@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Feature: Compact Agent Panel
 
 ## Overview

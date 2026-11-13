@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Capture device states
 
 Retained screenshots must use one logical state across desktop, tablet and mobile.

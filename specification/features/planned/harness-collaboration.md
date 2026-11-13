@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Feature: Harness collaboration
 
 Google users review their own projects, invite collaborators, and comment on exact committed images. Hosted comments never invoke agents. Electron supports the same projects, with local Plan/Change controls.

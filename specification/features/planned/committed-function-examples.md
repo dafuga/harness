@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Feature: Committed function examples
 
 A function's Examples tab explains uses with named input → expected output cases. The content is documentation committed to the same Git tree as the function; it does not depend on a verification run.

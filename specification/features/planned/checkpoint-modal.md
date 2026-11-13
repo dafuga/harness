@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Checkpoint modal
 
 Make the game editor map the main authoring surface. Adding or clicking a checkpoint opens a focused modal. Describe the desired checkpoint, generate a candidate image, request changes, then explicitly use the chosen image. Keep detailed executable rules and scene settings behind progressive disclosure.

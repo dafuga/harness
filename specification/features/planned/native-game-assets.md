@@ -5,6 +5,7 @@ unitIds: []
 owner: null
 reviewedAt: null
 ---
+
 # Native renderer and saved AI assets
 
 New game projects render native Three.js geometry in both dimensions (orthographic camera for 2D; perspective for 3D). Their manifest explicitly records aiRendering:false. Keep app routes, executable checkpoint mechanics, existing reusable rendering adapters and opt-in desktop preview code. Assets are prepared by GPT Image or another selected image provider, saved under static/game/assets, and loaded as ordinary Three.js textures/sprites/models. Document provenance and distinguish material/sprite images from geometry/GLB. No model calls, worker start, provider credential or paid session during normal gameplay. Preserve checkpoint image generation separately.
