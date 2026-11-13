@@ -8,8 +8,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/check-verification-forwards.ts"],
-		"symbols": ["checkVerificationForwards"]
+		"source": [
+			"scripts/check-verification-forwards.ts",
+			"scripts/check-verification-forwards.types.ts"
+		],
+		"symbols": [
+			"checkVerificationForwards",
+			"ForwardEntry",
+			"ForwardRegistry",
+			"ForwardResolutionContext",
+			"ForwardCheckContext",
+			"ExportResolution"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -54,7 +64,13 @@
 						"description": "List of human-readable registry, target, UID, resolution, or discovery issues; an empty list means all discovered forwards satisfy these checks."
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Unexpected filesystem failures during source or target inspection can throw; missing/invalid registry data is returned as issue text."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],

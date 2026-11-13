@@ -1826,7 +1826,7 @@
 			"unit": "command.analytics",
 			"from": "src/commands/AnalyticsCommand.ts",
 			"to": "src/cli/program/AnalyticsCommand.ts",
-			"definition": "fb326ecd4538912278f445eaddf24f3d32f7c9bacbad8b99fdd9a87a890d7e4c",
+			"definition": "e5308e52ac3690c12bc759fc6d923293c77d699911a5a4fc9322b5b6daf8b737",
 			"previousReviews": [
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
@@ -1845,12 +1845,18 @@
 					"path": "src/cli/program/AnalyticsCommand.ts",
 					"definition": "da04f00e7ab570a4a5e2638baeaeb9b5e49f0a46fc4dd433691ef3259be1e879",
 					"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
+				},
+				{
+					"commit": "ffeb19911929212808890dc3d36f4a3ad9718b0a",
+					"path": "src/cli/program/AnalyticsCommand.ts",
+					"definition": "fb326ecd4538912278f445eaddf24f3d32f7c9bacbad8b99fdd9a87a890d7e4c",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			],
 			"review": {
-				"commit": "ffeb19911929212808890dc3d36f4a3ad9718b0a",
+				"commit": "9c62f93cf019176ee612459c00c250c0db3fc9ff",
 				"path": "src/cli/program/AnalyticsCommand.ts",
-				"definition": "fb326ecd4538912278f445eaddf24f3d32f7c9bacbad8b99fdd9a87a890d7e4c",
+				"definition": "e5308e52ac3690c12bc759fc6d923293c77d699911a5a4fc9322b5b6daf8b737",
 				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 			},
 			"relocationDefinition": "5043fdbf76fd08dc5df16f5dd7d7eb348b0e2248dee70f1381c0f638b6a9194a"
@@ -1859,13 +1865,13 @@
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "d53b668186ed7645abfef355d77dc8a8dd7b19cb46cc423cecc631646c4584e0",
+			"definition": "f802cac7b431bf473de8afb3cd8f471f5d02f5eecb01e4447b317fd3b9f99578",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
+				"commit": "9c62f93cf019176ee612459c00c250c0db3fc9ff",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "d53b668186ed7645abfef355d77dc8a8dd7b19cb46cc423cecc631646c4584e0",
-				"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
+				"definition": "f802cac7b431bf473de8afb3cd8f471f5d02f5eecb01e4447b317fd3b9f99578",
+				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 			},
 			"previousReviews": [
 				{
@@ -1885,6 +1891,12 @@
 					"path": "src/cli/program/AnalyticsService.ts",
 					"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
 					"reason": "Retain the additive benchmark analytics query alongside the current sibling type companion."
+				},
+				{
+					"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "d53b668186ed7645abfef355d77dc8a8dd7b19cb46cc423cecc631646c4584e0",
+					"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
 				}
 			]
 		},
@@ -5002,14 +5014,22 @@
 			"unit": "workflow.loop-search",
 			"from": "src/workflows/loopSearch.ts",
 			"to": "src/cli/program/loopSearch.ts",
-			"definition": "2a46eb057892bc38a0a304793a78dd7deb824a199257c8db3df0c0da5c09d594",
+			"definition": "49040e9f5845476a8a1ee3c8e461d5b7a04a138540fff918a910bb61320fd20a",
 			"relocationDefinition": "1778b62b24b95d14637892548eb20905c81b15703bc142a7e626e75b120a703f",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "9dda9c67e6e5c640ec3f75df505a9391087df4e2",
 				"path": "src/cli/program/loopSearch.ts",
-				"definition": "2a46eb057892bc38a0a304793a78dd7deb824a199257c8db3df0c0da5c09d594",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "49040e9f5845476a8a1ee3c8e461d5b7a04a138540fff918a910bb61320fd20a",
+				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/loopSearch.ts",
+					"definition": "2a46eb057892bc38a0a304793a78dd7deb824a199257c8db3df0c0da5c09d594",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "command.audit",

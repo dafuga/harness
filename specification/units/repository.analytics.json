@@ -16,6 +16,7 @@
 			"AnalyticsRepository",
 			"AnalyticsRepository",
 			"AnalyticsRepository.constructor",
+			"AnalyticsRepository.open",
 			"AnalyticsRepository.reconcileHistorical",
 			"AnalyticsRepository.record",
 			"AnalyticsRepository.recordImported",
@@ -32,6 +33,19 @@
 				"type": "string",
 				"required": false,
 				"description": "Optional directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
+			},
+			{
+				"name": "AnalyticsRepository.constructor.options",
+				"type": "{ initialization?: 'synchronous' | 'deferred' }",
+				"required": false,
+				"default": {},
+				"description": "Initialization mode; deferred is used internally by open to await schema admission without blocking retry sleeps."
+			},
+			{
+				"name": "AnalyticsRepository.open.home",
+				"type": "string",
+				"required": false,
+				"description": "Directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical.root",
@@ -72,6 +86,11 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "AnalyticsRepository.open",
+				"type": "Promise<AnalyticsRepository>",
+				"description": "Resolves to an initialized repository after bounded asynchronous busy/locked retries; ordinary writes retain the five-second SQLite busy timeout."
+			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical",
 				"type": "Promise<void>",
@@ -120,10 +139,52 @@
 				"type": "thrown",
 				"description": "prune requires a canonical ISO UTC timestamp strictly in the past",
 				"examples": ["Retention cutoff must be an ISO UTC timestamp in the past."]
+			},
+			{
+				"name": "Analytics initialization timeout",
+				"type": "thrown",
+				"description": "open rejects after its five-second retry budget if SQLite remains busy or locked."
 			}
 		],
 		"errorStatus": "found",
 		"operations": [
+			{
+				"name": "AnalyticsRepository.open",
+				"inputs": [
+					{
+						"name": "AnalyticsRepository.open.home",
+						"type": "string",
+						"required": false,
+						"description": "Directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsRepository.open",
+						"type": "Promise<AnalyticsRepository>",
+						"description": "Resolves to an initialized repository after bounded asynchronous busy/locked retries; ordinary writes retain the five-second SQLite busy timeout."
+					}
+				],
+				"errors": [
+					{
+						"name": "Unsupported analytics schema version",
+						"type": "thrown",
+						"description": "construction rejects a database whose user_version is newer than the supported schema",
+						"examples": ["Unsupported analytics schema version."]
+					},
+					{
+						"name": "Analytics storage failure",
+						"type": "propagated",
+						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+					},
+					{
+						"name": "Analytics initialization timeout",
+						"type": "thrown",
+						"description": "open rejects after its five-second retry budget if SQLite remains busy or locked."
+					}
+				],
+				"errorStatus": "declared"
+			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical",
 				"inputs": [
@@ -295,13 +356,20 @@
 						"type": "string",
 						"required": false,
 						"description": "Optional directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
+					},
+					{
+						"name": "AnalyticsRepository.constructor.options",
+						"type": "{ initialization?: 'synchronous' | 'deferred' }",
+						"required": false,
+						"default": {},
+						"description": "Initialization mode; deferred is used internally by open to await schema admission without blocking retry sleeps."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.constructor",
 						"type": "AnalyticsRepository",
-						"description": "Initialized SQLite repository with its private database and schema."
+						"description": "SQLite repository; normal construction initializes synchronously, while deferred initialization is reserved for open."
 					}
 				],
 				"errors": [

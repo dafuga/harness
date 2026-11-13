@@ -30,32 +30,42 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "searchLoops.input",
 				"type": "SearchLoopsInput",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional project root and case-insensitive query; defaults to the current directory and all matching templates and loop instances."
 			},
 			{
 				"name": "renderLoopSearchResults.results",
 				"type": "LoopSearchResult[]",
-				"required": true
+				"required": true,
+				"description": "Search rows to display in their supplied order."
 			}
 		],
 		"outputs": [
 			{
 				"name": "searchLoops",
-				"type": "Promise<LoopSearchResult[]>"
+				"type": "Promise<LoopSearchResult[]>",
+				"description": "Templates and loop rows filtered by query; malformed or unreadable persisted loops become diagnostic rows and missing states are omitted."
 			},
 			{
 				"name": "renderLoopSearchResults",
-				"type": "string"
+				"type": "string",
+				"description": "Plain-text kind, identifier, title and summary for each row, or a no-match message."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Loop search filesystem failure",
+				"type": "propagated",
+				"description": "Unexpected directory or template discovery failures propagate; individual persisted loop failures are represented by diagnostic rows."
+			}
+		],
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "searchLoops",
@@ -64,17 +74,25 @@
 						"name": "searchLoops.input",
 						"type": "SearchLoopsInput",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional project root and case-insensitive query; defaults to the current directory and all matching templates and loop instances."
 					}
 				],
 				"outputs": [
 					{
 						"name": "searchLoops",
-						"type": "Promise<LoopSearchResult[]>"
+						"type": "Promise<LoopSearchResult[]>",
+						"description": "Templates and loop rows filtered by query; malformed or unreadable persisted loops become diagnostic rows and missing states are omitted."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Loop search filesystem failure",
+						"type": "propagated",
+						"description": "Unexpected directory or template discovery failures propagate; individual persisted loop failures are represented by diagnostic rows."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderLoopSearchResults",
@@ -82,22 +100,29 @@
 					{
 						"name": "renderLoopSearchResults.results",
 						"type": "LoopSearchResult[]",
-						"required": true
+						"required": true,
+						"description": "Search rows to display in their supplied order."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderLoopSearchResults",
-						"type": "string"
+						"type": "string",
+						"description": "Plain-text kind, identifier, title and summary for each row, or a no-match message."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "workflow.loop-state",
 			"via": "import",

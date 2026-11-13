@@ -19,55 +19,64 @@
 			"ModuleTaskAnalyticsService.metrics",
 			"ModuleTaskAnalyticsService.sync",
 			"TaskAnalyticsStore",
+			"TaskAnalyticsStoreFactory",
 			"TaskAnalyticsDetail",
 			"TaskPriceRates"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskAnalyticsService.constructor.store",
-				"type": "() => TaskAnalyticsStore",
-				"required": false
+				"type": "TaskAnalyticsStoreFactory",
+				"required": false,
+				"description": "Factory for a synchronous or promised analytics store; defaults to the asynchronous AnalyticsRepository.open factory."
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.quote.model",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Model identifier used to select the existing local task pricing rates."
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.quote.usage",
 				"type": "TaskUsage",
-				"required": false
+				"required": false,
+				"description": "Reported token usage; missing counts remain unknown in the resulting estimate."
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.metrics.events",
 				"type": "AnalyticsEvent[]",
-				"required": true
+				"required": true,
+				"description": "Analytics events to deduplicate and summarize; only task events with module-task details contribute."
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.sync.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project root whose persisted module-task queue is reconciled into analytics."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskAnalyticsService.quote",
-				"type": "unknown"
+				"type": "TaskApiCost",
+				"description": "Locally estimated task cost and range from the current taskPricing helper; this is not an authoritative billing meter."
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.metrics",
-				"type": "unknown"
+				"type": "ReturnType<typeof taskMetrics>",
+				"description": "Task, execution, submission and review counters with token/cost totals and per-model groups; incomplete usage and costs remain null."
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.sync",
-				"type": "Promise<number>"
+				"type": "Promise<number>",
+				"description": "Number of imported events; returns zero when disabled, empty, or after a caught storage/queue failure and warning."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ModuleTaskAnalyticsService.quote",
@@ -75,22 +84,25 @@
 					{
 						"name": "ModuleTaskAnalyticsService.quote.model",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Model identifier used to select the existing local task pricing rates."
 					},
 					{
 						"name": "ModuleTaskAnalyticsService.quote.usage",
 						"type": "TaskUsage",
-						"required": false
+						"required": false,
+						"description": "Reported token usage; missing counts remain unknown in the resulting estimate."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskAnalyticsService.quote",
-						"type": "unknown"
+						"type": "TaskApiCost",
+						"description": "Locally estimated task cost and range from the current taskPricing helper; this is not an authoritative billing meter."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.metrics",
@@ -98,17 +110,19 @@
 					{
 						"name": "ModuleTaskAnalyticsService.metrics.events",
 						"type": "AnalyticsEvent[]",
-						"required": true
+						"required": true,
+						"description": "Analytics events to deduplicate and summarize; only task events with module-task details contribute."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskAnalyticsService.metrics",
-						"type": "unknown"
+						"type": "ReturnType<typeof taskMetrics>",
+						"description": "Task, execution, submission and review counters with token/cost totals and per-model groups; incomplete usage and costs remain null."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskAnalyticsService.sync",
@@ -116,17 +130,19 @@
 					{
 						"name": "ModuleTaskAnalyticsService.sync.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project root whose persisted module-task queue is reconciled into analytics."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskAnalyticsService.sync",
-						"type": "Promise<number>"
+						"type": "Promise<number>",
+						"description": "Number of imported events; returns zero when disabled, empty, or after a caught storage/queue failure and warning."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -135,18 +151,20 @@
 				"inputs": [
 					{
 						"name": "ModuleTaskAnalyticsService.constructor.store",
-						"type": "() => TaskAnalyticsStore",
-						"required": false
+						"type": "TaskAnalyticsStoreFactory",
+						"required": false,
+						"description": "Factory for a synchronous or promised analytics store; defaults to the asynchronous AnalyticsRepository.open factory."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskAnalyticsService.constructor",
-						"type": "unknown"
+						"type": "ModuleTaskAnalyticsService",
+						"description": "Task analytics service retaining the supplied store factory without opening storage."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
