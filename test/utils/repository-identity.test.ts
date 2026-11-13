@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, renameSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, renameSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, expect, test } from 'vitest';
@@ -133,13 +133,16 @@ test('a site that is no repository is that one directory, and no repository belo
 	expect(sameSite(site, other)).toBe(false);
 
 	// The plain-site path cache is bounded too: a changed symlink is observed after 512 newer keys.
-	const plainTargetA = mkdtempSync(join(root, 'plain-cache-target-a-'));
-	const plainTargetB = mkdtempSync(join(root, 'plain-cache-target-b-'));
+	const plainTargetA = at('plain-cache-target-a');
+	mkdirSync(plainTargetA);
+	const plainTargetB = at('plain-cache-target-b');
+	mkdirSync(plainTargetB);
 	const plainSiteLink = join(root, 'plain-cache-site-link');
 	symlinkSync(plainTargetA, plainSiteLink);
 	expect(sameSite(plainSiteLink, plainTargetA)).toBe(true);
 	for (let index = 0; index < 512; index++) {
-		const filler = mkdtempSync(join(root, `plain-cache-filler-${index}-`));
+		const filler = at(`plain-cache-filler-${index}`);
+		mkdirSync(filler);
 		expect(sameSite(filler, filler)).toBe(true);
 	}
 	rmSync(plainSiteLink);
