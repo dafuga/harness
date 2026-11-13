@@ -140,6 +140,8 @@ test('loop evaluators report passing and failing commands', async () => {
 		const failed = await evaluateLoop({ root, loop: 'fail-loop' });
 
 		expect(passed.passed).toBe(true);
+		const skipped = await evaluateLoop({ root, loop: 'pass-loop', runEvaluators: false });
+		expect(skipped).toMatchObject({ passed: false, skipped: true, results: [] });
 		expect(failed.passed).toBe(false);
 		expect(failed.results[0].exitCode).toBe(2);
 		const overflow = await evaluateLoop({ root, loop: 'overflow-loop' });

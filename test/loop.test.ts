@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -80,6 +80,12 @@ test('loop workflow fails cleanly for invalid or conflicting input', async () =>
 		await expect(
 			completeLoopStep({ root, loop: 'support-chat', step: 'missing', evidence: 'Nope' })
 		).rejects.toThrow('does not exist');
+		const path = join(root, 'specification/loops/support-chat/loop.json');
+		const saved = JSON.parse(await readFile(path, 'utf8'));
+		await writeFile(path, JSON.stringify({ ...saved, steps: 'corrupt' }));
+		await expect(readLoopStatus({ root, loop: 'support-chat' })).rejects.toThrow(
+			'Invalid loop state'
+		);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
