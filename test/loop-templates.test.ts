@@ -127,6 +127,12 @@ test('loop evaluators report passing and failing commands', async () => {
 	try {
 		await writeTemplate(root, 'pass', evaluatorTemplate('pass', 'bun --version'));
 		await writeTemplate(root, 'fail', evaluatorTemplate('fail', 'bun -e "process.exit(2)"'));
+		await writeTemplate(
+			root,
+			'overflow',
+			evaluatorTemplate('overflow', `bun -e 'process.stdout.write("x".repeat(9000000))'`)
+		);
+		await createLoop({ root, name: 'overflow-loop', goal: 'Bounds output', from: 'overflow' });
 		await createLoop({ root, name: 'pass-loop', goal: 'Passes', from: 'pass' });
 		await createLoop({ root, name: 'fail-loop', goal: 'Fails', from: 'fail' });
 
@@ -136,6 +142,9 @@ test('loop evaluators report passing and failing commands', async () => {
 		expect(passed.passed).toBe(true);
 		expect(failed.passed).toBe(false);
 		expect(failed.results[0].exitCode).toBe(2);
+		const overflow = await evaluateLoop({ root, loop: 'overflow-loop' });
+		expect(overflow.passed).toBe(false);
+		expect(overflow.results[0].stderr).toContain('output limit');
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
