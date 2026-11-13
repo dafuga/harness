@@ -36,6 +36,15 @@ test('a scoped run keeps only the scenarios and states that show the entity', ()
 	expect(scoped.states.map((state) => state.id)).toEqual(['badge', 'badge-failed']);
 	expect(scoped.evidence?.[0].states).toEqual(['badge', 'badge-failed']);
 	expect(scoped.viewports).toHaveLength(2);
+	const implicit = {
+		...catalog,
+		states: catalog.states.map(({ id }) => ({ id }))
+	} as ScenarioManifest;
+	const [inherited] = scopedScenarios([implicit], badge);
+	expect(
+		inherited.states.map(({ id }) => id),
+		'Legacy membership covers every state when no state names the unit'
+	).toEqual(['badge', 'badge-failed', 'modal']);
 });
 
 test('an entity no scenario covers is refused', () => {
