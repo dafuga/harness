@@ -7,12 +7,17 @@ import { platform } from 'node:os';
 const tool = '/usr/bin/time';
 
 /** Peak resident memory of one process run, from the system `time` tool where it exists. */
-export function peakMemory(command: string, args: string[], input: string): PeakMemory {
+export async function peakMemory(
+	command: string,
+	args: string[],
+	input: string,
+	timeoutMs = 60000
+): Promise<PeakMemory> {
 	if (!existsSync(tool)) return { unavailable: `${tool} is not installed on this machine.` };
 	const flag = platform() === 'darwin' ? '-l' : '-v';
-	const result = new BoundedCommandAdapter().runSync(tool, [flag, command, ...args], {
+	const result = await new BoundedCommandAdapter().run(tool, [flag, command, ...args], {
 		input,
-		timeoutMs: 60000,
+		timeoutMs,
 		maxBuffer: 1024 * 1024
 	});
 	const report = result.stderr ?? '';

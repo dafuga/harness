@@ -23,13 +23,14 @@ test('async commands preserve input, binary bytes and nonzero exit results', asy
 });
 test('sync commands preserve exit information and enforce their limits', () => {
 	const adapter = new BoundedCommandAdapter();
-	expect(adapter.runSync('bun', ['-e', 'process.exit(3)']).code).toBe(3);
-	expect(() =>
-		adapter.runSync('bun', ['-e', 'setInterval(()=>{},100)'], { timeoutMs: 50 })
-	).toThrow();
-	expect(() =>
-		adapter.runSync('bun', ['-e', "process.stdout.write('abc')"], { maxBuffer: 1 })
-	).toThrow();
+	expect(adapter.runSync('git', ['--version']).code).toBe(0);
+	expect(
+		adapter.runSync('git', ['rev-parse', '--verify', 'harness-invalid-probe-reference']).code
+	).not.toBe(0);
+	expect(() => adapter.runSync('git', ['--version'], { maxBuffer: 1 })).toThrow();
+	expect(() => adapter.runSync('git', ['--version'], { timeoutMs: 0 })).toThrow(/positive finite/);
+	expect(() => adapter.runSync('bun', ['-e', 'process.exit(0)'])).toThrow(/direct probes/);
+	expect(() => adapter.runSync('git', ['fetch'])).toThrow(/direct probes/);
 });
 test('async commands stop on deadline, output overflow, cancellation or failed launch', async () => {
 	const adapter = new BoundedCommandAdapter();

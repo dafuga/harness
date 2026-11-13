@@ -93,7 +93,9 @@ export class KernelBenchmarkService {
 		warm: { runtime: UnitRuntime; url: string }
 	): Promise<BenchMeasurement[]> {
 		const { coldSamples, warmIterations } = this.plan;
-		const cold = Array.from({ length: coldSamples }, () => this.sample(target, run, warm.url));
+		const cold: number[] = [];
+		for (let index = 0; index < coldSamples; index++)
+			cold.push(await this.sample(target, run, warm.url));
 		const steady = await benchSamples(warm.runtime, run.request, warmIterations);
 		const entry = (metric: string, unitOfMeasure: string, value: number, samples: number) =>
 			benchMeasurement(this.context, {
@@ -113,7 +115,7 @@ export class KernelBenchmarkService {
 	}
 
 	/** One cold call in a fresh process, timed inside that process. */
-	private sample(target: RuntimeKind, run: WorkloadRun, url: string): number {
+	private async sample(target: RuntimeKind, run: WorkloadRun, url: string): Promise<number> {
 		const [command, ...prefix] = this.plan.cli;
 		const args = ['kernel', 'sample', '--runtime', target, '--nodes', String(run.nodes)];
 		const served = target === 'http' ? ['--url', url] : [];
@@ -145,7 +147,7 @@ export class KernelBenchmarkService {
 			});
 		}
 		if (target === 'process' && this.artifacts.native) {
-			const peak = peakMemory(this.artifacts.native, [], JSON.stringify(run.request));
+			const peak = await peakMemory(this.artifacts.native, [], JSON.stringify(run.request));
 			const value = 'bytes' in peak ? peak.bytes : peak;
 			const method = 'Peak resident set size of one native process run, from /usr/bin/time.';
 			return benchMeasurement(this.context, { ...base, value, method });

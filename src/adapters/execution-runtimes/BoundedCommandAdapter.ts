@@ -1,5 +1,6 @@
 // @harness-uid u_34r2rrehaa
 import { spawn, spawnSync, type ChildProcessWithoutNullStreams } from 'node:child_process';
+import { basename } from 'node:path';
 import type { BoundedCommandOptions, BoundedCommandResult } from './BoundedCommandAdapter.types';
 
 /** Explicit child environment; callers may supply task-specific keys deliberately. */
@@ -86,6 +87,19 @@ function collect(
 		if (options.signal?.aborted) abort();
 	});
 }
+
+function isDirectProbe(command: string, args: string[]): boolean {
+	const executable = basename(command);
+	if (executable === 'ps') return true;
+	if (executable === 'xcode-select') return args.length === 1 && args[0] === '-p';
+	if (executable !== 'git') return false;
+	const tail = args[0] === '-C' ? args.slice(2) : args;
+	if (['--version', 'rev-parse', 'check-ignore'].includes(tail[0])) return true;
+	return (
+		tail[0] === 'remote' && (tail.length === 1 || (tail[1] === 'get-url' && tail.length === 3))
+	);
+}
+
 /** Runs a directly named executable, with a deadline and combined output bound. */
 export class BoundedCommandAdapter {
 	async checked(
@@ -121,6 +135,10 @@ export class BoundedCommandAdapter {
 		options: BoundedCommandOptions = {}
 	): BoundedCommandResult {
 		const { timeout, maxBuffer } = limits(options);
+		if (!isDirectProbe(command, args))
+			throw new Error(
+				'Synchronous execution is restricted to direct probes; use run for workloads.'
+			);
 		const result = spawnSync(command, args, {
 			cwd: options.cwd,
 			env: commandEnvironment(options.env),
