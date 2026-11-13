@@ -6,6 +6,7 @@ import type { BuiltArtifacts } from '../../../../utils/development-tooling/unitM
 import type { PlannedCheck } from '../../../../utils/verification-evidence/verifyPlan';
 import { BuildIdentityService } from '../../../../services/verification-evidence/BuildIdentityService';
 import { CheckRunService, type CheckOutcome } from './check-run-service/CheckRunService';
+import type { CaptureLimits } from './check-run-service/captureLimits.types';
 
 /**
  * Exports the commit and runs setup and every check inside the export. The export is compared
@@ -28,7 +29,8 @@ export class SnapshotRunService {
 		};
 		try {
 			for (const path of config.link) await snapshot.link(root, path);
-			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory });
+			const limits = captureLimits(config);
+			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory, limits });
 			const misdeclared = snapshot.misdeclared().map(describeOutput);
 			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner);
 			const tools = setupFailures.length > 0 ? [] : await this.tools(runner, setupFailures);
@@ -83,6 +85,15 @@ export class SnapshotRunService {
 		}
 		return failures;
 	}
+}
+
+/** The optional byte caps of the config, leaving out any it does not declare. */
+function captureLimits(config: SnapshotRun['config']): CaptureLimits {
+	const { maxCaptureBytes, maxRecordBytes } = config;
+	return {
+		...(maxCaptureBytes === undefined ? {} : { maxCaptureBytes }),
+		...(maxRecordBytes === undefined ? {} : { maxRecordBytes })
+	};
 }
 
 /** An output declaration that covers tracked files would hide source, so nothing runs. */

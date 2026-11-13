@@ -1,4 +1,5 @@
 // @harness-uid u_3flwsx2557
+import type { CaptureLimits } from './captureLimits.types';
 import type { VerificationRecord } from '../../../../../core/verification-evidence/verificationTypes';
 import type { Gathered } from '../../../../../utils/verification-evidence/gatherCaptures';
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
@@ -12,6 +13,8 @@ export interface RunContext {
 	tree: string;
 	profile: string;
 	env: Record<string, string | undefined>;
+	/** Byte caps on what the checks may capture; none when absent. */
+	limits?: CaptureLimits;
 }
 
 export interface CheckOutcome {

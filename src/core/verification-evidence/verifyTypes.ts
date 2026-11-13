@@ -62,7 +62,14 @@ export const verifyConfigSchema = z.strictObject({
 			})
 		)
 		.default([]),
-	timeouts: z.strictObject({ test: z.number().int().positive() })
+	timeouts: z.strictObject({ test: z.number().int().positive() }),
+	/**
+	 * Optional byte caps on captured evidence; with neither declared nothing is capped. A single
+	 * capture file over `maxCaptureBytes` is not recorded, and neither is one that takes the
+	 * whole record's captures past `maxRecordBytes`; each is reported as a failure of its check.
+	 */
+	maxCaptureBytes: z.number().int().positive().optional(),
+	maxRecordBytes: z.number().int().positive().optional()
 });
 
 export const defaultVerifyConfig: VerifyConfig = {

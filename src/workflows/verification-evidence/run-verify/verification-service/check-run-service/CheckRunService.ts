@@ -11,6 +11,7 @@ import { resourceEnvironment } from '../../../../../utils/execution-runtimes/res
 import { resourceWork } from '../../../../../utils/execution-runtimes/resourceWork';
 import { runIsolated, type IsolatedResult } from '../../../../../utils/run-isolated/runIsolated';
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
+import { RecordBudget } from './captureLimits';
 import { gatherCaptures } from './gatherCaptures';
 import { readBrowserDiagnostics } from './readBrowserDiagnostics';
 
@@ -18,7 +19,11 @@ const maxLogBytes = 2_000_000;
 
 /** Runs one check in its own process group under a hard limit and collects what it captured. */
 export class CheckRunService {
-	constructor(private readonly context: RunContext) {}
+	private readonly budget: RecordBudget;
+
+	constructor(private readonly context: RunContext) {
+		this.budget = new RecordBudget(context.limits?.maxRecordBytes);
+	}
 
 	async run(check: PlannedCheck): Promise<CheckOutcome> {
 		const { directory, commit } = this.context;
@@ -27,22 +32,28 @@ export class CheckRunService {
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
 		const result = await this.execute(check, evidencePath, slug);
 		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
-		const captures = result.timedOut
-			? { gathered: [], failures: [] }
-			: gatherCaptures(join(directory, evidencePath), evidencePath);
+		const captures = this.budget.admit(
+			result.timedOut
+				? { gathered: [], failures: [] }
+				: gatherCaptures(join(directory, evidencePath), evidencePath, this.context.limits)
+		);
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
 		const diagnostics = result.timedOut
 			? {}
 			: readBrowserDiagnostics(join(directory, evidencePath));
-		const passed = result.status === 'passed' && !diagnostics.failure;
 		if (diagnostics.failure) written.push(`${prefix}check ${check.name}: ${diagnostics.failure}`);
+		const failures = [
+			...outcomeFailures(check, result).map((failure) => prefix + failure),
+			...written
+		];
+		const passed = result.status === 'passed' && failures.length === 0;
 		return {
 			check,
 			passed,
-			entry: this.entry(check, result, diagnostics),
+			entry: this.entry(check, result, diagnostics, passed),
 			gathered: captures.gathered,
-			failures: [...outcomeFailures(check, result).map((failure) => prefix + failure), ...written]
+			failures
 		};
 	}
 
@@ -91,23 +102,21 @@ export class CheckRunService {
 		});
 		if (result.status !== 'passed') return undefined;
 		const printed = await readFile(log, 'utf8').catch(() => '');
-		return printed
-			.split('\n')
-			.find((line) => line.trim() !== '')
-			?.trim();
+		return firstPrintedLine(printed);
 	}
 
 	private entry(
 		check: PlannedCheck,
 		result: IsolatedResult,
-		diagnostics: ReturnType<typeof readBrowserDiagnostics>
+		diagnostics: ReturnType<typeof readBrowserDiagnostics>,
+		passed: boolean
 	): CheckOutcome['entry'] {
 		return {
 			id: check.id,
 			kind: check.kind,
 			runner: check.runner,
 			target: check.target,
-			status: result.status === 'passed' && !diagnostics.failure ? 'passed' : 'failed',
+			status: passed ? 'passed' : 'failed',
 			...(diagnostics.browserErrors ? { browserErrors: diagnostics.browserErrors } : {}),
 			durationMs: Math.round(result.durationMs),
 			log: { ...result.log, path: relative(this.context.directory, result.log.path) }
@@ -157,4 +166,11 @@ function outcomeFailures(check: PlannedCheck, result: IsolatedResult): string[] 
 			? []
 			: [`test ${check.name} failed with exit code ${result.exitCode ?? 'unknown'}`];
 	return [...failed, ...leaked];
+}
+
+function firstPrintedLine(printed: string): string | undefined {
+	return printed
+		.split('\n')
+		.find((line) => line.trim() !== '')
+		?.trim();
 }
