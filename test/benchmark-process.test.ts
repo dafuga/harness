@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { expect, test } from 'vitest';
 import { benchmarkProcess } from '../src/cli/program/benchmark-service/benchmarkProcess';
+import { serveKernel } from '../src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService';
 
 test('deadline stops the spawned process instead of leaving background work', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'benchmark-cancel-'));
@@ -27,6 +28,13 @@ test('deadline stops the spawned process instead of leaving background work', as
 				command: ['bun', '-e', 'setInterval(()=>{},100)']
 			})
 		).rejects.toThrow(/timed out/);
+		const startup = serveKernel(['bun', '-e', 'setTimeout(()=>process.exit(0),250)'], 50).then(
+			() => false,
+			(error: Error) => error.message.includes('timed out')
+		);
+		expect(
+			await Promise.race([startup, new Promise((resolve) => setTimeout(() => resolve(false), 400))])
+		).toBe(true);
 		const before = await readFile(join(root, 'heartbeat'), 'utf8');
 		await new Promise((resolve) => setTimeout(resolve, 100));
 		expect(await readFile(join(root, 'heartbeat'), 'utf8')).toBe(before);
