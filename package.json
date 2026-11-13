@@ -67,7 +67,7 @@
 	"scripts": {
 		"dev": "bun run src/index.ts",
 		"build": "bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/hub svelte-kit sync && bun run build:kernel && bun run build:cli && bun run build:api && bun run --cwd packages/reports build && bun scripts/package-website.ts && bun run build:picker \"$@\"' --",
-		"check": "bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run check:debt-ratchets && bun run check:e2e-list && bun run format:check && bun run typecheck && bun run lint && bun run check:kernel && bun run build:kernel && bun run test:unit && bun run test:e2e && bun run build && bun run test:package && bun run dev -- audit . && bun run dev -- units check && bun run --cwd packages/reports check && bun run check:planning && bun run check:desktop && bun run check:collaboration && bun run check:hub && bun run check:remote && bun run check:relay && bun run check:game \"$@\"' --",
+		"check": "bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run check:verification-forwards && bun run check:debt-ratchets && bun run check:e2e-list && bun run format:check && bun run typecheck && bun run lint && bun run check:kernel && bun run build:kernel && bun run test:unit && bun run test:e2e && bun run build && bun run test:package && bun run dev -- audit . && bun run dev -- units check && bun run --cwd packages/reports check && bun run check:planning && bun run check:desktop && bun run check:collaboration && bun run check:hub && bun run check:remote && bun run check:relay && bun run check:game \"$@\"' --",
 		"typecheck": "bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'tsc --noEmit \"$@\"' --",
 		"test": "bun run test:unit",
 		"test:unit": "bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run --exclude \"test/**/*.e2e.test.ts\" \"$@\"' --",
@@ -97,7 +97,8 @@
 		"check:ios": "bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run --cwd packages/desktop ios:check:vectors && bun run --cwd packages/desktop ios:check:native && bun run --cwd packages/desktop ios:check:limits \"$@\"' --",
 		"check:game": "bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'HARNESS_CLI_PATH=../../src/index.ts bun run --cwd packages/game check \"$@\"' --",
 		"check:e2e-list": "bun scripts/check-e2e-list.ts",
-		"check:debt-ratchets": "bun scripts/check-debt-ratchets.ts"
+		"check:debt-ratchets": "bun scripts/check-debt-ratchets.ts",
+		"check:verification-forwards": "bun scripts/check-verification-forwards.ts"
 	},
 	"dependencies": {
 		"@anthropic-ai/claude-agent-sdk": "^0.3.292",
