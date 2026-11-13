@@ -21,6 +21,9 @@ export class AnalyticsRepository {
 		this.db.exec('PRAGMA busy_timeout=5000;');
 		this.initialize();
 		this.db.exec(`${sqliteTableSql(AnalyticsEventModel.definition)}; PRAGMA user_version=1;`);
+		this.db.exec(
+			"CREATE INDEX IF NOT EXISTS events_project ON events(json_extract(data, '$.project')); CREATE INDEX IF NOT EXISTS events_recorded_at ON events(julianday(timestamp));"
+		);
 	}
 	private initialize(): void {
 		const version = this.db.query('PRAGMA user_version').get() as { user_version: number };
@@ -65,6 +68,32 @@ export class AnalyticsRepository {
 		}[];
 		return rows.map((row) => JSON.parse(row.data) as AnalyticsEvent);
 	}
+	/** Preview retention by default. Unknown timestamps remain untouched. */
+	prune(
+		before: string,
+		apply = false
+	): { before: string; matching: number; deleted: number; dryRun: boolean } {
+		const date = new Date(before);
+		if (
+			!Number.isFinite(date.getTime()) ||
+			!before.endsWith('Z') ||
+			date.toISOString().slice(0, 19) !== before.slice(0, 19) ||
+			date.getTime() >= Date.now()
+		)
+			throw new Error('Retention cutoff must be an ISO UTC timestamp in the past.');
+		const cutoff = date.toISOString();
+		return this.db.transaction(() => {
+			const { count } = this.db
+				.query('SELECT COUNT(*) AS count FROM events WHERE julianday(timestamp) < julianday(?)')
+				.get(cutoff) as { count: number };
+			const deleted = apply
+				? this.db.query('DELETE FROM events WHERE julianday(timestamp) < julianday(?)').run(cutoff)
+						.changes
+				: 0;
+			return { before: cutoff, matching: count, deleted, dryRun: !apply };
+		})();
+	}
+
 	close(): void {
 		this.db.close();
 	}
