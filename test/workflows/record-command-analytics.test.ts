@@ -91,6 +91,17 @@ test('the real entry runs no sqlite or git worktree work for --help, --version a
 	const shim = await gitLog();
 	const home = join(scratch, 'analytics');
 	const env = { HARNESS_ANALYTICS_HOME: home, PATH: shim.path };
+	const imported = await runCommand(
+		['bun', '-e', `await import(${JSON.stringify(cli)})`],
+		scratch,
+		false,
+		env
+	);
+	expect(imported, 'library imports must not invoke the CLI').toMatchObject({
+		exitCode: 0,
+		stdout: '',
+		stderr: ''
+	});
 	for (const args of [['--help'], ['--version'], ['info', 'activity']])
 		await runCommand(['bun', cli, ...args], scratch, true, env);
 	expect(existsSync(home)).toBe(false);
