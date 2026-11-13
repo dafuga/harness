@@ -1,12 +1,11 @@
-import { mkdtemp, mkdir, writeFile, utimes, rm } from 'node:fs/promises';
+import { mkdir, rm, writeFile, utimes } from 'node:fs/promises';
 import { join } from 'node:path';
-import { tmpdir } from 'node:os';
 import { expect, test } from 'vitest';
 import { staleBuild } from '../../../src/utils/development-tooling/staleBuild';
+import { withTempDir } from '../../support/temporary';
 
-test('staleBuild warns only when checkout source is newer than its built entry', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'harness-stale-build-'));
-	try {
+test('staleBuild warns only when checkout source is newer than its built entry', async () =>
+	withTempDir('harness-stale-build-', async (root) => {
 		await mkdir(join(root, 'dist'));
 		await mkdir(join(root, 'src', 'nested'), { recursive: true });
 		const entry = join(root, 'dist/index.js');
@@ -21,7 +20,4 @@ test('staleBuild warns only when checkout source is newer than its built entry',
 		expect(staleBuild(source)).toBeUndefined();
 		await rm(join(root, 'src'), { recursive: true });
 		expect(staleBuild(entry)).toBeUndefined();
-	} finally {
-		await rm(root, { recursive: true, force: true });
-	}
-});
+	}));

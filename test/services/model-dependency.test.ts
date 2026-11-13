@@ -1,12 +1,11 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { ModelDependencyService } from '../../src/services/development-tooling/ModelDependencyService';
+import { withTempDir } from '../support/temporary';
 
-test('an explicit runtime is preserved and a development-only runtime becomes a production dependency', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'harness-model-dependency-'));
-	try {
+test('an explicit runtime is preserved and a development-only runtime becomes a production dependency', async () =>
+	withTempDir('harness-model-dependency-', async (root) => {
 		const path = join(root, 'package.json');
 		const service = new ModelDependencyService();
 		await writeFile(
@@ -21,7 +20,4 @@ test('an explicit runtime is preserved and a development-only runtime becomes a 
 		expect(manifest.dependencies['@dafuga01/harness']).toBe('file:runtime.tgz');
 		expect(manifest.devDependencies['@dafuga01/harness']).toBeUndefined();
 		expect(await service.ensure(root)).toEqual([]);
-	} finally {
-		await rm(root, { recursive: true, force: true });
-	}
-});
+	}));
