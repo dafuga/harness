@@ -385,8 +385,11 @@ paths, outputs, runners and time limits. A test file that needs a command of its
 listed under `checks` with its path and command. `tools` names the tools the checks depend on:
 each command runs in the snapshot after setup, the first line it prints is recorded beside the
 version of Harness itself, and a tool that reports nothing fails the verification before any
-check runs. Harness verifies itself with dependencies installed from the committed lock file
-(`bun install --frozen-lockfile` as its first setup command) instead of sharing the checkout's.
+check runs. Harness applies `link` paths from the checkout to the clean snapshot before running
+any `setup` command. Here, `node_modules` is linked when present; the first setup command then
+runs `bun install --frozen-lockfile --backend=copyfile` with that link already in place. The
+`node_modules/` output permits files created or changed during setup. The link and install have
+separate configured roles; no measured comparison has established either one as redundant.
 
 The snapshot has to remain the exact commit while checks run and capture. It is compared with
 the commit after setup and after every check: a tracked file that changes or disappears fails,

@@ -1,5 +1,6 @@
 {
 	"schemaVersion": 1,
+	"link": ["node_modules"],
 	"setup": [
 		{
 			"command": "bun install --frozen-lockfile --backend=copyfile",
@@ -30,7 +31,6 @@
 			"timeoutMs": 120000
 		}
 	],
-	"link": ["node_modules"],
 	"outputs": [
 		".cache/",
 		"coverage/",
