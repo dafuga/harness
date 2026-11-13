@@ -54,7 +54,7 @@ export class CheckRunService {
 		return {
 			check,
 			passed,
-			entry: checkEntry(check, result, diagnostics, passed, this.context.directory),
+			entry: checkEntry(check, result, { diagnostics, passed }, this.context.directory),
 			gathered: captures.gathered,
 			failures
 		};
@@ -163,8 +163,10 @@ function firstPrintedLine(printed: string): string | undefined {
 function checkEntry(
 	check: PlannedCheck,
 	result: IsolatedResult,
-	diagnostics: ReturnType<typeof readBrowserDiagnostics>,
-	passed: boolean,
+	{
+		diagnostics,
+		passed
+	}: { diagnostics: ReturnType<typeof readBrowserDiagnostics>; passed: boolean },
 	directory: string
 ): CheckOutcome['entry'] {
 	return {

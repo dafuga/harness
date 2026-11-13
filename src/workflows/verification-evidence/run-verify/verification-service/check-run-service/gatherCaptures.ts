@@ -40,7 +40,7 @@ export function gatherCaptures(
 			result.failures.push(`declared capture ${parsed.data.file} but wrote no file`);
 		else {
 			try {
-				const item = inspectBudgeted(parsed.data, file, recordPath, limits, budget);
+				const item = inspectBudgeted(parsed.data, file, { recordPath, limits, budget });
 				if (typeof item === 'string') result.failures.push(item);
 				else result.gathered.push(item);
 			} catch (error) {
@@ -56,9 +56,11 @@ export function gatherCaptures(
 function inspectBudgeted(
 	line: CaptureLine,
 	file: string,
-	recordPath: string,
-	limits: CaptureLimits,
-	budget: RecordBudget
+	{
+		recordPath,
+		limits,
+		budget
+	}: { recordPath: string; limits: CaptureLimits; budget: RecordBudget }
 ): Gathered | string {
 	const stat = lstatSync(file);
 	if (!stat.isFile()) throw new Error('Capture must be a regular file, not a symlink.');
