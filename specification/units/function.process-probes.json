@@ -43,6 +43,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "processProbes",
@@ -63,11 +64,10 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
-		"initialization": [],
-		"errorStatus": "none-found"
+		"initialization": []
 	},
 	"dependencies": [
 		{

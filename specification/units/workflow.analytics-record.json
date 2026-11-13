@@ -141,7 +141,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resolvedContext",
@@ -178,7 +178,7 @@
 						]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordAnalytics",
@@ -204,7 +204,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fingerprint",
@@ -230,7 +230,7 @@
 						"description": "fingerprint requires a value JSON.stringify can serialize to a string; cyclic values throw and undefined is not accepted by the hash update"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateReport",
@@ -257,7 +257,7 @@
 						"examples": ["Invalid report ID."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

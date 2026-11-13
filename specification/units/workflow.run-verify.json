@@ -22,7 +22,13 @@
 			"VerifyOptions",
 			"VerifyPlanReport",
 			"verifyPlan",
-			"VerifyResult"
+			"verifyRun",
+			"verifyCheck",
+			"verifyIdentity",
+			"verifyStamp",
+			"renderVerify",
+			"VerifyResult",
+			"VerifyOptions"
 		]
 	},
 	"contract": {
@@ -59,13 +65,6 @@
 				"type": "VerifyResult",
 				"required": true,
 				"description": "Stored verification record and directory, plus any scoped-attachment result."
-			},
-			{
-				"name": "verifyPlan.options",
-				"type": "VerifyOptions",
-				"required": false,
-				"default": {},
-				"description": "Optional repository root, commit, requested base, runtime, entity scope, and selection settings for the report-only verification plan."
 			}
 		],
 		"outputs": [
@@ -134,7 +133,7 @@
 						"description": "Invalid repository/revision/configuration, unavailable runtime, invalid scope, or failed required setup."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "verifyCheck",
@@ -161,7 +160,7 @@
 						"description": "Invalid repository/revision or absent record for the requested commit."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "verifyIdentity",
@@ -187,7 +186,7 @@
 						"description": "No built files in the requested directory."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "verifyStamp",
@@ -213,7 +212,7 @@
 						"description": "No build-stamp slot in the requested directory."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderVerify",
@@ -233,34 +232,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
-				"name": "verifyPlan",
-				"inputs": [
-					{
-						"name": "verifyPlan.options",
-						"type": "VerifyOptions",
-						"required": false,
-						"default": {},
-						"description": "Optional repository root, commit, requested base, runtime, entity scope, and selection settings for the report-only verification plan."
-					}
-				],
-				"outputs": [
-					{
-						"name": "verifyPlan",
-						"type": "Promise<VerifyPlanReport>",
-						"description": "Selected checks and conservative report-only runner grouping candidates; no checks are executed."
-					}
-				],
-				"errors": [
-					{
-						"name": "ExpectedCliError",
-						"type": "thrown",
-						"description": "Invalid repository/revision/configuration, HTTP runtime refusal, or entity without scenario coverage."
-					}
-				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

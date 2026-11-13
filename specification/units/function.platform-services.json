@@ -124,6 +124,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "sameTime",
@@ -149,7 +150,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "named",
@@ -169,7 +170,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "probing",
@@ -189,7 +190,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "macAuthority",
@@ -202,7 +203,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "platformServices",
@@ -215,7 +216,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "classifyProcess",
@@ -241,7 +242,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "stillPrivate",
@@ -273,11 +274,10 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
-		"initialization": [],
-		"errorStatus": "unknown"
+		"initialization": []
 	},
 	"dependencies": [
 		{

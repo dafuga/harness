@@ -26,7 +26,24 @@
 			"addLoopStep",
 			"completeLoopStep",
 			"readLoopStatus",
-			"renderLoopStatus"
+			"renderLoopStatus",
+			"CreateLoopInput",
+			"AddLoopStepInput",
+			"CompleteLoopStepInput",
+			"ReadLoopInput",
+			"LoopEvaluator",
+			"LoopState",
+			"LoopStatus",
+			"LoopStep",
+			"createLoop",
+			"addLoopStep",
+			"completeLoopStep",
+			"readLoopStatus",
+			"renderLoopStatus",
+			"CreateLoopInput",
+			"AddLoopStepInput",
+			"CompleteLoopStepInput",
+			"ReadLoopInput"
 		]
 	},
 	"contract": {
@@ -129,7 +146,7 @@
 						"description": "Invalid loop name/goal, existing loop directory, invalid template, or invalid completion kind."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "addLoopStep",
@@ -155,7 +172,7 @@
 						"description": "Invalid loop/step/title, missing or invalid state, or duplicate step id."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "completeLoopStep",
@@ -181,7 +198,7 @@
 						"description": "Invalid loop/step/evidence, missing or completed step, enforced-order violation, or failed regression/task-completion audit."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readLoopStatus",
@@ -207,7 +224,7 @@
 						"description": "Invalid loop id or missing/invalid persisted state."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderLoopStatus",
@@ -233,7 +250,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

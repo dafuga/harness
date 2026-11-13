@@ -154,7 +154,7 @@
 						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsRepository.record",
@@ -180,7 +180,7 @@
 						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsRepository.recordImported",
@@ -206,7 +206,7 @@
 						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsRepository.events",
@@ -225,7 +225,7 @@
 						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsRepository.prune",
@@ -264,7 +264,7 @@
 						"examples": ["Retention cutoff must be an ISO UTC timestamp in the past."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsRepository.close",
@@ -283,7 +283,7 @@
 						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -317,7 +317,7 @@
 						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		]
 	},

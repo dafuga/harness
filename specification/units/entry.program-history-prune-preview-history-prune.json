@@ -120,7 +120,7 @@
 						"description": "Invalid retention bounds throw before scanning; Git adapter or cache-scan failures can reject the promise."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderPrune",
@@ -140,7 +140,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

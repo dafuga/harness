@@ -12,7 +12,7 @@
 			"src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.types.ts"
 		],
-		"symbols": ["verifyPlanReport", "VerifyPlanReport", "NormalizedCheck"]
+		"symbols": ["VerifyPlanReport", "verifyPlanReport", "VerifyPlanReport", "NormalizedCheck"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -64,7 +64,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

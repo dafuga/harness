@@ -18,7 +18,15 @@
 			"LoopCommandResult",
 			"EvaluateLoopInput",
 			"evaluateLoop",
-			"renderLoopEvaluation"
+			"renderLoopEvaluation",
+			"LoopEvaluationResult",
+			"LoopCommandResult",
+			"EvaluateLoopInput",
+			"evaluateLoop",
+			"renderLoopEvaluation",
+			"LoopEvaluationResult",
+			"LoopCommandResult",
+			"EvaluateLoopInput"
 		]
 	},
 	"contract": {
@@ -82,7 +90,7 @@
 						"description": "Invalid or missing loop state."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderLoopEvaluation",
@@ -102,7 +110,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

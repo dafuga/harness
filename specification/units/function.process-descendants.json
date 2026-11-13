@@ -81,6 +81,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "processTable",
@@ -93,7 +94,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "processDescendants",
@@ -119,7 +120,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "signalProcesses",
@@ -145,11 +146,10 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
-		"initialization": [],
-		"errorStatus": "unknown"
+		"initialization": []
 	},
 	"dependencies": [
 		{

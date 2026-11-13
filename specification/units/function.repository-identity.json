@@ -77,6 +77,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "repositoryIdentity",
@@ -96,7 +97,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sameRepository",
@@ -122,7 +123,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sameSite",
@@ -148,11 +149,10 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
-		"initialization": [],
-		"errorStatus": "unknown"
+		"initialization": []
 	},
 	"dependencies": [
 		{

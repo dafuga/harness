@@ -169,7 +169,7 @@
 						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitAdapter.bytes",
@@ -208,7 +208,7 @@
 						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitAdapter.attempt",
@@ -242,7 +242,7 @@
 						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitAdapter.exec",
@@ -276,7 +276,7 @@
 						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitAdapter.isRepository",
@@ -296,7 +296,7 @@
 						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -318,7 +318,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},

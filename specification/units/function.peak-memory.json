@@ -59,6 +59,7 @@
 				"examples": ["Command timed out.", "Command output limit exceeded."]
 			}
 		],
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "peakMemory",
@@ -104,11 +105,10 @@
 						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
-		"initialization": [],
-		"errorStatus": "found"
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -158,7 +158,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BoundedCommandAdapter.checked",
@@ -205,7 +205,7 @@
 						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BoundedCommandAdapter.run",
@@ -252,7 +252,7 @@
 						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BoundedCommandAdapter.runSync",
@@ -307,7 +307,7 @@
 						]
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
