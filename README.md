@@ -407,6 +407,12 @@ reasons of each step. That holds for units too: one that was explained when it w
 changed since is explained by both, as long as every step along the first-parent history is
 explained in full. A step without a reason is not covered by the steps around it.
 
+To inspect repository metadata growth without changing its storage policy, run
+`bun scripts/report-specification-storage.ts`. It reports the unit JSON file count and bytes plus
+the budget ledger's line count and bytes; it never edits or rotates either store. Its 16 MiB unit
+store and 2 MiB ledger thresholds are operator heads-ups to inspect growth, not blocking limits or
+retention rules.
+
 **Budgets.** Source bytes, complexity and dependencies are frozen. Performance may be at most 5%
 worse than the baseline for the same workload, execution target and machine profile. A missing
 measurement, a missing baseline or a baseline from another profile never passes. A workload
