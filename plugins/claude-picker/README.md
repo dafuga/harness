@@ -1,5 +1,23 @@
 # Claude & OpenAI picker (local preview delivery)
 
+**Before first use:** `dist/` is not committed, so a fresh clone must build the plugin once.
+From the Harness repository root run `bun run build:picker`; until then `scripts/start.sh`
+exits with a build-missing message. See [Build and manual installation](#build-and-manual-installation).
+
+## Status: shipped and pending
+
+- **Shipped in this plugin:** six local MCP tools, the durable local request queue, the bundled
+  panel HTML and an isolated local browser preview. Repository tests cover these plugin surfaces;
+  see [Verification boundary](#verification-boundary).
+- **Pending in this plugin:** applying a queued selection to the installed desktop model, native
+  desktop rendering, all-device closure, phone reconnection and voice. This plugin has no desktop
+  adapter, so its switch requests remain pending.
+- **Separate from this plugin:** the installed Codex Harness Experimental app has a native picker
+  trial recorded as passing on 2026-10-09 in the
+  [native provider picker feature record](../../specification/features/planned/codex-native-provider-picker.md).
+  That trial is independent of this plugin's queue and does not establish native desktop behavior
+  for this plugin.
+
 This plugin provides a model picker conversation-panel entrypoint and six local MCP tools:
 open_model_picker, get_provider_status, list_models, list_observed_sessions,
 request_model_switch and cancel_model_switch.
