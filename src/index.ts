@@ -3,9 +3,8 @@
 import { CommanderError } from 'commander';
 import { fileURLToPath } from 'node:url';
 import { staleBuild } from './utils/development-tooling/staleBuild';
-import { commandAction } from './utils/development-tooling/commandAction';
 import { buildProgram } from './cli/program';
-import { recordAnalytics } from './workflows/reports-media/analyticsRecord';
+import { recordCommandAnalytics } from './workflows/reports-media/recordCommandAnalytics';
 import { importAnalytics } from './workflows/reports-media/importAnalytics';
 import { beatFromEnvironment } from './workflows/projects-sessions/runActivity';
 import { isExpectedCliError } from './core/development-tooling/errors';
@@ -25,12 +24,7 @@ try {
 		else throw error;
 	}
 } finally {
-	await recordAnalytics({
-		kind: 'command',
-		action: commandAction(process.argv.slice(2)),
-		exitCode: Number(process.exitCode ?? 0),
-		durationMs: Date.now() - startedAt
-	});
+	await recordCommandAnalytics(process.argv.slice(2), startedAt, process.exitCode);
 	await beatFromEnvironment();
 	if (process.argv[2] === 'loop') {
 		try {
