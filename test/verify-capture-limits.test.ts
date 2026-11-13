@@ -8,7 +8,17 @@ import { gatherCaptures } from '../src/services/check-run-service/gatherCaptures
 import { digestFile } from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
 import * as captureFiles from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
 import { syntheticPng } from './support/syntheticPng';
+import type { ResourceContext } from '../src/core/execution-runtimes/resourceTypes';
 import type { IsolatedResult } from '../src/utils/run-isolated/runIsolated';
+
+const passed: IsolatedResult = {
+	status: 'passed',
+	exitCode: 0,
+	timedOut: false,
+	durationMs: 1,
+	log: { path: '/made/up/page.log', bytes: 0, sha256: '' },
+	survivors: []
+};
 
 /** Writes files and an index naming them, the way a check leaves its evidence. */
 function leave(folder: string, files: Record<string, Buffer>, kind = 'output') {
@@ -78,6 +88,20 @@ test('a capture over maxCaptureBytes is refused with clear text and never record
 		const linkedDirectory = join(folder, 'linked-directory');
 		symlinkSync(nested, linkedDirectory);
 		expect(gatherCaptures(linkedDirectory, 'evidence').failures.join(' ')).toContain('directory');
+		const trusted = join(folder, 'trusted');
+		const outsideLeaf = join(folder, 'outside-leaf', 'leaf');
+		mkdirSync(trusted);
+		mkdirSync(outsideLeaf, { recursive: true });
+		leave(outsideLeaf, { 'proof.txt': Buffer.from('synthetic proof') });
+		symlinkSync(join(folder, 'outside-leaf'), join(trusted, 'evidence'));
+		const redirected = gatherCaptures(
+			join(trusted, 'evidence', 'leaf'),
+			'evidence/leaf',
+			{},
+			{ root: trusted }
+		);
+		expect(redirected.gathered).toEqual([]);
+		expect(redirected.failures.join(' ')).toContain('ancestry');
 		const linked = gatherCaptures(nested, 'evidence');
 		expect(linked.gathered).toEqual([]);
 		expect(linked.failures.join(' ')).toContain('regular file');
@@ -100,17 +124,16 @@ test('the optional caps are validated and absent by default', () => {
 
 test('a check run keeps captures until maxRecordBytes and reports the rest as failures', () =>
 	withTempDir('harness-capture-limits-', async (directory) => {
-		const passed: IsolatedResult = {
-			status: 'passed',
-			exitCode: 0,
-			timedOut: false,
-			durationMs: 1,
-			log: { path: '/made/up/page.log', bytes: 0, sha256: '' },
-			survivors: []
-		};
 		vi.doMock('../src/utils/run-isolated/runIsolated', () => ({ runIsolated: async () => passed }));
+		vi.doMock('../src/utils/execution-runtimes/resourceWork', () => ({
+			resourceWork: async (
+				_request: unknown,
+				action: (context: Pick<ResourceContext, 'env' | 'track'>) => Promise<unknown>
+			) => action({ env: {}, track: () => undefined })
+		}));
 		const { CheckRunService } = await import('../src/services/CheckRunService');
 		vi.doUnmock('../src/utils/run-isolated/runIsolated');
+		vi.doUnmock('../src/utils/execution-runtimes/resourceWork');
 		const commit = 'c'.repeat(40);
 		const context = { commit, tree: 'made-up', profile: 'made-up', env: {}, directory };
 		const service = new CheckRunService({

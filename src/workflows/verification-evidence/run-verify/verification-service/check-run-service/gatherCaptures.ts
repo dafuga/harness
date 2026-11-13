@@ -13,6 +13,7 @@ import {
 import type { Capture } from '../../../../../core/verification-evidence/verificationTypes';
 import type { CaptureLimits } from './captureLimits.types';
 import { digestFile, oversizeCapture, RecordBudget } from './captureLimits';
+import { evidenceDirectoryFailure } from './evidenceDirectoryFailure';
 import { mediaFacts } from './mediaFacts';
 import { type MediaFacts } from '../../../../../utils/verification-evidence/mediaFacts';
 
@@ -27,30 +28,36 @@ export function gatherCaptures(
 	directory: string,
 	recordPath: string,
 	limits: CaptureLimits = {},
-	budget = new RecordBudget(limits.maxRecordBytes)
+	scope: { budget?: RecordBudget; root?: string } = {}
 ): GatherResult {
+	const budget = scope.budget ?? new RecordBudget(limits.maxRecordBytes);
+	const refusal = evidenceDirectoryFailure(directory, scope.root ?? directory);
+	if (refusal) return { gathered: [], failures: [refusal] };
 	const index = join(directory, captureIndex);
 	const result: GatherResult = { gathered: [], failures: [] };
 	const lines = indexLines(index, result);
 	for (const text of lines) {
-		const parsed = captureLineSchema.safeParse(parseJson(text));
-		const file = parsed.success ? join(directory, parsed.data.file) : '';
-		if (!parsed.success) result.failures.push('wrote a malformed capture line');
-		else if (!existsSync(file))
-			result.failures.push(`declared capture ${parsed.data.file} but wrote no file`);
-		else {
-			try {
-				const item = inspectBudgeted(parsed.data, file, { recordPath, limits, budget });
-				if (typeof item === 'string') result.failures.push(item);
-				else result.gathered.push(item);
-			} catch (error) {
-				result.failures.push(
-					`could not inspect capture ${parsed.data.file}: ${error instanceof Error ? error.message : 'read failed'}`
-				);
-			}
-		}
+		const item = gatherLine(text, directory, { recordPath, limits, budget });
+		if (typeof item === 'string') result.failures.push(item);
+		else result.gathered.push(item);
 	}
 	return result;
+}
+
+function gatherLine(
+	text: string,
+	directory: string,
+	scope: { recordPath: string; limits: CaptureLimits; budget: RecordBudget }
+): Gathered | string {
+	const parsed = captureLineSchema.safeParse(parseJson(text));
+	if (!parsed.success) return 'wrote a malformed capture line';
+	const file = join(directory, parsed.data.file);
+	if (!existsSync(file)) return `declared capture ${parsed.data.file} but wrote no file`;
+	try {
+		return inspectBudgeted(parsed.data, file, scope);
+	} catch (error) {
+		return `could not inspect capture ${parsed.data.file}: ${error instanceof Error ? error.message : 'read failed'}`;
+	}
 }
 
 function inspectBudgeted(

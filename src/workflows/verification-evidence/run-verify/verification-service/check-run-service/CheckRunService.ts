@@ -11,6 +11,7 @@ import { resourceEnvironment } from '../../../../../utils/execution-runtimes/res
 import { resourceWork } from '../../../../../utils/execution-runtimes/resourceWork';
 import { runIsolated, type IsolatedResult } from '../../../../../utils/run-isolated/runIsolated';
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
+import { evidenceDirectoryFailure } from './evidenceDirectoryFailure';
 import { RecordBudget } from './captureLimits';
 import { gatherCaptures } from './gatherCaptures';
 import { readBrowserDiagnostics } from './readBrowserDiagnostics';
@@ -34,17 +35,16 @@ export class CheckRunService {
 		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
 		const captures = result.timedOut
 			? { gathered: [], failures: [] }
-			: gatherCaptures(
-					join(directory, evidencePath),
-					evidencePath,
-					this.context.limits,
-					this.budget
-				);
+			: gatherCaptures(join(directory, evidencePath), evidencePath, this.context.limits, {
+					budget: this.budget,
+					root: directory
+				});
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
-		const diagnostics = result.timedOut
-			? {}
-			: readBrowserDiagnostics(join(directory, evidencePath));
+		const diagnostics =
+			result.timedOut || evidenceDirectoryFailure(join(directory, evidencePath), directory)
+				? {}
+				: readBrowserDiagnostics(join(directory, evidencePath));
 		if (diagnostics.failure) written.push(`${prefix}check ${check.name}: ${diagnostics.failure}`);
 		const failures = [
 			...outcomeFailures(check, result).map((failure) => prefix + failure),
