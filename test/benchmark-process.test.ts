@@ -19,6 +19,14 @@ test('deadline stops the spawned process instead of leaving background work', as
 				]
 			})
 		).rejects.toThrow();
+		await expect(
+			benchmarkProcess({
+				cwd: root,
+				timeoutMs: 50,
+				signal: AbortSignal.timeout(250),
+				command: ['bun', '-e', 'setInterval(()=>{},100)']
+			})
+		).rejects.toThrow(/timed out/);
 		const before = await readFile(join(root, 'heartbeat'), 'utf8');
 		await new Promise((resolve) => setTimeout(resolve, 100));
 		expect(await readFile(join(root, 'heartbeat'), 'utf8')).toBe(before);
