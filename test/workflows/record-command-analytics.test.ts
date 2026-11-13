@@ -112,8 +112,14 @@ test('the real entry runs no sqlite or git worktree work for --help, --version a
 		stderr: ''
 	});
 	for (const entry of [cli, join(process.cwd(), 'src/cli/index.ts')])
-		for (const args of [['--help'], ['--version'], ['info', 'activity']])
+		for (const args of [['--help'], ['--version'], ['info', 'activity'], ['loop', '--help']])
 			await runCommand(['bun', entry, ...args], scratch, true, env);
+	await runCommand(
+		['bun', join(process.cwd(), 'src/cli/index.ts'), 'loop', 'list', '--json'],
+		scratch,
+		true,
+		{ ...env, HARNESS_ANALYTICS_DISABLED: '1' }
+	);
 	expect(existsSync(home)).toBe(false);
 	expect(await readFile(shim.log, 'utf8')).not.toContain('worktree');
 	await runCommand(['bun', cli, 'unknown-command'], scratch, false, env);
