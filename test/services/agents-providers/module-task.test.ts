@@ -1,7 +1,8 @@
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
-import { test } from 'vitest';
+import { test, vi } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
+import { CommitTreeAdapter } from '../../../src/adapters/git-source-history/CommitTreeAdapter';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile } from 'node:fs/promises';
 import { taskSelection } from '../../../src/services/agents-providers/module-task-service/taskPrompt';
@@ -19,6 +20,18 @@ test('admission rejects missing contracts, unknown modules and mutable task iden
 		await expect(service.add({ ...input, wantedContract: undefined })).rejects.toThrow(
 			'wantedContract'
 		);
+		const treeOpen = vi.spyOn(CommitTreeAdapter, 'open');
+		const queueUpdate = vi.spyOn(service.repository, 'update');
+		await expect(
+			service.add({
+				...input,
+				wantedContract: { ...input.wantedContract, dependsOn: ['service.prerequisite'] }
+			})
+		).rejects.toThrow(/dependsOn/);
+		expect(treeOpen).not.toHaveBeenCalled();
+		expect(queueUpdate).not.toHaveBeenCalled();
+		treeOpen.mockRestore();
+		queueUpdate.mockRestore();
 		await expect(service.add({ ...input, module: 'service.missing' })).rejects.toThrow(
 			'active and registered'
 		);
