@@ -58,6 +58,8 @@ test('two applications started from one template are different repositories', ()
 	const overflow = 'identity-cache-filler-255';
 	git(root, ['init', '-q', '-b', 'main', overflow]);
 	repositoryIdentity(at(overflow));
+	expect(repositoryIdentity(cacheTarget)).toBe(firstIdentity); // recent target survives the LRU eviction
+	for (let index = 0; index < 256; index++) repositoryIdentity(at(`missing-cache-key-${index}`));
 	expect(repositoryIdentity(cacheTarget)).not.toBe(firstIdentity);
 }, 30000);
 
