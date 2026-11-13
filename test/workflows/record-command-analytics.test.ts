@@ -65,6 +65,15 @@ test('the call site records real commands and leaves out skipped ones', async ()
 		exitCode: 2
 	});
 	expect(record.mock.calls[0][0].durationMs).toBeGreaterThanOrEqual(5);
+	for (const [family, action] of [
+		['loop', 'list'],
+		['loop', 'close'],
+		['analytics', 'prune'],
+		['history', 'prune']
+	]) {
+		await recordCommandAnalytics([family, action], Date.now(), 0, record);
+		expect(record.mock.calls.at(-1)?.[0].action).toBe(`${family} ${action}`);
+	}
 });
 
 test('a skipped command never creates the analytics store directory', async () => {

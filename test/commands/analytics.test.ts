@@ -6,6 +6,7 @@ test('analytics exposes all query and import/export operations', () => {
 	registerAnalyticsCommand(program);
 	expect(program.commands[0].commands.map((command) => command.name())).toEqual([
 		'cpu',
+		'prune',
 		'summary',
 		'loops',
 		'jev',
