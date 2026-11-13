@@ -21,6 +21,22 @@ test('durable analytics supports concurrent writers and duplicate identities', a
 			root
 		);
 		expect(result.stdout.trim()).toBe('1');
+		const pruned = await runCommand(
+			[
+				'bun',
+				'-e',
+				`import { AnalyticsRepository } from ${JSON.stringify(module)}; const r=new AnalyticsRepository(${JSON.stringify(root)}); const preview=r.prune('2026-10-07T00:00:00.000Z'); const retained=r.events().length; const applied=r.prune('2026-10-07T00:00:00.000Z',true); console.log(JSON.stringify({preview,retained,applied,remaining:r.events().length})); r.close();`
+			],
+			root,
+			false
+		);
+		expect(pruned.exitCode).toBe(0);
+		expect(JSON.parse(pruned.stdout)).toMatchObject({
+			preview: { matching: 1, deleted: 0, dryRun: true },
+			retained: 1,
+			applied: { matching: 1, deleted: 1, dryRun: false },
+			remaining: 0
+		});
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
