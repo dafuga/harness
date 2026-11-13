@@ -3,8 +3,8 @@
 	"id": "service.snapshot-run",
 	"uid": "u_x7kddegtw2",
 	"kind": "service",
-	"title": "SnapshotRunService",
-	"responsibility": "Runs setup and every planned check inside a clean snapshot and reports mutations.",
+	"title": "Verification snapshot runner",
+	"responsibility": "Creates a clean commit snapshot, applies links and setup, runs planned checks, observes file drift, and reports declared artifacts and build identities.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -25,29 +25,33 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SnapshotRunService.constructor.run",
 				"type": "SnapshotRun",
-				"required": true
+				"required": true,
+				"description": "Repository root, verification config and run context for the exact commit."
 			},
 			{
 				"name": "SnapshotRunService.execute.plan",
 				"type": "PlannedCheck[]",
-				"required": true
+				"required": true,
+				"description": "Checks to execute sequentially after setup and tool-version collection."
 			},
 			{
 				"name": "SnapshotRunService.execute.artifactPaths",
 				"type": "string[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Additional snapshot-relative paths whose existing bytes should be reported; defaults to an empty list."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SnapshotRunService.execute",
-				"type": "Promise<Executed>"
+				"type": "Promise<Executed>",
+				"description": "Execution results, source drift, setup failures, tool versions, declared artifacts, optional build identities and build failures."
 			}
 		],
 		"errors": [],
@@ -59,19 +63,22 @@
 					{
 						"name": "SnapshotRunService.execute.plan",
 						"type": "PlannedCheck[]",
-						"required": true
+						"required": true,
+						"description": "Checks to execute sequentially after setup and tool-version collection."
 					},
 					{
 						"name": "SnapshotRunService.execute.artifactPaths",
 						"type": "string[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Additional snapshot-relative paths whose existing bytes should be reported; defaults to an empty list."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SnapshotRunService.execute",
-						"type": "Promise<Executed>"
+						"type": "Promise<Executed>",
+						"description": "Execution results, source drift, setup failures, tool versions, declared artifacts, optional build identities and build failures."
 					}
 				],
 				"errors": [],
@@ -85,13 +92,15 @@
 					{
 						"name": "SnapshotRunService.constructor.run",
 						"type": "SnapshotRun",
-						"required": true
+						"required": true,
+						"description": "Repository root, verification config and run context for the exact commit."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SnapshotRunService.constructor",
-						"type": "unknown"
+						"type": "SnapshotRunService",
+						"description": "Snapshot runner initialized with the repository/config and exact-run context."
 					}
 				],
 				"errors": [],
@@ -127,6 +136,11 @@
 		},
 		{
 			"unit": "service.check-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-check-run-service-capture-limits",
 			"via": "import",
 			"origin": "derived"
 		}

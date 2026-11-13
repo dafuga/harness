@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "script.report-specification-storage",
+	"uid": "u_c2uuoqwiz3",
+	"kind": "script",
+	"title": "report-specification-storage",
+	"responsibility": "Measures the unit-manifest JSON store and append-only budget ledger, reporting byte/line counts and conservative operator heads-up thresholds without proposing retention or deletion policy.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/report-specification-storage.ts"],
+		"symbols": ["specificationStorageReport"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "specificationStorageReport.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository root containing specification/units and specification/budgets/ledger.ndjson."
+			}
+		],
+		"outputs": [
+			{
+				"name": "specificationStorageReport",
+				"type": "Promise<{ units: { files: number; bytes: number }; budgetLedger: { bytes: number; lines: number }; operatorHeadsUpBytes: { units: number; budgetLedger: number }; warnings: string[] }>",
+				"description": "Report of unit JSON file count and bytes, ledger bytes and line count, configured heads-up byte levels, and any threshold warnings."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An unreadable budget-ledger stream rejects the report; missing files/directories are treated as zero or empty by the stat/list helpers."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "specificationStorageReport",
+				"inputs": [
+					{
+						"name": "specificationStorageReport.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository root containing specification/units and specification/budgets/ledger.ndjson."
+					}
+				],
+				"outputs": [
+					{
+						"name": "specificationStorageReport",
+						"type": "Promise<{ units: { files: number; bytes: number }; budgetLedger: { bytes: number; lines: number }; operatorHeadsUpBytes: { units: number; budgetLedger: number }; warnings: string[] }>",
+						"description": "Report of unit JSON file count and bytes, ledger bytes and line count, configured heads-up byte levels, and any threshold warnings."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/report-specification-storage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/report-specification-storage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

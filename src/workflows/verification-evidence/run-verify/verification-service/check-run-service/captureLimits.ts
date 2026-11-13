@@ -1,3 +1,4 @@
+// @harness-uid u_r35cbtisci
 import type { CaptureLimits, CaptureRead } from './captureLimits.types';
 import { createHash } from 'node:crypto';
 import { closeSync, constants, fstatSync, openSync, readSync } from 'node:fs';

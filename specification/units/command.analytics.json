@@ -4,30 +4,32 @@
 	"uid": "u_wuyrjcr4it",
 	"kind": "command",
 	"title": "AnalyticsCommand",
-	"responsibility": "Owns the AnalyticsCommand command registration.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Registers local analytics query, CPU snapshot, and retention-prune commands with their command-line options.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program/AnalyticsCommand.ts", "src/commands/AnalyticsCommand.ts"],
-		"symbols": ["registerAnalyticsCommand", "registerAnalyticsCommand"]
+		"symbols": ["registerAnalyticsCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerAnalyticsCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "Commander program that receives the analytics command tree."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerAnalyticsCommand",
-				"type": "void"
+				"type": "void",
+				"description": "Registers CPU, prune, summary, loops, jev, models, tasks, benchmarks, events, import, and export subcommands; prune defaults to 90 days and deletes only with --apply."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerAnalyticsCommand",
@@ -35,22 +37,29 @@
 					{
 						"name": "registerAnalyticsCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "Commander program that receives the analytics command tree."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerAnalyticsCommand",
-						"type": "void"
+						"type": "void",
+						"description": "Registers CPU, prune, summary, loops, jev, models, tasks, benchmarks, events, import, and export subcommands; prune defaults to 90 days and deletes only with --apply."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "repository.analytics",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "service.analytics",
 			"via": "import",

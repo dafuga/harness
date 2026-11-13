@@ -1,3 +1,4 @@
+// @harness-uid u_xysbnkrzcc
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';

@@ -4,7 +4,7 @@
 	"uid": "u_trg35uiv2b",
 	"kind": "function",
 	"title": "Process peak memory",
-	"responsibility": "Runs a command under the system time utility and extracts its peak resident memory when available.",
+	"responsibility": "Runs a command under the system time utility with a deadline and returns peak resident bytes when the platform report is available, otherwise an unavailable reason.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -28,23 +28,37 @@
 				"name": "peakMemory.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Arguments passed to that executable."
+				"description": "Arguments passed directly to the executable."
 			},
 			{
 				"name": "peakMemory.input",
 				"type": "string",
 				"required": true,
-				"description": "Text sent to the process standard input."
+				"description": "Text written to the child standard input."
+			},
+			{
+				"name": "peakMemory.timeoutMs",
+				"type": "number",
+				"required": false,
+				"default": 60000,
+				"description": "Maximum child execution time in milliseconds; defaults to 60000."
 			}
 		],
 		"outputs": [
 			{
 				"name": "peakMemory",
 				"type": "PeakMemory",
-				"description": "Peak resident bytes from a successful BSD/GNU time report, converting GNU kilobytes by 1024; otherwise an unavailable explanation. Execution is synchronous and the command actually runs."
+				"description": "Peak resident bytes from a successful BSD/GNU time report, converting GNU kB to bytes; otherwise returns an unavailable reason. The command is run asynchronously with a timeout and output limit."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Bounded command failure",
+				"type": "propagated",
+				"description": "the time-wrapped child can reject on launch failure, timeout, cancellation or output overflow",
+				"examples": ["Command timed out.", "Command output limit exceeded."]
+			}
+		],
 		"operations": [
 			{
 				"name": "peakMemory",
@@ -59,29 +73,50 @@
 						"name": "peakMemory.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Arguments passed to that executable."
+						"description": "Arguments passed directly to the executable."
 					},
 					{
 						"name": "peakMemory.input",
 						"type": "string",
 						"required": true,
-						"description": "Text sent to the process standard input."
+						"description": "Text written to the child standard input."
+					},
+					{
+						"name": "peakMemory.timeoutMs",
+						"type": "number",
+						"required": false,
+						"default": 60000,
+						"description": "Maximum child execution time in milliseconds; defaults to 60000."
 					}
 				],
 				"outputs": [
 					{
 						"name": "peakMemory",
-						"type": "PeakMemory",
-						"description": "Peak resident bytes from a successful BSD/GNU time report, converting GNU kilobytes by 1024; otherwise an unavailable explanation. Execution is synchronous and the command actually runs."
+						"type": "Promise<PeakMemory>",
+						"description": "Peak resident bytes from a successful BSD/GNU time report, converting GNU kB to bytes; otherwise returns an unavailable reason. The command is run asynchronously with a timeout and output limit."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Bounded command failure",
+						"type": "propagated",
+						"description": "the time-wrapped child can reject on launch failure, timeout, cancellation or output overflow",
+						"examples": ["Command timed out.", "Command output limit exceeded."]
+					}
+				],
+				"errorStatus": "found"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "found"
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/development-tooling/peakMemory.ts",

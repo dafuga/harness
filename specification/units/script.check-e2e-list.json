@@ -1,0 +1,123 @@
+{
+	"schemaVersion": 1,
+	"id": "script.check-e2e-list",
+	"uid": "u_3mciuyjhwa",
+	"kind": "script",
+	"title": "check-e2e-list",
+	"responsibility": "Checks that every discovered E2E test file appears in the root test:e2e and test:package scripts and that those scripts do not name missing E2E files.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/check-e2e-list.ts"],
+		"symbols": ["declaredE2eTests", "compareE2eTests"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "declaredE2eTests.script",
+				"type": "string",
+				"required": true,
+				"description": "Script command text from which literal test/... .e2e.test.ts path references are extracted."
+			},
+			{
+				"name": "compareE2eTests.actualFiles",
+				"type": "readonly string[]",
+				"required": true,
+				"description": "E2E test paths discovered on disk."
+			},
+			{
+				"name": "compareE2eTests.declaredFiles",
+				"type": "readonly string[]",
+				"required": true,
+				"description": "E2E path references extracted from the package scripts."
+			}
+		],
+		"outputs": [
+			{
+				"name": "declaredE2eTests",
+				"type": "string[]",
+				"description": "Sorted E2E test paths explicitly referenced in the supplied script text."
+			},
+			{
+				"name": "compareE2eTests",
+				"type": "{ missing: string[]; stale: string[] }",
+				"description": "Sorted missing paths (present on disk but not declared) and stale paths (declared but absent on disk)."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The CLI throws when package.json lacks either required script; file or JSON reads can also fail."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "declaredE2eTests",
+				"inputs": [
+					{
+						"name": "declaredE2eTests.script",
+						"type": "string",
+						"required": true,
+						"description": "Script command text from which literal test/... .e2e.test.ts path references are extracted."
+					}
+				],
+				"outputs": [
+					{
+						"name": "declaredE2eTests",
+						"type": "string[]",
+						"description": "Sorted E2E test paths explicitly referenced in the supplied script text."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "compareE2eTests",
+				"inputs": [
+					{
+						"name": "compareE2eTests.actualFiles",
+						"type": "readonly string[]",
+						"required": true,
+						"description": "E2E test paths discovered on disk."
+					},
+					{
+						"name": "compareE2eTests.declaredFiles",
+						"type": "readonly string[]",
+						"required": true,
+						"description": "E2E path references extracted from the package scripts."
+					}
+				],
+				"outputs": [
+					{
+						"name": "compareE2eTests",
+						"type": "{ missing: string[]; stale: string[] }",
+						"description": "Sorted missing paths (present on disk but not declared) and stale paths (declared but absent on disk)."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/check-e2e-list.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/check-e2e-list.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -3,9 +3,9 @@
 	"id": "adapter.cpu-process",
 	"uid": "u_3wlbqeyf7m",
 	"kind": "adapter",
-	"title": "CpuProcessAdapter",
-	"responsibility": "Owns the CpuProcessAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"title": "CPU process sampling",
+	"responsibility": "Reads aggregate CPU counters and a bounded process table, then returns the CPU sample with recognized process roles.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -21,21 +21,36 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "CpuProcessAdapter.sample",
-				"type": "Promise<CpuReading>"
+				"type": "Promise<CpuReading>",
+				"description": "CPU reading with monotonic sample time, aggregate CPU counters and classified process rows."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Unsupported CPU process platform",
+				"type": "thrown",
+				"description": "sample rejects platforms other than macOS and Linux",
+				"examples": ["Unsupported CPU process platform."]
+			},
+			{
+				"name": "CPU counters unavailable",
+				"type": "thrown",
+				"description": "sample rejects when the OS returns no CPU counters",
+				"examples": ["CPU counters unavailable."]
+			},
+			{
+				"name": "Bounded process-table command failure",
+				"type": "propagated",
+				"description": "the ps process-table command can fail to launch, exceed its deadline or output cap, or be aborted",
+				"examples": ["Command timed out.", "Command output limit exceeded."]
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "CpuProcessAdapter.sample",
@@ -43,21 +58,41 @@
 				"outputs": [
 					{
 						"name": "CpuProcessAdapter.sample",
-						"type": "Promise<CpuReading>"
+						"type": "Promise<CpuReading>",
+						"description": "CPU reading with monotonic sample time, aggregate CPU counters and classified process rows."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Unsupported CPU process platform",
+						"type": "thrown",
+						"description": "sample rejects platforms other than macOS and Linux",
+						"examples": ["Unsupported CPU process platform."]
+					},
+					{
+						"name": "CPU counters unavailable",
+						"type": "thrown",
+						"description": "sample rejects when the OS returns no CPU counters",
+						"examples": ["CPU counters unavailable."]
+					},
+					{
+						"name": "Bounded process-table command failure",
+						"type": "propagated",
+						"description": "the ps process-table command can fail to launch, exceed its deadline or output cap, or be aborted",
+						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.cpu-metrics",
 			"via": "import",

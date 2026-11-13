@@ -1,3 +1,4 @@
+// @harness-uid u_f44y6xqi3p
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';

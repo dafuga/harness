@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"id": "script.with-resources",
+	"uid": "u_d2pmwm5tae",
+	"kind": "script",
+	"title": "with-resources",
+	"responsibility": "Builds the argument vector for running a command through the Harness resource-admission CLI, applying validated priority and resource environment overrides without shell interpolation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/with-resources.ts"],
+		"symbols": ["resourceArguments"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "resourceArguments.args",
+				"type": "string[]",
+				"required": true,
+				"description": "Arguments in the form <priority> -- <command and arguments>, where priority is coding, agent-test, or environment."
+			},
+			{
+				"name": "resourceArguments.env",
+				"type": "Record<string, string | undefined>",
+				"required": true,
+				"description": "Environment values used to override the selected priority, CPU count, and memory MiB."
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceArguments",
+				"type": "string[]",
+				"description": "Argument vector for `resources run`, with priority and resource limits followed by the requested command; no shell string is constructed."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Throws a Usage error unless a supported priority, `--` separator, and nonempty command are supplied."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "resourceArguments",
+				"inputs": [
+					{
+						"name": "resourceArguments.args",
+						"type": "string[]",
+						"required": true,
+						"description": "Arguments in the form <priority> -- <command and arguments>, where priority is coding, agent-test, or environment."
+					},
+					{
+						"name": "resourceArguments.env",
+						"type": "Record<string, string | undefined>",
+						"required": true,
+						"description": "Environment values used to override the selected priority, CPU count, and memory MiB."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resourceArguments",
+						"type": "string[]",
+						"description": "Argument vector for `resources run`, with priority and resource limits followed by the requested command; no shell string is constructed."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws a Usage error unless a supported priority, `--` separator, and nonempty command are supplied."
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "entry.index",
+			"via": "url",
+			"origin": "derived"
+		},
+		{
+			"unit": "entry.run-cli",
+			"via": "dynamic-import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/with-resources.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/with-resources.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

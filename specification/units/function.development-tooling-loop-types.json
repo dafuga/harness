@@ -4,12 +4,12 @@
 	"uid": "u_dzjufezgca",
 	"kind": "function",
 	"title": "Loop state records",
-	"responsibility": "Defines the stored loop state: goal, ordered steps, evaluators and completion policy, shared by loop workflows, activity reports and project work history.",
+	"responsibility": "Defines persisted loop goals, ordered steps, evaluators, completion policy and explicit abandoned closure without marking pending steps complete.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/development-tooling/loopTypes.ts"],
-		"symbols": ["LoopStep", "LoopEvaluator", "LoopState"]
+		"symbols": ["LoopStep", "LoopEvaluator", "LoopClosure", "LoopState"]
 	},
 	"contract": {
 		"origin": "declared",

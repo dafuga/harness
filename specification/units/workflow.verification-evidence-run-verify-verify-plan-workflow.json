@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.verification-evidence-run-verify-verify-plan-workflow",
+	"uid": "u_rizfoowd3l",
+	"kind": "workflow",
+	"title": "verifyPlanWorkflow",
+	"responsibility": "Plans full or entity-scoped verification checks using local repository state and a local impact runtime; it does not restore attached evidence or execute checks.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/verification-evidence/run-verify/verifyPlanWorkflow.ts"],
+		"symbols": ["verifyPlan"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "verifyPlan.options",
+				"type": "VerifyOptions",
+				"required": false,
+				"default": {},
+				"description": "Optional exact commit, requested base, local impact runtime, per-check timeout, entity scope, and repository root."
+			}
+		],
+		"outputs": [
+			{
+				"name": "verifyPlan",
+				"type": "Promise<VerifyPlanReport>",
+				"description": "Report-only selected plan; it never restores attached evidence or runs planned checks."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Invalid repository/revision/configuration, HTTP runtime refusal, or entity without scenario coverage."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "verifyPlan",
+				"inputs": [
+					{
+						"name": "verifyPlan.options",
+						"type": "VerifyOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional exact commit, requested base, local impact runtime, per-check timeout, entity scope, and repository root."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyPlan",
+						"type": "Promise<VerifyPlanReport>",
+						"description": "Report-only selected plan; it never restores attached evidence or runs planned checks."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid repository/revision/configuration, HTTP runtime refusal, or entity without scenario coverage."
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.trusted-base",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.unit-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-revisions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-verify",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-scoped-verify",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/verification-evidence/run-verify/verifyPlanWorkflow.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/verification-evidence/run-verify/verifyPlanWorkflow.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

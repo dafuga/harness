@@ -5813,6 +5813,41 @@
 			"commit": "8ff37d22dec778b84fa2a943573e9724a963dbc9",
 			"definition": "f65112a7deea343c60bfb6c86ad22ad7f714ef0aed5f7f5726ede4bde9e13030",
 			"reason": "Document omitted optional props through the owned syntax scanner while preserving requiredness and literal defaults."
+		},
+		{
+			"unit": "function.peak-memory",
+			"name": "peakMemory",
+			"commit": "c6a4638b0a08fbe29eca98109a3fcfee60d2d245",
+			"reason": "Bound command execution while preserving the recorded owner and identity.",
+			"definition": "a644503fc69745df0f19d746e95e68ed099205a62e5aaca9e6c99cdb4b6c0578"
+		},
+		{
+			"unit": "function.repository-identity",
+			"name": "sameRepository",
+			"commit": "c6a4638b0a08fbe29eca98109a3fcfee60d2d245",
+			"reason": "Bound command execution while preserving the recorded owner and identity.",
+			"definition": "aa9c6d1c6cae901c095c31c2e5dd596694d0d75ff71e42cca0d70d75430030b7"
+		},
+		{
+			"unit": "function.gather-captures",
+			"name": "gatherCaptures",
+			"commit": "5885a5eedf04c2cdd0f598e4e52bdd22c51d6294",
+			"reason": "Retain reviewed local safety and compatibility behavior in the recorded owner.",
+			"definition": "f13afc34a69c57dcc26f7310354845bdacf209b8a655947eab0b5c98bee02b3a"
+		},
+		{
+			"unit": "function.peak-memory",
+			"name": "peakMemory",
+			"commit": "23ce2b09de0f8c35e30efe782c41a9d783ebf923",
+			"reason": "Retain reviewed local safety and compatibility behavior in the recorded owner.",
+			"definition": "7ac98149d7172243f93b942112439ea3234fa3b95efbe6c4e85a10f86f81c007"
+		},
+		{
+			"unit": "function.repository-identity",
+			"name": "sameRepository",
+			"commit": "0c4abccd30b4653f530e5a0f1bbc37fd3e75b5f9",
+			"reason": "Retain reviewed local safety and compatibility behavior in the recorded owner.",
+			"definition": "aa9c6d1c6cae901c095c31c2e5dd596694d0d75ff71e42cca0d70d75430030b7"
 		}
 	],
 	"retiredOwners": [

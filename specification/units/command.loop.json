@@ -4,30 +4,32 @@
 	"uid": "u_bupajbnjit",
 	"kind": "command",
 	"title": "loop",
-	"responsibility": "Owns the loop command registration.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Registers loop lifecycle, regression-recording, create, step, status, search, next, and evaluation commands.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program/loop.ts"],
 		"symbols": ["registerLoopCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerLoopCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "Commander program that receives the loop command tree."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerLoopCommand",
-				"type": "void"
+				"type": "void",
+				"description": "Registers loop lifecycle and work commands including create, add, complete, status, search, next, evaluate, and regression record."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerLoopCommand",
@@ -35,22 +37,29 @@
 					{
 						"name": "registerLoopCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "Commander program that receives the loop command tree."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerLoopCommand",
-						"type": "void"
+						"type": "void",
+						"description": "Registers loop lifecycle and work commands including create, add, complete, status, search, next, evaluate, and regression record."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "entry.program-loop-lifecycle",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.record-regression",
 			"via": "import",

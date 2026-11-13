@@ -4,7 +4,7 @@
 	"uid": "u_tghxzhqmwm",
 	"kind": "command",
 	"title": "ScenariosCommand",
-	"responsibility": "Registers the harness scenarios list, show and check commands.",
+	"responsibility": "Registers commands to list scenarios, show one scenario contract, and validate contracts with report-only coverage diagnostics.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,27 +12,24 @@
 		"symbols": ["registerScenariosCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerScenariosCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "Commander program that receives the scenarios command tree."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerScenariosCommand",
-				"type": "void"
+				"type": "void",
+				"description": "Registers list, show, and check actions; check reports coverage diagnostics and fails on contract or unit-reference errors."
 			}
 		],
-		"errors": [
-			{
-				"name": "ExpectedCliError",
-				"type": "thrown"
-			}
-		],
-		"errorStatus": "unknown",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerScenariosCommand",
@@ -40,17 +37,19 @@
 					{
 						"name": "registerScenariosCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "Commander program that receives the scenarios command tree."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerScenariosCommand",
-						"type": "void"
+						"type": "void",
+						"description": "Registers list, show, and check actions; check reports coverage diagnostics and fails on contract or unit-reference errors."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
@@ -58,6 +57,11 @@
 	"dependencies": [
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-scenario-health",
 			"via": "import",
 			"origin": "derived"
 		},

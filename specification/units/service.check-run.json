@@ -3,8 +3,8 @@
 	"id": "service.check-run",
 	"uid": "u_3flwsx2557",
 	"kind": "service",
-	"title": "CheckRunService",
-	"responsibility": "Runs one planned check in the snapshot under isolation and collects what it captured.",
+	"title": "Verification check runner",
+	"responsibility": "Runs a planned check or declared tool in the snapshot under resource admission and process isolation, gathers bounded evidence, and returns its result.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -38,32 +38,37 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CheckRunService.constructor.context",
 				"type": "RunContext",
-				"required": true
+				"required": true,
+				"description": "Run metadata, snapshot and scratch directories, environment, and optional capture byte limits."
 			},
 			{
 				"name": "CheckRunService.run.check",
 				"type": "PlannedCheck",
-				"required": true
+				"required": true,
+				"description": "Planned check to execute with its runner, target, cwd, command and timeout."
 			},
 			{
 				"name": "CheckRunService.version.tool",
 				"type": "{ id: string; command: string }",
-				"required": true
+				"required": true,
+				"description": "Declared tool ID and command whose first nonempty output line identifies its version."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CheckRunService.run",
-				"type": "Promise<CheckOutcome>"
+				"type": "Promise<CheckOutcome>",
+				"description": "Outcome with the check entry, pass/fail state, admitted captures, and capture or execution failures."
 			},
 			{
 				"name": "CheckRunService.version",
-				"type": "Promise<string | undefined>"
+				"type": "Promise<string | undefined>",
+				"description": "First nonempty output line on success, or undefined when the command does not complete successfully or prints no version."
 			}
 		],
 		"errors": [],
@@ -75,13 +80,15 @@
 					{
 						"name": "CheckRunService.run.check",
 						"type": "PlannedCheck",
-						"required": true
+						"required": true,
+						"description": "Planned check to execute with its runner, target, cwd, command and timeout."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CheckRunService.run",
-						"type": "Promise<CheckOutcome>"
+						"type": "Promise<CheckOutcome>",
+						"description": "Outcome with the check entry, pass/fail state, admitted captures, and capture or execution failures."
 					}
 				],
 				"errors": [],
@@ -93,13 +100,15 @@
 					{
 						"name": "CheckRunService.version.tool",
 						"type": "{ id: string; command: string }",
-						"required": true
+						"required": true,
+						"description": "Declared tool ID and command whose first nonempty output line identifies its version."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CheckRunService.version",
-						"type": "Promise<string | undefined>"
+						"type": "Promise<string | undefined>",
+						"description": "First nonempty output line on success, or undefined when the command does not complete successfully or prints no version."
 					}
 				],
 				"errors": [],
@@ -113,13 +122,15 @@
 					{
 						"name": "CheckRunService.constructor.context",
 						"type": "RunContext",
-						"required": true
+						"required": true,
+						"description": "Run metadata, snapshot and scratch directories, environment, and optional capture byte limits."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CheckRunService.constructor",
-						"type": "unknown"
+						"type": "CheckRunService",
+						"description": "Runner retaining the check context and one record-wide capture budget."
 					}
 				],
 				"errors": [],
@@ -165,6 +176,16 @@
 		},
 		{
 			"unit": "function.verify-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-check-run-service-capture-limits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-check-run-service-evidence-directory-failure",
 			"via": "import",
 			"origin": "derived"
 		}

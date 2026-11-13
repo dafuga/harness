@@ -4,7 +4,7 @@
 	"uid": "u_vhrxgtfwjl",
 	"kind": "function",
 	"title": "Application repository identity",
-	"responsibility": "Identifies an application by its normalized upstream repository or local Git store and compares checkouts or a plain site directory.",
+	"responsibility": "Identifies a checkout by its normalized network origin or canonical local Git store, follows bounded local-clone origins, and compares repository or plain-site membership.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -32,48 +32,48 @@
 				"name": "repositoryIdentity.directory",
 				"type": "string",
 				"required": true,
-				"description": "Checkout directory to identify through Git metadata and upstream addresses."
+				"description": "Checkout directory identified through its selected upstream or canonical local Git store."
 			},
 			{
 				"name": "sameRepository.left",
 				"type": "string",
 				"required": true,
-				"description": "First checkout directory to compare."
+				"description": "First checkout directory to identify."
 			},
 			{
 				"name": "sameRepository.right",
 				"type": "string",
 				"required": true,
-				"description": "Second checkout directory to compare."
+				"description": "Second checkout directory to identify."
 			},
 			{
 				"name": "sameSite.site",
 				"type": "string",
 				"required": true,
-				"description": "Hosted site directory whose repository or plain-directory identity defines ownership."
+				"description": "Site directory whose repository identity or exact plain-directory path defines membership."
 			},
 			{
 				"name": "sameSite.directory",
 				"type": "string",
 				"required": true,
-				"description": "Candidate directory whose membership in the site should be checked."
+				"description": "Candidate directory whose membership in the site is tested."
 			}
 		],
 		"outputs": [
 			{
 				"name": "repositoryIdentity",
 				"type": "string | null",
-				"description": "Cached SHA-256 identity from a normalized network remote or canonical local Git store, following local clone origins up to the hop limit; null for missing or ambiguous origins."
+				"description": "SHA-256 of the normalized network origin or canonical local store after at most five local-origin hops; null when identity is missing or ambiguous."
 			},
 			{
 				"name": "sameRepository",
 				"type": "boolean",
-				"description": "True only when both directories have the same non-null repository identity. Shared template history alone does not establish identity."
+				"description": "True only when both directories resolve to the same non-null repository identity."
 			},
 			{
 				"name": "sameSite",
 				"type": "boolean",
-				"description": "True for another checkout of a known site repository, or the exact canonical directory of a site outside Git. Unknown-origin repositories do not fall back to path equality."
+				"description": "True for a checkout of the same known site repository or the exact canonical directory of a non-Git site; unknown repository origin is not path-matched."
 			}
 		],
 		"errors": [],
@@ -85,14 +85,14 @@
 						"name": "repositoryIdentity.directory",
 						"type": "string",
 						"required": true,
-						"description": "Checkout directory to identify through Git metadata and upstream addresses."
+						"description": "Checkout directory identified through its selected upstream or canonical local Git store."
 					}
 				],
 				"outputs": [
 					{
 						"name": "repositoryIdentity",
 						"type": "string | null",
-						"description": "Cached SHA-256 identity from a normalized network remote or canonical local Git store, following local clone origins up to the hop limit; null for missing or ambiguous origins."
+						"description": "SHA-256 of the normalized network origin or canonical local store after at most five local-origin hops; null when identity is missing or ambiguous."
 					}
 				],
 				"errors": [],
@@ -105,20 +105,20 @@
 						"name": "sameRepository.left",
 						"type": "string",
 						"required": true,
-						"description": "First checkout directory to compare."
+						"description": "First checkout directory to identify."
 					},
 					{
 						"name": "sameRepository.right",
 						"type": "string",
 						"required": true,
-						"description": "Second checkout directory to compare."
+						"description": "Second checkout directory to identify."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameRepository",
 						"type": "boolean",
-						"description": "True only when both directories have the same non-null repository identity. Shared template history alone does not establish identity."
+						"description": "True only when both directories resolve to the same non-null repository identity."
 					}
 				],
 				"errors": [],
@@ -131,29 +131,36 @@
 						"name": "sameSite.site",
 						"type": "string",
 						"required": true,
-						"description": "Hosted site directory whose repository or plain-directory identity defines ownership."
+						"description": "Site directory whose repository identity or exact plain-directory path defines membership."
 					},
 					{
 						"name": "sameSite.directory",
 						"type": "string",
 						"required": true,
-						"description": "Candidate directory whose membership in the site should be checked."
+						"description": "Candidate directory whose membership in the site is tested."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameSite",
 						"type": "boolean",
-						"description": "True for another checkout of a known site repository, or the exact canonical directory of a site outside Git. Unknown-origin repositories do not fall back to path equality."
+						"description": "True for a checkout of the same known site repository or the exact canonical directory of a non-Git site; unknown repository origin is not path-matched."
 					}
 				],
 				"errors": [],
 				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "unknown"
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/repositoryIdentity.ts",

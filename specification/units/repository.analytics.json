@@ -3,9 +3,9 @@
 	"id": "repository.analytics",
 	"uid": "u_4oijppigay",
 	"kind": "repository",
-	"title": "AnalyticsRepository",
-	"responsibility": "Owns the AnalyticsRepository persistence boundary.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics event repository",
+	"responsibility": "Persists analytics events in a private SQLite store, reconciles historical project rows, and previews or applies timestamp-based retention.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -20,67 +20,109 @@
 			"AnalyticsRepository.record",
 			"AnalyticsRepository.recordImported",
 			"AnalyticsRepository.events",
+			"AnalyticsRepository.prune",
 			"AnalyticsRepository.close"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AnalyticsRepository.constructor.home",
-				"type": "unknown",
-				"required": false
+				"type": "string",
+				"required": false,
+				"description": "Optional directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Directory whose canonical project identity should be reconciled."
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical.project",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Previously recorded project identity; historical rows for it are removed when it differs from the resolved root."
 			},
 			{
 				"name": "AnalyticsRepository.record.event",
 				"type": "AnalyticsEvent",
-				"required": true
+				"required": true,
+				"description": "Analytics event to insert if its ID is not already present."
 			},
 			{
 				"name": "AnalyticsRepository.recordImported.event",
 				"type": "AnalyticsEvent",
-				"required": true
+				"required": true,
+				"description": "Imported analytics event; an existing live event with the same ID remains non-historical."
+			},
+			{
+				"name": "AnalyticsRepository.prune.before",
+				"type": "string",
+				"required": true,
+				"description": "ISO UTC timestamp in the past; rows with an earlier parseable timestamp match retention."
+			},
+			{
+				"name": "AnalyticsRepository.prune.apply",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "When true, delete matching rows; false previews the count without deletion."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnalyticsRepository.reconcileHistorical",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after stale historical rows for the prior project are removed when root resolves to another project."
 			},
 			{
 				"name": "AnalyticsRepository.record",
-				"type": "void"
+				"type": "void",
+				"description": "Inserts the event once by ID; duplicates are ignored."
 			},
 			{
 				"name": "AnalyticsRepository.recordImported",
-				"type": "void"
+				"type": "void",
+				"description": "Upserts the imported event, preserving live status if a live event with that ID exists."
 			},
 			{
 				"name": "AnalyticsRepository.events",
-				"type": "AnalyticsEvent[]"
+				"type": "AnalyticsEvent[]",
+				"description": "All stored event payloads ordered by timestamp and row order."
+			},
+			{
+				"name": "AnalyticsRepository.prune",
+				"type": "{ before: string; matching: number; deleted: number; dryRun: boolean }",
+				"description": "Cutoff, number of matching rows, number deleted, and whether the call was a dry run."
 			},
 			{
 				"name": "AnalyticsRepository.close",
-				"type": "void"
+				"type": "void",
+				"description": "Closes the SQLite connection."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Unsupported analytics schema version",
+				"type": "thrown",
+				"description": "construction rejects a database whose user_version is newer than the supported schema",
+				"examples": ["Unsupported analytics schema version."]
+			},
+			{
+				"name": "Analytics storage failure",
+				"type": "propagated",
+				"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+			},
+			{
+				"name": "Invalid retention cutoff",
+				"type": "thrown",
+				"description": "prune requires a canonical ISO UTC timestamp strictly in the past",
+				"examples": ["Retention cutoff must be an ISO UTC timestamp in the past."]
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "AnalyticsRepository.reconcileHistorical",
@@ -88,22 +130,31 @@
 					{
 						"name": "AnalyticsRepository.reconcileHistorical.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Directory whose canonical project identity should be reconciled."
 					},
 					{
 						"name": "AnalyticsRepository.reconcileHistorical.project",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Previously recorded project identity; historical rows for it are removed when it differs from the resolved root."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.reconcileHistorical",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after stale historical rows for the prior project are removed when root resolves to another project."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Analytics storage failure",
+						"type": "propagated",
+						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "AnalyticsRepository.record",
@@ -111,17 +162,25 @@
 					{
 						"name": "AnalyticsRepository.record.event",
 						"type": "AnalyticsEvent",
-						"required": true
+						"required": true,
+						"description": "Analytics event to insert if its ID is not already present."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.record",
-						"type": "void"
+						"type": "void",
+						"description": "Inserts the event once by ID; duplicates are ignored."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Analytics storage failure",
+						"type": "propagated",
+						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "AnalyticsRepository.recordImported",
@@ -129,17 +188,25 @@
 					{
 						"name": "AnalyticsRepository.recordImported.event",
 						"type": "AnalyticsEvent",
-						"required": true
+						"required": true,
+						"description": "Imported analytics event; an existing live event with the same ID remains non-historical."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.recordImported",
-						"type": "void"
+						"type": "void",
+						"description": "Upserts the imported event, preserving live status if a live event with that ID exists."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Analytics storage failure",
+						"type": "propagated",
+						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "AnalyticsRepository.events",
@@ -147,11 +214,57 @@
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.events",
-						"type": "AnalyticsEvent[]"
+						"type": "AnalyticsEvent[]",
+						"description": "All stored event payloads ordered by timestamp and row order."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Analytics storage failure",
+						"type": "propagated",
+						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "AnalyticsRepository.prune",
+				"inputs": [
+					{
+						"name": "AnalyticsRepository.prune.before",
+						"type": "string",
+						"required": true,
+						"description": "ISO UTC timestamp in the past; rows with an earlier parseable timestamp match retention."
+					},
+					{
+						"name": "AnalyticsRepository.prune.apply",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "When true, delete matching rows; false previews the count without deletion."
+					}
+				],
+				"outputs": [
+					{
+						"name": "AnalyticsRepository.prune",
+						"type": "{ before: string; matching: number; deleted: number; dryRun: boolean }",
+						"description": "Cutoff, number of matching rows, number deleted, and whether the call was a dry run."
+					}
+				],
+				"errors": [
+					{
+						"name": "Analytics storage failure",
+						"type": "propagated",
+						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+					},
+					{
+						"name": "Invalid retention cutoff",
+						"type": "thrown",
+						"description": "prune requires a canonical ISO UTC timestamp strictly in the past",
+						"examples": ["Retention cutoff must be an ISO UTC timestamp in the past."]
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "AnalyticsRepository.close",
@@ -159,11 +272,18 @@
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.close",
-						"type": "void"
+						"type": "void",
+						"description": "Closes the SQLite connection."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Analytics storage failure",
+						"type": "propagated",
+						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+					}
+				],
+				"errorStatus": "found"
 			}
 		],
 		"initialization": [
@@ -172,18 +292,32 @@
 				"inputs": [
 					{
 						"name": "AnalyticsRepository.constructor.home",
-						"type": "unknown",
-						"required": false
+						"type": "string",
+						"required": false,
+						"description": "Optional directory for analytics.sqlite; defaults to HARNESS_ANALYTICS_HOME or ~/.codex/harness."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsRepository.constructor",
-						"type": "unknown"
+						"type": "AnalyticsRepository",
+						"description": "Initialized SQLite repository with its private database and schema."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Unsupported analytics schema version",
+						"type": "thrown",
+						"description": "construction rejects a database whose user_version is newer than the supported schema",
+						"examples": ["Unsupported analytics schema version."]
+					},
+					{
+						"name": "Analytics storage failure",
+						"type": "propagated",
+						"description": "filesystem, SQLite initialization/query, and close failures propagate from the repository"
+					}
+				],
+				"errorStatus": "found"
 			}
 		]
 	},

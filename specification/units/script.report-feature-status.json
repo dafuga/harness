@@ -1,0 +1,166 @@
+{
+	"schemaVersion": 1,
+	"id": "script.report-feature-status",
+	"uid": "u_xysbnkrzcc",
+	"kind": "script",
+	"title": "report-feature-status",
+	"responsibility": "Produces a report-only feature-document status inventory, flagging planned docs with matching complete loops or explicitly verified linked units and identifying missing owner/date evidence.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/report-feature-status.ts"],
+		"symbols": ["featureStatusReport", "linkedUnits", "verifiedUnitsInHistory"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "featureStatusReport.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository root containing feature docs, loop records, unit manifests, and optional evidence history."
+			},
+			{
+				"name": "featureStatusReport.verifiedUnitIds",
+				"type": "ReadonlySet<string>",
+				"required": true,
+				"description": "Unit IDs independently confirmed by the caller for comparison against each planned document."
+			},
+			{
+				"name": "linkedUnits.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository root whose unit manifests are scanned for explicit documentation links."
+			},
+			{
+				"name": "verifiedUnitsInHistory.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository root whose harness-evidence Git ref is queried for passed verification records."
+			},
+			{
+				"name": "verifiedUnitsInHistory.unitIds",
+				"type": "ReadonlySet<string>",
+				"required": true,
+				"description": "Unit IDs to search for in committed passed verification records; history is only a warning signal, not shipment proof."
+			}
+		],
+		"outputs": [
+			{
+				"name": "featureStatusReport",
+				"type": "{ documents: number; planned: number; implemented: number; classificationMismatches: { path: string; folderStatus: string; frontmatterStatus: string | undefined }[]; stalePlanned: { path: string; reasons: string[] }[]; missingOwnershipOrDateEvidence: { path: string; fields: string[] }[] }",
+				"description": "Counts planned and implemented feature docs, reports folder/frontmatter mismatches, potential stale planned labels, and absent ownership or review-date evidence."
+			},
+			{
+				"name": "linkedUnits",
+				"type": "Map<string, string[]>",
+				"description": "Map from a feature-document path to unit IDs whose manifests explicitly name that document."
+			},
+			{
+				"name": "verifiedUnitsInHistory",
+				"type": "Set<string>",
+				"description": "Set of requested unit IDs found in passed committed history records; this signal does not establish shipment."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Unexpected feature-document read failures can throw; malformed historical evidence is ignored by the history lookup."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "featureStatusReport",
+				"inputs": [
+					{
+						"name": "featureStatusReport.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository root containing feature docs, loop records, unit manifests, and optional evidence history."
+					},
+					{
+						"name": "featureStatusReport.verifiedUnitIds",
+						"type": "ReadonlySet<string>",
+						"required": true,
+						"description": "Unit IDs independently confirmed by the caller for comparison against each planned document."
+					}
+				],
+				"outputs": [
+					{
+						"name": "featureStatusReport",
+						"type": "{ documents: number; planned: number; implemented: number; classificationMismatches: { path: string; folderStatus: string; frontmatterStatus: string | undefined }[]; stalePlanned: { path: string; reasons: string[] }[]; missingOwnershipOrDateEvidence: { path: string; fields: string[] }[] }",
+						"description": "Counts planned and implemented feature docs, reports folder/frontmatter mismatches, potential stale planned labels, and absent ownership or review-date evidence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "linkedUnits",
+				"inputs": [
+					{
+						"name": "linkedUnits.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository root whose unit manifests are scanned for explicit documentation links."
+					}
+				],
+				"outputs": [
+					{
+						"name": "linkedUnits",
+						"type": "Map<string, string[]>",
+						"description": "Map from a feature-document path to unit IDs whose manifests explicitly name that document."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "verifiedUnitsInHistory",
+				"inputs": [
+					{
+						"name": "verifiedUnitsInHistory.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository root whose harness-evidence Git ref is queried for passed verification records."
+					},
+					{
+						"name": "verifiedUnitsInHistory.unitIds",
+						"type": "ReadonlySet<string>",
+						"required": true,
+						"description": "Unit IDs to search for in committed passed verification records; history is only a warning signal, not shipment proof."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifiedUnitsInHistory",
+						"type": "Set<string>",
+						"description": "Set of requested unit IDs found in passed committed history records; this signal does not establish shipment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/report-feature-status.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/report-feature-status.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

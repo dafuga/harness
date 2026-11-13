@@ -1,3 +1,4 @@
+// @harness-uid u_r35cbtisci
 /** Optional byte caps from `harness.verify.json`; a missing cap means no limit. */
 export interface CaptureLimits {
 	/** Largest single capture file a check may leave. */

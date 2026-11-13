@@ -1,3 +1,4 @@
+// @harness-uid u_d2pmwm5tae
 import { fileURLToPath } from 'node:url';
 
 /** Construct the existing resource CLI request without shell interpolation. */

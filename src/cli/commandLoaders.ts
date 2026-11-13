@@ -1,3 +1,4 @@
+// @harness-uid u_wnr7fhxvwz
 import type { Command } from 'commander';
 /** Each loader registers one command family; no workflow is imported before selection. */
 export const commandLoaders = {

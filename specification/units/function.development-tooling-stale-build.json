@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "function.development-tooling-stale-build",
+	"uid": "u_fp6usylruz",
+	"kind": "function",
+	"title": "staleBuild",
+	"responsibility": "Warns when a dist entry predates files in the checkout source trees; packaged or unreadable source trees produce no warning.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/development-tooling/staleBuild.ts"],
+		"symbols": ["staleBuild"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "staleBuild.entry",
+				"type": "string",
+				"required": true,
+				"description": "Path to the entry file being considered for execution."
+			}
+		],
+		"outputs": [
+			{
+				"name": "staleBuild",
+				"type": "string | undefined",
+				"description": "A rebuild warning when an entry under dist is older than a file under the checkout’s src or crates tree; undefined for other paths or when no newer source can be inspected."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "staleBuild",
+				"inputs": [
+					{
+						"name": "staleBuild.entry",
+						"type": "string",
+						"required": true,
+						"description": "Path to the entry file being considered for execution."
+					}
+				],
+				"outputs": [
+					{
+						"name": "staleBuild",
+						"type": "string | undefined",
+						"description": "A rebuild warning when an entry under dist is older than a file under the checkout’s src or crates tree; undefined for other paths or when no newer source can be inspected."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/development-tooling/staleBuild.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/development-tooling/staleBuild.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

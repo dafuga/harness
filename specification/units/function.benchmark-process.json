@@ -3,8 +3,8 @@
 	"id": "function.benchmark-process",
 	"uid": "u_ppagdjm4wo",
 	"kind": "function",
-	"title": "benchmarkProcess",
-	"responsibility": "Runs bounded benchmark subprocesses with cancellation and whole-process-group cleanup.",
+	"title": "Benchmark child process",
+	"responsibility": "Runs a benchmark command with an allowlisted environment, analytics disabled, cancellation and bounds, returning its exit code and text output.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -23,22 +23,29 @@
 				"name": "benchmarkProcess.input",
 				"type": "BenchmarkProcessInput",
 				"required": true,
-				"description": "Command vector, working directory, optional text input and cancellation signal."
+				"description": "Command vector, working directory, optional stdin text, cancellation signal and timeout."
 			}
 		],
 		"outputs": [
 			{
 				"name": "benchmarkEnvironment",
 				"type": "Record<string, string | undefined>",
-				"description": "Allowlisted system environment with nested Harness analytics disabled."
+				"description": "Allowlisted OS environment with HARNESS_ANALYTICS_DISABLED set to 1."
 			},
 			{
 				"name": "benchmarkProcess",
 				"type": "Promise<BenchmarkProcessResult>",
-				"description": "Child exit code and bounded stdout and stderr after process cleanup."
+				"description": "Exit code and UTF-8 stdout/stderr after bounded execution."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Bounded command failure",
+				"type": "propagated",
+				"description": "the benchmark child can reject on launch failure, timeout, cancellation or output overflow",
+				"examples": ["Command timed out.", "Command output limit exceeded."]
+			}
+		],
 		"operations": [
 			{
 				"name": "benchmarkEnvironment",
@@ -47,7 +54,7 @@
 					{
 						"name": "benchmarkEnvironment",
 						"type": "Record<string, string | undefined>",
-						"description": "Allowlisted system environment with nested Harness analytics disabled."
+						"description": "Allowlisted OS environment with HARNESS_ANALYTICS_DISABLED set to 1."
 					}
 				],
 				"errors": [],
@@ -60,23 +67,36 @@
 						"name": "benchmarkProcess.input",
 						"type": "BenchmarkProcessInput",
 						"required": true,
-						"description": "Command vector, working directory, optional text input and cancellation signal."
+						"description": "Command vector, working directory, optional stdin text, cancellation signal and timeout."
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchmarkProcess",
 						"type": "Promise<BenchmarkProcessResult>",
-						"description": "Child exit code and bounded stdout and stderr after process cleanup."
+						"description": "Exit code and UTF-8 stdout/stderr after bounded execution."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Bounded command failure",
+						"type": "propagated",
+						"description": "the benchmark child can reject on launch failure, timeout, cancellation or output overflow",
+						"examples": ["Command timed out.", "Command output limit exceeded."]
+					}
+				],
+				"errorStatus": "found"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "found"
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "entry.program-benchmark-service-benchmark-process-types",
 			"via": "import",

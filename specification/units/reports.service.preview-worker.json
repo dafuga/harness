@@ -3,8 +3,8 @@
 	"id": "reports.service.preview-worker",
 	"uid": "u_edxqiri65j",
 	"kind": "service",
-	"title": "Recover the owned preview worker",
-	"responsibility": "Runs one Node worker, detects crashes, hangs and repeated server errors, and replaces it with bounded backoff at the same address.",
+	"title": "Recoverable preview worker",
+	"responsibility": "Starts and supervises the owned Node preview worker, checks readiness and health, restarts it at the same URL with backoff, and stops it on close.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -27,14 +27,14 @@
 				"name": "PreviewWorkerService.constructor.entry",
 				"type": "string",
 				"required": true,
-				"description": "Compiled Node launcher owned by this supervisor.",
+				"description": "Compiled Node entry path for the worker process.",
 				"examples": ["/projects/harness/packages/reports/.cache/preview-node-example/entry.mjs"]
 			},
 			{
 				"name": "PreviewWorkerService.constructor.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Validated launch arguments passed unchanged to each replacement.",
+				"description": "Validated worker arguments passed unchanged to each replacement.",
 				"examples": [
 					[
 						"--port",
@@ -50,7 +50,7 @@
 				"name": "PreviewWorkerService.constructor.url",
 				"type": "string",
 				"required": true,
-				"description": "Stable loopback URL retained across worker replacements.",
+				"description": "Stable worker URL used for readiness and health checks and returned to callers.",
 				"examples": ["http://127.0.0.1:5688"]
 			}
 		],
@@ -58,7 +58,7 @@
 			{
 				"name": "PreviewWorkerService.start",
 				"type": "Promise<PreviewHandle>",
-				"description": "Ready worker address and an intentional shutdown operation.",
+				"description": "Starts a worker, waits for its health response to match the child PID and token, then schedules recovery checks and returns its URL/close handle.",
 				"examples": [
 					{
 						"url": "http://127.0.0.1:5688",
@@ -69,16 +69,16 @@
 			{
 				"name": "PreviewWorkerService.close",
 				"type": "Promise<void>",
-				"description": "Stops health checks and the owned child without respawning.",
+				"description": "Stops health checks and gracefully stops the owned child, escalating to SIGKILL after two seconds; does not respawn.",
 				"examples": [null]
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Preview worker startup failure",
 				"type": "thrown",
-				"description": "Refuses an unavailable or mismatched worker; ongoing recovery retries back off without starting overlapping workers.",
-				"examples": ["Preview worker did not become ready."]
+				"description": "start rejects when the child cannot be launched, exits before readiness, remains unhealthy through the startup deadline, or the service was stopped. Recovery retries later with backoff.",
+				"examples": ["Preview worker did not become ready.", "Preview stopped."]
 			}
 		],
 		"operations": [
@@ -89,7 +89,7 @@
 					{
 						"name": "PreviewWorkerService.start",
 						"type": "Promise<PreviewHandle>",
-						"description": "Ready worker address and an intentional shutdown operation.",
+						"description": "Starts a worker, waits for its health response to match the child PID and token, then schedules recovery checks and returns its URL/close handle.",
 						"examples": [
 							{
 								"url": "http://127.0.0.1:5688",
@@ -98,8 +98,18 @@
 						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Preview worker startup failure",
+						"type": "thrown",
+						"description": "start rejects when the worker cannot launch, exits before ready, or remains unready through the startup deadline.",
+						"examples": [
+							"Preview worker did not become ready.",
+							"Preview worker exited before readiness."
+						]
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "PreviewWorkerService.close",
@@ -108,12 +118,12 @@
 					{
 						"name": "PreviewWorkerService.close",
 						"type": "Promise<void>",
-						"description": "Stops health checks and the owned child without respawning.",
+						"description": "Stops health checks and gracefully stops the owned child, escalating to SIGKILL after two seconds; does not respawn.",
 						"examples": [null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": [
@@ -124,14 +134,14 @@
 						"name": "PreviewWorkerService.constructor.entry",
 						"type": "string",
 						"required": true,
-						"description": "Compiled Node launcher owned by this supervisor.",
+						"description": "Compiled Node entry path for the worker process.",
 						"examples": ["/projects/harness/packages/reports/.cache/preview-node-example/entry.mjs"]
 					},
 					{
 						"name": "PreviewWorkerService.constructor.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Validated launch arguments passed unchanged to each replacement.",
+						"description": "Validated worker arguments passed unchanged to each replacement.",
 						"examples": [
 							[
 								"--port",
@@ -147,22 +157,29 @@
 						"name": "PreviewWorkerService.constructor.url",
 						"type": "string",
 						"required": true,
-						"description": "Stable loopback URL retained across worker replacements.",
+						"description": "Stable worker URL used for readiness and health checks and returned to callers.",
 						"examples": ["http://127.0.0.1:5688"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PreviewWorkerService.constructor",
-						"type": "unknown"
+						"type": "PreviewWorkerService",
+						"description": "Supervisor initialized with the worker entry, arguments and stable URL."
 					}
 				],
 				"errors": [],
 				"errorStatus": "none-found"
 			}
-		]
+		],
+		"errorStatus": "found"
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.preview-health",
 			"via": "import",

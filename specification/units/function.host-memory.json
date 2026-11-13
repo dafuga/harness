@@ -3,8 +3,8 @@
 	"id": "function.host-memory",
 	"uid": "u_zv3wkcwxsy",
 	"kind": "function",
-	"title": "hostMemory",
-	"responsibility": "Parses platform memory counters and obtains current host availability with an explicit pressure level.",
+	"title": "Host memory observation",
+	"responsibility": "Parses macOS or Linux memory counters, or reads Windows host totals, and returns total, available, and pressure facts; unsupported or invalid sources fail.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,49 +20,61 @@
 				"name": "macMemory.text",
 				"type": "string",
 				"required": true,
-				"description": "Platform memory diagnostic output in its native text format."
+				"description": "Output of vm_stat in the expected page-counter format."
 			},
 			{
 				"name": "macMemory.pressure",
 				"type": "string",
 				"required": true,
-				"description": "macOS memory-pressure level emitted by sysctl."
+				"description": "kern.memorystatus_vm_pressure_level output; values 1, 2 and 4 map to normal, warning and critical, other values map to unknown."
 			},
 			{
 				"name": "macMemory.total",
 				"type": "number",
 				"required": true,
-				"description": "Total physical memory bytes used to bound parsed available pages."
+				"description": "Host physical-memory total in bytes, used to cap available-page bytes."
 			},
 			{
 				"name": "linuxMemory.text",
 				"type": "string",
 				"required": true,
-				"description": "Platform memory diagnostic output in its native text format."
+				"description": "/proc/meminfo text containing MemTotal and MemAvailable in kB."
 			}
 		],
 		"outputs": [
 			{
 				"name": "macMemory",
 				"type": "Memory",
-				"description": "Total and available bytes plus the parsed macOS pressure level; unknown levels remain unknown."
+				"description": "Total and available bytes plus mapped pressure; available pages are capped by total physical memory."
 			},
 			{
 				"name": "linuxMemory",
 				"type": "Memory",
-				"description": "Total and available bytes with critical pressure when less than five percent remains."
+				"description": "Total and available bytes, with critical pressure only below five percent available and normal pressure otherwise."
 			},
 			{
 				"name": "hostMemory",
 				"type": "Promise<Memory>",
-				"description": "Actual platform memory observation; unsupported or unreadable probes reject."
+				"description": "Platform observation using vm_stat/sysctl on macOS, /proc/meminfo on Linux, or OS memory values on Windows."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid memory counters",
 				"type": "thrown",
-				"description": "Unreadable or invalid platform counters and unsupported platforms reject instead of inventing available capacity."
+				"description": "macMemory and linuxMemory reject when platform counters cannot be parsed or totals are not positive",
+				"examples": ["Cannot read macOS memory counters", "Cannot read Linux available memory"]
+			},
+			{
+				"name": "Unsupported resource platform",
+				"type": "thrown",
+				"description": "hostMemory rejects platforms other than macOS, Linux and Windows",
+				"examples": ["Unsupported resource platform"]
+			},
+			{
+				"name": "Memory probe failure",
+				"type": "propagated",
+				"description": "macOS tool execution and Linux /proc/meminfo read failures reject to the caller"
 			}
 		],
 		"operations": [
@@ -73,35 +85,37 @@
 						"name": "macMemory.text",
 						"type": "string",
 						"required": true,
-						"description": "Platform memory diagnostic output in its native text format."
+						"description": "Output of vm_stat in the expected page-counter format."
 					},
 					{
 						"name": "macMemory.pressure",
 						"type": "string",
 						"required": true,
-						"description": "macOS memory-pressure level emitted by sysctl."
+						"description": "kern.memorystatus_vm_pressure_level output; values 1, 2 and 4 map to normal, warning and critical, other values map to unknown."
 					},
 					{
 						"name": "macMemory.total",
 						"type": "number",
 						"required": true,
-						"description": "Total physical memory bytes used to bound parsed available pages."
+						"description": "Host physical-memory total in bytes, used to cap available-page bytes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "macMemory",
 						"type": "Memory",
-						"description": "Total and available bytes plus the parsed macOS pressure level; unknown levels remain unknown."
+						"description": "Total and available bytes plus mapped pressure; available pages are capped by total physical memory."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Invalid memory counters",
+						"type": "thrown",
+						"description": "macMemory and linuxMemory reject when platform counters cannot be parsed or totals are not positive",
+						"examples": ["Cannot read macOS memory counters", "Cannot read Linux available memory"]
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "linuxMemory",
@@ -110,23 +124,25 @@
 						"name": "linuxMemory.text",
 						"type": "string",
 						"required": true,
-						"description": "Platform memory diagnostic output in its native text format."
+						"description": "/proc/meminfo text containing MemTotal and MemAvailable in kB."
 					}
 				],
 				"outputs": [
 					{
 						"name": "linuxMemory",
 						"type": "Memory",
-						"description": "Total and available bytes with critical pressure when less than five percent remains."
+						"description": "Total and available bytes, with critical pressure only below five percent available and normal pressure otherwise."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Invalid memory counters",
+						"type": "thrown",
+						"description": "macMemory and linuxMemory reject when platform counters cannot be parsed or totals are not positive",
+						"examples": ["Cannot read macOS memory counters", "Cannot read Linux available memory"]
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "hostMemory",
@@ -135,21 +151,34 @@
 					{
 						"name": "hostMemory",
 						"type": "Promise<Memory>",
-						"description": "Actual platform memory observation; unsupported or unreadable probes reject."
+						"description": "Platform observation using vm_stat/sysctl on macOS, /proc/meminfo on Linux, or OS memory values on Windows."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Unsupported resource platform",
+						"type": "thrown",
+						"description": "hostMemory rejects platforms other than macOS, Linux and Windows",
+						"examples": ["Unsupported resource platform"]
+					},
+					{
+						"name": "Memory probe failure",
+						"type": "propagated",
+						"description": "macOS tool execution and Linux /proc/meminfo read failures reject to the caller"
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "found"
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "service.execution-runtimes-resource-queue-service-resource-monitor-service-host-resources-adapter-host-memory-types",
 			"via": "import",

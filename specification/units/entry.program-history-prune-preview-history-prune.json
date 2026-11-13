@@ -1,0 +1,181 @@
+{
+	"schemaVersion": 1,
+	"id": "entry.program-history-prune-preview-history-prune",
+	"uid": "u_hpruneview",
+	"kind": "entry",
+	"title": "previewHistoryPrune",
+	"responsibility": "Builds and renders a report-only verification-cache retention inventory, marking every matching record as protected because durable deletion proof is unavailable.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/cli/program/history-prune/previewHistoryPrune.ts",
+			"src/cli/program/history-prune/previewHistoryPrune.types.ts"
+		],
+		"symbols": [
+			"previewHistoryPrune",
+			"renderPrune",
+			"PruneInventoryEntry",
+			"PruneInventory",
+			"ScannedRecord",
+			"CacheInventory",
+			"CacheScanContext",
+			"WalkResult"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "previewHistoryPrune.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository root used to resolve the verification cache and query the current Git HEAD."
+			},
+			{
+				"name": "previewHistoryPrune.keepLast",
+				"type": "number",
+				"required": true,
+				"description": "Maximum number of newest valid records retained regardless of age; must be a safe integer from 0 through 100000."
+			},
+			{
+				"name": "previewHistoryPrune.olderThanDays",
+				"type": "number",
+				"required": true,
+				"description": "Age threshold for inventory matches; must be a safe integer from 1 through 36500 days."
+			},
+			{
+				"name": "previewHistoryPrune.now",
+				"type": "Date",
+				"required": false,
+				"description": "Clock value used to calculate the cutoff; defaults to the current time."
+			},
+			{
+				"name": "renderPrune.result",
+				"type": "PruneInventory",
+				"required": true,
+				"description": "Report-only inventory returned by previewHistoryPrune, including protected entries and scan problems."
+			}
+		],
+		"outputs": [
+			{
+				"name": "previewHistoryPrune",
+				"type": "Promise<PruneInventory>",
+				"description": "Retention inventory with matching records marked protected; no cache files are modified and apply is unsupported."
+			},
+			{
+				"name": "renderPrune",
+				"type": "string",
+				"description": "Human-readable summary of matching protected records and scan problems."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid keep-last or age bounds throw; underlying Git or filesystem operations may also reject."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "previewHistoryPrune",
+				"inputs": [
+					{
+						"name": "previewHistoryPrune.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository root used to resolve the verification cache and query the current Git HEAD."
+					},
+					{
+						"name": "previewHistoryPrune.keepLast",
+						"type": "number",
+						"required": true,
+						"description": "Maximum number of newest valid records retained regardless of age; must be a safe integer from 0 through 100000."
+					},
+					{
+						"name": "previewHistoryPrune.olderThanDays",
+						"type": "number",
+						"required": true,
+						"description": "Age threshold for inventory matches; must be a safe integer from 1 through 36500 days."
+					},
+					{
+						"name": "previewHistoryPrune.now",
+						"type": "Date",
+						"required": false,
+						"description": "Clock value used to calculate the cutoff; defaults to the current time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "previewHistoryPrune",
+						"type": "Promise<PruneInventory>",
+						"description": "Retention inventory with matching records marked protected; no cache files are modified and apply is unsupported."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Invalid retention bounds throw before scanning; Git adapter or cache-scan failures can reject the promise."
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "renderPrune",
+				"inputs": [
+					{
+						"name": "renderPrune.result",
+						"type": "PruneInventory",
+						"required": true,
+						"description": "Report-only inventory returned by previewHistoryPrune, including protected entries and scan problems."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderPrune",
+						"type": "string",
+						"description": "Human-readable summary of matching protected records and scan problems."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "entry.program-history-prune-scan-verification-cache",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/history-prune/previewHistoryPrune.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/history-prune/previewHistoryPrune.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

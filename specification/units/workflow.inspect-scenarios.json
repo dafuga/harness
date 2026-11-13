@@ -4,7 +4,7 @@
 	"uid": "u_2g6cqdem3r",
 	"kind": "workflow",
 	"title": "inspectScenarios",
-	"responsibility": "Lists, shows and checks scenario contracts.",
+	"responsibility": "Reads working-tree scenario and unit manifests to list capture summaries, show one scenario’s requirements, or report contract and coverage problems.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,50 +12,58 @@
 		"symbols": ["listScenarios", "showScenario", "checkScenarios"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "listScenarios.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional repository root; defaults to process.cwd() and reads working-tree manifests."
 			},
 			{
 				"name": "showScenario.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Scenario id to find in the working-tree scenario registry."
 			},
 			{
 				"name": "showScenario.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional repository root; defaults to process.cwd()."
 			},
 			{
 				"name": "checkScenarios.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional repository root; defaults to process.cwd()."
 			}
 		],
 		"outputs": [
 			{
 				"name": "listScenarios",
-				"type": "unknown"
+				"type": "Promise<Array<{ id: string; kind: ScenarioManifest['kind']; title: string; units: string[]; captures: number; unproven: number; excluded: number }>>",
+				"description": "Scenarios sorted by id, each with id, kind, title, covered units, required capture count, unproven state count, and excluded state count."
 			},
 			{
 				"name": "showScenario",
-				"type": "Promise<ScenarioRequirements & { scenario: ScenarioManifest }>"
+				"type": "Promise<ScenarioRequirements & { scenario: ScenarioManifest }>",
+				"description": "Scenario manifest plus its required captures, unproven states, and inapplicable states."
 			},
 			{
 				"name": "checkScenarios",
-				"type": "Promise<{ scenarios: number; errors: string[] }>"
+				"type": "Promise<{ scenarios: number; errors: string[]; health: ScenarioHealth }>",
+				"description": "Scenario count, schema and unknown-unit errors, and report-only viewport, coverage, and uncovered-unit health."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Unknown scenario id."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "listScenarios",
@@ -63,17 +71,19 @@
 					{
 						"name": "listScenarios.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Optional repository root; defaults to process.cwd() and reads working-tree manifests."
 					}
 				],
 				"outputs": [
 					{
 						"name": "listScenarios",
-						"type": "unknown"
+						"type": "Promise<Array<{ id: string; kind: ScenarioManifest['kind']; title: string; units: string[]; captures: number; unproven: number; excluded: number }>>",
+						"description": "Scenarios sorted by id, each with id, kind, title, covered units, required capture count, unproven state count, and excluded state count."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "showScenario",
@@ -81,27 +91,31 @@
 					{
 						"name": "showScenario.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Scenario id to find in the working-tree scenario registry."
 					},
 					{
 						"name": "showScenario.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Optional repository root; defaults to process.cwd()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "showScenario",
-						"type": "Promise<ScenarioRequirements & { scenario: ScenarioManifest }>"
+						"type": "Promise<ScenarioRequirements & { scenario: ScenarioManifest }>",
+						"description": "Scenario manifest plus its required captures, unproven states, and inapplicable states."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Unknown scenario id."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "checkScenarios",
@@ -109,17 +123,19 @@
 					{
 						"name": "checkScenarios.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Optional repository root; defaults to process.cwd()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkScenarios",
-						"type": "Promise<{ scenarios: number; errors: string[] }>"
+						"type": "Promise<{ scenarios: number; errors: string[]; health: ScenarioHealth }>",
+						"description": "Scenario count, schema and unknown-unit errors, and report-only viewport, coverage, and uncovered-unit health."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
@@ -142,6 +158,11 @@
 		},
 		{
 			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-scenario-health",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,3 +1,4 @@
+// @harness-uid u_r7ovtiyjki
 import { CommanderError } from 'commander';
 import { loadCliProgram } from './loadCliProgram';
 import { staleBuild } from '../utils/development-tooling/staleBuild';

@@ -1,0 +1,229 @@
+{
+	"schemaVersion": 1,
+	"id": "script.check-debt-ratchets",
+	"uid": "u_f44y6xqi3p",
+	"kind": "script",
+	"title": "check-debt-ratchets",
+	"responsibility": "Compares layer allowlist edges, reuse findings, and direct temporary-directory calls against Git-base inventories, failing when these debt measures grow.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/check-debt-ratchets.ts"],
+		"symbols": [
+			"layerRatchet",
+			"reuseRatchet",
+			"TemporaryCallBaseline",
+			"mkdtempCallCount",
+			"temporaryCallRatchet"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "layerRatchet.before",
+				"type": "LayerEdge[]",
+				"required": true,
+				"description": "Layer edges from the comparison baseline."
+			},
+			{
+				"name": "layerRatchet.after",
+				"type": "LayerEdge[]",
+				"required": true,
+				"description": "Layer edges in the current tree."
+			},
+			{
+				"name": "reuseRatchet.before",
+				"type": "ReuseBaseline",
+				"required": true,
+				"description": "Per-path reuse finding counts from the comparison baseline."
+			},
+			{
+				"name": "reuseRatchet.after",
+				"type": "ReuseBaseline",
+				"required": true,
+				"description": "Per-path reuse finding counts in the current tree."
+			},
+			{
+				"name": "mkdtempCallCount.source",
+				"type": "string",
+				"required": true,
+				"description": "TypeScript source text to inspect for direct mkdtemp and mkdtempSync calls imported from filesystem modules."
+			},
+			{
+				"name": "temporaryCallRatchet.before",
+				"type": "TemporaryCallBaseline",
+				"required": true,
+				"description": "Per-test-file direct temporary-directory call counts from the baseline."
+			},
+			{
+				"name": "temporaryCallRatchet.after",
+				"type": "TemporaryCallBaseline",
+				"required": true,
+				"description": "Per-test-file direct temporary-directory call counts in the current tree."
+			},
+			{
+				"name": "temporaryCallRatchet.helperPath",
+				"type": "string",
+				"required": false,
+				"default": "test/support/temporary.ts",
+				"description": "Shared helper path exempted from ordinary count growth and limited to one direct temporary-directory call; defaults to test/support/temporary.ts."
+			}
+		],
+		"outputs": [
+			{
+				"name": "layerRatchet",
+				"type": "{ before: number; after: number; added: string[]; removed: string[] }",
+				"description": "Unique-edge counts plus sorted edge additions and removals between baseline and current allowlists."
+			},
+			{
+				"name": "reuseRatchet",
+				"type": "{ before: number; after: number; added: string[]; reduced: string[] }",
+				"description": "Total finding counts plus sorted per-path increases and reductions."
+			},
+			{
+				"name": "mkdtempCallCount",
+				"type": "number",
+				"description": "Number of recognized direct calls to imported mkdtemp or mkdtempSync functions."
+			},
+			{
+				"name": "temporaryCallRatchet",
+				"type": "{ before: number; after: number; added: string[] }",
+				"description": "Total call counts plus sorted paths whose calls grew or whose shared helper exceeds its one-call limit."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Git base lookup, baseline reads, TypeScript/source file reads, or JSON parsing can throw before the growth result is reported."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "layerRatchet",
+				"inputs": [
+					{
+						"name": "layerRatchet.before",
+						"type": "LayerEdge[]",
+						"required": true,
+						"description": "Layer edges from the comparison baseline."
+					},
+					{
+						"name": "layerRatchet.after",
+						"type": "LayerEdge[]",
+						"required": true,
+						"description": "Layer edges in the current tree."
+					}
+				],
+				"outputs": [
+					{
+						"name": "layerRatchet",
+						"type": "{ before: number; after: number; added: string[]; removed: string[] }",
+						"description": "Unique-edge counts plus sorted edge additions and removals between baseline and current allowlists."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "reuseRatchet",
+				"inputs": [
+					{
+						"name": "reuseRatchet.before",
+						"type": "ReuseBaseline",
+						"required": true,
+						"description": "Per-path reuse finding counts from the comparison baseline."
+					},
+					{
+						"name": "reuseRatchet.after",
+						"type": "ReuseBaseline",
+						"required": true,
+						"description": "Per-path reuse finding counts in the current tree."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reuseRatchet",
+						"type": "{ before: number; after: number; added: string[]; reduced: string[] }",
+						"description": "Total finding counts plus sorted per-path increases and reductions."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "mkdtempCallCount",
+				"inputs": [
+					{
+						"name": "mkdtempCallCount.source",
+						"type": "string",
+						"required": true,
+						"description": "TypeScript source text to inspect for direct mkdtemp and mkdtempSync calls imported from filesystem modules."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mkdtempCallCount",
+						"type": "number",
+						"description": "Number of recognized direct calls to imported mkdtemp or mkdtempSync functions."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "temporaryCallRatchet",
+				"inputs": [
+					{
+						"name": "temporaryCallRatchet.before",
+						"type": "TemporaryCallBaseline",
+						"required": true,
+						"description": "Per-test-file direct temporary-directory call counts from the baseline."
+					},
+					{
+						"name": "temporaryCallRatchet.after",
+						"type": "TemporaryCallBaseline",
+						"required": true,
+						"description": "Per-test-file direct temporary-directory call counts in the current tree."
+					},
+					{
+						"name": "temporaryCallRatchet.helperPath",
+						"type": "string",
+						"required": false,
+						"default": "test/support/temporary.ts",
+						"description": "Shared helper path exempted from ordinary count growth and limited to one direct temporary-directory call; defaults to test/support/temporary.ts."
+					}
+				],
+				"outputs": [
+					{
+						"name": "temporaryCallRatchet",
+						"type": "{ before: number; after: number; added: string[] }",
+						"description": "Total call counts plus sorted paths whose calls grew or whose shared helper exceeds its one-call limit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/check-debt-ratchets.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/check-debt-ratchets.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

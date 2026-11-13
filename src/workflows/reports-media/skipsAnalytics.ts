@@ -1,3 +1,4 @@
+// @harness-uid u_6grsyr7ypn
 /** Commands that only print a lookup; nothing about them is worth a stored event. */
 const lookupCommands = new Set(['help', 'info']);
 const versionFlags = new Set(['--version', '-V']);

@@ -3,8 +3,8 @@
 	"id": "service.verification",
 	"uid": "u_k23ebybqw2",
 	"kind": "service",
-	"title": "VerificationService",
-	"responsibility": "Verifies one exact commit: which scenarios rerun, which are inherited, and the stored record.",
+	"title": "Verification record service",
+	"responsibility": "Selects checks and scenarios for one exact commit, executes them in a snapshot, judges coverage, and persists the assembled verification record.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,22 +19,30 @@
 			"VerificationService",
 			"VerificationService.constructor",
 			"VerificationService.run",
+			"VerificationService.plan",
 			"VerifyContext"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "VerificationService.constructor.context",
 				"type": "VerifyContext",
-				"required": true
+				"required": true,
+				"description": "Exact revision, impact, manifests, verify config, base evidence, optional entity scope and environment."
 			}
 		],
 		"outputs": [
 			{
 				"name": "VerificationService.run",
-				"type": "Promise<StoredRecord>"
+				"type": "Promise<StoredRecord>",
+				"description": "StoredRecord for the completed run, including its record and scratch-directory path."
+			},
+			{
+				"name": "VerificationService.plan",
+				"type": "PlannedCheck[]",
+				"description": "Planned checks for this exact context without creating a snapshot or executing them."
 			}
 		],
 		"errors": [],
@@ -46,7 +54,21 @@
 				"outputs": [
 					{
 						"name": "VerificationService.run",
-						"type": "Promise<StoredRecord>"
+						"type": "Promise<StoredRecord>",
+						"description": "StoredRecord for the completed run, including its record and scratch-directory path."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VerificationService.plan",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VerificationService.plan",
+						"type": "PlannedCheck[]",
+						"description": "Planned checks for this exact context without creating a snapshot or executing them."
 					}
 				],
 				"errors": [],
@@ -60,13 +82,15 @@
 					{
 						"name": "VerificationService.constructor.context",
 						"type": "VerifyContext",
-						"required": true
+						"required": true,
+						"description": "Exact revision, impact, manifests, verify config, base evidence, optional entity scope and environment."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationService.constructor",
-						"type": "unknown"
+						"type": "VerificationService",
+						"description": "Service initialized with the verification context and record store."
 					}
 				],
 				"errors": [],

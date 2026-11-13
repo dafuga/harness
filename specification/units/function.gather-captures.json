@@ -3,8 +3,8 @@
 	"id": "function.gather-captures",
 	"uid": "u_3exag5gqwq",
 	"kind": "function",
-	"title": "Capture evidence collection",
-	"responsibility": "Reads a check’s capture index and inspects each declared evidence file to build record entries.",
+	"title": "Capture ingestion",
+	"responsibility": "Validates a check capture index, rejects redirected or oversized evidence, hashes files within capture and record budgets, and returns record-ready captures or explicit failures.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -32,20 +32,34 @@
 				"name": "gatherCaptures.directory",
 				"type": "string",
 				"required": true,
-				"description": "Evidence directory containing the capture index and files it names."
+				"description": "Evidence directory containing the capture index and the flat files named by valid index lines."
 			},
 			{
 				"name": "gatherCaptures.recordPath",
 				"type": "string",
 				"required": true,
-				"description": "Record-relative prefix prepended to each captured filename."
+				"description": "Record-relative prefix prepended to each admitted filename."
+			},
+			{
+				"name": "gatherCaptures.limits",
+				"type": "CaptureLimits",
+				"required": false,
+				"default": {},
+				"description": "Optional maximum bytes per capture and across this verification record; absent limits do not cap bytes."
+			},
+			{
+				"name": "gatherCaptures.scope",
+				"type": "{ budget?: RecordBudget; root?: string }",
+				"required": false,
+				"default": {},
+				"description": "Optional shared RecordBudget and trusted run root; the root is used to reject redirected evidence ancestry."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatherCaptures",
 				"type": "GatherResult",
-				"description": "Gathered captures with SHA-256, byte size, current timestamp and initial passed status, plus media facts or parsed benchmark data. Malformed index lines and missing files are returned as failures; no index yields empty arrays."
+				"description": "Gathered record-ready captures plus explicit failure strings; malformed lines, missing files, symlinks and over-budget files are not admitted."
 			}
 		],
 		"errors": [],
@@ -57,27 +71,42 @@
 						"name": "gatherCaptures.directory",
 						"type": "string",
 						"required": true,
-						"description": "Evidence directory containing the capture index and files it names."
+						"description": "Evidence directory containing the capture index and the flat files named by valid index lines."
 					},
 					{
 						"name": "gatherCaptures.recordPath",
 						"type": "string",
 						"required": true,
-						"description": "Record-relative prefix prepended to each captured filename."
+						"description": "Record-relative prefix prepended to each admitted filename."
+					},
+					{
+						"name": "gatherCaptures.limits",
+						"type": "CaptureLimits",
+						"required": false,
+						"default": {},
+						"description": "Optional maximum bytes per capture and across this verification record; absent limits do not cap bytes."
+					},
+					{
+						"name": "gatherCaptures.scope",
+						"type": "{ budget?: RecordBudget; root?: string }",
+						"required": false,
+						"default": {},
+						"description": "Optional shared RecordBudget and trusted run root; the root is used to reject redirected evidence ancestry."
 					}
 				],
 				"outputs": [
 					{
 						"name": "gatherCaptures",
 						"type": "GatherResult",
-						"description": "Gathered captures with SHA-256, byte size, current timestamp and initial passed status, plus media facts or parsed benchmark data. Malformed index lines and missing files are returned as failures; no index yields empty arrays."
+						"description": "Gathered record-ready captures plus explicit failure strings; malformed lines, missing files, symlinks and over-budget files are not admitted."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "none-found"
 	},
 	"dependencies": [
 		{
@@ -92,6 +121,16 @@
 		},
 		{
 			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-check-run-service-capture-limits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-check-run-service-evidence-directory-failure",
 			"via": "import",
 			"origin": "derived"
 		}

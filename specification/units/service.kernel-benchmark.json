@@ -3,8 +3,8 @@
 	"id": "service.kernel-benchmark",
 	"uid": "u_4c6cbv56v5",
 	"kind": "service",
-	"title": "KernelBenchmarkService",
-	"responsibility": "Measures every kernel runtime on identical workloads, cold and warm.",
+	"title": "Kernel benchmark service",
+	"responsibility": "Measures cold and warm latency, throughput, and available memory for the configured module, Wasm, process, and HTTP kernel runtimes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -26,60 +26,87 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "KernelBenchmarkService.constructor.plan",
 				"type": "BenchPlan",
-				"required": true
+				"required": true,
+				"description": "CLI vector, fresh-process sample count and warm-loop iteration count."
 			},
 			{
 				"name": "KernelBenchmarkService.constructor.context",
 				"type": "MeasureContext",
-				"required": true
+				"required": true,
+				"description": "Revision/profile context attached to each benchmark measurement."
 			},
 			{
 				"name": "KernelBenchmarkService.measure.run",
 				"type": "WorkloadRun",
-				"required": true
+				"required": true,
+				"description": "Validated workload run containing request, node count, seed and ID."
 			},
 			{
 				"name": "KernelBenchmarkService.measure.url",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "URL of the already running HTTP kernel server; used for the HTTP runtime."
 			},
 			{
 				"name": "KernelBenchmarkService.describe.run",
 				"type": "WorkloadRun",
-				"required": true
+				"required": true,
+				"description": "Workload request whose size facts are reported."
 			},
 			{
 				"name": "serveKernel.cli",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "CLI executable and leading arguments used to launch the kernel server."
+			},
+			{
+				"name": "serveKernel.startupTimeoutMs",
+				"type": "number",
+				"required": false,
+				"default": 20000,
+				"description": "Maximum wait for valid server readiness output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "KernelBenchmarkService.measure",
-				"type": "Promise<BenchMeasurement[]>"
+				"type": "Promise<BenchMeasurement[]>",
+				"description": "Cold and warm latency, throughput and memory measurement entries for each configured runtime; memory may be reported unavailable when it cannot be attributed."
 			},
 			{
 				"name": "KernelBenchmarkService.describe",
-				"type": "Workload"
+				"type": "Workload",
+				"description": "Workload dimensions and serialized request/response byte counts derived from the request."
 			},
 			{
 				"name": "serveKernel",
-				"type": "Promise<{ url: string; stop(): void }>"
+				"type": "Promise<{ url: string; stop(): void }>",
+				"description": "Ready server URL plus a stop function that signals the launched child."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "benchmark measurement requires the kernel build and rejects cold samples that exit unsuccessfully"
+			},
+			{
+				"name": "Kernel server startup failure",
+				"type": "thrown",
+				"description": "serveKernel rejects on spawn error, timeout, early child exit or invalid readiness JSON",
+				"examples": [
+					"Kernel server startup timed out.",
+					"Kernel server exited before readiness.",
+					"Kernel server returned invalid readiness data."
+				]
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "KernelBenchmarkService.measure",
@@ -87,22 +114,31 @@
 					{
 						"name": "KernelBenchmarkService.measure.run",
 						"type": "WorkloadRun",
-						"required": true
+						"required": true,
+						"description": "Validated workload run containing request, node count, seed and ID."
 					},
 					{
 						"name": "KernelBenchmarkService.measure.url",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "URL of the already running HTTP kernel server; used for the HTTP runtime."
 					}
 				],
 				"outputs": [
 					{
 						"name": "KernelBenchmarkService.measure",
-						"type": "Promise<BenchMeasurement[]>"
+						"type": "Promise<BenchMeasurement[]>",
+						"description": "Cold and warm latency, throughput and memory measurement entries for each configured runtime; memory may be reported unavailable when it cannot be attributed."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "benchmark measurement requires the kernel build and rejects cold samples that exit unsuccessfully"
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "KernelBenchmarkService.describe",
@@ -110,17 +146,19 @@
 					{
 						"name": "KernelBenchmarkService.describe.run",
 						"type": "WorkloadRun",
-						"required": true
+						"required": true,
+						"description": "Workload request whose size facts are reported."
 					}
 				],
 				"outputs": [
 					{
 						"name": "KernelBenchmarkService.describe",
-						"type": "Workload"
+						"type": "Workload",
+						"description": "Workload dimensions and serialized request/response byte counts derived from the request."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "serveKernel",
@@ -128,17 +166,37 @@
 					{
 						"name": "serveKernel.cli",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "CLI executable and leading arguments used to launch the kernel server."
+					},
+					{
+						"name": "serveKernel.startupTimeoutMs",
+						"type": "number",
+						"required": false,
+						"default": 20000,
+						"description": "Maximum wait for valid server readiness output."
 					}
 				],
 				"outputs": [
 					{
 						"name": "serveKernel",
-						"type": "Promise<{ url: string; stop(): void }>"
+						"type": "Promise<{ url: string; stop(): void }>",
+						"description": "Ready server URL plus a stop function that signals the launched child."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Kernel server startup failure",
+						"type": "thrown",
+						"description": "serveKernel rejects on spawn error, timeout, early child exit or invalid readiness JSON",
+						"examples": [
+							"Kernel server startup timed out.",
+							"Kernel server exited before readiness.",
+							"Kernel server returned invalid readiness data."
+						]
+					}
+				],
+				"errorStatus": "found"
 			}
 		],
 		"initialization": [
@@ -148,18 +206,21 @@
 					{
 						"name": "KernelBenchmarkService.constructor.plan",
 						"type": "BenchPlan",
-						"required": true
+						"required": true,
+						"description": "CLI vector, fresh-process sample count and warm-loop iteration count."
 					},
 					{
 						"name": "KernelBenchmarkService.constructor.context",
 						"type": "MeasureContext",
-						"required": true
+						"required": true,
+						"description": "Revision/profile context attached to each benchmark measurement."
 					}
 				],
 				"outputs": [
 					{
 						"name": "KernelBenchmarkService.constructor",
-						"type": "unknown"
+						"type": "KernelBenchmarkService",
+						"description": "Benchmark service initialized with the workload plan and measurement context."
 					}
 				],
 				"errors": [],
@@ -168,6 +229,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.http-runtime",
 			"via": "import",

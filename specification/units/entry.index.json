@@ -4,11 +4,11 @@
 	"uid": "u_lt35mxvvrg",
 	"kind": "entry",
 	"title": "index",
-	"responsibility": "Owns the index entry point.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Runs the executable CLI and preserves legacy source exports without executing commands when the compatibility module is imported.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/index.ts"],
+		"source": ["src/cli/index.ts", "src/index.ts"],
 		"symbols": [
 			"registerCodexCommand",
 			"ClaudeGatewayAdapter",
@@ -165,11 +165,14 @@
 			"rustBackendModule",
 			"moduleResourceLocation",
 			"PermissionCatalogService",
-			"PermissionsCommand"
+			"PermissionsCommand",
+			"BoundedCommandAdapter",
+			"staleBuild",
+			"scenarioHealth"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],
@@ -215,6 +218,11 @@
 		},
 		{
 			"unit": "adapter.desktop-integrity",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -289,18 +297,13 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "entry.program",
+			"unit": "entry.run-cli",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.bug-repair-policy",
 			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.command-action",
-			"via": "import",
 			"origin": "derived"
 		},
 		{
@@ -319,8 +322,8 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.errors",
-			"via": "import",
+			"unit": "function.development-tooling-stale-build",
+			"via": "reexport",
 			"origin": "derived"
 		},
 		{
@@ -419,11 +422,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.piped-output",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.preview-binding",
 			"via": "reexport",
 			"origin": "derived"
@@ -470,6 +468,11 @@
 		},
 		{
 			"unit": "function.unit-metadata",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-scenario-health",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -786,21 +789,6 @@
 		{
 			"unit": "validator.performance-evidence",
 			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "workflow.analytics-record",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "workflow.import-analytics",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "workflow.run-activity",
-			"via": "import",
 			"origin": "derived"
 		}
 	],

@@ -1,3 +1,4 @@
+// @harness-uid u_34r2rrehaa
 import type { ChildProcess } from 'node:child_process';
 export interface BoundedCommandOptions {
 	cwd?: string;

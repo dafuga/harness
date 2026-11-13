@@ -1,3 +1,4 @@
+// @harness-uid u_3mciuyjhwa
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 

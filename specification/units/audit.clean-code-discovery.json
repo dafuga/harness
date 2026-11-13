@@ -4,8 +4,8 @@
 	"uid": "u_3tqecbjzkv",
 	"kind": "audit",
 	"title": "cleanCodeDiscovery",
-	"responsibility": "Owns the cleanCodeDiscovery audit rule.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Selects reviewable source files, separates unsupported paths and applies Git, sensitive-path, generated-source and configured exclusions.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -20,46 +20,53 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "discoverCleanCodeFiles.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository directory used to make collected paths relative and run the bounded Git ignore probe."
 			},
 			{
 				"name": "discoverCleanCodeFiles.collected",
 				"type": "CollectedFiles",
-				"required": true
+				"required": true,
+				"description": "Collected files and ignored artifact or symlink paths to classify for the Clean Code review."
 			},
 			{
 				"name": "discoverCleanCodeFiles.exclusions",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Configured relative-path glob patterns excluded before source-extension selection."
 			},
 			{
 				"name": "matchesExclusion.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative path being checked against the configured exclusion pattern."
 			},
 			{
 				"name": "matchesExclusion.pattern",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Slash-normalized glob with *, ** or ? tokens, or a directory prefix ending in a slash."
 			}
 		],
 		"outputs": [
 			{
 				"name": "discoverCleanCodeFiles",
-				"type": "ReviewCoverage"
+				"type": "ReviewCoverage",
+				"description": "Sorted selected files, unsupported files and excluded paths with reasons; a failed Git probe contributes no Git exclusions."
 			},
 			{
 				"name": "matchesExclusion",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the relative path matches the glob or directory prefix."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "discoverCleanCodeFiles",
@@ -67,27 +74,31 @@
 					{
 						"name": "discoverCleanCodeFiles.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository directory used to make collected paths relative and run the bounded Git ignore probe."
 					},
 					{
 						"name": "discoverCleanCodeFiles.collected",
 						"type": "CollectedFiles",
-						"required": true
+						"required": true,
+						"description": "Collected files and ignored artifact or symlink paths to classify for the Clean Code review."
 					},
 					{
 						"name": "discoverCleanCodeFiles.exclusions",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Configured relative-path glob patterns excluded before source-extension selection."
 					}
 				],
 				"outputs": [
 					{
 						"name": "discoverCleanCodeFiles",
-						"type": "ReviewCoverage"
+						"type": "ReviewCoverage",
+						"description": "Sorted selected files, unsupported files and excluded paths with reasons; a failed Git probe contributes no Git exclusions."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "matchesExclusion",
@@ -95,27 +106,35 @@
 					{
 						"name": "matchesExclusion.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative path being checked against the configured exclusion pattern."
 					},
 					{
 						"name": "matchesExclusion.pattern",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Slash-normalized glob with *, ** or ? tokens, or a directory prefix ending in a slash."
 					}
 				],
 				"outputs": [
 					{
 						"name": "matchesExclusion",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the relative path matches the glob or directory prefix."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "audit.clean-code-types",
 			"via": "import",

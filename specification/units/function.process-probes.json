@@ -4,7 +4,7 @@
 	"uid": "u_5g22klsioo",
 	"kind": "function",
 	"title": "Bounded process probes",
-	"responsibility": "Provides bounded system-tool calls for reading process state and executable paths, with shared concurrency control.",
+	"responsibility": "Runs a limited number of timed system-tool probes and returns process facts or canonical executable paths; failed or cancelled probes produce unknown results.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -32,14 +32,14 @@
 				"type": "ProbeLimits",
 				"required": false,
 				"default": {},
-				"description": "Optional cancellation signal and per-tool timeout in milliseconds; default timeout is 3000."
+				"description": "Optional AbortSignal and timeout per system-tool call; defaults to 3000 ms."
 			}
 		],
 		"outputs": [
 			{
 				"name": "processProbes",
 				"type": "ProcessProbes",
-				"description": "Probe methods for running tools, reading process facts with ps and resolving executable paths with lsof. At most eight tools run concurrently process-wide; timeout/cancellation/failure yields not-ok, and unreadable facts or paths yield null."
+				"description": "Probe methods for bounded tool calls, process facts and canonical executable paths, limited to eight concurrent calls process-wide."
 			}
 		],
 		"errors": [],
@@ -52,23 +52,30 @@
 						"type": "ProbeLimits",
 						"required": false,
 						"default": {},
-						"description": "Optional cancellation signal and per-tool timeout in milliseconds; default timeout is 3000."
+						"description": "Optional AbortSignal and timeout per system-tool call; defaults to 3000 ms."
 					}
 				],
 				"outputs": [
 					{
 						"name": "processProbes",
 						"type": "ProcessProbes",
-						"description": "Probe methods for running tools, reading process facts with ps and resolving executable paths with lsof. At most eight tools run concurrently process-wide; timeout/cancellation/failure yields not-ok, and unreadable facts or paths yield null."
+						"description": "Probe methods for bounded tool calls, process facts and canonical executable paths, limited to eight concurrent calls process-wide."
 					}
 				],
 				"errors": [],
 				"errorStatus": "none-found"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "none-found"
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/development-tooling/processProbes.ts",

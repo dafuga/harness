@@ -1,4 +1,4 @@
-// @harness-uid u_hprunetype
+// @harness-uid u_hpruneview
 export type PruneInventoryEntry = {
 	path: string;
 	record?: string;

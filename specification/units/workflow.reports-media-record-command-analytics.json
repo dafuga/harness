@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.reports-media-record-command-analytics",
+	"uid": "u_bji3sakopo",
+	"kind": "workflow",
+	"title": "recordCommandAnalytics",
+	"responsibility": "Skips lookup-only CLI arguments and otherwise records command action, exit code, and elapsed time through the supplied or default analytics recorder.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/reports-media/recordCommandAnalytics.ts"],
+		"symbols": ["skipsAnalytics", "recordCommandAnalytics"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "recordCommandAnalytics.args",
+				"type": "readonly string[]",
+				"required": true,
+				"description": "CLI arguments used to identify lookup-only commands that should not create an event."
+			},
+			{
+				"name": "recordCommandAnalytics.startedAt",
+				"type": "number",
+				"required": true,
+				"description": "Start time in epoch milliseconds used to compute elapsed duration."
+			},
+			{
+				"name": "recordCommandAnalytics.exitCode",
+				"type": "number | string | null | undefined",
+				"required": true,
+				"description": "Command result code; nullish values are recorded as zero."
+			},
+			{
+				"name": "recordCommandAnalytics.record",
+				"type": "typeof recordAnalytics",
+				"required": false,
+				"description": "Optional recorder override; defaults to recordAnalytics."
+			}
+		],
+		"outputs": [
+			{
+				"name": "recordCommandAnalytics",
+				"type": "Promise<void>",
+				"description": "Resolves after the command event is recorded, or immediately when skipsAnalytics is true."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "recordCommandAnalytics",
+				"inputs": [
+					{
+						"name": "recordCommandAnalytics.args",
+						"type": "readonly string[]",
+						"required": true,
+						"description": "CLI arguments used to identify lookup-only commands that should not create an event."
+					},
+					{
+						"name": "recordCommandAnalytics.startedAt",
+						"type": "number",
+						"required": true,
+						"description": "Start time in epoch milliseconds used to compute elapsed duration."
+					},
+					{
+						"name": "recordCommandAnalytics.exitCode",
+						"type": "number | string | null | undefined",
+						"required": true,
+						"description": "Command result code; nullish values are recorded as zero."
+					},
+					{
+						"name": "recordCommandAnalytics.record",
+						"type": "typeof recordAnalytics",
+						"required": false,
+						"description": "Optional recorder override; defaults to recordAnalytics."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCommandAnalytics",
+						"type": "Promise<void>",
+						"description": "Resolves after the command event is recorded, or immediately when skipsAnalytics is true."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.command-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.reports-media-skips-analytics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/reports-media/recordCommandAnalytics.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/reports-media/recordCommandAnalytics.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

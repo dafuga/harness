@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"id": "entry.run-cli",
+	"uid": "u_r7ovtiyjki",
+	"kind": "entry",
+	"title": "runCli",
+	"responsibility": "Runs the shared executable CLI lifecycle: configures output, warns about stale builds, lazily loads and parses the command, maps expected CLI failures to exit status, and records eligible activity in cleanup.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/runCli.ts"],
+		"symbols": ["runCli"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "runCli.entry",
+				"type": "string",
+				"required": true,
+				"description": "Executable entry path passed to the stale-build check for warning generation."
+			}
+		],
+		"outputs": [
+			{
+				"name": "runCli",
+				"type": "Promise<void>",
+				"description": "Completes after command parsing and final analytics/activity hooks; command failures set process.exitCode, and unexpected failures are rethrown."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Unexpected command, analytics, or activity-hook failures are rethrown after the finalization attempt."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "runCli",
+				"inputs": [
+					{
+						"name": "runCli.entry",
+						"type": "string",
+						"required": true,
+						"description": "Executable entry path passed to the stale-build check for warning generation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runCli",
+						"type": "Promise<void>",
+						"description": "Completes after command parsing and final analytics/activity hooks; command failures set process.exitCode, and unexpected failures are rethrown."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Unexpected parsing or finalization failures are rethrown; failures in the finalization hooks can reject the returned promise."
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "entry.load-cli-program",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.development-tooling-stale-build",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.piped-output",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.import-analytics",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.reports-media-record-command-analytics",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.reports-media-skips-analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-activity",
+			"via": "dynamic-import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/runCli.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/runCli.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

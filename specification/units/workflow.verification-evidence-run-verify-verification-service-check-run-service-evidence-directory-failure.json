@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.verification-evidence-run-verify-verification-service-check-run-service-evidence-directory-failure",
+	"uid": "u_rzyz4jar6z",
+	"kind": "workflow",
+	"title": "Evidence ancestry guard",
+	"responsibility": "Rejects evidence paths outside the trusted run directory or with a non-directory or symlink component beneath that root.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/evidenceDirectoryFailure.ts"
+		],
+		"symbols": ["evidenceDirectoryFailure"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "evidenceDirectoryFailure.directory",
+				"type": "string",
+				"required": true,
+				"description": "Evidence directory to inspect, lexically beneath the trusted root."
+			},
+			{
+				"name": "evidenceDirectoryFailure.root",
+				"type": "string",
+				"required": true,
+				"description": "Trusted scratch directory that anchors the evidence path."
+			}
+		],
+		"outputs": [
+			{
+				"name": "evidenceDirectoryFailure",
+				"type": "string | undefined",
+				"description": "An ancestry failure message when the path escapes the root or a component is missing/not a directory/symlink; undefined when the existing path is safe or not yet created."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "evidenceDirectoryFailure",
+				"inputs": [
+					{
+						"name": "evidenceDirectoryFailure.directory",
+						"type": "string",
+						"required": true,
+						"description": "Evidence directory to inspect, lexically beneath the trusted root."
+					},
+					{
+						"name": "evidenceDirectoryFailure.root",
+						"type": "string",
+						"required": true,
+						"description": "Trusted scratch directory that anchors the evidence path."
+					}
+				],
+				"outputs": [
+					{
+						"name": "evidenceDirectoryFailure",
+						"type": "string | undefined",
+						"description": "An ancestry failure message when the path escapes the root or a component is missing/not a directory/symlink; undefined when the existing path is safe or not yet created."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/evidenceDirectoryFailure.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/evidenceDirectoryFailure.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

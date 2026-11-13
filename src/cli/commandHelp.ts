@@ -1,3 +1,4 @@
+// @harness-uid u_lx2pejcvnu
 /** Cheap root-help metadata, checked against every actual command registration. */
 export const commandHelp = [
 	{

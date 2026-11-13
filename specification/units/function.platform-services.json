@@ -3,8 +3,8 @@
 	"id": "function.platform-services",
 	"uid": "u_xahm4so2wv",
 	"kind": "function",
-	"title": "Shared platform service classification",
-	"responsibility": "Distinguishes private descendants from vetted shared Xcode services, protecting processes whose identity or authority cannot be established.",
+	"title": "Shared platform-service classification",
+	"responsibility": "Classifies ordinary command-owned processes as private and guards Xcode shared-service candidates; delegates a candidate only after process identity, Xcode authority and signature checks.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -50,77 +50,77 @@
 				"name": "sameTime.one",
 				"type": "string",
 				"required": true,
-				"description": "First process-start timestamp, compared after normalizing whitespace."
+				"description": "First process start-time string to compare after whitespace normalization."
 			},
 			{
 				"name": "sameTime.other",
 				"type": "string",
 				"required": true,
-				"description": "Second process-start timestamp to compare with the first."
+				"description": "Second process start-time string to compare after whitespace normalization."
 			},
 			{
 				"name": "named.names",
 				"type": "string[]",
 				"required": false,
-				"description": "Candidate executable names checked against the protected platform-service basenames."
+				"description": "Executable paths or names checked by basename against the guarded service/launcher names."
 			},
 			{
 				"name": "probing.context",
 				"type": "ServiceContext",
 				"required": true,
-				"description": "Service cleanup context supplying optional process probes and cancellation signal."
+				"description": "Context whose optional ProcessProbes implementation is used, or whose cancellation signal configures the default system probes."
 			},
 			{
 				"name": "classifyProcess.known",
 				"type": "TrackedProcess",
 				"required": true,
-				"description": "Tracked pid and start time identifying the process to classify."
+				"description": "PID and recorded start time of the process to classify."
 			},
 			{
 				"name": "classifyProcess.context",
 				"type": "ServiceContext",
 				"required": true,
-				"description": "Developer-tool authority supplier, command group, optional probes and cancellation signal."
+				"description": "Authority callback, command process-group ID, optional process probes and cancellation signal."
 			},
 			{
 				"name": "stillPrivate.known",
 				"type": "TrackedProcess",
 				"required": true,
-				"description": "Tracked process identity to recheck immediately before signalling."
+				"description": "PID and recorded start time to verify immediately before signalling."
 			},
 			{
 				"name": "stillPrivate.judgedAs",
 				"type": "string | null",
 				"required": true,
-				"description": "Executable path recorded when the process was judged private, or null when none was known."
+				"description": "Executable path previously judged private; null means no executable was established."
 			},
 			{
 				"name": "stillPrivate.context",
 				"type": "ServiceContext",
 				"required": true,
-				"description": "Probe context used for the final identity and executable check."
+				"description": "Authority callback, group ID, optional probes and cancellation signal used for the final identity check."
 			}
 		],
 		"outputs": [
 			{
 				"name": "macAuthority",
 				"type": "ServiceAuthority | null",
-				"description": "Selected canonical Xcode authority from synchronous xcode-select, or null when selection cannot be established."
+				"description": "Canonical selected Xcode developer directory and signature requirements, or null when selection cannot be established."
 			},
 			{
 				"name": "platformServices",
 				"type": "Promise<ServiceAuthority | null>",
-				"description": "Promise of the selected Xcode authority using bounded asynchronous probes, or null when unavailable."
+				"description": "Selected Xcode service authority from bounded asynchronous probes, or null if unavailable or invalid."
 			},
 			{
 				"name": "classifyProcess",
 				"type": "Promise<Verdict>",
-				"description": "Verdict with standing, reason and executable: gone for changed/absent identity, private for ordinary known programs, delegated for a fully vouched system-adopted service, otherwise protected."
+				"description": "Verdict describing gone, private, delegated or protected standing, reason and executable path."
 			},
 			{
 				"name": "stillPrivate",
 				"type": "Promise<boolean>",
-				"description": "True only if start time and executable still match and the process is not named as a guarded shared service or launcher; performs no signal itself."
+				"description": "True only when PID/start time and executable still match and the executable is not a guarded service or launcher; does not signal."
 			}
 		],
 		"errors": [],
@@ -132,23 +132,24 @@
 						"name": "sameTime.one",
 						"type": "string",
 						"required": true,
-						"description": "First process-start timestamp, compared after normalizing whitespace."
+						"description": "First process start-time string to compare after whitespace normalization."
 					},
 					{
 						"name": "sameTime.other",
 						"type": "string",
 						"required": true,
-						"description": "Second process-start timestamp to compare with the first."
+						"description": "Second process start-time string to compare after whitespace normalization."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameTime",
-						"type": "unknown"
+						"type": "boolean",
+						"description": "True when the timestamps match after whitespace normalization."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "named",
@@ -157,17 +158,18 @@
 						"name": "named.names",
 						"type": "string[]",
 						"required": false,
-						"description": "Candidate executable names checked against the protected platform-service basenames."
+						"description": "Executable paths or names checked by basename against the guarded service/launcher names."
 					}
 				],
 				"outputs": [
 					{
 						"name": "named",
-						"type": "unknown"
+						"type": "boolean",
+						"description": "True when any supplied executable basename is a guarded Xcode service or launcher."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "probing",
@@ -176,17 +178,18 @@
 						"name": "probing.context",
 						"type": "ServiceContext",
 						"required": true,
-						"description": "Service cleanup context supplying optional process probes and cancellation signal."
+						"description": "Context whose optional ProcessProbes implementation is used, or whose cancellation signal configures the default system probes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "probing",
-						"type": "unknown"
+						"type": "ProcessProbes",
+						"description": "Supplied process probes, or system probes configured with the context cancellation signal."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "macAuthority",
@@ -195,11 +198,11 @@
 					{
 						"name": "macAuthority",
 						"type": "ServiceAuthority | null",
-						"description": "Selected canonical Xcode authority from synchronous xcode-select, or null when selection cannot be established."
+						"description": "Canonical selected Xcode developer directory and signature requirements, or null when selection cannot be established."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "platformServices",
@@ -208,11 +211,11 @@
 					{
 						"name": "platformServices",
 						"type": "Promise<ServiceAuthority | null>",
-						"description": "Promise of the selected Xcode authority using bounded asynchronous probes, or null when unavailable."
+						"description": "Selected Xcode service authority from bounded asynchronous probes, or null if unavailable or invalid."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "classifyProcess",
@@ -221,20 +224,20 @@
 						"name": "classifyProcess.known",
 						"type": "TrackedProcess",
 						"required": true,
-						"description": "Tracked pid and start time identifying the process to classify."
+						"description": "PID and recorded start time of the process to classify."
 					},
 					{
 						"name": "classifyProcess.context",
 						"type": "ServiceContext",
 						"required": true,
-						"description": "Developer-tool authority supplier, command group, optional probes and cancellation signal."
+						"description": "Authority callback, command process-group ID, optional process probes and cancellation signal."
 					}
 				],
 				"outputs": [
 					{
 						"name": "classifyProcess",
 						"type": "Promise<Verdict>",
-						"description": "Verdict with standing, reason and executable: gone for changed/absent identity, private for ordinary known programs, delegated for a fully vouched system-adopted service, otherwise protected."
+						"description": "Verdict describing gone, private, delegated or protected standing, reason and executable path."
 					}
 				],
 				"errors": [],
@@ -247,35 +250,41 @@
 						"name": "stillPrivate.known",
 						"type": "TrackedProcess",
 						"required": true,
-						"description": "Tracked process identity to recheck immediately before signalling."
+						"description": "PID and recorded start time to verify immediately before signalling."
 					},
 					{
 						"name": "stillPrivate.judgedAs",
 						"type": "string | null",
 						"required": true,
-						"description": "Executable path recorded when the process was judged private, or null when none was known."
+						"description": "Executable path previously judged private; null means no executable was established."
 					},
 					{
 						"name": "stillPrivate.context",
 						"type": "ServiceContext",
 						"required": true,
-						"description": "Probe context used for the final identity and executable check."
+						"description": "Authority callback, group ID, optional probes and cancellation signal used for the final identity check."
 					}
 				],
 				"outputs": [
 					{
 						"name": "stillPrivate",
 						"type": "Promise<boolean>",
-						"description": "True only if start time and executable still match and the process is not named as a guarded shared service or launcher; performs no signal itself."
+						"description": "True only when PID/start time and executable still match and the executable is not a guarded service or launcher; does not signal."
 					}
 				],
 				"errors": [],
 				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "unknown"
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.process-descendants",
 			"via": "import",

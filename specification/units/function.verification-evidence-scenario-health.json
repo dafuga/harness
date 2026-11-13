@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"id": "function.verification-evidence-scenario-health",
+	"uid": "u_dxfhj3khjo",
+	"kind": "function",
+	"title": "scenarioHealth",
+	"responsibility": "Builds a report-only summary of documented viewport ids, size conflicts, state coverage, and active or retired units without scenario coverage.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/verification-evidence/scenarioHealth.ts",
+			"src/utils/verification-evidence/scenarioHealth.types.ts"
+		],
+		"symbols": [
+			"documentedViewports",
+			"scenarioHealth",
+			"renderScenarioHealth",
+			"HealthUnit",
+			"ScenarioHealthInput",
+			"ViewportSize",
+			"ScenarioHealth"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "scenarioHealth.input",
+				"type": "ScenarioHealthInput",
+				"required": true,
+				"description": "Scenario manifests and unit identity, kind, and lifecycle facts to summarize."
+			},
+			{
+				"name": "renderScenarioHealth.health",
+				"type": "ScenarioHealth",
+				"required": true,
+				"description": "The report produced by scenarioHealth."
+			}
+		],
+		"outputs": [
+			{
+				"name": "documentedViewports",
+				"type": "string[]",
+				"description": "Viewport ids promised by documentation: desktop, tablet, and mobile."
+			},
+			{
+				"name": "scenarioHealth",
+				"type": "ScenarioHealth",
+				"description": "Counts scenarios, viewport ids and conflicting sizes, state coverage classifications, and active or retired units absent from all scenarios."
+			},
+			{
+				"name": "renderScenarioHealth",
+				"type": "string[]",
+				"description": "Human-readable report lines; unit ids are omitted in favor of the command’s JSON output."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "scenarioHealth",
+				"inputs": [
+					{
+						"name": "scenarioHealth.input",
+						"type": "ScenarioHealthInput",
+						"required": true,
+						"description": "Scenario manifests and unit identity, kind, and lifecycle facts to summarize."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scenarioHealth",
+						"type": "ScenarioHealth",
+						"description": "Counts scenarios, viewport ids and conflicting sizes, state coverage classifications, and active or retired units absent from all scenarios."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "renderScenarioHealth",
+				"inputs": [
+					{
+						"name": "renderScenarioHealth.health",
+						"type": "ScenarioHealth",
+						"required": true,
+						"description": "The report produced by scenarioHealth."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderScenarioHealth",
+						"type": "string[]",
+						"description": "Human-readable report lines; unit ids are omitted in favor of the command’s JSON output."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/verification-evidence/scenarioHealth.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/verification-evidence/scenarioHealth.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

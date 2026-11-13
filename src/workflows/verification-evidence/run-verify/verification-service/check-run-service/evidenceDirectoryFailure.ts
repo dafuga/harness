@@ -1,3 +1,4 @@
+// @harness-uid u_rzyz4jar6z
 import { lstatSync } from 'node:fs';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 

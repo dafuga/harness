@@ -4,84 +4,128 @@
 	"uid": "u_hmagdhwxab",
 	"kind": "workflow",
 	"title": "scopedVerify",
-	"responsibility": "Owns the scopedVerify command workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Runs the scenarios covering one entity, reports screenshot attachment status, narrows entity-scoped impact, and configures the verification environment.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/workflows/verification-evidence/run-verify/scopedVerify.ts",
 			"src/workflows/verification-evidence/run-verify/scopedVerify.types.ts"
 		],
-		"symbols": ["scopedVerify", "renderAttachment", "scopedContext", "timer", "verifyEnv", "Base"]
+		"symbols": [
+			"scopedVerify",
+			"renderAttachment",
+			"scopedContext",
+			"scopedImpact",
+			"timer",
+			"verifyEnv",
+			"Base"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "scopedVerify.context",
 				"type": "Base",
-				"required": true
+				"required": true,
+				"description": "Verification context containing the target commit, repository root, and trusted head revision."
 			},
 			{
 				"name": "scopedVerify.runtime",
 				"type": "ImpactReport['runtime']",
-				"required": true
+				"required": true,
+				"description": "Impact-analysis runtime selected for this scoped verification."
 			},
 			{
 				"name": "scopedVerify.options",
 				"type": "VerifyOptions",
-				"required": true
+				"required": true,
+				"description": "Verification settings including the entity id and applicable runner/runtime options."
 			},
 			{
 				"name": "scopedVerify.env",
 				"type": "Record<string, string | undefined>",
-				"required": true
+				"required": true,
+				"description": "Base environment inherited by scoped verification child processes."
 			},
 			{
 				"name": "renderAttachment.attachment",
 				"type": "VerifyResult['attachment']",
-				"required": true
+				"required": true,
+				"description": "Optional screenshot attachment status returned for entity-scoped verification."
 			},
 			{
 				"name": "scopedContext.context",
 				"type": "Base",
-				"required": true
+				"required": true,
+				"description": "Entity-verification context containing the commit and head revision."
+			},
+			{
+				"name": "scopedImpact.head",
+				"type": "string",
+				"required": true,
+				"description": "Commit whose entity-scoped scenarios are being checked."
+			},
+			{
+				"name": "scopedImpact.runtime",
+				"type": "ImpactReport['runtime']",
+				"required": true,
+				"description": "Local impact runtime recorded in the scoped impact report."
 			},
 			{
 				"name": "timer.entity",
 				"type": "string | undefined",
-				"required": true
+				"required": true,
+				"description": "Optional entity id; absent disables timing messages."
 			},
 			{
 				"name": "verifyEnv.options",
 				"type": "VerifyOptions",
-				"required": true
+				"required": true,
+				"description": "Verify options used to derive resource priority and entity-scoped environment markers."
 			}
 		],
 		"outputs": [
 			{
 				"name": "scopedVerify",
-				"type": "Promise<VerifyResult>"
+				"type": "Promise<VerifyResult>",
+				"description": "Stored verification result for scenarios covering the entity; includes any screenshot-attachment outcome."
 			},
 			{
 				"name": "renderAttachment",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Human-readable screenshot states, viewports, and attached record, or the reason no attachment was made."
 			},
 			{
 				"name": "scopedContext",
-				"type": "Base"
+				"type": "Base",
+				"description": "Context whose base is replaced by the head so scoped proof does not claim a full comparison."
+			},
+			{
+				"name": "scopedImpact",
+				"type": "ImpactReport",
+				"description": "Empty-impact report tagged with the requested head and runtime; selected tests and affected scenarios start empty."
 			},
 			{
 				"name": "timer",
-				"type": "(step: string)"
+				"type": "(step: string)",
+				"description": "Callback that writes elapsed milliseconds for each named workflow step to stderr when an entity is set."
 			},
 			{
 				"name": "verifyEnv",
-				"type": "Record<string, string | undefined>"
+				"type": "Record<string, string | undefined>",
+				"description": "Child-process environment copied from process.env with normalized resource priority and entity scope marker when applicable."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Entity is not covered by a scenario, or verification setup/runtime fails."
+			}
+		],
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "scopedVerify",
@@ -89,32 +133,43 @@
 					{
 						"name": "scopedVerify.context",
 						"type": "Base",
-						"required": true
+						"required": true,
+						"description": "Verification context containing the target commit, repository root, and trusted head revision."
 					},
 					{
 						"name": "scopedVerify.runtime",
 						"type": "ImpactReport['runtime']",
-						"required": true
+						"required": true,
+						"description": "Impact-analysis runtime selected for this scoped verification."
 					},
 					{
 						"name": "scopedVerify.options",
 						"type": "VerifyOptions",
-						"required": true
+						"required": true,
+						"description": "Verification settings including the entity id and applicable runner/runtime options."
 					},
 					{
 						"name": "scopedVerify.env",
 						"type": "Record<string, string | undefined>",
-						"required": true
+						"required": true,
+						"description": "Base environment inherited by scoped verification child processes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "scopedVerify",
-						"type": "Promise<VerifyResult>"
+						"type": "Promise<VerifyResult>",
+						"description": "Stored verification result for scenarios covering the entity; includes any screenshot-attachment outcome."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Entity is not covered by a scenario, or verification setup/runtime fails."
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "renderAttachment",
@@ -122,17 +177,19 @@
 					{
 						"name": "renderAttachment.attachment",
 						"type": "VerifyResult['attachment']",
-						"required": true
+						"required": true,
+						"description": "Optional screenshot attachment status returned for entity-scoped verification."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderAttachment",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Human-readable screenshot states, viewports, and attached record, or the reason no attachment was made."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "scopedContext",
@@ -140,13 +197,41 @@
 					{
 						"name": "scopedContext.context",
 						"type": "Base",
-						"required": true
+						"required": true,
+						"description": "Entity-verification context containing the commit and head revision."
 					}
 				],
 				"outputs": [
 					{
 						"name": "scopedContext",
-						"type": "Base"
+						"type": "Base",
+						"description": "Context whose base is replaced by the head so scoped proof does not claim a full comparison."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "scopedImpact",
+				"inputs": [
+					{
+						"name": "scopedImpact.head",
+						"type": "string",
+						"required": true,
+						"description": "Commit whose entity-scoped scenarios are being checked."
+					},
+					{
+						"name": "scopedImpact.runtime",
+						"type": "ImpactReport['runtime']",
+						"required": true,
+						"description": "Local impact runtime recorded in the scoped impact report."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopedImpact",
+						"type": "ImpactReport",
+						"description": "Empty-impact report tagged with the requested head and runtime; selected tests and affected scenarios start empty."
 					}
 				],
 				"errors": [],
@@ -158,17 +243,19 @@
 					{
 						"name": "timer.entity",
 						"type": "string | undefined",
-						"required": true
+						"required": true,
+						"description": "Optional entity id; absent disables timing messages."
 					}
 				],
 				"outputs": [
 					{
 						"name": "timer",
-						"type": "(step: string)"
+						"type": "(step: string)",
+						"description": "Callback that writes elapsed milliseconds for each named workflow step to stderr when an entity is set."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "verifyEnv",
@@ -176,17 +263,19 @@
 					{
 						"name": "verifyEnv.options",
 						"type": "VerifyOptions",
-						"required": true
+						"required": true,
+						"description": "Verify options used to derive resource priority and entity-scoped environment markers."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyEnv",
-						"type": "Record<string, string | undefined>"
+						"type": "Record<string, string | undefined>",
+						"description": "Child-process environment copied from process.env with normalized resource priority and entity scope marker when applicable."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []

@@ -3,9 +3,9 @@
 	"id": "workflow.analytics-record",
 	"uid": "u_rtalczfelr",
 	"kind": "workflow",
-	"title": "analyticsRecord",
-	"responsibility": "Owns the analyticsRecord command workflow.",
-	"responsibilityOrigin": "derived",
+	"title": "Analytics event workflow",
+	"responsibility": "Resolves project and loop context, records local analytics events, fingerprints JSON-compatible values, and validates report references.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -26,73 +26,102 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "projectIdentity.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Checkout or project directory used to resolve the canonical primary worktree path."
 			},
 			{
 				"name": "resolvedContext.context",
 				"type": "AnalyticsContext",
-				"required": true
+				"required": true,
+				"description": "Requested loop, step, task, agent model and report analytics context."
 			},
 			{
 				"name": "resolvedContext.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root used to read loop state when a loop is selected."
 			},
 			{
 				"name": "recordAnalytics.event",
 				"type": "Omit<AnalyticsEvent, 'id' | 'timestamp' | 'project'>",
-				"required": true
+				"required": true,
+				"description": "Analytics fields excluding generated ID, timestamp and project identity."
 			},
 			{
 				"name": "recordAnalytics.root",
-				"type": "unknown",
-				"required": false
+				"type": "string",
+				"required": false,
+				"description": "Project root to identify; defaults to the process working directory."
 			},
 			{
 				"name": "fingerprint.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "JSON-serializable value whose serialized bytes are hashed."
 			},
 			{
 				"name": "validateReport.context",
 				"type": "AnalyticsContext",
-				"required": true
+				"required": true,
+				"description": "Analytics context; a present report ID is syntax-checked and must name a readable report manifest."
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectIdentity",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Canonical primary worktree path, falling back to the resolved input directory when Git identity cannot be read."
 			},
 			{
 				"name": "resolvedContext",
-				"type": "Promise<AnalyticsContext>"
+				"type": "Promise<AnalyticsContext>",
+				"description": "Context with environment defaults applied and, when selected, the loop model and run timestamp filled from loop state."
 			},
 			{
 				"name": "recordAnalytics",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after attempting local insertion; storage errors are caught and reported as a console warning, and analytics-disabled mode is a no-op."
 			},
 			{
 				"name": "fingerprint",
-				"type": "string"
+				"type": "string",
+				"description": "SHA-256 hex digest of JSON.stringify(value)."
 			},
 			{
 				"name": "validateReport",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves when no report is selected or its ID and manifest are valid and readable."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Invalid analytics context",
+				"type": "thrown",
+				"description": "resolvedContext rejects mutually exclusive task/loop context, step without loop, or a step absent from loop state",
+				"examples": [
+					"Use either --task or --loop/--step.",
+					"--step requires --loop.",
+					"Loop step does not exist."
+				]
+			},
+			{
+				"name": "Invalid report reference",
+				"type": "propagated",
+				"description": "validateReport rejects a malformed report ID or a missing/unreadable manifest",
+				"examples": ["Invalid report ID."]
+			},
+			{
+				"name": "JSON serialization failure",
+				"type": "propagated",
+				"description": "fingerprint requires a value JSON.stringify can serialize to a string; cyclic values throw and undefined is not accepted by the hash update"
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "projectIdentity",
@@ -100,17 +129,19 @@
 					{
 						"name": "projectIdentity.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Checkout or project directory used to resolve the canonical primary worktree path."
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectIdentity",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Canonical primary worktree path, falling back to the resolved input directory when Git identity cannot be read."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "resolvedContext",
@@ -118,27 +149,36 @@
 					{
 						"name": "resolvedContext.context",
 						"type": "AnalyticsContext",
-						"required": true
+						"required": true,
+						"description": "Requested loop, step, task, agent model and report analytics context."
 					},
 					{
 						"name": "resolvedContext.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root used to read loop state when a loop is selected."
 					}
 				],
 				"outputs": [
 					{
 						"name": "resolvedContext",
-						"type": "Promise<AnalyticsContext>"
+						"type": "Promise<AnalyticsContext>",
+						"description": "Context with environment defaults applied and, when selected, the loop model and run timestamp filled from loop state."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Invalid analytics context",
+						"type": "thrown",
+						"description": "resolvedContext rejects mutually exclusive task/loop context, step without loop, or a step absent from loop state",
+						"examples": [
+							"Use either --task or --loop/--step.",
+							"--step requires --loop.",
+							"Loop step does not exist."
+						]
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "recordAnalytics",
@@ -146,22 +186,25 @@
 					{
 						"name": "recordAnalytics.event",
 						"type": "Omit<AnalyticsEvent, 'id' | 'timestamp' | 'project'>",
-						"required": true
+						"required": true,
+						"description": "Analytics fields excluding generated ID, timestamp and project identity."
 					},
 					{
 						"name": "recordAnalytics.root",
-						"type": "unknown",
-						"required": false
+						"type": "string",
+						"required": false,
+						"description": "Project root to identify; defaults to the process working directory."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordAnalytics",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after attempting local insertion; storage errors are caught and reported as a console warning, and analytics-disabled mode is a no-op."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "fingerprint",
@@ -169,17 +212,25 @@
 					{
 						"name": "fingerprint.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "JSON-serializable value whose serialized bytes are hashed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "fingerprint",
-						"type": "string"
+						"type": "string",
+						"description": "SHA-256 hex digest of JSON.stringify(value)."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "JSON serialization failure",
+						"type": "propagated",
+						"description": "fingerprint requires a value JSON.stringify can serialize to a string; cyclic values throw and undefined is not accepted by the hash update"
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "validateReport",
@@ -187,27 +238,36 @@
 					{
 						"name": "validateReport.context",
 						"type": "AnalyticsContext",
-						"required": true
+						"required": true,
+						"description": "Analytics context; a present report ID is syntax-checked and must name a readable report manifest."
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateReport",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves when no report is selected or its ID and manifest are valid and readable."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Invalid report reference",
+						"type": "propagated",
+						"description": "validateReport rejects a malformed report ID or a missing/unreadable manifest",
+						"examples": ["Invalid report ID."]
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.analytics-types",
 			"via": "import",

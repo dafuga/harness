@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-loop-lifecycle-close-loop",
+	"uid": "u_22qpghpzat",
+	"kind": "workflow",
+	"title": "closeLoop",
+	"responsibility": "Abandons a loop only when it still has pending steps, updates its closure timestamp and trace, and leaves step states unchanged.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/development-tooling/loop-lifecycle/closeLoop.ts",
+			"src/workflows/development-tooling/loop-lifecycle/closeLoop.types.ts"
+		],
+		"symbols": ["closeLoopAbandoned", "CloseLoopInput"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "closeLoopAbandoned.input",
+				"type": "CloseLoopInput",
+				"required": true,
+				"description": "Loop directory identity and abandonment reason; root and timestamp provider are optional through LoopInput."
+			}
+		],
+		"outputs": [
+			{
+				"name": "closeLoopAbandoned",
+				"type": "Promise<LoopStatus>",
+				"description": "Updated loop state and relative trace path after marking an open loop abandoned; step status and evidence remain unchanged."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Loop name/reason validation, missing/invalid state, identity mismatch, already closed, no pending steps."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "closeLoopAbandoned",
+				"inputs": [
+					{
+						"name": "closeLoopAbandoned.input",
+						"type": "CloseLoopInput",
+						"required": true,
+						"description": "Loop directory identity and abandonment reason; root and timestamp provider are optional through LoopInput."
+					}
+				],
+				"outputs": [
+					{
+						"name": "closeLoopAbandoned",
+						"type": "Promise<LoopStatus>",
+						"description": "Updated loop state and relative trace path after marking an open loop abandoned; step status and evidence remain unchanged."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Loop name/reason validation, missing/invalid state, identity mismatch, already closed, no pending steps."
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-loop-lifecycle-loop-activity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.loop-state",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/loop-lifecycle/closeLoop.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/loop-lifecycle/closeLoop.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

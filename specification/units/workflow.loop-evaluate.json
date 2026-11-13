@@ -4,8 +4,8 @@
 	"uid": "u_rw46z3zz35",
 	"kind": "workflow",
 	"title": "loopEvaluate",
-	"responsibility": "Owns the loopEvaluate command workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Runs configured loop evaluators through the bounded command adapter, records their outcomes in the loop trace, and supports an explicit no-run inspection mode.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -18,43 +18,45 @@
 			"LoopCommandResult",
 			"EvaluateLoopInput",
 			"evaluateLoop",
-			"renderLoopEvaluation",
-			"LoopEvaluationResult",
-			"LoopCommandResult",
-			"EvaluateLoopInput",
-			"evaluateLoop",
-			"renderLoopEvaluation",
-			"LoopEvaluationResult",
-			"LoopCommandResult",
-			"EvaluateLoopInput"
+			"renderLoopEvaluation"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "evaluateLoop.input",
 				"type": "EvaluateLoopInput",
-				"required": true
+				"required": true,
+				"description": "Loop id and optional root/time provider, with runEvaluators controlling whether configured repository commands run; omission defaults to running them."
 			},
 			{
 				"name": "renderLoopEvaluation.result",
 				"type": "LoopEvaluationResult",
-				"required": true
+				"required": true,
+				"description": "Evaluation result returned by evaluateLoop."
 			}
 		],
 		"outputs": [
 			{
 				"name": "evaluateLoop",
-				"type": "Promise<LoopEvaluationResult>"
+				"type": "Promise<LoopEvaluationResult>",
+				"description": "Loop id, trace path, pass/fail outcome, evaluator stdout/stderr and exit codes; skipped mode writes a trace and returns passed false with skipped true."
 			},
 			{
 				"name": "renderLoopEvaluation",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable loop evaluator summary."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Invalid or missing loop state."
+			}
+		],
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "evaluateLoop",
@@ -62,17 +64,25 @@
 					{
 						"name": "evaluateLoop.input",
 						"type": "EvaluateLoopInput",
-						"required": true
+						"required": true,
+						"description": "Loop id and optional root/time provider, with runEvaluators controlling whether configured repository commands run; omission defaults to running them."
 					}
 				],
 				"outputs": [
 					{
 						"name": "evaluateLoop",
-						"type": "Promise<LoopEvaluationResult>"
+						"type": "Promise<LoopEvaluationResult>",
+						"description": "Loop id, trace path, pass/fail outcome, evaluator stdout/stderr and exit codes; skipped mode writes a trace and returns passed false with skipped true."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid or missing loop state."
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "renderLoopEvaluation",
@@ -80,22 +90,34 @@
 					{
 						"name": "renderLoopEvaluation.result",
 						"type": "LoopEvaluationResult",
-						"required": true
+						"required": true,
+						"description": "Evaluation result returned by evaluateLoop."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderLoopEvaluation",
-						"type": "string"
+						"type": "string",
+						"description": "Human-readable loop evaluator summary."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-environment",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.resource-work",
 			"via": "import",

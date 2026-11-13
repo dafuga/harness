@@ -4,8 +4,8 @@
 	"uid": "u_3b2qhm7yob",
 	"kind": "workflow",
 	"title": "manageLoop",
-	"responsibility": "Owns the manageLoop command workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Creates, edits, completes, reads, and renders loop state and trace; completion can enforce regression and final-task audits.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -26,84 +26,84 @@
 			"addLoopStep",
 			"completeLoopStep",
 			"readLoopStatus",
-			"renderLoopStatus",
-			"CreateLoopInput",
-			"AddLoopStepInput",
-			"CompleteLoopStepInput",
-			"ReadLoopInput",
-			"LoopEvaluator",
-			"LoopState",
-			"LoopStatus",
-			"LoopStep",
-			"createLoop",
-			"addLoopStep",
-			"completeLoopStep",
-			"readLoopStatus",
-			"renderLoopStatus",
-			"CreateLoopInput",
-			"AddLoopStepInput",
-			"CompleteLoopStepInput",
-			"ReadLoopInput"
+			"renderLoopStatus"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createLoop.input",
 				"type": "CreateLoopInput",
-				"required": true
+				"required": true,
+				"description": "Loop name and goal plus optional root, creation-time provider, source template, agent model, completion kind, and plan."
 			},
 			{
 				"name": "addLoopStep.input",
 				"type": "AddLoopStepInput",
-				"required": true
+				"required": true,
+				"description": "Loop id, new step id and title, with optional root and timestamp provider."
 			},
 			{
 				"name": "completeLoopStep.input",
 				"type": "CompleteLoopStepInput",
-				"required": true
+				"required": true,
+				"description": "Loop id, pending step id, evidence text, and optional root/time provider."
 			},
 			{
 				"name": "readLoopStatus.input",
 				"type": "ReadLoopInput",
-				"required": true
+				"required": true,
+				"description": "Loop id and optional repository root."
 			},
 			{
 				"name": "renderLoopStatus.status",
 				"type": "LoopStatus",
-				"required": true
+				"required": true,
+				"description": "Loop state and relative trace path to display."
+			},
+			{
+				"name": "renderLoopStatus.now",
+				"type": "string",
+				"required": false,
+				"description": "Current timestamp for age display; defaults to the current ISO timestamp."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createLoop",
-				"type": "Promise<LoopStatus>"
+				"type": "Promise<LoopStatus>",
+				"description": "New loop state and trace path after initializing template steps/evaluators and appending the creation event."
 			},
 			{
 				"name": "addLoopStep",
-				"type": "Promise<LoopStatus>"
+				"type": "Promise<LoopStatus>",
+				"description": "Updated loop state and trace path after appending a pending step."
 			},
 			{
 				"name": "completeLoopStep",
-				"type": "Promise<LoopStatus>"
+				"type": "Promise<LoopStatus>",
+				"description": "Updated loop state and trace path after recording completion time and evidence."
 			},
 			{
 				"name": "readLoopStatus",
-				"type": "Promise<LoopStatus>"
+				"type": "Promise<LoopStatus>",
+				"description": "Current loop state and relative trace path."
 			},
 			{
 				"name": "renderLoopStatus",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable loop identity, goal, trace path, activity, closure details, and step list."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Invalid loop id or missing/invalid persisted state."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "createLoop",
@@ -111,17 +111,25 @@
 					{
 						"name": "createLoop.input",
 						"type": "CreateLoopInput",
-						"required": true
+						"required": true,
+						"description": "Loop name and goal plus optional root, creation-time provider, source template, agent model, completion kind, and plan."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createLoop",
-						"type": "Promise<LoopStatus>"
+						"type": "Promise<LoopStatus>",
+						"description": "New loop state and trace path after initializing template steps/evaluators and appending the creation event."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid loop name/goal, existing loop directory, invalid template, or invalid completion kind."
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "addLoopStep",
@@ -129,22 +137,25 @@
 					{
 						"name": "addLoopStep.input",
 						"type": "AddLoopStepInput",
-						"required": true
+						"required": true,
+						"description": "Loop id, new step id and title, with optional root and timestamp provider."
 					}
 				],
 				"outputs": [
 					{
 						"name": "addLoopStep",
-						"type": "Promise<LoopStatus>"
+						"type": "Promise<LoopStatus>",
+						"description": "Updated loop state and trace path after appending a pending step."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Invalid loop/step/title, missing or invalid state, or duplicate step id."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "completeLoopStep",
@@ -152,22 +163,25 @@
 					{
 						"name": "completeLoopStep.input",
 						"type": "CompleteLoopStepInput",
-						"required": true
+						"required": true,
+						"description": "Loop id, pending step id, evidence text, and optional root/time provider."
 					}
 				],
 				"outputs": [
 					{
 						"name": "completeLoopStep",
-						"type": "Promise<LoopStatus>"
+						"type": "Promise<LoopStatus>",
+						"description": "Updated loop state and trace path after recording completion time and evidence."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Invalid loop/step/evidence, missing or completed step, enforced-order violation, or failed regression/task-completion audit."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "readLoopStatus",
@@ -175,17 +189,25 @@
 					{
 						"name": "readLoopStatus.input",
 						"type": "ReadLoopInput",
-						"required": true
+						"required": true,
+						"description": "Loop id and optional repository root."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readLoopStatus",
-						"type": "Promise<LoopStatus>"
+						"type": "Promise<LoopStatus>",
+						"description": "Current loop state and relative trace path."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid loop id or missing/invalid persisted state."
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "renderLoopStatus",
@@ -193,17 +215,25 @@
 					{
 						"name": "renderLoopStatus.status",
 						"type": "LoopStatus",
-						"required": true
+						"required": true,
+						"description": "Loop state and relative trace path to display."
+					},
+					{
+						"name": "renderLoopStatus.now",
+						"type": "string",
+						"required": false,
+						"description": "Current timestamp for age display; defaults to the current ISO timestamp."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderLoopStatus",
-						"type": "string"
+						"type": "string",
+						"description": "Human-readable loop identity, goal, trace path, activity, closure details, and step list."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
@@ -221,6 +251,11 @@
 		},
 		{
 			"unit": "service.task-completion",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-loop-lifecycle-loop-activity",
 			"via": "import",
 			"origin": "derived"
 		},

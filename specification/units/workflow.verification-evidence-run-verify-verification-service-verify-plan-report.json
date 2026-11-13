@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report",
+	"uid": "u_ybrkzabkgb",
+	"kind": "workflow",
+	"title": "verifyPlanReport",
+	"responsibility": "Reports exact-command grouping candidates for a planned check list without reordering, combining, or executing checks.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.types.ts"
+		],
+		"symbols": ["verifyPlanReport", "VerifyPlanReport", "NormalizedCheck"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "verifyPlanReport.plan",
+				"type": "PlannedCheck[]",
+				"required": true,
+				"description": "Selected checks with their IDs, targets, runner commands, working directories, and per-check timeouts."
+			},
+			{
+				"name": "verifyPlanReport.source",
+				"type": "VerifyPlanReport['source']",
+				"required": true,
+				"description": "Commit, base-resolution, runtime, and scope metadata for this plan report."
+			}
+		],
+		"outputs": [
+			{
+				"name": "verifyPlanReport",
+				"type": "VerifyPlanReport",
+				"description": "Deterministic report retaining every planned check and marking exact command-shape candidates, singletons, and checks that cannot be normalized safely; it never executes or combines checks."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "verifyPlanReport",
+				"inputs": [
+					{
+						"name": "verifyPlanReport.plan",
+						"type": "PlannedCheck[]",
+						"required": true,
+						"description": "Selected checks with their IDs, targets, runner commands, working directories, and per-check timeouts."
+					},
+					{
+						"name": "verifyPlanReport.source",
+						"type": "VerifyPlanReport['source']",
+						"required": true,
+						"description": "Commit, base-resolution, runtime, and scope metadata for this plan report."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyPlanReport",
+						"type": "VerifyPlanReport",
+						"description": "Deterministic report retaining every planned check and marking exact command-shape candidates, singletons, and checks that cannot be normalized safely; it never executes or combines checks."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.verify-plan",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

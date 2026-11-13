@@ -1,3 +1,4 @@
+// @harness-uid u_dxfhj3khjo
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
 
 /** The unit facts the report needs; retired units are not expected to be in any scenario. */

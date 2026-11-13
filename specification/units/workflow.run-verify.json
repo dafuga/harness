@@ -4,7 +4,7 @@
 	"uid": "u_srtmrphmgz",
 	"kind": "workflow",
 	"title": "runVerify",
-	"responsibility": "Resolves the commit and base, runs verification and checks stored records.",
+	"responsibility": "Resolves trusted revision ranges, runs or checks verification records, reports build identity, stamps built files, and re-exports the report-only plan API.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,75 +20,94 @@
 			"verifyStamp",
 			"renderVerify",
 			"VerifyOptions",
-			"verifyRun",
-			"verifyCheck",
-			"verifyIdentity",
-			"verifyStamp",
-			"renderVerify",
-			"VerifyResult",
-			"VerifyOptions"
+			"VerifyPlanReport",
+			"verifyPlan",
+			"VerifyResult"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "verifyRun.options",
 				"type": "VerifyOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional exact commit, requested base, runtime, per-check timeout, performance requirement, entity scope, resource priority, and repository root."
 			},
 			{
 				"name": "verifyCheck.options",
 				"type": "VerifyOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional exact commit, record id or file, and repository root."
 			},
 			{
 				"name": "verifyIdentity.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Built directory whose files should be identified."
 			},
 			{
 				"name": "verifyStamp.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Built directory whose existing stamp slots should receive its content-derived build id."
 			},
 			{
 				"name": "renderVerify.stored",
 				"type": "VerifyResult",
-				"required": true
+				"required": true,
+				"description": "Stored verification record and directory, plus any scoped-attachment result."
+			},
+			{
+				"name": "verifyPlan.options",
+				"type": "VerifyOptions",
+				"required": false,
+				"default": {},
+				"description": "Optional repository root, commit, requested base, runtime, entity scope, and selection settings for the report-only verification plan."
 			}
 		],
 		"outputs": [
 			{
 				"name": "verifyRun",
-				"type": "Promise<VerifyResult>"
+				"type": "Promise<VerifyResult>",
+				"description": "Stored verification record and directory; entity mode may include screenshot attachment status."
 			},
 			{
 				"name": "verifyCheck",
-				"type": "Promise<CheckReport>"
+				"type": "Promise<CheckReport>",
+				"description": "Status, commit, record id, and integrity or lineage problems for the stored record."
 			},
 			{
 				"name": "verifyIdentity",
-				"type": "Promise<IdentifiedBuild & { directory: string }>"
+				"type": "Promise<IdentifiedBuild & { directory: string }>",
+				"description": "Absolute directory, content-derived build id, file count, and any stamp found in the files."
 			},
 			{
 				"name": "verifyStamp",
-				"type": "Promise<IdentifiedBuild & { directory: string }>"
+				"type": "Promise<IdentifiedBuild & { directory: string }>",
+				"description": "Absolute directory, content-derived build id, file count, and written stamp."
 			},
 			{
 				"name": "renderVerify",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable verification status, checked scenarios, failures, record location, and attachment details."
+			},
+			{
+				"name": "verifyPlan",
+				"type": "Promise<VerifyPlanReport>",
+				"description": "Selected checks and conservative report-only runner grouping candidates; no checks are executed."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "No build-stamp slot in the requested directory."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "verifyRun",
@@ -97,22 +116,25 @@
 						"name": "verifyRun.options",
 						"type": "VerifyOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional exact commit, requested base, runtime, per-check timeout, performance requirement, entity scope, resource priority, and repository root."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyRun",
-						"type": "Promise<VerifyResult>"
+						"type": "Promise<VerifyResult>",
+						"description": "Stored verification record and directory; entity mode may include screenshot attachment status."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Invalid repository/revision/configuration, unavailable runtime, invalid scope, or failed required setup."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "verifyCheck",
@@ -121,22 +143,25 @@
 						"name": "verifyCheck.options",
 						"type": "VerifyOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional exact commit, record id or file, and repository root."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyCheck",
-						"type": "Promise<CheckReport>"
+						"type": "Promise<CheckReport>",
+						"description": "Status, commit, record id, and integrity or lineage problems for the stored record."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Invalid repository/revision or absent record for the requested commit."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "verifyIdentity",
@@ -144,22 +169,25 @@
 					{
 						"name": "verifyIdentity.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Built directory whose files should be identified."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyIdentity",
-						"type": "Promise<IdentifiedBuild & { directory: string }>"
+						"type": "Promise<IdentifiedBuild & { directory: string }>",
+						"description": "Absolute directory, content-derived build id, file count, and any stamp found in the files."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "No built files in the requested directory."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "verifyStamp",
@@ -167,17 +195,25 @@
 					{
 						"name": "verifyStamp.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Built directory whose existing stamp slots should receive its content-derived build id."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyStamp",
-						"type": "Promise<IdentifiedBuild & { directory: string }>"
+						"type": "Promise<IdentifiedBuild & { directory: string }>",
+						"description": "Absolute directory, content-derived build id, file count, and written stamp."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "No build-stamp slot in the requested directory."
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "renderVerify",
@@ -185,17 +221,46 @@
 					{
 						"name": "renderVerify.stored",
 						"type": "VerifyResult",
-						"required": true
+						"required": true,
+						"description": "Stored verification record and directory, plus any scoped-attachment result."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderVerify",
-						"type": "string"
+						"type": "string",
+						"description": "Human-readable verification status, checked scenarios, failures, record location, and attachment details."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "verifyPlan",
+				"inputs": [
+					{
+						"name": "verifyPlan.options",
+						"type": "VerifyOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional repository root, commit, requested base, runtime, entity scope, and selection settings for the report-only verification plan."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyPlan",
+						"type": "Promise<VerifyPlanReport>",
+						"description": "Selected checks and conservative report-only runner grouping candidates; no checks are executed."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid repository/revision/configuration, HTTP runtime refusal, or entity without scenario coverage."
+					}
+				],
+				"errorStatus": "found"
 			}
 		],
 		"initialization": []
@@ -284,6 +349,16 @@
 		{
 			"unit": "workflow.verification-evidence-run-verify-scoped-verify",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verify-plan-workflow",
+			"via": "reexport",
 			"origin": "derived"
 		}
 	],

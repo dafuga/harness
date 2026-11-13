@@ -3,8 +3,8 @@
 	"id": "adapter.process-identity",
 	"uid": "u_vb356v5djk",
 	"kind": "adapter",
-	"title": "ProcessIdentityAdapter",
-	"responsibility": "Asks the system whether a process exists and when it started.",
+	"title": "Process identity probe",
+	"responsibility": "Reads a process start time with ps so callers can distinguish a live process from a later process that reused its PID; unreadable probes remain unknown.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -15,22 +15,24 @@
 		"symbols": ["ProcessIdentityAdapter", "ProcessIdentityAdapter", "ProcessIdentityAdapter.find"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProcessIdentityAdapter.find.pid",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Process ID whose current start time is being queried."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProcessIdentityAdapter.find",
-				"type": "ProcessFacts"
+				"type": "ProcessFacts",
+				"description": "ProcessFacts: exists is false for ps exit 1, true when a start time was read, and undefined when the probe cannot establish identity; startedAt is the normalized ps start string or null."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ProcessIdentityAdapter.find",
@@ -38,22 +40,29 @@
 					{
 						"name": "ProcessIdentityAdapter.find.pid",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Process ID whose current start time is being queried."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProcessIdentityAdapter.find",
-						"type": "ProcessFacts"
+						"type": "ProcessFacts",
+						"description": "ProcessFacts: exists is false for ps exit 1, true when a start time was read, and undefined when the probe cannot establish identity; startedAt is the normalized ps start string or null."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.agent-liveness",
 			"via": "import",

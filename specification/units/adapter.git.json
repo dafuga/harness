@@ -3,9 +3,9 @@
 	"id": "adapter.git",
 	"uid": "u_pghy4246hw",
 	"kind": "adapter",
-	"title": "GitAdapter",
-	"responsibility": "Owns the GitAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"title": "Bounded Git adapter",
+	"responsibility": "Runs Git commands in the configured repository with bounded execution, Git-specific authentication variables, and text, byte, or status-returning interfaces.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -29,87 +29,108 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GitAdapter.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository working directory used as the cwd for every Git invocation."
 			},
 			{
 				"name": "GitAdapter.run.args",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Git argument vector, passed without shell interpolation."
 			},
 			{
 				"name": "GitAdapter.run.options",
 				"type": "GitRunOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional stdin, child environment overrides, deadline and output limit."
 			},
 			{
 				"name": "GitAdapter.bytes.args",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Git argument vector, passed without shell interpolation."
 			},
 			{
 				"name": "GitAdapter.bytes.options",
 				"type": "GitRunOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional stdin, child environment overrides, deadline and output limit."
 			},
 			{
 				"name": "GitAdapter.attempt.args",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Git argument vector for a non-throwing nonzero-exit probe."
 			},
 			{
 				"name": "GitAdapter.attempt.options",
 				"type": "GitRunOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional stdin, child environment overrides, deadline and output limit."
 			},
 			{
 				"name": "GitAdapter.exec.args",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Git argument vector, passed directly to the Git executable."
 			},
 			{
 				"name": "GitAdapter.exec.options",
 				"type": "GitRunOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional stdin, environment overrides, deadline and output limit; cwd remains the configured repository root."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GitAdapter.run",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Standard output decoded as UTF-8 and trimmed; nonzero exits reject with Git stderr in the error."
 			},
 			{
 				"name": "GitAdapter.bytes",
-				"type": "Promise<Buffer>"
+				"type": "Promise<Buffer>",
+				"description": "Unmodified stdout bytes; nonzero exits reject with Git stderr in the error."
 			},
 			{
 				"name": "GitAdapter.attempt",
-				"type": "Promise<string | undefined>"
+				"type": "Promise<string | undefined>",
+				"description": "Trimmed stdout on exit code zero, or undefined on a nonzero exit."
 			},
 			{
 				"name": "GitAdapter.exec",
-				"type": "Promise<GitResult>"
+				"type": "Promise<GitResult>",
+				"description": "Exit code, stdout bytes and stderr text from the bounded Git process."
 			},
 			{
 				"name": "GitAdapter.isRepository",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "True only when Git reports that the configured root is inside a work tree."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Git command failure",
+				"type": "thrown",
+				"description": "run and bytes reject when Git exits nonzero, including its stderr in the message"
+			},
+			{
+				"name": "Bounded command failure",
+				"type": "propagated",
+				"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
+				"examples": ["Command timed out.", "Command output limit exceeded."]
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "GitAdapter.run",
@@ -117,23 +138,38 @@
 					{
 						"name": "GitAdapter.run.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Git argument vector, passed without shell interpolation."
 					},
 					{
 						"name": "GitAdapter.run.options",
 						"type": "GitRunOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional stdin, child environment overrides, deadline and output limit."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.run",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Standard output decoded as UTF-8 and trimmed; nonzero exits reject with Git stderr in the error."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Git command failure",
+						"type": "thrown",
+						"description": "run and bytes reject when Git exits nonzero, including its stderr in the message"
+					},
+					{
+						"name": "Bounded command failure",
+						"type": "propagated",
+						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
+						"examples": ["Command timed out.", "Command output limit exceeded."]
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "GitAdapter.bytes",
@@ -141,28 +177,38 @@
 					{
 						"name": "GitAdapter.bytes.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Git argument vector, passed without shell interpolation."
 					},
 					{
 						"name": "GitAdapter.bytes.options",
 						"type": "GitRunOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional stdin, child environment overrides, deadline and output limit."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.bytes",
-						"type": "Promise<Buffer>"
+						"type": "Promise<Buffer>",
+						"description": "Unmodified stdout bytes; nonzero exits reject with Git stderr in the error."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Git command failure",
+						"type": "thrown",
+						"description": "run and bytes reject when Git exits nonzero, including its stderr in the message"
+					},
+					{
+						"name": "Bounded command failure",
+						"type": "propagated",
+						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
+						"examples": ["Command timed out.", "Command output limit exceeded."]
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "found"
 			},
 			{
 				"name": "GitAdapter.attempt",
@@ -170,23 +216,33 @@
 					{
 						"name": "GitAdapter.attempt.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Git argument vector for a non-throwing nonzero-exit probe."
 					},
 					{
 						"name": "GitAdapter.attempt.options",
 						"type": "GitRunOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional stdin, child environment overrides, deadline and output limit."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.attempt",
-						"type": "Promise<string | undefined>"
+						"type": "Promise<string | undefined>",
+						"description": "Trimmed stdout on exit code zero, or undefined on a nonzero exit."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Bounded command failure",
+						"type": "propagated",
+						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
+						"examples": ["Command timed out.", "Command output limit exceeded."]
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "GitAdapter.exec",
@@ -194,23 +250,33 @@
 					{
 						"name": "GitAdapter.exec.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Git argument vector, passed directly to the Git executable."
 					},
 					{
 						"name": "GitAdapter.exec.options",
 						"type": "GitRunOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional stdin, environment overrides, deadline and output limit; cwd remains the configured repository root."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.exec",
-						"type": "Promise<GitResult>"
+						"type": "Promise<GitResult>",
+						"description": "Exit code, stdout bytes and stderr text from the bounded Git process."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Bounded command failure",
+						"type": "propagated",
+						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
+						"examples": ["Command timed out.", "Command output limit exceeded."]
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "GitAdapter.isRepository",
@@ -218,11 +284,19 @@
 				"outputs": [
 					{
 						"name": "GitAdapter.isRepository",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "True only when Git reports that the configured root is inside a work tree."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Bounded command failure",
+						"type": "propagated",
+						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
+						"examples": ["Command timed out.", "Command output limit exceeded."]
+					}
+				],
+				"errorStatus": "found"
 			}
 		],
 		"initialization": [
@@ -232,13 +306,15 @@
 					{
 						"name": "GitAdapter.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository working directory used as the cwd for every Git invocation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.constructor",
-						"type": "unknown"
+						"type": "GitAdapter",
+						"description": "Initialized adapter retaining the repository root."
 					}
 				],
 				"errors": [],
@@ -246,7 +322,13 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/git-source-history/GitAdapter.ts",

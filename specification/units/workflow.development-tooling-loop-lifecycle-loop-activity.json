@@ -1,0 +1,250 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.development-tooling-loop-lifecycle-loop-activity",
+	"uid": "u_ymzsomv44i",
+	"kind": "workflow",
+	"title": "loopActivity",
+	"responsibility": "Derives pending and total step counts, last activity and age, stale status, and human-readable loop summary lines.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/development-tooling/loop-lifecycle/loopActivity.ts",
+			"src/workflows/development-tooling/loop-lifecycle/loopActivity.types.ts"
+		],
+		"symbols": [
+			"openStepCount",
+			"isOpenLoop",
+			"loopActivity",
+			"isStale",
+			"loopSummaryLines",
+			"LoopActivity"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "openStepCount.state",
+				"type": "LoopState",
+				"required": true,
+				"description": "Loop state whose pending steps are counted."
+			},
+			{
+				"name": "isOpenLoop.state",
+				"type": "LoopState",
+				"required": true,
+				"description": "Loop state to classify."
+			},
+			{
+				"name": "loopActivity.state",
+				"type": "LoopState",
+				"required": true,
+				"description": "Loop state whose step counts and activity timestamps are summarized."
+			},
+			{
+				"name": "loopActivity.now",
+				"type": "string",
+				"required": true,
+				"description": "Current timestamp in ISO-compatible text used to calculate nonnegative age in whole days."
+			},
+			{
+				"name": "isStale.activity",
+				"type": "LoopActivity",
+				"required": true,
+				"description": "Derived loop activity; unknown age is considered stale."
+			},
+			{
+				"name": "isStale.staleDays",
+				"type": "number",
+				"required": true,
+				"description": "Nonnegative idle-day threshold; the activity is stale when age is unknown or at least this many days."
+			},
+			{
+				"name": "loopSummaryLines.state",
+				"type": "LoopState",
+				"required": true,
+				"description": "Loop whose activity and closure details are rendered."
+			},
+			{
+				"name": "loopSummaryLines.now",
+				"type": "string",
+				"required": true,
+				"description": "Current timestamp used to calculate displayed age."
+			}
+		],
+		"outputs": [
+			{
+				"name": "openStepCount",
+				"type": "number",
+				"description": "Number of steps whose status is pending."
+			},
+			{
+				"name": "isOpenLoop",
+				"type": "boolean",
+				"description": "True only when the loop is not closed and has at least one pending step."
+			},
+			{
+				"name": "loopActivity",
+				"type": "LoopActivity",
+				"description": "Pending and total step counts plus last activity and age when valid timestamps are available."
+			},
+			{
+				"name": "isStale",
+				"type": "boolean",
+				"description": "Whether activity is unknown or its whole-day age meets the threshold."
+			},
+			{
+				"name": "loopSummaryLines",
+				"type": "string[]",
+				"description": "Human-readable age, open-step counts, and closure reason lines."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "openStepCount",
+				"inputs": [
+					{
+						"name": "openStepCount.state",
+						"type": "LoopState",
+						"required": true,
+						"description": "Loop state whose pending steps are counted."
+					}
+				],
+				"outputs": [
+					{
+						"name": "openStepCount",
+						"type": "number",
+						"description": "Number of steps whose status is pending."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "isOpenLoop",
+				"inputs": [
+					{
+						"name": "isOpenLoop.state",
+						"type": "LoopState",
+						"required": true,
+						"description": "Loop state to classify."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isOpenLoop",
+						"type": "boolean",
+						"description": "True only when the loop is not closed and has at least one pending step."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "loopActivity",
+				"inputs": [
+					{
+						"name": "loopActivity.state",
+						"type": "LoopState",
+						"required": true,
+						"description": "Loop state whose step counts and activity timestamps are summarized."
+					},
+					{
+						"name": "loopActivity.now",
+						"type": "string",
+						"required": true,
+						"description": "Current timestamp in ISO-compatible text used to calculate nonnegative age in whole days."
+					}
+				],
+				"outputs": [
+					{
+						"name": "loopActivity",
+						"type": "LoopActivity",
+						"description": "Pending and total step counts plus last activity and age when valid timestamps are available."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "isStale",
+				"inputs": [
+					{
+						"name": "isStale.activity",
+						"type": "LoopActivity",
+						"required": true,
+						"description": "Derived loop activity; unknown age is considered stale."
+					},
+					{
+						"name": "isStale.staleDays",
+						"type": "number",
+						"required": true,
+						"description": "Nonnegative idle-day threshold; the activity is stale when age is unknown or at least this many days."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isStale",
+						"type": "boolean",
+						"description": "Whether activity is unknown or its whole-day age meets the threshold."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "loopSummaryLines",
+				"inputs": [
+					{
+						"name": "loopSummaryLines.state",
+						"type": "LoopState",
+						"required": true,
+						"description": "Loop whose activity and closure details are rendered."
+					},
+					{
+						"name": "loopSummaryLines.now",
+						"type": "string",
+						"required": true,
+						"description": "Current timestamp used to calculate displayed age."
+					}
+				],
+				"outputs": [
+					{
+						"name": "loopSummaryLines",
+						"type": "string[]",
+						"description": "Human-readable age, open-step counts, and closure reason lines."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "workflow.loop-state",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/development-tooling/loop-lifecycle/loopActivity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/development-tooling/loop-lifecycle/loopActivity.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

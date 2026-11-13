@@ -4,7 +4,7 @@
 	"uid": "u_tikw6g3kij",
 	"kind": "command",
 	"title": "HistoryCommand",
-	"responsibility": "Registers the history commands: attach, reasons, status, fetch, push, sync, build and import-reports.",
+	"responsibility": "Registers Git history attach, status, reasons, prune, sync, build, and legacy report-import commands.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,22 +12,24 @@
 		"symbols": ["registerHistoryCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerHistoryCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "Commander program that receives the history command tree."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerHistoryCommand",
-				"type": "Command"
+				"type": "Command",
+				"description": "Returns the registered history command with attach, status, reasons, prune, fetch, push, sync, build, and import-reports subcommands; attach/status/reasons default their commit to HEAD and build defaults its limit to 2000."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerHistoryCommand",
@@ -35,22 +37,29 @@
 					{
 						"name": "registerHistoryCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "Commander program that receives the history command tree."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerHistoryCommand",
-						"type": "Command"
+						"type": "Command",
+						"description": "Returns the registered history command with attach, status, reasons, prune, fetch, push, sync, build, and import-reports subcommands; attach/status/reasons default their commit to HEAD and build defaults its limit to 2000."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "entry.program-history-prune-preview-history-prune",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.entity-lens",
 			"via": "import",
