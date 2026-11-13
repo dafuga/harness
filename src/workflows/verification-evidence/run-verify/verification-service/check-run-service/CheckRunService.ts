@@ -32,11 +32,14 @@ export class CheckRunService {
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
 		const result = await this.execute(check, evidencePath, slug);
 		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
-		const captures = this.budget.admit(
-			result.timedOut
-				? { gathered: [], failures: [] }
-				: gatherCaptures(join(directory, evidencePath), evidencePath, this.context.limits)
-		);
+		const captures = result.timedOut
+			? { gathered: [], failures: [] }
+			: gatherCaptures(
+					join(directory, evidencePath),
+					evidencePath,
+					this.context.limits,
+					this.budget
+				);
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
 		const diagnostics = result.timedOut

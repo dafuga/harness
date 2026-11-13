@@ -1,5 +1,4 @@
 import type { CaptureLimits, CaptureRead } from './captureLimits.types';
-import type { GatherResult } from '../../../../../utils/verification-evidence/gatherCaptures';
 import { createHash } from 'node:crypto';
 import { closeSync, constants, fstatSync, openSync, readSync } from 'node:fs';
 import { verifyConfigFile } from '../../../../../core/verification-evidence/verifyTypes';
@@ -18,7 +17,9 @@ export function digestFile(path: string, maxBytes?: number, retain = false): Cap
 		for (let read = readSync(descriptor, chunk); read > 0; read = readSync(descriptor, chunk)) {
 			bytes += read;
 			if (maxBytes !== undefined && bytes > maxBytes)
-				throw new Error('Capture exceeded maxCaptureBytes while reading.');
+				throw new Error(
+					'Capture exceeded maxCaptureBytes or remaining maxRecordBytes while reading.'
+				);
 			hash.update(chunk.subarray(0, read));
 			if (retain) chunks.push(Buffer.from(chunk.subarray(0, read)));
 		}
@@ -43,27 +44,21 @@ export function oversizeCapture(
 	return `left capture ${file} of ${bytes} bytes, over maxCaptureBytes ${cap} in ${verifyConfigFile}; it was not recorded`;
 }
 
-/** Totals the captures of one verification record and refuses those that pass `maxRecordBytes`. */
+/** Accounts for retained capture bytes across one verification record, before inspection. */
 export class RecordBudget {
 	private used = 0;
-
 	constructor(private readonly max?: number) {}
-
-	/** What a check's captures may keep, with a failure added for each the record has no room for. */
-	admit(result: GatherResult): GatherResult {
-		const admitted: GatherResult = { gathered: [], failures: [...result.failures] };
-		for (const item of result.gathered) {
-			const { bytes, path } = item.capture;
-			if (this.max !== undefined && this.used + bytes > this.max) {
-				admitted.failures.push(
-					`left capture ${path} of ${bytes} bytes, which takes the record to ${this.used + bytes} ` +
-						`bytes, over maxRecordBytes ${this.max} in ${verifyConfigFile}; it was not recorded`
-				);
-				continue;
-			}
-			this.used += bytes;
-			admitted.gathered.push(item);
-		}
-		return admitted;
+	remaining(): number | undefined {
+		return this.max === undefined ? undefined : this.max - this.used;
+	}
+	refusal(path: string, bytes: number): string | undefined {
+		if (this.max === undefined || this.used + bytes <= this.max) return undefined;
+		return (
+			`left capture ${path} of ${bytes} bytes, which takes the record to ${this.used + bytes} ` +
+			`bytes, over maxRecordBytes ${this.max} in ${verifyConfigFile}; it was not recorded`
+		);
+	}
+	retain(bytes: number): void {
+		this.used += bytes;
 	}
 }

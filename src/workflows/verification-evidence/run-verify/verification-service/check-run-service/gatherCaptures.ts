@@ -4,7 +4,7 @@ import type {
 	Gathered
 } from '../../../../../utils/verification-evidence/gatherCaptures';
 import { existsSync, lstatSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import {
 	captureIndex,
 	captureLineSchema,
@@ -12,7 +12,7 @@ import {
 } from '../../../../../core/verification-evidence/verifyTypes';
 import type { Capture } from '../../../../../core/verification-evidence/verificationTypes';
 import type { CaptureLimits } from './captureLimits.types';
-import { digestFile, oversizeCapture } from './captureLimits';
+import { digestFile, oversizeCapture, RecordBudget } from './captureLimits';
 import { mediaFacts } from './mediaFacts';
 import { type MediaFacts } from '../../../../../utils/verification-evidence/mediaFacts';
 
@@ -26,7 +26,8 @@ const hex = /^[0-9a-f]{40}$/;
 export function gatherCaptures(
 	directory: string,
 	recordPath: string,
-	limits: CaptureLimits = {}
+	limits: CaptureLimits = {},
+	budget = new RecordBudget(limits.maxRecordBytes)
 ): GatherResult {
 	const index = join(directory, captureIndex);
 	const result: GatherResult = { gathered: [], failures: [] };
@@ -41,9 +42,19 @@ export function gatherCaptures(
 			try {
 				const stat = lstatSync(file);
 				if (!stat.isFile()) throw new Error('Capture must be a regular file, not a symlink.');
-				const refused = oversizeCapture(parsed.data.file, stat.size, limits);
+				const refused =
+					oversizeCapture(parsed.data.file, stat.size, limits) ??
+					budget.refusal(`${recordPath}/${parsed.data.file}`, stat.size);
 				if (refused) result.failures.push(refused);
-				else result.gathered.push(inspect(parsed.data, file, recordPath, limits));
+				else {
+					const remaining = budget.remaining();
+					const cap = Math.min(limits.maxCaptureBytes ?? Infinity, remaining ?? Infinity);
+					const item = inspect(parsed.data, file, recordPath, {
+						maxCaptureBytes: Number.isFinite(cap) ? cap : undefined
+					});
+					budget.retain(item.capture.bytes);
+					result.gathered.push(item);
+				}
 			} catch (error) {
 				result.failures.push(
 					`could not inspect capture ${parsed.data.file}: ${error instanceof Error ? error.message : 'read failed'}`
@@ -101,11 +112,15 @@ function actualDuration(facts: MediaFacts | undefined): number | undefined {
 function indexLines(path: string, result: GatherResult): string[] {
 	if (!existsSync(path)) return [];
 	try {
+		if (!lstatSync(dirname(path)).isDirectory())
+			throw new Error('Capture directory must be a regular directory.');
 		if (!lstatSync(path).isFile()) throw new Error('Capture index must be a regular file.');
 		const { contents } = digestFile(path, 2_000_000, true);
 		return contents ? contents.toString('utf8').split('\n').filter(Boolean) : [];
 	} catch {
-		result.failures.push('capture index must be a regular file of at most 2000000 bytes');
+		result.failures.push(
+			'capture directory must be a regular directory; capture index must be a regular file of at most 2000000 bytes'
+		);
 		return [];
 	}
 }

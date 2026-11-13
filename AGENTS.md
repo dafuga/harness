@@ -201,6 +201,10 @@ Source tabs list implementation files, sibling type files and associated tests f
 
 When changing a shared Game renderer, include the root `test/game-runtime.test.ts` consumer guard in owning qualification, even when full CLI/native suites are deferred. Verify semantic object visibility and retained references; inactive scene containers must not change what a visibility assertion means.
 
+## Capture Ingestion Acceptance
+
+- When changing capture limits, strengthen the existing capture cases to prove that rejected media is never opened and cumulative limits apply before decoding. Cover a symlinked evidence directory as well as symlinked files, while preserving the standard case count. Encoded byte limits do not establish a decoded-memory or process RSS limit.
+
 ## Child Command Acceptance
 
 Before changing a child environment allowlist, inventory configuration read by the child, its launcher and framework adapter. Strengthen the existing command-boundary cases to prove required synthetic configuration still arrives and unrelated synthetic credentials do not. Keep authentication transport specific to the command that owns it.

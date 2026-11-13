@@ -533,10 +533,11 @@ Typed contracts for all of this ship in `@dafuga01/harness/verification`, includ
 
 Capture byte limits are optional in `harness.verify.json`: `maxCaptureBytes` rejects a single
 file before inspection (and bounds streamed reads), and `maxRecordBytes` caps the total capture
-bytes admitted across a record. Configure both to bound individual decoding and retained evidence.
+bytes admitted across a record, checked before inspection. Either cap bounds individual encoded
+reads; the record cap also preserves remaining capacity across checks.
 Media and benchmark captures are decoded in memory; other capture hashes use fixed-size chunks.
-The cumulative limit is admission accounting, not a cap on all inspection work. Capture files and
-the index must be regular files; the index has a fixed 2,000,000-byte bound. A refused capture
+These are encoded byte limits, not whole-process or decoded image memory limits. Capture directories
+must be regular directories; capture files and the index must be regular files; the index has a fixed 2,000,000-byte bound. A refused capture
 fails its check, including setup, and cannot appear as a passed individual test row. Attached Git
 LFS evidence remains durable; these settings do not delete existing history. Its growth is the sum
 of newly retained content objects per commit, so budget and retention are separate decisions.
