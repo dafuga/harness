@@ -2,6 +2,7 @@ import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
+import { withTempDir } from './support/temporary';
 import { searchLoops } from '../src/workflows/loopSearch';
 import { resolveLoopTemplate } from '../src/workflows/loopTemplates';
 import { projectFiles } from '../src/templates/project';
@@ -64,34 +65,8 @@ test.each(Object.entries(orders))(
 		expect(template.steps.find((step) => step.id === 'green')?.title).toContain(
 			'separate fix commit'
 		);
-		const root = await mkdtemp(join(tmpdir(), 'harness-regression-loop-search-'));
-		try {
-			const loops = join(root, 'specification/loops');
-			await mkdir(join(loops, 'legacy-evidence-shape'), { recursive: true });
-			await writeFile(
-				join(loops, 'legacy-evidence-shape/loop.json'),
-				JSON.stringify({
-					name: 'legacy-evidence-shape',
-					goal: 'A persisted loop from an older schema.',
-					createdAt: '2026-10-01T00:00:00.000Z',
-					updatedAt: '2026-10-01T00:00:00.000Z',
-					steps: [{ id: 'old-step', title: 'Older step', status: 'pending', evidence: ['one'] }]
-				})
-			);
-			await mkdir(join(loops, 'valid-project-loop'), { recursive: true });
-			await writeFile(
-				join(loops, 'valid-project-loop/loop.json'),
-				JSON.stringify({
-					name: 'valid-project-loop',
-					goal: 'A valid persisted loop.',
-					createdAt: '2026-10-01T00:00:00.000Z',
-					updatedAt: '2026-10-01T00:00:00.000Z',
-					steps: [
-						{ id: 'done', title: 'Done', status: 'complete' },
-						{ id: 'next', title: 'Next', status: 'pending' }
-					]
-				})
-			);
+		await withTempDir('harness-regression-loop-search-', async (root) => {
+			await writeSearchFixture(root);
 			const results = await searchLoops({ root });
 			expect(results.map((item) => item.id)).toContain(id);
 			expect(results).toContainEqual(
@@ -110,11 +85,38 @@ test.each(Object.entries(orders))(
 					summary: '1 of 2 steps complete.'
 				})
 			);
-		} finally {
-			await rm(root, { recursive: true, force: true });
-		}
+		});
 	}
 );
+
+async function writeSearchFixture(root: string): Promise<void> {
+	const loops = join(root, 'specification/loops');
+	await mkdir(join(loops, 'legacy-evidence-shape'), { recursive: true });
+	await writeFile(
+		join(loops, 'legacy-evidence-shape/loop.json'),
+		JSON.stringify({
+			name: 'legacy-evidence-shape',
+			goal: 'A persisted loop from an older schema.',
+			createdAt: '2026-10-01T00:00:00.000Z',
+			updatedAt: '2026-10-01T00:00:00.000Z',
+			steps: [{ id: 'old-step', title: 'Older step', status: 'pending', evidence: ['one'] }]
+		})
+	);
+	await mkdir(join(loops, 'valid-project-loop'), { recursive: true });
+	await writeFile(
+		join(loops, 'valid-project-loop/loop.json'),
+		JSON.stringify({
+			name: 'valid-project-loop',
+			goal: 'A valid persisted loop.',
+			createdAt: '2026-10-01T00:00:00.000Z',
+			updatedAt: '2026-10-01T00:00:00.000Z',
+			steps: [
+				{ id: 'done', title: 'Done', status: 'complete' },
+				{ id: 'next', title: 'Next', status: 'pending' }
+			]
+		})
+	);
+}
 
 test('project templates can extend regression prevention and override its guard', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-regression-template-'));
