@@ -1,4 +1,5 @@
 import type { Manifest } from './self-verify-config.test.types';
+import { measureWorkload } from './support/measureWorkload';
 import checksBaseline from './fixtures/verify-checks-baseline.json';
 import { spawnSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
@@ -50,8 +51,12 @@ test('this repository keeps source read-only and required scenario evidence comp
 	).toEqual([]);
 });
 
-test('named check profiles preserve all existing check IDs, commands and effective timeouts', () => {
-	const config = verifyConfigSchema.parse(JSON.parse(readFileSync('harness.verify.json', 'utf8')));
+test('named check profiles preserve all existing check IDs, commands and effective timeouts', async () => {
+	const config = await measureWorkload(
+		'function.verify-types',
+		'named-check-profile-expansion',
+		() => verifyConfigSchema.parse(JSON.parse(readFileSync('harness.verify.json', 'utf8')))
+	);
 	const actual = config.checks.map((check) => ({
 		id: check.path,
 		command: check.command,

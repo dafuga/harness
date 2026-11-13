@@ -10,6 +10,7 @@ import {
 	skipsAnalytics
 } from '../../src/workflows/reports-media/recordCommandAnalytics';
 import { runCommand } from '../support/cli';
+import { measureWorkload } from '../support/measureWorkload';
 
 const cli = join(process.cwd(), 'src/index.ts');
 let scratch = '';
@@ -100,11 +101,8 @@ test('the real entry runs no sqlite or git worktree work for --help, --version a
 	const shim = await gitLog();
 	const home = join(scratch, 'analytics');
 	const env = { HARNESS_ANALYTICS_HOME: home, PATH: shim.path };
-	const imported = await runCommand(
-		['bun', '-e', `await import(${JSON.stringify(cli)})`],
-		scratch,
-		false,
-		env
+	const imported = await measureWorkload('entry.index', 'compatibility-import-without-cli', () =>
+		runCommand(['bun', '-e', `await import(${JSON.stringify(cli)})`], scratch, false, env)
 	);
 	expect(imported, 'library imports must not invoke the CLI').toMatchObject({
 		exitCode: 0,

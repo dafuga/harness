@@ -4,11 +4,13 @@ import { tmpdir } from 'node:os';
 import { expect, test } from 'vitest';
 import { benchmarkProcess } from '../src/cli/program/benchmark-service/benchmarkProcess';
 import { peakMemory } from '../src/cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory';
+import { measureWorkload } from './support/measureWorkload';
 import { serveKernel } from '../src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService';
 
 test('deadline stops the spawned process instead of leaving background work', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'benchmark-cancel-'));
 	try {
+		await assertSuccessfulProcesses(root);
 		const signal = AbortSignal.timeout(200);
 		await expect(
 			benchmarkProcess({
@@ -44,6 +46,33 @@ test('deadline stops the spawned process instead of leaving background work', as
 		await rm(root, { recursive: true, force: true });
 	}
 });
+
+async function assertSuccessfulProcesses(root: string): Promise<void> {
+	const normal = await benchmarkProcess({
+		cwd: root,
+		command: ['bun', '-e', "process.stdout.write('ready')"],
+		timeoutMs: 3000
+	});
+	expect(normal).toMatchObject({ exitCode: 0, stdout: 'ready', stderr: '' });
+	const peak = await peakMemory('bun', ['-e', 'process.exit(0)'], '', 3000);
+	if ('bytes' in peak) expect(peak.bytes).toBeGreaterThan(0);
+	else expect(peak.unavailable).toBeTruthy();
+	const ready = await measureWorkload('service.kernel-benchmark', 'kernel-readiness-protocol', () =>
+		serveKernel(
+			[
+				'bun',
+				'-e',
+				"console.log(JSON.stringify({url:'http://127.0.0.1:49152'}));setInterval(()=>{},100)"
+			],
+			3000
+		)
+	);
+	try {
+		expect(ready.url).toBe('http://127.0.0.1:49152');
+	} finally {
+		ready.stop();
+	}
+}
 
 async function assertNestedTimeout(root: string): Promise<void> {
 	const pidFile = join(root, 'nested-pid');

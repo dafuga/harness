@@ -50,6 +50,7 @@ test('durable analytics supports concurrent writers and duplicate identities', a
 		expect(openedUnderLock.exitCode, openedUnderLock.stderr).toBe(0);
 		expect(JSON.parse(openedUnderLock.stdout)).toEqual({ timerProgressed: true, events: [] });
 		await expectWritesWaitForAnalyticsLock(module, root, lockedRoot);
+		await expectFixtureImport(root);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
@@ -74,4 +75,30 @@ async function expectWritesWaitForAnalyticsLock(
 		exitCode: 0,
 		events: [{ id: 'after-async-open', project: '/synthetic', action: 'audit' }]
 	});
+}
+
+async function expectFixtureImport(root: string): Promise<void> {
+	const workflow = join(process.cwd(), 'src/workflows/reports-media/importAnalytics.ts');
+	const result = await runCommand(
+		[
+			'bun',
+			'-e',
+			`
+		import { mkdirSync, writeFileSync } from 'node:fs';
+		import { join } from 'node:path';
+		import { importAnalytics } from ${JSON.stringify(workflow)};
+		const fixtureRoot=${JSON.stringify(root)};
+		const project=join(fixtureRoot,'import-project');
+		const loop=join(project,'specification/loops/synthetic');
+		mkdirSync(loop,{recursive:true});
+		writeFileSync(join(loop,'loop.json'),JSON.stringify({name:'synthetic',goal:'fixture',createdAt:'2026-11-13T00:00:00.000Z',updatedAt:'2026-11-13T00:00:00.000Z',steps:[]}));
+		process.env.HARNESS_ANALYTICS_HOME=join(fixtureRoot,'import-store');
+		console.log(JSON.stringify({imported:await importAnalytics(project)}));
+	`
+		],
+		root,
+		false
+	);
+	expect(result.exitCode, result.stderr).toBe(0);
+	expect(JSON.parse(result.stdout)).toEqual({ imported: 1 });
 }

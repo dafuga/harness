@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { CpuProcessAdapter } from '../../src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter';
 import { CpuUsageService } from '../../src/services/cpu-usage-service/CpuUsageService';
 test('concurrent CPU requests share one sampler', async () => {
 	let calls = 0;
@@ -17,4 +18,9 @@ test('concurrent CPU requests share one sampler', async () => {
 	expect(a).toBe(b);
 	expect(calls).toBe(2);
 	expect(a.machinePercent).toBe(50);
+	if (['darwin', 'linux'].includes(process.platform)) {
+		const reading = await new CpuProcessAdapter().sample();
+		expect(reading.cpu.cores).toBeGreaterThan(0);
+		expect(reading.cpu.total).toBeGreaterThan(0);
+	}
 });
