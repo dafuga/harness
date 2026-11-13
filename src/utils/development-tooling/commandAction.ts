@@ -3,8 +3,18 @@ const subcommands: Record<string, string[]> = {
 	benchmark: ['validate', 'run', 'results'],
 	resources: ['status', 'configure', 'run'],
 	task: ['check'],
-	loop: ['create', 'add', 'complete', 'status', 'search', 'next', 'evaluate'],
-	analytics: ['summary', 'loops', 'jev', 'models', 'benchmarks', 'events', 'import', 'export'],
+	loop: ['create', 'add', 'complete', 'status', 'search', 'next', 'evaluate', 'list', 'close'],
+	analytics: [
+		'summary',
+		'loops',
+		'jev',
+		'models',
+		'benchmarks',
+		'events',
+		'import',
+		'export',
+		'prune'
+	],
 	activity: ['show', 'register', 'heartbeat', 'finish', 'agents'],
 	report: [
 		'begin',
@@ -23,7 +33,17 @@ const subcommands: Record<string, string[]> = {
 	explain: ['add', 'list', 'check'],
 	budget: ['measure', 'status', 'history', 'establish', 'approve', 'bench'],
 	verify: ['run', 'check', 'identity', 'stamp'],
-	history: ['attach', 'status', 'reasons', 'fetch', 'push', 'sync', 'build', 'import-reports'],
+	history: [
+		'attach',
+		'status',
+		'reasons',
+		'fetch',
+		'push',
+		'sync',
+		'build',
+		'import-reports',
+		'prune'
+	],
 	hooks: ['install', 'uninstall', 'status', 'run'],
 	console: ['install', 'objects', 'restore', 'uninstall']
 };
