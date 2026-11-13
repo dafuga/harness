@@ -204,7 +204,13 @@ test.each(managedWorkspaces)(
 		for (const [name, command] of Object.entries(scripts)) {
 			if (!/(^|:)(test|build|check|lint|format)(:|$)/.test(name)) continue;
 			const delegation = /^bun run [\w:-]+$/.test(command);
-			expect(command.includes(' resources run ') || delegation, `${workspace}: ${name}`).toBe(true);
+			const wrapper = /^bun scripts\/with-resources\.ts (coding|agent-test|environment) -- /.test(
+				command
+			);
+			expect(
+				command.includes(' resources run ') || delegation || wrapper,
+				`${workspace}: ${name}`
+			).toBe(true);
 			if (command.includes(' -- sh -c '))
 				expect(command, `${workspace}: ${name} arguments`).toMatch(/ "\$@"' --$/);
 		}
