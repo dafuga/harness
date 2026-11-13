@@ -64,7 +64,55 @@ test.each(Object.entries(orders))(
 		expect(template.steps.find((step) => step.id === 'green')?.title).toContain(
 			'separate fix commit'
 		);
-		expect((await searchLoops({ query: id })).map((item) => item.id)).toContain(id);
+		const root = await mkdtemp(join(tmpdir(), 'harness-regression-loop-search-'));
+		try {
+			const loops = join(root, 'specification/loops');
+			await mkdir(join(loops, 'legacy-evidence-shape'), { recursive: true });
+			await writeFile(
+				join(loops, 'legacy-evidence-shape/loop.json'),
+				JSON.stringify({
+					name: 'legacy-evidence-shape',
+					goal: 'A persisted loop from an older schema.',
+					createdAt: '2026-10-01T00:00:00.000Z',
+					updatedAt: '2026-10-01T00:00:00.000Z',
+					steps: [{ id: 'old-step', title: 'Older step', status: 'pending', evidence: ['one'] }]
+				})
+			);
+			await mkdir(join(loops, 'valid-project-loop'), { recursive: true });
+			await writeFile(
+				join(loops, 'valid-project-loop/loop.json'),
+				JSON.stringify({
+					name: 'valid-project-loop',
+					goal: 'A valid persisted loop.',
+					createdAt: '2026-10-01T00:00:00.000Z',
+					updatedAt: '2026-10-01T00:00:00.000Z',
+					steps: [
+						{ id: 'done', title: 'Done', status: 'complete' },
+						{ id: 'next', title: 'Next', status: 'pending' }
+					]
+				})
+			);
+			const results = await searchLoops({ root });
+			expect(results.map((item) => item.id)).toContain(id);
+			expect(results).toContainEqual(
+				expect.objectContaining({
+					kind: 'loop',
+					id: 'legacy-evidence-shape',
+					title: expect.stringMatching(/invalid|unreadable/i),
+					summary: expect.stringMatching(/persisted|schema|invalid/i)
+				})
+			);
+			expect(results).toContainEqual(
+				expect.objectContaining({
+					kind: 'loop',
+					id: 'valid-project-loop',
+					title: 'A valid persisted loop.',
+					summary: '1 of 2 steps complete.'
+				})
+			);
+		} finally {
+			await rm(root, { recursive: true, force: true });
+		}
 	}
 );
 
