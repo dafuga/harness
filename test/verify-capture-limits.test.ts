@@ -6,6 +6,7 @@ import { withTempDir } from './support/temporary';
 import { captureIndex, defaultVerifyConfig, verifyConfigSchema } from '../src/core/verifyTypes';
 import { gatherCaptures } from '../src/services/check-run-service/gatherCaptures';
 import { digestFile } from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
+import * as captureFiles from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
 import { syntheticPng } from './support/syntheticPng';
 import type { IsolatedResult } from '../src/utils/run-isolated/runIsolated';
 
@@ -74,6 +75,9 @@ test('a capture over maxCaptureBytes is refused with clear text and never record
 				mediaType: 'text/plain'
 			}) + '\n'
 		);
+		const linkedDirectory = join(folder, 'linked-directory');
+		symlinkSync(nested, linkedDirectory);
+		expect(gatherCaptures(linkedDirectory, 'evidence').failures.join(' ')).toContain('directory');
 		const linked = gatherCaptures(nested, 'evidence');
 		expect(linked.gathered).toEqual([]);
 		expect(linked.failures.join(' ')).toContain('regular file');
@@ -114,20 +118,30 @@ test('a check run keeps captures until maxRecordBytes and reports the rest as fa
 			snapshot: '/made/up',
 			limits: { maxRecordBytes: 25 }
 		});
-		const run = (name: string, size: number) => {
+		const reads = vi.spyOn(captureFiles, 'digestFile');
+		const run = (name: string, size: number, kind = 'output') => {
 			const evidence = join(directory, 'evidence', commit, 'checks', name);
 			mkdirSync(evidence, { recursive: true });
-			leave(evidence, { [`${name}.txt`]: Buffer.alloc(size) });
+			leave(evidence, { [`${name}.txt`]: Buffer.alloc(size) }, kind);
 			const check = { id: name, name, target: name, cwd: '.', command: 'true' };
 			return service.run({ ...check, kind: 'unit', runner: 'command', timeoutMs: 1000 });
 		};
-		const [first, second, third] = [await run('a', 20), await run('b', 10), await run('c', 5)];
+		const [first, second, third] = [
+			await run('a', 20),
+			await run('b', 10, 'benchmark'),
+			await run('c', 5)
+		];
 		expect(first.gathered).toHaveLength(1);
 		expect(first.passed).toBe(true);
 		expect(second.passed).toBe(false);
 		expect(second.entry.status).toBe('failed');
 		expect(third.passed).toBe(true);
 		expect(second.gathered).toHaveLength(0);
+		expect(
+			reads.mock.calls.some(([path]) => path.endsWith('/b.txt')),
+			'rejected media must not be read'
+		).toBe(false);
+		reads.mockRestore();
 		expect(second.failures).toEqual([
 			`check b left capture evidence/${commit}/checks/b/b.txt of 10 bytes, which takes the record to 30 bytes, over maxRecordBytes 25 in harness.verify.json; it was not recorded`
 		]);
