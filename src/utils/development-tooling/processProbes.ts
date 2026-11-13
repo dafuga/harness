@@ -1,6 +1,6 @@
 // @harness-uid u_5g22klsioo
 import type { ProcessProbes, ProcessFacts, ProbeLimits } from './processProbes.types';
-import { execFile } from 'node:child_process';
+import { BoundedCommandAdapter } from '../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { realpathSync } from 'node:fs';
 
 /** How long one tool may take before it is ended. It is this process's own child. */
@@ -48,19 +48,21 @@ async function executable(ran: ProcessProbes['ran'], pid: number): Promise<strin
 export function processProbes(limits: ProbeLimits = {}): ProcessProbes {
 	const options = {
 		maxBuffer: 16_000_000,
-		timeout: limits.timeoutMs ?? probeMs,
-		killSignal: 'SIGKILL' as const,
+		timeoutMs: limits.timeoutMs ?? probeMs,
+		env: { LC_ALL: 'C' },
 		signal: limits.signal
 	};
 	const ran = async (file: string, args: string[]) => {
 		const done = await turn();
 		if (limits.signal?.aborted) return (done(), { ok: false, out: '' });
-		return new Promise<{ ok: boolean; out: string }>((resolve) => {
-			execFile(file, args, options, (error, out) => {
-				done();
-				resolve({ ok: !error, out: typeof out === 'string' ? out : '' });
-			});
-		});
+		try {
+			const result = await new BoundedCommandAdapter().run(file, args, options);
+			return { ok: result.code === 0, out: result.stdout.toString('utf8') };
+		} catch {
+			return { ok: false, out: '' };
+		} finally {
+			done();
+		}
 	};
 	return { ran, facts: (pid) => facts(ran, pid), executable: (pid) => executable(ran, pid) };
 }

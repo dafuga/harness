@@ -1,6 +1,5 @@
 // @harness-uid u_rtalczfelr
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
+import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { randomUUID, createHash } from 'node:crypto';
 import { realpath, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -8,11 +7,13 @@ import { AnalyticsRepository } from '../../repositories/reports-media/AnalyticsR
 import type { AnalyticsContext, AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
 import { loopPaths, readLoop } from '../development-tooling/loop-state/loopState';
 
-const git = promisify(execFile);
 export async function projectIdentity(root: string): Promise<string> {
 	const directory = await realpath(root).catch(() => resolve(root));
 	try {
-		const { stdout } = await git('git', ['worktree', 'list', '--porcelain'], { cwd: directory });
+		const stdout = await new GitAdapter(directory).run(['worktree', 'list', '--porcelain'], {
+			timeoutMs: 3000,
+			maxBuffer: 1024 * 1024
+		});
 		const primary = stdout.split('\n').find((line) => line.startsWith('worktree '));
 		return primary ? primary.slice(9) : directory;
 	} catch {

@@ -1,5 +1,5 @@
 // @harness-uid u_vb356v5djk
-import { execFileSync } from 'node:child_process';
+import { BoundedCommandAdapter } from '../../../adapters/execution-runtimes/BoundedCommandAdapter';
 import type { ProcessFacts } from '../../../utils/agents-providers/agentLiveness';
 
 /**
@@ -10,12 +10,14 @@ import type { ProcessFacts } from '../../../utils/agents-providers/agentLiveness
 export class ProcessIdentityAdapter {
 	find(pid: number): ProcessFacts {
 		try {
-			const started = execFileSync('ps', ['-o', 'lstart=', '-p', String(pid)], {
-				encoding: 'utf8',
-				env: { ...process.env, LC_ALL: 'C' },
-				stdio: ['ignore', 'pipe', 'ignore'],
-				timeout: 3000
-			}).trim();
+			const result = new BoundedCommandAdapter().runSync(
+				'ps',
+				['-o', 'lstart=', '-p', String(pid)],
+				{ timeoutMs: 3000, maxBuffer: 128000, env: { LC_ALL: 'C' } }
+			);
+			if (result.code !== 0)
+				return { exists: result.code === 1 ? false : undefined, startedAt: null };
+			const started = result.stdout.toString('utf8').trim();
 			return { exists: started !== '', startedAt: started || null };
 		} catch (error) {
 			// ps ends with 1 for a number no process has; any other failure answers nothing.

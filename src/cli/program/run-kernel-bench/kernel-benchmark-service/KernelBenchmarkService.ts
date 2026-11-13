@@ -1,6 +1,10 @@
 // @harness-uid u_4c6cbv56v5
 import type { BenchPlan, WorkloadRun, Workload } from './KernelBenchmarkService.types';
-import { spawn, spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
+import {
+	BoundedCommandAdapter,
+	commandEnvironment
+} from '../../../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { HttpRuntimeAdapter } from '../../../../adapters/execution-runtimes/HttpRuntimeAdapter';
 import { ProcessRuntimeAdapter } from '../../../../adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
 import { WasmRuntimeAdapter } from '../../../../adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
@@ -113,12 +117,17 @@ export class KernelBenchmarkService {
 		const [command, ...prefix] = this.plan.cli;
 		const args = ['kernel', 'sample', '--runtime', target, '--nodes', String(run.nodes)];
 		const served = target === 'http' ? ['--url', url] : [];
-		const result = spawnSync(command, [...prefix, ...args, '--seed', String(run.seed), ...served], {
-			encoding: 'utf8',
-			env: internal()
-		});
-		if (result.status !== 0) return fail(`Cold sample for ${target} failed: ${result.stderr}`);
-		return (JSON.parse(result.stdout) as { elapsedMs: number }).elapsedMs;
+		const result = new BoundedCommandAdapter().runSync(
+			command,
+			[...prefix, ...args, '--seed', String(run.seed), ...served],
+			{
+				timeoutMs: 60000,
+				maxBuffer: 8 * 1024 * 1024,
+				env: internal()
+			}
+		);
+		if (result.code !== 0) return fail(`Cold sample for ${target} failed: ${result.stderr}`);
+		return (JSON.parse(result.stdout.toString('utf8')) as { elapsedMs: number }).elapsedMs;
 	}
 
 	private async memory(
@@ -155,19 +164,42 @@ export class KernelBenchmarkService {
 
 /** Benchmark plumbing is not user activity, so its child commands record no analytics. */
 function internal(): Environment {
-	return { ...process.env, HARNESS_ANALYTICS_DISABLED: '1' };
+	return commandEnvironment({ HARNESS_ANALYTICS_DISABLED: '1' });
 }
 
 /** Starts this CLI as an HTTP kernel server and resolves with its URL. */
-export function serveKernel(cli: string[]): Promise<{ url: string; stop(): void }> {
+export function serveKernel(
+	cli: string[],
+	startupTimeoutMs = 20000
+): Promise<{ url: string; stop(): void }> {
 	const [command, ...prefix] = cli;
 	const args = [...prefix, 'kernel', 'serve', '--port', '0', '--runtime', 'module'];
 	const child = spawn(command, args, { stdio: ['ignore', 'pipe', 'inherit'], env: internal() });
 	return new Promise((resolve, reject) => {
-		child.once('error', reject);
+		let ready = false;
+		const failed = (error: Error) => {
+			clearTimeout(timer);
+			child.kill('SIGKILL');
+			reject(error);
+		};
+		const timer = setTimeout(
+			() => failed(new Error('Kernel server startup timed out.')),
+			startupTimeoutMs
+		);
+		child.once('error', failed);
+		child.once('exit', () => {
+			if (!ready) failed(new Error('Kernel server exited before readiness.'));
+		});
 		child.stdout.once('data', (chunk: Buffer) => {
-			const { url } = JSON.parse(chunk.toString('utf8')) as { url: string };
-			resolve({ url, stop: () => void child.kill() });
+			try {
+				const { url } = JSON.parse(chunk.toString('utf8')) as { url: string };
+				if (typeof url !== 'string') throw new Error('Kernel server returned no URL.');
+				ready = true;
+				clearTimeout(timer);
+				resolve({ url, stop: () => void child.kill() });
+			} catch {
+				failed(new Error('Kernel server returned invalid readiness data.'));
+			}
 		});
 	});
 }

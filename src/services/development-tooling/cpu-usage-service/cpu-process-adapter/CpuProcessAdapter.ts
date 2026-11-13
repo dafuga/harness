@@ -1,22 +1,23 @@
 // @harness-uid u_3wlbqeyf7m
 import { performance } from 'node:perf_hooks';
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
+import { BoundedCommandAdapter } from '../../../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { cpus, platform } from 'node:os';
 import { cpuProcesses } from './cpuProcesses';
 import type { CpuReading } from '../../../../utils/development-tooling/cpuMetrics';
-
-const execute = promisify(execFile);
 
 export class CpuProcessAdapter {
 	async sample(): Promise<CpuReading> {
 		if (!['darwin', 'linux'].includes(platform()))
 			throw new Error('Unsupported CPU process platform.');
-		const { stdout } = await execute('ps', ['-axo', 'pid=,ppid=,time=,args='], {
-			maxBuffer: 4 * 1024 * 1024,
-			timeout: 3000,
-			env: { ...process.env, LC_ALL: 'C' }
-		});
+		const stdout = await new BoundedCommandAdapter().checked(
+			'ps',
+			['-axo', 'pid=,ppid=,time=,args='],
+			{
+				maxBuffer: 4 * 1024 * 1024,
+				timeoutMs: 3000,
+				env: { LC_ALL: 'C' }
+			}
+		);
 		const processors = cpus();
 		if (!processors.length) throw new Error('CPU counters unavailable.');
 		const cpu = processors.reduce(
@@ -27,6 +28,6 @@ export class CpuProcessAdapter {
 			}),
 			{ idle: 0, total: 0, cores: 0 }
 		);
-		return { at: performance.now(), cpu, processes: cpuProcesses(stdout) };
+		return { at: performance.now(), cpu, processes: cpuProcesses(stdout.toString('utf8')) };
 	}
 }

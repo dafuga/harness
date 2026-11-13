@@ -3,7 +3,9 @@ import { spawn, spawnSync, type ChildProcessWithoutNullStreams } from 'node:chil
 import type { BoundedCommandOptions, BoundedCommandResult } from './BoundedCommandAdapter.types';
 
 /** Explicit child environment; callers may supply task-specific keys deliberately. */
-export function commandEnvironment(extra: Record<string, string | undefined> = {}): Record<string, string | undefined> {
+export function commandEnvironment(
+	extra: Record<string, string | undefined> = {}
+): Record<string, string | undefined> {
 	const result: Record<string, string | undefined> = {};
 	for (const key of [
 		'PATH',
@@ -86,6 +88,16 @@ function collect(
 }
 /** Runs a directly named executable, with a deadline and combined output bound. */
 export class BoundedCommandAdapter {
+	async checked(
+		command: string,
+		args: string[] = [],
+		options: BoundedCommandOptions = {}
+	): Promise<Buffer> {
+		const result = await this.run(command, args, options);
+		if (result.code !== 0) throw new Error(`Command failed with exit code ${result.code}.`);
+		return result.stdout;
+	}
+
 	run(
 		command: string,
 		args: string[] = [],

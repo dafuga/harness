@@ -10,8 +10,53 @@ export type {
 } from './loopState.types';
 import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { z } from 'zod';
 import { fail } from '../../../core/development-tooling/errors';
 import { validateKebabName } from './validation';
+
+const loopStateSchema = z
+	.object({
+		name: z.string().min(1),
+		goal: z.string().min(1),
+		createdAt: z.string(),
+		updatedAt: z.string(),
+		agentModel: z.string().optional(),
+		template: z.string().optional(),
+		templateLineage: z.array(z.string()).optional(),
+		enforceOrder: z.boolean().optional(),
+		regressionCommits: z.literal(1).optional(),
+		completion: z
+			.object({
+				version: z.literal(1),
+				kind: z.enum(['coding', 'planning']),
+				plan: z.string().optional()
+			})
+			.optional(),
+		steps: z.array(
+			z
+				.object({
+					id: z.string().min(1),
+					title: z.string(),
+					status: z.enum(['pending', 'complete']),
+					completedAt: z.string().optional(),
+					evidence: z.string().optional()
+				})
+				.passthrough()
+		),
+		evaluators: z
+			.array(
+				z
+					.object({
+						id: z.string().min(1),
+						title: z.string(),
+						command: z.string().min(1),
+						step: z.string().optional()
+					})
+					.passthrough()
+			)
+			.optional()
+	})
+	.passthrough();
 
 export function loopRoot(input?: LoopInput): string {
 	return input?.root ?? process.cwd();
@@ -35,7 +80,9 @@ export async function writeNewLoop(paths: LoopPaths, state: LoopState): Promise<
 
 export async function readLoop(path: string): Promise<LoopState> {
 	try {
-		return JSON.parse(await readFile(path, 'utf8')) as LoopState;
+		const parsed = loopStateSchema.safeParse(JSON.parse(await readFile(path, 'utf8')));
+		if (!parsed.success) return fail('Invalid loop state: persisted schema mismatch.');
+		return parsed.data;
 	} catch (error) {
 		if (isMissingFile(error)) fail('Loop does not exist.');
 		throw error;

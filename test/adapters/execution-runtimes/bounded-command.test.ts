@@ -7,6 +7,10 @@ import { measureWorkload } from '../../support/measureWorkload';
 // Initial public method matrix: async/sync normal, failed, invalid and bounded commands.
 test('async commands preserve input, binary bytes and nonzero exit results', async () => {
 	const adapter = new BoundedCommandAdapter();
+	expect(await adapter.checked('bun', ['-e', "process.stdout.write('ready')"])).toEqual(
+		Buffer.from('ready')
+	);
+	await expect(adapter.checked('bun', ['-e', 'process.exit(2)'])).rejects.toThrow('exit code 2');
 	const result = await measureWorkload(
 		'adapter.execution-runtimes-bounded-command',
 		'binary-command',

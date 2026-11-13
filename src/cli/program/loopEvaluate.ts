@@ -25,11 +25,12 @@ export async function evaluateLoop(input: EvaluateLoopInput): Promise<LoopEvalua
 	const root = loopRoot(input);
 	const paths = loopPaths(root, input.loop);
 	const state = await readLoop(paths.state);
-	const results = await runEvaluators(root, state.evaluators ?? [], {
+	const skipped = input.runEvaluators === false;
+	const results = await runEvaluators(root, skipped ? [] : (state.evaluators ?? []), {
 		loop: state.name,
 		agentModel: state.agentModel
 	});
-	const passed = results.every((result) => result.exitCode === 0);
+	const passed = !skipped && results.every((result) => result.exitCode === 0);
 
 	await appendTrace(paths.trace, {
 		event: 'loop.evaluated',
@@ -40,10 +41,18 @@ export async function evaluateLoop(input: EvaluateLoopInput): Promise<LoopEvalua
 		results: results.map(summaryResult)
 	});
 
-	return { loop: state.name, tracePath: paths.traceRelative, passed, results };
+	return {
+		loop: state.name,
+		tracePath: paths.traceRelative,
+		passed,
+		results,
+		...(skipped ? { skipped: true } : {})
+	};
 }
 
 export function renderLoopEvaluation(result: LoopEvaluationResult): string {
+	if (result.skipped)
+		return `Loop: ${result.loop}\nEvaluators: skipped (repository commands disabled)`;
 	if (result.results.length === 0) return `Loop: ${result.loop}\nEvaluators: none`;
 	return [
 		`Loop: ${result.loop}`,

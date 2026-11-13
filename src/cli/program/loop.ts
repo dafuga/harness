@@ -58,9 +58,12 @@ export function registerLoopCommand(program: Command): void {
 
 	command
 		.command('evaluate <loop>')
+		.option('--no-run-evaluators', 'Inspect an untrusted loop without running repository commands.')
 		.option('--json', 'Print structured evaluator results.')
 		.description('Run evaluator commands for a loop.')
-		.action((loop: string, options: { json?: boolean }) => runEvaluate(loop, options));
+		.action((loop: string, options: { json?: boolean; runEvaluators?: boolean }) =>
+			runEvaluate(loop, options)
+		);
 }
 
 async function runCreateLoop(
@@ -113,8 +116,11 @@ async function runNext(loop: string, options: { json?: boolean }): Promise<void>
 	console.log(options.json ? JSON.stringify(result, null, 2) : renderNextLoopStep(result));
 }
 
-async function runEvaluate(loop: string, options: { json?: boolean }): Promise<void> {
-	const result = await evaluateLoop({ loop });
+async function runEvaluate(
+	loop: string,
+	options: { json?: boolean; runEvaluators?: boolean }
+): Promise<void> {
+	const result = await evaluateLoop({ loop, runEvaluators: options.runEvaluators });
 	console.log(options.json ? JSON.stringify(result, null, 2) : renderLoopEvaluation(result));
 	if (!result.passed) process.exitCode = 1;
 }

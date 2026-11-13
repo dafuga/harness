@@ -1,11 +1,9 @@
 // @harness-uid u_zv3wkcwxsy
-import { execFile } from 'node:child_process';
+import { BoundedCommandAdapter } from '../../../../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { readFile } from 'node:fs/promises';
 import { freemem, platform, totalmem } from 'node:os';
-import { promisify } from 'node:util';
 import type { Memory } from './hostMemory.types';
 export type { Memory } from './hostMemory.types';
-const execute = promisify(execFile);
 export function macMemory(text: string, pressure: string, total: number): Memory {
 	const page = Number(/page size of (\d+) bytes/.exec(text)?.[1]);
 	const count = (name: string) =>
@@ -34,12 +32,14 @@ export function linuxMemory(text: string): Memory {
 }
 export async function hostMemory(): Promise<Memory> {
 	if (platform() === 'darwin') {
-		const options = { timeout: 3000, maxBuffer: 128000, env: { ...process.env, LC_ALL: 'C' } };
+		const options = { timeoutMs: 3000, maxBuffer: 128000, env: { LC_ALL: 'C' } };
+		const execute = (command: string, args: string[]) =>
+			new BoundedCommandAdapter().checked(command, args, options);
 		const [vm, pressure] = await Promise.all([
-			execute('vm_stat', [], options),
-			execute('sysctl', ['-n', 'kern.memorystatus_vm_pressure_level'], options)
+			execute('vm_stat', []),
+			execute('sysctl', ['-n', 'kern.memorystatus_vm_pressure_level'])
 		]);
-		return macMemory(vm.stdout, pressure.stdout, totalmem());
+		return macMemory(vm.toString('utf8'), pressure.toString('utf8'), totalmem());
 	}
 	if (platform() === 'linux') return linuxMemory(await readFile('/proc/meminfo', 'utf8'));
 	if (platform() === 'win32')

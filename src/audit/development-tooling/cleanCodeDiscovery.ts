@@ -1,5 +1,5 @@
 // @harness-uid u_3tqecbjzkv
-import { spawnSync } from 'node:child_process';
+import { BoundedCommandAdapter } from '../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { basename, relative } from 'node:path';
 import type { CollectedFiles } from './collect';
 import type { ReviewCoverage } from './cleanCodeTypes';
@@ -62,14 +62,24 @@ export function discoverCleanCodeFiles(
 }
 
 function gitIgnoredPaths(root: string, paths: string[]): Set<string> {
-	const result = spawnSync('git', ['check-ignore', '--no-index', '--stdin', '-z'], {
-		cwd: root,
-		encoding: 'utf8',
-		input: paths.join('\0') + '\0',
-		maxBuffer: 16 * 1024 * 1024
-	});
-	if (result.status !== 0) return new Set();
-	return new Set(result.stdout.split('\0').filter(Boolean));
+	try {
+		const result = new BoundedCommandAdapter().runSync(
+			'git',
+			['check-ignore', '--no-index', '--stdin', '-z'],
+			{
+				cwd: root,
+				input: paths.join('\0') + '\0',
+				maxBuffer: 16 * 1024 * 1024,
+				timeoutMs: 3000,
+				env: { GIT_TERMINAL_PROMPT: '0' }
+			}
+		);
+		return result.code === 0
+			? new Set(result.stdout.toString('utf8').split('\0').filter(Boolean))
+			: new Set();
+	} catch {
+		return new Set();
+	}
 }
 
 function exclusionReason(

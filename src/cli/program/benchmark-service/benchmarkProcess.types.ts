@@ -4,6 +4,7 @@ export interface BenchmarkProcessInput {
 	cwd: string;
 	input?: string;
 	signal?: AbortSignal;
+	timeoutMs?: number;
 }
 
 export interface BenchmarkProcessResult {

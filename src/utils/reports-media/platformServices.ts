@@ -1,6 +1,6 @@
 // @harness-uid u_xahm4so2wv
 import type { Verdict, ServiceContext, ServiceAuthority, Facts } from './platformServices.types';
-import { execFileSync } from 'node:child_process';
+import { BoundedCommandAdapter } from '../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { realpathSync, statSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import type { TrackedProcess } from '../development-tooling/processDescendants';
@@ -47,8 +47,11 @@ function authorityAt(selected: string): ServiceAuthority | null {
 /** Xcode as selected on this machine; null when there is none. Starts a tool and waits for it. */
 export function macAuthority(): ServiceAuthority | null {
 	try {
-		const selected = execFileSync('xcode-select', ['-p'], { stdio: ['ignore', 'pipe', 'ignore'] });
-		return authorityAt(selected.toString());
+		const selected = new BoundedCommandAdapter().runSync('xcode-select', ['-p'], {
+			timeoutMs: 3000,
+			maxBuffer: 128000
+		});
+		return selected.code === 0 ? authorityAt(selected.stdout.toString()) : null;
 	} catch {
 		return null;
 	}

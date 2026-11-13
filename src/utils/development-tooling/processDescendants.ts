@@ -6,7 +6,7 @@ import type {
 	ProcessTable,
 	Descendants
 } from './processDescendants.types';
-import { execFile } from 'node:child_process';
+import { BoundedCommandAdapter } from '../../adapters/execution-runtimes/BoundedCommandAdapter';
 
 /** How long one read of the processes may take before it is ended and counts as unreadable. */
 const readMs = 5000;
@@ -15,15 +15,20 @@ const readMs = 5000;
  * Process ids, parents, groups and start times only: nothing else about any process is read.
  * Null when they could not be read; a table without this very process was not read.
  */
-export function processTable(): Promise<Row[] | null> {
-	return new Promise((resolve) => {
-		const options = { maxBuffer: 16_000_000, timeout: readMs, killSignal: 'SIGKILL' as const };
-		execFile('ps', ['-A', '-o', 'pid=,ppid=,pgid=,lstart='], options, (error, out) => {
-			const rows = error ? [] : out.split('\n').flatMap(parsed);
-			resolve(rows.some((row) => row.pid === process.pid) ? rows : null);
-		});
-	});
+export async function processTable(): Promise<Row[] | null> {
+	try {
+		const out = await new BoundedCommandAdapter().checked(
+			'ps',
+			['-A', '-o', 'pid=,ppid=,pgid=,lstart='],
+			{ maxBuffer: 16_000_000, timeoutMs: readMs, env: { LC_ALL: 'C' } }
+		);
+		const rows = out.toString('utf8').split('\n').flatMap(parsed);
+		return rows.some((row) => row.pid === process.pid) ? rows : null;
+	} catch {
+		return null;
+	}
 }
+
 const table = async (): Promise<Row[]> => (await processTable()) ?? [];
 
 function parsed(line: string): Row[] {

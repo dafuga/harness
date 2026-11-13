@@ -6,6 +6,7 @@ export interface LoopEvaluationResult {
 	tracePath: string;
 	passed: boolean;
 	results: LoopCommandResult[];
+	skipped?: boolean;
 }
 
 export interface LoopCommandResult {
@@ -20,4 +21,5 @@ export interface LoopCommandResult {
 
 export interface EvaluateLoopInput extends LoopInput {
 	loop: string;
+	runEvaluators?: boolean;
 }

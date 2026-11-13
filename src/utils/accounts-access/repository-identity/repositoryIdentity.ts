@@ -1,5 +1,5 @@
 // @harness-uid u_vhrxgtfwjl
-import { execFileSync } from 'node:child_process';
+import { BoundedCommandAdapter } from '../../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { createHash } from 'node:crypto';
 import { realpathSync } from 'node:fs';
 import { isAbsolute, resolve } from 'node:path';
@@ -12,10 +12,12 @@ const maxHops = 5;
 
 function git(directory: string, args: string[]): string | undefined {
 	try {
-		return execFileSync('git', ['-C', directory, ...args], {
-			encoding: 'utf8',
-			stdio: ['ignore', 'pipe', 'ignore']
-		}).trim();
+		const result = new BoundedCommandAdapter().runSync('git', ['-C', directory, ...args], {
+			timeoutMs: 3000,
+			maxBuffer: 1024 * 1024,
+			env: { GIT_TERMINAL_PROMPT: '0' }
+		});
+		return result.code === 0 ? result.stdout.toString('utf8').trim() : undefined;
 	} catch {
 		return undefined;
 	}
