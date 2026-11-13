@@ -20,7 +20,9 @@ jobs:
   publish:
     name: Validate and publish the record
     # Records of commits from other repositories are not published.
-    if: github.event.workflow_run.head_repository.full_name == github.repository
+    if: >-
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.conclusion != 'cancelled'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -50,7 +52,8 @@ jobs:
           bun run dev -- history fetch origin
           mkdir -p ".cache/harness/verifications/$COMMIT"
           cp -R incoming/. ".cache/harness/verifications/$COMMIT/"
-          record=$(find ".cache/harness/verifications/$COMMIT" -name record.json | sort | tail -n 1)
+          record=$(find ".cache/harness/verifications/$COMMIT" -name record.json -exec jq -r '[.startedAt, input_filename] | @tsv' {} + | sort -k1,1 | tail -n 1 | cut -f2-)
+          test -n "$record" || { echo "::error::No verification record.json found for $COMMIT"; exit 1; }
           bun run dev -- history attach --commit "$COMMIT" --record "$record"
       - name: Publish evidence, notes and archived source without forcing
         run: bun run dev -- history sync origin
