@@ -2,6 +2,7 @@
 import type { SearchLoopsInput, LoopSearchResult } from './loopSearch.types';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import { isExpectedCliError } from '../../core/development-tooling/errors';
 import {
 	isMissingFile,
 	loopPaths,
@@ -58,9 +59,41 @@ async function loopResult(root: string, name: string): Promise<LoopSearchResult 
 			source: 'project'
 		};
 	} catch (error) {
-		if (isMissingFile(error)) return undefined;
-		throw error;
+		if (isMissingFile(error) || missingLoopState(error)) return undefined;
+		return invalidLoopResult(name, error);
 	}
+}
+
+function missingLoopState(error: unknown): boolean {
+	return isExpectedCliError(error) && error.message === 'Loop does not exist.';
+}
+
+function invalidLoopResult(name: string, error: unknown): LoopSearchResult {
+	const schemaMismatch =
+		isExpectedCliError(error) && error.message.startsWith('Invalid loop state:');
+	if (schemaMismatch)
+		return {
+			kind: 'loop',
+			id: name,
+			title: 'Invalid persisted loop',
+			summary: 'Persisted loop schema mismatch; stored steps are unavailable.',
+			source: 'project'
+		};
+	if (error instanceof SyntaxError)
+		return {
+			kind: 'loop',
+			id: name,
+			title: 'Invalid persisted loop',
+			summary: 'Persisted loop JSON is malformed; stored steps are unavailable.',
+			source: 'project'
+		};
+	return {
+		kind: 'loop',
+		id: name,
+		title: 'Unreadable persisted loop',
+		summary: 'Loop state could not be read; stored steps are unavailable.',
+		source: 'project'
+	};
 }
 
 function completedSteps(steps: Array<{ status: string }>): number {
