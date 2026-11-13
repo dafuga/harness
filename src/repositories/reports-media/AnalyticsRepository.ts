@@ -40,6 +40,7 @@ export class AnalyticsRepository {
 		try {
 			repository.db.exec('PRAGMA busy_timeout=0;');
 			await initializeAsync(repository.db);
+			repository.db.exec('PRAGMA busy_timeout=5000;');
 			return repository;
 		} catch (error) {
 			try {

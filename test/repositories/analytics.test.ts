@@ -49,21 +49,29 @@ test('durable analytics supports concurrent writers and duplicate identities', a
 		);
 		expect(openedUnderLock.exitCode, openedUnderLock.stderr).toBe(0);
 		expect(JSON.parse(openedUnderLock.stdout)).toEqual({ timerProgressed: true, events: [] });
-		const writeDuringLock = await runCommand(
-			[
-				'bun',
-				'-e',
-				`import { Database } from 'bun:sqlite'; import { AnalyticsRepository } from ${JSON.stringify(module)}; const root=${JSON.stringify(lockedRoot)}; const repository=await AnalyticsRepository.open(root); const writer=Bun.spawn(['bun','-e',"import { Database } from 'bun:sqlite'; const db=new Database(process.argv[1]); db.exec('PRAGMA busy_timeout=0; BEGIN EXCLUSIVE;'); setTimeout(()=>{db.exec('ROLLBACK;'); db.close();},150); console.log('locked');", root+'/analytics.sqlite'],{stdout:'pipe',stderr:'pipe'}); const stderr=new Response(writer.stderr).text(); try { const ready=await writer.stdout.getReader().read(); if(ready.done || !new TextDecoder().decode(ready.value).includes('locked')) throw new Error('writer did not acquire its lock'); repository.record({id:'after-async-open',timestamp:'2026-11-13T00:00:00.000Z',project:'/synthetic',kind:'command',action:'audit'}); const exitCode=await writer.exited; if(exitCode!==0) throw new Error(await stderr); console.log(JSON.stringify({exitCode,events:repository.events()})); } finally { await writer.exited; repository.close(); }`
-			],
-			root,
-			false
-		);
-		expect(writeDuringLock.exitCode, writeDuringLock.stderr).toBe(0);
-		expect(JSON.parse(writeDuringLock.stdout)).toMatchObject({
-			exitCode: 0,
-			events: [{ id: 'after-async-open', project: '/synthetic', action: 'audit' }]
-		});
+		await expectWritesWaitForAnalyticsLock(module, root, lockedRoot);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
 });
+
+async function expectWritesWaitForAnalyticsLock(
+	module: string,
+	root: string,
+	lockedRoot: string
+): Promise<void> {
+	const writeDuringLock = await runCommand(
+		[
+			'bun',
+			'-e',
+			`import { Database } from 'bun:sqlite'; import { AnalyticsRepository } from ${JSON.stringify(module)}; const root=${JSON.stringify(lockedRoot)}; const repository=await AnalyticsRepository.open(root); const writer=Bun.spawn(['bun','-e',"import { Database } from 'bun:sqlite'; const db=new Database(process.argv[1]); db.exec('PRAGMA busy_timeout=0; BEGIN EXCLUSIVE;'); setTimeout(()=>{db.exec('ROLLBACK;'); db.close();},150); console.log('locked');", root+'/analytics.sqlite'],{stdout:'pipe',stderr:'pipe'}); const stderr=new Response(writer.stderr).text(); try { const ready=await writer.stdout.getReader().read(); if(ready.done || !new TextDecoder().decode(ready.value).includes('locked')) throw new Error('writer did not acquire its lock'); repository.record({id:'after-async-open',timestamp:'2026-11-13T00:00:00.000Z',project:'/synthetic',kind:'command',action:'audit'}); const exitCode=await writer.exited; if(exitCode!==0) throw new Error(await stderr); console.log(JSON.stringify({exitCode,events:repository.events()})); } finally { await writer.exited; repository.close(); }`
+		],
+		root,
+		false
+	);
+	expect(writeDuringLock.exitCode, writeDuringLock.stderr).toBe(0);
+	expect(JSON.parse(writeDuringLock.stdout)).toMatchObject({
+		exitCode: 0,
+		events: [{ id: 'after-async-open', project: '/synthetic', action: 'audit' }]
+	});
+}
