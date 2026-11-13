@@ -35,3 +35,9 @@ intent into traceable work with repeatable proof.
 
 - Add update/reopen commands if real usage shows agents need to revise loops after creation.
 - Add richer evaluator types if command-based proof is not enough.
+
+### Loop age and abandoned work
+
+`harness loop list --stale 30` lists open loops at least 30 days old. Unknown ages and unreadable loop files are reported separately. `harness loop status <name>` includes age and pending-step count.
+
+Close work that was deliberately abandoned with `harness loop close <name> --abandoned --reason "<reason>"`. Closure records the reason and time; it preserves pending steps and existing trace evidence. It does not claim the work passed verification. Closed-loop archival remains separate from this command so references and history remain readable.
