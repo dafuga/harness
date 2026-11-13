@@ -1154,3 +1154,9 @@ Define project-local modules in `specification/modules/<id>/module.json`:
 ```
 
 Run `harness module add notes` and `harness module generate notes note Meeting`. Modules can declare setup files, dependencies, resource kinds, templates and instructions without extending Harness's core scaffold enum. Templates substitute `name`, `PascalName`, `camelName` and `kebabName`; existing files and unsafe output paths are rejected. Installed definitions are frozen until an explicit future upgrade mechanism is used.
+
+### CLI startup and compatibility imports
+
+`bun run dev` and the packaged `harness` executable use `src/cli/index.ts`, with command families loaded on demand. Root help uses lightweight metadata checked against the complete command registrations in the unit suite. CLI builds include the generated dynamic chunks; copy the complete `dist` tree when installing a build.
+
+The historical `src/index.ts` retains source exports and direct execution for compatibility. Importing it does not execute the CLI. New library consumers should use the documented package API (`src/lib` / `dist/api`) rather than a CLI entry. Importing the compatibility barrel still loads its exported dependency graph.

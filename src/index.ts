@@ -1,42 +1,9 @@
 #!/usr/bin/env bun
 // @harness-uid u_lt35mxvvrg
-import { CommanderError } from 'commander';
 import { fileURLToPath } from 'node:url';
-import { staleBuild } from './utils/development-tooling/staleBuild';
-import { buildProgram } from './cli/program';
-import { recordCommandAnalytics } from './workflows/reports-media/recordCommandAnalytics';
-import { importAnalytics } from './workflows/reports-media/importAnalytics';
-import { beatFromEnvironment } from './workflows/projects-sessions/runActivity';
-import { isExpectedCliError } from './core/development-tooling/errors';
-import { pipedOutput } from './utils/development-tooling/pipedOutput';
-
-// Compatibility exports stay importable without invoking the command-line application.
-if (import.meta.main) {
-	pipedOutput();
-	const buildWarning = staleBuild(fileURLToPath(import.meta.url));
-	if (buildWarning) console.error(buildWarning);
-	const startedAt = Date.now();
-	try {
-		await buildProgram().exitOverride().parseAsync(process.argv);
-	} catch (error) {
-		if (error instanceof CommanderError) process.exitCode = error.exitCode;
-		else {
-			process.exitCode = 1;
-			if (isExpectedCliError(error)) console.error(`Error: ${error.message}`);
-			else throw error;
-		}
-	} finally {
-		await recordCommandAnalytics(process.argv.slice(2), startedAt, process.exitCode);
-		await beatFromEnvironment();
-		if (process.argv[2] === 'loop') {
-			try {
-				await importAnalytics(process.cwd(), false);
-			} catch {
-				console.error('Warning: loop analytics could not be synchronized.');
-			}
-		}
-	}
-}
+import { runCli } from './cli/runCli';
+// Preserve historical source/deep imports and generator exports without CLI side effects.
+if (import.meta.main) await runCli(fileURLToPath(import.meta.url));
 export { registerCodexCommand } from './cli/program/CodexCommand';
 export { ClaudeGatewayAdapter } from './cli/program/codex-gateway-service/ClaudeGatewayAdapter';
 export { CodexGatewayService } from './cli/program/codex-gateway-service/CodexGatewayService';

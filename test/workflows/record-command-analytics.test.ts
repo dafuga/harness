@@ -102,8 +102,9 @@ test('the real entry runs no sqlite or git worktree work for --help, --version a
 		stdout: '',
 		stderr: ''
 	});
-	for (const args of [['--help'], ['--version'], ['info', 'activity']])
-		await runCommand(['bun', cli, ...args], scratch, true, env);
+	for (const entry of [cli, join(process.cwd(), 'src/cli/index.ts')])
+		for (const args of [['--help'], ['--version'], ['info', 'activity']])
+			await runCommand(['bun', entry, ...args], scratch, true, env);
 	expect(existsSync(home)).toBe(false);
 	expect(await readFile(shim.log, 'utf8')).not.toContain('worktree');
 	await runCommand(['bun', cli, 'unknown-command'], scratch, false, env);
