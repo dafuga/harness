@@ -2,9 +2,15 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
+import type {
+	LayerEdge,
+	ReuseBaseline,
+	TemporaryCallBaseline,
+	TemporaryCallNames
+} from './check-debt-ratchets.types';
+export type { TemporaryCallBaseline } from './check-debt-ratchets.types';
 
-type LayerEdge = { from: string; to: string; todo: string };
-type ReuseBaseline = Record<string, number>;
+const gitReadOptions = { encoding: 'utf8' as const, timeout: 30000, maxBuffer: 16 * 1024 * 1024 };
 
 export function layerRatchet(before: LayerEdge[], after: LayerEdge[]) {
 	const oldEdges = new Set(before.map(({ from, to }) => `${from} -> ${to}`));
@@ -19,7 +25,7 @@ export function layerRatchet(before: LayerEdge[], after: LayerEdge[]) {
 
 export function reuseRatchet(before: ReuseBaseline, after: ReuseBaseline) {
 	const added = Object.entries(after)
-		.filter(([path, count]) => !(path in before) || count > before[path]!)
+		.filter(([path, count]) => !(path in before) || count > before[path])
 		.map(([path, count]) => `${path}: ${before[path] ?? 0} -> ${count}`)
 		.sort();
 	const reduced = Object.entries(before)
@@ -34,46 +40,47 @@ export function reuseRatchet(before: ReuseBaseline, after: ReuseBaseline) {
 	};
 }
 
-export type TemporaryCallBaseline = Record<string, number>;
-
 export function mkdtempCallCount(source: string): number {
 	const ast = ts.createSourceFile('temporary-fixture.ts', source, ts.ScriptTarget.Latest, true);
-	const directNames = new Set<string>();
-	const namespaceNames = new Set<string>();
-	const tempNames = new Set(['mkdtemp', 'mkdtempSync']);
-	const fsModules = new Set(['node:fs', 'node:fs/promises', 'fs', 'fs/promises']);
-	for (const statement of ast.statements) {
-		if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier))
-			continue;
-		if (!fsModules.has(statement.moduleSpecifier.text) || !statement.importClause) continue;
-		const bindings = statement.importClause.namedBindings;
-		if (bindings && ts.isNamedImports(bindings)) {
-			for (const element of bindings.elements) {
-				if (tempNames.has(element.propertyName?.text ?? element.name.text)) {
-					directNames.add(element.name.text);
-				}
-			}
-		}
-		if (bindings && ts.isNamespaceImport(bindings)) namespaceNames.add(bindings.name.text);
-	}
+	const names: TemporaryCallNames = {
+		directNames: new Set(),
+		namespaceNames: new Set(),
+		tempNames: new Set(['mkdtemp', 'mkdtempSync']),
+		fsModules: new Set(['node:fs', 'node:fs/promises', 'fs', 'fs/promises'])
+	};
+	for (const statement of ast.statements) registerImportedTempNames(statement, names);
 	let count = 0;
 	const visit = (node: ts.Node) => {
-		if (ts.isCallExpression(node)) {
-			const expression = node.expression;
-			if (ts.isIdentifier(expression) && directNames.has(expression.text)) count += 1;
-			if (
-				ts.isPropertyAccessExpression(expression) &&
-				ts.isIdentifier(expression.expression) &&
-				namespaceNames.has(expression.expression.text) &&
-				tempNames.has(expression.name.text)
-			) {
-				count += 1;
-			}
-		}
+		if (ts.isCallExpression(node) && isTempCall(node.expression, names)) count += 1;
 		ts.forEachChild(node, visit);
 	};
 	visit(ast);
 	return count;
+}
+
+function registerImportedTempNames(statement: ts.Statement, names: TemporaryCallNames): void {
+	if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier)) return;
+	if (!names.fsModules.has(statement.moduleSpecifier.text) || !statement.importClause) return;
+	const bindings = statement.importClause.namedBindings;
+	if (bindings && ts.isNamedImports(bindings)) registerNamedImports(bindings, names);
+	if (bindings && ts.isNamespaceImport(bindings)) names.namespaceNames.add(bindings.name.text);
+}
+
+function registerNamedImports(bindings: ts.NamedImports, names: TemporaryCallNames): void {
+	for (const element of bindings.elements) {
+		const imported = element.propertyName?.text ?? element.name.text;
+		if (names.tempNames.has(imported)) names.directNames.add(element.name.text);
+	}
+}
+
+function isTempCall(expression: ts.Expression, names: TemporaryCallNames): boolean {
+	if (ts.isIdentifier(expression)) return names.directNames.has(expression.text);
+	if (!ts.isPropertyAccessExpression(expression) || !ts.isIdentifier(expression.expression))
+		return false;
+	return (
+		names.namespaceNames.has(expression.expression.text) &&
+		names.tempNames.has(expression.name.text)
+	);
 }
 
 export function temporaryCallRatchet(
@@ -101,26 +108,28 @@ export function temporaryCallRatchet(
 
 function baseRef(): string {
 	if (process.env.GITHUB_BASE_REF) return `origin/${process.env.GITHUB_BASE_REF}`;
-	const branch = execFileSync('git', ['branch', '--show-current'], { encoding: 'utf8' }).trim();
+	const branch = execFileSync('git', ['branch', '--show-current'], gitReadOptions).trim();
 	const ref = branch && branch !== 'main' ? 'main' : 'HEAD^';
-	return execFileSync('git', ['rev-parse', '--verify', ref], { encoding: 'utf8' }).trim();
+	return execFileSync('git', ['rev-parse', '--verify', ref], gitReadOptions).trim();
 }
 
 function readBaseJson<T>(ref: string, path: string): T {
-	const source = execFileSync('git', ['show', `${ref}:${path}`], { encoding: 'utf8' });
+	const source = execFileSync('git', ['show', `${ref}:${path}`], gitReadOptions);
 	return JSON.parse(source) as T;
 }
 
 function baseTemporaryCalls(ref: string): TemporaryCallBaseline {
-	const files = execFileSync('git', ['ls-tree', '-r', '--name-only', ref, '--', 'test'], {
-		encoding: 'utf8'
-	})
+	const files = execFileSync(
+		'git',
+		['ls-tree', '-r', '--name-only', ref, '--', 'test'],
+		gitReadOptions
+	)
 		.split('\n')
 		.filter((path) => /^test\/.*\.tsx?$/.test(path));
 	return Object.fromEntries(
 		files.map((path) => [
 			path,
-			mkdtempCallCount(execFileSync('git', ['show', `${ref}:${path}`], { encoding: 'utf8' }))
+			mkdtempCallCount(execFileSync('git', ['show', `${ref}:${path}`], gitReadOptions))
 		])
 	);
 }
@@ -129,7 +138,7 @@ function currentTemporaryCalls(): TemporaryCallBaseline {
 	const files = execFileSync(
 		'git',
 		['ls-files', '-z', '--cached', '--others', '--exclude-standard', '--', 'test'],
-		{ encoding: 'utf8' }
+		gitReadOptions
 	)
 		.split('\0')
 		.filter((path) => /^test\/.*\.tsx?$/.test(path));
