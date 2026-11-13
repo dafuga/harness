@@ -9,7 +9,8 @@ export type {
 	LoopCommandResult,
 	EvaluateLoopInput
 } from './loopEvaluate.types';
-import { spawn } from 'node:child_process';
+import { BoundedCommandAdapter } from '../../adapters/execution-runtimes/BoundedCommandAdapter';
+import { resourceEnvironment } from '../../utils/execution-runtimes/resourceEnvironment';
 import { resourceWork } from '../../utils/execution-runtimes/resourceWork';
 import {
 	appendTrace,
@@ -66,50 +67,39 @@ function runEvaluator(
 	context: { loop: string; agentModel?: string }
 ): Promise<LoopCommandResult> {
 	const startedAt = Date.now();
-	return resourceWork(
-		{ priority: 'agent-test', label: context.loop },
-		(lease) =>
-			new Promise((resolve) => {
-				const child = spawn(evaluator.command, {
-					cwd: root,
-					shell: true,
-					stdio: 'pipe',
-					env: {
-						...lease.env,
-						HARNESS_ANALYTICS_LOOP: context.loop,
-						HARNESS_ANALYTICS_STEP: evaluator.step,
-						HARNESS_AGENT_MODEL: context.agentModel ?? process.env.HARNESS_AGENT_MODEL
-					}
-				});
-				const stdout: Buffer[] = [];
-				const stderr: Buffer[] = [];
-
-				child.stdout.on('data', (chunk: Buffer) => stdout.push(chunk));
-				child.stderr.on('data', (chunk: Buffer) => stderr.push(chunk));
-				child.once('error', () =>
-					resolve({
-						id: evaluator.id,
-						title: evaluator.title,
-						command: evaluator.command,
-						exitCode: 1,
-						stdout: '',
-						stderr: 'Evaluator could not start'
-					})
-				);
-				child.once('close', (code) => {
-					resolve({
-						id: evaluator.id,
-						title: evaluator.title,
-						command: evaluator.command,
-						exitCode: code ?? 1,
-						durationMs: Date.now() - startedAt,
-						stdout: Buffer.concat(stdout).toString('utf8'),
-						stderr: Buffer.concat(stderr).toString('utf8')
-					});
-				});
-				if (child.pid) lease.track(child.pid);
-			})
-	);
+	return resourceWork({ priority: 'agent-test', label: context.loop }, async (lease) => {
+		const summary = { id: evaluator.id, title: evaluator.title, command: evaluator.command };
+		try {
+			const result = await new BoundedCommandAdapter().run('sh', ['-c', evaluator.command], {
+				cwd: root,
+				env: {
+					...resourceEnvironment(lease.env),
+					HARNESS_ANALYTICS_LOOP: context.loop,
+					HARNESS_ANALYTICS_STEP: evaluator.step,
+					HARNESS_ANALYTICS_DISABLED: process.env.HARNESS_ANALYTICS_DISABLED,
+					HARNESS_AGENT_MODEL: context.agentModel ?? process.env.HARNESS_AGENT_MODEL
+				},
+				onSpawn: (child) => {
+					if (child.pid) lease.track(child.pid);
+				}
+			});
+			return {
+				...summary,
+				exitCode: result.code,
+				stdout: result.stdout.toString('utf8'),
+				stderr: result.stderr,
+				durationMs: Date.now() - startedAt
+			};
+		} catch (error) {
+			return {
+				...summary,
+				exitCode: 1,
+				stdout: '',
+				stderr: error instanceof Error ? error.message : 'Evaluator could not start',
+				durationMs: Date.now() - startedAt
+			};
+		}
+	});
 }
 
 function renderCommandResult(result: LoopCommandResult): string {
