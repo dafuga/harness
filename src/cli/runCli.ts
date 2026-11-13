@@ -35,7 +35,11 @@ async function finishCommand(startedAt: number): Promise<void> {
 		const { beatFromEnvironment } = await import('../workflows/projects-sessions/runActivity');
 		await beatFromEnvironment();
 	}
-	if (process.argv[2] === 'loop') {
+	if (
+		process.argv[2] === 'loop' &&
+		!skipsAnalytics(process.argv.slice(2)) &&
+		process.env.HARNESS_ANALYTICS_DISABLED !== '1'
+	) {
 		try {
 			const { importAnalytics } = await import('../workflows/reports-media/importAnalytics');
 			await importAnalytics(process.cwd(), false);
