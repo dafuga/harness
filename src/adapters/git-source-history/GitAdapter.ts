@@ -1,6 +1,6 @@
 // @harness-uid u_pghy4246hw
 import type { GitRunOptions, GitResult } from './GitAdapter.types';
-import { spawn } from 'node:child_process';
+import { BoundedCommandAdapter } from '../execution-runtimes/BoundedCommandAdapter';
 
 /** Runs git in one repository without changing global or repository configuration. */
 export class GitAdapter {
@@ -24,26 +24,11 @@ export class GitAdapter {
 	}
 
 	exec(args: string[], options: GitRunOptions = {}): Promise<GitResult> {
-		const child = spawn('git', args, {
+		return new BoundedCommandAdapter().run('git', args, {
+			...options,
 			cwd: this.root,
-			env: { ...process.env, GIT_TERMINAL_PROMPT: '0', ...options.env },
-			stdio: 'pipe'
-		});
-		const stdout: Buffer[] = [];
-		const stderr: Buffer[] = [];
-		child.stdout.on('data', (chunk: Buffer) => stdout.push(chunk));
-		child.stderr.on('data', (chunk: Buffer) => stderr.push(chunk));
-		child.stdin.on('error', () => undefined);
-		child.stdin.end(options.input);
-		return new Promise((resolve, reject) => {
-			child.once('error', reject);
-			child.once('close', (code) =>
-				resolve({
-					code: code ?? 1,
-					stdout: Buffer.concat(stdout),
-					stderr: Buffer.concat(stderr).toString('utf8')
-				})
-			);
+			maxBuffer: options.maxBuffer ?? 128 * 1024 * 1024,
+			env: { ...options.env, GIT_TERMINAL_PROMPT: '0' }
 		});
 	}
 

@@ -36,8 +36,8 @@ test('isRepository distinguishes repositories from plain directories', async () 
 test('exec stops commands that exceed the deadline or combined output limit', async () => {
 	const git = await fixture();
 	await git.run(['init', '-q']);
-	await expect(
-		git.exec(['-c', 'alias.wait=!sleep 2', 'wait'], { timeoutMs: 50 })
-	).rejects.toThrow(/timed out/);
+	await expect(git.exec(['-c', 'alias.wait=!sleep 2', 'wait'], { timeoutMs: 50 })).rejects.toThrow(
+		/timed out/
+	);
 	await expect(git.exec(['--version'], { maxBuffer: 1 })).rejects.toThrow(/output limit/);
 });

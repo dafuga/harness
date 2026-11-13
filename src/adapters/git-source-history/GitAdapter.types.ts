@@ -2,6 +2,8 @@
 export interface GitRunOptions {
 	input?: string | Buffer;
 	env?: Record<string, string>;
+	timeoutMs?: number;
+	maxBuffer?: number;
 }
 
 export interface GitResult {
