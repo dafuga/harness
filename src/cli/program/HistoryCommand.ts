@@ -5,6 +5,7 @@ import type { Command } from 'commander';
 import { buildHistory, renderBuild, type BuildOptions } from './buildHistory';
 import { importReports, renderImport, type ImportOptions } from './importReports';
 import { persistReasons, renderReasons } from './persistReasons';
+import { previewHistoryPrune, renderPrune } from './history-prune/previewHistory';
 import { renderSync, syncHistory, type SyncAction } from './syncHistory';
 import {
 	historyAttach,
@@ -21,9 +22,25 @@ export function registerHistoryCommand(program: Command): Command {
 		.command('history')
 		.description('Keep verification records, evidence and reasons in Git, and read them back.');
 	registerRecords(history);
+	registerPrune(history);
 	registerSync(history);
 	registerOutputs(history);
 	return history;
+}
+
+function registerPrune(history: Command): void {
+	history
+		.command('prune')
+		.requiredOption('--keep-last <count>', 'Retain this many newest valid records.')
+		.requiredOption('--older-than <days>', 'Match records older than this many days.')
+		.option('--json', 'Print structured results.')
+		.description('Report-only verification-cache inventory; no deletion or --apply mode exists.')
+		.action(async (flags: Flags & { keepLast: string; olderThan: string }) => {
+			const keepLast = Number(flags.keepLast);
+			const olderThanDays = Number(flags.olderThan);
+			const result = await previewHistoryPrune(process.cwd(), keepLast, olderThanDays);
+			print(flags, result, renderPrune(result));
+		});
 }
 
 /** Commands that write or read what is attached to a commit. */
