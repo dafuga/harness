@@ -1,7 +1,7 @@
 // @harness-uid u_hprunwalke
 import { lstat, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { WalkResult } from './previewHistory.types';
+import type { WalkResult } from './previewHistoryPrune.types';
 
 export async function scanCacheTree(path: string): Promise<WalkResult> {
 	const state = await lstatOrError(path);

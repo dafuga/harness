@@ -3,7 +3,7 @@ import { join, resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { verificationsDirectory } from '../../../core/verification-evidence/verifyTypes';
 import { scanVerificationCache } from './scanVerificationCache';
-import type { PruneInventory, PruneInventoryEntry } from './previewHistory.types';
+import type { PruneInventory, PruneInventoryEntry } from './previewHistoryPrune.types';
 
 const busyDraftReason =
 	'local record may still be needed for attachment or concurrent use; no durable deletion proof or use lock is checked';

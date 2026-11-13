@@ -5,7 +5,7 @@ import type { Command } from 'commander';
 import { buildHistory, renderBuild, type BuildOptions } from './buildHistory';
 import { importReports, renderImport, type ImportOptions } from './importReports';
 import { persistReasons, renderReasons } from './persistReasons';
-import { previewHistoryPrune, renderPrune } from './history-prune/previewHistory';
+import { previewHistoryPrune, renderPrune } from './history-prune/previewHistoryPrune';
 import { renderSync, syncHistory, type SyncAction } from './syncHistory';
 import {
 	historyAttach,

@@ -3,7 +3,7 @@ import { Command } from 'commander';
 import { mkdir, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { registerHistoryCommand } from '../../src/cli/program/HistoryCommand';
-import { previewHistoryPrune } from '../../src/cli/program/history-prune/previewHistory';
+import { previewHistoryPrune } from '../../src/cli/program/history-prune/previewHistoryPrune';
 import { VerificationStoreRepository } from '../../src/repositories/verification-evidence/VerificationStoreRepository';
 import { sealRecord } from '../../src/utils/verification-evidence/sealRecord';
 import type { VerificationRecord } from '../../src/core/verification-evidence/verificationTypes';

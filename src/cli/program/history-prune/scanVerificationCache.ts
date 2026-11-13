@@ -5,8 +5,8 @@ import type { VerificationRecord } from '../../../core/verification-evidence/ver
 import { captureIndex } from '../../../core/verification-evidence/verifyTypes';
 import { VerificationRecordValidator } from '../../../validators/verification-evidence/VerificationRecordValidator';
 import { recordFiles } from '../../../utils/verification-evidence/evidenceManifest';
-import type { CacheScanContext, PruneInventoryEntry } from './previewHistory.types';
-import { scanCacheTree } from './walkCache';
+import type { CacheScanContext, PruneInventoryEntry } from './previewHistoryPrune.types';
+import { scanCacheTree } from './scanCacheTree';
 
 export async function scanVerificationCache(root: string, store: string) {
 	const context: CacheScanContext = { root, store, entries: [], valid: [], problems: [] };
