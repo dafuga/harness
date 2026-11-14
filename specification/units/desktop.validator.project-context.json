@@ -17,50 +17,236 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectContextValidator.operation.channel",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The IPC channel name that selects the branch in operation(), matched exactly and never length- or pattern-checked. Channels the method does not name return undefined without reading the input.",
+				"examples": ["project:select", "thread:comment", "project:capabilities"]
 			},
 			{
 				"name": "ProjectContextValidator.operation.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The raw IPC payload, of any type, which only some channels read. project:select and thread:comment require a non-array object, thread:pending, project:capabilities and project:agents treat null or undefined as {}, and every other channel ignores it.",
+				"examples": [
+					{},
+					{
+						"projectId": "local-9a3f0c71e5b24d86a1c0f7e39d52b846c1e0a9f3d7b25c84e6a1f0d93b7c2e58"
+					},
+					{
+						"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c",
+						"requestId": "a1d4f7e0-2b9c-4d3a-8e5f-7c0b6a9d1e28",
+						"threadId": "b7e4a9d2-1c3f-4a8e-9b6d-2e5f0c7a1d94",
+						"anchor": {
+							"entityId": "reports.component.evidence-grid",
+							"version": "v002",
+							"imageSha256": "5b1d7e04c9a36f28e0d4b7a1c63f9e52d8a0b7c41f6e3d92a85c0e7b4f19d36a",
+							"state": "default",
+							"viewport": "desktop",
+							"region": {
+								"x": 0.125,
+								"y": 0.2,
+								"width": 0.5,
+								"height": 0.25
+							},
+							"option": "o2",
+							"branch": "feature/evidence-grid",
+							"commit": "9f2c41e7a0b3d58c6e1f4a92b7d0c3e8f5a61b24"
+						},
+						"text": "The status badge clips at this width."
+					}
+				]
 			},
 			{
 				"name": "ProjectContextValidator.context.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The object that context() reads its optional projectId from; it must be a non-null, non-array object, and any other fields are ignored. null and undefined are rejected here, but operation() substitutes {} for them on the thread:pending, project:capabilities and project:agents channels.",
+				"examples": [
+					{},
+					{
+						"projectId": "local-9a3f0c71e5b24d86a1c0f7e39d52b846c1e0a9f3d7b25c84e6a1f0d93b7c2e58"
+					},
+					{
+						"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c"
+					}
+				]
 			},
 			{
 				"name": "ProjectContextValidator.comment.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The thread comment payload that comment() checks: a non-array object with a UUID requestId, non-blank text of at most 20000 characters, and an anchor object. The anchor must carry entityId, branch and commit, plus version, imageSha256, state, viewport and region, which may be null but must be present, with version, imageSha256, state and viewport all null or all set and region null unless version is set; projectId, threadId and the anchor's option are optional.",
+				"examples": [
+					{
+						"requestId": "6f1d2c3b-4a5e-4b7c-8d9e-0f1a2b3c4d5e",
+						"anchor": {
+							"entityId": "harness.project.discussion",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null,
+							"branch": "main",
+							"commit": "c3a1e9f07d24b6583e0a9c1f7d4b2e6a85f0d931"
+						},
+						"text": "Can the release checklist move above the evidence grid?"
+					},
+					{
+						"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c",
+						"requestId": "a1d4f7e0-2b9c-4d3a-8e5f-7c0b6a9d1e28",
+						"threadId": "b7e4a9d2-1c3f-4a8e-9b6d-2e5f0c7a1d94",
+						"anchor": {
+							"entityId": "reports.component.evidence-grid",
+							"version": "v002",
+							"imageSha256": "5b1d7e04c9a36f28e0d4b7a1c63f9e52d8a0b7c41f6e3d92a85c0e7b4f19d36a",
+							"state": "default",
+							"viewport": "desktop",
+							"region": {
+								"x": 0.125,
+								"y": 0.2,
+								"width": 0.5,
+								"height": 0.25
+							},
+							"option": "o2",
+							"branch": "feature/evidence-grid",
+							"commit": "9f2c41e7a0b3d58c6e1f4a92b7d0c3e8f5a61b24"
+						},
+						"text": "The status badge clips at this width."
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectContextValidator.operation",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The value operation() returns for its channel: null for project:list and the hosted:status, hosted:connect and hosted:disconnect channels, the validated context for project:select, thread:pending, project:capabilities and project:agents, and the validated comment for thread:comment. Any other channel returns undefined, which JSON cannot express.",
+				"examples": [
+					null,
+					{
+						"projectId": "local-9a3f0c71e5b24d86a1c0f7e39d52b846c1e0a9f3d7b25c84e6a1f0d93b7c2e58"
+					},
+					{
+						"requestId": "6f1d2c3b-4a5e-4b7c-8d9e-0f1a2b3c4d5e",
+						"anchor": {
+							"entityId": "harness.project.discussion",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null,
+							"branch": "main",
+							"commit": "c3a1e9f07d24b6583e0a9c1f7d4b2e6a85f0d931"
+						},
+						"text": "Can the release checklist move above the evidence grid?"
+					}
+				]
 			},
 			{
 				"name": "ProjectContextValidator.context",
-				"type": "{ projectId?: string }"
+				"type": "{ projectId?: string }",
+				"description": "The validated project selection: {} when the input has no projectId, otherwise an object whose projectId is the input's string unchanged, 1 to 128 characters long, starting with a letter or digit and holding only letters, digits, dots, underscores and dashes.",
+				"examples": [
+					{},
+					{
+						"projectId": "local-9a3f0c71e5b24d86a1c0f7e39d52b846c1e0a9f3d7b25c84e6a1f0d93b7c2e58"
+					},
+					{
+						"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c"
+					}
+				]
 			},
 			{
 				"name": "ProjectContextValidator.comment",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The validated thread comment: requestId and text as given, projectId and threadId only when supplied, and an anchor holding entityId, version, imageSha256, state, viewport, region, option (only when supplied), branch and commit. Input fields outside these are not copied into the result.",
+				"examples": [
+					{
+						"requestId": "6f1d2c3b-4a5e-4b7c-8d9e-0f1a2b3c4d5e",
+						"anchor": {
+							"entityId": "harness.project.discussion",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null,
+							"branch": "main",
+							"commit": "c3a1e9f07d24b6583e0a9c1f7d4b2e6a85f0d931"
+						},
+						"text": "Can the release checklist move above the evidence grid?"
+					},
+					{
+						"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c",
+						"requestId": "a1d4f7e0-2b9c-4d3a-8e5f-7c0b6a9d1e28",
+						"threadId": "b7e4a9d2-1c3f-4a8e-9b6d-2e5f0c7a1d94",
+						"anchor": {
+							"entityId": "reports.component.evidence-grid",
+							"version": "v002",
+							"imageSha256": "5b1d7e04c9a36f28e0d4b7a1c63f9e52d8a0b7c41f6e3d92a85c0e7b4f19d36a",
+							"state": "default",
+							"viewport": "desktop",
+							"region": {
+								"x": 0.125,
+								"y": 0.2,
+								"width": 0.5,
+								"height": 0.25
+							},
+							"option": "o2",
+							"branch": "feature/evidence-grid",
+							"commit": "9f2c41e7a0b3d58c6e1f4a92b7d0c3e8f5a61b24"
+						},
+						"text": "The status badge clips at this width."
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown with the message 'Expected an object.' when a value that must be an object is null, undefined, a primitive or an array: the context or comment input, the comment's anchor, or a region that is neither null nor an object."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid text field.' when a text value is not a string, is blank after trimming, or is longer than its limit; the anchor's version, imageSha256, state and viewport accept null instead."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid identifier.' when a text value that has a required format does not match it: projectId, requestId, threadId, entityId, version, imageSha256, option or commit."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Select an explicit project.' by operation() on the project:select channel when the parsed input has no projectId."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Incomplete image anchor.' when the anchor mixes null and set values among version, imageSha256, state and viewport."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Draft threads have no image region.' when the anchor's version is null but its region is not null."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid image region.' when a non-null region has an x, y, width or height that is not a finite number from 0 to 1."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Image region is outside the image.' when a non-null region has a zero width or height, or when x plus width or y plus height exceeds 1.000001."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectContextValidator.operation",
@@ -68,27 +254,115 @@
 					{
 						"name": "ProjectContextValidator.operation.channel",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The IPC channel name that selects the branch in operation(), matched exactly and never length- or pattern-checked. Channels the method does not name return undefined without reading the input.",
+						"examples": ["project:select", "thread:comment", "project:capabilities"]
 					},
 					{
 						"name": "ProjectContextValidator.operation.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The raw IPC payload, of any type, which only some channels read. project:select and thread:comment require a non-array object, thread:pending, project:capabilities and project:agents treat null or undefined as {}, and every other channel ignores it.",
+						"examples": [
+							{},
+							{
+								"projectId": "local-9a3f0c71e5b24d86a1c0f7e39d52b846c1e0a9f3d7b25c84e6a1f0d93b7c2e58"
+							},
+							{
+								"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c",
+								"requestId": "a1d4f7e0-2b9c-4d3a-8e5f-7c0b6a9d1e28",
+								"threadId": "b7e4a9d2-1c3f-4a8e-9b6d-2e5f0c7a1d94",
+								"anchor": {
+									"entityId": "reports.component.evidence-grid",
+									"version": "v002",
+									"imageSha256": "5b1d7e04c9a36f28e0d4b7a1c63f9e52d8a0b7c41f6e3d92a85c0e7b4f19d36a",
+									"state": "default",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.125,
+										"y": 0.2,
+										"width": 0.5,
+										"height": 0.25
+									},
+									"option": "o2",
+									"branch": "feature/evidence-grid",
+									"commit": "9f2c41e7a0b3d58c6e1f4a92b7d0c3e8f5a61b24"
+								},
+								"text": "The status badge clips at this width."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectContextValidator.operation",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The value operation() returns for its channel: null for project:list and the hosted:status, hosted:connect and hosted:disconnect channels, the validated context for project:select, thread:pending, project:capabilities and project:agents, and the validated comment for thread:comment. Any other channel returns undefined, which JSON cannot express.",
+						"examples": [
+							null,
+							{
+								"projectId": "local-9a3f0c71e5b24d86a1c0f7e39d52b846c1e0a9f3d7b25c84e6a1f0d93b7c2e58"
+							},
+							{
+								"requestId": "6f1d2c3b-4a5e-4b7c-8d9e-0f1a2b3c4d5e",
+								"anchor": {
+									"entityId": "harness.project.discussion",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null,
+									"branch": "main",
+									"commit": "c3a1e9f07d24b6583e0a9c1f7d4b2e6a85f0d931"
+								},
+								"text": "Can the release checklist move above the evidence grid?"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Expected an object.' when a value that must be an object is null, undefined, a primitive or an array: the context or comment input, the comment's anchor, or a region that is neither null nor an object."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid text field.' when a text value is not a string, is blank after trimming, or is longer than its limit; the anchor's version, imageSha256, state and viewport accept null instead."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid identifier.' when a text value that has a required format does not match it: projectId, requestId, threadId, entityId, version, imageSha256, option or commit."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Select an explicit project.' by operation() on the project:select channel when the parsed input has no projectId."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Incomplete image anchor.' when the anchor mixes null and set values among version, imageSha256, state and viewport."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Draft threads have no image region.' when the anchor's version is null but its region is not null."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid image region.' when a non-null region has an x, y, width or height that is not a finite number from 0 to 1."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Image region is outside the image.' when a non-null region has a zero width or height, or when x plus width or y plus height exceeds 1.000001."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectContextValidator.context",
@@ -96,17 +370,53 @@
 					{
 						"name": "ProjectContextValidator.context.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The object that context() reads its optional projectId from; it must be a non-null, non-array object, and any other fields are ignored. null and undefined are rejected here, but operation() substitutes {} for them on the thread:pending, project:capabilities and project:agents channels.",
+						"examples": [
+							{},
+							{
+								"projectId": "local-9a3f0c71e5b24d86a1c0f7e39d52b846c1e0a9f3d7b25c84e6a1f0d93b7c2e58"
+							},
+							{
+								"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectContextValidator.context",
-						"type": "{ projectId?: string }"
+						"type": "{ projectId?: string }",
+						"description": "The validated project selection: {} when the input has no projectId, otherwise an object whose projectId is the input's string unchanged, 1 to 128 characters long, starting with a letter or digit and holding only letters, digits, dots, underscores and dashes.",
+						"examples": [
+							{},
+							{
+								"projectId": "local-9a3f0c71e5b24d86a1c0f7e39d52b846c1e0a9f3d7b25c84e6a1f0d93b7c2e58"
+							},
+							{
+								"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Expected an object.' when a value that must be an object is null, undefined, a primitive or an array: the context or comment input, the comment's anchor, or a region that is neither null nor an object."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid text field.' when a text value is not a string, is blank after trimming, or is longer than its limit; the anchor's version, imageSha256, state and viewport accept null instead."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid identifier.' when a text value that has a required format does not match it: projectId, requestId, threadId, entityId, version, imageSha256, option or commit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectContextValidator.comment",
@@ -114,17 +424,131 @@
 					{
 						"name": "ProjectContextValidator.comment.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The thread comment payload that comment() checks: a non-array object with a UUID requestId, non-blank text of at most 20000 characters, and an anchor object. The anchor must carry entityId, branch and commit, plus version, imageSha256, state, viewport and region, which may be null but must be present, with version, imageSha256, state and viewport all null or all set and region null unless version is set; projectId, threadId and the anchor's option are optional.",
+						"examples": [
+							{
+								"requestId": "6f1d2c3b-4a5e-4b7c-8d9e-0f1a2b3c4d5e",
+								"anchor": {
+									"entityId": "harness.project.discussion",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null,
+									"branch": "main",
+									"commit": "c3a1e9f07d24b6583e0a9c1f7d4b2e6a85f0d931"
+								},
+								"text": "Can the release checklist move above the evidence grid?"
+							},
+							{
+								"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c",
+								"requestId": "a1d4f7e0-2b9c-4d3a-8e5f-7c0b6a9d1e28",
+								"threadId": "b7e4a9d2-1c3f-4a8e-9b6d-2e5f0c7a1d94",
+								"anchor": {
+									"entityId": "reports.component.evidence-grid",
+									"version": "v002",
+									"imageSha256": "5b1d7e04c9a36f28e0d4b7a1c63f9e52d8a0b7c41f6e3d92a85c0e7b4f19d36a",
+									"state": "default",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.125,
+										"y": 0.2,
+										"width": 0.5,
+										"height": 0.25
+									},
+									"option": "o2",
+									"branch": "feature/evidence-grid",
+									"commit": "9f2c41e7a0b3d58c6e1f4a92b7d0c3e8f5a61b24"
+								},
+								"text": "The status badge clips at this width."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectContextValidator.comment",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The validated thread comment: requestId and text as given, projectId and threadId only when supplied, and an anchor holding entityId, version, imageSha256, state, viewport, region, option (only when supplied), branch and commit. Input fields outside these are not copied into the result.",
+						"examples": [
+							{
+								"requestId": "6f1d2c3b-4a5e-4b7c-8d9e-0f1a2b3c4d5e",
+								"anchor": {
+									"entityId": "harness.project.discussion",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null,
+									"branch": "main",
+									"commit": "c3a1e9f07d24b6583e0a9c1f7d4b2e6a85f0d931"
+								},
+								"text": "Can the release checklist move above the evidence grid?"
+							},
+							{
+								"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c",
+								"requestId": "a1d4f7e0-2b9c-4d3a-8e5f-7c0b6a9d1e28",
+								"threadId": "b7e4a9d2-1c3f-4a8e-9b6d-2e5f0c7a1d94",
+								"anchor": {
+									"entityId": "reports.component.evidence-grid",
+									"version": "v002",
+									"imageSha256": "5b1d7e04c9a36f28e0d4b7a1c63f9e52d8a0b7c41f6e3d92a85c0e7b4f19d36a",
+									"state": "default",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.125,
+										"y": 0.2,
+										"width": 0.5,
+										"height": 0.25
+									},
+									"option": "o2",
+									"branch": "feature/evidence-grid",
+									"commit": "9f2c41e7a0b3d58c6e1f4a92b7d0c3e8f5a61b24"
+								},
+								"text": "The status badge clips at this width."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Expected an object.' when a value that must be an object is null, undefined, a primitive or an array: the context or comment input, the comment's anchor, or a region that is neither null nor an object."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid text field.' when a text value is not a string, is blank after trimming, or is longer than its limit; the anchor's version, imageSha256, state and viewport accept null instead."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid identifier.' when a text value that has a required format does not match it: projectId, requestId, threadId, entityId, version, imageSha256, option or commit."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Incomplete image anchor.' when the anchor mixes null and set values among version, imageSha256, state and viewport."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Draft threads have no image region.' when the anchor's version is null but its region is not null."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid image region.' when a non-null region has an x, y, width or height that is not a finite number from 0 to 1."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Image region is outside the image.' when a non-null region has a zero width or height, or when x plus width or y plus height exceeds 1.000001."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
