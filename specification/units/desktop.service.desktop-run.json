@@ -22,60 +22,139 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DesktopRunService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "The ProjectSessionService of this client: start reads its root and busy flag, claims the repository through its arbiter, and sets busy while a run holds it. The instance is stored by reference, not copied."
 			},
 			{
 				"name": "DesktopRunService.constructor.providers",
 				"type": "ProviderDiscoveryService",
-				"required": true
+				"required": true,
+				"description": "The ProviderDiscoveryService that the prepare steps use to select each run's runner and, for a plan of a pages, layouts or components entity, to list providers for image generation. This file stores it and never calls its methods itself."
 			},
 			{
 				"name": "DesktopRunService.constructor.generator",
 				"type": "ImageGenerator",
-				"required": true
+				"required": true,
+				"description": "The ImageGenerator that the prepare steps pass into each run context. This file never calls its generateImage method."
 			},
 			{
 				"name": "DesktopRunService.constructor.emit",
 				"type": "(event: RunEvent) => void",
-				"required": true
+				"required": true,
+				"description": "The callback that this client's runs send events to: execute first emits a 'status' event with phase 'queued', then a 'finished', 'cancelled' or 'failed' event when the run ends."
 			},
 			{
 				"name": "DesktopRunService.start.request",
 				"type": "RunRequest | ProjectRunRequest | ProjectTaskRequest",
-				"required": true
+				"required": true,
+				"description": "The request to start: a RunRequest (no intent) for a change or plan of an existing entity, a ProjectRunRequest with intent 'create' for a new plan, or a ProjectTaskRequest with intent 'task'. designCount checks designOptions first, so an invalid count is refused before the run is claimed.",
+				"examples": [
+					{
+						"mode": "plan",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "xhigh",
+						"entityId": "component.evidence-grid",
+						"threadId": "9c4e2b1a-7d3f-4a58-8e6b-2f1d0c9a7b53",
+						"text": "Add a loading state to the evidence grid.",
+						"approval": null
+					},
+					{
+						"intent": "create",
+						"projectId": "local-8f3a1c9d2e7b4f60a5c18d9e3b2f7a4c0d6e1b9f8a2c5d7e3b4f1a6c9d0e2b8f",
+						"category": "components",
+						"mode": "plan",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "high",
+						"text": "A component that lists the recorded verification runs of one unit."
+					},
+					{
+						"intent": "task",
+						"projectId": "local-8f3a1c9d2e7b4f60a5c18d9e3b2f7a4c0d6e1b9f8a2c5d7e3b4f1a6c9d0e2b8f",
+						"category": "components",
+						"mode": "ask",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "high",
+						"text": "Explain how the evidence grid chooses its columns.",
+						"branch": "main",
+						"commit": "4c1f9a2e7b8d3065f1a9c2e8d4b7063a5e1f9c28"
+					}
+				]
 			},
 			{
 				"name": "DesktopRunService.cancel.runId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The run id that start returned, a random UUID; cancel aborts only when it equals the id of the active run. Any other value, including the id of a run that has already ended, returns false and aborts nothing.",
+				"examples": ["6f1c2a9e-4b7d-4e3a-8c51-9d0e7b2f4a16", "0b9e4d27-7a13-4c8f-b5e6-2f81a9d03c74"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DesktopRunService.start",
-				"type": "Promise<{ runId: string }>"
+				"type": "Promise<{ runId: string }>",
+				"description": "The resolved value of start: the new run's id, returned once preparation has succeeded. Execution starts on a later timer tick, and rejections are described under errors.",
+				"examples": [
+					{
+						"runId": "6f1c2a9e-4b7d-4e3a-8c51-9d0e7b2f4a16"
+					},
+					{
+						"runId": "d3a7f518-29e4-4b06-9c3d-8e1f5a72b640"
+					}
+				]
 			},
 			{
 				"name": "DesktopRunService.cancelActive",
-				"type": "void"
+				"type": "void",
+				"description": "Nothing is returned: it aborts the active run's controller, whether the run is still being prepared or is executing, and does nothing when no run is active."
 			},
 			{
 				"name": "DesktopRunService.cancel",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when runId matched the active run and its controller was aborted, false otherwise. True means the abort was requested, not that the run has already stopped.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by start with 'A run is already active in this project.' when the session is busy or the arbiter cannot hold the project root for this client, since the arbiter allows one run per repository across every client on this computer. No run starts, and the session's busy flag is left as it was."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by start with 'An agent or planning write is active in another Harness app.' when the project root is set but no repository lease is obtained; the run is released before the error is rethrown."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by designCount with 'A Change makes no design options.'; start rejects with it before any state is set, when designOptions is given on a request whose mode is not 'plan'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by designCount with 'Design options must be a whole number from 1 to 10.'; start rejects with it before any state is set, when the designOptions of a plan is not an integer from 1 to 10."
+			},
+			{
+				"name": "RunCancelled",
+				"type": "thrown",
+				"description": "Thrown by the prepare step when the run is aborted while it is being prepared, by cancelActive or by a lost repository lease; start rejects with it after the run is released."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "Any other error from designCount, the arbiter claim, the repository lease or run preparation reaches the caller unchanged, so its name is set by the code that threw it."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DesktopRunService.start",
@@ -83,22 +162,92 @@
 					{
 						"name": "DesktopRunService.start.request",
 						"type": "RunRequest | ProjectRunRequest | ProjectTaskRequest",
-						"required": true
+						"required": true,
+						"description": "The request to start: a RunRequest (no intent) for a change or plan of an existing entity, a ProjectRunRequest with intent 'create' for a new plan, or a ProjectTaskRequest with intent 'task'. designCount checks designOptions first, so an invalid count is refused before the run is claimed.",
+						"examples": [
+							{
+								"mode": "plan",
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "xhigh",
+								"entityId": "component.evidence-grid",
+								"threadId": "9c4e2b1a-7d3f-4a58-8e6b-2f1d0c9a7b53",
+								"text": "Add a loading state to the evidence grid.",
+								"approval": null
+							},
+							{
+								"intent": "create",
+								"projectId": "local-8f3a1c9d2e7b4f60a5c18d9e3b2f7a4c0d6e1b9f8a2c5d7e3b4f1a6c9d0e2b8f",
+								"category": "components",
+								"mode": "plan",
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "high",
+								"text": "A component that lists the recorded verification runs of one unit."
+							},
+							{
+								"intent": "task",
+								"projectId": "local-8f3a1c9d2e7b4f60a5c18d9e3b2f7a4c0d6e1b9f8a2c5d7e3b4f1a6c9d0e2b8f",
+								"category": "components",
+								"mode": "ask",
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "high",
+								"text": "Explain how the evidence grid chooses its columns.",
+								"branch": "main",
+								"commit": "4c1f9a2e7b8d3065f1a9c2e8d4b7063a5e1f9c28"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DesktopRunService.start",
-						"type": "Promise<{ runId: string }>"
+						"type": "Promise<{ runId: string }>",
+						"description": "The resolved value of start: the new run's id, returned once preparation has succeeded. Execution starts on a later timer tick, and rejections are described under errors.",
+						"examples": [
+							{
+								"runId": "6f1c2a9e-4b7d-4e3a-8c51-9d0e7b2f4a16"
+							},
+							{
+								"runId": "d3a7f518-29e4-4b06-9c3d-8e1f5a72b640"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by start with 'A run is already active in this project.' when the session is busy or the arbiter cannot hold the project root for this client, since the arbiter allows one run per repository across every client on this computer. No run starts, and the session's busy flag is left as it was."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by start with 'An agent or planning write is active in another Harness app.' when the project root is set but no repository lease is obtained; the run is released before the error is rethrown."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by designCount with 'A Change makes no design options.'; start rejects with it before any state is set, when designOptions is given on a request whose mode is not 'plan'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by designCount with 'Design options must be a whole number from 1 to 10.'; start rejects with it before any state is set, when the designOptions of a plan is not an integer from 1 to 10."
+					},
+					{
+						"name": "RunCancelled",
+						"type": "thrown",
+						"description": "Thrown by the prepare step when the run is aborted while it is being prepared, by cancelActive or by a lost repository lease; start rejects with it after the run is released."
+					},
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Any other error from designCount, the arbiter claim, the repository lease or run preparation reaches the caller unchanged, so its name is set by the code that threw it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DesktopRunService.cancelActive",
@@ -106,11 +255,12 @@
 				"outputs": [
 					{
 						"name": "DesktopRunService.cancelActive",
-						"type": "void"
+						"type": "void",
+						"description": "Nothing is returned: it aborts the active run's controller, whether the run is still being prepared or is executing, and does nothing when no run is active."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DesktopRunService.cancel",
@@ -118,17 +268,24 @@
 					{
 						"name": "DesktopRunService.cancel.runId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The run id that start returned, a random UUID; cancel aborts only when it equals the id of the active run. Any other value, including the id of a run that has already ended, returns false and aborts nothing.",
+						"examples": [
+							"6f1c2a9e-4b7d-4e3a-8c51-9d0e7b2f4a16",
+							"0b9e4d27-7a13-4c8f-b5e6-2f81a9d03c74"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DesktopRunService.cancel",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when runId matched the active run and its controller was aborted, false otherwise. True means the abort was requested, not that the run has already stopped.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -138,32 +295,37 @@
 					{
 						"name": "DesktopRunService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "The ProjectSessionService of this client: start reads its root and busy flag, claims the repository through its arbiter, and sets busy while a run holds it. The instance is stored by reference, not copied."
 					},
 					{
 						"name": "DesktopRunService.constructor.providers",
 						"type": "ProviderDiscoveryService",
-						"required": true
+						"required": true,
+						"description": "The ProviderDiscoveryService that the prepare steps use to select each run's runner and, for a plan of a pages, layouts or components entity, to list providers for image generation. This file stores it and never calls its methods itself."
 					},
 					{
 						"name": "DesktopRunService.constructor.generator",
 						"type": "ImageGenerator",
-						"required": true
+						"required": true,
+						"description": "The ImageGenerator that the prepare steps pass into each run context. This file never calls its generateImage method."
 					},
 					{
 						"name": "DesktopRunService.constructor.emit",
 						"type": "(event: RunEvent) => void",
-						"required": true
+						"required": true,
+						"description": "The callback that this client's runs send events to: execute first emits a 'status' event with phase 'queued', then a 'finished', 'cancelled' or 'failed' event when the run ends."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DesktopRunService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The DesktopRunService instance the constructor creates; it keeps the four dependencies and starts with no lease and no active run."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
