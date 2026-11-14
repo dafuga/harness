@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native rect element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet; when supplied, it is invoked and rendered inside the <rect>, and when absent no child content is rendered. It is removed from the remaining props, so it is not spread onto the element as an attribute."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgRect",
 				"type": "markup",
-				"description": "The actual native rect element, with forwarded attributes and content and no additional wrapper."
+				"description": "Renders an SVG <rect> element and spreads all props other than children onto it; when a children Snippet is supplied, that snippet is rendered inside the element. It adds no wrapper and supplies no default rect attributes."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
