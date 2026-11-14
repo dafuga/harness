@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feMorphology element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet that is rendered inside the feMorphology element only when it is truthy; when it is omitted, nothing is rendered inside the element. The component calls it with no arguments and does not wrap, validate, or transform it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeMorphology",
 				"type": "markup",
-				"description": "The actual native feMorphology element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native feMorphology element in the SVG namespace set by svelte:options, with every prop other than children spread onto it unfiltered and the optional children rendered inside it. The component adds no wrapper element and sets no attributes of its own, so the output is exactly that one element."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
