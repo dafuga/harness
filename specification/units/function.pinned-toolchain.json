@@ -28,30 +28,55 @@
 				"name": "pinnedToolchain.tool",
 				"type": "string",
 				"required": true,
-				"description": "Lowercase Rust tool name beginning with a letter and containing only letters, digits and hyphens."
+				"description": "Rust executable name matching /^[a-z][a-z0-9-]*$/. It is passed to rustup as the tool to select from the channel declared by the nearest rust-toolchain.toml.",
+				"examples": ["cargo", "rustc", "clippy-driver"]
 			},
 			{
 				"name": "pinnedToolchain.options",
 				"type": "PinnedOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional working directory, environment and command runner. Defaults use the current directory, process environment and synchronous subprocess execution."
+				"description": "Optional lookup directory, child environment, and injected runner; when supplied, run must return a ToolAnswer for the rustup lookup. Defaults to {} for options; omitted cwd, env, and run use process.cwd(), process.env, and asked, respectively.",
+				"examples": [
+					{
+						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+					},
+					{
+						"env": {
+							"PATH": "/opt/homebrew/bin:/usr/bin:/bin"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "pinnedToolchain",
 				"type": "PinnedTool",
-				"description": "Resolved executable and copied child environment with the pinned RUSTUP_TOOLCHAIN, matching rustc path, cleared wrappers and toolchain directories prepended to PATH and library search paths."
+				"description": "The selected executable path and environment for launching it. The environment inherits the chosen input environment and sets RUSTUP_TOOLCHAIN, RUSTC, RUSTC_WRAPPER, RUSTC_WORKSPACE_WRAPPER, PATH, and DYLD_LIBRARY_PATH for the selected toolchain; values are strings or undefined.",
+				"examples": [
+					{
+						"command": "/Users/danielfugere/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+						"env": {
+							"RUSTUP_TOOLCHAIN": "stable",
+							"RUSTC": "/Users/danielfugere/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc",
+							"RUSTC_WRAPPER": "",
+							"RUSTC_WORKSPACE_WRAPPER": "",
+							"PATH": "/Users/danielfugere/.rustup/toolchains/stable-aarch64-apple-darwin/bin:/usr/bin:/bin",
+							"DYLD_LIBRARY_PATH": "/Users/danielfugere/.rustup/toolchains/stable-aarch64-apple-darwin/lib"
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Thrown for an invalid tool name, absent/malformed nearest rust-toolchain.toml, invalid starting directory, unavailable rustup or unsuccessful/empty tool resolution."
+				"description": "Throws Error for a tool name outside /^[a-z][a-z0-9-]*$/, a non-directory working directory, or a filesystem or TOML failure while locating or parsing the nearest rust-toolchain.toml. It also throws if rustup cannot start, exits nonzero, or returns a blank executable path; a malformed nearer pin is not skipped in favor of an ancestor."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "pinnedToolchain",
@@ -60,30 +85,55 @@
 						"name": "pinnedToolchain.tool",
 						"type": "string",
 						"required": true,
-						"description": "Lowercase Rust tool name beginning with a letter and containing only letters, digits and hyphens."
+						"description": "Rust executable name matching /^[a-z][a-z0-9-]*$/. It is passed to rustup as the tool to select from the channel declared by the nearest rust-toolchain.toml.",
+						"examples": ["cargo", "rustc", "clippy-driver"]
 					},
 					{
 						"name": "pinnedToolchain.options",
 						"type": "PinnedOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional working directory, environment and command runner. Defaults use the current directory, process environment and synchronous subprocess execution."
+						"description": "Optional lookup directory, child environment, and injected runner; when supplied, run must return a ToolAnswer for the rustup lookup. Defaults to {} for options; omitted cwd, env, and run use process.cwd(), process.env, and asked, respectively.",
+						"examples": [
+							{
+								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+							},
+							{
+								"env": {
+									"PATH": "/opt/homebrew/bin:/usr/bin:/bin"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pinnedToolchain",
 						"type": "PinnedTool",
-						"description": "Resolved executable and copied child environment with the pinned RUSTUP_TOOLCHAIN, matching rustc path, cleared wrappers and toolchain directories prepended to PATH and library search paths."
+						"description": "The selected executable path and environment for launching it. The environment inherits the chosen input environment and sets RUSTUP_TOOLCHAIN, RUSTC, RUSTC_WRAPPER, RUSTC_WORKSPACE_WRAPPER, PATH, and DYLD_LIBRARY_PATH for the selected toolchain; values are strings or undefined.",
+						"examples": [
+							{
+								"command": "/Users/danielfugere/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+								"env": {
+									"RUSTUP_TOOLCHAIN": "stable",
+									"RUSTC": "/Users/danielfugere/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc",
+									"RUSTC_WRAPPER": "",
+									"RUSTC_WORKSPACE_WRAPPER": "",
+									"PATH": "/Users/danielfugere/.rustup/toolchains/stable-aarch64-apple-darwin/bin:/usr/bin:/bin",
+									"DYLD_LIBRARY_PATH": "/Users/danielfugere/.rustup/toolchains/stable-aarch64-apple-darwin/lib"
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error for a tool name outside /^[a-z][a-z0-9-]*$/, a non-directory working directory, or a filesystem or TOML failure while locating or parsing the nearest rust-toolchain.toml. It also throws if rustup cannot start, exits nonzero, or returns a blank executable path; a malformed nearer pin is not skipped in favor of an ancestor."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
