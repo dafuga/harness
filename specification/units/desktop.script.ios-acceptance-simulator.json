@@ -29,123 +29,180 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "install.udid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "UDID of the simulator that receives the app installation.",
+				"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 			},
 			{
 				"name": "install.product",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path to the app product passed to xcrun simctl install.",
+				"examples": ["/tmp/Harness.app"]
 			},
 			{
 				"name": "launch.udid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "UDID of the simulator on which the app is launched.",
+				"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 			},
 			{
 				"name": "launch.args",
 				"type": "string[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Arguments passed through to the app at launch after the existing process is terminated.",
+				"examples": [
+					["--acceptance", "camera-permission"]
+				]
 			},
 			{
 				"name": "cameraAccess.udid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "UDID of the simulator whose camera permission is changed.",
+				"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 			},
 			{
 				"name": "cameraAccess.access",
 				"type": "'grant' | 'revoke'",
-				"required": true
+				"required": true,
+				"description": "Camera permission state that the simulator reports to the app.",
+				"examples": ["grant", "revoke"]
 			},
 			{
 				"name": "running.udid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "UDID of the simulator whose process list is checked for the app.",
+				"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 			},
 			{
 				"name": "screenshot.udid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "UDID of the simulator whose screen is captured.",
+				"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 			},
 			{
 				"name": "screenshot.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path where the simulator screenshot is written.",
+				"examples": ["/tmp/ios-acceptance.png"]
 			},
 			{
 				"name": "inspectorSocket.udid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "UDID of the simulator whose WebKit inspector socket setting is read.",
+				"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 			},
 			{
 				"name": "keychainGroups.udid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "UDID of the simulator whose Keychain database is queried for matching access groups.",
+				"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 			},
 			{
 				"name": "shutdown.udid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "UDID of the simulator that is asked to shut down.",
+				"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "deviceName",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Name reserved for the native acceptance simulator.",
+				"examples": ["Harness Native Acceptance"]
 			},
 			{
 				"name": "bundleId",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Bundle identifier used when launching the app and changing its camera permission.",
+				"examples": ["com.dafuga.harness"]
 			},
 			{
 				"name": "acceptanceDevice",
-				"type": "{ udid: string; runtime: string }"
+				"type": "{ udid: string; runtime: string }",
+				"description": "The simulator UDID and runtime version after the named device has been erased, booted, and boot-checked.",
+				"examples": [
+					{
+						"udid": "6D5A4E3C-2B1A-4F08-9C7D-1234567890AB",
+						"runtime": "26.0"
+					}
+				]
 			},
 			{
 				"name": "install",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned after the app product is installed on the selected simulator."
 			},
 			{
 				"name": "launch",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned after the app is launched with the supplied arguments."
 			},
 			{
 				"name": "cameraAccess",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned after the simulator camera permission state is set for the app."
 			},
 			{
 				"name": "running",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the simulator process list contains the app UIKitApplication entry.",
+				"examples": [true, false]
 			},
 			{
 				"name": "screenshot",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned after the simulator screenshot command is run for the requested path."
 			},
 			{
 				"name": "inspectorSocket",
-				"type": "string"
+				"type": "string",
+				"description": "The value of the simulator RWI_LISTEN_SOCKET environment variable.",
+				"examples": ["/tmp/webinspector.sock"]
 			},
 			{
 				"name": "keychainGroups",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Distinct Keychain access-group names containing the app bundle identifier; item contents are never read.",
+				"examples": [
+					["com.dafuga.harness"],
+					[]
+				]
 			},
 			{
 				"name": "shutdown",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned after a shutdown attempt for the selected simulator."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when no available iOS runtime exists, the newest available runtime supports no iPhone, the Keychain database read fails, or a simulator command fails."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown if the JSON returned while listing simulator runtimes or devices cannot be parsed."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "acceptanceDevice",
@@ -153,11 +210,29 @@
 				"outputs": [
 					{
 						"name": "acceptanceDevice",
-						"type": "{ udid: string; runtime: string }"
+						"type": "{ udid: string; runtime: string }",
+						"description": "The simulator UDID and runtime version after the named device has been erased, booted, and boot-checked.",
+						"examples": [
+							{
+								"udid": "6D5A4E3C-2B1A-4F08-9C7D-1234567890AB",
+								"runtime": "26.0"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when no available iOS runtime exists or the newest available runtime supports no iPhone."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown if the JSON returned while listing simulator runtimes or devices cannot be parsed."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "install",
@@ -165,22 +240,33 @@
 					{
 						"name": "install.udid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "UDID of the simulator that receives the app installation.",
+						"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 					},
 					{
 						"name": "install.product",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path to the app product passed to xcrun simctl install.",
+						"examples": ["/tmp/Harness.app"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "install",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned after the app product is installed on the selected simulator."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated when the xcrun simctl command used by this operation fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "launch",
@@ -188,23 +274,36 @@
 					{
 						"name": "launch.udid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "UDID of the simulator on which the app is launched.",
+						"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 					},
 					{
 						"name": "launch.args",
 						"type": "string[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Arguments passed through to the app at launch after the existing process is terminated.",
+						"examples": [
+							["--acceptance", "camera-permission"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "launch",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned after the app is launched with the supplied arguments."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated when the xcrun simctl command used by this operation fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "cameraAccess",
@@ -212,22 +311,33 @@
 					{
 						"name": "cameraAccess.udid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "UDID of the simulator whose camera permission is changed.",
+						"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 					},
 					{
 						"name": "cameraAccess.access",
 						"type": "'grant' | 'revoke'",
-						"required": true
+						"required": true,
+						"description": "Camera permission state that the simulator reports to the app.",
+						"examples": ["grant", "revoke"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cameraAccess",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned after the simulator camera permission state is set for the app."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated when the xcrun simctl command used by this operation fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "running",
@@ -235,17 +345,27 @@
 					{
 						"name": "running.udid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "UDID of the simulator whose process list is checked for the app.",
+						"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "running",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the simulator process list contains the app UIKitApplication entry.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated when the xcrun simctl command used by this operation fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "screenshot",
@@ -253,22 +373,33 @@
 					{
 						"name": "screenshot.udid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "UDID of the simulator whose screen is captured.",
+						"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 					},
 					{
 						"name": "screenshot.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path where the simulator screenshot is written.",
+						"examples": ["/tmp/ios-acceptance.png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "screenshot",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned after the simulator screenshot command is run for the requested path."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated when the xcrun simctl command used by this operation fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "inspectorSocket",
@@ -276,17 +407,27 @@
 					{
 						"name": "inspectorSocket.udid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "UDID of the simulator whose WebKit inspector socket setting is read.",
+						"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "inspectorSocket",
-						"type": "string"
+						"type": "string",
+						"description": "The value of the simulator RWI_LISTEN_SOCKET environment variable.",
+						"examples": ["/tmp/webinspector.sock"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated when the xcrun simctl command used by this operation fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "keychainGroups",
@@ -294,22 +435,30 @@
 					{
 						"name": "keychainGroups.udid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "UDID of the simulator whose Keychain database is queried for matching access groups.",
+						"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "keychainGroups",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Distinct Keychain access-group names containing the app bundle identifier; item contents are never read.",
+						"examples": [
+							["com.dafuga.harness"],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the simulator Keychain database query returns a nonzero exit code."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "shutdown",
@@ -317,17 +466,20 @@
 					{
 						"name": "shutdown.udid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "UDID of the simulator that is asked to shut down.",
+						"examples": ["6D5A4E3C-2B1A-4F08-9C7D-1234567890AB"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "shutdown",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned after a shutdown attempt for the selected simulator."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
