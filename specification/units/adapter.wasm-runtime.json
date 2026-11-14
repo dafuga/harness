@@ -12,23 +12,35 @@
 		"symbols": ["WasmRuntimeAdapter", "WasmRuntimeAdapter.constructor"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "WasmRuntimeAdapter.constructor.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A filesystem path passed to readFile to obtain the WebAssembly module bytes when the runtime first loads the module. If reading fails, the loader rejects with the error returned by wasmUnavailable.",
+				"examples": ["dist/adapter.wasm-runtime.wasm"]
 			},
 			{
 				"name": "WasmRuntimeAdapter.constructor.options",
 				"type": "RuntimeOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Runtime options forwarded to the superclass adapter. timeoutMs sets the runtime deadline; omitted or nullish values use defaultRuntimeTimeoutMs.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "wasmUnavailable",
+				"type": "thrown",
+				"description": "On a file read failure, the deferred loader throws the error returned by wasmUnavailable with the message Wasm module ${file} cannot be read. That error is named RuntimeUnavailable; during invocation, the superclass turns load failures into a runtime-unavailable response."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [
 			{
@@ -37,23 +49,30 @@
 					{
 						"name": "WasmRuntimeAdapter.constructor.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A filesystem path passed to readFile to obtain the WebAssembly module bytes when the runtime first loads the module. If reading fails, the loader rejects with the error returned by wasmUnavailable.",
+						"examples": ["dist/adapter.wasm-runtime.wasm"]
 					},
 					{
 						"name": "WasmRuntimeAdapter.constructor.options",
 						"type": "RuntimeOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Runtime options forwarded to the superclass adapter. timeoutMs sets the runtime deadline; omitted or nullish values use defaultRuntimeTimeoutMs.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WasmRuntimeAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructor returns a WasmRuntimeAdapter instance, which inherits the Wasm runtime interface."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
