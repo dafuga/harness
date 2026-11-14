@@ -12,12 +12,13 @@
 		"symbols": ["svelteAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "svelteAdapter",
-				"type": "AuditAdapter"
+				"type": "AuditAdapter",
+				"description": "svelteAdapter is the AuditAdapter for .svelte files, declared for the app and dapp profiles, with id 'svelte', label 'Svelte', extensions ['.svelte'], optionalTools 'svelte-check' and 'eslint', and an audit(file) method that returns the findings for one file from auditFileLength, auditTypePlacement, auditAtomicComposition, auditBlocks and the local svelte-script-lang, svelte-route-file (src/routes/ paths) and svelte-component-name (src/components/ paths) checks. The adapter's own code neither runs svelte-check nor eslint, nor filters files by extension or profile, and auditBlocks receives only the first <script> block's content and runs only when that content is non-empty."
 			}
 		],
 		"errors": [],
