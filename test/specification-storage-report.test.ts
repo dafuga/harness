@@ -2,6 +2,7 @@ import { mkdir, readFile, truncate, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { specificationStorageReport } from '../scripts/report-specification-storage';
+import { renderCheck } from '../src/cli/program/manageUnits';
 import { withTempDir } from './support/temporary';
 
 test('reports unit JSON count/bytes and ledger line/byte totals without mutation', async () => {
@@ -43,5 +44,8 @@ test('reports threshold crossings as operator heads-ups without blocking the rep
 			'Unit JSON store is at or above the 16777216-byte operator heads-up.',
 			'Budget ledger is at or above the 2097152-byte operator heads-up.'
 		]);
+		expect(
+			renderCheck({ units: 1, uncertain: 0, errors: [], warnings: report.warnings })
+		).toContain('Warning: Budget ledger is at or above the 2097152-byte operator heads-up.');
 	});
 });

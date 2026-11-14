@@ -16,6 +16,7 @@ export type IndexReport = Omit<UnitIndexResult, 'manifests'> & {
 };
 
 export interface CheckReport {
+	warnings?: string[];
 	units: number;
 	uncertain: number;
 	errors: string[];

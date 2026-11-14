@@ -27,8 +27,9 @@ export function registerUnitsCommand(program: Command): void {
 		.action(async (flags: Flags) => {
 			const report = await checkUnits();
 			if (flags.json) console.log(JSON.stringify(report, null, 2));
+			else for (const warning of report.warnings ?? []) console.warn(`Warning: ${warning}`);
 			if (report.errors.length > 0) fail(report.errors.join('\n'));
-			if (!flags.json) console.log(renderCheck(report));
+			if (!flags.json) console.log(renderCheck({ ...report, warnings: [] }));
 		});
 	units
 		.command('list')

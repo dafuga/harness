@@ -1,5 +1,6 @@
 // @harness-uid u_k4g4widopi
 import type { UnitsOptions, IndexReport, CheckReport } from './manageUnits.types';
+import { specificationStorageReport } from './manageUnitsStorage';
 import { fail } from '../../core/development-tooling/errors';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type { UnitIndexResult } from '../../workflows/development-tooling/load-units/unit-index-service/UnitIndexService';
@@ -36,6 +37,7 @@ export async function checkUnits(options: UnitsOptions = {}): Promise<CheckRepor
 		uncertain: graphOf(loaded).uncertain.length,
 		contractFailures: contractFailureCounts(loaded.fresh.manifests),
 		storedContractFailures: contractFailureCounts(loaded.stored),
+		warnings: (await specificationStorageReport(loaded.root)).warnings,
 		errors: registryErrors(loaded)
 	};
 }
@@ -118,7 +120,10 @@ export function renderIndex(report: IndexReport, wrote: boolean): string {
 
 export function renderCheck(report: CheckReport): string {
 	const plural = report.uncertain === 1 ? '' : 's';
-	return `Units registry is valid: ${report.units} units, ${report.uncertain} uncertain reference${plural}.`;
+	return [
+		`Units registry is valid: ${report.units} units, ${report.uncertain} uncertain reference${plural}.`,
+		...(report.warnings ?? []).map((warning) => `Warning: ${warning}`)
+	].join('\n');
 }
 
 export type { UnitsOptions, IndexReport, CheckReport } from './manageUnits.types';
