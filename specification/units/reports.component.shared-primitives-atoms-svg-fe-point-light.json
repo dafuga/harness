@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native fePointLight element; native HTML content rules still apply."
+				"description": "Optional Svelte snippet rendered as child content inside the native fePointLight element when provided; when omitted, the component renders no child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFePointLight",
 				"type": "markup",
-				"description": "The actual native fePointLight element, with forwarded attributes and content and no additional wrapper."
+				"description": "The component renders one native SVG fePointLight element and spreads all props other than children onto it. If children is provided, it is rendered inside the element; no wrapper is added."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
