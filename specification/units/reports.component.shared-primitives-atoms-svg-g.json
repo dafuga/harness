@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native g element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet rendered inside the g element only when it is truthy; when it is omitted, this component renders no child content. It matters when the caller needs nested content inside the group, and the component adds no validation, so whatever the snippet renders passes through unchanged."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgG",
 				"type": "markup",
-				"description": "The actual native g element, with forwarded attributes and content and no additional wrapper."
+				"description": "The rendered native g element, always tagged g in the SVG namespace set by svelte:options, with every prop except children forwarded as an attribute and the children snippet rendered inside it when provided. The component adds no wrapper element, so callers' attributes and content land directly on this g element."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
