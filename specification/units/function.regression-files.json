@@ -34,83 +34,152 @@
 				"name": "testPath.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative path to classify as a test, fixture or scenario input."
+				"description": "A repository-relative path classified as a test when it contains a test, tests, e2e, fixtures, __tests__, or __snapshots__ segment followed by /, matches a .test. or .spec. filename pattern, or starts with specification/scenarios/. This is a pattern check and does not verify that the path exists.",
+				"examples": [
+					"tests/utils/regressionFiles.test.ts",
+					"specification/scenarios/regression-files.json"
+				]
 			},
 			{
 				"name": "metadata.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative path to classify as loop metadata or Markdown documentation."
+				"description": "A repository-relative path classified as metadata when it begins with specification/loops/ or ends with .md. Other paths return false.",
+				"examples": ["specification/loops/regression-files.yaml", "docs/regression-files.md"]
 			},
 			{
 				"name": "regressionFiles.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository containing the selected committed test corpus."
+				"description": "The repository root passed to the evidence-tree, unit-registry, and commit-tree readers. It must identify the repository containing the selected commit.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
+				]
 			},
 			{
 				"name": "regressionFiles.commit",
 				"type": "string",
 				"required": true,
-				"description": "Exact commit whose tests, fixtures and runner configuration are fingerprinted."
+				"description": "The commit identifier used to read the tracked evidence tree and unit manifests. This function does not validate its format itself.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "regressionFiles.tests",
 				"type": "string[]",
 				"required": true,
-				"description": "Named strengthened tests that must exist in the committed corpus."
+				"description": "A nonempty list of repository-relative paths naming strengthened tests. Each path must be tracked in the selected commit, cannot start with / or contain a .. segment, and cannot name manifest-owned product source unless testPath matches it.",
+				"examples": [
+					["tests/utils/regressionFiles.test.ts"]
+				]
 			},
 			{
 				"name": "regressionFixCommit.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository containing both the red checkpoint and candidate repair."
+				"description": "The repository root used to inspect the red checkpoint, candidate fix, and their tracked files. It must identify the repository containing both commits.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
+				]
 			},
 			{
 				"name": "regressionFixCommit.commit",
 				"type": "string",
 				"required": true,
-				"description": "Candidate fix commit whose ancestry, source-only repair and frozen test inputs are checked."
+				"description": "The candidate fix commit whose ancestry, changed files, and frozen regression inputs are checked. It must differ from and descend from the red record source commit.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "regressionFixCommit.red",
 				"type": "RegressionRecord",
 				"required": true,
-				"description": "Retained failing record identifying the original test commit and frozen corpus."
+				"description": "The regression record whose source commit, tests, and inputs form the baseline for comparison. The operation assumes it is the retained red record and does not validate its phase or status.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"loop": "verification-evidence",
+						"phase": "red",
+						"status": "failed",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"parent": "abcdef0123456789abcdef0123456789abcdef01"
+						},
+						"units": ["function.regression-files"],
+						"tests": ["tests/utils/regressionFiles.test.ts"],
+						"inputs": [
+							{
+								"path": "tests/utils/regressionFiles.test.ts",
+								"hash": "89abcdef0123456789abcdef0123456789abcdef"
+							}
+						],
+						"command": "bun test tests/utils/regressionFiles.test.ts",
+						"assertion": "The strengthened regression test fails before the fix.",
+						"profile": "focused",
+						"startedAt": "2026-11-14T10:00:00.000Z",
+						"finishedAt": "2026-11-14T10:00:02.000Z",
+						"exitCode": 1,
+						"log": {
+							"path": "output.log",
+							"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+							"bytes": 512
+						}
+					}
+				]
 			},
 			{
 				"name": "regressionTestCommit.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository containing the candidate failing-test checkpoint."
+				"description": "The repository root passed to GitAdapter for the candidate failing-test checkpoint. It must identify the repository containing the commit.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
+				]
 			},
 			{
 				"name": "regressionTestCommit.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit checked for a test-only change before any product repair."
+				"description": "The commit whose diff against its first parent is checked for test-only changes. The function reads changed paths from commit^ to commit.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "regressionTestCommit.tests",
 				"type": "string[]",
 				"required": true,
-				"description": "Named tests that the failing-test commit must strengthen."
+				"description": "A list of repository-relative paths naming tests that the checkpoint must strengthen. At least one listed path must appear among the changed files; this operation does not validate the paths against the commit tree.",
+				"examples": [
+					["tests/utils/regressionFiles.test.ts"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "Result",
 				"type": "Regression result",
-				"description": "The frozen test inputs, or why the commit sequence is invalid"
+				"description": "Successful calls return a boolean classification, a sorted path-and-hash list, or no value after commit validation, depending on the operation. Invalid proof inputs or commit sequences throw ExpectedCliError.",
+				"examples": [
+					[
+						{
+							"path": "package.json",
+							"hash": "89abcdef0123456789abcdef0123456789abcdef"
+						},
+						{
+							"path": "tests/utils/regressionFiles.test.ts",
+							"hash": "abcdef0123456789abcdef0123456789abcdef01"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
-				"name": "Invalid proof",
-				"type": "Explicit rejection or gap",
-				"description": "Refuses a product repair in the test commit, reused commits or changed test inputs."
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Raised when the named tests are empty or invalid, when a failing-test commit includes disallowed changes or names no changed test, or when a fix commit is reused, does not descend from the red commit, changes frozen inputs, or lacks a product-code change."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "testPath",
@@ -119,17 +188,23 @@
 						"name": "testPath.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative path to classify as a test, fixture or scenario input."
+						"description": "A repository-relative path classified as a test when it contains a test, tests, e2e, fixtures, __tests__, or __snapshots__ segment followed by /, matches a .test. or .spec. filename pattern, or starts with specification/scenarios/. This is a pattern check and does not verify that the path exists.",
+						"examples": [
+							"tests/utils/regressionFiles.test.ts",
+							"specification/scenarios/regression-files.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "testPath",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns true for paths matching the test, fixture, snapshot, test-filename, spec-filename, or scenario-prefix patterns; otherwise returns false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "metadata",
@@ -138,17 +213,20 @@
 						"name": "metadata.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative path to classify as loop metadata or Markdown documentation."
+						"description": "A repository-relative path classified as metadata when it begins with specification/loops/ or ends with .md. Other paths return false.",
+						"examples": ["specification/loops/regression-files.yaml", "docs/regression-files.md"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "metadata",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns true for paths under specification/loops/ or paths ending in .md; otherwise returns false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "regressionFiles",
@@ -157,34 +235,55 @@
 						"name": "regressionFiles.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository containing the selected committed test corpus."
+						"description": "The repository root passed to the evidence-tree, unit-registry, and commit-tree readers. It must identify the repository containing the selected commit.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
+						]
 					},
 					{
 						"name": "regressionFiles.commit",
 						"type": "string",
 						"required": true,
-						"description": "Exact commit whose tests, fixtures and runner configuration are fingerprinted."
+						"description": "The commit identifier used to read the tracked evidence tree and unit manifests. This function does not validate its format itself.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "regressionFiles.tests",
 						"type": "string[]",
 						"required": true,
-						"description": "Named strengthened tests that must exist in the committed corpus."
+						"description": "A nonempty list of repository-relative paths naming strengthened tests. Each path must be tracked in the selected commit, cannot start with / or contain a .. segment, and cannot name manifest-owned product source unless testPath matches it.",
+						"examples": [
+							["tests/utils/regressionFiles.test.ts"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "regressionFiles",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to path-and-hash entries from the selected tracked evidence tree for the named tests, recognized test paths, and recognized runner configuration files. The entries are sorted by path.",
+						"examples": [
+							[
+								{
+									"path": "package.json",
+									"hash": "89abcdef0123456789abcdef0123456789abcdef"
+								},
+								{
+									"path": "tests/utils/regressionFiles.test.ts",
+									"hash": "abcdef0123456789abcdef0123456789abcdef01"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when tests is empty, a named test is absent from the commit or starts with / or contains a .. segment, or a manifest-owned product-source path is named without matching testPath."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "regressionFixCommit",
@@ -193,34 +292,73 @@
 						"name": "regressionFixCommit.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository containing both the red checkpoint and candidate repair."
+						"description": "The repository root used to inspect the red checkpoint, candidate fix, and their tracked files. It must identify the repository containing both commits.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
+						]
 					},
 					{
 						"name": "regressionFixCommit.commit",
 						"type": "string",
 						"required": true,
-						"description": "Candidate fix commit whose ancestry, source-only repair and frozen test inputs are checked."
+						"description": "The candidate fix commit whose ancestry, changed files, and frozen regression inputs are checked. It must differ from and descend from the red record source commit.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "regressionFixCommit.red",
 						"type": "RegressionRecord",
 						"required": true,
-						"description": "Retained failing record identifying the original test commit and frozen corpus."
+						"description": "The regression record whose source commit, tests, and inputs form the baseline for comparison. The operation assumes it is the retained red record and does not validate its phase or status.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"loop": "verification-evidence",
+								"phase": "red",
+								"status": "failed",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"parent": "abcdef0123456789abcdef0123456789abcdef01"
+								},
+								"units": ["function.regression-files"],
+								"tests": ["tests/utils/regressionFiles.test.ts"],
+								"inputs": [
+									{
+										"path": "tests/utils/regressionFiles.test.ts",
+										"hash": "89abcdef0123456789abcdef0123456789abcdef"
+									}
+								],
+								"command": "bun test tests/utils/regressionFiles.test.ts",
+								"assertion": "The strengthened regression test fails before the fix.",
+								"profile": "focused",
+								"startedAt": "2026-11-14T10:00:00.000Z",
+								"finishedAt": "2026-11-14T10:00:02.000Z",
+								"exitCode": 1,
+								"log": {
+									"path": "output.log",
+									"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+									"bytes": 512
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "regressionFixCommit",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after validating that the fix commit differs from and descends from the red source commit, preserves the red inputs exactly, and changes at least one product-code path."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the candidate is the red source commit or is not its descendant, when the frozen inputs differ, or when the candidate changes no path classified as product code."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "regressionTestCommit",
@@ -229,34 +367,43 @@
 						"name": "regressionTestCommit.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository containing the candidate failing-test checkpoint."
+						"description": "The repository root passed to GitAdapter for the candidate failing-test checkpoint. It must identify the repository containing the commit.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
+						]
 					},
 					{
 						"name": "regressionTestCommit.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit checked for a test-only change before any product repair."
+						"description": "The commit whose diff against its first parent is checked for test-only changes. The function reads changed paths from commit^ to commit.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "regressionTestCommit.tests",
 						"type": "string[]",
 						"required": true,
-						"description": "Named tests that the failing-test commit must strengthen."
+						"description": "A list of repository-relative paths naming tests that the checkpoint must strengthen. At least one listed path must appear among the changed files; this operation does not validate the paths against the commit tree.",
+						"examples": [
+							["tests/utils/regressionFiles.test.ts"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "regressionTestCommit",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value when the commit changes only named tests, recognized test paths, or recognized metadata paths, and at least one named test changed."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when any changed path is outside the named tests, recognized test paths, and recognized metadata paths, or when no named test appears among the changed paths."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
