@@ -12,47 +12,55 @@
 		"symbols": ["ManageController", "ManageController.constructor", "ManageController.handle"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ManageController.constructor.scope",
 				"type": "HostScope",
-				"required": true
+				"required": true,
+				"description": "A HostScope dependency used only by register. After validating the body, the controller calls owns(input.hostId) and returns 400 invalid-input if it returns false."
 			},
 			{
 				"name": "ManageController.constructor.store",
 				"type": "HostStorageAdapter",
-				"required": true
+				"required": true,
+				"description": "A HostStorageAdapter used by summary, revoke-device, and unregister. The controller calls host() and returns 404 not-found when the record is absent or its hostId differs from the validated call."
 			},
 			{
 				"name": "ManageController.constructor.registry",
 				"type": "HostRegistryService",
-				"required": true
+				"required": true,
+				"description": "A HostRegistryService used for registration, summary, and unregistration. register(input) produces a 200 response when truthy and a 403 forbidden response otherwise; summary(host) supplies the summary response, and unregister() is awaited before a 200 response."
 			},
 			{
 				"name": "ManageController.constructor.revocation",
 				"type": "DeviceRevocationService",
-				"required": true
+				"required": true,
+				"description": "A DeviceRevocationService used by revoke-device. The controller calls revoke(deviceId) after body validation and host and owner checks."
 			},
 			{
 				"name": "ManageController.handle.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "A Fetch API Request passed to handle. It must use POST and name a supported operation for body parsing to occur; other methods or operation names return 404 not-found before parsing."
 			},
 			{
 				"name": "ManageController.handle.operation",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The management route operation handled with the request. Accepted values are register, summary, revoke-device, and unregister; other values return 404 not-found before request-body parsing.",
+				"examples": ["register", "revoke-device", "unregister"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ManageController.handle",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "A promise resolving to the Fetch API Response returned by the controller. Responses use status 404 for non-POST or unsupported operations, 400 for invalid input, 403 for owner mismatch or failed registration, and 200 for successful operations; a missing or mismatched host also returns 404."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ManageController.handle",
@@ -60,22 +68,26 @@
 					{
 						"name": "ManageController.handle.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "A Fetch API Request passed to handle. It must use POST and name a supported operation for body parsing to occur; other methods or operation names return 404 not-found before parsing."
 					},
 					{
 						"name": "ManageController.handle.operation",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The management route operation handled with the request. Accepted values are register, summary, revoke-device, and unregister; other values return 404 not-found before request-body parsing.",
+						"examples": ["register", "revoke-device", "unregister"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ManageController.handle",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "A promise resolving to the Fetch API Response returned by the controller. Responses use status 404 for non-POST or unsupported operations, 400 for invalid input, 403 for owner mismatch or failed registration, and 200 for successful operations; a missing or mismatched host also returns 404."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -85,32 +97,37 @@
 					{
 						"name": "ManageController.constructor.scope",
 						"type": "HostScope",
-						"required": true
+						"required": true,
+						"description": "A HostScope dependency used only by register. After validating the body, the controller calls owns(input.hostId) and returns 400 invalid-input if it returns false."
 					},
 					{
 						"name": "ManageController.constructor.store",
 						"type": "HostStorageAdapter",
-						"required": true
+						"required": true,
+						"description": "A HostStorageAdapter used by summary, revoke-device, and unregister. The controller calls host() and returns 404 not-found when the record is absent or its hostId differs from the validated call."
 					},
 					{
 						"name": "ManageController.constructor.registry",
 						"type": "HostRegistryService",
-						"required": true
+						"required": true,
+						"description": "A HostRegistryService used for registration, summary, and unregistration. register(input) produces a 200 response when truthy and a 403 forbidden response otherwise; summary(host) supplies the summary response, and unregister() is awaited before a 200 response."
 					},
 					{
 						"name": "ManageController.constructor.revocation",
 						"type": "DeviceRevocationService",
-						"required": true
+						"required": true,
+						"description": "A DeviceRevocationService used by revoke-device. The controller calls revoke(deviceId) after body validation and host and owner checks."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ManageController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ManageController instance holding the four supplied dependencies and a new ManageBodyValidator. The constructor does not call the dependency methods."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
