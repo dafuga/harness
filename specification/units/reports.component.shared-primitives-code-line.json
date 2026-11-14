@@ -25,45 +25,45 @@
 				"name": "CodeLine.text",
 				"type": "string",
 				"required": true,
-				"description": "Required complete source text. The full untruncated text stays in the DOM and native hover title."
+				"description": "Complete source text rendered as code content and assigned unchanged to its native title. It applies in both modes; clipping affects only the visible presentation, and the component imposes no text-length limit.",
+				"examples": [
+					"<hx-code class:wrap={mode === 'wrap'} title={text}>{text}</hx-code>",
+					"white-space: pre-wrap;"
+				]
 			},
 			{
 				"name": "CodeLine.mode",
 				"type": "'clip' | 'wrap'",
 				"required": false,
 				"default": "clip",
-				"description": "Optional clip or wrap mode, default clip. Clip uses one ellipsized line; wrap preserves whitespace and wraps long tokens."
+				"description": "Selects the code presentation and defaults to 'clip'. Clip uses one ellipsized line; wrap preserves whitespace and breaks long tokens anywhere.",
+				"examples": ["clip", "wrap"]
 			},
 			{
 				"name": "CodeLine.action",
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional snippet containing an existing inspection action; its callback, dialog and focus return remain caller-owned."
+				"description": "Optional Svelte snippet rendered after the code in an adjacent action span when supplied. It is undefined when omitted; the caller owns its behavior and focus return."
 			},
 			{
 				"name": "CodeLine.className",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional feature classes, default an empty string."
+				"description": "Optional string appended to the wrapper's code-line class and defaults to an empty string. The component uses it as a class value and does not use it to select the code's wrapping mode.",
+				"examples": ["", "feature-code"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CodeLine",
 				"type": "markup",
-				"description": "Code text with its complete hover/accessibility content, explicit clip or wrap presentation, and optional adjacent inspection action."
+				"description": "Renders text in an hx-code element inside an inline-flex wrapper, with the full string in the element's title; mode selects nowrap and ellipsis or preserved whitespace wrapping. When action is supplied, the snippet appears in an adjacent non-shrinking span, and its behavior remains caller-owned."
 			}
 		],
-		"errors": [
-			{
-				"name": "Caller content error",
-				"type": "thrown",
-				"description": "Errors from supplied snippets propagate; this presentation component does not catch them."
-			}
-		],
-		"errorStatus": "declared",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
