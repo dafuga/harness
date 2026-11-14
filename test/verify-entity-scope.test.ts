@@ -45,6 +45,15 @@ test('a scoped run keeps only the scenarios and states that show the entity', ()
 		inherited.states.map(({ id }) => id),
 		'Legacy membership covers every state when no state names the unit'
 	).toEqual(['badge', 'badge-failed', 'modal']);
+	// A shared scenario, as explorer-shell is for a verdict: only its unnamed states show it.
+	const mixed = {
+		...catalog,
+		units: [...catalog.units, 'reports.component.verdict'],
+		states: [{ id: 'bar' }, ...catalog.states]
+	} as ScenarioManifest;
+	const [shared] = scopedScenarios([mixed], 'reports.component.verdict');
+	expect(shared.states.map(({ id }) => id)).toEqual(['bar']);
+	expect(shared.evidence?.[0].states).toEqual([]);
 });
 
 test('an entity no scenario covers is refused', () => {

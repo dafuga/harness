@@ -10,7 +10,9 @@ export function scopeFailure(entity: string): string {
 
 /**
  * The scenarios that cover one entity, each narrowed to the states that show it, so its coverage
- * asks only for that entity's captures. An entity no scenario covers is refused.
+ * asks only for that entity's captures. An entity no state names is shown by the states that name
+ * nothing, which stand for the whole scenario; a state naming other units never shows it. An
+ * entity no scenario covers is refused.
  */
 export function scopedScenarios(scenarios: ScenarioManifest[], entity: string): ScenarioManifest[] {
 	const covering = scenarios.filter((scenario) => scenario.units.includes(entity));
@@ -19,7 +21,7 @@ export function scopedScenarios(scenarios: ScenarioManifest[], entity: string): 
 		const explicit = scenario.states.some((state) => (state.units ?? []).includes(entity));
 		const states = explicit
 			? scenario.states.filter((state) => (state.units ?? []).includes(entity))
-			: scenario.states;
+			: scenario.states.filter((state) => !state.units?.length);
 		const shown = new Set(states.map((state) => state.id));
 		return {
 			...scenario,
