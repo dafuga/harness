@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native legend element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the native legend when provided. When absent, no child content is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlLegend",
 				"type": "markup",
-				"description": "The actual native legend element, with forwarded attributes and content and no additional wrapper."
+				"description": "A native legend element that receives all props except children as attributes. The optional children snippet is rendered inside it, with no wrapper element added."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
