@@ -19,13 +19,15 @@
 			{
 				"name": "remoteControl.remote",
 				"type": "RemoteHostService",
-				"required": true
+				"required": true,
+				"description": "A RemoteHostService instance whose status, enable, and disable methods and devices member provide the remote controls. It is required when constructing the LocalControl; this wrapper captures devices and forwards calls without validation or result transformation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteControl",
-				"type": "LocalControl"
+				"type": "LocalControl",
+				"description": "The returned LocalControl is an object with callbacks for status, enable, disable, createPairing, closePairing, approvePairing, denyPairing, and revokeDevice. These callbacks are used by the window client and directly delegate to the host or captured devices methods without validation, transformation, or error handling."
 			}
 		],
 		"errors": [],
@@ -37,17 +39,19 @@
 					{
 						"name": "remoteControl.remote",
 						"type": "RemoteHostService",
-						"required": true
+						"required": true,
+						"description": "A RemoteHostService instance whose status, enable, and disable methods and devices member provide the remote controls. It is required when constructing the LocalControl; this wrapper captures devices and forwards calls without validation or result transformation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteControl",
-						"type": "LocalControl"
+						"type": "LocalControl",
+						"description": "The returned LocalControl is an object with callbacks for status, enable, disable, createPairing, closePairing, approvePairing, denyPairing, and revokeDevice. These callbacks are used by the window client and directly delegate to the host or captured devices methods without validation, transformation, or error handling."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
