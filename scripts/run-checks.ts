@@ -4,6 +4,7 @@ export const checkSteps = [
 	'check:verification-forwards',
 	'check:debt-ratchets',
 	'check:e2e-list',
+	'check:doc-links',
 	'format:check',
 	'typecheck',
 	'lint',
