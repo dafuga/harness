@@ -18,45 +18,84 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectRegistryService.constructor.file",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional path passed to LocalDocumentAdapter for the project registry document. When omitted, the constructor passes undefined, and the service does not validate or normalize the path itself.",
+				"examples": ["/Users/danielfugere/.config/desktop/projects.json"]
 			},
 			{
 				"name": "ProjectRegistryService.register.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Directory sent to git rev-parse --show-toplevel before the repository root is canonicalized with realpath. It must identify a Git work tree and be resolvable by realpath.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7/packages/desktop/src"
+				]
 			},
 			{
 				"name": "ProjectRegistryService.get.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "ID compared with each registered project id using string equality. IDs produced by register use local- followed by 64 lowercase hexadecimal SHA-256 characters.",
+				"examples": ["local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectRegistryService.register",
-				"type": "Promise<DesktopProject>"
+				"type": "Promise<DesktopProject>",
+				"description": "Resolves to the project built from the canonical Git root, using that root’s basename as name and kind local. Its id is local- followed by the lowercase 64-character SHA-256 digest of the root, and repeat registration returns the existing matching record.",
+				"examples": [
+					{
+						"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
+						"name": "slot-7",
+						"kind": "local",
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+					}
+				]
 			},
 			{
 				"name": "ProjectRegistryService.list",
-				"type": "Promise<DesktopProject[]>"
+				"type": "Promise<DesktopProject[]>",
+				"description": "Resolves to the persisted project array after checking it is an array and each entry has kind local, a string root, and an id matching local-[a-f0-9]{64}. It does not check that name matches the root or recompute the id from root.",
+				"examples": [
+					[
+						{
+							"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
+							"name": "slot-7",
+							"kind": "local",
+							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+						}
+					]
+				]
 			},
 			{
 				"name": "ProjectRegistryService.get",
-				"type": "Promise<DesktopProject>"
+				"type": "Promise<DesktopProject>",
+				"description": "Resolves to the project whose id equals the requested string. It rejects when no matching project exists and propagates failures from list().",
+				"examples": [
+					{
+						"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
+						"name": "slot-7",
+						"kind": "local",
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The service throws Error(Invalid project registry.) when list() rejects the persisted shape and Error(Unknown project.) when get() cannot find the requested ID. Rejections from Git lookup, realpath, and document adapter calls in register() or list() propagate."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectRegistryService.register",
@@ -64,17 +103,36 @@
 					{
 						"name": "ProjectRegistryService.register.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Directory sent to git rev-parse --show-toplevel before the repository root is canonicalized with realpath. It must identify a Git work tree and be resolvable by realpath.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7/packages/desktop/src"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectRegistryService.register",
-						"type": "Promise<DesktopProject>"
+						"type": "Promise<DesktopProject>",
+						"description": "Resolves to the project built from the canonical Git root, using that root’s basename as name and kind local. Its id is local- followed by the lowercase 64-character SHA-256 digest of the root, and repeat registration returns the existing matching record.",
+						"examples": [
+							{
+								"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
+								"name": "slot-7",
+								"kind": "local",
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Git lookup, realpath, or the registry update can reject; register() does not catch or replace those failures."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectRegistryService.list",
@@ -82,16 +140,28 @@
 				"outputs": [
 					{
 						"name": "ProjectRegistryService.list",
-						"type": "Promise<DesktopProject[]>"
+						"type": "Promise<DesktopProject[]>",
+						"description": "Resolves to the persisted project array after checking it is an array and each entry has kind local, a string root, and an id matching local-[a-f0-9]{64}. It does not check that name matches the root or recompute the id from root.",
+						"examples": [
+							[
+								{
+									"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
+									"name": "slot-7",
+									"kind": "local",
+									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error(Invalid project registry.) when the read value is not an array or an entry fails the kind, root, or ID checks."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectRegistryService.get",
@@ -99,22 +169,34 @@
 					{
 						"name": "ProjectRegistryService.get.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "ID compared with each registered project id using string equality. IDs produced by register use local- followed by 64 lowercase hexadecimal SHA-256 characters.",
+						"examples": ["local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectRegistryService.get",
-						"type": "Promise<DesktopProject>"
+						"type": "Promise<DesktopProject>",
+						"description": "Resolves to the project whose id equals the requested string. It rejects when no matching project exists and propagates failures from list().",
+						"examples": [
+							{
+								"id": "local-cad1e79d046d0509f0363447f510e19f8ee97657502d3c934108208e8bfa6037",
+								"name": "slot-7",
+								"kind": "local",
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error(Unknown project.) when no registry entry has the requested ID; it also propagates errors from list()."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -124,17 +206,21 @@
 					{
 						"name": "ProjectRegistryService.constructor.file",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional path passed to LocalDocumentAdapter for the project registry document. When omitted, the constructor passes undefined, and the service does not validate or normalize the path itself.",
+						"examples": ["/Users/danielfugere/.config/desktop/projects.json"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectRegistryService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a ProjectRegistryService instance containing a LocalDocumentAdapter for DesktopProject[] and a factory that supplies an empty array."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
