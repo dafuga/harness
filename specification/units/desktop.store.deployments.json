@@ -12,18 +12,20 @@
 		"symbols": ["createDeploymentsStore"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createDeploymentsStore.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "A Workspace instance whose project, snapshot, activity, deployment bridge, and busy state the store reads while operating. It is required when constructing the store."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createDeploymentsStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A DeploymentsState instance bound to the supplied workspace, exposing environment selection, status refresh, deployment review and execution, and related loading and error state. The factory returns this class instance."
 			}
 		],
 		"errors": [],
@@ -35,17 +37,19 @@
 					{
 						"name": "createDeploymentsStore.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "A Workspace instance whose project, snapshot, activity, deployment bridge, and busy state the store reads while operating. It is required when constructing the store."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createDeploymentsStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A DeploymentsState instance bound to the supplied workspace, exposing environment selection, status refresh, deployment review and execution, and related loading and error state. The factory returns this class instance."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
