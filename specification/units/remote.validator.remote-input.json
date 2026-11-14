@@ -24,72 +24,244 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteInputValidator.attach.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The raw input to `attach`: an object with exactly the keys `client`, `protocol` and `resume`, and any other shape is refused. `protocol` must be the number 1, `client.kind` must be `electron`, `ios` or `test`, `client.name` must be non-blank and at most 80 characters, and `resume` must be null or `{ epoch, sequence }` with an `epoch` of 32 lowercase hex characters and a `sequence` that is a non-negative safe integer.",
+				"examples": [
+					{
+						"protocol": 1,
+						"client": {
+							"kind": "ios",
+							"name": "Review iPhone"
+						},
+						"resume": null
+					},
+					{
+						"protocol": 1,
+						"client": {
+							"kind": "electron",
+							"name": "Harness desktop"
+						},
+						"resume": {
+							"epoch": "0a6f3c81d24e97b5c3f08e2d61a4b9c7",
+							"sequence": 42
+						}
+					}
+				]
 			},
 			{
 				"name": "RemoteInputValidator.projectId.input",
 				"type": "Fields",
-				"required": true
+				"required": true,
+				"description": "The request fields that name the project, read from the `projectId` key. The value must be the string `local-` followed by 64 lowercase hex characters, the form the protocol reserves for projects registered on the computer, so paths and hosted project ids are refused.",
+				"examples": [
+					{
+						"projectId": "local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8"
+					},
+					{
+						"projectId": "local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+					}
+				]
 			},
 			{
 				"name": "RemoteInputValidator.revision.input",
 				"type": "Fields",
-				"required": true
+				"required": true,
+				"description": "The request fields that name the checked-out revision, read from the `revision` key. That value must be an object with exactly `branch` and `commit`, where `branch` is a string of 1 to 255 characters and `commit` is a 40-character lowercase hex SHA.",
+				"examples": [
+					{
+						"revision": {
+							"branch": "main",
+							"commit": "4b7e2c9d1a03f58e6c42b97d0e1a5f3c8d6b2e94"
+						}
+					},
+					{
+						"revision": {
+							"branch": "feature/evidence-grid",
+							"commit": "e91d04a7c3b8f26d5e0a19c74b3d8f2e6a05c1b9"
+						}
+					}
+				]
 			},
 			{
 				"name": "RemoteInputValidator.approval.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The approval input: an object with exactly `agents`, `deviceId`, `pairingId` and `projectIds`, plus `comments` only when it is sent. `pairingId` must be 32 lowercase hex characters, `deviceId` must be 40 lowercase hex characters, `projectIds` must hold 1 to 64 distinct `local-` project ids, and `agents` must be a boolean; a present `comments` must be a boolean that is true whenever `agents` is true.",
+				"examples": [
+					{
+						"pairingId": "9c41e7a0b2d84f6e91a35c07d8e2b4f1",
+						"deviceId": "5a0f8c2e71d9b4637e2a58c0d14f9b6e3a7c52d1",
+						"projectIds": [
+							"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8"
+						],
+						"agents": false
+					},
+					{
+						"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628",
+						"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c",
+						"projectIds": [
+							"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8",
+							"local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+						],
+						"agents": false,
+						"comments": true
+					},
+					{
+						"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628",
+						"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c",
+						"projectIds": [
+							"local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+						],
+						"agents": true,
+						"comments": true
+					}
+				]
 			},
 			{
 				"name": "RemoteInputValidator.pairing.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An object with exactly one key, `pairingId`, whose value must be 32 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
+				"examples": [
+					{
+						"pairingId": "9c41e7a0b2d84f6e91a35c07d8e2b4f1"
+					},
+					{
+						"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628"
+					}
+				]
 			},
 			{
 				"name": "RemoteInputValidator.device.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An object with exactly one key, `deviceId`, whose value must be 40 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
+				"examples": [
+					{
+						"deviceId": "5a0f8c2e71d9b4637e2a58c0d14f9b6e3a7c52d1"
+					},
+					{
+						"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteInputValidator.attach",
-				"type": "AttachInput"
+				"type": "AttachInput",
+				"description": "The checked attach input, returned with `protocol` always 1, a `client` whose `kind` is `electron`, `ios` or `test` and whose name is unchanged, and `resume` either null or `{ epoch, sequence }`. Only input that passed every check is returned, so a caller can rely on these shapes.",
+				"examples": [
+					{
+						"protocol": 1,
+						"client": {
+							"kind": "ios",
+							"name": "Review iPhone"
+						},
+						"resume": null
+					},
+					{
+						"protocol": 1,
+						"client": {
+							"kind": "electron",
+							"name": "Harness desktop"
+						},
+						"resume": {
+							"epoch": "0a6f3c81d24e97b5c3f08e2d61a4b9c7",
+							"sequence": 42
+						}
+					}
+				]
 			},
 			{
 				"name": "RemoteInputValidator.projectId",
-				"type": "string"
+				"type": "string",
+				"description": "The project id from the input, returned unchanged: `local-` followed by 64 lowercase hex characters, the form reserved for projects registered on the computer. A path or a hosted project id is never returned.",
+				"examples": [
+					"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8",
+					"local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+				]
 			},
 			{
 				"name": "RemoteInputValidator.revision",
-				"type": "RemoteRevision"
+				"type": "RemoteRevision",
+				"description": "The checked branch and commit, returned as `{ branch, commit }` with the branch exactly as sent. `branch` is 1 to 255 characters, and `commit` is a 40-character lowercase hex SHA.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "4b7e2c9d1a03f58e6c42b97d0e1a5f3c8d6b2e94"
+					},
+					{
+						"branch": "feature/evidence-grid",
+						"commit": "e91d04a7c3b8f26d5e0a19c74b3d8f2e6a05c1b9"
+					}
+				]
 			},
 			{
 				"name": "RemoteInputValidator.approval",
-				"type": "RemoteApprovalInput"
+				"type": "RemoteApprovalInput",
+				"description": "The checked approval input, returned with `pairingId`, `deviceId`, `projectIds` and `agents`, plus `comments` only when the input carried it. Each value is the checked input value, unchanged, and `projectIds` keeps the order it was sent in.",
+				"examples": [
+					{
+						"pairingId": "9c41e7a0b2d84f6e91a35c07d8e2b4f1",
+						"deviceId": "5a0f8c2e71d9b4637e2a58c0d14f9b6e3a7c52d1",
+						"projectIds": [
+							"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8"
+						],
+						"agents": false
+					},
+					{
+						"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628",
+						"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c",
+						"projectIds": [
+							"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8",
+							"local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+						],
+						"agents": false,
+						"comments": true
+					}
+				]
 			},
 			{
 				"name": "RemoteInputValidator.pairing",
-				"type": "{ pairingId: string }"
+				"type": "{ pairingId: string }",
+				"description": "The checked pairing id, returned as `{ pairingId }`, and it is exactly 32 lowercase hex characters.",
+				"examples": [
+					{
+						"pairingId": "9c41e7a0b2d84f6e91a35c07d8e2b4f1"
+					},
+					{
+						"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628"
+					}
+				]
 			},
 			{
 				"name": "RemoteInputValidator.device",
-				"type": "{ deviceId: string }"
+				"type": "{ deviceId: string }",
+				"description": "The checked device id, returned as `{ deviceId }`, and it is exactly 40 lowercase hex characters.",
+				"examples": [
+					{
+						"deviceId": "5a0f8c2e71d9b4637e2a58c0d14f9b6e3a7c52d1"
+					},
+					{
+						"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "RemoteFailure",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Every refused input throws a RemoteFailure whose `code` names the failed check: `protocol-unsupported`, `invalid-message`, `project-required`, `project-denied` or `revision-required`. Its message is the fixed display text for that code and carries no input values."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteInputValidator.attach",
@@ -97,22 +269,67 @@
 					{
 						"name": "RemoteInputValidator.attach.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The raw input to `attach`: an object with exactly the keys `client`, `protocol` and `resume`, and any other shape is refused. `protocol` must be the number 1, `client.kind` must be `electron`, `ios` or `test`, `client.name` must be non-blank and at most 80 characters, and `resume` must be null or `{ epoch, sequence }` with an `epoch` of 32 lowercase hex characters and a `sequence` that is a non-negative safe integer.",
+						"examples": [
+							{
+								"protocol": 1,
+								"client": {
+									"kind": "ios",
+									"name": "Review iPhone"
+								},
+								"resume": null
+							},
+							{
+								"protocol": 1,
+								"client": {
+									"kind": "electron",
+									"name": "Harness desktop"
+								},
+								"resume": {
+									"epoch": "0a6f3c81d24e97b5c3f08e2d61a4b9c7",
+									"sequence": 42
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteInputValidator.attach",
-						"type": "AttachInput"
+						"type": "AttachInput",
+						"description": "The checked attach input, returned with `protocol` always 1, a `client` whose `kind` is `electron`, `ios` or `test` and whose name is unchanged, and `resume` either null or `{ epoch, sequence }`. Only input that passed every check is returned, so a caller can rely on these shapes.",
+						"examples": [
+							{
+								"protocol": 1,
+								"client": {
+									"kind": "ios",
+									"name": "Review iPhone"
+								},
+								"resume": null
+							},
+							{
+								"protocol": 1,
+								"client": {
+									"kind": "electron",
+									"name": "Harness desktop"
+								},
+								"resume": {
+									"epoch": "0a6f3c81d24e97b5c3f08e2d61a4b9c7",
+									"sequence": 42
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "RemoteFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as RemoteFailure with code `protocol-unsupported` when `protocol` is a number other than 1, and with code `invalid-message` for any other refusal: a missing or non-number protocol, keys other than exactly `client`, `protocol` and `resume`, or a malformed `client` or `resume`."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteInputValidator.projectId",
@@ -120,22 +337,37 @@
 					{
 						"name": "RemoteInputValidator.projectId.input",
 						"type": "Fields",
-						"required": true
+						"required": true,
+						"description": "The request fields that name the project, read from the `projectId` key. The value must be the string `local-` followed by 64 lowercase hex characters, the form the protocol reserves for projects registered on the computer, so paths and hosted project ids are refused.",
+						"examples": [
+							{
+								"projectId": "local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8"
+							},
+							{
+								"projectId": "local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteInputValidator.projectId",
-						"type": "string"
+						"type": "string",
+						"description": "The project id from the input, returned unchanged: `local-` followed by 64 lowercase hex characters, the form reserved for projects registered on the computer. A path or a hosted project id is never returned.",
+						"examples": [
+							"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8",
+							"local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "RemoteFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as RemoteFailure with code `project-required` when `projectId` is undefined, and with code `project-denied` when it is not a string of the form `local-` followed by 64 lowercase hex characters."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteInputValidator.revision",
@@ -143,22 +375,49 @@
 					{
 						"name": "RemoteInputValidator.revision.input",
 						"type": "Fields",
-						"required": true
+						"required": true,
+						"description": "The request fields that name the checked-out revision, read from the `revision` key. That value must be an object with exactly `branch` and `commit`, where `branch` is a string of 1 to 255 characters and `commit` is a 40-character lowercase hex SHA.",
+						"examples": [
+							{
+								"revision": {
+									"branch": "main",
+									"commit": "4b7e2c9d1a03f58e6c42b97d0e1a5f3c8d6b2e94"
+								}
+							},
+							{
+								"revision": {
+									"branch": "feature/evidence-grid",
+									"commit": "e91d04a7c3b8f26d5e0a19c74b3d8f2e6a05c1b9"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteInputValidator.revision",
-						"type": "RemoteRevision"
+						"type": "RemoteRevision",
+						"description": "The checked branch and commit, returned as `{ branch, commit }` with the branch exactly as sent. `branch` is 1 to 255 characters, and `commit` is a 40-character lowercase hex SHA.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "4b7e2c9d1a03f58e6c42b97d0e1a5f3c8d6b2e94"
+							},
+							{
+								"branch": "feature/evidence-grid",
+								"commit": "e91d04a7c3b8f26d5e0a19c74b3d8f2e6a05c1b9"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "RemoteFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as RemoteFailure with code `revision-required` whenever `revision` is undefined or malformed: not an object with exactly `branch` and `commit`, a `branch` that is empty or longer than 255 characters, or a `commit` that is not 40 lowercase hex characters."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteInputValidator.approval",
@@ -166,22 +425,74 @@
 					{
 						"name": "RemoteInputValidator.approval.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The approval input: an object with exactly `agents`, `deviceId`, `pairingId` and `projectIds`, plus `comments` only when it is sent. `pairingId` must be 32 lowercase hex characters, `deviceId` must be 40 lowercase hex characters, `projectIds` must hold 1 to 64 distinct `local-` project ids, and `agents` must be a boolean; a present `comments` must be a boolean that is true whenever `agents` is true.",
+						"examples": [
+							{
+								"pairingId": "9c41e7a0b2d84f6e91a35c07d8e2b4f1",
+								"deviceId": "5a0f8c2e71d9b4637e2a58c0d14f9b6e3a7c52d1",
+								"projectIds": [
+									"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8"
+								],
+								"agents": false
+							},
+							{
+								"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628",
+								"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c",
+								"projectIds": [
+									"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8",
+									"local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+								],
+								"agents": false,
+								"comments": true
+							},
+							{
+								"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628",
+								"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c",
+								"projectIds": [
+									"local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+								],
+								"agents": true,
+								"comments": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteInputValidator.approval",
-						"type": "RemoteApprovalInput"
+						"type": "RemoteApprovalInput",
+						"description": "The checked approval input, returned with `pairingId`, `deviceId`, `projectIds` and `agents`, plus `comments` only when the input carried it. Each value is the checked input value, unchanged, and `projectIds` keeps the order it was sent in.",
+						"examples": [
+							{
+								"pairingId": "9c41e7a0b2d84f6e91a35c07d8e2b4f1",
+								"deviceId": "5a0f8c2e71d9b4637e2a58c0d14f9b6e3a7c52d1",
+								"projectIds": [
+									"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8"
+								],
+								"agents": false
+							},
+							{
+								"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628",
+								"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c",
+								"projectIds": [
+									"local-7d3a9f0c12e845b6a09c7e1f3d52b8a46e0c9d17b3f2a85e41d6c0b9e7f3a2d8",
+									"local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
+								],
+								"agents": false,
+								"comments": true
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "RemoteFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as RemoteFailure with code `invalid-message` for any refused approval: keys that are not exactly `agents`, `deviceId`, `pairingId` and `projectIds` (with or without `comments`), a `projectIds` that is not 1 to 64 distinct `local-` ids, a non-boolean `agents`, a present `comments` that is not a boolean or is false while `agents` is true, or a malformed `pairingId` or `deviceId`."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteInputValidator.pairing",
@@ -189,17 +500,41 @@
 					{
 						"name": "RemoteInputValidator.pairing.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An object with exactly one key, `pairingId`, whose value must be 32 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
+						"examples": [
+							{
+								"pairingId": "9c41e7a0b2d84f6e91a35c07d8e2b4f1"
+							},
+							{
+								"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteInputValidator.pairing",
-						"type": "{ pairingId: string }"
+						"type": "{ pairingId: string }",
+						"description": "The checked pairing id, returned as `{ pairingId }`, and it is exactly 32 lowercase hex characters.",
+						"examples": [
+							{
+								"pairingId": "9c41e7a0b2d84f6e91a35c07d8e2b4f1"
+							},
+							{
+								"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "Thrown as RemoteFailure with code `invalid-message` when the input is not an object with exactly the key `pairingId`, or when that value is not 32 lowercase hex characters."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteInputValidator.device",
@@ -207,17 +542,41 @@
 					{
 						"name": "RemoteInputValidator.device.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An object with exactly one key, `deviceId`, whose value must be 40 lowercase hex characters; any other shape or value is refused with `invalid-message`.",
+						"examples": [
+							{
+								"deviceId": "5a0f8c2e71d9b4637e2a58c0d14f9b6e3a7c52d1"
+							},
+							{
+								"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteInputValidator.device",
-						"type": "{ deviceId: string }"
+						"type": "{ deviceId: string }",
+						"description": "The checked device id, returned as `{ deviceId }`, and it is exactly 40 lowercase hex characters.",
+						"examples": [
+							{
+								"deviceId": "5a0f8c2e71d9b4637e2a58c0d14f9b6e3a7c52d1"
+							},
+							{
+								"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "Thrown as RemoteFailure with code `invalid-message` when the input is not an object with exactly the key `deviceId`, or when that value is not 40 lowercase hex characters."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
