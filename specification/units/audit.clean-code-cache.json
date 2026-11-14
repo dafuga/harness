@@ -25,65 +25,162 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reviewCacheKey.snapshot",
 				"type": "ReviewSnapshot",
-				"required": true
+				"required": true,
+				"description": "A review snapshot containing the target, supplied inputs, serialized state, context hash, context paths, and omitted paths. The key uses only state and contextHash, so changes to the other snapshot fields do not affect it.",
+				"examples": [
+					{
+						"target": {
+							"path": "src/audit/development-tooling/cleanCodeCache.ts",
+							"contents": "export const enabled = true;\n",
+							"hash": "db1242f0e836edaa9533cb367264cc3624520f3576b72d407ed0d1677545c26a"
+						},
+						"inputs": [
+							{
+								"path": "src/audit/development-tooling/cleanCodeCache.ts",
+								"contents": "export const enabled = true;\n",
+								"hash": "db1242f0e836edaa9533cb367264cc3624520f3576b72d407ed0d1677545c26a"
+							}
+						],
+						"contextHash": "40be9bbee81c0ccae949dc2586d0b3764f61e60f4e0580a2901fe83f37976248",
+						"state": "{\"target\":{\"path\":\"src/audit/development-tooling/cleanCodeCache.ts\",\"language\":\".ts\",\"code\":\"export const enabled = true;\\n\"},\"related\":[],\"conventions\":[],\"omittedContext\":[],\"auditFindings\":[]}",
+						"contextPaths": [],
+						"omittedContext": []
+					}
+				]
 			},
 			{
 				"name": "reviewCacheKey.settings",
 				"type": "CleanCodeSettings",
-				"required": true
+				"required": true,
+				"description": "The clean-code settings object included in full in the cache-key serialization. Its JSON-serialized fields participate in the key; the implementation does not apply separate normalization here.",
+				"examples": [
+					{
+						"mode": "advisory",
+						"model": "configured-model",
+						"minConfidence": 0.75,
+						"apiKeyEnv": "API_KEY_ENV",
+						"exclude": []
+					}
+				]
 			},
 			{
 				"name": "readReviewCache.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project root used to resolve .cache/harness/clean-code for lookup. The read requires resolvable real paths and returns undefined if directory resolution or any later read step fails.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "readReviewCache.key",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Cache key inserted verbatim into the <key>.json lookup filename. The function does not validate or normalize the key string.",
+				"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 			},
 			{
 				"name": "writeReviewCache.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project root used to resolve .cache/harness/clean-code for cache creation. The write checks the nearest existing cache ancestor against the project root, and any failure is swallowed.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "writeReviewCache.key",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Cache key inserted verbatim into the temporary and final cache filenames. The function does not validate or normalize the key string.",
+				"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 			},
 			{
 				"name": "writeReviewCache.value",
 				"type": "CachedEvaluation",
-				"required": true
+				"required": true,
+				"description": "Evaluation data serialized into the cache file; evaluation is required and localization is optional. Serialization or filesystem failures are swallowed so cache availability does not determine whether a review succeeds.",
+				"examples": [
+					{
+						"evaluation": {
+							"model": "configured-model",
+							"answers": {
+								"meaningful-names": {
+									"type": "choice",
+									"choice": "meets",
+									"confidence": 0.94,
+									"probabilities": {
+										"meets": 0.94,
+										"violates": 0.03,
+										"not_applicable": 0.01,
+										"insufficient_context": 0.02
+									}
+								}
+							},
+							"usage": {
+								"input_tokens": 128,
+								"output_tokens": 24
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reviewCacheKey",
-				"type": "string"
+				"type": "string",
+				"description": "A lowercase SHA-256 digest used as the review cache key. It hashes the provider URL, rubric version, complete settings object, snapshot state, and snapshot context hash.",
+				"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 			},
 			{
 				"name": "readReviewCache",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "Resolves to the parsed JSON stored for the key when the resolved file remains inside the project cache directory. It resolves to undefined on missing files, escaped paths, invalid JSON, or any caught read error; parsed values are not schema-validated.",
+				"examples": [
+					{
+						"evaluation": {
+							"model": "configured-model",
+							"answers": {
+								"meaningful-names": {
+									"type": "choice",
+									"choice": "meets",
+									"confidence": 0.94,
+									"probabilities": {
+										"meets": 0.94,
+										"violates": 0.03,
+										"not_applicable": 0.01,
+										"insufficient_context": 0.02
+									}
+								}
+							},
+							"usage": {
+								"input_tokens": 128,
+								"output_tokens": 24
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "writeReviewCache",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves to void after attempting to serialize the evaluation and rename the temporary file to the key cache filename. All failures are caught, so this operation does not reject for cache errors."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The internal cache-directory guards throw this error when the resolved cache directory or nearest existing ancestor is outside the project root. readReviewCache and writeReviewCache catch it, so it does not escape those exported operations."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reviewCacheKey",
@@ -91,22 +188,55 @@
 					{
 						"name": "reviewCacheKey.snapshot",
 						"type": "ReviewSnapshot",
-						"required": true
+						"required": true,
+						"description": "A review snapshot containing the target, supplied inputs, serialized state, context hash, context paths, and omitted paths. The key uses only state and contextHash, so changes to the other snapshot fields do not affect it.",
+						"examples": [
+							{
+								"target": {
+									"path": "src/audit/development-tooling/cleanCodeCache.ts",
+									"contents": "export const enabled = true;\n",
+									"hash": "db1242f0e836edaa9533cb367264cc3624520f3576b72d407ed0d1677545c26a"
+								},
+								"inputs": [
+									{
+										"path": "src/audit/development-tooling/cleanCodeCache.ts",
+										"contents": "export const enabled = true;\n",
+										"hash": "db1242f0e836edaa9533cb367264cc3624520f3576b72d407ed0d1677545c26a"
+									}
+								],
+								"contextHash": "40be9bbee81c0ccae949dc2586d0b3764f61e60f4e0580a2901fe83f37976248",
+								"state": "{\"target\":{\"path\":\"src/audit/development-tooling/cleanCodeCache.ts\",\"language\":\".ts\",\"code\":\"export const enabled = true;\\n\"},\"related\":[],\"conventions\":[],\"omittedContext\":[],\"auditFindings\":[]}",
+								"contextPaths": [],
+								"omittedContext": []
+							}
+						]
 					},
 					{
 						"name": "reviewCacheKey.settings",
 						"type": "CleanCodeSettings",
-						"required": true
+						"required": true,
+						"description": "The clean-code settings object included in full in the cache-key serialization. Its JSON-serialized fields participate in the key; the implementation does not apply separate normalization here.",
+						"examples": [
+							{
+								"mode": "advisory",
+								"model": "configured-model",
+								"minConfidence": 0.75,
+								"apiKeyEnv": "API_KEY_ENV",
+								"exclude": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reviewCacheKey",
-						"type": "string"
+						"type": "string",
+						"description": "A lowercase SHA-256 digest used as the review cache key. It hashes the provider URL, rubric version, complete settings object, snapshot state, and snapshot context hash.",
+						"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readReviewCache",
@@ -114,22 +244,53 @@
 					{
 						"name": "readReviewCache.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project root used to resolve .cache/harness/clean-code for lookup. The read requires resolvable real paths and returns undefined if directory resolution or any later read step fails.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "readReviewCache.key",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Cache key inserted verbatim into the <key>.json lookup filename. The function does not validate or normalize the key string.",
+						"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readReviewCache",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "Resolves to the parsed JSON stored for the key when the resolved file remains inside the project cache directory. It resolves to undefined on missing files, escaped paths, invalid JSON, or any caught read error; parsed values are not schema-validated.",
+						"examples": [
+							{
+								"evaluation": {
+									"model": "configured-model",
+									"answers": {
+										"meaningful-names": {
+											"type": "choice",
+											"choice": "meets",
+											"confidence": 0.94,
+											"probabilities": {
+												"meets": 0.94,
+												"violates": 0.03,
+												"not_applicable": 0.01,
+												"insufficient_context": 0.02
+											}
+										}
+									},
+									"usage": {
+										"input_tokens": 128,
+										"output_tokens": 24
+									}
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writeReviewCache",
@@ -137,27 +298,59 @@
 					{
 						"name": "writeReviewCache.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project root used to resolve .cache/harness/clean-code for cache creation. The write checks the nearest existing cache ancestor against the project root, and any failure is swallowed.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "writeReviewCache.key",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Cache key inserted verbatim into the temporary and final cache filenames. The function does not validate or normalize the key string.",
+						"examples": ["8b7f5247e2937405454a84258cbe9bdcdb83604e7892f0ddc46618814d0ace78"]
 					},
 					{
 						"name": "writeReviewCache.value",
 						"type": "CachedEvaluation",
-						"required": true
+						"required": true,
+						"description": "Evaluation data serialized into the cache file; evaluation is required and localization is optional. Serialization or filesystem failures are swallowed so cache availability does not determine whether a review succeeds.",
+						"examples": [
+							{
+								"evaluation": {
+									"model": "configured-model",
+									"answers": {
+										"meaningful-names": {
+											"type": "choice",
+											"choice": "meets",
+											"confidence": 0.94,
+											"probabilities": {
+												"meets": 0.94,
+												"violates": 0.03,
+												"not_applicable": 0.01,
+												"insufficient_context": 0.02
+											}
+										}
+									},
+									"usage": {
+										"input_tokens": 128,
+										"output_tokens": 24
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writeReviewCache",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves to void after attempting to serialize the evaluation and rename the temporary file to the key cache filename. All failures are caught, so this operation does not reject for cache errors."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
