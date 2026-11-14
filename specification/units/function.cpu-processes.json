@@ -21,23 +21,68 @@
 				"name": "cpuProcesses.value",
 				"type": "string",
 				"required": true,
-				"description": "Process-list text whose rows contain pid, parent pid, cumulative CPU time and command. Malformed rows are skipped; time may include a day prefix and fractional seconds."
+				"description": "Process-list text with one row per line, where each row is a pid, a parent pid, a cumulative CPU time and a command; the time may carry a day prefix such as 1-02:03:04 and fractional seconds such as 0:12.34. Rows that do not match that shape, including rows ending in a carriage return, are skipped, while a non-numeric time such as 1.2.3 is kept with NaN cpuMs.",
+				"examples": [
+					"  4821     1 0:12.34 /usr/local/bin/codex app-server --stdio\n  5103  4821 1-02:03:04 node /usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js\n  9034  5103 0:00.50 /bin/zsh -l\n",
+					"  812     1 0:03.25 node /opt/work/harness/dist/index.js\n 6612     1 1-00:00:05 opencode\n"
+				]
 			},
 			{
 				"name": "cpuProcesses.monitorPid",
 				"type": "unknown",
 				"required": false,
-				"description": "Pid to classify as Harness regardless of its command; defaults to the current process id."
+				"description": "Pid to classify as Harness regardless of its command; defaults to process.pid (the current process id). It is compared with === against each numeric pid, so a string holding the same digits never matches.",
+				"examples": [812, 4821, 90231]
 			}
 		],
 		"outputs": [
 			{
 				"name": "cpuProcesses",
 				"type": "CpuProcess[]",
-				"description": "Parsed processes with numeric pids and CPU milliseconds, plus an optional Codex, Harness or agent role and safe label. Command strings are used only for classification and are not returned."
+				"description": "One entry per input row that matches the row shape, in input order, with numeric pid, parentPid and cpuMs (cumulative CPU time in milliseconds, NaN for a non-numeric time). role (harness, codex or agent) and label (Harness, Codex app, Codex CLI, Claude, opencode or aider) appear only for recognized rows, and command text is never returned.",
+				"examples": [
+					[
+						{
+							"pid": 4821,
+							"parentPid": 1,
+							"cpuMs": 12340,
+							"role": "codex",
+							"label": "Codex app"
+						},
+						{
+							"pid": 5103,
+							"parentPid": 4821,
+							"cpuMs": 93784000,
+							"role": "agent",
+							"label": "Claude"
+						},
+						{
+							"pid": 9034,
+							"parentPid": 5103,
+							"cpuMs": 500
+						}
+					],
+					[
+						{
+							"pid": 812,
+							"parentPid": 1,
+							"cpuMs": 3250,
+							"role": "harness",
+							"label": "Harness"
+						},
+						{
+							"pid": 6612,
+							"parentPid": 1,
+							"cpuMs": 86405000,
+							"role": "agent",
+							"label": "opencode"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "cpuProcesses",
@@ -46,24 +91,68 @@
 						"name": "cpuProcesses.value",
 						"type": "string",
 						"required": true,
-						"description": "Process-list text whose rows contain pid, parent pid, cumulative CPU time and command. Malformed rows are skipped; time may include a day prefix and fractional seconds."
+						"description": "Process-list text with one row per line, where each row is a pid, a parent pid, a cumulative CPU time and a command; the time may carry a day prefix such as 1-02:03:04 and fractional seconds such as 0:12.34. Rows that do not match that shape, including rows ending in a carriage return, are skipped, while a non-numeric time such as 1.2.3 is kept with NaN cpuMs.",
+						"examples": [
+							"  4821     1 0:12.34 /usr/local/bin/codex app-server --stdio\n  5103  4821 1-02:03:04 node /usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js\n  9034  5103 0:00.50 /bin/zsh -l\n",
+							"  812     1 0:03.25 node /opt/work/harness/dist/index.js\n 6612     1 1-00:00:05 opencode\n"
+						]
 					},
 					{
 						"name": "cpuProcesses.monitorPid",
 						"type": "unknown",
 						"required": false,
-						"description": "Pid to classify as Harness regardless of its command; defaults to the current process id."
+						"description": "Pid to classify as Harness regardless of its command; defaults to process.pid (the current process id). It is compared with === against each numeric pid, so a string holding the same digits never matches.",
+						"examples": [812, 4821, 90231]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cpuProcesses",
 						"type": "CpuProcess[]",
-						"description": "Parsed processes with numeric pids and CPU milliseconds, plus an optional Codex, Harness or agent role and safe label. Command strings are used only for classification and are not returned."
+						"description": "One entry per input row that matches the row shape, in input order, with numeric pid, parentPid and cpuMs (cumulative CPU time in milliseconds, NaN for a non-numeric time). role (harness, codex or agent) and label (Harness, Codex app, Codex CLI, Claude, opencode or aider) appear only for recognized rows, and command text is never returned.",
+						"examples": [
+							[
+								{
+									"pid": 4821,
+									"parentPid": 1,
+									"cpuMs": 12340,
+									"role": "codex",
+									"label": "Codex app"
+								},
+								{
+									"pid": 5103,
+									"parentPid": 4821,
+									"cpuMs": 93784000,
+									"role": "agent",
+									"label": "Claude"
+								},
+								{
+									"pid": 9034,
+									"parentPid": 5103,
+									"cpuMs": 500
+								}
+							],
+							[
+								{
+									"pid": 812,
+									"parentPid": 1,
+									"cpuMs": 3250,
+									"role": "harness",
+									"label": "Harness"
+								},
+								{
+									"pid": 6612,
+									"parentPid": 1,
+									"cpuMs": 86405000,
+									"role": "agent",
+									"label": "opencode"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
