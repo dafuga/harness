@@ -12,27 +12,30 @@
 		"symbols": ["registerGenerateCommand", "UnitFlags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerGenerateCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The Commander program instance that receives the generate command tree when registration runs. The implementation calls its command builder API, so this must be a Commander Command instance."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerGenerateCommand",
-				"type": "void"
+				"type": "void",
+				"description": "The function returns no value after registering the generate command, alias, subcommands, options, and action handlers. Command actions run later when Commander dispatches them."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The component scaffold action throws this when a truthy --level value is neither molecule nor organism. The failure message directs native atom generation to generate elements."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerGenerateCommand",
@@ -40,17 +43,19 @@
 					{
 						"name": "registerGenerateCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The Commander program instance that receives the generate command tree when registration runs. The implementation calls its command builder API, so this must be a Commander Command instance."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerGenerateCommand",
-						"type": "void"
+						"type": "void",
+						"description": "The function returns no value after registering the generate command, alias, subcommands, options, and action handlers. Command actions run later when Commander dispatches them."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
