@@ -32,125 +32,194 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "pause.milliseconds",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Timer delay passed to setTimeout before the promise resolves. Runtime timer precision and scheduling can delay completion.",
+				"examples": [900]
 			},
 			{
 				"name": "control.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The TEST ONLY Acceptance context for this request, including record and page instances, simulator UDID, fixture control origin, project id and name, and output path. The control origin must resolve to this machine."
 			},
 			{
 				"name": "control.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path concatenated directly to controlOrigin for the fixture request. Exactly /status selects GET; every other path selects POST.",
+				"examples": ["/status", "/pairing"]
 			},
 			{
 				"name": "control.body",
 				"type": "object",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "offered.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The TEST ONLY Acceptance context used to request and hide a pairing offer. It must include a record with a hide method and a control origin accepted by control."
 			},
 			{
 				"name": "restart.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The TEST ONLY Acceptance context supplying the page to reset and simulator UDID to relaunch. Its fixture control origin is not used by this operation."
 			},
 			{
 				"name": "restart.fixture",
 				"type": "boolean",
 				"required": false,
-				"default": true
+				"default": true,
+				"description": "Whether to include the loopback fixture argument in the simulator launch. It defaults to true; false omits that argument.",
+				"examples": [true, false]
 			},
 			{
 				"name": "restart.scans",
 				"type": "string[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Scan answers for this launch, joined with | and passed after scanArgument only when the array is nonempty. Only the TEST ONLY fixture copy understands these answers.",
+				"examples": [
+					[],
+					["fixture-scan-payload-001", "fixture-scan-payload-002"]
+				]
 			},
 			{
 				"name": "scanPressed.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The TEST ONLY Acceptance context supplying the simulator page on which the scan-button script runs. The operation uses its page and does not otherwise use the run fields."
 			},
 			{
 				"name": "scanPressed.name",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional phone name filled into the Name of this phone field before pressing the scan action. When omitted, no name-fill expression is included.",
+				"examples": ["Harness fixture iPhone"]
 			},
 			{
 				"name": "shot.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The TEST ONLY Acceptance context supplying the simulator UDID and screenshot output directory. The output directory is combined with the requested screenshot name."
 			},
 			{
 				"name": "shot.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Name interpolated with a .png suffix and resolved against run.output after a 900 millisecond pause. The name is not sanitized.",
+				"examples": ["pairing-offer"]
 			},
 			{
 				"name": "openDesign.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The TEST ONLY Acceptance context supplying the page and synthetic project name used by this flow. The operation also opens Review designs and waits for an image with nonzero naturalWidth."
 			}
 		],
 		"outputs": [
 			{
 				"name": "computerName",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Fixture computer name constant used to identify the computer in the acceptance fixture. Its exact value is Harness fixture computer.",
+				"examples": ["Harness fixture computer"]
 			},
 			{
 				"name": "panelText",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Fixture panel script text exposed for the acceptance fixture. Its exact value is return panel();.",
+				"examples": ["return panel();"]
 			},
 			{
 				"name": "footerText",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Fixture footer script text exposed for the acceptance fixture. Its exact value is return footer();.",
+				"examples": ["return footer();"]
 			},
 			{
 				"name": "pause",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A function that resolves after scheduling a setTimeout for the supplied milliseconds. Timer scheduling is subject to runtime timing, and the function resolves without a value."
 			},
 			{
 				"name": "control",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "Resolves with the response JSON parsed from the fixture control endpoint and cast to T, without runtime shape validation. T defaults to FixtureView, whose fields are state, locked, requests, and devices.",
+				"examples": [
+					{
+						"state": "idle",
+						"locked": false,
+						"requests": [
+							{
+								"deviceId": "device-001",
+								"deviceName": "Harness fixture iPhone"
+							}
+						],
+						"devices": [
+							{
+								"deviceId": "device-001",
+								"name": "Harness fixture iPhone",
+								"online": true
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "offered",
-				"type": "Promise<PairingOffer>"
+				"type": "Promise<PairingOffer>",
+				"description": "Resolves with the one-time offer returned by the fixture pairing endpoint. Before returning, it hides the offer code and QR scan text from run-record writes.",
+				"examples": [
+					{
+						"pairingId": "pairing-001",
+						"code": "482731",
+						"scan": "fixture-pairing-qr-payload-001"
+					}
+				]
 			},
 			{
 				"name": "restart",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after run.page.reset() completes and launch is invoked with the selected fixture and scan arguments. It does not wait for the relaunched app to become ready."
 			},
 			{
 				"name": "scanPressed",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves with the string returned by evaluating the scan action on the simulator page. It fills the optional phone name first, then tries Scan QR code or Scan again.",
+				"examples": ["true"]
 			},
 			{
 				"name": "shot",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves without a value after pausing 900 milliseconds and asking the simulator screenshot helper to save a PNG at the resolved output path. The screenshot content is not returned."
 			},
 			{
 				"name": "openDesign",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves with loaded after opening the named project, confirming its title, opening Review designs, and waiting for an image with nonzero naturalWidth. The returned value is the readiness marker, not the image.",
+				"examples": ["loaded"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the fixture control origin is not on this machine or the fixture responds with a non-OK status. The response status is included in the refusal error message."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "pause",
@@ -158,17 +227,20 @@
 					{
 						"name": "pause.milliseconds",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Timer delay passed to setTimeout before the promise resolves. Runtime timer precision and scheduling can delay completion.",
+						"examples": [900]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pause",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A function that resolves after scheduling a setTimeout for the supplied milliseconds. Timer scheduling is subject to runtime timing, and the function resolves without a value."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "control",
@@ -176,32 +248,61 @@
 					{
 						"name": "control.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The TEST ONLY Acceptance context for this request, including record and page instances, simulator UDID, fixture control origin, project id and name, and output path. The control origin must resolve to this machine."
 					},
 					{
 						"name": "control.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path concatenated directly to controlOrigin for the fixture request. Exactly /status selects GET; every other path selects POST.",
+						"examples": ["/status", "/pairing"]
 					},
 					{
 						"name": "control.body",
 						"type": "object",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "control",
-						"type": "Promise<T>"
+						"type": "Promise<T>",
+						"description": "Resolves with the response JSON parsed from the fixture control endpoint and cast to T, without runtime shape validation. T defaults to FixtureView, whose fields are state, locked, requests, and devices.",
+						"examples": [
+							{
+								"state": "idle",
+								"locked": false,
+								"requests": [
+									{
+										"deviceId": "device-001",
+										"deviceName": "Harness fixture iPhone"
+									}
+								],
+								"devices": [
+									{
+										"deviceId": "device-001",
+										"name": "Harness fixture iPhone",
+										"online": true
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the fixture control origin is not on this machine or the fixture responds with a non-OK status. The response status is included in the refusal error message."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "offered",
@@ -209,17 +310,32 @@
 					{
 						"name": "offered.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The TEST ONLY Acceptance context used to request and hide a pairing offer. It must include a record with a hide method and a control origin accepted by control."
 					}
 				],
 				"outputs": [
 					{
 						"name": "offered",
-						"type": "Promise<PairingOffer>"
+						"type": "Promise<PairingOffer>",
+						"description": "Resolves with the one-time offer returned by the fixture pairing endpoint. Before returning, it hides the offer code and QR scan text from run-record writes.",
+						"examples": [
+							{
+								"pairingId": "pairing-001",
+								"code": "482731",
+								"scan": "fixture-pairing-qr-payload-001"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagates the Error from control when the fixture control origin is not local or the pairing endpoint responds with a non-OK status."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "restart",
@@ -227,29 +343,38 @@
 					{
 						"name": "restart.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The TEST ONLY Acceptance context supplying the page to reset and simulator UDID to relaunch. Its fixture control origin is not used by this operation."
 					},
 					{
 						"name": "restart.fixture",
 						"type": "boolean",
 						"required": false,
-						"default": true
+						"default": true,
+						"description": "Whether to include the loopback fixture argument in the simulator launch. It defaults to true; false omits that argument.",
+						"examples": [true, false]
 					},
 					{
 						"name": "restart.scans",
 						"type": "string[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Scan answers for this launch, joined with | and passed after scanArgument only when the array is nonempty. Only the TEST ONLY fixture copy understands these answers.",
+						"examples": [
+							[],
+							["fixture-scan-payload-001", "fixture-scan-payload-002"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "restart",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after run.page.reset() completes and launch is invoked with the selected fixture and scan arguments. It does not wait for the relaunched app to become ready."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scanPressed",
@@ -257,22 +382,28 @@
 					{
 						"name": "scanPressed.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The TEST ONLY Acceptance context supplying the simulator page on which the scan-button script runs. The operation uses its page and does not otherwise use the run fields."
 					},
 					{
 						"name": "scanPressed.name",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional phone name filled into the Name of this phone field before pressing the scan action. When omitted, no name-fill expression is included.",
+						"examples": ["Harness fixture iPhone"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanPressed",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves with the string returned by evaluating the scan action on the simulator page. It fills the optional phone name first, then tries Scan QR code or Scan again.",
+						"examples": ["true"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "shot",
@@ -280,22 +411,26 @@
 					{
 						"name": "shot.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The TEST ONLY Acceptance context supplying the simulator UDID and screenshot output directory. The output directory is combined with the requested screenshot name."
 					},
 					{
 						"name": "shot.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Name interpolated with a .png suffix and resolved against run.output after a 900 millisecond pause. The name is not sanitized.",
+						"examples": ["pairing-offer"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "shot",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves without a value after pausing 900 milliseconds and asking the simulator screenshot helper to save a PNG at the resolved output path. The screenshot content is not returned."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "openDesign",
@@ -303,17 +438,20 @@
 					{
 						"name": "openDesign.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The TEST ONLY Acceptance context supplying the page and synthetic project name used by this flow. The operation also opens Review designs and waits for an image with nonzero naturalWidth."
 					}
 				],
 				"outputs": [
 					{
 						"name": "openDesign",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves with loaded after opening the named project, confirming its title, opening Review designs, and waiting for an image with nonzero naturalWidth. The returned value is the readiness marker, not the image.",
+						"examples": ["loaded"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
