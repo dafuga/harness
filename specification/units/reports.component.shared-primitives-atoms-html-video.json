@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native video element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the video element when provided; if absent or falsy, no child content is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlVideo",
 				"type": "markup",
-				"description": "The actual native video element, with forwarded attributes and content and no additional wrapper."
+				"description": "A native video element with the remaining props spread onto it; the children snippet is rendered inside only when truthy."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
