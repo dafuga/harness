@@ -15,30 +15,86 @@
 		"symbols": ["guides", "findGuide", "availableGuideTopics", "Guide", "Guide"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "findGuide.topic",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The topic string supplied to findGuide is passed to findGuideByTopic with the module's assembled guides. It matters when selecting guidance by topic; this wrapper does not validate or transform the string.",
+				"examples": ["component", "model"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "guides",
-				"type": "Guide[]"
+				"type": "Guide[]",
+				"description": "guides is the module's array of Guide records, assembled from imported guides, inline records, and generated guide factories before a topic-based naming-rule map is applied. Its records use the Guide fields, and imported definitions determine the full list.",
+				"examples": [
+					[
+						{
+							"topic": "model",
+							"summary": "Add data behavior through a small ActiveRecord-like model and an adapter.",
+							"steps": [
+								"Generate the model with fields and the target adapter.",
+								"Keep persistence calls inside the model or adapter, not in controllers.",
+								"Add validations near the model before wiring UI or API behavior.",
+								"Write model tests before adding higher-level workflow tests."
+							],
+							"rules": [
+								"One model file owns one table-shaped concept.",
+								"Model contracts document source-declared methods and fields, never exported constants as outputs. Show initialization and persistence methods only when they exist; shared interfaces do not imply database behavior.",
+								"Document database structure from the selected model definition in a separate Table tab. Inspect committed syntax without importing model code or reading a live database; leave dynamic schemas explicitly unresolved.",
+								"Use adapters for D1, SQLite, and Postgres differences.",
+								"Keep queries named by intent instead of scattering SQL."
+							],
+							"antiPatterns": [
+								"Do not put controller response formatting in models.",
+								"Do not create a generic database utility that knows every table."
+							],
+							"exampleCommands": ["harness generate model Post title:string body:text --adapter d1"]
+						}
+					]
+				]
 			},
 			{
 				"name": "findGuide",
-				"type": "Guide | undefined"
+				"type": "Guide | undefined",
+				"description": "This is the value returned by findGuideByTopic(guides, topic) for a requested topic. Its declared type permits a Guide or undefined, and this wrapper does not reshape the result.",
+				"examples": [
+					{
+						"topic": "controller",
+						"summary": "Add request handling as a thin coordinator.",
+						"steps": [
+							"Generate the controller.",
+							"Call models and services from small action methods.",
+							"Return a consistent response shape.",
+							"Cover the action with a focused test."
+						],
+						"rules": [
+							"Controllers parse input and shape output.",
+							"Business decisions belong in services or models.",
+							"Each action should fit on one screen."
+						],
+						"antiPatterns": [
+							"Do not put SQL in controllers.",
+							"Do not mix page rendering and API mutation logic."
+						],
+						"exampleCommands": ["harness generate controller Posts"]
+					}
+				]
 			},
 			{
 				"name": "availableGuideTopics",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "availableGuideTopics() returns the strings produced by uniqueGuideTopics(guides). It matters when callers need the assembled guide topics, and this wrapper returns the helper result unchanged.",
+				"examples": [
+					["model", "controller", "component"]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "findGuide",
@@ -46,17 +102,42 @@
 					{
 						"name": "findGuide.topic",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The topic string supplied to findGuide is passed to findGuideByTopic with the module's assembled guides. It matters when selecting guidance by topic; this wrapper does not validate or transform the string.",
+						"examples": ["component", "model"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "findGuide",
-						"type": "Guide | undefined"
+						"type": "Guide | undefined",
+						"description": "This is the value returned by findGuideByTopic(guides, topic) for a requested topic. Its declared type permits a Guide or undefined, and this wrapper does not reshape the result.",
+						"examples": [
+							{
+								"topic": "controller",
+								"summary": "Add request handling as a thin coordinator.",
+								"steps": [
+									"Generate the controller.",
+									"Call models and services from small action methods.",
+									"Return a consistent response shape.",
+									"Cover the action with a focused test."
+								],
+								"rules": [
+									"Controllers parse input and shape output.",
+									"Business decisions belong in services or models.",
+									"Each action should fit on one screen."
+								],
+								"antiPatterns": [
+									"Do not put SQL in controllers.",
+									"Do not mix page rendering and API mutation logic."
+								],
+								"exampleCommands": ["harness generate controller Posts"]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "availableGuideTopics",
@@ -64,11 +145,15 @@
 				"outputs": [
 					{
 						"name": "availableGuideTopics",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "availableGuideTopics() returns the strings produced by uniqueGuideTopics(guides). It matters when callers need the assembled guide topics, and this wrapper returns the helper result unchanged.",
+						"examples": [
+							["model", "controller", "component"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
