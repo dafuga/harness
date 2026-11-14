@@ -12,16 +12,37 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown at module load when process.platform is not 'darwin', with the message 'This package target requires macOS.'; no command or file operation in this file runs before it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown at module load when HARNESS_MAC_SIGN_IDENTITY is set (an empty string counts) but is not exactly 40 hexadecimal characters with no surrounding whitespace; the message is 'HARNESS_MAC_SIGN_IDENTITY must be the exact certificate SHA-1 fingerprint.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown at module load when HARNESS_MAC_SIGN_IDENTITY is a valid 40-character fingerprint that is not among the identities parsed from 'security find-identity -v -p codesigning'; the match ignores case, and the message is 'HARNESS_MAC_SIGN_IDENTITY is not an available code-signing identity.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "execFileSync throws when '/usr/libexec/PlistBuddy' or 'codesign' exits with a non-zero status or fails to start; those calls run on every invocation, while 'security find-identity' can throw the same way only when HARNESS_MAC_SIGN_IDENTITY is set. This file does not catch these errors."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the Node.js error from a failed awaited fs call (mkdir, cp, rm, or writeFile), for example when build, dist/main.cjs, or dist/preload.cjs is missing from the working directory, or with whatever the awaited macIcon(output) call rejects with; this file catches neither."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
