@@ -16,31 +16,70 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GatewayContentSerializer.history.input",
 				"type": "GatewayItem[]",
-				"required": true
+				"required": true,
+				"description": "The ordered gateway items that history normalizes. It recursively visits nested arrays and object fields, extracts inline images, and throws for unsupported attachments, binary file resources, or nesting beyond depth 32.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "GatewayContentSerializer.toolResult.output",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The raw string returned for a tool result. If its left-trimmed first character is `[` or `{`, valid JSON is parsed; otherwise the string remains text, and parsed content is recursively normalized with the same depth and attachment limits.",
+				"examples": ["{\"content\":\"Build complete.\"}", "Plain text tool response."]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GatewayContentSerializer.history",
-				"type": "{ input: GatewayItem[]; images: GatewayImage[] }"
+				"type": "{ input: GatewayItem[]; images: GatewayImage[] }",
+				"description": "The normalized history object containing transformed input items and extracted image payloads. Image placeholders refer to entries in `images` using a 1-based `image_reference`; each call is limited to 20 images and 20 MiB of image bytes.",
+				"examples": [
+					{
+						"input": [],
+						"images": []
+					}
+				]
 			},
 			{
 				"name": "GatewayContentSerializer.toolResult",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The result contains a `content` array with a text item and any extracted image items; the text is the original output unless images were extracted, when normalized content is JSON-serialized. A parsed top-level `isError: true` adds `isError: true` to the result.",
+				"examples": [
+					{
+						"content": [
+							{
+								"type": "text",
+								"text": "{\"content\":\"Build complete.\"}"
+							}
+						]
+					},
+					{
+						"content": [
+							{
+								"type": "text",
+								"text": "{\"isError\":true}"
+							}
+						],
+						"isError": true
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "gatewayContentError",
+				"type": "thrown",
+				"description": "Thrown when traversal exceeds depth 32, encounters an unsupported audio, video, or file attachment, or encounters a binary file resource. It is also thrown when a call exceeds 20 images or 20 MiB of image bytes."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GatewayContentSerializer.history",
@@ -48,17 +87,34 @@
 					{
 						"name": "GatewayContentSerializer.history.input",
 						"type": "GatewayItem[]",
-						"required": true
+						"required": true,
+						"description": "The ordered gateway items that history normalizes. It recursively visits nested arrays and object fields, extracts inline images, and throws for unsupported attachments, binary file resources, or nesting beyond depth 32.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GatewayContentSerializer.history",
-						"type": "{ input: GatewayItem[]; images: GatewayImage[] }"
+						"type": "{ input: GatewayItem[]; images: GatewayImage[] }",
+						"description": "The normalized history object containing transformed input items and extracted image payloads. Image placeholders refer to entries in `images` using a 1-based `image_reference`; each call is limited to 20 images and 20 MiB of image bytes.",
+						"examples": [
+							{
+								"input": [],
+								"images": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "gatewayContentError",
+						"type": "thrown",
+						"description": "Thrown when traversal exceeds depth 32, encounters an unsupported audio, video, or file attachment, or encounters a binary file resource. It is also thrown when a call exceeds 20 images or 20 MiB of image bytes."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GatewayContentSerializer.toolResult",
@@ -66,17 +122,45 @@
 					{
 						"name": "GatewayContentSerializer.toolResult.output",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The raw string returned for a tool result. If its left-trimmed first character is `[` or `{`, valid JSON is parsed; otherwise the string remains text, and parsed content is recursively normalized with the same depth and attachment limits.",
+						"examples": ["{\"content\":\"Build complete.\"}", "Plain text tool response."]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GatewayContentSerializer.toolResult",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The result contains a `content` array with a text item and any extracted image items; the text is the original output unless images were extracted, when normalized content is JSON-serialized. A parsed top-level `isError: true` adds `isError: true` to the result.",
+						"examples": [
+							{
+								"content": [
+									{
+										"type": "text",
+										"text": "{\"content\":\"Build complete.\"}"
+									}
+								]
+							},
+							{
+								"content": [
+									{
+										"type": "text",
+										"text": "{\"isError\":true}"
+									}
+								],
+								"isError": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "gatewayContentError",
+						"type": "thrown",
+						"description": "Thrown when traversal exceeds depth 32, encounters an unsupported audio, video, or file attachment, or encounters a binary file resource. It is also thrown when a call exceeds 20 images or 20 MiB of image bytes."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
