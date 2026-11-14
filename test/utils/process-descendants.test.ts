@@ -11,7 +11,6 @@ const alive = (pid: number) => {
 		return false;
 	}
 };
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 afterEach(() => {
 	for (const pid of started.splice(0)) if (alive(pid)) process.kill(pid, 'SIGKILL');
 });
@@ -41,11 +40,10 @@ test('a daemon is still known after its parent has ended, and only it is stopped
 	expect(left.map((item) => item.pid)).toEqual([pid]);
 	// The same id with another start time is another process: it is not signalled.
 	await signalProcesses([{ pid, started: 'Thu Jan  1 00:00:00 1970' }], 'SIGKILL');
-	await sleep(200);
 	expect(alive(pid)).toBe(true);
 	await signalProcesses(left, 'SIGKILL');
-	await sleep(200);
-	expect([alive(pid), await tracker.survivors()]).toEqual([false, []]);
+	await expect.poll(() => alive(pid)).toBe(false);
+	expect(await tracker.survivors()).toEqual([]);
 });
 
 test('what was never seen under the command is not followed', async () => {

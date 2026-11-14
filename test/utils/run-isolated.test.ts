@@ -1,3 +1,4 @@
+import { setTimeout as sleep } from 'node:timers/promises';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { mkdtemp, readFile } from 'node:fs/promises';
@@ -8,7 +9,6 @@ import { processTable } from '../../src/utils/processDescendants';
 import { runIsolated } from '../../src/utils/run-isolated/runIsolated';
 
 const node = process.execPath;
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const started: number[] = [];
 /** True while a process with this id exists; signal 0 only asks. */
 function alive(pid: number): boolean {
