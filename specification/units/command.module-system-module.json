@@ -21,23 +21,24 @@
 				"name": "ModuleCommand.register.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander program that receives the module subcommands."
+				"description": "Commander program to which the module and plugin command groups are attached. It matters when registering this command; the implementation uses it to add commands and their action handlers."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleCommand.register",
 				"type": "void",
-				"description": "Registers compatible module commands and external plugin list, info, add, generate and test commands; test execution preserves the child exit status."
+				"description": "The method returns no value and attaches module list, info, add and generate commands plus plugin list, info and test commands to the program. The plugin group uses a filtered catalog, and plugin test delegates headless execution to TestingPluginService."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+				"description": "The add and generate handlers throw Error(\"Unknown plugin: <id>\") when an id is absent from the module catalog; the info handler throws Error(\"Unknown module: <id>\") when absent from the catalog selected for its command group. For plugin test, SIGINT or SIGTERM gives the abort signal an Error(\"Testing plugin cancelled.\") reason, and delegated service failures propagate without translation."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleCommand.register",
@@ -46,18 +47,18 @@
 						"name": "ModuleCommand.register.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander program that receives the module subcommands."
+						"description": "Commander program to which the module and plugin command groups are attached. It matters when registering this command; the implementation uses it to add commands and their action handlers."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleCommand.register",
 						"type": "void",
-						"description": "Registers compatible module commands and external plugin list, info, add, generate and test commands; test execution preserves the child exit status."
+						"description": "The method returns no value and attaches module list, info, add and generate commands plus plugin list, info and test commands to the program. The plugin group uses a filtered catalog, and plugin test delegates headless execution to TestingPluginService."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
