@@ -12,27 +12,41 @@
 		"symbols": ["GET"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GET.params",
 				"type": "{ id: string }",
-				"required": true
+				"required": true,
+				"description": "The route params of /api/reports/[id]: id is the [id] path segment, passed unchanged to repository.get, which uses it as the report's directory name. This file does not validate id; a value that does not match 1 to 100 characters from A-Z, a-z, 0-9, _ and -, makes the lookup fail, and GET then throws the 404 error.",
+				"examples": [
+					{
+						"id": "6f1c2a9e-3b7d-4e2a-9c51-0d8e4b7a2f10"
+					},
+					{
+						"id": "0b9d4c71-52e8-4a6f-8d13-7e2c9f05a1b4"
+					},
+					{
+						"id": "c3a7e8d2-1f4b-4c9e-a06d-5b8f2e7d91c3"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The Response that SvelteKit's json() helper builds from the Report that repository.get resolves with, so its body is that report's JSON and it carries the header Cache-Control: no-store. It is returned only when the lookup succeeds, which means a report recorded for another site is never returned, and any failed lookup throws the 404 error instead."
 			}
 		],
 		"errors": [
 			{
 				"name": "HttpError 404",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "error(404, 'Report not found') from SvelteKit throws an HttpError with status 404 whenever the try block fails. The catch clause ignores the cause, so an id with no report directory, an id that safeId rejects, a symlinked report directory, a missing or unparsable manifest.json, or a report recorded for another site all produce this same 404."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GET",
@@ -40,22 +54,36 @@
 					{
 						"name": "GET.params",
 						"type": "{ id: string }",
-						"required": true
+						"required": true,
+						"description": "The route params of /api/reports/[id]: id is the [id] path segment, passed unchanged to repository.get, which uses it as the report's directory name. This file does not validate id; a value that does not match 1 to 100 characters from A-Z, a-z, 0-9, _ and -, makes the lookup fail, and GET then throws the 404 error.",
+						"examples": [
+							{
+								"id": "6f1c2a9e-3b7d-4e2a-9c51-0d8e4b7a2f10"
+							},
+							{
+								"id": "0b9d4c71-52e8-4a6f-8d13-7e2c9f05a1b4"
+							},
+							{
+								"id": "c3a7e8d2-1f4b-4c9e-a06d-5b8f2e7d91c3"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The Response that SvelteKit's json() helper builds from the Report that repository.get resolves with, so its body is that report's JSON and it carries the header Cache-Control: no-store. It is returned only when the lookup succeeds, which means a report recorded for another site is never returned, and any failed lookup throws the 404 error instead."
 					}
 				],
 				"errors": [
 					{
 						"name": "HttpError 404",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "error(404, 'Report not found') from SvelteKit throws an HttpError with status 404 whenever the try block fails. The catch clause ignores the cause, so an id with no report directory, an id that safeId rejects, a symlinked report directory, a missing or unparsable manifest.json, or a report recorded for another site all produce this same 404."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
