@@ -29,42 +29,64 @@
 				"type": "ListLoopsInput",
 				"required": false,
 				"default": {},
-				"description": "Optional loop root, current-time provider, and idle-day threshold; defaults to process.cwd(), current time, and zero stale days."
+				"description": "The options passed to listOpenLoops and its loop-root and clock helpers, with an optional staleDays threshold. The function defaults omitted input to {} and an omitted staleDays value to 0.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "renderOpenLoops.list",
 				"type": "OpenLoopList",
 				"required": true,
-				"description": "The result returned by listOpenLoops."
+				"description": "An OpenLoopList containing loop rows and unreadable-loop diagnostics to render. The function preserves the supplied loop order and appends unreadable diagnostics after loop lines.",
+				"examples": [
+					{
+						"loops": [],
+						"unreadable": []
+					}
+				]
 			},
 			{
 				"name": "renderOpenLoops.staleDays",
 				"type": "number",
 				"required": false,
 				"default": 0,
-				"description": "Idle-day threshold used for the text heading; defaults to zero (all open loops)."
+				"description": "Controls only the heading: values greater than zero produce an idle-for-N+-days scope, while zero or negative values produce an open scope. It defaults to zero and does not filter the supplied list.",
+				"examples": [0, 14]
 			}
 		],
 		"outputs": [
 			{
 				"name": "listOpenLoops",
 				"type": "Promise<OpenLoopList>",
-				"description": "Open loops in oldest-activity order plus unreadable loop directories and their error messages."
+				"description": "Resolves to open loops that meet the optional idle-day threshold, sorted by oldest activity, plus unreadable entries collected while reading individual loops. A missing loop directory is an empty set; a non-missing error while listing it rejects the promise.",
+				"examples": [
+					{
+						"loops": [],
+						"unreadable": []
+					}
+				]
 			},
 			{
 				"name": "renderOpenLoops",
 				"type": "string",
-				"description": "Human-readable list of open loops and unreadable entries."
+				"description": "Returns one line per loop, or a no-results line when no loops are present, followed by unreadable diagnostics; the lines are joined with newlines. The heading uses staleDays, but the supplied list is not filtered.",
+				"examples": ["No open loops."]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Invalid stale-day threshold."
+				"description": "Raised when staleDays is not a nonnegative safe integer. Validation happens before loop enumeration."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A non-missing error from listing the loop directory is rethrown, so listOpenLoops rejects. A missing loop directory is treated as an empty set."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "listOpenLoops",
@@ -74,21 +96,35 @@
 						"type": "ListLoopsInput",
 						"required": false,
 						"default": {},
-						"description": "Optional loop root, current-time provider, and idle-day threshold; defaults to process.cwd(), current time, and zero stale days."
+						"description": "The options passed to listOpenLoops and its loop-root and clock helpers, with an optional staleDays threshold. The function defaults omitted input to {} and an omitted staleDays value to 0.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "listOpenLoops",
 						"type": "Promise<OpenLoopList>",
-						"description": "Open loops in oldest-activity order plus unreadable loop directories and their error messages."
+						"description": "Resolves to open loops that meet the optional idle-day threshold, sorted by oldest activity, plus unreadable entries collected while reading individual loops. A missing loop directory is an empty set; a non-missing error while listing it rejects the promise.",
+						"examples": [
+							{
+								"loops": [],
+								"unreadable": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid stale-day threshold."
+						"description": "Raised when staleDays is not a nonnegative safe integer. Validation happens before loop enumeration."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A non-missing error from listing the loop directory is rethrown, so listOpenLoops rejects. A missing loop directory is treated as an empty set."
 					}
 				],
 				"errorStatus": "declared"
@@ -100,21 +136,29 @@
 						"name": "renderOpenLoops.list",
 						"type": "OpenLoopList",
 						"required": true,
-						"description": "The result returned by listOpenLoops."
+						"description": "An OpenLoopList containing loop rows and unreadable-loop diagnostics to render. The function preserves the supplied loop order and appends unreadable diagnostics after loop lines.",
+						"examples": [
+							{
+								"loops": [],
+								"unreadable": []
+							}
+						]
 					},
 					{
 						"name": "renderOpenLoops.staleDays",
 						"type": "number",
 						"required": false,
 						"default": 0,
-						"description": "Idle-day threshold used for the text heading; defaults to zero (all open loops)."
+						"description": "Controls only the heading: values greater than zero produce an idle-for-N+-days scope, while zero or negative values produce an open scope. It defaults to zero and does not filter the supplied list.",
+						"examples": [0, 14]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderOpenLoops",
 						"type": "string",
-						"description": "Human-readable list of open loops and unreadable entries."
+						"description": "Returns one line per loop, or a no-results line when no loops are present, followed by unreadable diagnostics; the lines are joined with newlines. The heading uses staleDays, but the supplied list is not filtered.",
+						"examples": ["No open loops."]
 					}
 				],
 				"errors": [],
