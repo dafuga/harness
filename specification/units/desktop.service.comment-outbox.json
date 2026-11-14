@@ -21,41 +21,237 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CommentOutboxService.constructor.file",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Path of the JSON file that stores unsent drafts; when omitted or empty, drafts are kept only in memory and are lost when the instance is discarded. A set path is written through a temporary file that is renamed over the drafts file, its missing parent directory is created with mode 0700, and the file is created with mode 0600.",
+				"examples": [
+					"/Users/example/Library/Application Support/Harness/comment-outbox.json",
+					"/Users/example/Library/Application Support/Harness/outbox/drafts.json"
+				]
 			},
 			{
 				"name": "CommentOutboxService.save.input",
 				"type": "HumanCommentDraft",
-				"required": true
+				"required": true,
+				"description": "The unsent comment to save: requestId, text and anchor, plus an optional threadId and the projectId it belongs to; save stores text and anchor without validating them. save rejects when projectId is missing or empty, and an already-saved (projectId, requestId) pair must have an input that JSON-serializes identically to the stored one, otherwise save rejects with 'Conflicting comment request.'",
+				"examples": [
+					{
+						"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+						"requestId": "c4e8a1d2-7f3b-4a6e-9b05-3d1f8e2a6c74",
+						"anchor": {
+							"branch": "main",
+							"commit": "3a7f9c2e1b4d6f8a0c5e7b9d1f3a5c7e9b1d3f5a",
+							"entityId": "reports.component.evidence-grid",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						},
+						"text": "The empty-state message should name the missing evidence type."
+					},
+					{
+						"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+						"requestId": "5d2b7e9a-1c4f-4e83-8a6d-b0f2c9e51d37",
+						"threadId": "e83a5c17-9d2f-4b6a-a1e4-7c0d3f98b2a6",
+						"anchor": {
+							"branch": "feature/evidence-grid",
+							"commit": "9d4e2b7a1f3c5e8d0a6b4f2e9c1d7a3b5f8e0c2d",
+							"entityId": "reports.component.evidence-grid",
+							"version": "v012",
+							"imageSha256": "4f8a2c6e1b9d3f7a5c0e8b2d6f4a1c9e3b7d5f0a2c8e6b4d1f9a3c7e5b0d2f8a",
+							"state": "empty",
+							"viewport": "desktop",
+							"region": {
+								"x": 0.125,
+								"y": 0.25,
+								"width": 0.5,
+								"height": 0.2
+							}
+						},
+						"text": "Keep the evidence type label visible when the grid is narrow."
+					}
+				]
 			},
 			{
 				"name": "CommentOutboxService.list.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The project whose unsent drafts list returns; a stored draft is included only when its projectId is strictly equal to this value. An id with no stored drafts yields an empty array rather than an error.",
+				"examples": ["0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3", "7b3e5d9a-2c1f-4e6b-8d0a-f4c2e7b9a1d5"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CommentOutboxService.save",
-				"type": "Promise<PendingComment>"
+				"type": "Promise<PendingComment>",
+				"description": "The PendingComment that save resolves with: a new draft with a random UUID draftId and savedAt set to the current time, or, for a repeat of an already-saved (projectId, requestId) with a JSON-identical input, the existing draft without adding another. Every draft has kind 'pending' and the reason 'Saved locally; not synced. Connect a verified shared project to publish.'",
+				"examples": [
+					{
+						"kind": "pending",
+						"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+						"draftId": "9f1c2a7e-4b3d-4e8a-9c61-7d2b5e0f3a18",
+						"savedAt": "2026-11-14T09:30:12.418Z",
+						"input": {
+							"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+							"requestId": "c4e8a1d2-7f3b-4a6e-9b05-3d1f8e2a6c74",
+							"anchor": {
+								"branch": "main",
+								"commit": "3a7f9c2e1b4d6f8a0c5e7b9d1f3a5c7e9b1d3f5a",
+								"entityId": "reports.component.evidence-grid",
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							},
+							"text": "The empty-state message should name the missing evidence type."
+						},
+						"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+					},
+					{
+						"kind": "pending",
+						"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+						"draftId": "2e7b9d4a-6c1f-4a8e-b3d5-0f9a2c7e1b64",
+						"savedAt": "2026-11-14T10:02:47.906Z",
+						"input": {
+							"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+							"requestId": "5d2b7e9a-1c4f-4e83-8a6d-b0f2c9e51d37",
+							"threadId": "e83a5c17-9d2f-4b6a-a1e4-7c0d3f98b2a6",
+							"anchor": {
+								"branch": "feature/evidence-grid",
+								"commit": "9d4e2b7a1f3c5e8d0a6b4f2e9c1d7a3b5f8e0c2d",
+								"entityId": "reports.component.evidence-grid",
+								"version": "v012",
+								"imageSha256": "4f8a2c6e1b9d3f7a5c0e8b2d6f4a1c9e3b7d5f0a2c8e6b4d1f9a3c7e5b0d2f8a",
+								"state": "empty",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.125,
+									"y": 0.25,
+									"width": 0.5,
+									"height": 0.2
+								}
+							},
+							"text": "Keep the evidence type label visible when the grid is narrow."
+						},
+						"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+					}
+				]
 			},
 			{
 				"name": "CommentOutboxService.list",
-				"type": "Promise<PendingComment[]>"
+				"type": "Promise<PendingComment[]>",
+				"description": "The stored drafts whose projectId matches, in the order they were first saved; the array is empty when the drafts file does not exist or holds no match. A drafts file that exists but cannot be read or parsed makes list reject instead.",
+				"examples": [
+					[],
+					[
+						{
+							"kind": "pending",
+							"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+							"draftId": "9f1c2a7e-4b3d-4e8a-9c61-7d2b5e0f3a18",
+							"savedAt": "2026-11-14T09:30:12.418Z",
+							"input": {
+								"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+								"requestId": "c4e8a1d2-7f3b-4a6e-9b05-3d1f8e2a6c74",
+								"anchor": {
+									"branch": "main",
+									"commit": "3a7f9c2e1b4d6f8a0c5e7b9d1f3a5c7e9b1d3f5a",
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"text": "The empty-state message should name the missing evidence type."
+							},
+							"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+						}
+					],
+					[
+						{
+							"kind": "pending",
+							"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+							"draftId": "9f1c2a7e-4b3d-4e8a-9c61-7d2b5e0f3a18",
+							"savedAt": "2026-11-14T09:30:12.418Z",
+							"input": {
+								"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+								"requestId": "c4e8a1d2-7f3b-4a6e-9b05-3d1f8e2a6c74",
+								"anchor": {
+									"branch": "main",
+									"commit": "3a7f9c2e1b4d6f8a0c5e7b9d1f3a5c7e9b1d3f5a",
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"text": "The empty-state message should name the missing evidence type."
+							},
+							"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+						},
+						{
+							"kind": "pending",
+							"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+							"draftId": "2e7b9d4a-6c1f-4a8e-b3d5-0f9a2c7e1b64",
+							"savedAt": "2026-11-14T10:02:47.906Z",
+							"input": {
+								"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+								"requestId": "5d2b7e9a-1c4f-4e83-8a6d-b0f2c9e51d37",
+								"threadId": "e83a5c17-9d2f-4b6a-a1e4-7c0d3f98b2a6",
+								"anchor": {
+									"branch": "feature/evidence-grid",
+									"commit": "9d4e2b7a1f3c5e8d0a6b4f2e9c1d7a3b5f8e0c2d",
+									"entityId": "reports.component.evidence-grid",
+									"version": "v012",
+									"imageSha256": "4f8a2c6e1b9d3f7a5c0e8b2d6f4a1c9e3b7d5f0a2c8e6b4d1f9a3c7e5b0d2f8a",
+									"state": "empty",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.125,
+										"y": 0.25,
+										"width": 0.5,
+										"height": 0.2
+									}
+								},
+								"text": "Keep the evidence type label visible when the grid is narrow."
+							},
+							"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "save rejects with Error('A comment needs a project.') when input.projectId is missing or empty; this check runs before the drafts file is read or written."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "save rejects with Error('Conflicting comment request.') when a stored draft has the same projectId and requestId but the new input serializes to different JSON than the stored input; the stored draft is left unchanged and nothing is written."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "save and list reject with a SyntaxError from JSON.parse when the drafts file exists but is not valid JSON; save writes nothing in that case."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "save and list reject with a Node.js filesystem Error that carries a code such as EACCES when the drafts file exists but cannot be read, or when save cannot create its directory, write its temporary file or rename it over the drafts file; a missing drafts file is not an error."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CommentOutboxService.save",
@@ -63,17 +259,130 @@
 					{
 						"name": "CommentOutboxService.save.input",
 						"type": "HumanCommentDraft",
-						"required": true
+						"required": true,
+						"description": "The unsent comment to save: requestId, text and anchor, plus an optional threadId and the projectId it belongs to; save stores text and anchor without validating them. save rejects when projectId is missing or empty, and an already-saved (projectId, requestId) pair must have an input that JSON-serializes identically to the stored one, otherwise save rejects with 'Conflicting comment request.'",
+						"examples": [
+							{
+								"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+								"requestId": "c4e8a1d2-7f3b-4a6e-9b05-3d1f8e2a6c74",
+								"anchor": {
+									"branch": "main",
+									"commit": "3a7f9c2e1b4d6f8a0c5e7b9d1f3a5c7e9b1d3f5a",
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"text": "The empty-state message should name the missing evidence type."
+							},
+							{
+								"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+								"requestId": "5d2b7e9a-1c4f-4e83-8a6d-b0f2c9e51d37",
+								"threadId": "e83a5c17-9d2f-4b6a-a1e4-7c0d3f98b2a6",
+								"anchor": {
+									"branch": "feature/evidence-grid",
+									"commit": "9d4e2b7a1f3c5e8d0a6b4f2e9c1d7a3b5f8e0c2d",
+									"entityId": "reports.component.evidence-grid",
+									"version": "v012",
+									"imageSha256": "4f8a2c6e1b9d3f7a5c0e8b2d6f4a1c9e3b7d5f0a2c8e6b4d1f9a3c7e5b0d2f8a",
+									"state": "empty",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.125,
+										"y": 0.25,
+										"width": 0.5,
+										"height": 0.2
+									}
+								},
+								"text": "Keep the evidence type label visible when the grid is narrow."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommentOutboxService.save",
-						"type": "Promise<PendingComment>"
+						"type": "Promise<PendingComment>",
+						"description": "The PendingComment that save resolves with: a new draft with a random UUID draftId and savedAt set to the current time, or, for a repeat of an already-saved (projectId, requestId) with a JSON-identical input, the existing draft without adding another. Every draft has kind 'pending' and the reason 'Saved locally; not synced. Connect a verified shared project to publish.'",
+						"examples": [
+							{
+								"kind": "pending",
+								"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+								"draftId": "9f1c2a7e-4b3d-4e8a-9c61-7d2b5e0f3a18",
+								"savedAt": "2026-11-14T09:30:12.418Z",
+								"input": {
+									"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+									"requestId": "c4e8a1d2-7f3b-4a6e-9b05-3d1f8e2a6c74",
+									"anchor": {
+										"branch": "main",
+										"commit": "3a7f9c2e1b4d6f8a0c5e7b9d1f3a5c7e9b1d3f5a",
+										"entityId": "reports.component.evidence-grid",
+										"version": null,
+										"imageSha256": null,
+										"state": null,
+										"viewport": null,
+										"region": null
+									},
+									"text": "The empty-state message should name the missing evidence type."
+								},
+								"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+							},
+							{
+								"kind": "pending",
+								"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+								"draftId": "2e7b9d4a-6c1f-4a8e-b3d5-0f9a2c7e1b64",
+								"savedAt": "2026-11-14T10:02:47.906Z",
+								"input": {
+									"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+									"requestId": "5d2b7e9a-1c4f-4e83-8a6d-b0f2c9e51d37",
+									"threadId": "e83a5c17-9d2f-4b6a-a1e4-7c0d3f98b2a6",
+									"anchor": {
+										"branch": "feature/evidence-grid",
+										"commit": "9d4e2b7a1f3c5e8d0a6b4f2e9c1d7a3b5f8e0c2d",
+										"entityId": "reports.component.evidence-grid",
+										"version": "v012",
+										"imageSha256": "4f8a2c6e1b9d3f7a5c0e8b2d6f4a1c9e3b7d5f0a2c8e6b4d1f9a3c7e5b0d2f8a",
+										"state": "empty",
+										"viewport": "desktop",
+										"region": {
+											"x": 0.125,
+											"y": 0.25,
+											"width": 0.5,
+											"height": 0.2
+										}
+									},
+									"text": "Keep the evidence type label visible when the grid is narrow."
+								},
+								"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "save rejects with Error('A comment needs a project.') when input.projectId is missing or empty; this check runs before the drafts file is read or written."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "save rejects with Error('Conflicting comment request.') when a stored draft has the same projectId and requestId but the new input serializes to different JSON than the stored input; the stored draft is left unchanged and nothing is written."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "save rejects with a SyntaxError from JSON.parse when the drafts file exists but is not valid JSON; save writes nothing in that case."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "save rejects with a Node.js filesystem Error that carries a code such as EACCES when the drafts file exists but cannot be read, or when save cannot create its directory, write its temporary file or rename it over the drafts file; a missing drafts file is not an error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CommentOutboxService.list",
@@ -81,17 +390,113 @@
 					{
 						"name": "CommentOutboxService.list.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The project whose unsent drafts list returns; a stored draft is included only when its projectId is strictly equal to this value. An id with no stored drafts yields an empty array rather than an error.",
+						"examples": [
+							"0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+							"7b3e5d9a-2c1f-4e6b-8d0a-f4c2e7b9a1d5"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommentOutboxService.list",
-						"type": "Promise<PendingComment[]>"
+						"type": "Promise<PendingComment[]>",
+						"description": "The stored drafts whose projectId matches, in the order they were first saved; the array is empty when the drafts file does not exist or holds no match. A drafts file that exists but cannot be read or parsed makes list reject instead.",
+						"examples": [
+							[],
+							[
+								{
+									"kind": "pending",
+									"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+									"draftId": "9f1c2a7e-4b3d-4e8a-9c61-7d2b5e0f3a18",
+									"savedAt": "2026-11-14T09:30:12.418Z",
+									"input": {
+										"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+										"requestId": "c4e8a1d2-7f3b-4a6e-9b05-3d1f8e2a6c74",
+										"anchor": {
+											"branch": "main",
+											"commit": "3a7f9c2e1b4d6f8a0c5e7b9d1f3a5c7e9b1d3f5a",
+											"entityId": "reports.component.evidence-grid",
+											"version": null,
+											"imageSha256": null,
+											"state": null,
+											"viewport": null,
+											"region": null
+										},
+										"text": "The empty-state message should name the missing evidence type."
+									},
+									"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+								}
+							],
+							[
+								{
+									"kind": "pending",
+									"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+									"draftId": "9f1c2a7e-4b3d-4e8a-9c61-7d2b5e0f3a18",
+									"savedAt": "2026-11-14T09:30:12.418Z",
+									"input": {
+										"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+										"requestId": "c4e8a1d2-7f3b-4a6e-9b05-3d1f8e2a6c74",
+										"anchor": {
+											"branch": "main",
+											"commit": "3a7f9c2e1b4d6f8a0c5e7b9d1f3a5c7e9b1d3f5a",
+											"entityId": "reports.component.evidence-grid",
+											"version": null,
+											"imageSha256": null,
+											"state": null,
+											"viewport": null,
+											"region": null
+										},
+										"text": "The empty-state message should name the missing evidence type."
+									},
+									"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+								},
+								{
+									"kind": "pending",
+									"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+									"draftId": "2e7b9d4a-6c1f-4a8e-b3d5-0f9a2c7e1b64",
+									"savedAt": "2026-11-14T10:02:47.906Z",
+									"input": {
+										"projectId": "0f9c1e7a-3b52-4d8e-a6f1-92c4b7d0e5a3",
+										"requestId": "5d2b7e9a-1c4f-4e83-8a6d-b0f2c9e51d37",
+										"threadId": "e83a5c17-9d2f-4b6a-a1e4-7c0d3f98b2a6",
+										"anchor": {
+											"branch": "feature/evidence-grid",
+											"commit": "9d4e2b7a1f3c5e8d0a6b4f2e9c1d7a3b5f8e0c2d",
+											"entityId": "reports.component.evidence-grid",
+											"version": "v012",
+											"imageSha256": "4f8a2c6e1b9d3f7a5c0e8b2d6f4a1c9e3b7d5f0a2c8e6b4d1f9a3c7e5b0d2f8a",
+											"state": "empty",
+											"viewport": "desktop",
+											"region": {
+												"x": 0.125,
+												"y": 0.25,
+												"width": 0.5,
+												"height": 0.2
+											}
+										},
+										"text": "Keep the evidence type label visible when the grid is narrow."
+									},
+									"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "list rejects with a SyntaxError from JSON.parse when the drafts file exists but is not valid JSON."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "list rejects with a Node.js filesystem Error that carries a code such as EACCES when the drafts file exists but cannot be read; a missing drafts file yields an empty array instead."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -101,17 +506,24 @@
 					{
 						"name": "CommentOutboxService.constructor.file",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Path of the JSON file that stores unsent drafts; when omitted or empty, drafts are kept only in memory and are lost when the instance is discarded. A set path is written through a temporary file that is renamed over the drafts file, its missing parent directory is created with mode 0700, and the file is created with mode 0600.",
+						"examples": [
+							"/Users/example/Library/Application Support/Harness/comment-outbox.json",
+							"/Users/example/Library/Application Support/Harness/outbox/drafts.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommentOutboxService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new CommentOutboxService instance, which stores drafts in the given file or in memory when file is omitted or empty."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
