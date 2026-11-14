@@ -48,20 +48,66 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "channels",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The table of 37 channel names for the desktop bridge, keyed by a camelCase name (for example, `snapshot` maps to `project:snapshot`); use it when a channel name is needed. The values are fixed string literals because of `as const`, and `ChannelName` is the union of all 37 of them, so no other string is typed as a channel name.",
+				"examples": [
+					{
+						"gameCreate": "game:create",
+						"gameLevelGenerate": "game:level-generate",
+						"gameImageGenerate": "game:image-generate",
+						"gameImageRead": "game:image-read",
+						"gameRead": "game:read",
+						"gameSave": "game:save",
+						"gameRender": "game:render",
+						"deploymentStatus": "deployment:status",
+						"deploymentActivities": "deployment:activities",
+						"startDeployment": "deployment:start",
+						"deploymentProgress": "deployment:progress",
+						"planDeployment": "deployment:plan",
+						"deploy": "deployment:execute",
+						"openProject": "project:open",
+						"listProjects": "project:list",
+						"selectProject": "project:select",
+						"capabilities": "project:capabilities",
+						"addComment": "thread:comment",
+						"pendingComments": "thread:pending",
+						"hostedStatus": "hosted:status",
+						"connectHosted": "hosted:connect",
+						"disconnectHosted": "hosted:disconnect",
+						"snapshot": "project:snapshot",
+						"entity": "entity:read",
+						"history": "entity:history",
+						"source": "entity:source",
+						"image": "image:read",
+						"evidence": "evidence:read",
+						"artifact": "evidence:artifact",
+						"createPlan": "plan:create",
+						"openThread": "thread:open",
+						"messages": "thread:messages",
+						"approve": "design:approve",
+						"providers": "providers:list",
+						"agentActivity": "project:agents",
+						"startRun": "run:start",
+						"cancelRun": "run:cancel"
+					}
+				]
 			},
 			{
 				"name": "runEventChannel",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The fixed channel name `run:event` for run events, exported separately rather than as one of the 37 entries of `channels`. It is a single string constant, so it is the one run-event channel name this module defines; use it wherever that name is needed.",
+				"examples": ["run:event"]
 			},
 			{
 				"name": "cacheEventChannel",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The fixed channel name `cache:status` for cache status events, exported separately rather than as one of the 37 entries of `channels`. It is a single string constant, so it is the one cache-event channel name this module defines; use it wherever that name is needed.",
+				"examples": ["cache:status"]
 			}
 		],
 		"errors": [],
