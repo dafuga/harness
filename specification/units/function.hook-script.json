@@ -42,59 +42,78 @@
 				"name": "hookScript.stage",
 				"type": "string",
 				"required": true,
-				"description": "Stage to render, normally pre-push or commit-msg. Only commit-msg uses the no-stdin message-file handoff."
+				"description": "Stage to render, normally pre-push or commit-msg. Only commit-msg hands Harness the message file path as an argument with no stdin, and every other string takes the piped-stdin branch; the value is inserted into the script text and file names without escaping or validation.",
+				"examples": ["pre-push", "commit-msg"]
 			},
 			{
 				"name": "managedHook.text",
 				"type": "string",
 				"required": true,
-				"description": "Hook file text to search for the Harness marker."
+				"description": "The text of an existing hook file, searched for the marker harness-managed hook at any position. The text is only searched, never parsed, so a hook that merely mentions the marker also counts as managed.",
+				"examples": [
+					"#!/bin/sh\nnpm run lint\n",
+					"#!/bin/sh\n# harness-managed hook: pre-push. Written by \"harness hooks install\"; remove it with\n# \"harness hooks uninstall\". A hook that was already here is kept beside this file and\n# runs first.\n"
+				]
 			},
 			{
 				"name": "stageFile.stage",
 				"type": "string",
 				"required": true,
-				"description": "Hook stage; pre-push retains the original opt-in filename, other names receive a suffix."
+				"description": "The stage whose opt-in file name is wanted: pre-push maps to the original harness-hooks file, and any other string maps to harness-hooks- followed by that string. The value is not checked against the offered stages, and the function only builds the name as a string without touching the filesystem.",
+				"examples": ["pre-push", "commit-msg"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hookMarker",
 				"type": "unknown",
-				"description": "Marker text harness-managed hook."
+				"description": "The fixed marker text harness-managed hook, which each wrapper writes into its header comment and managedHook searches for as a plain substring.",
+				"examples": ["harness-managed hook"]
 			},
 			{
 				"name": "chainedSuffix",
 				"type": "unknown",
-				"description": "Suffix .harness-chained used to retain an existing hook beside the wrapper."
+				"description": "The suffix .harness-chained, appended to the stage name to form the file beside the wrapper that keeps a hook which was already there. The wrapper runs that file first only when it exists and is executable.",
+				"examples": [".harness-chained"]
 			},
 			{
 				"name": "enabledFile",
 				"type": "unknown",
-				"description": "Per-worktree push opt-in filename harness-hooks."
+				"description": "The per-worktree opt-in file name harness-hooks, read from each worktree's own Git directory, which opts a worktree into the pre-push stage and holds its Harness command. Every version of Harness has written this name, so it means a push and nothing else.",
+				"examples": ["harness-hooks"]
 			},
 			{
 				"name": "hookStages",
 				"type": "unknown",
-				"description": "Supported stages pre-push and commit-msg."
+				"description": "The stages Harness offers, in this order: pre-push, where a push is verified, and commit-msg, where the message of a commit is measured. hookScript and stageFile accept any string and do not check it against this list.",
+				"examples": [
+					["pre-push", "commit-msg"]
+				]
 			},
 			{
 				"name": "stageFile",
 				"type": "string",
-				"description": "harness-hooks for pre-push; otherwise harness-hooks- followed by the stage."
+				"description": "The opt-in file name for a stage: harness-hooks for pre-push, otherwise harness-hooks- followed by the stage, so commit-msg gives harness-hooks-commit-msg. The name is built as a string only, and nothing is created or checked on disk.",
+				"examples": ["harness-hooks", "harness-hooks-commit-msg"]
 			},
 			{
 				"name": "hookScript",
 				"type": "string",
-				"description": "Shell script text that runs an executable chained hook first, preserves its failure, then reads the stage-specific worktree opt-in command and invokes Harness. Producing text does not install or run the hook."
+				"description": "Shell script text for one stage's hook wrapper: it runs an executable chained hook first and exits with that hook's status if it fails, then exits 0 when there is no Git directory or no opt-in file, and otherwise runs the Harness command stored in the opt-in file. Producing the text does not install or run the hook.",
+				"examples": [
+					"#!/bin/sh\n# harness-managed hook: pre-push. Written by \"harness hooks install\"; remove it with\n# \"harness hooks uninstall\". A hook that was already here is kept beside this file and\n# runs first.\nhook_dir=$(dirname \"$0\")\ninput=$(cat)\nnewline='\n'\nchained=\"$hook_dir/pre-push.harness-chained\"\nif [ -x \"$chained\" ]; then\n\tprintf '%s' \"${input:+$input$newline}\" | \"$chained\" \"$@\" || exit $?\nfi\ngit_dir=$(git rev-parse --absolute-git-dir 2>/dev/null) || exit 0\n[ -f \"$git_dir/harness-hooks\" ] || exit 0\nharness=$(cat \"$git_dir/harness-hooks\")\nprintf '%s' \"${input:+$input$newline}\" | sh -c \"$harness hooks run pre-push\"\n",
+					"#!/bin/sh\n# harness-managed hook: commit-msg. Written by \"harness hooks install\"; remove it with\n# \"harness hooks uninstall\". A hook that was already here is kept beside this file and\n# runs first.\nhook_dir=$(dirname \"$0\")\nchained=\"$hook_dir/commit-msg.harness-chained\"\nif [ -x \"$chained\" ]; then\n\t\"$chained\" \"$@\" || exit $?\nfi\ngit_dir=$(git rev-parse --absolute-git-dir 2>/dev/null) || exit 0\n[ -f \"$git_dir/harness-hooks-commit-msg\" ] || exit 0\nharness=$(cat \"$git_dir/harness-hooks-commit-msg\")\nsh -c \"$harness hooks run commit-msg \\\"\\$1\\\"\" harness-hook \"$1\" </dev/null\n"
+				]
 			},
 			{
 				"name": "managedHook",
 				"type": "boolean",
-				"description": "True when the text contains the managed marker anywhere."
+				"description": "True when the text contains the managed marker anywhere, and false otherwise. It is a substring check, so a hook that only mentions the marker is reported as managed.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "hookScript",
@@ -103,18 +122,23 @@
 						"name": "hookScript.stage",
 						"type": "string",
 						"required": true,
-						"description": "Stage to render, normally pre-push or commit-msg. Only commit-msg uses the no-stdin message-file handoff."
+						"description": "Stage to render, normally pre-push or commit-msg. Only commit-msg hands Harness the message file path as an argument with no stdin, and every other string takes the piped-stdin branch; the value is inserted into the script text and file names without escaping or validation.",
+						"examples": ["pre-push", "commit-msg"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hookScript",
 						"type": "string",
-						"description": "Shell script text that runs an executable chained hook first, preserves its failure, then reads the stage-specific worktree opt-in command and invokes Harness. Producing text does not install or run the hook."
+						"description": "Shell script text for one stage's hook wrapper: it runs an executable chained hook first and exits with that hook's status if it fails, then exits 0 when there is no Git directory or no opt-in file, and otherwise runs the Harness command stored in the opt-in file. Producing the text does not install or run the hook.",
+						"examples": [
+							"#!/bin/sh\n# harness-managed hook: pre-push. Written by \"harness hooks install\"; remove it with\n# \"harness hooks uninstall\". A hook that was already here is kept beside this file and\n# runs first.\nhook_dir=$(dirname \"$0\")\ninput=$(cat)\nnewline='\n'\nchained=\"$hook_dir/pre-push.harness-chained\"\nif [ -x \"$chained\" ]; then\n\tprintf '%s' \"${input:+$input$newline}\" | \"$chained\" \"$@\" || exit $?\nfi\ngit_dir=$(git rev-parse --absolute-git-dir 2>/dev/null) || exit 0\n[ -f \"$git_dir/harness-hooks\" ] || exit 0\nharness=$(cat \"$git_dir/harness-hooks\")\nprintf '%s' \"${input:+$input$newline}\" | sh -c \"$harness hooks run pre-push\"\n",
+							"#!/bin/sh\n# harness-managed hook: commit-msg. Written by \"harness hooks install\"; remove it with\n# \"harness hooks uninstall\". A hook that was already here is kept beside this file and\n# runs first.\nhook_dir=$(dirname \"$0\")\nchained=\"$hook_dir/commit-msg.harness-chained\"\nif [ -x \"$chained\" ]; then\n\t\"$chained\" \"$@\" || exit $?\nfi\ngit_dir=$(git rev-parse --absolute-git-dir 2>/dev/null) || exit 0\n[ -f \"$git_dir/harness-hooks-commit-msg\" ] || exit 0\nharness=$(cat \"$git_dir/harness-hooks-commit-msg\")\nsh -c \"$harness hooks run commit-msg \\\"\\$1\\\"\" harness-hook \"$1\" </dev/null\n"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "managedHook",
@@ -123,18 +147,23 @@
 						"name": "managedHook.text",
 						"type": "string",
 						"required": true,
-						"description": "Hook file text to search for the Harness marker."
+						"description": "The text of an existing hook file, searched for the marker harness-managed hook at any position. The text is only searched, never parsed, so a hook that merely mentions the marker also counts as managed.",
+						"examples": [
+							"#!/bin/sh\nnpm run lint\n",
+							"#!/bin/sh\n# harness-managed hook: pre-push. Written by \"harness hooks install\"; remove it with\n# \"harness hooks uninstall\". A hook that was already here is kept beside this file and\n# runs first.\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "managedHook",
 						"type": "boolean",
-						"description": "True when the text contains the managed marker anywhere."
+						"description": "True when the text contains the managed marker anywhere, and false otherwise. It is a substring check, so a hook that only mentions the marker is reported as managed.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "stageFile",
@@ -143,18 +172,20 @@
 						"name": "stageFile.stage",
 						"type": "string",
 						"required": true,
-						"description": "Hook stage; pre-push retains the original opt-in filename, other names receive a suffix."
+						"description": "The stage whose opt-in file name is wanted: pre-push maps to the original harness-hooks file, and any other string maps to harness-hooks- followed by that string. The value is not checked against the offered stages, and the function only builds the name as a string without touching the filesystem.",
+						"examples": ["pre-push", "commit-msg"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "stageFile",
 						"type": "string",
-						"description": "harness-hooks for pre-push; otherwise harness-hooks- followed by the stage."
+						"description": "The opt-in file name for a stage: harness-hooks for pre-push, otherwise harness-hooks- followed by the stage, so commit-msg gives harness-hooks-commit-msg. The name is built as a string only, and nothing is created or checked on disk.",
+						"examples": ["harness-hooks", "harness-hooks-commit-msg"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
