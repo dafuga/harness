@@ -25,34 +25,250 @@
 			{
 				"name": "GameLevelService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "The ProjectSessionService whose assertProject(), mutable() and busy flag gate each generate() call. The constructor only stores it."
 			},
 			{
 				"name": "GameLevelService.constructor.providers",
 				"type": "ProviderDiscoveryService",
-				"required": true
+				"required": true,
+				"description": "The ProviderDiscoveryService whose select() checks the requested CLI and model and returns its runner. The constructor only stores it."
 			},
 			{
 				"name": "GameLevelService.generate.input",
 				"type": "LevelRequest",
 				"required": true,
-				"description": "Selected project, unsaved level brief, document revision and exact local provider/model for one read-only generation."
+				"description": "One read-only generation request: document must pass the game document validator, viewId must name one of its views with a non-blank planning concept and description, projectId must be the selected project, and expectedRevision must equal the SHA-256 digest of the game.json on disk. The provider and model must name a CLI and a model that the CLI lists, the run must report that same model back, and the optional feedback is added to the prompt as design data.",
+				"examples": [
+					{
+						"projectId": "local-9c4e1a7f2b8d3e60a5c1f9b74d2e8a3c6f0b5d1e9a7c2f4b8e3d6a0c1f5b9e72",
+						"document": {
+							"version": 1,
+							"views": [
+								{
+									"id": "view-mhb4q9xr",
+									"title": "Courtyard level",
+									"dimension": "3d",
+									"style": "Low-poly stone courtyard at dusk with warm lantern light.",
+									"checkpoints": [],
+									"planning": {
+										"concept": "Walled courtyard with a raised platform",
+										"description": "A small walled courtyard. The player starts near the west wall, climbs the central platform and reaches a goal by the east wall."
+									}
+								}
+							],
+							"mechanics": []
+						},
+						"viewId": "view-mhb4q9xr",
+						"expectedRevision": "5a0e7c39d4b18f62e9c3a7d10b6f48e27c95d3a0f1e8b26c4d7a09e53b2c8f10",
+						"provider": "claude",
+						"model": "claude-opus-5-5"
+					},
+					{
+						"projectId": "local-3b7f0d2ac81e5b649d2a7f10e6c3b8a50f4d9e27b1a6c3e8d5f29a407e1c8b63",
+						"document": {
+							"version": 1,
+							"views": [
+								{
+									"id": "view-mhc2t7ka",
+									"title": "Harbor level",
+									"dimension": "3d",
+									"style": "Flat ink-and-paper harbor with muted blues.",
+									"checkpoints": [],
+									"planning": {
+										"concept": "Harbor dock crossing",
+										"description": "Walk the dock past the cargo crate to the lighthouse goal at the east end, and keep one lane open."
+									}
+								}
+							],
+							"mechanics": [
+								{
+									"id": "movement",
+									"title": "Movement and collision",
+									"description": "Move the player along the dock and stop at walls.",
+									"inputs": ["x", "y"],
+									"events": ["goal-reached"]
+								}
+							]
+						},
+						"viewId": "view-mhc2t7ka",
+						"expectedRevision": "a83f1d0c6e2b94f7c0d5a3e819f7b6c2d4e08a5b7c3f2e91b65a0d4fe2c81937",
+						"provider": "codex",
+						"model": "gpt-6.1-sol",
+						"feedback": "Keep the lighthouse goal on the east side and leave one lane open."
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameLevelService.generate",
 				"type": "Promise<{ proposal: LevelProposal }>",
-				"description": "Validated final layout proposal tied to the input brief, dimension and reported model; does not save, approve or build."
+				"description": "The validated proposal: the model's summary (at most 4000 characters) and layout (passing LevelValidator.layout, with at most 80 objects), plus the view's planning concept and description, the view dimension, the input provider, the model the run reported, and a SHA-256 id of the proposal JSON before the id is added. Nothing is saved, approved or built, and generate returns this proposal only.",
+				"examples": [
+					{
+						"proposal": {
+							"id": "2f6d0a9bc4e71853a0b9d2f67e3c1a48d59b06e291f4c7a30e8d2b65c7a3f19d",
+							"concept": "Walled courtyard with a raised platform",
+							"description": "A small walled courtyard. The player starts near the west wall, climbs the central platform and reaches a goal by the east wall.",
+							"dimension": "3d",
+							"provider": "claude",
+							"model": "claude-opus-5-5",
+							"summary": "A 12 by 10 walled courtyard with a central platform, a crate and a goal beside the east wall.",
+							"layout": {
+								"width": 12,
+								"depth": 10,
+								"spawn": {
+									"x": 1.5,
+									"z": 5
+								},
+								"objects": [
+									{
+										"id": "north-wall",
+										"kind": "wall",
+										"label": "North wall",
+										"x": 6,
+										"z": 0.5,
+										"width": 12,
+										"depth": 1,
+										"height": 3
+									},
+									{
+										"id": "west-wall",
+										"kind": "wall",
+										"label": "West wall",
+										"x": 0.5,
+										"z": 5,
+										"width": 1,
+										"depth": 10,
+										"height": 3
+									},
+									{
+										"id": "south-wall",
+										"kind": "wall",
+										"label": "South wall",
+										"x": 6,
+										"z": 9.5,
+										"width": 12,
+										"depth": 1,
+										"height": 3
+									},
+									{
+										"id": "east-wall",
+										"kind": "wall",
+										"label": "East wall",
+										"x": 11.5,
+										"z": 5,
+										"width": 1,
+										"depth": 10,
+										"height": 3
+									},
+									{
+										"id": "central-platform",
+										"kind": "platform",
+										"label": "Central platform",
+										"x": 6,
+										"z": 5,
+										"width": 4,
+										"depth": 3,
+										"height": 1
+									},
+									{
+										"id": "wooden-crate",
+										"kind": "prop",
+										"label": "Wooden crate",
+										"x": 3,
+										"z": 7,
+										"width": 1,
+										"depth": 1,
+										"height": 1
+									},
+									{
+										"id": "goal-flag",
+										"kind": "goal",
+										"label": "Goal",
+										"x": 10.5,
+										"z": 2,
+										"width": 1,
+										"depth": 1,
+										"height": 2
+									}
+								]
+							}
+						}
+					},
+					{
+						"proposal": {
+							"id": "58c2e7f09b41d6a3e0f75c284a9d3b16f2e80c7d6b1a94e53d7c0f2ba8e5d619",
+							"concept": "Harbor dock crossing",
+							"description": "Walk the dock past the cargo crate to the lighthouse goal at the east end, and keep one lane open.",
+							"dimension": "3d",
+							"provider": "codex",
+							"model": "gpt-6.1-sol",
+							"summary": "A 16 by 8 raised dock with a cargo crate, a south rail and a lighthouse goal at the east end.",
+							"layout": {
+								"width": 16,
+								"depth": 8,
+								"spawn": {
+									"x": 2,
+									"z": 4
+								},
+								"objects": [
+									{
+										"id": "dock-planks",
+										"kind": "platform",
+										"label": "Dock planks",
+										"x": 8,
+										"z": 4,
+										"width": 12,
+										"depth": 2,
+										"height": 1
+									},
+									{
+										"id": "south-rail",
+										"kind": "wall",
+										"label": "South rail",
+										"x": 8,
+										"z": 7.5,
+										"width": 16,
+										"depth": 1,
+										"height": 1.2
+									},
+									{
+										"id": "cargo-crate",
+										"kind": "prop",
+										"label": "Cargo crate",
+										"x": 5,
+										"z": 3,
+										"width": 1.5,
+										"depth": 1.5,
+										"height": 1.5
+									},
+									{
+										"id": "lighthouse-goal",
+										"kind": "goal",
+										"label": "Lighthouse",
+										"x": 14.5,
+										"z": 4,
+										"width": 2,
+										"depth": 2,
+										"height": 4
+									}
+								]
+							}
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Reject unavailable models, malformed layouts, stale revisions, concurrent generation, project changes and read-only history."
+				"description": "Thrown as Error with one of the fixed messages when the view is missing or its planning concept or description is blank, the session is busy or this project is already generating, the game revision changes before or after the run, project files change during generation, the provider returns another model, or the model text is over 100000 characters or its JSON, summary or layout is invalid. Errors from the session, provider, repository and validator calls, such as an unselected project, read-only history or an unavailable model, are not caught here and reach the caller unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GameLevelService.generate",
@@ -61,23 +277,237 @@
 						"name": "GameLevelService.generate.input",
 						"type": "LevelRequest",
 						"required": true,
-						"description": "Selected project, unsaved level brief, document revision and exact local provider/model for one read-only generation."
+						"description": "One read-only generation request: document must pass the game document validator, viewId must name one of its views with a non-blank planning concept and description, projectId must be the selected project, and expectedRevision must equal the SHA-256 digest of the game.json on disk. The provider and model must name a CLI and a model that the CLI lists, the run must report that same model back, and the optional feedback is added to the prompt as design data.",
+						"examples": [
+							{
+								"projectId": "local-9c4e1a7f2b8d3e60a5c1f9b74d2e8a3c6f0b5d1e9a7c2f4b8e3d6a0c1f5b9e72",
+								"document": {
+									"version": 1,
+									"views": [
+										{
+											"id": "view-mhb4q9xr",
+											"title": "Courtyard level",
+											"dimension": "3d",
+											"style": "Low-poly stone courtyard at dusk with warm lantern light.",
+											"checkpoints": [],
+											"planning": {
+												"concept": "Walled courtyard with a raised platform",
+												"description": "A small walled courtyard. The player starts near the west wall, climbs the central platform and reaches a goal by the east wall."
+											}
+										}
+									],
+									"mechanics": []
+								},
+								"viewId": "view-mhb4q9xr",
+								"expectedRevision": "5a0e7c39d4b18f62e9c3a7d10b6f48e27c95d3a0f1e8b26c4d7a09e53b2c8f10",
+								"provider": "claude",
+								"model": "claude-opus-5-5"
+							},
+							{
+								"projectId": "local-3b7f0d2ac81e5b649d2a7f10e6c3b8a50f4d9e27b1a6c3e8d5f29a407e1c8b63",
+								"document": {
+									"version": 1,
+									"views": [
+										{
+											"id": "view-mhc2t7ka",
+											"title": "Harbor level",
+											"dimension": "3d",
+											"style": "Flat ink-and-paper harbor with muted blues.",
+											"checkpoints": [],
+											"planning": {
+												"concept": "Harbor dock crossing",
+												"description": "Walk the dock past the cargo crate to the lighthouse goal at the east end, and keep one lane open."
+											}
+										}
+									],
+									"mechanics": [
+										{
+											"id": "movement",
+											"title": "Movement and collision",
+											"description": "Move the player along the dock and stop at walls.",
+											"inputs": ["x", "y"],
+											"events": ["goal-reached"]
+										}
+									]
+								},
+								"viewId": "view-mhc2t7ka",
+								"expectedRevision": "a83f1d0c6e2b94f7c0d5a3e819f7b6c2d4e08a5b7c3f2e91b65a0d4fe2c81937",
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"feedback": "Keep the lighthouse goal on the east side and leave one lane open."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameLevelService.generate",
 						"type": "Promise<{ proposal: LevelProposal }>",
-						"description": "Validated final layout proposal tied to the input brief, dimension and reported model; does not save, approve or build."
+						"description": "The validated proposal: the model's summary (at most 4000 characters) and layout (passing LevelValidator.layout, with at most 80 objects), plus the view's planning concept and description, the view dimension, the input provider, the model the run reported, and a SHA-256 id of the proposal JSON before the id is added. Nothing is saved, approved or built, and generate returns this proposal only.",
+						"examples": [
+							{
+								"proposal": {
+									"id": "2f6d0a9bc4e71853a0b9d2f67e3c1a48d59b06e291f4c7a30e8d2b65c7a3f19d",
+									"concept": "Walled courtyard with a raised platform",
+									"description": "A small walled courtyard. The player starts near the west wall, climbs the central platform and reaches a goal by the east wall.",
+									"dimension": "3d",
+									"provider": "claude",
+									"model": "claude-opus-5-5",
+									"summary": "A 12 by 10 walled courtyard with a central platform, a crate and a goal beside the east wall.",
+									"layout": {
+										"width": 12,
+										"depth": 10,
+										"spawn": {
+											"x": 1.5,
+											"z": 5
+										},
+										"objects": [
+											{
+												"id": "north-wall",
+												"kind": "wall",
+												"label": "North wall",
+												"x": 6,
+												"z": 0.5,
+												"width": 12,
+												"depth": 1,
+												"height": 3
+											},
+											{
+												"id": "west-wall",
+												"kind": "wall",
+												"label": "West wall",
+												"x": 0.5,
+												"z": 5,
+												"width": 1,
+												"depth": 10,
+												"height": 3
+											},
+											{
+												"id": "south-wall",
+												"kind": "wall",
+												"label": "South wall",
+												"x": 6,
+												"z": 9.5,
+												"width": 12,
+												"depth": 1,
+												"height": 3
+											},
+											{
+												"id": "east-wall",
+												"kind": "wall",
+												"label": "East wall",
+												"x": 11.5,
+												"z": 5,
+												"width": 1,
+												"depth": 10,
+												"height": 3
+											},
+											{
+												"id": "central-platform",
+												"kind": "platform",
+												"label": "Central platform",
+												"x": 6,
+												"z": 5,
+												"width": 4,
+												"depth": 3,
+												"height": 1
+											},
+											{
+												"id": "wooden-crate",
+												"kind": "prop",
+												"label": "Wooden crate",
+												"x": 3,
+												"z": 7,
+												"width": 1,
+												"depth": 1,
+												"height": 1
+											},
+											{
+												"id": "goal-flag",
+												"kind": "goal",
+												"label": "Goal",
+												"x": 10.5,
+												"z": 2,
+												"width": 1,
+												"depth": 1,
+												"height": 2
+											}
+										]
+									}
+								}
+							},
+							{
+								"proposal": {
+									"id": "58c2e7f09b41d6a3e0f75c284a9d3b16f2e80c7d6b1a94e53d7c0f2ba8e5d619",
+									"concept": "Harbor dock crossing",
+									"description": "Walk the dock past the cargo crate to the lighthouse goal at the east end, and keep one lane open.",
+									"dimension": "3d",
+									"provider": "codex",
+									"model": "gpt-6.1-sol",
+									"summary": "A 16 by 8 raised dock with a cargo crate, a south rail and a lighthouse goal at the east end.",
+									"layout": {
+										"width": 16,
+										"depth": 8,
+										"spawn": {
+											"x": 2,
+											"z": 4
+										},
+										"objects": [
+											{
+												"id": "dock-planks",
+												"kind": "platform",
+												"label": "Dock planks",
+												"x": 8,
+												"z": 4,
+												"width": 12,
+												"depth": 2,
+												"height": 1
+											},
+											{
+												"id": "south-rail",
+												"kind": "wall",
+												"label": "South rail",
+												"x": 8,
+												"z": 7.5,
+												"width": 16,
+												"depth": 1,
+												"height": 1.2
+											},
+											{
+												"id": "cargo-crate",
+												"kind": "prop",
+												"label": "Cargo crate",
+												"x": 5,
+												"z": 3,
+												"width": 1.5,
+												"depth": 1.5,
+												"height": 1.5
+											},
+											{
+												"id": "lighthouse-goal",
+												"kind": "goal",
+												"label": "Lighthouse",
+												"x": 14.5,
+												"z": 4,
+												"width": 2,
+												"depth": 2,
+												"height": 4
+											}
+										]
+									}
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as Error with one of the fixed messages when the view is missing or its planning concept or description is blank, the session is busy or this project is already generating, the game revision changes before or after the run, project files change during generation, the provider returns another model, or the model text is over 100000 characters or its JSON, summary or layout is invalid. Errors from the session, provider, repository and validator calls, such as an unselected project, read-only history or an unavailable model, are not caught here and reach the caller unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -87,22 +517,25 @@
 					{
 						"name": "GameLevelService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "The ProjectSessionService whose assertProject(), mutable() and busy flag gate each generate() call. The constructor only stores it."
 					},
 					{
 						"name": "GameLevelService.constructor.providers",
 						"type": "ProviderDiscoveryService",
-						"required": true
+						"required": true,
+						"description": "The ProviderDiscoveryService whose select() checks the requested CLI and model and returns its runner. The constructor only stores it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameLevelService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new GameLevelService instance, which keeps the session and providers for later generate() calls. The constructor body is empty, so construction itself does not throw."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
