@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feFlood element; native HTML content rules still apply."
+				"description": "Optional Svelte snippet that supplies child content for the feFlood element, which matters only when the caller needs content inside it. The template renders it with {@render children()} only when it is provided, so an omitted value adds no child content, and because the template calls it as a function the value must be a snippet rather than a string."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeFlood",
 				"type": "markup",
-				"description": "The actual native feFlood element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native feFlood element itself, created in the SVG namespace with every forwarded attribute applied and the optional children rendered inside it. It matters when a caller needs the bare feFlood element with no wrapper added, and its limits come from the forwarded attributes and children, since this file does not validate either one."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
