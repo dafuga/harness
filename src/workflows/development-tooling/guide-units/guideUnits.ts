@@ -1,11 +1,29 @@
 // @harness-uid u_3ersk4crkf
 import type { GuidanceOptions, GuideReport, GuideState } from './guideUnits.types';
+import type {
+	ExplorerCapture
+} from '../../../../packages/reports/src/models/explorer-ui/ExplorerEvidence.types';
 import { allUnitStates, guidanceContext, guidanceUnit } from './guidanceContext';
 import { unitStateName } from './contractStates';
 import { stateTests } from './stateTests';
 import { unitShots } from './unitShots';
 
 const devices = ['desktop', 'tablet', 'mobile'];
+
+/** @pure Whether a usable, passed assertion or trace capture proves this named unit state. */
+export function recordedDone(
+	captures: ExplorerCapture[],
+	unitId: string,
+	name: string
+): boolean {
+	return captures.some(
+		(item) =>
+			item.usable &&
+			item.capture.status === 'passed' &&
+			(item.capture.kind === 'assertions' || item.capture.kind === 'trace') &&
+			unitStateName(unitId, item.state) === name
+	);
+}
 
 export async function guideUnits(id: string, options: GuidanceOptions = {}): Promise<GuideReport> {
 	const context = await guidanceContext(options, true);

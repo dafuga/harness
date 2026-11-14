@@ -13,6 +13,9 @@
 			"guidanceContext",
 			"guidanceUnit",
 			"guidanceText",
+			"scenarioStatesFor",
+			"headlessStateNames",
+			"headlessOnly",
 			"namedUnitStates",
 			"sourceUnitStates",
 			"allUnitStates"
@@ -56,6 +59,41 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository-relative source or test file to read from the selected tree, cached within this invocation."
+			},
+			{
+				"name": "scenarioStatesFor.scenario",
+				"type": "ScenarioManifest",
+				"required": true
+			},
+			{
+				"name": "scenarioStatesFor.unitId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "headlessStateNames.scenarios",
+				"type": "ScenarioManifest[]",
+				"required": true
+			},
+			{
+				"name": "headlessStateNames.unitId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "headlessStateNames.registryStates",
+				"type": "StateRegistry[]",
+				"required": true
+			},
+			{
+				"name": "headlessOnly.scenarios",
+				"type": "ScenarioManifest[]",
+				"required": true
+			},
+			{
+				"name": "headlessOnly.unitId",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "namedUnitStates.context",
@@ -245,6 +283,80 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "scenarioStatesFor",
+				"inputs": [
+					{
+						"name": "scenarioStatesFor.scenario",
+						"type": "ScenarioManifest",
+						"required": true
+					},
+					{
+						"name": "scenarioStatesFor.unitId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scenarioStatesFor",
+						"type": "ScenarioManifest['states']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "headlessStateNames",
+				"inputs": [
+					{
+						"name": "headlessStateNames.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true
+					},
+					{
+						"name": "headlessStateNames.unitId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "headlessStateNames.registryStates",
+						"type": "StateRegistry[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "headlessStateNames",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "headlessOnly",
+				"inputs": [
+					{
+						"name": "headlessOnly.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true
+					},
+					{
+						"name": "headlessOnly.unitId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "headlessOnly",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "namedUnitStates",

@@ -2,8 +2,16 @@
 import { WorkingTreeAdapter } from '../../../adapters/git-source-history/WorkingTreeAdapter';
 import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
 import { loadUnits } from '../load-units/loadUnits';
-import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
-import type { GuidanceContext, GuidanceOptions, UnitState } from './guideUnits.types';
+import type {
+	ComponentManifest,
+	ScenarioManifest
+} from '../../../core/development-tooling/unitTypes';
+import type {
+	GuidanceContext,
+	GuidanceOptions,
+	StateRegistry,
+	UnitState
+} from './guideUnits.types';
 import { contractStates, mergeUnitStates, unitStateName } from './contractStates';
 import { stateRegistries } from './stateRegistries';
 import { fail } from '../../../core/development-tooling/errors';
@@ -38,6 +46,56 @@ export async function guidanceText(context: GuidanceContext, path: string): Prom
 	return context.texts.get(path)!;
 }
 
+/** @pure Return only the scenario states attributed to this unit by the guide's existing rule. */
+export function scenarioStatesFor(
+	scenario: ScenarioManifest,
+	unitId: string
+): ScenarioManifest['states'] {
+	if (!scenario.units.includes(unitId)) return [];
+	const specific = scenario.states.some((state) => state.units?.includes(unitId));
+	return scenario.states.filter(
+		(state) =>
+			state.coverage !== 'inapplicable' &&
+			(!specific || state.units?.includes(unitId)) &&
+			(scenario.units.length === 1 ||
+				state.id === unitId.replaceAll('.', '-') ||
+				state.id.startsWith(`${unitId.replaceAll('.', '-')}-`))
+	);
+}
+
+/** @pure Required headless states not also declared by UI scenarios or state registries. */
+export function headlessStateNames(
+	scenarios: ScenarioManifest[],
+	unitId: string,
+	registryStates: StateRegistry[]
+): string[] {
+	const excluded = new Set(
+		registryStates
+			.filter((row) => row.entity === unitId)
+			.flatMap((row) => row.states.map((state) => unitStateName(unitId, state)))
+	);
+	for (const scenario of scenarios.filter((item) => item.kind === 'ui'))
+		for (const state of scenarioStatesFor(scenario, unitId))
+			excluded.add(unitStateName(unitId, state.id));
+	const names = new Set<string>();
+	for (const scenario of scenarios.filter(
+		(item) => item.kind === 'headless' && item.viewports.length === 0
+	))
+		for (const state of scenarioStatesFor(scenario, unitId)) {
+			const name = unitStateName(unitId, state.id);
+			if (state.coverage === 'required' && !excluded.has(name)) names.add(name);
+		}
+	return [...names];
+}
+
+/** @pure A unit is headless-only when no attributed UI scenario declares one of its states. */
+export function headlessOnly(scenarios: ScenarioManifest[], unitId: string): boolean {
+	return !scenarios.some(
+		(scenario) =>
+			scenario.kind === 'ui' && scenarioStatesFor(scenario, unitId).length > 0
+	);
+}
+
 export function namedUnitStates(context: GuidanceContext, unit: ComponentManifest): UnitState[] {
 	const states = context.registries
 		.filter((row) => row.entity === unit.id)
@@ -48,22 +106,13 @@ export function namedUnitStates(context: GuidanceContext, unit: ComponentManifes
 				reasons: [row.where]
 			}))
 		);
-	for (const scenario of context.loaded.scenarios.filter((row) => row.units.includes(unit.id))) {
-		const specific = scenario.states.some((state) => state.units?.includes(unit.id));
-		for (const state of scenario.states.filter(
-			(state) =>
-				state.coverage !== 'inapplicable' &&
-				(!specific || state.units?.includes(unit.id)) &&
-				(scenario.units.length === 1 ||
-					state.id === unit.id.replaceAll('.', '-') ||
-					state.id.startsWith(`${unit.id.replaceAll('.', '-')}-`))
-		))
+	for (const scenario of context.loaded.scenarios)
+		for (const state of scenarioStatesFor(scenario, unit.id))
 			states.push({
 				name: unitStateName(unit.id, state.id),
 				origin: 'REQUIRED',
 				reasons: [`specification/scenarios/${scenario.id}.json#${state.id}`]
 			});
-	}
 	return mergeUnitStates([
 		[{ name: 'default', origin: 'REQUIRED', reasons: ['Default presentation.'] }],
 		states

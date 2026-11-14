@@ -13,6 +13,7 @@
 			"src/workflows/development-tooling/guide-units/guideUnits.types.ts"
 		],
 		"symbols": [
+			"recordedDone",
 			"guideUnits",
 			"renderUnitsGuide",
 			"GuidanceOptions",
@@ -30,6 +31,21 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "recordedDone.captures",
+				"type": "ExplorerCapture[]",
+				"required": true
+			},
+			{
+				"name": "recordedDone.unitId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordedDone.name",
+				"type": "string",
+				"required": true
+			},
 			{
 				"name": "guideUnits.id",
 				"type": "string",
@@ -71,6 +87,34 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "recordedDone",
+				"inputs": [
+					{
+						"name": "recordedDone.captures",
+						"type": "ExplorerCapture[]",
+						"required": true
+					},
+					{
+						"name": "recordedDone.unitId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordedDone.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedDone",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "guideUnits",
 				"inputs": [
@@ -135,6 +179,11 @@
 		},
 		{
 			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-evidence-types",
 			"via": "import",
 			"origin": "derived"
 		},
