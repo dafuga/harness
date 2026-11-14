@@ -20,3 +20,7 @@ export interface DeclaredExamples {
 	documentation: UnitDocumentation | undefined;
 	items: DeclaredItemExamples[];
 }
+
+export type ObservedUsageExample =
+	| { name: string; input: unknown; output: unknown }
+	| { name: string; input: unknown; error: unknown };
