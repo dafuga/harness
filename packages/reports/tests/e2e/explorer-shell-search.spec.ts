@@ -2,12 +2,13 @@ import { expect, test, type Page, type TestInfo } from '../../../../test/support
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { box } from './support/shellChecks';
-import { sha, shellBranch, shellMount } from './support/shellData';
+import { sha, shellMount } from './support/shellData';
 import {
 	buildShellFixture,
 	captureShell,
 	openShellPage,
-	removeShellFixture
+	removeShellFixture,
+	shellOrigin
 } from './support/shellFixture';
 
 /**
@@ -103,9 +104,8 @@ test('with a commit selected only that commit is searched, and the result keeps 
 }, info) => {
 	await opened(page, 1440, 1000);
 	await remember(page, info, 'ready-shell-search-pinned-desktop');
-	const pinned = { branch: shellBranch, commit: sha(3), category: 'functions' };
-	await page.evaluate((to) => history.replaceState(to, ''), pinned);
-	await page.reload();
+	// The host reads its place from the address, as a reload or a shared link gives it.
+	await page.goto(`${shellOrigin}${scoped}/commit/${sha(3)}/functions`);
 	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 	await expect(field(page)).toHaveAttribute('placeholder', `Search at ${sha(3).slice(0, 7)}`);
 	await field(page).fill('frame');
@@ -124,9 +124,18 @@ test('at a wide desktop the search shares the one row of the bar, overlapping no
 	await opened(page, 1440, 1000);
 	await remember(page, info, 'ready-shell-search-fit-desktop');
 	await field(page).press('Escape');
-	const trigger = page.getByRole('button', { name: 'Search entities', exact: true });
+	// The search is a labelled control in the row of the categories, and covers none of the bar.
+	const bar = page.getByRole('banner');
+	const trigger = bar.getByRole('button', { name: 'Search entities', exact: true });
+	await expect(trigger).toHaveText('Search entities');
 	const search = await box(trigger);
-	expect(search.width).toBeLessThanOrEqual(48);
+	const row = await box(bar.getByRole('navigation', { name: 'Harness categories' }));
+	expect(search.y < row.y + row.height && search.y + search.height > row.y).toBe(true);
+	for (const other of [row, await box(bar.locator('.hx-revision'))])
+		expect(
+			search.x >= other.x + other.width || search.x + search.width <= other.x,
+			'beside, never over, the categories and the revision'
+		).toBe(true);
 	expect(search.x + search.width).toBeLessThanOrEqual(1440);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1440);
 });
