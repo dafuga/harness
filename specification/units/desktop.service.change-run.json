@@ -14,22 +14,60 @@
 		"symbols": ["ChangeRunService", "ChangeRunService.run"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ChangeRunService.run.context",
 				"type": "RunContext",
-				"required": true
+				"required": true,
+				"description": "The RunContext of one change run; run reads context.root for the source snapshot and the host changes observer, and passes the same object to changeExecute, recordChange, and promoteChange. run does not validate it, and it sets failureRecorded to true only when changeExecute failed, just before rethrowing that failure."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ChangeRunService.run",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The value run resolves with, a string: the message promoteChange returns, reached only when changeExecute did not fail and recordChange resolved. With no environment requested the message says that code changes were recorded and verification is still required; with an environment it says the change was verified and committed and names the last environment its deployments are queued through.",
+				"examples": [
+					"Code changes recorded. Verification is still required.",
+					"Change verified and committed. Deployments through dev are queued; follow the deployment activity indicator.",
+					"Change verified and committed. Deployments through preprod are queued; follow the deployment activity indicator. Use Deploy to promote preprod to production."
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "ChangeRunService.run.sourceSnapshot",
+				"type": "thrown",
+				"description": "The rejection of sourceSnapshot(context.root) for the before snapshot, which runs before the temporary directory is created and is not caught by run. It rejects with the error from its awaited gitRead call, or with a non-ENOENT file error when a listed file cannot be hashed."
+			},
+			{
+				"name": "ChangeRunService.run.temporaryDirectory",
+				"type": "thrown",
+				"description": "The rejection of mkdtemp when a 'harness-change-' directory cannot be created under the OS temporary directory. It happens before the try block, so the finally cleanup does not run and no change is recorded."
+			},
+			{
+				"name": "ChangeRunService.run.failure",
+				"type": "thrown",
+				"description": "The error that changeExecute threw or rejected with, kept as is when it is an Error and otherwise wrapped as new Error(String(value)). run passes it to recordChange, sets failureRecorded to true on the context, and rethrows it; changeExecute throws RunCancelled when the signal is aborted after the agent run."
+			},
+			{
+				"name": "ChangeRunService.run.recordChange",
+				"type": "thrown",
+				"description": "The rejection of recordChange, which runs after changeExecute whether or not it failed; run does not catch it, and it can come from recordChange's awaited snapshot, host-record, branch, ownership, or message steps. When it rejects, that error replaces any failure from changeExecute and promoteChange is not called."
+			},
+			{
+				"name": "ChangeRunService.run.promoteChange",
+				"type": "thrown",
+				"description": "The rejection of promoteChange, which runs only when changeExecute did not fail and recordChange resolved. It rejects with Error('Change cancelled before deployment.') when the signal is aborted, with Error('Unknown deployment environment.') from changeEnvironment after the deployment is enqueued for an environment outside dev, stage, preprod, and prod, and otherwise with any error raised by its snapshot, git, branch, or deployment steps."
+			},
+			{
+				"name": "ChangeRunService.run.cleanup",
+				"type": "thrown",
+				"description": "The rejection of rm(directory, { recursive: true, force: true }) in the finally block, which runs after every path that created the temporary directory. When it rejects, that error replaces the resolved value of run or the error it was throwing."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ChangeRunService.run",
@@ -37,17 +75,55 @@
 					{
 						"name": "ChangeRunService.run.context",
 						"type": "RunContext",
-						"required": true
+						"required": true,
+						"description": "The RunContext of one change run; run reads context.root for the source snapshot and the host changes observer, and passes the same object to changeExecute, recordChange, and promoteChange. run does not validate it, and it sets failureRecorded to true only when changeExecute failed, just before rethrowing that failure."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ChangeRunService.run",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The value run resolves with, a string: the message promoteChange returns, reached only when changeExecute did not fail and recordChange resolved. With no environment requested the message says that code changes were recorded and verification is still required; with an environment it says the change was verified and committed and names the last environment its deployments are queued through.",
+						"examples": [
+							"Code changes recorded. Verification is still required.",
+							"Change verified and committed. Deployments through dev are queued; follow the deployment activity indicator.",
+							"Change verified and committed. Deployments through preprod are queued; follow the deployment activity indicator. Use Deploy to promote preprod to production."
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ChangeRunService.run.sourceSnapshot",
+						"type": "thrown",
+						"description": "The rejection of sourceSnapshot(context.root) for the before snapshot, which runs before the temporary directory is created and is not caught by run. It rejects with the error from its awaited gitRead call, or with a non-ENOENT file error when a listed file cannot be hashed."
+					},
+					{
+						"name": "ChangeRunService.run.temporaryDirectory",
+						"type": "thrown",
+						"description": "The rejection of mkdtemp when a 'harness-change-' directory cannot be created under the OS temporary directory. It happens before the try block, so the finally cleanup does not run and no change is recorded."
+					},
+					{
+						"name": "ChangeRunService.run.failure",
+						"type": "thrown",
+						"description": "The error that changeExecute threw or rejected with, kept as is when it is an Error and otherwise wrapped as new Error(String(value)). run passes it to recordChange, sets failureRecorded to true on the context, and rethrows it; changeExecute throws RunCancelled when the signal is aborted after the agent run."
+					},
+					{
+						"name": "ChangeRunService.run.recordChange",
+						"type": "thrown",
+						"description": "The rejection of recordChange, which runs after changeExecute whether or not it failed; run does not catch it, and it can come from recordChange's awaited snapshot, host-record, branch, ownership, or message steps. When it rejects, that error replaces any failure from changeExecute and promoteChange is not called."
+					},
+					{
+						"name": "ChangeRunService.run.promoteChange",
+						"type": "thrown",
+						"description": "The rejection of promoteChange, which runs only when changeExecute did not fail and recordChange resolved. It rejects with Error('Change cancelled before deployment.') when the signal is aborted, with Error('Unknown deployment environment.') from changeEnvironment after the deployment is enqueued for an environment outside dev, stage, preprod, and prod, and otherwise with any error raised by its snapshot, git, branch, or deployment steps."
+					},
+					{
+						"name": "ChangeRunService.run.cleanup",
+						"type": "thrown",
+						"description": "The rejection of rm(directory, { recursive: true, force: true }) in the finally block, which runs after every path that created the temporary directory. When it rejects, that error replaces the resolved value of run or the error it was throwing."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
