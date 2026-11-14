@@ -22,36 +22,55 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LegacyReportRepository.constructor.store",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path to the root of the legacy report store. The repository resolves its runs directory and run asset directories from this path.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+				]
 			},
 			{
 				"name": "LegacyReportRepository.asset.run",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Run directory name used as the run path segment when resolving an asset. It is not checked against the directory names returned by runs().",
+				"examples": ["run-001"]
 			},
 			{
 				"name": "LegacyReportRepository.asset.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path passed to resolve beneath the selected run's assets directory. A resolved path that fails the assets-directory prefix check, or a failed file read, returns undefined.",
+				"examples": ["summary.json", "screenshots/final.png"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "LegacyReportRepository.runs",
-				"type": "Promise<LegacyRun[]>"
+				"type": "Promise<LegacyRun[]>",
+				"description": "Array of run records for direct subdirectories of the runs directory whose UTF-8 manifest.json parses as JSON, sorted lexicographically by directory name. Missing or unreadable manifests and invalid JSON are skipped; a failed directory listing yields an empty array, and a manifest may be any JSON value.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "run-001",
+							"manifest": {}
+						}
+					]
+				]
 			},
 			{
 				"name": "LegacyReportRepository.asset",
-				"type": "Promise<Buffer | undefined>"
+				"type": "Promise<Buffer | undefined>",
+				"description": "Bytes read from the requested asset, or undefined when the resolved path fails the assets-directory prefix check or the file read rejects. The repository does not parse or interpret the bytes."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "LegacyReportRepository.runs",
@@ -59,11 +78,21 @@
 				"outputs": [
 					{
 						"name": "LegacyReportRepository.runs",
-						"type": "Promise<LegacyRun[]>"
+						"type": "Promise<LegacyRun[]>",
+						"description": "Array of run records for direct subdirectories of the runs directory whose UTF-8 manifest.json parses as JSON, sorted lexicographically by directory name. Missing or unreadable manifests and invalid JSON are skipped; a failed directory listing yields an empty array, and a manifest may be any JSON value.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "run-001",
+									"manifest": {}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LegacyReportRepository.asset",
@@ -71,22 +100,27 @@
 					{
 						"name": "LegacyReportRepository.asset.run",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Run directory name used as the run path segment when resolving an asset. It is not checked against the directory names returned by runs().",
+						"examples": ["run-001"]
 					},
 					{
 						"name": "LegacyReportRepository.asset.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path passed to resolve beneath the selected run's assets directory. A resolved path that fails the assets-directory prefix check, or a failed file read, returns undefined.",
+						"examples": ["summary.json", "screenshots/final.png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LegacyReportRepository.asset",
-						"type": "Promise<Buffer | undefined>"
+						"type": "Promise<Buffer | undefined>",
+						"description": "Bytes read from the requested asset, or undefined when the resolved path fails the assets-directory prefix check or the file read rejects. The repository does not parse or interpret the bytes."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -96,17 +130,22 @@
 					{
 						"name": "LegacyReportRepository.constructor.store",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path to the root of the legacy report store. The repository resolves its runs directory and run asset directories from this path.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LegacyReportRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed repository instance retains the supplied store path. Construction performs no filesystem access; reads occur when runs() or asset() is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
