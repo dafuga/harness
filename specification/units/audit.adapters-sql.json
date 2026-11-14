@@ -12,12 +12,13 @@
 		"symbols": ["sqlAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "sqlAdapter",
-				"type": "AuditAdapter"
+				"type": "AuditAdapter",
+				"description": "The sqlAdapter object, which declares id 'sql', label 'SQL', profiles ['app', 'dapp'], extensions ['.sql'] and optionalTools ['sqlfluff'], whose audit(file) returns, in order, the auditFileLength and auditSqlNaming findings followed by the sql-dangerous-migration, sql-reversible-migration and sql-seed-in-migration findings. The dangerous-SQL and seed checks ignore text after '--' on each line, only the reversibility and seed checks are limited to paths containing 'db/migrations/', and the reversibility check reads raw contents, so a '-- rollback' or '-- reversible' marker anywhere in the file skips it while any create, alter or drop word, comments included, triggers it."
 			}
 		],
 		"errors": [],
