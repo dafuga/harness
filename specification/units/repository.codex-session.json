@@ -20,64 +20,81 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CodexSessionRepository.create.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String used as the key for retrieving or creating a session in the repository map. No format or non-empty check is applied; a live existing ID returns its stored session, an aborted existing ID throws, and new IDs are refused once 100 sessions are stored.",
+				"examples": ["codex-session-2026-11-14-01"]
 			},
 			{
 				"name": "CodexSessionRepository.waitForTool.session",
 				"type": "GatewaySession",
-				"required": true
+				"required": true,
+				"description": "Session object used to track pending and delivered tool calls. It must expose the state this method reads; the implementation does not verify that it came from this repository."
 			},
 			{
 				"name": "CodexSessionRepository.waitForTool.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String key for a tool call in the session's pending and delivered state. IDs already present in either collection are rejected as duplicates; no format validation is applied.",
+				"examples": ["call_8f31"]
 			},
 			{
 				"name": "CodexSessionRepository.deliver.session",
 				"type": "GatewaySession",
-				"required": true
+				"required": true,
+				"description": "Session object whose pending calls are resolved and whose delivered IDs are updated. The implementation uses its state directly and does not verify repository ownership."
 			},
 			{
 				"name": "CodexSessionRepository.deliver.outputs",
 				"type": "GatewayItem[]",
-				"required": true
+				"required": true,
+				"description": "Array of gateway output items whose call_id values identify pending calls and whose output values become resolved strings. The array may be empty; stringified call IDs must be unique and currently pending, and non-string outputs are JSON-stringified.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "CodexSessionRepository.cancel.session",
 				"type": "GatewaySession",
-				"required": true
+				"required": true,
+				"description": "Session object to abort and clear. Pending promises reject with Error('Session cancelled'); session membership is not checked."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CodexSessionRepository.create",
-				"type": "GatewaySession"
+				"type": "GatewaySession",
+				"description": "A session produced by gatewayTypes(id) and returned for the supplied ID. A previously stored live session is returned unchanged; the repository refuses a new one at 100 stored sessions and throws for a previously cancelled ID."
 			},
 			{
 				"name": "CodexSessionRepository.waitForTool",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "A promise that resolves with the tool output as a string once deliver receives a matching pending call ID. String outputs pass through and non-string outputs are JSON-stringified; cancellation while pending rejects the promise.",
+				"examples": ["Room reserved."]
 			},
 			{
 				"name": "CodexSessionRepository.deliver",
-				"type": "void"
+				"type": "void",
+				"description": "Returns no value after resolving each matching pending call. It stringifies non-string outputs, removes each resolved pending call, and marks its ID delivered; duplicate or unknown IDs throw."
 			},
 			{
 				"name": "CodexSessionRepository.cancel",
-				"type": "void"
+				"type": "void",
+				"description": "Returns no value after aborting the session controller, rejecting pending promises with Error('Session cancelled'), and clearing the pending map."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An Error is thrown for an aborted existing session ID, the 100-session limit, duplicate pending or delivered tool calls, duplicate output call IDs, or output call IDs that are unknown or already delivered. Pending tool promises are rejected with Error('Session cancelled') when their session is cancelled."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CodexSessionRepository.create",
@@ -85,22 +102,26 @@
 					{
 						"name": "CodexSessionRepository.create.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String used as the key for retrieving or creating a session in the repository map. No format or non-empty check is applied; a live existing ID returns its stored session, an aborted existing ID throws, and new IDs are refused once 100 sessions are stored.",
+						"examples": ["codex-session-2026-11-14-01"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexSessionRepository.create",
-						"type": "GatewaySession"
+						"type": "GatewaySession",
+						"description": "A session produced by gatewayTypes(id) and returned for the supplied ID. A previously stored live session is returned unchanged; the repository refuses a new one at 100 stored sessions and throws for a previously cancelled ID."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Error('Session cancelled; restart requires explicit recovery') is thrown when the stored session for the ID has been aborted. Error('Prototype session limit reached') is thrown when a new ID is requested while 100 sessions are stored."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexSessionRepository.waitForTool",
@@ -108,27 +129,33 @@
 					{
 						"name": "CodexSessionRepository.waitForTool.session",
 						"type": "GatewaySession",
-						"required": true
+						"required": true,
+						"description": "Session object used to track pending and delivered tool calls. It must expose the state this method reads; the implementation does not verify that it came from this repository."
 					},
 					{
 						"name": "CodexSessionRepository.waitForTool.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String key for a tool call in the session's pending and delivered state. IDs already present in either collection are rejected as duplicates; no format validation is applied.",
+						"examples": ["call_8f31"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexSessionRepository.waitForTool",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "A promise that resolves with the tool output as a string once deliver receives a matching pending call ID. String outputs pass through and non-string outputs are JSON-stringified; cancellation while pending rejects the promise.",
+						"examples": ["Room reserved."]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Error('Duplicate call') is thrown when the ID is already pending or delivered. The returned promise can reject with Error('Session cancelled') if cancel runs while it is pending."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexSessionRepository.deliver",
@@ -136,27 +163,34 @@
 					{
 						"name": "CodexSessionRepository.deliver.session",
 						"type": "GatewaySession",
-						"required": true
+						"required": true,
+						"description": "Session object whose pending calls are resolved and whose delivered IDs are updated. The implementation uses its state directly and does not verify repository ownership."
 					},
 					{
 						"name": "CodexSessionRepository.deliver.outputs",
 						"type": "GatewayItem[]",
-						"required": true
+						"required": true,
+						"description": "Array of gateway output items whose call_id values identify pending calls and whose output values become resolved strings. The array may be empty; stringified call IDs must be unique and currently pending, and non-string outputs are JSON-stringified.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexSessionRepository.deliver",
-						"type": "void"
+						"type": "void",
+						"description": "Returns no value after resolving each matching pending call. It stringifies non-string outputs, removes each resolved pending call, and marks its ID delivered; duplicate or unknown IDs throw."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Error('Duplicate tool output') is thrown if output call_id values stringify to duplicates. Error('Unknown or already delivered tool call') is thrown if any output ID is not pending; all IDs are checked before any output is delivered."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexSessionRepository.cancel",
@@ -164,17 +198,25 @@
 					{
 						"name": "CodexSessionRepository.cancel.session",
 						"type": "GatewaySession",
-						"required": true
+						"required": true,
+						"description": "Session object to abort and clear. Pending promises reject with Error('Session cancelled'); session membership is not checked."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexSessionRepository.cancel",
-						"type": "void"
+						"type": "void",
+						"description": "Returns no value after aborting the session controller, rejecting pending promises with Error('Session cancelled'), and clearing the pending map."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Each promise pending at cancellation is rejected with Error('Session cancelled') before the pending map is cleared."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
