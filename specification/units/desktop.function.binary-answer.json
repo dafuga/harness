@@ -18,24 +18,35 @@
 				"name": "binaryAnswer.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "The bytes to encode. Their length and hash are calculated directly from this array."
+				"description": "The byte sequence encoded for transport. Its length, SHA-256 digest and base64 payload are derived directly from it; this function applies no explicit size check."
 			},
 			{
 				"name": "binaryAnswer.mediaType",
 				"type": "string",
 				"required": false,
 				"default": "image/png",
-				"description": "The media type to label the answer with; defaults to image/png. The function does not inspect the bytes to verify this label."
+				"description": "The string label copied into the answer; when omitted, it is image/png. This function does not validate the label against the bytes.",
+				"examples": ["image/png"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "binaryAnswer",
 				"type": "RemoteBinary",
-				"description": "An object containing base64 data, encoding set to base64, the supplied media type, byte length and calculated SHA-256 hash."
+				"description": "The transport record returned from the call, with base64 encoding, the supplied media type, byte count, SHA-256 hex digest and base64 payload. The media type is copied as given or defaults to image/png, and the function does not validate it against the bytes.",
+				"examples": [
+					{
+						"encoding": "base64",
+						"mediaType": "image/png",
+						"byteLength": 3,
+						"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+						"data": "YWJj"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "binaryAnswer",
@@ -44,25 +55,35 @@
 						"name": "binaryAnswer.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "The bytes to encode. Their length and hash are calculated directly from this array."
+						"description": "The byte sequence encoded for transport. Its length, SHA-256 digest and base64 payload are derived directly from it; this function applies no explicit size check."
 					},
 					{
 						"name": "binaryAnswer.mediaType",
 						"type": "string",
 						"required": false,
 						"default": "image/png",
-						"description": "The media type to label the answer with; defaults to image/png. The function does not inspect the bytes to verify this label."
+						"description": "The string label copied into the answer; when omitted, it is image/png. This function does not validate the label against the bytes.",
+						"examples": ["image/png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "binaryAnswer",
 						"type": "RemoteBinary",
-						"description": "An object containing base64 data, encoding set to base64, the supplied media type, byte length and calculated SHA-256 hash."
+						"description": "The transport record returned from the call, with base64 encoding, the supplied media type, byte count, SHA-256 hex digest and base64 payload. The media type is copied as given or defaults to image/png, and the function does not validate it against the bytes.",
+						"examples": [
+							{
+								"encoding": "base64",
+								"mediaType": "image/png",
+								"byteLength": 3,
+								"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"data": "YWJj"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
