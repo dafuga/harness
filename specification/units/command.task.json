@@ -26,45 +26,125 @@
 				"name": "TaskCommand.constructor.root",
 				"type": "unknown",
 				"required": false,
-				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+				"default": "undefined",
+				"description": "Filesystem root used to read the selected loop state and resolve committed task evidence and audit storage. If omitted, the constructor uses process.cwd().",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+				]
 			},
 			{
 				"name": "TaskCommand.run.flags",
 				"type": "Flags",
 				"required": true,
-				"description": "Task kind, goal, plan, loop and optional registered-unit selection supplied by the CLI."
+				"description": "CLI values for kind (coding or planning), goal, committed project-relative plan path, loop name, comma-separated unit IDs, and JSON rendering. TaskCommand.run ignores json, splits units on commas, trims entries and removes empty entries; with loop, stored loop data supplies goal and completion kind/plan.",
+				"examples": [
+					{
+						"kind": "coding",
+						"goal": "Audit task completion for the evidence grid",
+						"plan": "specification/plans/task-completion-review.md",
+						"loop": "task-completion-review",
+						"units": "reports.component.evidence-grid",
+						"json": true
+					}
+				]
 			},
 			{
 				"name": "registerTaskCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander program on which the task check subcommand is registered."
+				"description": "Commander program that receives the task command, its check subcommand, and the module-task subcommands. Calling the check handler later prints the audit and sets the process exit code to one when passed is false."
 			},
 			{
 				"name": "renderTaskAudit.audit",
 				"type": "TaskAudit",
 				"required": true,
-				"description": "Persisted task checks and semantic limitation to render as human-readable CLI output."
+				"description": "TaskAudit record supplying passed, each check id/passed/detail, limitation, and audit id to the formatter. Other TaskAudit fields are not read by this function.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "4bfc9726aabc0684d228bc0d0edc722078d723af132f52c5f86ab8a3249546af",
+						"commit": null,
+						"kind": "coding",
+						"goal": "Improve task auditing",
+						"task": {
+							"plan": null,
+							"loop": null,
+							"units": ["reports.component.evidence-grid"]
+						},
+						"passed": false,
+						"checks": [
+							{
+								"id": "evidence",
+								"passed": false,
+								"detail": "Commit the task source and preserve unrelated edits before its completion audit."
+							}
+						],
+						"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "TaskCommand.run",
 				"type": "Promise<TaskAudit>",
-				"description": "Stored audit of the selected committed loop contract or explicit task flags."
+				"description": "Resolves to the TaskAudit returned by TaskCompletionService.check, including its checks and audit-record ID. When loop is supplied, stored loop data supplies the goal and completion kind/plan; units still come from the flags.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "4bfc9726aabc0684d228bc0d0edc722078d723af132f52c5f86ab8a3249546af",
+						"commit": null,
+						"kind": "coding",
+						"goal": "Improve task auditing",
+						"task": {
+							"plan": null,
+							"loop": null,
+							"units": ["reports.component.evidence-grid"]
+						},
+						"passed": false,
+						"checks": [
+							{
+								"id": "evidence",
+								"passed": false,
+								"detail": "Commit the task source and preserve unrelated edits before its completion audit."
+							}
+						],
+						"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+					}
+				]
 			},
 			{
 				"name": "registerTaskCommand",
 				"type": "void",
-				"description": "Registers CLI handlers; running a failed audit sets a nonzero process exit status."
+				"description": "Registers the task command, its check subcommand, and the module-task subcommands. The check action prints JSON when --json is set and otherwise renders text, then sets process.exitCode to one for a failed audit."
 			},
 			{
 				"name": "renderTaskAudit",
 				"type": "string",
-				"description": "Human-readable outcome with every check, the semantic limitation and audit ID."
+				"description": "One newline-separated string containing the audit outcome, each check, the limitation, and audit ID.",
+				"examples": [
+					"Task completion audit: failed\n[failed] evidence: Commit the task source and preserve unrelated edits before its completion audit.\nStructural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty.\nAudit: 4bfc9726aabc0684d228bc0d0edc722078d723af132f52c5f86ab8a3249546af"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Thrown when a loop name is not lowercase kebab-case, or when the selected loop file is missing or fails the loop-state schema."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "The run promise rejects if readLoop cannot parse the selected loop file as JSON, because readLoop rethrows the JSON.parse error."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A filesystem failure other than a missing loop file is rethrown while loading loop state, and failures creating or writing the audit record reject TaskCompletionService.check."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "TaskCommand.run",
@@ -73,18 +153,67 @@
 						"name": "TaskCommand.run.flags",
 						"type": "Flags",
 						"required": true,
-						"description": "Task kind, goal, plan, loop and optional registered-unit selection supplied by the CLI."
+						"description": "CLI values for kind (coding or planning), goal, committed project-relative plan path, loop name, comma-separated unit IDs, and JSON rendering. TaskCommand.run ignores json, splits units on commas, trims entries and removes empty entries; with loop, stored loop data supplies goal and completion kind/plan.",
+						"examples": [
+							{
+								"kind": "coding",
+								"goal": "Audit task completion for the evidence grid",
+								"plan": "specification/plans/task-completion-review.md",
+								"loop": "task-completion-review",
+								"units": "reports.component.evidence-grid",
+								"json": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TaskCommand.run",
 						"type": "Promise<TaskAudit>",
-						"description": "Stored audit of the selected committed loop contract or explicit task flags."
+						"description": "Resolves to the TaskAudit returned by TaskCompletionService.check, including its checks and audit-record ID. When loop is supplied, stored loop data supplies the goal and completion kind/plan; units still come from the flags.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "4bfc9726aabc0684d228bc0d0edc722078d723af132f52c5f86ab8a3249546af",
+								"commit": null,
+								"kind": "coding",
+								"goal": "Improve task auditing",
+								"task": {
+									"plan": null,
+									"loop": null,
+									"units": ["reports.component.evidence-grid"]
+								},
+								"passed": false,
+								"checks": [
+									{
+										"id": "evidence",
+										"passed": false,
+										"detail": "Commit the task source and preserve unrelated edits before its completion audit."
+									}
+								],
+								"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when a loop name is not lowercase kebab-case, or when the selected loop file is missing or fails the loop-state schema."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "The run promise rejects if readLoop cannot parse the selected loop file as JSON, because readLoop rethrows the JSON.parse error."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem failure other than a missing loop file is rethrown while loading loop state, and failures creating or writing the audit record reject TaskCompletionService.check."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "registerTaskCommand",
@@ -93,18 +222,18 @@
 						"name": "registerTaskCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander program on which the task check subcommand is registered."
+						"description": "Commander program that receives the task command, its check subcommand, and the module-task subcommands. Calling the check handler later prints the audit and sets the process exit code to one when passed is false."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerTaskCommand",
 						"type": "void",
-						"description": "Registers CLI handlers; running a failed audit sets a nonzero process exit status."
+						"description": "Registers the task command, its check subcommand, and the module-task subcommands. The check action prints JSON when --json is set and otherwise renders text, then sets process.exitCode to one for a failed audit."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderTaskAudit",
@@ -113,18 +242,44 @@
 						"name": "renderTaskAudit.audit",
 						"type": "TaskAudit",
 						"required": true,
-						"description": "Persisted task checks and semantic limitation to render as human-readable CLI output."
+						"description": "TaskAudit record supplying passed, each check id/passed/detail, limitation, and audit id to the formatter. Other TaskAudit fields are not read by this function.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "4bfc9726aabc0684d228bc0d0edc722078d723af132f52c5f86ab8a3249546af",
+								"commit": null,
+								"kind": "coding",
+								"goal": "Improve task auditing",
+								"task": {
+									"plan": null,
+									"loop": null,
+									"units": ["reports.component.evidence-grid"]
+								},
+								"passed": false,
+								"checks": [
+									{
+										"id": "evidence",
+										"passed": false,
+										"detail": "Commit the task source and preserve unrelated edits before its completion audit."
+									}
+								],
+								"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderTaskAudit",
 						"type": "string",
-						"description": "Human-readable outcome with every check, the semantic limitation and audit ID."
+						"description": "One newline-separated string containing the audit outcome, each check, the limitation, and audit ID.",
+						"examples": [
+							"Task completion audit: failed\n[failed] evidence: Commit the task source and preserve unrelated edits before its completion audit.\nStructural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty.\nAudit: 4bfc9726aabc0684d228bc0d0edc722078d723af132f52c5f86ab8a3249546af"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -135,17 +290,22 @@
 						"name": "TaskCommand.constructor.root",
 						"type": "unknown",
 						"required": false,
-						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+						"default": "undefined",
+						"description": "Filesystem root used to read the selected loop state and resolve committed task evidence and audit storage. If omitted, the constructor uses process.cwd().",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TaskCommand.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "TaskCommand instance retaining the selected root; run uses that root for loop-state and task-audit service calls."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
