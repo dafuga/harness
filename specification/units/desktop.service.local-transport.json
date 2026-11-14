@@ -40,62 +40,106 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LocalTransportService.constructor.options",
 				"type": "LocalTransportOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional settings: origin is the exact Origin header the transport accepts, ticketMs is a ticket's lifetime in milliseconds, tickets is the most tickets that may wait, clients is the most open connections, and now is the clock for ticket expiry (Date.now() when omitted). An omitted origin, ticketMs, tickets or clients uses its localTransport default from the remote package.",
+				"examples": [
+					{},
+					{
+						"ticketMs": 5000,
+						"tickets": 8,
+						"clients": 4
+					},
+					{
+						"origin": "http://localhost:5173",
+						"ticketMs": 3000,
+						"tickets": 16,
+						"clients": 2
+					}
+				]
 			},
 			{
 				"name": "LocalTransportService.bootstrap.target",
 				"type": "LocalTransportTarget",
-				"required": true
+				"required": true,
+				"description": "The client that one ticket is issued for: bootstrap stores it with the ticket, and the socket admitted on that ticket is passed to its attach() method. forget matches it by identity, so only tickets issued for this exact object are removed."
 			},
 			{
 				"name": "LocalTransportService.forget.target",
 				"type": "LocalTransportTarget",
-				"required": true
+				"required": true,
+				"description": "The client whose tickets forget removes, matched by identity against the target each stored ticket was issued for. A target with no stored tickets changes nothing."
 			}
 		],
 		"outputs": [
 			{
 				"name": "LocalTransportService.port",
-				"type": "number"
+				"type": "number",
+				"description": "The TCP port of the bound server on 127.0.0.1, which the operating system picks because the server starts on port 0. It throws while no server is bound, that is before listen() resolves and after close().",
+				"examples": [50817, 52193, 61044]
 			},
 			{
 				"name": "LocalTransportService.address",
-				"type": "string"
+				"type": "string",
+				"description": "The IP address the server is bound to, which is always 127.0.0.1 because start() passes that host. It throws the same error as port while no server is bound.",
+				"examples": ["127.0.0.1"]
 			},
 			{
 				"name": "LocalTransportService.connections",
-				"type": "number"
+				"type": "number",
+				"description": "The number of WebSocket clients the server currently has open, which never exceeds the clients limit. It is 0 before listen() resolves and after close().",
+				"examples": [0, 1, 3]
 			},
 			{
 				"name": "LocalTransportService.listen",
-				"type": "Promise<number>"
+				"type": "Promise<number>",
+				"description": "A promise that resolves with the bound port once the server is listening, and repeated calls share that same promise. If starting fails, the promise rejects and the next call starts the server again.",
+				"examples": [50817, 52193]
 			},
 			{
 				"name": "LocalTransportService.bootstrap",
-				"type": "LocalBootstrap"
+				"type": "LocalBootstrap",
+				"description": "A new one-use ticket for one client, returned together with the port to connect to. The ticket is 32 random bytes encoded as base64url, and it stops opening a socket once its ticketMs lifetime has passed.",
+				"examples": [
+					{
+						"port": 50817,
+						"ticket": "q7Zt1xK9bN3vW8pLs0RfYc2HdUeJgT6mAo4iXkB5nQw"
+					},
+					{
+						"port": 52193,
+						"ticket": "Lr0aP8sVw3KdX6zYbN1mQe7TcHuJf4gO9iRt2AlWxE5"
+					}
+				]
 			},
 			{
 				"name": "LocalTransportService.forget",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing. It deletes every stored ticket whose target is the given object, so those tickets can no longer open a socket, and it does not close sockets that are already open."
 			},
 			{
 				"name": "LocalTransportService.close",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "A promise that resolves once every open socket has been terminated and the server has closed. It resolves even if listen() failed, and it does nothing when no server is running."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by the port and address getters and by bootstrap while no server is bound, that is before listen() resolves or after close(). The message is 'The transport is not listening.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejection of listen() with the error that starting the WebSocket server fails with, such as an 'error' event emitted before it is listening. The cached start promise is cleared, so a later listen() call starts the server again."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "LocalTransportService.port",
@@ -103,11 +147,19 @@
 				"outputs": [
 					{
 						"name": "LocalTransportService.port",
-						"type": "number"
+						"type": "number",
+						"description": "The TCP port of the bound server on 127.0.0.1, which the operating system picks because the server starts on port 0. It throws while no server is bound, that is before listen() resolves and after close().",
+						"examples": [50817, 52193, 61044]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown while no server is bound, that is before listen() resolves or after close(). The message is 'The transport is not listening.'"
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalTransportService.address",
@@ -115,11 +167,19 @@
 				"outputs": [
 					{
 						"name": "LocalTransportService.address",
-						"type": "string"
+						"type": "string",
+						"description": "The IP address the server is bound to, which is always 127.0.0.1 because start() passes that host. It throws the same error as port while no server is bound.",
+						"examples": ["127.0.0.1"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown while no server is bound, that is before listen() resolves or after close(). The message is 'The transport is not listening.'"
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalTransportService.connections",
@@ -127,11 +187,13 @@
 				"outputs": [
 					{
 						"name": "LocalTransportService.connections",
-						"type": "number"
+						"type": "number",
+						"description": "The number of WebSocket clients the server currently has open, which never exceeds the clients limit. It is 0 before listen() resolves and after close().",
+						"examples": [0, 1, 3]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalTransportService.listen",
@@ -139,11 +201,19 @@
 				"outputs": [
 					{
 						"name": "LocalTransportService.listen",
-						"type": "Promise<number>"
+						"type": "Promise<number>",
+						"description": "A promise that resolves with the bound port once the server is listening, and repeated calls share that same promise. If starting fails, the promise rejects and the next call starts the server again.",
+						"examples": [50817, 52193]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejection of listen() with the error that starting the WebSocket server fails with, such as an 'error' event emitted before it is listening. The cached start promise is cleared, so a later listen() call starts the server again."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalTransportService.bootstrap",
@@ -151,17 +221,35 @@
 					{
 						"name": "LocalTransportService.bootstrap.target",
 						"type": "LocalTransportTarget",
-						"required": true
+						"required": true,
+						"description": "The client that one ticket is issued for: bootstrap stores it with the ticket, and the socket admitted on that ticket is passed to its attach() method. forget matches it by identity, so only tickets issued for this exact object are removed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalTransportService.bootstrap",
-						"type": "LocalBootstrap"
+						"type": "LocalBootstrap",
+						"description": "A new one-use ticket for one client, returned together with the port to connect to. The ticket is 32 random bytes encoded as base64url, and it stops opening a socket once its ticketMs lifetime has passed.",
+						"examples": [
+							{
+								"port": 50817,
+								"ticket": "q7Zt1xK9bN3vW8pLs0RfYc2HdUeJgT6mAo4iXkB5nQw"
+							},
+							{
+								"port": 52193,
+								"ticket": "Lr0aP8sVw3KdX6zYbN1mQe7TcHuJf4gO9iRt2AlWxE5"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown while no server is bound, that is before listen() resolves or after close(). The ticket is stored before the port is read, so it is never returned and stays in the map until it expires or is pruned."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalTransportService.forget",
@@ -169,17 +257,19 @@
 					{
 						"name": "LocalTransportService.forget.target",
 						"type": "LocalTransportTarget",
-						"required": true
+						"required": true,
+						"description": "The client whose tickets forget removes, matched by identity against the target each stored ticket was issued for. A target with no stored tickets changes nothing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalTransportService.forget",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing. It deletes every stored ticket whose target is the given object, so those tickets can no longer open a socket, and it does not close sockets that are already open."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalTransportService.close",
@@ -187,11 +277,12 @@
 				"outputs": [
 					{
 						"name": "LocalTransportService.close",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "A promise that resolves once every open socket has been terminated and the server has closed. It resolves even if listen() failed, and it does nothing when no server is running."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -202,17 +293,33 @@
 						"name": "LocalTransportService.constructor.options",
 						"type": "LocalTransportOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional settings: origin is the exact Origin header the transport accepts, ticketMs is a ticket's lifetime in milliseconds, tickets is the most tickets that may wait, clients is the most open connections, and now is the clock for ticket expiry (Date.now() when omitted). An omitted origin, ticketMs, tickets or clients uses its localTransport default from the remote package.",
+						"examples": [
+							{},
+							{
+								"ticketMs": 5000,
+								"tickets": 8,
+								"clients": 4
+							},
+							{
+								"origin": "http://localhost:5173",
+								"ticketMs": 3000,
+								"tickets": 16,
+								"clients": 2
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalTransportService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new LocalTransportService, which keeps its options and opens no server until listen() is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
