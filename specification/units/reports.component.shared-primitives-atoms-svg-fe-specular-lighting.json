@@ -29,17 +29,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feSpecularLighting element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet rendered as the content of the feSpecularLighting element; when it is undefined or otherwise falsy, the element gets no content. The component renders it with {@render children()} and does not check that the value is a Snippet or filter what it renders."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeSpecularLighting",
 				"type": "markup",
-				"description": "The actual native feSpecularLighting element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native feSpecularLighting element in the SVG namespace, with every received attribute except children spread onto it and the children snippet rendered inside it. No wrapper element is added, so the rendered output is the feSpecularLighting element itself, and the spread attributes are not validated or filtered."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
