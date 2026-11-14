@@ -6,6 +6,7 @@ import { benchmarkProcess } from '../src/cli/program/benchmark-service/benchmark
 import { peakMemory } from '../src/cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory';
 import { measureWorkload } from './support/measureWorkload';
 import { serveKernel } from '../src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService';
+import { KernelBenchmarkService } from '../src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService';
 
 test('deadline stops the spawned process instead of leaving background work', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'benchmark-cancel-'));
@@ -45,6 +46,23 @@ test('deadline stops the spawned process instead of leaving background work', as
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
+});
+
+test('kernel cold samples run asynchronously instead of using the probe-only sync runner', async () => {
+	const service = new KernelBenchmarkService(
+		{
+			cli: ['bun', '-e', 'process.stdout.write(JSON.stringify({elapsedMs:7}))'],
+			coldSamples: 1,
+			warmIterations: 1
+		},
+		{} as never
+	);
+	const sample = (
+		service as unknown as {
+			sample(target: string, run: { nodes: number; seed: number }, url: string): Promise<number>;
+		}
+	).sample;
+	await expect(sample.call(service, 'module', { nodes: 1, seed: 1 }, '')).resolves.toBe(7);
 });
 
 async function assertSuccessfulProcesses(root: string): Promise<void> {

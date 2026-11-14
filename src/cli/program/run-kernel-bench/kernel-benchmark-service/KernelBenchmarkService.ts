@@ -26,6 +26,7 @@ import {
 } from '../../../../utils/execution-runtimes/kernelArtifacts';
 import { peakMemory } from './peakMemory';
 import { UnitRuntimeService } from '../../../../services/execution-runtimes/UnitRuntimeService';
+import { commandDeadlines } from '../../../../adapters/execution-runtimes/bounded-command-adapter/commandDeadlines';
 
 const runtimes: RuntimeKind[] = ['module', 'wasm', 'process', 'http'];
 
@@ -119,11 +120,11 @@ export class KernelBenchmarkService {
 		const [command, ...prefix] = this.plan.cli;
 		const args = ['kernel', 'sample', '--runtime', target, '--nodes', String(run.nodes)];
 		const served = target === 'http' ? ['--url', url] : [];
-		const result = new BoundedCommandAdapter().runSync(
+		const result = await new BoundedCommandAdapter().run(
 			command,
 			[...prefix, ...args, '--seed', String(run.seed), ...served],
 			{
-				timeoutMs: 60000,
+				timeoutMs: commandDeadlines.kernelSampleMs,
 				maxBuffer: 8 * 1024 * 1024,
 				env: internal()
 			}
