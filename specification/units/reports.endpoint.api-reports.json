@@ -12,16 +12,23 @@
 		"symbols": ["GET"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved value is a SvelteKit JSON Response containing repository.list()'s resolved value, with Cache-Control set to no-store. The route does not specify the response body's schema; repository.list() determines it."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "repository.list rejection",
+				"type": "thrown",
+				"description": "The rejection value propagated when repository.list() throws or its promise rejects. GET does not catch or transform it, and this route does not specify its error name or message."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GET",
@@ -29,11 +36,18 @@
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved value is a SvelteKit JSON Response containing repository.list()'s resolved value, with Cache-Control set to no-store. The route does not specify the response body's schema; repository.list() determines it."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "repository.list rejection",
+						"type": "thrown",
+						"description": "The rejection value propagated when repository.list() throws or its promise rejects. GET does not catch or transform it, and this route does not specify its error name or message."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
