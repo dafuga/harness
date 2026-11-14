@@ -25,51 +25,94 @@
 				"type": "string",
 				"required": false,
 				"default": "codex",
-				"description": "Native Codex executable name or path."
+				"description": "Executable passed as argv[0] to Codex commands. It defaults to codex when omitted.",
+				"examples": ["codex", "/usr/local/bin/codex"]
 			},
 			{
 				"name": "CodexBenchmarkAdapter.preflight.candidate",
 				"type": "BenchmarkCandidate",
 				"required": true,
-				"description": "Explicit runner, model, effort and tool configuration to validate."
+				"description": "Candidate settings determine whether preflight proceeds: tools must be default and effort must not be max. Preflight runs only the version check and does not validate model access.",
+				"examples": [
+					{
+						"id": "codex-luna-medium",
+						"runner": "codex",
+						"model": "gpt-6-luna",
+						"effort": "medium",
+						"instructions": "Prefer a focused implementation that satisfies the benchmark task.",
+						"tools": "default"
+					}
+				]
 			},
 			{
 				"name": "CodexBenchmarkAdapter.run.input",
 				"type": "BenchmarkRunnerInput",
 				"required": true,
-				"description": "Isolated workspace, prompt, optional resumed session and abort signal."
+				"description": "Supplies the candidate, working directory, prompt, optional session, and abort signal for one Codex execution. The signal is passed to the process; a session selects the resume command path."
 			},
 			{
 				"name": "CodexBenchmarkAdapter.command.input",
 				"type": "BenchmarkRunnerInput",
 				"required": true,
-				"description": "Candidate settings and session used to form the native argument vector."
+				"description": "Supplies the candidate model and effort plus an optional session for building the argument vector. A truthy session selects resume; otherwise the vector includes the workspace-write sandbox."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CodexBenchmarkAdapter.preflight",
 				"type": "Promise<string>",
-				"description": "Installed Codex CLI version after supported-setting checks."
+				"description": "Trimmed stdout from codex --version. It is returned only after the supported-setting check passes and the process exits with code zero.",
+				"examples": ["codex 1.0.0"]
 			},
 			{
 				"name": "CodexBenchmarkAdapter.run",
 				"type": "Promise<BenchmarkTurn>",
-				"description": "Completed turn with session identity, matching reported model and available usage."
+				"description": "Benchmark turn parsed from the Codex JSON event output. If the turn has a truthy reportedModel, it must equal the candidate model; this adapter does not reject a missing or empty reportedModel.",
+				"examples": [
+					{
+						"session": "019a4c12-6c31-7d22-a087-1efc3bc3c901",
+						"reportedModel": "gpt-6-luna",
+						"usage": {
+							"inputTokens": 1842,
+							"outputTokens": 317,
+							"cacheReadTokens": 512
+						}
+					}
+				]
 			},
 			{
 				"name": "CodexBenchmarkAdapter.command",
 				"type": "string[]",
-				"description": "Explicit Codex exec or resume argument vector."
+				"description": "Argument vector for codex exec with JSON output, ignored user config, the candidate model and effort, approval policy never, provider openai, and stdin marker -. A truthy session inserts resume and the session after exec; otherwise workspace-write sandbox arguments are included.",
+				"examples": [
+					[
+						"codex",
+						"exec",
+						"--sandbox",
+						"workspace-write",
+						"--json",
+						"--ignore-user-config",
+						"-m",
+						"gpt-6-luna",
+						"-c",
+						"model_reasoning_effort=\"medium\"",
+						"-c",
+						"approval_policy=\"never\"",
+						"-c",
+						"model_provider=\"openai\"",
+						"-"
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsupported settings, unavailable execution and incomplete or mismatched turns."
+				"description": "Throws Error for unsupported preflight settings, a failed Codex process, or a truthy reported model that differs from the candidate model. Failures rejected by the awaited process or event-parsing calls also propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CodexBenchmarkAdapter.preflight",
@@ -78,23 +121,35 @@
 						"name": "CodexBenchmarkAdapter.preflight.candidate",
 						"type": "BenchmarkCandidate",
 						"required": true,
-						"description": "Explicit runner, model, effort and tool configuration to validate."
+						"description": "Candidate settings determine whether preflight proceeds: tools must be default and effort must not be max. Preflight runs only the version check and does not validate model access.",
+						"examples": [
+							{
+								"id": "codex-luna-medium",
+								"runner": "codex",
+								"model": "gpt-6-luna",
+								"effort": "medium",
+								"instructions": "Prefer a focused implementation that satisfies the benchmark task.",
+								"tools": "default"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexBenchmarkAdapter.preflight",
 						"type": "Promise<string>",
-						"description": "Installed Codex CLI version after supported-setting checks."
+						"description": "Trimmed stdout from codex --version. It is returned only after the supported-setting check passes and the process exits with code zero.",
+						"examples": ["codex 1.0.0"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error when tools is not default or effort is max, or when codex --version exits nonzero; process failures also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexBenchmarkAdapter.run",
@@ -103,23 +158,35 @@
 						"name": "CodexBenchmarkAdapter.run.input",
 						"type": "BenchmarkRunnerInput",
 						"required": true,
-						"description": "Isolated workspace, prompt, optional resumed session and abort signal."
+						"description": "Supplies the candidate, working directory, prompt, optional session, and abort signal for one Codex execution. The signal is passed to the process; a session selects the resume command path."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexBenchmarkAdapter.run",
 						"type": "Promise<BenchmarkTurn>",
-						"description": "Completed turn with session identity, matching reported model and available usage."
+						"description": "Benchmark turn parsed from the Codex JSON event output. If the turn has a truthy reportedModel, it must equal the candidate model; this adapter does not reject a missing or empty reportedModel.",
+						"examples": [
+							{
+								"session": "019a4c12-6c31-7d22-a087-1efc3bc3c901",
+								"reportedModel": "gpt-6-luna",
+								"usage": {
+									"inputTokens": 1842,
+									"outputTokens": 317,
+									"cacheReadTokens": 512
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error when Codex exits nonzero or a truthy reportedModel differs from the candidate model; process and event-parsing failures also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexBenchmarkAdapter.command",
@@ -128,18 +195,37 @@
 						"name": "CodexBenchmarkAdapter.command.input",
 						"type": "BenchmarkRunnerInput",
 						"required": true,
-						"description": "Candidate settings and session used to form the native argument vector."
+						"description": "Supplies the candidate model and effort plus an optional session for building the argument vector. A truthy session selects resume; otherwise the vector includes the workspace-write sandbox."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexBenchmarkAdapter.command",
 						"type": "string[]",
-						"description": "Explicit Codex exec or resume argument vector."
+						"description": "Argument vector for codex exec with JSON output, ignored user config, the candidate model and effort, approval policy never, provider openai, and stdin marker -. A truthy session inserts resume and the session after exec; otherwise workspace-write sandbox arguments are included.",
+						"examples": [
+							[
+								"codex",
+								"exec",
+								"--sandbox",
+								"workspace-write",
+								"--json",
+								"--ignore-user-config",
+								"-m",
+								"gpt-6-luna",
+								"-c",
+								"model_reasoning_effort=\"medium\"",
+								"-c",
+								"approval_policy=\"never\"",
+								"-c",
+								"model_provider=\"openai\"",
+								"-"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -151,17 +237,19 @@
 						"type": "string",
 						"required": false,
 						"default": "codex",
-						"description": "Native Codex executable name or path."
+						"description": "Executable passed as argv[0] to Codex commands. It defaults to codex when omitted.",
+						"examples": ["codex", "/usr/local/bin/codex"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexBenchmarkAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed adapter instance, which stores the supplied executable or the constructor default codex."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
