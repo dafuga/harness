@@ -27,56 +27,223 @@
 				"name": "modulePath.path",
 				"type": "string",
 				"required": true,
-				"description": "Workspace-relative module source path, optionally prefixed by its package path."
+				"description": "Module source path whose first src/ segment is followed by a moduleFolders name, then '/' and more text; any text before that src/ is kept in root as the package prefix. Paths without that shape make modulePath return undefined.",
+				"examples": [
+					"src/components/billing/InvoiceTable.tsx",
+					"packages/web/src/lib/utils/billing/formatCurrency.ts",
+					"apps/admin/src/app/(marketing)/pricing/page.tsx"
+				]
 			},
 			{
 				"name": "moduleGroup.paths",
 				"type": "string[]",
 				"required": true,
-				"description": "Owned source paths at the selected revision, including supported forwarding entries."
+				"description": "Owned source paths scanned for a category: a path counts when modulePath gives it a folder that is followed by another segment and equals a group id once the parentheses of a route-group folder such as (marketing) are removed. Other paths are ignored, and folder aliases are consulted only when no path counts.",
+				"examples": [
+					["src/components/billing/InvoiceTable.tsx", "src/components/billing/InvoiceRow.tsx"],
+					[
+						"apps/web/src/routes/(pricing-plans)/index.tsx",
+						"apps/web/src/routes/(pricing-plans)/checkout.tsx"
+					],
+					["apps/web/src/routes/(account)/profile.tsx"]
+				]
 			},
 			{
 				"name": "moduleGroup.groups",
 				"type": "ModuleGroup[]",
 				"required": true,
-				"description": "Validated project category definitions, including optional framework route-folder aliases."
+				"description": "Category definitions matched by exact id against each counted path's folder. A group's optional folders are raw string prefixes of owned paths, not whole segments, used as aliases only when no path counts, and only the longest matching prefixes are used.",
+				"examples": [
+					[
+						{
+							"id": "billing",
+							"title": "Billing",
+							"terms": ["invoice", "payment"]
+						},
+						{
+							"id": "pricing",
+							"title": "Pricing",
+							"terms": ["plan", "checkout"],
+							"folders": ["apps/web/src/routes/(pricing-plans)/"]
+						},
+						{
+							"id": "account-settings",
+							"title": "Account settings",
+							"terms": ["profile", "security"],
+							"folders": ["apps/web/src/routes/(account)/"]
+						}
+					],
+					[
+						{
+							"id": "pricing",
+							"title": "Pricing",
+							"terms": ["plan", "checkout"],
+							"folders": ["apps/web/src/routes/(pricing-plans)/"]
+						}
+					]
+				]
 			},
 			{
 				"name": "matchingGroups.text",
 				"type": "string",
 				"required": true,
-				"description": "Code name and optional declared responsibility used for whole-word category matching."
+				"description": "Text to match, normalized by splitting camelCase after a lowercase letter or digit, lowercasing it, and replacing each run of characters other than ASCII letters and digits with one space. A group's id or term matches only when its words appear in that normalized text as a whole-word sequence.",
+				"examples": ["InvoiceTable", "usePaymentRetry", "InvoicePlanCard"]
 			},
 			{
 				"name": "matchingGroups.groups",
 				"type": "ModuleGroup[]",
 				"required": true,
-				"description": "Available project categories and the domain words each category matches."
+				"description": "Categories scored against the text: each group's id and terms are lowercased and split only at non-alphanumeric characters, with camelCase left unsplit. A group's score is the largest word count among its id and terms that match the text, and a group with no match scores zero.",
+				"examples": [
+					[
+						{
+							"id": "billing",
+							"title": "Billing",
+							"terms": ["invoice", "payment"]
+						},
+						{
+							"id": "pricing",
+							"title": "Pricing",
+							"terms": ["plan", "checkout"],
+							"folders": ["apps/web/src/routes/(pricing-plans)/"]
+						},
+						{
+							"id": "account-settings",
+							"title": "Account settings",
+							"terms": ["profile", "security"],
+							"folders": ["apps/web/src/routes/(account)/"]
+						}
+					],
+					[
+						{
+							"id": "pricing",
+							"title": "Pricing",
+							"terms": ["plan", "checkout"],
+							"folders": ["apps/web/src/routes/(pricing-plans)/"]
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "moduleFolders",
 				"type": "unknown",
-				"description": "Immutable list of supported module roots preceding category folders."
+				"description": "Frozen list of the 39 folder names that modulePath accepts directly after a src/ segment; any other folder name makes modulePath return undefined.",
+				"examples": [
+					[
+						"adapters",
+						"app",
+						"audit",
+						"channels",
+						"commands",
+						"components",
+						"concerns",
+						"config",
+						"configs",
+						"controllers",
+						"core",
+						"decorators",
+						"forms",
+						"functions",
+						"generators",
+						"guides",
+						"helpers",
+						"hooks",
+						"initializers",
+						"jobs",
+						"lib",
+						"mailers",
+						"middleware",
+						"models",
+						"notifications",
+						"pages",
+						"partials",
+						"policies",
+						"repositories",
+						"routes",
+						"rules",
+						"serializers",
+						"services",
+						"shells",
+						"stores",
+						"templates",
+						"utils",
+						"validators",
+						"workflows"
+					]
+				]
 			},
 			{
 				"name": "modulePath",
 				"type": "{ root: string; parts: string[] } | undefined",
-				"description": "Scaffold root and remaining category/owner segments, or undefined outside supported module shapes."
+				"description": "Scaffold root: the path through the moduleFolders name after src/, plus the following segment when that name is lib and the segment is stores, utils, helpers, components, services, models, config, or adapters. parts holds the remaining segments, and the value is undefined when the path has no supported src/<folder>/<segment> shape.",
+				"examples": [
+					{
+						"root": "src/components",
+						"parts": ["billing", "InvoiceTable.tsx"]
+					},
+					{
+						"root": "packages/web/src/lib/utils",
+						"parts": ["billing", "formatCurrency.ts"]
+					},
+					{
+						"root": "apps/admin/src/app",
+						"parts": ["(marketing)", "pricing", "page.tsx"]
+					}
+				]
 			},
 			{
 				"name": "moduleGroup",
 				"type": "Pick<ModuleGroup, 'id' | 'title'> | undefined",
-				"description": "One category id and title from source folders or framework aliases; undefined when absent or conflicting."
+				"description": "The single matched category's id and title, taken from counted source-folder paths or, when none count, from folder aliases. The value is undefined when no category matches or when two or more different categories match.",
+				"examples": [
+					{
+						"id": "billing",
+						"title": "Billing"
+					},
+					{
+						"id": "pricing",
+						"title": "Pricing"
+					},
+					{
+						"id": "account-settings",
+						"title": "Account settings"
+					}
+				]
 			},
 			{
 				"name": "matchingGroups",
 				"type": "ModuleGroup[]",
-				"description": "All categories tied for the best nonzero whole-word match; an empty array means no category matched."
+				"description": "Groups tied for the highest score, in input order, where a group's score is the largest word count among its id and terms that match the text. The array is empty when no score is above zero, including when groups is empty.",
+				"examples": [
+					[
+						{
+							"id": "billing",
+							"title": "Billing",
+							"terms": ["invoice", "payment"]
+						}
+					],
+					[
+						{
+							"id": "billing",
+							"title": "Billing",
+							"terms": ["invoice", "payment"]
+						},
+						{
+							"id": "pricing",
+							"title": "Pricing",
+							"terms": ["plan", "checkout"],
+							"folders": ["apps/web/src/routes/(pricing-plans)/"]
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "modulePath",
@@ -85,18 +252,37 @@
 						"name": "modulePath.path",
 						"type": "string",
 						"required": true,
-						"description": "Workspace-relative module source path, optionally prefixed by its package path."
+						"description": "Module source path whose first src/ segment is followed by a moduleFolders name, then '/' and more text; any text before that src/ is kept in root as the package prefix. Paths without that shape make modulePath return undefined.",
+						"examples": [
+							"src/components/billing/InvoiceTable.tsx",
+							"packages/web/src/lib/utils/billing/formatCurrency.ts",
+							"apps/admin/src/app/(marketing)/pricing/page.tsx"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "modulePath",
 						"type": "{ root: string; parts: string[] } | undefined",
-						"description": "Scaffold root and remaining category/owner segments, or undefined outside supported module shapes."
+						"description": "Scaffold root: the path through the moduleFolders name after src/, plus the following segment when that name is lib and the segment is stores, utils, helpers, components, services, models, config, or adapters. parts holds the remaining segments, and the value is undefined when the path has no supported src/<folder>/<segment> shape.",
+						"examples": [
+							{
+								"root": "src/components",
+								"parts": ["billing", "InvoiceTable.tsx"]
+							},
+							{
+								"root": "packages/web/src/lib/utils",
+								"parts": ["billing", "formatCurrency.ts"]
+							},
+							{
+								"root": "apps/admin/src/app",
+								"parts": ["(marketing)", "pricing", "page.tsx"]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "moduleGroup",
@@ -105,24 +291,75 @@
 						"name": "moduleGroup.paths",
 						"type": "string[]",
 						"required": true,
-						"description": "Owned source paths at the selected revision, including supported forwarding entries."
+						"description": "Owned source paths scanned for a category: a path counts when modulePath gives it a folder that is followed by another segment and equals a group id once the parentheses of a route-group folder such as (marketing) are removed. Other paths are ignored, and folder aliases are consulted only when no path counts.",
+						"examples": [
+							["src/components/billing/InvoiceTable.tsx", "src/components/billing/InvoiceRow.tsx"],
+							[
+								"apps/web/src/routes/(pricing-plans)/index.tsx",
+								"apps/web/src/routes/(pricing-plans)/checkout.tsx"
+							],
+							["apps/web/src/routes/(account)/profile.tsx"]
+						]
 					},
 					{
 						"name": "moduleGroup.groups",
 						"type": "ModuleGroup[]",
 						"required": true,
-						"description": "Validated project category definitions, including optional framework route-folder aliases."
+						"description": "Category definitions matched by exact id against each counted path's folder. A group's optional folders are raw string prefixes of owned paths, not whole segments, used as aliases only when no path counts, and only the longest matching prefixes are used.",
+						"examples": [
+							[
+								{
+									"id": "billing",
+									"title": "Billing",
+									"terms": ["invoice", "payment"]
+								},
+								{
+									"id": "pricing",
+									"title": "Pricing",
+									"terms": ["plan", "checkout"],
+									"folders": ["apps/web/src/routes/(pricing-plans)/"]
+								},
+								{
+									"id": "account-settings",
+									"title": "Account settings",
+									"terms": ["profile", "security"],
+									"folders": ["apps/web/src/routes/(account)/"]
+								}
+							],
+							[
+								{
+									"id": "pricing",
+									"title": "Pricing",
+									"terms": ["plan", "checkout"],
+									"folders": ["apps/web/src/routes/(pricing-plans)/"]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "moduleGroup",
 						"type": "Pick<ModuleGroup, 'id' | 'title'> | undefined",
-						"description": "One category id and title from source folders or framework aliases; undefined when absent or conflicting."
+						"description": "The single matched category's id and title, taken from counted source-folder paths or, when none count, from folder aliases. The value is undefined when no category matches or when two or more different categories match.",
+						"examples": [
+							{
+								"id": "billing",
+								"title": "Billing"
+							},
+							{
+								"id": "pricing",
+								"title": "Pricing"
+							},
+							{
+								"id": "account-settings",
+								"title": "Account settings"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "matchingGroups",
@@ -131,24 +368,77 @@
 						"name": "matchingGroups.text",
 						"type": "string",
 						"required": true,
-						"description": "Code name and optional declared responsibility used for whole-word category matching."
+						"description": "Text to match, normalized by splitting camelCase after a lowercase letter or digit, lowercasing it, and replacing each run of characters other than ASCII letters and digits with one space. A group's id or term matches only when its words appear in that normalized text as a whole-word sequence.",
+						"examples": ["InvoiceTable", "usePaymentRetry", "InvoicePlanCard"]
 					},
 					{
 						"name": "matchingGroups.groups",
 						"type": "ModuleGroup[]",
 						"required": true,
-						"description": "Available project categories and the domain words each category matches."
+						"description": "Categories scored against the text: each group's id and terms are lowercased and split only at non-alphanumeric characters, with camelCase left unsplit. A group's score is the largest word count among its id and terms that match the text, and a group with no match scores zero.",
+						"examples": [
+							[
+								{
+									"id": "billing",
+									"title": "Billing",
+									"terms": ["invoice", "payment"]
+								},
+								{
+									"id": "pricing",
+									"title": "Pricing",
+									"terms": ["plan", "checkout"],
+									"folders": ["apps/web/src/routes/(pricing-plans)/"]
+								},
+								{
+									"id": "account-settings",
+									"title": "Account settings",
+									"terms": ["profile", "security"],
+									"folders": ["apps/web/src/routes/(account)/"]
+								}
+							],
+							[
+								{
+									"id": "pricing",
+									"title": "Pricing",
+									"terms": ["plan", "checkout"],
+									"folders": ["apps/web/src/routes/(pricing-plans)/"]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "matchingGroups",
 						"type": "ModuleGroup[]",
-						"description": "All categories tied for the best nonzero whole-word match; an empty array means no category matched."
+						"description": "Groups tied for the highest score, in input order, where a group's score is the largest word count among its id and terms that match the text. The array is empty when no score is above zero, including when groups is empty.",
+						"examples": [
+							[
+								{
+									"id": "billing",
+									"title": "Billing",
+									"terms": ["invoice", "payment"]
+								}
+							],
+							[
+								{
+									"id": "billing",
+									"title": "Billing",
+									"terms": ["invoice", "payment"]
+								},
+								{
+									"id": "pricing",
+									"title": "Pricing",
+									"terms": ["plan", "checkout"],
+									"folders": ["apps/web/src/routes/(pricing-plans)/"]
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
