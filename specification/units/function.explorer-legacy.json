@@ -18,17 +18,57 @@
 				"name": "explorerLegacy.route",
 				"type": "ConsoleRoute",
 				"required": true,
-				"description": "Legacy route with branch, commit, view and optional unit."
+				"description": "The legacy console route supplies branch, commit, and a view, with optional base commit, verification record, and unit id. This mapper reads only branch, commit, view, and unit; branch may be null, the view is one of the five console views, and base and record do not affect its result.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"view": "map"
+					},
+					{
+						"branch": "release/2026.11",
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"view": "history",
+						"unit": "function.explorer-legacy"
+					},
+					{
+						"branch": null,
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"view": "compare",
+						"base": "89abcdef0123456789abcdef0123456789abcdef"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerLegacy",
 				"type": "ExplorerLocation",
-				"description": "Explorer location preserving branch and commit. No unit opens Pages; a selected unit opens its kind category, defaulting to functions, with history section for history or growth views."
+				"description": "The explorer address retains the input branch and commit. Without a unit it selects Pages; with a unit it uses the category mapped from the penultimate id segment (falling back to functions for unknown kinds), preserves the full id as entity, and marks history for history or growth views.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"category": "pages"
+					},
+					{
+						"branch": "release/2026.11",
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"category": "functions",
+						"entity": "function.explorer-legacy"
+					},
+					{
+						"branch": null,
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"category": "functions",
+						"entity": "function.explorer-legacy",
+						"section": "history"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "explorerLegacy",
@@ -37,18 +77,57 @@
 						"name": "explorerLegacy.route",
 						"type": "ConsoleRoute",
 						"required": true,
-						"description": "Legacy route with branch, commit, view and optional unit."
+						"description": "The legacy console route supplies branch, commit, and a view, with optional base commit, verification record, and unit id. This mapper reads only branch, commit, view, and unit; branch may be null, the view is one of the five console views, and base and record do not affect its result.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"view": "map"
+							},
+							{
+								"branch": "release/2026.11",
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"view": "history",
+								"unit": "function.explorer-legacy"
+							},
+							{
+								"branch": null,
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"view": "compare",
+								"base": "89abcdef0123456789abcdef0123456789abcdef"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerLegacy",
 						"type": "ExplorerLocation",
-						"description": "Explorer location preserving branch and commit. No unit opens Pages; a selected unit opens its kind category, defaulting to functions, with history section for history or growth views."
+						"description": "The explorer address retains the input branch and commit. Without a unit it selects Pages; with a unit it uses the category mapped from the penultimate id segment (falling back to functions for unknown kinds), preserves the full id as entity, and marks history for history or growth views.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "pages"
+							},
+							{
+								"branch": "release/2026.11",
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"category": "functions",
+								"entity": "function.explorer-legacy"
+							},
+							{
+								"branch": null,
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "functions",
+								"entity": "function.explorer-legacy",
+								"section": "history"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
