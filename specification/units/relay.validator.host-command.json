@@ -15,27 +15,84 @@
 		"symbols": ["HostCommandValidator", "HostCommandValidator.command", "Check"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostCommandValidator.command.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The value that `JSON.parse` returned for one text frame from the host, which `HostCommandService` passes in unchanged. It is accepted only when it is a non-null, non-array object whose `type` is one of the seven host commands and which carries exactly that command's fields, with `challenge` optional on `pairing-approve`.",
+				"examples": [
+					{
+						"type": "pairing-approve",
+						"ref": "b04e17d9c3a2f8e1",
+						"pairingId": "7d2b9e4f1a6c03e8b5d7f2a9c1e4608b",
+						"deviceId": "c07a5e2f9d13b84e6a0f2c8d57e19b3a4f6d2c10",
+						"sealed": "Ld7Kq2ZxTn0MbVwY9rGsHa4PeJ8oUc1fIi6lNt3yWk5XvDgRhCjBzSp-Eu_Qm0AoXr7YztGh2NqW8cVeRi5LdTx1PaBk9sEo4JuHyM3nZf6vCwQ0gIt_lDaK",
+						"challenge": "k3Hq8ZpV1uLwT0rXf5mNcYb9sJdA2eGo7iQhW4xPlRE"
+					},
+					{
+						"type": "device-drop",
+						"deviceId": "9f3c2a7e5b1d8046c3e9a2f71d05b8c4e6a13d27",
+						"connectionId": "4b7e0d19a3c85f2ed61a9c07be34f588",
+						"code": 4401
+					},
+					{
+						"type": "packet",
+						"deviceId": "9f3c2a7e5b1d8046c3e9a2f71d05b8c4e6a13d27",
+						"connectionId": "4b7e0d19a3c85f2ed61a9c07be34f588",
+						"packet": {
+							"type": "sealed",
+							"counter": 4,
+							"more": false,
+							"data": "tQ4vB8mKzL2nFxRc7WdAoYe0SjUi5HgP9kNbT3MqVw6LaZxE1rDh_yJuC8Fs"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostCommandValidator.command",
-				"type": "RelayHostCommand"
+				"type": "RelayHostCommand",
+				"description": "The input object itself, unchanged and typed as one of the seven `RelayHostCommand` variants. A `pairing-approve` without `challenge` is also returned, though the type declares `challenge` as required.",
+				"examples": [
+					{
+						"type": "pairing-approve",
+						"ref": "b04e17d9c3a2f8e1",
+						"pairingId": "7d2b9e4f1a6c03e8b5d7f2a9c1e4608b",
+						"deviceId": "c07a5e2f9d13b84e6a0f2c8d57e19b3a4f6d2c10",
+						"sealed": "Ld7Kq2ZxTn0MbVwY9rGsHa4PeJ8oUc1fIi6lNt3yWk5XvDgRhCjBzSp-Eu_Qm0AoXr7YztGh2NqW8cVeRi5LdTx1PaBk9sEo4JuHyM3nZf6vCwQ0gIt_lDaK",
+						"challenge": "k3Hq8ZpV1uLwT0rXf5mNcYb9sJdA2eGo7iQhW4xPlRE"
+					},
+					{
+						"type": "device-drop",
+						"deviceId": "9f3c2a7e5b1d8046c3e9a2f71d05b8c4e6a13d27",
+						"connectionId": "4b7e0d19a3c85f2ed61a9c07be34f588",
+						"code": 4401
+					},
+					{
+						"type": "packet",
+						"deviceId": "9f3c2a7e5b1d8046c3e9a2f71d05b8c4e6a13d27",
+						"connectionId": "4b7e0d19a3c85f2ed61a9c07be34f588",
+						"packet": {
+							"type": "sealed",
+							"counter": 4,
+							"more": false,
+							"data": "tQ4vB8mKzL2nFxRc7WdAoYe0SjUi5HgP9kNbT3MqVw6LaZxE1rDh_yJuC8Fs"
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown with `Not a host command.` when the value is null, an array or a primitive, or when its `type` is none of the seven host commands, and with `Malformed host command.` when a known command lacks a required field, has an extra field or has an invalid field. `HostCommandService` catches either and ends the host's socket with code 4400."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostCommandValidator.command",
@@ -43,22 +100,79 @@
 					{
 						"name": "HostCommandValidator.command.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The value that `JSON.parse` returned for one text frame from the host, which `HostCommandService` passes in unchanged. It is accepted only when it is a non-null, non-array object whose `type` is one of the seven host commands and which carries exactly that command's fields, with `challenge` optional on `pairing-approve`.",
+						"examples": [
+							{
+								"type": "pairing-approve",
+								"ref": "b04e17d9c3a2f8e1",
+								"pairingId": "7d2b9e4f1a6c03e8b5d7f2a9c1e4608b",
+								"deviceId": "c07a5e2f9d13b84e6a0f2c8d57e19b3a4f6d2c10",
+								"sealed": "Ld7Kq2ZxTn0MbVwY9rGsHa4PeJ8oUc1fIi6lNt3yWk5XvDgRhCjBzSp-Eu_Qm0AoXr7YztGh2NqW8cVeRi5LdTx1PaBk9sEo4JuHyM3nZf6vCwQ0gIt_lDaK",
+								"challenge": "k3Hq8ZpV1uLwT0rXf5mNcYb9sJdA2eGo7iQhW4xPlRE"
+							},
+							{
+								"type": "device-drop",
+								"deviceId": "9f3c2a7e5b1d8046c3e9a2f71d05b8c4e6a13d27",
+								"connectionId": "4b7e0d19a3c85f2ed61a9c07be34f588",
+								"code": 4401
+							},
+							{
+								"type": "packet",
+								"deviceId": "9f3c2a7e5b1d8046c3e9a2f71d05b8c4e6a13d27",
+								"connectionId": "4b7e0d19a3c85f2ed61a9c07be34f588",
+								"packet": {
+									"type": "sealed",
+									"counter": 4,
+									"more": false,
+									"data": "tQ4vB8mKzL2nFxRc7WdAoYe0SjUi5HgP9kNbT3MqVw6LaZxE1rDh_yJuC8Fs"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostCommandValidator.command",
-						"type": "RelayHostCommand"
+						"type": "RelayHostCommand",
+						"description": "The input object itself, unchanged and typed as one of the seven `RelayHostCommand` variants. A `pairing-approve` without `challenge` is also returned, though the type declares `challenge` as required.",
+						"examples": [
+							{
+								"type": "pairing-approve",
+								"ref": "b04e17d9c3a2f8e1",
+								"pairingId": "7d2b9e4f1a6c03e8b5d7f2a9c1e4608b",
+								"deviceId": "c07a5e2f9d13b84e6a0f2c8d57e19b3a4f6d2c10",
+								"sealed": "Ld7Kq2ZxTn0MbVwY9rGsHa4PeJ8oUc1fIi6lNt3yWk5XvDgRhCjBzSp-Eu_Qm0AoXr7YztGh2NqW8cVeRi5LdTx1PaBk9sEo4JuHyM3nZf6vCwQ0gIt_lDaK",
+								"challenge": "k3Hq8ZpV1uLwT0rXf5mNcYb9sJdA2eGo7iQhW4xPlRE"
+							},
+							{
+								"type": "device-drop",
+								"deviceId": "9f3c2a7e5b1d8046c3e9a2f71d05b8c4e6a13d27",
+								"connectionId": "4b7e0d19a3c85f2ed61a9c07be34f588",
+								"code": 4401
+							},
+							{
+								"type": "packet",
+								"deviceId": "9f3c2a7e5b1d8046c3e9a2f71d05b8c4e6a13d27",
+								"connectionId": "4b7e0d19a3c85f2ed61a9c07be34f588",
+								"packet": {
+									"type": "sealed",
+									"counter": 4,
+									"more": false,
+									"data": "tQ4vB8mKzL2nFxRc7WdAoYe0SjUi5HgP9kNbT3MqVw6LaZxE1rDh_yJuC8Fs"
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with `Not a host command.` when the value is null, an array or a primitive, or when its `type` is none of the seven host commands, and with `Malformed host command.` when a known command lacks a required field, has an extra field or has an invalid field. `HostCommandService` catches either and ends the host's socket with code 4400."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
