@@ -27,115 +27,438 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "responseRecord.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The value to narrow to an object record before reading response fields. It must be a non-null, non-array object; primitives, null, and arrays are rejected.",
+				"examples": [
+					{
+						"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.actor.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The hosted response whose actor must be verified against the signed-in principal. It must contain an actor record with a matching id and emailVerified set to true.",
+				"examples": [
+					{
+						"actor": {
+							"id": "1f85fd39-53d1-4283-8a5d-ea50a780ca11",
+							"emailVerified": true
+						}
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.actor.principalId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The signed-in principal id used to verify the hosted actor. It must exactly equal actor.id; the validator performs no format check or normalization.",
+				"examples": ["1f85fd39-53d1-4283-8a5d-ea50a780ca11"]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.projects.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The hosted project list to validate before returning desktop project entries. It must be an array of records with string id and name; other response fields are discarded.",
+				"examples": [
+					[
+						{
+							"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+							"name": "Atlas Web"
+						}
+					]
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.snapshot.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The hosted snapshot to validate before exposing it as a read-only project snapshot. Its project id and name, revision commit, and entities, branches, and commits arrays must pass the implementation's checks.",
+				"examples": [
+					{
+						"project": {
+							"name": "Atlas Web",
+							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+							"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true
+						},
+						"branches": [],
+						"commits": [],
+						"entities": [],
+						"writable": true
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.snapshot.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The requested hosted project id used to compare against snapshot.project.id. The comparison is exact and the validator imposes no additional id format.",
+				"examples": ["8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.entity.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The hosted entity detail to validate before returning it. Its id must equal entityId, and versions, sources, and threads must be arrays.",
+				"examples": [
+					{
+						"id": "reports.component.evidence-grid",
+						"category": "components",
+						"kind": "component",
+						"title": "Evidence Grid",
+						"summary": "Displays evidence attached to a report.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"size": {
+							"available": false,
+							"text": "Not measured"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						},
+						"sources": [
+							"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts"
+						]
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.entity.entityId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The requested unit or entity id used to compare against entity.id. The comparison is exact and the validator imposes no additional id format.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.messages.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The hosted thread messages to validate before returning them. It must be an array whose items each have string id and text; other message fields are not checked.",
+				"examples": [
+					[
+						{
+							"id": "6a3c5e75-9ba1-4285-9daa-2f181fd3d68f",
+							"at": "2026-11-14T10:30:00.000Z",
+							"author": "user",
+							"text": "The evidence is ready for review.",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": null,
+							"imageSha256": null
+						}
+					]
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.history.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The hosted history page to validate before returning its entries. It requires an entries array with string id and title per entry, a boolean complete flag, and nextPage null or an integer of at least 1.",
+				"examples": [
+					{
+						"entries": [
+							{
+								"id": "3713c4d6-6544-4b62-b294-e96d5740d43a",
+								"at": "2026-11-14T10:25:00.000Z",
+								"kind": "commit",
+								"title": "Update evidence grid",
+								"detail": "Updated evidence grid validation.",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"version": null
+							}
+						],
+						"complete": true,
+						"nextPage": null
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The hosted thread returned after a comment submission. Its project and collaboration commit must match the request constraints, and its thread id, anchor, and matching comment identity are checked when applicable.",
+				"examples": [
+					{
+						"id": "b6d40870-eeb4-47ee-b180-16f9f4db4862",
+						"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+						"anchor": {
+							"branch": "main",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"entityId": "reports.component.evidence-grid",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						},
+						"comments": [
+							{
+								"id": "6a3c5e75-9ba1-4285-9daa-2f181fd3d68f",
+								"requestId": "24b50be1-ab1e-4eaf-8b32-45e8064f1762",
+								"actor": {
+									"id": "1f85fd39-53d1-4283-8a5d-ea50a780ca11",
+									"email": "alex@example.com",
+									"name": "Alex Morgan",
+									"emailVerified": true
+								},
+								"text": "Please include the source path.",
+								"createdAt": "2026-11-14T10:31:00.000Z"
+							}
+						],
+						"collaborationCommit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment.input",
 				"type": "AddCommentInput",
-				"required": true
+				"required": true,
+				"description": "The comment request being acknowledged, containing projectId, requestId, anchor, text, and an optional threadId. Its anchor fields and requestId/text values are matched against the returned thread and comment.",
+				"examples": [
+					{
+						"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+						"requestId": "24b50be1-ab1e-4eaf-8b32-45e8064f1762",
+						"threadId": "b6d40870-eeb4-47ee-b180-16f9f4db4862",
+						"anchor": {
+							"branch": "main",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"entityId": "reports.component.evidence-grid",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						},
+						"text": "Please include the source path."
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment.principalId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The signed-in principal id expected on the matching acknowledged comment. It must exactly equal the comment actor id, whose emailVerified value must be true.",
+				"examples": ["1f85fd39-53d1-4283-8a5d-ea50a780ca11"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "responseRecord",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"description": "A non-null, non-array object viewed as a string-keyed record of unknown values. It preserves the supplied object for inspecting response fields.",
+				"examples": [
+					{
+						"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.actor",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned after the hosted actor matches the signed-in principal and is email-verified. This method performs validation only."
 			},
 			{
 				"name": "RemoteProjectResponseValidator.projects",
-				"type": "DesktopProject[]"
+				"type": "DesktopProject[]",
+				"description": "The validated desktop project list, with each item reduced to id, name, and kind set to shared. Input items without string id and name are rejected.",
+				"examples": [
+					[
+						{
+							"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+							"name": "Atlas Web",
+							"kind": "shared"
+						}
+					]
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.snapshot",
-				"type": "ProjectSnapshot"
+				"type": "ProjectSnapshot",
+				"description": "The hosted snapshot returned with writable forced to false. Its project identity must match the request, its revision commit must be 40 lowercase hexadecimal characters, and its entities, branches, and commits must be arrays.",
+				"examples": [
+					{
+						"project": {
+							"name": "Atlas Web",
+							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+							"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true
+						},
+						"branches": [],
+						"commits": [],
+						"entities": [],
+						"writable": false
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.entity",
-				"type": "EntityDetail"
+				"type": "EntityDetail",
+				"description": "The hosted entity detail returned unchanged after its id matches entityId and versions, sources, and threads are arrays. The validator does not check its other fields.",
+				"examples": [
+					{
+						"id": "reports.component.evidence-grid",
+						"category": "components",
+						"kind": "component",
+						"title": "Evidence Grid",
+						"summary": "Displays evidence attached to a report.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"size": {
+							"available": false,
+							"text": "Not measured"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						},
+						"sources": [
+							"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts"
+						]
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.messages",
-				"type": "ThreadMessage[]"
+				"type": "ThreadMessage[]",
+				"description": "The input message array returned unchanged after every item has string id and text. The validator does not check the remaining message fields.",
+				"examples": [
+					[
+						{
+							"id": "6a3c5e75-9ba1-4285-9daa-2f181fd3d68f",
+							"at": "2026-11-14T10:30:00.000Z",
+							"author": "user",
+							"text": "The evidence is ready for review.",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": null,
+							"imageSha256": null
+						}
+					]
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.history",
-				"type": "{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }"
+				"type": "{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }",
+				"description": "The hosted history page returned after checking entries, complete, and nextPage. Each entry must have string id and title, and nextPage must be null or an integer of at least 1.",
+				"examples": [
+					{
+						"entries": [
+							{
+								"id": "3713c4d6-6544-4b62-b294-e96d5740d43a",
+								"at": "2026-11-14T10:25:00.000Z",
+								"kind": "commit",
+								"title": "Update evidence grid",
+								"detail": "Updated evidence grid validation.",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"version": null
+							}
+						],
+						"complete": true,
+						"nextPage": null
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment",
-				"type": "CommittedThread"
+				"type": "CommittedThread",
+				"description": "The acknowledged hosted thread returned after project, collaboration commit, optional thread id, anchor, and matching comment identity checks. collaborationCommit must be 40 lowercase hexadecimal characters.",
+				"examples": [
+					{
+						"id": "b6d40870-eeb4-47ee-b180-16f9f4db4862",
+						"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+						"anchor": {
+							"branch": "main",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"entityId": "reports.component.evidence-grid",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						},
+						"comments": [
+							{
+								"id": "6a3c5e75-9ba1-4285-9daa-2f181fd3d68f",
+								"requestId": "24b50be1-ab1e-4eaf-8b32-45e8064f1762",
+								"actor": {
+									"id": "1f85fd39-53d1-4283-8a5d-ea50a780ca11",
+									"email": "alex@example.com",
+									"name": "Alex Morgan",
+									"emailVerified": true
+								},
+								"text": "Please include the source path.",
+								"createdAt": "2026-11-14T10:31:00.000Z"
+							}
+						],
+						"collaborationCommit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "These synchronous validators throw Error for malformed response records and invalid hosted projects, snapshots, entities, messages, history pages, or comment acknowledgments. Actor and comment validation also throws when principal, project, thread, anchor, request, text, or verified actor identity values do not satisfy the implementation's comparisons."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "responseRecord",
@@ -143,22 +466,35 @@
 					{
 						"name": "responseRecord.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The value to narrow to an object record before reading response fields. It must be a non-null, non-array object; primitives, null, and arrays are rejected.",
+						"examples": [
+							{
+								"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "responseRecord",
-						"type": "Record<string, unknown>"
+						"type": "Record<string, unknown>",
+						"description": "A non-null, non-array object viewed as a string-keyed record of unknown values. It preserves the supplied object for inspecting response fields.",
+						"examples": [
+							{
+								"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error unless the value is a non-null object that is not an array."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectResponseValidator.actor",
@@ -166,27 +502,40 @@
 					{
 						"name": "RemoteProjectResponseValidator.actor.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The hosted response whose actor must be verified against the signed-in principal. It must contain an actor record with a matching id and emailVerified set to true.",
+						"examples": [
+							{
+								"actor": {
+									"id": "1f85fd39-53d1-4283-8a5d-ea50a780ca11",
+									"emailVerified": true
+								}
+							}
+						]
 					},
 					{
 						"name": "RemoteProjectResponseValidator.actor.principalId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The signed-in principal id used to verify the hosted actor. It must exactly equal actor.id; the validator performs no format check or normalization.",
+						"examples": ["1f85fd39-53d1-4283-8a5d-ea50a780ca11"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectResponseValidator.actor",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned after the hosted actor matches the signed-in principal and is email-verified. This method performs validation only."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error for malformed response records, a missing actor, or an actor whose id differs from principalId or whose emailVerified value is not true."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectResponseValidator.projects",
@@ -194,22 +543,42 @@
 					{
 						"name": "RemoteProjectResponseValidator.projects.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The hosted project list to validate before returning desktop project entries. It must be an array of records with string id and name; other response fields are discarded.",
+						"examples": [
+							[
+								{
+									"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+									"name": "Atlas Web"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectResponseValidator.projects",
-						"type": "DesktopProject[]"
+						"type": "DesktopProject[]",
+						"description": "The validated desktop project list, with each item reduced to id, name, and kind set to shared. Input items without string id and name are rejected.",
+						"examples": [
+							[
+								{
+									"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+									"name": "Atlas Web",
+									"kind": "shared"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error unless value is an array and every item is an object record with string id and name."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectResponseValidator.snapshot",
@@ -217,27 +586,70 @@
 					{
 						"name": "RemoteProjectResponseValidator.snapshot.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The hosted snapshot to validate before exposing it as a read-only project snapshot. Its project id and name, revision commit, and entities, branches, and commits arrays must pass the implementation's checks.",
+						"examples": [
+							{
+								"project": {
+									"name": "Atlas Web",
+									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+									"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true
+								},
+								"branches": [],
+								"commits": [],
+								"entities": [],
+								"writable": true
+							}
+						]
 					},
 					{
 						"name": "RemoteProjectResponseValidator.snapshot.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The requested hosted project id used to compare against snapshot.project.id. The comparison is exact and the validator imposes no additional id format.",
+						"examples": ["8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectResponseValidator.snapshot",
-						"type": "ProjectSnapshot"
+						"type": "ProjectSnapshot",
+						"description": "The hosted snapshot returned with writable forced to false. Its project identity must match the request, its revision commit must be 40 lowercase hexadecimal characters, and its entities, branches, and commits must be arrays.",
+						"examples": [
+							{
+								"project": {
+									"name": "Atlas Web",
+									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+									"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true
+								},
+								"branches": [],
+								"commits": [],
+								"entities": [],
+								"writable": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error for malformed response records or unless project.id matches projectId, project.name is a string, revision.commit is 40 lowercase hexadecimal characters, and entities, branches, and commits are arrays."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectResponseValidator.entity",
@@ -245,27 +657,112 @@
 					{
 						"name": "RemoteProjectResponseValidator.entity.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The hosted entity detail to validate before returning it. Its id must equal entityId, and versions, sources, and threads must be arrays.",
+						"examples": [
+							{
+								"id": "reports.component.evidence-grid",
+								"category": "components",
+								"kind": "component",
+								"title": "Evidence Grid",
+								"summary": "Displays evidence attached to a report.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null,
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": null
+								},
+								"relationships": [],
+								"versions": [],
+								"threads": [],
+								"history": [],
+								"size": {
+									"available": false,
+									"text": "Not measured"
+								},
+								"performance": {
+									"available": false,
+									"text": "Not measured"
+								},
+								"sources": [
+									"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts"
+								]
+							}
+						]
 					},
 					{
 						"name": "RemoteProjectResponseValidator.entity.entityId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The requested unit or entity id used to compare against entity.id. The comparison is exact and the validator imposes no additional id format.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectResponseValidator.entity",
-						"type": "EntityDetail"
+						"type": "EntityDetail",
+						"description": "The hosted entity detail returned unchanged after its id matches entityId and versions, sources, and threads are arrays. The validator does not check its other fields.",
+						"examples": [
+							{
+								"id": "reports.component.evidence-grid",
+								"category": "components",
+								"kind": "component",
+								"title": "Evidence Grid",
+								"summary": "Displays evidence attached to a report.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null,
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": null
+								},
+								"relationships": [],
+								"versions": [],
+								"threads": [],
+								"history": [],
+								"size": {
+									"available": false,
+									"text": "Not measured"
+								},
+								"performance": {
+									"available": false,
+									"text": "Not measured"
+								},
+								"sources": [
+									"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts"
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error for a malformed response record or unless entity.id matches entityId and versions, sources, and threads are arrays."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectResponseValidator.messages",
@@ -273,22 +770,55 @@
 					{
 						"name": "RemoteProjectResponseValidator.messages.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The hosted thread messages to validate before returning them. It must be an array whose items each have string id and text; other message fields are not checked.",
+						"examples": [
+							[
+								{
+									"id": "6a3c5e75-9ba1-4285-9daa-2f181fd3d68f",
+									"at": "2026-11-14T10:30:00.000Z",
+									"author": "user",
+									"text": "The evidence is ready for review.",
+									"mode": null,
+									"provider": null,
+									"model": null,
+									"version": null,
+									"imageSha256": null
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectResponseValidator.messages",
-						"type": "ThreadMessage[]"
+						"type": "ThreadMessage[]",
+						"description": "The input message array returned unchanged after every item has string id and text. The validator does not check the remaining message fields.",
+						"examples": [
+							[
+								{
+									"id": "6a3c5e75-9ba1-4285-9daa-2f181fd3d68f",
+									"at": "2026-11-14T10:30:00.000Z",
+									"author": "user",
+									"text": "The evidence is ready for review.",
+									"mode": null,
+									"provider": null,
+									"model": null,
+									"version": null,
+									"imageSha256": null
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error unless value is an array and every message has string id and text."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectResponseValidator.history",
@@ -296,22 +826,59 @@
 					{
 						"name": "RemoteProjectResponseValidator.history.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The hosted history page to validate before returning its entries. It requires an entries array with string id and title per entry, a boolean complete flag, and nextPage null or an integer of at least 1.",
+						"examples": [
+							{
+								"entries": [
+									{
+										"id": "3713c4d6-6544-4b62-b294-e96d5740d43a",
+										"at": "2026-11-14T10:25:00.000Z",
+										"kind": "commit",
+										"title": "Update evidence grid",
+										"detail": "Updated evidence grid validation.",
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"version": null
+									}
+								],
+								"complete": true,
+								"nextPage": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectResponseValidator.history",
-						"type": "{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }"
+						"type": "{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }",
+						"description": "The hosted history page returned after checking entries, complete, and nextPage. Each entry must have string id and title, and nextPage must be null or an integer of at least 1.",
+						"examples": [
+							{
+								"entries": [
+									{
+										"id": "3713c4d6-6544-4b62-b294-e96d5740d43a",
+										"at": "2026-11-14T10:25:00.000Z",
+										"kind": "commit",
+										"title": "Update evidence grid",
+										"detail": "Updated evidence grid validation.",
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"version": null
+									}
+								],
+								"complete": true,
+								"nextPage": null
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error for a malformed page or unless entries is an array, complete is boolean, nextPage is null or an integer of at least 1, and every entry has string id and title."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment",
@@ -319,32 +886,118 @@
 					{
 						"name": "RemoteProjectResponseValidator.comment.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The hosted thread returned after a comment submission. Its project and collaboration commit must match the request constraints, and its thread id, anchor, and matching comment identity are checked when applicable.",
+						"examples": [
+							{
+								"id": "b6d40870-eeb4-47ee-b180-16f9f4db4862",
+								"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+								"anchor": {
+									"branch": "main",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"comments": [
+									{
+										"id": "6a3c5e75-9ba1-4285-9daa-2f181fd3d68f",
+										"requestId": "24b50be1-ab1e-4eaf-8b32-45e8064f1762",
+										"actor": {
+											"id": "1f85fd39-53d1-4283-8a5d-ea50a780ca11",
+											"email": "alex@example.com",
+											"name": "Alex Morgan",
+											"emailVerified": true
+										},
+										"text": "Please include the source path.",
+										"createdAt": "2026-11-14T10:31:00.000Z"
+									}
+								],
+								"collaborationCommit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					},
 					{
 						"name": "RemoteProjectResponseValidator.comment.input",
 						"type": "AddCommentInput",
-						"required": true
+						"required": true,
+						"description": "The comment request being acknowledged, containing projectId, requestId, anchor, text, and an optional threadId. Its anchor fields and requestId/text values are matched against the returned thread and comment.",
+						"examples": [
+							{
+								"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+								"requestId": "24b50be1-ab1e-4eaf-8b32-45e8064f1762",
+								"threadId": "b6d40870-eeb4-47ee-b180-16f9f4db4862",
+								"anchor": {
+									"branch": "main",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"text": "Please include the source path."
+							}
+						]
 					},
 					{
 						"name": "RemoteProjectResponseValidator.comment.principalId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The signed-in principal id expected on the matching acknowledged comment. It must exactly equal the comment actor id, whose emailVerified value must be true.",
+						"examples": ["1f85fd39-53d1-4283-8a5d-ea50a780ca11"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectResponseValidator.comment",
-						"type": "CommittedThread"
+						"type": "CommittedThread",
+						"description": "The acknowledged hosted thread returned after project, collaboration commit, optional thread id, anchor, and matching comment identity checks. collaborationCommit must be 40 lowercase hexadecimal characters.",
+						"examples": [
+							{
+								"id": "b6d40870-eeb4-47ee-b180-16f9f4db4862",
+								"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921",
+								"anchor": {
+									"branch": "main",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"comments": [
+									{
+										"id": "6a3c5e75-9ba1-4285-9daa-2f181fd3d68f",
+										"requestId": "24b50be1-ab1e-4eaf-8b32-45e8064f1762",
+										"actor": {
+											"id": "1f85fd39-53d1-4283-8a5d-ea50a780ca11",
+											"email": "alex@example.com",
+											"name": "Alex Morgan",
+											"emailVerified": true
+										},
+										"text": "Please include the source path.",
+										"createdAt": "2026-11-14T10:31:00.000Z"
+									}
+								],
+								"collaborationCommit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error for malformed response records or unless the response matches the requested project, has a 40-character lowercase hexadecimal collaboration commit and comments array, and satisfies any requested thread id, anchor, requestId, text, actor id, and email verification checks."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
