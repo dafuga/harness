@@ -36,9 +36,16 @@ const verifyConfigInputSchema = z.strictObject({
 	 * none is held to none.
 	 */
 	writing: z.union([z.literal(1), z.literal(2)]).optional(),
-	/** Commands run in the snapshot before any check, for example a locked install. */
+	/**
+	 * Commands run in the snapshot before any check, for example a locked install. A step may
+	 * name the `builds` it produces; every name must be declared in `builds`.
+	 */
 	setup: z.array(
-		z.strictObject({ command: text, timeoutMs: z.number().int().positive().optional() })
+		z.strictObject({
+			command: text,
+			timeoutMs: z.number().int().positive().optional(),
+			builds: z.array(text).optional()
+		})
 	),
 	/** Paths shared from the checkout instead of rebuilt, for example node_modules. */
 	link: z.array(text),
@@ -96,6 +103,19 @@ function matchesCheckPath(literal: string, checkPath: string): boolean {
 
 export const verifyConfigSchema = verifyConfigInputSchema
 	.superRefine((config, context) => {
+		for (const [index, step] of config.setup.entries()) {
+			for (const id of step.builds ?? []) {
+				if (!config.builds.some((build) => build.id === id)) {
+					context.addIssue({
+						code: 'custom',
+						path: ['setup', index, 'builds'],
+						message:
+							`Unknown verify build "${id}" named by a setup step. ` +
+							'Declare it in builds or remove it from the step.'
+					});
+				}
+			}
+		}
 		for (const [name, profile] of Object.entries(config.profiles)) {
 			const inherited = config.checks.filter((check) => check.profile === name && !check.command);
 			if (profile.command && !profile.command.includes('{target}') && inherited.length > 1)

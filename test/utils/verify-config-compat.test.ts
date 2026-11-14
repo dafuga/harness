@@ -54,3 +54,46 @@ test('an old harness.verify.json without the new keys loads with the defaults ap
 	const loaded: VerifyConfig = parsed;
 	expect(loaded.timeouts.test).toBe(5_000);
 });
+
+/** `oldShape` with these setup steps and one declared build, `reports`. */
+const withSetup = (setup: unknown[]) => ({
+	...oldShape,
+	builds: [{ id: 'reports', directory: 'packages/reports/build' }],
+	setup
+});
+
+test('a setup step may name the builds it produces, and the names survive parsing', () => {
+	const parsed = verifyConfigSchema.parse(
+		withSetup([{ command: 'bun run build', timeoutMs: 1_000, builds: ['reports'] }])
+	);
+	expect(parsed.setup).toEqual([
+		{ command: 'bun run build', timeoutMs: 1_000, builds: ['reports'] }
+	]);
+});
+
+test('a setup step naming an undeclared build is rejected, and the message names it', () => {
+	const rejected = verifyConfigSchema.safeParse(
+		withSetup([{ command: 'bun run build', builds: ['reports', 'planing'] }])
+	);
+	expect(rejected.success).toBe(false);
+	expect(rejected.error?.issues).toEqual([
+		expect.objectContaining({
+			path: ['setup', 0, 'builds'],
+			message: expect.stringContaining('"planing"')
+		})
+	]);
+});
+
+test('setup steps without builds still parse, and gain no builds key', () => {
+	const parsed = verifyConfigSchema.parse(
+		withSetup([
+			{ command: 'bun install --frozen-lockfile' },
+			{ command: 'bun run build', timeoutMs: 1_000 }
+		])
+	);
+	expect(parsed.setup).toEqual([
+		{ command: 'bun install --frozen-lockfile' },
+		{ command: 'bun run build', timeoutMs: 1_000 }
+	]);
+	for (const step of parsed.setup) expect(step).not.toHaveProperty('builds');
+});
