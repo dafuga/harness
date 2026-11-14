@@ -12,22 +12,31 @@
 		"symbols": ["macIcon"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "macIcon.app",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path to the packaged macOS app bundle directory; the script appends Contents/Resources/Harness.icns and Contents/Info.plist to this path. Those bundle locations must be usable by the output and plist-editing commands because the script creates only its temporary iconset directory.",
+				"examples": ["/Applications/Harness.app"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "macIcon",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Promise resolving with no value after the app icon has been created, the CFBundleIconFile value has been set to Harness.icns, and temporary iconset cleanup has completed. It rejects if icon generation, file operations, either command-line tool, or cleanup fails."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Errors from temporary-directory creation, icon generation or writes, iconutil, PlistBuddy, and temporary-directory cleanup propagate without translation. If cleanup fails while another operation is already failing, the cleanup error rejects the promise."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "macIcon",
@@ -35,17 +44,26 @@
 					{
 						"name": "macIcon.app",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path to the packaged macOS app bundle directory; the script appends Contents/Resources/Harness.icns and Contents/Info.plist to this path. Those bundle locations must be usable by the output and plist-editing commands because the script creates only its temporary iconset directory.",
+						"examples": ["/Applications/Harness.app"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "macIcon",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Promise resolving with no value after the app icon has been created, the CFBundleIconFile value has been set to Harness.icns, and temporary iconset cleanup has completed. It rejects if icon generation, file operations, either command-line tool, or cleanup fails."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Errors from temporary-directory creation, icon generation or writes, iconutil, PlistBuddy, and temporary-directory cleanup propagate without translation. If cleanup fails while another operation is already failing, the cleanup error rejects the promise."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
