@@ -22,36 +22,141 @@
 				"name": "SourceCodeAction.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Entity whose owned files should be read."
+				"description": "The explorer entity the opened file belongs to, passed unchanged as the first argument of nav.source. Its name is read only when title is omitted, and no other field of it is read here.",
+				"examples": [
+					{
+						"id": "reports.component.source-code-action",
+						"category": "components",
+						"role": "Component",
+						"name": "SourceCodeAction",
+						"purpose": "Opens one selected source file through its host without changing detail navigation.",
+						"unit": {
+							"id": "reports.component.source-code-action",
+							"kind": "component",
+							"composition": {
+								"level": "organism",
+								"uses": ["reports.component.harness-harness-action"]
+							},
+							"status": "active",
+							"title": "SourceCodeAction",
+							"responsibility": "Opens one selected source file through its host without changing detail navigation.",
+							"dependencies": [
+								{
+									"unit": "reports.component.harness-harness-action",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-lens",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": ["packages/reports/src/components/explorer-ui/SourceCodeAction.svelte"],
+								"symbols": ["SourceCodeAction"]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "SourceCodeAction.entity",
+										"type": "ExplorerEntity",
+										"required": true,
+										"description": "The explorer entity the opened file belongs to, passed unchanged as the first argument of nav.source. Its name is read only when title is omitted, and no other field of it is read here."
+									},
+									{
+										"name": "SourceCodeAction.nav",
+										"type": "EntityNav",
+										"required": true,
+										"description": "The navigation object whose optional source callback opens the file. This component reads only nav.source, and the button is disabled when nav.source is absent."
+									},
+									{
+										"name": "SourceCodeAction.title",
+										"type": "string",
+										"required": false,
+										"default": "undefined (omitted)",
+										"description": "The name the entity is shown under at this place, passed as the second argument of nav.source. When it is omitted, entity.name is passed instead; any string, including an empty one, is passed through unchanged."
+									},
+									{
+										"name": "SourceCodeAction.path",
+										"type": "string",
+										"required": true,
+										"description": "The repository-relative path of the file this row opens, one of the unit's owned or test files as EntitySource lists them. It forms the accessible label 'View code for <path>' of the button and is passed unchanged as the fourth argument of nav.source; this component does not check it."
+									}
+								],
+								"outputs": [
+									{
+										"name": "SourceCodeAction",
+										"type": "markup",
+										"description": "A View code button: an hx-button with a file icon, the visible text 'View code', the accessible label 'View code for <path>', disabled when nav.source is absent. A press calls nav.source with the entity, the title or entity name, the button element as trigger and the path; this component does not navigate itself, and the explorer frame focuses that trigger again on close when it is still connected."
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/SourceCodeAction.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5f0c8a3e1b7d2964"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Evidence missing",
+							"reasons": ["No verification record is attached to this commit."]
+						},
+						"change": "direct",
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "SourceCodeAction.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Revision-scoped navigation including an optional source callback."
+				"description": "The navigation object whose optional source callback opens the file. This component reads only nav.source, and the button is disabled when nav.source is absent."
 			},
 			{
 				"name": "SourceCodeAction.title",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional displayed callable or entity name."
+				"description": "The name the entity is shown under at this place, passed as the second argument of nav.source. When it is omitted, entity.name is passed instead; any string, including an empty one, is passed through unchanged.",
+				"examples": ["SourceCodeAction", "renderOrderRow — OrderTable"]
 			},
 			{
 				"name": "SourceCodeAction.path",
 				"type": "string",
 				"required": true,
-				"description": "The owned file selected by this row; its contents appear first in the modal."
+				"description": "The repository-relative path of the file this row opens, one of the unit's owned or test files as EntitySource lists them. It forms the accessible label 'View code for <path>' of the button and is passed unchanged as the fourth argument of nav.source; this component does not check it.",
+				"examples": [
+					"packages/reports/src/components/explorer-ui/SourceCodeAction.svelte",
+					"packages/reports/src/utils/explorer-ui/entityLens.ts",
+					"packages/reports/tests/e2e/harness-explorer-catalog.spec.ts"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceCodeAction",
 				"type": "markup",
-				"description": "A file-specific View code button. Opening retains the selected commit and address; closing restores focus to this row."
+				"description": "A View code button: an hx-button with a file icon, the visible text 'View code', the accessible label 'View code for <path>', disabled when nav.source is absent. A press calls nav.source with the entity, the title or entity name, the button element as trigger and the path; this component does not navigate itself, and the explorer frame focuses that trigger again on close when it is still connected."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
