@@ -33,51 +33,290 @@
 				"name": "sideImpact.base",
 				"type": "{ commit: string; side: StoredSide } | null",
 				"required": true,
-				"description": "Stored earlier commit/side, or null to represent the state before the first commit."
+				"description": "The stored revision to compare from, or null for the state before the first commit. A null value means no earlier stored side is analyzed.",
+				"examples": [
+					null,
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"side": {
+							"schemaVersion": 1,
+							"config": {
+								"schemaVersion": 1,
+								"workspaces": [
+									{
+										"name": "",
+										"root": "."
+									}
+								],
+								"tests": ["test/", "tests/"],
+								"global": [],
+								"ignored": [
+									"**/*.md",
+									"specification/features/",
+									"specification/loops/",
+									".gitignore"
+								],
+								"references": []
+							},
+							"files": [],
+							"units": [],
+							"scenarios": [],
+							"nodes": [],
+							"edges": [],
+							"uncertain": []
+						}
+					}
+				]
 			},
 			{
 				"name": "sideImpact.head",
 				"type": "{ commit: string; side: StoredSide }",
 				"required": true,
-				"description": "Stored later commit/side to compare against."
+				"description": "The stored revision analyzed against base, including its commit identifier and source snapshot. The analysis reconstructs it from this snapshot without reading a live repository.",
+				"examples": [
+					{
+						"commit": "abcdef0123456789abcdef0123456789abcdef01",
+						"side": {
+							"schemaVersion": 1,
+							"config": {
+								"schemaVersion": 1,
+								"workspaces": [
+									{
+										"name": "",
+										"root": "."
+									}
+								],
+								"tests": ["test/", "tests/"],
+								"global": [],
+								"ignored": [
+									"**/*.md",
+									"specification/features/",
+									"specification/loops/",
+									".gitignore"
+								],
+								"references": []
+							},
+							"files": [
+								["src/utils/explorer-ui/sideImpact.ts", "2222222222222222222222222222222222222222"]
+							],
+							"units": [
+								{
+									"id": "function.side-impact",
+									"status": "active",
+									"source": ["src/utils/explorer-ui/sideImpact.ts"]
+								}
+							],
+							"scenarios": [],
+							"nodes": [
+								["src/utils/explorer-ui/sideImpact.ts", "source"]
+							],
+							"edges": [],
+							"uncertain": []
+						}
+					}
+				]
 			},
 			{
 				"name": "storedSide.side",
 				"type": "ImpactSide",
 				"required": true,
-				"description": "Impact-side snapshot containing tracked files, manifests, scenarios and dependency graph."
+				"description": "An impact-side snapshot with revision, configuration, tracked entries, manifests, scenarios, and a dependency graph. Its graph edges are stored as node-list positions in the resulting compact snapshot.",
+				"examples": [
+					{
+						"revision": "abcdef0123456789abcdef0123456789abcdef01",
+						"config": {
+							"schemaVersion": 1,
+							"workspaces": [
+								{
+									"name": "",
+									"root": "."
+								}
+							],
+							"tests": ["test/", "tests/"],
+							"global": [],
+							"ignored": [
+								"**/*.md",
+								"specification/features/",
+								"specification/loops/",
+								".gitignore"
+							],
+							"references": []
+						},
+						"entries": [
+							{
+								"path": "src/utils/explorer-ui/sideImpact.ts",
+								"hash": "2222222222222222222222222222222222222222"
+							}
+						],
+						"manifests": [],
+						"scenarios": [],
+						"graph": {
+							"nodes": [
+								{
+									"id": "src/utils/explorer-ui/sideImpact.ts",
+									"kind": "source"
+								}
+							],
+							"edges": [],
+							"uncertain": []
+						}
+					}
+				]
 			},
 			{
 				"name": "impactView.report",
 				"type": "ImpactReport",
 				"required": true,
-				"description": "Computed impact report to reduce to history-facing source impact."
+				"description": "The complete impact analysis report to project into its history-facing shape. The projection returns its expanded state, unit impact, affected scenarios, uncertainty, and changed files.",
+				"examples": [
+					{
+						"base": "0123456789abcdef0123456789abcdef01234567",
+						"head": "abcdef0123456789abcdef0123456789abcdef01",
+						"runtime": "module",
+						"expanded": false,
+						"changed": [
+							{
+								"path": "src/utils/explorer-ui/sideImpact.ts",
+								"status": "modified",
+								"classification": "source",
+								"unit": "function.side-impact"
+							}
+						],
+						"units": {
+							"direct": ["function.side-impact"],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"tests": {
+							"selected": [],
+							"excluded": [],
+							"removed": []
+						},
+						"scenarios": {
+							"affected": [],
+							"unaffected": []
+						},
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "impactView.base",
 				"type": "string | null",
 				"required": true,
-				"description": "Compared-from commit, or null for the initial state."
+				"description": "The compared-from commit identifier, or null when there was no earlier commit. This value is copied to the resulting SourceImpact.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "storedSide",
 				"type": "StoredSide",
-				"description": "Version 1 compact side with path/hash files, unit ownership, scenarios, node ids/kinds and numeric edge indexes. Edges with missing endpoints are omitted."
+				"description": "A version 1 compact snapshot containing configuration, file path/hash pairs, unit ownership, scenarios, graph nodes, numeric edge positions, and uncertain nodes. Edges with endpoints absent from the node list are omitted.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"config": {
+							"schemaVersion": 1,
+							"workspaces": [
+								{
+									"name": "",
+									"root": "."
+								}
+							],
+							"tests": ["test/", "tests/"],
+							"global": [],
+							"ignored": [
+								"**/*.md",
+								"specification/features/",
+								"specification/loops/",
+								".gitignore"
+							],
+							"references": []
+						},
+						"files": [
+							["src/utils/explorer-ui/sideImpact.ts", "2222222222222222222222222222222222222222"]
+						],
+						"units": [
+							{
+								"id": "function.side-impact",
+								"status": "active",
+								"source": ["src/utils/explorer-ui/sideImpact.ts"]
+							}
+						],
+						"scenarios": [],
+						"nodes": [
+							["src/utils/explorer-ui/sideImpact.ts", "source"]
+						],
+						"edges": [],
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "impactView",
 				"type": "SourceImpact",
-				"description": "Source impact containing base, expansion, units, affected scenarios, uncertainty and changed paths."
+				"description": "A history-facing impact value with the base, expansion state, unit impact, affected scenarios, uncertainty, and changed files. It keeps only affected scenarios from the report's affected/unaffected split.",
+				"examples": [
+					{
+						"base": "0123456789abcdef0123456789abcdef01234567",
+						"expanded": false,
+						"units": {
+							"direct": ["function.side-impact"],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"scenarios": [],
+						"uncertain": [],
+						"changed": [
+							{
+								"path": "src/utils/explorer-ui/sideImpact.ts",
+								"status": "modified",
+								"classification": "source",
+								"unit": "function.side-impact"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "sideImpact",
 				"type": "Promise<SourceImpact>",
-				"description": "Computed source impact using the normal ImpactService and TypeScript kernel against the supplied stored sides. No repository reads are required."
+				"description": "A promise resolving to source impact computed from the two stored revision sides using ImpactService and the impact kernel. It needs no live repository because the supplied snapshots provide the analyzed state.",
+				"examples": [
+					{
+						"base": "0123456789abcdef0123456789abcdef01234567",
+						"expanded": false,
+						"units": {
+							"direct": ["function.side-impact"],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"scenarios": [],
+						"uncertain": [],
+						"changed": [
+							{
+								"path": "src/utils/explorer-ui/sideImpact.ts",
+								"status": "modified",
+								"classification": "source",
+								"unit": "function.side-impact"
+							}
+						]
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejects when a stored edge index does not identify a node, because graph reconstruction reads the missing node's id."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sideImpact",
@@ -86,24 +325,130 @@
 						"name": "sideImpact.base",
 						"type": "{ commit: string; side: StoredSide } | null",
 						"required": true,
-						"description": "Stored earlier commit/side, or null to represent the state before the first commit."
+						"description": "The stored revision to compare from, or null for the state before the first commit. A null value means no earlier stored side is analyzed.",
+						"examples": [
+							null,
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"side": {
+									"schemaVersion": 1,
+									"config": {
+										"schemaVersion": 1,
+										"workspaces": [
+											{
+												"name": "",
+												"root": "."
+											}
+										],
+										"tests": ["test/", "tests/"],
+										"global": [],
+										"ignored": [
+											"**/*.md",
+											"specification/features/",
+											"specification/loops/",
+											".gitignore"
+										],
+										"references": []
+									},
+									"files": [],
+									"units": [],
+									"scenarios": [],
+									"nodes": [],
+									"edges": [],
+									"uncertain": []
+								}
+							}
+						]
 					},
 					{
 						"name": "sideImpact.head",
 						"type": "{ commit: string; side: StoredSide }",
 						"required": true,
-						"description": "Stored later commit/side to compare against."
+						"description": "The stored revision analyzed against base, including its commit identifier and source snapshot. The analysis reconstructs it from this snapshot without reading a live repository.",
+						"examples": [
+							{
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"side": {
+									"schemaVersion": 1,
+									"config": {
+										"schemaVersion": 1,
+										"workspaces": [
+											{
+												"name": "",
+												"root": "."
+											}
+										],
+										"tests": ["test/", "tests/"],
+										"global": [],
+										"ignored": [
+											"**/*.md",
+											"specification/features/",
+											"specification/loops/",
+											".gitignore"
+										],
+										"references": []
+									},
+									"files": [
+										[
+											"src/utils/explorer-ui/sideImpact.ts",
+											"2222222222222222222222222222222222222222"
+										]
+									],
+									"units": [
+										{
+											"id": "function.side-impact",
+											"status": "active",
+											"source": ["src/utils/explorer-ui/sideImpact.ts"]
+										}
+									],
+									"scenarios": [],
+									"nodes": [
+										["src/utils/explorer-ui/sideImpact.ts", "source"]
+									],
+									"edges": [],
+									"uncertain": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sideImpact",
 						"type": "Promise<SourceImpact>",
-						"description": "Computed source impact using the normal ImpactService and TypeScript kernel against the supplied stored sides. No repository reads are required."
+						"description": "A promise resolving to source impact computed from the two stored revision sides using ImpactService and the impact kernel. It needs no live repository because the supplied snapshots provide the analyzed state.",
+						"examples": [
+							{
+								"base": "0123456789abcdef0123456789abcdef01234567",
+								"expanded": false,
+								"units": {
+									"direct": ["function.side-impact"],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"scenarios": [],
+								"uncertain": [],
+								"changed": [
+									{
+										"path": "src/utils/explorer-ui/sideImpact.ts",
+										"status": "modified",
+										"classification": "source",
+										"unit": "function.side-impact"
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects when a stored edge index does not identify a node, because graph reconstruction reads the missing node's id."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "storedSide",
@@ -112,18 +457,101 @@
 						"name": "storedSide.side",
 						"type": "ImpactSide",
 						"required": true,
-						"description": "Impact-side snapshot containing tracked files, manifests, scenarios and dependency graph."
+						"description": "An impact-side snapshot with revision, configuration, tracked entries, manifests, scenarios, and a dependency graph. Its graph edges are stored as node-list positions in the resulting compact snapshot.",
+						"examples": [
+							{
+								"revision": "abcdef0123456789abcdef0123456789abcdef01",
+								"config": {
+									"schemaVersion": 1,
+									"workspaces": [
+										{
+											"name": "",
+											"root": "."
+										}
+									],
+									"tests": ["test/", "tests/"],
+									"global": [],
+									"ignored": [
+										"**/*.md",
+										"specification/features/",
+										"specification/loops/",
+										".gitignore"
+									],
+									"references": []
+								},
+								"entries": [
+									{
+										"path": "src/utils/explorer-ui/sideImpact.ts",
+										"hash": "2222222222222222222222222222222222222222"
+									}
+								],
+								"manifests": [],
+								"scenarios": [],
+								"graph": {
+									"nodes": [
+										{
+											"id": "src/utils/explorer-ui/sideImpact.ts",
+											"kind": "source"
+										}
+									],
+									"edges": [],
+									"uncertain": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "storedSide",
 						"type": "StoredSide",
-						"description": "Version 1 compact side with path/hash files, unit ownership, scenarios, node ids/kinds and numeric edge indexes. Edges with missing endpoints are omitted."
+						"description": "A version 1 compact snapshot containing configuration, file path/hash pairs, unit ownership, scenarios, graph nodes, numeric edge positions, and uncertain nodes. Edges with endpoints absent from the node list are omitted.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"config": {
+									"schemaVersion": 1,
+									"workspaces": [
+										{
+											"name": "",
+											"root": "."
+										}
+									],
+									"tests": ["test/", "tests/"],
+									"global": [],
+									"ignored": [
+										"**/*.md",
+										"specification/features/",
+										"specification/loops/",
+										".gitignore"
+									],
+									"references": []
+								},
+								"files": [
+									[
+										"src/utils/explorer-ui/sideImpact.ts",
+										"2222222222222222222222222222222222222222"
+									]
+								],
+								"units": [
+									{
+										"id": "function.side-impact",
+										"status": "active",
+										"source": ["src/utils/explorer-ui/sideImpact.ts"]
+									}
+								],
+								"scenarios": [],
+								"nodes": [
+									["src/utils/explorer-ui/sideImpact.ts", "source"]
+								],
+								"edges": [],
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "impactView",
@@ -132,24 +560,79 @@
 						"name": "impactView.report",
 						"type": "ImpactReport",
 						"required": true,
-						"description": "Computed impact report to reduce to history-facing source impact."
+						"description": "The complete impact analysis report to project into its history-facing shape. The projection returns its expanded state, unit impact, affected scenarios, uncertainty, and changed files.",
+						"examples": [
+							{
+								"base": "0123456789abcdef0123456789abcdef01234567",
+								"head": "abcdef0123456789abcdef0123456789abcdef01",
+								"runtime": "module",
+								"expanded": false,
+								"changed": [
+									{
+										"path": "src/utils/explorer-ui/sideImpact.ts",
+										"status": "modified",
+										"classification": "source",
+										"unit": "function.side-impact"
+									}
+								],
+								"units": {
+									"direct": ["function.side-impact"],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"tests": {
+									"selected": [],
+									"excluded": [],
+									"removed": []
+								},
+								"scenarios": {
+									"affected": [],
+									"unaffected": []
+								},
+								"uncertain": []
+							}
+						]
 					},
 					{
 						"name": "impactView.base",
 						"type": "string | null",
 						"required": true,
-						"description": "Compared-from commit, or null for the initial state."
+						"description": "The compared-from commit identifier, or null when there was no earlier commit. This value is copied to the resulting SourceImpact.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "impactView",
 						"type": "SourceImpact",
-						"description": "Source impact containing base, expansion, units, affected scenarios, uncertainty and changed paths."
+						"description": "A history-facing impact value with the base, expansion state, unit impact, affected scenarios, uncertainty, and changed files. It keeps only affected scenarios from the report's affected/unaffected split.",
+						"examples": [
+							{
+								"base": "0123456789abcdef0123456789abcdef01234567",
+								"expanded": false,
+								"units": {
+									"direct": ["function.side-impact"],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"scenarios": [],
+								"uncertain": [],
+								"changed": [
+									{
+										"path": "src/utils/explorer-ui/sideImpact.ts",
+										"status": "modified",
+										"classification": "source",
+										"unit": "function.side-impact"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
