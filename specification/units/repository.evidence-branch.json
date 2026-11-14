@@ -22,51 +22,77 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EvidenceBranchRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem root passed to EvidenceTreeAdapter when the repository is constructed. This class does not normalize or validate the string.",
+				"examples": ["/Users/daniel/projects/sample-repository"]
 			},
 			{
 				"name": "EvidenceBranchRepository.add.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Directory prefix joined with each file path for placement and with key for the existing-record lookup. This class does not validate the resulting path.",
+				"examples": ["records/2026-11-14/verification-001"]
 			},
 			{
 				"name": "EvidenceBranchRepository.add.files",
 				"type": "TreeFile[]",
-				"required": true
+				"required": true,
+				"description": "Files added under directory when a new commit is made; a file whose path equals key supplies the bytes used to recognize an identical existing entry. If that file is absent or lacks matching byte content, an existing entry is refused.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "EvidenceBranchRepository.add.message",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit message used when adding a new evidence-tree commit. It is not used for an identical existing record.",
+				"examples": ["Add recorded evidence session"]
 			},
 			{
 				"name": "EvidenceBranchRepository.add.key",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Relative file path combined with directory to locate the identifying content and check whether that record already exists. When an existing entry is found, the corresponding supplied file must expose matching bytes.",
+				"examples": ["record.json"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceBranchRepository.tip",
-				"type": "Promise<string | undefined>"
+				"type": "Promise<string | undefined>",
+				"description": "Current commit hash at the evidence ref, or undefined when the ref has no tip. The value identifies a commit in the evidence history.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "EvidenceBranchRepository.add",
-				"type": "Promise<StoredDirectory>"
+				"type": "Promise<StoredDirectory>",
+				"description": "The commit associated with the keyed entry and whether this call created a new commit. For an identical existing entry, commit is found from the key file history and falls back to the current tip if that lookup yields no commit.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"created": true
+					},
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"created": false
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised when add finds different bytes at the existing directory/key path, or after 20 unsuccessful attempts to advance the evidence ref."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "EvidenceBranchRepository.tip",
@@ -74,11 +100,13 @@
 				"outputs": [
 					{
 						"name": "EvidenceBranchRepository.tip",
-						"type": "Promise<string | undefined>"
+						"type": "Promise<string | undefined>",
+						"description": "Current commit hash at the evidence ref, or undefined when the ref has no tip. The value identifies a commit in the evidence history.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EvidenceBranchRepository.add",
@@ -86,37 +114,59 @@
 					{
 						"name": "EvidenceBranchRepository.add.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Directory prefix joined with each file path for placement and with key for the existing-record lookup. This class does not validate the resulting path.",
+						"examples": ["records/2026-11-14/verification-001"]
 					},
 					{
 						"name": "EvidenceBranchRepository.add.files",
 						"type": "TreeFile[]",
-						"required": true
+						"required": true,
+						"description": "Files added under directory when a new commit is made; a file whose path equals key supplies the bytes used to recognize an identical existing entry. If that file is absent or lacks matching byte content, an existing entry is refused.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "EvidenceBranchRepository.add.message",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit message used when adding a new evidence-tree commit. It is not used for an identical existing record.",
+						"examples": ["Add recorded evidence session"]
 					},
 					{
 						"name": "EvidenceBranchRepository.add.key",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Relative file path combined with directory to locate the identifying content and check whether that record already exists. When an existing entry is found, the corresponding supplied file must expose matching bytes.",
+						"examples": ["record.json"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceBranchRepository.add",
-						"type": "Promise<StoredDirectory>"
+						"type": "Promise<StoredDirectory>",
+						"description": "The commit associated with the keyed entry and whether this call created a new commit. For an identical existing entry, commit is found from the key file history and falls back to the current tip if that lookup yields no commit.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"created": true
+							},
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"created": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when add finds different bytes at the existing directory/key path, or after 20 unsuccessful attempts to advance the evidence ref."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -126,17 +176,20 @@
 					{
 						"name": "EvidenceBranchRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem root passed to EvidenceTreeAdapter when the repository is constructed. This class does not normalize or validate the string.",
+						"examples": ["/Users/daniel/projects/sample-repository"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceBranchRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "EvidenceBranchRepository instance created with the supplied root through EvidenceTreeAdapter. The instance uses that adapter for evidence-ref reads and writes."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
