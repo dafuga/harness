@@ -26,90 +26,321 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AuthRecordValidator.challenge.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A stored challenge row consumed when validating a persisted challenge. It must be a non-null object with non-empty string id_hash, nonce, and csrf_hash fields and a safe-integer expires_at; invalid rows throw the corruption Error.",
+				"examples": [
+					{
+						"id_hash": "c4e6e23f5c1d40c2a2d24c6678499c18e8e8e064",
+						"nonce": "nQ3zP8kV2aY7mD4s",
+						"csrf_hash": "4b5f8cfc80f59ca3286fa65c",
+						"expires_at": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.session.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A stored session row consumed when validating a persisted session. kind must be browser or native, required text fields must be non-empty strings, numeric fields must be safe integers, and null or missing parent_hash and revoked_at become null.",
+				"examples": [
+					{
+						"id_hash": "b83c9e6f1f47d4a2b9822d8c6487b128",
+						"kind": "browser",
+						"parent_hash": null,
+						"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+						"actor_email": "alex@example.com",
+						"actor_name": "Alex Rivera",
+						"resource": "https://api.example.com",
+						"created_at": 1760000000000,
+						"expires_at": 1893456000000,
+						"revoked_at": null
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.githubState.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A stored GitHub state row consumed when validating a persisted OAuth state. Its required text columns must be non-empty strings and grant_generation and expires_at must be safe integers.",
+				"examples": [
+					{
+						"id_hash": "026c1b2e5cf0943a61e3de7ac9281fbf",
+						"session_hash": "dd389b39b9bb5fc38d50b037adac3d62",
+						"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+						"grant_generation": 3,
+						"verifier_cipher": "cipher-v1:K8nW4rP2sT6x",
+						"expires_at": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.grant.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A stored GitHub grant row consumed when validating a persisted grant. actor_id, login, and cipher text fields must be non-empty strings, github_user_id and created_at and expires_at must be safe integers, and null or missing token and refresh metadata becomes null.",
+				"examples": [
+					{
+						"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+						"github_user_id": 58323114,
+						"login": "alexrivera",
+						"token_cipher": "cipher-v1:Q7mP3kN8",
+						"token_expires_at": null,
+						"refresh_cipher": null,
+						"refresh_expires_at": null,
+						"created_at": 1760000000000,
+						"expires_at": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.emailProof.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A stored email proof row consumed when validating a persisted proof. Required text fields must be non-empty strings, integer columns must be safe integers, and claimed must be exactly numeric 0 or 1; null or missing code_hash and code_expires_at becomes null.",
+				"examples": [
+					{
+						"id_hash": "994e3f05f7914bda8172388f2a3c660e",
+						"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+						"actor_email": "alex@example.com",
+						"actor_name": "Alex Rivera",
+						"code_hash": "d46f8e0c1a25b7d3f9046a2b8c51e790",
+						"code_expires_at": 1800000000000,
+						"attempts": 1,
+						"claimed": 0,
+						"expires_at": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.verifiedEmail.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A stored verified-email row consumed when validating a persisted email verification. actor_id and email_hash must be non-empty strings, and verified_at and expires_at must be safe integers.",
+				"examples": [
+					{
+						"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+						"email_hash": "0e9b36b7c14a8fd20e47a631b58c92de",
+						"verified_at": 1760000000000,
+						"expires_at": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.grantState.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A stored grant-state row consumed when validating the current grant generation. generation must be a safe integer; a non-null revoked_at makes a tombstone and skips the other columns, while an unrevoked row must also contain a valid grant and may have a nullable refreshing_until.",
+				"examples": [
+					{
+						"generation": 4,
+						"revoked_at": null,
+						"refreshing_until": null,
+						"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+						"github_user_id": 58323114,
+						"login": "alexrivera",
+						"token_cipher": "cipher-v1:Q7mP3kN8",
+						"token_expires_at": null,
+						"refresh_cipher": null,
+						"refresh_expires_at": null,
+						"created_at": 1760000000000,
+						"expires_at": 1893456000000
+					},
+					{
+						"generation": 5,
+						"revoked_at": 1761000000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.exchange.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A stored native exchange row consumed when validating a persisted native exchange. environment must be local, staging, or production; status must be pending, approved, or consumed; required text fields must be non-empty strings, optional subject and parent_hash become null when null or missing, and expires_at must be a safe integer.",
+				"examples": [
+					{
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"challenge": "native-challenge-01JBY3Q4K2M7",
+						"nonce_hash": "513f67eac6e4b2f97a1d2c3e4f506172",
+						"code_hash": "b2a70c4d8e1f3956a0c3d7e9f1425b68",
+						"resource": "https://api.example.com",
+						"audience": "https://api.example.com",
+						"action": "login",
+						"environment": "production",
+						"origin": "https://app.example.com",
+						"status": "approved",
+						"subject": null,
+						"parent_hash": null,
+						"expires_at": 1893456000000
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AuthRecordValidator.challenge",
-				"type": "ChallengeRecord"
+				"type": "ChallengeRecord",
+				"description": "The typed challenge record returned from the stored row. Its idHash, nonce, and csrfHash are copied as non-empty strings, and expiresAt is copied from a safe integer.",
+				"examples": [
+					{
+						"idHash": "c4e6e23f5c1d40c2a2d24c6678499c18e8e8e064",
+						"nonce": "nQ3zP8kV2aY7mD4s",
+						"csrfHash": "4b5f8cfc80f59ca3286fa65c",
+						"expiresAt": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.session",
-				"type": "SessionRecord"
+				"type": "SessionRecord",
+				"description": "The typed session record returned from the stored row, including its actor and nullable parentHash and revokedAt. kind is limited to browser or native, and actor.emailVerified is always true.",
+				"examples": [
+					{
+						"idHash": "b83c9e6f1f47d4a2b9822d8c6487b128",
+						"kind": "browser",
+						"parentHash": null,
+						"actor": {
+							"id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+							"email": "alex@example.com",
+							"name": "Alex Rivera",
+							"emailVerified": true
+						},
+						"resource": "https://api.example.com",
+						"createdAt": 1760000000000,
+						"expiresAt": 1893456000000,
+						"revokedAt": null
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.githubState",
-				"type": "GithubStateRecord"
+				"type": "GithubStateRecord",
+				"description": "The typed GitHub state record returned from the stored row. idHash, sessionHash, actorId, and verifierCipher are non-empty strings, while grantGeneration and expiresAt are safe integers.",
+				"examples": [
+					{
+						"idHash": "026c1b2e5cf0943a61e3de7ac9281fbf",
+						"sessionHash": "dd389b39b9bb5fc38d50b037adac3d62",
+						"actorId": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+						"grantGeneration": 3,
+						"verifierCipher": "cipher-v1:K8nW4rP2sT6x",
+						"expiresAt": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.grant",
-				"type": "GithubGrantRecord"
+				"type": "GithubGrantRecord",
+				"description": "The typed GitHub grant record returned from the stored row. githubUserId, createdAt, and expiresAt are safe integers; the token and refresh expiry and cipher fields are nullable when their stored columns are null or missing.",
+				"examples": [
+					{
+						"actorId": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+						"githubUserId": 58323114,
+						"login": "alexrivera",
+						"tokenCipher": "cipher-v1:Q7mP3kN8",
+						"tokenExpiresAt": null,
+						"refreshCipher": null,
+						"refreshExpiresAt": null,
+						"createdAt": 1760000000000,
+						"expiresAt": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.emailProof",
-				"type": "EmailProofRecord"
+				"type": "EmailProofRecord",
+				"description": "The typed email proof record returned from the stored row, with its actor marked emailVerified and claimed converted from numeric 0 or 1 to a boolean. codeHash and codeExpiresAt are null when their stored columns are null or missing.",
+				"examples": [
+					{
+						"idHash": "994e3f05f7914bda8172388f2a3c660e",
+						"actor": {
+							"id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+							"email": "alex@example.com",
+							"name": "Alex Rivera",
+							"emailVerified": true
+						},
+						"codeHash": "d46f8e0c1a25b7d3f9046a2b8c51e790",
+						"codeExpiresAt": 1800000000000,
+						"attempts": 1,
+						"claimed": false,
+						"expiresAt": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.verifiedEmail",
-				"type": "VerifiedEmailRecord"
+				"type": "VerifiedEmailRecord",
+				"description": "The typed verified-email record returned from the stored row. actorId and emailHash are non-empty strings, and verifiedAt and expiresAt are safe integers.",
+				"examples": [
+					{
+						"actorId": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+						"emailHash": "0e9b36b7c14a8fd20e47a631b58c92de",
+						"verifiedAt": 1760000000000,
+						"expiresAt": 1893456000000
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.grantState",
-				"type": "GrantState"
+				"type": "GrantState",
+				"description": "The typed grant state returns its safe-integer generation, a grant or null, and refreshingUntil or null. A revoked row is a tombstone with grant and refreshingUntil both null, regardless of its other columns.",
+				"examples": [
+					{
+						"generation": 4,
+						"grant": {
+							"actorId": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+							"githubUserId": 58323114,
+							"login": "alexrivera",
+							"tokenCipher": "cipher-v1:Q7mP3kN8",
+							"tokenExpiresAt": null,
+							"refreshCipher": null,
+							"refreshExpiresAt": null,
+							"createdAt": 1760000000000,
+							"expiresAt": 1893456000000
+						},
+						"refreshingUntil": null
+					},
+					{
+						"generation": 5,
+						"grant": null,
+						"refreshingUntil": null
+					}
+				]
 			},
 			{
 				"name": "AuthRecordValidator.exchange",
-				"type": "NativeExchangeRecord"
+				"type": "NativeExchangeRecord",
+				"description": "The typed native exchange record returned from the stored row. environment and status use their declared enum values, subject and parentHash are nullable, and expiresAt is a safe integer.",
+				"examples": [
+					{
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"challenge": "native-challenge-01JBY3Q4K2M7",
+						"nonceHash": "513f67eac6e4b2f97a1d2c3e4f506172",
+						"codeHash": "b2a70c4d8e1f3956a0c3d7e9f1425b68",
+						"resource": "https://api.example.com",
+						"audience": "https://api.example.com",
+						"action": "login",
+						"environment": "production",
+						"origin": "https://app.example.com",
+						"status": "approved",
+						"subject": null,
+						"parentHash": null,
+						"expiresAt": 1893456000000
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AuthRecordValidator.challenge",
@@ -117,17 +348,41 @@
 					{
 						"name": "AuthRecordValidator.challenge.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A stored challenge row consumed when validating a persisted challenge. It must be a non-null object with non-empty string id_hash, nonce, and csrf_hash fields and a safe-integer expires_at; invalid rows throw the corruption Error.",
+						"examples": [
+							{
+								"id_hash": "c4e6e23f5c1d40c2a2d24c6678499c18e8e8e064",
+								"nonce": "nQ3zP8kV2aY7mD4s",
+								"csrf_hash": "4b5f8cfc80f59ca3286fa65c",
+								"expires_at": 1893456000000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRecordValidator.challenge",
-						"type": "ChallengeRecord"
+						"type": "ChallengeRecord",
+						"description": "The typed challenge record returned from the stored row. Its idHash, nonce, and csrfHash are copied as non-empty strings, and expiresAt is copied from a safe integer.",
+						"examples": [
+							{
+								"idHash": "c4e6e23f5c1d40c2a2d24c6678499c18e8e8e064",
+								"nonce": "nQ3zP8kV2aY7mD4s",
+								"csrfHash": "4b5f8cfc80f59ca3286fa65c",
+								"expiresAt": 1893456000000
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRecordValidator.session",
@@ -135,17 +390,56 @@
 					{
 						"name": "AuthRecordValidator.session.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A stored session row consumed when validating a persisted session. kind must be browser or native, required text fields must be non-empty strings, numeric fields must be safe integers, and null or missing parent_hash and revoked_at become null.",
+						"examples": [
+							{
+								"id_hash": "b83c9e6f1f47d4a2b9822d8c6487b128",
+								"kind": "browser",
+								"parent_hash": null,
+								"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+								"actor_email": "alex@example.com",
+								"actor_name": "Alex Rivera",
+								"resource": "https://api.example.com",
+								"created_at": 1760000000000,
+								"expires_at": 1893456000000,
+								"revoked_at": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRecordValidator.session",
-						"type": "SessionRecord"
+						"type": "SessionRecord",
+						"description": "The typed session record returned from the stored row, including its actor and nullable parentHash and revokedAt. kind is limited to browser or native, and actor.emailVerified is always true.",
+						"examples": [
+							{
+								"idHash": "b83c9e6f1f47d4a2b9822d8c6487b128",
+								"kind": "browser",
+								"parentHash": null,
+								"actor": {
+									"id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+									"email": "alex@example.com",
+									"name": "Alex Rivera",
+									"emailVerified": true
+								},
+								"resource": "https://api.example.com",
+								"createdAt": 1760000000000,
+								"expiresAt": 1893456000000,
+								"revokedAt": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRecordValidator.githubState",
@@ -153,17 +447,45 @@
 					{
 						"name": "AuthRecordValidator.githubState.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A stored GitHub state row consumed when validating a persisted OAuth state. Its required text columns must be non-empty strings and grant_generation and expires_at must be safe integers.",
+						"examples": [
+							{
+								"id_hash": "026c1b2e5cf0943a61e3de7ac9281fbf",
+								"session_hash": "dd389b39b9bb5fc38d50b037adac3d62",
+								"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+								"grant_generation": 3,
+								"verifier_cipher": "cipher-v1:K8nW4rP2sT6x",
+								"expires_at": 1893456000000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRecordValidator.githubState",
-						"type": "GithubStateRecord"
+						"type": "GithubStateRecord",
+						"description": "The typed GitHub state record returned from the stored row. idHash, sessionHash, actorId, and verifierCipher are non-empty strings, while grantGeneration and expiresAt are safe integers.",
+						"examples": [
+							{
+								"idHash": "026c1b2e5cf0943a61e3de7ac9281fbf",
+								"sessionHash": "dd389b39b9bb5fc38d50b037adac3d62",
+								"actorId": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+								"grantGeneration": 3,
+								"verifierCipher": "cipher-v1:K8nW4rP2sT6x",
+								"expiresAt": 1893456000000
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRecordValidator.grant",
@@ -171,17 +493,51 @@
 					{
 						"name": "AuthRecordValidator.grant.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A stored GitHub grant row consumed when validating a persisted grant. actor_id, login, and cipher text fields must be non-empty strings, github_user_id and created_at and expires_at must be safe integers, and null or missing token and refresh metadata becomes null.",
+						"examples": [
+							{
+								"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+								"github_user_id": 58323114,
+								"login": "alexrivera",
+								"token_cipher": "cipher-v1:Q7mP3kN8",
+								"token_expires_at": null,
+								"refresh_cipher": null,
+								"refresh_expires_at": null,
+								"created_at": 1760000000000,
+								"expires_at": 1893456000000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRecordValidator.grant",
-						"type": "GithubGrantRecord"
+						"type": "GithubGrantRecord",
+						"description": "The typed GitHub grant record returned from the stored row. githubUserId, createdAt, and expiresAt are safe integers; the token and refresh expiry and cipher fields are nullable when their stored columns are null or missing.",
+						"examples": [
+							{
+								"actorId": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+								"githubUserId": 58323114,
+								"login": "alexrivera",
+								"tokenCipher": "cipher-v1:Q7mP3kN8",
+								"tokenExpiresAt": null,
+								"refreshCipher": null,
+								"refreshExpiresAt": null,
+								"createdAt": 1760000000000,
+								"expiresAt": 1893456000000
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRecordValidator.emailProof",
@@ -189,17 +545,54 @@
 					{
 						"name": "AuthRecordValidator.emailProof.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A stored email proof row consumed when validating a persisted proof. Required text fields must be non-empty strings, integer columns must be safe integers, and claimed must be exactly numeric 0 or 1; null or missing code_hash and code_expires_at becomes null.",
+						"examples": [
+							{
+								"id_hash": "994e3f05f7914bda8172388f2a3c660e",
+								"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+								"actor_email": "alex@example.com",
+								"actor_name": "Alex Rivera",
+								"code_hash": "d46f8e0c1a25b7d3f9046a2b8c51e790",
+								"code_expires_at": 1800000000000,
+								"attempts": 1,
+								"claimed": 0,
+								"expires_at": 1893456000000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRecordValidator.emailProof",
-						"type": "EmailProofRecord"
+						"type": "EmailProofRecord",
+						"description": "The typed email proof record returned from the stored row, with its actor marked emailVerified and claimed converted from numeric 0 or 1 to a boolean. codeHash and codeExpiresAt are null when their stored columns are null or missing.",
+						"examples": [
+							{
+								"idHash": "994e3f05f7914bda8172388f2a3c660e",
+								"actor": {
+									"id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+									"email": "alex@example.com",
+									"name": "Alex Rivera",
+									"emailVerified": true
+								},
+								"codeHash": "d46f8e0c1a25b7d3f9046a2b8c51e790",
+								"codeExpiresAt": 1800000000000,
+								"attempts": 1,
+								"claimed": false,
+								"expiresAt": 1893456000000
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRecordValidator.verifiedEmail",
@@ -207,17 +600,41 @@
 					{
 						"name": "AuthRecordValidator.verifiedEmail.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A stored verified-email row consumed when validating a persisted email verification. actor_id and email_hash must be non-empty strings, and verified_at and expires_at must be safe integers.",
+						"examples": [
+							{
+								"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+								"email_hash": "0e9b36b7c14a8fd20e47a631b58c92de",
+								"verified_at": 1760000000000,
+								"expires_at": 1893456000000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRecordValidator.verifiedEmail",
-						"type": "VerifiedEmailRecord"
+						"type": "VerifiedEmailRecord",
+						"description": "The typed verified-email record returned from the stored row. actorId and emailHash are non-empty strings, and verifiedAt and expiresAt are safe integers.",
+						"examples": [
+							{
+								"actorId": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+								"emailHash": "0e9b36b7c14a8fd20e47a631b58c92de",
+								"verifiedAt": 1760000000000,
+								"expiresAt": 1893456000000
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRecordValidator.grantState",
@@ -225,17 +642,67 @@
 					{
 						"name": "AuthRecordValidator.grantState.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A stored grant-state row consumed when validating the current grant generation. generation must be a safe integer; a non-null revoked_at makes a tombstone and skips the other columns, while an unrevoked row must also contain a valid grant and may have a nullable refreshing_until.",
+						"examples": [
+							{
+								"generation": 4,
+								"revoked_at": null,
+								"refreshing_until": null,
+								"actor_id": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+								"github_user_id": 58323114,
+								"login": "alexrivera",
+								"token_cipher": "cipher-v1:Q7mP3kN8",
+								"token_expires_at": null,
+								"refresh_cipher": null,
+								"refresh_expires_at": null,
+								"created_at": 1760000000000,
+								"expires_at": 1893456000000
+							},
+							{
+								"generation": 5,
+								"revoked_at": 1761000000000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRecordValidator.grantState",
-						"type": "GrantState"
+						"type": "GrantState",
+						"description": "The typed grant state returns its safe-integer generation, a grant or null, and refreshingUntil or null. A revoked row is a tombstone with grant and refreshingUntil both null, regardless of its other columns.",
+						"examples": [
+							{
+								"generation": 4,
+								"grant": {
+									"actorId": "1f2e3d4c-5b6a-4789-9012-3456789abcde",
+									"githubUserId": 58323114,
+									"login": "alexrivera",
+									"tokenCipher": "cipher-v1:Q7mP3kN8",
+									"tokenExpiresAt": null,
+									"refreshCipher": null,
+									"refreshExpiresAt": null,
+									"createdAt": 1760000000000,
+									"expiresAt": 1893456000000
+								},
+								"refreshingUntil": null
+							},
+							{
+								"generation": 5,
+								"grant": null,
+								"refreshingUntil": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRecordValidator.exchange",
@@ -243,17 +710,59 @@
 					{
 						"name": "AuthRecordValidator.exchange.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A stored native exchange row consumed when validating a persisted native exchange. environment must be local, staging, or production; status must be pending, approved, or consumed; required text fields must be non-empty strings, optional subject and parent_hash become null when null or missing, and expires_at must be a safe integer.",
+						"examples": [
+							{
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"challenge": "native-challenge-01JBY3Q4K2M7",
+								"nonce_hash": "513f67eac6e4b2f97a1d2c3e4f506172",
+								"code_hash": "b2a70c4d8e1f3956a0c3d7e9f1425b68",
+								"resource": "https://api.example.com",
+								"audience": "https://api.example.com",
+								"action": "login",
+								"environment": "production",
+								"origin": "https://app.example.com",
+								"status": "approved",
+								"subject": null,
+								"parent_hash": null,
+								"expires_at": 1893456000000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRecordValidator.exchange",
-						"type": "NativeExchangeRecord"
+						"type": "NativeExchangeRecord",
+						"description": "The typed native exchange record returned from the stored row. environment and status use their declared enum values, subject and parentHash are nullable, and expiresAt is a safe integer.",
+						"examples": [
+							{
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"challenge": "native-challenge-01JBY3Q4K2M7",
+								"nonceHash": "513f67eac6e4b2f97a1d2c3e4f506172",
+								"codeHash": "b2a70c4d8e1f3956a0c3d7e9f1425b68",
+								"resource": "https://api.example.com",
+								"audience": "https://api.example.com",
+								"action": "login",
+								"environment": "production",
+								"origin": "https://app.example.com",
+								"status": "approved",
+								"subject": null,
+								"parentHash": null,
+								"expiresAt": 1893456000000
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
