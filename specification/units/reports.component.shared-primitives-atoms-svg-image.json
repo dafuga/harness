@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native image element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the native image element when provided. It is not called when absent."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgImage",
 				"type": "markup",
-				"description": "The actual native image element, with forwarded attributes and content and no additional wrapper."
+				"description": "A native SVG image element with all remaining props forwarded as attributes and no wrapper. If children is provided, its rendered content is placed inside the element."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
