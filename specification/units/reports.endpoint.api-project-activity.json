@@ -12,16 +12,23 @@
 		"symbols": ["GET"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "Resolves to a JSON Response for the value returned by `siteActivity()`, falling back to `{status: 'unavailable'}` only when it is nullish; the HTTP status is 200 for truthy values and 503 otherwise, with `cache-control: no-store`."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "siteActivity rejection",
+				"type": "thrown",
+				"description": "A rejection from the awaited `siteActivity()` call propagates from `GET` because this handler has no catch; its concrete error value is determined by that call."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GET",
@@ -29,11 +36,18 @@
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "Resolves to a JSON Response for the value returned by `siteActivity()`, falling back to `{status: 'unavailable'}` only when it is nullish; the HTTP status is 200 for truthy values and 503 otherwise, with `cache-control: no-store`."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "siteActivity rejection",
+						"type": "thrown",
+						"description": "A rejection from the awaited `siteActivity()` call propagates from `GET` because this handler has no catch; its concrete error value is determined by that call."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
