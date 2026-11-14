@@ -30,44 +30,57 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ClientProjectsService.constructor.options",
 				"type": "ClientProjectsOptions",
-				"required": true
+				"required": true,
+				"description": "options supplies the registry, outbox, repository arbiter, provider discovery service, image generator and run-event callback used by this client. Its optional projection cache is passed to each project session; the service does not create or default these dependencies."
 			},
 			{
 				"name": "ClientProjectsService.use.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "projectId is the registry key passed to registry.get() when opening a project. This service does not validate or transform it.",
+				"examples": ["client-project-01"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ClientProjectsService.roots",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "roots lists the root path of each project in this client's ready map, in map iteration order. Projects still opening are absent, and a missing session root is stored as an empty string.",
+				"examples": [
+					["/Users/daniel/projects/client-app"],
+					["/workspace/projects/client-app", ""]
+				]
 			},
 			{
 				"name": "ClientProjectsService.use",
-				"type": "Promise<ClientProject>"
+				"type": "Promise<ClientProject>",
+				"description": "use opens the registered project for this client and resolves with its ClientProject after the session opens. Concurrent calls for the same id share the opening promise; calls after end() reject with Error, and an opening that finishes afterward is discarded."
 			},
 			{
 				"name": "ClientProjectsService.ended",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "ended reports whether end() has marked this client ended. The flag starts false and is never reset.",
+				"examples": [false, true]
 			},
 			{
 				"name": "ClientProjectsService.end",
-				"type": "void"
+				"type": "void",
+				"description": "end marks the client ended and cancels active runs for every ready project. Projects still opening are discarded when they finish, and later use() calls reject."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Error is rejected by use() when the client has ended, either before opening starts or after a project session opens. Its message is \"This session has ended.\"."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ClientProjectsService.roots",
@@ -75,11 +88,16 @@
 				"outputs": [
 					{
 						"name": "ClientProjectsService.roots",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "roots lists the root path of each project in this client's ready map, in map iteration order. Projects still opening are absent, and a missing session root is stored as an empty string.",
+						"examples": [
+							["/Users/daniel/projects/client-app"],
+							["/workspace/projects/client-app", ""]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ClientProjectsService.use",
@@ -87,17 +105,26 @@
 					{
 						"name": "ClientProjectsService.use.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "projectId is the registry key passed to registry.get() when opening a project. This service does not validate or transform it.",
+						"examples": ["client-project-01"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClientProjectsService.use",
-						"type": "Promise<ClientProject>"
+						"type": "Promise<ClientProject>",
+						"description": "use opens the registered project for this client and resolves with its ClientProject after the session opens. Concurrent calls for the same id share the opening promise; calls after end() reject with Error, and an opening that finishes afterward is discarded."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Error is rejected by use() when the client has ended, either before opening starts or after a project session opens. Its message is \"This session has ended.\"."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ClientProjectsService.ended",
@@ -105,11 +132,13 @@
 				"outputs": [
 					{
 						"name": "ClientProjectsService.ended",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "ended reports whether end() has marked this client ended. The flag starts false and is never reset.",
+						"examples": [false, true]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ClientProjectsService.end",
@@ -117,11 +146,12 @@
 				"outputs": [
 					{
 						"name": "ClientProjectsService.end",
-						"type": "void"
+						"type": "void",
+						"description": "end marks the client ended and cancels active runs for every ready project. Projects still opening are discarded when they finish, and later use() calls reject."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -131,17 +161,19 @@
 					{
 						"name": "ClientProjectsService.constructor.options",
 						"type": "ClientProjectsOptions",
-						"required": true
+						"required": true,
+						"description": "options supplies the registry, outbox, repository arbiter, provider discovery service, image generator and run-event callback used by this client. Its optional projection cache is passed to each project session; the service does not create or default these dependencies."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClientProjectsService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Construction stores the supplied options and initializes empty opening and ready maps with ended state false. The constructor has no explicit return value, so JavaScript creates the ClientProjectsService instance."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
