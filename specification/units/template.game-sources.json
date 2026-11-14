@@ -12,12 +12,18 @@
 		"symbols": ["gameSources"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "gameSources",
-				"type": "Record<string, string>"
+				"type": "Record<string, string>",
+				"description": "This exported static map supplies the game-source template: each declared relative file path maps to source text as a string. It has no runtime inputs or filesystem lookup; its keys and contents are fixed in this module.",
+				"examples": [
+					{
+						"adapters/Software3dAdapter.types.ts": "export type Point = [number, number, number];\n\nexport type Box = { id: string; at: Point; size: Point; color: string };\n"
+					}
+				]
 			}
 		],
 		"errors": [],
