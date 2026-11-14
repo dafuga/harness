@@ -34,57 +34,95 @@
 				"name": "UsageExamples.examples",
 				"type": "UsageExample[]",
 				"required": true,
-				"description": "Committed invocation code and expected JSON outputs or errors."
+				"description": "The examples to display, in order; documented entries carry a name of up to 160 characters and an input, plus exactly one of output or error and an optional call of up to 16,000 characters that is shown as text and never executed. Documents hold 1 to 64 entries, and an empty list shows the no-examples message unless a titled setup is rendered.",
+				"examples": [
+					[
+						{
+							"name": "Format a list",
+							"call": "compact([1, 2, 3])",
+							"input": [1, 2, 3],
+							"output": "[1, 2, 3]"
+						},
+						{
+							"name": "Format a summary",
+							"call": "compact({ status: \"passed\", total: 3 })",
+							"input": {
+								"status": "passed",
+								"total": 3
+							},
+							"output": "{ \"status\": \"passed\", \"total\": 3 }"
+						}
+					],
+					[
+						{
+							"name": "Show a list without a recorded call",
+							"input": [1, 2, 3],
+							"output": "[1, 2, 3]"
+						}
+					]
+				]
 			},
 			{
 				"name": "UsageExamples.setup",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional legacy setup included inside each code block without executing it."
+				"description": "Setup text placed before each call when setupTitle is not set; when setupTitle and a non-empty setup are both set, it is shown once as its own block and left out of the snippets. It is displayed as text and never executed, and documented setup is trimmed and limited to 32,000 characters.",
+				"examples": [
+					"const summary = { status: \"passed\", total: 3 };",
+					"const items = [1, 2, 3];"
+				]
 			},
 			{
 				"name": "UsageExamples.setupTitle",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional heading for setup rendered once before the example snippets."
+				"description": "Heading for the setup block, rendered once above the example snippets only when a non-empty setup is also given. With both set, the setup appears under this heading and is not repeated inside each snippet.",
+				"examples": ["Create the service", "Setup"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "UsageExamples",
 				"type": "markup",
-				"description": "Short titles and code blocks, or an explicit message when no usage examples are recorded."
+				"description": "Rendered markup: one article per example, headed by its name with its snippet in a code block, preceded by a setup article when a titled setup is rendered. With no examples and no setup article, it renders only the 'No usage examples are recorded.' message."
 			},
 			{
 				"name": "compact",
 				"type": "string",
-				"description": "Compact JSON text with whitespace that permits line wrapping."
+				"description": "Compact text of a value: arrays render as [a, b], objects as { \"key\": value } with a space after each separator and {} when empty, so long output can wrap and nothing is truncated. Other values use JSON.stringify, and undefined, functions and symbols fall back to String() because JSON.stringify returns undefined for them.",
+				"examples": ["{ \"status\": \"passed\", \"total\": 3 }", "[1, 2, 3]", "\"types\""]
 			},
 			{
 				"name": "usageExamples",
 				"type": "string[]",
-				"description": "Literal code snippets followed by expected output or throws comments."
+				"description": "One newline-joined snippet per example, in input order: an optional setup line, then the call text or, when no call is recorded, a '// Call not documented' comment and a '// Input:' comment with the compact input. Each snippet ends with '// =>' and the compact output, or with '// throws' and the compact error when the example's error is not undefined.",
+				"examples": [
+					["compact([1, 2, 3])\n// => \"[1, 2, 3]\""],
+					["const items = [1, 2, 3];\ncompact(items)\n// => \"[1, 2, 3]\""],
+					["// Call not documented\n// Input: [1, 2, 3]\n// => \"[1, 2, 3]\""]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "An example containing BigInt cannot be serialized."
+				"description": "Thrown by JSON.stringify when the formatter reaches a BigInt at any depth in an example's output (or its error when one is present), or in its input when no call is recorded."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "The recursive formatter cannot render a circular example."
+				"description": "Thrown when the formatter reaches a circular array or object in an example's output (or its error when one is present), or in its input when no call is recorded, because the recursion never ends."
 			},
 			{
 				"name": "Value access or conversion error",
 				"type": "thrown",
-				"description": "A supplied getter, proxy or value conversion callback can throw while formatting an example."
+				"description": "A getter, proxy trap, revoked proxy, toJSON or toString method on an example value can throw while the formatter reads it; the formatter does not catch it, so the same error reaches the caller."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "compact",
@@ -92,31 +130,41 @@
 					{
 						"name": "compact.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The value to format: arrays and objects are walked recursively, reading only the own enumerable string-keyed properties of objects, so a BigInt, a circular structure or a throwing getter reached anywhere inside it makes the call fail.",
+						"examples": [
+							{
+								"status": "passed",
+								"total": 3
+							},
+							[1, 2, 3],
+							"types"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "compact",
 						"type": "string",
-						"description": "Compact JSON text with whitespace that permits line wrapping."
+						"description": "Compact text of a value: arrays render as [a, b], objects as { \"key\": value } with a space after each separator and {} when empty, so long output can wrap and nothing is truncated. Other values use JSON.stringify, and undefined, functions and symbols fall back to String() because JSON.stringify returns undefined for them.",
+						"examples": ["{ \"status\": \"passed\", \"total\": 3 }", "[1, 2, 3]", "\"types\""]
 					}
 				],
 				"errors": [
 					{
 						"name": "TypeError",
 						"type": "thrown",
-						"description": "BigInt values cannot be JSON serialized."
+						"description": "Thrown by JSON.stringify when the value is a BigInt, or the formatter reaches one through its arrays or object entries at any depth."
 					},
 					{
 						"name": "RangeError",
 						"type": "thrown",
-						"description": "Circular arrays or objects exceed the recursive formatter's stack."
+						"description": "Thrown when the formatter reaches a circular array or object through the value, because the recursion never ends."
 					},
 					{
 						"name": "Value access or conversion error",
 						"type": "thrown",
-						"description": "A supplied getter, proxy or value conversion callback can throw."
+						"description": "Thrown by a getter, proxy trap, revoked proxy, toJSON or toString method that the formatter reaches while reading the value, since compact does not catch it."
 					}
 				],
 				"errorStatus": "declared"
@@ -127,36 +175,74 @@
 					{
 						"name": "usageExamples.examples",
 						"type": "UsageExample[]",
-						"required": true
+						"required": true,
+						"description": "The examples to format, in order; each contributes one snippet that uses its call text when recorded and otherwise its compact input, and ends with its compact output, or with its compact error when the error is not undefined. When both output and error are undefined, the snippet ends with '// => undefined'.",
+						"examples": [
+							[
+								{
+									"name": "Format a list",
+									"call": "compact([1, 2, 3])",
+									"input": [1, 2, 3],
+									"output": "[1, 2, 3]"
+								},
+								{
+									"name": "Format a summary",
+									"call": "compact({ status: \"passed\", total: 3 })",
+									"input": {
+										"status": "passed",
+										"total": 3
+									},
+									"output": "{ \"status\": \"passed\", \"total\": 3 }"
+								}
+							],
+							[
+								{
+									"name": "Show a list without a recorded call",
+									"input": [1, 2, 3],
+									"output": "[1, 2, 3]"
+								}
+							]
+						]
 					},
 					{
 						"name": "usageExamples.setup",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Setup text placed before the call in every returned snippet; an undefined or empty value adds no line, because falsy parts are filtered out.",
+						"examples": [
+							"const items = [1, 2, 3];",
+							"const summary = { status: \"passed\", total: 3 };"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "usageExamples",
 						"type": "string[]",
-						"description": "Literal code snippets followed by expected output or throws comments."
+						"description": "One newline-joined snippet per example, in input order: an optional setup line, then the call text or, when no call is recorded, a '// Call not documented' comment and a '// Input:' comment with the compact input. Each snippet ends with '// =>' and the compact output, or with '// throws' and the compact error when the example's error is not undefined.",
+						"examples": [
+							["compact([1, 2, 3])\n// => \"[1, 2, 3]\""],
+							["const items = [1, 2, 3];\ncompact(items)\n// => \"[1, 2, 3]\""],
+							["// Call not documented\n// Input: [1, 2, 3]\n// => \"[1, 2, 3]\""]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "TypeError",
 						"type": "thrown",
-						"description": "An example containing BigInt cannot be JSON serialized."
+						"description": "Thrown by JSON.stringify when the formatter reaches a BigInt at any depth in an example's output (or its error when one is present), or in its input when no call is recorded."
 					},
 					{
 						"name": "RangeError",
 						"type": "thrown",
-						"description": "Circular arrays or objects exceed the recursive formatter's stack."
+						"description": "Thrown when the formatter reaches a circular array or object in an example's output (or its error when one is present), or in its input when no call is recorded, because the recursion never ends."
 					},
 					{
 						"name": "Value access or conversion error",
 						"type": "thrown",
-						"description": "A supplied getter, proxy or value conversion callback can throw."
+						"description": "Thrown by a getter, proxy trap, revoked proxy, toJSON or toString method that the formatter reaches in an example's output, its error, or its input when no call is recorded; usageExamples does not catch it."
 					}
 				],
 				"errorStatus": "declared"
