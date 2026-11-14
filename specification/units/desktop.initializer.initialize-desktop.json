@@ -25,16 +25,24 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "initializeDesktop",
-				"type": "Promise<BrowserWindow | null>"
+				"type": "Promise<BrowserWindow | null>",
+				"description": "The BrowserWindow this call opened, returned after its loadURL('harness://app/') promise resolves, or null when another instance already holds the single-instance lock, in which case this process calls app.quit() and starts no backend. The module's own import-time call discards this value, so only other callers of the exported function receive it.",
+				"examples": [null]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "rejection",
+				"type": "thrown",
+				"description": "Whatever value a step of the startup sequence rejects or throws with (the transport listen, the remote start, the window's loadURL, or a constructor or setup call), passed on unchanged because the function has no try/catch. The module's import-time call logs such a value and exits the app with code 1, and the function defines no error type of its own."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "initializeDesktop",
@@ -42,11 +50,19 @@
 				"outputs": [
 					{
 						"name": "initializeDesktop",
-						"type": "Promise<BrowserWindow | null>"
+						"type": "Promise<BrowserWindow | null>",
+						"description": "The BrowserWindow this call opened, returned after its loadURL('harness://app/') promise resolves, or null when another instance already holds the single-instance lock, in which case this process calls app.quit() and starts no backend. The module's own import-time call discards this value, so only other callers of the exported function receive it.",
+						"examples": [null]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "rejection",
+						"type": "thrown",
+						"description": "Whatever value a step of the startup sequence rejects or throws with (the transport listen, the remote start, the window's loadURL, or a constructor or setup call), passed on unchanged because the function has no try/catch. The module's import-time call logs such a value and exits the app with code 1, and the function defines no error type of its own."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
