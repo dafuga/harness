@@ -9,6 +9,17 @@ test('every external action is pinned to a full commit hash', () => {
 	const all = [...uses(verify), ...uses(publish)];
 	expect(all.length).toBeGreaterThan(1);
 	for (const action of all) expect(action).toMatch(/^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/);
+	const caches = [...verify.matchAll(/uses: actions\/cache\/restore@/g)];
+	expect(caches).toHaveLength(6);
+	expect(verify.match(/uses: actions\/cache\/save@/g)).toHaveLength(6);
+	expect(
+		verify.match(
+			/!cancelled\(\) && steps\.cache-(bun|rust|playwright)\.outputs\.cache-hit != 'true'/g
+		)
+	).toHaveLength(6);
+	expect(verify.match(/~\/\.rustup/g)).toHaveLength(4);
+	expect(verify).toContain('~/Library/Caches/ms-playwright');
+	expect(verify).toContain("HARNESS_DEBT_RATCHET_BASE: ${{ github.event.before || '' }}");
 });
 
 test('code under test runs without write credentials', () => {
