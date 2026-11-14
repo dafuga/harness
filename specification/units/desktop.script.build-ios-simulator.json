@@ -12,16 +12,17 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A normal simulator product is rejected if it has a local-networking exception, allows web inspection, or holds the synthetic scanner of a test copy."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
