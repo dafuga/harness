@@ -21,7 +21,7 @@
 				"name": "helperTemplates.code",
 				"type": "string",
 				"required": true,
-				"description": "Svelte component source to parse. Plain markup and string contents do not become helper calls.",
+				"description": "Svelte component source passed to the Svelte parser and script scanner. Plain markup and string literals are not emitted as template helper uses; parsed template expressions are wrapped for analysis.",
 				"examples": ["<script>const title = 'Orders';</script><h1>{title}</h1>"]
 			}
 		],
@@ -29,10 +29,18 @@
 			{
 				"name": "helperTemplates",
 				"type": "string",
-				"description": "Script code and isolated template-expression wrappers, with template-bound names represented as local parameters so shadowing remains visible."
+				"description": "The script code and generated wrapper functions for positioned Svelte template expressions, joined with newline characters. Each wrapper uses bindings from block context and parameters as local parameters, preserving scope during helper reuse analysis.",
+				"examples": ["function __template() { void (formatDate(date)); }"]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Svelte parser error",
+				"type": "thrown",
+				"description": "An exception from parse(code, { modern: true }) propagates when the Svelte source cannot be parsed; this function does not catch or transform it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "helperTemplates",
@@ -41,7 +49,7 @@
 						"name": "helperTemplates.code",
 						"type": "string",
 						"required": true,
-						"description": "Svelte component source to parse. Plain markup and string contents do not become helper calls.",
+						"description": "Svelte component source passed to the Svelte parser and script scanner. Plain markup and string literals are not emitted as template helper uses; parsed template expressions are wrapped for analysis.",
 						"examples": ["<script>const title = 'Orders';</script><h1>{title}</h1>"]
 					}
 				],
@@ -49,11 +57,18 @@
 					{
 						"name": "helperTemplates",
 						"type": "string",
-						"description": "Script code and isolated template-expression wrappers, with template-bound names represented as local parameters so shadowing remains visible."
+						"description": "The script code and generated wrapper functions for positioned Svelte template expressions, joined with newline characters. Each wrapper uses bindings from block context and parameters as local parameters, preserving scope during helper reuse analysis.",
+						"examples": ["function __template() { void (formatDate(date)); }"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Svelte parser error",
+						"type": "thrown",
+						"description": "An exception from parse(code, { modern: true }) propagates when the Svelte source cannot be parsed; this function does not catch or transform it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
