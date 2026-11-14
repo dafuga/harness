@@ -21,56 +21,119 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "elementName.tag",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The tag argument that every call to elementName must supply, declared as a plain string in htmlElements.d.ts. The declaration sets no rule on which strings are valid, so any string satisfies the declared type.",
+				"examples": ["div", "input", "path"]
 			},
 			{
 				"name": "atomTag.atom",
 				"type": "{ name: string }",
-				"required": true
+				"required": true,
+				"description": "The atom argument that every call to atomTag must supply, declared as an object whose only field is a string name. The declaration sets no rule on which names are valid, so any string name satisfies the declared type.",
+				"examples": [
+					{
+						"name": "email"
+					},
+					{
+						"name": "submit"
+					}
+				]
 			},
 			{
 				"name": "nativeAtomSource.atom",
 				"type": "{ tag: string; type?: string }",
-				"required": true
+				"required": true,
+				"description": "The atom argument that every call to nativeAtomSource must supply, declared with a required string tag and an optional string type. The declaration sets no rule on which values are valid or how the two fields combine into the returned string.",
+				"examples": [
+					{
+						"tag": "input",
+						"type": "email"
+					},
+					{
+						"tag": "button"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "htmlElements",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported const htmlElements, declared as string[] in htmlElements.d.ts, so importers receive an array of strings. The declaration gives only the type, not the list contents, so the examples show the declared shape rather than the actual list.",
+				"examples": [
+					["a", "abbr", "div"],
+					["button", "input", "label", "span"]
+				]
 			},
 			{
 				"name": "svgElements",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported const svgElements, declared as string[] in htmlElements.d.ts, so importers receive an array of strings. The declaration gives only the type, not the list contents, so the examples show the declared shape rather than the actual list.",
+				"examples": [
+					["circle", "path", "rect"],
+					["g", "line", "text"]
+				]
 			},
 			{
 				"name": "inputTypes",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported const inputTypes, declared as string[] in htmlElements.d.ts, so importers receive an array of strings. The declaration gives only the type, not the list contents, so the examples show the declared shape rather than the actual list.",
+				"examples": [
+					["checkbox", "email", "text"],
+					["date", "number", "password"]
+				]
 			},
 			{
 				"name": "voidElements",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported const voidElements, declared as Set<string> in htmlElements.d.ts, so importers receive a Set rather than an array. The declaration gives no contents, and JSON cannot express a Set, so no examples are given."
 			},
 			{
 				"name": "elementName",
-				"type": "string; export const nativeAtoms: Array<{ name: string; tag: string; type?: string }>; export function atomTag(atom: { name: string }): string; export function nativeAtomSource(atom: { tag: string; type?: string }): string"
+				"type": "string; export const nativeAtoms: Array<{ name: string; tag: string; type?: string }>; export function atomTag(atom: { name: string }): string; export function nativeAtomSource(atom: { tag: string; type?: string }): string",
+				"description": "The string returned by the elementName function, declared to return string in htmlElements.d.ts. The declaration gives no rule for how the returned string relates to the tag argument.",
+				"examples": ["span", "img", "circle"]
 			},
 			{
 				"name": "nativeAtoms",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported const nativeAtoms, declared in htmlElements.d.ts as an array of objects, each with a string name, a string tag, and an optional string type. The declaration shows no entries, so the examples show the declared shape rather than the actual list.",
+				"examples": [
+					[
+						{
+							"name": "email",
+							"tag": "input",
+							"type": "email"
+						},
+						{
+							"name": "submit",
+							"tag": "button"
+						}
+					],
+					[
+						{
+							"name": "notes",
+							"tag": "textarea"
+						}
+					]
+				]
 			},
 			{
 				"name": "atomTag",
-				"type": "string; export function nativeAtomSource(atom: { tag: string; type?: string }): string"
+				"type": "string; export function nativeAtomSource(atom: { tag: string; type?: string }): string",
+				"description": "The string returned by the atomTag function, declared to return string in htmlElements.d.ts. The declaration gives no rule for how the returned string is derived from the atom's name.",
+				"examples": ["input", "button", "select"]
 			},
 			{
 				"name": "nativeAtomSource",
-				"type": "string"
+				"type": "string",
+				"description": "The string returned by the nativeAtomSource function, declared to return string in htmlElements.d.ts. The declaration gives no rule for how the returned string is derived from the atom's tag and type.",
+				"examples": ["input", "textarea"]
 			}
 		],
 		"errors": [],
@@ -82,17 +145,21 @@
 					{
 						"name": "elementName.tag",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The tag argument that every call to elementName must supply, declared as a plain string in htmlElements.d.ts. The declaration sets no rule on which strings are valid, so any string satisfies the declared type.",
+						"examples": ["div", "input", "path"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "elementName",
-						"type": "string; export const nativeAtoms: Array<{ name: string; tag: string; type?: string }>; export function atomTag(atom: { name: string }): string; export function nativeAtomSource(atom: { tag: string; type?: string }): string"
+						"type": "string; export const nativeAtoms: Array<{ name: string; tag: string; type?: string }>; export function atomTag(atom: { name: string }): string; export function nativeAtomSource(atom: { tag: string; type?: string }): string",
+						"description": "The string returned by the elementName function, declared to return string in htmlElements.d.ts. The declaration gives no rule for how the returned string relates to the tag argument.",
+						"examples": ["span", "img", "circle"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "atomTag",
@@ -100,17 +167,28 @@
 					{
 						"name": "atomTag.atom",
 						"type": "{ name: string }",
-						"required": true
+						"required": true,
+						"description": "The atom argument that every call to atomTag must supply, declared as an object whose only field is a string name. The declaration sets no rule on which names are valid, so any string name satisfies the declared type.",
+						"examples": [
+							{
+								"name": "email"
+							},
+							{
+								"name": "submit"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomTag",
-						"type": "string; export function nativeAtomSource(atom: { tag: string; type?: string }): string"
+						"type": "string; export function nativeAtomSource(atom: { tag: string; type?: string }): string",
+						"description": "The string returned by the atomTag function, declared to return string in htmlElements.d.ts. The declaration gives no rule for how the returned string is derived from the atom's name.",
+						"examples": ["input", "button", "select"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "nativeAtomSource",
@@ -118,17 +196,29 @@
 					{
 						"name": "nativeAtomSource.atom",
 						"type": "{ tag: string; type?: string }",
-						"required": true
+						"required": true,
+						"description": "The atom argument that every call to nativeAtomSource must supply, declared with a required string tag and an optional string type. The declaration sets no rule on which values are valid or how the two fields combine into the returned string.",
+						"examples": [
+							{
+								"tag": "input",
+								"type": "email"
+							},
+							{
+								"tag": "button"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "nativeAtomSource",
-						"type": "string"
+						"type": "string",
+						"description": "The string returned by the nativeAtomSource function, declared to return string in htmlElements.d.ts. The declaration gives no rule for how the returned string is derived from the atom's tag and type.",
+						"examples": ["input", "textarea"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
