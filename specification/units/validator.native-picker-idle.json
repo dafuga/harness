@@ -22,27 +22,76 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativePickerIdleValidator.validate.input",
 				"type": "PickerData",
-				"required": true
+				"required": true,
+				"description": "The thread record to classify: validate reads input.status.type, which must be 'idle' (valid without calling rpc) or 'systemError' (valid only when thread/read shows a last turn with status 'failed' and no turn with status 'inProgress'), and input.id, which is sent as threadId on the systemError path. A null or undefined input rejects with a TypeError, and any other status type, a non-object status, or a missing status returns valid false.",
+				"examples": [
+					{
+						"id": "3d1f9c2a-7b4e-4a85-9f0d-6e2c1a8b5d47",
+						"status": {
+							"type": "idle"
+						}
+					},
+					{
+						"id": "b7e04c9d-2f18-4e63-a5c1-9d8e0f3a7b26",
+						"status": {
+							"type": "systemError"
+						}
+					},
+					{
+						"id": "0c58e7a1-96d3-4f2b-8e14-5a7c3d9b2f60",
+						"status": {
+							"type": "notLoaded"
+						}
+					}
+				]
 			},
 			{
 				"name": "NativePickerIdleValidator.validate.rpc",
 				"type": "PickerRpc",
-				"required": true
+				"required": true,
+				"description": "The request function that validate calls only on the systemError path, as rpc('thread/read', { threadId: input.id, includeTurns: true }); validate reads the turns array from the resolved object's thread field and treats a non-array turns value as invalid. A rejection from rpc is not caught and propagates out of validate unchanged."
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativePickerIdleValidator.validate",
-				"type": "Promise<NativePickerIdleValidatorResult>"
+				"type": "Promise<NativePickerIdleValidatorResult>",
+				"description": "The resolved verdict: valid is true with an empty errors array when input.status.type is 'idle', or when input.status.type is 'systemError' and thread/read shows a last turn with status 'failed' and no turn with status 'inProgress'. Otherwise valid is false and errors holds only the fixed message 'Provider switching requires an idle chat or a confirmed completed failure'; the promise rejects only in the cases listed under errors.",
+				"examples": [
+					{
+						"valid": true,
+						"errors": []
+					},
+					{
+						"valid": false,
+						"errors": ["Provider switching requires an idle chat or a confirmed completed failure"]
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejects validate's promise when input is null or undefined, because input.status is read on the first line of validate."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejects validate's promise when input.status.type is 'systemError' and rpc is not callable or resolves to null or undefined, because the thread property of the rpc result is read on that path."
+			},
+			{
+				"name": "PickerRpc rejection",
+				"type": "thrown",
+				"description": "Propagates the rejection from rpc('thread/read') unchanged when input.status.type is 'systemError', because validate does not catch errors from that await."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativePickerIdleValidator.validate",
@@ -50,22 +99,73 @@
 					{
 						"name": "NativePickerIdleValidator.validate.input",
 						"type": "PickerData",
-						"required": true
+						"required": true,
+						"description": "The thread record to classify: validate reads input.status.type, which must be 'idle' (valid without calling rpc) or 'systemError' (valid only when thread/read shows a last turn with status 'failed' and no turn with status 'inProgress'), and input.id, which is sent as threadId on the systemError path. A null or undefined input rejects with a TypeError, and any other status type, a non-object status, or a missing status returns valid false.",
+						"examples": [
+							{
+								"id": "3d1f9c2a-7b4e-4a85-9f0d-6e2c1a8b5d47",
+								"status": {
+									"type": "idle"
+								}
+							},
+							{
+								"id": "b7e04c9d-2f18-4e63-a5c1-9d8e0f3a7b26",
+								"status": {
+									"type": "systemError"
+								}
+							},
+							{
+								"id": "0c58e7a1-96d3-4f2b-8e14-5a7c3d9b2f60",
+								"status": {
+									"type": "notLoaded"
+								}
+							}
+						]
 					},
 					{
 						"name": "NativePickerIdleValidator.validate.rpc",
 						"type": "PickerRpc",
-						"required": true
+						"required": true,
+						"description": "The request function that validate calls only on the systemError path, as rpc('thread/read', { threadId: input.id, includeTurns: true }); validate reads the turns array from the resolved object's thread field and treats a non-array turns value as invalid. A rejection from rpc is not caught and propagates out of validate unchanged."
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativePickerIdleValidator.validate",
-						"type": "Promise<NativePickerIdleValidatorResult>"
+						"type": "Promise<NativePickerIdleValidatorResult>",
+						"description": "The resolved verdict: valid is true with an empty errors array when input.status.type is 'idle', or when input.status.type is 'systemError' and thread/read shows a last turn with status 'failed' and no turn with status 'inProgress'. Otherwise valid is false and errors holds only the fixed message 'Provider switching requires an idle chat or a confirmed completed failure'; the promise rejects only in the cases listed under errors.",
+						"examples": [
+							{
+								"valid": true,
+								"errors": []
+							},
+							{
+								"valid": false,
+								"errors": [
+									"Provider switching requires an idle chat or a confirmed completed failure"
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects validate's promise when input is null or undefined, because input.status is read on the first line of validate."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects validate's promise when input.status.type is 'systemError' and rpc is not callable or resolves to null or undefined, because the thread property of the rpc result is read on that path."
+					},
+					{
+						"name": "PickerRpc rejection",
+						"type": "thrown",
+						"description": "Propagates the rejection from rpc('thread/read') unchanged when input.status.type is 'systemError', because validate does not catch errors from that await."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
