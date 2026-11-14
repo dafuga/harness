@@ -1,7 +1,8 @@
-import { afterEach, beforeEach, expect, test } from 'vitest';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { rm } from 'node:fs/promises';
 import { resolveCleanCodeSettings } from '../src/audit/cleanCodeConfig';
-import { matchesExclusion } from '../src/audit/cleanCodeDiscovery';
+import { discoverCleanCodeFiles, matchesExclusion } from '../src/audit/cleanCodeDiscovery';
+import { BoundedCommandAdapter } from '../src/adapters/execution-runtimes/BoundedCommandAdapter';
 import { reviewCleanCode } from '../src/workflows/reviewCleanCode';
 import { fixtureEvaluation, reviewFixtureRoot, reviewSettings } from './support/cleanCodeFixture';
 
@@ -10,6 +11,7 @@ beforeEach(async () => {
 	root = await reviewFixtureRoot();
 });
 afterEach(async () => {
+	vi.restoreAllMocks();
 	await rm(root, { recursive: true, force: true });
 });
 
@@ -24,6 +26,19 @@ test('recursive exclusions match root files as well as nested paths', () => {
 	expect(matchesExclusion('index.ts', '**/*.ts')).toBe(true);
 	expect(matchesExclusion('src/utils/greet.ts', '**/*.ts')).toBe(true);
 	expect(matchesExclusion('src/utils/greet.ts', 'src/*.ts')).toBe(false);
+});
+
+test('a failed git ignore probe stops discovery instead of silently selecting ignored files', () => {
+	vi.spyOn(BoundedCommandAdapter.prototype, 'runSync').mockImplementation(() => {
+		throw Object.assign(new Error('timed out'), { code: 'ETIMEDOUT' });
+	});
+	expect(() =>
+		discoverCleanCodeFiles(
+			root,
+			{ files: [{ path: `${root}/secret.ts`, extension: '.ts' }], dirs: [], ignoredPaths: [] },
+			[]
+		)
+	).toThrow('Cannot safely determine ignored files');
 });
 
 test.each([

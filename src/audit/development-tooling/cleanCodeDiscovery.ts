@@ -77,9 +77,18 @@ function gitIgnoredPaths(root: string, paths: string[]): Set<string> {
 		return result.code === 0
 			? new Set(result.stdout.toString('utf8').split('\0').filter(Boolean))
 			: new Set();
-	} catch {
-		return new Set();
+	} catch (error) {
+		if (!isTimeout(error)) return new Set();
+		throw new Error('Cannot safely determine ignored files for clean code review.', {
+			cause: error
+		});
 	}
+}
+
+function isTimeout(error: unknown): boolean {
+	return (
+		typeof error === 'object' && error !== null && 'code' in error && error.code === 'ETIMEDOUT'
+	);
 }
 
 function exclusionReason(

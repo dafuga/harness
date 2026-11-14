@@ -46,9 +46,16 @@ function git(directory: string, args: string[]): string | undefined {
 			env: { GIT_TERMINAL_PROMPT: '0' }
 		});
 		return result.code === 0 ? result.stdout.toString('utf8').trim() : undefined;
-	} catch {
+	} catch (error) {
+		if (isTimeout(error)) throw error;
 		return undefined;
 	}
+}
+
+function isTimeout(error: unknown): boolean {
+	return (
+		typeof error === 'object' && error !== null && 'code' in error && error.code === 'ETIMEDOUT'
+	);
 }
 
 /** `host/path` of a network address in any of its spellings; undefined for anything else. */
@@ -100,9 +107,15 @@ function identify(directory: string, hops: number): string | null {
 export function repositoryIdentity(directory: string): string | null {
 	const cached = readLru(known, directory);
 	if (cached.hit) return cached.value ?? null;
-	const identity = identify(directory, 0);
+	let identity: string | null;
+	try {
+		identity = identify(directory, 0);
+	} catch (error) {
+		if (isTimeout(error)) return null;
+		throw error;
+	}
 	const result = identity && createHash('sha256').update(identity).digest('hex');
-	writeLru(known, [directory, result], MAX_KNOWN_CACHE_ENTRIES);
+	if (result !== null) writeLru(known, [directory, result], MAX_KNOWN_CACHE_ENTRIES);
 	return result;
 }
 
@@ -142,8 +155,14 @@ function plainSite(site: string): string | null {
 	const cached = readLru(plain, site);
 	if (cached.hit) return cached.value ?? null;
 	const own = realDirectory(site);
-	const outside = own !== undefined && git(own, ['rev-parse', '--git-dir']) === undefined;
+	let outside = false;
+	try {
+		outside = own !== undefined && git(own, ['rev-parse', '--git-dir']) === undefined;
+	} catch (error) {
+		if (isTimeout(error)) return null;
+		throw error;
+	}
 	const result = outside ? own : null;
-	writeLru(plain, [site, result], MAX_PLAIN_CACHE_ENTRIES);
+	if (result !== null) writeLru(plain, [site, result], MAX_PLAIN_CACHE_ENTRIES);
 	return result;
 }
