@@ -18,17 +18,18 @@
 				"name": "registerBenchmarkCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander program receiving the benchmark subcommands."
+				"description": "The supplied Commander `Command` instance receives the `benchmark` command and its three children. It is required to register this CLI tree; the function does not return a replacement command."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerBenchmarkCommand",
 				"type": "void",
-				"description": "Registers validate, run and results with JSON and ordering-seed flags."
+				"description": "The function returns no value after attaching `benchmark` with `validate`, `run`, and `results` child commands. Each child accepts `<target>` and the `--json` and `--seed <seed>` options; this function registers their actions but does not invoke them."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerBenchmarkCommand",
@@ -37,18 +38,18 @@
 						"name": "registerBenchmarkCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander program receiving the benchmark subcommands."
+						"description": "The supplied Commander `Command` instance receives the `benchmark` command and its three children. It is required to register this CLI tree; the function does not return a replacement command."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerBenchmarkCommand",
 						"type": "void",
-						"description": "Registers validate, run and results with JSON and ordering-seed flags."
+						"description": "The function returns no value after attaching `benchmark` with `validate`, `run`, and `results` child commands. Each child accepts `<target>` and the `--json` and `--seed <seed>` options; this function registers their actions but does not invoke them."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
