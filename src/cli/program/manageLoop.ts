@@ -16,6 +16,7 @@ import { fail } from '../../core/development-tooling/errors';
 import { TaskCompletionService } from '../../services/verification-evidence/TaskCompletionService';
 import {
 	appendTrace,
+	assertLoopOpen,
 	loopPaths,
 	loopRoot,
 	readLoop,
@@ -66,6 +67,7 @@ export async function addLoopStep(input: AddLoopStepInput): Promise<LoopStatus> 
 	const title = validateRequiredText(input.title, 'Step title');
 	const paths = loopPaths(loopRoot(input), loop);
 	const state = await readLoop(paths.state);
+	assertLoopOpen(state);
 
 	if (state.steps.some((item) => item.id === step)) fail(`Loop step "${step}" already exists.`);
 
@@ -85,6 +87,7 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 	const evidence = validateRequiredText(input.evidence, 'Step evidence');
 	const paths = loopPaths(loopRoot(input), loop);
 	const state = await readLoop(paths.state);
+	assertLoopOpen(state);
 	const item = state.steps.find((candidate) => candidate.id === step);
 
 	if (!item) fail(`Loop step "${step}" does not exist.`);

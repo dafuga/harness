@@ -15,6 +15,7 @@ import { resourceEnvironment } from '../../utils/execution-runtimes/resourceEnvi
 import { resourceWork } from '../../utils/execution-runtimes/resourceWork';
 import {
 	appendTrace,
+	assertLoopOpen,
 	loopPaths,
 	loopRoot,
 	readLoop,
@@ -26,6 +27,7 @@ export async function evaluateLoop(input: EvaluateLoopInput): Promise<LoopEvalua
 	const root = loopRoot(input);
 	const paths = loopPaths(root, input.loop);
 	const state = await readLoop(paths.state);
+	assertLoopOpen(state);
 	const skipped = input.runEvaluators === false;
 	const results = await runEvaluators(root, skipped ? [] : (state.evaluators ?? []), {
 		loop: state.name,

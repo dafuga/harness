@@ -4,7 +4,8 @@ import { Command } from 'commander';
 import { afterEach, expect, test, vi } from 'vitest';
 import { withTempDir } from './support/temporary';
 import { registerLoopLifecycleCommands } from '../src/cli/program/loopLifecycle';
-import { renderLoopStatus } from '../src/cli/program/manageLoop';
+import { addLoopStep, completeLoopStep, renderLoopStatus } from '../src/cli/program/manageLoop';
+import { evaluateLoop } from '../src/cli/program/loopEvaluate';
 import { closeLoopAbandoned } from '../src/workflows/development-tooling/loop-lifecycle/closeLoop';
 import {
 	isOpenLoop,
@@ -127,6 +128,19 @@ test('closeLoopAbandoned records the closure and leaves steps and old loops unto
 			reason: stored.closed?.reason
 		});
 		expect((await listOpenLoops({ root, now: () => now })).loops).toEqual([]);
+		const path = join(root, 'specification', 'loops', 'stale-open', 'loop.json');
+		const closedBytes = await readFile(path, 'utf8');
+		for (const mutate of [
+			() => addLoopStep({ root, loop: 'stale-open', step: 'later', title: 'Later' }),
+			() => completeLoopStep({ root, loop: 'stale-open', step: 'step-1', evidence: 'proof' }),
+			() => evaluateLoop({ root, loop: 'stale-open' })
+		]) {
+			await expect(mutate()).rejects.toThrow('is closed as abandoned');
+			expect(await readFile(path, 'utf8')).toBe(closedBytes);
+		}
+		expect(
+			await readFile(join(root, 'specification', 'loops', 'stale-open', 'trace.ndjson'), 'utf8')
+		).toBe(trace);
 	}));
 
 test('closeLoopAbandoned refuses an empty reason, a closed loop and a loop with nothing pending', () =>

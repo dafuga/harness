@@ -107,6 +107,11 @@ export async function readLoop(path: string): Promise<LoopState> {
 	}
 }
 
+/** Explicit closure is final; status and search may still read the historical state. */
+export function assertLoopOpen(state: LoopState): void {
+	if (state.closed) fail(`Loop "${state.name}" is closed as ${state.closed.status}.`);
+}
+
 /** Names the file and each failing field; callers match the "Invalid loop state:" prefix. */
 function schemaMismatch(path: string, issues: z.core.$ZodIssue[]): string {
 	const shown = issues
