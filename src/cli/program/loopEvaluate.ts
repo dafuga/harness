@@ -10,6 +10,7 @@ export type {
 	EvaluateLoopInput
 } from './loopEvaluate.types';
 import { BoundedCommandAdapter } from '../../adapters/execution-runtimes/BoundedCommandAdapter';
+import { commandDeadlines } from '../../adapters/execution-runtimes/bounded-command-adapter/commandDeadlines';
 import { resourceEnvironment } from '../../utils/execution-runtimes/resourceEnvironment';
 import { resourceWork } from '../../utils/execution-runtimes/resourceWork';
 import {
@@ -81,6 +82,7 @@ function runEvaluator(
 		try {
 			const result = await new BoundedCommandAdapter().run('sh', ['-c', evaluator.command], {
 				cwd: root,
+				timeoutMs: evaluator.timeoutMs ?? commandDeadlines.evaluatorMs,
 				env: {
 					...resourceEnvironment(lease.env),
 					HARNESS_ANALYTICS_LOOP: context.loop,

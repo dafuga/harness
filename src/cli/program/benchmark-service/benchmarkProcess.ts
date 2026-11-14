@@ -2,6 +2,7 @@
 import type { BenchmarkProcessInput, BenchmarkProcessResult } from './benchmarkProcess.types';
 export type { BenchmarkProcessInput, BenchmarkProcessResult } from './benchmarkProcess.types';
 import { BoundedCommandAdapter } from '../../../adapters/execution-runtimes/BoundedCommandAdapter';
+import { commandDeadlines } from '../../../adapters/execution-runtimes/bounded-command-adapter/commandDeadlines';
 export function benchmarkEnvironment(): Record<string, string | undefined> {
 	const env: Record<string, string | undefined> = { HARNESS_ANALYTICS_DISABLED: '1' };
 	for (const key of [
@@ -27,7 +28,7 @@ export async function benchmarkProcess(
 		env: benchmarkEnvironment(),
 		input: input.input,
 		signal: input.signal,
-		timeoutMs: input.timeoutMs,
+		timeoutMs: input.timeoutMs ?? commandDeadlines.benchmarkChildMs,
 		maxBuffer: 8_000_000
 	});
 	return { exitCode: result.code, stdout: result.stdout.toString('utf8'), stderr: result.stderr };

@@ -18,6 +18,7 @@ export interface LoopEvaluator {
 	title: string;
 	command: string;
 	step?: string;
+	timeoutMs?: number;
 }
 
 export interface LoopClosure {

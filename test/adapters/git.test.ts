@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { afterEach, expect, test, vi } from 'vitest';
 import { BoundedCommandAdapter } from '../../src/adapters/execution-runtimes/BoundedCommandAdapter';
 import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
+import { gitDeadline } from '../../src/adapters/git-source-history/git-adapter/gitDeadline';
 
 // Initial method matrix: run/bytes/attempt/exec/isRepository and bounded errors.
 const roots: string[] = [];
@@ -44,6 +45,11 @@ test('isRepository distinguishes repositories from plain directories', async () 
 	expect(await git.isRepository()).toBe(false);
 	await git.run(['init', '-q']);
 	expect(await git.isRepository()).toBe(true);
+});
+test('git deadlines distinguish local work from network and long-running verbs', () => {
+	expect(gitDeadline(['status'])).toBe(30 * 60 * 1000);
+	expect(gitDeadline(['fetch', 'origin'])).toBe(6 * 60 * 60 * 1000);
+	expect(gitDeadline(['-C', '/tmp/repo', 'worktree', 'add', '/tmp/tree'])).toBe(6 * 60 * 60 * 1000);
 });
 test('exec stops commands that exceed the deadline or combined output limit', async () => {
 	const git = await fixture();

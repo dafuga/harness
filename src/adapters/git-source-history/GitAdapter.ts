@@ -1,6 +1,7 @@
 // @harness-uid u_pghy4246hw
 import type { GitRunOptions, GitResult } from './GitAdapter.types';
 import { BoundedCommandAdapter } from '../execution-runtimes/BoundedCommandAdapter';
+import { gitDeadline } from './git-adapter/gitDeadline';
 
 /** Runs git in one repository without changing global or repository configuration. */
 export class GitAdapter {
@@ -27,6 +28,7 @@ export class GitAdapter {
 		return new BoundedCommandAdapter().run('git', args, {
 			...options,
 			cwd: this.root,
+			timeoutMs: options.timeoutMs ?? gitDeadline(args),
 			maxBuffer: options.maxBuffer ?? 128 * 1024 * 1024,
 			env: gitEnvironment(options.env)
 		});

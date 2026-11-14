@@ -34,7 +34,7 @@ function killGroup(child: ChildProcessWithoutNullStreams): void {
 	}
 }
 function limits(options: BoundedCommandOptions) {
-	const timeout = options.timeoutMs ?? 60000;
+	const timeout = options.timeoutMs ?? commandDeadlines.backstopMs;
 	const maxBuffer = options.maxBuffer ?? 8 * 1024 * 1024;
 	if (
 		![timeout, maxBuffer].every(
@@ -57,7 +57,10 @@ function collect(
 			failure ??= reason;
 			killGroup(child);
 		};
-		const timer = setTimeout(() => stop(new Error('Command timed out.')), timeout);
+		const timer = setTimeout(
+			() => stop(timeoutFailure(commandLabel(child.spawnfile, child.spawnargs), timeout)),
+			timeout
+		);
 		const abort = () => stop(options.signal?.reason ?? new Error('Command aborted.'));
 		options.signal?.addEventListener('abort', abort, { once: true });
 		for (const stream of ['stdout', 'stderr'] as const) {
@@ -83,6 +86,7 @@ function collect(
 				});
 		});
 		child.stdin.on('error', () => undefined);
+		const unregister = registerForSignals(child);
 		child.stdin.end(options.input);
 		if (options.signal?.aborted) abort();
 	});
@@ -157,3 +161,4 @@ export class BoundedCommandAdapter {
 	}
 }
 export type { BoundedCommandOptions, BoundedCommandResult } from './BoundedCommandAdapter.types';
+export { commandDeadlines } from './bounded-command-adapter/commandDeadlines';

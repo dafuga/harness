@@ -67,7 +67,8 @@ const loopStateSchema = z
 						id: z.string().min(1),
 						title: z.string(),
 						command: z.string().min(1),
-						step: z.string().optional()
+						step: z.string().optional(),
+						timeoutMs: z.number().int().min(100).max(21600000).optional()
 					})
 					.passthrough()
 			)
