@@ -26,21 +26,23 @@
 				"type": "string",
 				"required": false,
 				"default": "Loading…",
-				"description": "Optional status label describing the data being read; defaults to Loading…. The host owns fetching and decides when to show or remove the status."
+				"description": "Use this text to identify what data the host is waiting on; it defaults to Loading…. Long labels wrap anywhere in the available width.",
+				"examples": ["Loading reports…", "Reading project evidence"]
 			},
 			{
 				"name": "LoadingState.inline",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Show the decorative ring and label together in normal document flow. Defaults to false for a viewport-centered loading status."
+				"description": "Set true when the waiting status belongs in document flow; it defaults to false and uses a fixed viewport layer. Inline mode changes the layout and ring size while keeping the same label.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "LoadingState",
 				"type": "markup",
-				"description": "A polite, atomic status with a decorative ring and label. Defaults to a viewport-centered ring with its label below; inline mode places a smaller ring beside the label in document flow. Pointer events pass through and reduced motion keeps the ring still. States: default-label: The centered progress indicator uses the default Loading label. long: A long caller label wraps beside the progress indicator."
+				"description": "The component renders a polite, atomic status region containing the label and a decorative ring hidden from assistive technology; it reads no data and claims no progress. By default it is fixed over the viewport with pointer events passing through, while inline mode places a smaller ring and label in document flow and reduced-motion preference disables ring animation."
 			}
 		],
 		"errors": [],
