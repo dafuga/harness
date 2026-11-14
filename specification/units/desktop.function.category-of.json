@@ -18,17 +18,20 @@
 				"name": "categoryOf.kind",
 				"type": "string",
 				"required": true,
-				"description": "The declared kind: page, shell, component, function, shared-function, config or service."
+				"description": "The string is the unit’s declared kind used to choose a catalog category. Only the exact keys `page`, `endpoint`, `api`, `shell`, `layout`, `component`, `function`, `shared-function`, `config`, `service`, and `model` are recognized; all other strings return `null`.",
+				"examples": ["page", "shared-function", "endpoint"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "categoryOf",
 				"type": "Category | null",
-				"description": "The corresponding plural category. Both function and shared-function map to functions. Other ordinary kind names return null; names and source files are not consulted."
+				"description": "The result is the plural catalog category mapped from the declared kind, or `null` when the kind is not an exact key in the mapping. `function` and `shared-function` both map to `functions`.",
+				"examples": ["pages", "functions", null]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "categoryOf",
@@ -37,18 +40,20 @@
 						"name": "categoryOf.kind",
 						"type": "string",
 						"required": true,
-						"description": "The declared kind: page, shell, component, function, shared-function, config or service."
+						"description": "The string is the unit’s declared kind used to choose a catalog category. Only the exact keys `page`, `endpoint`, `api`, `shell`, `layout`, `component`, `function`, `shared-function`, `config`, `service`, and `model` are recognized; all other strings return `null`.",
+						"examples": ["page", "shared-function", "endpoint"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "categoryOf",
 						"type": "Category | null",
-						"description": "The corresponding plural category. Both function and shared-function map to functions. Other ordinary kind names return null; names and source files are not consulted."
+						"description": "The result is the plural catalog category mapped from the declared kind, or `null` when the kind is not an exact key in the mapping. `function` and `shared-function` both map to `functions`.",
+						"examples": ["pages", "functions", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
