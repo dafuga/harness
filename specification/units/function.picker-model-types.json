@@ -28,40 +28,68 @@
 				"name": "sameSelection.a",
 				"type": "ProviderSelection",
 				"required": true,
-				"description": "First provider, model and effort selection to compare."
+				"description": "First required operand to sameSelection: a ProviderSelection object with provider set to openai or harness-claude, plus model and effort strings. The function compares all three fields exactly and does not normalize or interpret the strings.",
+				"examples": [
+					{
+						"provider": "openai",
+						"model": "model-1",
+						"effort": "effort-1"
+					},
+					{
+						"provider": "harness-claude",
+						"model": "model-2",
+						"effort": "effort-2"
+					}
+				]
 			},
 			{
 				"name": "sameSelection.b",
 				"type": "ProviderSelection",
 				"required": true,
-				"description": "Second selection to compare without normalization."
+				"description": "Second required operand to sameSelection: a ProviderSelection object with provider set to openai or harness-claude, plus model and effort strings. The function compares all three fields exactly and does not normalize or interpret the strings.",
+				"examples": [
+					{
+						"provider": "openai",
+						"model": "model-1",
+						"effort": "effort-1"
+					},
+					{
+						"provider": "openai",
+						"model": "model-1",
+						"effort": "effort-2"
+					}
+				]
 			},
 			{
 				"name": "validateSessionId.value",
 				"type": "string",
 				"required": true,
-				"description": "Explicit session id beginning with an ASCII letter/digit, followed by letters, digits, underscores or hyphens, at most 128 characters total."
+				"description": "Explicit Codex session ID to validate. It must be 1–128 ASCII characters, start with an ASCII letter or digit, and then contain only ASCII letters, digits, underscores, or hyphens.",
+				"examples": ["codex-session-01", "a7F3_x9"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sameSelection",
 				"type": "boolean",
-				"description": "True only when provider, model and effort all match exactly."
+				"description": "True exactly when provider, model, and effort are all strictly equal between the two inputs; otherwise false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "validateSessionId",
 				"type": "string",
-				"description": "The original session id when it matches the required shape."
+				"description": "Returns the original string unchanged when it matches the session-ID pattern: 1–128 ASCII characters, starting with a letter or digit and containing only letters, digits, underscores, or hyphens.",
+				"examples": ["codex-session-01", "a7F3_x9"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Thrown when the session id is empty, too long or contains an unsupported character."
+				"description": "Thrown when the input fails the session-ID pattern; its message is exactly “A valid explicit Codex session ID is required.”"
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sameSelection",
@@ -70,24 +98,49 @@
 						"name": "sameSelection.a",
 						"type": "ProviderSelection",
 						"required": true,
-						"description": "First provider, model and effort selection to compare."
+						"description": "First required operand to sameSelection: a ProviderSelection object with provider set to openai or harness-claude, plus model and effort strings. The function compares all three fields exactly and does not normalize or interpret the strings.",
+						"examples": [
+							{
+								"provider": "openai",
+								"model": "model-1",
+								"effort": "effort-1"
+							},
+							{
+								"provider": "harness-claude",
+								"model": "model-2",
+								"effort": "effort-2"
+							}
+						]
 					},
 					{
 						"name": "sameSelection.b",
 						"type": "ProviderSelection",
 						"required": true,
-						"description": "Second selection to compare without normalization."
+						"description": "Second required operand to sameSelection: a ProviderSelection object with provider set to openai or harness-claude, plus model and effort strings. The function compares all three fields exactly and does not normalize or interpret the strings.",
+						"examples": [
+							{
+								"provider": "openai",
+								"model": "model-1",
+								"effort": "effort-1"
+							},
+							{
+								"provider": "openai",
+								"model": "model-1",
+								"effort": "effort-2"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameSelection",
 						"type": "boolean",
-						"description": "True only when provider, model and effort all match exactly."
+						"description": "True exactly when provider, model, and effort are all strictly equal between the two inputs; otherwise false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateSessionId",
@@ -96,23 +149,26 @@
 						"name": "validateSessionId.value",
 						"type": "string",
 						"required": true,
-						"description": "Explicit session id beginning with an ASCII letter/digit, followed by letters, digits, underscores or hyphens, at most 128 characters total."
+						"description": "Explicit Codex session ID to validate. It must be 1–128 ASCII characters, start with an ASCII letter or digit, and then contain only ASCII letters, digits, underscores, or hyphens.",
+						"examples": ["codex-session-01", "a7F3_x9"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateSessionId",
 						"type": "string",
-						"description": "The original session id when it matches the required shape."
+						"description": "Returns the original string unchanged when it matches the session-ID pattern: 1–128 ASCII characters, starting with a letter or digit and containing only letters, digits, underscores, or hyphens.",
+						"examples": ["codex-session-01", "a7F3_x9"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the input fails the session-ID pattern; its message is exactly “A valid explicit Codex session ID is required.”"
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
