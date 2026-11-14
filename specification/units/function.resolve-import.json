@@ -22,41 +22,99 @@
 				"name": "resolveHttpEndpoint.reference",
 				"type": "SourceReference",
 				"required": true,
-				"description": "Source-recorded HTTP request with method and URL to resolve against a registered endpoint."
+				"description": "Scanned source reference; absolute HTTP(S) or protocol-relative specifiers are returned as external, while leading-slash specifiers are matched against tracked endpoints. A null specifier yields non-literal uncertainty using detail or an empty string; output typeOnly is always false.",
+				"examples": [
+					{
+						"specifier": "/api/reports",
+						"via": "http",
+						"typeOnly": false
+					},
+					{
+						"specifier": "https://api.example.test/reports",
+						"via": "http",
+						"typeOnly": false
+					},
+					{
+						"specifier": null,
+						"via": "http",
+						"typeOnly": false,
+						"detail": "computed URL"
+					}
+				]
 			},
 			{
 				"name": "resolveHttpEndpoint.context",
 				"type": "ResolveContext",
 				"required": true,
-				"description": "Project files and route resolution context used to identify the request destination."
+				"description": "Read-only set of repository-relative tracked paths and the owning workspace root. Endpoint matching considers only tracked src/routes/**/+server.[cm]?[jt]s files beneath that root."
 			},
 			{
 				"name": "resolveImport.from",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative importing file path using forward slashes."
+				"description": "Repository-relative path of the importing source file. Relative and style imports resolve from its directory; $lib/ imports resolve from context.workspaceRoot/src/lib.",
+				"examples": ["src/utils/development-tooling/resolveImport.ts"]
 			},
 			{
 				"name": "resolveImport.reference",
 				"type": "SourceReference",
 				"required": true,
-				"description": "Scanned reference with import kind, optional literal specifier, type-only flag and detail for computed references."
+				"description": "Scanned source reference with a literal specifier or null, its resolution channel, type-only flag, and optional detail. A null specifier yields non-literal uncertainty; via http selects endpoint matching, whose result has typeOnly false.",
+				"examples": [
+					{
+						"specifier": "./resolveImport.types",
+						"via": "import",
+						"typeOnly": true
+					},
+					{
+						"specifier": "node:fs/promises",
+						"via": "import",
+						"typeOnly": false
+					},
+					{
+						"specifier": null,
+						"via": "dynamic-import",
+						"typeOnly": false,
+						"detail": "computed module specifier"
+					}
+				]
 			},
 			{
 				"name": "resolveImport.context",
 				"type": "ResolveContext",
 				"required": true,
-				"description": "Tracked path set and owning workspace root for relative and $lib resolution."
+				"description": "Read-only set of repository-relative tracked paths and the owning workspace's repository-relative root. The resolver uses these paths to recognize tracked candidates and does not read files from disk."
 			}
 		],
 		"outputs": [
 			{
 				"name": "resolveImport",
 				"type": "ResolvedReference",
-				"description": "Resolved file path, external package/framework name or non-literal/unresolved uncertainty, retaining via and typeOnly. Tries supported extensions, index files and .js-to-.ts fallback; does not read the filesystem. Rooted HTTP requests resolve only to tracked endpoints in the owning workspace, preferring literal routes; external and ambiguous requests stay explicit."
+				"description": "Resolution result retaining the reference channel and, except for HTTP resolution, its type-only flag, with either a tracked repository-relative path, an external module name, or explicit uncertainty. File matching tries the configured suffixes and index files plus the .js-to-.ts fallback, without reading the filesystem.",
+				"examples": [
+					{
+						"via": "import",
+						"typeOnly": true,
+						"path": "src/utils/development-tooling/resolveImport.types.ts"
+					},
+					{
+						"via": "import",
+						"typeOnly": false,
+						"external": "@sveltejs/kit"
+					},
+					{
+						"via": "dynamic-import",
+						"typeOnly": false,
+						"uncertain": {
+							"reason": "unresolved-import",
+							"detail": "./missing"
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "resolveHttpEndpoint",
@@ -65,23 +123,62 @@
 						"name": "resolveHttpEndpoint.reference",
 						"type": "SourceReference",
 						"required": true,
-						"description": "Source-recorded HTTP request with method and URL to resolve against a registered endpoint."
+						"description": "Scanned source reference; absolute HTTP(S) or protocol-relative specifiers are returned as external, while leading-slash specifiers are matched against tracked endpoints. A null specifier yields non-literal uncertainty using detail or an empty string; output typeOnly is always false.",
+						"examples": [
+							{
+								"specifier": "/api/reports",
+								"via": "http",
+								"typeOnly": false
+							},
+							{
+								"specifier": "https://api.example.test/reports",
+								"via": "http",
+								"typeOnly": false
+							},
+							{
+								"specifier": null,
+								"via": "http",
+								"typeOnly": false,
+								"detail": "computed URL"
+							}
+						]
 					},
 					{
 						"name": "resolveHttpEndpoint.context",
 						"type": "ResolveContext",
 						"required": true,
-						"description": "Project files and route resolution context used to identify the request destination."
+						"description": "Read-only set of repository-relative tracked paths and the owning workspace root. Endpoint matching considers only tracked src/routes/**/+server.[cm]?[jt]s files beneath that root."
 					}
 				],
 				"outputs": [
 					{
 						"name": "resolveHttpEndpoint",
-						"type": "ResolvedReference"
+						"type": "ResolvedReference",
+						"description": "Result for an HTTP source reference; it carries the reference channel, always sets typeOnly to false, and contains a tracked endpoint path, the original external specifier, or explicit uncertainty. It matches only tracked server files beneath the owning workspace and leaves missing or tied candidates unresolved.",
+						"examples": [
+							{
+								"via": "http",
+								"typeOnly": false,
+								"path": "src/routes/api/reports/+server.ts"
+							},
+							{
+								"via": "http",
+								"typeOnly": false,
+								"external": "https://api.example.test/reports"
+							},
+							{
+								"via": "http",
+								"typeOnly": false,
+								"uncertain": {
+									"reason": "unresolved-import",
+									"detail": "/api/missing"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resolveImport",
@@ -90,30 +187,69 @@
 						"name": "resolveImport.from",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative importing file path using forward slashes."
+						"description": "Repository-relative path of the importing source file. Relative and style imports resolve from its directory; $lib/ imports resolve from context.workspaceRoot/src/lib.",
+						"examples": ["src/utils/development-tooling/resolveImport.ts"]
 					},
 					{
 						"name": "resolveImport.reference",
 						"type": "SourceReference",
 						"required": true,
-						"description": "Scanned reference with import kind, optional literal specifier, type-only flag and detail for computed references."
+						"description": "Scanned source reference with a literal specifier or null, its resolution channel, type-only flag, and optional detail. A null specifier yields non-literal uncertainty; via http selects endpoint matching, whose result has typeOnly false.",
+						"examples": [
+							{
+								"specifier": "./resolveImport.types",
+								"via": "import",
+								"typeOnly": true
+							},
+							{
+								"specifier": "node:fs/promises",
+								"via": "import",
+								"typeOnly": false
+							},
+							{
+								"specifier": null,
+								"via": "dynamic-import",
+								"typeOnly": false,
+								"detail": "computed module specifier"
+							}
+						]
 					},
 					{
 						"name": "resolveImport.context",
 						"type": "ResolveContext",
 						"required": true,
-						"description": "Tracked path set and owning workspace root for relative and $lib resolution."
+						"description": "Read-only set of repository-relative tracked paths and the owning workspace's repository-relative root. The resolver uses these paths to recognize tracked candidates and does not read files from disk."
 					}
 				],
 				"outputs": [
 					{
 						"name": "resolveImport",
 						"type": "ResolvedReference",
-						"description": "Resolved file path, external package/framework name or non-literal/unresolved uncertainty, retaining via and typeOnly. Tries supported extensions, index files and .js-to-.ts fallback; does not read the filesystem. Rooted HTTP requests resolve only to tracked endpoints in the owning workspace, preferring literal routes; external and ambiguous requests stay explicit."
+						"description": "Resolution result retaining the reference channel and, except for HTTP resolution, its type-only flag, with either a tracked repository-relative path, an external module name, or explicit uncertainty. File matching tries the configured suffixes and index files plus the .js-to-.ts fallback, without reading the filesystem.",
+						"examples": [
+							{
+								"via": "import",
+								"typeOnly": true,
+								"path": "src/utils/development-tooling/resolveImport.types.ts"
+							},
+							{
+								"via": "import",
+								"typeOnly": false,
+								"external": "@sveltejs/kit"
+							},
+							{
+								"via": "dynamic-import",
+								"typeOnly": false,
+								"uncertain": {
+									"reason": "unresolved-import",
+									"detail": "./missing"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
