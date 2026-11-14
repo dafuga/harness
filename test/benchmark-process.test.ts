@@ -62,7 +62,11 @@ test('kernel cold samples run asynchronously instead of using the probe-only syn
 			sample(target: string, run: { nodes: number; seed: number }, url: string): Promise<number>;
 		}
 	).sample;
-	await expect(sample.call(service, 'module', { nodes: 1, seed: 1 }, '')).resolves.toBe(7);
+	await expect(
+		measureWorkload('service.kernel-benchmark', 'cold-module-sample', () =>
+			sample.call(service, 'module', { nodes: 1, seed: 1 }, '')
+		)
+	).resolves.toBe(7);
 });
 
 async function assertSuccessfulProcesses(root: string): Promise<void> {
