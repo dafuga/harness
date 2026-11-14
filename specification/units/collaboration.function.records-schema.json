@@ -18,15 +18,22 @@
 			{
 				"name": "projectSchema",
 				"type": "unknown",
-				"description": "Strict project schema for UUID, name, repository identity, creation time and owner actor ID."
+				"description": "Strict schema for project records requiring `id`, `name`, `sourceRepository`, `createdAt`, and `ownerId`; unknown fields are rejected. `createdAt` uses `z.iso.datetime()`, while the other fields use the imported `id`, `label`, and `repositorySchema` validators."
 			},
 			{
 				"name": "recordsSchema",
 				"type": "unknown",
-				"description": "Strict version-1 records schema for projects, members, invitations and threads; rejects duplicate identities or request IDs, unbound records and projects without an owner."
+				"description": "Strict schema for version-1 snapshots containing `projects`, `members`, `invitations`, and `threads`; nested records are strict, timestamps use `z.iso.datetime()`, and comment text is trimmed to 1–20,000 characters with at most 100,000 comments per thread. It rejects duplicate project IDs, member `projectId/actorId` pairs, invitation IDs, thread IDs or per-project comment request IDs, records referencing absent projects, and projects without an owner member."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Calling `parse` on either schema throws when the value violates its validation rules. `recordsSchema` adds custom issues for duplicate record identity, unbound records, missing owners, and duplicate requests."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
