@@ -45,102 +45,200 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path passed to GitAdapter as the repository root and used to resolve the shared Git directory for task-owner identity. It must point to the repository whose task ref this instance manages.",
+				"examples": ["/Users/danielfugere/projects/harness"]
 			},
 			{
 				"name": "ModuleTaskRepository.update.change",
 				"type": "(data: ModuleTaskQueue) => T",
-				"required": true
+				"required": true,
+				"description": "Synchronous callback invoked with a parsed clone of the task queue; mutate that queue to propose a change and its return value becomes value. It is not awaited, and normalized no-op changes leave the existing commit unchanged."
 			},
 			{
 				"name": "ModuleTaskRepository.update.source",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional source commit supplied as a parent when creating a queue commit; when omitted, the prior queue commit is used, or HEAD seeds the first queue commit. The value must identify a commit Git accepts as a parent.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "ModuleTaskRepository.sync.remote",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Configured Git remote name used to fetch and push the explicit task ref. It must match the implementation's remote-name pattern and resolve through git remote get-url; pass a name such as origin, not a URL.",
+				"examples": ["origin"]
 			},
 			{
 				"name": "syncTaskQueue.git",
 				"type": "GitAdapter",
-				"required": true
+				"required": true,
+				"description": "GitAdapter for the repository whose task ref is exchanged with a configured remote. The helper uses its run, attempt, and exec operations to inspect, fetch, compare, update, push, and clean up refs."
 			},
 			{
 				"name": "syncTaskQueue.ref",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git ref whose task queue history is exchanged with the remote. The repository class supplies refs/harness/tasks; the helper passes this string to Git ref commands without validating its format.",
+				"examples": ["refs/harness/tasks"]
 			},
 			{
 				"name": "syncTaskQueue.remote",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Configured Git remote name used to fetch and push the explicit task ref. It must match the implementation's remote-name pattern and resolve through git remote get-url; pass a name such as origin, not a URL.",
+				"examples": ["origin"]
 			},
 			{
 				"name": "taskOwner.git",
 				"type": "GitAdapter",
-				"required": true
+				"required": true,
+				"description": "GitAdapter for the repository whose Git common directory stores the local task-owner UUID. The helper uses it to resolve that common directory."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskRepository.read",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or null when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise.",
+				"examples": [
+					{
+						"commit": null,
+						"data": {
+							"schemaVersion": 1,
+							"features": [],
+							"tasks": []
+						}
+					},
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"data": {
+							"schemaVersion": 1,
+							"features": [],
+							"tasks": []
+						}
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskRepository.update",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing.",
+				"examples": [
+					{
+						"value": "updated",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					},
+					{
+						"value": "unchanged",
+						"commit": null
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskRepository.sync",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues.",
+				"examples": [
+					{
+						"remote": "origin",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					},
+					{
+						"remote": "origin",
+						"commit": null
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskRepository.owner",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to a local workspace UUID, current process PID, and start time from ProcessIdentityAdapter after creating or reading harness/task-owner-id under the Git common directory. It throws if the stored UUID is invalid or current process start time is unavailable.",
+				"examples": [
+					{
+						"workspace": "550e8400-e29b-41d4-a716-446655440000",
+						"pid": 4821,
+						"startedAt": "2026-11-14T09:30:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "syncTaskQueue",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns a null commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories.",
+				"examples": [
+					{
+						"remote": "origin",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					},
+					{
+						"remote": "origin",
+						"commit": null
+					}
+				]
 			},
 			{
 				"name": "taskOwner",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to a local workspace UUID, the current process PID, and its start time returned by ProcessIdentityAdapter. It creates or reads harness/task-owner-id under the repository's Git common directory and throws if that UUID is invalid or the process start time is unavailable.",
+				"examples": [
+					{
+						"workspace": "550e8400-e29b-41d4-a716-446655440000",
+						"pid": 4821,
+						"startedAt": "2026-11-14T09:30:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "featureSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Zod schema for a strict feature object with exactly id, goal, and tldr; id uses the unit ID rule and a maximum length of 150, while both text fields are trimmed and limited to 1–16,000 characters. It validates feature records stored in the queue."
 			},
 			{
 				"name": "wantedContractSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Zod schema for a strict contract object with responsibility, inputs, outputs, and errors; text is trimmed and limited to 1–16,000 characters, and outputs must contain at least one contract item. It validates the requested contract saved with a task input."
 			},
 			{
 				"name": "taskInputSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Zod schema for a strict task request with validated unit IDs, required title/instructions/wantedContract, and optional module goal, verification files, provider, intelligence, and assignee; model defaults to auto. Verification files are limited to 64 repository-relative paths that name a test or explicit verification fixture."
 			},
 			{
 				"name": "storedTaskSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Zod schema for a persisted queue task that replaces incoming feature/module IDs with validated feature and module records and requires sourceCommit, contractHash, status, and createdAt. It restricts status to the declared values, commit IDs to lowercase 40-character hex strings, contractHash to 64 lowercase hex characters, and defaults omitted review/history/attempt arrays to empty arrays."
 			},
 			{
 				"name": "queueSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Zod schema for the strict root queue object with schemaVersion 1 and feature and task arrays. It validates each array entry and caps the arrays at 1,000 features and 10,000 tasks."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by update when the task ref loses 16 compare-and-swap attempts, by sync when the remote name is unusable or queue histories diverge, and by owner when the local owner UUID or process start identity is invalid. The operation message identifies the condition."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown when read parses malformed JSON from the committed queue.json; update can propagate this while reading the queue. The absent-ref path constructs an empty queue and does not parse stored JSON."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown when queue data read from Git or candidate data passed to update fails queueSchema validation. Strict objects, schema version, item rules, and queue limits apply."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskRepository.read",
@@ -148,11 +246,41 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.read",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or null when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise.",
+						"examples": [
+							{
+								"commit": null,
+								"data": {
+									"schemaVersion": 1,
+									"features": [],
+									"tasks": []
+								}
+							},
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"data": {
+									"schemaVersion": 1,
+									"features": [],
+									"tasks": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when stored queue.json text is not valid JSON. This applies only when the task ref exists."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when parsed queue data does not satisfy queueSchema's strict shape, item schemas, or size limits."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskRepository.update",
@@ -160,27 +288,53 @@
 					{
 						"name": "ModuleTaskRepository.update.change",
 						"type": "(data: ModuleTaskQueue) => T",
-						"required": true
+						"required": true,
+						"description": "Synchronous callback invoked with a parsed clone of the task queue; mutate that queue to propose a change and its return value becomes value. It is not awaited, and normalized no-op changes leave the existing commit unchanged."
 					},
 					{
 						"name": "ModuleTaskRepository.update.source",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional source commit supplied as a parent when creating a queue commit; when omitted, the prior queue commit is used, or HEAD seeds the first queue commit. The value must identify a commit Git accepts as a parent.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.update",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing.",
+						"examples": [
+							{
+								"value": "updated",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"value": "unchanged",
+								"commit": null
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown after 16 unsuccessful compare-and-swap attempts to update the task ref. Exceptions from reading or validating queue data also propagate."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Propagated if read encounters malformed committed queue.json text."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when the existing or changed queue fails queueSchema validation before commit."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskRepository.sync",
@@ -188,17 +342,36 @@
 					{
 						"name": "ModuleTaskRepository.sync.remote",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Configured Git remote name used to fetch and push the explicit task ref. It must match the implementation's remote-name pattern and resolve through git remote get-url; pass a name such as origin, not a URL.",
+						"examples": ["origin"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.sync",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues.",
+						"examples": [
+							{
+								"remote": "origin",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"remote": "origin",
+								"commit": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the remote name does not match the configured-name pattern or when the local and remote task histories have diverged. Divergence requires coordinating the queue owner before retrying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskRepository.owner",
@@ -206,11 +379,25 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.owner",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to a local workspace UUID, current process PID, and start time from ProcessIdentityAdapter after creating or reading harness/task-owner-id under the Git common directory. It throws if the stored UUID is invalid or current process start time is unavailable.",
+						"examples": [
+							{
+								"workspace": "550e8400-e29b-41d4-a716-446655440000",
+								"pid": 4821,
+								"startedAt": "2026-11-14T09:30:00.000Z"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the stored local owner identity is not a UUID or the current process start time cannot be established."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "syncTaskQueue",
@@ -218,32 +405,49 @@
 					{
 						"name": "syncTaskQueue.git",
 						"type": "GitAdapter",
-						"required": true
+						"required": true,
+						"description": "GitAdapter for the repository whose task ref is exchanged with a configured remote. The helper uses its run, attempt, and exec operations to inspect, fetch, compare, update, push, and clean up refs."
 					},
 					{
 						"name": "syncTaskQueue.ref",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git ref whose task queue history is exchanged with the remote. The repository class supplies refs/harness/tasks; the helper passes this string to Git ref commands without validating its format.",
+						"examples": ["refs/harness/tasks"]
 					},
 					{
 						"name": "syncTaskQueue.remote",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Configured Git remote name used to fetch and push the explicit task ref. It must match the implementation's remote-name pattern and resolve through git remote get-url; pass a name such as origin, not a URL.",
+						"examples": ["origin"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "syncTaskQueue",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns a null commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories.",
+						"examples": [
+							{
+								"remote": "origin",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"remote": "origin",
+								"commit": null
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the remote name does not match the configured-name pattern or when the local and remote task histories have diverged. Divergence requires coordinating the queue owner before retrying."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "taskOwner",
@@ -251,22 +455,32 @@
 					{
 						"name": "taskOwner.git",
 						"type": "GitAdapter",
-						"required": true
+						"required": true,
+						"description": "GitAdapter for the repository whose Git common directory stores the local task-owner UUID. The helper uses it to resolve that common directory."
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskOwner",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to a local workspace UUID, the current process PID, and its start time returned by ProcessIdentityAdapter. It creates or reads harness/task-owner-id under the repository's Git common directory and throws if that UUID is invalid or the process start time is unavailable.",
+						"examples": [
+							{
+								"workspace": "550e8400-e29b-41d4-a716-446655440000",
+								"pid": 4821,
+								"startedAt": "2026-11-14T09:30:00.000Z"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the stored local owner identity is not a UUID or the current process start time cannot be established."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -276,17 +490,20 @@
 					{
 						"name": "ModuleTaskRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path passed to GitAdapter as the repository root and used to resolve the shared Git directory for task-owner identity. It must point to the repository whose task ref this instance manages.",
+						"examples": ["/Users/danielfugere/projects/harness"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed ModuleTaskRepository instance retains the supplied root, creates its GitAdapter, and exposes refs/harness/tasks as its queue ref. Construction does not read or write the task queue."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
