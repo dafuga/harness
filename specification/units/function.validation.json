@@ -46,96 +46,112 @@
 				"name": "validateProjectName.name",
 				"type": "string",
 				"required": true,
-				"description": "Project name to trim and validate as a safe single name."
+				"description": "Project name text passed to the project validator. It is trimmed and must be nonempty, contain no '..', slash, or backslash, and start with a letter or number followed only by letters, numbers, spaces, dashes, or underscores.",
+				"examples": ["  Field Notes  "]
 			},
 			{
 				"name": "validateName.name",
 				"type": "string",
 				"required": true,
-				"description": "Proposed project or code name to trim and validate."
+				"description": "Candidate name text passed to the shared validator. It is trimmed and must be nonempty, contain no '..', slash, or backslash, and start with a letter or number followed only by letters, numbers, spaces, dashes, or underscores.",
+				"examples": ["  Field Notes  "]
 			},
 			{
 				"name": "validateName.label",
 				"type": "string",
 				"required": true,
-				"description": "Human-readable field label included in validation errors."
+				"description": "Human-readable label interpolated into validation failure messages for the candidate name.",
+				"examples": ["Project name"]
 			},
 			{
 				"name": "validateFieldName.name",
 				"type": "string",
 				"required": true,
-				"description": "Field name to trim and validate as a safe single name."
+				"description": "Field name text passed to the field validator. It is trimmed and must satisfy the shared nonempty safe-name rules, including the allowed letters, numbers, spaces, dashes, and underscores.",
+				"examples": ["customer_id"]
 			},
 			{
 				"name": "validateCodeName.name",
 				"type": "string",
 				"required": true,
-				"description": "Code name to trim and validate as a safe single name."
+				"description": "Code name text passed to the code-name validator. It is trimmed and must satisfy the shared nonempty safe-name rules, including the allowed letters, numbers, spaces, dashes, and underscores.",
+				"examples": ["billing service"]
 			},
 			{
 				"name": "validateRouteName.name",
 				"type": "string",
 				"required": true,
-				"description": "Safe code name to convert to kebab-case route text."
+				"description": "Candidate code name passed through code-name validation before conversion with toKebabCase. The generated route string must not be empty.",
+				"examples": ["billing-reports"]
 			},
 			{
 				"name": "validateExportName.name",
 				"type": "string",
 				"required": true,
-				"description": "Safe code name to convert to camelCase and validate as a TypeScript identifier."
+				"description": "Candidate code name passed through code-name validation before conversion with toCamelCase. The converted value must match the TypeScript identifier pattern checked by the implementation.",
+				"examples": ["billing-report"]
 			},
 			{
 				"name": "validateKebabName.name",
 				"type": "string",
 				"required": true,
-				"description": "Name expected to already use lowercase alphanumeric segments separated by hyphens."
+				"description": "Name text is trimmed, then must match one or more lowercase letter-or-digit segments separated by single hyphens. Empty text, uppercase letters, spaces inside, underscores, and repeated or leading or trailing hyphens fail.",
+				"examples": ["reports-grid2"]
 			},
 			{
 				"name": "validateKebabName.label",
 				"type": "string",
 				"required": true,
-				"description": "Human-readable field label used in a kebab-case failure message."
+				"description": "Human-readable label interpolated into the failure message when the value is not lowercase kebab-case.",
+				"examples": ["Unit name"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "validateProjectName",
 				"type": "string",
-				"description": "Trimmed safe project name."
+				"description": "The trimmed project name after it passes the shared safe-name rules.",
+				"examples": ["Field Notes"]
 			},
 			{
 				"name": "validateCodeName",
 				"type": "string",
-				"description": "Trimmed safe code name."
+				"description": "The trimmed code name after it passes the shared safe-name rules.",
+				"examples": ["billing service"]
 			},
 			{
 				"name": "validateFieldName",
 				"type": "string",
-				"description": "Trimmed safe field name."
+				"description": "The trimmed field name after it passes the shared safe-name rules.",
+				"examples": ["customer_id"]
 			},
 			{
 				"name": "validateRouteName",
 				"type": "string",
-				"description": "Nonempty kebab-case route name."
+				"description": "The nonempty string returned by toKebabCase for a code name that passed validation.",
+				"examples": ["billing-reports"]
 			},
 			{
 				"name": "validateKebabName",
 				"type": "string",
-				"description": "Trimmed lowercase kebab-case name."
+				"description": "The trimmed value after it matches the lowercase alphanumeric-segments-separated-by-single-hyphens pattern.",
+				"examples": ["reports-grid2"]
 			},
 			{
 				"name": "validateExportName",
 				"type": "string",
-				"description": "CamelCase export name satisfying TypeScript identifier shape."
+				"description": "The toCamelCase result for a code name that matches the checked TypeScript identifier pattern.",
+				"examples": ["billingReport"]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown for empty names, traversal/separators, unsafe characters, invalid kebab case or an invalid generated export identifier."
+				"description": "Raised by fail when a name is empty or unsafe, when route conversion produces an empty string, when an export conversion fails the TypeScript identifier check, or when a value fails the lowercase kebab-case pattern."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "validateProjectName",
@@ -144,18 +160,26 @@
 						"name": "validateProjectName.name",
 						"type": "string",
 						"required": true,
-						"description": "Project name to trim and validate as a safe single name."
+						"description": "Project name text passed to the project validator. It is trimmed and must be nonempty, contain no '..', slash, or backslash, and start with a letter or number followed only by letters, numbers, spaces, dashes, or underscores.",
+						"examples": ["  Field Notes  "]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateProjectName",
 						"type": "string",
-						"description": "Trimmed safe project name."
+						"description": "The trimmed project name after it passes the shared safe-name rules.",
+						"examples": ["Field Notes"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when the project name is empty after trimming, contains '..', '/' or '\\', or fails the shared safe-name pattern."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateName",
@@ -164,28 +188,33 @@
 						"name": "validateName.name",
 						"type": "string",
 						"required": true,
-						"description": "Proposed project or code name to trim and validate."
+						"description": "Candidate name text passed to the shared validator. It is trimmed and must be nonempty, contain no '..', slash, or backslash, and start with a letter or number followed only by letters, numbers, spaces, dashes, or underscores.",
+						"examples": ["  Field Notes  "]
 					},
 					{
 						"name": "validateName.label",
 						"type": "string",
 						"required": true,
-						"description": "Human-readable field label included in validation errors."
+						"description": "Human-readable label interpolated into validation failure messages for the candidate name.",
+						"examples": ["Project name"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateName",
-						"type": "string"
+						"type": "string",
+						"description": "The trimmed input name after it passes the shared safe-name rules.",
+						"examples": ["Field Notes"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when the name is empty after trimming, contains '..', '/' or '\\', or fails the shared safe-name pattern."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateFieldName",
@@ -194,18 +223,26 @@
 						"name": "validateFieldName.name",
 						"type": "string",
 						"required": true,
-						"description": "Field name to trim and validate as a safe single name."
+						"description": "Field name text passed to the field validator. It is trimmed and must satisfy the shared nonempty safe-name rules, including the allowed letters, numbers, spaces, dashes, and underscores.",
+						"examples": ["customer_id"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateFieldName",
 						"type": "string",
-						"description": "Trimmed safe field name."
+						"description": "The trimmed field name after it passes the shared safe-name rules.",
+						"examples": ["customer_id"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when the field name is empty after trimming, contains '..', '/' or '\\', or fails the shared safe-name pattern."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateCodeName",
@@ -214,18 +251,26 @@
 						"name": "validateCodeName.name",
 						"type": "string",
 						"required": true,
-						"description": "Code name to trim and validate as a safe single name."
+						"description": "Code name text passed to the code-name validator. It is trimmed and must satisfy the shared nonempty safe-name rules, including the allowed letters, numbers, spaces, dashes, and underscores.",
+						"examples": ["billing service"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateCodeName",
 						"type": "string",
-						"description": "Trimmed safe code name."
+						"description": "The trimmed code name after it passes the shared safe-name rules.",
+						"examples": ["billing service"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when the code name is empty after trimming, contains '..', '/' or '\\', or fails the shared safe-name pattern."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateRouteName",
@@ -234,23 +279,26 @@
 						"name": "validateRouteName.name",
 						"type": "string",
 						"required": true,
-						"description": "Safe code name to convert to kebab-case route text."
+						"description": "Candidate code name passed through code-name validation before conversion with toKebabCase. The generated route string must not be empty.",
+						"examples": ["billing-reports"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateRouteName",
 						"type": "string",
-						"description": "Nonempty kebab-case route name."
+						"description": "The nonempty string returned by toKebabCase for a code name that passed validation.",
+						"examples": ["billing-reports"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when code-name validation fails or toKebabCase returns an empty string."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateExportName",
@@ -259,23 +307,26 @@
 						"name": "validateExportName.name",
 						"type": "string",
 						"required": true,
-						"description": "Safe code name to convert to camelCase and validate as a TypeScript identifier."
+						"description": "Candidate code name passed through code-name validation before conversion with toCamelCase. The converted value must match the TypeScript identifier pattern checked by the implementation.",
+						"examples": ["billing-report"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateExportName",
 						"type": "string",
-						"description": "CamelCase export name satisfying TypeScript identifier shape."
+						"description": "The toCamelCase result for a code name that matches the checked TypeScript identifier pattern.",
+						"examples": ["billingReport"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when code-name validation fails or the toCamelCase result does not match the TypeScript identifier pattern /^[a-zA-Z_$][a-zA-Z0-9_$]*$/."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validateKebabName",
@@ -284,29 +335,33 @@
 						"name": "validateKebabName.name",
 						"type": "string",
 						"required": true,
-						"description": "Name expected to already use lowercase alphanumeric segments separated by hyphens."
+						"description": "Name text is trimmed, then must match one or more lowercase letter-or-digit segments separated by single hyphens. Empty text, uppercase letters, spaces inside, underscores, and repeated or leading or trailing hyphens fail.",
+						"examples": ["reports-grid2"]
 					},
 					{
 						"name": "validateKebabName.label",
 						"type": "string",
 						"required": true,
-						"description": "Human-readable field label used in a kebab-case failure message."
+						"description": "Human-readable label interpolated into the failure message when the value is not lowercase kebab-case.",
+						"examples": ["Unit name"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateKebabName",
 						"type": "string",
-						"description": "Trimmed lowercase kebab-case name."
+						"description": "The trimmed value after it matches the lowercase alphanumeric-segments-separated-by-single-hyphens pattern.",
+						"examples": ["reports-grid2"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when the trimmed value does not match the lowercase alphanumeric-segments-separated-by-single-hyphens pattern."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
