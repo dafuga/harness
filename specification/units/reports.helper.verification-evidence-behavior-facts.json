@@ -21,40 +21,84 @@
 				"name": "behaviorFacts.duration",
 				"type": "string | null",
 				"required": true,
-				"description": "Required duration text, or null for Not measured; zero-duration text is retained."
+				"description": "This text supplies the duration row; null is rendered as “Not measured,” while a non-null string is preserved verbatim. Highlighting marks only the literal input string “Not measured” as unmeasured, not null.",
+				"examples": ["14.2s", null, "0ms"]
 			},
 			{
 				"name": "behaviorFacts.scenarios",
 				"type": "BehaviorScenario[]",
 				"required": true,
-				"description": "Required ordered scenario records; numeric array access preserves custom iterator and species admission."
+				"description": "These ordered scenario records become facts after the duration row, one per indexed entry. The helper reads length and numeric indices, so array iterator and species behavior do not affect traversal.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "behaviorFacts.paired",
 				"type": "boolean",
 				"required": true,
-				"description": "Required comparison flag; true includes the parent outcome and arrow."
+				"description": "This flag controls whether each scenario value includes its before outcome and an arrow. When true, a missing before or after outcome is shown as “not run”; when false, the before outcome is omitted.",
+				"examples": [false, true]
 			},
 			{
 				"name": "behaviorFacts.options",
 				"type": "BehaviorFactOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional display settings, default {}; durationLabel defaults to E2E duration and highlight defaults to false."
+				"description": "These optional settings control the duration label and status highlighting. A missing durationLabel uses “E2E duration,” and a missing highlight behaves as false; highlighting marks the literal “Not measured” duration text and scenario outcomes other than “passed”.",
+				"examples": [
+					{},
+					{
+						"durationLabel": "Wall time",
+						"highlight": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "behaviorFacts",
 				"type": "BehaviorFact[]",
-				"description": "Duration followed by scenario facts, with stable keys, labels, literal outcomes and optional status classes."
+				"description": "The helper returns one duration fact followed by one fact per scenario, preserving scenario order. It creates a new array and uses the configured label, paired outcome prefix, and highlighting rules.",
+				"examples": [
+					[
+						{
+							"key": "duration",
+							"label": "E2E duration",
+							"value": "14.2s",
+							"className": ""
+						}
+					],
+					[
+						{
+							"key": "duration",
+							"label": "E2E duration",
+							"value": "14.2s",
+							"className": ""
+						},
+						{
+							"key": "checkout",
+							"label": "Checkout",
+							"value": "passed → failed",
+							"className": "failed"
+						}
+					],
+					[
+						{
+							"key": "duration",
+							"label": "Wall time",
+							"value": "Not measured",
+							"className": "unmeasured"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Input access error",
-				"type": "propagated",
-				"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+				"type": "thrown",
+				"description": "Exceptions thrown while reading supplied option or scenario properties, array length or indexed entries, or coercing an outcome value propagate to the caller; the helper does not catch or normalize them."
 			}
 		],
 		"errorStatus": "declared",
@@ -66,40 +110,84 @@
 						"name": "behaviorFacts.duration",
 						"type": "string | null",
 						"required": true,
-						"description": "Required duration text, or null for Not measured; zero-duration text is retained."
+						"description": "This text supplies the duration row; null is rendered as “Not measured,” while a non-null string is preserved verbatim. Highlighting marks only the literal input string “Not measured” as unmeasured, not null.",
+						"examples": ["14.2s", null, "0ms"]
 					},
 					{
 						"name": "behaviorFacts.scenarios",
 						"type": "BehaviorScenario[]",
 						"required": true,
-						"description": "Required ordered scenario records; numeric array access preserves custom iterator and species admission."
+						"description": "These ordered scenario records become facts after the duration row, one per indexed entry. The helper reads length and numeric indices, so array iterator and species behavior do not affect traversal.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "behaviorFacts.paired",
 						"type": "boolean",
 						"required": true,
-						"description": "Required comparison flag; true includes the parent outcome and arrow."
+						"description": "This flag controls whether each scenario value includes its before outcome and an arrow. When true, a missing before or after outcome is shown as “not run”; when false, the before outcome is omitted.",
+						"examples": [false, true]
 					},
 					{
 						"name": "behaviorFacts.options",
 						"type": "BehaviorFactOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional display settings, default {}; durationLabel defaults to E2E duration and highlight defaults to false."
+						"description": "These optional settings control the duration label and status highlighting. A missing durationLabel uses “E2E duration,” and a missing highlight behaves as false; highlighting marks the literal “Not measured” duration text and scenario outcomes other than “passed”.",
+						"examples": [
+							{},
+							{
+								"durationLabel": "Wall time",
+								"highlight": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "behaviorFacts",
 						"type": "BehaviorFact[]",
-						"description": "Duration followed by scenario facts, with stable keys, labels, literal outcomes and optional status classes."
+						"description": "The helper returns one duration fact followed by one fact per scenario, preserving scenario order. It creates a new array and uses the configured label, paired outcome prefix, and highlighting rules.",
+						"examples": [
+							[
+								{
+									"key": "duration",
+									"label": "E2E duration",
+									"value": "14.2s",
+									"className": ""
+								}
+							],
+							[
+								{
+									"key": "duration",
+									"label": "E2E duration",
+									"value": "14.2s",
+									"className": ""
+								},
+								{
+									"key": "checkout",
+									"label": "Checkout",
+									"value": "passed → failed",
+									"className": "failed"
+								}
+							],
+							[
+								{
+									"key": "duration",
+									"label": "Wall time",
+									"value": "Not measured",
+									"className": "unmeasured"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access error",
-						"type": "propagated",
-						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+						"type": "thrown",
+						"description": "Exceptions thrown while reading supplied option or scenario properties, array length or indexed entries, or coercing an outcome value propagate to the caller; the helper does not catch or normalize them."
 					}
 				],
 				"errorStatus": "declared"
