@@ -23,33 +23,37 @@
 				"name": "GameWorkspaceChips.demo",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether the game is an in-memory example; true shows a Demo chip."
+				"description": "Whether this is an in-memory example rather than a saved project. When true, the component renders a Demo chip.",
+				"examples": [true, false]
 			},
 			{
 				"name": "GameWorkspaceChips.commit",
 				"type": "string",
 				"required": false,
 				"default": "undefined",
-				"description": "The historical commit being shown; when given, a History chip names its short id. Defaults to undefined, which shows no history chip."
+				"description": "The historical commit being shown. A truthy string renders a History chip using shortCommit; an absent or empty string renders no History chip.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GameWorkspaceChips.readonly",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether editing is disabled; true shows a Read-only chip unless a commit is shown."
+				"description": "Whether the workspace is read-only. The component renders a Read-only chip only when this is true and commit is falsy.",
+				"examples": [true, false]
 			},
 			{
 				"name": "GameWorkspaceChips.dirty",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether there are edits not yet saved; true shows an Unsaved changes chip."
+				"description": "Whether there are edits not saved yet. When true, the component renders an Unsaved changes chip.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameWorkspaceChips",
 				"type": "markup",
-				"description": "The chips that apply, in order, rendered as inline pills; none when nothing applies. Catalog states: default shows Unsaved changes; demo shows Demo; readonly shows Read-only; with-commit shows History with its short id and suppresses Read-only."
+				"description": "A markup fragment containing inline pills in this order when applicable: Demo, History, Read-only, and Unsaved changes. History uses shortCommit(commit), and Read-only appears only when readonly is true and commit is falsy."
 			}
 		],
 		"errors": [],
