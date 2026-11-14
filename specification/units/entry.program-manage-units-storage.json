@@ -12,22 +12,68 @@
 		"symbols": ["specificationStorageReport"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "specificationStorageReport.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root beneath which the function resolves specification/units and specification/budgets/ledger.ndjson. Only regular .json files found under the unit directory are counted; unreadable directories and failed file stats are treated as empty or zero, while a ledger stream error can reject the report.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "specificationStorageReport",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The report gives the number and total bytes of .json unit files, the ledger byte and line counts, the fixed operator heads-up thresholds, and any warnings. A warning appears when its byte total is at or above the corresponding threshold; filesystem enumeration and stat failures are treated as empty or zero.",
+				"examples": [
+					{
+						"units": {
+							"files": 3,
+							"bytes": 12288
+						},
+						"budgetLedger": {
+							"bytes": 734,
+							"lines": 8
+						},
+						"operatorHeadsUpBytes": {
+							"units": 16777216,
+							"budgetLedger": 2097152
+						},
+						"warnings": []
+					},
+					{
+						"units": {
+							"files": 140,
+							"bytes": 17000000
+						},
+						"budgetLedger": {
+							"bytes": 2200000,
+							"lines": 25
+						},
+						"operatorHeadsUpBytes": {
+							"units": 16777216,
+							"budgetLedger": 2097152
+						},
+						"warnings": [
+							"Unit JSON store is at or above the 16777216-byte operator heads-up.",
+							"Budget ledger is at or above the 2097152-byte operator heads-up."
+						]
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A ledger stream error rejects the report while its lines are being counted. Directory enumeration and file stat errors are caught and treated as empty or zero."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "specificationStorageReport",
@@ -35,17 +81,63 @@
 					{
 						"name": "specificationStorageReport.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root beneath which the function resolves specification/units and specification/budgets/ledger.ndjson. Only regular .json files found under the unit directory are counted; unreadable directories and failed file stats are treated as empty or zero, while a ledger stream error can reject the report.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "specificationStorageReport",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The report gives the number and total bytes of .json unit files, the ledger byte and line counts, the fixed operator heads-up thresholds, and any warnings. A warning appears when its byte total is at or above the corresponding threshold; filesystem enumeration and stat failures are treated as empty or zero.",
+						"examples": [
+							{
+								"units": {
+									"files": 3,
+									"bytes": 12288
+								},
+								"budgetLedger": {
+									"bytes": 734,
+									"lines": 8
+								},
+								"operatorHeadsUpBytes": {
+									"units": 16777216,
+									"budgetLedger": 2097152
+								},
+								"warnings": []
+							},
+							{
+								"units": {
+									"files": 140,
+									"bytes": 17000000
+								},
+								"budgetLedger": {
+									"bytes": 2200000,
+									"lines": 25
+								},
+								"operatorHeadsUpBytes": {
+									"units": 16777216,
+									"budgetLedger": 2097152
+								},
+								"warnings": [
+									"Unit JSON store is at or above the 16777216-byte operator heads-up.",
+									"Budget ledger is at or above the 2097152-byte operator heads-up."
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A ledger stream error rejects the report while its lines are being counted. Directory enumeration and file stat errors are caught and treated as empty or zero."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
