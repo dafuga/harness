@@ -37,41 +37,307 @@
 				"name": "helperConsumers.tree",
 				"type": "HelperTree",
 				"required": true,
-				"description": "The selected source tree. Reads and optional file listings describe this exact revision, rather than files from another checkout."
+				"description": "The source tree for the selected revision: read(path) loads the units config and each active owned source file, and the optional list() supplies the import-resolution paths (owned script and Svelte paths are used when it is absent). Read failures are swallowed, so an unreadable or invalid config falls back to defaultUnitsConfig and an unreadable file contributes no references or forwards, but a rejecting list() rejects helperConsumers, and the function never checks which revision the tree describes."
 			},
 			{
 				"name": "helperConsumers.units",
 				"type": "Unit[]",
 				"required": true,
-				"description": "Registered units and their owned source. Helpers receive distinct callable consumers; services receive distinct active runtime owner units. Types, unused imports and forwarding exports do not count."
+				"description": "Registered units to scan: only units with status 'active' contribute owned source, helpers and service exports, so inactive units never count as consumers, and a unit's own references to its service exports are skipped. Each consumer is distinct per unit and caller symbol, but units in the component or service categories and references to service exports count as the unit alone, while other references without a named caller are ignored.",
+				"examples": [
+					[
+						{
+							"id": "function.helper-consumers",
+							"kind": "function",
+							"status": "active",
+							"title": "helperConsumers",
+							"responsibility": "Counts runtime owners and proves concrete instantiated service classes, public instance methods and per-class consumers at the selected revision.",
+							"dependencies": [
+								{
+									"unit": "function.explorer-route",
+									"via": "import"
+								},
+								{
+									"unit": "function.helper-references",
+									"via": "import"
+								},
+								{
+									"unit": "function.resolve-import",
+									"via": "import"
+								},
+								{
+									"unit": "function.revision-registry",
+									"via": "import"
+								},
+								{
+									"unit": "function.source-types",
+									"via": "import"
+								},
+								{
+									"unit": "function.unit-metadata",
+									"via": "import"
+								},
+								{
+									"unit": "function.units-config",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"src/services/explorer-ui/revision-detail-service/helperConsumers.ts",
+									"src/services/explorer-ui/revision-detail-service/helperConsumers.types.ts",
+									"src/services/explorer-ui/revision-detail-service/serviceClasses.ts",
+									"src/services/explorer-ui/revision-detail-service/serviceClasses.types.ts",
+									"src/services/revision-detail-service/helperConsumers.ts",
+									"src/services/revision-detail-service/serviceClasses.ts",
+									"src/utils/explorer-ui/helperConsumers.ts",
+									"src/utils/helperConsumers.ts"
+								],
+								"symbols": [
+									"helperConsumers",
+									"Unit",
+									"Context",
+									"serviceClasses",
+									"Facts",
+									"Definition",
+									"Lookup",
+									"ProofContext",
+									"HelperTree",
+									"HelperConsumer"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "helperConsumers.tree",
+										"type": "HelperTree",
+										"required": true
+									},
+									{
+										"name": "helperConsumers.units",
+										"type": "Unit[]",
+										"required": true
+									},
+									{
+										"name": "serviceClasses.units",
+										"type": "Unit[]",
+										"required": true
+									},
+									{
+										"name": "serviceClasses.facts",
+										"type": "Facts",
+										"required": true
+									},
+									{
+										"name": "serviceClasses.lookup",
+										"type": "Lookup",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "helperConsumers",
+										"type": "Promise<void>"
+									}
+								],
+								"errors": [
+									{
+										"name": "tree.list rejection",
+										"type": "thrown"
+									},
+									{
+										"name": "TypeError",
+										"type": "thrown"
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/utils/explorer-ui/helperConsumers.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "3b7e0c9d5a1f24e8"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "serviceClasses.units",
 				"type": "Unit[]",
 				"required": true,
-				"description": "Selected-revision units to annotate with proven service classes and concrete consumer counts."
+				"description": "Units to annotate in place: each unit's serviceClasses is replaced, becoming empty when it has no serviceExports, with each service export that resolves (directly or through forwards) to a non-abstract class declared in that unit's own owned source, and each class lists its inherited methods, consumer units and constructedBy units. Exports of the same class are merged, and helperConsumers passes only active units.",
+				"examples": [
+					[
+						{
+							"id": "function.helper-consumers",
+							"kind": "function",
+							"status": "active",
+							"title": "helperConsumers",
+							"responsibility": "Counts runtime owners and proves concrete instantiated service classes, public instance methods and per-class consumers at the selected revision.",
+							"dependencies": [
+								{
+									"unit": "function.explorer-route",
+									"via": "import"
+								},
+								{
+									"unit": "function.helper-references",
+									"via": "import"
+								},
+								{
+									"unit": "function.resolve-import",
+									"via": "import"
+								},
+								{
+									"unit": "function.revision-registry",
+									"via": "import"
+								},
+								{
+									"unit": "function.source-types",
+									"via": "import"
+								},
+								{
+									"unit": "function.unit-metadata",
+									"via": "import"
+								},
+								{
+									"unit": "function.units-config",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"src/services/explorer-ui/revision-detail-service/helperConsumers.ts",
+									"src/services/explorer-ui/revision-detail-service/helperConsumers.types.ts",
+									"src/services/explorer-ui/revision-detail-service/serviceClasses.ts",
+									"src/services/explorer-ui/revision-detail-service/serviceClasses.types.ts",
+									"src/services/revision-detail-service/helperConsumers.ts",
+									"src/services/revision-detail-service/serviceClasses.ts",
+									"src/utils/explorer-ui/helperConsumers.ts",
+									"src/utils/helperConsumers.ts"
+								],
+								"symbols": [
+									"helperConsumers",
+									"Unit",
+									"Context",
+									"serviceClasses",
+									"Facts",
+									"Definition",
+									"Lookup",
+									"ProofContext",
+									"HelperTree",
+									"HelperConsumer"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "helperConsumers.tree",
+										"type": "HelperTree",
+										"required": true
+									},
+									{
+										"name": "helperConsumers.units",
+										"type": "Unit[]",
+										"required": true
+									},
+									{
+										"name": "serviceClasses.units",
+										"type": "Unit[]",
+										"required": true
+									},
+									{
+										"name": "serviceClasses.facts",
+										"type": "Facts",
+										"required": true
+									},
+									{
+										"name": "serviceClasses.lookup",
+										"type": "Lookup",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "helperConsumers",
+										"type": "Promise<void>"
+									}
+								],
+								"errors": [
+									{
+										"name": "tree.list rejection",
+										"type": "thrown"
+									},
+									{
+										"name": "TypeError",
+										"type": "thrown"
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/utils/explorer-ui/helperConsumers.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "3b7e0c9d5a1f24e8"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "serviceClasses.facts",
 				"type": "Facts",
 				"required": true,
-				"description": "Resolved export, construction and runtime-reference facts for the selected source revision."
+				"description": "Helper facts keyed by repository source path, supplying each file's class declarations, forwards and references. helperConsumers fills it only for owned JavaScript, TypeScript and Svelte files of active units, and a path with no entry counts as having no classes, forwards or references."
 			},
 			{
 				"name": "serviceClasses.lookup",
 				"type": "Lookup",
 				"required": true,
-				"description": "Source declaration lookup used to follow exported classes and inheritance."
+				"description": "Lookup for exported classes: users maps each source#name key to its consumers keyed by unit and symbol, target(path, binding) resolves an import binding to a source path for base classes and forwards (or undefined), and reference(path, reference) resolves a construction or runtime reference to its source#name key (or undefined)."
 			}
 		],
 		"outputs": [
 			{
 				"name": "helperConsumers",
 				"type": "Promise<void>",
-				"description": "Attaches distinct helper and runtime export consumers plus concrete class facts, inherited instance methods and construction sites from active owned source."
+				"description": "Resolves with no value after updating units in place: every helper gets its distinct, sorted consumers, every unit gets serviceConsumers (the distinct units that consume its service exports), and each active unit gets serviceClasses with methods, consumers and constructedBy. Consumers and class facts come only from active units' owned source."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "tree.list rejection",
+				"type": "thrown",
+				"description": "Any error that tree.list() rejects with propagates unchanged out of helperConsumers, because that await is not inside a try block."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when tree.list() resolves to a value that cannot be mapped, such as null or undefined, or to a list containing null entries, because the result is mapped without a guard."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "helperConsumers",
@@ -80,24 +346,162 @@
 						"name": "helperConsumers.tree",
 						"type": "HelperTree",
 						"required": true,
-						"description": "The selected source tree. Reads and optional file listings describe this exact revision, rather than files from another checkout."
+						"description": "The source tree for the selected revision: read(path) loads the units config and each active owned source file, and the optional list() supplies the import-resolution paths (owned script and Svelte paths are used when it is absent). Read failures are swallowed, so an unreadable or invalid config falls back to defaultUnitsConfig and an unreadable file contributes no references or forwards, but a rejecting list() rejects helperConsumers, and the function never checks which revision the tree describes."
 					},
 					{
 						"name": "helperConsumers.units",
 						"type": "Unit[]",
 						"required": true,
-						"description": "Registered units and their owned source. Helpers receive distinct callable consumers; services receive distinct active runtime owner units. Types, unused imports and forwarding exports do not count."
+						"description": "Registered units to scan: only units with status 'active' contribute owned source, helpers and service exports, so inactive units never count as consumers, and a unit's own references to its service exports are skipped. Each consumer is distinct per unit and caller symbol, but units in the component or service categories and references to service exports count as the unit alone, while other references without a named caller are ignored.",
+						"examples": [
+							[
+								{
+									"id": "function.helper-consumers",
+									"kind": "function",
+									"status": "active",
+									"title": "helperConsumers",
+									"responsibility": "Counts runtime owners and proves concrete instantiated service classes, public instance methods and per-class consumers at the selected revision.",
+									"dependencies": [
+										{
+											"unit": "function.explorer-route",
+											"via": "import"
+										},
+										{
+											"unit": "function.helper-references",
+											"via": "import"
+										},
+										{
+											"unit": "function.resolve-import",
+											"via": "import"
+										},
+										{
+											"unit": "function.revision-registry",
+											"via": "import"
+										},
+										{
+											"unit": "function.source-types",
+											"via": "import"
+										},
+										{
+											"unit": "function.unit-metadata",
+											"via": "import"
+										},
+										{
+											"unit": "function.units-config",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"src/services/explorer-ui/revision-detail-service/helperConsumers.ts",
+											"src/services/explorer-ui/revision-detail-service/helperConsumers.types.ts",
+											"src/services/explorer-ui/revision-detail-service/serviceClasses.ts",
+											"src/services/explorer-ui/revision-detail-service/serviceClasses.types.ts",
+											"src/services/revision-detail-service/helperConsumers.ts",
+											"src/services/revision-detail-service/serviceClasses.ts",
+											"src/utils/explorer-ui/helperConsumers.ts",
+											"src/utils/helperConsumers.ts"
+										],
+										"symbols": [
+											"helperConsumers",
+											"Unit",
+											"Context",
+											"serviceClasses",
+											"Facts",
+											"Definition",
+											"Lookup",
+											"ProofContext",
+											"HelperTree",
+											"HelperConsumer"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "helperConsumers.tree",
+												"type": "HelperTree",
+												"required": true
+											},
+											{
+												"name": "helperConsumers.units",
+												"type": "Unit[]",
+												"required": true
+											},
+											{
+												"name": "serviceClasses.units",
+												"type": "Unit[]",
+												"required": true
+											},
+											{
+												"name": "serviceClasses.facts",
+												"type": "Facts",
+												"required": true
+											},
+											{
+												"name": "serviceClasses.lookup",
+												"type": "Lookup",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "helperConsumers",
+												"type": "Promise<void>"
+											}
+										],
+										"errors": [
+											{
+												"name": "tree.list rejection",
+												"type": "thrown"
+											},
+											{
+												"name": "TypeError",
+												"type": "thrown"
+											}
+										]
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/utils/explorer-ui/helperConsumers.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "3b7e0c9d5a1f24e8"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "helperConsumers",
 						"type": "Promise<void>",
-						"description": "Attaches distinct helper and runtime export consumers plus concrete class facts, inherited instance methods and construction sites from active owned source."
+						"description": "Resolves with no value after updating units in place: every helper gets its distinct, sorted consumers, every unit gets serviceConsumers (the distinct units that consume its service exports), and each active unit gets serviceClasses with methods, consumers and constructedBy. Consumers and class facts come only from active units' owned source."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "tree.list rejection",
+						"type": "thrown",
+						"description": "Any error that tree.list() rejects with propagates unchanged out of helperConsumers, because that await is not inside a try block."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when tree.list() resolves to a value that cannot be mapped, such as null or undefined, or to a list containing null entries, because the result is mapped without a guard."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "serviceClasses",
@@ -106,29 +510,157 @@
 						"name": "serviceClasses.units",
 						"type": "Unit[]",
 						"required": true,
-						"description": "Selected-revision units to annotate with proven service classes and concrete consumer counts."
+						"description": "Units to annotate in place: each unit's serviceClasses is replaced, becoming empty when it has no serviceExports, with each service export that resolves (directly or through forwards) to a non-abstract class declared in that unit's own owned source, and each class lists its inherited methods, consumer units and constructedBy units. Exports of the same class are merged, and helperConsumers passes only active units.",
+						"examples": [
+							[
+								{
+									"id": "function.helper-consumers",
+									"kind": "function",
+									"status": "active",
+									"title": "helperConsumers",
+									"responsibility": "Counts runtime owners and proves concrete instantiated service classes, public instance methods and per-class consumers at the selected revision.",
+									"dependencies": [
+										{
+											"unit": "function.explorer-route",
+											"via": "import"
+										},
+										{
+											"unit": "function.helper-references",
+											"via": "import"
+										},
+										{
+											"unit": "function.resolve-import",
+											"via": "import"
+										},
+										{
+											"unit": "function.revision-registry",
+											"via": "import"
+										},
+										{
+											"unit": "function.source-types",
+											"via": "import"
+										},
+										{
+											"unit": "function.unit-metadata",
+											"via": "import"
+										},
+										{
+											"unit": "function.units-config",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"src/services/explorer-ui/revision-detail-service/helperConsumers.ts",
+											"src/services/explorer-ui/revision-detail-service/helperConsumers.types.ts",
+											"src/services/explorer-ui/revision-detail-service/serviceClasses.ts",
+											"src/services/explorer-ui/revision-detail-service/serviceClasses.types.ts",
+											"src/services/revision-detail-service/helperConsumers.ts",
+											"src/services/revision-detail-service/serviceClasses.ts",
+											"src/utils/explorer-ui/helperConsumers.ts",
+											"src/utils/helperConsumers.ts"
+										],
+										"symbols": [
+											"helperConsumers",
+											"Unit",
+											"Context",
+											"serviceClasses",
+											"Facts",
+											"Definition",
+											"Lookup",
+											"ProofContext",
+											"HelperTree",
+											"HelperConsumer"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "helperConsumers.tree",
+												"type": "HelperTree",
+												"required": true
+											},
+											{
+												"name": "helperConsumers.units",
+												"type": "Unit[]",
+												"required": true
+											},
+											{
+												"name": "serviceClasses.units",
+												"type": "Unit[]",
+												"required": true
+											},
+											{
+												"name": "serviceClasses.facts",
+												"type": "Facts",
+												"required": true
+											},
+											{
+												"name": "serviceClasses.lookup",
+												"type": "Lookup",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "helperConsumers",
+												"type": "Promise<void>"
+											}
+										],
+										"errors": [
+											{
+												"name": "tree.list rejection",
+												"type": "thrown"
+											},
+											{
+												"name": "TypeError",
+												"type": "thrown"
+											}
+										]
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/utils/explorer-ui/helperConsumers.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "3b7e0c9d5a1f24e8"
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "serviceClasses.facts",
 						"type": "Facts",
 						"required": true,
-						"description": "Resolved export, construction and runtime-reference facts for the selected source revision."
+						"description": "Helper facts keyed by repository source path, supplying each file's class declarations, forwards and references. helperConsumers fills it only for owned JavaScript, TypeScript and Svelte files of active units, and a path with no entry counts as having no classes, forwards or references."
 					},
 					{
 						"name": "serviceClasses.lookup",
 						"type": "Lookup",
 						"required": true,
-						"description": "Source declaration lookup used to follow exported classes and inheritance."
+						"description": "Lookup for exported classes: users maps each source#name key to its consumers keyed by unit and symbol, target(path, binding) resolves an import binding to a source path for base classes and forwards (or undefined), and reference(path, reference) resolves a construction or runtime reference to its source#name key (or undefined)."
 					}
 				],
 				"outputs": [
 					{
 						"name": "serviceClasses",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing; it replaces each passed unit's serviceClasses in place, and each class lists its inherited methods plus consumer units and constructedBy units."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
