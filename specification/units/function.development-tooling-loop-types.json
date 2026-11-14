@@ -9,7 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/core/development-tooling/loopTypes.ts"],
-		"symbols": ["LoopStep", "LoopEvaluator", "LoopClosure", "LoopState"]
+		"symbols": [
+			"LoopEvidenceEntry",
+			"LoopStepEvidence",
+			"LoopStep",
+			"LoopEvaluator",
+			"LoopClosure",
+			"LoopState"
+		]
 	},
 	"contract": {
 		"origin": "declared",

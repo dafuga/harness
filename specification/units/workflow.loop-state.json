@@ -24,6 +24,7 @@
 			"loopPaths",
 			"writeNewLoop",
 			"readLoop",
+			"assertLoopOpen",
 			"writeLoop",
 			"appendTrace",
 			"validateLoopId",
@@ -79,6 +80,11 @@
 			{
 				"name": "readLoop.path",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "assertLoopOpen.state",
+				"type": "LoopState",
 				"required": true
 			},
 			{
@@ -148,6 +154,10 @@
 			{
 				"name": "readLoop",
 				"type": "Promise<LoopState>"
+			},
+			{
+				"name": "assertLoopOpen",
+				"type": "void"
 			},
 			{
 				"name": "writeLoop",
@@ -268,6 +278,29 @@
 					}
 				],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertLoopOpen",
+				"inputs": [
+					{
+						"name": "assertLoopOpen.state",
+						"type": "LoopState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertLoopOpen",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "writeLoop",

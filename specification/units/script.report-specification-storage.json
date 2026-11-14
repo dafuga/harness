@@ -13,14 +13,7 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "specificationStorageReport.root",
-				"type": "string",
-				"required": true,
-				"description": "Repository root containing specification/units and specification/budgets/ledger.ndjson."
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "specificationStorageReport",
@@ -36,31 +29,16 @@
 			}
 		],
 		"errorStatus": "found",
-		"operations": [
-			{
-				"name": "specificationStorageReport",
-				"inputs": [
-					{
-						"name": "specificationStorageReport.root",
-						"type": "string",
-						"required": true,
-						"description": "Repository root containing specification/units and specification/budgets/ledger.ndjson."
-					}
-				],
-				"outputs": [
-					{
-						"name": "specificationStorageReport",
-						"type": "Promise<{ units: { files: number; bytes: number }; budgetLedger: { bytes: number; lines: number }; operatorHeadsUpBytes: { units: number; budgetLedger: number }; warnings: string[] }>",
-						"description": "Report of unit JSON file count and bytes, ledger bytes and line count, configured heads-up byte levels, and any threshold warnings."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			}
-		],
+		"operations": [],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "entry.program-manage-units-storage",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "scripts/report-specification-storage.ts",

@@ -14,16 +14,31 @@
 		],
 		"symbols": [
 			"ReportServerService",
+			"reportServerEnvironment",
 			"ReportServerService",
 			"ReportServerService.constructor",
 			"ReportServerService.serve",
-			"ReportServerService.stop",
-			"reportServerEnvironment"
+			"ReportServerService.stop"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "reportServerEnvironment.port",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "reportServerEnvironment.base",
+				"type": "NodeJS.ProcessEnv",
+				"required": true
+			},
+			{
+				"name": "reportServerEnvironment.cwd",
+				"type": "string",
+				"required": true
+			},
 			{
 				"name": "ReportServerService.constructor.repository",
 				"type": "unknown",
@@ -44,6 +59,10 @@
 		],
 		"outputs": [
 			{
+				"name": "reportServerEnvironment",
+				"type": "NodeJS.ProcessEnv"
+			},
+			{
 				"name": "ReportServerService.serve",
 				"type": "unknown"
 			},
@@ -60,6 +79,34 @@
 		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "reportServerEnvironment",
+				"inputs": [
+					{
+						"name": "reportServerEnvironment.port",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "reportServerEnvironment.base",
+						"type": "NodeJS.ProcessEnv",
+						"required": true
+					},
+					{
+						"name": "reportServerEnvironment.cwd",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportServerEnvironment",
+						"type": "NodeJS.ProcessEnv"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "ReportServerService.serve",
 				"inputs": [

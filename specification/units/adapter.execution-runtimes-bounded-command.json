@@ -10,7 +10,10 @@
 	"owns": {
 		"source": [
 			"src/adapters/execution-runtimes/BoundedCommandAdapter.ts",
-			"src/adapters/execution-runtimes/BoundedCommandAdapter.types.ts"
+			"src/adapters/execution-runtimes/BoundedCommandAdapter.types.ts",
+			"src/adapters/execution-runtimes/bounded-command-adapter/commandDeadlines.ts",
+			"src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.ts",
+			"src/adapters/execution-runtimes/bounded-command-adapter/commandOutput.ts"
 		],
 		"symbols": [
 			"commandEnvironment",
@@ -20,8 +23,15 @@
 			"BoundedCommandAdapter.runSync",
 			"BoundedCommandOptions",
 			"BoundedCommandResult",
+			"commandDeadlines",
 			"BoundedCommandOptions",
-			"BoundedCommandResult"
+			"BoundedCommandResult",
+			"commandDeadlines",
+			"BoundedCommandFailure",
+			"BoundedCommandFailure.constructor",
+			"commandLabel",
+			"timeoutFailure",
+			"commandOutput"
 		]
 	},
 	"contract": {
@@ -93,6 +103,41 @@
 				"required": false,
 				"default": {},
 				"description": "Optional cwd, environment, stdin, timeout, output limit and abort signal."
+			},
+			{
+				"name": "BoundedCommandFailure.constructor.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BoundedCommandFailure.constructor.stdout",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "BoundedCommandFailure.constructor.stderr",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "commandLabel.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "timeoutFailure.label",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "timeoutFailure.timeoutMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "commandOutput.maxBytes",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -308,9 +353,97 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "commandLabel",
+				"inputs": [
+					{
+						"name": "commandLabel.command",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "commandLabel",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "timeoutFailure",
+				"inputs": [
+					{
+						"name": "timeoutFailure.label",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "timeoutFailure.timeoutMs",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "timeoutFailure",
+						"type": "Error"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "commandOutput",
+				"inputs": [
+					{
+						"name": "commandOutput.maxBytes",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "commandOutput",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "BoundedCommandFailure.constructor",
+				"inputs": [
+					{
+						"name": "BoundedCommandFailure.constructor.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BoundedCommandFailure.constructor.stdout",
+						"type": "Buffer",
+						"required": true
+					},
+					{
+						"name": "BoundedCommandFailure.constructor.stderr",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BoundedCommandFailure.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
