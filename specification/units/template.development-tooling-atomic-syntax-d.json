@@ -12,36 +12,232 @@
 		"symbols": ["atomicSyntax", "walkAtomicMarkup"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "atomicSyntax.content",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Svelte source passed unchanged to svelte/compiler parse with { modern: true }; atomicSyntax does not check its type or validate it beyond that parse. Its top-level Comment nodes supply the @harness-atoms, @harness-tier and @harness-element values, and every RegularElement whose name starts with hx- in the template fragment that walkAtomicMarkup reaches is collected in atoms.",
+				"examples": [
+					"<!-- @harness-atoms src/atoms/button -->\n<!-- @harness-tier atom -->\n<!-- @harness-element button -->\n<hx-button>Save</hx-button>",
+					"<!-- @harness-tier layout -->\n<div>Hello</div>",
+					"<!-- @harness-element input checkbox -->\n<hx-input-checkbox></hx-input-checkbox>"
+				]
 			},
 			{
 				"name": "walkAtomicMarkup.node",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Value to walk, and any type is accepted: null, undefined and other non-object values are ignored, arrays are walked element by element, and objects are walked through their own properties except the properties named parent, metadata, expression and attributes. Each non-array object whose type property is truthy is passed to callback before its properties are walked.",
+				"examples": [
+					{
+						"type": "Fragment",
+						"nodes": [
+							{
+								"type": "Comment",
+								"data": " @harness-tier atom "
+							}
+						]
+					},
+					{
+						"type": "RegularElement",
+						"name": "hx-button",
+						"attributes": [],
+						"fragment": {
+							"type": "Fragment",
+							"nodes": [
+								{
+									"type": "Text",
+									"data": "Save"
+								}
+							]
+						}
+					},
+					[
+						{
+							"type": "Text",
+							"data": "Save"
+						},
+						{
+							"type": "Comment",
+							"data": " @harness-element button "
+						}
+					]
+				]
 			},
 			{
 				"name": "walkAtomicMarkup.callback",
 				"type": "(node: Record<string, unknown>) => void",
-				"required": true
+				"required": true,
+				"description": "Function called for each non-array object the walk reaches whose type property is truthy, before that object's properties are walked. Its return value is ignored, and an exception it throws is not caught, so it propagates out of walkAtomicMarkup and ends the walk."
 			}
 		],
 		"outputs": [
 			{
 				"name": "atomicSyntax",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The object atomicSyntax returns: tree is the unmodified svelte/compiler parse result with { modern: true }, and atoms has one entry per RegularElement in the template fragment whose name starts with hx-, holding its node and its definition, which is undefined when no native atom's tag matches the name. directory is the token after @harness-atoms, element is the first token after @harness-element, and tier is the value after @harness-tier (only atom, molecule, organism, layout or page match), each taken from the first matching top-level comment and undefined when none matches.",
+				"examples": [
+					{
+						"tree": {
+							"type": "Root",
+							"fragment": {
+								"type": "Fragment",
+								"nodes": [
+									{
+										"type": "Comment",
+										"data": " @harness-atoms src/atoms/button "
+									},
+									{
+										"type": "Comment",
+										"data": " @harness-tier atom "
+									},
+									{
+										"type": "Comment",
+										"data": " @harness-element button "
+									},
+									{
+										"type": "RegularElement",
+										"name": "hx-button",
+										"attributes": [],
+										"fragment": {
+											"type": "Fragment",
+											"nodes": [
+												{
+													"type": "Text",
+													"data": "Save"
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						"directory": "src/atoms/button",
+						"tier": "atom",
+						"element": "button",
+						"atoms": [
+							{
+								"node": {
+									"type": "RegularElement",
+									"name": "hx-button",
+									"attributes": [],
+									"fragment": {
+										"type": "Fragment",
+										"nodes": [
+											{
+												"type": "Text",
+												"data": "Save"
+											}
+										]
+									}
+								},
+								"definition": {
+									"name": "HtmlButton",
+									"tag": "button"
+								}
+							}
+						]
+					},
+					{
+						"tree": {
+							"type": "Root",
+							"fragment": {
+								"type": "Fragment",
+								"nodes": [
+									{
+										"type": "Comment",
+										"data": " @harness-tier layout "
+									},
+									{
+										"type": "RegularElement",
+										"name": "div",
+										"attributes": [],
+										"fragment": {
+											"type": "Fragment",
+											"nodes": [
+												{
+													"type": "Text",
+													"data": "Hello"
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						"tier": "layout",
+						"atoms": []
+					},
+					{
+						"tree": {
+							"type": "Root",
+							"fragment": {
+								"type": "Fragment",
+								"nodes": [
+									{
+										"type": "Comment",
+										"data": " @harness-element input checkbox "
+									},
+									{
+										"type": "RegularElement",
+										"name": "hx-input-checkbox",
+										"attributes": [],
+										"fragment": {
+											"type": "Fragment",
+											"nodes": []
+										}
+									}
+								]
+							}
+						},
+						"element": "input",
+						"atoms": [
+							{
+								"node": {
+									"type": "RegularElement",
+									"name": "hx-input-checkbox",
+									"attributes": [],
+									"fragment": {
+										"type": "Fragment",
+										"nodes": []
+									}
+								},
+								"definition": {
+									"name": "HtmlInputCheckbox",
+									"tag": "input",
+									"type": "checkbox"
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "walkAtomicMarkup",
-				"type": "void"
+				"type": "void",
+				"description": "Always undefined, because walkAtomicMarkup returns nothing and reports each object only through callback."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "svelte/compiler parse error",
+				"type": "thrown",
+				"description": "Thrown by parse(content, { modern: true }) from svelte/compiler when content cannot be parsed as Svelte source; atomicSyntax does not catch it, so the caller receives that error unchanged."
+			},
+			{
+				"name": "callback error",
+				"type": "thrown",
+				"description": "Any value thrown by callback is not caught by walkAtomicMarkup, so it propagates to the caller and ends the walk."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown by the JavaScript engine when walkAtomicMarkup recursion exceeds the call stack. This happens when an object or array reaches itself through a path that does not use the parent, metadata, expression or attributes keys, or when the input is nested deeper than the stack allows, because the walker has no cycle check."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "atomicSyntax",
@@ -49,17 +245,165 @@
 					{
 						"name": "atomicSyntax.content",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Svelte source passed unchanged to svelte/compiler parse with { modern: true }; atomicSyntax does not check its type or validate it beyond that parse. Its top-level Comment nodes supply the @harness-atoms, @harness-tier and @harness-element values, and every RegularElement whose name starts with hx- in the template fragment that walkAtomicMarkup reaches is collected in atoms.",
+						"examples": [
+							"<!-- @harness-atoms src/atoms/button -->\n<!-- @harness-tier atom -->\n<!-- @harness-element button -->\n<hx-button>Save</hx-button>",
+							"<!-- @harness-tier layout -->\n<div>Hello</div>",
+							"<!-- @harness-element input checkbox -->\n<hx-input-checkbox></hx-input-checkbox>"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomicSyntax",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The object atomicSyntax returns: tree is the unmodified svelte/compiler parse result with { modern: true }, and atoms has one entry per RegularElement in the template fragment whose name starts with hx-, holding its node and its definition, which is undefined when no native atom's tag matches the name. directory is the token after @harness-atoms, element is the first token after @harness-element, and tier is the value after @harness-tier (only atom, molecule, organism, layout or page match), each taken from the first matching top-level comment and undefined when none matches.",
+						"examples": [
+							{
+								"tree": {
+									"type": "Root",
+									"fragment": {
+										"type": "Fragment",
+										"nodes": [
+											{
+												"type": "Comment",
+												"data": " @harness-atoms src/atoms/button "
+											},
+											{
+												"type": "Comment",
+												"data": " @harness-tier atom "
+											},
+											{
+												"type": "Comment",
+												"data": " @harness-element button "
+											},
+											{
+												"type": "RegularElement",
+												"name": "hx-button",
+												"attributes": [],
+												"fragment": {
+													"type": "Fragment",
+													"nodes": [
+														{
+															"type": "Text",
+															"data": "Save"
+														}
+													]
+												}
+											}
+										]
+									}
+								},
+								"directory": "src/atoms/button",
+								"tier": "atom",
+								"element": "button",
+								"atoms": [
+									{
+										"node": {
+											"type": "RegularElement",
+											"name": "hx-button",
+											"attributes": [],
+											"fragment": {
+												"type": "Fragment",
+												"nodes": [
+													{
+														"type": "Text",
+														"data": "Save"
+													}
+												]
+											}
+										},
+										"definition": {
+											"name": "HtmlButton",
+											"tag": "button"
+										}
+									}
+								]
+							},
+							{
+								"tree": {
+									"type": "Root",
+									"fragment": {
+										"type": "Fragment",
+										"nodes": [
+											{
+												"type": "Comment",
+												"data": " @harness-tier layout "
+											},
+											{
+												"type": "RegularElement",
+												"name": "div",
+												"attributes": [],
+												"fragment": {
+													"type": "Fragment",
+													"nodes": [
+														{
+															"type": "Text",
+															"data": "Hello"
+														}
+													]
+												}
+											}
+										]
+									}
+								},
+								"tier": "layout",
+								"atoms": []
+							},
+							{
+								"tree": {
+									"type": "Root",
+									"fragment": {
+										"type": "Fragment",
+										"nodes": [
+											{
+												"type": "Comment",
+												"data": " @harness-element input checkbox "
+											},
+											{
+												"type": "RegularElement",
+												"name": "hx-input-checkbox",
+												"attributes": [],
+												"fragment": {
+													"type": "Fragment",
+													"nodes": []
+												}
+											}
+										]
+									}
+								},
+								"element": "input",
+								"atoms": [
+									{
+										"node": {
+											"type": "RegularElement",
+											"name": "hx-input-checkbox",
+											"attributes": [],
+											"fragment": {
+												"type": "Fragment",
+												"nodes": []
+											}
+										},
+										"definition": {
+											"name": "HtmlInputCheckbox",
+											"tag": "input",
+											"type": "checkbox"
+										}
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "svelte/compiler parse error",
+						"type": "thrown",
+						"description": "Thrown by parse(content, { modern: true }) from svelte/compiler when content cannot be parsed as Svelte source; atomicSyntax does not catch it, so the caller receives that error unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "walkAtomicMarkup",
@@ -67,22 +411,71 @@
 					{
 						"name": "walkAtomicMarkup.node",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Value to walk, and any type is accepted: null, undefined and other non-object values are ignored, arrays are walked element by element, and objects are walked through their own properties except the properties named parent, metadata, expression and attributes. Each non-array object whose type property is truthy is passed to callback before its properties are walked.",
+						"examples": [
+							{
+								"type": "Fragment",
+								"nodes": [
+									{
+										"type": "Comment",
+										"data": " @harness-tier atom "
+									}
+								]
+							},
+							{
+								"type": "RegularElement",
+								"name": "hx-button",
+								"attributes": [],
+								"fragment": {
+									"type": "Fragment",
+									"nodes": [
+										{
+											"type": "Text",
+											"data": "Save"
+										}
+									]
+								}
+							},
+							[
+								{
+									"type": "Text",
+									"data": "Save"
+								},
+								{
+									"type": "Comment",
+									"data": " @harness-element button "
+								}
+							]
+						]
 					},
 					{
 						"name": "walkAtomicMarkup.callback",
 						"type": "(node: Record<string, unknown>) => void",
-						"required": true
+						"required": true,
+						"description": "Function called for each non-array object the walk reaches whose type property is truthy, before that object's properties are walked. Its return value is ignored, and an exception it throws is not caught, so it propagates out of walkAtomicMarkup and ends the walk."
 					}
 				],
 				"outputs": [
 					{
 						"name": "walkAtomicMarkup",
-						"type": "void"
+						"type": "void",
+						"description": "Always undefined, because walkAtomicMarkup returns nothing and reports each object only through callback."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "callback error",
+						"type": "thrown",
+						"description": "Any value thrown by callback is not caught by walkAtomicMarkup, so it propagates to the caller and ends the walk."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown by the JavaScript engine when walkAtomicMarkup recursion exceeds the call stack. This happens when an object or array reaches itself through a path that does not use the parent, metadata, expression or attributes keys, or when the input is nested deeper than the stack allows, because the walker has no cycle check."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
