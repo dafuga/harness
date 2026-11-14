@@ -127,17 +127,32 @@ function actualDuration(facts: MediaFacts | undefined): number | undefined {
 	return facts && 'kind' in facts && facts.kind === 'audio' ? facts.durationSeconds : undefined;
 }
 
+/**
+ * Largest `captures.ndjson` one check may leave. Fixed, not read from `harness.verify.json`: an
+ * index over it is refused whole, never truncated, and none of the captures it names are read.
+ */
+const maxCaptureIndexBytes = 2_000_000;
+
 function indexLines(path: string, result: GatherResult): string[] {
 	if (!existsSync(path)) return [];
 	try {
 		if (!lstatSync(dirname(path)).isDirectory())
 			throw new Error('Capture directory must be a regular directory.');
-		if (!lstatSync(path).isFile()) throw new Error('Capture index must be a regular file.');
-		const { contents } = digestFile(path, 2_000_000, true);
+		const index = lstatSync(path);
+		if (!index.isFile()) throw new Error('Capture index must be a regular file.');
+		if (index.size > maxCaptureIndexBytes) {
+			// Said on its own, with the file and both sizes, so the cap is never hit silently.
+			result.failures.push(
+				`left capture index ${captureIndex} of ${index.size} bytes, over the fixed capture index ` +
+					`cap of ${maxCaptureIndexBytes} bytes; none of the captures it names were recorded`
+			);
+			return [];
+		}
+		const { contents } = digestFile(path, maxCaptureIndexBytes, true);
 		return contents ? contents.toString('utf8').split('\n').filter(Boolean) : [];
 	} catch {
 		result.failures.push(
-			'capture directory must be a regular directory; capture index must be a regular file of at most 2000000 bytes'
+			`capture directory must be a regular directory; capture index must be a regular file of at most ${maxCaptureIndexBytes} bytes`
 		);
 		return [];
 	}
