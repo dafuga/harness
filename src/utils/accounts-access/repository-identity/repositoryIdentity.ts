@@ -162,7 +162,7 @@ function plainSite(site: string): string | null {
 		if (isTimeout(error)) return null;
 		throw error;
 	}
-	const result = outside ? own : null;
+	const result = outside ? (own ?? null) : null;
 	if (result !== null) writeLru(plain, [site, result], MAX_PLAIN_CACHE_ENTRIES);
 	return result;
 }
