@@ -18,35 +18,37 @@
 				"name": "gatewayStream.session",
 				"type": "GatewaySession",
 				"required": true,
-				"description": "Mutable session receiving the event emitter and completed replay snapshot."
+				"description": "The mutable gateway session that receives the stream's `emit` callback. A `done` or `error` event stores the captured event stream in `session.replays` only when `context` is present, and terminal events or client cancellation clear the callback."
 			},
 			{
 				"name": "gatewayStream.repository",
 				"type": "CodexSessionRepository",
 				"required": true,
-				"description": "Session repository used to cancel unfinished work on request abort or stream cancellation."
+				"description": "The repository whose `cancel(session)` method is called when the context signal aborts before a terminal event or when the client cancels an unfinished stream. Cancellation is not attempted after `done` or `error` has marked the stream ended."
 			},
 			{
 				"name": "gatewayStream.context",
 				"type": "{ key: string; signal: globalThis.AbortSignal }",
 				"required": false,
-				"description": "Optional replay key and abort signal associated with this request."
+				"default": "undefined",
+				"description": "Optional replay key and abort signal read when the stream starts. A future abort event invokes `repository.cancel(session)` once if the stream is unfinished (an already-aborted signal is not checked), and a terminal event stores the captured stream under `key`; omitting the context skips both behaviors."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayStream",
 				"type": "Response",
-				"description": "No-store text/event-stream response. Startup, text and calls are serialized; done/error closes the stream, clears the emitter and optionally stores the complete replay. Client cancellation clears the emitter and cancels unfinished work."
+				"description": "A `Response` with `Content-Type: text/event-stream` and `Cache-Control: no-store` whose body emits UTF-8 server-sent event chunks. It sends serializer startup events, then text/call events, and on `done` or `error` sends the corresponding terminal events, closes and clears `session.emit`, and saves the snapshot when `context` exists; client cancellation cancels only an unfinished session, while signal abort cancels without closing the stream."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "No direct ExpectedCliError throw appears in this implementation; repository cancellation or serialization may propagate errors."
+				"description": "An expected CLI failure propagated from code invoked while producing or emitting the gateway stream. The function does not catch or translate it."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "gatewayStream",
@@ -55,30 +57,37 @@
 						"name": "gatewayStream.session",
 						"type": "GatewaySession",
 						"required": true,
-						"description": "Mutable session receiving the event emitter and completed replay snapshot."
+						"description": "The mutable gateway session that receives the stream's `emit` callback. A `done` or `error` event stores the captured event stream in `session.replays` only when `context` is present, and terminal events or client cancellation clear the callback."
 					},
 					{
 						"name": "gatewayStream.repository",
 						"type": "CodexSessionRepository",
 						"required": true,
-						"description": "Session repository used to cancel unfinished work on request abort or stream cancellation."
+						"description": "The repository whose `cancel(session)` method is called when the context signal aborts before a terminal event or when the client cancels an unfinished stream. Cancellation is not attempted after `done` or `error` has marked the stream ended."
 					},
 					{
 						"name": "gatewayStream.context",
 						"type": "{ key: string; signal: globalThis.AbortSignal }",
 						"required": false,
-						"description": "Optional replay key and abort signal associated with this request."
+						"default": "undefined",
+						"description": "Optional replay key and abort signal read when the stream starts. A future abort event invokes `repository.cancel(session)` once if the stream is unfinished (an already-aborted signal is not checked), and a terminal event stores the captured stream under `key`; omitting the context skips both behaviors."
 					}
 				],
 				"outputs": [
 					{
 						"name": "gatewayStream",
 						"type": "Response",
-						"description": "No-store text/event-stream response. Startup, text and calls are serialized; done/error closes the stream, clears the emitter and optionally stores the complete replay. Client cancellation clears the emitter and cancels unfinished work."
+						"description": "A `Response` with `Content-Type: text/event-stream` and `Cache-Control: no-store` whose body emits UTF-8 server-sent event chunks. It sends serializer startup events, then text/call events, and on `done` or `error` sends the corresponding terminal events, closes and clears `session.emit`, and saves the snapshot when `context` exists; client cancellation cancels only an unfinished session, while signal abort cancels without closing the stream."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "An expected CLI failure propagated from code invoked while producing or emitting the gateway stream. The function does not catch or translate it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
