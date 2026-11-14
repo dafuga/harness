@@ -12,27 +12,113 @@
 		"symbols": ["taskUsage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "taskUsage.provider",
 				"type": "'claude' | 'codex'",
-				"required": true
+				"required": true,
+				"description": "Selects the provider whose usage event is read: 'claude' uses the last event of type 'result', and any other value uses the last event of type 'turn.completed'. The value is not validated at runtime, and only the exact string 'codex' changes how inputTokens is computed.",
+				"examples": ["claude", "codex"]
 			},
 			{
 				"name": "taskUsage.events",
 				"type": "TaskPublicEvent[]",
-				"required": true
+				"required": true,
+				"description": "The provider's public events in array order; usage and total_cost_usd come from the last event whose type matches the provider (type 'result' for claude, 'turn.completed' for codex), and all other events are ignored. The array is copied before the search, so the caller's array is not modified, and when no matching event exists every field of the result is null.",
+				"examples": [
+					[
+						{
+							"type": "assistant"
+						},
+						{
+							"type": "result",
+							"subtype": "success",
+							"is_error": false,
+							"result": "Regenerated the task usage report.",
+							"total_cost_usd": 0.0234,
+							"usage": {
+								"input_tokens": 3,
+								"cache_creation_input_tokens": 12840,
+								"cache_read_input_tokens": 45210,
+								"output_tokens": 412,
+								"cache_creation": {
+									"ephemeral_1h_input_tokens": 0
+								}
+							}
+						}
+					],
+					[
+						{
+							"type": "thread.started"
+						},
+						{
+							"type": "item.completed",
+							"item": {
+								"type": "agent_message",
+								"text": "Regenerated the task usage report."
+							}
+						},
+						{
+							"type": "turn.completed",
+							"usage": {
+								"input_tokens": 24763,
+								"cached_input_tokens": 24448,
+								"output_tokens": 1122,
+								"reasoning_tokens": 640
+							}
+						}
+					],
+					[
+						{
+							"type": "system",
+							"subtype": "init"
+						},
+						{
+							"type": "assistant"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "taskUsage",
-				"type": "TaskUsage"
+				"type": "TaskUsage",
+				"description": "The usage summary read from the selected provider event, where each number is a finite non-negative value or null when the source value is missing, non-numeric, negative or non-finite. For claude, inputTokens is input plus cache-read plus cache-write tokens and is null if any part is null; for codex, inputTokens is the raw input_tokens count, which already includes cached tokens.",
+				"examples": [
+					{
+						"inputTokens": 58053,
+						"outputTokens": 412,
+						"cacheReadTokens": 45210,
+						"cacheWriteTokens": 12840,
+						"cacheWriteLongTokens": 0,
+						"reportedCostUsd": 0.0234,
+						"reasoningTokens": null
+					},
+					{
+						"inputTokens": 24763,
+						"outputTokens": 1122,
+						"cacheReadTokens": 24448,
+						"cacheWriteTokens": null,
+						"cacheWriteLongTokens": null,
+						"reportedCostUsd": null,
+						"reasoningTokens": 640
+					},
+					{
+						"inputTokens": null,
+						"outputTokens": null,
+						"cacheReadTokens": null,
+						"cacheWriteTokens": null,
+						"cacheWriteLongTokens": null,
+						"reportedCostUsd": null,
+						"reasoningTokens": null
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "taskUsage",
@@ -40,22 +126,108 @@
 					{
 						"name": "taskUsage.provider",
 						"type": "'claude' | 'codex'",
-						"required": true
+						"required": true,
+						"description": "Selects the provider whose usage event is read: 'claude' uses the last event of type 'result', and any other value uses the last event of type 'turn.completed'. The value is not validated at runtime, and only the exact string 'codex' changes how inputTokens is computed.",
+						"examples": ["claude", "codex"]
 					},
 					{
 						"name": "taskUsage.events",
 						"type": "TaskPublicEvent[]",
-						"required": true
+						"required": true,
+						"description": "The provider's public events in array order; usage and total_cost_usd come from the last event whose type matches the provider (type 'result' for claude, 'turn.completed' for codex), and all other events are ignored. The array is copied before the search, so the caller's array is not modified, and when no matching event exists every field of the result is null.",
+						"examples": [
+							[
+								{
+									"type": "assistant"
+								},
+								{
+									"type": "result",
+									"subtype": "success",
+									"is_error": false,
+									"result": "Regenerated the task usage report.",
+									"total_cost_usd": 0.0234,
+									"usage": {
+										"input_tokens": 3,
+										"cache_creation_input_tokens": 12840,
+										"cache_read_input_tokens": 45210,
+										"output_tokens": 412,
+										"cache_creation": {
+											"ephemeral_1h_input_tokens": 0
+										}
+									}
+								}
+							],
+							[
+								{
+									"type": "thread.started"
+								},
+								{
+									"type": "item.completed",
+									"item": {
+										"type": "agent_message",
+										"text": "Regenerated the task usage report."
+									}
+								},
+								{
+									"type": "turn.completed",
+									"usage": {
+										"input_tokens": 24763,
+										"cached_input_tokens": 24448,
+										"output_tokens": 1122,
+										"reasoning_tokens": 640
+									}
+								}
+							],
+							[
+								{
+									"type": "system",
+									"subtype": "init"
+								},
+								{
+									"type": "assistant"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskUsage",
-						"type": "TaskUsage"
+						"type": "TaskUsage",
+						"description": "The usage summary read from the selected provider event, where each number is a finite non-negative value or null when the source value is missing, non-numeric, negative or non-finite. For claude, inputTokens is input plus cache-read plus cache-write tokens and is null if any part is null; for codex, inputTokens is the raw input_tokens count, which already includes cached tokens.",
+						"examples": [
+							{
+								"inputTokens": 58053,
+								"outputTokens": 412,
+								"cacheReadTokens": 45210,
+								"cacheWriteTokens": 12840,
+								"cacheWriteLongTokens": 0,
+								"reportedCostUsd": 0.0234,
+								"reasoningTokens": null
+							},
+							{
+								"inputTokens": 24763,
+								"outputTokens": 1122,
+								"cacheReadTokens": 24448,
+								"cacheWriteTokens": null,
+								"cacheWriteLongTokens": null,
+								"reportedCostUsd": null,
+								"reasoningTokens": 640
+							},
+							{
+								"inputTokens": null,
+								"outputTokens": null,
+								"cacheReadTokens": null,
+								"cacheWriteTokens": null,
+								"cacheWriteLongTokens": null,
+								"reportedCostUsd": null,
+								"reasoningTokens": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
