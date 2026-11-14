@@ -18,24 +18,24 @@
 				"name": "registerLoopLifecycleCommands.command",
 				"type": "Command",
 				"required": true,
-				"description": "Commander command to which the `list` and `close` subcommands are attached."
+				"description": "The Commander command that the `list` and `close <loop>` subcommands are attached to during registration. The function never checks its type; it relies on Commander's command() method and the chained option(), description() and action() calls that follow it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerLoopLifecycleCommands",
 				"type": "void",
-				"description": "No return value; registers list and close subcommands on the supplied Commander command."
+				"description": "The function returns nothing and is synchronous; its effect is the `list` and `close <loop>` subcommands attached to the supplied command before it returns. The actions are only passed to action() here and are not run during this call."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Invalid --stale values or missing abandonment confirmation are reported as expected CLI errors; downstream loop workflows may also reject."
+				"description": "Raised through fail() by the registered actions when `close` runs without --abandoned, or when a supplied --stale value does not convert with Number() to a non-negative safe integer; the registration call itself never raises it. Rejections from listOpenLoops and closeLoopAbandoned are not caught in those actions and propagate out of them."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerLoopLifecycleCommands",
@@ -44,23 +44,17 @@
 						"name": "registerLoopLifecycleCommands.command",
 						"type": "Command",
 						"required": true,
-						"description": "Commander command to which the `list` and `close` subcommands are attached."
+						"description": "The Commander command that the `list` and `close <loop>` subcommands are attached to during registration. The function never checks its type; it relies on Commander's command() method and the chained option(), description() and action() calls that follow it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerLoopLifecycleCommands",
 						"type": "void",
-						"description": "No return value; registers list and close subcommands on the supplied Commander command."
+						"description": "The function returns nothing and is synchronous; its effect is the `list` and `close <loop>` subcommands attached to the supplied command before it returns. The actions are only passed to action() here and are not run during this call."
 					}
 				],
-				"errors": [
-					{
-						"name": "ExpectedCliError",
-						"type": "thrown",
-						"description": "The registered actions raise expected CLI errors for invalid stale-day values or a close request without --abandoned; delegated workflows may fail."
-					}
-				],
+				"errors": [],
 				"errorStatus": "declared"
 			}
 		],
