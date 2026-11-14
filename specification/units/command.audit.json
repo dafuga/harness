@@ -12,22 +12,24 @@
 		"symbols": ["registerAuditCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerAuditCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander Command the audit subcommand is attached to. It matters only when registerAuditCommand calls program.command('audit [path]') on it, and the function neither validates nor stores it, so callers must pass a Command that can create subcommands."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerAuditCommand",
-				"type": "void"
+				"type": "void",
+				"description": "The function has no return statement, so the value is always undefined and carries no data. Its effect is on program: the audit [path] subcommand gets the options set in audit.ts (--coverage, --profile, --json, --clean-code, --gate, --dry-run, --refresh), whatever analyticsOptions() adds to it, and an action that calls runAudit(path, options)."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerAuditCommand",
@@ -35,17 +37,19 @@
 					{
 						"name": "registerAuditCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander Command the audit subcommand is attached to. It matters only when registerAuditCommand calls program.command('audit [path]') on it, and the function neither validates nor stores it, so callers must pass a Command that can create subcommands."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerAuditCommand",
-						"type": "void"
+						"type": "void",
+						"description": "The function has no return statement, so the value is always undefined and carries no data. Its effect is on program: the audit [path] subcommand gets the options set in audit.ts (--coverage, --profile, --json, --clean-code, --gate, --dry-run, --refresh), whatever analyticsOptions() adds to it, and an action that calls runAudit(path, options)."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
