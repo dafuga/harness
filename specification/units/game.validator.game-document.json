@@ -15,36 +15,270 @@
 		"symbols": ["validateDocument", "assertDocument", "RecordValue"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "validateDocument.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The candidate game document, of any type, that validateDocument checks; any value that is not a non-null, non-array object with version 1, a non-empty views list and a mechanics list makes the function return only ['Invalid game document']. Ids, titles, condition fields, action targets, and mechanic inputs and events must be 1 to 200 characters and cannot be __proto__, constructor or prototype; descriptions, styles, and scalar string values are capped at 4000 characters; x and y must be finite numbers; and every list holds at most 200 entries.",
+				"examples": [
+					{
+						"version": 1,
+						"views": [
+							{
+								"id": "view-campus",
+								"title": "Campus",
+								"dimension": "2d",
+								"style": "pixel-art",
+								"checkpoints": [
+									{
+										"id": "checkpoint-library",
+										"title": "Library",
+										"description": "Find the reading room key.",
+										"x": 120,
+										"y": 80,
+										"requires": [],
+										"conditions": [],
+										"actions": [
+											{
+												"target": "keyFound",
+												"type": "set",
+												"value": true
+											}
+										]
+									},
+									{
+										"id": "checkpoint-lab",
+										"title": "Lab door",
+										"description": "Open the lab with the key.",
+										"imagePrompt": "Pixel-art lab door at dusk",
+										"image": {
+											"model": "gpt-image-2",
+											"path": "static/game/checkpoints/3b9f1c0a7d4e28b65f1a9c3d7e0b2a4f8c6d1e9b5a3f7c2d0e4b8a6f1c9d3e57.png",
+											"prompt": "Pixel-art lab door at dusk, warm window light",
+											"createdAt": "2026-11-10T09:30:00.000Z"
+										},
+										"x": 300,
+										"y": 80,
+										"requires": ["checkpoint-library"],
+										"conditions": [
+											{
+												"field": "keyFound",
+												"op": "eq",
+												"value": true
+											}
+										],
+										"actions": [
+											{
+												"target": "view-lab",
+												"type": "transition",
+												"value": true
+											}
+										],
+										"repeatable": false
+									}
+								]
+							},
+							{
+								"id": "view-lab",
+								"title": "Lab",
+								"dimension": "3d",
+								"style": "clean",
+								"checkpoints": []
+							}
+						],
+						"mechanics": [
+							{
+								"id": "mechanic-key-door",
+								"title": "Key door",
+								"description": "Opens the lab door once the key is found.",
+								"inputs": ["keyFound"],
+								"events": ["door-opened"]
+							}
+						]
+					},
+					{
+						"version": 1,
+						"views": [
+							{
+								"id": "view-campus",
+								"title": "Campus",
+								"dimension": "2d",
+								"style": "pixel-art",
+								"checkpoints": [
+									{
+										"id": "checkpoint-library",
+										"title": "Library",
+										"description": "Go down to the cellar once the key is found.",
+										"x": 120,
+										"y": 80,
+										"requires": [],
+										"conditions": [],
+										"actions": [
+											{
+												"target": "view-cellar",
+												"type": "transition",
+												"value": true
+											}
+										]
+									}
+								]
+							}
+						],
+						"mechanics": []
+					},
+					{
+						"version": 2,
+						"views": [],
+						"mechanics": []
+					}
+				]
 			},
 			{
 				"name": "assertDocument.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The candidate game document, of any type, that assertDocument checks by calling validateDocument and throwing when that returns any message. A call that returns normally narrows this value to GameDocument, which requires it to clear every check validateDocument runs, under these limits: ids, titles, condition fields, action targets, and mechanic inputs and events are 1 to 200 characters and cannot be __proto__, constructor or prototype; descriptions, styles, and scalar string values are at most 4000 characters; x and y are finite numbers; and every list holds at most 200 entries.",
+				"examples": [
+					{
+						"version": 1,
+						"views": [
+							{
+								"id": "view-campus",
+								"title": "Campus",
+								"dimension": "2d",
+								"style": "pixel-art",
+								"checkpoints": [
+									{
+										"id": "checkpoint-library",
+										"title": "Library",
+										"description": "Find the reading room key.",
+										"x": 120,
+										"y": 80,
+										"requires": [],
+										"conditions": [],
+										"actions": [
+											{
+												"target": "keyFound",
+												"type": "set",
+												"value": true
+											}
+										]
+									},
+									{
+										"id": "checkpoint-lab",
+										"title": "Lab door",
+										"description": "Open the lab with the key.",
+										"imagePrompt": "Pixel-art lab door at dusk",
+										"image": {
+											"model": "gpt-image-2",
+											"path": "static/game/checkpoints/3b9f1c0a7d4e28b65f1a9c3d7e0b2a4f8c6d1e9b5a3f7c2d0e4b8a6f1c9d3e57.png",
+											"prompt": "Pixel-art lab door at dusk, warm window light",
+											"createdAt": "2026-11-10T09:30:00.000Z"
+										},
+										"x": 300,
+										"y": 80,
+										"requires": ["checkpoint-library"],
+										"conditions": [
+											{
+												"field": "keyFound",
+												"op": "eq",
+												"value": true
+											}
+										],
+										"actions": [
+											{
+												"target": "view-lab",
+												"type": "transition",
+												"value": true
+											}
+										],
+										"repeatable": false
+									}
+								]
+							},
+							{
+								"id": "view-lab",
+								"title": "Lab",
+								"dimension": "3d",
+								"style": "clean",
+								"checkpoints": []
+							}
+						],
+						"mechanics": [
+							{
+								"id": "mechanic-key-door",
+								"title": "Key door",
+								"description": "Opens the lab door once the key is found.",
+								"inputs": ["keyFound"],
+								"events": ["door-opened"]
+							}
+						]
+					},
+					{
+						"version": 1,
+						"views": [
+							{
+								"id": "view-campus",
+								"title": "Campus",
+								"dimension": "2d",
+								"style": "pixel-art",
+								"checkpoints": [
+									{
+										"id": "checkpoint-library",
+										"title": "Library",
+										"description": "Go down to the cellar once the key is found.",
+										"x": 120,
+										"y": 80,
+										"requires": [],
+										"conditions": [],
+										"actions": [
+											{
+												"target": "view-cellar",
+												"type": "transition",
+												"value": true
+											}
+										]
+									}
+								]
+							}
+						],
+						"mechanics": []
+					},
+					{
+						"version": 2,
+						"views": [],
+						"mechanics": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "validateDocument",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The list of validation messages for the document, in the order the checks run, and empty only when every check passes. It is exactly ['Invalid game document'] when the top-level shape fails, exactly ['Invalid game view'] when a views entry is not a non-null, non-array object, and otherwise holds one message per failure, such as 'Unknown view: <target>'.",
+				"examples": [
+					[],
+					["Unknown view: view-cellar"],
+					["Invalid game document"]
+				]
 			},
 			{
 				"name": "assertDocument",
-				"type": "asserts input is GameDocument"
+				"type": "asserts input is GameDocument",
+				"description": "No value is returned: the function has no return statement, so at runtime the result is undefined. Its declared effect is the assertion that input is a GameDocument, which applies only when the call returns without throwing."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A plain Error thrown by assertDocument only when validateDocument returns at least one message; its message is those messages joined with '; ' in the order they were produced."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "validateDocument",
@@ -52,17 +286,136 @@
 					{
 						"name": "validateDocument.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The candidate game document, of any type, that validateDocument checks; any value that is not a non-null, non-array object with version 1, a non-empty views list and a mechanics list makes the function return only ['Invalid game document']. Ids, titles, condition fields, action targets, and mechanic inputs and events must be 1 to 200 characters and cannot be __proto__, constructor or prototype; descriptions, styles, and scalar string values are capped at 4000 characters; x and y must be finite numbers; and every list holds at most 200 entries.",
+						"examples": [
+							{
+								"version": 1,
+								"views": [
+									{
+										"id": "view-campus",
+										"title": "Campus",
+										"dimension": "2d",
+										"style": "pixel-art",
+										"checkpoints": [
+											{
+												"id": "checkpoint-library",
+												"title": "Library",
+												"description": "Find the reading room key.",
+												"x": 120,
+												"y": 80,
+												"requires": [],
+												"conditions": [],
+												"actions": [
+													{
+														"target": "keyFound",
+														"type": "set",
+														"value": true
+													}
+												]
+											},
+											{
+												"id": "checkpoint-lab",
+												"title": "Lab door",
+												"description": "Open the lab with the key.",
+												"imagePrompt": "Pixel-art lab door at dusk",
+												"image": {
+													"model": "gpt-image-2",
+													"path": "static/game/checkpoints/3b9f1c0a7d4e28b65f1a9c3d7e0b2a4f8c6d1e9b5a3f7c2d0e4b8a6f1c9d3e57.png",
+													"prompt": "Pixel-art lab door at dusk, warm window light",
+													"createdAt": "2026-11-10T09:30:00.000Z"
+												},
+												"x": 300,
+												"y": 80,
+												"requires": ["checkpoint-library"],
+												"conditions": [
+													{
+														"field": "keyFound",
+														"op": "eq",
+														"value": true
+													}
+												],
+												"actions": [
+													{
+														"target": "view-lab",
+														"type": "transition",
+														"value": true
+													}
+												],
+												"repeatable": false
+											}
+										]
+									},
+									{
+										"id": "view-lab",
+										"title": "Lab",
+										"dimension": "3d",
+										"style": "clean",
+										"checkpoints": []
+									}
+								],
+								"mechanics": [
+									{
+										"id": "mechanic-key-door",
+										"title": "Key door",
+										"description": "Opens the lab door once the key is found.",
+										"inputs": ["keyFound"],
+										"events": ["door-opened"]
+									}
+								]
+							},
+							{
+								"version": 1,
+								"views": [
+									{
+										"id": "view-campus",
+										"title": "Campus",
+										"dimension": "2d",
+										"style": "pixel-art",
+										"checkpoints": [
+											{
+												"id": "checkpoint-library",
+												"title": "Library",
+												"description": "Go down to the cellar once the key is found.",
+												"x": 120,
+												"y": 80,
+												"requires": [],
+												"conditions": [],
+												"actions": [
+													{
+														"target": "view-cellar",
+														"type": "transition",
+														"value": true
+													}
+												]
+											}
+										]
+									}
+								],
+								"mechanics": []
+							},
+							{
+								"version": 2,
+								"views": [],
+								"mechanics": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateDocument",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The list of validation messages for the document, in the order the checks run, and empty only when every check passes. It is exactly ['Invalid game document'] when the top-level shape fails, exactly ['Invalid game view'] when a views entry is not a non-null, non-array object, and otherwise holds one message per failure, such as 'Unknown view: <target>'.",
+						"examples": [
+							[],
+							["Unknown view: view-cellar"],
+							["Invalid game document"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "assertDocument",
@@ -70,22 +423,137 @@
 					{
 						"name": "assertDocument.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The candidate game document, of any type, that assertDocument checks by calling validateDocument and throwing when that returns any message. A call that returns normally narrows this value to GameDocument, which requires it to clear every check validateDocument runs, under these limits: ids, titles, condition fields, action targets, and mechanic inputs and events are 1 to 200 characters and cannot be __proto__, constructor or prototype; descriptions, styles, and scalar string values are at most 4000 characters; x and y are finite numbers; and every list holds at most 200 entries.",
+						"examples": [
+							{
+								"version": 1,
+								"views": [
+									{
+										"id": "view-campus",
+										"title": "Campus",
+										"dimension": "2d",
+										"style": "pixel-art",
+										"checkpoints": [
+											{
+												"id": "checkpoint-library",
+												"title": "Library",
+												"description": "Find the reading room key.",
+												"x": 120,
+												"y": 80,
+												"requires": [],
+												"conditions": [],
+												"actions": [
+													{
+														"target": "keyFound",
+														"type": "set",
+														"value": true
+													}
+												]
+											},
+											{
+												"id": "checkpoint-lab",
+												"title": "Lab door",
+												"description": "Open the lab with the key.",
+												"imagePrompt": "Pixel-art lab door at dusk",
+												"image": {
+													"model": "gpt-image-2",
+													"path": "static/game/checkpoints/3b9f1c0a7d4e28b65f1a9c3d7e0b2a4f8c6d1e9b5a3f7c2d0e4b8a6f1c9d3e57.png",
+													"prompt": "Pixel-art lab door at dusk, warm window light",
+													"createdAt": "2026-11-10T09:30:00.000Z"
+												},
+												"x": 300,
+												"y": 80,
+												"requires": ["checkpoint-library"],
+												"conditions": [
+													{
+														"field": "keyFound",
+														"op": "eq",
+														"value": true
+													}
+												],
+												"actions": [
+													{
+														"target": "view-lab",
+														"type": "transition",
+														"value": true
+													}
+												],
+												"repeatable": false
+											}
+										]
+									},
+									{
+										"id": "view-lab",
+										"title": "Lab",
+										"dimension": "3d",
+										"style": "clean",
+										"checkpoints": []
+									}
+								],
+								"mechanics": [
+									{
+										"id": "mechanic-key-door",
+										"title": "Key door",
+										"description": "Opens the lab door once the key is found.",
+										"inputs": ["keyFound"],
+										"events": ["door-opened"]
+									}
+								]
+							},
+							{
+								"version": 1,
+								"views": [
+									{
+										"id": "view-campus",
+										"title": "Campus",
+										"dimension": "2d",
+										"style": "pixel-art",
+										"checkpoints": [
+											{
+												"id": "checkpoint-library",
+												"title": "Library",
+												"description": "Go down to the cellar once the key is found.",
+												"x": 120,
+												"y": 80,
+												"requires": [],
+												"conditions": [],
+												"actions": [
+													{
+														"target": "view-cellar",
+														"type": "transition",
+														"value": true
+													}
+												]
+											}
+										]
+									}
+								],
+								"mechanics": []
+							},
+							{
+								"version": 2,
+								"views": [],
+								"mechanics": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "assertDocument",
-						"type": "asserts input is GameDocument"
+						"type": "asserts input is GameDocument",
+						"description": "No value is returned: the function has no return statement, so at runtime the result is undefined. Its declared effect is the assertion that input is a GameDocument, which applies only when the call returns without throwing."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A plain Error thrown by assertDocument only when validateDocument returns at least one message; its message is those messages joined with '; ' in the order they were produced."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
