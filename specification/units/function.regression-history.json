@@ -34,71 +34,218 @@
 				"name": "regressionHash.bytes",
 				"type": "string | Buffer",
 				"required": true,
-				"description": "Exact string or byte sequence to hash with SHA-256."
+				"description": "Exact string or Buffer hashed unchanged with createHash('sha256'), used for evidence files, focused captures and canonical record JSON. Any change to these bytes changes the digest, and the signature admits no other types.",
+				"examples": [
+					"{\"record\":\"c81d4e7b20a6f93d5e1b8c04a72f6d9e3b5a18c7f0e42d6b9a3c1f7e8d05b2a4\",\"log\":\"47b2e9d0c6a13f58e2d7b04a9c61f3e8d25b07c4a9e6f1d3b80c2a5e7f94d16b\"}",
+					"FAIL regressionHistory\nexpected 2 to equal 3\n"
+				]
 			},
 			{
 				"name": "regressionHistory.commit",
 				"type": "string",
 				"required": true,
-				"description": "Selected source commit whose retained focused regression runs are projected."
+				"description": "Source commit key whose regression notes are projected; only notes stored under this exact string are read, and a commit with no entries returns an empty array.",
+				"examples": [
+					"7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+					"b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71",
+					"e91c3a6f0b84d257a3e9c10f6d8b24a7c05e3d92"
+				]
 			},
 			{
 				"name": "regressionHistory.notes",
 				"type": "Map<string, ReadNote>",
 				"required": true,
-				"description": "Pinned Git notes identifying retained regression records."
+				"description": "Map from commit to its parsed Git note entries; the selected commit's regression entries are read from it, and a green note's red partner is searched in its origin commit's entries. An origin commit missing from this map gives that note a gap instead of an invented red result."
 			},
 			{
 				"name": "regressionHistory.load",
 				"type": "Loader",
 				"required": true,
-				"description": "Reader that verifies and loads the record, log and files named by a regression note."
+				"description": "Loader called for each selected regression note and again for a green note's red partner, returning its record, output and optional files. A rejection from it is caught for that note and becomes its gap, using the error message, or a generic message when the rejection is not an Error."
 			},
 			{
 				"name": "regressionHistory.media",
 				"type": "MediaPlacer",
 				"required": false,
-				"description": "Places verified capture bytes in the prepared history media store."
+				"description": "Defaults to checkedMedia, the named placer imported from ../development-tooling/mediaPlace; it places each verified focused capture's bytes and its resolved fields are merged into that capture. A null or undefined placement result is recorded as media null with the gap 'Focused media is not resolved by this reader.'"
 			},
 			{
 				"name": "sameRegression.red",
 				"type": "RegressionRecord",
 				"required": true,
-				"description": "Failing checkpoint supplying the original tests, command, assertion and environment."
+				"description": "Red checkpoint that must have phase 'red' and status 'failed'; its command, assertion, profile, inputs, units and tests are the values the green checkpoint must match.",
+				"examples": [
+					{
+						"id": "5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365",
+						"loop": 1,
+						"phase": "red",
+						"status": "failed",
+						"exitCode": 1,
+						"command": "npm test -- regressionHistory",
+						"assertion": "expected 2 to equal 3",
+						"profile": "darwin-arm64-node22",
+						"source": {
+							"commit": "7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+							"tree": "3a0f6d2b9c71e45a8d0b36f19e2c7a84d5b0e1f6"
+						},
+						"inputs": {
+							"fixture": "evidence-grid-basic"
+						},
+						"units": ["reports.component.evidence-grid"],
+						"tests": ["regressionHistory keeps a red commit free of future green results"],
+						"log": {
+							"sha256": "47b2e9d0c6a13f58e2d7b04a9c61f3e8d25b07c4a9e6f1d3b80c2a5e7f94d16b",
+							"bytes": 45
+						},
+						"finishedAt": "2026-11-12T09:14:31.000Z"
+					}
+				]
 			},
 			{
 				"name": "sameRegression.green",
 				"type": "RegressionRecord",
 				"required": true,
-				"description": "Candidate passing checkpoint to compare with the original regression inputs."
+				"description": "Candidate green checkpoint that must have phase 'green', status 'passed', a source commit different from red's, and a red link naming red's record id and source commit.",
+				"examples": [
+					{
+						"id": "a64f1d0b92e7c35f8a1d06e4b7c93f2e5d8a01b6c4e7f93a2d5b08c1e6f4a719",
+						"loop": 1,
+						"phase": "green",
+						"status": "passed",
+						"exitCode": 0,
+						"command": "npm test -- regressionHistory",
+						"assertion": "expected 2 to equal 3",
+						"profile": "darwin-arm64-node22",
+						"source": {
+							"commit": "b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71",
+							"tree": "f6c1a80d3e92b47c5a1d0e8f6b39c2a7d4e15b08"
+						},
+						"red": {
+							"commit": "7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+							"record": "5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365"
+						},
+						"inputs": {
+							"fixture": "evidence-grid-basic"
+						},
+						"units": ["reports.component.evidence-grid"],
+						"tests": ["regressionHistory keeps a red commit free of future green results"],
+						"log": {
+							"sha256": "9f4c2e7b0d61a85e3c9b2f07d4a6e1c85b3f97e0d2a4c6b18e5f3d07a9c2e46b",
+							"bytes": 23
+						},
+						"finishedAt": "2026-11-12T09:31:07.000Z"
+					}
+				]
 			},
 			{
 				"name": "readRegression.note",
 				"type": "RegressionNote",
 				"required": true,
-				"description": "Pinned regression note naming its committed evidence path and manifest hash."
+				"description": "Pinned regression note whose evidence.path must equal regressions/<commit>/<record> and whose evidence.manifest must equal the SHA-256 of manifest.json. Its commit, record, loop and phase must match the record that readRegression verifies, or readRegression rejects.",
+				"examples": [
+					{
+						"kind": "regression",
+						"commit": "7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+						"loop": 1,
+						"phase": "red",
+						"record": "5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365",
+						"evidence": {
+							"path": "regressions/7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3/5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365",
+							"manifest": "0f9e3b7a1c5d28e4b06a7f3c9d1e52b8a4c07f6e3d9b1a58c2e7f04d6b3a9c15"
+						}
+					},
+					{
+						"kind": "regression",
+						"commit": "b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71",
+						"loop": 1,
+						"phase": "green",
+						"record": "a64f1d0b92e7c35f8a1d06e4b7c93f2e5d8a01b6c4e7f93a2d5b08c1e6f4a719",
+						"evidence": {
+							"path": "regressions/b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71/a64f1d0b92e7c35f8a1d06e4b7c93f2e5d8a01b6c4e7f93a2d5b08c1e6f4a719",
+							"manifest": "e7a03c5f91d2b86e4a0c7f15d3b9e2a68c41f0d7b5e93a26c8d1f4e0b7a5c932"
+						}
+					}
+				]
 			},
 			{
 				"name": "readRegression.read",
 				"type": "(path: string) => Promise<Buffer | undefined>",
 				"required": true,
-				"description": "Reader for exact evidence bytes addressed relative to that retained record."
+				"description": "Reader called with the relative paths manifest.json, record.json, output.log and each focused capture path, and each call must return exact Buffer bytes. An undefined result makes that evidence missing, and readRegression rejects."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Result",
 				"type": "Regression result",
-				"description": "Linked failure and pass results, with explicit gaps for missing or corrupt proof"
+				"description": "One regression view per selected note, in note order: each has loop, units and red, gains green for a capture or paired checkpoint, and carries a gap with red set to null when its proof cannot be read.",
+				"examples": [
+					[
+						{
+							"loop": 1,
+							"units": ["reports.component.evidence-grid"],
+							"red": {
+								"commit": "7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+								"sourceTree": "3a0f6d2b9c71e45a8d0b36f19e2c7a84d5b0e1f6",
+								"id": "5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365",
+								"status": "failed",
+								"command": "npm test -- regressionHistory",
+								"assertion": "expected 2 to equal 3",
+								"finishedAt": "2026-11-12T09:14:31.000Z",
+								"output": "FAIL regressionHistory\nexpected 2 to equal 3\n"
+							},
+							"green": {
+								"commit": "b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71",
+								"sourceTree": "f6c1a80d3e92b47c5a1d0e8f6b39c2a7d4e15b08",
+								"id": "a64f1d0b92e7c35f8a1d06e4b7c93f2e5d8a01b6c4e7f93a2d5b08c1e6f4a719",
+								"status": "passed",
+								"command": "npm test -- regressionHistory",
+								"assertion": "expected 2 to equal 3",
+								"finishedAt": "2026-11-12T09:31:07.000Z",
+								"output": "PASS regressionHistory\n"
+							}
+						}
+					],
+					[
+						{
+							"loop": 2,
+							"units": [],
+							"red": null,
+							"gap": "Regression evidence hashes do not match."
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Invalid proof",
 				"type": "Explicit rejection or gap",
-				"description": "Missing or damaged proof stays visible as a gap; it cannot become a passing result."
+				"description": "readRegression rejects when proof is missing or damaged, and regressionHistory reports a failing Loader call or a failed red pairing as that note's gap view, with red set to null and no green result."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Raised through fail(...) when readRegression finds missing evidence, a wrong evidence path, a manifest or file hash mismatch, a record identity mismatch, a commit, loop or checkpoint mismatch, an output hash mismatch, a phase that does not match the recorded outcome, or a focused capture that is missing, has different bytes, cannot be decoded, or has a different served revision. readRegression itself rejects with it, and regressionHistory does not call readRegression directly."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when the record.json or manifest.json bytes are not valid JSON. readRegression does not catch it, so it rejects with that SyntaxError."
+			},
+			{
+				"name": "regressionRecordSchema.parse error",
+				"type": "thrown",
+				"description": "Thrown by regressionRecordSchema.parse when the parsed record.json does not satisfy the regression record schema. readRegression does not catch it, so it rejects with that error."
+			},
+			{
+				"name": "Read callback rejection",
+				"type": "thrown",
+				"description": "Any rejection from the read callback passes through readRegression unchanged, because readRegression does not catch errors from its reads."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "regressionHash",
@@ -107,17 +254,26 @@
 						"name": "regressionHash.bytes",
 						"type": "string | Buffer",
 						"required": true,
-						"description": "Exact string or byte sequence to hash with SHA-256."
+						"description": "Exact string or Buffer hashed unchanged with createHash('sha256'), used for evidence files, focused captures and canonical record JSON. Any change to these bytes changes the digest, and the signature admits no other types.",
+						"examples": [
+							"{\"record\":\"c81d4e7b20a6f93d5e1b8c04a72f6d9e3b5a18c7f0e42d6b9a3c1f7e8d05b2a4\",\"log\":\"47b2e9d0c6a13f58e2d7b04a9c61f3e8d25b07c4a9e6f1d3b80c2a5e7f94d16b\"}",
+							"FAIL regressionHistory\nexpected 2 to equal 3\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "regressionHash",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "SHA-256 digest of the input bytes as a 64-character lowercase hexadecimal string.",
+						"examples": [
+							"0f9e3b7a1c5d28e4b06a7f3c9d1e52b8a4c07f6e3d9b1a58c2e7f04d6b3a9c15",
+							"9f4c2e7b0d61a85e3c9b2f07d4a6e1c85b3f97e0d2a4c6b18e5f3d07a9c2e46b"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "regressionHistory",
@@ -126,35 +282,78 @@
 						"name": "regressionHistory.commit",
 						"type": "string",
 						"required": true,
-						"description": "Selected source commit whose retained focused regression runs are projected."
+						"description": "Source commit key whose regression notes are projected; only notes stored under this exact string are read, and a commit with no entries returns an empty array.",
+						"examples": [
+							"7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+							"b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71",
+							"e91c3a6f0b84d257a3e9c10f6d8b24a7c05e3d92"
+						]
 					},
 					{
 						"name": "regressionHistory.notes",
 						"type": "Map<string, ReadNote>",
 						"required": true,
-						"description": "Pinned Git notes identifying retained regression records."
+						"description": "Map from commit to its parsed Git note entries; the selected commit's regression entries are read from it, and a green note's red partner is searched in its origin commit's entries. An origin commit missing from this map gives that note a gap instead of an invented red result."
 					},
 					{
 						"name": "regressionHistory.load",
 						"type": "Loader",
 						"required": true,
-						"description": "Reader that verifies and loads the record, log and files named by a regression note."
+						"description": "Loader called for each selected regression note and again for a green note's red partner, returning its record, output and optional files. A rejection from it is caught for that note and becomes its gap, using the error message, or a generic message when the rejection is not an Error."
 					},
 					{
 						"name": "regressionHistory.media",
 						"type": "MediaPlacer",
 						"required": false,
-						"description": "Places verified capture bytes in the prepared history media store."
+						"description": "Defaults to checkedMedia, the named placer imported from ../development-tooling/mediaPlace; it places each verified focused capture's bytes and its resolved fields are merged into that capture. A null or undefined placement result is recorded as media null with the gap 'Focused media is not resolved by this reader.'"
 					}
 				],
 				"outputs": [
 					{
 						"name": "regressionHistory",
-						"type": "Promise<RegressionView[]>"
+						"type": "Promise<RegressionView[]>",
+						"description": "Resolved array with one view per selected regression note, in note order; a note whose proof fails becomes a view with units set to [], red set to null and a gap message.",
+						"examples": [
+							[
+								{
+									"loop": 1,
+									"units": ["reports.component.evidence-grid"],
+									"red": {
+										"commit": "7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+										"sourceTree": "3a0f6d2b9c71e45a8d0b36f19e2c7a84d5b0e1f6",
+										"id": "5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365",
+										"status": "failed",
+										"command": "npm test -- regressionHistory",
+										"assertion": "expected 2 to equal 3",
+										"finishedAt": "2026-11-12T09:14:31.000Z",
+										"output": "FAIL regressionHistory\nexpected 2 to equal 3\n"
+									},
+									"green": {
+										"commit": "b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71",
+										"sourceTree": "f6c1a80d3e92b47c5a1d0e8f6b39c2a7d4e15b08",
+										"id": "a64f1d0b92e7c35f8a1d06e4b7c93f2e5d8a01b6c4e7f93a2d5b08c1e6f4a719",
+										"status": "passed",
+										"command": "npm test -- regressionHistory",
+										"assertion": "expected 2 to equal 3",
+										"finishedAt": "2026-11-12T09:31:07.000Z",
+										"output": "PASS regressionHistory\n"
+									}
+								}
+							],
+							[
+								{
+									"loop": 2,
+									"units": [],
+									"red": null,
+									"gap": "Regression evidence hashes do not match."
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sameRegression",
@@ -163,23 +362,81 @@
 						"name": "sameRegression.red",
 						"type": "RegressionRecord",
 						"required": true,
-						"description": "Failing checkpoint supplying the original tests, command, assertion and environment."
+						"description": "Red checkpoint that must have phase 'red' and status 'failed'; its command, assertion, profile, inputs, units and tests are the values the green checkpoint must match.",
+						"examples": [
+							{
+								"id": "5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365",
+								"loop": 1,
+								"phase": "red",
+								"status": "failed",
+								"exitCode": 1,
+								"command": "npm test -- regressionHistory",
+								"assertion": "expected 2 to equal 3",
+								"profile": "darwin-arm64-node22",
+								"source": {
+									"commit": "7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+									"tree": "3a0f6d2b9c71e45a8d0b36f19e2c7a84d5b0e1f6"
+								},
+								"inputs": {
+									"fixture": "evidence-grid-basic"
+								},
+								"units": ["reports.component.evidence-grid"],
+								"tests": ["regressionHistory keeps a red commit free of future green results"],
+								"log": {
+									"sha256": "47b2e9d0c6a13f58e2d7b04a9c61f3e8d25b07c4a9e6f1d3b80c2a5e7f94d16b",
+									"bytes": 45
+								},
+								"finishedAt": "2026-11-12T09:14:31.000Z"
+							}
+						]
 					},
 					{
 						"name": "sameRegression.green",
 						"type": "RegressionRecord",
 						"required": true,
-						"description": "Candidate passing checkpoint to compare with the original regression inputs."
+						"description": "Candidate green checkpoint that must have phase 'green', status 'passed', a source commit different from red's, and a red link naming red's record id and source commit.",
+						"examples": [
+							{
+								"id": "a64f1d0b92e7c35f8a1d06e4b7c93f2e5d8a01b6c4e7f93a2d5b08c1e6f4a719",
+								"loop": 1,
+								"phase": "green",
+								"status": "passed",
+								"exitCode": 0,
+								"command": "npm test -- regressionHistory",
+								"assertion": "expected 2 to equal 3",
+								"profile": "darwin-arm64-node22",
+								"source": {
+									"commit": "b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71",
+									"tree": "f6c1a80d3e92b47c5a1d0e8f6b39c2a7d4e15b08"
+								},
+								"red": {
+									"commit": "7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+									"record": "5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365"
+								},
+								"inputs": {
+									"fixture": "evidence-grid-basic"
+								},
+								"units": ["reports.component.evidence-grid"],
+								"tests": ["regressionHistory keeps a red commit free of future green results"],
+								"log": {
+									"sha256": "9f4c2e7b0d61a85e3c9b2f07d4a6e1c85b3f97e0d2a4c6b18e5f3d07a9c2e46b",
+									"bytes": 23
+								},
+								"finishedAt": "2026-11-12T09:31:07.000Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameRegression",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True only when red is phase 'red' with status 'failed', green is phase 'green' with status 'passed', their source commits differ, green links to red's record id and commit, and command, assertion, profile, inputs, units and tests all match.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readRegression",
@@ -188,28 +445,69 @@
 						"name": "readRegression.note",
 						"type": "RegressionNote",
 						"required": true,
-						"description": "Pinned regression note naming its committed evidence path and manifest hash."
+						"description": "Pinned regression note whose evidence.path must equal regressions/<commit>/<record> and whose evidence.manifest must equal the SHA-256 of manifest.json. Its commit, record, loop and phase must match the record that readRegression verifies, or readRegression rejects.",
+						"examples": [
+							{
+								"kind": "regression",
+								"commit": "7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3",
+								"loop": 1,
+								"phase": "red",
+								"record": "5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365",
+								"evidence": {
+									"path": "regressions/7d4a91c0e3b52f86a1d09e47c3b8f25a6e10d9b3/5e0c9a7f3d1b8e62c4a07f95d3e1b6c8a2f04d79e5b13c6a8f0d2e7b9c41a365",
+									"manifest": "0f9e3b7a1c5d28e4b06a7f3c9d1e52b8a4c07f6e3d9b1a58c2e7f04d6b3a9c15"
+								}
+							},
+							{
+								"kind": "regression",
+								"commit": "b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71",
+								"loop": 1,
+								"phase": "green",
+								"record": "a64f1d0b92e7c35f8a1d06e4b7c93f2e5d8a01b6c4e7f93a2d5b08c1e6f4a719",
+								"evidence": {
+									"path": "regressions/b2f60e8d17a4c93e5d08f7b26a1c4e90d3f58a71/a64f1d0b92e7c35f8a1d06e4b7c93f2e5d8a01b6c4e7f93a2d5b08c1e6f4a719",
+									"manifest": "e7a03c5f91d2b86e4a0c7f15d3b9e2a68c41f0d7b5e93a26c8d1f4e0b7a5c932"
+								}
+							}
+						]
 					},
 					{
 						"name": "readRegression.read",
 						"type": "(path: string) => Promise<Buffer | undefined>",
 						"required": true,
-						"description": "Reader for exact evidence bytes addressed relative to that retained record."
+						"description": "Reader called with the relative paths manifest.json, record.json, output.log and each focused capture path, and each call must return exact Buffer bytes. An undefined result makes that evidence missing, and readRegression rejects."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readRegression",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolved object holding the verified record, the output.log text decoded as UTF-8, and a Map of verified focused capture bytes keyed by capture path; any verification failure rejects instead of resolving."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised through fail(...) when readRegression finds missing evidence, a wrong evidence path, a manifest or file hash mismatch, a record identity mismatch, a commit, loop or checkpoint mismatch, an output hash mismatch, a phase that does not match the recorded outcome, or a focused capture that is missing, has different bytes, cannot be decoded, or has a different served revision. readRegression itself rejects with it, and regressionHistory does not call readRegression directly."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the record.json or manifest.json bytes are not valid JSON. readRegression does not catch it, so it rejects with that SyntaxError."
+					},
+					{
+						"name": "regressionRecordSchema.parse error",
+						"type": "thrown",
+						"description": "Thrown by regressionRecordSchema.parse when the parsed record.json does not satisfy the regression record schema. readRegression does not catch it, so it rejects with that error."
+					},
+					{
+						"name": "Read callback rejection",
+						"type": "thrown",
+						"description": "Any rejection from the read callback passes through readRegression unchanged, because readRegression does not catch errors from its reads."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
