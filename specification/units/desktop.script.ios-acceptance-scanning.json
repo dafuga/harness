@@ -12,36 +12,83 @@
 		"symbols": ["scanEndings", "cameraOnly"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "scanEndings.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The run context of one native acceptance phase: its AcceptanceRecord, its SimulatorPage, the simulator udid, the fixture control origin, the project, and the output folder for screenshots and the report. Every fixture control call is refused unless controlOrigin is an http://127.0.0.1 origin with a port of two to five digits."
 			},
 			{
 				"name": "cameraOnly.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The run context of one native acceptance phase: its AcceptanceRecord, its SimulatorPage, the simulator udid, the fixture control origin, the project, and the output folder for screenshots and the report. Every fixture control call is refused unless controlOrigin is an http://127.0.0.1 origin with a port of two to five digits."
 			},
 			{
 				"name": "cameraOnly.product",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name of the product under test, used only as a label: it appears in the check messages and, lowercased, in the screenshot name camera-only-<product>.png. It selects nothing, because restart always launches the same bundle.",
+				"examples": ["Debug", "Release"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanEndings",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise that scanEndings returns: it resolves with no value once the six endings are checked and the scan-refused screenshot is taken, and it rejects with the error that stops the run."
 			},
 			{
 				"name": "cameraOnly",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise that cameraOnly returns: it resolves with no value once its checks are recorded and its camera-only screenshot is taken, and it rejects with the error that stops the run."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by control when run.controlOrigin is not an http://127.0.0.1 origin with a port of two to five digits, with the message 'The control of the fixture is not on this machine.' No request is sent in that case."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by control when the fixture answers with a status that is not OK, with the message 'The fixture refused /pairing (<status>).' or 'The fixture refused /status (<status>).', where the status is the HTTP status code of the response."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejected by fetch inside control when the request fails at the network level before any response arrives. Nothing on the way catches it, so scanEndings and cameraOnly reject with the same TypeError."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Rejected by response.json() inside control when the fixture answers with a body that is not valid JSON. Nothing on the way catches it, so scanEndings and cameraOnly reject with the same SyntaxError."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when an xcrun simctl call fails: launch in restart, privacy in cameraAccess, or io screenshot in shot. The message is 'xcrun failed (<exit code>):' followed by the last 25 lines of the tool's output."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by keychainGroups in scanEndings when the sqlite3 read of the simulator's Keychain database exits with a non-zero code, with the message 'The Keychain database of the simulator could not be read.' cameraOnly never reads the Keychain, so it cannot throw this."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by SimulatorPage.evaluate after eight failed attempts; scanPressed and the plugin-method read in cameraOnly both reach it. The message is 'The page could not be read: ' followed by the first line of the last failure, cut to 160 characters."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by SimulatorPage.until when the expression does not show the wanted words within the given seconds. The message is \"<wanted>\" did not appear within <seconds> s; last seen: <text>, where the text is the last value read, or 'error: ' and the message of a failed read, with whitespace collapsed and cut to 160 characters."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "scanEndings",
@@ -49,17 +96,60 @@
 					{
 						"name": "scanEndings.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The run context of one native acceptance phase: its AcceptanceRecord, its SimulatorPage, the simulator udid, the fixture control origin, the project, and the output folder for screenshots and the report. Every fixture control call is refused unless controlOrigin is an http://127.0.0.1 origin with a port of two to five digits."
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanEndings",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise that scanEndings returns: it resolves with no value once the six endings are checked and the scan-refused screenshot is taken, and it rejects with the error that stops the run."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by control when run.controlOrigin is not an http://127.0.0.1 origin with a port of two to five digits, with the message 'The control of the fixture is not on this machine.' No request is sent in that case."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by control when the fixture answers with a status that is not OK, with the message 'The fixture refused /pairing (<status>).' or 'The fixture refused /status (<status>).', where the status is the HTTP status code of the response."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejected by fetch inside control when the request fails at the network level before any response arrives. Nothing on the way catches it, so scanEndings and cameraOnly reject with the same TypeError."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected by response.json() inside control when the fixture answers with a body that is not valid JSON. Nothing on the way catches it, so scanEndings and cameraOnly reject with the same SyntaxError."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when an xcrun simctl call fails: launch in restart, privacy in cameraAccess, or io screenshot in shot. The message is 'xcrun failed (<exit code>):' followed by the last 25 lines of the tool's output."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by keychainGroups in scanEndings when the sqlite3 read of the simulator's Keychain database exits with a non-zero code, with the message 'The Keychain database of the simulator could not be read.' cameraOnly never reads the Keychain, so it cannot throw this."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by SimulatorPage.evaluate after eight failed attempts; scanPressed and the plugin-method read in cameraOnly both reach it. The message is 'The page could not be read: ' followed by the first line of the last failure, cut to 160 characters."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by SimulatorPage.until when the expression does not show the wanted words within the given seconds. The message is \"<wanted>\" did not appear within <seconds> s; last seen: <text>, where the text is the last value read, or 'error: ' and the message of a failed read, with whitespace collapsed and cut to 160 characters."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "cameraOnly",
@@ -67,22 +157,62 @@
 					{
 						"name": "cameraOnly.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The run context of one native acceptance phase: its AcceptanceRecord, its SimulatorPage, the simulator udid, the fixture control origin, the project, and the output folder for screenshots and the report. Every fixture control call is refused unless controlOrigin is an http://127.0.0.1 origin with a port of two to five digits."
 					},
 					{
 						"name": "cameraOnly.product",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name of the product under test, used only as a label: it appears in the check messages and, lowercased, in the screenshot name camera-only-<product>.png. It selects nothing, because restart always launches the same bundle.",
+						"examples": ["Debug", "Release"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cameraOnly",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise that cameraOnly returns: it resolves with no value once its checks are recorded and its camera-only screenshot is taken, and it rejects with the error that stops the run."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by control when run.controlOrigin is not an http://127.0.0.1 origin with a port of two to five digits, with the message 'The control of the fixture is not on this machine.' No request is sent in that case."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by control when the fixture answers with a status that is not OK, with the message 'The fixture refused /pairing (<status>).' or 'The fixture refused /status (<status>).', where the status is the HTTP status code of the response."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejected by fetch inside control when the request fails at the network level before any response arrives. Nothing on the way catches it, so scanEndings and cameraOnly reject with the same TypeError."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected by response.json() inside control when the fixture answers with a body that is not valid JSON. Nothing on the way catches it, so scanEndings and cameraOnly reject with the same SyntaxError."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when an xcrun simctl call fails: launch in restart, privacy in cameraAccess, or io screenshot in shot. The message is 'xcrun failed (<exit code>):' followed by the last 25 lines of the tool's output."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by SimulatorPage.evaluate after eight failed attempts; scanPressed and the plugin-method read in cameraOnly both reach it. The message is 'The page could not be read: ' followed by the first line of the last failure, cut to 160 characters."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by SimulatorPage.until when the expression does not show the wanted words within the given seconds. The message is \"<wanted>\" did not appear within <seconds> s; last seen: <text>, where the text is the last value read, or 'error: ' and the message of a failed read, with whitespace collapsed and cut to 160 characters."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
