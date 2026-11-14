@@ -12,27 +12,34 @@
 		"symbols": ["DesktopIntegrityAdapter", "DesktopIntegrityAdapter.update"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DesktopIntegrityAdapter.update.app",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path to the experimental app bundle directory, whose Contents/Info.plist is copied and whose Contents/Frameworks/Codex Framework.framework/Codex Framework is symlinked into a temporary alias bundle. It must end with '/Codex Harness Experimental.app' (a slash before the name, no trailing slash), otherwise update rejects before creating any temporary directory.",
+				"examples": [
+					"/Applications/Codex Harness Experimental.app",
+					"/Users/build/Applications/Codex Harness Experimental.app"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DesktopIntegrityAdapter.update",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with undefined once the read-back digest and the calculated digest both have used true and their sha256 digests are equal; the temporary directory is removed before the promise settles."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown with the message 'Integrity changes require the experimental copy' when app does not end with '/Codex Harness Experimental.app', with 'Expected enabled ASAR integrity' when the stored integrity read from the temporary alias bundle has used false, and with 'Integrity digest verification failed' when the read-back digest or the calculated digest has used false or the two sha256 digests differ. Errors from its filesystem calls and from the @electron/asar calls are not caught and also reject the promise."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DesktopIntegrityAdapter.update",
@@ -40,22 +47,29 @@
 					{
 						"name": "DesktopIntegrityAdapter.update.app",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path to the experimental app bundle directory, whose Contents/Info.plist is copied and whose Contents/Frameworks/Codex Framework.framework/Codex Framework is symlinked into a temporary alias bundle. It must end with '/Codex Harness Experimental.app' (a slash before the name, no trailing slash), otherwise update rejects before creating any temporary directory.",
+						"examples": [
+							"/Applications/Codex Harness Experimental.app",
+							"/Users/build/Applications/Codex Harness Experimental.app"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DesktopIntegrityAdapter.update",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with undefined once the read-back digest and the calculated digest both have used true and their sha256 digests are equal; the temporary directory is removed before the promise settles."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Integrity changes require the experimental copy' when app does not end with '/Codex Harness Experimental.app', with 'Expected enabled ASAR integrity' when the stored integrity read from the temporary alias bundle has used false, and with 'Integrity digest verification failed' when the read-back digest or the calculated digest has used false or the two sha256 digests differ. Errors from its filesystem calls and from the @electron/asar calls are not caught and also reject the promise."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
