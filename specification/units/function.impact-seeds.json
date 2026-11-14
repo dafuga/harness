@@ -22,23 +22,314 @@
 				"name": "impactSeeds.changes",
 				"type": "TreeChange[]",
 				"required": true,
-				"description": "Added, modified or removed file changes to classify; removed paths use the base side."
+				"description": "Changed repository-relative paths, each with status `added`, `modified` or `removed`. A removed path is classified and owned on the base side, while an added or modified path is classified on the head side and takes its owner from an active head manifest, or else from an active base manifest; every entry is kept in the output in input order.",
+				"examples": [
+					[
+						{
+							"path": "src/services/reports-media/impact-service/impactSeeds.ts",
+							"status": "modified"
+						}
+					],
+					[
+						{
+							"path": "specification/units/function.impact-seeds.json",
+							"status": "modified"
+						},
+						{
+							"path": "src/utils/impactSeeds.ts",
+							"status": "removed"
+						}
+					]
+				]
 			},
 			{
 				"name": "impactSeeds.sides",
 				"type": "Sides",
 				"required": true,
-				"description": "Base and head snapshots providing workspace config and active unit ownership."
+				"description": "Base and head revisions (`ImpactSide`) whose only fields read are `config` and `manifests`; `revision`, `entries`, `scenarios` and `graph` are ignored. Only active manifests own changed files, while a changed unit manifest seeds its unit and that unit's owned files from both sides whatever their status.",
+				"examples": [
+					{
+						"base": {
+							"revision": "4c1e9a7d2b6f8035e1a4c9d7b2f6e8a0d3c5b7f1",
+							"config": {
+								"schemaVersion": 1,
+								"workspaces": [
+									{
+										"name": "",
+										"root": "."
+									}
+								],
+								"tests": ["test/", "tests/"],
+								"global": [],
+								"ignored": [
+									"**/*.md",
+									"specification/features/",
+									"specification/loops/",
+									".gitignore"
+								],
+								"references": []
+							},
+							"entries": [
+								{
+									"path": "src/utils/reports-media/impactSeeds.ts",
+									"hash": "b7e2d0c419a8f36e5d1b9c4a7f20e8d3c6a5b914"
+								},
+								{
+									"path": "specification/units/function.impact-seeds.json",
+									"hash": "e05a3c9f71d2b8064a1e7c3d9b5f2a8c6e0d4b17"
+								}
+							],
+							"manifests": [
+								{
+									"schemaVersion": 1,
+									"id": "function.impact-seeds",
+									"uid": "u_5xyk6edmo2",
+									"kind": "function",
+									"title": "Changed-path impact seeds",
+									"responsibility": "Classifies changed paths and converts them into graph seeds while flagging unbounded changes.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"owns": {
+										"source": [
+											"src/services/impact-service/impactSeeds.ts",
+											"src/services/reports-media/impact-service/impactSeeds.ts",
+											"src/services/reports-media/impact-service/impactSeeds.types.ts",
+											"src/utils/impactSeeds.ts",
+											"src/utils/reports-media/impactSeeds.ts"
+										],
+										"symbols": ["impactSeeds", "Sides", "ImpactSeeds"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [
+											{
+												"name": "impactSeeds.changes",
+												"type": "TreeChange[]",
+												"required": true
+											},
+											{
+												"name": "impactSeeds.sides",
+												"type": "Sides",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "impactSeeds",
+												"type": "ImpactSeeds"
+											}
+										],
+										"errors": []
+									},
+									"dependencies": [
+										{
+											"unit": "function.classify-path",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.impact-types",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.source-types",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.tree-changes",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.units-config",
+											"via": "import",
+											"origin": "derived"
+										}
+									],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/utils/reports-media/impactSeeds.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/utils/reports-media/impactSeeds.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							],
+							"scenarios": [],
+							"graph": {
+								"nodes": [
+									{
+										"id": "unit:function.impact-seeds",
+										"kind": "unit"
+									},
+									{
+										"id": "file:src/utils/reports-media/impactSeeds.ts",
+										"kind": "source",
+										"unit": "function.impact-seeds"
+									}
+								],
+								"edges": [],
+								"uncertain": []
+							}
+						},
+						"head": {
+							"revision": "working-tree",
+							"config": {
+								"schemaVersion": 1,
+								"workspaces": [
+									{
+										"name": "",
+										"root": "."
+									}
+								],
+								"tests": ["test/", "tests/"],
+								"global": [],
+								"ignored": [
+									"**/*.md",
+									"specification/features/",
+									"specification/loops/",
+									".gitignore"
+								],
+								"references": []
+							},
+							"entries": [
+								{
+									"path": "src/utils/reports-media/impactSeeds.ts",
+									"hash": "d19c5e2a8b07f4c3e6a1d9b2f80c7e5a4b3d1f62"
+								},
+								{
+									"path": "specification/units/function.impact-seeds.json",
+									"hash": "e05a3c9f71d2b8064a1e7c3d9b5f2a8c6e0d4b17"
+								}
+							],
+							"manifests": [
+								{
+									"schemaVersion": 1,
+									"id": "function.impact-seeds",
+									"uid": "u_5xyk6edmo2",
+									"kind": "function",
+									"title": "Changed-path impact seeds",
+									"responsibility": "Classifies changed paths and converts them into graph seeds while flagging unbounded changes.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"owns": {
+										"source": [
+											"src/services/impact-service/impactSeeds.ts",
+											"src/services/reports-media/impact-service/impactSeeds.ts",
+											"src/services/reports-media/impact-service/impactSeeds.types.ts",
+											"src/utils/impactSeeds.ts",
+											"src/utils/reports-media/impactSeeds.ts"
+										],
+										"symbols": ["impactSeeds", "Sides", "ImpactSeeds"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [
+											{
+												"name": "impactSeeds.changes",
+												"type": "TreeChange[]",
+												"required": true
+											},
+											{
+												"name": "impactSeeds.sides",
+												"type": "Sides",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "impactSeeds",
+												"type": "ImpactSeeds"
+											}
+										],
+										"errors": []
+									},
+									"dependencies": [
+										{
+											"unit": "function.classify-path",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.impact-types",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.source-types",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.tree-changes",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.units-config",
+											"via": "import",
+											"origin": "derived"
+										}
+									],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/utils/reports-media/impactSeeds.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/utils/reports-media/impactSeeds.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							],
+							"scenarios": [],
+							"graph": {
+								"nodes": [
+									{
+										"id": "unit:function.impact-seeds",
+										"kind": "unit"
+									},
+									{
+										"id": "file:src/utils/reports-media/impactSeeds.ts",
+										"kind": "source",
+										"unit": "function.impact-seeds"
+									}
+								],
+								"edges": [],
+								"uncertain": []
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "impactSeeds",
 				"type": "ImpactSeeds",
-				"description": "Classified changes, graph seed ids, directly touched units and expansion reasons. Ignored paths produce no seeds; unit manifests seed their unit and owned files on both sides, scenarios seed their scenario, and global/other paths require expansion."
+				"description": "Result of one call: `changed` keeps every input change with its `classification` and, when a unit is found, its `unit`; `seeds` lists the `unit:`, `file:` and `scenario:` node ids of each non-ignored change in input order, without de-duplication; `direct` is the set of units whose unit manifest changed or that actively own a changed file; and `expansions` holds a `global-change` entry per `global` change and an `unclassified-change` entry per `other` change, which select everything. Ignored paths add no seeds or expansions but still appear in `changed` and can still mark a unit as direct."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "impactSeeds",
@@ -47,24 +338,314 @@
 						"name": "impactSeeds.changes",
 						"type": "TreeChange[]",
 						"required": true,
-						"description": "Added, modified or removed file changes to classify; removed paths use the base side."
+						"description": "Changed repository-relative paths, each with status `added`, `modified` or `removed`. A removed path is classified and owned on the base side, while an added or modified path is classified on the head side and takes its owner from an active head manifest, or else from an active base manifest; every entry is kept in the output in input order.",
+						"examples": [
+							[
+								{
+									"path": "src/services/reports-media/impact-service/impactSeeds.ts",
+									"status": "modified"
+								}
+							],
+							[
+								{
+									"path": "specification/units/function.impact-seeds.json",
+									"status": "modified"
+								},
+								{
+									"path": "src/utils/impactSeeds.ts",
+									"status": "removed"
+								}
+							]
+						]
 					},
 					{
 						"name": "impactSeeds.sides",
 						"type": "Sides",
 						"required": true,
-						"description": "Base and head snapshots providing workspace config and active unit ownership."
+						"description": "Base and head revisions (`ImpactSide`) whose only fields read are `config` and `manifests`; `revision`, `entries`, `scenarios` and `graph` are ignored. Only active manifests own changed files, while a changed unit manifest seeds its unit and that unit's owned files from both sides whatever their status.",
+						"examples": [
+							{
+								"base": {
+									"revision": "4c1e9a7d2b6f8035e1a4c9d7b2f6e8a0d3c5b7f1",
+									"config": {
+										"schemaVersion": 1,
+										"workspaces": [
+											{
+												"name": "",
+												"root": "."
+											}
+										],
+										"tests": ["test/", "tests/"],
+										"global": [],
+										"ignored": [
+											"**/*.md",
+											"specification/features/",
+											"specification/loops/",
+											".gitignore"
+										],
+										"references": []
+									},
+									"entries": [
+										{
+											"path": "src/utils/reports-media/impactSeeds.ts",
+											"hash": "b7e2d0c419a8f36e5d1b9c4a7f20e8d3c6a5b914"
+										},
+										{
+											"path": "specification/units/function.impact-seeds.json",
+											"hash": "e05a3c9f71d2b8064a1e7c3d9b5f2a8c6e0d4b17"
+										}
+									],
+									"manifests": [
+										{
+											"schemaVersion": 1,
+											"id": "function.impact-seeds",
+											"uid": "u_5xyk6edmo2",
+											"kind": "function",
+											"title": "Changed-path impact seeds",
+											"responsibility": "Classifies changed paths and converts them into graph seeds while flagging unbounded changes.",
+											"responsibilityOrigin": "declared",
+											"status": "active",
+											"owns": {
+												"source": [
+													"src/services/impact-service/impactSeeds.ts",
+													"src/services/reports-media/impact-service/impactSeeds.ts",
+													"src/services/reports-media/impact-service/impactSeeds.types.ts",
+													"src/utils/impactSeeds.ts",
+													"src/utils/reports-media/impactSeeds.ts"
+												],
+												"symbols": ["impactSeeds", "Sides", "ImpactSeeds"]
+											},
+											"contract": {
+												"origin": "declared",
+												"inputs": [
+													{
+														"name": "impactSeeds.changes",
+														"type": "TreeChange[]",
+														"required": true
+													},
+													{
+														"name": "impactSeeds.sides",
+														"type": "Sides",
+														"required": true
+													}
+												],
+												"outputs": [
+													{
+														"name": "impactSeeds",
+														"type": "ImpactSeeds"
+													}
+												],
+												"errors": []
+											},
+											"dependencies": [
+												{
+													"unit": "function.classify-path",
+													"via": "import",
+													"origin": "derived"
+												},
+												{
+													"unit": "function.impact-types",
+													"via": "import",
+													"origin": "derived"
+												},
+												{
+													"unit": "function.source-types",
+													"via": "import",
+													"origin": "derived"
+												},
+												{
+													"unit": "function.tree-changes",
+													"via": "import",
+													"origin": "derived"
+												},
+												{
+													"unit": "function.units-config",
+													"via": "import",
+													"origin": "derived"
+												}
+											],
+											"runtime": {
+												"kind": "module",
+												"entry": "src/utils/reports-media/impactSeeds.ts",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "src/utils/reports-media/impactSeeds.ts"
+													}
+												]
+											},
+											"scenarios": [],
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											}
+										}
+									],
+									"scenarios": [],
+									"graph": {
+										"nodes": [
+											{
+												"id": "unit:function.impact-seeds",
+												"kind": "unit"
+											},
+											{
+												"id": "file:src/utils/reports-media/impactSeeds.ts",
+												"kind": "source",
+												"unit": "function.impact-seeds"
+											}
+										],
+										"edges": [],
+										"uncertain": []
+									}
+								},
+								"head": {
+									"revision": "working-tree",
+									"config": {
+										"schemaVersion": 1,
+										"workspaces": [
+											{
+												"name": "",
+												"root": "."
+											}
+										],
+										"tests": ["test/", "tests/"],
+										"global": [],
+										"ignored": [
+											"**/*.md",
+											"specification/features/",
+											"specification/loops/",
+											".gitignore"
+										],
+										"references": []
+									},
+									"entries": [
+										{
+											"path": "src/utils/reports-media/impactSeeds.ts",
+											"hash": "d19c5e2a8b07f4c3e6a1d9b2f80c7e5a4b3d1f62"
+										},
+										{
+											"path": "specification/units/function.impact-seeds.json",
+											"hash": "e05a3c9f71d2b8064a1e7c3d9b5f2a8c6e0d4b17"
+										}
+									],
+									"manifests": [
+										{
+											"schemaVersion": 1,
+											"id": "function.impact-seeds",
+											"uid": "u_5xyk6edmo2",
+											"kind": "function",
+											"title": "Changed-path impact seeds",
+											"responsibility": "Classifies changed paths and converts them into graph seeds while flagging unbounded changes.",
+											"responsibilityOrigin": "declared",
+											"status": "active",
+											"owns": {
+												"source": [
+													"src/services/impact-service/impactSeeds.ts",
+													"src/services/reports-media/impact-service/impactSeeds.ts",
+													"src/services/reports-media/impact-service/impactSeeds.types.ts",
+													"src/utils/impactSeeds.ts",
+													"src/utils/reports-media/impactSeeds.ts"
+												],
+												"symbols": ["impactSeeds", "Sides", "ImpactSeeds"]
+											},
+											"contract": {
+												"origin": "declared",
+												"inputs": [
+													{
+														"name": "impactSeeds.changes",
+														"type": "TreeChange[]",
+														"required": true
+													},
+													{
+														"name": "impactSeeds.sides",
+														"type": "Sides",
+														"required": true
+													}
+												],
+												"outputs": [
+													{
+														"name": "impactSeeds",
+														"type": "ImpactSeeds"
+													}
+												],
+												"errors": []
+											},
+											"dependencies": [
+												{
+													"unit": "function.classify-path",
+													"via": "import",
+													"origin": "derived"
+												},
+												{
+													"unit": "function.impact-types",
+													"via": "import",
+													"origin": "derived"
+												},
+												{
+													"unit": "function.source-types",
+													"via": "import",
+													"origin": "derived"
+												},
+												{
+													"unit": "function.tree-changes",
+													"via": "import",
+													"origin": "derived"
+												},
+												{
+													"unit": "function.units-config",
+													"via": "import",
+													"origin": "derived"
+												}
+											],
+											"runtime": {
+												"kind": "module",
+												"entry": "src/utils/reports-media/impactSeeds.ts",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "src/utils/reports-media/impactSeeds.ts"
+													}
+												]
+											},
+											"scenarios": [],
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											}
+										}
+									],
+									"scenarios": [],
+									"graph": {
+										"nodes": [
+											{
+												"id": "unit:function.impact-seeds",
+												"kind": "unit"
+											},
+											{
+												"id": "file:src/utils/reports-media/impactSeeds.ts",
+												"kind": "source",
+												"unit": "function.impact-seeds"
+											}
+										],
+										"edges": [],
+										"uncertain": []
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "impactSeeds",
 						"type": "ImpactSeeds",
-						"description": "Classified changes, graph seed ids, directly touched units and expansion reasons. Ignored paths produce no seeds; unit manifests seed their unit and owned files on both sides, scenarios seed their scenario, and global/other paths require expansion."
+						"description": "Result of one call: `changed` keeps every input change with its `classification` and, when a unit is found, its `unit`; `seeds` lists the `unit:`, `file:` and `scenario:` node ids of each non-ignored change in input order, without de-duplication; `direct` is the set of units whose unit manifest changed or that actively own a changed file; and `expansions` holds a `global-change` entry per `global` change and an `unclassified-change` entry per `other` change, which select everything. Ignored paths add no seeds or expansions but still appear in `changed` and can still mark a unit as direct."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
