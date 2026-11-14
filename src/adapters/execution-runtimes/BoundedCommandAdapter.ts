@@ -183,7 +183,10 @@ export class BoundedCommandAdapter {
 		args: string[] = [],
 		options: BoundedCommandOptions = {}
 	): BoundedCommandResult {
-		const { timeout, maxBuffer } = limits(options);
+		const { timeout, maxBuffer } = limits({
+			...options,
+			timeoutMs: options.timeoutMs ?? commandDeadlines.syncProbeMs
+		});
 		if (!isDirectProbe(command, args))
 			throw new Error(
 				'Synchronous execution is restricted to direct probes; use run for workloads.'
