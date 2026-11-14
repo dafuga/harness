@@ -18,18 +18,24 @@
 				"name": "registerAnalyticsCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander program that receives the analytics command tree."
+				"description": "The commander Command that receives the new analytics group as a direct child, via program.command('analytics'), so it decides where the analytics commands appear in the CLI. The function does not validate it: it only calls command() on it, so the value must support that method, and no other program setting is read or changed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerAnalyticsCommand",
 				"type": "void",
-				"description": "Registers CPU, prune, summary, loops, jev, models, tasks, benchmarks, events, import, and export subcommands; prune defaults to 90 days and deletes only with --apply."
+				"description": "The function returns nothing; its only effect is attaching the analytics group, with its cpu, prune, summary, loops, jev, models, tasks, benchmarks, events, import and export subcommands, to the program before it returns. No subcommand action runs during registration; prune's --older-than defaults to 90 days and the --apply flag is forwarded to the repository's prune call, while the prune command's help says deletion requires --apply."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message '--older-than must be between 1 and 36500 whole days.' inside the async prune action, so that action's promise rejects, when the --older-than value converted with Number() is not a safe integer from 1 to 36500. The check runs before AnalyticsRepository.open(), so an invalid value never opens the analytics store."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerAnalyticsCommand",
@@ -38,14 +44,14 @@
 						"name": "registerAnalyticsCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander program that receives the analytics command tree."
+						"description": "The commander Command that receives the new analytics group as a direct child, via program.command('analytics'), so it decides where the analytics commands appear in the CLI. The function does not validate it: it only calls command() on it, so the value must support that method, and no other program setting is read or changed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerAnalyticsCommand",
 						"type": "void",
-						"description": "Registers CPU, prune, summary, loops, jev, models, tasks, benchmarks, events, import, and export subcommands; prune defaults to 90 days and deletes only with --apply."
+						"description": "The function returns nothing; its only effect is attaching the analytics group, with its cpu, prune, summary, loops, jev, models, tasks, benchmarks, events, import and export subcommands, to the program before it returns. No subcommand action runs during registration; prune's --older-than defaults to 90 days and the --apply flag is forwarded to the repository's prune call, while the prune command's help says deletion requires --apply."
 					}
 				],
 				"errors": [],
