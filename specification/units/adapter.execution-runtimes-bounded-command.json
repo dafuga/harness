@@ -42,147 +42,219 @@
 				"type": "Record<string, string | undefined>",
 				"required": false,
 				"default": {},
-				"description": "Explicit extra child variables, merged after the allowlisted inherited OS variables."
+				"description": "Caller-supplied child environment entries are merged after inherited allowlisted variables, so they override matching inherited keys; values may be strings or undefined. It defaults to an empty object.",
+				"examples": [
+					{
+						"TASK_MODE": "verify",
+						"CI": "1"
+					}
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.checked.command",
 				"type": "string",
 				"required": true,
-				"description": "Executable name or path to invoke directly."
+				"description": "Executable name or path passed directly to child_process.spawn without a shell.",
+				"examples": ["git"]
 			},
 			{
 				"name": "BoundedCommandAdapter.checked.args",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Argument vector passed directly to the executable."
+				"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
+				"examples": [
+					["--version"]
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.checked.options",
 				"type": "BoundedCommandOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional cwd, environment, stdin, timeout, combined output limit, cancellation signal and spawn observer."
+				"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
+				"examples": [
+					{
+						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"env": {
+							"CI": "1"
+						},
+						"input": "",
+						"timeoutMs": 30000,
+						"maxBuffer": 1048576
+					}
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.run.command",
 				"type": "string",
 				"required": true,
-				"description": "Executable name or path to invoke directly."
+				"description": "Executable name or path passed directly to child_process.spawn without a shell.",
+				"examples": ["git"]
 			},
 			{
 				"name": "BoundedCommandAdapter.run.args",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Argument vector passed directly to the executable."
+				"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
+				"examples": [
+					["rev-parse", "--show-toplevel"]
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.run.options",
 				"type": "BoundedCommandOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional cwd, environment, stdin, timeout, combined output limit, cancellation signal and spawn observer."
+				"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
+				"examples": [
+					{
+						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"env": {
+							"CI": "1"
+						},
+						"input": "",
+						"timeoutMs": 30000,
+						"maxBuffer": 1048576
+					}
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.runSync.command",
 				"type": "string",
 				"required": true,
-				"description": "Executable for a synchronous direct probe; only the adapter allowlist of probe command shapes is accepted."
+				"description": "Executable name or path for a synchronous direct probe. Accepted shapes are ps; xcode-select -p; git --version, rev-parse, check-ignore, remote, or remote get-url with three tail arguments, optionally preceded by git -C and a path.",
+				"examples": ["git"]
 			},
 			{
 				"name": "BoundedCommandAdapter.runSync.args",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Direct-probe argument vector, subject to the synchronous command allowlist."
+				"description": "Arguments passed directly to the executable, subject to the runSync direct-probe allowlist.",
+				"examples": [
+					["--version"]
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.runSync.options",
 				"type": "BoundedCommandOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional cwd, environment, stdin, timeout, output limit and abort signal."
+				"description": "Sets the synchronous child's cwd, environment extras, stdin, timeout, output buffer limit, and abort signal. Defaults are 60 seconds and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647, and maxBuffer is passed to spawnSync.",
+				"examples": [
+					{
+						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"env": {
+							"CI": "1"
+						},
+						"input": "",
+						"timeoutMs": 30000,
+						"maxBuffer": 1048576
+					}
+				]
 			},
 			{
 				"name": "BoundedCommandFailure.constructor.message",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Message stored on the Error instance and shown when the failure is reported.",
+				"examples": ["Command failed with exit code 2."]
 			},
 			{
 				"name": "BoundedCommandFailure.constructor.stdout",
 				"type": "Buffer",
-				"required": true
+				"required": true,
+				"description": "Captured stdout byte prefix attached to the failure; the adapter bounds collected output before constructing its command failures."
 			},
 			{
 				"name": "BoundedCommandFailure.constructor.stderr",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Captured stderr text attached to the failure; the adapter bounds collected output before constructing its command failures.",
+				"examples": [""]
 			},
 			{
 				"name": "commandLabel.command",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Command string whose basename is used as a safe display label, without including argument values.",
+				"examples": ["/usr/bin/git"]
 			},
 			{
 				"name": "timeoutFailure.label",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Safe command label included in the timeout error message.",
+				"examples": ["git"]
 			},
 			{
 				"name": "timeoutFailure.timeoutMs",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Deadline duration in milliseconds used to format the timeout error; values below 60,000 show milliseconds, and longer values also show rounded minutes.",
+				"examples": [30000]
 			},
 			{
 				"name": "commandOutput.maxBytes",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Maximum combined number of stdout and stderr bytes retained by this collector; append returns false when a chunk does not fit completely.",
+				"examples": [1048576]
 			}
 		],
 		"outputs": [
 			{
 				"name": "commandEnvironment",
 				"type": "Record<string, string | undefined>",
-				"description": "Environment containing only the allowlisted inherited OS keys plus explicitly supplied extras."
+				"description": "Contains currently defined inherited variables from the adapter's allowlist plus all caller extras; caller entries overwrite inherited values.",
+				"examples": [
+					{
+						"PATH": "/usr/bin",
+						"TASK_MODE": "verify"
+					}
+				]
 			},
 			{
 				"name": "BoundedCommandAdapter.checked",
 				"type": "Promise<Buffer>",
-				"description": "Stdout bytes when the process exits successfully."
+				"description": "Resolves to the command's stdout Buffer only when its exit code is zero; a nonzero exit rejects with a BoundedCommandFailure carrying the captured stdout and stderr."
 			},
 			{
 				"name": "BoundedCommandAdapter.run",
 				"type": "Promise<BoundedCommandResult>",
-				"description": "Exit code, stdout bytes and stderr text after bounded execution; timeout, cancellation, launch and output-limit errors reject."
+				"description": "Resolves with exactly code, stdout, and stderr: a numeric exit code, captured stdout Buffer, and stderr decoded as UTF-8. Timeout, cancellation, launch, or output-cap failures reject."
 			},
 			{
 				"name": "BoundedCommandAdapter.runSync",
 				"type": "BoundedCommandResult",
-				"description": "Exit status and captured stdout/stderr for the direct probe."
+				"description": "Returns exactly code, stdout, and stderr, using status or 1 when status is null, an empty Buffer when stdout is absent, and UTF-8 stderr text or an empty string."
 			}
 		],
 		"errors": [
 			{
-				"name": "Command bounds invalid",
+				"name": "Error",
 				"type": "thrown",
-				"description": "timeout and maxBuffer must be positive finite safe integers no greater than 2147483647",
-				"examples": ["Command bounds must be positive finite integers."]
+				"description": "Thrown for invalid timeoutMs or maxBuffer bounds, a runSync command shape outside the direct-probe allowlist, or a synchronous child-process API error."
 			},
 			{
-				"name": "Command execution failed",
+				"name": "BoundedCommandFailure",
 				"type": "thrown",
-				"description": "execution rejects for launch errors, nonzero checked exits, timeout, cancellation or output overflow",
-				"examples": ["Command timed out.", "Command output limit exceeded."]
+				"description": "checked rejects for a nonzero exit code; run and checked also reject with this type for asynchronous launch errors, deadline expiry, abort during execution, or combined output overflow. The failure carries the bounded captured stdout and stderr."
 			},
 			{
-				"name": "Synchronous command not allowed",
+				"name": "AbortSignal.reason",
 				"type": "thrown",
-				"description": "runSync accepts only the direct-probe executable and argument shapes listed by the adapter",
-				"examples": ["Synchronous execution is restricted to direct probes; use run for workloads."]
+				"description": "run throws the supplied reason unchanged when its signal is already aborted; checked propagates that reason as its rejection."
+			},
+			{
+				"name": "onSpawn callback error",
+				"type": "thrown",
+				"description": "run propagates any value thrown by the optional onSpawn callback after starting the child."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "commandEnvironment",
@@ -192,14 +264,26 @@
 						"type": "Record<string, string | undefined>",
 						"required": false,
 						"default": {},
-						"description": "Explicit extra child variables, merged after the allowlisted inherited OS variables."
+						"description": "Caller-supplied child environment entries are merged after inherited allowlisted variables, so they override matching inherited keys; values may be strings or undefined. It defaults to an empty object.",
+						"examples": [
+							{
+								"TASK_MODE": "verify",
+								"CI": "1"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commandEnvironment",
 						"type": "Record<string, string | undefined>",
-						"description": "Environment containing only the allowlisted inherited OS keys plus explicitly supplied extras."
+						"description": "Contains currently defined inherited variables from the adapter's allowlist plus all caller extras; caller entries overwrite inherited values.",
+						"examples": [
+							{
+								"PATH": "/usr/bin",
+								"TASK_MODE": "verify"
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -212,42 +296,60 @@
 						"name": "BoundedCommandAdapter.checked.command",
 						"type": "string",
 						"required": true,
-						"description": "Executable name or path to invoke directly."
+						"description": "Executable name or path passed directly to child_process.spawn without a shell.",
+						"examples": ["git"]
 					},
 					{
 						"name": "BoundedCommandAdapter.checked.args",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Argument vector passed directly to the executable."
+						"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
+						"examples": [
+							["--version"]
+						]
 					},
 					{
 						"name": "BoundedCommandAdapter.checked.options",
 						"type": "BoundedCommandOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional cwd, environment, stdin, timeout, combined output limit, cancellation signal and spawn observer."
+						"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
+						"examples": [
+							{
+								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"env": {
+									"CI": "1"
+								},
+								"input": "",
+								"timeoutMs": 30000,
+								"maxBuffer": 1048576
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BoundedCommandAdapter.checked",
 						"type": "Promise<Buffer>",
-						"description": "Stdout bytes when the process exits successfully."
+						"description": "Resolves to the command's stdout Buffer only when its exit code is zero; a nonzero exit rejects with a BoundedCommandFailure carrying the captured stdout and stderr."
 					}
 				],
 				"errors": [
 					{
-						"name": "Command bounds invalid",
+						"name": "Error",
 						"type": "thrown",
-						"description": "timeout and maxBuffer must be positive finite safe integers no greater than 2147483647",
-						"examples": ["Command bounds must be positive finite integers."]
+						"description": "Thrown for invalid timeoutMs or maxBuffer bounds or a synchronous child_process.spawn API error."
 					},
 					{
-						"name": "Command execution failed",
+						"name": "BoundedCommandFailure",
 						"type": "thrown",
-						"description": "execution rejects for launch errors, nonzero checked exits, timeout, cancellation or output overflow",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"description": "Rejects with this type when the command exits nonzero or asynchronous execution fails from launch error, timeout, abort, or combined output overflow."
+					},
+					{
+						"name": "onSpawn callback error",
+						"type": "thrown",
+						"description": "Any value thrown by the optional onSpawn callback propagates after the child has been started."
 					}
 				],
 				"errorStatus": "declared"
@@ -259,42 +361,65 @@
 						"name": "BoundedCommandAdapter.run.command",
 						"type": "string",
 						"required": true,
-						"description": "Executable name or path to invoke directly."
+						"description": "Executable name or path passed directly to child_process.spawn without a shell.",
+						"examples": ["git"]
 					},
 					{
 						"name": "BoundedCommandAdapter.run.args",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Argument vector passed directly to the executable."
+						"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
+						"examples": [
+							["rev-parse", "--show-toplevel"]
+						]
 					},
 					{
 						"name": "BoundedCommandAdapter.run.options",
 						"type": "BoundedCommandOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional cwd, environment, stdin, timeout, combined output limit, cancellation signal and spawn observer."
+						"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
+						"examples": [
+							{
+								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"env": {
+									"CI": "1"
+								},
+								"input": "",
+								"timeoutMs": 30000,
+								"maxBuffer": 1048576
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BoundedCommandAdapter.run",
 						"type": "Promise<BoundedCommandResult>",
-						"description": "Exit code, stdout bytes and stderr text after bounded execution; timeout, cancellation, launch and output-limit errors reject."
+						"description": "Resolves with exactly code, stdout, and stderr: a numeric exit code, captured stdout Buffer, and stderr decoded as UTF-8. Timeout, cancellation, launch, or output-cap failures reject."
 					}
 				],
 				"errors": [
 					{
-						"name": "Command bounds invalid",
+						"name": "Error",
 						"type": "thrown",
-						"description": "timeout and maxBuffer must be positive finite safe integers no greater than 2147483647",
-						"examples": ["Command bounds must be positive finite integers."]
+						"description": "Thrown for invalid timeoutMs or maxBuffer bounds or a synchronous child_process.spawn API error."
 					},
 					{
-						"name": "Command execution failed",
+						"name": "AbortSignal.reason",
 						"type": "thrown",
-						"description": "execution rejects for launch errors, nonzero checked exits, timeout, cancellation or output overflow",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"description": "Thrown unchanged when the supplied signal is already aborted before the child is started."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejects with this type for asynchronous launch errors, deadline expiry, abort during execution, or combined output overflow."
+					},
+					{
+						"name": "onSpawn callback error",
+						"type": "thrown",
+						"description": "Any value thrown by the optional onSpawn callback propagates after the child has been started."
 					}
 				],
 				"errorStatus": "declared"
@@ -306,50 +431,50 @@
 						"name": "BoundedCommandAdapter.runSync.command",
 						"type": "string",
 						"required": true,
-						"description": "Executable for a synchronous direct probe; only the adapter allowlist of probe command shapes is accepted."
+						"description": "Executable name or path for a synchronous direct probe. Accepted shapes are ps; xcode-select -p; git --version, rev-parse, check-ignore, remote, or remote get-url with three tail arguments, optionally preceded by git -C and a path.",
+						"examples": ["git"]
 					},
 					{
 						"name": "BoundedCommandAdapter.runSync.args",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Direct-probe argument vector, subject to the synchronous command allowlist."
+						"description": "Arguments passed directly to the executable, subject to the runSync direct-probe allowlist.",
+						"examples": [
+							["--version"]
+						]
 					},
 					{
 						"name": "BoundedCommandAdapter.runSync.options",
 						"type": "BoundedCommandOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional cwd, environment, stdin, timeout, output limit and abort signal."
+						"description": "Sets the synchronous child's cwd, environment extras, stdin, timeout, output buffer limit, and abort signal. Defaults are 60 seconds and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647, and maxBuffer is passed to spawnSync.",
+						"examples": [
+							{
+								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"env": {
+									"CI": "1"
+								},
+								"input": "",
+								"timeoutMs": 30000,
+								"maxBuffer": 1048576
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BoundedCommandAdapter.runSync",
 						"type": "BoundedCommandResult",
-						"description": "Exit status and captured stdout/stderr for the direct probe."
+						"description": "Returns exactly code, stdout, and stderr, using status or 1 when status is null, an empty Buffer when stdout is absent, and UTF-8 stderr text or an empty string."
 					}
 				],
 				"errors": [
 					{
-						"name": "Command bounds invalid",
+						"name": "Error",
 						"type": "thrown",
-						"description": "timeout and maxBuffer must be positive finite safe integers no greater than 2147483647",
-						"examples": ["Command bounds must be positive finite integers."]
-					},
-					{
-						"name": "Command execution failed",
-						"type": "thrown",
-						"description": "execution rejects for launch errors, nonzero checked exits, timeout, cancellation or output overflow",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
-					},
-					{
-						"name": "Synchronous command not allowed",
-						"type": "thrown",
-						"description": "runSync accepts only the direct-probe executable and argument shapes listed by the adapter",
-						"examples": [
-							"Synchronous execution is restricted to direct probes; use run for workloads."
-						]
+						"description": "Thrown for invalid timeoutMs or maxBuffer bounds, a command and argument shape outside the direct-probe allowlist, or a synchronous child-process error."
 					}
 				],
 				"errorStatus": "declared"
@@ -360,17 +485,21 @@
 					{
 						"name": "commandLabel.command",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Command string whose basename is used as a safe display label, without including argument values.",
+						"examples": ["/usr/bin/git"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commandLabel",
-						"type": "string"
+						"type": "string",
+						"description": "Returns path.basename(command), so only the executable's final path component is exposed.",
+						"examples": ["git"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "timeoutFailure",
@@ -378,22 +507,27 @@
 					{
 						"name": "timeoutFailure.label",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Safe command label included in the timeout error message.",
+						"examples": ["git"]
 					},
 					{
 						"name": "timeoutFailure.timeoutMs",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Deadline duration in milliseconds used to format the timeout error; values below 60,000 show milliseconds, and longer values also show rounded minutes.",
+						"examples": [30000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "timeoutFailure",
-						"type": "Error"
+						"type": "Error",
+						"description": "Creates an Error whose message identifies the supplied label and deadline; durations under 60 seconds show milliseconds, and longer durations include rounded minutes."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "commandOutput",
@@ -401,17 +535,20 @@
 					{
 						"name": "commandOutput.maxBytes",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Maximum combined number of stdout and stderr bytes retained by this collector; append returns false when a chunk does not fit completely.",
+						"examples": [1048576]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commandOutput",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a stateful collector with append(stream, chunk) and read(); stdout is returned as a Buffer and stderr as UTF-8 text, with a shared byte cap."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -421,27 +558,33 @@
 					{
 						"name": "BoundedCommandFailure.constructor.message",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Message stored on the Error instance and shown when the failure is reported.",
+						"examples": ["Command failed with exit code 2."]
 					},
 					{
 						"name": "BoundedCommandFailure.constructor.stdout",
 						"type": "Buffer",
-						"required": true
+						"required": true,
+						"description": "Captured stdout byte prefix attached to the failure; the adapter bounds collected output before constructing its command failures."
 					},
 					{
 						"name": "BoundedCommandFailure.constructor.stderr",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Captured stderr text attached to the failure; the adapter bounds collected output before constructing its command failures.",
+						"examples": [""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BoundedCommandFailure.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates an Error named BoundedCommandFailure with the supplied message and captured stdout Buffer and stderr string attached as non-enumerable properties."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
