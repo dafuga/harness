@@ -21,17 +21,149 @@
 				"name": "legacyReport.manifest",
 				"type": "unknown",
 				"required": true,
-				"description": "Unknown legacy manifest containing report identity, project, title, mode, environment, state, status and timestamps, with optional summary, checks and evidence."
+				"description": "One manifest from the old report store, typed unknown and validated on every call: it must be an object with non-empty id, startedAt, updatedAt and status strings, a project object with string id, name and path, and string title, mode, environment and state. Any manifest that breaks these rules, including a checks item without a non-empty id or status or an evidence item without a non-empty id, file or status, makes the function return undefined rather than throw; revision is optional, and summary, checks and evidence default to '', [] and [].",
+				"examples": [
+					{
+						"id": "run-20261102-0931a",
+						"project": {
+							"id": "prj-7f3c",
+							"name": "storefront-web",
+							"path": "/repos/storefront-web"
+						},
+						"title": "Checkout visual check",
+						"mode": "ci",
+						"environment": "staging",
+						"revision": "3a7f9c2e4b1d86f05e9a2c7b4d1f8e6a0c3b5d72",
+						"startedAt": "2026-11-02T09:31:02.114Z",
+						"updatedAt": "2026-11-02T09:33:47.902Z",
+						"summary": "2 of 2 checks passed.",
+						"status": "passed",
+						"state": "archived",
+						"checks": [
+							{
+								"id": "visual-diff",
+								"title": "Visual diff",
+								"status": "passed"
+							},
+							{
+								"id": "a11y-scan",
+								"title": "Accessibility scan",
+								"status": "passed"
+							}
+						],
+						"evidence": [
+							{
+								"id": "ev-0001",
+								"title": "Checkout on mobile",
+								"file": "reports/2026-11-02/checkout-mobile.png",
+								"status": "passed",
+								"mimeType": "image/png",
+								"capturedAt": "2026-11-02T09:32:15.000Z",
+								"viewport": "390x844"
+							}
+						]
+					},
+					{
+						"id": "run-20261030-1407b",
+						"project": {
+							"id": "prj-7f3c",
+							"name": "",
+							"path": "/repos/storefront-web"
+						},
+						"title": "Login smoke run",
+						"mode": "local",
+						"environment": "local",
+						"startedAt": "2026-10-30T14:07:55.480Z",
+						"updatedAt": "2026-10-30T14:08:10.012Z",
+						"status": "running",
+						"state": "active"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "legacyReport",
 				"type": "LegacyReport | undefined",
-				"description": "Project identity and normalized version 1 legacy record, or undefined when validation fails. Original status/times remain; revision is trimmed or null, checks omit extra details, and media starts with null hash/size plus legacy provenance."
+				"description": "An object with project (the manifest's id, name and path, which the LegacyReport type comment says is used only to decide whether the run is this repository's) and record (a schemaVersion 1, kind 'legacy-report' record whose project is the name, or the id when the name is empty), for a valid manifest. Status, state, startedAt and updatedAt are copied unchanged, so a run still marked running stays running; revision is trimmed or null when missing or blank, checks keep only id, title and status, each media item has provenance 'legacy-report' with sha256 and bytes set to null, and undefined is returned when validation fails.",
+				"examples": [
+					{
+						"project": {
+							"id": "prj-7f3c",
+							"name": "storefront-web",
+							"path": "/repos/storefront-web"
+						},
+						"record": {
+							"schemaVersion": 1,
+							"kind": "legacy-report",
+							"id": "run-20261102-0931a",
+							"project": "storefront-web",
+							"title": "Checkout visual check",
+							"mode": "ci",
+							"environment": "staging",
+							"status": "passed",
+							"state": "archived",
+							"startedAt": "2026-11-02T09:31:02.114Z",
+							"updatedAt": "2026-11-02T09:33:47.902Z",
+							"revision": "3a7f9c2e4b1d86f05e9a2c7b4d1f8e6a0c3b5d72",
+							"summary": "2 of 2 checks passed.",
+							"checks": [
+								{
+									"id": "visual-diff",
+									"title": "Visual diff",
+									"status": "passed"
+								},
+								{
+									"id": "a11y-scan",
+									"title": "Accessibility scan",
+									"status": "passed"
+								}
+							],
+							"media": [
+								{
+									"id": "ev-0001",
+									"title": "Checkout on mobile",
+									"file": "reports/2026-11-02/checkout-mobile.png",
+									"status": "passed",
+									"mediaType": "image/png",
+									"capturedAt": "2026-11-02T09:32:15.000Z",
+									"viewport": "390x844",
+									"provenance": "legacy-report",
+									"sha256": null,
+									"bytes": null
+								}
+							]
+						}
+					},
+					{
+						"project": {
+							"id": "prj-7f3c",
+							"name": "",
+							"path": "/repos/storefront-web"
+						},
+						"record": {
+							"schemaVersion": 1,
+							"kind": "legacy-report",
+							"id": "run-20261030-1407b",
+							"project": "prj-7f3c",
+							"title": "Login smoke run",
+							"mode": "local",
+							"environment": "local",
+							"status": "running",
+							"state": "active",
+							"startedAt": "2026-10-30T14:07:55.480Z",
+							"updatedAt": "2026-10-30T14:08:10.012Z",
+							"revision": null,
+							"summary": "",
+							"checks": [],
+							"media": []
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "legacyReport",
@@ -40,18 +172,149 @@
 						"name": "legacyReport.manifest",
 						"type": "unknown",
 						"required": true,
-						"description": "Unknown legacy manifest containing report identity, project, title, mode, environment, state, status and timestamps, with optional summary, checks and evidence."
+						"description": "One manifest from the old report store, typed unknown and validated on every call: it must be an object with non-empty id, startedAt, updatedAt and status strings, a project object with string id, name and path, and string title, mode, environment and state. Any manifest that breaks these rules, including a checks item without a non-empty id or status or an evidence item without a non-empty id, file or status, makes the function return undefined rather than throw; revision is optional, and summary, checks and evidence default to '', [] and [].",
+						"examples": [
+							{
+								"id": "run-20261102-0931a",
+								"project": {
+									"id": "prj-7f3c",
+									"name": "storefront-web",
+									"path": "/repos/storefront-web"
+								},
+								"title": "Checkout visual check",
+								"mode": "ci",
+								"environment": "staging",
+								"revision": "3a7f9c2e4b1d86f05e9a2c7b4d1f8e6a0c3b5d72",
+								"startedAt": "2026-11-02T09:31:02.114Z",
+								"updatedAt": "2026-11-02T09:33:47.902Z",
+								"summary": "2 of 2 checks passed.",
+								"status": "passed",
+								"state": "archived",
+								"checks": [
+									{
+										"id": "visual-diff",
+										"title": "Visual diff",
+										"status": "passed"
+									},
+									{
+										"id": "a11y-scan",
+										"title": "Accessibility scan",
+										"status": "passed"
+									}
+								],
+								"evidence": [
+									{
+										"id": "ev-0001",
+										"title": "Checkout on mobile",
+										"file": "reports/2026-11-02/checkout-mobile.png",
+										"status": "passed",
+										"mimeType": "image/png",
+										"capturedAt": "2026-11-02T09:32:15.000Z",
+										"viewport": "390x844"
+									}
+								]
+							},
+							{
+								"id": "run-20261030-1407b",
+								"project": {
+									"id": "prj-7f3c",
+									"name": "",
+									"path": "/repos/storefront-web"
+								},
+								"title": "Login smoke run",
+								"mode": "local",
+								"environment": "local",
+								"startedAt": "2026-10-30T14:07:55.480Z",
+								"updatedAt": "2026-10-30T14:08:10.012Z",
+								"status": "running",
+								"state": "active"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "legacyReport",
 						"type": "LegacyReport | undefined",
-						"description": "Project identity and normalized version 1 legacy record, or undefined when validation fails. Original status/times remain; revision is trimmed or null, checks omit extra details, and media starts with null hash/size plus legacy provenance."
+						"description": "An object with project (the manifest's id, name and path, which the LegacyReport type comment says is used only to decide whether the run is this repository's) and record (a schemaVersion 1, kind 'legacy-report' record whose project is the name, or the id when the name is empty), for a valid manifest. Status, state, startedAt and updatedAt are copied unchanged, so a run still marked running stays running; revision is trimmed or null when missing or blank, checks keep only id, title and status, each media item has provenance 'legacy-report' with sha256 and bytes set to null, and undefined is returned when validation fails.",
+						"examples": [
+							{
+								"project": {
+									"id": "prj-7f3c",
+									"name": "storefront-web",
+									"path": "/repos/storefront-web"
+								},
+								"record": {
+									"schemaVersion": 1,
+									"kind": "legacy-report",
+									"id": "run-20261102-0931a",
+									"project": "storefront-web",
+									"title": "Checkout visual check",
+									"mode": "ci",
+									"environment": "staging",
+									"status": "passed",
+									"state": "archived",
+									"startedAt": "2026-11-02T09:31:02.114Z",
+									"updatedAt": "2026-11-02T09:33:47.902Z",
+									"revision": "3a7f9c2e4b1d86f05e9a2c7b4d1f8e6a0c3b5d72",
+									"summary": "2 of 2 checks passed.",
+									"checks": [
+										{
+											"id": "visual-diff",
+											"title": "Visual diff",
+											"status": "passed"
+										},
+										{
+											"id": "a11y-scan",
+											"title": "Accessibility scan",
+											"status": "passed"
+										}
+									],
+									"media": [
+										{
+											"id": "ev-0001",
+											"title": "Checkout on mobile",
+											"file": "reports/2026-11-02/checkout-mobile.png",
+											"status": "passed",
+											"mediaType": "image/png",
+											"capturedAt": "2026-11-02T09:32:15.000Z",
+											"viewport": "390x844",
+											"provenance": "legacy-report",
+											"sha256": null,
+											"bytes": null
+										}
+									]
+								}
+							},
+							{
+								"project": {
+									"id": "prj-7f3c",
+									"name": "",
+									"path": "/repos/storefront-web"
+								},
+								"record": {
+									"schemaVersion": 1,
+									"kind": "legacy-report",
+									"id": "run-20261030-1407b",
+									"project": "prj-7f3c",
+									"title": "Login smoke run",
+									"mode": "local",
+									"environment": "local",
+									"status": "running",
+									"state": "active",
+									"startedAt": "2026-10-30T14:07:55.480Z",
+									"updatedAt": "2026-10-30T14:08:10.012Z",
+									"revision": null,
+									"summary": "",
+									"checks": [],
+									"media": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
