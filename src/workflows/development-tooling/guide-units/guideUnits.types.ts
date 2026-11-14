@@ -40,6 +40,7 @@ export interface StateTest {
 export interface GuideState extends UnitState {
 	tests: StateTest[];
 	viewports: Record<string, 'DONE' | 'MISSING'>;
+	evidence?: 'DONE' | 'MISSING';
 	status: 'DONE' | 'MISSING';
 }
 

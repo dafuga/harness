@@ -31,6 +31,12 @@
 				"type": "string",
 				"required": true,
 				"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
+			},
+			{
+				"name": "stateTests.options",
+				"type": "{ headless?: boolean }",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -69,6 +75,12 @@
 						"type": "string",
 						"required": true,
 						"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
+					},
+					{
+						"name": "stateTests.options",
+						"type": "{ headless?: boolean }",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [

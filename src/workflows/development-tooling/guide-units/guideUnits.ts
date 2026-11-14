@@ -3,7 +3,13 @@ import type { GuidanceOptions, GuideReport, GuideState } from './guideUnits.type
 import type {
 	ExplorerCapture
 } from '../../../../packages/reports/src/models/explorer-ui/ExplorerEvidence.types';
-import { allUnitStates, guidanceContext, guidanceUnit } from './guidanceContext';
+import {
+	allUnitStates,
+	guidanceContext,
+	guidanceUnit,
+	headlessOnly,
+	namedUnitStates
+} from './guidanceContext';
 import { unitStateName } from './contractStates';
 import { stateTests } from './stateTests';
 import { unitShots } from './unitShots';
@@ -31,8 +37,26 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 	const shots = await unitShots(context.loaded.root, id, context.tree.revision);
 	const states: GuideState[] = [];
 	const derived = await allUnitStates(context, unit);
-	for (const state of derived.filter((item) => item.origin === 'REQUIRED')) {
-		const tests = await stateTests(context, unit, state.name);
+	const headless = headlessOnly(context.loaded.scenarios, id);
+	const namedDefault = namedUnitStates(context, unit).find((state) => state.name === 'default');
+	const explicitDefault = namedDefault?.reasons.some((reason) => reason !== 'Default presentation.') ?? false;
+	for (const state of derived.filter(
+		(item) =>
+			item.origin === 'REQUIRED' &&
+			(!headless || item.name !== 'default' || explicitDefault)
+	)) {
+		const tests = await stateTests(context, unit, state.name, { headless });
+		if (headless) {
+			const evidence = recordedDone(shots.captures, id, state.name) ? 'DONE' : 'MISSING';
+			states.push({
+				...state,
+				tests,
+				viewports: {},
+				evidence,
+				status: tests.length > 0 && evidence === 'DONE' ? 'DONE' : 'MISSING'
+			});
+			continue;
+		}
 		const viewports: GuideState['viewports'] = {};
 		for (const viewport of devices)
 			viewports[viewport] = shots.captures.some(
@@ -76,7 +100,7 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 export function renderUnitsGuide(report: GuideReport): string {
 	const rows = report.states.map(
 		(state) =>
-			`${state.status} ${state.name} [${state.origin}] test:${state.tests.length ? state.tests.map((test) => test.file).join(', ') : 'MISSING'} ${devices.map((device) => `${device}:${state.viewports[device]}`).join(' ')}\n  ${state.reasons.join('; ')}`
+			`${state.status} ${state.name} [${state.origin}] test:${state.tests.length ? state.tests.map((test) => test.file).join(', ') : 'MISSING'} ${state.evidence ? `evidence:${state.evidence}` : devices.map((device) => `${device}:${state.viewports[device]}`).join(' ')}\n  ${state.reasons.join('; ')}`
 	);
 	return [
 		`${report.entity} @ ${report.commit}`,

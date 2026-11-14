@@ -25,18 +25,23 @@ function declaredState(scenario: ScenarioManifest, unit: string, state: string) 
 export async function stateTests(
 	context: GuidanceContext,
 	unit: ComponentManifest,
-	state: string
+	state: string,
+	options: { headless?: boolean } = {}
 ): Promise<StateTest[]> {
 	const paths = declaredTestPaths(context, unit, state);
-	for (const file of attributedTests(context, unit))
-		if (!paths.has(file)) paths.set(file, new Set());
+	if (!options.headless)
+		for (const file of attributedTests(context, unit))
+			if (!paths.has(file)) paths.set(file, new Set());
 	const found: StateTest[] = [];
 	for (const [file, viewports] of paths) {
 		if (!context.loaded.index.files.has(file)) continue;
 		if (!context.testSyntax.has(file))
 			context.testSyntax.set(file, authoredTest(await guidanceText(context, file)));
 		const syntax = context.testSyntax.get(file)!;
-		if (syntax.test && (syntax.states.has(state) || (viewports.size > 0 && syntax.matrix)))
+		if (
+			syntax.test &&
+			(options.headless || syntax.states.has(state) || (viewports.size > 0 && syntax.matrix))
+		)
 			found.push({ file, viewports: [...viewports] });
 	}
 	return found;
@@ -67,6 +72,10 @@ function scenarioTestFiles(
 	test: ScenarioManifest['tests'][number]
 ): string[] {
 	if (test.runner !== 'command') return [posix.normalize(posix.join(test.cwd ?? '.', test.target))];
+	const output = test.target.match(
+		/\bverification-output\.ts\s+(?:playwright|vitest)\s+(['"]?)([^'"\s]+)\1/
+	);
+	if (output) return scopedTestFile(context, test.cwd ?? '.', output[2]);
 	if (!/\b(?:playwright|vitest)\s+(?:test|run)\b/.test(test.target)) return [];
 	const names = [
 		...test.target.matchAll(/(?:^|[\s"'])([\w./@-]+\.(?:spec|test)\.[cm]?[tj]sx?)(?=$|[\s"'])/g)
