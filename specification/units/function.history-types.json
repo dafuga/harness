@@ -59,70 +59,79 @@
 			{
 				"name": "evidenceBranch",
 				"type": "unknown",
-				"description": "Evidence branch name harness-evidence."
+				"description": "The branch name used for the evidence branch in Git-backed history. Its fixed literal is `harness-evidence`.",
+				"examples": ["harness-evidence"]
 			},
 			{
 				"name": "evidenceRef",
 				"type": "unknown",
-				"description": "Evidence reference refs/heads/harness-evidence."
+				"description": "The full Git ref for the evidence branch. It points to `refs/heads/harness-evidence`.",
+				"examples": ["refs/heads/harness-evidence"]
 			},
 			{
 				"name": "notesRef",
 				"type": "unknown",
-				"description": "History note reference refs/notes/harness."
+				"description": "The Git notes ref name used for history notes. Its fixed value is `refs/notes/harness`.",
+				"examples": ["refs/notes/harness"]
 			},
 			{
 				"name": "sourceArchivePrefix",
 				"type": "unknown",
-				"description": "Prefix refs/harness/source/ for per-commit source archive refs."
+				"description": "The prefix for source archive refs, with one ref per tested commit named by its hash so the commit outlives its branch. The fixed prefix is `refs/harness/source/`.",
+				"examples": ["refs/harness/source/"]
 			},
 			{
 				"name": "remoteTrackingPrefix",
 				"type": "unknown",
-				"description": "Prefix refs/harness/remotes/ for fetched history refs awaiting merge."
+				"description": "The prefix where fetched copies of a remote's evidence and notes are kept before they are merged. Its fixed value is `refs/harness/remotes/`.",
+				"examples": ["refs/harness/remotes/"]
 			},
 			{
 				"name": "evidenceMarker",
 				"type": "unknown",
-				"description": "Evidence-tree marker filename harness-evidence.json."
+				"description": "The filename at the root of every evidence tree. A commit carrying this marker is never treated as source; the value is `harness-evidence.json`.",
+				"examples": ["harness-evidence.json"]
 			},
 			{
 				"name": "recordsDirectory",
 				"type": "unknown",
-				"description": "Evidence record directory name records."
+				"description": "The directory name for stored evidence records. Its fixed value is `records`.",
+				"examples": ["records"]
 			},
 			{
 				"name": "legacyDirectory",
 				"type": "unknown",
-				"description": "Legacy report directory name legacy."
+				"description": "The directory name for legacy reports. Its fixed value is `legacy`.",
+				"examples": ["legacy"]
 			},
 			{
 				"name": "evidencePointerSchema",
 				"type": "unknown",
-				"description": "Strict pointer schema containing an evidence commit, nonempty path and SHA-256 manifest digest."
+				"description": "A strict schema for a stored-record pointer with a full lowercase 40-character commit hash, a nonempty path, and a lowercase 64-character manifest SHA-256 digest. It identifies the evidence commit, record path, and manifest hash; it does not enumerate files."
 			},
 			{
 				"name": "historyNoteSchema",
 				"type": "unknown",
-				"description": "Discriminated strict version 1 note schemas for verification, change reason and legacy report, each bound to its source commit."
+				"description": "A strict version 1 discriminated union for the `verification`, `reason`, `legacy-report`, and `regression` history-note kinds. Use it for one line on a source commit; each kind names the commit it was written for and rejects undeclared fields."
 			},
 			{
 				"name": "evidenceFileSchema",
 				"type": "unknown",
-				"description": "Strict file schema with nonempty path, lowercase SHA-256, nonnegative integer byte size, git/lfs storage and optional media type."
+				"description": "A strict schema for one stored record file: it requires a nonempty path, lowercase 64-character SHA-256, nonnegative integer byte count, and `git` or `lfs` storage, with optional `mediaType`. `git` means an ordinary Git blob; `lfs` means a Git LFS pointer on the branch, and the schema carries no file bytes."
 			},
 			{
 				"name": "evidenceManifestSchema",
 				"type": "unknown",
-				"description": "Strict version 1 manifest schema naming record, source commit/tree, pass/fail status and evidence files."
+				"description": "The immutable strict schema for a version 1 evidence manifest beside a stored record. It requires a nonempty record name, source commit and tree, pass/fail status, and file list; each source hash is a full commit hash."
 			},
 			{
 				"name": "legacyRecordSchema",
 				"type": "unknown",
-				"description": "Strict version 1 legacy-report schema preserving report facts, checks and media provenance, with nullable media hash/size and revision."
+				"description": "A strict version 1 schema for a report recorded before Git-backed records, preserving its declared report fields, checks, and media provenance. It omits old-store paths, commands, and logs; revision and each media file's SHA-256 and byte count are nullable, while mediaType, capturedAt, and viewport are optional."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
