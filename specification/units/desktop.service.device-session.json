@@ -21,22 +21,24 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeviceSessionService.constructor.options",
 				"type": "DeviceSessionOptions",
-				"required": true
+				"required": true,
+				"description": "The options of one approved phone's session: its host and device identities (the phone receives them on attach), the grant callback that returns the device's current RemoteGrant, an optional epoch, an optional locked callback that returns undefined until the computer knows the screen state, and the registry, outbox, arbiter, providers, generator and optional cache that its projects and operations use. Host, device and epoch are taken when the session is built, grant runs again for each request and attach, locked runs for each attach, and a missing epoch makes the event log pick a random one."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeviceSessionService.end",
-				"type": "void"
+				"type": "void",
+				"description": "end() returns nothing: it detaches the attached connection, if any, and drops any later answer or event, then marks the client projects ended and aborts the active run of each opened project. It does not wait for the aborted runs, whose cleanup finishes later."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "DeviceSessionService.end",
@@ -44,11 +46,12 @@
 				"outputs": [
 					{
 						"name": "DeviceSessionService.end",
-						"type": "void"
+						"type": "void",
+						"description": "end() returns nothing: it detaches the attached connection, if any, and drops any later answer or event, then marks the client projects ended and aborts the active run of each opened project. It does not wait for the aborted runs, whose cleanup finishes later."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -58,17 +61,19 @@
 					{
 						"name": "DeviceSessionService.constructor.options",
 						"type": "DeviceSessionOptions",
-						"required": true
+						"required": true,
+						"description": "The options of one approved phone's session: its host and device identities (the phone receives them on attach), the grant callback that returns the device's current RemoteGrant, an optional epoch, an optional locked callback that returns undefined until the computer knows the screen state, and the registry, outbox, arbiter, providers, generator and optional cache that its projects and operations use. Host, device and epoch are taken when the session is built, grant runs again for each request and attach, locked runs for each attach, and a missing epoch makes the event log pick a random one."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeviceSessionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new DeviceSessionService, whose public wire property is the WireSessionService that serves the phone; it opens no project until a request names one. Events go only to the connection the phone attached, and until one attaches they are only recorded for replay."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
