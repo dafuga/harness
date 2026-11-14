@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native pattern element; native HTML content rules still apply."
+				"description": "An optional Svelte Snippet rendered as child content inside the native pattern element when supplied. If omitted or undefined, no child content is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgPattern",
 				"type": "markup",
-				"description": "The actual native pattern element, with forwarded attributes and content and no additional wrapper."
+				"description": "The component renders one native pattern element, forwards the remaining props to it as attributes, and renders the optional snippet inside it. It adds no wrapper element."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
