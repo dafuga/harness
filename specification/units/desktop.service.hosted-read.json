@@ -22,42 +22,111 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostedReadService.constructor.options",
 				"type": "HostedReadOptions",
-				"required": true
+				"required": true,
+				"description": "Settings for every read: origin, which must parse as an absolute URL that the session origin is compared with, and credentials(), which must resolve a non-null session whose origin matches and whose token and principalId are non-empty. authorityVersion, cache, and onCacheStatus are optional, while fetch and onDenied are inherited from RemoteHttpOptions and are not read by this service."
 			},
 			{
 				"name": "HostedReadService.read.query",
 				"type": "{ projectId: string; key: string }",
-				"required": true
+				"required": true,
+				"description": "The read's identity: projectId names the hosted project and key names the read within it, and with origin and principalId they form the cache scope, so any loaded or kept identity must match this projectId. The service checks the format of neither string, so callers supply them: discovery uses '$projects' with key 'projects', and project reads use the project's UUID from createProject.",
+				"examples": [
+					{
+						"projectId": "$projects",
+						"key": "projects"
+					},
+					{
+						"projectId": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
+						"key": "pure-helper-contracts-v1:/api/projects/0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93/snapshot?branch=main"
+					},
+					{
+						"projectId": "5c9e1a7d-2b40-4f63-a8d1-0e7b3c94f1a2",
+						"key": "pure-helper-contracts-v1:/api/projects/5c9e1a7d-2b40-4f63-a8d1-0e7b3c94f1a2/snapshot?commit=9d41c7e0a2f85b36c1e9d0472ab8f5e61c3d7a92"
+					}
+				]
 			},
 			{
 				"name": "HostedReadService.read.load",
 				"type": "() => Promise<{ value: T; identity?: CacheIdentity; principalId?: string }>",
-				"required": true
+				"required": true,
+				"description": "The caller's network read, run once after the credential and guard checks; it resolves to { value, identity?, principalId? }, and a principalId or identity that does not match this principal and projectId fails the read. Its rejection is served from the kept entry only when it is a HostedFailureValidator with category 'offline' and a kept entry exists, and is otherwise rethrown."
 			},
 			{
 				"name": "HostedReadService.read.validate",
 				"type": "(value: unknown) => T",
-				"required": true
+				"required": true,
+				"description": "Checks a kept value before it is served offline and supplies the value that read returns in that case; it is never called on a fresh load result. If it throws, the kept entry for this read's scope is discarded and its error is rethrown."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostedReadService.read",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved object { value, cachedAt, offline } of read: value is the loaded value unchecked on a fresh read, or the validate() result on an offline read. cachedAt is the ISO time the cache entry was written or kept, and it is undefined on a fresh read with no identity or no cache; offline is true only when the value was served from the kept entry.",
+				"examples": [
+					{
+						"value": [
+							{
+								"id": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
+								"name": "Field Reports",
+								"kind": "shared"
+							}
+						],
+						"offline": false
+					},
+					{
+						"value": [
+							{
+								"id": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
+								"name": "Field Reports",
+								"kind": "shared"
+							},
+							{
+								"id": "5c9e1a7d-2b40-4f63-a8d1-0e7b3c94f1a2",
+								"name": "Site Survey",
+								"kind": "shared"
+							}
+						],
+						"cachedAt": "2026-11-13T17:42:08.309Z",
+						"offline": false
+					},
+					{
+						"value": [
+							{
+								"id": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
+								"name": "Field Reports",
+								"kind": "shared"
+							}
+						],
+						"cachedAt": "2026-11-12T09:30:51.126Z",
+						"offline": true
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by read's own checks: 'A verified hosted session is required.' when credentials() resolves no session, the session origin differs from origin, or its token or principalId is empty; 'Hosted authority changed during the read.' when the session, authorityVersion, or cache generation differs from the one the read began with; and 'Hosted cache identity mismatch.', 'Incomplete hosted cache identity.', 'Invalid hosted cache revision.', or 'Invalid hosted collaboration revision.' when a loaded principalId or identity, or a kept identity, fails its checks. Errors from load, validate, credentials, authorityVersion, onCacheStatus, or the cache are otherwise rethrown unchanged, and a validate error on a kept value is rethrown after that entry is discarded."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by new URL(options.origin) inside credential() when origin is not an absolute URL, which is reached only after credentials() resolves a non-null session. It is raised before load runs and is not caught by the offline fallback, so no kept value is served."
+			},
+			{
+				"name": "HostedFailureValidator",
+				"type": "thrown",
+				"description": "A HostedFailureValidator that load() rejects with and read rethrows unchanged when its category is 'denied' or 'failed', or when it is 'offline' and no kept entry exists, including when no cache is configured; the class sets no name, so its .name is 'Error'. Before rethrowing a 'denied' failure, read purges the principal's cache at status 401 and this project's cache at any other status."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostedReadService.read",
@@ -65,27 +134,100 @@
 					{
 						"name": "HostedReadService.read.query",
 						"type": "{ projectId: string; key: string }",
-						"required": true
+						"required": true,
+						"description": "The read's identity: projectId names the hosted project and key names the read within it, and with origin and principalId they form the cache scope, so any loaded or kept identity must match this projectId. The service checks the format of neither string, so callers supply them: discovery uses '$projects' with key 'projects', and project reads use the project's UUID from createProject.",
+						"examples": [
+							{
+								"projectId": "$projects",
+								"key": "projects"
+							},
+							{
+								"projectId": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
+								"key": "pure-helper-contracts-v1:/api/projects/0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93/snapshot?branch=main"
+							},
+							{
+								"projectId": "5c9e1a7d-2b40-4f63-a8d1-0e7b3c94f1a2",
+								"key": "pure-helper-contracts-v1:/api/projects/5c9e1a7d-2b40-4f63-a8d1-0e7b3c94f1a2/snapshot?commit=9d41c7e0a2f85b36c1e9d0472ab8f5e61c3d7a92"
+							}
+						]
 					},
 					{
 						"name": "HostedReadService.read.load",
 						"type": "() => Promise<{ value: T; identity?: CacheIdentity; principalId?: string }>",
-						"required": true
+						"required": true,
+						"description": "The caller's network read, run once after the credential and guard checks; it resolves to { value, identity?, principalId? }, and a principalId or identity that does not match this principal and projectId fails the read. Its rejection is served from the kept entry only when it is a HostedFailureValidator with category 'offline' and a kept entry exists, and is otherwise rethrown."
 					},
 					{
 						"name": "HostedReadService.read.validate",
 						"type": "(value: unknown) => T",
-						"required": true
+						"required": true,
+						"description": "Checks a kept value before it is served offline and supplies the value that read returns in that case; it is never called on a fresh load result. If it throws, the kept entry for this read's scope is discarded and its error is rethrown."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedReadService.read",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved object { value, cachedAt, offline } of read: value is the loaded value unchecked on a fresh read, or the validate() result on an offline read. cachedAt is the ISO time the cache entry was written or kept, and it is undefined on a fresh read with no identity or no cache; offline is true only when the value was served from the kept entry.",
+						"examples": [
+							{
+								"value": [
+									{
+										"id": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
+										"name": "Field Reports",
+										"kind": "shared"
+									}
+								],
+								"offline": false
+							},
+							{
+								"value": [
+									{
+										"id": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
+										"name": "Field Reports",
+										"kind": "shared"
+									},
+									{
+										"id": "5c9e1a7d-2b40-4f63-a8d1-0e7b3c94f1a2",
+										"name": "Site Survey",
+										"kind": "shared"
+									}
+								],
+								"cachedAt": "2026-11-13T17:42:08.309Z",
+								"offline": false
+							},
+							{
+								"value": [
+									{
+										"id": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
+										"name": "Field Reports",
+										"kind": "shared"
+									}
+								],
+								"cachedAt": "2026-11-12T09:30:51.126Z",
+								"offline": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by read's own checks: 'A verified hosted session is required.' when credentials() resolves no session, the session origin differs from origin, or its token or principalId is empty; 'Hosted authority changed during the read.' when the session, authorityVersion, or cache generation differs from the one the read began with; and 'Hosted cache identity mismatch.', 'Incomplete hosted cache identity.', 'Invalid hosted cache revision.', or 'Invalid hosted collaboration revision.' when a loaded principalId or identity, or a kept identity, fails its checks. Errors from load, validate, credentials, authorityVersion, onCacheStatus, or the cache are otherwise rethrown unchanged, and a validate error on a kept value is rethrown after that entry is discarded."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by new URL(options.origin) inside credential() when origin is not an absolute URL, which is reached only after credentials() resolves a non-null session. It is raised before load runs and is not caught by the offline fallback, so no kept value is served."
+					},
+					{
+						"name": "HostedFailureValidator",
+						"type": "thrown",
+						"description": "A HostedFailureValidator that load() rejects with and read rethrows unchanged when its category is 'denied' or 'failed', or when it is 'offline' and no kept entry exists, including when no cache is configured; the class sets no name, so its .name is 'Error'. Before rethrowing a 'denied' failure, read purges the principal's cache at status 401 and this project's cache at any other status."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -95,17 +237,19 @@
 					{
 						"name": "HostedReadService.constructor.options",
 						"type": "HostedReadOptions",
-						"required": true
+						"required": true,
+						"description": "Settings for every read: origin, which must parse as an absolute URL that the session origin is compared with, and credentials(), which must resolve a non-null session whose origin matches and whose token and principalId are non-empty. authorityVersion, cache, and onCacheStatus are optional, while fetch and onDenied are inherited from RemoteHttpOptions and are not read by this service."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedReadService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The HostedReadService instance the constructor creates, which keeps options privately and exposes read as its only public method."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
