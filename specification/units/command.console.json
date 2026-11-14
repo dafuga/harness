@@ -12,22 +12,24 @@
 		"symbols": ["registerConsoleCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerConsoleCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander Command that the `console` command is added to as a subcommand. The function uses it only for `program.command('console')` and does not check it first, so it must be a Command."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerConsoleCommand",
-				"type": "Command"
+				"type": "Command",
+				"description": "The `console` Command created by `program.command('console')`, not `program` itself. It is returned after the install, objects, uninstall and restore subcommands have been registered on it."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerConsoleCommand",
@@ -35,17 +37,19 @@
 					{
 						"name": "registerConsoleCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander Command that the `console` command is added to as a subcommand. The function uses it only for `program.command('console')` and does not check it first, so it must be a Command."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerConsoleCommand",
-						"type": "Command"
+						"type": "Command",
+						"description": "The `console` Command created by `program.command('console')`, not `program` itself. It is returned after the install, objects, uninstall and restore subcommands have been registered on it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
