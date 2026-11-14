@@ -21,37 +21,67 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostedProjectService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "The project session whose projectId, busy and pending fields are read when a project is selected. The service also increments and decrements pending on this same object around remote snapshots and dispatched hosted calls, and never replaces the reference."
 			},
 			{
 				"name": "HostedProjectService.constructor.remote",
 				"type": "RemoteProjectPort",
-				"required": true
+				"required": true,
+				"description": "The hosted project port that supplies shared project data and actions; listProjects, snapshot, capabilities and addComment are called on it directly, and available, agent, evidence and artifact are checked before use. The read methods entity, source, image, messages and history are looked up on it by name when read, and a missing one makes that read throw 'Desktop operation unavailable.'"
 			},
 			{
 				"name": "HostedProjectService.wrap.local",
 				"type": "Bridge",
-				"required": true
+				"required": true,
+				"description": "The local desktop bridge that wrap places behind the Proxy as its target, and that the proxy calls for listProjects, selectProject and openProject. listProjects and selectProject are called with non-null assertions, so the bridge must provide both, and any key the proxy does not intercept is read from it unchanged."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostedProjectService.wrap",
-				"type": "Bridge"
+				"type": "Bridge",
+				"description": "The Proxy over the local bridge that wrap returns. Each property read decides its result at that moment: listProjects is replaced by a function that returns the local projects followed by the remote ones (remote ones are left out when remote.available() resolves to false), selectProject and openProject are replaced by this service's functions, hostedStatus, connectHosted, disconnectHosted and gameCreate come from the local bridge, and any other key is a dispatch to the selected hosted project or comes from the local bridge when none is selected."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown, rejecting the call, when selectProject is called while session.busy or session.pending is truthy, unless no hosted project is selected and the requested projectId equals session.projectId, which is the local project already open. Its message is 'Wait for the active project operation.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown, rejecting the call, when a call dispatched to the selected hosted project passes a projectId that differs from it; a call that leaves projectId undefined is handled with the selected projectId. Its message is 'The requested project is not selected.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown, rejecting the call, for startRun, cancelRun, openThread and approve when the remote port has no agent method; providers returns an empty list in that case instead. Its message is 'Agent runs and source mutations are unavailable in shared projects without a connected executor.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown, rejecting the call, when evidence or artifact is called while a hosted project is selected and the remote port has no method with that name. Its message is 'Recorded evidence of a shared project is not read on this computer yet.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown, rejecting the call, for a call made while a hosted project is selected whose key is not one of providers, startRun, cancelRun, openThread, approve, capabilities, pendingComments, addComment, snapshot, entity, source, image, messages, history, evidence or artifact. Its message is 'Agent runs and source mutations are unavailable in shared projects.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown, rejecting the call, when snapshot, entity, source, image, messages or history is called while a hosted project is selected and the remote port has no method with that name. Its message is 'Desktop operation unavailable.'"
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostedProjectService.wrap",
@@ -59,17 +89,19 @@
 					{
 						"name": "HostedProjectService.wrap.local",
 						"type": "Bridge",
-						"required": true
+						"required": true,
+						"description": "The local desktop bridge that wrap places behind the Proxy as its target, and that the proxy calls for listProjects, selectProject and openProject. listProjects and selectProject are called with non-null assertions, so the bridge must provide both, and any key the proxy does not intercept is read from it unchanged."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedProjectService.wrap",
-						"type": "Bridge"
+						"type": "Bridge",
+						"description": "The Proxy over the local bridge that wrap returns. Each property read decides its result at that moment: listProjects is replaced by a function that returns the local projects followed by the remote ones (remote ones are left out when remote.available() resolves to false), selectProject and openProject are replaced by this service's functions, hostedStatus, connectHosted, disconnectHosted and gameCreate come from the local bridge, and any other key is a dispatch to the selected hosted project or comes from the local bridge when none is selected."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,22 +111,25 @@
 					{
 						"name": "HostedProjectService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "The project session whose projectId, busy and pending fields are read when a project is selected. The service also increments and decrements pending on this same object around remote snapshots and dispatched hosted calls, and never replaces the reference."
 					},
 					{
 						"name": "HostedProjectService.constructor.remote",
 						"type": "RemoteProjectPort",
-						"required": true
+						"required": true,
+						"description": "The hosted project port that supplies shared project data and actions; listProjects, snapshot, capabilities and addComment are called on it directly, and available, agent, evidence and artifact are checked before use. The read methods entity, source, image, messages and history are looked up on it by name when read, and a missing one makes that read throw 'Desktop operation unavailable.'"
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedProjectService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The HostedProjectService object that new creates, which holds session and remote as private fields and starts with selected set to null, so no hosted project is selected."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
