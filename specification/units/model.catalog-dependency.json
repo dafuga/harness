@@ -34,59 +34,101 @@
 				"name": "CatalogDependency.id",
 				"type": "string",
 				"required": true,
-				"description": "Stored row identity; the model passes it to the adapter without generating a key."
+				"description": "Required string row key included in create attributes and passed to find, update, and delete; the model does not generate, normalize, or validate it.",
+				"examples": ["cd-001"]
 			},
 			{
 				"name": "CatalogDependency.entityId",
 				"type": "string",
 				"required": true,
-				"description": "Stored entity identity referenced by this membership or relationship."
+				"description": "Required string field in each CatalogDependencyAttributes row and create input; the model forwards it without resolving or validating it.",
+				"examples": ["entity-42"]
 			},
 			{
 				"name": "CatalogDependency.targetId",
 				"type": "string",
 				"required": true,
-				"description": "Stable target unit ID of the directed relationship."
+				"description": "Required string field in each CatalogDependencyAttributes row and create input; the model forwards it without parsing or validating it.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "CatalogDependency.via",
 				"type": "string",
 				"required": true,
-				"description": "Declared or indexed relationship kind."
+				"description": "Required string field in each CatalogDependencyAttributes row and create input; the model forwards it without interpreting or validating it.",
+				"examples": ["import"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogDependency.find",
 				"type": "Promise<CatalogDependencyAttributes | null>",
-				"description": "Promise of the matching catalog_dependencies row, or null according to the adapter lookup result."
+				"description": "Resolves to the adapter row for the supplied id, or null, and is used for key lookup. The model returns the adapter result directly without validating or transforming it.",
+				"examples": [
+					null,
+					{
+						"id": "cd-001",
+						"entityId": "entity-42",
+						"targetId": "reports.component.evidence-grid",
+						"via": "import"
+					}
+				]
 			},
 			{
 				"name": "CatalogDependency.findBy",
 				"type": "Promise<CatalogDependencyAttributes[]>",
-				"description": "Promise of catalog_dependencies rows matching the supplied attribute filters."
+				"description": "Resolves to the array returned by adapter.findBy for a shallow copy of the supplied partial fields. The model does not sort, validate, or otherwise transform the rows.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "cd-001",
+							"entityId": "entity-42",
+							"targetId": "reports.component.evidence-grid",
+							"via": "import"
+						}
+					]
+				]
 			},
 			{
 				"name": "CatalogDependency.create",
 				"type": "Promise<CatalogDependencyAttributes>",
-				"description": "Promise of the catalog_dependencies row returned by the adapter after creation."
+				"description": "Resolves to the row returned by adapter.create after the input is shallow-copied for insertion. The model does not generate an id, validate fields, or post-process the result.",
+				"examples": [
+					{
+						"id": "cd-001",
+						"entityId": "entity-42",
+						"targetId": "reports.component.evidence-grid",
+						"via": "import"
+					}
+				]
 			},
 			{
 				"name": "CatalogDependency.update",
 				"type": "Promise<CatalogDependencyAttributes | null>",
-				"description": "Promise of the updated catalog_dependencies row, or null according to the adapter update result."
+				"description": "Resolves to the updated row returned by adapter.update, or null. The key and shallow-copied partial patch are passed through without model-side validation or defaulting.",
+				"examples": [
+					null,
+					{
+						"id": "cd-001",
+						"entityId": "entity-42",
+						"targetId": "reports.component.evidence-grid",
+						"via": "import"
+					}
+				]
 			},
 			{
 				"name": "CatalogDependency.delete",
 				"type": "Promise<boolean>",
-				"description": "Promise of the adapter deletion result for the requested catalog_dependencies row."
+				"description": "Resolves to the boolean returned by adapter.delete for the supplied id. The model does not reinterpret the deletion result.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Persistence operation failure",
-				"type": "propagated",
-				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+				"type": "thrown",
+				"description": "Synchronous adapter exceptions and rejections from adapter promises pass through unchanged; getters that throw while findBy, create, or update copies an argument also escape. The model does not catch or wrap these failures."
 			}
 		],
 		"errorStatus": "declared",
@@ -98,27 +140,37 @@
 						"name": "CatalogDependency.find.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
+						"description": "PersistenceAdapter used for the catalog_dependencies lookup; the model passes it the table name and id and does not manage its lifecycle."
 					},
 					{
 						"name": "CatalogDependency.find.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "String row key forwarded to adapter.find for lookup; the model does not parse, normalize, or validate its format.",
+						"examples": ["cd-001"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.find",
 						"type": "Promise<CatalogDependencyAttributes | null>",
-						"description": "Promise of the matching catalog_dependencies row, or null according to the adapter lookup result."
+						"description": "Resolves to the adapter row for the supplied id, or null, and is used for key lookup. The model returns the adapter result directly without validating or transforming it.",
+						"examples": [
+							null,
+							{
+								"id": "cd-001",
+								"entityId": "entity-42",
+								"targetId": "reports.component.evidence-grid",
+								"via": "import"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Synchronous exceptions from adapter.find and rejections from its returned promise propagate unchanged. This method does not catch or wrap them."
 					}
 				],
 				"errorStatus": "declared"
@@ -130,27 +182,44 @@
 						"name": "CatalogDependency.findBy.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
+						"description": "PersistenceAdapter used for the catalog_dependencies filter query; the model passes it the table name and a shallow copy of the fields."
 					},
 					{
 						"name": "CatalogDependency.findBy.fields",
 						"type": "Partial<CatalogDependencyAttributes>",
 						"required": true,
-						"description": "Partial stored attributes used as equality filters for catalog_dependencies."
+						"description": "Partial row attributes passed to adapter.findBy as filters in a shallow copy. The model does not rewrite the field values.",
+						"examples": [
+							{
+								"entityId": "entity-42",
+								"via": "import"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.findBy",
 						"type": "Promise<CatalogDependencyAttributes[]>",
-						"description": "Promise of catalog_dependencies rows matching the supplied attribute filters."
+						"description": "Resolves to the array returned by adapter.findBy for a shallow copy of the supplied partial fields. The model does not sort, validate, or otherwise transform the rows.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "cd-001",
+									"entityId": "entity-42",
+									"targetId": "reports.component.evidence-grid",
+									"via": "import"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Exceptions from adapter.findBy, rejections from its returned promise, and getters that throw while copying fields propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -162,27 +231,43 @@
 						"name": "CatalogDependency.create.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
+						"description": "PersistenceAdapter used to create a catalog_dependencies row; the model passes it the table name and a shallow copy of the input."
 					},
 					{
 						"name": "CatalogDependency.create.input",
 						"type": "CatalogDependencyCreateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_dependencies; omitted update fields remain the adapter's responsibility."
+						"description": "Full CatalogDependencyAttributes object with the four required string fields, shallow-copied for adapter.create. The model does not fill an id or validate the values.",
+						"examples": [
+							{
+								"id": "cd-001",
+								"entityId": "entity-42",
+								"targetId": "reports.component.evidence-grid",
+								"via": "import"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.create",
 						"type": "Promise<CatalogDependencyAttributes>",
-						"description": "Promise of the catalog_dependencies row returned by the adapter after creation."
+						"description": "Resolves to the row returned by adapter.create after the input is shallow-copied for insertion. The model does not generate an id, validate fields, or post-process the result.",
+						"examples": [
+							{
+								"id": "cd-001",
+								"entityId": "entity-42",
+								"targetId": "reports.component.evidence-grid",
+								"via": "import"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Exceptions from adapter.create, rejections from its returned promise, and getters that throw while copying the input propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -194,33 +279,48 @@
 						"name": "CatalogDependency.update.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
+						"description": "PersistenceAdapter used to update a catalog_dependencies row; the model passes it the table name, id, and a shallow copy of the patch."
 					},
 					{
 						"name": "CatalogDependency.update.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "String row key forwarded to adapter.update; the model does not parse, normalize, or validate its format.",
+						"examples": ["cd-001"]
 					},
 					{
 						"name": "CatalogDependency.update.input",
 						"type": "CatalogDependencyUpdateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_dependencies; omitted update fields remain the adapter's responsibility."
+						"description": "Partial patch containing only entityId, targetId, and/or via; the declared update type excludes id. The model shallow-copies the patch and leaves omitted-field behavior to the adapter.",
+						"examples": [
+							{
+								"targetId": "reports.component.evidence-grid"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.update",
 						"type": "Promise<CatalogDependencyAttributes | null>",
-						"description": "Promise of the updated catalog_dependencies row, or null according to the adapter update result."
+						"description": "Resolves to the updated row returned by adapter.update, or null. The key and shallow-copied partial patch are passed through without model-side validation or defaulting.",
+						"examples": [
+							null,
+							{
+								"id": "cd-001",
+								"entityId": "entity-42",
+								"targetId": "reports.component.evidence-grid",
+								"via": "import"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Exceptions from adapter.update, rejections from its returned promise, and getters that throw while copying the patch propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -232,27 +332,29 @@
 						"name": "CatalogDependency.delete.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_dependencies table; the model owns no connection lifecycle."
+						"description": "PersistenceAdapter used to delete a catalog_dependencies row; the model passes it the table name and id without managing its lifecycle."
 					},
 					{
 						"name": "CatalogDependency.delete.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "String row key forwarded to adapter.delete; the model does not parse, normalize, or validate its format.",
+						"examples": ["cd-001"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogDependency.delete",
 						"type": "Promise<boolean>",
-						"description": "Promise of the adapter deletion result for the requested catalog_dependencies row."
+						"description": "Resolves to the boolean returned by adapter.delete for the supplied id. The model does not reinterpret the deletion result.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Synchronous exceptions from adapter.delete and rejections from its returned promise propagate unchanged. This method does not catch or wrap them."
 					}
 				],
 				"errorStatus": "declared"
