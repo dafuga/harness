@@ -26,31 +26,72 @@
 		"outputs": [
 			{
 				"name": "impact",
-				"type": "ImpactOutput"
+				"type": "ImpactOutput",
+				"description": "Reports the reverse dependency closure of changed IDs plus uncertain IDs only when changed is nonempty; each affected record carries the node ID, nearest seed distance, graph path (via), presence, and seed marker. affected follows head-node order then base-only-node order, uncovered uses head coverage for surviving IDs and base coverage for removed IDs, and unknown lists changed IDs absent from both graphs.",
+				"examples": [
+					{
+						"affected": [
+							{
+								"id": "test",
+								"distance": 2,
+								"via": "both",
+								"presence": "both",
+								"seed": null
+							},
+							{
+								"id": "service",
+								"distance": 1,
+								"via": "both",
+								"presence": "both",
+								"seed": null
+							},
+							{
+								"id": "util",
+								"distance": 0,
+								"via": "both",
+								"presence": "both",
+								"seed": "changed"
+							}
+						],
+						"uncovered": [],
+						"unknown": []
+					}
+				]
 			},
 			{
 				"name": "version",
-				"type": "{ contract: \"impact-kernel/1\" }"
+				"type": "{ contract: \"impact-kernel/1\" }",
+				"description": "The version operation returns the fixed contract identifier implemented by this kernel. Its value is always impact-kernel/1.",
+				"examples": [
+					{
+						"contract": "impact-kernel/1"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "invalid-json",
-				"type": "refused"
+				"type": "thrown",
+				"description": "Returned when the request text is malformed JSON or contains values the portable parser refuses, including out-of-range numbers, lone surrogate escapes, or nesting deeper than 64 levels. The failure envelope uses the message \"request is not valid JSON\"."
 			},
 			{
 				"name": "invalid-request",
-				"type": "refused"
+				"type": "thrown",
+				"description": "Returned when the request is not an object with a string operation, when impact input is not an object, or when an impact field has the wrong JSON shape. The failure envelope identifies the request problem or malformed impact field."
 			},
 			{
 				"name": "invalid-graph",
-				"type": "refused"
+				"type": "thrown",
+				"description": "Returned when a base or head graph repeats a node ID or an edge endpoint is outside that graph’s node array. Malformed edge-pair or index JSON is reported as invalid-request instead."
 			},
 			{
 				"name": "unknown-operation",
-				"type": "refused"
+				"type": "thrown",
+				"description": "Returned when operation is a string other than version or impact. The failure message includes the unsupported operation value."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
