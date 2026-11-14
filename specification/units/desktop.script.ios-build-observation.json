@@ -15,36 +15,52 @@
 		"symbols": ["buildObservation", "finishObservation", "BuildObservation", "BuildObservation"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "buildObservation.read",
 				"type": "(signal: AbortSignal) => Promise<boolean>",
-				"required": true
+				"required": true,
+				"description": "The probe that look() calls with an AbortSignal, with at most one call in flight; its resolved boolean becomes the look() result. A rejection, a synchronous throw, or no settlement within 5000 ms closes the observation, aborting that signal and making look() resolve false."
 			},
 			{
 				"name": "finishObservation.settle",
 				"type": "() => Promise<string | null>",
-				"required": true
+				"required": true,
+				"description": "The callback that finishObservation runs only after reads[0].look() resolves true; its resolved value is returned unchanged, and a throw or rejection becomes the settlement-failure message. It has no timeout of its own, so a promise that never settles leaves finishObservation pending."
 			},
 			{
 				"name": "finishObservation.reads",
 				"type": "BuildObservation[]",
-				"required": true
+				"required": true,
+				"description": "The observations to finish: only reads[0] is probed with look(), and every entry is then closed in the finally block. An empty array leaves reads[0] undefined, so the call resolves with the settlement-failure message, while a null or undefined entry makes the call reject with a TypeError."
 			}
 		],
 		"outputs": [
 			{
 				"name": "buildObservation",
-				"type": "BuildObservation"
+				"type": "BuildObservation",
+				"description": "The handle buildObservation returns synchronously, with look() and close() as its only members; the AbortSignal is never exposed on it. Once close() has run, which also happens after a failed probe or the 5000 ms timeout, look() resolves false without calling read again, and while a probe is in flight it returns that same pending result."
 			},
 			{
 				"name": "finishObservation",
-				"type": "Promise<string | null>"
+				"type": "Promise<string | null>",
+				"description": "The promise resolves with settle's resolved value when reads[0].look() resolves true and settle resolves, with 'Build process observation failed; shared or unknown processes were not signalled.' when look() resolves false, or with 'Build process settlement failed; shared or unknown processes were not signalled.' when settle throws or rejects. It rejects only for invalid reads, as listed under errors, and stays pending for as long as settle does.",
+				"examples": [
+					null,
+					"Build process observation failed; shared or unknown processes were not signalled.",
+					"Build process settlement failed; shared or unknown processes were not signalled."
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "finishObservation rejects with this TypeError when reads is not iterable (such as null or undefined), or when an entry is null, undefined, or has no callable close(), because the finally block calls close() on each entry without a guard. The rejection replaces any message or settled value the call would otherwise return, and the entries after the failing one are not closed."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "buildObservation",
@@ -52,17 +68,19 @@
 					{
 						"name": "buildObservation.read",
 						"type": "(signal: AbortSignal) => Promise<boolean>",
-						"required": true
+						"required": true,
+						"description": "The probe that look() calls with an AbortSignal, with at most one call in flight; its resolved boolean becomes the look() result. A rejection, a synchronous throw, or no settlement within 5000 ms closes the observation, aborting that signal and making look() resolve false."
 					}
 				],
 				"outputs": [
 					{
 						"name": "buildObservation",
-						"type": "BuildObservation"
+						"type": "BuildObservation",
+						"description": "The handle buildObservation returns synchronously, with look() and close() as its only members; the AbortSignal is never exposed on it. Once close() has run, which also happens after a failed probe or the 5000 ms timeout, look() resolves false without calling read again, and while a probe is in flight it returns that same pending result."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "finishObservation",
@@ -70,22 +88,36 @@
 					{
 						"name": "finishObservation.settle",
 						"type": "() => Promise<string | null>",
-						"required": true
+						"required": true,
+						"description": "The callback that finishObservation runs only after reads[0].look() resolves true; its resolved value is returned unchanged, and a throw or rejection becomes the settlement-failure message. It has no timeout of its own, so a promise that never settles leaves finishObservation pending."
 					},
 					{
 						"name": "finishObservation.reads",
 						"type": "BuildObservation[]",
-						"required": true
+						"required": true,
+						"description": "The observations to finish: only reads[0] is probed with look(), and every entry is then closed in the finally block. An empty array leaves reads[0] undefined, so the call resolves with the settlement-failure message, while a null or undefined entry makes the call reject with a TypeError."
 					}
 				],
 				"outputs": [
 					{
 						"name": "finishObservation",
-						"type": "Promise<string | null>"
+						"type": "Promise<string | null>",
+						"description": "The promise resolves with settle's resolved value when reads[0].look() resolves true and settle resolves, with 'Build process observation failed; shared or unknown processes were not signalled.' when look() resolves false, or with 'Build process settlement failed; shared or unknown processes were not signalled.' when settle throws or rejects. It rejects only for invalid reads, as listed under errors, and stays pending for as long as settle does.",
+						"examples": [
+							null,
+							"Build process observation failed; shared or unknown processes were not signalled.",
+							"Build process settlement failed; shared or unknown processes were not signalled."
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "finishObservation rejects with this TypeError when reads is not iterable (such as null or undefined), or when an entry is null, undefined, or has no callable close(), because the finally block calls close() on each entry without a guard. The rejection replaces any message or settled value the call would otherwise return, and the entries after the failing one are not closed."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
