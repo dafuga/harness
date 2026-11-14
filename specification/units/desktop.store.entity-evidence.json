@@ -21,21 +21,23 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "createEntityEvidenceStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Each call returns a new, separate EntityEvidenceState on which show(), url() and reset() act, starting with status 'idle', a null result, an empty error, an undefined read and empty refusals. It reads no evidence until show() is called, reset() revokes the object URLs made by url(), and show() runs reset() whenever the target or bridge differs from the one shown."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "url() rejects with this Error, thrown in its private made() step, when the capture cannot be queried: no result or scope is shown, no bridge is set, or artifactQuery returns no query for that side and file (message: 'This capture is not listed by the evidence that is shown.'). It is also thrown with the message 'This capture is no longer shown.' when reset() runs, directly or through show() with a changed target or bridge, while the bytes are loading; a rejection from artifactBytes is not caught here, so the caller of url() receives it unchanged."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createEntityEvidenceStore",
@@ -43,11 +45,12 @@
 				"outputs": [
 					{
 						"name": "createEntityEvidenceStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Each call returns a new, separate EntityEvidenceState on which show(), url() and reset() act, starting with status 'idle', a null result, an empty error, an undefined read and empty refusals. It reads no evidence until show() is called, reset() revokes the object URLs made by url(), and show() runs reset() whenever the target or bridge differs from the one shown."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
