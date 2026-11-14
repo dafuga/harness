@@ -18,47 +18,142 @@
 				"name": "discoverCleanCodeFiles.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository directory used to make collected paths relative and run the bounded Git ignore probe."
+				"description": "Repository directory: collected paths are made relative to it, and the bounded git check-ignore probe runs with it as the working directory. A file outside this directory gets a relative path that starts with '../'.",
+				"examples": ["/workspace/app", "/home/runner/work/app/app", "/srv/builds/web-client"]
 			},
 			{
 				"name": "discoverCleanCodeFiles.collected",
 				"type": "CollectedFiles",
 				"required": true,
-				"description": "Collected files and ignored artifact or symlink paths to classify for the Clean Code review."
+				"description": "The output of the audit file collector: `files` holds each candidate's `path`, built with `join` from the scanned root, and its lowercase `extension` with the leading dot (empty when the name has none), while `ignoredPaths` holds artifact-directory and symlink entries that are reported as excluded. The `dirs` field is not read by this function.",
+				"examples": [
+					{
+						"files": [
+							{
+								"path": "/workspace/app/README.md",
+								"extension": ".md"
+							},
+							{
+								"path": "/workspace/app/scripts/local-setup.sh",
+								"extension": ".sh"
+							},
+							{
+								"path": "/workspace/app/src/audit/cleanCodeDiscovery.ts",
+								"extension": ".ts"
+							},
+							{
+								"path": "/workspace/app/src/legacy/parser.ts",
+								"extension": ".ts"
+							}
+						],
+						"dirs": ["docs/", "scripts/", "src/", "src/audit/", "src/legacy/"],
+						"ignoredPaths": ["dist/", "docs/current-link"]
+					},
+					{
+						"files": [
+							{
+								"path": "/workspace/app/packages/web/src/app.svelte",
+								"extension": ".svelte"
+							}
+						],
+						"dirs": ["packages/", "packages/web/", "packages/web/src/"],
+						"ignoredPaths": ["packages/web/node_modules/", "packages/web/.svelte-kit/"]
+					}
+				]
 			},
 			{
 				"name": "discoverCleanCodeFiles.exclusions",
 				"type": "string[]",
 				"required": true,
-				"description": "Configured relative-path glob patterns excluded before source-extension selection."
+				"description": "Configured glob or directory-prefix patterns, each tested with matchesExclusion against collected file paths only and never against ignoredPaths entries. The test runs after the Git-ignored and sensitive-path checks and before the generated-source and source-extension checks; an empty array adds no configured exclusions.",
+				"examples": [
+					["src/legacy/**"],
+					["docs/", "**/*.gen.ts"],
+					[]
+				]
 			},
 			{
 				"name": "matchesExclusion.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative path being checked against the configured exclusion pattern."
+				"description": "Repository-relative path that is compared exactly as given, with no separator or './' normalization, so it must already use '/' separators. The comparison is case-sensitive.",
+				"examples": [
+					"src/legacy/parser.ts",
+					"docs/guide/index.md",
+					"packages/web/src/api/client.gen.ts"
+				]
 			},
 			{
 				"name": "matchesExclusion.pattern",
 				"type": "string",
 				"required": true,
-				"description": "Slash-normalized glob with *, ** or ? tokens, or a directory prefix ending in a slash."
+				"description": "A glob or directory prefix where `*` matches any characters except '/', `**` matches any characters including '/', `**/` matches nothing or any leading path ending in '/', and `?` matches one character except '/', with a pattern ending in '/' matching every path that starts with it. Before matching, backslashes become '/' and one leading './' is removed.",
+				"examples": ["src/legacy/**", "docs/", "**/*.gen.ts"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "discoverCleanCodeFiles",
 				"type": "ReviewCoverage",
-				"description": "Sorted selected files, unsupported files and excluded paths with reasons; a failed Git probe contributes no Git exclusions."
+				"description": "Coverage split into `selectedFiles` (source-extension files that pass every exclusion check), `unsupportedFiles` (other non-excluded files), both sorted by path, and `excludedPaths` (collector artifact and symlink entries first, then excluded files sorted by path, each with its reason). A Git probe that exits non-zero or fails with a non-timeout error adds no 'Git ignored' entries, and a timeout throws instead.",
+				"examples": [
+					{
+						"selectedFiles": ["src/audit/cleanCodeDiscovery.ts"],
+						"excludedPaths": [
+							{
+								"path": "dist/",
+								"reason": "Artifact directory or symlink"
+							},
+							{
+								"path": "docs/current-link",
+								"reason": "Artifact directory or symlink"
+							},
+							{
+								"path": "scripts/local-setup.sh",
+								"reason": "Git ignored"
+							},
+							{
+								"path": "src/legacy/parser.ts",
+								"reason": "Configured exclusion"
+							}
+						],
+						"unsupportedFiles": ["README.md"]
+					},
+					{
+						"selectedFiles": ["src/app/main.ts"],
+						"excludedPaths": [
+							{
+								"path": "packages/api/.env.local",
+								"reason": "Sensitive or third-party path"
+							},
+							{
+								"path": "src/api/client.gen.ts",
+								"reason": "Generated source"
+							},
+							{
+								"path": "vendor/lib/parser.js",
+								"reason": "Sensitive or third-party path"
+							}
+						],
+						"unsupportedFiles": ["assets/logo.png"]
+					}
+				]
 			},
 			{
 				"name": "matchesExclusion",
 				"type": "boolean",
-				"description": "Whether the relative path matches the glob or directory prefix."
+				"description": "True when the whole path matches the glob or when a directory-prefix pattern is a prefix of the path. The match is case-sensitive and the path is not normalized.",
+				"examples": [true, false]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by discoverCleanCodeFiles as `new Error('Cannot safely determine ignored files for clean code review.')` with the caught probe error as `cause`, only when that error has the code ETIMEDOUT. Other probe failures are not thrown and contribute no Git-ignored exclusions."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "discoverCleanCodeFiles",
@@ -67,29 +162,117 @@
 						"name": "discoverCleanCodeFiles.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository directory used to make collected paths relative and run the bounded Git ignore probe."
+						"description": "Repository directory: collected paths are made relative to it, and the bounded git check-ignore probe runs with it as the working directory. A file outside this directory gets a relative path that starts with '../'.",
+						"examples": ["/workspace/app", "/home/runner/work/app/app", "/srv/builds/web-client"]
 					},
 					{
 						"name": "discoverCleanCodeFiles.collected",
 						"type": "CollectedFiles",
 						"required": true,
-						"description": "Collected files and ignored artifact or symlink paths to classify for the Clean Code review."
+						"description": "The output of the audit file collector: `files` holds each candidate's `path`, built with `join` from the scanned root, and its lowercase `extension` with the leading dot (empty when the name has none), while `ignoredPaths` holds artifact-directory and symlink entries that are reported as excluded. The `dirs` field is not read by this function.",
+						"examples": [
+							{
+								"files": [
+									{
+										"path": "/workspace/app/README.md",
+										"extension": ".md"
+									},
+									{
+										"path": "/workspace/app/scripts/local-setup.sh",
+										"extension": ".sh"
+									},
+									{
+										"path": "/workspace/app/src/audit/cleanCodeDiscovery.ts",
+										"extension": ".ts"
+									},
+									{
+										"path": "/workspace/app/src/legacy/parser.ts",
+										"extension": ".ts"
+									}
+								],
+								"dirs": ["docs/", "scripts/", "src/", "src/audit/", "src/legacy/"],
+								"ignoredPaths": ["dist/", "docs/current-link"]
+							},
+							{
+								"files": [
+									{
+										"path": "/workspace/app/packages/web/src/app.svelte",
+										"extension": ".svelte"
+									}
+								],
+								"dirs": ["packages/", "packages/web/", "packages/web/src/"],
+								"ignoredPaths": ["packages/web/node_modules/", "packages/web/.svelte-kit/"]
+							}
+						]
 					},
 					{
 						"name": "discoverCleanCodeFiles.exclusions",
 						"type": "string[]",
 						"required": true,
-						"description": "Configured relative-path glob patterns excluded before source-extension selection."
+						"description": "Configured glob or directory-prefix patterns, each tested with matchesExclusion against collected file paths only and never against ignoredPaths entries. The test runs after the Git-ignored and sensitive-path checks and before the generated-source and source-extension checks; an empty array adds no configured exclusions.",
+						"examples": [
+							["src/legacy/**"],
+							["docs/", "**/*.gen.ts"],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "discoverCleanCodeFiles",
 						"type": "ReviewCoverage",
-						"description": "Sorted selected files, unsupported files and excluded paths with reasons; a failed Git probe contributes no Git exclusions."
+						"description": "Coverage split into `selectedFiles` (source-extension files that pass every exclusion check), `unsupportedFiles` (other non-excluded files), both sorted by path, and `excludedPaths` (collector artifact and symlink entries first, then excluded files sorted by path, each with its reason). A Git probe that exits non-zero or fails with a non-timeout error adds no 'Git ignored' entries, and a timeout throws instead.",
+						"examples": [
+							{
+								"selectedFiles": ["src/audit/cleanCodeDiscovery.ts"],
+								"excludedPaths": [
+									{
+										"path": "dist/",
+										"reason": "Artifact directory or symlink"
+									},
+									{
+										"path": "docs/current-link",
+										"reason": "Artifact directory or symlink"
+									},
+									{
+										"path": "scripts/local-setup.sh",
+										"reason": "Git ignored"
+									},
+									{
+										"path": "src/legacy/parser.ts",
+										"reason": "Configured exclusion"
+									}
+								],
+								"unsupportedFiles": ["README.md"]
+							},
+							{
+								"selectedFiles": ["src/app/main.ts"],
+								"excludedPaths": [
+									{
+										"path": "packages/api/.env.local",
+										"reason": "Sensitive or third-party path"
+									},
+									{
+										"path": "src/api/client.gen.ts",
+										"reason": "Generated source"
+									},
+									{
+										"path": "vendor/lib/parser.js",
+										"reason": "Sensitive or third-party path"
+									}
+								],
+								"unsupportedFiles": ["assets/logo.png"]
+							}
+						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by discoverCleanCodeFiles as `new Error('Cannot safely determine ignored files for clean code review.')` with the caught probe error as `cause`, only when that error has the code ETIMEDOUT. Other probe failures are not thrown and contribute no Git-ignored exclusions."
+					}
+				],
 				"errorStatus": "declared"
 			},
 			{
@@ -99,20 +282,27 @@
 						"name": "matchesExclusion.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative path being checked against the configured exclusion pattern."
+						"description": "Repository-relative path that is compared exactly as given, with no separator or './' normalization, so it must already use '/' separators. The comparison is case-sensitive.",
+						"examples": [
+							"src/legacy/parser.ts",
+							"docs/guide/index.md",
+							"packages/web/src/api/client.gen.ts"
+						]
 					},
 					{
 						"name": "matchesExclusion.pattern",
 						"type": "string",
 						"required": true,
-						"description": "Slash-normalized glob with *, ** or ? tokens, or a directory prefix ending in a slash."
+						"description": "A glob or directory prefix where `*` matches any characters except '/', `**` matches any characters including '/', `**/` matches nothing or any leading path ending in '/', and `?` matches one character except '/', with a pattern ending in '/' matching every path that starts with it. Before matching, backslashes become '/' and one leading './' is removed.",
+						"examples": ["src/legacy/**", "docs/", "**/*.gen.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "matchesExclusion",
 						"type": "boolean",
-						"description": "Whether the relative path matches the glob or directory prefix."
+						"description": "True when the whole path matches the glob or when a directory-prefix pattern is a prefix of the path. The match is case-sensitive and the path is not normalized.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
