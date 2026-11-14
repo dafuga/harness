@@ -48,40 +48,79 @@
 				"name": "httpReferences.code",
 				"type": "string",
 				"required": true,
-				"description": "Script source to scan for fetch calls and statically readable request methods and URLs."
+				"description": "Source text parsed as TSX to find calls to the bare fetch identifier or event/window/globalThis/self.fetch. Other objects' fetch methods are ignored, and computed or missing arguments produce a null specifier with a call snippet.",
+				"examples": ["fetch('/api/users')", "window.fetch(`/api/${userId}`)"]
 			},
 			{
 				"name": "scanImports.code",
 				"type": "string",
 				"required": true,
-				"description": "Source text to scan for module references."
+				"description": "Source text whose references are selected by language. TypeScript scans imports, reexports, relative new URL references, import()/require() calls, and recognized fetch calls; Svelte scans script blocks and recognized <hx-...> atoms, CSS scans quoted @import, and other returns an empty array.",
+				"examples": [
+					"import type { User } from './models/user';\nfetch('/api/users');",
+					"@import url('./theme.css');"
+				]
 			},
 			{
 				"name": "scanImports.language",
 				"type": "SourceLanguage",
 				"required": true,
-				"description": "Source family: ts scans scripts, svelte scans its script blocks, css scans quoted @import references, and other returns no references."
+				"description": "Selects the scan branch: ts scans script references, svelte scans script blocks and recognized <hx-...> atoms, css scans quoted @import references, and other returns no references. These are the only accepted values.",
+				"examples": ["ts", "svelte", "css"]
 			},
 			{
 				"name": "svelteScripts.code",
 				"type": "string",
 				"required": true,
-				"description": "Svelte source from which script-block contents should be extracted."
+				"description": "Svelte source text searched for <script ...>...</script> blocks. A regular expression extracts each matched body in source order and does not parse scripts structurally.",
+				"examples": [
+					"<script>import './setup';</script>",
+					"<script context=\"module\">export const ready = true;</script>"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanImports",
 				"type": "SourceReference[]",
-				"description": "Source-ordered references with specifier or null, via and typeOnly, plus details for computed calls. Platform fetch URLs become HTTP references; interpolated segments stay unknown. Module member calls are excluded."
+				"description": "For ts, the array contains unique references ordered by source offset; css returns quoted @import matches, and svelte returns script references followed by recognized <hx-...> atom imports. Unresolved import(), require(), or fetch arguments have a null specifier and detail, while other returns an empty array.",
+				"examples": [
+					[
+						{
+							"specifier": "./models/user",
+							"via": "import",
+							"typeOnly": true
+						}
+					],
+					[
+						{
+							"specifier": null,
+							"via": "dynamic-import",
+							"typeOnly": false,
+							"detail": "import(modulePath)"
+						}
+					],
+					[
+						{
+							"specifier": "/api/users",
+							"via": "http",
+							"typeOnly": false
+						}
+					]
+				]
 			},
 			{
 				"name": "svelteScripts",
 				"type": "string[]",
-				"description": "Contents of matched script blocks in source order, excluding tags."
+				"description": "An array of captured bodies for script tags matched by the regular expression, in source order, with the tags excluded. Non-matching tags are omitted.",
+				"examples": [
+					["import './setup';"],
+					["let count = 0;", "export const ready = true;"]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "httpReferences",
@@ -90,17 +129,38 @@
 						"name": "httpReferences.code",
 						"type": "string",
 						"required": true,
-						"description": "Script source to scan for fetch calls and statically readable request methods and URLs."
+						"description": "Source text parsed as TSX to find calls to the bare fetch identifier or event/window/globalThis/self.fetch. Other objects' fetch methods are ignored, and computed or missing arguments produce a null specifier with a call snippet.",
+						"examples": ["fetch('/api/users')", "window.fetch(`/api/${userId}`)"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "httpReferences",
-						"type": "Found[]"
+						"type": "Found[]",
+						"description": "An array of platform fetch call records in traversal order, each with its source offset, via='http', typeOnly=false, and a string specifier or null. A null specifier adds a call-text detail truncated to 120 characters.",
+						"examples": [
+							[
+								{
+									"index": 0,
+									"via": "http",
+									"typeOnly": false,
+									"specifier": "/api/users"
+								}
+							],
+							[
+								{
+									"index": 0,
+									"via": "http",
+									"typeOnly": false,
+									"specifier": null,
+									"detail": "fetch(endpoint)"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scanImports",
@@ -109,24 +169,53 @@
 						"name": "scanImports.code",
 						"type": "string",
 						"required": true,
-						"description": "Source text to scan for module references."
+						"description": "Source text whose references are selected by language. TypeScript scans imports, reexports, relative new URL references, import()/require() calls, and recognized fetch calls; Svelte scans script blocks and recognized <hx-...> atoms, CSS scans quoted @import, and other returns an empty array.",
+						"examples": [
+							"import type { User } from './models/user';\nfetch('/api/users');",
+							"@import url('./theme.css');"
+						]
 					},
 					{
 						"name": "scanImports.language",
 						"type": "SourceLanguage",
 						"required": true,
-						"description": "Source family: ts scans scripts, svelte scans its script blocks, css scans quoted @import references, and other returns no references."
+						"description": "Selects the scan branch: ts scans script references, svelte scans script blocks and recognized <hx-...> atoms, css scans quoted @import references, and other returns no references. These are the only accepted values.",
+						"examples": ["ts", "svelte", "css"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanImports",
 						"type": "SourceReference[]",
-						"description": "Source-ordered references with specifier or null, via and typeOnly, plus details for computed calls. Platform fetch URLs become HTTP references; interpolated segments stay unknown. Module member calls are excluded."
+						"description": "For ts, the array contains unique references ordered by source offset; css returns quoted @import matches, and svelte returns script references followed by recognized <hx-...> atom imports. Unresolved import(), require(), or fetch arguments have a null specifier and detail, while other returns an empty array.",
+						"examples": [
+							[
+								{
+									"specifier": "./models/user",
+									"via": "import",
+									"typeOnly": true
+								}
+							],
+							[
+								{
+									"specifier": null,
+									"via": "dynamic-import",
+									"typeOnly": false,
+									"detail": "import(modulePath)"
+								}
+							],
+							[
+								{
+									"specifier": "/api/users",
+									"via": "http",
+									"typeOnly": false
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "svelteScripts",
@@ -135,18 +224,26 @@
 						"name": "svelteScripts.code",
 						"type": "string",
 						"required": true,
-						"description": "Svelte source from which script-block contents should be extracted."
+						"description": "Svelte source text searched for <script ...>...</script> blocks. A regular expression extracts each matched body in source order and does not parse scripts structurally.",
+						"examples": [
+							"<script>import './setup';</script>",
+							"<script context=\"module\">export const ready = true;</script>"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "svelteScripts",
 						"type": "string[]",
-						"description": "Contents of matched script blocks in source order, excluding tags."
+						"description": "An array of captured bodies for script tags matched by the regular expression, in source order, with the tags excluded. Non-matching tags are omitted.",
+						"examples": [
+							["import './setup';"],
+							["let count = 0;", "export const ready = true;"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
