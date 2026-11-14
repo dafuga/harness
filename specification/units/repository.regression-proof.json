@@ -33,84 +33,176 @@
 			{
 				"name": "RegressionProofRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem root of the Git repository whose source history, notes, and evidence refs this instance reads or writes. The adapters use this path for repository operations.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "RegressionProofRepository.constructor.within",
 				"type": "string | null",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional evidence-history commit pin used by load when checking a note’s evidence commit. If omitted, load uses the current evidence-ref tip; null is treated as no usable pin and causes the evidence-history check to fail.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 			},
 			{
 				"name": "RegressionProofRepository.history.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source Git commit whose tree anchors the returned regression history. Notes on other non-red commits are included only when their source trees match this commit’s tree.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "RegressionProofRepository.history.notes",
 				"type": "Map<string, ReadNote>",
-				"required": true
+				"required": true,
+				"description": "Map from source commit hashes to parsed Git note entries. Its regression notes select the records history can load; history uses only the supplied map."
 			},
 			{
 				"name": "RegressionProofRepository.history.media",
 				"type": "MediaPlacer",
-				"required": true
+				"required": true,
+				"description": "Media placement callback passed to regressionHistory while it builds history points. It resolves focused capture media or reports a gap for captures that cannot be placed."
 			},
 			{
 				"name": "RegressionProofRepository.save.record",
 				"type": "RegressionRecord",
-				"required": true
+				"required": true,
+				"description": "Regression checkpoint serialized as record.json, with its source commit and record id used to form the evidence path and note. On load, the record is parsed and its identity, source, phase, and log metadata are checked.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+						"loop": "regression-proof-fixture",
+						"phase": "red",
+						"status": "failed",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"parent": "fedcba9876543210fedcba9876543210fedcba98"
+						},
+						"units": ["repository.regression-proof"],
+						"tests": ["focused regression proof is retained"],
+						"inputs": [
+							{
+								"path": "src/repositories/verification-evidence/RegressionProofRepository.ts",
+								"hash": "0123456789abcdef0123456789abcdef01234567"
+							}
+						],
+						"command": "bun run test:unit",
+						"assertion": "Expected 1 result",
+						"profile": "focused-unit",
+						"startedAt": "2026-11-14T09:00:00.000Z",
+						"finishedAt": "2026-11-14T09:00:01.000Z",
+						"exitCode": 1,
+						"log": {
+							"path": "output.log",
+							"sha256": "4690fab8602b5fe8663d2e0a350dd8ae3c461440d44bf56a5deaff70bff04d35",
+							"bytes": 18
+						}
+					}
+				]
 			},
 			{
 				"name": "RegressionProofRepository.save.output",
 				"type": "Buffer",
-				"required": true
+				"required": true,
+				"description": "Raw bytes stored as output.log and hashed into manifest.json. Loading decodes those bytes as UTF-8 for the regression view."
 			},
 			{
 				"name": "RegressionProofRepository.save.files",
 				"type": "Array<{ path: string; bytes: Buffer }>",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Optional additional path and Buffer pairs stored beside record.json, output.log, and manifest.json. The default is an empty array, so no additional files are written when omitted."
 			},
 			{
 				"name": "RegressionProofRepository.load.note",
 				"type": "RegressionNote",
-				"required": true
+				"required": true,
+				"description": "Parsed regression history note linking a source commit and checkpoint to an evidence commit, path, and manifest hash. Its pointer must match the source commit and record id, and the evidence commit must be in the selected history.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"kind": "regression",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"loop": "regression-proof-fixture",
+						"phase": "red",
+						"record": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+						"evidence": {
+							"commit": "abcdef0123456789abcdef0123456789abcdef01",
+							"path": "regressions/0123456789abcdef0123456789abcdef01234567/e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+							"manifest": "2efc19f8acf26688a61b822b501f73d5d3f462a103a124d50024f21ea9e24c07"
+						}
+					}
+				]
 			},
 			{
 				"name": "RegressionProofRepository.latest.loop",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Regression loop identifier matched exactly against candidate notes. It narrows lookup to checkpoints belonging to this loop.",
+				"examples": ["regression-proof-fixture"]
 			},
 			{
 				"name": "RegressionProofRepository.latest.phase",
 				"type": "'red' | 'green'",
-				"required": true
+				"required": true,
+				"description": "Checkpoint phase to select, limited by this method to red or green. Capture notes are not eligible for latest lookup.",
+				"examples": ["red", "green"]
 			},
 			{
 				"name": "RegressionProofRepository.latest.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit whose ancestry is searched for the nearest matching checkpoint. Only notes on that ancestry can be returned.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "regressionNotes.notes",
 				"type": "Map<string, ReadNote>",
-				"required": true
+				"required": true,
+				"description": "Map from source commit hashes to parsed Git note entries. The function scans every value and returns only entries whose kind is regression."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Result",
 				"type": "Regression result",
-				"description": "Append-only evidence and Git notes that survive a fresh clone"
+				"description": "A regression history view containing the loop and tested units with a red result, a red and green pair, or a visible gap when evidence cannot be read. Stored records, logs, manifests, and notes provide the evidence behind each view.",
+				"examples": [
+					{
+						"loop": "regression-proof-fixture",
+						"units": ["repository.regression-proof"],
+						"red": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
+							"id": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+							"status": "failed",
+							"command": "bun run test:unit",
+							"assertion": "Expected 1 result",
+							"finishedAt": "2026-11-14T09:00:01.000Z",
+							"output": "Expected 1 result\n"
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Invalid proof",
 				"type": "Explicit rejection or gap",
-				"description": "Rejects copied records, changed hashes or evidence outside the pinned history."
+				"description": "load throws ExpectedCliError when evidence is outside the pinned history or when its source tree, path, hashes, checkpoint identity, phase, or captured bytes fail validation; history converts a per-note read failure into a visible gap."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Thrown when the evidence commit is outside the pinned evidence history, the source tree differs, or the evidence path, hashes, checkpoint identity or phase, or captured bytes fail validation."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RegressionProofRepository.history",
@@ -118,27 +210,50 @@
 					{
 						"name": "RegressionProofRepository.history.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source Git commit whose tree anchors the returned regression history. Notes on other non-red commits are included only when their source trees match this commit’s tree.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "RegressionProofRepository.history.notes",
 						"type": "Map<string, ReadNote>",
-						"required": true
+						"required": true,
+						"description": "Map from source commit hashes to parsed Git note entries. Its regression notes select the records history can load; history uses only the supplied map."
 					},
 					{
 						"name": "RegressionProofRepository.history.media",
 						"type": "MediaPlacer",
-						"required": true
+						"required": true,
+						"description": "Media placement callback passed to regressionHistory while it builds history points. It resolves focused capture media or reports a gap for captures that cannot be placed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RegressionProofRepository.history",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Promise resolving to flattened regression views for the requested commit and eligible commits with identical source trees. Corrupt or unreadable per-note evidence is retained as a gap in its view.",
+						"examples": [
+							[
+								{
+									"loop": "regression-proof-fixture",
+									"units": ["repository.regression-proof"],
+									"red": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
+										"id": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+										"status": "failed",
+										"command": "bun run test:unit",
+										"assertion": "Expected 1 result",
+										"finishedAt": "2026-11-14T09:00:01.000Z",
+										"output": "Expected 1 result\n"
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RegressionProofRepository.save",
@@ -146,28 +261,65 @@
 					{
 						"name": "RegressionProofRepository.save.record",
 						"type": "RegressionRecord",
-						"required": true
+						"required": true,
+						"description": "Regression checkpoint serialized as record.json, with its source commit and record id used to form the evidence path and note. On load, the record is parsed and its identity, source, phase, and log metadata are checked.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+								"loop": "regression-proof-fixture",
+								"phase": "red",
+								"status": "failed",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"parent": "fedcba9876543210fedcba9876543210fedcba98"
+								},
+								"units": ["repository.regression-proof"],
+								"tests": ["focused regression proof is retained"],
+								"inputs": [
+									{
+										"path": "src/repositories/verification-evidence/RegressionProofRepository.ts",
+										"hash": "0123456789abcdef0123456789abcdef01234567"
+									}
+								],
+								"command": "bun run test:unit",
+								"assertion": "Expected 1 result",
+								"profile": "focused-unit",
+								"startedAt": "2026-11-14T09:00:00.000Z",
+								"finishedAt": "2026-11-14T09:00:01.000Z",
+								"exitCode": 1,
+								"log": {
+									"path": "output.log",
+									"sha256": "4690fab8602b5fe8663d2e0a350dd8ae3c461440d44bf56a5deaff70bff04d35",
+									"bytes": 18
+								}
+							}
+						]
 					},
 					{
 						"name": "RegressionProofRepository.save.output",
 						"type": "Buffer",
-						"required": true
+						"required": true,
+						"description": "Raw bytes stored as output.log and hashed into manifest.json. Loading decodes those bytes as UTF-8 for the regression view."
 					},
 					{
 						"name": "RegressionProofRepository.save.files",
 						"type": "Array<{ path: string; bytes: Buffer }>",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Optional additional path and Buffer pairs stored beside record.json, output.log, and manifest.json. The default is an empty array, so no additional files are written when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RegressionProofRepository.save",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Promise resolves with no value after storing the record, log, manifest, and optional files, appending the regression note, and updating the source archive ref."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RegressionProofRepository.load",
@@ -175,22 +327,40 @@
 					{
 						"name": "RegressionProofRepository.load.note",
 						"type": "RegressionNote",
-						"required": true
+						"required": true,
+						"description": "Parsed regression history note linking a source commit and checkpoint to an evidence commit, path, and manifest hash. Its pointer must match the source commit and record id, and the evidence commit must be in the selected history.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"kind": "regression",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"loop": "regression-proof-fixture",
+								"phase": "red",
+								"record": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+								"evidence": {
+									"commit": "abcdef0123456789abcdef0123456789abcdef01",
+									"path": "regressions/0123456789abcdef0123456789abcdef01234567/e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+									"manifest": "2efc19f8acf26688a61b822b501f73d5d3f462a103a124d50024f21ea9e24c07"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RegressionProofRepository.load",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the parsed record, UTF-8 output text, and a Map of capture paths to validated original Buffers. It reads from the note’s evidence commit, checks the pinned history and source tree, and validates checkpoint identities, hashes, capture bytes, decoding, and served revision when present."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the evidence commit is outside the pinned evidence history, the source tree differs, or the evidence path, hashes, checkpoint identity or phase, or captured bytes fail validation."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RegressionProofRepository.latest",
@@ -198,27 +368,55 @@
 					{
 						"name": "RegressionProofRepository.latest.loop",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Regression loop identifier matched exactly against candidate notes. It narrows lookup to checkpoints belonging to this loop.",
+						"examples": ["regression-proof-fixture"]
 					},
 					{
 						"name": "RegressionProofRepository.latest.phase",
 						"type": "'red' | 'green'",
-						"required": true
+						"required": true,
+						"description": "Checkpoint phase to select, limited by this method to red or green. Capture notes are not eligible for latest lookup.",
+						"examples": ["red", "green"]
 					},
 					{
 						"name": "RegressionProofRepository.latest.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit whose ancestry is searched for the nearest matching checkpoint. Only notes on that ancestry can be returned.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RegressionProofRepository.latest",
-						"type": "Promise<RegressionNote | undefined>"
+						"type": "Promise<RegressionNote | undefined>",
+						"description": "Promise resolves to the latest matching note at the nearest ancestor containing a candidate for the requested loop and phase. It resolves undefined when no candidate exists on the supplied commit’s ancestry.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"kind": "regression",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"loop": "regression-proof-fixture",
+								"phase": "red",
+								"record": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+								"evidence": {
+									"commit": "abcdef0123456789abcdef0123456789abcdef01",
+									"path": "regressions/0123456789abcdef0123456789abcdef01234567/e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+									"manifest": "2efc19f8acf26688a61b822b501f73d5d3f462a103a124d50024f21ea9e24c07"
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Propagated from load when the selected ancestor note fails evidence-history or checkpoint validation."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "regressionNotes",
@@ -226,17 +424,36 @@
 					{
 						"name": "regressionNotes.notes",
 						"type": "Map<string, ReadNote>",
-						"required": true
+						"required": true,
+						"description": "Map from source commit hashes to parsed Git note entries. The function scans every value and returns only entries whose kind is regression."
 					}
 				],
 				"outputs": [
 					{
 						"name": "regressionNotes",
-						"type": "RegressionNote[]"
+						"type": "RegressionNote[]",
+						"description": "Returns regression notes from all parsed note entries, preserving map and entry iteration order. Other note kinds and each ReadNote’s parsing problems are excluded.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"kind": "regression",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"loop": "regression-proof-fixture",
+									"phase": "red",
+									"record": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+									"evidence": {
+										"commit": "abcdef0123456789abcdef0123456789abcdef01",
+										"path": "regressions/0123456789abcdef0123456789abcdef01234567/e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+										"manifest": "2efc19f8acf26688a61b822b501f73d5d3f462a103a124d50024f21ea9e24c07"
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -246,22 +463,30 @@
 					{
 						"name": "RegressionProofRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem root of the Git repository whose source history, notes, and evidence refs this instance reads or writes. The adapters use this path for repository operations.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "RegressionProofRepository.constructor.within",
 						"type": "string | null",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional evidence-history commit pin used by load when checking a note’s evidence commit. If omitted, load uses the current evidence-ref tip; null is treated as no usable pin and causes the evidence-history check to fail.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RegressionProofRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a repository instance retaining the Git root and optional evidence-history pin. Construction stores these values without reading Git history."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
