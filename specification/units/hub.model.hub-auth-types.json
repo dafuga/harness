@@ -43,24 +43,36 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "EMAIL_CODE_LENGTH",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The length of the email proof code, fixed at 8 characters by the constant in HubAuthValues.ts. It is declared with const, so the value cannot change at runtime.",
+				"examples": [8]
 			},
 			{
 				"name": "NATIVE_AUDIENCE",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The audience string 'harness-desktop' defined in HubAuthValues.ts. NativeAuthorization.audience is typed as this constant, so that field can only hold this value.",
+				"examples": ["harness-desktop"]
 			},
 			{
 				"name": "NATIVE_ACTION",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The action string 'native-session' defined in HubAuthValues.ts and re-exported by accounts-access/HubAuth.types.ts. No type in these three files references it, so this unit does not show where it applies.",
+				"examples": ["native-session"]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "The error HubAuth.authorizeRepository throws, according to its doc comment, which also says it re-proves GitHub admin and installation access on every call. AuthFailure is not declared in these three files, and the comment does not state when it is thrown."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
