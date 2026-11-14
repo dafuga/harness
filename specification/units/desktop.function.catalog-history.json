@@ -20,29 +20,97 @@
 				"name": "catalogHistory.root",
 				"type": "string",
 				"required": true,
-				"description": "The repository directory in which to read Git history."
+				"description": "The repository root passed to gitRead for the Git history query. It has no effect when the unit has no owned source paths and no documentation path.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			},
 			{
 				"name": "catalogHistory.revision",
 				"type": "string",
 				"required": true,
-				"description": "The Git revision from which to read history, passed as supplied to Git."
+				"description": "The Git revision argument passed unchanged to git log when the unit has source or documentation paths. It is not validated or used when that combined path list is empty.",
+				"examples": ["HEAD"]
 			},
 			{
 				"name": "catalogHistory.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "The unit definition whose owned source paths restrict the history. No owned paths means an empty history without running Git."
+				"description": "The ComponentManifest whose owns.source paths, followed by documentation when present, define which files are queried. If both contribute no paths, the function resolves to an empty array without calling gitRead.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "desktop.function.catalog-history",
+						"uid": "u_poh4z5oled",
+						"kind": "function",
+						"title": "Read an entity’s source history",
+						"responsibility": "Reads up to 100 Git commits affecting a unit’s owned source paths at the requested revision.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/desktop/src/services/project-session-service/catalog-service/catalogHistory.ts",
+								"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogHistory.ts",
+								"packages/desktop/src/utils/catalogHistory.ts"
+							],
+							"symbols": ["catalogHistory", "catalogHistory", "catalogHistory"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/desktop/src/utils/catalogHistory.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/desktop/src/utils/catalogHistory.ts"
+								}
+							]
+						},
+						"scenarios": ["desktop-native", "desktop-project-runs"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "catalogHistory",
 				"type": "unknown",
-				"description": "A promise for commit history entries containing the hash, author timestamp and subject, with no design version. Each entry states that source changed and verification is recorded separately. Git read failures reject the promise."
+				"description": "A promise resolving to at most 100 Git commits for the supplied revision, filtered to unit.owns.source and unit.documentation when present. Each entry contains the commit hash as id and commit, the author date and subject, kind “commit”, the fixed source-change detail, and version null; no paths or no matching commits yields an empty array.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "0123456789abcdef0123456789abcdef01234567",
+							"at": "2026-11-13T09:14:22+00:00",
+							"kind": "commit",
+							"title": "Refine catalog history service",
+							"detail": "Source changed. Verification is recorded separately.",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"version": null
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A rejected gitRead call propagates when the Git history command fails. The function skips the Git read when the manifest has no source or documentation paths."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "catalogHistory",
@@ -51,30 +119,97 @@
 						"name": "catalogHistory.root",
 						"type": "string",
 						"required": true,
-						"description": "The repository directory in which to read Git history."
+						"description": "The repository root passed to gitRead for the Git history query. It has no effect when the unit has no owned source paths and no documentation path.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					},
 					{
 						"name": "catalogHistory.revision",
 						"type": "string",
 						"required": true,
-						"description": "The Git revision from which to read history, passed as supplied to Git."
+						"description": "The Git revision argument passed unchanged to git log when the unit has source or documentation paths. It is not validated or used when that combined path list is empty.",
+						"examples": ["HEAD"]
 					},
 					{
 						"name": "catalogHistory.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "The unit definition whose owned source paths restrict the history. No owned paths means an empty history without running Git."
+						"description": "The ComponentManifest whose owns.source paths, followed by documentation when present, define which files are queried. If both contribute no paths, the function resolves to an empty array without calling gitRead.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "desktop.function.catalog-history",
+								"uid": "u_poh4z5oled",
+								"kind": "function",
+								"title": "Read an entity’s source history",
+								"responsibility": "Reads up to 100 Git commits affecting a unit’s owned source paths at the requested revision.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/desktop/src/services/project-session-service/catalog-service/catalogHistory.ts",
+										"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogHistory.ts",
+										"packages/desktop/src/utils/catalogHistory.ts"
+									],
+									"symbols": ["catalogHistory", "catalogHistory", "catalogHistory"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/desktop/src/utils/catalogHistory.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/desktop/src/utils/catalogHistory.ts"
+										}
+									]
+								},
+								"scenarios": ["desktop-native", "desktop-project-runs"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "catalogHistory",
 						"type": "unknown",
-						"description": "A promise for commit history entries containing the hash, author timestamp and subject, with no design version. Each entry states that source changed and verification is recorded separately. Git read failures reject the promise."
+						"description": "A promise resolving to at most 100 Git commits for the supplied revision, filtered to unit.owns.source and unit.documentation when present. Each entry contains the commit hash as id and commit, the author date and subject, kind “commit”, the fixed source-change detail, and version null; no paths or no matching commits yields an empty array.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "0123456789abcdef0123456789abcdef01234567",
+									"at": "2026-11-13T09:14:22+00:00",
+									"kind": "commit",
+									"title": "Refine catalog history service",
+									"detail": "Source changed. Verification is recorded separately.",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"version": null
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A rejected gitRead call propagates when the Git history command fails. The function skips the Git read when the manifest has no source or documentation paths."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
