@@ -12,22 +12,30 @@
 		"symbols": ["registerImpactCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerImpactCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The Commander Command program on which the impact subcommand is registered. It must provide the chained .command, .option, .description, and .action methods used here; this implementation does not check another program shape."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerImpactCommand",
-				"type": "void"
+				"type": "void",
+				"description": "Registration returns no value (void). The supplied program gains an impact command with --base defaulting to HEAD, optional --head, --runtime, and --json; its action awaits runImpact(flags) and prints JSON when --json is set or renderImpact(report) otherwise."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "runImpact rejection",
+				"type": "thrown",
+				"description": "When the registered async action runs, it rejects with the failure value from runImpact(flags) if that awaited call rejects; this file does not name or translate the rejection."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerImpactCommand",
@@ -35,17 +43,25 @@
 					{
 						"name": "registerImpactCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The Commander Command program on which the impact subcommand is registered. It must provide the chained .command, .option, .description, and .action methods used here; this implementation does not check another program shape."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerImpactCommand",
-						"type": "void"
+						"type": "void",
+						"description": "Registration returns no value (void). The supplied program gains an impact command with --base defaulting to HEAD, optional --head, --runtime, and --json; its action awaits runImpact(flags) and prints JSON when --json is set or renderImpact(report) otherwise."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "runImpact rejection",
+						"type": "thrown",
+						"description": "When the registered async action runs, it rejects with the failure value from runImpact(flags) if that awaited call rejects; this file does not name or translate the rejection."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
