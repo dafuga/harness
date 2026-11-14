@@ -26,143 +26,183 @@
 				"name": "benchmarkGit.cwd",
 				"type": "string",
 				"required": true,
-				"description": "Working directory in which Git executes with repository hooks disabled."
+				"description": "Directory passed as the subprocess working directory for the Git command. It determines which repository Git uses; an unavailable directory can make the command fail.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "benchmarkGit.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Git command argument vector."
+				"description": "Git arguments appended after the command disables repository hooks. They select the Git action and options; a nonzero Git exit code causes an Error.",
+				"examples": [
+					["status", "--short"]
+				]
 			},
 			{
 				"name": "benchmarkFiles.project",
 				"type": "string",
 				"required": true,
-				"description": "Git repository root supplying committed benchmark source."
+				"description": "Repository directory used as the Git working directory while listing the selected tree. It must contain the repository and revision being read.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "benchmarkFiles.revision",
 				"type": "string",
 				"required": true,
-				"description": "Pinned commit whose tracked regular files form the baseline."
+				"description": "Git revision expression passed to `git ls-tree` to select the tree. It must resolve in the specified repository; entries other than regular-file blobs are rejected.",
+				"examples": ["4f2c9a3d6e1b8075a4c9d2e7f1036b8a5c0d1e2f"]
 			},
 			{
 				"name": "snapshotBenchmark.project",
 				"type": "string",
 				"required": true,
-				"description": "Git repository root supplying committed benchmark source."
+				"description": "Repository directory used for listing and archiving the selected tree. It must contain the repository and revision being read.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "snapshotBenchmark.revision",
 				"type": "string",
 				"required": true,
-				"description": "Pinned commit whose tracked regular files form the baseline."
+				"description": "Git revision expression passed to tree listing and archive creation. It selects the snapshot; unsupported tree entries cause an Error.",
+				"examples": ["4f2c9a3d6e1b8075a4c9d2e7f1036b8a5c0d1e2f"]
 			},
 			{
 				"name": "snapshotBenchmark.destination",
 				"type": "string",
 				"required": true,
-				"description": "Temporary directory receiving extracted or copied committed files."
+				"description": "Directory created for extracted snapshot files. The function extracts the archive there and creates a temporary `snapshot.tar` beside it.",
+				"examples": ["/tmp/benchmark-snapshot"]
 			},
 			{
 				"name": "createBenchmarkWorkspace.baseline",
 				"type": "string",
 				"required": true,
-				"description": "Pristine extracted source copied into each isolated trial or evaluator."
+				"description": "Directory recursively copied into the new workspace before Git is initialized. Its contents become the forced-added baseline commit.",
+				"examples": ["/tmp/benchmark-snapshot"]
 			},
 			{
 				"name": "createBenchmarkWorkspace.destination",
 				"type": "string",
 				"required": true,
-				"description": "Temporary directory receiving extracted or copied committed files."
+				"description": "Workspace destination that is recursively removed before the baseline is copied. Git is initialized there and the copied files are committed.",
+				"examples": ["/tmp/benchmark-trial"]
 			},
 			{
 				"name": "regularBenchmarkFile.root",
 				"type": "string",
 				"required": true,
-				"description": "Root containing the exact project-relative file to inspect."
+				"description": "Directory prefix used to resolve the file path one slash-separated segment at a time. The joined segments are checked for missing entries and symlinks.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "regularBenchmarkFile.file",
 				"type": "string",
 				"required": true,
-				"description": "Relative file path checked for regular entries and content identity."
+				"description": "Slash-separated path joined to the root for the regular-file check. Every joined segment must exist without being a symlink, and the final entry must be a file.",
+				"examples": ["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
 			},
 			{
 				"name": "benchmarkFileValue.root",
 				"type": "string",
 				"required": true,
-				"description": "Root containing the exact project-relative file to inspect."
+				"description": "Directory prefix used to resolve the file before its mode and contents are read. The value is returned only when the path passes the regular nonsymlink-file check.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "benchmarkFileValue.file",
 				"type": "string",
 				"required": true,
-				"description": "Relative file path checked for regular entries and content identity."
+				"description": "Slash-separated path joined to the root for the file check and fingerprint. Missing or symlinked segments produce `undefined` rather than a fingerprint.",
+				"examples": ["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
 			},
 			{
 				"name": "overlayBenchmarkFiles.source",
 				"type": "string",
 				"required": true,
-				"description": "Trial workspace supplying the allowed implementation changes."
+				"description": "Root from which each listed path is checked and, when it is a regular file, read. Missing or nonregular source paths cause the matching target path to be removed.",
+				"examples": ["/tmp/benchmark-trial"]
 			},
 			{
 				"name": "overlayBenchmarkFiles.target",
 				"type": "string",
 				"required": true,
-				"description": "Clean evaluator workspace receiving allowed changes."
+				"description": "Root whose listed destinations are updated. Listed files are copied with their source mode or removed, and parent directories are created when needed.",
+				"examples": ["/tmp/benchmark-evaluator"]
 			},
 			{
 				"name": "overlayBenchmarkFiles.files",
 				"type": "string[]",
 				"required": true,
-				"description": "Exact allowed implementation paths to copy or remove."
+				"description": "Paths processed in order against the source and target roots. Each regular source file is copied; a missing, symlinked, or otherwise nonregular source path triggers removal of the matching target entry.",
+				"examples": [
+					["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "benchmarkGit",
 				"type": "Promise<string>",
-				"description": "Captured stdout from a successful Git command."
+				"description": "Standard output captured from a successful Git subprocess. A nonzero exit code throws before any string is returned.",
+				"examples": [""]
 			},
 			{
 				"name": "benchmarkFiles",
 				"type": "Promise<string[]>",
-				"description": "Regular tracked paths from the pinned revision."
+				"description": "Relative paths parsed from the selected tree after all entries pass the regular-blob mode check. Symlinks and submodules are rejected.",
+				"examples": [
+					["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+				]
 			},
 			{
 				"name": "snapshotBenchmark",
 				"type": "Promise<string[]>",
-				"description": "Tracked paths retained in the extracted committed baseline."
+				"description": "Relative paths retained from the selected tree after extraction and regular-file checks. Export-ignore archives that omit a listed path are rejected.",
+				"examples": [
+					["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+				]
 			},
 			{
 				"name": "createBenchmarkWorkspace",
 				"type": "Promise<void>",
-				"description": "Resets and initializes a fresh baseline Git workspace."
+				"description": "No value; on success the destination contains a Git repository with the copied baseline committed. The destination is cleared before copying."
 			},
 			{
 				"name": "regularBenchmarkFile",
 				"type": "Promise<boolean>",
-				"description": "Whether every path segment is nonsymbolic and the final entry is a regular file."
+				"description": "Whether every joined path segment exists without being a symlink and the final entry is a regular file. Missing or symlinked segments return false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "benchmarkFileValue",
 				"type": "Promise<string | undefined>",
-				"description": "Executable permission bits and SHA-256 fingerprint, or undefined for a nonregular path."
+				"description": "The final file’s executable permission bits followed by its SHA-256 digest, or `undefined` when the regular-file check fails. The permission portion is the decimal rendering of `mode & 0o111`.",
+				"examples": ["0:5aae5a7526c3eab2c2d8314c660aa6fe6ee5cb75779fb5d035cb0c0101050a10"]
 			},
 			{
 				"name": "overlayBenchmarkFiles",
 				"type": "Promise<void>",
-				"description": "Copies or removes only allowed implementation paths in the evaluator."
+				"description": "No value; listed regular files are copied with their source mode, while other listed source paths cause target removal. Paths not listed are not directly overlaid."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects Git failures, unsupported symlinks or submodules, and incomplete extraction."
+				"description": "Benchmark operations reject with Error for Git failures, unsupported tree entries, archive extraction or completeness failures, and filesystem failures. Explicit validation failures use the messages in the implementation; underlying filesystem and subprocess errors propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "benchmarkGit",
@@ -171,29 +211,37 @@
 						"name": "benchmarkGit.cwd",
 						"type": "string",
 						"required": true,
-						"description": "Working directory in which Git executes with repository hooks disabled."
+						"description": "Directory passed as the subprocess working directory for the Git command. It determines which repository Git uses; an unavailable directory can make the command fail.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "benchmarkGit.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Git command argument vector."
+						"description": "Git arguments appended after the command disables repository hooks. They select the Git action and options; a nonzero Git exit code causes an Error.",
+						"examples": [
+							["status", "--short"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchmarkGit",
 						"type": "Promise<string>",
-						"description": "Captured stdout from a successful Git command."
+						"description": "Standard output captured from a successful Git subprocess. A nonzero exit code throws before any string is returned.",
+						"examples": [""]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects if the Git subprocess fails or exits with a nonzero status. A nonzero exit status is raised as Error with the benchmark Git failure message."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "benchmarkFiles",
@@ -202,29 +250,37 @@
 						"name": "benchmarkFiles.project",
 						"type": "string",
 						"required": true,
-						"description": "Git repository root supplying committed benchmark source."
+						"description": "Repository directory used as the Git working directory while listing the selected tree. It must contain the repository and revision being read.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "benchmarkFiles.revision",
 						"type": "string",
 						"required": true,
-						"description": "Pinned commit whose tracked regular files form the baseline."
+						"description": "Git revision expression passed to `git ls-tree` to select the tree. It must resolve in the specified repository; entries other than regular-file blobs are rejected.",
+						"examples": ["4f2c9a3d6e1b8075a4c9d2e7f1036b8a5c0d1e2f"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchmarkFiles",
 						"type": "Promise<string[]>",
-						"description": "Regular tracked paths from the pinned revision."
+						"description": "Relative paths parsed from the selected tree after all entries pass the regular-blob mode check. Symlinks and submodules are rejected.",
+						"examples": [
+							["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with Error when Git fails or a tree entry is not a `100644 blob` or `100755 blob` regular-file entry."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "snapshotBenchmark",
@@ -233,35 +289,44 @@
 						"name": "snapshotBenchmark.project",
 						"type": "string",
 						"required": true,
-						"description": "Git repository root supplying committed benchmark source."
+						"description": "Repository directory used for listing and archiving the selected tree. It must contain the repository and revision being read.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "snapshotBenchmark.revision",
 						"type": "string",
 						"required": true,
-						"description": "Pinned commit whose tracked regular files form the baseline."
+						"description": "Git revision expression passed to tree listing and archive creation. It selects the snapshot; unsupported tree entries cause an Error.",
+						"examples": ["4f2c9a3d6e1b8075a4c9d2e7f1036b8a5c0d1e2f"]
 					},
 					{
 						"name": "snapshotBenchmark.destination",
 						"type": "string",
 						"required": true,
-						"description": "Temporary directory receiving extracted or copied committed files."
+						"description": "Directory created for extracted snapshot files. The function extracts the archive there and creates a temporary `snapshot.tar` beside it.",
+						"examples": ["/tmp/benchmark-snapshot"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "snapshotBenchmark",
 						"type": "Promise<string[]>",
-						"description": "Tracked paths retained in the extracted committed baseline."
+						"description": "Relative paths retained from the selected tree after extraction and regular-file checks. Export-ignore archives that omit a listed path are rejected.",
+						"examples": [
+							["README.md", "src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with Error on Git failure, an unsupported tree entry, tar extraction failure, or a listed snapshot file missing after extraction."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "createBenchmarkWorkspace",
@@ -270,24 +335,32 @@
 						"name": "createBenchmarkWorkspace.baseline",
 						"type": "string",
 						"required": true,
-						"description": "Pristine extracted source copied into each isolated trial or evaluator."
+						"description": "Directory recursively copied into the new workspace before Git is initialized. Its contents become the forced-added baseline commit.",
+						"examples": ["/tmp/benchmark-snapshot"]
 					},
 					{
 						"name": "createBenchmarkWorkspace.destination",
 						"type": "string",
 						"required": true,
-						"description": "Temporary directory receiving extracted or copied committed files."
+						"description": "Workspace destination that is recursively removed before the baseline is copied. Git is initialized there and the copied files are committed.",
+						"examples": ["/tmp/benchmark-trial"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createBenchmarkWorkspace",
 						"type": "Promise<void>",
-						"description": "Resets and initializes a fresh baseline Git workspace."
+						"description": "No value; on success the destination contains a Git repository with the copied baseline committed. The destination is cleared before copying."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects if destination removal or baseline copying fails, or if any Git initialization, add, or commit command fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "regularBenchmarkFile",
@@ -296,24 +369,35 @@
 						"name": "regularBenchmarkFile.root",
 						"type": "string",
 						"required": true,
-						"description": "Root containing the exact project-relative file to inspect."
+						"description": "Directory prefix used to resolve the file path one slash-separated segment at a time. The joined segments are checked for missing entries and symlinks.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "regularBenchmarkFile.file",
 						"type": "string",
 						"required": true,
-						"description": "Relative file path checked for regular entries and content identity."
+						"description": "Slash-separated path joined to the root for the regular-file check. Every joined segment must exist without being a symlink, and the final entry must be a file.",
+						"examples": ["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "regularBenchmarkFile",
 						"type": "Promise<boolean>",
-						"description": "Whether every path segment is nonsymbolic and the final entry is a regular file."
+						"description": "Whether every joined path segment exists without being a symlink and the final entry is a regular file. Missing or symlinked segments return false.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Can reject if the final filesystem lookup fails after the segment checks, such as when the path changes during traversal. Missing or symlinked segments encountered by the loop return false."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "benchmarkFileValue",
@@ -322,24 +406,35 @@
 						"name": "benchmarkFileValue.root",
 						"type": "string",
 						"required": true,
-						"description": "Root containing the exact project-relative file to inspect."
+						"description": "Directory prefix used to resolve the file before its mode and contents are read. The value is returned only when the path passes the regular nonsymlink-file check.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "benchmarkFileValue.file",
 						"type": "string",
 						"required": true,
-						"description": "Relative file path checked for regular entries and content identity."
+						"description": "Slash-separated path joined to the root for the file check and fingerprint. Missing or symlinked segments produce `undefined` rather than a fingerprint.",
+						"examples": ["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchmarkFileValue",
 						"type": "Promise<string | undefined>",
-						"description": "Executable permission bits and SHA-256 fingerprint, or undefined for a nonregular path."
+						"description": "The final file’s executable permission bits followed by its SHA-256 digest, or `undefined` when the regular-file check fails. The permission portion is the decimal rendering of `mode & 0o111`.",
+						"examples": ["0:5aae5a7526c3eab2c2d8314c660aa6fe6ee5cb75779fb5d035cb0c0101050a10"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Can reject if filesystem metadata or file reading fails after the regular-file check. A path that fails the check returns undefined instead."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "overlayBenchmarkFiles",
@@ -348,30 +443,41 @@
 						"name": "overlayBenchmarkFiles.source",
 						"type": "string",
 						"required": true,
-						"description": "Trial workspace supplying the allowed implementation changes."
+						"description": "Root from which each listed path is checked and, when it is a regular file, read. Missing or nonregular source paths cause the matching target path to be removed.",
+						"examples": ["/tmp/benchmark-trial"]
 					},
 					{
 						"name": "overlayBenchmarkFiles.target",
 						"type": "string",
 						"required": true,
-						"description": "Clean evaluator workspace receiving allowed changes."
+						"description": "Root whose listed destinations are updated. Listed files are copied with their source mode or removed, and parent directories are created when needed.",
+						"examples": ["/tmp/benchmark-evaluator"]
 					},
 					{
 						"name": "overlayBenchmarkFiles.files",
 						"type": "string[]",
 						"required": true,
-						"description": "Exact allowed implementation paths to copy or remove."
+						"description": "Paths processed in order against the source and target roots. Each regular source file is copied; a missing, symlinked, or otherwise nonregular source path triggers removal of the matching target entry.",
+						"examples": [
+							["src/cli/program/benchmark-service/benchmarkWorkspace.ts"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "overlayBenchmarkFiles",
 						"type": "Promise<void>",
-						"description": "Copies or removes only allowed implementation paths in the evaluator."
+						"description": "No value; listed regular files are copied with their source mode, while other listed source paths cause target removal. Paths not listed are not directly overlaid."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Can reject if target removal, directory creation, source reading, target writing, or permission updating fails."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
