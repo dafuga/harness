@@ -10,6 +10,12 @@ export interface SnapshotRun {
 	config: VerifyConfig;
 	/** Everything about the run except the snapshot directory, which is created here. */
 	context: Omit<RunContext, 'snapshot'>;
+	/**
+	 * The builds the run's scenarios need, as `neededBuilds` names them. A scoped run runs only
+	 * the setup steps `scopedSetup` keeps, and identifies only the needed builds. `'all'`, or none
+	 * given, runs and identifies everything.
+	 */
+	needed?: ReadonlySet<string> | 'all';
 }
 
 export interface Executed {
@@ -23,8 +29,16 @@ export interface Executed {
 	tools: Array<{ id: string; version: string }>;
 	/** Declared artifacts that exist in the snapshot after the run, by path. */
 	artifacts: BuiltArtifacts;
-	/** Identity of each declared build as setup compiled it; undefined when none is declared. */
+	/**
+	 * Identity of each declared build the run needed, as setup compiled it; undefined when none is
+	 * declared.
+	 */
 	builds?: BuiltIdentity[];
+	/**
+	 * Declared builds a scoped run did not need, so they were not identified. Absent when the run
+	 * was not scoped.
+	 */
+	skippedBuilds?: string[];
 	/** Declared builds that are missing, or whose files changed while checks ran. */
 	buildFailures: string[];
 }

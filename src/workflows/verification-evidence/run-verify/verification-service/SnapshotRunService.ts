@@ -7,6 +7,7 @@ import type { PlannedCheck } from '../../../../utils/verification-evidence/verif
 import { BuildIdentityService } from '../../../../services/verification-evidence/BuildIdentityService';
 import { CheckRunService, type CheckOutcome } from './check-run-service/CheckRunService';
 import type { CaptureLimits } from './check-run-service/captureLimits.types';
+import { scopedSetup } from './buildScope';
 
 /**
  * Exports the commit and runs setup and every check inside the export. The export is compared
@@ -19,7 +20,7 @@ export class SnapshotRunService {
 	constructor(private readonly run: SnapshotRun) {}
 
 	async execute(plan: PlannedCheck[], artifactPaths: string[] = []): Promise<Executed> {
-		const { root, config, context } = this.run;
+		const { root, config, context, needed = 'all' } = this.run;
 		const snapshot = await SnapshotAdapter.create(root, context.commit, config.outputs);
 		const seen = { mutated: new Set<string>(), added: new Set<string>() };
 		const observe = async (): Promise<void> => {
@@ -32,9 +33,10 @@ export class SnapshotRunService {
 			const limits = captureLimits(config);
 			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory, limits });
 			const misdeclared = snapshot.misdeclared().map(describeOutput);
-			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner);
+			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner, needed);
 			const tools = setupFailures.length > 0 ? [] : await this.tools(runner, setupFailures);
-			const compiled = await this.identities.declared(snapshot.directory, config.builds);
+			const wanted = config.builds.filter((build) => needed === 'all' || needed.has(build.id));
+			const compiled = await this.identities.declared(snapshot.directory, wanted);
 			await observe();
 			const outcomes: CheckOutcome[] = [];
 			for (const check of setupFailures.length > 0 ? [] : plan) {
@@ -47,7 +49,7 @@ export class SnapshotRunService {
 			const builds = config.builds.length > 0 ? { builds: compiled.found } : {};
 			const buildFailures = [...compiled.failures, ...moved];
 			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts };
-			return { ...observed, ...builds, buildFailures };
+			return { ...observed, ...builds, ...skippedBuilds(config, needed), buildFailures };
 		} finally {
 			await snapshot.remove();
 		}
@@ -67,10 +69,15 @@ export class SnapshotRunService {
 		return failures.length > 0 ? [] : found;
 	}
 
-	/** Setup runs under the same isolation and limits as any check. */
-	private async setup(runner: CheckRunService): Promise<string[]> {
+	/** Setup runs under the same isolation and limits as any check; a scoped run skips the rest. */
+	private async setup(
+		runner: CheckRunService,
+		needed: ReadonlySet<string> | 'all'
+	): Promise<string[]> {
 		const failures: string[] = [];
+		const kept = new Set(scopedSetup(this.run.config.setup, needed));
 		for (const [index, step] of this.run.config.setup.entries()) {
+			if (!kept.has(step)) continue;
 			const outcome = await runner.run({
 				id: `setup-${index + 1}`,
 				name: step.command,
@@ -94,6 +101,15 @@ function captureLimits(config: SnapshotRun['config']): CaptureLimits {
 		...(maxCaptureBytes === undefined ? {} : { maxCaptureBytes }),
 		...(maxRecordBytes === undefined ? {} : { maxRecordBytes })
 	};
+}
+
+/** The declared builds a scoped run did not need, by id. A run that is not scoped skips none. */
+function skippedBuilds(
+	config: SnapshotRun['config'],
+	needed: ReadonlySet<string> | 'all'
+): { skippedBuilds?: string[] } {
+	const skipped = config.builds.filter((build) => needed !== 'all' && !needed.has(build.id));
+	return needed === 'all' ? {} : { skippedBuilds: skipped.map((build) => build.id) };
 }
 
 /** An output declaration that covers tracked files would hide source, so nothing runs. */
