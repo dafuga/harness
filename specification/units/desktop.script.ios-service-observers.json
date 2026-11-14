@@ -15,32 +15,37 @@
 		"symbols": ["observeIosServices", "SeenService", "WatchedService"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "observeIosServices.rows",
 				"type": "Map<number, SeenService> | null",
-				"required": true
+				"required": true,
+				"description": "A map keyed by process ID whose values record each service's start time and executable path before the build. A null baseline is rejected, and only rows whose executable matches a discovered platform service are watched."
 			},
 			{
 				"name": "observeIosServices.group",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The process group supplied when classifying matching existing services; it matters when a discovered service path is present in the baseline and must be attested. The declared type accepts any JavaScript number.",
+				"examples": [1234]
 			}
 		],
 		"outputs": [
 			{
 				"name": "observeIosServices",
-				"type": "Promise<BuildObservation>"
+				"type": "Promise<BuildObservation>",
+				"description": "Resolves to the BuildObservation produced for this baseline. Its check reports clear only while watched services retain their live process identity, remain delegated, and the observation signal is not aborted; existing services are never owned or signalled by this script."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The function throws Error if rows is null, a matching existing service is not classified as delegated, or its process identity cannot be anchored as alive. Rejections from awaited service discovery or process checks also reject this async call."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "observeIosServices",
@@ -48,27 +53,32 @@
 					{
 						"name": "observeIosServices.rows",
 						"type": "Map<number, SeenService> | null",
-						"required": true
+						"required": true,
+						"description": "A map keyed by process ID whose values record each service's start time and executable path before the build. A null baseline is rejected, and only rows whose executable matches a discovered platform service are watched."
 					},
 					{
 						"name": "observeIosServices.group",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The process group supplied when classifying matching existing services; it matters when a discovered service path is present in the baseline and must be attested. The declared type accepts any JavaScript number.",
+						"examples": [1234]
 					}
 				],
 				"outputs": [
 					{
 						"name": "observeIosServices",
-						"type": "Promise<BuildObservation>"
+						"type": "Promise<BuildObservation>",
+						"description": "Resolves to the BuildObservation produced for this baseline. Its check reports clear only while watched services retain their live process identity, remain delegated, and the observation signal is not aborted; existing services are never owned or signalled by this script."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The function throws Error if rows is null, a matching existing service is not classified as delegated, or its process identity cannot be anchored as alive. Rejections from awaited service discovery or process checks also reject this async call."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
