@@ -25,22 +25,24 @@
 				"name": "+layout.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Page content rendered through the layout children snippet."
+				"description": "This required Svelte `Snippet` is the current route's page content passed into the root layout. The layout renders it once without arguments and does not supply fallback content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "+layout",
 				"type": "markup",
-				"description": "Rendered child page with the shared styles and session context."
+				"description": "This is the route's page content produced by rendering the required `children` snippet once. The layout adds no wrapper element; the component separately imports workspace, design, and hub styles and provides a browser session context."
 			},
 			{
 				"name": "ssr",
 				"type": "unknown",
-				"description": "Disables server rendering for the browser workspace."
+				"description": "This layout module exports `false` for SvelteKit's `ssr` setting. It tells SvelteKit to render hosted pages in the browser, where the signed-in session and bridge live.",
+				"examples": [false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
