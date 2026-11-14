@@ -12,50 +12,90 @@
 		"symbols": ["gameViewFiles", "mechanicFiles", "checkpointFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gameViewFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name used to derive the view config's symbol, id, and title. It is case-converted for those generated values, with no additional validation in this function.",
+				"examples": ["inventory"]
 			},
 			{
 				"name": "gameViewFiles.dimension",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The view dimension inserted into the config; a falsy value causes fail to throw ExpectedCliError. The failure message asks for harness.dimension of 2d or 3d, but the function only checks truthiness and does not whitelist those values.",
+				"examples": ["2d", "3d"]
 			},
 			{
 				"name": "mechanicFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The mechanic name used to derive its kebab-case file and test id and camelCase function symbol. This function passes it through case-conversion helpers without additional validation.",
+				"examples": ["dash"]
 			},
 			{
 				"name": "checkpointFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The checkpoint name used to derive the config symbol, kebab-case id, and PascalCase title. The function uses case conversion without additional validation.",
+				"examples": ["spawn"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gameViewFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The function returns one planned file at src/configs/<camelCaseName>ViewConfig.ts. Its contents include the converted id and title and supplied dimension, with empty style and checkpoints.",
+				"examples": [
+					[
+						{
+							"path": "src/configs/inventoryViewConfig.ts",
+							"contents": "import type { GameView } from '../lib/game/models/Game.types';\n\nexport const inventoryViewConfig: GameView = {\n\tid: 'inventory',\n\ttitle: 'Inventory',\n\tdimension: '2d',\n\tstyle: '',\n\tcheckpoints: []\n};\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "mechanicFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The function returns a utility file and a Vitest test file. The generated utility accepts readonly GameState and GameInput and returns an empty patch, while the test checks the named mechanic with a simple input.",
+				"examples": [
+					[
+						{
+							"path": "src/utils/dash.ts",
+							"contents": "import type { GameState, GameInput } from '../lib/game/models/Game.types';\n\nexport function dash(state: Readonly<GameState>, input: Readonly<GameInput>): GameState {\n\tvoid state;\n\tvoid input;\n\treturn {};\n}\n"
+						},
+						{
+							"path": "test/dash.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { dash } from '../src/utils/dash';\n\ntest('dash produces an independent state patch', () => {\n\texpect(dash({}, { x: 0, y: 0 })).toEqual({});\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "checkpointFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The function returns one planned file at src/configs/<camelCaseName>CheckpointConfig.ts. It derives id and title from name and initializes description to an empty string, coordinates to zero, and requires, conditions, and actions to empty arrays.",
+				"examples": [
+					[
+						{
+							"path": "src/configs/spawnCheckpointConfig.ts",
+							"contents": "import type { Checkpoint } from '../lib/game/models/Game.types';\n\nexport const spawnCheckpointConfig: Checkpoint = {\n\tid: 'spawn',\n\ttitle: 'Spawn',\n\tdescription: '',\n\tx: 0,\n\ty: 0,\n\trequires: [],\n\tconditions: [],\n\tactions: []\n};\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when dimension is falsy in gameViewFiles; the implementation calls fail with this exact message: 'A game view needs harness.dimension 2d or 3d in package.json.'"
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "gameViewFiles",
@@ -63,27 +103,41 @@
 					{
 						"name": "gameViewFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name used to derive the view config's symbol, id, and title. It is case-converted for those generated values, with no additional validation in this function.",
+						"examples": ["inventory"]
 					},
 					{
 						"name": "gameViewFiles.dimension",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The view dimension inserted into the config; a falsy value causes fail to throw ExpectedCliError. The failure message asks for harness.dimension of 2d or 3d, but the function only checks truthiness and does not whitelist those values.",
+						"examples": ["2d", "3d"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gameViewFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The function returns one planned file at src/configs/<camelCaseName>ViewConfig.ts. Its contents include the converted id and title and supplied dimension, with empty style and checkpoints.",
+						"examples": [
+							[
+								{
+									"path": "src/configs/inventoryViewConfig.ts",
+									"contents": "import type { GameView } from '../lib/game/models/Game.types';\n\nexport const inventoryViewConfig: GameView = {\n\tid: 'inventory',\n\ttitle: 'Inventory',\n\tdimension: '2d',\n\tstyle: '',\n\tcheckpoints: []\n};\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when dimension is falsy in gameViewFiles; the implementation calls fail with this exact message: 'A game view needs harness.dimension 2d or 3d in package.json.'"
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "mechanicFiles",
@@ -91,17 +145,32 @@
 					{
 						"name": "mechanicFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The mechanic name used to derive its kebab-case file and test id and camelCase function symbol. This function passes it through case-conversion helpers without additional validation.",
+						"examples": ["dash"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mechanicFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The function returns a utility file and a Vitest test file. The generated utility accepts readonly GameState and GameInput and returns an empty patch, while the test checks the named mechanic with a simple input.",
+						"examples": [
+							[
+								{
+									"path": "src/utils/dash.ts",
+									"contents": "import type { GameState, GameInput } from '../lib/game/models/Game.types';\n\nexport function dash(state: Readonly<GameState>, input: Readonly<GameInput>): GameState {\n\tvoid state;\n\tvoid input;\n\treturn {};\n}\n"
+								},
+								{
+									"path": "test/dash.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { dash } from '../src/utils/dash';\n\ntest('dash produces an independent state patch', () => {\n\texpect(dash({}, { x: 0, y: 0 })).toEqual({});\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "checkpointFiles",
@@ -109,17 +178,28 @@
 					{
 						"name": "checkpointFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The checkpoint name used to derive the config symbol, kebab-case id, and PascalCase title. The function uses case conversion without additional validation.",
+						"examples": ["spawn"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkpointFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The function returns one planned file at src/configs/<camelCaseName>CheckpointConfig.ts. It derives id and title from name and initializes description to an empty string, coordinates to zero, and requires, conditions, and actions to empty arrays.",
+						"examples": [
+							[
+								{
+									"path": "src/configs/spawnCheckpointConfig.ts",
+									"contents": "import type { Checkpoint } from '../lib/game/models/Game.types';\n\nexport const spawnCheckpointConfig: Checkpoint = {\n\tid: 'spawn',\n\ttitle: 'Spawn',\n\tdescription: '',\n\tx: 0,\n\ty: 0,\n\trequires: [],\n\tconditions: [],\n\tactions: []\n};\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
