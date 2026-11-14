@@ -21,39 +21,58 @@
 				"name": "artifactAnswer.capture",
 				"type": "Listed",
 				"required": true,
-				"description": "The listed capture’s kind, recorded media type, SHA-256 hash, stored-media marker and optional explanation for missing bytes."
+				"description": "The listed fields identify the capture kind and recorded media type, the digest to compare, and whether media is stored. The function passes kind and mediaType to the media selector, compares sha256 exactly, checks only whether media is null, and uses gap in the missing-bytes error.",
+				"examples": [
+					{
+						"kind": "trace",
+						"mediaType": "application/json",
+						"sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+						"media": "stored"
+					}
+				]
 			},
 			{
 				"name": "artifactAnswer.bytes",
 				"type": "Uint8Array | undefined",
 				"required": true,
-				"description": "The bytes held by the capture’s record, or undefined when unavailable. At most 11 MiB is accepted, including exactly 11 MiB."
+				"description": "The bytes held by the capture record, or undefined if they are missing. Undefined is rejected, and supplied arrays longer than 11 MiB are rejected; exactly 11 MiB passes the size check."
 			}
 		],
 		"outputs": [
 			{
 				"name": "artifactAnswer",
 				"type": "Promise<EvidenceArtifactResult>",
-				"description": "A promise for the original bytes, their checked recorded hash, and the media type selected from the capture kind and byte signatures. Unsupported media is rejected by the media checker."
+				"description": "Resolves to the same Uint8Array with the recorded SHA-256 and the media type returned by artifactMedia. It resolves only after the bytes pass the presence, 11 MiB size, SHA-256, and media checks."
 			}
 		],
 		"errors": [
 			{
 				"name": "not-stored",
-				"type": "refused",
-				"description": "Rejects when bytes are absent or the capture’s media marker is null. The message includes the recorded gap when available."
+				"type": "thrown",
+				"description": "Throws an Error when capture.media is null or bytes is undefined. It uses capture.gap unless that value is nullish, then says its record does not hold them."
 			},
 			{
 				"name": "too-large",
-				"type": "refused",
-				"description": "Rejects bytes longer than 11 MiB, reporting the actual and allowed lengths."
+				"type": "thrown",
+				"description": "Throws an Error when bytes.length exceeds 11 * 1024 * 1024 (11 MiB). The message reports the actual length and the 11 MiB limit."
 			},
 			{
 				"name": "hash-mismatch",
-				"type": "refused",
-				"description": "Rejects when hashing the supplied bytes with SHA-256 does not reproduce the recorded hash."
+				"type": "thrown",
+				"description": "Throws an Error when the lowercase hexadecimal SHA-256 digest of bytes differs from capture.sha256. The comparison is exact, so a malformed or differently cased recorded value also fails."
+			},
+			{
+				"name": "media-not-served",
+				"type": "thrown",
+				"description": "Throws an Error when artifactMedia cannot serve the capture kind or bytes: screenshots need a PNG or JPEG signature, recorded audio needs a recognized matching signature, and results need UTF-8 text without NUL. A result recorded as JSON but containing other valid text is served as plain text."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Throws an Error when capture.media is null or bytes are undefined, when bytes.length exceeds artifactLimit, or when the recomputed SHA-256 differs from capture.sha256."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "artifactAnswer",
@@ -62,29 +81,38 @@
 						"name": "artifactAnswer.capture",
 						"type": "Listed",
 						"required": true,
-						"description": "The listed capture’s kind, recorded media type, SHA-256 hash, stored-media marker and optional explanation for missing bytes."
+						"description": "The listed fields identify the capture kind and recorded media type, the digest to compare, and whether media is stored. The function passes kind and mediaType to the media selector, compares sha256 exactly, checks only whether media is null, and uses gap in the missing-bytes error.",
+						"examples": [
+							{
+								"kind": "trace",
+								"mediaType": "application/json",
+								"sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+								"media": "stored"
+							}
+						]
 					},
 					{
 						"name": "artifactAnswer.bytes",
 						"type": "Uint8Array | undefined",
 						"required": true,
-						"description": "The bytes held by the capture’s record, or undefined when unavailable. At most 11 MiB is accepted, including exactly 11 MiB."
+						"description": "The bytes held by the capture record, or undefined if they are missing. Undefined is rejected, and supplied arrays longer than 11 MiB are rejected; exactly 11 MiB passes the size check."
 					}
 				],
 				"outputs": [
 					{
 						"name": "artifactAnswer",
 						"type": "Promise<EvidenceArtifactResult>",
-						"description": "A promise for the original bytes, their checked recorded hash, and the media type selected from the capture kind and byte signatures. Unsupported media is rejected by the media checker."
+						"description": "Resolves to the same Uint8Array with the recorded SHA-256 and the media type returned by artifactMedia. It resolves only after the bytes pass the presence, 11 MiB size, SHA-256, and media checks."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with an Error when bytes or stored media are unavailable, the bytes exceed 11 MiB, their SHA-256 differs from the recorded value, or artifactMedia cannot serve the capture. Media selection occurs only after the availability, size, and hash checks pass."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
