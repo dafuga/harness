@@ -33,9 +33,10 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 		await titled(page, 'Layouts');
 		await listed(page);
 	},
-	// Its overview, what it uses and that nothing uses it yet.
+	// Its overview, what it uses and that nothing uses it yet, loaded at its own address: an old
+	// Shells address is rewritten in the page, and a rewritten load has no timing of its own.
 	async shell(page) {
-		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}`));
+		await page.goto(at(shellsBranch, commits.shelled, `layouts/${unit}`));
 		await titled(page, 'TitleFrame');
 		await expect(page.getByRole('tab', { name: 'Overview', exact: true })).toHaveAttribute(
 			'aria-selected',
@@ -45,13 +46,13 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 		await expect(content(page).getByRole('region', { name: 'Uses', exact: true })).toHaveCount(0);
 	},
 	async 'shell-details'(page) {
-		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}/details`));
+		await page.goto(at(shellsBranch, commits.shelled, `layouts/${unit}/details`));
 		await expect(
 			content(page).getByRole('heading', { name: 'Contract', exact: true })
 		).toBeVisible();
 	},
 	async 'shell-history'(page) {
-		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}/history`));
+		await page.goto(at(shellsBranch, commits.shelled, `layouts/${unit}/history`));
 		await titled(page, 'TitleFrame');
 	},
 	// The address of a component leads a shell to Layouts, with its branch, commit, section and tab.
