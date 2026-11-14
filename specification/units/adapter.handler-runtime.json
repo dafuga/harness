@@ -19,37 +19,74 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HandlerRuntimeAdapter.constructor.handler",
 				"type": "RuntimeHandler",
-				"required": true
+				"required": true,
+				"description": "The callback invoked by invoke with a RuntimeRequest after the request passes the portable JSON check; it may return a response directly or a promise of one. A throw or rejection is converted to a runtime-failed response, while a blocking callback cannot be interrupted."
 			},
 			{
 				"name": "HandlerRuntimeAdapter.constructor.options",
 				"type": "RuntimeOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Constructor options for this adapter; only timeoutMs is read, and an absent value uses the 30,000 ms default. The deadline returns a runtime-timeout response for a late result, but it cannot interrupt synchronous work that blocks the calling thread.",
+				"examples": [
+					{},
+					{
+						"timeoutMs": 5000
+					}
+				]
 			},
 			{
 				"name": "HandlerRuntimeAdapter.invoke.request",
 				"type": "RuntimeRequest",
-				"required": true
+				"required": true,
+				"description": "One unit call, containing a required operation string and optional input value. invoke passes it to the handler only when its data is portable JSON: finite numbers, well-formed strings, plain objects or arrays, and no more than 64 levels deep; otherwise it resolves with an invalid-json response.",
+				"examples": [
+					{
+						"operation": "render",
+						"input": {
+							"component": "Button",
+							"props": {
+								"label": "Save"
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HandlerRuntimeAdapter.invoke",
-				"type": "Promise<RuntimeResponse>"
+				"type": "Promise<RuntimeResponse>",
+				"description": "The normalized response envelope returned by invoke, either {ok:true,output:...} or {ok:false,error:{code,message}}. An invalid handler value becomes invalid-response; handler throws or rejections, nonportable requests, and deadline expiry resolve to runtime-failed, invalid-json, and runtime-timeout failures respectively.",
+				"examples": [
+					{
+						"ok": true,
+						"output": {
+							"count": 3
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-failed",
+							"message": "handler rejected"
+						}
+					}
+				]
 			},
 			{
 				"name": "HandlerRuntimeAdapter.close",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The close promise resolves immediately with undefined; this adapter has no resources to release."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "HandlerRuntimeAdapter.invoke",
@@ -57,17 +94,45 @@
 					{
 						"name": "HandlerRuntimeAdapter.invoke.request",
 						"type": "RuntimeRequest",
-						"required": true
+						"required": true,
+						"description": "One unit call, containing a required operation string and optional input value. invoke passes it to the handler only when its data is portable JSON: finite numbers, well-formed strings, plain objects or arrays, and no more than 64 levels deep; otherwise it resolves with an invalid-json response.",
+						"examples": [
+							{
+								"operation": "render",
+								"input": {
+									"component": "Button",
+									"props": {
+										"label": "Save"
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HandlerRuntimeAdapter.invoke",
-						"type": "Promise<RuntimeResponse>"
+						"type": "Promise<RuntimeResponse>",
+						"description": "The normalized response envelope returned by invoke, either {ok:true,output:...} or {ok:false,error:{code,message}}. An invalid handler value becomes invalid-response; handler throws or rejections, nonportable requests, and deadline expiry resolve to runtime-failed, invalid-json, and runtime-timeout failures respectively.",
+						"examples": [
+							{
+								"ok": true,
+								"output": {
+									"count": 3
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-failed",
+									"message": "handler rejected"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HandlerRuntimeAdapter.close",
@@ -75,11 +140,12 @@
 				"outputs": [
 					{
 						"name": "HandlerRuntimeAdapter.close",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The close promise resolves immediately with undefined; this adapter has no resources to release."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -89,23 +155,32 @@
 					{
 						"name": "HandlerRuntimeAdapter.constructor.handler",
 						"type": "RuntimeHandler",
-						"required": true
+						"required": true,
+						"description": "The callback invoked by invoke with a RuntimeRequest after the request passes the portable JSON check; it may return a response directly or a promise of one. A throw or rejection is converted to a runtime-failed response, while a blocking callback cannot be interrupted."
 					},
 					{
 						"name": "HandlerRuntimeAdapter.constructor.options",
 						"type": "RuntimeOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Constructor options for this adapter; only timeoutMs is read, and an absent value uses the 30,000 ms default. The deadline returns a runtime-timeout response for a late result, but it cannot interrupt synchronous work that blocks the calling thread.",
+						"examples": [
+							{},
+							{
+								"timeoutMs": 5000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HandlerRuntimeAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructor result is a HandlerRuntimeAdapter instance that holds the handler and resolved timeout for calls. Its kind is always module, and the instance is not a JSON value."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
