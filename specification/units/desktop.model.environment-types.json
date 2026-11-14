@@ -56,16 +56,24 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "remoteContext",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The constant `'harness:remote'`, the name of the place where the page keeps its two connection stores for the components below it. It matters only to code that uses this name to reach those stores; this module holds neither store, and the value is fixed.",
+				"examples": ["harness:remote"]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "remoteScanFailures",
+				"type": "thrown",
+				"description": "The `scan` method of `RemoteNativePlugin` rejects when a scan ends without an offer, and the rejection carries one of the `remoteScanFailures` values as its code. Those values are not defined in these files, so they are not listed here."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
