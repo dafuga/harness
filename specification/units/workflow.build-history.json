@@ -12,37 +12,106 @@
 		"symbols": ["buildHistory", "renderBuild", "BuildOptions", "BuildOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "buildHistory.options",
 				"type": "BuildOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional configuration for the repository root, history output directory, and newest-commit limit. The root defaults to the current working directory, the output path is resolved from the root and must be given, and the limit defaults to 2000 and must convert to a positive whole number.",
+				"examples": [
+					{
+						"root": "/workspace/repo",
+						"out": ".harness/history",
+						"limit": "2000"
+					}
+				]
 			},
 			{
 				"name": "renderBuild.built",
 				"type": "BuiltHistory",
-				"required": true
+				"required": true,
+				"description": "A built history result containing the output path, SHA-256 digest, media counts, problems, history index, and SQLite catalog path. It is consumed by renderBuild to produce the text summary.",
+				"examples": [
+					{
+						"out": "/workspace/repo/.harness/history",
+						"digest": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"media": {
+							"resolved": 0,
+							"missing": 0
+						},
+						"problems": [],
+						"index": {
+							"schemaVersion": 1,
+							"refs": {
+								"evidence": null,
+								"notes": null
+							},
+							"branches": [],
+							"revisions": [],
+							"units": [],
+							"benchmarks": [],
+							"profiles": [],
+							"legacy": [],
+							"truncated": false,
+							"problems": []
+						},
+						"catalog": "/workspace/repo/.harness/history/catalog.sqlite"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "buildHistory",
-				"type": "Promise<BuiltHistory>"
+				"type": "Promise<BuiltHistory>",
+				"description": "Resolves to the built history result containing the output path, digest, media counts, problems, index data, and SQLite catalog path. The build reads repository Git history, requires a Git repository and an output directory, and includes the requested number of newest commits, defaulting to 2000.",
+				"examples": [
+					{
+						"out": "/workspace/repo/.harness/history",
+						"digest": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"media": {
+							"resolved": 0,
+							"missing": 0
+						},
+						"problems": [],
+						"index": {
+							"schemaVersion": 1,
+							"refs": {
+								"evidence": null,
+								"notes": null
+							},
+							"branches": [],
+							"revisions": [],
+							"units": [],
+							"benchmarks": [],
+							"profiles": [],
+							"legacy": [],
+							"truncated": false,
+							"problems": []
+						},
+						"catalog": "/workspace/repo/.harness/history/catalog.sqlite"
+					}
+				]
 			},
 			{
 				"name": "renderBuild",
-				"type": "string"
+				"type": "string",
+				"description": "Text summary of a built history result, including the output path, 12-character digest prefix, SQLite catalog path, revision coverage counts, media counts, and any problems. The lines are joined with newline characters.",
+				"examples": [
+					"History index written to /workspace/repo/.harness/history (0123456789ab).\nSQLite catalog: /workspace/repo/.harness/history/catalog.sqlite.\n0 commits: 0 verified, 0 failed, 0 invalid, 0 without evidence.\nMedia: 0 resolved, 0 missing."
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by buildHistory when the resolved root is not a Git repository, the output directory is missing, or the supplied limit does not convert to a positive whole number."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "buildHistory",
@@ -51,22 +120,59 @@
 						"name": "buildHistory.options",
 						"type": "BuildOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional configuration for the repository root, history output directory, and newest-commit limit. The root defaults to the current working directory, the output path is resolved from the root and must be given, and the limit defaults to 2000 and must convert to a positive whole number.",
+						"examples": [
+							{
+								"root": "/workspace/repo",
+								"out": ".harness/history",
+								"limit": "2000"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "buildHistory",
-						"type": "Promise<BuiltHistory>"
+						"type": "Promise<BuiltHistory>",
+						"description": "Resolves to the built history result containing the output path, digest, media counts, problems, index data, and SQLite catalog path. The build reads repository Git history, requires a Git repository and an output directory, and includes the requested number of newest commits, defaulting to 2000.",
+						"examples": [
+							{
+								"out": "/workspace/repo/.harness/history",
+								"digest": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"media": {
+									"resolved": 0,
+									"missing": 0
+								},
+								"problems": [],
+								"index": {
+									"schemaVersion": 1,
+									"refs": {
+										"evidence": null,
+										"notes": null
+									},
+									"branches": [],
+									"revisions": [],
+									"units": [],
+									"benchmarks": [],
+									"profiles": [],
+									"legacy": [],
+									"truncated": false,
+									"problems": []
+								},
+								"catalog": "/workspace/repo/.harness/history/catalog.sqlite"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by buildHistory when the resolved root is not a Git repository, the output directory is missing, or the supplied limit does not convert to a positive whole number."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderBuild",
@@ -74,17 +180,49 @@
 					{
 						"name": "renderBuild.built",
 						"type": "BuiltHistory",
-						"required": true
+						"required": true,
+						"description": "A built history result containing the output path, SHA-256 digest, media counts, problems, history index, and SQLite catalog path. It is consumed by renderBuild to produce the text summary.",
+						"examples": [
+							{
+								"out": "/workspace/repo/.harness/history",
+								"digest": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"media": {
+									"resolved": 0,
+									"missing": 0
+								},
+								"problems": [],
+								"index": {
+									"schemaVersion": 1,
+									"refs": {
+										"evidence": null,
+										"notes": null
+									},
+									"branches": [],
+									"revisions": [],
+									"units": [],
+									"benchmarks": [],
+									"profiles": [],
+									"legacy": [],
+									"truncated": false,
+									"problems": []
+								},
+								"catalog": "/workspace/repo/.harness/history/catalog.sqlite"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderBuild",
-						"type": "string"
+						"type": "string",
+						"description": "Text summary of a built history result, including the output path, 12-character digest prefix, SQLite catalog path, revision coverage counts, media counts, and any problems. The lines are joined with newline characters.",
+						"examples": [
+							"History index written to /workspace/repo/.harness/history (0123456789ab).\nSQLite catalog: /workspace/repo/.harness/history/catalog.sqlite.\n0 commits: 0 verified, 0 failed, 0 invalid, 0 without evidence.\nMedia: 0 resolved, 0 missing."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
