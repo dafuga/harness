@@ -21,17 +21,74 @@
 				"name": "projectActivity.source",
 				"type": "ActivitySource",
 				"required": true,
-				"description": "Repository identity and kind, newest-first revisions, callbacks for reasons/changes/owners, loop states and limits for work, files, reasons and units."
+				"description": "Supplies the project kind and repository identity, newest-first revisions, loop states, per-commit reason and change callbacks, a per-path ownership callback, and limits for work, files, reasons, and units. The callbacks provide the repository facts used to assemble committed activity, while the limits cap returned list lengths."
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectActivity",
 				"type": "ProjectActivity",
-				"description": "Version 1 activity with newest commit or null, loop summaries, bounded work entries and each path once at its latest listed change. Reasons and unit ids are deduplicated; owned files are preferred within a commit."
+				"description": "Contains version 1 committed activity for the supplied repository, with the newest revision and time or null, loop usage, recent work, and each changed path once at its latest revision. The work, file, reason, and unit lists are bounded by their configured limits, and owned files are prioritized within each revision.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"kind": "recorded",
+						"repository": {
+							"name": "harness-shots",
+							"branch": "main",
+							"head": "0123456789abcdef0123456789abcdef01234567"
+						},
+						"asOf": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"committedAt": "2026-11-14T10:00:00.000Z"
+						},
+						"loops": {
+							"total": 1,
+							"types": [
+								{
+									"template": "custom",
+									"loops": 1,
+									"complete": 1,
+									"open": 0,
+									"lastUsedAt": "2026-11-14T10:00:00.000Z",
+									"names": ["project-activity"]
+								}
+							]
+						},
+						"work": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"subject": "Assemble committed project activity",
+								"author": "Codex",
+								"committedAt": "2026-11-14T10:00:00.000Z",
+								"branches": ["main"],
+								"units": ["function.project-activity"],
+								"unitCount": 1,
+								"reasons": [
+									{
+										"unit": "function.project-activity",
+										"behavior": "Assemble committed project activity"
+									}
+								],
+								"reasonCount": 1,
+								"files": 1
+							}
+						],
+						"files": [
+							{
+								"path": "src/services/projects-sessions/project-activity-service/projectActivity.ts",
+								"status": "M",
+								"units": ["function.project-activity"],
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"committedAt": "2026-11-14T10:00:00.000Z"
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "projectActivity",
@@ -40,18 +97,74 @@
 						"name": "projectActivity.source",
 						"type": "ActivitySource",
 						"required": true,
-						"description": "Repository identity and kind, newest-first revisions, callbacks for reasons/changes/owners, loop states and limits for work, files, reasons and units."
+						"description": "Supplies the project kind and repository identity, newest-first revisions, loop states, per-commit reason and change callbacks, a per-path ownership callback, and limits for work, files, reasons, and units. The callbacks provide the repository facts used to assemble committed activity, while the limits cap returned list lengths."
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectActivity",
 						"type": "ProjectActivity",
-						"description": "Version 1 activity with newest commit or null, loop summaries, bounded work entries and each path once at its latest listed change. Reasons and unit ids are deduplicated; owned files are preferred within a commit."
+						"description": "Contains version 1 committed activity for the supplied repository, with the newest revision and time or null, loop usage, recent work, and each changed path once at its latest revision. The work, file, reason, and unit lists are bounded by their configured limits, and owned files are prioritized within each revision.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"kind": "recorded",
+								"repository": {
+									"name": "harness-shots",
+									"branch": "main",
+									"head": "0123456789abcdef0123456789abcdef01234567"
+								},
+								"asOf": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"committedAt": "2026-11-14T10:00:00.000Z"
+								},
+								"loops": {
+									"total": 1,
+									"types": [
+										{
+											"template": "custom",
+											"loops": 1,
+											"complete": 1,
+											"open": 0,
+											"lastUsedAt": "2026-11-14T10:00:00.000Z",
+											"names": ["project-activity"]
+										}
+									]
+								},
+								"work": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"subject": "Assemble committed project activity",
+										"author": "Codex",
+										"committedAt": "2026-11-14T10:00:00.000Z",
+										"branches": ["main"],
+										"units": ["function.project-activity"],
+										"unitCount": 1,
+										"reasons": [
+											{
+												"unit": "function.project-activity",
+												"behavior": "Assemble committed project activity"
+											}
+										],
+										"reasonCount": 1,
+										"files": 1
+									}
+								],
+								"files": [
+									{
+										"path": "src/services/projects-sessions/project-activity-service/projectActivity.ts",
+										"status": "M",
+										"units": ["function.project-activity"],
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"committedAt": "2026-11-14T10:00:00.000Z"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
