@@ -18,29 +18,39 @@
 				"name": "helperScopes.node",
 				"type": "ts.Node",
 				"required": true,
-				"description": "The identifier or member-access syntax node, with its TypeScript parent chain intact."
+				"description": "The syntax node of the runtime reference to the helper; its kind is not checked, and the node itself is never counted as a caller or shadowing scope. The walk starts at node.parent and stops before the SourceFile, so the parent chain must be intact, and a node with no parent yields { caller: null, shadowed: false }."
 			},
 			{
 				"name": "helperScopes.name",
 				"type": "string",
 				"required": true,
-				"description": "The local binding name whose enclosing scopes should be checked for shadowing."
+				"description": "The local binding name of the helper import, which is searched for in enclosing scopes; an enclosing binding with the same name sets shadowed to true. Only parameters, function-expression names, declarations (var, let, const, function, class) that are direct statements of a Block, catch variables and for-loop declarations are checked, and the SourceFile's own top-level bindings never count.",
+				"examples": ["formatDate", "escapeHtml", "readUnitSpec"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "helperScopes",
 				"type": "{ caller: string | null; shadowed: boolean }",
-				"description": "The enclosing named function path, or null at module level, and whether an inner binding hides this name.",
+				"description": "caller is the '.'-joined names of the enclosing named functions, outermost first (for example buildReport.formatRow), or null when none encloses the node: function declarations and named function expressions contribute their own name, arrows contribute the variable name they initialize, and methods or anonymous functions add nothing. shadowed reports whether an enclosing scope binds the name as described for the name input, and it does not change caller.",
 				"examples": [
 					{
 						"caller": "renderTitle",
+						"shadowed": false
+					},
+					{
+						"caller": "buildReport.formatRow",
+						"shadowed": true
+					},
+					{
+						"caller": null,
 						"shadowed": false
 					}
 				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "helperScopes",
@@ -49,30 +59,39 @@
 						"name": "helperScopes.node",
 						"type": "ts.Node",
 						"required": true,
-						"description": "The identifier or member-access syntax node, with its TypeScript parent chain intact."
+						"description": "The syntax node of the runtime reference to the helper; its kind is not checked, and the node itself is never counted as a caller or shadowing scope. The walk starts at node.parent and stops before the SourceFile, so the parent chain must be intact, and a node with no parent yields { caller: null, shadowed: false }."
 					},
 					{
 						"name": "helperScopes.name",
 						"type": "string",
 						"required": true,
-						"description": "The local binding name whose enclosing scopes should be checked for shadowing."
+						"description": "The local binding name of the helper import, which is searched for in enclosing scopes; an enclosing binding with the same name sets shadowed to true. Only parameters, function-expression names, declarations (var, let, const, function, class) that are direct statements of a Block, catch variables and for-loop declarations are checked, and the SourceFile's own top-level bindings never count.",
+						"examples": ["formatDate", "escapeHtml", "readUnitSpec"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "helperScopes",
 						"type": "{ caller: string | null; shadowed: boolean }",
-						"description": "The enclosing named function path, or null at module level, and whether an inner binding hides this name.",
+						"description": "caller is the '.'-joined names of the enclosing named functions, outermost first (for example buildReport.formatRow), or null when none encloses the node: function declarations and named function expressions contribute their own name, arrows contribute the variable name they initialize, and methods or anonymous functions add nothing. shadowed reports whether an enclosing scope binds the name as described for the name input, and it does not change caller.",
 						"examples": [
 							{
 								"caller": "renderTitle",
+								"shadowed": false
+							},
+							{
+								"caller": "buildReport.formatRow",
+								"shadowed": true
+							},
+							{
+								"caller": null,
 								"shadowed": false
 							}
 						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
