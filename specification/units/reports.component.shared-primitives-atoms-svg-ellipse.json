@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native ellipse element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the native ellipse when supplied. The component invokes the snippet without transforming its output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgEllipse",
 				"type": "markup",
-				"description": "The actual native ellipse element, with forwarded attributes and content and no additional wrapper."
+				"description": "Renders the native SVG ellipse element, spreads every remaining prop onto it as an attribute, and conditionally renders children inside it. It adds no wrapper element."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
