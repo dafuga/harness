@@ -21,24 +21,43 @@
 				"name": "maskSource.code",
 				"type": "string",
 				"required": true,
-				"description": "Source text to scan using JavaScript-like comment, string, template and regular-expression rules."
+				"description": "JavaScript-like source text scanned when comment and literal masking must preserve source offsets. The scanner keeps total length and newlines, but recognizes regular expressions heuristically and only finds their closing slash on the same line.",
+				"examples": [
+					"const message = 'secret'; // comment\nsend(message);",
+					"const view = `Hello ${user.name}`;"
+				]
 			},
 			{
 				"name": "maskSource.options",
 				"type": "MaskOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional strings flag, default true, controlling whether literal contents are blanked as well as comments."
+				"description": "Defaults to `{}`; `options.strings ?? true` means omitted or nullish `strings` enables literal-content masking. Set `strings` to `false` to preserve single- and double-quoted, template, and recognized regular-expression contents while comments are still masked.",
+				"examples": [
+					{},
+					{
+						"strings": false
+					},
+					{
+						"strings": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "maskSource",
 				"type": "string",
-				"description": "Same-length text with comments blanked, newlines preserved, literal delimiters retained and template interpolation code still visible. With strings false, literal contents remain."
+				"description": "The returned source has comments replaced by spaces while line breaks and total length are preserved. Literal delimiters remain, and template interpolation regions are scanned as code; literal contents are blanked by default and preserved when `strings` is `false`.",
+				"examples": [
+					"const message = '      ';",
+					"const view = `  ${user.name}`;",
+					"const pattern = /      /g;"
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "maskSource",
@@ -47,25 +66,43 @@
 						"name": "maskSource.code",
 						"type": "string",
 						"required": true,
-						"description": "Source text to scan using JavaScript-like comment, string, template and regular-expression rules."
+						"description": "JavaScript-like source text scanned when comment and literal masking must preserve source offsets. The scanner keeps total length and newlines, but recognizes regular expressions heuristically and only finds their closing slash on the same line.",
+						"examples": [
+							"const message = 'secret'; // comment\nsend(message);",
+							"const view = `Hello ${user.name}`;"
+						]
 					},
 					{
 						"name": "maskSource.options",
 						"type": "MaskOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional strings flag, default true, controlling whether literal contents are blanked as well as comments."
+						"description": "Defaults to `{}`; `options.strings ?? true` means omitted or nullish `strings` enables literal-content masking. Set `strings` to `false` to preserve single- and double-quoted, template, and recognized regular-expression contents while comments are still masked.",
+						"examples": [
+							{},
+							{
+								"strings": false
+							},
+							{
+								"strings": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "maskSource",
 						"type": "string",
-						"description": "Same-length text with comments blanked, newlines preserved, literal delimiters retained and template interpolation code still visible. With strings false, literal contents remain."
+						"description": "The returned source has comments replaced by spaces while line breaks and total length are preserved. Literal delimiters remain, and template interpolation regions are scanned as code; literal contents are blanked by default and preserved when `strings` is `false`.",
+						"examples": [
+							"const message = '      ';",
+							"const view = `  ${user.name}`;",
+							"const pattern = /      /g;"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
