@@ -22,17 +22,45 @@
 				"name": "readBrowserDiagnostics.directory",
 				"type": "string",
 				"required": true,
-				"description": "Directory for this check attempt; only its browser-errors.ndjson file is read."
+				"description": "Directory used for this check attempt; the function reads only its browser-errors.ndjson child and returns no diagnostics when that file is absent.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "readBrowserDiagnostics",
 				"type": "Read",
-				"description": "Parsed browserErrors when the file contains valid nonblank JSON lines. Returns an empty object for a missing or empty file, or a failure message for a nonregular file, a file over 2000000 bytes, read failure or any invalid line; partial results are not returned."
+				"description": "Contains parsed diagnostics from each nonblank line when the file is present and within the size limit; a missing or empty file returns {}, while a nonregular file, a file over 2,000,000 bytes, or any read, JSON, or schema error returns a failure string without partial records.",
+				"examples": [
+					{},
+					{
+						"failure": "Browser diagnostics could not be read or did not match their schema."
+					},
+					{
+						"browserErrors": [
+							{
+								"test": "verification page loads",
+								"file": "tests/e2e/verification.spec.ts",
+								"project": "chromium",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "pageerror",
+										"message": "TypeError: Cannot read properties of undefined",
+										"page": "http://127.0.0.1:4173/verify"
+									}
+								],
+								"expected": []
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "readBrowserDiagnostics",
@@ -41,18 +69,45 @@
 						"name": "readBrowserDiagnostics.directory",
 						"type": "string",
 						"required": true,
-						"description": "Directory for this check attempt; only its browser-errors.ndjson file is read."
+						"description": "Directory used for this check attempt; the function reads only its browser-errors.ndjson child and returns no diagnostics when that file is absent.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-16"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readBrowserDiagnostics",
 						"type": "Read",
-						"description": "Parsed browserErrors when the file contains valid nonblank JSON lines. Returns an empty object for a missing or empty file, or a failure message for a nonregular file, a file over 2000000 bytes, read failure or any invalid line; partial results are not returned."
+						"description": "Contains parsed diagnostics from each nonblank line when the file is present and within the size limit; a missing or empty file returns {}, while a nonregular file, a file over 2,000,000 bytes, or any read, JSON, or schema error returns a failure string without partial records.",
+						"examples": [
+							{},
+							{
+								"failure": "Browser diagnostics could not be read or did not match their schema."
+							},
+							{
+								"browserErrors": [
+									{
+										"test": "verification page loads",
+										"file": "tests/e2e/verification.spec.ts",
+										"project": "chromium",
+										"retry": 0,
+										"errors": [
+											{
+												"type": "pageerror",
+												"message": "TypeError: Cannot read properties of undefined",
+												"page": "http://127.0.0.1:4173/verify"
+											}
+										],
+										"expected": []
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
