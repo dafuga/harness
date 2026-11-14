@@ -22,58 +22,62 @@
 				"name": "SourceDialog.open",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether to show and mount the reader."
+				"description": "It is the boolean forwarded to Modal. SourceContent is mounted only while it is true.",
+				"examples": [true, false]
 			},
 			{
 				"name": "SourceDialog.title",
 				"type": "string",
 				"required": true,
-				"description": "Entity or callable name used in the dialog title."
+				"description": "The name interpolated before “· Source code” in the modal title. It is not transformed here.",
+				"examples": ["Quarterly report", "Revenue estimate"]
 			},
 			{
 				"name": "SourceDialog.files",
 				"type": "SourceFiles",
 				"required": true,
-				"description": "Lists owned files for this source session."
+				"description": "Callback returning a promise of source file paths for SourceContent. It is supplied only while the dialog is open."
 			},
 			{
 				"name": "SourceDialog.read",
 				"type": "SourceRead",
 				"required": true,
-				"description": "Reads the captured revision of a selected file."
+				"description": "Callback that accepts a source path and returns a promise of its text. It is supplied only while the dialog is open."
 			},
 			{
 				"name": "SourceDialog.commit",
 				"type": "string",
 				"required": true,
-				"description": "Source revision shown beside the selector."
+				"description": "String commit identifier passed to SourceContent while the dialog is open. This component does not validate or transform it.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "SourceDialog.onClose",
 				"type": "() => void",
 				"required": true,
-				"description": "Host closes the session and restores focus."
+				"description": "Close callback forwarded to Modal for close requests; SourceDialog does not call it directly."
 			},
 			{
 				"name": "SourceDialog.empty",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional no-files explanation. Defaults to JavaScript undefined, using the shared source viewer default."
+				"description": "Optional no-files message forwarded to SourceContent while the dialog is open. When omitted, its value is undefined.",
+				"examples": ["No source files are available."]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceDialog",
 				"type": "markup",
-				"description": "Open dialogs mount the source reader, including loading, failure, missing-source and empty-file messages. Closed dialogs read nothing. Escape and close delegate to the host, which owns focus restoration."
+				"description": "Renders Modal with the title “${title} · Source code”, the text variant, and onClose. It renders SourceContent only while open is true."
 			}
 		],
 		"errors": [
 			{
 				"name": "onClose callback error",
-				"type": "propagated",
-				"description": "The required close callback may throw when the shared modal requests closure; SourceDialog does not catch it."
+				"type": "thrown",
+				"description": "If the forwarded onClose callback throws when invoked by Modal, SourceDialog does not catch the exception."
 			}
 		],
 		"errorStatus": "declared",
