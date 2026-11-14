@@ -18,17 +18,19 @@
 				"name": "gatewayContentError.message",
 				"type": "string",
 				"required": true,
-				"description": "Human-readable explanation to place on the error."
+				"description": "A string supplied as the message for the new Error when gateway content failure details are needed. The function passes it through without validation or transformation.",
+				"examples": ["Unexpected gateway response content", "Gateway returned an empty body"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayContentError",
 				"type": "Error",
-				"description": "New Error with the supplied message and name GatewayContentError; construction does not throw it."
+				"description": "A newly constructed Error whose message is the supplied string and whose name is set to GatewayContentError. The function returns the error without throwing it."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "gatewayContentError",
@@ -37,18 +39,19 @@
 						"name": "gatewayContentError.message",
 						"type": "string",
 						"required": true,
-						"description": "Human-readable explanation to place on the error."
+						"description": "A string supplied as the message for the new Error when gateway content failure details are needed. The function passes it through without validation or transformation.",
+						"examples": ["Unexpected gateway response content", "Gateway returned an empty body"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gatewayContentError",
 						"type": "Error",
-						"description": "New Error with the supplied message and name GatewayContentError; construction does not throw it."
+						"description": "A newly constructed Error whose message is the supplied string and whose name is set to GatewayContentError. The function returns the error without throwing it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
