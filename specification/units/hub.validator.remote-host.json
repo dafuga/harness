@@ -21,40 +21,96 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteHostValidator.registration.body",
 				"type": "Body",
-				"required": true
+				"required": true,
+				"description": "The raw object an owner sends to register a host, typed as a record of unknown values. Only hostId, hostKey, credentialHash and name are read and every other key is dropped, so nothing in the body can name an owner.",
+				"examples": [
+					{
+						"hostId": "3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
+						"hostKey": "BKxH0d3Q1s9VbL2n7MjY4fWcE8tPzR6aGiU5oXkT3yNq0JhSdCe1lBvZ8rFuIA_wmDg4KpOyQ7sEb9TnLx2HcVQ",
+						"credentialHash": "9c4e0a7b1f5d28e36a0c9b47d2f81e5a3c6b09d4e7f2a18b5c3d6e0f9a2b7c41",
+						"name": "Studio Mac mini"
+					},
+					{
+						"hostId": "a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90",
+						"hostKey": "BPm3Yx0aT7wQ2kLd9sHeVn5Rb1JgZo8uCwE4iKfMt6AyNqS0XhdLr2pU9VcGk3OjBz7W1-Ee4hMv_Ti8Rq0nYaA",
+						"credentialHash": "e0b3f9a6c2d814e7b5a90c3f6d2e18b47a5c0f93d6e2b1a84c7f0d9e35b2a61c",
+						"name": "Office Mac Studio"
+					}
+				]
 			},
 			{
 				"name": "RemoteHostValidator.hostId.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The untyped value offered as a host identifier, such as the hostId field of a request body. It is accepted only when it is a string of exactly 40 lowercase hexadecimal characters, and hostId() checks that format alone without comparing the value to any key.",
+				"examples": [
+					"3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
+					"a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90"
+				]
 			},
 			{
 				"name": "RemoteHostValidator.deviceId.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The untyped value offered as a device identifier, such as the deviceId field of a request. It is accepted only when it is a string of exactly 40 lowercase hexadecimal characters, and deviceId() checks that format alone without comparing the value to any key.",
+				"examples": [
+					"0e5d2b9f71a3c86e4d0b29f5a7c1e38d6b4f0a72",
+					"5b8f1e0c7a4d92e36f0b1c8a5d7e2f96c3a40b18"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteHostValidator.registration",
-				"type": "Promise<RemoteHostRegisterInput>"
+				"type": "Promise<RemoteHostRegisterInput>",
+				"description": "The host registration that registration() resolves to: hostId, hostKey, credentialHash and name, with name returned trimmed. It resolves only when hostId, hostKey and credentialHash pass their patterns, name is 1 to 80 characters after trimming (JavaScript string length), and hostId equals the first 40 hex characters of the SHA-256 of hostKey's 65 decoded bytes; otherwise it rejects with invalid-input.",
+				"examples": [
+					{
+						"hostId": "3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
+						"hostKey": "BKxH0d3Q1s9VbL2n7MjY4fWcE8tPzR6aGiU5oXkT3yNq0JhSdCe1lBvZ8rFuIA_wmDg4KpOyQ7sEb9TnLx2HcVQ",
+						"credentialHash": "9c4e0a7b1f5d28e36a0c9b47d2f81e5a3c6b09d4e7f2a18b5c3d6e0f9a2b7c41",
+						"name": "Studio Mac mini"
+					},
+					{
+						"hostId": "a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90",
+						"hostKey": "BPm3Yx0aT7wQ2kLd9sHeVn5Rb1JgZo8uCwE4iKfMt6AyNqS0XhdLr2pU9VcGk3OjBz7W1-Ee4hMv_Ti8Rq0nYaA",
+						"credentialHash": "e0b3f9a6c2d814e7b5a90c3f6d2e18b47a5c0f93d6e2b1a84c7f0d9e35b2a61c",
+						"name": "Office Mac Studio"
+					}
+				]
 			},
 			{
 				"name": "RemoteHostValidator.hostId",
-				"type": "string"
+				"type": "string",
+				"description": "The value hostId() returns: the string it was given, returned unchanged after passing the check for exactly 40 lowercase hexadecimal characters. A caller needs it when a checked host identifier is required, and it is never trimmed or case-folded.",
+				"examples": [
+					"3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
+					"a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90"
+				]
 			},
 			{
 				"name": "RemoteHostValidator.deviceId",
-				"type": "string"
+				"type": "string",
+				"description": "The value deviceId() returns: the string it was given, returned unchanged after passing the check for exactly 40 lowercase hexadecimal characters. A caller needs it when a checked device identifier is required, and it is never trimmed or case-folded.",
+				"examples": [
+					"0e5d2b9f71a3c86e4d0b29f5a7c1e38d6b4f0a72",
+					"5b8f1e0c7a4d92e36f0b1c8a5d7e2f96c3a40b18"
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "invalid-input",
+				"type": "thrown",
+				"description": "Thrown by hubFail('invalid-input') when hostId, deviceId, hostKey or credentialHash fails its pattern, when name is empty or longer than 80 characters after trimming, or when hostId is not the identity of hostKey. It is an Error with the message 'Harness artifact unavailable' and code 'invalid-input', and registration() delivers it as a rejected promise."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteHostValidator.registration",
@@ -62,17 +118,53 @@
 					{
 						"name": "RemoteHostValidator.registration.body",
 						"type": "Body",
-						"required": true
+						"required": true,
+						"description": "The raw object an owner sends to register a host, typed as a record of unknown values. Only hostId, hostKey, credentialHash and name are read and every other key is dropped, so nothing in the body can name an owner.",
+						"examples": [
+							{
+								"hostId": "3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
+								"hostKey": "BKxH0d3Q1s9VbL2n7MjY4fWcE8tPzR6aGiU5oXkT3yNq0JhSdCe1lBvZ8rFuIA_wmDg4KpOyQ7sEb9TnLx2HcVQ",
+								"credentialHash": "9c4e0a7b1f5d28e36a0c9b47d2f81e5a3c6b09d4e7f2a18b5c3d6e0f9a2b7c41",
+								"name": "Studio Mac mini"
+							},
+							{
+								"hostId": "a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90",
+								"hostKey": "BPm3Yx0aT7wQ2kLd9sHeVn5Rb1JgZo8uCwE4iKfMt6AyNqS0XhdLr2pU9VcGk3OjBz7W1-Ee4hMv_Ti8Rq0nYaA",
+								"credentialHash": "e0b3f9a6c2d814e7b5a90c3f6d2e18b47a5c0f93d6e2b1a84c7f0d9e35b2a61c",
+								"name": "Office Mac Studio"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostValidator.registration",
-						"type": "Promise<RemoteHostRegisterInput>"
+						"type": "Promise<RemoteHostRegisterInput>",
+						"description": "The host registration that registration() resolves to: hostId, hostKey, credentialHash and name, with name returned trimmed. It resolves only when hostId, hostKey and credentialHash pass their patterns, name is 1 to 80 characters after trimming (JavaScript string length), and hostId equals the first 40 hex characters of the SHA-256 of hostKey's 65 decoded bytes; otherwise it rejects with invalid-input.",
+						"examples": [
+							{
+								"hostId": "3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
+								"hostKey": "BKxH0d3Q1s9VbL2n7MjY4fWcE8tPzR6aGiU5oXkT3yNq0JhSdCe1lBvZ8rFuIA_wmDg4KpOyQ7sEb9TnLx2HcVQ",
+								"credentialHash": "9c4e0a7b1f5d28e36a0c9b47d2f81e5a3c6b09d4e7f2a18b5c3d6e0f9a2b7c41",
+								"name": "Studio Mac mini"
+							},
+							{
+								"hostId": "a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90",
+								"hostKey": "BPm3Yx0aT7wQ2kLd9sHeVn5Rb1JgZo8uCwE4iKfMt6AyNqS0XhdLr2pU9VcGk3OjBz7W1-Ee4hMv_Ti8Rq0nYaA",
+								"credentialHash": "e0b3f9a6c2d814e7b5a90c3f6d2e18b47a5c0f93d6e2b1a84c7f0d9e35b2a61c",
+								"name": "Office Mac Studio"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "Rejects with the invalid-input error (an Error with code 'invalid-input') when hostId, hostKey or credentialHash fails its pattern, when name is empty or longer than 80 characters after trimming, or when hostId is not the identity of hostKey, which includes a hostKey that is not an uncompressed P-256 point."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostValidator.hostId",
@@ -80,17 +172,33 @@
 					{
 						"name": "RemoteHostValidator.hostId.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The untyped value offered as a host identifier, such as the hostId field of a request body. It is accepted only when it is a string of exactly 40 lowercase hexadecimal characters, and hostId() checks that format alone without comparing the value to any key.",
+						"examples": [
+							"3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
+							"a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostValidator.hostId",
-						"type": "string"
+						"type": "string",
+						"description": "The value hostId() returns: the string it was given, returned unchanged after passing the check for exactly 40 lowercase hexadecimal characters. A caller needs it when a checked host identifier is required, and it is never trimmed or case-folded.",
+						"examples": [
+							"3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
+							"a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "Throws the invalid-input error (an Error with code 'invalid-input') when the value is not a string of exactly 40 lowercase hexadecimal characters."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostValidator.deviceId",
@@ -98,17 +206,33 @@
 					{
 						"name": "RemoteHostValidator.deviceId.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The untyped value offered as a device identifier, such as the deviceId field of a request. It is accepted only when it is a string of exactly 40 lowercase hexadecimal characters, and deviceId() checks that format alone without comparing the value to any key.",
+						"examples": [
+							"0e5d2b9f71a3c86e4d0b29f5a7c1e38d6b4f0a72",
+							"5b8f1e0c7a4d92e36f0b1c8a5d7e2f96c3a40b18"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostValidator.deviceId",
-						"type": "string"
+						"type": "string",
+						"description": "The value deviceId() returns: the string it was given, returned unchanged after passing the check for exactly 40 lowercase hexadecimal characters. A caller needs it when a checked device identifier is required, and it is never trimmed or case-folded.",
+						"examples": [
+							"0e5d2b9f71a3c86e4d0b29f5a7c1e38d6b4f0a72",
+							"5b8f1e0c7a4d92e36f0b1c8a5d7e2f96c3a40b18"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "Throws the invalid-input error (an Error with code 'invalid-input') when the value is not a string matching the deviceId pattern of exactly 40 lowercase hexadecimal characters."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
