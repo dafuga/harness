@@ -20,35 +20,146 @@
 				"name": "addComment.deps",
 				"type": "CollaborationDependencies",
 				"required": true,
-				"description": "Repository, source-anchor validator and optional clock used by the transaction."
+				"description": "Dependency bag for the transaction: repository.read and repository.compareAndSwap load and save the records, source.validateAnchor checks each anchor against the project's source repository on every attempt, and the optional now() stamps createdAt (new Date() when absent). The cache and authorizeRepository members are declared on the type but never read by this function."
 			},
 			{
 				"name": "addComment.actor",
 				"type": "Actor",
 				"required": true,
-				"description": "Verified actor who must be an owner or commenter of the project."
+				"description": "The actor, parsed by a strict schema (id and name trimmed to 1–200 characters, email a valid address of up to 320 characters stored in lowercase, emailVerified exactly true, no extra fields) and stored on the new comment. The actor id must match a project member whose role is owner, writer or commenter, otherwise the call throws forbidden.",
+				"examples": [
+					{
+						"id": "usr_4c9e1a2b7d",
+						"email": "riley.chen@example.com",
+						"name": "Riley Chen",
+						"emailVerified": true
+					},
+					{
+						"id": "usr_8e2d5b1f03",
+						"email": "sam.ortiz@example.org",
+						"name": "Sam Ortiz",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "addComment.input",
 				"type": "AddCommentInput",
 				"required": true,
-				"description": "Project and request UUIDs, optional thread UUID, source anchor and trimmed comment text of 1–20,000 characters."
+				"description": "Strict object: projectId and requestId are UUIDs, threadId is an optional UUID, text is trimmed to 1–20,000 characters, and anchor must pass the anchor schema (imageSha256 requires version, state and viewport, while without it state, viewport and region must be null), with any other field rejected. Omit threadId to open a new thread, or pass an existing thread's id to reply, in which case the anchor must equal that thread's anchor.",
+				"examples": [
+					{
+						"projectId": "6f1c2e8a-4b7d-4e9a-9c3f-2d8b5a1e7f60",
+						"requestId": "b7e4d2a9-3c18-4f6e-8a25-91d0c7f4e3b6",
+						"anchor": {
+							"branch": "main",
+							"commit": "9b1e4f7a2c8d03e5f6a1b2c3d4e5f60718293a4b",
+							"entityId": "reports.component.evidence-grid",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						},
+						"text": "The empty-state copy overlaps the filter bar on narrow screens."
+					},
+					{
+						"projectId": "6f1c2e8a-4b7d-4e9a-9c3f-2d8b5a1e7f60",
+						"requestId": "0d5a8c3e-7f21-4b9d-8e64-c3a1f09b2d78",
+						"threadId": "1c8e6a40-93d7-4f2b-b5a1-6e0d3c9f7a28",
+						"anchor": {
+							"branch": "main",
+							"commit": "9b1e4f7a2c8d03e5f6a1b2c3d4e5f60718293a4b",
+							"entityId": "reports.component.evidence-grid",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						},
+						"text": "Confirmed on a 1280px viewport as well."
+					},
+					{
+						"projectId": "6f1c2e8a-4b7d-4e9a-9c3f-2d8b5a1e7f60",
+						"requestId": "e90b3f6c-1a47-4d28-9e5b-07c2a8d4f1e3",
+						"anchor": {
+							"branch": "main",
+							"commit": "c41a7e0d9f2b65a8e3d1c7f4b09a2e6d5c83f1b7",
+							"entityId": "reports.component.evidence-grid",
+							"version": "v012",
+							"imageSha256": "a3f9c17e5b0d82e4f6a1c9b7d3e50f2a8c4d6e1b9f7a0c3e5d2b8f6a1c4e9d7b",
+							"state": "filter-open",
+							"viewport": "desktop",
+							"region": {
+								"x": 0.12,
+								"y": 0.4,
+								"width": 0.3,
+								"height": 0.2
+							}
+						},
+						"text": "Filter chips wrap onto a second row at this width."
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "addComment",
 				"type": "unknown",
-				"description": "Promise of the updated thread and committed collaboration revision; an identical repeated request returns its existing thread."
+				"description": "The thread that holds the comment, with every comment in it, plus collaborationCommit set to the collaboration revision that the transaction read or committed. A repeat that matches the stored comment returns the existing thread with the current revision and appends nothing, and any other repeat throws request-conflict.",
+				"examples": [
+					{
+						"id": "1c8e6a40-93d7-4f2b-b5a1-6e0d3c9f7a28",
+						"projectId": "6f1c2e8a-4b7d-4e9a-9c3f-2d8b5a1e7f60",
+						"anchor": {
+							"branch": "main",
+							"commit": "9b1e4f7a2c8d03e5f6a1b2c3d4e5f60718293a4b",
+							"entityId": "reports.component.evidence-grid",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						},
+						"comments": [
+							{
+								"id": "5a7c1e9b-2d4f-4b83-a6e0-f1c9d3b7e254",
+								"requestId": "b7e4d2a9-3c18-4f6e-8a25-91d0c7f4e3b6",
+								"actor": {
+									"id": "usr_4c9e1a2b7d",
+									"email": "riley.chen@example.com",
+									"name": "Riley Chen",
+									"emailVerified": true
+								},
+								"text": "The empty-state copy overlaps the filter bar on narrow screens.",
+								"createdAt": "2026-11-14T09:30:12.418Z"
+							},
+							{
+								"id": "7d2f9b04-6e1a-4c58-b3d7-2a9e5f8c1b60",
+								"requestId": "0d5a8c3e-7f21-4b9d-8e64-c3a1f09b2d78",
+								"actor": {
+									"id": "usr_8e2d5b1f03",
+									"email": "sam.ortiz@example.org",
+									"name": "Sam Ortiz",
+									"emailVerified": true
+								},
+								"text": "Confirmed on a 1280px viewport as well.",
+								"createdAt": "2026-11-14T10:02:47.135Z"
+							}
+						],
+						"collaborationCommit": "e07d3b9a5c12f48e6b0a9d2c7e1f35a4b8d60c92"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid input, denied membership, invalid source anchors, missing threads, conflicting request or anchor reuse, and exhausted write retries."
+				"description": "Thrown as an Error whose message is 'Collaboration <code>' and whose code is invalid-input (a schema check fails on the input or on records read or written), forbidden (no project, no membership, or a role other than owner, writer or commenter), not-found (threadId is not a thread of the project), anchor-conflict (the thread named by threadId has a different anchor), request-conflict (a repeated requestId with a different actor id, text, anchor or threadId), or conflict (compareAndSwap returned null on all five attempts). Rejections from deps.source and deps.repository pass through unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "addComment",
@@ -57,30 +168,146 @@
 						"name": "addComment.deps",
 						"type": "CollaborationDependencies",
 						"required": true,
-						"description": "Repository, source-anchor validator and optional clock used by the transaction."
+						"description": "Dependency bag for the transaction: repository.read and repository.compareAndSwap load and save the records, source.validateAnchor checks each anchor against the project's source repository on every attempt, and the optional now() stamps createdAt (new Date() when absent). The cache and authorizeRepository members are declared on the type but never read by this function."
 					},
 					{
 						"name": "addComment.actor",
 						"type": "Actor",
 						"required": true,
-						"description": "Verified actor who must be an owner or commenter of the project."
+						"description": "The actor, parsed by a strict schema (id and name trimmed to 1–200 characters, email a valid address of up to 320 characters stored in lowercase, emailVerified exactly true, no extra fields) and stored on the new comment. The actor id must match a project member whose role is owner, writer or commenter, otherwise the call throws forbidden.",
+						"examples": [
+							{
+								"id": "usr_4c9e1a2b7d",
+								"email": "riley.chen@example.com",
+								"name": "Riley Chen",
+								"emailVerified": true
+							},
+							{
+								"id": "usr_8e2d5b1f03",
+								"email": "sam.ortiz@example.org",
+								"name": "Sam Ortiz",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "addComment.input",
 						"type": "AddCommentInput",
 						"required": true,
-						"description": "Project and request UUIDs, optional thread UUID, source anchor and trimmed comment text of 1–20,000 characters."
+						"description": "Strict object: projectId and requestId are UUIDs, threadId is an optional UUID, text is trimmed to 1–20,000 characters, and anchor must pass the anchor schema (imageSha256 requires version, state and viewport, while without it state, viewport and region must be null), with any other field rejected. Omit threadId to open a new thread, or pass an existing thread's id to reply, in which case the anchor must equal that thread's anchor.",
+						"examples": [
+							{
+								"projectId": "6f1c2e8a-4b7d-4e9a-9c3f-2d8b5a1e7f60",
+								"requestId": "b7e4d2a9-3c18-4f6e-8a25-91d0c7f4e3b6",
+								"anchor": {
+									"branch": "main",
+									"commit": "9b1e4f7a2c8d03e5f6a1b2c3d4e5f60718293a4b",
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"text": "The empty-state copy overlaps the filter bar on narrow screens."
+							},
+							{
+								"projectId": "6f1c2e8a-4b7d-4e9a-9c3f-2d8b5a1e7f60",
+								"requestId": "0d5a8c3e-7f21-4b9d-8e64-c3a1f09b2d78",
+								"threadId": "1c8e6a40-93d7-4f2b-b5a1-6e0d3c9f7a28",
+								"anchor": {
+									"branch": "main",
+									"commit": "9b1e4f7a2c8d03e5f6a1b2c3d4e5f60718293a4b",
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"text": "Confirmed on a 1280px viewport as well."
+							},
+							{
+								"projectId": "6f1c2e8a-4b7d-4e9a-9c3f-2d8b5a1e7f60",
+								"requestId": "e90b3f6c-1a47-4d28-9e5b-07c2a8d4f1e3",
+								"anchor": {
+									"branch": "main",
+									"commit": "c41a7e0d9f2b65a8e3d1c7f4b09a2e6d5c83f1b7",
+									"entityId": "reports.component.evidence-grid",
+									"version": "v012",
+									"imageSha256": "a3f9c17e5b0d82e4f6a1c9b7d3e50f2a8c4d6e1b9f7a0c3e5d2b8f6a1c4e9d7b",
+									"state": "filter-open",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.12,
+										"y": 0.4,
+										"width": 0.3,
+										"height": 0.2
+									}
+								},
+								"text": "Filter chips wrap onto a second row at this width."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "addComment",
 						"type": "unknown",
-						"description": "Promise of the updated thread and committed collaboration revision; an identical repeated request returns its existing thread."
+						"description": "The thread that holds the comment, with every comment in it, plus collaborationCommit set to the collaboration revision that the transaction read or committed. A repeat that matches the stored comment returns the existing thread with the current revision and appends nothing, and any other repeat throws request-conflict.",
+						"examples": [
+							{
+								"id": "1c8e6a40-93d7-4f2b-b5a1-6e0d3c9f7a28",
+								"projectId": "6f1c2e8a-4b7d-4e9a-9c3f-2d8b5a1e7f60",
+								"anchor": {
+									"branch": "main",
+									"commit": "9b1e4f7a2c8d03e5f6a1b2c3d4e5f60718293a4b",
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"comments": [
+									{
+										"id": "5a7c1e9b-2d4f-4b83-a6e0-f1c9d3b7e254",
+										"requestId": "b7e4d2a9-3c18-4f6e-8a25-91d0c7f4e3b6",
+										"actor": {
+											"id": "usr_4c9e1a2b7d",
+											"email": "riley.chen@example.com",
+											"name": "Riley Chen",
+											"emailVerified": true
+										},
+										"text": "The empty-state copy overlaps the filter bar on narrow screens.",
+										"createdAt": "2026-11-14T09:30:12.418Z"
+									},
+									{
+										"id": "7d2f9b04-6e1a-4c58-b3d7-2a9e5f8c1b60",
+										"requestId": "0d5a8c3e-7f21-4b9d-8e64-c3a1f09b2d78",
+										"actor": {
+											"id": "usr_8e2d5b1f03",
+											"email": "sam.ortiz@example.org",
+											"name": "Sam Ortiz",
+											"emailVerified": true
+										},
+										"text": "Confirmed on a 1280px viewport as well.",
+										"createdAt": "2026-11-14T10:02:47.135Z"
+									}
+								],
+								"collaborationCommit": "e07d3b9a5c12f48e6b0a9d2c7e1f35a4b8d60c92"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown as an Error whose message is 'Collaboration <code>' and whose code is invalid-input (a schema check fails on the input or on records read or written), forbidden (no project, no membership, or a role other than owner, writer or commenter), not-found (threadId is not a thread of the project), anchor-conflict (the thread named by threadId has a different anchor), request-conflict (a repeated requestId with a different actor id, text, anchor or threadId), or conflict (compareAndSwap returned null on all five attempts). Rejections from deps.source and deps.repository pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
