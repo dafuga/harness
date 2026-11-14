@@ -18,34 +18,56 @@
 				"name": "portableJson.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Value to inspect: finite numbers, well-formed strings, booleans, null, arrays and plain/null-prototype objects are supported. Undefined object fields are ignored; unsupported values are refused."
+				"description": "The value to inspect: a finite number, a well-formed string, a boolean, null, an array, or an object whose prototype is Object.prototype or null. For objects, only own enumerable string-keyed fields are checked and undefined fields are skipped; undefined outside object fields, NaN or infinite numbers, strings or keys with lone surrogates, functions, symbols, bigints, non-array objects with another prototype and nesting beyond 64 levels make the result false.",
+				"examples": [
+					{
+						"name": "build",
+						"retries": 3,
+						"tags": ["ci", "fast"]
+					},
+					[1, 2.5, "text", null, true],
+					"build finished"
+				]
 			},
 			{
 				"name": "portableJson.level",
 				"type": "number",
 				"required": false,
 				"default": 0,
-				"description": "Current container nesting depth, default zero; recursive calls advance it."
+				"description": "Number of arrays or objects already enclosing the value; it defaults to 0 and each container entered adds one. Objects and arrays are refused once it reaches maxJsonDepth (64), and it is not validated, so a negative start allows more than 64 levels.",
+				"examples": [0, 1, 2]
 			}
 		],
 		"outputs": [
 			{
 				"name": "maxJsonDepth",
 				"type": "unknown",
-				"description": "Maximum supported array/object nesting depth, 64."
+				"description": "The deepest array or object nesting that portableJson accepts, exported as a const holding 64. A nested array or object is refused once its level reaches this value, so at most 64 nested containers pass.",
+				"examples": [64]
 			},
 			{
 				"name": "portableJson",
 				"type": "boolean",
-				"description": "True when inspected values pass numeric, Unicode, prototype and depth checks; false otherwise. Input is checked in place rather than cloned or serialized."
+				"description": "True when every number is finite, every string and every object key with a defined value is well-formed, every non-array object has a plain or null prototype, and nesting stays within maxJsonDepth; false otherwise. The input is checked in place and is never cloned or serialized.",
+				"examples": [true, false]
 			},
 			{
 				"name": "notPortable",
 				"type": "RuntimeResponse",
-				"description": "Shared runtime failure with code invalid-json and message request is not valid JSON."
+				"description": "Shared failure response created once by runtimeFailure('invalid-json', 'request is not valid JSON') and exported as a single object that is not frozen. portableJson never returns or throws it; it only returns true or false, so callers decide whether to use it.",
+				"examples": [
+					{
+						"ok": false,
+						"error": {
+							"code": "invalid-json",
+							"message": "request is not valid JSON"
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "portableJson",
@@ -54,25 +76,36 @@
 						"name": "portableJson.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Value to inspect: finite numbers, well-formed strings, booleans, null, arrays and plain/null-prototype objects are supported. Undefined object fields are ignored; unsupported values are refused."
+						"description": "The value to inspect: a finite number, a well-formed string, a boolean, null, an array, or an object whose prototype is Object.prototype or null. For objects, only own enumerable string-keyed fields are checked and undefined fields are skipped; undefined outside object fields, NaN or infinite numbers, strings or keys with lone surrogates, functions, symbols, bigints, non-array objects with another prototype and nesting beyond 64 levels make the result false.",
+						"examples": [
+							{
+								"name": "build",
+								"retries": 3,
+								"tags": ["ci", "fast"]
+							},
+							[1, 2.5, "text", null, true],
+							"build finished"
+						]
 					},
 					{
 						"name": "portableJson.level",
 						"type": "number",
 						"required": false,
 						"default": 0,
-						"description": "Current container nesting depth, default zero; recursive calls advance it."
+						"description": "Number of arrays or objects already enclosing the value; it defaults to 0 and each container entered adds one. Objects and arrays are refused once it reaches maxJsonDepth (64), and it is not validated, so a negative start allows more than 64 levels.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"outputs": [
 					{
 						"name": "portableJson",
 						"type": "boolean",
-						"description": "True when inspected values pass numeric, Unicode, prototype and depth checks; false otherwise. Input is checked in place rather than cloned or serialized."
+						"description": "True when every number is finite, every string and every object key with a defined value is well-formed, every non-array object has a plain or null prototype, and nesting stays within maxJsonDepth; false otherwise. The input is checked in place and is never cloned or serialized.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
