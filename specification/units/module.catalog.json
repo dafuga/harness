@@ -26,11 +26,17 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "CatalogRepository's constructor throws this Error with message `Unsupported SQLite catalog schema version` when the catalog metadata row exists and its schema version is not 1. CatalogRepository.entities throws this Error with message `Invalid catalog pagination` when limit is not an integer from 1 through 10000 or offset is not a nonnegative integer."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
