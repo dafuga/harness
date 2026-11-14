@@ -16,56 +16,199 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativeHandoffValidator.start.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The untrusted JSON body of POST /api/auth/native/start, which must be a non-array object. start() reads only handoffId, verificationUrl, userCode, interval and expiresAt from it and ignores any other fields.",
+				"examples": [
+					{
+						"handoffId": "k3VyQ8wLx0Tn5pZbH2mJ7sEaRd9gYcKfU4oN1iXqW6A",
+						"userCode": "KQ7M-3TWD",
+						"verificationUrl": "https://harness.example.com/native/k3VyQ8wLx0Tn5pZbH2mJ7sEaRd9gYcKfU4oN1iXqW6A",
+						"expiresAt": "2026-11-14T12:05:00.000Z",
+						"interval": 2
+					},
+					{
+						"handoffId": "Hx7uP2qVd9Rk0LsMw4ZnTb3YcJ8fAe5gKiQoU1rXy6E",
+						"userCode": "XH4P-9RNC",
+						"verificationUrl": "http://localhost:3000/native/Hx7uP2qVd9Rk0LsMw4ZnTb3YcJ8fAe5gKiQoU1rXy6E",
+						"expiresAt": "2026-11-14T12:05:00.000Z",
+						"interval": 2
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffValidator.start.origin",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The origin the caller expects the hosted service to be at, as NativeAuthService passes its origin option. start() does not check its format; it accepts only a verificationUrl equal to this value, then '/native/', then the encoded handoffId.",
+				"examples": ["https://harness.example.com", "http://localhost:3000"]
 			},
 			{
 				"name": "NativeHandoffValidator.start.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The caller's current time in epoch milliseconds, from NativeAuthService's now option or Date.now(). start() throws 'Expired native handoff.' when expiresAt is at or before this value.",
+				"examples": [1794657600000, 1794657660000]
 			},
 			{
 				"name": "NativeHandoffValidator.exchange.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The untrusted JSON body of POST /api/auth/native/exchange, which must be a non-array object whose actor is also a non-array object. exchange() checks audience, nonce, resource, authorization, expiresAt and the actor's identity fields, and ignores any other fields.",
+				"examples": [
+					{
+						"authorization": "Tq4VbN8sLk2XzR7wYc0HdJ3mPa9EgUfK1oiWx5nBrZ6",
+						"actor": {
+							"id": "google-104827365192837461029",
+							"email": "ada.sample@example.com",
+							"name": "Ada Sample",
+							"emailVerified": true
+						},
+						"audience": "harness-desktop",
+						"resource": "projects",
+						"nonce": "Qz8rT1mVb4xNs0KwLh7YcEaPdU2gJfRo",
+						"expiresAt": "2026-12-14T12:01:00.000Z"
+					},
+					{
+						"authorization": "Mz5kHc1RtYpL8wQe3xVnB0sJ7aGdUiK4oTfW9rZ2ENb",
+						"actor": {
+							"id": "google-209384716205839146072",
+							"email": "lin.sample@example.com",
+							"name": "Lin Sample",
+							"emailVerified": true
+						},
+						"audience": "harness-desktop",
+						"resource": "projects",
+						"nonce": "a1Lk9Vq0ZtR3xMsP7wYbN2eHcJ8uGdKf",
+						"expiresAt": "2026-12-14T12:01:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffValidator.exchange.expected",
 				"type": "{ origin: string; nonce: string; resource: string }",
-				"required": true
+				"required": true,
+				"description": "The binding the caller expects, built by NativeAuthService from its origin, the nonce it generated and the resource it requested. exchange() copies origin into the returned credential without comparing it, and requires the response's nonce and resource to equal the expected values exactly.",
+				"examples": [
+					{
+						"origin": "https://harness.example.com",
+						"nonce": "Qz8rT1mVb4xNs0KwLh7YcEaPdU2gJfRo",
+						"resource": "projects"
+					},
+					{
+						"origin": "http://localhost:3000",
+						"nonce": "a1Lk9Vq0ZtR3xMsP7wYbN2eHcJ8uGdKf",
+						"resource": "projects"
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffValidator.exchange.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The caller's current time in epoch milliseconds, from NativeAuthService's now option or Date.now(). exchange() throws 'Expired native handoff.' when the response's expiresAt is at or before this value.",
+				"examples": [1794657660000, 1794657600000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativeHandoffValidator.start",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The handoff that start() returns: handoffId, userCode, verificationUrl, expiresAt (the input string, unchanged) and interval, which NativeAuthService treats as seconds between polls and which must be from 1 to 30. NativeAuthService removes handoffId and keeps the other fields as the pending handoff status.",
+				"examples": [
+					{
+						"handoffId": "k3VyQ8wLx0Tn5pZbH2mJ7sEaRd9gYcKfU4oN1iXqW6A",
+						"userCode": "KQ7M-3TWD",
+						"verificationUrl": "https://harness.example.com/native/k3VyQ8wLx0Tn5pZbH2mJ7sEaRd9gYcKfU4oN1iXqW6A",
+						"expiresAt": "2026-11-14T12:05:00.000Z",
+						"interval": 2
+					},
+					{
+						"handoffId": "Hx7uP2qVd9Rk0LsMw4ZnTb3YcJ8fAe5gKiQoU1rXy6E",
+						"userCode": "XH4P-9RNC",
+						"verificationUrl": "http://localhost:3000/native/Hx7uP2qVd9Rk0LsMw4ZnTb3YcJ8fAe5gKiQoU1rXy6E",
+						"expiresAt": "2026-11-14T12:05:00.000Z",
+						"interval": 2
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffValidator.exchange",
-				"type": "{ credential: NativeHostedCredential; status: NativeHostedStatus }"
+				"type": "{ credential: NativeHostedCredential; status: NativeHostedStatus }",
+				"description": "The accepted result of exchange(): credential holds origin (copied from expected), principalId (the actor's id) and token (the response's authorization string), and status is always configured true with state 'signed-in' and the actor's id, name and email.",
+				"examples": [
+					{
+						"credential": {
+							"origin": "https://harness.example.com",
+							"principalId": "google-104827365192837461029",
+							"token": "Tq4VbN8sLk2XzR7wYc0HdJ3mPa9EgUfK1oiWx5nBrZ6"
+						},
+						"status": {
+							"configured": true,
+							"state": "signed-in",
+							"actor": {
+								"id": "google-104827365192837461029",
+								"name": "Ada Sample",
+								"email": "ada.sample@example.com"
+							}
+						}
+					},
+					{
+						"credential": {
+							"origin": "http://localhost:3000",
+							"principalId": "google-209384716205839146072",
+							"token": "Mz5kHc1RtYpL8wQe3xVnB0sJ7aGdUiK4oTfW9rZ2ENb"
+						},
+						"status": {
+							"configured": true,
+							"state": "signed-in",
+							"actor": {
+								"id": "google-209384716205839146072",
+								"name": "Lin Sample",
+								"email": "lin.sample@example.com"
+							}
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown as Error('Invalid hosted response.') by responseRecord when the response is null, not an object, or an array; exchange() also throws it when the response's actor is missing or is not a non-array object."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown as Error('Invalid native handoff URL.') by start() when handoffId is not a string of 1 to 200 characters, each a letter, digit, underscore or hyphen, or when verificationUrl is not exactly origin, then '/native/', then the URL-encoded handoffId."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown as Error('Invalid native handoff.') by start() when userCode is not a string of at most 40 characters, or when interval is not a number from 1 to 30."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown as Error('Expired native handoff.') by start() and exchange() through their expiresAt check, when expiresAt is not a string that Date.parse can read or is at or before now, so malformed values get the same message."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown as Error('Native handoff binding mismatch.') by exchange() when audience is not 'harness-desktop', when nonce or resource differ from expected, or when authorization is not a string."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown as Error('Invalid native handoff identity.') by exchange() when actor.id, actor.email or actor.name is not a string, or when actor.emailVerified is not true."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativeHandoffValidator.start",
@@ -73,32 +216,86 @@
 					{
 						"name": "NativeHandoffValidator.start.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The untrusted JSON body of POST /api/auth/native/start, which must be a non-array object. start() reads only handoffId, verificationUrl, userCode, interval and expiresAt from it and ignores any other fields.",
+						"examples": [
+							{
+								"handoffId": "k3VyQ8wLx0Tn5pZbH2mJ7sEaRd9gYcKfU4oN1iXqW6A",
+								"userCode": "KQ7M-3TWD",
+								"verificationUrl": "https://harness.example.com/native/k3VyQ8wLx0Tn5pZbH2mJ7sEaRd9gYcKfU4oN1iXqW6A",
+								"expiresAt": "2026-11-14T12:05:00.000Z",
+								"interval": 2
+							},
+							{
+								"handoffId": "Hx7uP2qVd9Rk0LsMw4ZnTb3YcJ8fAe5gKiQoU1rXy6E",
+								"userCode": "XH4P-9RNC",
+								"verificationUrl": "http://localhost:3000/native/Hx7uP2qVd9Rk0LsMw4ZnTb3YcJ8fAe5gKiQoU1rXy6E",
+								"expiresAt": "2026-11-14T12:05:00.000Z",
+								"interval": 2
+							}
+						]
 					},
 					{
 						"name": "NativeHandoffValidator.start.origin",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The origin the caller expects the hosted service to be at, as NativeAuthService passes its origin option. start() does not check its format; it accepts only a verificationUrl equal to this value, then '/native/', then the encoded handoffId.",
+						"examples": ["https://harness.example.com", "http://localhost:3000"]
 					},
 					{
 						"name": "NativeHandoffValidator.start.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The caller's current time in epoch milliseconds, from NativeAuthService's now option or Date.now(). start() throws 'Expired native handoff.' when expiresAt is at or before this value.",
+						"examples": [1794657600000, 1794657660000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeHandoffValidator.start",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The handoff that start() returns: handoffId, userCode, verificationUrl, expiresAt (the input string, unchanged) and interval, which NativeAuthService treats as seconds between polls and which must be from 1 to 30. NativeAuthService removes handoffId and keeps the other fields as the pending handoff status.",
+						"examples": [
+							{
+								"handoffId": "k3VyQ8wLx0Tn5pZbH2mJ7sEaRd9gYcKfU4oN1iXqW6A",
+								"userCode": "KQ7M-3TWD",
+								"verificationUrl": "https://harness.example.com/native/k3VyQ8wLx0Tn5pZbH2mJ7sEaRd9gYcKfU4oN1iXqW6A",
+								"expiresAt": "2026-11-14T12:05:00.000Z",
+								"interval": 2
+							},
+							{
+								"handoffId": "Hx7uP2qVd9Rk0LsMw4ZnTb3YcJ8fAe5gKiQoU1rXy6E",
+								"userCode": "XH4P-9RNC",
+								"verificationUrl": "http://localhost:3000/native/Hx7uP2qVd9Rk0LsMw4ZnTb3YcJ8fAe5gKiQoU1rXy6E",
+								"expiresAt": "2026-11-14T12:05:00.000Z",
+								"interval": 2
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as Error('Invalid hosted response.') by responseRecord when the response is null, not an object, or an array; exchange() also throws it when the response's actor is missing or is not a non-array object."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as Error('Invalid native handoff URL.') by start() when handoffId is not a string of 1 to 200 characters, each a letter, digit, underscore or hyphen, or when verificationUrl is not exactly origin, then '/native/', then the URL-encoded handoffId."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as Error('Invalid native handoff.') by start() when userCode is not a string of at most 40 characters, or when interval is not a number from 1 to 30."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as Error('Expired native handoff.') by start() and exchange() through their expiresAt check, when expiresAt is not a string that Date.parse can read or is at or before now, so malformed values get the same message."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeHandoffValidator.exchange",
@@ -106,32 +303,127 @@
 					{
 						"name": "NativeHandoffValidator.exchange.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The untrusted JSON body of POST /api/auth/native/exchange, which must be a non-array object whose actor is also a non-array object. exchange() checks audience, nonce, resource, authorization, expiresAt and the actor's identity fields, and ignores any other fields.",
+						"examples": [
+							{
+								"authorization": "Tq4VbN8sLk2XzR7wYc0HdJ3mPa9EgUfK1oiWx5nBrZ6",
+								"actor": {
+									"id": "google-104827365192837461029",
+									"email": "ada.sample@example.com",
+									"name": "Ada Sample",
+									"emailVerified": true
+								},
+								"audience": "harness-desktop",
+								"resource": "projects",
+								"nonce": "Qz8rT1mVb4xNs0KwLh7YcEaPdU2gJfRo",
+								"expiresAt": "2026-12-14T12:01:00.000Z"
+							},
+							{
+								"authorization": "Mz5kHc1RtYpL8wQe3xVnB0sJ7aGdUiK4oTfW9rZ2ENb",
+								"actor": {
+									"id": "google-209384716205839146072",
+									"email": "lin.sample@example.com",
+									"name": "Lin Sample",
+									"emailVerified": true
+								},
+								"audience": "harness-desktop",
+								"resource": "projects",
+								"nonce": "a1Lk9Vq0ZtR3xMsP7wYbN2eHcJ8uGdKf",
+								"expiresAt": "2026-12-14T12:01:00.000Z"
+							}
+						]
 					},
 					{
 						"name": "NativeHandoffValidator.exchange.expected",
 						"type": "{ origin: string; nonce: string; resource: string }",
-						"required": true
+						"required": true,
+						"description": "The binding the caller expects, built by NativeAuthService from its origin, the nonce it generated and the resource it requested. exchange() copies origin into the returned credential without comparing it, and requires the response's nonce and resource to equal the expected values exactly.",
+						"examples": [
+							{
+								"origin": "https://harness.example.com",
+								"nonce": "Qz8rT1mVb4xNs0KwLh7YcEaPdU2gJfRo",
+								"resource": "projects"
+							},
+							{
+								"origin": "http://localhost:3000",
+								"nonce": "a1Lk9Vq0ZtR3xMsP7wYbN2eHcJ8uGdKf",
+								"resource": "projects"
+							}
+						]
 					},
 					{
 						"name": "NativeHandoffValidator.exchange.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The caller's current time in epoch milliseconds, from NativeAuthService's now option or Date.now(). exchange() throws 'Expired native handoff.' when the response's expiresAt is at or before this value.",
+						"examples": [1794657660000, 1794657600000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeHandoffValidator.exchange",
-						"type": "{ credential: NativeHostedCredential; status: NativeHostedStatus }"
+						"type": "{ credential: NativeHostedCredential; status: NativeHostedStatus }",
+						"description": "The accepted result of exchange(): credential holds origin (copied from expected), principalId (the actor's id) and token (the response's authorization string), and status is always configured true with state 'signed-in' and the actor's id, name and email.",
+						"examples": [
+							{
+								"credential": {
+									"origin": "https://harness.example.com",
+									"principalId": "google-104827365192837461029",
+									"token": "Tq4VbN8sLk2XzR7wYc0HdJ3mPa9EgUfK1oiWx5nBrZ6"
+								},
+								"status": {
+									"configured": true,
+									"state": "signed-in",
+									"actor": {
+										"id": "google-104827365192837461029",
+										"name": "Ada Sample",
+										"email": "ada.sample@example.com"
+									}
+								}
+							},
+							{
+								"credential": {
+									"origin": "http://localhost:3000",
+									"principalId": "google-209384716205839146072",
+									"token": "Mz5kHc1RtYpL8wQe3xVnB0sJ7aGdUiK4oTfW9rZ2ENb"
+								},
+								"status": {
+									"configured": true,
+									"state": "signed-in",
+									"actor": {
+										"id": "google-209384716205839146072",
+										"name": "Lin Sample",
+										"email": "lin.sample@example.com"
+									}
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as Error('Invalid hosted response.') by responseRecord when the response is null, not an object, or an array; exchange() also throws it when the response's actor is missing or is not a non-array object."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as Error('Native handoff binding mismatch.') by exchange() when audience is not 'harness-desktop', when nonce or resource differ from expected, or when authorization is not a string."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as Error('Expired native handoff.') by start() and exchange() through their expiresAt check, when expiresAt is not a string that Date.parse can read or is at or before now, so malformed values get the same message."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as Error('Invalid native handoff identity.') by exchange() when actor.id, actor.email or actor.name is not a string, or when actor.emailVerified is not true."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
