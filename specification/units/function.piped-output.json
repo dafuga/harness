@@ -18,10 +18,11 @@
 			{
 				"name": "pipedOutput",
 				"type": "void",
-				"description": "Returns nothing and replaces global console.log with a formatter that writes one newline-terminated string to process.stdout."
+				"description": "Returns no value and replaces `console.log` with a function that formats its arguments using `node:util.format` and writes one newline-terminated string to `process.stdout`. This matters for piped output because the stdout stream queues what does not fit its buffer and flushes it before process exit; only `console.log` is replaced."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "pipedOutput",
@@ -30,11 +31,11 @@
 					{
 						"name": "pipedOutput",
 						"type": "void",
-						"description": "Returns nothing and replaces global console.log with a formatter that writes one newline-terminated string to process.stdout."
+						"description": "Returns no value and replaces `console.log` with a function that formats its arguments using `node:util.format` and writes one newline-terminated string to `process.stdout`. This matters for piped output because the stdout stream queues what does not fit its buffer and flushes it before process exit; only `console.log` is replaced."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
