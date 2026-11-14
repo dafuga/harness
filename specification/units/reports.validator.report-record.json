@@ -12,27 +12,50 @@
 		"symbols": ["ReportRecordValidator", "ReportRecordValidator.validate"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportRecordValidator.validate.record",
 				"type": "RecordInput",
-				"required": true
+				"required": true,
+				"description": "One record supplied for validation. Its kind must be check, evidence, finding, coverage, acceptance, summary, or heartbeat, and its data object is checked according to that kind.",
+				"examples": [
+					{
+						"kind": "heartbeat",
+						"data": {}
+					},
+					{
+						"kind": "summary",
+						"data": {
+							"text": "Build and browser verification passed."
+						}
+					},
+					{
+						"kind": "check",
+						"data": {
+							"id": "check-browser-smoke",
+							"title": "Browser smoke check",
+							"status": "passed"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportRecordValidator.validate",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The method has no result payload and returns undefined after the record passes validation."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An Error is thrown when the kind is unsupported, data is missing or not a non-array object, or a kind-specific check fails; messages are Unsupported record kind, Record data is required, Summary text is required, Acceptance criteria must be a list of short nonempty strings, Invalid report or asset ID, Record title is required, Valid status is required, Invalid evidence status, Evidence path is required, Invalid evidence phase, Invalid audio duration, or Invalid audio transcript. IDs must contain 1–100 ASCII letters, digits, underscores, or hyphens; item titles and acceptance strings must be nonempty after trimming and at most 500 characters, acceptance allows at most 30 entries, statuses must be running, passed, failed, blocked, skipped, not-proven, or interrupted, truthy evidence phases must be before, after, or current, evidence paths must be nonempty strings, and supplied audio durations and transcripts must be finite nonnegative numbers and strings of at most 10,000 characters respectively."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReportRecordValidator.validate",
@@ -40,22 +63,45 @@
 					{
 						"name": "ReportRecordValidator.validate.record",
 						"type": "RecordInput",
-						"required": true
+						"required": true,
+						"description": "One record supplied for validation. Its kind must be check, evidence, finding, coverage, acceptance, summary, or heartbeat, and its data object is checked according to that kind.",
+						"examples": [
+							{
+								"kind": "heartbeat",
+								"data": {}
+							},
+							{
+								"kind": "summary",
+								"data": {
+									"text": "Build and browser verification passed."
+								}
+							},
+							{
+								"kind": "check",
+								"data": {
+									"id": "check-browser-smoke",
+									"title": "Browser smoke check",
+									"status": "passed"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRecordValidator.validate",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The method has no result payload and returns undefined after the record passes validation."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "An Error is thrown when the kind is unsupported, data is missing or not a non-array object, or a kind-specific check fails; messages are Unsupported record kind, Record data is required, Summary text is required, Acceptance criteria must be a list of short nonempty strings, Invalid report or asset ID, Record title is required, Valid status is required, Invalid evidence status, Evidence path is required, Invalid evidence phase, Invalid audio duration, or Invalid audio transcript. IDs must contain 1–100 ASCII letters, digits, underscores, or hyphens; item titles and acceptance strings must be nonempty after trimming and at most 500 characters, acceptance allows at most 30 entries, statuses must be running, passed, failed, blocked, skipped, not-proven, or interrupted, truthy evidence phases must be before, after, or current, evidence paths must be nonempty strings, and supplied audio durations and transcripts must be finite nonnegative numbers and strings of at most 10,000 characters respectively."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
