@@ -22,40 +22,91 @@
 				"name": "applyExports.root",
 				"type": "string",
 				"required": true,
-				"description": "Project directory containing src/index.ts."
+				"description": "Project directory that is joined with 'src/index.ts' to locate the entry file that is read and, when changed, rewritten. It is used only when plans is non-empty and is not validated, so a directory without src/index.ts makes the read reject.",
+				"examples": ["/workspace/sample-app", "/srv/builds/billing-api"]
 			},
 			{
 				"name": "applyExports.plans",
 				"type": "ExportPlan[]",
 				"required": true,
-				"description": "Source-module export plans with optional named and type export names. An empty list avoids reading the entry file."
+				"description": "Export plans applied in array order to the entry file, and an empty array returns false before any file is read. Each rendered line is skipped when it already appears as an exact substring of the text, so an identical plan repeated later in the list adds nothing.",
+				"examples": [
+					[],
+					[
+						{
+							"source": "./core/projects-sessions/exports",
+							"types": ["ExportPlan"]
+						}
+					],
+					[
+						{
+							"source": "./workflows/projects-sessions/generate-code/exports",
+							"named": ["applyExports", "appendMissingExports"]
+						}
+					]
+				]
 			},
 			{
 				"name": "appendMissingExports.contents",
 				"type": "string",
 				"required": true,
-				"description": "Existing entry-file text to extend."
+				"description": "Existing entry-file text that each rendered line is checked against as an exact substring and that missing lines are appended to, and that is also parsed and scanned for './helpers/' plans. An empty string is valid, and a newline is inserted before the appended lines only when the text is non-empty and does not already end with one.",
+				"examples": ["", "export * from './core/exports';\n", "export * from './core/exports';"]
 			},
 			{
 				"name": "appendMissingExports.plans",
 				"type": "ExportPlan[]",
 				"required": true,
-				"description": "Export plans to render as complete export lines; presence is checked by exact substring."
+				"description": "Export plans rendered in array order as 'export { ... } from' and 'export type { ... } from' lines; a plan with no named or types entries renders nothing. For sources starting with './helpers/', named entries already re-exported from that source are dropped, and a name that is already an exported symbol of the text is rendered as '<name> as <name>Helper', then '<name> as <name>Helper2', and so on while the alias is taken.",
+				"examples": [
+					[
+						{
+							"source": "./helpers/session-cache",
+							"named": ["readSessionCache", "clearSessionCache"],
+							"types": ["SessionCacheEntry"]
+						}
+					],
+					[
+						{
+							"source": "./core/projects-sessions/exports",
+							"types": ["ExportPlan"]
+						}
+					],
+					[
+						{
+							"source": "./workflows/projects-sessions/generate-code/exports",
+							"named": ["applyExports"]
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "applyExports",
 				"type": "Promise<boolean>",
-				"description": "Resolves true after writing changed src/index.ts, or false when no additions are needed."
+				"description": "Resolves true after src/index.ts is rewritten with the appended text, and resolves false without writing when plans is empty or when the appended text equals the file text that was read. A true result therefore always means the file was written.",
+				"examples": [true, false]
 			},
 			{
 				"name": "appendMissingExports",
 				"type": "string",
-				"description": "Existing text unchanged when all lines are present, otherwise text with missing lines appended and a final newline."
+				"description": "Returns contents unchanged when no rendered line is missing as an exact substring, and otherwise returns contents with each plan's missing lines appended as one block that ends in a newline. A newline is inserted before the appended text when non-empty contents do not already end with one.",
+				"examples": [
+					"export * from './core/exports';\nexport { applyExports, appendMissingExports } from './workflows/projects-sessions/generate-code/exports';\n",
+					"export * from './core/exports';\n",
+					"export * from './core/exports';\nexport type { ExportPlan } from './core/projects-sessions/exports';\n"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the Node.js file-system Error from readFile, when plans is non-empty, or from writeFile, when the appended text differs from the file, for example ENOENT for a missing src/index.ts; applyExports does not catch it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "applyExports",
@@ -64,24 +115,47 @@
 						"name": "applyExports.root",
 						"type": "string",
 						"required": true,
-						"description": "Project directory containing src/index.ts."
+						"description": "Project directory that is joined with 'src/index.ts' to locate the entry file that is read and, when changed, rewritten. It is used only when plans is non-empty and is not validated, so a directory without src/index.ts makes the read reject.",
+						"examples": ["/workspace/sample-app", "/srv/builds/billing-api"]
 					},
 					{
 						"name": "applyExports.plans",
 						"type": "ExportPlan[]",
 						"required": true,
-						"description": "Source-module export plans with optional named and type export names. An empty list avoids reading the entry file."
+						"description": "Export plans applied in array order to the entry file, and an empty array returns false before any file is read. Each rendered line is skipped when it already appears as an exact substring of the text, so an identical plan repeated later in the list adds nothing.",
+						"examples": [
+							[],
+							[
+								{
+									"source": "./core/projects-sessions/exports",
+									"types": ["ExportPlan"]
+								}
+							],
+							[
+								{
+									"source": "./workflows/projects-sessions/generate-code/exports",
+									"named": ["applyExports", "appendMissingExports"]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "applyExports",
 						"type": "Promise<boolean>",
-						"description": "Resolves true after writing changed src/index.ts, or false when no additions are needed."
+						"description": "Resolves true after src/index.ts is rewritten with the appended text, and resolves false without writing when plans is empty or when the appended text equals the file text that was read. A true result therefore always means the file was written.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the Node.js file-system Error from readFile, when plans is non-empty, or from writeFile, when the appended text differs from the file, for example ENOENT for a missing src/index.ts; applyExports does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "appendMissingExports",
@@ -90,24 +164,51 @@
 						"name": "appendMissingExports.contents",
 						"type": "string",
 						"required": true,
-						"description": "Existing entry-file text to extend."
+						"description": "Existing entry-file text that each rendered line is checked against as an exact substring and that missing lines are appended to, and that is also parsed and scanned for './helpers/' plans. An empty string is valid, and a newline is inserted before the appended lines only when the text is non-empty and does not already end with one.",
+						"examples": ["", "export * from './core/exports';\n", "export * from './core/exports';"]
 					},
 					{
 						"name": "appendMissingExports.plans",
 						"type": "ExportPlan[]",
 						"required": true,
-						"description": "Export plans to render as complete export lines; presence is checked by exact substring."
+						"description": "Export plans rendered in array order as 'export { ... } from' and 'export type { ... } from' lines; a plan with no named or types entries renders nothing. For sources starting with './helpers/', named entries already re-exported from that source are dropped, and a name that is already an exported symbol of the text is rendered as '<name> as <name>Helper', then '<name> as <name>Helper2', and so on while the alias is taken.",
+						"examples": [
+							[
+								{
+									"source": "./helpers/session-cache",
+									"named": ["readSessionCache", "clearSessionCache"],
+									"types": ["SessionCacheEntry"]
+								}
+							],
+							[
+								{
+									"source": "./core/projects-sessions/exports",
+									"types": ["ExportPlan"]
+								}
+							],
+							[
+								{
+									"source": "./workflows/projects-sessions/generate-code/exports",
+									"named": ["applyExports"]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "appendMissingExports",
 						"type": "string",
-						"description": "Existing text unchanged when all lines are present, otherwise text with missing lines appended and a final newline."
+						"description": "Returns contents unchanged when no rendered line is missing as an exact substring, and otherwise returns contents with each plan's missing lines appended as one block that ends in a newline. A newline is inserted before the appended text when non-empty contents do not already end with one.",
+						"examples": [
+							"export * from './core/exports';\nexport { applyExports, appendMissingExports } from './workflows/projects-sessions/generate-code/exports';\n",
+							"export * from './core/exports';\n",
+							"export * from './core/exports';\nexport type { ExportPlan } from './core/projects-sessions/exports';\n"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
