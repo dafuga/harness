@@ -22,17 +22,174 @@
 				"name": "kernelClosure.input",
 				"type": "ImpactInput",
 				"required": true,
-				"description": "The dependency graphs before and after a change, changed or uncertain units, and the tests or scenarios that can verify them. Each edge means the first node depends on the second."
+				"description": "The base and head dependency graphs, each with its node ids and edges, where each edge is a pair [from, to] of node positions meaning the node at from depends on the node at to, plus the changed and uncertain unit ids and the sink ids of the tests or scenarios that verify them. Changed ids are the seeds of the closure, uncertain ids seed it only when changed is not empty, and an id that a graph does not list is skipped as a seed or sink in that graph.",
+				"examples": [
+					{
+						"base": {
+							"nodes": ["function.kernel-types", "function.kernel-closure", "kernel-closure-cases"],
+							"edges": [
+								[1, 0],
+								[2, 1]
+							]
+						},
+						"head": {
+							"nodes": ["function.kernel-types", "function.kernel-closure", "kernel-closure-cases"],
+							"edges": [
+								[1, 0],
+								[2, 1]
+							]
+						},
+						"changed": ["function.kernel-types"],
+						"uncertain": [],
+						"sinks": ["kernel-closure-cases"]
+					},
+					{
+						"base": {
+							"nodes": [
+								"function.kernel-types",
+								"function.kernel-closure",
+								"function.legacy-probe",
+								"kernel-closure-cases"
+							],
+							"edges": [
+								[1, 0],
+								[2, 0],
+								[3, 1]
+							]
+						},
+						"head": {
+							"nodes": [
+								"function.kernel-types",
+								"function.kernel-closure",
+								"kernel-closure-cases",
+								"reports.component.evidence-grid"
+							],
+							"edges": [
+								[1, 0],
+								[2, 1],
+								[3, 1]
+							]
+						},
+						"changed": [
+							"function.kernel-types",
+							"reports.component.evidence-grid",
+							"function.new-helper"
+						],
+						"uncertain": ["function.legacy-probe"],
+						"sinks": ["kernel-closure-cases"]
+					},
+					{
+						"base": {
+							"nodes": ["function.kernel-types", "function.kernel-closure", "kernel-closure-cases"],
+							"edges": [
+								[1, 0],
+								[2, 1]
+							]
+						},
+						"head": {
+							"nodes": ["function.kernel-types", "function.kernel-closure", "kernel-closure-cases"],
+							"edges": [
+								[1, 0],
+								[2, 1]
+							]
+						},
+						"changed": [],
+						"uncertain": ["function.kernel-closure"],
+						"sinks": ["kernel-closure-cases"]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "affectedUnits",
 				"type": "ImpactOutput",
-				"description": "Affected units and their fewest dependency steps from a changed or uncertain unit. Also lists changed units with no covering test, and changed units absent from both graphs."
+				"description": "Affected lists each node that is a changed or uncertain seed, or depends on one directly or transitively, in either graph, with its fewest hops from a seed (distance), the graph or graphs that reach it (via: base, head or both), its presence (added when base does not list it, removed when head does not, otherwise both), and its seed (changed, uncertain or null). Uncovered lists the changed units that no sink depends on, judged in head when head lists the unit and otherwise in base; unknown lists the changed units that neither graph lists; and all three lists are empty when no unit is changed.",
+				"examples": [
+					{
+						"affected": [
+							{
+								"id": "function.kernel-types",
+								"distance": 0,
+								"via": "both",
+								"presence": "both",
+								"seed": "changed"
+							},
+							{
+								"id": "function.kernel-closure",
+								"distance": 1,
+								"via": "both",
+								"presence": "both",
+								"seed": null
+							},
+							{
+								"id": "kernel-closure-cases",
+								"distance": 2,
+								"via": "both",
+								"presence": "both",
+								"seed": null
+							}
+						],
+						"uncovered": [],
+						"unknown": []
+					},
+					{
+						"affected": [
+							{
+								"id": "function.kernel-types",
+								"distance": 0,
+								"via": "both",
+								"presence": "both",
+								"seed": "changed"
+							},
+							{
+								"id": "function.kernel-closure",
+								"distance": 1,
+								"via": "both",
+								"presence": "both",
+								"seed": null
+							},
+							{
+								"id": "kernel-closure-cases",
+								"distance": 2,
+								"via": "both",
+								"presence": "both",
+								"seed": null
+							},
+							{
+								"id": "reports.component.evidence-grid",
+								"distance": 0,
+								"via": "head",
+								"presence": "added",
+								"seed": "changed"
+							},
+							{
+								"id": "function.legacy-probe",
+								"distance": 0,
+								"via": "base",
+								"presence": "removed",
+								"seed": "uncertain"
+							}
+						],
+						"uncovered": ["reports.component.evidence-grid"],
+						"unknown": ["function.new-helper"]
+					},
+					{
+						"affected": [],
+						"uncovered": [],
+						"unknown": []
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Raised by the JavaScript runtime, since kernelClosure has no explicit throw, when base, head, changed, sinks, or the nodes or edges of a graph are missing, when uncertain is missing while changed is not empty, or when an edge refers to a position that is not an index into its graph's nodes."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "kernelClosure",
@@ -41,17 +198,190 @@
 						"name": "kernelClosure.input",
 						"type": "ImpactInput",
 						"required": true,
-						"description": "The dependency graphs before and after a change, changed or uncertain units, and the tests or scenarios that can verify them. Each edge means the first node depends on the second."
+						"description": "The base and head dependency graphs, each with its node ids and edges, where each edge is a pair [from, to] of node positions meaning the node at from depends on the node at to, plus the changed and uncertain unit ids and the sink ids of the tests or scenarios that verify them. Changed ids are the seeds of the closure, uncertain ids seed it only when changed is not empty, and an id that a graph does not list is skipped as a seed or sink in that graph.",
+						"examples": [
+							{
+								"base": {
+									"nodes": [
+										"function.kernel-types",
+										"function.kernel-closure",
+										"kernel-closure-cases"
+									],
+									"edges": [
+										[1, 0],
+										[2, 1]
+									]
+								},
+								"head": {
+									"nodes": [
+										"function.kernel-types",
+										"function.kernel-closure",
+										"kernel-closure-cases"
+									],
+									"edges": [
+										[1, 0],
+										[2, 1]
+									]
+								},
+								"changed": ["function.kernel-types"],
+								"uncertain": [],
+								"sinks": ["kernel-closure-cases"]
+							},
+							{
+								"base": {
+									"nodes": [
+										"function.kernel-types",
+										"function.kernel-closure",
+										"function.legacy-probe",
+										"kernel-closure-cases"
+									],
+									"edges": [
+										[1, 0],
+										[2, 0],
+										[3, 1]
+									]
+								},
+								"head": {
+									"nodes": [
+										"function.kernel-types",
+										"function.kernel-closure",
+										"kernel-closure-cases",
+										"reports.component.evidence-grid"
+									],
+									"edges": [
+										[1, 0],
+										[2, 1],
+										[3, 1]
+									]
+								},
+								"changed": [
+									"function.kernel-types",
+									"reports.component.evidence-grid",
+									"function.new-helper"
+								],
+								"uncertain": ["function.legacy-probe"],
+								"sinks": ["kernel-closure-cases"]
+							},
+							{
+								"base": {
+									"nodes": [
+										"function.kernel-types",
+										"function.kernel-closure",
+										"kernel-closure-cases"
+									],
+									"edges": [
+										[1, 0],
+										[2, 1]
+									]
+								},
+								"head": {
+									"nodes": [
+										"function.kernel-types",
+										"function.kernel-closure",
+										"kernel-closure-cases"
+									],
+									"edges": [
+										[1, 0],
+										[2, 1]
+									]
+								},
+								"changed": [],
+								"uncertain": ["function.kernel-closure"],
+								"sinks": ["kernel-closure-cases"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "kernelClosure",
-						"type": "ImpactOutput"
+						"type": "ImpactOutput",
+						"description": "Affected lists each node that is a changed or uncertain seed, or depends on one directly or transitively, in either graph, with its fewest hops from a seed (distance), the graph or graphs that reach it (via: base, head or both), its presence (added when base does not list it, removed when head does not, otherwise both), and its seed (changed, uncertain or null). Uncovered lists the changed units that no sink depends on, judged in head when head lists the unit and otherwise in base; unknown lists the changed units that neither graph lists; and all three lists are empty when no unit is changed.",
+						"examples": [
+							{
+								"affected": [
+									{
+										"id": "function.kernel-types",
+										"distance": 0,
+										"via": "both",
+										"presence": "both",
+										"seed": "changed"
+									},
+									{
+										"id": "function.kernel-closure",
+										"distance": 1,
+										"via": "both",
+										"presence": "both",
+										"seed": null
+									},
+									{
+										"id": "kernel-closure-cases",
+										"distance": 2,
+										"via": "both",
+										"presence": "both",
+										"seed": null
+									}
+								],
+								"uncovered": [],
+								"unknown": []
+							},
+							{
+								"affected": [
+									{
+										"id": "function.kernel-types",
+										"distance": 0,
+										"via": "both",
+										"presence": "both",
+										"seed": "changed"
+									},
+									{
+										"id": "function.kernel-closure",
+										"distance": 1,
+										"via": "both",
+										"presence": "both",
+										"seed": null
+									},
+									{
+										"id": "kernel-closure-cases",
+										"distance": 2,
+										"via": "both",
+										"presence": "both",
+										"seed": null
+									},
+									{
+										"id": "reports.component.evidence-grid",
+										"distance": 0,
+										"via": "head",
+										"presence": "added",
+										"seed": "changed"
+									},
+									{
+										"id": "function.legacy-probe",
+										"distance": 0,
+										"via": "base",
+										"presence": "removed",
+										"seed": "uncertain"
+									}
+								],
+								"uncovered": ["reports.component.evidence-grid"],
+								"unknown": ["function.new-helper"]
+							},
+							{
+								"affected": [],
+								"uncovered": [],
+								"unknown": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Raised by the JavaScript runtime, since kernelClosure has no explicit throw, when base, head, changed, sinks, or the nodes or edges of a graph are missing, when uncertain is missing while changed is not empty, or when an edge refers to a position that is not an index into its graph's nodes."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
