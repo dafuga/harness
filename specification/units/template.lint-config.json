@@ -12,16 +12,29 @@
 		"symbols": ["lintConfigFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "lintConfigFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "This is the ordered list of files the template plans when producing the lint configuration scaffold. It always contains exactly eslint.harness-rules.js followed by eslint.config.js, each with generated source in contents.",
+				"examples": [
+					[
+						{
+							"path": "eslint.harness-rules.js",
+							"contents": "import { existsSync, readFileSync } from 'node:fs';\n\nconst defaults = {\n\tmaxFileLines: 220,\n\tmaxFunctionLines: 55,\n\tmaxClassLines: 120,\n\tmaxMethodLines: 35,\n\tmaxNestingDepth: 4,\n\tmaxParameters: 4,\n\tmaxComplexity: 10,\n\tmaxClassesPerFile: 1\n};\n\nexport const harnessRuleLimits = readHarnessLimits();\n\nexport default {\n\trules: {\n\t\t'max-class-lines': sizeRule('Class', harnessRuleLimits.maxClassLines, 'ClassDeclaration'),\n\t\t'max-method-lines': sizeRule('Method', harnessRuleLimits.maxMethodLines, 'MethodDefinition'),\n\t\t'no-manager-name': {\n\t\t\tmeta: {\n\t\t\t\ttype: 'suggestion',\n\t\t\t\tmessages: { manager: 'Avoid catch-all Manager class names.' }\n\t\t\t},\n\t\t\tcreate(context) {\n\t\t\t\treturn {\n\t\t\t\t\tClassDeclaration(node) {\n\t\t\t\t\t\tif (node.id?.name?.endsWith('Manager')) {\n\t\t\t\t\t\t\tcontext.report({ node: node.id, messageId: 'manager' });\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t};\n\t\t\t}\n\t\t}\n\t}\n};\n\nfunction readHarnessLimits() {\n\tconst path = new URL('./harness.audit.json', import.meta.url);\n\tif (!existsSync(path)) return defaults;\n\tconst config = JSON.parse(readFileSync(path, 'utf8'));\n\treturn { ...defaults, ...positiveLimits(config.limits ?? {}) };\n}\n\nfunction positiveLimits(config) {\n\treturn Object.fromEntries(\n\t\tObject.entries(config).filter(([, value]) => Number.isInteger(value) && value > 0)\n\t);\n}\n\nfunction sizeRule(label, max, selector) {\n\treturn {\n\t\tmeta: {\n\t\t\ttype: 'suggestion',\n\t\t\tmessages: { tooLarge: label + ' has {{lines}} lines. Limit is {{max}}.' }\n\t\t},\n\t\tcreate(context) {\n\t\t\treturn {\n\t\t\t\t[selector](node) {\n\t\t\t\t\tconst lines = node.loc.end.line - node.loc.start.line + 1;\n\t\t\t\t\tif (lines > max) {\n\t\t\t\t\t\tcontext.report({ node, messageId: 'tooLarge', data: { lines, max } });\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t};\n\t\t}\n\t};\n}\n"
+						},
+						{
+							"path": "eslint.config.js",
+							"contents": "import eslint from '@eslint/js';\nimport tseslint from '@typescript-eslint/eslint-plugin';\nimport tsParser from '@typescript-eslint/parser';\nimport prettier from 'eslint-config-prettier';\nimport harness, { harnessRuleLimits } from './eslint.harness-rules.js';\n\nexport default [\n\t{\n\t\tignores: [\n\t\t\t'dist/**',\n\t\t\t'node_modules/**',\n\t\t\t'coverage/**',\n\t\t\t'.svelte-kit/**',\n\t\t\t'build/**',\n\t\t\t'.cache/**'\n\t\t]\n\t},\n\tprettier,\n\t{\n\t\tfiles: ['src/**/*.ts', 'test/**/*.ts', 'db/**/*.ts'],\n\t\tlanguageOptions: {\n\t\t\tparser: tsParser,\n\t\t\tparserOptions: { project: './tsconfig.json' },\n\t\t\tglobals: {\n\t\t\t\t$state: 'readonly',\n\t\t\t\tBun: 'readonly',\n\t\t\t\tResponse: 'readonly',\n\t\t\t\tconsole: 'readonly'\n\t\t\t}\n\t\t},\n\t\tplugins: { '@typescript-eslint': tseslint, harness },\n\t\trules: {\n\t\t\t...eslint.configs.recommended.rules,\n\t\t\t'no-unused-vars': 'off',\n\t\t\t'@typescript-eslint/consistent-type-imports': 'error',\n\t\t\t'@typescript-eslint/no-explicit-any': 'error',\n\t\t\t'@typescript-eslint/no-floating-promises': 'error',\n\t\t\t'@typescript-eslint/no-misused-promises': 'error',\n\t\t\t'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],\n\t\t\tcomplexity: ['error', harnessRuleLimits.maxComplexity],\n\t\t\t'harness/max-class-lines': 'error',\n\t\t\t'harness/max-method-lines': 'error',\n\t\t\t'harness/no-manager-name': 'error',\n\t\t\t'max-classes-per-file': ['error', harnessRuleLimits.maxClassesPerFile],\n\t\t\t'max-depth': ['error', harnessRuleLimits.maxNestingDepth],\n\t\t\t'max-lines': [\n\t\t\t\t'error',\n\t\t\t\t{ max: harnessRuleLimits.maxFileLines, skipBlankLines: true, skipComments: true }\n\t\t\t],\n\t\t\t'max-lines-per-function': [\n\t\t\t\t'error',\n\t\t\t\t{ max: harnessRuleLimits.maxFunctionLines, skipBlankLines: true, skipComments: true }\n\t\t\t],\n\t\t\t'max-params': ['error', harnessRuleLimits.maxParameters],\n\t\t\t'no-nested-ternary': 'error'\n\t\t}\n\t}\n];\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "lintConfigFiles",
@@ -29,11 +42,24 @@
 				"outputs": [
 					{
 						"name": "lintConfigFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "This is the ordered list of files the template plans when producing the lint configuration scaffold. It always contains exactly eslint.harness-rules.js followed by eslint.config.js, each with generated source in contents.",
+						"examples": [
+							[
+								{
+									"path": "eslint.harness-rules.js",
+									"contents": "import { existsSync, readFileSync } from 'node:fs';\n\nconst defaults = {\n\tmaxFileLines: 220,\n\tmaxFunctionLines: 55,\n\tmaxClassLines: 120,\n\tmaxMethodLines: 35,\n\tmaxNestingDepth: 4,\n\tmaxParameters: 4,\n\tmaxComplexity: 10,\n\tmaxClassesPerFile: 1\n};\n\nexport const harnessRuleLimits = readHarnessLimits();\n\nexport default {\n\trules: {\n\t\t'max-class-lines': sizeRule('Class', harnessRuleLimits.maxClassLines, 'ClassDeclaration'),\n\t\t'max-method-lines': sizeRule('Method', harnessRuleLimits.maxMethodLines, 'MethodDefinition'),\n\t\t'no-manager-name': {\n\t\t\tmeta: {\n\t\t\t\ttype: 'suggestion',\n\t\t\t\tmessages: { manager: 'Avoid catch-all Manager class names.' }\n\t\t\t},\n\t\t\tcreate(context) {\n\t\t\t\treturn {\n\t\t\t\t\tClassDeclaration(node) {\n\t\t\t\t\t\tif (node.id?.name?.endsWith('Manager')) {\n\t\t\t\t\t\t\tcontext.report({ node: node.id, messageId: 'manager' });\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t};\n\t\t\t}\n\t\t}\n\t}\n};\n\nfunction readHarnessLimits() {\n\tconst path = new URL('./harness.audit.json', import.meta.url);\n\tif (!existsSync(path)) return defaults;\n\tconst config = JSON.parse(readFileSync(path, 'utf8'));\n\treturn { ...defaults, ...positiveLimits(config.limits ?? {}) };\n}\n\nfunction positiveLimits(config) {\n\treturn Object.fromEntries(\n\t\tObject.entries(config).filter(([, value]) => Number.isInteger(value) && value > 0)\n\t);\n}\n\nfunction sizeRule(label, max, selector) {\n\treturn {\n\t\tmeta: {\n\t\t\ttype: 'suggestion',\n\t\t\tmessages: { tooLarge: label + ' has {{lines}} lines. Limit is {{max}}.' }\n\t\t},\n\t\tcreate(context) {\n\t\t\treturn {\n\t\t\t\t[selector](node) {\n\t\t\t\t\tconst lines = node.loc.end.line - node.loc.start.line + 1;\n\t\t\t\t\tif (lines > max) {\n\t\t\t\t\t\tcontext.report({ node, messageId: 'tooLarge', data: { lines, max } });\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t};\n\t\t}\n\t};\n}\n"
+								},
+								{
+									"path": "eslint.config.js",
+									"contents": "import eslint from '@eslint/js';\nimport tseslint from '@typescript-eslint/eslint-plugin';\nimport tsParser from '@typescript-eslint/parser';\nimport prettier from 'eslint-config-prettier';\nimport harness, { harnessRuleLimits } from './eslint.harness-rules.js';\n\nexport default [\n\t{\n\t\tignores: [\n\t\t\t'dist/**',\n\t\t\t'node_modules/**',\n\t\t\t'coverage/**',\n\t\t\t'.svelte-kit/**',\n\t\t\t'build/**',\n\t\t\t'.cache/**'\n\t\t]\n\t},\n\tprettier,\n\t{\n\t\tfiles: ['src/**/*.ts', 'test/**/*.ts', 'db/**/*.ts'],\n\t\tlanguageOptions: {\n\t\t\tparser: tsParser,\n\t\t\tparserOptions: { project: './tsconfig.json' },\n\t\t\tglobals: {\n\t\t\t\t$state: 'readonly',\n\t\t\t\tBun: 'readonly',\n\t\t\t\tResponse: 'readonly',\n\t\t\t\tconsole: 'readonly'\n\t\t\t}\n\t\t},\n\t\tplugins: { '@typescript-eslint': tseslint, harness },\n\t\trules: {\n\t\t\t...eslint.configs.recommended.rules,\n\t\t\t'no-unused-vars': 'off',\n\t\t\t'@typescript-eslint/consistent-type-imports': 'error',\n\t\t\t'@typescript-eslint/no-explicit-any': 'error',\n\t\t\t'@typescript-eslint/no-floating-promises': 'error',\n\t\t\t'@typescript-eslint/no-misused-promises': 'error',\n\t\t\t'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],\n\t\t\tcomplexity: ['error', harnessRuleLimits.maxComplexity],\n\t\t\t'harness/max-class-lines': 'error',\n\t\t\t'harness/max-method-lines': 'error',\n\t\t\t'harness/no-manager-name': 'error',\n\t\t\t'max-classes-per-file': ['error', harnessRuleLimits.maxClassesPerFile],\n\t\t\t'max-depth': ['error', harnessRuleLimits.maxNestingDepth],\n\t\t\t'max-lines': [\n\t\t\t\t'error',\n\t\t\t\t{ max: harnessRuleLimits.maxFileLines, skipBlankLines: true, skipComments: true }\n\t\t\t],\n\t\t\t'max-lines-per-function': [\n\t\t\t\t'error',\n\t\t\t\t{ max: harnessRuleLimits.maxFunctionLines, skipBlankLines: true, skipComments: true }\n\t\t\t],\n\t\t\t'max-params': ['error', harnessRuleLimits.maxParameters],\n\t\t\t'no-nested-ternary': 'error'\n\t\t}\n\t}\n];\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
