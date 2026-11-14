@@ -22,34 +22,56 @@
 				"name": "artifactMedia.capture",
 				"type": "Recorded",
 				"required": true,
-				"description": "The capture kind and recorded media type. Supported kinds are screenshot, audio, output, assertions and trace."
+				"description": "The capture kind and recorded media type: kind must be screenshot, audio, output, assertions or trace, and any other kind is refused. mediaType is read only for audio, where it must be a recorded audio type the function knows, and for output, assertions and trace, where application/json (parameters after ';' ignored) lets text that parses as JSON be served as application/json.",
+				"examples": [
+					{
+						"kind": "screenshot",
+						"mediaType": "image/png"
+					},
+					{
+						"kind": "audio",
+						"mediaType": "audio/wav"
+					},
+					{
+						"kind": "assertions",
+						"mediaType": "application/json"
+					}
+				]
 			},
 			{
 				"name": "artifactMedia.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "The bytes to inspect. Screenshots need a PNG or JPEG signature. Audio needs a supported recorded type and matching signature. Text results must be valid UTF-8 without a null character."
+				"description": "The raw bytes to inspect: a screenshot needs a PNG or JPEG signature at the start, audio needs the signature of its recorded type, and an output, assertions or trace result must decode as UTF-8 with no null character. The length is not limited here, and the screenshot and audio checks read only the leading bytes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "artifactLimit",
 				"type": "unknown",
-				"description": "The shared maximum artifact size, 11 MiB or 11,534,336 bytes. This function exports the limit; media-type selection does not itself enforce it."
+				"description": "The most raw bytes one artifact may have, 11 MiB or 11,534,336 bytes, so that its base64 form still fits one 16 MiB message. The limit is only exported; artifactMedia does not check byte length against it.",
+				"examples": [11534336]
 			},
 			{
 				"name": "artifactMedia",
 				"type": "string",
-				"description": "PNG or JPEG for screenshots; WAV, MPEG, MP4 or Ogg for supported audio. Results use application/json only when recorded as JSON and successfully parsed; otherwise they use UTF-8 plain text. No HTML type is returned."
+				"description": "The media type the capture is served as: image/png or image/jpeg for screenshots, audio/wav, audio/mpeg, audio/mp4 or audio/ogg for audio, and application/json or text/plain; charset=utf-8 for results. A result is application/json only when its recorded type is application/json (parameters ignored) and its text parses as JSON, and nothing is ever served as HTML or anything a page would run.",
+				"examples": ["image/png", "application/json", "text/plain; charset=utf-8"]
 			}
 		],
 		"errors": [
 			{
 				"name": "type-not-attested",
 				"type": "refused",
-				"description": "Throws when the capture kind is unsupported, screenshot or audio signatures do not match an accepted format, the recorded audio type is unsupported, or a result is not valid text. Invalid JSON falls back to plain text."
+				"description": "Refused with a thrown plain Error when the capture kind is not screenshot, audio, output, assertions or trace, when screenshot bytes are not PNG or JPEG, when the recorded audio type is not one the function knows or its bytes do not match it, or when a result is not valid UTF-8 or contains a null character. Invalid JSON is not refused; it is served as plain text."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The plain Error that artifactMedia throws synchronously for every refused input, with a message that names the case: an unsupported capture kind, screenshot bytes that are not PNG or JPEG, a recorded audio type the function does not know, audio bytes that do not match their type, or a result that is not valid UTF-8 or contains a null character."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "artifactMedia",
@@ -58,29 +80,45 @@
 						"name": "artifactMedia.capture",
 						"type": "Recorded",
 						"required": true,
-						"description": "The capture kind and recorded media type. Supported kinds are screenshot, audio, output, assertions and trace."
+						"description": "The capture kind and recorded media type: kind must be screenshot, audio, output, assertions or trace, and any other kind is refused. mediaType is read only for audio, where it must be a recorded audio type the function knows, and for output, assertions and trace, where application/json (parameters after ';' ignored) lets text that parses as JSON be served as application/json.",
+						"examples": [
+							{
+								"kind": "screenshot",
+								"mediaType": "image/png"
+							},
+							{
+								"kind": "audio",
+								"mediaType": "audio/wav"
+							},
+							{
+								"kind": "assertions",
+								"mediaType": "application/json"
+							}
+						]
 					},
 					{
 						"name": "artifactMedia.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "The bytes to inspect. Screenshots need a PNG or JPEG signature. Audio needs a supported recorded type and matching signature. Text results must be valid UTF-8 without a null character."
+						"description": "The raw bytes to inspect: a screenshot needs a PNG or JPEG signature at the start, audio needs the signature of its recorded type, and an output, assertions or trace result must decode as UTF-8 with no null character. The length is not limited here, and the screenshot and audio checks read only the leading bytes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "artifactMedia",
 						"type": "string",
-						"description": "PNG or JPEG for screenshots; WAV, MPEG, MP4 or Ogg for supported audio. Results use application/json only when recorded as JSON and successfully parsed; otherwise they use UTF-8 plain text. No HTML type is returned."
+						"description": "The media type the capture is served as: image/png or image/jpeg for screenshots, audio/wav, audio/mpeg, audio/mp4 or audio/ogg for audio, and application/json or text/plain; charset=utf-8 for results. A result is application/json only when its recorded type is application/json (parameters ignored) and its text parses as JSON, and nothing is ever served as HTML or anything a page would run.",
+						"examples": ["image/png", "application/json", "text/plain; charset=utf-8"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The plain Error that artifactMedia throws synchronously for every refused input, with a message that names the case: an unsupported capture kind, screenshot bytes that are not PNG or JPEG, a recorded audio type the function does not know, audio bytes that do not match their type, or a result that is not valid UTF-8 or contains a null character."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
