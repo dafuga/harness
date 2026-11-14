@@ -12,40 +12,54 @@
 		"symbols": ["scanFixtureProduct", "holds", "buildScanFixture"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "holds.product",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path to a product tree passed to `contents`. It matters when checking the built fixture, and the files returned by `contents` must be readable.",
+				"examples": [
+					"/repo/.cache/ios/scan-fixture/App.app",
+					"/repo/.cache/ios/scan-fixture/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+				]
 			},
 			{
 				"name": "holds.words",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Literal substring to search for in each product file. The check uses `includes`, so the value is not treated as a regular expression or a whole-file comparison.",
+				"examples": ["SyntheticScanner", "RemoteCameraScanner"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanFixtureProduct",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Absolute destination path for `App.app` under `desktopRoot/.cache/ios/scan-fixture`. It names the test-only product built with the synthetic scanner.",
+				"examples": ["/repo/.cache/ios/scan-fixture/App.app"]
 			},
 			{
 				"name": "holds",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether at least one file returned by `contents(product)` includes the requested substring. It is false when no scanned file matches.",
+				"examples": [true, false]
 			},
 			{
 				"name": "buildScanFixture",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolved path string returned by `changedCopy` after the Debug simulator product passes the synthetic-scanner marker check. The product is built from an isolated source copy that allows only the camera scanner file to differ.",
+				"examples": ["/repo/.cache/ios/scan-fixture/App.app"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An `Error` is thrown if the isolated source differs in anything other than exactly the camera scanner replacement, or if the built product lacks `scanMarker`. Failures from the uncaught build, file-read, and copy steps also propagate."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "holds",
@@ -53,22 +67,37 @@
 					{
 						"name": "holds.product",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path to a product tree passed to `contents`. It matters when checking product files, and the files returned by `contents` must be readable.",
+						"examples": [
+							"/repo/.cache/ios/scan-fixture/App.app",
+							"/repo/.cache/ios/scan-fixture/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+						]
 					},
 					{
 						"name": "holds.words",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Literal substring to search for in each product file. The check uses `includes`, so the value is not treated as a regular expression or a whole-file comparison.",
+						"examples": ["SyntheticScanner", "RemoteCameraScanner"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "holds",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether at least one file returned by `contents(product)` includes the requested substring. It is false when no scanned file matches.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An `Error` from `contents(product)` or `readFileSync` propagates if product files cannot be read. `holds` does not catch file-reading failures."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "buildScanFixture",
@@ -76,16 +105,19 @@
 				"outputs": [
 					{
 						"name": "buildScanFixture",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolved path string returned by `changedCopy` after the Debug simulator product passes the synthetic-scanner marker check. The product is built from an isolated source copy that allows only the camera scanner file to differ.",
+						"examples": ["/repo/.cache/ios/scan-fixture/App.app"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "An `Error` is thrown if the isolated source differs in anything other than exactly the camera scanner replacement, or if the built product lacks `scanMarker`. Failures from the uncaught build and copy steps also propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
