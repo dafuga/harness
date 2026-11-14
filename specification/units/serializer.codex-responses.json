@@ -20,58 +20,337 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CodexResponsesSerializer.constructor.model",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The model identifier stored by the serializer and copied into response objects. The implementation stores it without validation.",
+				"examples": ["gpt-5-codex", "codex-model"]
 			},
 			{
 				"name": "CodexResponsesSerializer.text.delta",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A text fragment appended to the assistant message and emitted as a response.output_text.delta event. It is appended as supplied, including an empty string.",
+				"examples": ["Hello, ", "world!"]
 			},
 			{
 				"name": "CodexResponsesSerializer.call.call",
 				"type": "GatewayCall",
-				"required": true
+				"required": true,
+				"description": "The gateway call record whose id, name, and arguments are copied into a completed call item; a truthy namespace is also copied. If custom is truthy, arguments is parsed as JSON and its input property is copied, so malformed JSON throws SyntaxError.",
+				"examples": [
+					{
+						"id": "call_550e8400-e29b-41d4-a716-446655440000",
+						"name": "get_weather",
+						"arguments": "{\"city\":\"Toronto\"}",
+						"custom": false
+					},
+					{
+						"id": "call_123e4567-e89b-42d3-a456-426614174000",
+						"name": "search_docs",
+						"arguments": "{\"input\":{\"query\":\"release notes\"}}",
+						"namespace": "docs",
+						"custom": true
+					}
+				]
 			},
 			{
 				"name": "CodexResponsesSerializer.fail.message",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The error message placed in the response.failed payload's gateway_error object. It is inserted without normalization or validation.",
+				"examples": ["Upstream gateway timed out"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CodexResponsesSerializer.start",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"description": "Two events announce response creation and progress, each carrying an in_progress response snapshot with the stored model and current output. Calling start advances event sequence numbers and does not reset accumulated output.",
+				"examples": [
+					[
+						{
+							"type": "response.created",
+							"sequence_number": 0,
+							"response": {
+								"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+								"object": "response",
+								"created_at": 1794613200,
+								"model": "gpt-5-codex",
+								"status": "in_progress",
+								"output": [],
+								"parallel_tool_calls": true,
+								"error": null,
+								"incomplete_details": null
+							}
+						},
+						{
+							"type": "response.in_progress",
+							"sequence_number": 1,
+							"response": {
+								"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+								"object": "response",
+								"created_at": 1794613200,
+								"model": "gpt-5-codex",
+								"status": "in_progress",
+								"output": [],
+								"parallel_tool_calls": true,
+								"error": null,
+								"incomplete_details": null
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "CodexResponsesSerializer.text",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"description": "The returned events represent a text fragment appended to the assistant message; the first text call also adds output-item and content-part events, while every call emits a delta event. The serializer keeps one assistant message and does not validate the fragment or enforce a lifecycle.",
+				"examples": [
+					[
+						{
+							"type": "response.output_item.added",
+							"sequence_number": 0,
+							"output_index": 0,
+							"item": {
+								"id": "msg_550e8400-e29b-41d4-a716-446655440000",
+								"type": "message",
+								"role": "assistant",
+								"status": "in_progress",
+								"content": []
+							}
+						},
+						{
+							"type": "response.content_part.added",
+							"sequence_number": 1,
+							"item_id": "msg_550e8400-e29b-41d4-a716-446655440000",
+							"output_index": 0,
+							"content_index": 0,
+							"part": {
+								"type": "output_text",
+								"text": "",
+								"annotations": []
+							}
+						},
+						{
+							"type": "response.output_text.delta",
+							"sequence_number": 2,
+							"item_id": "msg_550e8400-e29b-41d4-a716-446655440000",
+							"output_index": 0,
+							"content_index": 0,
+							"delta": "Hello, world!"
+						}
+					]
+				]
 			},
 			{
 				"name": "CodexResponsesSerializer.call",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"description": "The returned pair announces and completes a call item appended to the response output. A truthy custom flag changes the item type and parses arguments JSON, which can throw SyntaxError.",
+				"examples": [
+					[
+						{
+							"type": "response.output_item.added",
+							"sequence_number": 0,
+							"output_index": 0,
+							"item": {
+								"id": "fc_550e8400-e29b-41d4-a716-446655440000",
+								"type": "function_call",
+								"call_id": "call_550e8400-e29b-41d4-a716-446655440000",
+								"name": "get_weather",
+								"arguments": "{\"city\":\"Toronto\"}",
+								"status": "completed"
+							}
+						},
+						{
+							"type": "response.output_item.done",
+							"sequence_number": 1,
+							"output_index": 0,
+							"item": {
+								"id": "fc_550e8400-e29b-41d4-a716-446655440000",
+								"type": "function_call",
+								"call_id": "call_550e8400-e29b-41d4-a716-446655440000",
+								"name": "get_weather",
+								"arguments": "{\"city\":\"Toronto\"}",
+								"status": "completed"
+							}
+						}
+					],
+					[
+						{
+							"type": "response.output_item.added",
+							"sequence_number": 0,
+							"output_index": 0,
+							"item": {
+								"id": "fc_123e4567-e89b-42d3-a456-426614174000",
+								"type": "custom_tool_call",
+								"call_id": "call_123e4567-e89b-42d3-a456-426614174000",
+								"name": "search_docs",
+								"arguments": "{\"input\":{\"query\":\"release notes\"}}",
+								"status": "completed",
+								"namespace": "docs",
+								"input": {
+									"query": "release notes"
+								}
+							}
+						},
+						{
+							"type": "response.output_item.done",
+							"sequence_number": 1,
+							"output_index": 0,
+							"item": {
+								"id": "fc_123e4567-e89b-42d3-a456-426614174000",
+								"type": "custom_tool_call",
+								"call_id": "call_123e4567-e89b-42d3-a456-426614174000",
+								"name": "search_docs",
+								"arguments": "{\"input\":{\"query\":\"release notes\"}}",
+								"status": "completed",
+								"namespace": "docs",
+								"input": {
+									"query": "release notes"
+								}
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "CodexResponsesSerializer.finish",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"description": "The events complete any assistant text message and always end with response.completed carrying status completed. Without a text message, the completion event is the only returned event.",
+				"examples": [
+					[
+						{
+							"type": "response.completed",
+							"sequence_number": 0,
+							"response": {
+								"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+								"object": "response",
+								"created_at": 1794613200,
+								"model": "gpt-5-codex",
+								"status": "completed",
+								"output": [],
+								"parallel_tool_calls": true,
+								"error": null,
+								"incomplete_details": null
+							}
+						}
+					],
+					[
+						{
+							"type": "response.output_text.done",
+							"sequence_number": 3,
+							"item_id": "msg_550e8400-e29b-41d4-a716-446655440000",
+							"output_index": 0,
+							"content_index": 0,
+							"text": "Hello, world!"
+						},
+						{
+							"type": "response.content_part.done",
+							"sequence_number": 4,
+							"item_id": "msg_550e8400-e29b-41d4-a716-446655440000",
+							"output_index": 0,
+							"content_index": 0,
+							"part": {
+								"type": "output_text",
+								"text": "Hello, world!",
+								"annotations": []
+							}
+						},
+						{
+							"type": "response.output_item.done",
+							"sequence_number": 5,
+							"output_index": 0,
+							"item": {
+								"id": "msg_550e8400-e29b-41d4-a716-446655440000",
+								"type": "message",
+								"role": "assistant",
+								"status": "completed",
+								"content": [
+									{
+										"type": "output_text",
+										"text": "Hello, world!",
+										"annotations": []
+									}
+								]
+							}
+						},
+						{
+							"type": "response.completed",
+							"sequence_number": 6,
+							"response": {
+								"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+								"object": "response",
+								"created_at": 1794613200,
+								"model": "gpt-5-codex",
+								"status": "completed",
+								"output": [
+									{
+										"id": "msg_550e8400-e29b-41d4-a716-446655440000",
+										"type": "message",
+										"role": "assistant",
+										"status": "completed",
+										"content": [
+											{
+												"type": "output_text",
+												"text": "Hello, world!",
+												"annotations": []
+											}
+										]
+									}
+								],
+								"parallel_tool_calls": true,
+								"error": null,
+								"incomplete_details": null
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "CodexResponsesSerializer.fail",
-				"type": "GatewayItem[]"
+				"type": "GatewayItem[]",
+				"description": "One response.failed event carries status failed and a gateway_error object containing the supplied message. The method does not close the serializer or alter its output array.",
+				"examples": [
+					[
+						{
+							"type": "response.failed",
+							"sequence_number": 0,
+							"response": {
+								"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+								"object": "response",
+								"created_at": 1794613200,
+								"model": "gpt-5-codex",
+								"status": "failed",
+								"output": [],
+								"parallel_tool_calls": true,
+								"error": {
+									"code": "gateway_error",
+									"message": "Upstream gateway timed out"
+								},
+								"incomplete_details": null
+							}
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An ExpectedCliError raised during serializer use propagates to the caller without translation."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown when JSON.parse cannot parse call.arguments while serializing a call with a truthy custom flag. The implementation propagates the parse error without translating it."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CodexResponsesSerializer.start",
@@ -79,11 +358,46 @@
 				"outputs": [
 					{
 						"name": "CodexResponsesSerializer.start",
-						"type": "GatewayItem[]"
+						"type": "GatewayItem[]",
+						"description": "Two events announce response creation and progress, each carrying an in_progress response snapshot with the stored model and current output. Calling start advances event sequence numbers and does not reset accumulated output.",
+						"examples": [
+							[
+								{
+									"type": "response.created",
+									"sequence_number": 0,
+									"response": {
+										"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+										"object": "response",
+										"created_at": 1794613200,
+										"model": "gpt-5-codex",
+										"status": "in_progress",
+										"output": [],
+										"parallel_tool_calls": true,
+										"error": null,
+										"incomplete_details": null
+									}
+								},
+								{
+									"type": "response.in_progress",
+									"sequence_number": 1,
+									"response": {
+										"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+										"object": "response",
+										"created_at": 1794613200,
+										"model": "gpt-5-codex",
+										"status": "in_progress",
+										"output": [],
+										"parallel_tool_calls": true,
+										"error": null,
+										"incomplete_details": null
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexResponsesSerializer.text",
@@ -91,17 +405,56 @@
 					{
 						"name": "CodexResponsesSerializer.text.delta",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A text fragment appended to the assistant message and emitted as a response.output_text.delta event. It is appended as supplied, including an empty string.",
+						"examples": ["Hello, ", "world!"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexResponsesSerializer.text",
-						"type": "GatewayItem[]"
+						"type": "GatewayItem[]",
+						"description": "The returned events represent a text fragment appended to the assistant message; the first text call also adds output-item and content-part events, while every call emits a delta event. The serializer keeps one assistant message and does not validate the fragment or enforce a lifecycle.",
+						"examples": [
+							[
+								{
+									"type": "response.output_item.added",
+									"sequence_number": 0,
+									"output_index": 0,
+									"item": {
+										"id": "msg_550e8400-e29b-41d4-a716-446655440000",
+										"type": "message",
+										"role": "assistant",
+										"status": "in_progress",
+										"content": []
+									}
+								},
+								{
+									"type": "response.content_part.added",
+									"sequence_number": 1,
+									"item_id": "msg_550e8400-e29b-41d4-a716-446655440000",
+									"output_index": 0,
+									"content_index": 0,
+									"part": {
+										"type": "output_text",
+										"text": "",
+										"annotations": []
+									}
+								},
+								{
+									"type": "response.output_text.delta",
+									"sequence_number": 2,
+									"item_id": "msg_550e8400-e29b-41d4-a716-446655440000",
+									"output_index": 0,
+									"content_index": 0,
+									"delta": "Hello, world!"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexResponsesSerializer.call",
@@ -109,17 +462,106 @@
 					{
 						"name": "CodexResponsesSerializer.call.call",
 						"type": "GatewayCall",
-						"required": true
+						"required": true,
+						"description": "The gateway call record whose id, name, and arguments are copied into a completed call item; a truthy namespace is also copied. If custom is truthy, arguments is parsed as JSON and its input property is copied, so malformed JSON throws SyntaxError.",
+						"examples": [
+							{
+								"id": "call_550e8400-e29b-41d4-a716-446655440000",
+								"name": "get_weather",
+								"arguments": "{\"city\":\"Toronto\"}",
+								"custom": false
+							},
+							{
+								"id": "call_123e4567-e89b-42d3-a456-426614174000",
+								"name": "search_docs",
+								"arguments": "{\"input\":{\"query\":\"release notes\"}}",
+								"namespace": "docs",
+								"custom": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexResponsesSerializer.call",
-						"type": "GatewayItem[]"
+						"type": "GatewayItem[]",
+						"description": "The returned pair announces and completes a call item appended to the response output. A truthy custom flag changes the item type and parses arguments JSON, which can throw SyntaxError.",
+						"examples": [
+							[
+								{
+									"type": "response.output_item.added",
+									"sequence_number": 0,
+									"output_index": 0,
+									"item": {
+										"id": "fc_550e8400-e29b-41d4-a716-446655440000",
+										"type": "function_call",
+										"call_id": "call_550e8400-e29b-41d4-a716-446655440000",
+										"name": "get_weather",
+										"arguments": "{\"city\":\"Toronto\"}",
+										"status": "completed"
+									}
+								},
+								{
+									"type": "response.output_item.done",
+									"sequence_number": 1,
+									"output_index": 0,
+									"item": {
+										"id": "fc_550e8400-e29b-41d4-a716-446655440000",
+										"type": "function_call",
+										"call_id": "call_550e8400-e29b-41d4-a716-446655440000",
+										"name": "get_weather",
+										"arguments": "{\"city\":\"Toronto\"}",
+										"status": "completed"
+									}
+								}
+							],
+							[
+								{
+									"type": "response.output_item.added",
+									"sequence_number": 0,
+									"output_index": 0,
+									"item": {
+										"id": "fc_123e4567-e89b-42d3-a456-426614174000",
+										"type": "custom_tool_call",
+										"call_id": "call_123e4567-e89b-42d3-a456-426614174000",
+										"name": "search_docs",
+										"arguments": "{\"input\":{\"query\":\"release notes\"}}",
+										"status": "completed",
+										"namespace": "docs",
+										"input": {
+											"query": "release notes"
+										}
+									}
+								},
+								{
+									"type": "response.output_item.done",
+									"sequence_number": 1,
+									"output_index": 0,
+									"item": {
+										"id": "fc_123e4567-e89b-42d3-a456-426614174000",
+										"type": "custom_tool_call",
+										"call_id": "call_123e4567-e89b-42d3-a456-426614174000",
+										"name": "search_docs",
+										"arguments": "{\"input\":{\"query\":\"release notes\"}}",
+										"status": "completed",
+										"namespace": "docs",
+										"input": {
+											"query": "release notes"
+										}
+									}
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when JSON.parse cannot parse call.arguments while serializing a call with a truthy custom flag. The implementation propagates the parse error without translating it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexResponsesSerializer.finish",
@@ -127,11 +569,100 @@
 				"outputs": [
 					{
 						"name": "CodexResponsesSerializer.finish",
-						"type": "GatewayItem[]"
+						"type": "GatewayItem[]",
+						"description": "The events complete any assistant text message and always end with response.completed carrying status completed. Without a text message, the completion event is the only returned event.",
+						"examples": [
+							[
+								{
+									"type": "response.completed",
+									"sequence_number": 0,
+									"response": {
+										"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+										"object": "response",
+										"created_at": 1794613200,
+										"model": "gpt-5-codex",
+										"status": "completed",
+										"output": [],
+										"parallel_tool_calls": true,
+										"error": null,
+										"incomplete_details": null
+									}
+								}
+							],
+							[
+								{
+									"type": "response.output_text.done",
+									"sequence_number": 3,
+									"item_id": "msg_550e8400-e29b-41d4-a716-446655440000",
+									"output_index": 0,
+									"content_index": 0,
+									"text": "Hello, world!"
+								},
+								{
+									"type": "response.content_part.done",
+									"sequence_number": 4,
+									"item_id": "msg_550e8400-e29b-41d4-a716-446655440000",
+									"output_index": 0,
+									"content_index": 0,
+									"part": {
+										"type": "output_text",
+										"text": "Hello, world!",
+										"annotations": []
+									}
+								},
+								{
+									"type": "response.output_item.done",
+									"sequence_number": 5,
+									"output_index": 0,
+									"item": {
+										"id": "msg_550e8400-e29b-41d4-a716-446655440000",
+										"type": "message",
+										"role": "assistant",
+										"status": "completed",
+										"content": [
+											{
+												"type": "output_text",
+												"text": "Hello, world!",
+												"annotations": []
+											}
+										]
+									}
+								},
+								{
+									"type": "response.completed",
+									"sequence_number": 6,
+									"response": {
+										"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+										"object": "response",
+										"created_at": 1794613200,
+										"model": "gpt-5-codex",
+										"status": "completed",
+										"output": [
+											{
+												"id": "msg_550e8400-e29b-41d4-a716-446655440000",
+												"type": "message",
+												"role": "assistant",
+												"status": "completed",
+												"content": [
+													{
+														"type": "output_text",
+														"text": "Hello, world!",
+														"annotations": []
+													}
+												]
+											}
+										],
+										"parallel_tool_calls": true,
+										"error": null,
+										"incomplete_details": null
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexResponsesSerializer.fail",
@@ -139,17 +670,42 @@
 					{
 						"name": "CodexResponsesSerializer.fail.message",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The error message placed in the response.failed payload's gateway_error object. It is inserted without normalization or validation.",
+						"examples": ["Upstream gateway timed out"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexResponsesSerializer.fail",
-						"type": "GatewayItem[]"
+						"type": "GatewayItem[]",
+						"description": "One response.failed event carries status failed and a gateway_error object containing the supplied message. The method does not close the serializer or alter its output array.",
+						"examples": [
+							[
+								{
+									"type": "response.failed",
+									"sequence_number": 0,
+									"response": {
+										"id": "resp_550e8400-e29b-41d4-a716-446655440000",
+										"object": "response",
+										"created_at": 1794613200,
+										"model": "gpt-5-codex",
+										"status": "failed",
+										"output": [],
+										"parallel_tool_calls": true,
+										"error": {
+											"code": "gateway_error",
+											"message": "Upstream gateway timed out"
+										},
+										"incomplete_details": null
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -159,17 +715,20 @@
 					{
 						"name": "CodexResponsesSerializer.constructor.model",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The model identifier stored by the serializer and copied into response objects. The implementation stores it without validation.",
+						"examples": ["gpt-5-codex", "codex-model"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexResponsesSerializer.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The initialized serializer instance stores the supplied model, starts with empty output and sequence state, and creates a response id. The instance itself is a class value and is not represented as JSON."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
