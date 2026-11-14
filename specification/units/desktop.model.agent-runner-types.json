@@ -26,11 +26,17 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "RunCancelled",
+				"type": "thrown",
+				"description": "The error for a run that its owner cancelled, as distinct from a run that failed. This unit defines the class, but no code in its source files throws it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [
 			{
@@ -39,11 +45,12 @@
 				"outputs": [
 					{
 						"name": "RunCancelled.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The RunCancelled instance that `new RunCancelled()` creates, representing a run its owner cancelled as distinct from one that failed. The constructor takes no arguments, so every instance is an Error named 'RunCancelled' with the message 'The run was cancelled.'"
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
