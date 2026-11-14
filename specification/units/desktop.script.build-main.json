@@ -12,21 +12,37 @@
 		"symbols": ["desktopNodeOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "desktopNodeOptions",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Shared Bun.build options (target node, format cjs, electron external, the jsonc-parser resolve plugin, outdir dist, external sourcemaps) that buildDesktopMain spreads into the main.cjs and preload.cjs builds, adding only entrypoints and naming. The plugin's setup callback is a function that JSON cannot express, so the example keeps only the plugin's name.",
+				"examples": [
+					{
+						"target": "node",
+						"format": "cjs",
+						"external": ["electron"],
+						"plugins": [
+							{
+								"name": "bundle-jsonc-parser-module"
+							}
+						],
+						"outdir": "dist",
+						"sourcemap": "external"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by buildDesktopMain when this file runs as the main module (importing it throws nothing), either because Bun.build reports success false, with the build logs joined by newlines as the message, or because execFileSync throws when node --check exits non-zero or cannot be spawned on a built file. Other rejections, such as from mkdir('dist'), are not caught and propagate out unchanged."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
