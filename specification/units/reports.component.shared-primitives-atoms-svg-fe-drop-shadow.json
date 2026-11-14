@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feDropShadow element; native HTML content rules still apply."
+				"description": "A Svelte Snippet whose rendered output becomes the content of the feDropShadow element; when omitted, the element has no content. It is destructured out of the props so it is never spread onto the element as an attribute, and the component calls it with no arguments only when it is truthy, without checking anything else about the value."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeDropShadow",
 				"type": "markup",
-				"description": "The actual native feDropShadow element, with forwarded attributes and content and no additional wrapper."
+				"description": "Always a single feDropShadow element in the SVG namespace (set by svelte:options), with every prop other than children spread onto it as attributes and the children snippet rendered inside it when provided. No wrapper element is added around it."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
