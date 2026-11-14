@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native marker element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered as child content inside the <marker> when supplied; when omitted, the element has no children from this component. The snippet is called without arguments, and the component does not otherwise interpret its markup."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgMarker",
 				"type": "markup",
-				"description": "The actual native marker element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native SVG <marker> element produced by this component, with every prop other than children forwarded as an attribute. When children is supplied, its snippet is rendered inside the element; the component adds no wrapper or marker-specific behavior."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
