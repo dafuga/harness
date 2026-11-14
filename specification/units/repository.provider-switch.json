@@ -19,49 +19,95 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProviderSwitchRepository.constructor.home",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem directory in which the repository creates or opens `provider-switches.sqlite`. It creates the directory recursively with mode 0700 and sets the database file mode to 0600.",
+				"examples": ["/tmp/provider-switch-data"]
 			},
 			{
 				"name": "ProviderSwitchRepository.get.sessionId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Session key used to look up a row with an exact `session` match. It is not normalized or validated by this repository.",
+				"examples": ["session-01JAZ7K4W6M2"]
 			},
 			{
 				"name": "ProviderSwitchRepository.put.record",
 				"type": "SwitchRequest",
-				"required": true
+				"required": true,
+				"description": "Switch request serialized into the row's `data` column, with `record.sessionId` used as the session key and `switchRevision(record)` stored as the row id. The exact required fields of `SwitchRequest` are defined outside the two permitted implementation files.",
+				"examples": [
+					{
+						"id": "switch-request-01JAZ7K4W6M2Q9R3",
+						"sessionId": "session-01JAZ7K4W6M2",
+						"target": {
+							"provider": "openai",
+							"model": "gpt-5-codex",
+							"effort": "medium"
+						},
+						"status": "pending",
+						"createdAt": "2026-11-14T10:30:00.000Z",
+						"reason": "Switch this session to the selected provider model."
+					}
+				]
 			},
 			{
 				"name": "ProviderSwitchRepository.put.expectedId",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Expected current `switches.id` value used in the conditional update when a row for the session already exists. A non-null value must equal the stored id for that update to change a row; null does not match an existing id.",
+				"examples": [null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderSwitchRepository.get",
-				"type": "SwitchRequest | null"
+				"type": "SwitchRequest | null",
+				"description": "Stored switch request parsed from the matching row, or null when no row exists for the session. A failed query or malformed stored JSON throws.",
+				"examples": [null]
 			},
 			{
 				"name": "ProviderSwitchRepository.put",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when SQLite reports exactly one row changed by the insert or conditional update, and false otherwise. The method returns only this change result.",
+				"examples": [true, false]
 			},
 			{
 				"name": "ProviderSwitchRepository.list",
-				"type": "SwitchRequest[]"
+				"type": "SwitchRequest[]",
+				"description": "Stored switch requests ordered by descending rowid, with at most 100 rows returned. Each row's data is parsed as JSON and malformed stored data throws.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ProviderSwitchRepository.close",
-				"type": "void"
+				"type": "void",
+				"description": "Closes the repository's SQLite database connection. It returns no value."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A filesystem operation, SQLite loading, or SQLite operation failed. The repository does not catch or translate these failures."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse rejected malformed stored row data while get or list was reading it."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "JSON.stringify rejected a record containing a cycle or a value such as BigInt while put was serializing it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProviderSwitchRepository.get",
@@ -69,17 +115,32 @@
 					{
 						"name": "ProviderSwitchRepository.get.sessionId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Session key used to look up a row with an exact `session` match. It is not normalized or validated by this repository.",
+						"examples": ["session-01JAZ7K4W6M2"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitchRepository.get",
-						"type": "SwitchRequest | null"
+						"type": "SwitchRequest | null",
+						"description": "Stored switch request parsed from the matching row, or null when no row exists for the session. A failed query or malformed stored JSON throws.",
+						"examples": [null]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem operation, SQLite loading, or SQLite operation failed. The repository does not catch or translate these failures."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse rejected malformed stored row data while get or list was reading it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderSwitchRepository.put",
@@ -87,22 +148,52 @@
 					{
 						"name": "ProviderSwitchRepository.put.record",
 						"type": "SwitchRequest",
-						"required": true
+						"required": true,
+						"description": "Switch request serialized into the row's `data` column, with `record.sessionId` used as the session key and `switchRevision(record)` stored as the row id. The exact required fields of `SwitchRequest` are defined outside the two permitted implementation files.",
+						"examples": [
+							{
+								"id": "switch-request-01JAZ7K4W6M2Q9R3",
+								"sessionId": "session-01JAZ7K4W6M2",
+								"target": {
+									"provider": "openai",
+									"model": "gpt-5-codex",
+									"effort": "medium"
+								},
+								"status": "pending",
+								"createdAt": "2026-11-14T10:30:00.000Z",
+								"reason": "Switch this session to the selected provider model."
+							}
+						]
 					},
 					{
 						"name": "ProviderSwitchRepository.put.expectedId",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "Expected current `switches.id` value used in the conditional update when a row for the session already exists. A non-null value must equal the stored id for that update to change a row; null does not match an existing id.",
+						"examples": [null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitchRepository.put",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when SQLite reports exactly one row changed by the insert or conditional update, and false otherwise. The method returns only this change result.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem operation, SQLite loading, or SQLite operation failed. The repository does not catch or translate these failures."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "JSON.stringify rejected a record containing a cycle or a value such as BigInt while put was serializing it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderSwitchRepository.list",
@@ -110,11 +201,26 @@
 				"outputs": [
 					{
 						"name": "ProviderSwitchRepository.list",
-						"type": "SwitchRequest[]"
+						"type": "SwitchRequest[]",
+						"description": "Stored switch requests ordered by descending rowid, with at most 100 rows returned. Each row's data is parsed as JSON and malformed stored data throws.",
+						"examples": [
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem operation, SQLite loading, or SQLite operation failed. The repository does not catch or translate these failures."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse rejected malformed stored row data while get or list was reading it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderSwitchRepository.close",
@@ -122,11 +228,18 @@
 				"outputs": [
 					{
 						"name": "ProviderSwitchRepository.close",
-						"type": "void"
+						"type": "void",
+						"description": "Closes the repository's SQLite database connection. It returns no value."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem operation, SQLite loading, or SQLite operation failed. The repository does not catch or translate these failures."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -136,17 +249,26 @@
 					{
 						"name": "ProviderSwitchRepository.constructor.home",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem directory in which the repository creates or opens `provider-switches.sqlite`. It creates the directory recursively with mode 0700 and sets the database file mode to 0600.",
+						"examples": ["/tmp/provider-switch-data"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitchRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A ProviderSwitchRepository instance holding the initialized SQLite database connection under the supplied home directory. The instance is used for repository operations and its connection is closed by close."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem operation, SQLite loading, or SQLite operation failed. The repository does not catch or translate these failures."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
