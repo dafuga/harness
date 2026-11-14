@@ -12,22 +12,38 @@
 		"symbols": ["renderGuide"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "renderGuide.guide",
 				"type": "Guide",
-				"required": true
+				"required": true,
+				"description": "A Guide supplies topic, summary, steps, rules, antiPatterns, and exampleCommands; contains is optional. Text fields are interpolated verbatim, and list entries become one bullet each.",
+				"examples": [
+					{
+						"topic": "Local rendering",
+						"summary": "Render the guide as Markdown.",
+						"steps": ["Read the guide data.", "Call renderGuide."],
+						"contains": ["A topic heading.", "Section lists."],
+						"rules": ["Keep section order."],
+						"antiPatterns": ["Return HTML."],
+						"exampleCommands": ["npm run dev"]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "renderGuide",
-				"type": "string"
+				"type": "string",
+				"description": "The returned Markdown places the topic heading and summary before the Steps, optional Contains, Rules, Anti-patterns, and Example commands lists. List entries are prefixed with -, the rendered headings remain in this order, and the result ends with a newline.",
+				"examples": [
+					"# Local rendering\n\nRender the guide as Markdown.\n\n## Steps\n- Read the guide data.\n- Call renderGuide.\n\n\n## Contains\n- A topic heading.\n- Section lists.\n\n\n## Rules\n- Keep section order.\n\n\n## Anti-patterns\n- Return HTML.\n\n\n## Example commands\n- npm run dev\n"
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "renderGuide",
@@ -35,17 +51,33 @@
 					{
 						"name": "renderGuide.guide",
 						"type": "Guide",
-						"required": true
+						"required": true,
+						"description": "A Guide supplies topic, summary, steps, rules, antiPatterns, and exampleCommands; contains is optional. Text fields are interpolated verbatim, and list entries become one bullet each.",
+						"examples": [
+							{
+								"topic": "Local rendering",
+								"summary": "Render the guide as Markdown.",
+								"steps": ["Read the guide data.", "Call renderGuide."],
+								"contains": ["A topic heading.", "Section lists."],
+								"rules": ["Keep section order."],
+								"antiPatterns": ["Return HTML."],
+								"exampleCommands": ["npm run dev"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderGuide",
-						"type": "string"
+						"type": "string",
+						"description": "The returned Markdown places the topic heading and summary before the Steps, optional Contains, Rules, Anti-patterns, and Example commands lists. List entries are prefixed with -, the rendered headings remain in this order, and the result ends with a newline.",
+						"examples": [
+							"# Local rendering\n\nRender the guide as Markdown.\n\n## Steps\n- Read the guide data.\n- Call renderGuide.\n\n\n## Contains\n- A topic heading.\n- Section lists.\n\n\n## Rules\n- Keep section order.\n\n\n## Anti-patterns\n- Return HTML.\n\n\n## Example commands\n- npm run dev\n"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
