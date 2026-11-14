@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native mask element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet rendered inside the mask element with no arguments whenever it is truthy; when it is omitted, the mask renders no snippet content. It is removed from the props before the rest are spread as attributes, and it must be a Snippet because any other truthy value is called as a function during render."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgMask",
 				"type": "markup",
-				"description": "The actual native mask element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native SVG mask element (tag mask in the SVG namespace), rendered with no wrapper element around it. Every prop except children is spread onto it as an attribute, and the children snippet renders inside it when provided."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
