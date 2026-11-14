@@ -26,36 +26,148 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeviceOperationsService.constructor.options",
 				"type": "DeviceOperationsOptions",
-				"required": true
+				"required": true,
+				"description": "What one approved device's session draws on: its client projects (projects), the provider discovery service (providers), the repository arbiter (arbiter), and its grant (grant), a callback read again for every request. The constructor stores these values as given and checks none of them."
 			},
 			{
 				"name": "DeviceOperationsService.handle.request",
 				"type": "WireRequest",
-				"required": true
+				"required": true,
+				"description": "The request a phone sent: its method must be one that methods() offers, or handle() rejects it with method-denied. Its input names the registered project by projectId (listProjects and providers need none), and the revision methods createPlan, openThread, approve and startRun also need revision, a {branch, commit} pair for the checked-out branch and its tip commit; revision and epoch are removed before the bridge payload is checked.",
+				"examples": [
+					{
+						"type": "request",
+						"id": "3b7f0c2e-94a1-4d6e-8f35-c2a7e1d90b48",
+						"method": "snapshot",
+						"input": {
+							"projectId": "local-8c4e1f0a9b27d36e5f1a0c8b2d7e94f63a1c5b0e8d2f7a9c4b6e1d3f5a8c0b72",
+							"branch": null,
+							"commit": null
+						}
+					},
+					{
+						"type": "request",
+						"id": "d0a4e7c1-5b29-4f8e-a13c-9e6b2d7f4a05",
+						"method": "openThread",
+						"input": {
+							"projectId": "local-8c4e1f0a9b27d36e5f1a0c8b2d7e94f63a1c5b0e8d2f7a9c4b6e1d3f5a8c0b72",
+							"epoch": "6f2a9d07c3e15b84a07d2e9f51b8c6e3",
+							"revision": {
+								"branch": "main",
+								"commit": "d41b7e2c90a5f3e81c6d4b92e07a3f5db8c2196e"
+							},
+							"entityId": "reports.component.evidence-grid",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						}
+					},
+					{
+						"type": "request",
+						"id": "a5c3e9f0-1d7b-4a62-8e94-0b3f6c2d8e17",
+						"method": "listProjects",
+						"input": {}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeviceOperationsService.methods",
-				"type": "RemoteMethod[]"
+				"type": "RemoteMethod[]",
+				"description": "The methods this device offers now, recomputed from the current grant on every call: session.attach, the reads except history, addComment and openThread unless grant.comments is false, and the agent methods only when grant.agents is true and grant.comments is not false. A method missing from this list is refused by handle() with method-denied.",
+				"examples": [
+					[
+						"session.attach",
+						"listProjects",
+						"capabilities",
+						"snapshot",
+						"entity",
+						"source",
+						"image",
+						"evidence",
+						"artifact",
+						"messages",
+						"pendingComments",
+						"providers",
+						"addComment",
+						"openThread",
+						"createPlan",
+						"approve",
+						"startRun",
+						"cancelRun"
+					],
+					[
+						"session.attach",
+						"listProjects",
+						"capabilities",
+						"snapshot",
+						"entity",
+						"source",
+						"image",
+						"evidence",
+						"artifact",
+						"messages",
+						"pendingComments",
+						"providers",
+						"addComment",
+						"openThread"
+					],
+					[
+						"session.attach",
+						"listProjects",
+						"capabilities",
+						"snapshot",
+						"entity",
+						"source",
+						"image",
+						"evidence",
+						"artifact",
+						"messages",
+						"pendingComments",
+						"providers"
+					]
+				]
 			},
 			{
 				"name": "DeviceOperationsService.handle",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "Resolves with the answer for the requested method: listProjects returns the granted projects as {id, name, kind: 'local'}, providers returns the provider discovery list only when agents are granted and [] otherwise, and capabilities replaces the bridge's answer with this device's own capabilities. snapshot has its root set to an empty string and writable limited by the agents capability, image and artifact pass through binaryAnswer, and every other method resolves with the bridge's answer unchanged.",
+				"examples": [
+					[
+						{
+							"id": "local-8c4e1f0a9b27d36e5f1a0c8b2d7e94f63a1c5b0e8d2f7a9c4b6e1d3f5a8c0b72",
+							"name": "design-system",
+							"kind": "local"
+						}
+					],
+					{
+						"comments": true,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "local",
+						"reason": "This device was approved to read and comment only."
+					},
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "RemoteFailure",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A RemoteFailure is the refusal that handle() throws as a rejection, with a code of method-denied, project-required, project-denied, invalid-message, revoked, revision-required, read-only, revision-mismatch or busy. Other errors, such as one from the bridge operation, pass through unwrapped."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DeviceOperationsService.methods",
@@ -63,11 +175,64 @@
 				"outputs": [
 					{
 						"name": "DeviceOperationsService.methods",
-						"type": "RemoteMethod[]"
+						"type": "RemoteMethod[]",
+						"description": "The methods this device offers now, recomputed from the current grant on every call: session.attach, the reads except history, addComment and openThread unless grant.comments is false, and the agent methods only when grant.agents is true and grant.comments is not false. A method missing from this list is refused by handle() with method-denied.",
+						"examples": [
+							[
+								"session.attach",
+								"listProjects",
+								"capabilities",
+								"snapshot",
+								"entity",
+								"source",
+								"image",
+								"evidence",
+								"artifact",
+								"messages",
+								"pendingComments",
+								"providers",
+								"addComment",
+								"openThread",
+								"createPlan",
+								"approve",
+								"startRun",
+								"cancelRun"
+							],
+							[
+								"session.attach",
+								"listProjects",
+								"capabilities",
+								"snapshot",
+								"entity",
+								"source",
+								"image",
+								"evidence",
+								"artifact",
+								"messages",
+								"pendingComments",
+								"providers",
+								"addComment",
+								"openThread"
+							],
+							[
+								"session.attach",
+								"listProjects",
+								"capabilities",
+								"snapshot",
+								"entity",
+								"source",
+								"image",
+								"evidence",
+								"artifact",
+								"messages",
+								"pendingComments",
+								"providers"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeviceOperationsService.handle",
@@ -75,22 +240,80 @@
 					{
 						"name": "DeviceOperationsService.handle.request",
 						"type": "WireRequest",
-						"required": true
+						"required": true,
+						"description": "The request a phone sent: its method must be one that methods() offers, or handle() rejects it with method-denied. Its input names the registered project by projectId (listProjects and providers need none), and the revision methods createPlan, openThread, approve and startRun also need revision, a {branch, commit} pair for the checked-out branch and its tip commit; revision and epoch are removed before the bridge payload is checked.",
+						"examples": [
+							{
+								"type": "request",
+								"id": "3b7f0c2e-94a1-4d6e-8f35-c2a7e1d90b48",
+								"method": "snapshot",
+								"input": {
+									"projectId": "local-8c4e1f0a9b27d36e5f1a0c8b2d7e94f63a1c5b0e8d2f7a9c4b6e1d3f5a8c0b72",
+									"branch": null,
+									"commit": null
+								}
+							},
+							{
+								"type": "request",
+								"id": "d0a4e7c1-5b29-4f8e-a13c-9e6b2d7f4a05",
+								"method": "openThread",
+								"input": {
+									"projectId": "local-8c4e1f0a9b27d36e5f1a0c8b2d7e94f63a1c5b0e8d2f7a9c4b6e1d3f5a8c0b72",
+									"epoch": "6f2a9d07c3e15b84a07d2e9f51b8c6e3",
+									"revision": {
+										"branch": "main",
+										"commit": "d41b7e2c90a5f3e81c6d4b92e07a3f5db8c2196e"
+									},
+									"entityId": "reports.component.evidence-grid",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								}
+							},
+							{
+								"type": "request",
+								"id": "a5c3e9f0-1d7b-4a62-8e94-0b3f6c2d8e17",
+								"method": "listProjects",
+								"input": {}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeviceOperationsService.handle",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "Resolves with the answer for the requested method: listProjects returns the granted projects as {id, name, kind: 'local'}, providers returns the provider discovery list only when agents are granted and [] otherwise, and capabilities replaces the bridge's answer with this device's own capabilities. snapshot has its root set to an empty string and writable limited by the agents capability, image and artifact pass through binaryAnswer, and every other method resolves with the bridge's answer unchanged.",
+						"examples": [
+							[
+								{
+									"id": "local-8c4e1f0a9b27d36e5f1a0c8b2d7e94f63a1c5b0e8d2f7a9c4b6e1d3f5a8c0b72",
+									"name": "design-system",
+									"kind": "local"
+								}
+							],
+							{
+								"comments": true,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "local",
+								"reason": "This device was approved to read and comment only."
+							},
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "RemoteFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A RemoteFailure is the refusal that handle() throws as a rejection, with a code of method-denied, project-required, project-denied, invalid-message, revoked, revision-required, read-only, revision-mismatch or busy. Other errors, such as one from the bridge operation, pass through unwrapped."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -100,17 +323,19 @@
 					{
 						"name": "DeviceOperationsService.constructor.options",
 						"type": "DeviceOperationsOptions",
-						"required": true
+						"required": true,
+						"description": "What one approved device's session draws on: its client projects (projects), the provider discovery service (providers), the repository arbiter (arbiter), and its grant (grant), a callback read again for every request. The constructor stores these values as given and checks none of them."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeviceOperationsService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The DeviceOperationsService instance itself: it keeps the options, creates its own RemoteInputValidator and IpcRequestValidator, and exposes methods() and handle()."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
