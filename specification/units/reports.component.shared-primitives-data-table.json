@@ -28,61 +28,65 @@
 				"name": "DataTable.label",
 				"type": "string",
 				"required": true,
-				"description": "Required accessible name for both the table and its scroll region."
+				"description": "Accessible name applied to both the table and its keyboard-scrollable region.",
+				"examples": ["Project inventory", "Evidence matrix"]
 			},
 			{
 				"name": "DataTable.header",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required snippet of header rows and scoped column headings."
+				"description": "Required Svelte snippet rendered inside the table's thead. The caller supplies its header rows and any column scopes."
 			},
 			{
 				"name": "DataTable.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required snippet of body rows; the caller retains data ordering, cell formatting and actions."
+				"description": "Required Svelte snippet rendered inside the tbody when isEmpty is false. The caller owns the body data, row ordering, cell formatting, and actions."
 			},
 			{
 				"name": "DataTable.empty",
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional complete empty rows and cell spans. Defaults to JavaScript undefined; when isEmpty is true and this snippet is omitted, shows No rows to display. beneath the table."
+				"description": "Optional Svelte snippet rendered inside the tbody when isEmpty is true. It defaults to undefined; if omitted, the component shows No rows to display. beneath the table."
 			},
 			{
 				"name": "DataTable.isEmpty",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional empty-state selector, default false. True renders the supplied empty rows or the visible default empty message instead of children."
+				"description": "Selects the empty branch instead of children and defaults to false. When true, the component renders empty if supplied or shows No rows to display. if empty is omitted.",
+				"examples": [false, true]
 			},
 			{
 				"name": "DataTable.className",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional frame classes, default an empty string; feature styling stays with the caller."
+				"description": "Optional class string added to the data-table scroll region and defaults to an empty string. The caller owns these feature-specific classes.",
+				"examples": ["evidence-table"]
 			},
 			{
 				"name": "DataTable.tableClass",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional table classes, default an empty string; existing catalog styles remain supported."
+				"description": "Optional class string assigned to the table and defaults to an empty string. The caller can use it for feature-specific table styling.",
+				"examples": ["reporting-table"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DataTable",
 				"type": "markup",
-				"description": "A semantic table with caller-owned rows, a keyboard-focusable horizontal scroll region, a visible hint when columns overflow, and explicit fallback content when empty rows are omitted."
+				"description": "Renders the caller's header in thead and either its body rows or the selected empty snippet in tbody. The table and keyboard-focusable region share label; an omitted empty snippet shows No rows to display. when isEmpty is true, and horizontal overflow adds a scroll hint."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller content error",
 				"type": "thrown",
-				"description": "Errors from supplied snippets propagate; this presentation component does not catch them."
+				"description": "DataTable does not catch errors from the supplied header, body, or empty snippets. A snippet render failure propagates through the component."
 			}
 		],
 		"errorStatus": "declared",
