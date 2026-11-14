@@ -18,14 +18,20 @@
 				"name": "staleBuild.entry",
 				"type": "string",
 				"required": true,
-				"description": "Path to the entry file being considered for execution."
+				"description": "Path to the entry file being checked. Only entries whose immediate parent directory is named `dist` are compared with checkout source trees.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19/dist/cli.js"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "staleBuild",
 				"type": "string | undefined",
-				"description": "A rebuild warning when an entry under dist is older than a file under the checkout’s src or crates tree; undefined for other paths or when no newer source can be inspected."
+				"description": "Returns the rebuild warning when `entry` is directly inside a directory named `dist` and an inspected file under the checkout root’s `src` or `crates` tree has a newer modification time. Returns `undefined` for entries outside `dist`, when no newer file is found, or when reading the entry or a source file throws.",
+				"examples": [
+					"Warning: this dist build is older than source; run bun run build:cli before using it."
+				]
 			}
 		],
 		"errors": [],
@@ -38,14 +44,20 @@
 						"name": "staleBuild.entry",
 						"type": "string",
 						"required": true,
-						"description": "Path to the entry file being considered for execution."
+						"description": "Path to the entry file being checked. Only entries whose immediate parent directory is named `dist` are compared with checkout source trees.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19/dist/cli.js"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "staleBuild",
 						"type": "string | undefined",
-						"description": "A rebuild warning when an entry under dist is older than a file under the checkout’s src or crates tree; undefined for other paths or when no newer source can be inspected."
+						"description": "Returns the rebuild warning when `entry` is directly inside a directory named `dist` and an inspected file under the checkout root’s `src` or `crates` tree has a newer modification time. Returns `undefined` for entries outside `dist`, when no newer file is found, or when reading the entry or a source file throws.",
+						"examples": [
+							"Warning: this dist build is older than source; run bun run build:cli before using it."
+						]
 					}
 				],
 				"errors": [],
