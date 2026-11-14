@@ -15,18 +15,20 @@
 		"symbols": ["createRemotePhoneStore", "RemotePhone", "RemotePhoneState", "State", "RemotePhone"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createRemotePhoneStore.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "The existing Workspace whose remote phone control port and project state this store reads and updates. The factory keeps this workspace reference and does not accept a phone port separately."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createRemotePhoneStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A new RemotePhoneState instance bound to the supplied Workspace and exposed through the RemotePhone type. It holds remote phone status, error, busy, and scan-failure state and acts through the workspace remote phone port."
 			}
 		],
 		"errors": [],
@@ -38,17 +40,19 @@
 					{
 						"name": "createRemotePhoneStore.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "The existing Workspace whose remote phone control port and project state this store reads and updates. The factory keeps this workspace reference and does not accept a phone port separately."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createRemotePhoneStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A new RemotePhoneState instance bound to the supplied Workspace and exposed through the RemotePhone type. It holds remote phone status, error, busy, and scan-failure state and acts through the workspace remote phone port."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
