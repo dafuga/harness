@@ -12,22 +12,24 @@
 		"symbols": ["registerReportCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerReportCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander Command that the 'report' subcommand is added to; it matters on every call because registerReportCommand uses it only to call program.command('report'). The function does not validate it or keep a reference to it after that call."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerReportCommand",
-				"type": "void"
+				"type": "void",
+				"description": "The function returns nothing (void); its only effect is to add a 'report' subcommand to the given program, with the description 'Record media reports and serve the website.', unknown options and excess arguments allowed, an optional variadic '[args...]' argument, and an action. That action calls runReport with the args array only when the command runs, so calling this function never invokes runReport."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerReportCommand",
@@ -35,17 +37,19 @@
 					{
 						"name": "registerReportCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander Command that the 'report' subcommand is added to; it matters on every call because registerReportCommand uses it only to call program.command('report'). The function does not validate it or keep a reference to it after that call."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerReportCommand",
-						"type": "void"
+						"type": "void",
+						"description": "The function returns nothing (void); its only effect is to add a 'report' subcommand to the given program, with the description 'Record media reports and serve the website.', unknown options and excess arguments allowed, an optional variadic '[args...]' argument, and an action. That action calls runReport with the args array only when the command runs, so calling this function never invokes runReport."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
