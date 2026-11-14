@@ -29,17 +29,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feComponentTransfer element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet, called with no arguments and rendered inside the feComponentTransfer element through {@render children()} only when it is truthy; when it is omitted, no snippet content is rendered. The value is removed from the rest props before the attributes are spread, so it is never set as an attribute, and the component does not validate or restrict what the snippet renders."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeComponentTransfer",
 				"type": "markup",
-				"description": "The actual native feComponentTransfer element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native feComponentTransfer element, created in the SVG namespace declared by svelte:options through svelte:element, with every prop except children spread onto it as attributes and the children snippet rendered inside it when provided. No wrapper element is added around it."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
