@@ -53,9 +53,9 @@ export class EvidenceTreeAdapter {
 		});
 		const hashes = [...new Set(requested.map(([, hash]) => hash))];
 		if (hashes.length === 0) return new Map();
-		// Attached records reach hundreds of MB, beyond the adapter's default output cap: size each
-		// batch from git's own object sizes, in groups under the adapter's ceiling.
-		const sizes = await this.sizes(hashes);
+		// Attached records reach hundreds of MB, beyond the adapter's default output cap: size the
+		// batch from the object sizes the tree listing already reports (one `cat-file` call stays one).
+		const sizes = this.blobSizes;
 		const blobs = new Map<string, Buffer>();
 		for (const group of batchGroups(hashes, sizes, batchCeiling)) {
 			const bytes = await this.git.bytes(['cat-file', '--batch'], {
@@ -67,25 +67,20 @@ export class EvidenceTreeAdapter {
 		return new Map(requested.map(([path, hash]) => [path, Buffer.from(blobs.get(hash)!)]));
 	}
 
-	private async sizes(hashes: string[]): Promise<Map<string, number>> {
-		const listed = await this.git.run(['cat-file', '--batch-check'], {
-			input: hashes.join('\n') + '\n'
-		});
-		const sizes = new Map<string, number>();
-		for (const line of listed.split('\n')) {
-			const match = /^([a-f0-9]+) blob ([0-9]+)$/.exec(line.trim());
-			if (match) sizes.set(match[1], Number(match[2]));
-		}
-		return sizes;
-	}
+	/** Blob sizes seen by `list`, so a batch read can size its output buffer. */
+	private readonly blobSizes = new Map<string, number>();
 
-	/** Every file path at a commit with its blob id. */
+	/** Every file path at a commit with its blob id (sizes are kept for batch reads). */
 	async list(commit: string): Promise<Map<string, string>> {
-		const output = await this.git.run(['ls-tree', '-r', '-z', commit]);
+		const output = await this.git.run(['ls-tree', '-r', '-l', '-z', commit]);
 		const entries = output
 			.split('\0')
-			.map((line) => /^\d+ blob ([0-9a-f]+)\t(.+)$/s.exec(line))
-			.flatMap((match): Array<[string, string]> => (match ? [[match[2], match[1]]] : []));
+			.map((line) => /^\d+ blob ([0-9a-f]+) +([0-9]+)\t(.+)$/s.exec(line))
+			.flatMap((match): Array<[string, string]> => {
+				if (!match) return [];
+				this.blobSizes.set(match[1], Number(match[2]));
+				return [[match[3], match[1]]];
+			});
 		return new Map(entries);
 	}
 
