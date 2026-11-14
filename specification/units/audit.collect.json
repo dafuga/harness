@@ -21,22 +21,47 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "collectAuditedFiles.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The filesystem path passed to collectAuditedFiles determines where recursive collection begins. The function passes it to readdir without validation, so the path must be readable by the process.",
+				"examples": ["/workspace/app"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "collectAuditedFiles",
-				"type": "Promise<CollectedFiles>"
+				"type": "Promise<CollectedFiles>",
+				"description": "The resolved CollectedFiles object contains files with a joined path and lower-case extension for each non-directory, non-symlink entry, dirs with visited paths relative to the root ending in /, and ignoredPaths for symbolic links and skipped directories. Skipped directory names come from a fixed ignore set, and their paths end in /.",
+				"examples": [
+					{
+						"files": [
+							{
+								"path": "/workspace/app/package.json",
+								"extension": ".json"
+							},
+							{
+								"path": "/workspace/app/src/audit/collect.ts",
+								"extension": ".ts"
+							}
+						],
+						"dirs": ["src/", "src/audit/"],
+						"ignoredPaths": ["node_modules/", "src/current-link"]
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A filesystem error from readdir or lstat rejects the promise and propagates to the caller because the implementation does not catch or translate it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "collectAuditedFiles",
@@ -44,17 +69,42 @@
 					{
 						"name": "collectAuditedFiles.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The filesystem path passed to collectAuditedFiles determines where recursive collection begins. The function passes it to readdir without validation, so the path must be readable by the process.",
+						"examples": ["/workspace/app"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "collectAuditedFiles",
-						"type": "Promise<CollectedFiles>"
+						"type": "Promise<CollectedFiles>",
+						"description": "The resolved CollectedFiles object contains files with a joined path and lower-case extension for each non-directory, non-symlink entry, dirs with visited paths relative to the root ending in /, and ignoredPaths for symbolic links and skipped directories. Skipped directory names come from a fixed ignore set, and their paths end in /.",
+						"examples": [
+							{
+								"files": [
+									{
+										"path": "/workspace/app/package.json",
+										"extension": ".json"
+									},
+									{
+										"path": "/workspace/app/src/audit/collect.ts",
+										"extension": ".ts"
+									}
+								],
+								"dirs": ["src/", "src/audit/"],
+								"ignoredPaths": ["node_modules/", "src/current-link"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A filesystem error from readdir or lstat rejects the promise and propagates to the caller because the implementation does not catch or translate it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
