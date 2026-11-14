@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feFuncB element; native HTML content rules still apply."
+				"description": "The Svelte snippet that supplies the content of the feFuncB element, rendered with `{@render children()}` only when it is truthy, so nothing is rendered inside the element when it is omitted. The component does not validate it and calls it directly, so the value must be a `Snippet` (typed `children?: Snippet`)."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeFuncB",
 				"type": "markup",
-				"description": "The actual native feFuncB element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native `feFuncB` element rendered in the SVG namespace, with every prop other than `children` spread onto it and the `children` snippet rendered inside it when provided. The tag name is fixed to `feFuncB` and the component adds no wrapper element around it."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
