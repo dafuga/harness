@@ -18,29 +18,40 @@
 				"name": "readTreeTexts.tree",
 				"type": "Pick<SourceTree, 'read'>",
 				"required": true,
-				"description": "Source-tree reader bound to the requested revision."
+				"description": "A source-tree reader exposing a read(path) method for fetching text. The helper calls it once per requested path and awaits calls in groups of at most 64."
 			},
 			{
 				"name": "readTreeTexts.paths",
 				"type": "string[]",
 				"required": true,
-				"description": "Ordered source paths to read in bounded batches; returned text retains this order."
+				"description": "Ordered source paths to read. The helper processes at most 64 paths per awaited batch and preserves array order; an empty array causes no reads.",
+				"examples": [
+					["src/utils/development-tooling/readTreeTexts.ts", "src/utils/readTreeTexts.ts"],
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "texts",
 				"type": "Promise<string[]>",
-				"description": "Unchanged file text in requested order; at most 64 reads run together. An empty request returns an empty list."
+				"description": "Resolved file text, with one string for each requested path in input order. An empty paths array resolves to an empty array.",
+				"examples": [
+					[],
+					[
+						"// @harness-uid u_h7xitjdym5\nexport { readTreeTexts } from './development-tooling/readTreeTexts';\nexport * from './development-tooling/readTreeTexts';\n"
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Read failed",
-				"type": "Error",
-				"description": "A failed file read rejects the whole request; no file is silently omitted."
+				"type": "thrown",
+				"description": "A failure from tree.read(path) rejects the helper call, and the helper does not return a partial array."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "readTreeTexts",
@@ -49,23 +60,40 @@
 						"name": "readTreeTexts.tree",
 						"type": "Pick<SourceTree, 'read'>",
 						"required": true,
-						"description": "Source-tree reader bound to the requested revision."
+						"description": "A source-tree reader exposing a read(path) method for fetching text. The helper calls it once per requested path and awaits calls in groups of at most 64."
 					},
 					{
 						"name": "readTreeTexts.paths",
 						"type": "string[]",
 						"required": true,
-						"description": "Ordered source paths to read in bounded batches; returned text retains this order."
+						"description": "Ordered source paths to read. The helper processes at most 64 paths per awaited batch and preserves array order; an empty array causes no reads.",
+						"examples": [
+							["src/utils/development-tooling/readTreeTexts.ts", "src/utils/readTreeTexts.ts"],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readTreeTexts",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "Resolved file text, with one string for each requested path in input order. An empty paths array resolves to an empty array.",
+						"examples": [
+							[],
+							[
+								"// @harness-uid u_h7xitjdym5\nexport { readTreeTexts } from './development-tooling/readTreeTexts';\nexport * from './development-tooling/readTreeTexts';\n"
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Read failed",
+						"type": "thrown",
+						"description": "A failure from tree.read(path) rejects the helper call, and the helper does not return a partial array."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
