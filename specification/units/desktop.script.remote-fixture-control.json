@@ -15,32 +15,37 @@
 		"symbols": ["remoteFixtureControl", "FixtureAction", "FixtureAction"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "remoteFixtureControl.port",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Port passed to `server.listen` for the control listener, which binds to `127.0.0.1`; `0` lets the OS choose a port. It must be a valid TCP port, and the selected port is used in the returned origin.",
+				"examples": [0, 43127]
 			},
 			{
 				"name": "remoteFixtureControl.actions",
 				"type": "Record<string, FixtureAction>",
-				"required": true
+				"required": true,
+				"description": "A map whose keys are exact `METHOD /path` request strings such as `GET /fixture`, and whose values are `FixtureAction` callbacks. Each callback receives the parsed request body as a record, and its result is awaited and serialized as JSON; unmatched keys receive a 404 response."
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteFixtureControl",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "This is the handle resolved after the listener binds, with `origin` set to its loopback URL and `close` providing asynchronous shutdown. The close callback closes all active connections first and resolves after `server.close` completes."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A synchronous exception raised while creating or starting the server rejects the returned promise, so no handle is produced. Request parsing, fixture-action, and oversized-body errors are caught by the request handler and returned as HTTP 409 JSON instead."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "remoteFixtureControl",
@@ -48,22 +53,32 @@
 					{
 						"name": "remoteFixtureControl.port",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Port passed to `server.listen` for the control listener, which binds to `127.0.0.1`; `0` lets the OS choose a port. It must be a valid TCP port, and the selected port is used in the returned origin.",
+						"examples": [0, 43127]
 					},
 					{
 						"name": "remoteFixtureControl.actions",
 						"type": "Record<string, FixtureAction>",
-						"required": true
+						"required": true,
+						"description": "A map whose keys are exact `METHOD /path` request strings such as `GET /fixture`, and whose values are `FixtureAction` callbacks. Each callback receives the parsed request body as a record, and its result is awaited and serialized as JSON; unmatched keys receive a 404 response."
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteFixtureControl",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "This is the handle resolved after the listener binds, with `origin` set to its loopback URL and `close` providing asynchronous shutdown. The close callback closes all active connections first and resolves after `server.close` completes."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A synchronous exception raised while creating or starting the server rejects the returned promise, so no handle is produced. Request parsing, fixture-action, and oversized-body errors are caught by the request handler and returned as HTTP 409 JSON instead."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
