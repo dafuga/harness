@@ -30,54 +30,67 @@
 				"name": "SourceFileList.files",
 				"type": "string[]",
 				"required": true,
-				"description": "Actual source paths, in display order."
+				"description": "Paths are rendered in array order, one row per entry; an empty array selects the empty state. Each complete path is passed unchanged to href and children.",
+				"examples": [
+					["packages/reports/src/components/explorer-ui/SourceFileList.svelte"],
+					[
+						"packages/reports/src/components/explorer-ui/SourceFileList.svelte",
+						"packages/reports/src/components/explorer-ui/sourceFileParts.ts"
+					]
+				]
 			},
 			{
 				"name": "SourceFileList.label",
 				"type": "string",
 				"required": false,
 				"default": "Source files",
-				"description": "Accessible list name, defaulting to Source files; test lists supply Test files."
+				"description": "Accessible name assigned to the rendered list when files is non-empty. Defaults to the literal string Source files; it is unused in the empty state.",
+				"examples": ["Source files", "Changed files"]
 			},
 			{
 				"name": "SourceFileList.empty",
 				"type": "string",
 				"required": false,
 				"default": "No source files recorded at this revision.",
-				"description": "Caller-supplied empty message for the selected file collection."
+				"description": "Message rendered through EmptyState only when files is empty; otherwise it is unused. Defaults to the literal string No source files recorded at this revision.",
+				"examples": [
+					"No source files recorded at this revision.",
+					"No files changed in this revision."
+				]
 			},
 			{
 				"name": "SourceFileList.relativeTo",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Directory prefix omitted from matching display labels. Complete paths remain in hover text and links, and are passed to each file action."
+				"description": "Passed with each path to sourceFileParts to derive the displayed folder and name; it does not change the path passed to href or children or the path used for title text. Defaults to the empty string.",
+				"examples": ["", "packages/reports/src/components/explorer-ui"]
 			},
 			{
 				"name": "SourceFileList.href",
 				"type": "(path: string) => string | undefined",
 				"required": true,
-				"description": "Required callback receiving each complete source path and returning its external destination URL or JavaScript undefined for a plain path. The display prefix does not change this argument."
+				"description": "Called once for each path when files is non-empty, with the complete path; a truthy returned string is used directly as the link destination, while undefined or an empty string renders plain code text. The return value is not validated as a URL."
 			},
 			{
 				"name": "SourceFileList.children",
 				"type": "Snippet<[string]>",
 				"required": true,
-				"description": "The existing action for each source file."
+				"description": "Svelte snippet rendered once in each file row and given the complete path; it is not rendered when files is empty."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceFileList",
 				"type": "markup",
-				"description": "Responsive file rows with underlined linked filenames opening in a new tab and a visible hover highlight, or plain paths when href returns undefined. Complete paths remain in labels, titles and callback arguments. Empty input shows the supplied empty message."
+				"description": "Renders one row per path in order with folder/name text, a complete-path title, and the matching children snippet; a truthy href(path) result makes the text an underlined new-tab link with the complete path as its accessible label, while a falsy result makes it code text. An empty array renders empty through EmptyState; paths wrap at widths up to 800px and rows use one column at widths up to 480px."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or snippet error",
-				"type": "propagated",
-				"description": "Errors from href or the per-file children snippet propagate; the list does not catch them."
+				"type": "thrown",
+				"description": "If href(path) or the rendered children snippet throws, SourceFileList lets that exception propagate because it does not catch either call."
 			}
 		],
 		"errorStatus": "declared",
