@@ -23,16 +23,23 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The page renders the shared-projects route, showing sign-in when no actor is present and project creation with the project list, loading, or error state when signed in. Its GitHub connection message appears only when the query string has `github=connected` or `github=failed`."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "The refresh callback can reject with the reason from `session.check()` because it awaits that call without a catch or narrowing the rejection. The implementation does not specify the rejection value or its runtime name."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
