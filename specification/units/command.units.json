@@ -12,27 +12,30 @@
 		"symbols": ["registerUnitsCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerUnitsCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "Commander `Command` instance on which `registerUnitsCommand` installs the `units` subtree; required when wiring this CLI group and must expose the Commander `.command()` API."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerUnitsCommand",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned; the function attaches the Units command tree to the supplied program during CLI registration."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An expected CLI error raised when the `units check` action finds one or more report errors; its message is those strings joined with newline separators."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerUnitsCommand",
@@ -40,17 +43,19 @@
 					{
 						"name": "registerUnitsCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "Commander `Command` instance on which `registerUnitsCommand` installs the `units` subtree; required when wiring this CLI group and must expose the Commander `.command()` API."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerUnitsCommand",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned; the function attaches the Units command tree to the supplied program during CLI registration."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
