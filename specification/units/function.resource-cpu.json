@@ -20,34 +20,82 @@
 				"name": "resourceCpu.previous",
 				"type": "Counters",
 				"required": true,
-				"description": "Previous CPU interval counters, quota usage and monotonic timestamp."
+				"description": "The earlier hostCpuCounters() sample supplies baseline totals and quota usage for interval deltas. Its core count must match the current sample, and when current quota usage is present, prior quota usage must also be present and no greater.",
+				"examples": [
+					{
+						"at": 4200.5,
+						"limits": {
+							"cores": 4,
+							"cpuUsedUs": 12000000
+						},
+						"cores": 8,
+						"affinity": 4,
+						"idle": 270000,
+						"total": 460000
+					}
+				]
 			},
 			{
 				"name": "resourceCpu.current",
 				"type": "Counters",
 				"required": true,
-				"description": "Current CPU interval counters, affinity, quota usage and monotonic timestamp."
+				"description": "The later hostCpuCounters() sample supplies the interval end, affinity, and current limits used for utilization and availability. Its core count must be nonzero and unchanged from the previous sample, total must increase, idle delta must be between zero and total delta, and reported quota usage must not regress or change the core limit.",
+				"examples": [
+					{
+						"at": 4400.5,
+						"limits": {
+							"cores": 4,
+							"cpuUsedUs": 12300000
+						},
+						"cores": 8,
+						"affinity": 4,
+						"idle": 271300,
+						"total": 461600
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostCpuCounters",
 				"type": "unknown",
-				"description": "Monotonic host CPU counters, affinity and current cgroup limits for interval comparison."
+				"description": "A host sample containing monotonic performance.now() time, the logical CPU count from os.cpus(), affinity from availableParallelism(), aggregate idle and total CPU times, and the current hostResourceLimits() value. Call it for interval endpoints passed to resourceCpu; its elapsed and idle deltas are validated there.",
+				"examples": [
+					{
+						"at": 4200.5,
+						"limits": {
+							"cores": 4,
+							"cpuUsedUs": 12000000
+						},
+						"cores": 8,
+						"affinity": 4,
+						"idle": 270000,
+						"total": 460000
+					}
+				]
 			},
 			{
 				"name": "resourceCpu",
 				"type": "unknown",
-				"description": "Logical and usable cores, observed host utilization and currently available quota-aware cores."
+				"description": "An interval summary with the logical core count, usable core count, host CPU use percentage, and available cores. Usable cores are bounded by logical cores, affinity, and any core limit; available cores are clamped at zero and bounded by observed idle capacity and, when quota use is reported, measured quota availability.",
+				"examples": [
+					{
+						"logicalCores": 8,
+						"usableCores": 4,
+						"cpuUsedPercent": 18.75,
+						"cpuAvailableCores": 2.5
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid counter intervals or changed or malformed quota counters require a fresh sample."
+				"description": "Throws Error('Invalid CPU interval') when current cores are zero or differ from previous.cores, total time does not advance, or idle delta is outside zero through elapsed time. Throws Error('CPU quota changed; waiting for a fresh interval') when reported quota usage has no prior value, regresses, or the core limit changes; throws Error('Invalid CPU quota counters') when computed quota availability is not finite."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hostCpuCounters",
@@ -56,11 +104,24 @@
 					{
 						"name": "hostCpuCounters",
 						"type": "unknown",
-						"description": "Monotonic host CPU counters, affinity and current cgroup limits for interval comparison."
+						"description": "A host sample containing monotonic performance.now() time, the logical CPU count from os.cpus(), affinity from availableParallelism(), aggregate idle and total CPU times, and the current hostResourceLimits() value. Call it for interval endpoints passed to resourceCpu; its elapsed and idle deltas are validated there.",
+						"examples": [
+							{
+								"at": 4200.5,
+								"limits": {
+									"cores": 4,
+									"cpuUsedUs": 12000000
+								},
+								"cores": 8,
+								"affinity": 4,
+								"idle": 270000,
+								"total": 460000
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resourceCpu",
@@ -69,29 +130,64 @@
 						"name": "resourceCpu.previous",
 						"type": "Counters",
 						"required": true,
-						"description": "Previous CPU interval counters, quota usage and monotonic timestamp."
+						"description": "The earlier hostCpuCounters() sample supplies baseline totals and quota usage for interval deltas. Its core count must match the current sample, and when current quota usage is present, prior quota usage must also be present and no greater.",
+						"examples": [
+							{
+								"at": 4200.5,
+								"limits": {
+									"cores": 4,
+									"cpuUsedUs": 12000000
+								},
+								"cores": 8,
+								"affinity": 4,
+								"idle": 270000,
+								"total": 460000
+							}
+						]
 					},
 					{
 						"name": "resourceCpu.current",
 						"type": "Counters",
 						"required": true,
-						"description": "Current CPU interval counters, affinity, quota usage and monotonic timestamp."
+						"description": "The later hostCpuCounters() sample supplies the interval end, affinity, and current limits used for utilization and availability. Its core count must be nonzero and unchanged from the previous sample, total must increase, idle delta must be between zero and total delta, and reported quota usage must not regress or change the core limit.",
+						"examples": [
+							{
+								"at": 4400.5,
+								"limits": {
+									"cores": 4,
+									"cpuUsedUs": 12300000
+								},
+								"cores": 8,
+								"affinity": 4,
+								"idle": 271300,
+								"total": 461600
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceCpu",
 						"type": "unknown",
-						"description": "Logical and usable cores, observed host utilization and currently available quota-aware cores."
+						"description": "An interval summary with the logical core count, usable core count, host CPU use percentage, and available cores. Usable cores are bounded by logical cores, affinity, and any core limit; available cores are clamped at zero and bounded by observed idle capacity and, when quota use is reported, measured quota availability.",
+						"examples": [
+							{
+								"logicalCores": 8,
+								"usableCores": 4,
+								"cpuUsedPercent": 18.75,
+								"cpuAvailableCores": 2.5
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error('Invalid CPU interval') when current cores are zero or differ from previous.cores, total time does not advance, or idle delta is outside zero through elapsed time. Throws Error('CPU quota changed; waiting for a fresh interval') when reported quota usage has no prior value, regresses, or the core limit changes; throws Error('Invalid CPU quota counters') when computed quota availability is not finite."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
