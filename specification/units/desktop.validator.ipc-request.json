@@ -12,32 +12,45 @@
 		"symbols": ["IpcRequestValidator", "IpcRequestValidator.parse"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "IpcRequestValidator.parse.channel",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Channel string used to select the IPC parser. The method throws when the value is absent from `channels`; values beginning with `game:` go to `gamePayload`, while other values go through project-context handling and then `ipcPayload` if that handling returns `undefined`.",
+				"examples": ["game:"]
 			},
 			{
 				"name": "IpcRequestValidator.parse.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Value supplied with the channel for parsing. Its shape is not constrained here and it is passed to `gamePayload`, project-context handling, or `ipcPayload` according to the channel.",
+				"examples": [
+					null,
+					{},
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "IpcRequestValidator.parse",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Value returned for the request: the `gamePayload` result for `game:` channels, a defined project-context operation result for other channels, or the `ipcPayload` result. When the `ipcPayload` result is a truthy object, its fields are spread together with project context; the result type is otherwise unconstrained.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown with message `Unknown desktop operation.` when `channel` is not among the values in `channels`. Exceptions from delegated parsing or project-context methods are not caught by this method."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "IpcRequestValidator.parse",
@@ -45,27 +58,40 @@
 					{
 						"name": "IpcRequestValidator.parse.channel",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Channel string used to select the IPC parser. The method throws when the value is absent from `channels`; values beginning with `game:` go to `gamePayload`, while other values go through project-context handling and then `ipcPayload` if that handling returns `undefined`.",
+						"examples": ["game:"]
 					},
 					{
 						"name": "IpcRequestValidator.parse.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Value supplied with the channel for parsing. Its shape is not constrained here and it is passed to `gamePayload`, project-context handling, or `ipcPayload` according to the channel.",
+						"examples": [
+							null,
+							{},
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "IpcRequestValidator.parse",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Value returned for the request: the `gamePayload` result for `game:` channels, a defined project-context operation result for other channels, or the `ipcPayload` result. When the `ipcPayload` result is a truthy object, its fields are spread together with project context; the result type is otherwise unconstrained.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with message `Unknown desktop operation.` when `channel` is not among the values in `channels`. Exceptions from delegated parsing or project-context methods are not caught by this method."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
