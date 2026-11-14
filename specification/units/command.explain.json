@@ -12,27 +12,30 @@
 		"symbols": ["registerExplainCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerExplainCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander program that receives the explain command group. It is used only inside this call, for one program.command('explain') call, and no other property of it is read."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerExplainCommand",
-				"type": "void"
+				"type": "void",
+				"description": "registerExplainCommand returns nothing; its effect is registering the explain command with its add, list and check subcommands on the program. The subcommand handlers attached with action() run later, when the CLI dispatches to them, not during this call."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by fail() in the check subcommand when explainedRange(flags) returns one or more failures; fail() is called with those failures joined by newlines. Within this unit only check calls fail(), so the add and list subcommands do not raise this error directly."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerExplainCommand",
@@ -40,17 +43,19 @@
 					{
 						"name": "registerExplainCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander program that receives the explain command group. It is used only inside this call, for one program.command('explain') call, and no other property of it is read."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerExplainCommand",
-						"type": "void"
+						"type": "void",
+						"description": "registerExplainCommand returns nothing; its effect is registering the explain command with its add, list and check subcommands on the program. The subcommand handlers attached with action() run later, when the CLI dispatches to them, not during this call."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
