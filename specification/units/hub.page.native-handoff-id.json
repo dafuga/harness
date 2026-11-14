@@ -21,12 +21,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The markup of the /native/[handoffId] route: an hx-h1 reading 'Connect a Harness device' inside HubFrame, then a NativeApproval for handoffId (keyed on it) when session.actor is truthy, otherwise a LoginPanel with the Google sign-in reason. The page does not validate handoffId, falling back to an empty string when the route param is absent, and sets the document title to 'Harness · Connect a Harness device'."
 			}
 		],
 		"errors": [],
