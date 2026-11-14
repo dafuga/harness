@@ -37,20 +37,31 @@
 			{
 				"name": "explanationsFile",
 				"type": "unknown",
-				"description": "Scratch NDJSON path .cache/harness/explanations.ndjson, outside the source tree."
+				"description": "The relative cache path used to stage reasons before a commit exists; it is .cache/harness/explanations.ndjson and is kept outside the source tree.",
+				"examples": [".cache/harness/explanations.ndjson"]
 			},
 			{
 				"name": "explanationOutcomes",
 				"type": "unknown",
-				"description": "Allowed attempt outcomes: improved, not-improved and not-applicable."
+				"description": "The readonly tuple of outcome strings accepted by simplification and performance attempts; only improved, not-improved, and not-applicable are allowed.",
+				"examples": [
+					["improved", "not-improved", "not-applicable"]
+				]
 			},
 			{
 				"name": "explanationSchema",
 				"type": "unknown",
-				"description": "Strict Zod schema naming the unit, symbol, optional file, added/modified/removed change, nullable before/after fingerprints, behavior, simplification and performance attempts, and recording time. Text is trimmed and nonempty."
+				"description": "A strict Zod object schema for recording why one function or unit changed; its from and to content fingerprints bind the reason to that exact change, so it goes stale when the code changes again. It requires a unit matching unitIdPattern, nonempty trimmed symbol, behavior, attempt text, and recordedAt, an added/modified/removed change, nullable string fingerprints, and simplification/performance attempts with a declared outcome; file is optional and unknown keys are rejected."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "explanationSchema.parse throws a ZodError when a value fails the strict schema, including an invalid unit id or change/outcome, missing or invalid required fields, or unknown keys."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
