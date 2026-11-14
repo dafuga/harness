@@ -2842,13 +2842,13 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "c9aa478ccf7e7e02411860996eb13858665fa60f1b48cbc491581a6734c4f1dc",
+			"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "ae524672e7e16f8c98f5809aa9ae64716eacf0a3",
+				"commit": "b29d2f723b940748d5ec7b0f64f0fdabd6156be6",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "c9aa478ccf7e7e02411860996eb13858665fa60f1b48cbc491581a6734c4f1dc",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
+				"reason": "Retain the reviewed change: entity-scoped verify computes the needed builds; skipped builds are not 'not produced' failures."
 			},
 			"previousReviews": [
 				{
@@ -2868,6 +2868,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 					"definition": "f228965d07044fe8cd6e7407ed248f5c2c46ebcaf76d9bcdc06019328dbb0ab6",
 					"reason": "Keep successfully checked scoped scenarios passed while retaining the record scope restriction."
+				},
+				{
+					"commit": "ae524672e7e16f8c98f5809aa9ae64716eacf0a3",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "c9aa478ccf7e7e02411860996eb13858665fa60f1b48cbc491581a6734c4f1dc",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			]
 		},
@@ -2893,13 +2899,13 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "e14baa2aef4dfe2844469c25187534f635897ea8b60bcba78c5bfdc94c4dee4b",
+			"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "427a38c585a23252fc6c2fe24479623627e28719",
+				"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "e14baa2aef4dfe2844469c25187534f635897ea8b60bcba78c5bfdc94c4dee4b",
-				"reason": "Mark newly assembled component identities as source-contract schema 2 for explicit historical verification."
+				"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
+				"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
 			},
 			"previousReviews": [
 				{
@@ -2925,6 +2931,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "002c5b0b24a4d6660f5c151d8e9d297e68345aadc596bd11ad452e44494adeb1",
 					"reason": "Seal measured and removed unit versions with their retained source hashes."
+				},
+				{
+					"commit": "427a38c585a23252fc6c2fe24479623627e28719",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "e14baa2aef4dfe2844469c25187534f635897ea8b60bcba78c5bfdc94c4dee4b",
+					"reason": "Mark newly assembled component identities as source-contract schema 2 for explicit historical verification."
 				}
 			]
 		},
@@ -2932,14 +2944,22 @@
 			"unit": "function.recorded-builds",
 			"from": "src/services/record-assembly-service/recordedBuilds.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
-			"definition": "6994520d35139d22dc9858598583a42b897f249b0159fc16181a44d0951d2960",
+			"definition": "575bd2de783327c9bb2e76d073dbf628b659dd3257b9981ab51cd7de1feb88b7",
 			"relocationDefinition": "55d30881cbcba4fab3a23661992d3c2660f3be37182901d9d80c94dd0c1d3fb5",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "7a2e13ba28bf8ccf067589ff5c93c1f1b3f7eed9",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
-				"definition": "6994520d35139d22dc9858598583a42b897f249b0159fc16181a44d0951d2960",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "575bd2de783327c9bb2e76d073dbf628b659dd3257b9981ab51cd7de1feb88b7",
+				"reason": "Retain the reviewed change: verification record: optional skippedBuilds next to builds."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
+					"definition": "6994520d35139d22dc9858598583a42b897f249b0159fc16181a44d0951d2960",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "function.seal-record",
@@ -3970,13 +3990,13 @@
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "5b0ec5ba4312b32ffdec01e7fe07b875c29d81bf3cf17d17d12bda29ce34f864",
+			"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
 			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
 			"review": {
-				"commit": "5371e626fd69a6dd3ec3ce16c268eecb9010ca67",
+				"commit": "4d13df49eba238879e7c326676162a68df3fb85a",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-				"definition": "5b0ec5ba4312b32ffdec01e7fe07b875c29d81bf3cf17d17d12bda29ce34f864",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
+				"reason": "Retain the reviewed change: snapshot run: skip setup steps and builds a scoped run does not need."
 			},
 			"previousReviews": [
 				{
@@ -3984,6 +4004,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 					"definition": "c5597a0791a47bc9f41a5c1b22fa3a0115991f75b61c25681e3221742f18f462",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5371e626fd69a6dd3ec3ce16c268eecb9010ca67",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "5b0ec5ba4312b32ffdec01e7fe07b875c29d81bf3cf17d17d12bda29ce34f864",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			]
 		},
