@@ -2,7 +2,7 @@ import { expect, test, type Locator } from '../../../../test/support/browserTest
 import { fits, pictured, screens, sharedField } from './support/sharedSelect';
 import { box, channels, combo, reachable, styled } from './support/shellChecks';
 import { exerciseNativeAtoms } from './support/nativeAtoms';
-import { shellCategories as categories } from './support/shellData';
+import { sha, shellCategories as categories } from './support/shellData';
 import {
 	buildShellFixture,
 	captureShell,
@@ -185,7 +185,10 @@ for (const [screen, width, height] of screens) {
 		await expect(selected).toHaveText('Component map');
 		expect(await styled(selected, 'border-bottom-color')).toBe(outside);
 		expect(await styled(chosen, 'color')).toBe(inside);
-		expect(channels(await styled(combo(legacy, 'Commit'), 'color'))[3] ?? 1).toBe(1);
+		// The closed field paints its short commit once, over a native value kept transparent.
+		const painted = combo(legacy, 'Commit').locator('..').locator('.report-select-value');
+		await expect(painted).toHaveText(sha(4).slice(0, 7));
+		expect(channels(await styled(painted, 'color'))[3] ?? 1).toBe(1);
 		await expect(legacy.getByText('Go to tip')).toHaveCount(0);
 		for (const name of ['Branch', 'Commit']) await sharedField(combo(legacy, name));
 		await captureShell(page, home, { state: 'pieces-used', viewport: screen });
