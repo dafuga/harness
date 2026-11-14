@@ -37,94 +37,225 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "mailerFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A string name used to derive the mailer class name and its source and test filenames. The implementation applies PascalCase and kebab-case conversions when building those names.",
+				"examples": ["invoice"]
 			},
 			{
 				"name": "helperFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A string name used to derive the helper function name and source and test filenames. The implementation applies camelCase and kebab-case conversions when building those names.",
+				"examples": ["invoice"]
 			},
 			{
 				"name": "concernFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A string name used to derive the concern function name and filenames. The implementation uses PascalCase for the function suffix and kebab-case for the file name.",
+				"examples": ["invoice"]
 			},
 			{
 				"name": "channelFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A string name used to derive the channel class name and source and test filenames. The implementation applies PascalCase and kebab-case conversions when building those names.",
+				"examples": ["invoice"]
 			},
 			{
 				"name": "formFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A string name used to derive the form class name and source and test filenames. The implementation applies PascalCase and kebab-case conversions when building those names.",
+				"examples": ["invoice"]
 			},
 			{
 				"name": "initializerFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A string name used to derive the initializer function name and filenames. The implementation uses PascalCase for the function suffix and kebab-case for the file name.",
+				"examples": ["invoice"]
 			},
 			{
 				"name": "configFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A string name used to derive the config export name and filenames. The implementation applies camelCase and kebab-case conversions when building those names.",
+				"examples": ["invoice"]
 			},
 			{
 				"name": "middlewareFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A string name used to derive the middleware class name and source and test filenames. The implementation applies PascalCase and kebab-case conversions when building those names.",
+				"examples": ["invoice"]
 			},
 			{
 				"name": "resourceFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A string resource name passed to the model, controller, policy, serializer, API, view and E2E generators. This wrapper fixes the parsed field to title:string and the adapter to sqlite.",
+				"examples": ["invoice"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "mailerFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The file plans for the named mailer: a message interface and class under src/mailers, plus a test under test/mailers. Each plan has a repository-relative path and file contents.",
+				"examples": [
+					[
+						{
+							"path": "src/mailers/InvoiceMailer.ts",
+							"contents": "export interface InvoiceMailerMessage {\n\tsubject: string;\n\ttext: string;\n}\n\nexport class InvoiceMailer {\n\trender(recipient: string): InvoiceMailerMessage {\n\t\treturn { subject: 'Invoice', text: `Hello ${recipient}` };\n\t}\n}\n"
+						},
+						{
+							"path": "test/mailers/invoice.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { InvoiceMailer } from '../../src/mailers/InvoiceMailer';\n\ntest('InvoiceMailer renders messages', () => {\n\texpect(new InvoiceMailer()).toBeInstanceOf(InvoiceMailer);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "helperFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The file plans for a helper that trims display text and its test. The helper name and file paths are derived from the input name.",
+				"examples": [
+					[
+						{
+							"path": "src/helpers/invoice.ts",
+							"contents": "/** @pure */\nexport function invoice(textToFormat: string): string {\n\treturn textToFormat.trim();\n}\n"
+						},
+						{
+							"path": "test/helpers/invoice.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { invoice } from '../../src/helpers/invoice';\n\ntest('invoice trims display text', () => {\n\texpect(invoice('  label  ')).toEqual('label');\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "concernFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The file plans for a concern function that copies its input and adds the kebab-cased concern name, plus its test. The source path uses the generated function name.",
+				"examples": [
+					[
+						{
+							"path": "src/concerns/withInvoice.ts",
+							"contents": "export function withInvoice<T extends object>(input: T): T & { concern: string } {\n\treturn { ...input, concern: 'invoice' };\n}\n"
+						},
+						{
+							"path": "test/concerns/invoice.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { withInvoice } from '../../src/concerns/withInvoice';\n\ntest('withInvoice adds concern metadata', () => {\n\texpect(withInvoice({ value: true })).toEqual({ value: true, concern: 'invoice' });\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "channelFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The file plans for a channel class and its test. The class counts subscriptions and returns broadcast payloads unchanged.",
+				"examples": [
+					[
+						{
+							"path": "src/channels/InvoiceChannel.ts",
+							"contents": "export class InvoiceChannel {\n\tprivate subscribers = 0;\n\n\tsubscribe(): number {\n\t\tthis.subscribers += 1;\n\t\treturn this.subscribers;\n\t}\n\n\tbroadcast(payload: string): string {\n\t\treturn payload;\n\t}\n}\n"
+						},
+						{
+							"path": "test/channels/invoice.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { InvoiceChannel } from '../../src/channels/InvoiceChannel';\n\ntest('InvoiceChannel broadcasts payloads', () => {\n\texpect(new InvoiceChannel()).toBeInstanceOf(InvoiceChannel);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "formFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The file plans for a form class and its test. The class reports an error when values are empty and returns a shallow copy as its payload.",
+				"examples": [
+					[
+						{
+							"path": "src/forms/InvoiceForm.ts",
+							"contents": "export class InvoiceForm {\n\tconstructor(private readonly values: Record<string, unknown> = {}) {}\n\n\tvalidate(): string[] {\n\t\treturn Object.keys(this.values).length === 0 ? ['values are required'] : [];\n\t}\n\n\ttoPayload(): Record<string, unknown> {\n\t\treturn { ...this.values };\n\t}\n}\n"
+						},
+						{
+							"path": "test/forms/invoice.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { InvoiceForm } from '../../src/forms/InvoiceForm';\n\ntest('InvoiceForm validates payloads', () => {\n\texpect(new InvoiceForm()).toBeInstanceOf(InvoiceForm);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "initializerFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The file plans for an initializer function and its test. The function returns the enabled setting, defaulting to true when it is absent.",
+				"examples": [
+					[
+						{
+							"path": "src/initializers/initializeInvoice.ts",
+							"contents": "export interface InvoiceInitializerConfig {\n\tenabled?: boolean;\n}\n\nexport function initializeInvoice(config: InvoiceInitializerConfig = {}): boolean {\n\treturn config.enabled ?? true;\n}\n"
+						},
+						{
+							"path": "test/initializers/invoice.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { initializeInvoice } from '../../src/initializers/initializeInvoice';\n\ntest('initializeInvoice returns enabled state', () => {\n\texpect(initializeInvoice({ enabled: true })).toEqual(true);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "configFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The file plans for an empty config module and its test. The module starts with no settings and uses the input name with a Config suffix.",
+				"examples": [
+					[
+						{
+							"path": "src/configs/invoiceConfig.ts",
+							"contents": "// Add only controls a person needs to change, then declare their audience and purpose\n// in the unit's configControls before making this configuration public.\nexport const invoiceConfig = {} as const;\n"
+						},
+						{
+							"path": "test/config/invoice.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { invoiceConfig } from '../../src/configs/invoiceConfig';\n\ntest('invoiceConfig starts without invented settings', () => {\n\texpect(invoiceConfig).toEqual({});\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "middlewareFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The file plans for a middleware class and its test. Its handle method returns the incoming request unchanged.",
+				"examples": [
+					[
+						{
+							"path": "src/middleware/InvoiceMiddleware.ts",
+							"contents": "export class InvoiceMiddleware {\n\thandle(request: Request): Request | Response {\n\t\treturn request;\n\t}\n}\n"
+						},
+						{
+							"path": "test/middleware/invoice.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { InvoiceMiddleware } from '../../src/middleware/InvoiceMiddleware';\n\ntest('InvoiceMiddleware passes through requests', () => {\n\texpect(new InvoiceMiddleware()).toBeInstanceOf(InvoiceMiddleware);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "resourceFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The returned file plans combine adapter types, model, controller, policy, serializer, API, view and E2E generators for the resource name. This wrapper parses the fixed field title:string and selects the sqlite adapter.",
+				"examples": [
+					[
+						{
+							"path": "src/models/invoice.ts",
+							"contents": "export interface Invoice {\n\ttitle: string;\n}\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "mailerFiles",
@@ -132,17 +263,32 @@
 					{
 						"name": "mailerFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A string name used to derive the mailer class name and its source and test filenames. The implementation applies PascalCase and kebab-case conversions when building those names.",
+						"examples": ["invoice"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mailerFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The file plans for the named mailer: a message interface and class under src/mailers, plus a test under test/mailers. Each plan has a repository-relative path and file contents.",
+						"examples": [
+							[
+								{
+									"path": "src/mailers/InvoiceMailer.ts",
+									"contents": "export interface InvoiceMailerMessage {\n\tsubject: string;\n\ttext: string;\n}\n\nexport class InvoiceMailer {\n\trender(recipient: string): InvoiceMailerMessage {\n\t\treturn { subject: 'Invoice', text: `Hello ${recipient}` };\n\t}\n}\n"
+								},
+								{
+									"path": "test/mailers/invoice.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { InvoiceMailer } from '../../src/mailers/InvoiceMailer';\n\ntest('InvoiceMailer renders messages', () => {\n\texpect(new InvoiceMailer()).toBeInstanceOf(InvoiceMailer);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "helperFiles",
@@ -150,17 +296,32 @@
 					{
 						"name": "helperFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A string name used to derive the helper function name and source and test filenames. The implementation applies camelCase and kebab-case conversions when building those names.",
+						"examples": ["invoice"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "helperFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The file plans for a helper that trims display text and its test. The helper name and file paths are derived from the input name.",
+						"examples": [
+							[
+								{
+									"path": "src/helpers/invoice.ts",
+									"contents": "/** @pure */\nexport function invoice(textToFormat: string): string {\n\treturn textToFormat.trim();\n}\n"
+								},
+								{
+									"path": "test/helpers/invoice.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { invoice } from '../../src/helpers/invoice';\n\ntest('invoice trims display text', () => {\n\texpect(invoice('  label  ')).toEqual('label');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "concernFiles",
@@ -168,17 +329,32 @@
 					{
 						"name": "concernFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A string name used to derive the concern function name and filenames. The implementation uses PascalCase for the function suffix and kebab-case for the file name.",
+						"examples": ["invoice"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "concernFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The file plans for a concern function that copies its input and adds the kebab-cased concern name, plus its test. The source path uses the generated function name.",
+						"examples": [
+							[
+								{
+									"path": "src/concerns/withInvoice.ts",
+									"contents": "export function withInvoice<T extends object>(input: T): T & { concern: string } {\n\treturn { ...input, concern: 'invoice' };\n}\n"
+								},
+								{
+									"path": "test/concerns/invoice.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { withInvoice } from '../../src/concerns/withInvoice';\n\ntest('withInvoice adds concern metadata', () => {\n\texpect(withInvoice({ value: true })).toEqual({ value: true, concern: 'invoice' });\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "channelFiles",
@@ -186,17 +362,32 @@
 					{
 						"name": "channelFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A string name used to derive the channel class name and source and test filenames. The implementation applies PascalCase and kebab-case conversions when building those names.",
+						"examples": ["invoice"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "channelFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The file plans for a channel class and its test. The class counts subscriptions and returns broadcast payloads unchanged.",
+						"examples": [
+							[
+								{
+									"path": "src/channels/InvoiceChannel.ts",
+									"contents": "export class InvoiceChannel {\n\tprivate subscribers = 0;\n\n\tsubscribe(): number {\n\t\tthis.subscribers += 1;\n\t\treturn this.subscribers;\n\t}\n\n\tbroadcast(payload: string): string {\n\t\treturn payload;\n\t}\n}\n"
+								},
+								{
+									"path": "test/channels/invoice.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { InvoiceChannel } from '../../src/channels/InvoiceChannel';\n\ntest('InvoiceChannel broadcasts payloads', () => {\n\texpect(new InvoiceChannel()).toBeInstanceOf(InvoiceChannel);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "formFiles",
@@ -204,17 +395,32 @@
 					{
 						"name": "formFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A string name used to derive the form class name and source and test filenames. The implementation applies PascalCase and kebab-case conversions when building those names.",
+						"examples": ["invoice"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "formFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The file plans for a form class and its test. The class reports an error when values are empty and returns a shallow copy as its payload.",
+						"examples": [
+							[
+								{
+									"path": "src/forms/InvoiceForm.ts",
+									"contents": "export class InvoiceForm {\n\tconstructor(private readonly values: Record<string, unknown> = {}) {}\n\n\tvalidate(): string[] {\n\t\treturn Object.keys(this.values).length === 0 ? ['values are required'] : [];\n\t}\n\n\ttoPayload(): Record<string, unknown> {\n\t\treturn { ...this.values };\n\t}\n}\n"
+								},
+								{
+									"path": "test/forms/invoice.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { InvoiceForm } from '../../src/forms/InvoiceForm';\n\ntest('InvoiceForm validates payloads', () => {\n\texpect(new InvoiceForm()).toBeInstanceOf(InvoiceForm);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "initializerFiles",
@@ -222,17 +428,32 @@
 					{
 						"name": "initializerFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A string name used to derive the initializer function name and filenames. The implementation uses PascalCase for the function suffix and kebab-case for the file name.",
+						"examples": ["invoice"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "initializerFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The file plans for an initializer function and its test. The function returns the enabled setting, defaulting to true when it is absent.",
+						"examples": [
+							[
+								{
+									"path": "src/initializers/initializeInvoice.ts",
+									"contents": "export interface InvoiceInitializerConfig {\n\tenabled?: boolean;\n}\n\nexport function initializeInvoice(config: InvoiceInitializerConfig = {}): boolean {\n\treturn config.enabled ?? true;\n}\n"
+								},
+								{
+									"path": "test/initializers/invoice.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { initializeInvoice } from '../../src/initializers/initializeInvoice';\n\ntest('initializeInvoice returns enabled state', () => {\n\texpect(initializeInvoice({ enabled: true })).toEqual(true);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "configFiles",
@@ -240,17 +461,32 @@
 					{
 						"name": "configFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A string name used to derive the config export name and filenames. The implementation applies camelCase and kebab-case conversions when building those names.",
+						"examples": ["invoice"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "configFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The file plans for an empty config module and its test. The module starts with no settings and uses the input name with a Config suffix.",
+						"examples": [
+							[
+								{
+									"path": "src/configs/invoiceConfig.ts",
+									"contents": "// Add only controls a person needs to change, then declare their audience and purpose\n// in the unit's configControls before making this configuration public.\nexport const invoiceConfig = {} as const;\n"
+								},
+								{
+									"path": "test/config/invoice.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { invoiceConfig } from '../../src/configs/invoiceConfig';\n\ntest('invoiceConfig starts without invented settings', () => {\n\texpect(invoiceConfig).toEqual({});\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "middlewareFiles",
@@ -258,17 +494,32 @@
 					{
 						"name": "middlewareFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A string name used to derive the middleware class name and source and test filenames. The implementation applies PascalCase and kebab-case conversions when building those names.",
+						"examples": ["invoice"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "middlewareFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The file plans for a middleware class and its test. Its handle method returns the incoming request unchanged.",
+						"examples": [
+							[
+								{
+									"path": "src/middleware/InvoiceMiddleware.ts",
+									"contents": "export class InvoiceMiddleware {\n\thandle(request: Request): Request | Response {\n\t\treturn request;\n\t}\n}\n"
+								},
+								{
+									"path": "test/middleware/invoice.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { InvoiceMiddleware } from '../../src/middleware/InvoiceMiddleware';\n\ntest('InvoiceMiddleware passes through requests', () => {\n\texpect(new InvoiceMiddleware()).toBeInstanceOf(InvoiceMiddleware);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resourceFiles",
@@ -276,17 +527,28 @@
 					{
 						"name": "resourceFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A string resource name passed to the model, controller, policy, serializer, API, view and E2E generators. This wrapper fixes the parsed field to title:string and the adapter to sqlite.",
+						"examples": ["invoice"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The returned file plans combine adapter types, model, controller, policy, serializer, API, view and E2E generators for the resource name. This wrapper parses the fixed field title:string and selects the sqlite adapter.",
+						"examples": [
+							[
+								{
+									"path": "src/models/invoice.ts",
+									"contents": "export interface Invoice {\n\ttitle: string;\n}\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
