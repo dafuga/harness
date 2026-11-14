@@ -37,76 +37,211 @@
 				"name": "GameCheckpointImage.checkpoint",
 				"type": "Checkpoint",
 				"required": true,
-				"description": "Selected checkpoint whose guidance, rules or saved image are being edited."
+				"description": "The checkpoint being edited: its title, description, requires, conditions and actions go into the image prompt, its imagePrompt is the guidance each new image builds on, and its image is the saved reference this panel previews and can remove. Generation needs a non-blank description, and the host rejects the request when no checkpoint with this id exists in the view it is sent with.",
+				"examples": [
+					{
+						"id": "checkpoint-1",
+						"title": "Checkpoint 1",
+						"description": "The player reaches the flooded cellar door and finds the brass key.",
+						"x": 80,
+						"y": 80,
+						"requires": [],
+						"conditions": [],
+						"actions": []
+					},
+					{
+						"id": "checkpoint-2",
+						"title": "Checkpoint 2",
+						"description": "The player crosses the lantern-lit bridge after unlocking the cellar door.",
+						"imagePrompt": "Warm lantern light on a wooden bridge, mist rising off dark water.",
+						"image": {
+							"path": "static/game/checkpoints/c0ffee42d9a18b37e5f6c2a40d1b9e87f3a6c5d20e8b71f94a2c3d6e5f0b1a28.png",
+							"model": "gpt-image-2",
+							"prompt": "Create a polished gameplay checkpoint image, a visual target for a game.\nKeep consistent characters, environment and art direction. Show the checkpoint state. No HUD, text labels or UI.\nView: New level (2d). Style: Hand-painted watercolor, muted teal and amber palette, soft edges.\nCheckpoint: Checkpoint 2. Guidance: The player crosses the lantern-lit bridge after unlocking the cellar door.\nVisual direction: Warm lantern light on a wooden bridge, mist rising off dark water.\nPrerequisites: [\"checkpoint-1\"]\nConditions: [{\"field\":\"brassKey\",\"op\":\"eq\",\"value\":true}]\nConsequences: [{\"type\":\"set\",\"target\":\"cellarDoorOpen\",\"value\":true}]",
+							"createdAt": "2026-11-14T09:30:12.418Z"
+						},
+						"x": 340,
+						"y": 80,
+						"requires": ["checkpoint-1"],
+						"conditions": [
+							{
+								"field": "brassKey",
+								"op": "eq",
+								"value": true
+							}
+						],
+						"actions": [
+							{
+								"type": "set",
+								"target": "cellarDoorOpen",
+								"value": true
+							}
+						],
+						"repeatable": false
+					}
+				]
 			},
 			{
 				"name": "GameCheckpointImage.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Active game view containing scene direction and executable checkpoints."
+				"description": "The game view that contains the checkpoint: its id names the view in each generation request, and a change to its style or dimension made while an image is generating marks that candidate as made before the latest edits. For a view with a planned level, the host refuses to generate until that level is approved and built.",
+				"examples": [
+					{
+						"id": "view-mhwz0q7c",
+						"title": "New level",
+						"dimension": "2d",
+						"style": "Hand-painted watercolor, muted teal and amber palette, soft edges.",
+						"checkpoints": [
+							{
+								"id": "checkpoint-1",
+								"title": "Checkpoint 1",
+								"description": "The player reaches the flooded cellar door and finds the brass key.",
+								"x": 80,
+								"y": 80,
+								"requires": [],
+								"conditions": [],
+								"actions": []
+							}
+						]
+					},
+					{
+						"id": "view-mhx4k2a9",
+						"title": "New level",
+						"dimension": "2d",
+						"style": "Low-poly diorama, warm dusk light, saturated greens.",
+						"checkpoints": [],
+						"planning": {
+							"concept": "",
+							"description": ""
+						}
+					}
+				]
 			},
 			{
 				"name": "GameCheckpointImage.document",
 				"type": "GameDocument",
 				"required": true,
-				"description": "Complete authored game document supplying the checkpoint and view context."
+				"description": "The complete game document that every generation request carries, with the selected checkpoint's imagePrompt replaced by the guidance for the new image. The host validates it with the game document rules, reads the selected view and checkpoint from it, and rejects the request when the saved game no longer matches revision.",
+				"examples": [
+					{
+						"version": 1,
+						"views": [
+							{
+								"id": "view-mhx4k2a9",
+								"title": "New level",
+								"dimension": "2d",
+								"style": "Low-poly diorama, warm dusk light, saturated greens.",
+								"checkpoints": [],
+								"planning": {
+									"concept": "",
+									"description": ""
+								}
+							}
+						],
+						"mechanics": []
+					},
+					{
+						"version": 1,
+						"views": [
+							{
+								"id": "view-mhwz0q7c",
+								"title": "New level",
+								"dimension": "2d",
+								"style": "Hand-painted watercolor, muted teal and amber palette, soft edges.",
+								"checkpoints": [
+									{
+										"id": "checkpoint-1",
+										"title": "Checkpoint 1",
+										"description": "The player reaches the flooded cellar door and finds the brass key.",
+										"x": 80,
+										"y": 80,
+										"requires": [],
+										"conditions": [],
+										"actions": []
+									}
+								]
+							}
+						],
+						"mechanics": [
+							{
+								"id": "lantern",
+								"title": "Lantern",
+								"description": "A carried light that reveals hidden paths in dark rooms.",
+								"inputs": ["toggleLantern"],
+								"events": ["lanternLit"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "GameCheckpointImage.projectId",
 				"type": "string | null",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Selected local project identity used to bind host reads and writes."
+				"description": "The identity of the local project the panel is bound to: 'local-' followed by 64 lowercase hex characters, and it must be the project currently selected on the host. When it is null or omitted, no image is previewed and generation is blocked with 'The demo is not saved, so it cannot generate images.'",
+				"examples": ["local-3c9e1f7a0b4d2e8c6f15a9d3b7e0c4f82a6d1b9e5c3f7a0d4b8e2c6f1a9d3b75", null]
 			},
 			{
 				"name": "GameCheckpointImage.revision",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Expected document hash used to reject stale image generation or saves."
+				"description": "The SHA-256 hex digest of the saved game.json, 64 lowercase characters, that generation is based on. When it is missing, generation is blocked with 'Reload the game to generate images.'; the host rejects a request whose digest no longer matches the saved game, and a change to it discards any unused candidate.",
+				"examples": [
+					"5f2c9a1e7b04d83c6a95e2f1b7d40c8e3a69f5d2b1c07e48a3d9f6b2c1e5a704",
+					"a7d31f9c0e6b4285d1f3c7e9a0b6d2f48c1e5a93b7d0f6e2c4a8b1d9f3e5c602"
+				]
 			},
 			{
 				"name": "GameCheckpointImage.commit",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional immutable Git revision for reading historical image bytes."
+				"description": "A full 40-character lowercase Git commit SHA at which the current image is read; setting it also turns generation off and hides Remove image reference. An abbreviated SHA makes the read fail, and the panel then shows 'Unable to read this checkpoint image.'",
+				"examples": [
+					"7d1c3a9e0b5f24688c13d7e2a4b9f0165c8e2d3a",
+					"a91f0e3c6b2d87f54e10c9b3d6a2f8e75c4b1d09"
+				]
 			},
 			{
 				"name": "GameCheckpointImage.readonly",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Disable editing and generation for historical or otherwise immutable views."
+				"description": "Set it to true for an immutable view: generation is turned off with 'This game is read-only, so new images are off.' and Remove image reference is hidden, while the current image still shows. It does not stop a candidate that already exists from being used, because Use this image is not gated by it.",
+				"examples": [false, true]
 			},
 			{
 				"name": "GameCheckpointImage.bridge",
 				"type": "DesktopBridge",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Local desktop host operations for project creation, persistence and explicit image generation."
+				"description": "Desktop host operations: generation is offered only when bridge.gameImageGenerate exists, and the current image is read only when bridge.gameImageRead exists. When it is omitted, no image is previewed and, once no earlier reason applies, the status line reads 'This app cannot generate images.'"
 			},
 			{
 				"name": "GameCheckpointImage.change",
 				"type": "(patch: Partial<Checkpoint>) => void",
 				"required": true,
-				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+				"description": "Callback that receives { image: undefined } when Remove image reference is clicked; that control is shown only while no candidate is pending, when the checkpoint has an image, and when the panel is neither readonly nor at a commit. The panel never calls it for generation or for accepting a candidate."
 			},
 			{
 				"name": "GameCheckpointImage.accept",
 				"type": "(patch: Partial<Checkpoint>) => void",
 				"required": true,
-				"description": "Adopt the chosen candidate image and guidance through the modal owner."
+				"description": "Callback that Use this image calls with { image, imagePrompt } when the candidate has guidance, or with { image } alone when it has none; the panel does not change the checkpoint itself. The candidate stays on screen after the call until projectId, revision, commit, view id or checkpoint id changes."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCheckpointImage",
 				"type": "markup",
-				"description": "Generate and revise checkpoint image candidates; replace the confirmed reference only after explicit acceptance."
+				"description": "The rendered section (data-harness-component 'game-checkpoint-image') that shows a pending candidate with Request changes, Generate changes and Use this image, or otherwise the current image with Generate image and, when allowed, Remove image reference, plus a status line and an alert when an error is set. A candidate is labelled 'Not used yet.' and, when its title, description, requires, conditions, actions, view style or view dimension changed while it was being generated, also 'Made before your latest edits.'"
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
