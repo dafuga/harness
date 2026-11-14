@@ -60,79 +60,208 @@
 				"name": "explorerKindCategory.kind",
 				"type": "string",
 				"required": true,
-				"description": "Declared unit kind to map into a displayed category."
+				"description": "A unit kind string looked up in the declared kind-to-category map. Unmapped values return null; for example, view maps to pages and shell maps to components.",
+				"examples": ["function", "shell", "guide"]
 			},
 			{
 				"name": "tabOf.location",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Parsed explorer address whose category, entity and section determine the allowed tabs."
+				"description": "An explorer location whose category, entity or helper, and section determine which requested tabs are eligible. Platforms and locations without an entity or helper have no selected tab.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "functions",
+						"entity": "reports.function.generate-report"
+					},
+					{
+						"branch": null,
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "components",
+						"entity": "reports.component.evidence-grid",
+						"section": "details"
+					}
+				]
 			},
 			{
 				"name": "tabOf.search",
 				"type": "string",
 				"required": true,
-				"description": "URL search string containing an optional legacy tab selection."
+				"description": "The URL search string passed to URLSearchParams; its tab parameter is filtered by the location's section, category, entity or helper, and default-tab rules.",
+				"examples": ["?tab=examples", "?tab=source"]
 			},
 			{
 				"name": "explorerRoute.path",
 				"type": "string",
 				"required": true,
-				"description": "Console-relative path beginning with an encoded branch segment or full lowercase 40-character commit hash; trailing slashes are ignored."
+				"description": "A pathname to parse, beginning with a slash and naming a branch or lowercase 40-character commit scope before its category, helper, or screen segments. Trailing slashes are ignored, and branch and entity segments are percent-decoded.",
+				"examples": [
+					"/branch/main/functions/reports.function.generate-report",
+					"/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/components/reports.component.evidence-grid",
+					"/branch/release%2F2026/pages"
+				]
 			},
 			{
 				"name": "explorerRoute.search",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional query string containing tab selection; defaults to empty."
+				"description": "An optional URL search string used to select a helper and tab; only tabs allowed for the parsed location are retained. Defaults to the empty string.",
+				"examples": ["?tab=source", "?helper=build-report&tab=examples"]
 			},
 			{
 				"name": "canonicalExplorerLocation.location",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Explorer location to normalize from compatibility Details aliases to the canonical section and tab."
+				"description": "An explorer location that may contain the legacy details section and its tab. Normalization changes only locations whose section is details.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "models",
+						"entity": "reports.model.summary",
+						"section": "details",
+						"tab": "table"
+					},
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "components",
+						"entity": "reports.component.evidence-grid",
+						"section": "details",
+						"tab": "measurements"
+					}
+				]
 			},
 			{
 				"name": "explorerRoutePath.location",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Branch or commit scope and category, with optional entity, details/history section and tab."
+				"description": "An explorer location to serialize with its branch or commit scope and category, plus any entity, screen, helper, section, and supported tab. Details locations are canonicalized before the path is built.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "functions",
+						"entity": "reports.function.generate-report",
+						"tab": "examples"
+					},
+					{
+						"branch": null,
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages",
+						"screen": "styles"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerCategories",
 				"type": "unknown",
-				"description": "Navigation categories in order: pages, shells, components, functions, configs, services and models. Styles is a separate screen."
+				"description": "The accepted category names in route order: all entity categories followed by platforms.",
+				"examples": [
+					[
+						"pages",
+						"apis",
+						"layouts",
+						"components",
+						"functions",
+						"configs",
+						"services",
+						"models",
+						"types",
+						"platforms"
+					]
+				]
 			},
 			{
 				"name": "explorerKindCategory",
 				"type": "ExplorerCategory | null",
-				"description": "Mapped category, or null for an unsupported kind; only shell maps to shells."
+				"description": "The category assigned to a recognized unit kind, or null when the kind is absent from the mapping.",
+				"examples": ["functions", "components", null]
 			},
 			{
 				"name": "explorerSections",
 				"type": "unknown",
-				"description": "Supported entity sections: details and history; omitted section means overview."
+				"description": "The supported entity sections are details and history; an entity without a section is on its overview.",
+				"examples": [
+					["details", "history"]
+				]
 			},
 			{
 				"name": "explorerTabs",
 				"type": "unknown",
-				"description": "Allowed tabs by section, including Audio for component entities only. Pages exclude Used In. Details includes contract, measurements and source; history has none."
+				"description": "The declared tab names for overview, details, and history sections. tabOf additionally filters these names by category and location rules.",
+				"examples": [
+					{
+						"overview": [
+							"overview",
+							"contract",
+							"permissions",
+							"table",
+							"models",
+							"apis",
+							"used-in",
+							"uses",
+							"relationships",
+							"audio",
+							"tests",
+							"examples",
+							"states",
+							"source"
+						],
+						"details": ["contract", "table", "models", "measurements", "source"],
+						"history": []
+					}
+				]
 			},
 			{
 				"name": "explorerRoute",
 				"type": "ExplorerLocation | undefined",
-				"description": "Parsed location, or undefined for malformed scope, encoding, category or selection. Audio is accepted only for components; invalid/default tabs and page Used In tabs are omitted."
+				"description": "A parsed location for a valid branch or full-commit scope, or undefined when the scope, category, screen, entity, or section is invalid. It decodes branch and entity segments and keeps only eligible non-default tabs.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "functions",
+						"entity": "reports.function.generate-report",
+						"tab": "examples"
+					},
+					{
+						"branch": null,
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages"
+					},
+					{
+						"branch": "release/2026",
+						"commit": null,
+						"category": "apis",
+						"entity": "reports.api.get-summary",
+						"tab": "permissions"
+					}
+				]
 			},
 			{
 				"name": "explorerRoutePath",
 				"type": "string",
-				"description": "Canonical scoped path for an entity, callable or Styles screen; helper tabs use path segments and legacy entity tabs use query parameters."
+				"description": "The canonical scoped path for a location, using dedicated paths for screens and function helpers. Entity tabs are query parameters, while helper panes are path segments.",
+				"examples": [
+					"/branch/main/functions/reports.function.generate-report?tab=examples",
+					"/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/components/reports.component.evidence-grid?tab=source",
+					"/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/styles"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "Path serialization throws when encodeURIComponent receives branch, entity, helper, or screen-entity text containing an unpaired UTF-16 surrogate."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "explorerKindCategory",
@@ -141,18 +270,20 @@
 						"name": "explorerKindCategory.kind",
 						"type": "string",
 						"required": true,
-						"description": "Declared unit kind to map into a displayed category."
+						"description": "A unit kind string looked up in the declared kind-to-category map. Unmapped values return null; for example, view maps to pages and shell maps to components.",
+						"examples": ["function", "shell", "guide"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerKindCategory",
 						"type": "ExplorerCategory | null",
-						"description": "Mapped category, or null for an unsupported kind; only shell maps to shells."
+						"description": "The category assigned to a recognized unit kind, or null when the kind is absent from the mapping.",
+						"examples": ["functions", "components", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "tabOf",
@@ -161,23 +292,41 @@
 						"name": "tabOf.location",
 						"type": "ExplorerLocation",
 						"required": true,
-						"description": "Parsed explorer address whose category, entity and section determine the allowed tabs."
+						"description": "An explorer location whose category, entity or helper, and section determine which requested tabs are eligible. Platforms and locations without an entity or helper have no selected tab.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "functions",
+								"entity": "reports.function.generate-report"
+							},
+							{
+								"branch": null,
+								"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"category": "components",
+								"entity": "reports.component.evidence-grid",
+								"section": "details"
+							}
+						]
 					},
 					{
 						"name": "tabOf.search",
 						"type": "string",
 						"required": true,
-						"description": "URL search string containing an optional legacy tab selection."
+						"description": "The URL search string passed to URLSearchParams; its tab parameter is filtered by the location's section, category, entity or helper, and default-tab rules.",
+						"examples": ["?tab=examples", "?tab=source"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "tabOf",
-						"type": "ExplorerTab | undefined"
+						"type": "ExplorerTab | undefined",
+						"description": "The requested eligible tab other than the section's default, or undefined when none is selected or the location rules reject it.",
+						"examples": ["source", "examples"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerRoute",
@@ -186,25 +335,52 @@
 						"name": "explorerRoute.path",
 						"type": "string",
 						"required": true,
-						"description": "Console-relative path beginning with an encoded branch segment or full lowercase 40-character commit hash; trailing slashes are ignored."
+						"description": "A pathname to parse, beginning with a slash and naming a branch or lowercase 40-character commit scope before its category, helper, or screen segments. Trailing slashes are ignored, and branch and entity segments are percent-decoded.",
+						"examples": [
+							"/branch/main/functions/reports.function.generate-report",
+							"/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/components/reports.component.evidence-grid",
+							"/branch/release%2F2026/pages"
+						]
 					},
 					{
 						"name": "explorerRoute.search",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Optional query string containing tab selection; defaults to empty."
+						"description": "An optional URL search string used to select a helper and tab; only tabs allowed for the parsed location are retained. Defaults to the empty string.",
+						"examples": ["?tab=source", "?helper=build-report&tab=examples"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerRoute",
 						"type": "ExplorerLocation | undefined",
-						"description": "Parsed location, or undefined for malformed scope, encoding, category or selection. Audio is accepted only for components; invalid/default tabs and page Used In tabs are omitted."
+						"description": "A parsed location for a valid branch or full-commit scope, or undefined when the scope, category, screen, entity, or section is invalid. It decodes branch and entity segments and keeps only eligible non-default tabs.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "functions",
+								"entity": "reports.function.generate-report",
+								"tab": "examples"
+							},
+							{
+								"branch": null,
+								"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"category": "pages"
+							},
+							{
+								"branch": "release/2026",
+								"commit": null,
+								"category": "apis",
+								"entity": "reports.api.get-summary",
+								"tab": "permissions"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "canonicalExplorerLocation",
@@ -213,17 +389,51 @@
 						"name": "canonicalExplorerLocation.location",
 						"type": "ExplorerLocation",
 						"required": true,
-						"description": "Explorer location to normalize from compatibility Details aliases to the canonical section and tab."
+						"description": "An explorer location that may contain the legacy details section and its tab. Normalization changes only locations whose section is details.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "models",
+								"entity": "reports.model.summary",
+								"section": "details",
+								"tab": "table"
+							},
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "components",
+								"entity": "reports.component.evidence-grid",
+								"section": "details",
+								"tab": "measurements"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "canonicalExplorerLocation",
-						"type": "ExplorerLocation"
+						"type": "ExplorerLocation",
+						"description": "The canonical explorer location, with the legacy details section removed when present. It removes measurements, preserves source and models table, and otherwise selects models for pages or contract for other categories.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "models",
+								"entity": "reports.model.summary",
+								"tab": "table"
+							},
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "components",
+								"entity": "reports.component.evidence-grid"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerRoutePath",
@@ -232,18 +442,44 @@
 						"name": "explorerRoutePath.location",
 						"type": "ExplorerLocation",
 						"required": true,
-						"description": "Branch or commit scope and category, with optional entity, details/history section and tab."
+						"description": "An explorer location to serialize with its branch or commit scope and category, plus any entity, screen, helper, section, and supported tab. Details locations are canonicalized before the path is built.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "functions",
+								"entity": "reports.function.generate-report",
+								"tab": "examples"
+							},
+							{
+								"branch": null,
+								"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"category": "pages",
+								"screen": "styles"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerRoutePath",
 						"type": "string",
-						"description": "Canonical scoped path for an entity, callable or Styles screen; helper tabs use path segments and legacy entity tabs use query parameters."
+						"description": "The canonical scoped path for a location, using dedicated paths for screens and function helpers. Entity tabs are query parameters, while helper panes are path segments.",
+						"examples": [
+							"/branch/main/functions/reports.function.generate-report?tab=examples",
+							"/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/components/reports.component.evidence-grid?tab=source",
+							"/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/styles"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Path serialization throws when encodeURIComponent receives branch, entity, helper, or screen-entity text containing an unpaired UTF-16 surrogate."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
