@@ -18,14 +18,29 @@
 				"name": "ProcessIdentityAdapter.find.pid",
 				"type": "number",
 				"required": true,
-				"description": "Process ID whose current start time is being queried."
+				"description": "The process number, converted with String() and passed to ps as the -p argument; together with the exists and startedAt facts read for it, this number lets callers tell a process from a later one that was given the same number. The adapter does no integer or range check, so any value given here is sent to ps in its string form.",
+				"examples": [48213, 90417, 1207]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProcessIdentityAdapter.find",
 				"type": "ProcessFacts",
-				"description": "ProcessFacts: exists is false for ps exit 1, true when a start time was read, and undefined when the probe cannot establish identity; startedAt is the normalized ps start string or null."
+				"description": "The ProcessFacts object find returns: exists is true only when ps exits with code 0 and prints a non-empty start time, false when ps exits with code 1 (the code it uses for a number no process has) or exits with code 0 and nothing is left after trimming, and undefined when the probe cannot establish identity (any other exit code, or a thrown error whose status is not 1), in which case nothing is claimed either way. startedAt is the trimmed text ps prints for lstart under LC_ALL=C, or null whenever no start time was read, and it is not parsed into a date.",
+				"examples": [
+					{
+						"exists": true,
+						"startedAt": "Tue Nov 10 09:14:22 2026"
+					},
+					{
+						"exists": true,
+						"startedAt": "Mon Nov  9 14:03:57 2026"
+					},
+					{
+						"exists": false,
+						"startedAt": null
+					}
+				]
 			}
 		],
 		"errors": [],
@@ -38,14 +53,29 @@
 						"name": "ProcessIdentityAdapter.find.pid",
 						"type": "number",
 						"required": true,
-						"description": "Process ID whose current start time is being queried."
+						"description": "The process number, converted with String() and passed to ps as the -p argument; together with the exists and startedAt facts read for it, this number lets callers tell a process from a later one that was given the same number. The adapter does no integer or range check, so any value given here is sent to ps in its string form.",
+						"examples": [48213, 90417, 1207]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProcessIdentityAdapter.find",
 						"type": "ProcessFacts",
-						"description": "ProcessFacts: exists is false for ps exit 1, true when a start time was read, and undefined when the probe cannot establish identity; startedAt is the normalized ps start string or null."
+						"description": "The ProcessFacts object find returns: exists is true only when ps exits with code 0 and prints a non-empty start time, false when ps exits with code 1 (the code it uses for a number no process has) or exits with code 0 and nothing is left after trimming, and undefined when the probe cannot establish identity (any other exit code, or a thrown error whose status is not 1), in which case nothing is claimed either way. startedAt is the trimmed text ps prints for lstart under LC_ALL=C, or null whenever no start time was read, and it is not parsed into a date.",
+						"examples": [
+							{
+								"exists": true,
+								"startedAt": "Tue Nov 10 09:14:22 2026"
+							},
+							{
+								"exists": true,
+								"startedAt": "Mon Nov  9 14:03:57 2026"
+							},
+							{
+								"exists": false,
+								"startedAt": null
+							}
+						]
 					}
 				],
 				"errors": [],
