@@ -25,34 +25,49 @@
 				"name": "fail.message",
 				"type": "string",
 				"required": true,
-				"description": "Human-readable failure message to attach to the expected CLI error."
+				"description": "The text passed unchanged to the Error constructor, so it becomes the message property that callers read from the thrown ExpectedCliError. fail does no trimming, formatting, length or runtime type check, so only the TypeScript string type constrains it: an empty string is accepted, and a Symbol makes the Error constructor throw a TypeError.",
+				"examples": [
+					"Unit reports.component.evidence-grid has no contract section.",
+					"Could not parse unit.json: unexpected end of JSON input",
+					"Refusing to overwrite an existing unit.json."
+				]
 			},
 			{
 				"name": "isExpectedCliError.error",
 				"type": "unknown",
 				"required": true,
-				"description": "Any value to test for membership in the ExpectedCliError class."
+				"description": "Any value to test, checked with instanceof against ExpectedCliError, so only instances of that class or of its subclasses return true. Values such as null, undefined, primitives, plain Error objects and objects whose name property is ExpectedCliError return false.",
+				"examples": [
+					"Unexpected end of input",
+					null,
+					{
+						"name": "ExpectedCliError",
+						"message": "Unknown unit"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "fail",
 				"type": "never",
-				"description": "Never returns: immediately throws a new ExpectedCliError containing the supplied message."
+				"description": "fail is declared to return never and never returns normally: it always throws a new ExpectedCliError built from the supplied message. No value is produced, so callers cannot use a return value from it."
 			},
 			{
 				"name": "isExpectedCliError",
 				"type": "error is ExpectedCliError",
-				"description": "True only when the value is an instance of ExpectedCliError, narrowing its TypeScript type."
+				"description": "The boolean result of the instanceof check, declared as a type predicate so that a true result narrows the argument to ExpectedCliError in TypeScript. It is false for every other value, including plain Error objects.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "The Error subclass thrown by fail, with its name set to ExpectedCliError."
+				"description": "The Error subclass thrown by fail, with its name property set to ExpectedCliError. It is the only error the implementation throws by design, and fail throws it on every call."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "fail",
@@ -61,23 +76,29 @@
 						"name": "fail.message",
 						"type": "string",
 						"required": true,
-						"description": "Human-readable failure message to attach to the expected CLI error."
+						"description": "The text passed unchanged to the Error constructor, so it becomes the message property that callers read from the thrown ExpectedCliError. fail does no trimming, formatting, length or runtime type check, so only the TypeScript string type constrains it: an empty string is accepted, and a Symbol makes the Error constructor throw a TypeError.",
+						"examples": [
+							"Unit reports.component.evidence-grid has no contract section.",
+							"Could not parse unit.json: unexpected end of JSON input",
+							"Refusing to overwrite an existing unit.json."
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fail",
 						"type": "never",
-						"description": "Never returns: immediately throws a new ExpectedCliError containing the supplied message."
+						"description": "fail is declared to return never and never returns normally: it always throws a new ExpectedCliError built from the supplied message. No value is produced, so callers cannot use a return value from it."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The Error subclass thrown by fail, with its name property set to ExpectedCliError. It is the only error the implementation throws by design, and fail throws it on every call."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "isExpectedCliError",
@@ -86,18 +107,27 @@
 						"name": "isExpectedCliError.error",
 						"type": "unknown",
 						"required": true,
-						"description": "Any value to test for membership in the ExpectedCliError class."
+						"description": "Any value to test, checked with instanceof against ExpectedCliError, so only instances of that class or of its subclasses return true. Values such as null, undefined, primitives, plain Error objects and objects whose name property is ExpectedCliError return false.",
+						"examples": [
+							"Unexpected end of input",
+							null,
+							{
+								"name": "ExpectedCliError",
+								"message": "Unknown unit"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isExpectedCliError",
 						"type": "error is ExpectedCliError",
-						"description": "True only when the value is an instance of ExpectedCliError, narrowing its TypeScript type."
+						"description": "The boolean result of the instanceof check, declared as a type predicate so that a true result narrows the argument to ExpectedCliError in TypeScript. It is false for every other value, including plain Error objects.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
