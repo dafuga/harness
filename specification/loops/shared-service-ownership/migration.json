@@ -2074,13 +2074,13 @@
 			"unit": "workflow.loop-evaluate",
 			"from": "src/workflows/loopEvaluate.ts",
 			"to": "src/cli/program/loopEvaluate.ts",
-			"definition": "1c37c40cff1293be969a01474df129c666708b4ee39871f99f2f9cd82af9d2f8",
+			"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
 			"relocationDefinition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3",
 			"review": {
-				"commit": "c6a4638b0a08fbe29eca98109a3fcfee60d2d245",
+				"commit": "58a619d02e4cb955fe0db11ad18c1ff3348e2ff0",
 				"path": "src/cli/program/loopEvaluate.ts",
-				"definition": "1c37c40cff1293be969a01474df129c666708b4ee39871f99f2f9cd82af9d2f8",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
+				"reason": "Retain bounded evaluator output and process trees, workload-aware deadlines, refusal of mutations after explicit loop closure, owner-scoped child credentials and preserved bounded command diagnostics."
 			},
 			"previousReviews": [
 				{
@@ -2100,6 +2100,12 @@
 					"path": "src/cli/program/loopEvaluate.ts",
 					"definition": "de2ebc33ef97ea1dfdb128a45f698738759bfdc6acb62a03ec4f57a9c91f19f2",
 					"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+				},
+				{
+					"commit": "c6a4638b0a08fbe29eca98109a3fcfee60d2d245",
+					"path": "src/cli/program/loopEvaluate.ts",
+					"definition": "1c37c40cff1293be969a01474df129c666708b4ee39871f99f2f9cd82af9d2f8",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			]
 		},
@@ -2577,13 +2583,13 @@
 			"unit": "service.kernel-benchmark",
 			"from": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
 			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-			"definition": "e646e8792e26026e8a445e2f992c4987921070921b7e4e1778828b5105b387d8",
+			"definition": "0b7506528bdf23937d0b9a65fffd7ca72fa97f6d4274b3c75d85e15788b2faa5",
 			"relocationDefinition": "31eb00cde9c6e7f351bd776bfd29d8e3db6c5e2952ac5c3d0320b7a7d7aaa28f",
 			"review": {
-				"commit": "23ce2b09de0f8c35e30efe782c41a9d783ebf923",
+				"commit": "c4221b3bf2fb9dfa02e7842d7ccf9b5e6db7bb46",
 				"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-				"definition": "e646e8792e26026e8a445e2f992c4987921070921b7e4e1778828b5105b387d8",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "0b7506528bdf23937d0b9a65fffd7ca72fa97f6d4274b3c75d85e15788b2faa5",
+				"reason": "Retain bounded process execution, bounded nested runtime lifetimes and asynchronous cold kernel samples."
 			},
 			"previousReviews": [
 				{
@@ -2596,6 +2602,12 @@
 					"commit": "c6a4638b0a08fbe29eca98109a3fcfee60d2d245",
 					"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
 					"definition": "ad2d36de75c15b00acfbffe99eefb6b07f4e5dc52a2ad3f7a0f7a3e036c9626e",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "23ce2b09de0f8c35e30efe782c41a9d783ebf923",
+					"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
+					"definition": "e646e8792e26026e8a445e2f992c4987921070921b7e4e1778828b5105b387d8",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			]
@@ -2695,13 +2707,13 @@
 			"unit": "command.units",
 			"from": "src/commands/UnitsCommand.ts",
 			"to": "src/cli/program/UnitsCommand.ts",
-			"definition": "0b813e6b24558173ac5b9bb8004b0d1907d35aba879f3353494eecb271fcf4fb",
+			"definition": "e735b3d4bb10e0832dff9f355d8ad03dc90d3dfd4ab3802af76ae7f33786014e",
 			"relocationDefinition": "56b7063d4a3eaae60eab61f13b0a1da62432d13e4f6ee5e0cd0cc25f997289b0",
 			"review": {
-				"commit": "c9fe9cd9f1f1200d0fbdd69e84e066d38e5f0559",
+				"commit": "664955c2295b36d2fe9e48134af32549a8082a7c",
 				"path": "src/cli/program/UnitsCommand.ts",
-				"definition": "0b813e6b24558173ac5b9bb8004b0d1907d35aba879f3353494eecb271fcf4fb",
-				"reason": "Register the units rename command."
+				"definition": "e735b3d4bb10e0832dff9f355d8ad03dc90d3dfd4ab3802af76ae7f33786014e",
+				"reason": "Surface specification storage warnings in units check."
 			},
 			"previousReviews": [
 				{
@@ -2721,6 +2733,12 @@
 					"path": "src/cli/program/UnitsCommand.ts",
 					"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "c9fe9cd9f1f1200d0fbdd69e84e066d38e5f0559",
+					"path": "src/cli/program/UnitsCommand.ts",
+					"definition": "0b813e6b24558173ac5b9bb8004b0d1907d35aba879f3353494eecb271fcf4fb",
+					"reason": "Register the units rename command."
 				}
 			]
 		},
@@ -3048,13 +3066,13 @@
 			"unit": "workflow.manage-units",
 			"from": "src/workflows/manageUnits.ts",
 			"to": "src/cli/program/manageUnits.ts",
-			"definition": "47681cf8af14b3c81b5c7b90b4f4ce019d36795f3961baaddc323baf30c14110",
+			"definition": "b1f16c862f67adf0c36c200102c5a229dfd51310558cf6c65d3daa9b220bd368",
 			"relocationDefinition": "9724dcb63f8d4269c25b93b40fe77fac47ecd44518b088f3f0e8b47a79c03353",
 			"review": {
-				"commit": "3e76af50b0853dcf8626be85cb6ee5d2e061883b",
+				"commit": "664955c2295b36d2fe9e48134af32549a8082a7c",
 				"path": "src/cli/program/manageUnits.ts",
-				"definition": "47681cf8af14b3c81b5c7b90b4f4ce019d36795f3961baaddc323baf30c14110",
-				"reason": "Report missing, copied and duplicate unit uids in units check."
+				"definition": "b1f16c862f67adf0c36c200102c5a229dfd51310558cf6c65d3daa9b220bd368",
+				"reason": "Surface specification storage warnings in units check."
 			},
 			"previousReviews": [
 				{
@@ -3074,6 +3092,12 @@
 					"path": "src/cli/program/manageUnits.ts",
 					"definition": "87548f18489da50626771fe056383f4bb7258177e0666e557ec88be19bf91bea",
 					"reason": "Check source-derived contract quality and report current and stored entity failure counts."
+				},
+				{
+					"commit": "3e76af50b0853dcf8626be85cb6ee5d2e061883b",
+					"path": "src/cli/program/manageUnits.ts",
+					"definition": "47681cf8af14b3c81b5c7b90b4f4ce019d36795f3961baaddc323baf30c14110",
+					"reason": "Report missing, copied and duplicate unit uids in units check."
 				}
 			]
 		},
@@ -4338,13 +4362,13 @@
 			"unit": "workflow.manage-loop",
 			"from": "src/workflows/manageLoop.ts",
 			"to": "src/cli/program/manageLoop.ts",
-			"definition": "540eea3e2093f7c9fde429c3a93fb6e33b32d432a3bb8449e2f2e85d85b10ca3",
+			"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
 			"relocationDefinition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe",
 			"review": {
-				"commit": "ea51bbcbf69c324dd7913254e50715cdf24e6278",
+				"commit": "745253c6258eb6a90ae59b9758562ec322ba8665",
 				"path": "src/cli/program/manageLoop.ts",
-				"definition": "540eea3e2093f7c9fde429c3a93fb6e33b32d432a3bb8449e2f2e85d85b10ca3",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
+				"reason": "Retain stale-loop listing with recorded abandoned closure, preserved stored loop evidence with named schema fields, and refusal of mutations after explicit loop closure."
 			},
 			"previousReviews": [
 				{
@@ -4370,6 +4394,12 @@
 					"path": "src/cli/program/manageLoop.ts",
 					"definition": "5548263136affc817d03eff679c4057b1c73cca2daff10907e7940efee99bdb8",
 					"reason": "Audit final completion only for explicitly typed loops and preserve default completion and paired regression guards."
+				},
+				{
+					"commit": "ea51bbcbf69c324dd7913254e50715cdf24e6278",
+					"path": "src/cli/program/manageLoop.ts",
+					"definition": "540eea3e2093f7c9fde429c3a93fb6e33b32d432a3bb8449e2f2e85d85b10ca3",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			]
 		},
@@ -5140,7 +5170,7 @@
 			"unit": "reports.service.preview-worker",
 			"from": "packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts",
 			"to": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
-			"definition": "15bcfc4f7873d7cab181a32e81376572a6358ae64dc79e9881a67b6fff677978",
+			"definition": "ba1fbbadb81ac4dc48957524eb476d63050bd45f4149298fbfd6cfc80de0af0c",
 			"relocationDefinition": "b0afd2601578c69b68d8e01a90b5f0aa6f9215c7087abd8f6931dd8938dd1877",
 			"previousReviews": [
 				{
@@ -5148,13 +5178,19 @@
 					"path": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
 					"definition": "544aee3274d99add28398ad8b9b240ec99fb8c0dba025cb9086bdfdb24f08f92",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "a1fcccb3fc57af4ae0d7b2dc62684ab14738f73c",
+					"path": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
+					"definition": "15bcfc4f7873d7cab181a32e81376572a6358ae64dc79e9881a67b6fff677978",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			],
 			"review": {
-				"commit": "a1fcccb3fc57af4ae0d7b2dc62684ab14738f73c",
+				"commit": "55c266df8d9fc38127baed75319e44a14edb63f4",
 				"path": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
-				"definition": "15bcfc4f7873d7cab181a32e81376572a6358ae64dc79e9881a67b6fff677978",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "ba1fbbadb81ac4dc48957524eb476d63050bd45f4149298fbfd6cfc80de0af0c",
+				"reason": "Retain the isolated preview worker environment, preserved scoped child configuration and auth, and owner-scoped child credentials."
 			}
 		},
 		{
@@ -5218,7 +5254,14 @@
 			"unit": "reports.service.report-server",
 			"from": "packages/reports/src/services/report-server-service/ReportServerService.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
-			"definition": "8981e216100b4860ba47d2356a22c84663f62fc4f22d81cf3481b9279f8d680f"
+			"definition": "a2c57ecc04ebb264bd508f10138e571f9142c94db051fbac04cb4fd76ddc27c3",
+			"relocationDefinition": "8981e216100b4860ba47d2356a22c84663f62fc4f22d81cf3481b9279f8d680f",
+			"review": {
+				"commit": "1c8072c5168bc0979c05eb377ea5e5ea2b2b08ab",
+				"path": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
+				"definition": "a2c57ecc04ebb264bd508f10138e571f9142c94db051fbac04cb4fd76ddc27c3",
+				"reason": "Set the served origin to the exact loopback address and port so CLI requests to report serve are accepted."
+			}
 		},
 		{
 			"unit": "reports.function.report-server-record",

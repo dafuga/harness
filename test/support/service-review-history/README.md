@@ -70,3 +70,15 @@ Scoped screenshot admission retains implementation commit `b0fc91c01` for select
 Report export removal retains implementation commit `0a97ffe38` for the console host files that no longer generate the export route.
 
 The retained report CLI description is reviewed at `325d2720a`; the pack also retains its original relocation proof.
+
+The improvements-branch reviews retain implementation commits `58a619d02` (evaluator diagnostics,
+deadlines, credentials and closed-loop refusal), `c4221b3bf` (kernel benchmark process bounds),
+`664955c22` (units check storage warnings), `745253c62` (loop closure and stored evidence),
+`55c266df8` (preview worker environment and credentials) and `1c8072c51` (report serve loopback
+origin, a first review of that moved file).
+
+When an earlier review commit is no longer in the local Git store, resolve the ids from a temporary
+bare repository that holds the previous pack and borrows the checkout's objects: `git index-pack
+--stdin < objects.pack` into it, add the checkout's `objects` directory to
+`objects/info/alternates`, then run the script and `git pack-objects` with `GIT_DIR` set to it.
+Every object of the previous pack must still be listed.
