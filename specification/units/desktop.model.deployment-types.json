@@ -36,16 +36,45 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "deploymentEnvironments",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Lists the supported deployment environment literals used by Deployment types. Its values are limited to dev, stage, preprod, and prod.",
+				"examples": [
+					["dev", "stage", "preprod", "prod"]
+				]
 			},
 			{
 				"name": "deploymentSteps",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Lists the ordered deployment step IDs and titles used by Deployment types. The list contains preparing, checking, building, uploading, and verifying in that order.",
+				"examples": [
+					[
+						{
+							"id": "preparing",
+							"title": "Prepare source"
+						},
+						{
+							"id": "checking",
+							"title": "Run checks"
+						},
+						{
+							"id": "building",
+							"title": "Build source"
+						},
+						{
+							"id": "uploading",
+							"title": "Deploy to Cloudflare"
+						},
+						{
+							"id": "verifying",
+							"title": "Verify health"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
