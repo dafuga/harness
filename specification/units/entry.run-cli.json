@@ -18,24 +18,30 @@
 				"name": "runCli.entry",
 				"type": "string",
 				"required": true,
-				"description": "Executable entry path passed to the stale-build check for warning generation."
+				"description": "Executable entry path that runCli passes unchanged to staleBuild(entry); it matters only for the stale-build warning, which is written to stderr when the check returns a truthy value. runCli does not validate the path, and the parameter is not used anywhere else in the function.",
+				"examples": ["src/cli/index.ts", "dist/cli/index.js"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "runCli",
 				"type": "Promise<void>",
-				"description": "Completes after command parsing and final analytics/activity hooks; command failures set process.exitCode, and unexpected failures are rethrown."
+				"description": "Resolves with no value after command parsing and any applicable finalization steps (analytics recording, the activity beat, and the loop analytics synchronization) have run. It resolves for CommanderError and expected CLI errors, which set process.exitCode without rejecting, and rejects for an unexpected command error, a finalization failure, or an error thrown by pipedOutput() or staleBuild(entry)."
 			}
 		],
 		"errors": [
 			{
 				"name": "Unexpected command or finalization failure",
 				"type": "thrown",
-				"description": "Unexpected command, analytics, or activity-hook failures are rethrown after the finalization attempt."
+				"description": "A command error that is neither a CommanderError nor an expected CLI error is rethrown after finalization runs, with process.exitCode already set to 1. A finalization error, such as one from recording analytics or the activity beat, rejects the promise and replaces any rethrown command error, while a failed loop analytics synchronization is only logged as a warning."
+			},
+			{
+				"name": "Startup output or stale-build failure",
+				"type": "thrown",
+				"description": "An error thrown by pipedOutput() or staleBuild(entry) is not caught because both run before the try block, so the promise rejects with that error unchanged and finalization does not run."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runCli",
@@ -44,21 +50,27 @@
 						"name": "runCli.entry",
 						"type": "string",
 						"required": true,
-						"description": "Executable entry path passed to the stale-build check for warning generation."
+						"description": "Executable entry path that runCli passes unchanged to staleBuild(entry); it matters only for the stale-build warning, which is written to stderr when the check returns a truthy value. runCli does not validate the path, and the parameter is not used anywhere else in the function.",
+						"examples": ["src/cli/index.ts", "dist/cli/index.js"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runCli",
 						"type": "Promise<void>",
-						"description": "Completes after command parsing and final analytics/activity hooks; command failures set process.exitCode, and unexpected failures are rethrown."
+						"description": "Resolves with no value after command parsing and any applicable finalization steps (analytics recording, the activity beat, and the loop analytics synchronization) have run. It resolves for CommanderError and expected CLI errors, which set process.exitCode without rejecting, and rejects for an unexpected command error, a finalization failure, or an error thrown by pipedOutput() or staleBuild(entry)."
 					}
 				],
 				"errors": [
 					{
 						"name": "Unexpected command or finalization failure",
 						"type": "thrown",
-						"description": "Unexpected parsing or finalization failures are rethrown; failures in the finalization hooks can reject the returned promise."
+						"description": "A command error that is neither a CommanderError nor an expected CLI error is rethrown after finalization runs, with process.exitCode already set to 1. A finalization error, such as one from recording analytics or the activity beat, rejects the promise and replaces any rethrown command error, while a failed loop analytics synchronization is only logged as a warning."
+					},
+					{
+						"name": "Startup output or stale-build failure",
+						"type": "thrown",
+						"description": "An error thrown by pipedOutput() or staleBuild(entry) is not caught because both run before the try block, so the promise rejects with that error unchanged and finalization does not run."
 					}
 				],
 				"errorStatus": "declared"
