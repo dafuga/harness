@@ -28,28 +28,43 @@
 				"name": "detectProjectKind.root",
 				"type": "string",
 				"required": true,
-				"description": "Project directory to inspect for package.json, svelte.config.js and src/index.ts."
+				"description": "Root directory to inspect for package.json and project marker files; an unreadable or invalid package.json is treated as missing, and failed file checks count as absent.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+				]
 			},
 			{
 				"name": "detectGameDimension.root",
 				"type": "string",
 				"required": true,
-				"description": "Project root whose package.json supplies the game dimension."
+				"description": "Root directory from which to read package.json for harness.dimension; unreadable or invalid manifests are treated as missing.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "detectProjectKind",
 				"type": "Promise<DetectedProjectKind>",
-				"description": "App or lib from explicit package harness.kind first; otherwise app for Svelte configuration/dependency/check script, lib for a readable package and src/index.ts, or unknown. Read/parse/access failures are treated as missing evidence."
+				"description": "Returns the detected kind: a supported package.json harness.kind (app, lib, or game) wins; otherwise svelte.config.js, an @sveltejs/kit key in dependencies/devDependencies, or scripts.check containing svelte-kit yields app, a truthy parsed package.json value plus src/index.ts yields lib, and the fallback is unknown. Package read/parse errors and file access failures count as missing evidence.",
+				"examples": ["app", "lib", "game"]
 			},
 			{
 				"name": "detectGameDimension",
 				"type": "Promise<'2d' | '3d' | undefined>",
-				"description": "Supported declared game dimension, or undefined when absent or invalid."
+				"description": "Resolved game dimension from package.json harness.dimension; only exact 2d and 3d values are returned, and missing, unreadable, invalid, or unsupported values produce undefined.",
+				"examples": ["2d", "3d"]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "When detectProjectKind reaches the SvelteKit check after explicit-kind and svelte.config.js checks, a parsed package with no @sveltejs/kit key in dependencies or devDependencies and a non-null scripts.check value whose includes member is not callable makes it reject with TypeError; package read/parse failures and file access failures are caught."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "detectProjectKind",
@@ -58,18 +73,28 @@
 						"name": "detectProjectKind.root",
 						"type": "string",
 						"required": true,
-						"description": "Project directory to inspect for package.json, svelte.config.js and src/index.ts."
+						"description": "Root directory to inspect for package.json and project marker files; an unreadable or invalid package.json is treated as missing, and failed file checks count as absent.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "detectProjectKind",
 						"type": "Promise<DetectedProjectKind>",
-						"description": "App or lib from explicit package harness.kind first; otherwise app for Svelte configuration/dependency/check script, lib for a readable package and src/index.ts, or unknown. Read/parse/access failures are treated as missing evidence."
+						"description": "Returns the detected kind: a supported package.json harness.kind (app, lib, or game) wins; otherwise svelte.config.js, an @sveltejs/kit key in dependencies/devDependencies, or scripts.check containing svelte-kit yields app, a truthy parsed package.json value plus src/index.ts yields lib, and the fallback is unknown. Package read/parse errors and file access failures count as missing evidence.",
+						"examples": ["app", "lib", "game"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "When detectProjectKind reaches the SvelteKit check after explicit-kind and svelte.config.js checks, a parsed package with no @sveltejs/kit key in dependencies or devDependencies and a non-null scripts.check value whose includes member is not callable makes it reject with TypeError; package read/parse failures and file access failures are caught."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "detectGameDimension",
@@ -78,18 +103,22 @@
 						"name": "detectGameDimension.root",
 						"type": "string",
 						"required": true,
-						"description": "Project root whose package.json supplies the game dimension."
+						"description": "Root directory from which to read package.json for harness.dimension; unreadable or invalid manifests are treated as missing.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "detectGameDimension",
 						"type": "Promise<'2d' | '3d' | undefined>",
-						"description": "Supported declared game dimension, or undefined when absent or invalid."
+						"description": "Resolved game dimension from package.json harness.dimension; only exact 2d and 3d values are returned, and missing, unreadable, invalid, or unsupported values produce undefined.",
+						"examples": ["2d", "3d"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
