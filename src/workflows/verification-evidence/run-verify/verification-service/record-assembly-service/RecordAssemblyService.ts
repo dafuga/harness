@@ -59,7 +59,11 @@ export class RecordAssemblyService {
 				.filter((item) => !item.check.id.startsWith('setup-'))
 				.map((item) => item.entry),
 			scenarios: judgedScenarios(input),
-			...recordedBuilds(input.executed.builds),
+			// Only a run that skipped a declared build names one; every other record is unchanged.
+			...recordedBuilds(
+				input.executed.builds,
+				input.executed.skippedBuilds?.length ? input.executed.skippedBuilds : undefined
+			),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
 			reasons: recordedReasons(reasons),
 			gates: Object.fromEntries(Object.entries(gates).map(([gate, list]) => [gate, outcome(list)])),
