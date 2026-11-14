@@ -20,23 +20,31 @@
 				"name": "derivedResponsibility.kind",
 				"type": "string",
 				"required": true,
-				"description": "Unit kind used to choose a known purpose phrase; unknown kinds use the kind followed by unit."
+				"description": "The unit kind, which picks the purpose phrase from the module's purpose table by an exact, case-sensitive key and is the only input that changes that phrase. A kind with no entry produces the kind followed by unit, but inherited Object.prototype names such as constructor or toString are found by the lookup and never reach that fallback.",
+				"examples": ["function", "service", "component"]
 			},
 			{
 				"name": "derivedResponsibility.title",
 				"type": "string",
 				"required": true,
-				"description": "Unit title inserted unchanged into the placeholder sentence."
+				"description": "The unit title, inserted unchanged after 'Owns the' in every result; it is not trimmed or validated, so an empty title leaves two adjacent spaces.",
+				"examples": ["Fallback unit responsibility", "Unit index", "Evidence grid"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "derivedResponsibility",
 				"type": "string",
-				"description": "Placeholder sentence of the form Owns the title purpose. It names a kind and title only and is not a reviewed description of behavior."
+				"description": "A placeholder sentence for a unit nobody has described yet, in the form Owns the title purpose followed by a period, where the purpose is the value the kind looks up in the purpose table, or the kind followed by unit when that lookup finds nothing. It restates only the kind and title and contains no marker that it is derived, so it must not be read as a reviewed description of behavior.",
+				"examples": [
+					"Owns the Fallback unit responsibility shared function.",
+					"Owns the Unit index service workflow.",
+					"Owns the Evidence grid Svelte component."
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "derivedResponsibility",
@@ -45,24 +53,31 @@
 						"name": "derivedResponsibility.kind",
 						"type": "string",
 						"required": true,
-						"description": "Unit kind used to choose a known purpose phrase; unknown kinds use the kind followed by unit."
+						"description": "The unit kind, which picks the purpose phrase from the module's purpose table by an exact, case-sensitive key and is the only input that changes that phrase. A kind with no entry produces the kind followed by unit, but inherited Object.prototype names such as constructor or toString are found by the lookup and never reach that fallback.",
+						"examples": ["function", "service", "component"]
 					},
 					{
 						"name": "derivedResponsibility.title",
 						"type": "string",
 						"required": true,
-						"description": "Unit title inserted unchanged into the placeholder sentence."
+						"description": "The unit title, inserted unchanged after 'Owns the' in every result; it is not trimmed or validated, so an empty title leaves two adjacent spaces.",
+						"examples": ["Fallback unit responsibility", "Unit index", "Evidence grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "derivedResponsibility",
 						"type": "string",
-						"description": "Placeholder sentence of the form Owns the title purpose. It names a kind and title only and is not a reviewed description of behavior."
+						"description": "A placeholder sentence for a unit nobody has described yet, in the form Owns the title purpose followed by a period, where the purpose is the value the kind looks up in the purpose table, or the kind followed by unit when that lookup finds nothing. It restates only the kind and title and contains no marker that it is derived, so it must not be read as a reviewed description of behavior.",
+						"examples": [
+							"Owns the Fallback unit responsibility shared function.",
+							"Owns the Unit index service workflow.",
+							"Owns the Evidence grid Svelte component."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
