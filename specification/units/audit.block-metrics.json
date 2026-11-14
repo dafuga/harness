@@ -23,63 +23,88 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "parameterCount.line",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source-code line scanned to estimate a function's parameter count. The helper uses only the first parenthesized substring and counts comma-separated segments, so it is not a syntax-aware parser.",
+				"examples": ["function combine(left, right) {", "run()"]
 			},
 			{
 				"name": "complexityPoints.line",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Single source-code line scanned for branch-like tokens. It counts if, for, while, case, catch, and question marks followed by whitespace, except that any line containing the literal return / produces zero; switch is not counted.",
+				"examples": ["if (ready) return value;", "return /foo/.test(line) ? yes : no"]
 			},
 			{
 				"name": "maxDepth.lines",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Ordered source lines scanned to estimate maximum control-block depth. A line matching if, for, while, switch, or catch before an opening brace increments once, and each closing brace decrements the depth down to zero; this is a brace-counting heuristic.",
+				"examples": [
+					[],
+					["if (ready) {", "while (running) {", "}", "}"]
+				]
 			},
 			{
 				"name": "count.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String whose occurrences of the supplied token are counted by splitting. Non-empty tokens count non-overlapping separators, while an empty token follows JavaScript split('') behavior.",
+				"examples": ["red,green,red", "aaaa"]
 			},
 			{
 				"name": "count.token",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String separator used to count occurrences in the value argument. Non-empty separators are counted without overlap; an empty string follows JavaScript split('') behavior and can produce a non-occurrence-style result.",
+				"examples": [",", "aa"]
 			},
 			{
 				"name": "capitalize.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String whose first UTF-16 code unit is uppercased while the remaining substring is preserved. An empty string stays empty, and the rest of the string is not lowercased.",
+				"examples": ["blockMetrics", ""]
 			}
 		],
 		"outputs": [
 			{
 				"name": "parameterCount",
-				"type": "number"
+				"type": "number",
+				"description": "Estimated count of comma-separated segments in the first parenthesized part of the input line. It returns zero when no parenthesized part is found or that part trims to empty; it does not parse language syntax.",
+				"examples": [2, 0]
 			},
 			{
 				"name": "complexityPoints",
-				"type": "number"
+				"type": "number",
+				"description": "Count of the matched branch-like tokens in the line, or zero when the line contains return /. Only if, for, while, case, catch, and question marks followed by whitespace are matched; switch is excluded.",
+				"examples": [1, 0]
 			},
 			{
 				"name": "maxDepth",
-				"type": "number"
+				"type": "number",
+				"description": "Greatest depth reached by the helper's control-block and closing-brace scan. It is zero if no qualifying control-block line occurs and does not represent parser-validated nesting.",
+				"examples": [0, 2]
 			},
 			{
 				"name": "count",
-				"type": "number"
+				"type": "number",
+				"description": "Number returned as split(value, token).length minus one. For a non-empty token this counts non-overlapping separators; an empty token uses JavaScript split('') behavior.",
+				"examples": [2, 2]
 			},
 			{
 				"name": "capitalize",
-				"type": "string"
+				"type": "string",
+				"description": "String returned with its first UTF-16 code unit uppercased and the remaining substring unchanged. Empty input returns an empty string.",
+				"examples": ["BlockMetrics", ""]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "parameterCount",
@@ -87,17 +112,21 @@
 					{
 						"name": "parameterCount.line",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source-code line scanned to estimate a function's parameter count. The helper uses only the first parenthesized substring and counts comma-separated segments, so it is not a syntax-aware parser.",
+						"examples": ["function combine(left, right) {", "run()"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "parameterCount",
-						"type": "number"
+						"type": "number",
+						"description": "Estimated count of comma-separated segments in the first parenthesized part of the input line. It returns zero when no parenthesized part is found or that part trims to empty; it does not parse language syntax.",
+						"examples": [2, 0]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "complexityPoints",
@@ -105,17 +134,21 @@
 					{
 						"name": "complexityPoints.line",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Single source-code line scanned for branch-like tokens. It counts if, for, while, case, catch, and question marks followed by whitespace, except that any line containing the literal return / produces zero; switch is not counted.",
+						"examples": ["if (ready) return value;", "return /foo/.test(line) ? yes : no"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "complexityPoints",
-						"type": "number"
+						"type": "number",
+						"description": "Count of the matched branch-like tokens in the line, or zero when the line contains return /. Only if, for, while, case, catch, and question marks followed by whitespace are matched; switch is excluded.",
+						"examples": [1, 0]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "maxDepth",
@@ -123,17 +156,24 @@
 					{
 						"name": "maxDepth.lines",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Ordered source lines scanned to estimate maximum control-block depth. A line matching if, for, while, switch, or catch before an opening brace increments once, and each closing brace decrements the depth down to zero; this is a brace-counting heuristic.",
+						"examples": [
+							[],
+							["if (ready) {", "while (running) {", "}", "}"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "maxDepth",
-						"type": "number"
+						"type": "number",
+						"description": "Greatest depth reached by the helper's control-block and closing-brace scan. It is zero if no qualifying control-block line occurs and does not represent parser-validated nesting.",
+						"examples": [0, 2]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "count",
@@ -141,22 +181,28 @@
 					{
 						"name": "count.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String whose occurrences of the supplied token are counted by splitting. Non-empty tokens count non-overlapping separators, while an empty token follows JavaScript split('') behavior.",
+						"examples": ["red,green,red", "aaaa"]
 					},
 					{
 						"name": "count.token",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String separator used to count occurrences in the value argument. Non-empty separators are counted without overlap; an empty string follows JavaScript split('') behavior and can produce a non-occurrence-style result.",
+						"examples": [",", "aa"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "count",
-						"type": "number"
+						"type": "number",
+						"description": "Number returned as split(value, token).length minus one. For a non-empty token this counts non-overlapping separators; an empty token uses JavaScript split('') behavior.",
+						"examples": [2, 2]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "capitalize",
@@ -164,17 +210,21 @@
 					{
 						"name": "capitalize.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String whose first UTF-16 code unit is uppercased while the remaining substring is preserved. An empty string stays empty, and the rest of the string is not lowercased.",
+						"examples": ["blockMetrics", ""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "capitalize",
-						"type": "string"
+						"type": "string",
+						"description": "String returned with its first UTF-16 code unit uppercased and the remaining substring unchanged. Empty input returns an empty string.",
+						"examples": ["BlockMetrics", ""]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
