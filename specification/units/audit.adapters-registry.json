@@ -26,59 +26,80 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "adaptersForProfile.profile",
 				"type": "Exclude<AuditProfile, 'auto'>",
-				"required": true
+				"required": true,
+				"description": "A concrete audit profile used to filter the adapter registry. The auto profile is excluded and cannot be supplied here.",
+				"examples": ["app", "lib", "dapp"]
 			},
 			{
 				"name": "adapterForExtension.extension",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The file extension searched within adapters selected for the requested profile. Matching uses exact string inclusion.",
+				"examples": [".go"]
 			},
 			{
 				"name": "adapterForExtension.profile",
 				"type": "Exclude<AuditProfile, 'auto'>",
-				"required": true
+				"required": true,
+				"description": "A concrete audit profile used to select the adapters searched for the extension. The auto profile is excluded and cannot be supplied here.",
+				"examples": ["dapp", "lib", "app"]
 			},
 			{
 				"name": "resolveAuditProfile.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root path consulted when profile is auto. Detection checks package.json harness.kind, contract directories, and Svelte markers.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+				]
 			},
 			{
 				"name": "resolveAuditProfile.profile",
 				"type": "AuditProfile",
 				"required": false,
-				"default": "auto"
+				"default": "auto",
+				"description": "The audit profile to return directly, or auto to detect a profile from the repository root. It defaults to auto.",
+				"examples": ["auto", "app", "dapp"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditAdapters",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The ordered registry of imported audit adapter implementations. It is the source list filtered by profile and extension lookup."
 			},
 			{
 				"name": "adaptersForProfile",
-				"type": "AuditAdapter[]"
+				"type": "AuditAdapter[]",
+				"description": "The adapters whose profiles include the requested profile, preserving registry order. The result scopes the later extension lookup."
 			},
 			{
 				"name": "adapterForExtension",
-				"type": "AuditAdapter | undefined"
+				"type": "AuditAdapter | undefined",
+				"description": "The first adapter in the profile-filtered registry whose extensions include the supplied string, or undefined when none matches."
 			},
 			{
 				"name": "knownAuditExtensions",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The deduplicated extensions declared by registered adapters together with the built-in future extensions. First occurrence order is preserved.",
+				"examples": [
+					[".go", ".java", ".kt", ".m", ".mm", ".swift", ".vue"]
+				]
 			},
 			{
 				"name": "resolveAuditProfile",
-				"type": "Exclude<AuditProfile, 'auto'>"
+				"type": "Exclude<AuditProfile, 'auto'>",
+				"description": "The supplied concrete profile, or the profile detected from the repository root when the input is auto. Detection checks Harness package kind, contract workspace markers, and Svelte app markers.",
+				"examples": ["app", "lib", "dapp"]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "adaptersForProfile",
@@ -86,17 +107,20 @@
 					{
 						"name": "adaptersForProfile.profile",
 						"type": "Exclude<AuditProfile, 'auto'>",
-						"required": true
+						"required": true,
+						"description": "A concrete audit profile used to filter the adapter registry. The auto profile is excluded and cannot be supplied here.",
+						"examples": ["app", "lib", "dapp"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "adaptersForProfile",
-						"type": "AuditAdapter[]"
+						"type": "AuditAdapter[]",
+						"description": "The adapters whose profiles include the requested profile, preserving registry order. The result scopes the later extension lookup."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "adapterForExtension",
@@ -104,22 +128,27 @@
 					{
 						"name": "adapterForExtension.extension",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The file extension searched within adapters selected for the requested profile. Matching uses exact string inclusion.",
+						"examples": [".go"]
 					},
 					{
 						"name": "adapterForExtension.profile",
 						"type": "Exclude<AuditProfile, 'auto'>",
-						"required": true
+						"required": true,
+						"description": "A concrete audit profile used to select the adapters searched for the extension. The auto profile is excluded and cannot be supplied here.",
+						"examples": ["dapp", "lib", "app"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "adapterForExtension",
-						"type": "AuditAdapter | undefined"
+						"type": "AuditAdapter | undefined",
+						"description": "The first adapter in the profile-filtered registry whose extensions include the supplied string, or undefined when none matches."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "knownAuditExtensions",
@@ -127,11 +156,15 @@
 				"outputs": [
 					{
 						"name": "knownAuditExtensions",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The deduplicated extensions declared by registered adapters together with the built-in future extensions. First occurrence order is preserved.",
+						"examples": [
+							[".go", ".java", ".kt", ".m", ".mm", ".swift", ".vue"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resolveAuditProfile",
@@ -139,23 +172,31 @@
 					{
 						"name": "resolveAuditProfile.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root path consulted when profile is auto. Detection checks package.json harness.kind, contract directories, and Svelte markers.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+						]
 					},
 					{
 						"name": "resolveAuditProfile.profile",
 						"type": "AuditProfile",
 						"required": false,
-						"default": "auto"
+						"default": "auto",
+						"description": "The audit profile to return directly, or auto to detect a profile from the repository root. It defaults to auto.",
+						"examples": ["auto", "app", "dapp"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resolveAuditProfile",
-						"type": "Exclude<AuditProfile, 'auto'>"
+						"type": "Exclude<AuditProfile, 'auto'>",
+						"description": "The supplied concrete profile, or the profile detected from the repository root when the input is auto. Detection checks Harness package kind, contract workspace markers, and Svelte app markers.",
+						"examples": ["app", "lib", "dapp"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
