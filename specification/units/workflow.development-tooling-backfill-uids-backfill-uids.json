@@ -22,18 +22,59 @@
 				"type": "BackfillOptions",
 				"required": false,
 				"default": {},
-				"description": "The project root and whether to write; without write it only reports."
+				"description": "The optional root passed to loadUnits and a write flag controlling whether changes are applied. The function defaults the whole options argument to {}, so omitted or false write reports planned changes only; only active stored units are reviewed.",
+				"examples": [
+					{},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13",
+						"write": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "backfillUids",
 				"type": "Promise<BackfillReport>",
-				"description": "A report of the units given a uid, the files annotated, the units kept in the registry only and the units whose files disagree."
+				"description": "The resolved BackfillReport counts active stored units and lists newly assigned uids, source paths needing uid annotations, registry-only unit ids, uid disagreements, and files written. If write is omitted or false, planned assignments and annotations are still listed, written is zero, and conflicting units are skipped.",
+				"examples": [
+					{
+						"units": 0,
+						"assigned": [],
+						"annotated": [],
+						"registryOnly": [],
+						"conflicts": [],
+						"written": 0
+					},
+					{
+						"units": 3,
+						"assigned": [
+							{
+								"id": "workflow.development-tooling-backfill-uids-backfill-uids",
+								"uid": "u_ycgebzbwzx"
+							}
+						],
+						"annotated": ["src/workflows/development-tooling/backfill-uids/backfillUids.ts"],
+						"registryOnly": ["reports.component.evidence-grid"],
+						"conflicts": [
+							{
+								"id": "function.unit-types",
+								"reason": "its files announce 2 different uids"
+							}
+						],
+						"written": 2
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The promise rejects with a propagated error if loadUnits fails, or if a source read, source write, or registry write fails while write is enabled. The workflow does not catch or transform these failures."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "backfillUids",
@@ -43,17 +84,58 @@
 						"type": "BackfillOptions",
 						"required": false,
 						"default": {},
-						"description": "The project root and whether to write; without write it only reports."
+						"description": "The optional root passed to loadUnits and a write flag controlling whether changes are applied. The function defaults the whole options argument to {}, so omitted or false write reports planned changes only; only active stored units are reviewed.",
+						"examples": [
+							{},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13",
+								"write": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "backfillUids",
 						"type": "Promise<BackfillReport>",
-						"description": "A report of the units given a uid, the files annotated, the units kept in the registry only and the units whose files disagree."
+						"description": "The resolved BackfillReport counts active stored units and lists newly assigned uids, source paths needing uid annotations, registry-only unit ids, uid disagreements, and files written. If write is omitted or false, planned assignments and annotations are still listed, written is zero, and conflicting units are skipped.",
+						"examples": [
+							{
+								"units": 0,
+								"assigned": [],
+								"annotated": [],
+								"registryOnly": [],
+								"conflicts": [],
+								"written": 0
+							},
+							{
+								"units": 3,
+								"assigned": [
+									{
+										"id": "workflow.development-tooling-backfill-uids-backfill-uids",
+										"uid": "u_ycgebzbwzx"
+									}
+								],
+								"annotated": ["src/workflows/development-tooling/backfill-uids/backfillUids.ts"],
+								"registryOnly": ["reports.component.evidence-grid"],
+								"conflicts": [
+									{
+										"id": "function.unit-types",
+										"reason": "its files announce 2 different uids"
+									}
+								],
+								"written": 2
+							}
+						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise rejects with a propagated error if loadUnits fails, or if a source read, source write, or registry write fails while write is enabled. The workflow does not catch or transform these failures."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],
