@@ -12,27 +12,30 @@
 		"symbols": ["ImageBytesValidator", "ImageBytesValidator.validate"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ImageBytesValidator.validate.value",
 				"type": "Uint8Array",
-				"required": true
+				"required": true,
+				"description": "The image bytes from the image generator that validate checks on every call. The value must be a Uint8Array instance, and planImageCodec then requires a length from 33 to 33,554,432 bytes inclusive, nonzero big-endian width and height read from byte offsets 16 and 20 (the PNG IHDR fields) whose product is at most 32,000,000, and a pngjs decode that succeeds with CRC checking enabled."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ImageBytesValidator.validate",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "The same Uint8Array object that was passed in, returned by reference rather than as a copy and only after planImageCodec accepts the bytes. The width and height that planImageCodec decodes are discarded, so callers receive the original bytes rather than the dimensions."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown as an Error with the message 'Image generator did not return image bytes.' when the input is not a Uint8Array instance, before planImageCodec runs. Otherwise planImageCodec throws an Error with code 'invalid-image': 'Expected a complete PNG under 32 MiB' for fewer than 33 or more than 33,554,432 bytes, 'Image dimensions exceed limit' for a zero width or height or a width times height above 32,000,000, or 'PNG decoding failed' when pngjs throws while decoding, and validate does not catch it."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ImageBytesValidator.validate",
@@ -40,22 +43,25 @@
 					{
 						"name": "ImageBytesValidator.validate.value",
 						"type": "Uint8Array",
-						"required": true
+						"required": true,
+						"description": "The image bytes from the image generator that validate checks on every call. The value must be a Uint8Array instance, and planImageCodec then requires a length from 33 to 33,554,432 bytes inclusive, nonzero big-endian width and height read from byte offsets 16 and 20 (the PNG IHDR fields) whose product is at most 32,000,000, and a pngjs decode that succeeds with CRC checking enabled."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ImageBytesValidator.validate",
-						"type": "Uint8Array"
+						"type": "Uint8Array",
+						"description": "The same Uint8Array object that was passed in, returned by reference rather than as a copy and only after planImageCodec accepts the bytes. The width and height that planImageCodec decodes are discarded, so callers receive the original bytes rather than the dimensions."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as an Error with the message 'Image generator did not return image bytes.' when the input is not a Uint8Array instance, before planImageCodec runs. Otherwise planImageCodec throws an Error with code 'invalid-image': 'Expected a complete PNG under 32 MiB' for fewer than 33 or more than 33,554,432 bytes, 'Image dimensions exceed limit' for a zero width or height or a width times height above 32,000,000, or 'PNG decoding failed' when pngjs throws while decoding, and validate does not catch it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
