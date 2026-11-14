@@ -59,9 +59,15 @@
 </hx-dialog>
 
 <style>
+	/* A fieldset is never narrower than its content by default; on a phone it keeps the screen's
+	   width, and the recorded values, one word without spaces, wrap inside it. */
 	fieldset {
 		display: grid;
 		gap: var(--hx-space-12);
+		min-inline-size: 0;
+	}
+	output {
+		overflow-wrap: anywhere;
 	}
 	button.active {
 		outline: var(--hx-border-thick) solid var(--hx-color-primary);
