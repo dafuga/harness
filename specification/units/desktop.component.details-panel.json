@@ -30,23 +30,62 @@
 				"name": "DetailsPanel.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "Entity supplying its kind, size and performance text, owned source paths and identifier. A source request is scoped to this identifier. An empty source list produces “No source files recorded.”"
+				"description": "An entity detail record whose `sources` paths become selectable buttons and whose `id` scopes each source request. The component uses the list as provided; an empty list renders “No source files recorded.”",
+				"examples": [
+					{
+						"id": "desktop.component.details-panel",
+						"category": "components",
+						"kind": "component",
+						"title": "Source files",
+						"summary": "Lets a person read source files from the displayed entity and revision, only on the Source tab.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": "active",
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"sources": ["packages/desktop/src/components/shared-primitives/DetailsPanel.svelte"],
+						"size": {
+							"available": false,
+							"text": ""
+						},
+						"performance": {
+							"available": false,
+							"text": ""
+						}
+					}
+				]
 			},
 			{
 				"name": "DetailsPanel.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplying the source-reading bridge, snapshot revision commit and project context. These are required when a source is selected. Failures during that request, including unavailable required context, are caught and shown as text."
+				"description": "A WorkspaceState store instance supplying the bridge, snapshot revision and project context used by a source read. If the bridge or snapshot is unavailable when a path is selected, the caught access or request failure is rendered as error text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DetailsPanel",
 				"type": "markup",
-				"description": "Source files for the displayed entity and revision. Choosing a file clears old text and errors, requests its contents and shows the result. A failed read displays an alert."
+				"description": "The rendered section contains a Source files heading and one button for each `entity.sources` path, or the empty-state text when there are none. Selecting a path clears prior source and error text, requests `bridge.source` with the entity id, revision commit and project context, then shows returned text or a role=alert error and a `<pre>` labelled by the selected path."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
