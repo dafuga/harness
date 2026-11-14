@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { evaluateLoop } from '../src/workflows/loopEvaluate';
 import { nextLoopStep } from '../src/workflows/loopNext';
 import { searchLoops } from '../src/workflows/loopSearch';
@@ -151,6 +151,27 @@ test('loop evaluators report passing and failing commands', async () => {
 		expect(overflow.passed).toBe(false);
 		expect(overflow.results[0].stderr).toContain('output limit');
 	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+});
+
+test('loop evaluators receive the named GitHub credential without other secrets', async () => {
+	const root = await tempRoot('harness-loop-env-');
+	vi.stubEnv('GH_TOKEN', 'synthetic-github-token');
+	vi.stubEnv('HARNESS_UNRELATED_SECRET', 'must-not-cross');
+	try {
+		const command = `bun -e 'process.stdout.write(JSON.stringify({token:process.env.GH_TOKEN,secret:process.env.HARNESS_UNRELATED_SECRET}))'`;
+		await writeTemplate(root, 'environment', evaluatorTemplate('environment', command));
+		await createLoop({
+			root,
+			name: 'environment-loop',
+			goal: 'Check evaluator environment',
+			from: 'environment'
+		});
+		const result = await evaluateLoop({ root, loop: 'environment-loop' });
+		expect(JSON.parse(result.results[0].stdout)).toEqual({ token: 'synthetic-github-token' });
+	} finally {
+		vi.unstubAllEnvs();
 		await rm(root, { recursive: true, force: true });
 	}
 });
