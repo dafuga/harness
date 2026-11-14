@@ -27,53 +27,89 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LocalClientService.constructor.options",
 				"type": "LocalClientOptions",
-				"required": true
+				"required": true,
+				"description": "The options of one window client: shared holds the stores and services that every client of the computer shares (registry, outbox, arbiter, providers, generator, and the optional cache, remote and auth), choose goes to DesktopBridgeService, control goes to LocalOperationsService, and the optional defer replaces setImmediate as the defer function given to each attached socket's WireFramingService. The constructor builds the window's own ProjectSessionService and DesktopRunService from shared, and throws a TypeError when options or options.shared is undefined or null."
 			},
 			{
 				"name": "LocalClientService.attach.socket",
 				"type": "LocalSocket",
-				"required": true
+				"required": true,
+				"description": "The loopback socket that the transport admitted with a ticket of this window, used through its send, close, onText and onClose methods. attach registers the socket's text and close listeners, and closes it with 4401 when the wire session has ended."
 			},
 			{
 				"name": "LocalClientService.emit.channel",
 				"type": "WireChannel",
-				"required": true
+				"required": true,
+				"description": "The wire channel the value is sent on, which WireChannel limits to 'run', 'cache' or 'connection'; the two sends in this file use 'run' for run events. emit passes the channel through without checking it at runtime.",
+				"examples": ["run", "cache", "connection"]
 			},
 			{
 				"name": "LocalClientService.emit.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The payload that emit forwards unchanged to the wire session; the two sends in this file pass a RunEvent on the 'run' channel. emit does not inspect the value.",
+				"examples": [
+					{
+						"runId": "3f2b8c1e-9d4a-4b7e-8a51-6c2f0e9d7a13",
+						"kind": "status",
+						"phase": "queued",
+						"detail": "Starting plan"
+					},
+					{
+						"runId": "c81d0e47-2a6f-4f9b-b3d2-1e5a7c9f04e8",
+						"kind": "text",
+						"text": "Reading the approved design before writing the plan."
+					},
+					{
+						"runId": "9a4e6d21-7b3c-4e85-8f0a-2d6c1b9e5f73",
+						"kind": "finished",
+						"summary": "Plan saved; the change is ready to review.",
+						"verified": false
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "LocalClientService.ended",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the wire session of this window has ended, read from the wire session's ended flag on every access. While it is true, attach closes a new socket with 4401 and does not register it.",
+				"examples": [false, true]
 			},
 			{
 				"name": "LocalClientService.attach",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing: it closes the socket with 4401 when the wire session has ended, and otherwise tracks the socket and connects its text and close events to a new wire link. Errors while sending or accepting a frame do not throw; the socket closes with 4413 for a RemoteFailure coded 'too-large', 4429 for 'too-many-requests', and 4400 for any other error."
 			},
 			{
 				"name": "LocalClientService.emit",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing; it forwards the channel and value unchanged to the window's wire session."
 			},
 			{
 				"name": "LocalClientService.cancel",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing; it aborts the active run of this window's own DesktopRunService, if one is active, and leaves the runs of other clients alone."
 			},
 			{
 				"name": "LocalClientService.end",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing; it calls the unsubscribe that remote.onRunEvent returned, if there is one, ends the wire session, cancels this window's active run, and closes every socket still attached with 1001."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by the constructor when options or options.shared is undefined or null, since it destructures options.shared before building anything."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "LocalClientService.ended",
@@ -81,11 +117,13 @@
 				"outputs": [
 					{
 						"name": "LocalClientService.ended",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the wire session of this window has ended, read from the wire session's ended flag on every access. While it is true, attach closes a new socket with 4401 and does not register it.",
+						"examples": [false, true]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalClientService.attach",
@@ -93,17 +131,19 @@
 					{
 						"name": "LocalClientService.attach.socket",
 						"type": "LocalSocket",
-						"required": true
+						"required": true,
+						"description": "The loopback socket that the transport admitted with a ticket of this window, used through its send, close, onText and onClose methods. attach registers the socket's text and close listeners, and closes it with 4401 when the wire session has ended."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalClientService.attach",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing: it closes the socket with 4401 when the wire session has ended, and otherwise tracks the socket and connects its text and close events to a new wire link. Errors while sending or accepting a frame do not throw; the socket closes with 4413 for a RemoteFailure coded 'too-large', 4429 for 'too-many-requests', and 4400 for any other error."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalClientService.emit",
@@ -111,22 +151,45 @@
 					{
 						"name": "LocalClientService.emit.channel",
 						"type": "WireChannel",
-						"required": true
+						"required": true,
+						"description": "The wire channel the value is sent on, which WireChannel limits to 'run', 'cache' or 'connection'; the two sends in this file use 'run' for run events. emit passes the channel through without checking it at runtime.",
+						"examples": ["run", "cache", "connection"]
 					},
 					{
 						"name": "LocalClientService.emit.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The payload that emit forwards unchanged to the wire session; the two sends in this file pass a RunEvent on the 'run' channel. emit does not inspect the value.",
+						"examples": [
+							{
+								"runId": "3f2b8c1e-9d4a-4b7e-8a51-6c2f0e9d7a13",
+								"kind": "status",
+								"phase": "queued",
+								"detail": "Starting plan"
+							},
+							{
+								"runId": "c81d0e47-2a6f-4f9b-b3d2-1e5a7c9f04e8",
+								"kind": "text",
+								"text": "Reading the approved design before writing the plan."
+							},
+							{
+								"runId": "9a4e6d21-7b3c-4e85-8f0a-2d6c1b9e5f73",
+								"kind": "finished",
+								"summary": "Plan saved; the change is ready to review.",
+								"verified": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalClientService.emit",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing; it forwards the channel and value unchanged to the window's wire session."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalClientService.cancel",
@@ -134,11 +197,12 @@
 				"outputs": [
 					{
 						"name": "LocalClientService.cancel",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing; it aborts the active run of this window's own DesktopRunService, if one is active, and leaves the runs of other clients alone."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalClientService.end",
@@ -146,11 +210,12 @@
 				"outputs": [
 					{
 						"name": "LocalClientService.end",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing; it calls the unsubscribe that remote.onRunEvent returned, if there is one, ends the wire session, cancels this window's active run, and closes every socket still attached with 1001."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -160,17 +225,25 @@
 					{
 						"name": "LocalClientService.constructor.options",
 						"type": "LocalClientOptions",
-						"required": true
+						"required": true,
+						"description": "The options of one window client: shared holds the stores and services that every client of the computer shares (registry, outbox, arbiter, providers, generator, and the optional cache, remote and auth), choose goes to DesktopBridgeService, control goes to LocalOperationsService, and the optional defer replaces setImmediate as the defer function given to each attached socket's WireFramingService. The constructor builds the window's own ProjectSessionService and DesktopRunService from shared, and throws a TypeError when options or options.shared is undefined or null."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalClientService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The LocalClientService instance that new produces, with its session, runs and wire session already built."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by the constructor when options or options.shared is undefined or null, since it destructures options.shared before building anything."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
