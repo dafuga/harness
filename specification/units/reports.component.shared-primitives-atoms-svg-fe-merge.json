@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feMerge element; native HTML content rules still apply."
+				"description": "An optional Svelte Snippet that is rendered with {@render children()} as the content of the feMerge element; when it is omitted, the {#if children} check skips rendering and the element has no content. The component does not validate the snippet or what it renders, so nothing checks the content placed inside feMerge."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeMerge",
 				"type": "markup",
-				"description": "The actual native feMerge element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native SVG feMerge element itself (svelte:element with the fixed tag feMerge in the svg namespace), with every prop except children spread onto it as attributes and the children snippet rendered inside it when provided. No wrapper element is added, and the attributes are passed through without validation."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
