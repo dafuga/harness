@@ -23,40 +23,80 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProcessRuntimeAdapter.constructor.config",
 				"type": "ProcessRuntimeConfig",
-				"required": true
+				"required": true,
+				"description": "The process configuration supplies the required executable and optional arguments, persistence mode, and timeout. Missing args becomes [], missing timeoutMs uses 30000 ms, and persistent mode keeps one child for line exchanges.",
+				"examples": [
+					{
+						"command": "node",
+						"args": ["-e", "console.log(JSON.stringify({ok:true,output:null}))"],
+						"persistent": false,
+						"timeoutMs": 30000
+					}
+				]
 			},
 			{
 				"name": "ProcessRuntimeAdapter.invoke.request",
 				"type": "RuntimeRequest",
-				"required": true
+				"required": true,
+				"description": "A runtime request contains a required operation string and optional input payload. invoke forwards it only when it is portable JSON: finite numbers, well-formed strings, plain objects and arrays, with at most 64 nested object or array levels.",
+				"examples": [
+					{
+						"operation": "render",
+						"input": {
+							"path": "src/index.ts"
+						}
+					}
+				]
 			},
 			{
 				"name": "ProcessRuntimeAdapter.invokeText.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Raw text sent to the child process. Persistent mode writes it as one line after replacing embedded newlines with spaces; one-shot mode writes the text as provided.",
+				"examples": ["{\"operation\":\"render\",\"input\":{\"path\":\"src/index.ts\"}}", "not-json"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProcessRuntimeAdapter.invoke",
-				"type": "Promise<RuntimeResponse>"
+				"type": "Promise<RuntimeResponse>",
+				"description": "Resolves to a RuntimeResponse success envelope or failure envelope. Non-portable requests, invalid response text, process startup or exit failures, and timeouts are returned as failure responses.",
+				"examples": [
+					{
+						"ok": true,
+						"output": null
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-timeout",
+							"message": "no response within 30000 ms"
+						}
+					}
+				]
 			},
 			{
 				"name": "ProcessRuntimeAdapter.invokeText",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves to the child’s stdout text unchanged, or JSON text encoding a failure response. A persistent exchange returns its next line, while one-shot mode returns all captured stdout.",
+				"examples": [
+					"{\"ok\":true,\"output\":null}",
+					"{\"ok\":false,\"error\":{\"code\":\"runtime-timeout\",\"message\":\"no response within 30000 ms\"}}"
+				]
 			},
 			{
 				"name": "ProcessRuntimeAdapter.close",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after requesting termination of the persistent child, if one exists. It has no process to close in one-shot mode."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ProcessRuntimeAdapter.invoke",
@@ -64,17 +104,40 @@
 					{
 						"name": "ProcessRuntimeAdapter.invoke.request",
 						"type": "RuntimeRequest",
-						"required": true
+						"required": true,
+						"description": "A runtime request contains a required operation string and optional input payload. invoke forwards it only when it is portable JSON: finite numbers, well-formed strings, plain objects and arrays, with at most 64 nested object or array levels.",
+						"examples": [
+							{
+								"operation": "render",
+								"input": {
+									"path": "src/index.ts"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProcessRuntimeAdapter.invoke",
-						"type": "Promise<RuntimeResponse>"
+						"type": "Promise<RuntimeResponse>",
+						"description": "Resolves to a RuntimeResponse success envelope or failure envelope. Non-portable requests, invalid response text, process startup or exit failures, and timeouts are returned as failure responses.",
+						"examples": [
+							{
+								"ok": true,
+								"output": null
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-timeout",
+									"message": "no response within 30000 ms"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProcessRuntimeAdapter.invokeText",
@@ -82,17 +145,27 @@
 					{
 						"name": "ProcessRuntimeAdapter.invokeText.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Raw text sent to the child process. Persistent mode writes it as one line after replacing embedded newlines with spaces; one-shot mode writes the text as provided.",
+						"examples": [
+							"{\"operation\":\"render\",\"input\":{\"path\":\"src/index.ts\"}}",
+							"not-json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProcessRuntimeAdapter.invokeText",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves to the child’s stdout text unchanged, or JSON text encoding a failure response. A persistent exchange returns its next line, while one-shot mode returns all captured stdout.",
+						"examples": [
+							"{\"ok\":true,\"output\":null}",
+							"{\"ok\":false,\"error\":{\"code\":\"runtime-timeout\",\"message\":\"no response within 30000 ms\"}}"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProcessRuntimeAdapter.close",
@@ -100,11 +173,12 @@
 				"outputs": [
 					{
 						"name": "ProcessRuntimeAdapter.close",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after requesting termination of the persistent child, if one exists. It has no process to close in one-shot mode."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -114,17 +188,27 @@
 					{
 						"name": "ProcessRuntimeAdapter.constructor.config",
 						"type": "ProcessRuntimeConfig",
-						"required": true
+						"required": true,
+						"description": "The process configuration supplies the required executable and optional arguments, persistence mode, and timeout. Missing args becomes [], missing timeoutMs uses 30000 ms, and persistent mode keeps one child for line exchanges.",
+						"examples": [
+							{
+								"command": "node",
+								"args": ["-e", "console.log(JSON.stringify({ok:true,output:null}))"],
+								"persistent": false,
+								"timeoutMs": 30000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProcessRuntimeAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates the adapter with kind process, the configured or default timeout, and an optional persistent line-process session. The persistent child starts on its first exchange."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
