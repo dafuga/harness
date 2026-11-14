@@ -1,0 +1,117 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.verification-evidence-run-verify-verification-service-build-scope",
+	"kind": "workflow",
+	"title": "buildScope",
+	"responsibility": "Owns the buildScope command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/verification-evidence/run-verify/verification-service/buildScope.ts"],
+		"symbols": ["neededBuilds", "scopedSetup"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "neededBuilds.scenarios",
+				"type": "ScenarioManifest[]",
+				"required": true
+			},
+			{
+				"name": "scopedSetup.setup",
+				"type": "VerifyConfig['setup']",
+				"required": true
+			},
+			{
+				"name": "scopedSetup.needed",
+				"type": "ReadonlySet<string> | 'all'",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "neededBuilds",
+				"type": "Set<string> | 'all'"
+			},
+			{
+				"name": "scopedSetup",
+				"type": "VerifyConfig['setup']"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "neededBuilds",
+				"inputs": [
+					{
+						"name": "neededBuilds.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "neededBuilds",
+						"type": "Set<string> | 'all'"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scopedSetup",
+				"inputs": [
+					{
+						"name": "scopedSetup.setup",
+						"type": "VerifyConfig['setup']",
+						"required": true
+					},
+					{
+						"name": "scopedSetup.needed",
+						"type": "ReadonlySet<string> | 'all'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopedSetup",
+						"type": "VerifyConfig['setup']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/verification-evidence/run-verify/verification-service/buildScope.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/verification-evidence/run-verify/verification-service/buildScope.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

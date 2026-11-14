@@ -31,6 +31,11 @@
 				"type": "RecordedBuild[]",
 				"required": false,
 				"description": "Optional observed build entries; undefined means the project declared no build."
+			},
+			{
+				"name": "recordedBuilds.skipped",
+				"type": "string[]",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -50,12 +55,17 @@
 						"type": "RecordedBuild[]",
 						"required": false,
 						"description": "Optional observed build entries; undefined means the project declared no build."
+					},
+					{
+						"name": "recordedBuilds.skipped",
+						"type": "string[]",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedBuilds",
-						"type": "Pick<VerificationRecord, 'builds'>",
+						"type": "Pick<VerificationRecord, 'builds' | 'skippedBuilds'>",
 						"description": "Empty object when observations are undefined, otherwise builds containing only id, directory, buildId and files. An explicitly empty array remains builds: []."
 					}
 				],
