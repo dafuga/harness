@@ -16,37 +16,60 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ClaudeToolsSerializer.constructor.repository",
 				"type": "CodexSessionRepository",
-				"required": true
+				"required": true,
+				"description": "The repository instance retained by the serializer and used by each generated tool to wait for its result. It must expose waitForTool(session, id), which receives the supplied session and a generated call_-prefixed UUID."
 			},
 			{
 				"name": "ClaudeToolsSerializer.server.definitions",
 				"type": "GatewayItem[]",
-				"required": true
+				"required": true,
+				"description": "The definitions passed through gatewayToolDefinitions and mapped to SDK tool definitions when server is called. Mapped entries are limited to function and custom; function entries are converted from their JSON Schema parameters, while custom entries receive a required string input field.",
+				"examples": [
+					[
+						{
+							"type": "function",
+							"name": "search_files",
+							"description": "Search repository files by query.",
+							"parameters": {
+								"type": "object",
+								"properties": {
+									"query": {
+										"type": "string"
+									}
+								},
+								"required": ["query"]
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "ClaudeToolsSerializer.server.session",
 				"type": "GatewaySession",
-				"required": true
+				"required": true,
+				"description": "The gateway session captured by the generated tool callbacks and passed to waitForTool. If session.emit exists, each tool callback emits its call event before awaiting the result; event arguments are JSON serialized."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ClaudeToolsSerializer.server",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The server value returned by createSdkMcpServer, configured with name codex, version 0.1.0, and one generated tool for each mapped definition. Each generated tool is named tool_<index> and only supports function or custom definitions."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown while creating a tool when its definition type is neither function nor custom. The message is Unsupported Codex tool shape."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ClaudeToolsSerializer.server",
@@ -54,22 +77,49 @@
 					{
 						"name": "ClaudeToolsSerializer.server.definitions",
 						"type": "GatewayItem[]",
-						"required": true
+						"required": true,
+						"description": "The definitions passed through gatewayToolDefinitions and mapped to SDK tool definitions when server is called. Mapped entries are limited to function and custom; function entries are converted from their JSON Schema parameters, while custom entries receive a required string input field.",
+						"examples": [
+							[
+								{
+									"type": "function",
+									"name": "search_files",
+									"description": "Search repository files by query.",
+									"parameters": {
+										"type": "object",
+										"properties": {
+											"query": {
+												"type": "string"
+											}
+										},
+										"required": ["query"]
+									}
+								}
+							]
+						]
 					},
 					{
 						"name": "ClaudeToolsSerializer.server.session",
 						"type": "GatewaySession",
-						"required": true
+						"required": true,
+						"description": "The gateway session captured by the generated tool callbacks and passed to waitForTool. If session.emit exists, each tool callback emits its call event before awaiting the result; event arguments are JSON serialized."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeToolsSerializer.server",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The server value returned by createSdkMcpServer, configured with name codex, version 0.1.0, and one generated tool for each mapped definition. Each generated tool is named tool_<index> and only supports function or custom definitions."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown while creating a tool when its definition type is neither function nor custom. The message is Unsupported Codex tool shape."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,17 +129,19 @@
 					{
 						"name": "ClaudeToolsSerializer.constructor.repository",
 						"type": "CodexSessionRepository",
-						"required": true
+						"required": true,
+						"description": "The repository instance retained by the serializer and used by each generated tool to wait for its result. It must expose waitForTool(session, id), which receives the supplied session and a generated call_-prefixed UUID."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeToolsSerializer.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed ClaudeToolsSerializer instance, retaining the supplied repository and initializing a GatewayEventsService field."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
