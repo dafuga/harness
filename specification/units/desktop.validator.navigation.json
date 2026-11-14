@@ -12,18 +12,22 @@
 		"symbols": ["NavigationValidator", "NavigationValidator.validate"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NavigationValidator.validate.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The navigation URL to check, which may be any value at runtime. Only a string can pass, and it must parse as an absolute URL with protocol 'harness:', hostname 'app', and no username or password; any non-string returns false without parsing.",
+				"examples": ["harness://app/", "https://example.com/", null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "NavigationValidator.validate",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "The validation verdict: true only when the input is a string that parses as an absolute URL with protocol 'harness:', hostname 'app', and no username or password. Every other input returns false, including non-strings and strings that are not valid absolute URLs; validate never throws.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
@@ -35,17 +39,21 @@
 					{
 						"name": "NavigationValidator.validate.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The navigation URL to check, which may be any value at runtime. Only a string can pass, and it must parse as an absolute URL with protocol 'harness:', hostname 'app', and no username or password; any non-string returns false without parsing.",
+						"examples": ["harness://app/", "https://example.com/", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NavigationValidator.validate",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "The validation verdict: true only when the input is a string that parses as an absolute URL with protocol 'harness:', hostname 'app', and no username or password. Every other input returns false, including non-strings and strings that are not valid absolute URLs; validate never throws.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
