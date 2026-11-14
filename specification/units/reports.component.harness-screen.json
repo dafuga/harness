@@ -22,23 +22,25 @@
 				"name": "HarnessScreen.title",
 				"type": "string",
 				"required": true,
-				"description": "Required page title, followed by the Harness name in the document title."
+				"description": "The name of this explorer screen, which the component places in the document's title element as '{title} · Harness'. It is required and used as given, with no trimming, validation or length limit, so an empty string produces a document title of ' · Harness'.",
+				"examples": ["Branches", "Commits", "Categories"]
 			},
 			{
 				"name": "HarnessScreen.content",
 				"type": "ExplorerScreen",
 				"required": true,
-				"description": "Required explorer screen component to render through the console."
+				"description": "The component that renders this screen, which HarnessScreen passes unchanged to HarnessConsole as its content. It is required with no default, so every page must supply its own."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessScreen",
 				"type": "markup",
-				"description": "Explorer console bound to the current route and query beneath /harness. Navigation uses the framework router with the requested history replacement while preserving focus and avoiding automatic page scrolling."
+				"description": "The rendered markup: a document title of '{title} · Harness' and a HarnessConsole bound to the current URL's pathname minus its first 8 characters ('/harness') plus the query string, so it updates whenever the route or query changes. The '/harness' prefix is not checked, and the navigate function passed to the console calls SvelteKit's goto with '/harness' + path, replaceState set to replace, noScroll: true and keepFocus: true."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
