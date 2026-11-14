@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native set element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet for the native SVG <set> element's child content; it is rendered only when truthy. The implementation does not forward children as an attribute."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgSet",
 				"type": "markup",
-				"description": "The actual native set element, with forwarded attributes and content and no additional wrapper."
+				"description": "A native SVG <set> element with every prop except children forwarded as attributes and the children snippet rendered when truthy. It adds no wrapper element or other behavior."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
