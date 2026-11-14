@@ -21,81 +21,296 @@
 				"name": "readRecords.deps",
 				"type": "CollaborationDependencies",
 				"required": true,
-				"description": "Repository dependency used to read and validate a snapshot."
+				"description": "Dependencies whose repository.read() supplies the snapshot; readRecords uses no other member of this object."
 			},
 			{
 				"name": "currentProject.records",
 				"type": "CollaborationRecords",
 				"required": true,
-				"description": "Validated records snapshot to search."
+				"description": "Records snapshot that currentProject does not parse or validate; it searches only the projects and members arrays.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"projects": [
+							{
+								"id": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"name": "Design system audit",
+								"sourceRepository": {
+									"id": 612088341,
+									"owner": "acme-design",
+									"name": "design-system",
+									"private": true,
+									"installationId": 48213907
+								},
+								"createdAt": "2026-09-08T16:42:10.000Z",
+								"ownerId": "google-110418263957201846395"
+							}
+						],
+						"members": [
+							{
+								"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"actorId": "google-110418263957201846395",
+								"email": "maya.chen@example.com",
+								"name": "Maya Chen",
+								"role": "owner"
+							},
+							{
+								"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"actorId": "google-209884713522600918374",
+								"email": "jonas.reyes@example.com",
+								"name": "Jonas Reyes",
+								"role": "writer"
+							}
+						],
+						"invitations": [
+							{
+								"id": "e1f0a9b8-2c7d-4a3e-b6f5-0d9c8b7a6e5f",
+								"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"expiresAt": "2026-11-21T09:00:00.000Z",
+								"codeHash": "5e8a1c3f0d9b7e2a4c6f8d1b3e5a7c9d0f2b4e6a8c1d3f5b7e9a0c2d4f6b8e1a",
+								"email": "priya.raman@example.com",
+								"role": "commenter",
+								"acceptedBy": null
+							}
+						],
+						"threads": [
+							{
+								"id": "c3a9f7e2-5b1d-4e6a-8f20-9d4c7b1e3a58",
+								"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"anchor": {
+									"branch": "main",
+									"commit": "8c3e0f7a2d91b5e46f0a1c7d9e2b3f58a6d4c10e",
+									"entityId": "reports.component.evidence-grid",
+									"version": "v001",
+									"imageSha256": "d41f7a2c9e05b8316a3d0f4c7e92b1a85d6e3f0c49b7a2e1d8c5f3069a7b4e2c",
+									"state": "default",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.12,
+										"y": 0.4,
+										"width": 0.5,
+										"height": 0.25
+									}
+								},
+								"comments": [
+									{
+										"id": "a4d2c6e8-7f1b-4b9d-8e3a-5c0f2d7b9e14",
+										"requestId": "0b6f3d9a-e8c4-4f27-a1d5-7e3c9b0f6a82",
+										"actor": {
+											"id": "google-209884713522600918374",
+											"email": "jonas.reyes@example.com",
+											"name": "Jonas Reyes",
+											"emailVerified": true
+										},
+										"text": "The card padding looks tighter than the spec on tablet.",
+										"createdAt": "2026-10-30T11:15:04.000Z"
+									}
+								]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "currentProject.actor",
 				"type": "Actor",
 				"required": true,
-				"description": "Verified actor whose membership is required."
+				"description": "Actor checked against the strict actor schema (exactly id, email, name and emailVerified true); only actor.id is used to find the membership.",
+				"examples": [
+					{
+						"id": "google-110418263957201846395",
+						"email": "maya.chen@example.com",
+						"name": "Maya Chen",
+						"emailVerified": true
+					},
+					{
+						"id": "google-209884713522600918374",
+						"email": "jonas.reyes@example.com",
+						"name": "Jonas Reyes",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "currentProject.projectId",
 				"type": "string",
 				"required": true,
-				"description": "Project UUID to resolve."
+				"description": "Project id that must be a UUID and is compared exactly with the id of each project in records.projects.",
+				"examples": ["7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6", "a92f6c1e-08b4-4d7a-b3e5-6f1c2a9d8e47"]
 			},
 			{
 				"name": "currentProject.roles",
 				"type": "Role[]",
 				"required": false,
 				"default": ["owner", "writer", "commenter", "viewer"],
-				"description": "Allowed roles; defaults to owner, commenter and viewer."
+				"description": "Roles that may access the project; the actor's membership role must be one of them, and when omitted the default is owner, writer, commenter and viewer.",
+				"examples": [
+					["owner", "writer", "commenter", "viewer"],
+					["owner", "writer"],
+					["owner"]
+				]
 			},
 			{
 				"name": "transaction.deps",
 				"type": "CollaborationDependencies",
 				"required": true,
-				"description": "Repository dependency supporting read and compare-and-swap."
+				"description": "Dependencies whose repository.read() is called on each attempt and whose repository.compareAndSwap() is called only after a change; no other member is used."
 			},
 			{
 				"name": "transaction.operation",
 				"type": "(records: CollaborationRecords) => Promise<T>",
 				"required": true,
-				"description": "Async operation that may mutate parsed records and return a result; can run again after write conflicts."
+				"description": "Async callback that receives the parsed records and may mutate them; its resolved value becomes value. It runs again on a fresh snapshot after each failed compare-and-swap, for at most five attempts in total."
 			},
 			{
 				"name": "now.deps",
 				"type": "CollaborationDependencies",
 				"required": true,
-				"description": "Optional clock dependency; otherwise uses the current system date."
+				"description": "Dependencies whose optional now() clock supplies the date; when deps.now is absent, now returns a new Date for the system time."
 			}
 		],
 		"outputs": [
 			{
 				"name": "currentProject",
 				"type": "ProjectSummary",
-				"description": "Matching project with the actor’s membership role."
+				"description": "The matched project's stored fields with the actor's membership role added; collaborationCommit is not set by this function.",
+				"examples": [
+					{
+						"id": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+						"name": "Design system audit",
+						"sourceRepository": {
+							"id": 612088341,
+							"owner": "acme-design",
+							"name": "design-system",
+							"private": true,
+							"installationId": 48213907
+						},
+						"createdAt": "2026-09-08T16:42:10.000Z",
+						"ownerId": "google-110418263957201846395",
+						"role": "owner"
+					},
+					{
+						"id": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+						"name": "Design system audit",
+						"sourceRepository": {
+							"id": 612088341,
+							"owner": "acme-design",
+							"name": "design-system",
+							"private": true,
+							"installationId": 48213907
+						},
+						"createdAt": "2026-09-08T16:42:10.000Z",
+						"ownerId": "google-110418263957201846395",
+						"role": "writer"
+					}
+				]
 			},
 			{
 				"name": "readRecords",
 				"type": "Promise<CollaborationRecords>",
-				"description": "Parsed records from the repository snapshot."
+				"description": "Resolved CollaborationRecords parsed from the repository snapshot; the snapshot's revision is not returned.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"projects": [
+							{
+								"id": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"name": "Design system audit",
+								"sourceRepository": {
+									"id": 612088341,
+									"owner": "acme-design",
+									"name": "design-system",
+									"private": true,
+									"installationId": 48213907
+								},
+								"createdAt": "2026-09-08T16:42:10.000Z",
+								"ownerId": "google-110418263957201846395"
+							}
+						],
+						"members": [
+							{
+								"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"actorId": "google-110418263957201846395",
+								"email": "maya.chen@example.com",
+								"name": "Maya Chen",
+								"role": "owner"
+							},
+							{
+								"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"actorId": "google-209884713522600918374",
+								"email": "jonas.reyes@example.com",
+								"name": "Jonas Reyes",
+								"role": "writer"
+							}
+						],
+						"invitations": [
+							{
+								"id": "e1f0a9b8-2c7d-4a3e-b6f5-0d9c8b7a6e5f",
+								"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"expiresAt": "2026-11-21T09:00:00.000Z",
+								"codeHash": "5e8a1c3f0d9b7e2a4c6f8d1b3e5a7c9d0f2b4e6a8c1d3f5b7e9a0c2d4f6b8e1a",
+								"email": "priya.raman@example.com",
+								"role": "commenter",
+								"acceptedBy": null
+							}
+						],
+						"threads": [
+							{
+								"id": "c3a9f7e2-5b1d-4e6a-8f20-9d4c7b1e3a58",
+								"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"anchor": {
+									"branch": "main",
+									"commit": "8c3e0f7a2d91b5e46f0a1c7d9e2b3f58a6d4c10e",
+									"entityId": "reports.component.evidence-grid",
+									"version": "v001",
+									"imageSha256": "d41f7a2c9e05b8316a3d0f4c7e92b1a85d6e3f0c49b7a2e1d8c5f3069a7b4e2c",
+									"state": "default",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.12,
+										"y": 0.4,
+										"width": 0.5,
+										"height": 0.25
+									}
+								},
+								"comments": [
+									{
+										"id": "a4d2c6e8-7f1b-4b9d-8e3a-5c0f2d7b9e14",
+										"requestId": "0b6f3d9a-e8c4-4f27-a1d5-7e3c9b0f6a82",
+										"actor": {
+											"id": "google-209884713522600918374",
+											"email": "jonas.reyes@example.com",
+											"name": "Jonas Reyes",
+											"emailVerified": true
+										},
+										"text": "The card padding looks tighter than the spec on tablet.",
+										"createdAt": "2026-10-30T11:15:04.000Z"
+									}
+								]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "transaction",
 				"type": "Promise<{ value: T; revision: string }>",
-				"description": "Operation result and revision; unchanged records avoid a write, and changed records retry at most five times."
+				"description": "Resolved object whose value is the callback's result and whose revision is the snapshot revision when the records are unchanged, or the revision returned by compare-and-swap after a write. An all-zero revision means the collaboration branch is missing."
 			},
 			{
 				"name": "now",
 				"type": "Date",
-				"description": "Injected date or a new Date from the system clock."
+				"description": "The Date returned by deps.now() when the clock is provided and returns a value other than null or undefined, otherwise a new Date for the system time at the call. Exceptions thrown by deps.now() propagate unchanged."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid actors or records, denied projects or roles and five unsuccessful write attempts; callback and repository errors propagate."
+				"description": "Thrown as a plain Error (not an ExpectedCliError instance) with message 'Collaboration <code>' and a code property: 'invalid-input' for an invalid actor, project id or records, 'forbidden' when the project or the actor's membership is missing or the membership role is not in roles, and 'conflict' after five unsuccessful compare-and-swap writes. Errors from the transaction callback and the repository propagate unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "readRecords",
@@ -104,18 +319,106 @@
 						"name": "readRecords.deps",
 						"type": "CollaborationDependencies",
 						"required": true,
-						"description": "Repository dependency used to read and validate a snapshot."
+						"description": "Dependencies whose repository.read() supplies the snapshot; readRecords uses no other member of this object."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readRecords",
 						"type": "Promise<CollaborationRecords>",
-						"description": "Parsed records from the repository snapshot."
+						"description": "Resolved CollaborationRecords parsed from the repository snapshot; the snapshot's revision is not returned.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"projects": [
+									{
+										"id": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"name": "Design system audit",
+										"sourceRepository": {
+											"id": 612088341,
+											"owner": "acme-design",
+											"name": "design-system",
+											"private": true,
+											"installationId": 48213907
+										},
+										"createdAt": "2026-09-08T16:42:10.000Z",
+										"ownerId": "google-110418263957201846395"
+									}
+								],
+								"members": [
+									{
+										"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"actorId": "google-110418263957201846395",
+										"email": "maya.chen@example.com",
+										"name": "Maya Chen",
+										"role": "owner"
+									},
+									{
+										"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"actorId": "google-209884713522600918374",
+										"email": "jonas.reyes@example.com",
+										"name": "Jonas Reyes",
+										"role": "writer"
+									}
+								],
+								"invitations": [
+									{
+										"id": "e1f0a9b8-2c7d-4a3e-b6f5-0d9c8b7a6e5f",
+										"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"expiresAt": "2026-11-21T09:00:00.000Z",
+										"codeHash": "5e8a1c3f0d9b7e2a4c6f8d1b3e5a7c9d0f2b4e6a8c1d3f5b7e9a0c2d4f6b8e1a",
+										"email": "priya.raman@example.com",
+										"role": "commenter",
+										"acceptedBy": null
+									}
+								],
+								"threads": [
+									{
+										"id": "c3a9f7e2-5b1d-4e6a-8f20-9d4c7b1e3a58",
+										"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"anchor": {
+											"branch": "main",
+											"commit": "8c3e0f7a2d91b5e46f0a1c7d9e2b3f58a6d4c10e",
+											"entityId": "reports.component.evidence-grid",
+											"version": "v001",
+											"imageSha256": "d41f7a2c9e05b8316a3d0f4c7e92b1a85d6e3f0c49b7a2e1d8c5f3069a7b4e2c",
+											"state": "default",
+											"viewport": "desktop",
+											"region": {
+												"x": 0.12,
+												"y": 0.4,
+												"width": 0.5,
+												"height": 0.25
+											}
+										},
+										"comments": [
+											{
+												"id": "a4d2c6e8-7f1b-4b9d-8e3a-5c0f2d7b9e14",
+												"requestId": "0b6f3d9a-e8c4-4f27-a1d5-7e3c9b0f6a82",
+												"actor": {
+													"id": "google-209884713522600918374",
+													"email": "jonas.reyes@example.com",
+													"name": "Jonas Reyes",
+													"emailVerified": true
+												},
+												"text": "The card padding looks tighter than the spec on tablet.",
+												"createdAt": "2026-10-30T11:15:04.000Z"
+											}
+										]
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown as a plain Error with code 'invalid-input' when the snapshot's records fail the records schema, such as duplicate identities, unbound records, a project without an owner or duplicate request messages; repository read errors propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "currentProject",
@@ -124,42 +427,178 @@
 						"name": "currentProject.records",
 						"type": "CollaborationRecords",
 						"required": true,
-						"description": "Validated records snapshot to search."
+						"description": "Records snapshot that currentProject does not parse or validate; it searches only the projects and members arrays.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"projects": [
+									{
+										"id": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"name": "Design system audit",
+										"sourceRepository": {
+											"id": 612088341,
+											"owner": "acme-design",
+											"name": "design-system",
+											"private": true,
+											"installationId": 48213907
+										},
+										"createdAt": "2026-09-08T16:42:10.000Z",
+										"ownerId": "google-110418263957201846395"
+									}
+								],
+								"members": [
+									{
+										"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"actorId": "google-110418263957201846395",
+										"email": "maya.chen@example.com",
+										"name": "Maya Chen",
+										"role": "owner"
+									},
+									{
+										"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"actorId": "google-209884713522600918374",
+										"email": "jonas.reyes@example.com",
+										"name": "Jonas Reyes",
+										"role": "writer"
+									}
+								],
+								"invitations": [
+									{
+										"id": "e1f0a9b8-2c7d-4a3e-b6f5-0d9c8b7a6e5f",
+										"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"expiresAt": "2026-11-21T09:00:00.000Z",
+										"codeHash": "5e8a1c3f0d9b7e2a4c6f8d1b3e5a7c9d0f2b4e6a8c1d3f5b7e9a0c2d4f6b8e1a",
+										"email": "priya.raman@example.com",
+										"role": "commenter",
+										"acceptedBy": null
+									}
+								],
+								"threads": [
+									{
+										"id": "c3a9f7e2-5b1d-4e6a-8f20-9d4c7b1e3a58",
+										"projectId": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+										"anchor": {
+											"branch": "main",
+											"commit": "8c3e0f7a2d91b5e46f0a1c7d9e2b3f58a6d4c10e",
+											"entityId": "reports.component.evidence-grid",
+											"version": "v001",
+											"imageSha256": "d41f7a2c9e05b8316a3d0f4c7e92b1a85d6e3f0c49b7a2e1d8c5f3069a7b4e2c",
+											"state": "default",
+											"viewport": "desktop",
+											"region": {
+												"x": 0.12,
+												"y": 0.4,
+												"width": 0.5,
+												"height": 0.25
+											}
+										},
+										"comments": [
+											{
+												"id": "a4d2c6e8-7f1b-4b9d-8e3a-5c0f2d7b9e14",
+												"requestId": "0b6f3d9a-e8c4-4f27-a1d5-7e3c9b0f6a82",
+												"actor": {
+													"id": "google-209884713522600918374",
+													"email": "jonas.reyes@example.com",
+													"name": "Jonas Reyes",
+													"emailVerified": true
+												},
+												"text": "The card padding looks tighter than the spec on tablet.",
+												"createdAt": "2026-10-30T11:15:04.000Z"
+											}
+										]
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "currentProject.actor",
 						"type": "Actor",
 						"required": true,
-						"description": "Verified actor whose membership is required."
+						"description": "Actor checked against the strict actor schema (exactly id, email, name and emailVerified true); only actor.id is used to find the membership.",
+						"examples": [
+							{
+								"id": "google-110418263957201846395",
+								"email": "maya.chen@example.com",
+								"name": "Maya Chen",
+								"emailVerified": true
+							},
+							{
+								"id": "google-209884713522600918374",
+								"email": "jonas.reyes@example.com",
+								"name": "Jonas Reyes",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "currentProject.projectId",
 						"type": "string",
 						"required": true,
-						"description": "Project UUID to resolve."
+						"description": "Project id that must be a UUID and is compared exactly with the id of each project in records.projects.",
+						"examples": [
+							"7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+							"a92f6c1e-08b4-4d7a-b3e5-6f1c2a9d8e47"
+						]
 					},
 					{
 						"name": "currentProject.roles",
 						"type": "Role[]",
 						"required": false,
 						"default": ["owner", "writer", "commenter", "viewer"],
-						"description": "Allowed roles; defaults to owner, commenter and viewer."
+						"description": "Roles that may access the project; the actor's membership role must be one of them, and when omitted the default is owner, writer, commenter and viewer.",
+						"examples": [
+							["owner", "writer", "commenter", "viewer"],
+							["owner", "writer"],
+							["owner"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "currentProject",
 						"type": "ProjectSummary",
-						"description": "Matching project with the actor’s membership role."
+						"description": "The matched project's stored fields with the actor's membership role added; collaborationCommit is not set by this function.",
+						"examples": [
+							{
+								"id": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"name": "Design system audit",
+								"sourceRepository": {
+									"id": 612088341,
+									"owner": "acme-design",
+									"name": "design-system",
+									"private": true,
+									"installationId": 48213907
+								},
+								"createdAt": "2026-09-08T16:42:10.000Z",
+								"ownerId": "google-110418263957201846395",
+								"role": "owner"
+							},
+							{
+								"id": "7d4e1b9a-3c52-4f80-9a6e-b1c2d3e4f5a6",
+								"name": "Design system audit",
+								"sourceRepository": {
+									"id": 612088341,
+									"owner": "acme-design",
+									"name": "design-system",
+									"private": true,
+									"installationId": 48213907
+								},
+								"createdAt": "2026-09-08T16:42:10.000Z",
+								"ownerId": "google-110418263957201846395",
+								"role": "writer"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as a plain Error with code 'invalid-input' when the actor fails the actor schema or the projectId is not a UUID, and with code 'forbidden' when no project has that id, the actor has no membership in it, or the membership role is not in roles."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "transaction",
@@ -168,29 +607,30 @@
 						"name": "transaction.deps",
 						"type": "CollaborationDependencies",
 						"required": true,
-						"description": "Repository dependency supporting read and compare-and-swap."
+						"description": "Dependencies whose repository.read() is called on each attempt and whose repository.compareAndSwap() is called only after a change; no other member is used."
 					},
 					{
 						"name": "transaction.operation",
 						"type": "(records: CollaborationRecords) => Promise<T>",
 						"required": true,
-						"description": "Async operation that may mutate parsed records and return a result; can run again after write conflicts."
+						"description": "Async callback that receives the parsed records and may mutate them; its resolved value becomes value. It runs again on a fresh snapshot after each failed compare-and-swap, for at most five attempts in total."
 					}
 				],
 				"outputs": [
 					{
 						"name": "transaction",
 						"type": "Promise<{ value: T; revision: string }>",
-						"description": "Operation result and revision; unchanged records avoid a write, and changed records retry at most five times."
+						"description": "Resolved object whose value is the callback's result and whose revision is the snapshot revision when the records are unchanged, or the revision returned by compare-and-swap after a write. An all-zero revision means the collaboration branch is missing."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as a plain Error with code 'invalid-input' when the snapshot's records or the records changed by the operation fail the records schema, and with code 'conflict' after five write attempts that return no revision; errors from the operation and the repository propagate unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "now",
@@ -199,18 +639,18 @@
 						"name": "now.deps",
 						"type": "CollaborationDependencies",
 						"required": true,
-						"description": "Optional clock dependency; otherwise uses the current system date."
+						"description": "Dependencies whose optional now() clock supplies the date; when deps.now is absent, now returns a new Date for the system time."
 					}
 				],
 				"outputs": [
 					{
 						"name": "now",
 						"type": "Date",
-						"description": "Injected date or a new Date from the system clock."
+						"description": "The Date returned by deps.now() when the clock is provided and returns a value other than null or undefined, otherwise a new Date for the system time at the call. Exceptions thrown by deps.now() propagate unchanged."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
