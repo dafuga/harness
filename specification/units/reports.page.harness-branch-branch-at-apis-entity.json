@@ -18,12 +18,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The page renders a HarnessScreen titled API with EntityBehaviorScreen as its content. This markup is produced whenever the route page renders; the wrapper supplies no additional route data."
 			}
 		],
 		"errors": [],
