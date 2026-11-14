@@ -12,12 +12,47 @@
 		"symbols": ["gameScaffoldDetails"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "gameScaffoldDetails",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Provides details for the `game-view`, `mechanic`, and `checkpoint` scaffold kinds. Each entry includes its kind, summary, `appOnly` and `gameOnly` flags, listed contents, and an example `harness generate <kind> example` command.",
+				"examples": [
+					{
+						"game-view": {
+							"kind": "game-view",
+							"summary": "Game scene, UI and visual direction.",
+							"appOnly": true,
+							"gameOnly": true,
+							"contains": [
+								"Game view config under src/configs/<name>ViewConfig.ts.",
+								"View dimension taken from the project's harness.dimension."
+							],
+							"exampleCommand": "harness generate game-view example"
+						},
+						"mechanic": {
+							"kind": "mechanic",
+							"summary": "Independent deterministic state/input/event behavior.",
+							"appOnly": true,
+							"gameOnly": true,
+							"contains": [
+								"Mechanic function under src/utils/<name>.ts.",
+								"Mechanic unit test under test/<name>.test.ts."
+							],
+							"exampleCommand": "harness generate mechanic example"
+						},
+						"checkpoint": {
+							"kind": "checkpoint",
+							"summary": "Executable condition/action checkpoint.",
+							"appOnly": true,
+							"gameOnly": true,
+							"contains": ["Checkpoint config under src/configs/<name>CheckpointConfig.ts."],
+							"exampleCommand": "harness generate checkpoint example"
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
