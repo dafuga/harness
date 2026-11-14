@@ -12,18 +12,34 @@
 		"symbols": ["atomicComponents"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "atomicComponents.options",
 				"type": "{ aliases?: Record<string, string> }",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional configuration passed to atomicComponents; when supplied, it may contain an aliases record whose keys and values are strings. The declaration specifies no alias semantics or other option fields.",
+				"examples": [
+					{
+						"aliases": {
+							"components": "src/components"
+						}
+					},
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "atomicComponents",
-				"type": "PreprocessorGroup"
+				"type": "PreprocessorGroup",
+				"description": "The function returns the PreprocessorGroup type imported from svelte/compiler. The declaration does not specify its members or processing behavior.",
+				"examples": [
+					{
+						"name": "atomicComponents"
+					}
+				]
 			}
 		],
 		"errors": [],
@@ -35,17 +51,33 @@
 					{
 						"name": "atomicComponents.options",
 						"type": "{ aliases?: Record<string, string> }",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional configuration passed to atomicComponents; when supplied, it may contain an aliases record whose keys and values are strings. The declaration specifies no alias semantics or other option fields.",
+						"examples": [
+							{
+								"aliases": {
+									"components": "src/components"
+								}
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomicComponents",
-						"type": "PreprocessorGroup"
+						"type": "PreprocessorGroup",
+						"description": "The function returns the PreprocessorGroup type imported from svelte/compiler. The declaration does not specify its members or processing behavior.",
+						"examples": [
+							{
+								"name": "atomicComponents"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
