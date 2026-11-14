@@ -27,108 +27,794 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogRepository.constructor.db",
 				"type": "SqliteDatabase",
-				"required": true
+				"required": true,
+				"description": "The synchronous SQLite connection that all catalog reads and writes go through. The constructor uses it at once to create the tables when initialize is true and to read catalog_metadata, so a connection that cannot run those statements makes construction throw."
 			},
 			{
 				"name": "CatalogRepository.constructor.initialize",
 				"type": "boolean",
 				"required": false,
-				"default": true
+				"default": true,
+				"description": "When true, the constructor creates the catalog tables, checks them, and then creates the query indexes; when false, it creates nothing and only checks the existing tables and the schema version.",
+				"examples": [true, false]
 			},
 			{
 				"name": "CatalogRepository.replace.index",
 				"type": "HistoryIndex",
-				"required": true
+				"required": true,
+				"description": "The complete history index to store, with its branches and every revision with the records and coverage that the index lists for it. Every catalog table is emptied before the write, so a revision left out of this index is removed from the query index.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"refs": {
+							"evidence": "e7b19c0a4d2f8e63a1c5b7d09f4e2a68c3b1d5f0",
+							"notes": "5a2c8e71d0b9f34a6e1d7c02b58f9a3e0d64c2b8"
+						},
+						"branches": [
+							{
+								"name": "main",
+								"head": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+								"tree": "d4a09c7e3b18f2a6c5e0d9b47a1f83e26c0d5b91",
+								"parents": ["3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"],
+								"subject": "Index catalog records by commit",
+								"author": "Lena Okafor",
+								"authoredAt": "2026-11-12T09:38:02+01:00",
+								"committedAt": "2026-11-12T09:40:55+01:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "9d4f0c2a7e1b83f56a0d9c4e2b7a1f38c5e60d7b2a94f1c8e3d5b6a7f0e1c2d9",
+										"status": "passed",
+										"profile": "5e0a7c19b3d24f86",
+										"finishedAt": "2026-11-12T09:41:17.206Z",
+										"base": "a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77",
+										"valid": true,
+										"problems": []
+									}
+								],
+								"reasons": 2,
+								"legacy": [],
+								"changes": {
+									"base": "3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09",
+									"direct": ["repository.catalog"],
+									"added": [],
+									"removed": []
+								},
+								"detail": "revisions/8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42.json"
+							},
+							{
+								"commit": "3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09",
+								"tree": "07e6b2c49f1a8d3e5b0c7a92f4d61e8b3a5c0f27",
+								"parents": ["a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77"],
+								"subject": "Keep unavailable registries out of the catalog",
+								"author": "Tomas Berger",
+								"authoredAt": "2026-11-11T16:05:31+01:00",
+								"committedAt": "2026-11-11T16:07:12+01:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["no verification record is attached to this commit"],
+								"records": [],
+								"reasons": 0,
+								"legacy": [],
+								"changes": {
+									"base": "a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77",
+									"direct": ["service.catalog-write"],
+									"added": [],
+									"removed": []
+								},
+								"detail": "revisions/3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09.json"
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [
+							{
+								"id": "5e0a7c19b3d24f86",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M3 Pro",
+								"cores": 12,
+								"memoryBytes": 38654705664,
+								"runtime": "node 22.12.0"
+							}
+						],
+						"legacy": [],
+						"truncated": true,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "CatalogRepository.replace.snapshots",
 				"type": "CatalogSnapshot[]",
-				"required": true
+				"required": true,
+				"description": "One snapshot per commit, pairing the commit hash with that revision's RevisionRegistry; each snapshot's units are stored as entities of its commit, and each revision takes its registry availability and scenarios from the snapshot with the same commit. A revision with no matching snapshot is stored with no registry and no scenarios.",
+				"examples": [
+					[
+						{
+							"commit": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+							"registry": {
+								"available": true,
+								"units": [
+									{
+										"id": "repository.catalog",
+										"kind": "repository",
+										"status": "active",
+										"title": "CatalogRepository",
+										"responsibility": "Owns the CatalogRepository persistence boundary.",
+										"dependencies": [
+											{
+												"unit": "adapter.sqlite",
+												"via": "import"
+											},
+											{
+												"unit": "function.catalog-models",
+												"via": "import"
+											},
+											{
+												"unit": "function.history-index-types",
+												"via": "import"
+											},
+											{
+												"unit": "function.revision-registry",
+												"via": "import"
+											},
+											{
+												"unit": "function.sqlite-types",
+												"via": "import"
+											},
+											{
+												"unit": "service.catalog-write",
+												"via": "import"
+											}
+										],
+										"scenarios": [],
+										"owns": {
+											"source": [
+												"src/repositories/git-source-history/CatalogRepository.ts",
+												"src/repositories/git-source-history/CatalogRepository.types.ts"
+											],
+											"symbols": [
+												"CatalogRepository",
+												"CatalogRepository.constructor",
+												"CatalogRepository.replace",
+												"CatalogRepository.entities",
+												"CatalogRepository.dependencies",
+												"CatalogRepository.consumers",
+												"CatalogRepository.history",
+												"CatalogRepository.records",
+												"CatalogRepository.scenarios",
+												"CatalogQuery",
+												"CatalogQuery"
+											]
+										},
+										"contract": {
+											"inputs": [
+												{
+													"name": "CatalogRepository.constructor.db",
+													"type": "SqliteDatabase",
+													"required": true
+												},
+												{
+													"name": "CatalogRepository.constructor.initialize",
+													"type": "boolean",
+													"required": false,
+													"default": true
+												},
+												{
+													"name": "CatalogRepository.replace.index",
+													"type": "HistoryIndex",
+													"required": true
+												},
+												{
+													"name": "CatalogRepository.replace.snapshots",
+													"type": "CatalogSnapshot[]",
+													"required": true
+												},
+												{
+													"name": "CatalogRepository.entities.options",
+													"type": "CatalogQuery",
+													"required": false,
+													"default": {}
+												},
+												{
+													"name": "CatalogRepository.dependencies.unitId",
+													"type": "string",
+													"required": true
+												},
+												{
+													"name": "CatalogRepository.dependencies.commit",
+													"type": "string",
+													"required": false
+												},
+												{
+													"name": "CatalogRepository.consumers.unitId",
+													"type": "string",
+													"required": true
+												},
+												{
+													"name": "CatalogRepository.consumers.commit",
+													"type": "string",
+													"required": false
+												},
+												{
+													"name": "CatalogRepository.history.unitId",
+													"type": "string",
+													"required": true
+												},
+												{
+													"name": "CatalogRepository.records.commit",
+													"type": "string",
+													"required": false
+												},
+												{
+													"name": "CatalogRepository.scenarios.commit",
+													"type": "string",
+													"required": false
+												}
+											],
+											"outputs": [
+												{
+													"name": "CatalogRepository.replace",
+													"type": "void"
+												},
+												{
+													"name": "CatalogRepository.entities",
+													"type": "RevisionRegistry['units']"
+												},
+												{
+													"name": "CatalogRepository.dependencies",
+													"type": "Array<{ unit: string; via: string }>"
+												},
+												{
+													"name": "CatalogRepository.consumers",
+													"type": "Array<{ unit: string; via: string }>"
+												},
+												{
+													"name": "CatalogRepository.history",
+													"type": "IndexedRevision[]"
+												},
+												{
+													"name": "CatalogRepository.records",
+													"type": "HistoryIndex['revisions'][number]['records']"
+												},
+												{
+													"name": "CatalogRepository.scenarios",
+													"type": "RevisionRegistry['scenarios']"
+												}
+											],
+											"errors": [
+												{
+													"name": "Error",
+													"type": "thrown"
+												}
+											]
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "src/repositories/git-source-history/CatalogRepository.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "c0a7e3f19d2b6845"
+									}
+								],
+								"scenarios": [],
+								"graph": {
+									"nodes": [
+										{
+											"id": "unit:repository.catalog",
+											"kind": "unit"
+										}
+									],
+									"edges": [
+										{
+											"from": "unit:repository.catalog",
+											"to": "unit:adapter.sqlite",
+											"via": "import"
+										},
+										{
+											"from": "unit:repository.catalog",
+											"to": "unit:function.catalog-models",
+											"via": "import"
+										},
+										{
+											"from": "unit:repository.catalog",
+											"to": "unit:function.history-index-types",
+											"via": "import"
+										},
+										{
+											"from": "unit:repository.catalog",
+											"to": "unit:function.revision-registry",
+											"via": "import"
+										},
+										{
+											"from": "unit:repository.catalog",
+											"to": "unit:function.sqlite-types",
+											"via": "import"
+										},
+										{
+											"from": "unit:repository.catalog",
+											"to": "unit:service.catalog-write",
+											"via": "import"
+										}
+									]
+								}
+							}
+						},
+						{
+							"commit": "3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09",
+							"registry": {
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"nodes": [],
+									"edges": []
+								}
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "CatalogRepository.entities.options",
 				"type": "CatalogQuery",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Filters and paging for the entities query: commit selects the revision (the catalog head when omitted), kind must match exactly, and search is a case-insensitive substring of the unit's title or unit id. limit defaults to 100 and must be an integer from 1 to 10000, and offset defaults to 0 and must be a non-negative integer.",
+				"examples": [
+					{},
+					{
+						"kind": "repository"
+					},
+					{
+						"commit": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+						"search": "catalog",
+						"limit": 20,
+						"offset": 0
+					}
+				]
 			},
 			{
 				"name": "CatalogRepository.dependencies.unitId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The unit id whose dependencies are listed, such as 'repository.catalog'. It must match a stored unit id exactly, and an id that the revision does not contain returns an empty list rather than an error.",
+				"examples": ["repository.catalog", "service.catalog-write"]
 			},
 			{
 				"name": "CatalogRepository.dependencies.commit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The commit whose recorded dependency graph is read, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
+				"examples": [
+					"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+					"3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"
+				]
 			},
 			{
 				"name": "CatalogRepository.consumers.unitId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The unit id whose consumers are listed, such as 'service.catalog-write'. It must match a stored unit id exactly, and an id that no dependency in the revision targets returns an empty list rather than an error.",
+				"examples": ["service.catalog-write", "adapter.sqlite"]
 			},
 			{
 				"name": "CatalogRepository.consumers.commit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The commit whose recorded dependency graph is searched for consumers, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
+				"examples": [
+					"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+					"3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"
+				]
 			},
 			{
 				"name": "CatalogRepository.history.unitId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The unit id whose history is listed, such as 'repository.catalog'. It must match a stored unit id exactly, and the result holds every stored revision that contains the unit, or an empty list when none does.",
+				"examples": ["repository.catalog", "function.sqlite-types"]
 			},
 			{
 				"name": "CatalogRepository.records.commit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The commit whose attached verification records are listed, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
+				"examples": [
+					"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+					"3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"
+				]
 			},
 			{
 				"name": "CatalogRepository.scenarios.commit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The commit whose declared scenarios are listed, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
+				"examples": [
+					"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+					"3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogRepository.replace",
-				"type": "void"
+				"type": "void",
+				"description": "The value undefined: the call returns only after the whole query index has been replaced in one transaction. If a write fails, that transaction is rolled back to its savepoint and the error is rethrown."
 			},
 			{
 				"name": "CatalogRepository.entities",
-				"type": "RevisionRegistry['units']"
+				"type": "RevisionRegistry['units']",
+				"description": "The unit records of the requested revision that match the query, ordered by title and then unit id, each exactly as its registry stored it. The array holds at most limit entries and is empty when no unit matches or the revision stores no units.",
+				"examples": [
+					[
+						{
+							"id": "repository.catalog",
+							"kind": "repository",
+							"status": "active",
+							"title": "CatalogRepository",
+							"responsibility": "Owns the CatalogRepository persistence boundary.",
+							"dependencies": [
+								{
+									"unit": "adapter.sqlite",
+									"via": "import"
+								},
+								{
+									"unit": "function.catalog-models",
+									"via": "import"
+								},
+								{
+									"unit": "function.history-index-types",
+									"via": "import"
+								},
+								{
+									"unit": "function.revision-registry",
+									"via": "import"
+								},
+								{
+									"unit": "function.sqlite-types",
+									"via": "import"
+								},
+								{
+									"unit": "service.catalog-write",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"src/repositories/git-source-history/CatalogRepository.ts",
+									"src/repositories/git-source-history/CatalogRepository.types.ts"
+								],
+								"symbols": [
+									"CatalogRepository",
+									"CatalogRepository.constructor",
+									"CatalogRepository.replace",
+									"CatalogRepository.entities",
+									"CatalogRepository.dependencies",
+									"CatalogRepository.consumers",
+									"CatalogRepository.history",
+									"CatalogRepository.records",
+									"CatalogRepository.scenarios",
+									"CatalogQuery",
+									"CatalogQuery"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "CatalogRepository.constructor.db",
+										"type": "SqliteDatabase",
+										"required": true
+									},
+									{
+										"name": "CatalogRepository.constructor.initialize",
+										"type": "boolean",
+										"required": false,
+										"default": true
+									},
+									{
+										"name": "CatalogRepository.replace.index",
+										"type": "HistoryIndex",
+										"required": true
+									},
+									{
+										"name": "CatalogRepository.replace.snapshots",
+										"type": "CatalogSnapshot[]",
+										"required": true
+									},
+									{
+										"name": "CatalogRepository.entities.options",
+										"type": "CatalogQuery",
+										"required": false,
+										"default": {}
+									},
+									{
+										"name": "CatalogRepository.dependencies.unitId",
+										"type": "string",
+										"required": true
+									},
+									{
+										"name": "CatalogRepository.dependencies.commit",
+										"type": "string",
+										"required": false
+									},
+									{
+										"name": "CatalogRepository.consumers.unitId",
+										"type": "string",
+										"required": true
+									},
+									{
+										"name": "CatalogRepository.consumers.commit",
+										"type": "string",
+										"required": false
+									},
+									{
+										"name": "CatalogRepository.history.unitId",
+										"type": "string",
+										"required": true
+									},
+									{
+										"name": "CatalogRepository.records.commit",
+										"type": "string",
+										"required": false
+									},
+									{
+										"name": "CatalogRepository.scenarios.commit",
+										"type": "string",
+										"required": false
+									}
+								],
+								"outputs": [
+									{
+										"name": "CatalogRepository.replace",
+										"type": "void"
+									},
+									{
+										"name": "CatalogRepository.entities",
+										"type": "RevisionRegistry['units']"
+									},
+									{
+										"name": "CatalogRepository.dependencies",
+										"type": "Array<{ unit: string; via: string }>"
+									},
+									{
+										"name": "CatalogRepository.consumers",
+										"type": "Array<{ unit: string; via: string }>"
+									},
+									{
+										"name": "CatalogRepository.history",
+										"type": "IndexedRevision[]"
+									},
+									{
+										"name": "CatalogRepository.records",
+										"type": "HistoryIndex['revisions'][number]['records']"
+									},
+									{
+										"name": "CatalogRepository.scenarios",
+										"type": "RevisionRegistry['scenarios']"
+									}
+								],
+								"errors": [
+									{
+										"name": "Error",
+										"type": "thrown"
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/repositories/git-source-history/CatalogRepository.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "c0a7e3f19d2b6845"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "CatalogRepository.dependencies",
-				"type": "Array<{ unit: string; via: string }>"
+				"type": "Array<{ unit: string; via: string }>",
+				"description": "The units that the requested unit depends on in the requested revision, ordered by unit id and then via; unit is the dependency's unit id and via is its edge kind, such as 'import'. The array is empty when the unit has no dependencies in that revision.",
+				"examples": [
+					[
+						{
+							"unit": "adapter.sqlite",
+							"via": "import"
+						},
+						{
+							"unit": "function.catalog-models",
+							"via": "import"
+						},
+						{
+							"unit": "function.history-index-types",
+							"via": "import"
+						},
+						{
+							"unit": "function.revision-registry",
+							"via": "import"
+						},
+						{
+							"unit": "function.sqlite-types",
+							"via": "import"
+						},
+						{
+							"unit": "service.catalog-write",
+							"via": "import"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "CatalogRepository.consumers",
-				"type": "Array<{ unit: string; via: string }>"
+				"type": "Array<{ unit: string; via: string }>",
+				"description": "The units in the requested revision that depend on the requested unit, ordered by unit id and then via; unit is the dependent's unit id and via is the edge kind, such as 'import'. The array is empty when no unit in that revision depends on it.",
+				"examples": [
+					[
+						{
+							"unit": "repository.catalog",
+							"via": "import"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "CatalogRepository.history",
-				"type": "IndexedRevision[]"
+				"type": "IndexedRevision[]",
+				"description": "Every stored revision that contains the requested unit, newest first by committed time, each as the history index recorded it, with its commit, coverage, gaps, records and detail path. The array is empty when no stored revision contains the unit.",
+				"examples": [
+					[
+						{
+							"commit": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+							"tree": "d4a09c7e3b18f2a6c5e0d9b47a1f83e26c0d5b91",
+							"parents": ["3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"],
+							"subject": "Index catalog records by commit",
+							"author": "Lena Okafor",
+							"authoredAt": "2026-11-12T09:38:02+01:00",
+							"committedAt": "2026-11-12T09:40:55+01:00",
+							"branches": ["main"],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "9d4f0c2a7e1b83f56a0d9c4e2b7a1f38c5e60d7b2a94f1c8e3d5b6a7f0e1c2d9",
+									"status": "passed",
+									"profile": "5e0a7c19b3d24f86",
+									"finishedAt": "2026-11-12T09:41:17.206Z",
+									"base": "a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77",
+									"valid": true,
+									"problems": []
+								}
+							],
+							"reasons": 2,
+							"legacy": [],
+							"changes": {
+								"base": "3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09",
+								"direct": ["repository.catalog"],
+								"added": [],
+								"removed": []
+							},
+							"detail": "revisions/8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42.json"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "CatalogRepository.records",
-				"type": "HistoryIndex['revisions'][number]['records']"
+				"type": "HistoryIndex['revisions'][number]['records']",
+				"description": "The verification records attached to the requested commit, each as the index lists it, ordered by record id. Each id is the record's sha256 hex digest, and the array is empty when the commit has no attached records or is not stored.",
+				"examples": [
+					[
+						{
+							"id": "9d4f0c2a7e1b83f56a0d9c4e2b7a1f38c5e60d7b2a94f1c8e3d5b6a7f0e1c2d9",
+							"status": "passed",
+							"profile": "5e0a7c19b3d24f86",
+							"finishedAt": "2026-11-12T09:41:17.206Z",
+							"base": "a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77",
+							"valid": true,
+							"problems": []
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "CatalogRepository.scenarios",
-				"type": "RevisionRegistry['scenarios']"
+				"type": "RevisionRegistry['scenarios']",
+				"description": "The scenarios declared in the requested revision's registry, ordered by scenario id, each with its units, states, viewports, tests and evidence. The array is empty when the revision declares no scenarios or is not stored.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "reports.evidence-grid.desktop",
+							"title": "Evidence grid on desktop",
+							"kind": "ui",
+							"units": ["reports.component.evidence-grid"],
+							"states": [
+								{
+									"id": "loaded",
+									"title": "Evidence loaded",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "reports.evidence-grid.desktop.e2e",
+									"kind": "e2e",
+									"runner": "playwright"
+								}
+							],
+							"evidence": [
+								{
+									"id": "reports.evidence-grid.desktop.shot",
+									"kind": "screenshot",
+									"states": ["loaded"],
+									"viewports": ["desktop"]
+								}
+							]
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by the constructor with 'Unsupported SQLite catalog schema version' when the catalog_metadata row 'catalog' has a schema_version other than 1, and by entities with 'Invalid catalog pagination' when limit or offset is out of range. The constructor also propagates the SQLite adapter's assertModels errors, such as 'SQLite model columns do not match table: <table>', when the stored tables and their models disagree."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CatalogRepository.replace",
@@ -136,22 +822,350 @@
 					{
 						"name": "CatalogRepository.replace.index",
 						"type": "HistoryIndex",
-						"required": true
+						"required": true,
+						"description": "The complete history index to store, with its branches and every revision with the records and coverage that the index lists for it. Every catalog table is emptied before the write, so a revision left out of this index is removed from the query index.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"refs": {
+									"evidence": "e7b19c0a4d2f8e63a1c5b7d09f4e2a68c3b1d5f0",
+									"notes": "5a2c8e71d0b9f34a6e1d7c02b58f9a3e0d64c2b8"
+								},
+								"branches": [
+									{
+										"name": "main",
+										"head": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+										"tree": "d4a09c7e3b18f2a6c5e0d9b47a1f83e26c0d5b91",
+										"parents": ["3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"],
+										"subject": "Index catalog records by commit",
+										"author": "Lena Okafor",
+										"authoredAt": "2026-11-12T09:38:02+01:00",
+										"committedAt": "2026-11-12T09:40:55+01:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "9d4f0c2a7e1b83f56a0d9c4e2b7a1f38c5e60d7b2a94f1c8e3d5b6a7f0e1c2d9",
+												"status": "passed",
+												"profile": "5e0a7c19b3d24f86",
+												"finishedAt": "2026-11-12T09:41:17.206Z",
+												"base": "a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77",
+												"valid": true,
+												"problems": []
+											}
+										],
+										"reasons": 2,
+										"legacy": [],
+										"changes": {
+											"base": "3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09",
+											"direct": ["repository.catalog"],
+											"added": [],
+											"removed": []
+										},
+										"detail": "revisions/8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42.json"
+									},
+									{
+										"commit": "3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09",
+										"tree": "07e6b2c49f1a8d3e5b0c7a92f4d61e8b3a5c0f27",
+										"parents": ["a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77"],
+										"subject": "Keep unavailable registries out of the catalog",
+										"author": "Tomas Berger",
+										"authoredAt": "2026-11-11T16:05:31+01:00",
+										"committedAt": "2026-11-11T16:07:12+01:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": ["no verification record is attached to this commit"],
+										"records": [],
+										"reasons": 0,
+										"legacy": [],
+										"changes": {
+											"base": "a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77",
+											"direct": ["service.catalog-write"],
+											"added": [],
+											"removed": []
+										},
+										"detail": "revisions/3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09.json"
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [
+									{
+										"id": "5e0a7c19b3d24f86",
+										"platform": "darwin",
+										"arch": "arm64",
+										"cpu": "Apple M3 Pro",
+										"cores": 12,
+										"memoryBytes": 38654705664,
+										"runtime": "node 22.12.0"
+									}
+								],
+								"legacy": [],
+								"truncated": true,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "CatalogRepository.replace.snapshots",
 						"type": "CatalogSnapshot[]",
-						"required": true
+						"required": true,
+						"description": "One snapshot per commit, pairing the commit hash with that revision's RevisionRegistry; each snapshot's units are stored as entities of its commit, and each revision takes its registry availability and scenarios from the snapshot with the same commit. A revision with no matching snapshot is stored with no registry and no scenarios.",
+						"examples": [
+							[
+								{
+									"commit": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+									"registry": {
+										"available": true,
+										"units": [
+											{
+												"id": "repository.catalog",
+												"kind": "repository",
+												"status": "active",
+												"title": "CatalogRepository",
+												"responsibility": "Owns the CatalogRepository persistence boundary.",
+												"dependencies": [
+													{
+														"unit": "adapter.sqlite",
+														"via": "import"
+													},
+													{
+														"unit": "function.catalog-models",
+														"via": "import"
+													},
+													{
+														"unit": "function.history-index-types",
+														"via": "import"
+													},
+													{
+														"unit": "function.revision-registry",
+														"via": "import"
+													},
+													{
+														"unit": "function.sqlite-types",
+														"via": "import"
+													},
+													{
+														"unit": "service.catalog-write",
+														"via": "import"
+													}
+												],
+												"scenarios": [],
+												"owns": {
+													"source": [
+														"src/repositories/git-source-history/CatalogRepository.ts",
+														"src/repositories/git-source-history/CatalogRepository.types.ts"
+													],
+													"symbols": [
+														"CatalogRepository",
+														"CatalogRepository.constructor",
+														"CatalogRepository.replace",
+														"CatalogRepository.entities",
+														"CatalogRepository.dependencies",
+														"CatalogRepository.consumers",
+														"CatalogRepository.history",
+														"CatalogRepository.records",
+														"CatalogRepository.scenarios",
+														"CatalogQuery",
+														"CatalogQuery"
+													]
+												},
+												"contract": {
+													"inputs": [
+														{
+															"name": "CatalogRepository.constructor.db",
+															"type": "SqliteDatabase",
+															"required": true
+														},
+														{
+															"name": "CatalogRepository.constructor.initialize",
+															"type": "boolean",
+															"required": false,
+															"default": true
+														},
+														{
+															"name": "CatalogRepository.replace.index",
+															"type": "HistoryIndex",
+															"required": true
+														},
+														{
+															"name": "CatalogRepository.replace.snapshots",
+															"type": "CatalogSnapshot[]",
+															"required": true
+														},
+														{
+															"name": "CatalogRepository.entities.options",
+															"type": "CatalogQuery",
+															"required": false,
+															"default": {}
+														},
+														{
+															"name": "CatalogRepository.dependencies.unitId",
+															"type": "string",
+															"required": true
+														},
+														{
+															"name": "CatalogRepository.dependencies.commit",
+															"type": "string",
+															"required": false
+														},
+														{
+															"name": "CatalogRepository.consumers.unitId",
+															"type": "string",
+															"required": true
+														},
+														{
+															"name": "CatalogRepository.consumers.commit",
+															"type": "string",
+															"required": false
+														},
+														{
+															"name": "CatalogRepository.history.unitId",
+															"type": "string",
+															"required": true
+														},
+														{
+															"name": "CatalogRepository.records.commit",
+															"type": "string",
+															"required": false
+														},
+														{
+															"name": "CatalogRepository.scenarios.commit",
+															"type": "string",
+															"required": false
+														}
+													],
+													"outputs": [
+														{
+															"name": "CatalogRepository.replace",
+															"type": "void"
+														},
+														{
+															"name": "CatalogRepository.entities",
+															"type": "RevisionRegistry['units']"
+														},
+														{
+															"name": "CatalogRepository.dependencies",
+															"type": "Array<{ unit: string; via: string }>"
+														},
+														{
+															"name": "CatalogRepository.consumers",
+															"type": "Array<{ unit: string; via: string }>"
+														},
+														{
+															"name": "CatalogRepository.history",
+															"type": "IndexedRevision[]"
+														},
+														{
+															"name": "CatalogRepository.records",
+															"type": "HistoryIndex['revisions'][number]['records']"
+														},
+														{
+															"name": "CatalogRepository.scenarios",
+															"type": "RevisionRegistry['scenarios']"
+														}
+													],
+													"errors": [
+														{
+															"name": "Error",
+															"type": "thrown"
+														}
+													]
+												},
+												"runtime": {
+													"kind": "module",
+													"targets": [
+														{
+															"kind": "module",
+															"entry": "src/repositories/git-source-history/CatalogRepository.ts"
+														}
+													]
+												},
+												"budgets": {
+													"size": "frozen",
+													"complexity": "frozen",
+													"performance": []
+												},
+												"version": "c0a7e3f19d2b6845"
+											}
+										],
+										"scenarios": [],
+										"graph": {
+											"nodes": [
+												{
+													"id": "unit:repository.catalog",
+													"kind": "unit"
+												}
+											],
+											"edges": [
+												{
+													"from": "unit:repository.catalog",
+													"to": "unit:adapter.sqlite",
+													"via": "import"
+												},
+												{
+													"from": "unit:repository.catalog",
+													"to": "unit:function.catalog-models",
+													"via": "import"
+												},
+												{
+													"from": "unit:repository.catalog",
+													"to": "unit:function.history-index-types",
+													"via": "import"
+												},
+												{
+													"from": "unit:repository.catalog",
+													"to": "unit:function.revision-registry",
+													"via": "import"
+												},
+												{
+													"from": "unit:repository.catalog",
+													"to": "unit:function.sqlite-types",
+													"via": "import"
+												},
+												{
+													"from": "unit:repository.catalog",
+													"to": "unit:service.catalog-write",
+													"via": "import"
+												}
+											]
+										}
+									}
+								},
+								{
+									"commit": "3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09",
+									"registry": {
+										"available": false,
+										"gap": "no unit registry is stored at this revision",
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"nodes": [],
+											"edges": []
+										}
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRepository.replace",
-						"type": "void"
+						"type": "void",
+						"description": "The value undefined: the call returns only after the whole query index has been replaced in one transaction. If a write fails, that transaction is rolled back to its savepoint and the error is rethrown."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRepository.entities",
@@ -160,17 +1174,212 @@
 						"name": "CatalogRepository.entities.options",
 						"type": "CatalogQuery",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Filters and paging for the entities query: commit selects the revision (the catalog head when omitted), kind must match exactly, and search is a case-insensitive substring of the unit's title or unit id. limit defaults to 100 and must be an integer from 1 to 10000, and offset defaults to 0 and must be a non-negative integer.",
+						"examples": [
+							{},
+							{
+								"kind": "repository"
+							},
+							{
+								"commit": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+								"search": "catalog",
+								"limit": 20,
+								"offset": 0
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRepository.entities",
-						"type": "RevisionRegistry['units']"
+						"type": "RevisionRegistry['units']",
+						"description": "The unit records of the requested revision that match the query, ordered by title and then unit id, each exactly as its registry stored it. The array holds at most limit entries and is empty when no unit matches or the revision stores no units.",
+						"examples": [
+							[
+								{
+									"id": "repository.catalog",
+									"kind": "repository",
+									"status": "active",
+									"title": "CatalogRepository",
+									"responsibility": "Owns the CatalogRepository persistence boundary.",
+									"dependencies": [
+										{
+											"unit": "adapter.sqlite",
+											"via": "import"
+										},
+										{
+											"unit": "function.catalog-models",
+											"via": "import"
+										},
+										{
+											"unit": "function.history-index-types",
+											"via": "import"
+										},
+										{
+											"unit": "function.revision-registry",
+											"via": "import"
+										},
+										{
+											"unit": "function.sqlite-types",
+											"via": "import"
+										},
+										{
+											"unit": "service.catalog-write",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"src/repositories/git-source-history/CatalogRepository.ts",
+											"src/repositories/git-source-history/CatalogRepository.types.ts"
+										],
+										"symbols": [
+											"CatalogRepository",
+											"CatalogRepository.constructor",
+											"CatalogRepository.replace",
+											"CatalogRepository.entities",
+											"CatalogRepository.dependencies",
+											"CatalogRepository.consumers",
+											"CatalogRepository.history",
+											"CatalogRepository.records",
+											"CatalogRepository.scenarios",
+											"CatalogQuery",
+											"CatalogQuery"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "CatalogRepository.constructor.db",
+												"type": "SqliteDatabase",
+												"required": true
+											},
+											{
+												"name": "CatalogRepository.constructor.initialize",
+												"type": "boolean",
+												"required": false,
+												"default": true
+											},
+											{
+												"name": "CatalogRepository.replace.index",
+												"type": "HistoryIndex",
+												"required": true
+											},
+											{
+												"name": "CatalogRepository.replace.snapshots",
+												"type": "CatalogSnapshot[]",
+												"required": true
+											},
+											{
+												"name": "CatalogRepository.entities.options",
+												"type": "CatalogQuery",
+												"required": false,
+												"default": {}
+											},
+											{
+												"name": "CatalogRepository.dependencies.unitId",
+												"type": "string",
+												"required": true
+											},
+											{
+												"name": "CatalogRepository.dependencies.commit",
+												"type": "string",
+												"required": false
+											},
+											{
+												"name": "CatalogRepository.consumers.unitId",
+												"type": "string",
+												"required": true
+											},
+											{
+												"name": "CatalogRepository.consumers.commit",
+												"type": "string",
+												"required": false
+											},
+											{
+												"name": "CatalogRepository.history.unitId",
+												"type": "string",
+												"required": true
+											},
+											{
+												"name": "CatalogRepository.records.commit",
+												"type": "string",
+												"required": false
+											},
+											{
+												"name": "CatalogRepository.scenarios.commit",
+												"type": "string",
+												"required": false
+											}
+										],
+										"outputs": [
+											{
+												"name": "CatalogRepository.replace",
+												"type": "void"
+											},
+											{
+												"name": "CatalogRepository.entities",
+												"type": "RevisionRegistry['units']"
+											},
+											{
+												"name": "CatalogRepository.dependencies",
+												"type": "Array<{ unit: string; via: string }>"
+											},
+											{
+												"name": "CatalogRepository.consumers",
+												"type": "Array<{ unit: string; via: string }>"
+											},
+											{
+												"name": "CatalogRepository.history",
+												"type": "IndexedRevision[]"
+											},
+											{
+												"name": "CatalogRepository.records",
+												"type": "HistoryIndex['revisions'][number]['records']"
+											},
+											{
+												"name": "CatalogRepository.scenarios",
+												"type": "RevisionRegistry['scenarios']"
+											}
+										],
+										"errors": [
+											{
+												"name": "Error",
+												"type": "thrown"
+											}
+										]
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/repositories/git-source-history/CatalogRepository.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "c0a7e3f19d2b6845"
+								}
+							],
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'Invalid catalog pagination' when limit is not an integer from 1 to 10000 or offset is not a non-negative integer. The check runs before the entities query is executed."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRepository.dependencies",
@@ -178,22 +1387,60 @@
 					{
 						"name": "CatalogRepository.dependencies.unitId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The unit id whose dependencies are listed, such as 'repository.catalog'. It must match a stored unit id exactly, and an id that the revision does not contain returns an empty list rather than an error.",
+						"examples": ["repository.catalog", "service.catalog-write"]
 					},
 					{
 						"name": "CatalogRepository.dependencies.commit",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The commit whose recorded dependency graph is read, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
+						"examples": [
+							"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+							"3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRepository.dependencies",
-						"type": "Array<{ unit: string; via: string }>"
+						"type": "Array<{ unit: string; via: string }>",
+						"description": "The units that the requested unit depends on in the requested revision, ordered by unit id and then via; unit is the dependency's unit id and via is its edge kind, such as 'import'. The array is empty when the unit has no dependencies in that revision.",
+						"examples": [
+							[
+								{
+									"unit": "adapter.sqlite",
+									"via": "import"
+								},
+								{
+									"unit": "function.catalog-models",
+									"via": "import"
+								},
+								{
+									"unit": "function.history-index-types",
+									"via": "import"
+								},
+								{
+									"unit": "function.revision-registry",
+									"via": "import"
+								},
+								{
+									"unit": "function.sqlite-types",
+									"via": "import"
+								},
+								{
+									"unit": "service.catalog-write",
+									"via": "import"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRepository.consumers",
@@ -201,22 +1448,40 @@
 					{
 						"name": "CatalogRepository.consumers.unitId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The unit id whose consumers are listed, such as 'service.catalog-write'. It must match a stored unit id exactly, and an id that no dependency in the revision targets returns an empty list rather than an error.",
+						"examples": ["service.catalog-write", "adapter.sqlite"]
 					},
 					{
 						"name": "CatalogRepository.consumers.commit",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The commit whose recorded dependency graph is searched for consumers, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
+						"examples": [
+							"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+							"3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRepository.consumers",
-						"type": "Array<{ unit: string; via: string }>"
+						"type": "Array<{ unit: string; via: string }>",
+						"description": "The units in the requested revision that depend on the requested unit, ordered by unit id and then via; unit is the dependent's unit id and via is the edge kind, such as 'import'. The array is empty when no unit in that revision depends on it.",
+						"examples": [
+							[
+								{
+									"unit": "repository.catalog",
+									"via": "import"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRepository.history",
@@ -224,17 +1489,58 @@
 					{
 						"name": "CatalogRepository.history.unitId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The unit id whose history is listed, such as 'repository.catalog'. It must match a stored unit id exactly, and the result holds every stored revision that contains the unit, or an empty list when none does.",
+						"examples": ["repository.catalog", "function.sqlite-types"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRepository.history",
-						"type": "IndexedRevision[]"
+						"type": "IndexedRevision[]",
+						"description": "Every stored revision that contains the requested unit, newest first by committed time, each as the history index recorded it, with its commit, coverage, gaps, records and detail path. The array is empty when no stored revision contains the unit.",
+						"examples": [
+							[
+								{
+									"commit": "8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+									"tree": "d4a09c7e3b18f2a6c5e0d9b47a1f83e26c0d5b91",
+									"parents": ["3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"],
+									"subject": "Index catalog records by commit",
+									"author": "Lena Okafor",
+									"authoredAt": "2026-11-12T09:38:02+01:00",
+									"committedAt": "2026-11-12T09:40:55+01:00",
+									"branches": ["main"],
+									"retained": false,
+									"coverage": "verified",
+									"gaps": [],
+									"records": [
+										{
+											"id": "9d4f0c2a7e1b83f56a0d9c4e2b7a1f38c5e60d7b2a94f1c8e3d5b6a7f0e1c2d9",
+											"status": "passed",
+											"profile": "5e0a7c19b3d24f86",
+											"finishedAt": "2026-11-12T09:41:17.206Z",
+											"base": "a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77",
+											"valid": true,
+											"problems": []
+										}
+									],
+									"reasons": 2,
+									"legacy": [],
+									"changes": {
+										"base": "3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09",
+										"direct": ["repository.catalog"],
+										"added": [],
+										"removed": []
+									},
+									"detail": "revisions/8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42.json"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRepository.records",
@@ -242,17 +1548,38 @@
 					{
 						"name": "CatalogRepository.records.commit",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The commit whose attached verification records are listed, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
+						"examples": [
+							"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+							"3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRepository.records",
-						"type": "HistoryIndex['revisions'][number]['records']"
+						"type": "HistoryIndex['revisions'][number]['records']",
+						"description": "The verification records attached to the requested commit, each as the index lists it, ordered by record id. Each id is the record's sha256 hex digest, and the array is empty when the commit has no attached records or is not stored.",
+						"examples": [
+							[
+								{
+									"id": "9d4f0c2a7e1b83f56a0d9c4e2b7a1f38c5e60d7b2a94f1c8e3d5b6a7f0e1c2d9",
+									"status": "passed",
+									"profile": "5e0a7c19b3d24f86",
+									"finishedAt": "2026-11-12T09:41:17.206Z",
+									"base": "a51d9e7c02b4f6a18e3d7c5b09f2a4e61d8c3b77",
+									"valid": true,
+									"problems": []
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogRepository.scenarios",
@@ -260,17 +1587,64 @@
 					{
 						"name": "CatalogRepository.scenarios.commit",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The commit whose declared scenarios are listed, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
+						"examples": [
+							"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
+							"3f0b7d19e6a2c48b5d0e91f7a3c6b2d8e4f51a09"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRepository.scenarios",
-						"type": "RevisionRegistry['scenarios']"
+						"type": "RevisionRegistry['scenarios']",
+						"description": "The scenarios declared in the requested revision's registry, ordered by scenario id, each with its units, states, viewports, tests and evidence. The array is empty when the revision declares no scenarios or is not stored.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "reports.evidence-grid.desktop",
+									"title": "Evidence grid on desktop",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "loaded",
+											"title": "Evidence loaded",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "reports.evidence-grid.desktop.e2e",
+											"kind": "e2e",
+											"runner": "playwright"
+										}
+									],
+									"evidence": [
+										{
+											"id": "reports.evidence-grid.desktop.shot",
+											"kind": "screenshot",
+											"states": ["loaded"],
+											"viewports": ["desktop"]
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -280,28 +1654,33 @@
 					{
 						"name": "CatalogRepository.constructor.db",
 						"type": "SqliteDatabase",
-						"required": true
+						"required": true,
+						"description": "The synchronous SQLite connection that all catalog reads and writes go through. The constructor uses it at once to create the tables when initialize is true and to read catalog_metadata, so a connection that cannot run those statements makes construction throw."
 					},
 					{
 						"name": "CatalogRepository.constructor.initialize",
 						"type": "boolean",
 						"required": false,
-						"default": true
+						"default": true,
+						"description": "When true, the constructor creates the catalog tables, checks them, and then creates the query indexes; when false, it creates nothing and only checks the existing tables and the schema version.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new CatalogRepository instance; its readonly adapter property is the SqliteAdapter built over the given connection and the catalog models."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'Unsupported SQLite catalog schema version' when the catalog_metadata row 'catalog' has a schema_version other than 1, whichever value initialize has. The SQLite adapter's assertModels errors, such as 'SQLite model columns do not match table: <table>', propagate from the same call when the stored tables and their models disagree."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
