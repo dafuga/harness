@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feBlend element; native HTML content rules still apply."
+				"description": "Optional Snippet that supplies content inside the feBlend element, rendered with `{@render children()}` (no arguments) only when the value is truthy. It is excluded from the forwarded attributes; when it is omitted (undefined), nothing is rendered inside the element, and the component does not check the value beyond that truthiness test."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeBlend",
 				"type": "markup",
-				"description": "The actual native feBlend element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native feBlend element in the SVG namespace, with every prop except children forwarded to it through the attribute spread and the children snippet rendered inside it when provided. The template adds no wrapper element and no default attributes, and the component itself does not validate or change any forwarded value."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
