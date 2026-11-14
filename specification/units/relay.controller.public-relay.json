@@ -22,27 +22,46 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PublicRelayController.constructor.env",
 				"type": "RelayEnv",
-				"required": true
+				"required": true,
+				"description": "The Worker's bindings and variables: REMOTE_HOSTS (required) is the Durable Object namespace that forward() uses to reach the host object on every forwarded request, and the constructor checks none of them. HARNESS_ENVIRONMENT (optional) is read by the guard's transport check, which refuses any request that is not https on every matched route in production and staging, and HARNESS_RELAY_ALLOWED_ORIGINS (optional) is the comma- or space-separated origin list that the connect guard checks when a connect request has an Origin header."
 			},
 			{
 				"name": "PublicRelayController.handle.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The public HTTP request: handle chooses the route from its method and URL pathname, serving GET /v1/health, GET /v1/hosts/{hostId}/connect, GET /v1/hosts/{hostId}/pairings/{pairingId} (info), and POST on that pairing path with /request, /poll or /exchange appended, and any other method or path is answered 404. A connect request keeps its headers and drops its query string when forwarded, and a body is read only for the pairing actions request, poll and exchange, where it must be an application/json object of at most 16 KiB or the answer is 400."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PublicRelayController.handle",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "The Response to the request: the relay's own JSON answer, which is 200 with { ok: true, protocol } for GET /v1/health, 404 with error not-found for any other method or path, 400 tls-required from the transport check, 426 upgrade-required, 403 origin-denied or 401 credential-invalid from the connect guard, and 400 pairing-invalid (exchange) or invalid-input (request, poll) for an unreadable pairing body; a forwarded connect or pairing call returns the host object's own Response unchanged. Rejections that the controller does not catch are listed under errors."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by new URL(request.url) in handle when the request URL is not a valid absolute URL, before any route is matched; handle does not catch it, so its promise rejects."
+			},
+			{
+				"name": "DurableObjectStub.fetch rejection",
+				"type": "thrown",
+				"description": "Whatever the host object's stub.fetch() rejects with when forward() sends a connect or pairing request to it; forward() does not catch it, so connect, pairing and handle reject with the same value."
+			},
+			{
+				"name": "request body stream error",
+				"type": "thrown",
+				"description": "The error a pairing call's request body stream fails with; the reader.read() or reader.cancel() calls in readJsonBody (through boundedBytes) reject with it and are not caught, so pairing and handle reject with it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PublicRelayController.handle",
@@ -50,17 +69,35 @@
 					{
 						"name": "PublicRelayController.handle.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The public HTTP request: handle chooses the route from its method and URL pathname, serving GET /v1/health, GET /v1/hosts/{hostId}/connect, GET /v1/hosts/{hostId}/pairings/{pairingId} (info), and POST on that pairing path with /request, /poll or /exchange appended, and any other method or path is answered 404. A connect request keeps its headers and drops its query string when forwarded, and a body is read only for the pairing actions request, poll and exchange, where it must be an application/json object of at most 16 KiB or the answer is 400."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PublicRelayController.handle",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "The Response to the request: the relay's own JSON answer, which is 200 with { ok: true, protocol } for GET /v1/health, 404 with error not-found for any other method or path, 400 tls-required from the transport check, 426 upgrade-required, 403 origin-denied or 401 credential-invalid from the connect guard, and 400 pairing-invalid (exchange) or invalid-input (request, poll) for an unreadable pairing body; a forwarded connect or pairing call returns the host object's own Response unchanged. Rejections that the controller does not catch are listed under errors."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by new URL(request.url) in handle when the request URL is not a valid absolute URL, before any route is matched; handle does not catch it, so its promise rejects."
+					},
+					{
+						"name": "DurableObjectStub.fetch rejection",
+						"type": "thrown",
+						"description": "Whatever the host object's stub.fetch() rejects with when forward() sends a connect or pairing request to it; forward() does not catch it, so connect, pairing and handle reject with the same value."
+					},
+					{
+						"name": "request body stream error",
+						"type": "thrown",
+						"description": "The error a pairing call's request body stream fails with; the reader.read() or reader.cancel() calls in readJsonBody (through boundedBytes) reject with it and are not caught, so pairing and handle reject with it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -70,17 +107,19 @@
 					{
 						"name": "PublicRelayController.constructor.env",
 						"type": "RelayEnv",
-						"required": true
+						"required": true,
+						"description": "The Worker's bindings and variables: REMOTE_HOSTS (required) is the Durable Object namespace that forward() uses to reach the host object on every forwarded request, and the constructor checks none of them. HARNESS_ENVIRONMENT (optional) is read by the guard's transport check, which refuses any request that is not https on every matched route in production and staging, and HARNESS_RELAY_ALLOWED_ORIGINS (optional) is the comma- or space-separated origin list that the connect guard checks when a connect request has an Origin header."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PublicRelayController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructor returns no value of its own: new PublicRelayController(env) yields the instance, which keeps env and a ConnectGuardMiddleware built from it, and the constructor validates nothing."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
