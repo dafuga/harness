@@ -12,16 +12,23 @@
 		"symbols": ["load"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "load",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The value load returns, which is undefined because its body has no return statement. It only matters if load completes, and it never does because redirect(308, '/harness') throws on every call."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Redirect 308",
+				"type": "thrown",
+				"description": "A redirect thrown by redirect(308, '/harness') on every call to load, which sends the visitor to /harness with HTTP status 308 (Permanent Redirect). Because it is thrown unconditionally, load never returns a value."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "load",
@@ -29,16 +36,18 @@
 				"outputs": [
 					{
 						"name": "load",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The value the load operation returns, which is undefined because its body has no return statement. It only matters if the call completes, and it never does because redirect(308, '/harness') throws on every call."
 					}
 				],
 				"errors": [
 					{
 						"name": "Redirect 308",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A redirect thrown by redirect(308, '/harness') on every call to load, which sends the visitor to /harness with HTTP status 308 (Permanent Redirect). Because it is thrown unconditionally, load never returns a value."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
