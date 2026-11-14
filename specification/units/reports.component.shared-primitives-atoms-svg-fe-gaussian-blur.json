@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feGaussianBlur element; native HTML content rules still apply."
+				"description": "A Svelte Snippet rendered as child content of the feGaussianBlur element, and only when the value is truthy; omitting it renders no snippet content. The component adds no validation and no wrapper around what the snippet renders."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeGaussianBlur",
 				"type": "markup",
-				"description": "The actual native feGaussianBlur element, with forwarded attributes and content and no additional wrapper."
+				"description": "The feGaussianBlur element itself, rendered in the SVG namespace with every prop other than children spread onto it as an attribute and the children snippet rendered inside it when provided. No wrapper element is added, and the spread attributes are passed through without filtering."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
