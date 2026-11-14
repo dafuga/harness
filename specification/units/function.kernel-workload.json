@@ -33,57 +33,117 @@
 				"name": "kernelMutations.request",
 				"type": "RuntimeRequest",
 				"required": true,
-				"description": "Valid impact request whose input contains graph node/edge arrays and changed ids for mutation."
+				"description": "An impact runtime request whose input supplies base and head graphs plus changed, uncertain, and sink ids. The mutations copy or edit these fields, so the graph node and edge arrays and changed array must be present when a mutation reads them.",
+				"examples": [
+					{
+						"operation": "impact",
+						"input": {
+							"base": {
+								"nodes": ["n0", "n1"],
+								"edges": [
+									[1, 0]
+								]
+							},
+							"head": {
+								"nodes": ["n0", "n1"],
+								"edges": [
+									[1, 0]
+								]
+							},
+							"changed": ["n1"],
+							"uncertain": [],
+							"sinks": ["n1"]
+						}
+					}
+				]
 			},
 			{
 				"name": "kernelMutations.count",
 				"type": "number",
 				"required": true,
-				"description": "Number of malformed variants to generate by cycling the fixed mutation list."
+				"description": "The requested Array.from length for the returned variants. The 15 fixed mutations repeat in source order, and variants after the first cycle receive a round field; JavaScript length conversion applies without separate validation.",
+				"examples": [4, 20]
 			},
 			{
 				"name": "kernelWorkload.nodes",
 				"type": "number",
 				"required": true,
-				"description": "Requested graph node count, normally a nonnegative integer; zero produces an empty changed list."
+				"description": "The number used to create original node ids and size the base graph. Zero yields empty base and head graphs and empty changed, uncertain, and sink lists; the implementation has no explicit range check.",
+				"examples": [0, 12]
 			},
 			{
 				"name": "kernelWorkload.seed",
 				"type": "number",
 				"required": true,
-				"description": "Numeric random seed normalized to an unsigned 32-bit state."
+				"description": "The seed is coerced to an unsigned 32-bit state before pseudo-random values are generated. Seeds that coerce to the same 32-bit value produce the same workload.",
+				"examples": [12345, -1]
 			},
 			{
 				"name": "edges.size",
 				"type": "number",
 				"required": true,
-				"description": "Number of graph nodes whose repeatable synthetic dependency edges are generated."
+				"description": "The number of node positions used as edge endpoints. Iteration starts at position 1 and stops before size, so sizes at or below 1 return no edges; there is no explicit range check.",
+				"examples": [0, 4]
 			},
 			{
 				"name": "edges.next",
 				"type": "Random",
 				"required": true,
-				"description": "Seeded random-number source controlling edge counts, endpoints and occasional cycles."
+				"description": "A callback that supplies random values for parent selection and occasional reverse edges. It is called only during iterations with size greater than 1, and its return values are not range-checked."
 			}
 		],
 		"outputs": [
 			{
 				"name": "kernelWorkload",
 				"type": "RuntimeRequest",
-				"description": "Impact runtime request with deterministic base/head graphs, removals/additions, changed and uncertain ids and sink selection."
+				"description": "Returns an impact request containing base and head graphs plus changed, uncertain, and sink id lists. Original ids use the n prefix, head additions use the a prefix, and the number of added ids is ceil(nodes × 0.03).",
+				"examples": [
+					{
+						"operation": "impact",
+						"input": {
+							"base": {
+								"nodes": [],
+								"edges": []
+							},
+							"head": {
+								"nodes": [],
+								"edges": []
+							},
+							"changed": [],
+							"uncertain": [],
+							"sinks": []
+						}
+					}
+				]
 			},
 			{
 				"name": "kernelMutations",
 				"type": "unknown[]",
-				"description": "Ordered malformed requests covering missing/wrong fields, duplicate nodes, invalid edges and unsupported operations; later cycles add a round marker."
+				"description": "Returns one variant per Array.from length unit, cycling through the 15 fixed mutations in source order. Variants after the first cycle also receive a round number starting at 1.",
+				"examples": [
+					[
+						{
+							"operation": "nope",
+							"input": {}
+						}
+					]
+				]
 			},
 			{
 				"name": "kernelTexts",
 				"type": "string[]",
-				"description": "Raw JSON text fixtures covering numeric extremes, Unicode, depth, duplicate keys and malformed/non-object JSON."
+				"description": "Returns raw request text fixtures for parser edge cases, including numeric extremes, Unicode, nesting depth, duplicate keys, and malformed or non-object JSON. The fixtures are fixed strings rather than parsed requests.",
+				"examples": [
+					["{\"operation\":\"version\",\"ignored\":1e400}"],
+					[
+						"{\"operation\":\"impact\",\"input\":{\"base\":{\"nodes\":[\"a\"],\"edges\":[[0,1e400]]},\"head\":{\"nodes\":[],\"edges\":[]},\"changed\":[],\"uncertain\":[],\"sinks\":[]}}"
+					],
+					["{not json"]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "kernelMutations",
@@ -92,24 +152,55 @@
 						"name": "kernelMutations.request",
 						"type": "RuntimeRequest",
 						"required": true,
-						"description": "Valid impact request whose input contains graph node/edge arrays and changed ids for mutation."
+						"description": "An impact runtime request whose input supplies base and head graphs plus changed, uncertain, and sink ids. The mutations copy or edit these fields, so the graph node and edge arrays and changed array must be present when a mutation reads them.",
+						"examples": [
+							{
+								"operation": "impact",
+								"input": {
+									"base": {
+										"nodes": ["n0", "n1"],
+										"edges": [
+											[1, 0]
+										]
+									},
+									"head": {
+										"nodes": ["n0", "n1"],
+										"edges": [
+											[1, 0]
+										]
+									},
+									"changed": ["n1"],
+									"uncertain": [],
+									"sinks": ["n1"]
+								}
+							}
+						]
 					},
 					{
 						"name": "kernelMutations.count",
 						"type": "number",
 						"required": true,
-						"description": "Number of malformed variants to generate by cycling the fixed mutation list."
+						"description": "The requested Array.from length for the returned variants. The 15 fixed mutations repeat in source order, and variants after the first cycle receive a round field; JavaScript length conversion applies without separate validation.",
+						"examples": [4, 20]
 					}
 				],
 				"outputs": [
 					{
 						"name": "kernelMutations",
 						"type": "unknown[]",
-						"description": "Ordered malformed requests covering missing/wrong fields, duplicate nodes, invalid edges and unsupported operations; later cycles add a round marker."
+						"description": "Returns one variant per Array.from length unit, cycling through the 15 fixed mutations in source order. Variants after the first cycle also receive a round number starting at 1.",
+						"examples": [
+							[
+								{
+									"operation": "nope",
+									"input": {}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "kernelTexts",
@@ -118,11 +209,18 @@
 					{
 						"name": "kernelTexts",
 						"type": "string[]",
-						"description": "Raw JSON text fixtures covering numeric extremes, Unicode, depth, duplicate keys and malformed/non-object JSON."
+						"description": "Returns raw request text fixtures for parser edge cases, including numeric extremes, Unicode, nesting depth, duplicate keys, and malformed or non-object JSON. The fixtures are fixed strings rather than parsed requests.",
+						"examples": [
+							["{\"operation\":\"version\",\"ignored\":1e400}"],
+							[
+								"{\"operation\":\"impact\",\"input\":{\"base\":{\"nodes\":[\"a\"],\"edges\":[[0,1e400]]},\"head\":{\"nodes\":[],\"edges\":[]},\"changed\":[],\"uncertain\":[],\"sinks\":[]}}"
+							],
+							["{not json"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "kernelWorkload",
@@ -131,24 +229,44 @@
 						"name": "kernelWorkload.nodes",
 						"type": "number",
 						"required": true,
-						"description": "Requested graph node count, normally a nonnegative integer; zero produces an empty changed list."
+						"description": "The number used to create original node ids and size the base graph. Zero yields empty base and head graphs and empty changed, uncertain, and sink lists; the implementation has no explicit range check.",
+						"examples": [0, 12]
 					},
 					{
 						"name": "kernelWorkload.seed",
 						"type": "number",
 						"required": true,
-						"description": "Numeric random seed normalized to an unsigned 32-bit state."
+						"description": "The seed is coerced to an unsigned 32-bit state before pseudo-random values are generated. Seeds that coerce to the same 32-bit value produce the same workload.",
+						"examples": [12345, -1]
 					}
 				],
 				"outputs": [
 					{
 						"name": "kernelWorkload",
 						"type": "RuntimeRequest",
-						"description": "Impact runtime request with deterministic base/head graphs, removals/additions, changed and uncertain ids and sink selection."
+						"description": "Returns an impact request containing base and head graphs plus changed, uncertain, and sink id lists. Original ids use the n prefix, head additions use the a prefix, and the number of added ids is ceil(nodes × 0.03).",
+						"examples": [
+							{
+								"operation": "impact",
+								"input": {
+									"base": {
+										"nodes": [],
+										"edges": []
+									},
+									"head": {
+										"nodes": [],
+										"edges": []
+									},
+									"changed": [],
+									"uncertain": [],
+									"sinks": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "edges",
@@ -157,23 +275,31 @@
 						"name": "edges.size",
 						"type": "number",
 						"required": true,
-						"description": "Number of graph nodes whose repeatable synthetic dependency edges are generated."
+						"description": "The number of node positions used as edge endpoints. Iteration starts at position 1 and stops before size, so sizes at or below 1 return no edges; there is no explicit range check.",
+						"examples": [0, 4]
 					},
 					{
 						"name": "edges.next",
 						"type": "Random",
 						"required": true,
-						"description": "Seeded random-number source controlling edge counts, endpoints and occasional cycles."
+						"description": "A callback that supplies random values for parent selection and occasional reverse edges. It is called only during iterations with size greater than 1, and its return values are not range-checked."
 					}
 				],
 				"outputs": [
 					{
 						"name": "edges",
-						"type": "Array<[number, number]>"
+						"type": "Array<[number, number]>",
+						"description": "Returns directed edge pairs whose endpoints are numeric node positions. Each position from 1 through size - 1 gets one to three edges to lower positions, with an occasional reverse edge.",
+						"examples": [
+							[],
+							[
+								[1, 0]
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
