@@ -20,29 +20,84 @@
 				"name": "approvalMatch.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "The entity details, including its latest version, contract hash, last design version’s approval and threads."
+				"description": "The catalog entity with its latest design, approval, contract, and thread records. It is consulted for Change requests; the latest version's current approval and a thread belonging to the entity must bind to the request.",
+				"examples": [
+					{
+						"id": "desktop.function.approval-match",
+						"category": "functions",
+						"kind": "function",
+						"title": "Check the approved change",
+						"summary": "Checks that a Change request still names the approved design, contract, images and thread.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"sources": [
+							"packages/desktop/src/services/agents-providers/desktop-run-service/approvalMatch.ts",
+							"packages/desktop/src/services/desktop-run-service/approvalMatch.ts",
+							"packages/desktop/src/utils/approvalMatch.ts"
+						],
+						"size": {
+							"available": false,
+							"text": ""
+						},
+						"performance": {
+							"available": false,
+							"text": ""
+						}
+					}
+				]
 			},
 			{
 				"name": "approvalMatch.request",
 				"type": "RunRequest",
 				"required": true,
-				"description": "The requested mode, thread and approval binding. Plan requests pass without an approval check. A Change must identify the current approved version, contract, image hashes and design option."
+				"description": "The run mode, entity and thread identifiers, and approval binding. Plan requests return without validation; Change requests must match the latest current approval, contract hash, image hash set, and design option.",
+				"examples": [
+					{
+						"mode": "plan",
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"effort": null,
+						"entityId": "desktop.function.approval-match",
+						"threadId": "b7a6d9c4-17f8-4b32-8e51-df04ba39cb62",
+						"text": "Prepare a plan for this unit.",
+						"approval": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "approvalMatch",
 				"type": "void",
-				"description": "No return value. Returning normally means the applicable approval and thread checks passed; it does not execute or verify a change."
+				"description": "No return value. Normal completion means the request was not a Change or the applicable approval and thread checks passed; it does not execute or verify a change."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Refuses a missing or outdated approval, a different design or contract, different image hashes or option, a thread outside this entity, or a thread anchored to another version or option. Image hash order is ignored, but the complete sorted lists must match."
+				"description": "A synchronous Error is thrown for a Change request without a current approval or target, a mismatch in version, contract hash, image hashes, or option, a thread outside the entity, or a thread anchored to a different version or option. Image hash order is ignored, and a thread with no version or option anchor is not rejected for that missing anchor value."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "approvalMatch",
@@ -51,29 +106,84 @@
 						"name": "approvalMatch.entity",
 						"type": "EntityDetail",
 						"required": true,
-						"description": "The entity details, including its latest version, contract hash, last design version’s approval and threads."
+						"description": "The catalog entity with its latest design, approval, contract, and thread records. It is consulted for Change requests; the latest version's current approval and a thread belonging to the entity must bind to the request.",
+						"examples": [
+							{
+								"id": "desktop.function.approval-match",
+								"category": "functions",
+								"kind": "function",
+								"title": "Check the approved change",
+								"summary": "Checks that a Change request still names the approved design, contract, images and thread.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null,
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": null
+								},
+								"relationships": [],
+								"versions": [],
+								"threads": [],
+								"history": [],
+								"sources": [
+									"packages/desktop/src/services/agents-providers/desktop-run-service/approvalMatch.ts",
+									"packages/desktop/src/services/desktop-run-service/approvalMatch.ts",
+									"packages/desktop/src/utils/approvalMatch.ts"
+								],
+								"size": {
+									"available": false,
+									"text": ""
+								},
+								"performance": {
+									"available": false,
+									"text": ""
+								}
+							}
+						]
 					},
 					{
 						"name": "approvalMatch.request",
 						"type": "RunRequest",
 						"required": true,
-						"description": "The requested mode, thread and approval binding. Plan requests pass without an approval check. A Change must identify the current approved version, contract, image hashes and design option."
+						"description": "The run mode, entity and thread identifiers, and approval binding. Plan requests return without validation; Change requests must match the latest current approval, contract hash, image hash set, and design option.",
+						"examples": [
+							{
+								"mode": "plan",
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"effort": null,
+								"entityId": "desktop.function.approval-match",
+								"threadId": "b7a6d9c4-17f8-4b32-8e51-df04ba39cb62",
+								"text": "Prepare a plan for this unit.",
+								"approval": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "approvalMatch",
 						"type": "void",
-						"description": "No return value. Returning normally means the applicable approval and thread checks passed; it does not execute or verify a change."
+						"description": "No return value. Normal completion means the request was not a Change or the applicable approval and thread checks passed; it does not execute or verify a change."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A synchronous Error is thrown for a Change request without a current approval or target, a mismatch in version, contract hash, image hashes, or option, a thread outside the entity, or a thread anchored to a different version or option. Image hash order is ignored, and a thread with no version or option anchor is not rejected for that missing anchor value."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
