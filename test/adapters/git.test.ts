@@ -34,6 +34,27 @@ test('run returns trimmed text and bytes preserves binary data', async () => {
 		Buffer.from('b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\n')
 	);
 });
+test('git children receive scoped authentication and transport configuration', async () => {
+	const git = await fixture();
+	vi.stubEnv('GIT_CONFIG_NOSYSTEM', '1');
+	vi.stubEnv('GIT_ASKPASS', '/fixture/askpass');
+	vi.stubEnv('SSH_ASKPASS', '/fixture/ssh-askpass');
+	vi.stubEnv('SSL_CERT_FILE', '/fixture/ca.pem');
+	vi.stubEnv('HTTP_PROXY', 'http://fixture.invalid:8000');
+	vi.stubEnv('HARNESS_GIT_UNRELATED_SECRET', 'synthetic');
+	const result = await git.exec(['-c', 'alias.showenv=!env', 'showenv']);
+	const output = result.stdout.toString();
+	expect(result.code).toBe(0);
+	for (const value of [
+		'GIT_CONFIG_NOSYSTEM=1',
+		'GIT_ASKPASS=/fixture/askpass',
+		'SSH_ASKPASS=/fixture/ssh-askpass',
+		'SSL_CERT_FILE=/fixture/ca.pem',
+		'HTTP_PROXY=http://fixture.invalid:8000'
+	])
+		expect(output).toContain(value);
+	expect(output).not.toContain('HARNESS_GIT_UNRELATED_SECRET');
+});
 test('attempt and exec retain unsuccessful exit information', async () => {
 	const git = await fixture();
 	expect(await git.attempt(['rev-parse', 'HEAD'])).toBeUndefined();

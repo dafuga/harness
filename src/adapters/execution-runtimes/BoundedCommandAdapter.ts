@@ -20,9 +20,26 @@ export function commandEnvironment(
 		'LANG',
 		'LC_ALL',
 		'TZ',
-		'SYSTEMROOT'
+		'SYSTEMROOT',
+		'CI',
+		'NODE_OPTIONS',
+		'NODE_PATH',
+		'GH_TOKEN',
+		'SSL_CERT_FILE',
+		'SSL_CERT_DIR',
+		'HTTP_PROXY',
+		'HTTPS_PROXY',
+		'ALL_PROXY',
+		'NO_PROXY',
+		'http_proxy',
+		'https_proxy',
+		'all_proxy',
+		'no_proxy',
+		'XDG_CONFIG_HOME'
 	])
 		if (process.env[key] !== undefined) result[key] = process.env[key];
+	for (const [key, value] of Object.entries(process.env))
+		if (key.startsWith('PROJECT_REPORTS_R2_') && value !== undefined) result[key] = value;
 	return { ...result, ...extra };
 }
 function killGroup(child: ChildProcessWithoutNullStreams): void {
@@ -58,7 +75,7 @@ function collect(
 			killGroup(child);
 		};
 		const timer = setTimeout(
-			() => stop(timeoutFailure(commandLabel(child.spawnfile, child.spawnargs), timeout)),
+			() => stop(timeoutFailure(commandLabel(child.spawnfile), timeout)),
 			timeout
 		);
 		const abort = () => stop(options.signal?.reason ?? new Error('Command aborted.'));
