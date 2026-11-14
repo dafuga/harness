@@ -18,23 +18,68 @@
 				"name": "gatewayToolDefinitions.definitions",
 				"type": "GatewayItem[]",
 				"required": true,
-				"description": "Tool definitions containing function/custom entries or namespace entries with a tools array."
+				"description": "An array of gateway records to flatten. A record with type \"namespace\" must have an array-valued tools field; any other record is accepted only when String(type) is \"function\" or \"custom\".",
+				"examples": [
+					[
+						{
+							"type": "function",
+							"name": "lookup_weather"
+						}
+					],
+					[
+						{
+							"type": "namespace",
+							"name": "weather",
+							"tools": [
+								{
+									"type": "function",
+									"name": "lookup_weather"
+								},
+								{
+									"type": "custom",
+									"name": "get_forecast"
+								}
+							]
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayToolDefinitions",
 				"type": "GatewayItem[]",
-				"description": "Flattened function/custom tool entries with enclosing namespace names attached; direct supported entries are returned unchanged."
+				"description": "A flat array of supported function and custom records. Namespace descendants receive a namespace property set to that namespace name as recursion unwinds, so an outer namespace overwrites a nested one; a missing name produces undefined, and direct supported records are returned unchanged.",
+				"examples": [
+					[
+						{
+							"type": "function",
+							"name": "lookup_weather"
+						}
+					],
+					[
+						{
+							"type": "function",
+							"name": "lookup_weather",
+							"namespace": "weather"
+						},
+						{
+							"type": "custom",
+							"name": "get_forecast",
+							"namespace": "weather"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Thrown when namespace.tools is not an array or a tool type is neither function nor custom."
+				"description": "Thrown when a namespace record has a non-array tools field; the message is \"Invalid namespace tools\". Also thrown when a non-namespace record has a stringified type other than \"function\" or \"custom\"; the message is \"Unsupported hosted tool; disable it explicitly for this provider\"."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "gatewayToolDefinitions",
@@ -43,18 +88,68 @@
 						"name": "gatewayToolDefinitions.definitions",
 						"type": "GatewayItem[]",
 						"required": true,
-						"description": "Tool definitions containing function/custom entries or namespace entries with a tools array."
+						"description": "An array of gateway records to flatten. A record with type \"namespace\" must have an array-valued tools field; any other record is accepted only when String(type) is \"function\" or \"custom\".",
+						"examples": [
+							[
+								{
+									"type": "function",
+									"name": "lookup_weather"
+								}
+							],
+							[
+								{
+									"type": "namespace",
+									"name": "weather",
+									"tools": [
+										{
+											"type": "function",
+											"name": "lookup_weather"
+										},
+										{
+											"type": "custom",
+											"name": "get_forecast"
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gatewayToolDefinitions",
 						"type": "GatewayItem[]",
-						"description": "Flattened function/custom tool entries with enclosing namespace names attached; direct supported entries are returned unchanged."
+						"description": "A flat array of supported function and custom records. Namespace descendants receive a namespace property set to that namespace name as recursion unwinds, so an outer namespace overwrites a nested one; a missing name produces undefined, and direct supported records are returned unchanged.",
+						"examples": [
+							[
+								{
+									"type": "function",
+									"name": "lookup_weather"
+								}
+							],
+							[
+								{
+									"type": "function",
+									"name": "lookup_weather",
+									"namespace": "weather"
+								},
+								{
+									"type": "custom",
+									"name": "get_forecast",
+									"namespace": "weather"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a namespace record has a non-array tools field; the message is \"Invalid namespace tools\". Also thrown when a non-namespace record has a stringified type other than \"function\" or \"custom\"; the message is \"Unsupported hosted tool; disable it explicitly for this provider\"."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
