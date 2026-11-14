@@ -21,29 +21,74 @@
 				"name": "moduleResourceLocation.scope",
 				"type": "Pick<ExplorerLocation, 'branch' | 'commit'>",
 				"required": true,
-				"description": "Selected branch and commit; unrelated entity context is discarded."
+				"description": "The revision branch and commit are copied into the returned location. No other location context is accepted or preserved.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "moduleResourceLocation.module",
 				"type": "string",
 				"required": true,
-				"description": "Identity of the module declaring this resource."
+				"description": "This module identifier is prefixed to the resource id when no catalog destination is declared. It does not affect catalog routes and is not validated here.",
+				"examples": ["reports"]
 			},
 			{
 				"name": "moduleResourceLocation.resource",
 				"type": "ModuleResource",
 				"required": true,
-				"description": "Resource declaration with an optional existing catalog destination."
+				"description": "The resource catalog selects a destination: permissions and module-library map to the permissions and modules screens, while styles and dependencies map to same-named screens. Any other present catalog becomes the category; without a catalog, the destination is the module-resources screen with entity `${module}.${resource.id}`.",
+				"examples": [
+					{
+						"id": "colors",
+						"title": "Color palette",
+						"singular": "Color",
+						"kind": "style",
+						"instructions": ["Create the shared color tokens."],
+						"files": [
+							{
+								"path": "src/styles/colors.css",
+								"contents": ":root { --color-primary: #2457c5; }"
+							}
+						],
+						"catalog": "styles"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "moduleResourceLocation",
 				"type": "ExplorerLocation",
-				"description": "A fresh catalog or module-resource location in the supplied branch and commit."
+				"description": "The returned location copies branch and commit and selects fields for the destination. Page screens use category pages plus a screen, other declared catalogs become the category directly, and a missing catalog uses pages, module-resources, and entity `${module}.${resource.id}`.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"category": "pages",
+						"screen": "permissions"
+					},
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"category": "pages",
+						"screen": "modules"
+					},
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"category": "pages",
+						"screen": "module-resources",
+						"entity": "reports.colors"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "moduleResourceLocation",
@@ -52,30 +97,74 @@
 						"name": "moduleResourceLocation.scope",
 						"type": "Pick<ExplorerLocation, 'branch' | 'commit'>",
 						"required": true,
-						"description": "Selected branch and commit; unrelated entity context is discarded."
+						"description": "The revision branch and commit are copied into the returned location. No other location context is accepted or preserved.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					},
 					{
 						"name": "moduleResourceLocation.module",
 						"type": "string",
 						"required": true,
-						"description": "Identity of the module declaring this resource."
+						"description": "This module identifier is prefixed to the resource id when no catalog destination is declared. It does not affect catalog routes and is not validated here.",
+						"examples": ["reports"]
 					},
 					{
 						"name": "moduleResourceLocation.resource",
 						"type": "ModuleResource",
 						"required": true,
-						"description": "Resource declaration with an optional existing catalog destination."
+						"description": "The resource catalog selects a destination: permissions and module-library map to the permissions and modules screens, while styles and dependencies map to same-named screens. Any other present catalog becomes the category; without a catalog, the destination is the module-resources screen with entity `${module}.${resource.id}`.",
+						"examples": [
+							{
+								"id": "colors",
+								"title": "Color palette",
+								"singular": "Color",
+								"kind": "style",
+								"instructions": ["Create the shared color tokens."],
+								"files": [
+									{
+										"path": "src/styles/colors.css",
+										"contents": ":root { --color-primary: #2457c5; }"
+									}
+								],
+								"catalog": "styles"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "moduleResourceLocation",
 						"type": "ExplorerLocation",
-						"description": "A fresh catalog or module-resource location in the supplied branch and commit."
+						"description": "The returned location copies branch and commit and selects fields for the destination. Page screens use category pages plus a screen, other declared catalogs become the category directly, and a missing catalog uses pages, module-resources, and entity `${module}.${resource.id}`.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "pages",
+								"screen": "permissions"
+							},
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "pages",
+								"screen": "modules"
+							},
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "pages",
+								"screen": "module-resources",
+								"entity": "reports.colors"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
