@@ -27,81 +27,381 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "VerificationStoreRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root used to derive the verification scratch-store path under .cache/harness/verifications. The constructor joins this string with that relative directory but does not create or validate the path.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+				]
 			},
 			{
 				"name": "VerificationStoreRepository.directoryFor.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit string used as the commit directory under the verification scratch store. This method passes it to path.join without checking that it is a full commit hash.",
+				"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 			},
 			{
 				"name": "VerificationStoreRepository.directoryFor.startedAt",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Run start timestamp used to form the run directory component. Non-digits are removed and at most the first 17 remaining digits are kept; shorter values remain shorter.",
+				"examples": ["2026-11-14T09:08:07.123Z"]
 			},
 			{
 				"name": "VerificationStoreRepository.save.record",
 				"type": "VerificationRecord",
-				"required": true
+				"required": true,
+				"description": "Verification record serialized into record.json with tab indentation. The repository does not validate the record before writing it.",
+				"examples": [
+					{
+						"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+						"schemaVersion": 1,
+						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+						"source": {
+							"commit": "89abcdef0123456789abcdef0123456789abcdef",
+							"tree": "0123456789abcdef0123456789abcdef01234567",
+							"base": null
+						},
+						"profile": {
+							"id": "linux-x64-node22",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "AMD EPYC 7B13",
+							"cores": 4,
+							"memoryBytes": 8589934592,
+							"runtime": "node 22.15.0"
+						},
+						"startedAt": "2026-11-14T09:08:07.123Z",
+						"finishedAt": "2026-11-14T09:08:12.456Z",
+						"status": "passed",
+						"components": [],
+						"measurements": [],
+						"impact": {
+							"runtime": "module",
+							"expanded": false,
+							"changed": [],
+							"units": {
+								"direct": [],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [],
+						"scenarios": [],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "VerificationStoreRepository.save.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Directory in which save creates record.json. It creates the directory recursively and uses the supplied path without requiring it to be inside the scratch store.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+				]
 			},
 			{
 				"name": "VerificationStoreRepository.load.reference",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A stored record ID or a path to a record file; a resolved existing file is read before any ID search. An invalid file or an unmatched ID returns undefined.",
+				"examples": [
+					"2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
+				]
 			},
 			{
 				"name": "VerificationStoreRepository.latest.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit string used to filter records by record.source.commit. It is compared exactly and is not validated as a SHA by this method.",
+				"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 			},
 			{
 				"name": "VerificationStoreRepository.read.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "File-system path to one record JSON file. Missing, unreadable, malformed, or schema-invalid content returns undefined.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "VerificationStoreRepository.directoryFor",
-				"type": "string"
+				"type": "string",
+				"description": "Store directory path formed from the repository root, .cache/harness/verifications, the commit string, and the sanitized timestamp. The timestamp component contains at most 17 digits, and this method creates no directories.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+				]
 			},
 			{
 				"name": "VerificationStoreRepository.save",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "A promise that resolves with no value after the directory is recursively created and tab-indented record.json is written with a trailing newline. It does not validate the record, and file-system failures reject the promise."
 			},
 			{
 				"name": "VerificationStoreRepository.load",
-				"type": "StoredRecord | undefined"
+				"type": "StoredRecord | undefined",
+				"description": "A valid stored record with its containing directory, or undefined when no valid file or matching record ID is found. Existing file references take precedence over ID lookup.",
+				"examples": [
+					{
+						"record": {
+							"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+							"schemaVersion": 1,
+							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+							"source": {
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"tree": "0123456789abcdef0123456789abcdef01234567",
+								"base": null
+							},
+							"profile": {
+								"id": "linux-x64-node22",
+								"platform": "linux",
+								"arch": "x64",
+								"cpu": "AMD EPYC 7B13",
+								"cores": 4,
+								"memoryBytes": 8589934592,
+								"runtime": "node 22.15.0"
+							},
+							"startedAt": "2026-11-14T09:08:07.123Z",
+							"finishedAt": "2026-11-14T09:08:12.456Z",
+							"status": "passed",
+							"components": [],
+							"measurements": [],
+							"impact": {
+								"runtime": "module",
+								"expanded": false,
+								"changed": [],
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"uncertain": []
+							},
+							"tests": [],
+							"scenarios": [],
+							"budgets": {
+								"status": "passed",
+								"findings": []
+							},
+							"reasons": {
+								"status": "passed",
+								"missing": []
+							},
+							"failures": []
+						},
+						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+					}
+				]
 			},
 			{
 				"name": "VerificationStoreRepository.latest",
-				"type": "StoredRecord | undefined"
+				"type": "StoredRecord | undefined",
+				"description": "The valid stored record for the exact source commit with the greatest startedAt string under descending comparison, regardless of outcome. Returns undefined when no record matches.",
+				"examples": [
+					{
+						"record": {
+							"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+							"schemaVersion": 1,
+							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+							"source": {
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"tree": "0123456789abcdef0123456789abcdef01234567",
+								"base": null
+							},
+							"profile": {
+								"id": "linux-x64-node22",
+								"platform": "linux",
+								"arch": "x64",
+								"cpu": "AMD EPYC 7B13",
+								"cores": 4,
+								"memoryBytes": 8589934592,
+								"runtime": "node 22.15.0"
+							},
+							"startedAt": "2026-11-14T09:08:07.123Z",
+							"finishedAt": "2026-11-14T09:08:12.456Z",
+							"status": "passed",
+							"components": [],
+							"measurements": [],
+							"impact": {
+								"runtime": "module",
+								"expanded": false,
+								"changed": [],
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"uncertain": []
+							},
+							"tests": [],
+							"scenarios": [],
+							"budgets": {
+								"status": "passed",
+								"findings": []
+							},
+							"reasons": {
+								"status": "passed",
+								"missing": []
+							},
+							"failures": []
+						},
+						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+					}
+				]
 			},
 			{
 				"name": "VerificationStoreRepository.all",
-				"type": "StoredRecord[]"
+				"type": "StoredRecord[]",
+				"description": "An array of all valid stored records in commit/run directory traversal order. Invalid records are skipped, and a missing store produces an empty array.",
+				"examples": [
+					[],
+					[
+						{
+							"record": {
+								"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+								"schemaVersion": 1,
+								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+								"source": {
+									"commit": "89abcdef0123456789abcdef0123456789abcdef",
+									"tree": "0123456789abcdef0123456789abcdef01234567",
+									"base": null
+								},
+								"profile": {
+									"id": "linux-x64-node22",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "AMD EPYC 7B13",
+									"cores": 4,
+									"memoryBytes": 8589934592,
+									"runtime": "node 22.15.0"
+								},
+								"startedAt": "2026-11-14T09:08:07.123Z",
+								"finishedAt": "2026-11-14T09:08:12.456Z",
+								"status": "passed",
+								"components": [],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [],
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"failures": []
+							},
+							"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+						}
+					]
+				]
 			},
 			{
 				"name": "VerificationStoreRepository.records",
-				"type": "IterableIterator<StoredRecord>"
+				"type": "IterableIterator<StoredRecord>",
+				"description": "A lazy iterator that yields valid stored records in commit/run directory traversal order without retaining the full history. If the store directory is absent it yields nothing; directory enumeration failures propagate when consumed."
 			},
 			{
 				"name": "VerificationStoreRepository.read",
-				"type": "StoredRecord | undefined"
+				"type": "StoredRecord | undefined",
+				"description": "A valid record parsed from the file together with its parent directory. Missing, unreadable, malformed, or schema-invalid files return undefined.",
+				"examples": [
+					{
+						"record": {
+							"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+							"schemaVersion": 1,
+							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+							"source": {
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"tree": "0123456789abcdef0123456789abcdef01234567",
+								"base": null
+							},
+							"profile": {
+								"id": "linux-x64-node22",
+								"platform": "linux",
+								"arch": "x64",
+								"cpu": "AMD EPYC 7B13",
+								"cores": 4,
+								"memoryBytes": 8589934592,
+								"runtime": "node 22.15.0"
+							},
+							"startedAt": "2026-11-14T09:08:07.123Z",
+							"finishedAt": "2026-11-14T09:08:12.456Z",
+							"status": "passed",
+							"components": [],
+							"measurements": [],
+							"impact": {
+								"runtime": "module",
+								"expanded": false,
+								"changed": [],
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"uncertain": []
+							},
+							"tests": [],
+							"scenarios": [],
+							"budgets": {
+								"status": "passed",
+								"findings": []
+							},
+							"reasons": {
+								"status": "passed",
+								"missing": []
+							},
+							"failures": []
+						},
+						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Unhandled file-system failures from recursive directory creation, file writing, store traversal, or file stat can throw or reject from the corresponding methods. read catches file-read, JSON-parse, and validation failures and returns undefined; operating-system error codes vary by cause."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "VerificationStoreRepository.directoryFor",
@@ -109,22 +409,30 @@
 					{
 						"name": "VerificationStoreRepository.directoryFor.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit string used as the commit directory under the verification scratch store. This method passes it to path.join without checking that it is a full commit hash.",
+						"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 					},
 					{
 						"name": "VerificationStoreRepository.directoryFor.startedAt",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Run start timestamp used to form the run directory component. Non-digits are removed and at most the first 17 remaining digits are kept; shorter values remain shorter.",
+						"examples": ["2026-11-14T09:08:07.123Z"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationStoreRepository.directoryFor",
-						"type": "string"
+						"type": "string",
+						"description": "Store directory path formed from the repository root, .cache/harness/verifications, the commit string, and the sanitized timestamp. The timestamp component contains at most 17 digits, and this method creates no directories.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "VerificationStoreRepository.save",
@@ -132,22 +440,83 @@
 					{
 						"name": "VerificationStoreRepository.save.record",
 						"type": "VerificationRecord",
-						"required": true
+						"required": true,
+						"description": "Verification record serialized into record.json with tab indentation. The repository does not validate the record before writing it.",
+						"examples": [
+							{
+								"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+								"schemaVersion": 1,
+								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+								"source": {
+									"commit": "89abcdef0123456789abcdef0123456789abcdef",
+									"tree": "0123456789abcdef0123456789abcdef01234567",
+									"base": null
+								},
+								"profile": {
+									"id": "linux-x64-node22",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "AMD EPYC 7B13",
+									"cores": 4,
+									"memoryBytes": 8589934592,
+									"runtime": "node 22.15.0"
+								},
+								"startedAt": "2026-11-14T09:08:07.123Z",
+								"finishedAt": "2026-11-14T09:08:12.456Z",
+								"status": "passed",
+								"components": [],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [],
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"failures": []
+							}
+						]
 					},
 					{
 						"name": "VerificationStoreRepository.save.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Directory in which save creates record.json. It creates the directory recursively and uses the supplied path without requiring it to be inside the scratch store.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationStoreRepository.save",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "A promise that resolves with no value after the directory is recursively created and tab-indented record.json is written with a trailing newline. It does not validate the record, and file-system failures reject the promise."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Recursive directory creation or writing record.json can reject with a Node filesystem Error; the method does not catch these failures."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "VerificationStoreRepository.load",
@@ -155,17 +524,81 @@
 					{
 						"name": "VerificationStoreRepository.load.reference",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A stored record ID or a path to a record file; a resolved existing file is read before any ID search. An invalid file or an unmatched ID returns undefined.",
+						"examples": [
+							"2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationStoreRepository.load",
-						"type": "StoredRecord | undefined"
+						"type": "StoredRecord | undefined",
+						"description": "A valid stored record with its containing directory, or undefined when no valid file or matching record ID is found. Existing file references take precedence over ID lookup.",
+						"examples": [
+							{
+								"record": {
+									"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+									"schemaVersion": 1,
+									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+									"source": {
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"tree": "0123456789abcdef0123456789abcdef01234567",
+										"base": null
+									},
+									"profile": {
+										"id": "linux-x64-node22",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "AMD EPYC 7B13",
+										"cores": 4,
+										"memoryBytes": 8589934592,
+										"runtime": "node 22.15.0"
+									},
+									"startedAt": "2026-11-14T09:08:07.123Z",
+									"finishedAt": "2026-11-14T09:08:12.456Z",
+									"status": "passed",
+									"components": [],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [],
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [],
+									"scenarios": [],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"missing": []
+									},
+									"failures": []
+								},
+								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failing statSync on an existing path or an uncaught store-directory enumeration failure can throw a Node filesystem Error; record-file read and validation failures are caught by read."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "VerificationStoreRepository.latest",
@@ -173,17 +606,78 @@
 					{
 						"name": "VerificationStoreRepository.latest.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit string used to filter records by record.source.commit. It is compared exactly and is not validated as a SHA by this method.",
+						"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationStoreRepository.latest",
-						"type": "StoredRecord | undefined"
+						"type": "StoredRecord | undefined",
+						"description": "The valid stored record for the exact source commit with the greatest startedAt string under descending comparison, regardless of outcome. Returns undefined when no record matches.",
+						"examples": [
+							{
+								"record": {
+									"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+									"schemaVersion": 1,
+									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+									"source": {
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"tree": "0123456789abcdef0123456789abcdef01234567",
+										"base": null
+									},
+									"profile": {
+										"id": "linux-x64-node22",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "AMD EPYC 7B13",
+										"cores": 4,
+										"memoryBytes": 8589934592,
+										"runtime": "node 22.15.0"
+									},
+									"startedAt": "2026-11-14T09:08:07.123Z",
+									"finishedAt": "2026-11-14T09:08:12.456Z",
+									"status": "passed",
+									"components": [],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [],
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [],
+									"scenarios": [],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"missing": []
+									},
+									"failures": []
+								},
+								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A store or run-directory enumeration failure from readdirSync can throw a Node filesystem Error; record-file read and validation failures are skipped."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "VerificationStoreRepository.all",
@@ -191,11 +685,73 @@
 				"outputs": [
 					{
 						"name": "VerificationStoreRepository.all",
-						"type": "StoredRecord[]"
+						"type": "StoredRecord[]",
+						"description": "An array of all valid stored records in commit/run directory traversal order. Invalid records are skipped, and a missing store produces an empty array.",
+						"examples": [
+							[],
+							[
+								{
+									"record": {
+										"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+										"schemaVersion": 1,
+										"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+										"source": {
+											"commit": "89abcdef0123456789abcdef0123456789abcdef",
+											"tree": "0123456789abcdef0123456789abcdef01234567",
+											"base": null
+										},
+										"profile": {
+											"id": "linux-x64-node22",
+											"platform": "linux",
+											"arch": "x64",
+											"cpu": "AMD EPYC 7B13",
+											"cores": 4,
+											"memoryBytes": 8589934592,
+											"runtime": "node 22.15.0"
+										},
+										"startedAt": "2026-11-14T09:08:07.123Z",
+										"finishedAt": "2026-11-14T09:08:12.456Z",
+										"status": "passed",
+										"components": [],
+										"measurements": [],
+										"impact": {
+											"runtime": "module",
+											"expanded": false,
+											"changed": [],
+											"units": {
+												"direct": [],
+												"indirect": [],
+												"added": [],
+												"removed": []
+											},
+											"uncertain": []
+										},
+										"tests": [],
+										"scenarios": [],
+										"budgets": {
+											"status": "passed",
+											"findings": []
+										},
+										"reasons": {
+											"status": "passed",
+											"missing": []
+										},
+										"failures": []
+									},
+									"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A store or run-directory enumeration failure from readdirSync can throw a Node filesystem Error; record-file read and validation failures are skipped."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "VerificationStoreRepository.records",
@@ -203,11 +759,18 @@
 				"outputs": [
 					{
 						"name": "VerificationStoreRepository.records",
-						"type": "IterableIterator<StoredRecord>"
+						"type": "IterableIterator<StoredRecord>",
+						"description": "A lazy iterator that yields valid stored records in commit/run directory traversal order without retaining the full history. If the store directory is absent it yields nothing; directory enumeration failures propagate when consumed."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A store or run-directory enumeration failure from readdirSync can throw a Node filesystem Error while the iterator is consumed; record-file read and validation failures are skipped."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "VerificationStoreRepository.read",
@@ -215,17 +778,74 @@
 					{
 						"name": "VerificationStoreRepository.read.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "File-system path to one record JSON file. Missing, unreadable, malformed, or schema-invalid content returns undefined.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationStoreRepository.read",
-						"type": "StoredRecord | undefined"
+						"type": "StoredRecord | undefined",
+						"description": "A valid record parsed from the file together with its parent directory. Missing, unreadable, malformed, or schema-invalid files return undefined.",
+						"examples": [
+							{
+								"record": {
+									"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
+									"schemaVersion": 1,
+									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+									"source": {
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"tree": "0123456789abcdef0123456789abcdef01234567",
+										"base": null
+									},
+									"profile": {
+										"id": "linux-x64-node22",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "AMD EPYC 7B13",
+										"cores": 4,
+										"memoryBytes": 8589934592,
+										"runtime": "node 22.15.0"
+									},
+									"startedAt": "2026-11-14T09:08:07.123Z",
+									"finishedAt": "2026-11-14T09:08:12.456Z",
+									"status": "passed",
+									"components": [],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [],
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [],
+									"scenarios": [],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"missing": []
+									},
+									"failures": []
+								},
+								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -235,17 +855,22 @@
 					{
 						"name": "VerificationStoreRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root used to derive the verification scratch-store path under .cache/harness/verifications. The constructor joins this string with that relative directory but does not create or validate the path.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationStoreRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed VerificationStoreRepository instance, which retains the root-derived store path and a VerificationRecordValidator. Construction joins paths but does not create the store directory."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
