@@ -20,78 +20,156 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SqliteTableAdapter.constructor.db",
 				"type": "SqliteDatabase",
-				"required": true
+				"required": true,
+				"description": "A synchronous SQLite database handle used by the adapter's prepared statements. It must provide the prepare, all, get, and run calls used by the methods; the adapter does not open the database."
 			},
 			{
 				"name": "SqliteTableAdapter.constructor.model",
 				"type": "SqliteModel",
-				"required": true
+				"required": true,
+				"description": "Model metadata supplying the table, declared fields, and optional primary-key name used by the adapter. When primaryKey is absent the adapter uses id; an updatedAt field with default timestamp is refreshed during updates.",
+				"examples": [
+					{
+						"table": "tasks",
+						"primaryKey": "id",
+						"fields": {}
+					}
+				]
 			},
 			{
 				"name": "SqliteTableAdapter.find.id",
 				"type": "number | string",
-				"required": true
+				"required": true,
+				"description": "The number or string compared with the configured primary-key column, which defaults to id. The method does not impose a narrower identifier format.",
+				"examples": [17, "task-17"]
 			},
 			{
 				"name": "SqliteTableAdapter.findBy.fields",
 				"type": "Record<string, unknown>",
-				"required": true
+				"required": true,
+				"description": "A field-to-value map converted by sqliteInput to build the WHERE clause. Null values become IS NULL checks, non-null values are bound, and an empty map selects without a WHERE clause.",
+				"examples": [
+					{
+						"status": "active",
+						"archived": null
+					},
+					{}
+				]
 			},
 			{
 				"name": "SqliteTableAdapter.insert.input",
 				"type": "Record<string, unknown>",
-				"required": true
+				"required": true,
+				"description": "A field-to-value map converted by sqliteInput before the INSERT statement is prepared. Values are bound through placeholders, while an empty map uses DEFAULT VALUES.",
+				"examples": [
+					{
+						"name": "Ada",
+						"status": "active"
+					},
+					{}
+				]
 			},
 			{
 				"name": "SqliteTableAdapter.update.id",
 				"type": "number | string",
-				"required": true
+				"required": true,
+				"description": "The number or string compared with the configured primary-key column when selecting the row to update. When the input map is empty, this identifier is passed to find instead.",
+				"examples": [17, "task-17"]
 			},
 			{
 				"name": "SqliteTableAdapter.update.input",
 				"type": "Record<string, unknown>",
-				"required": true
+				"required": true,
+				"description": "A field-to-value map converted by sqliteInput for the UPDATE statement; an own property matching the primary key throws Error. An empty map returns find(id), and updatedAt is refreshed when its model default is timestamp.",
+				"examples": [
+					{
+						"name": "Ada"
+					},
+					{
+						"name": "Ada",
+						"updatedAt": "2026-11-14T09:00:00.000Z"
+					},
+					{}
+				]
 			},
 			{
 				"name": "SqliteTableAdapter.delete.id",
 				"type": "number | string",
-				"required": true
+				"required": true,
+				"description": "The number or string compared with the configured primary-key column in the DELETE statement. The method reports whether any row was removed rather than returning the row.",
+				"examples": [17, "task-17"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SqliteTableAdapter.find",
-				"type": "T | null"
+				"type": "T | null",
+				"description": "The first matching row mapped through sqliteRow, or null when no row matches. It finds that row using the model's primary-key field.",
+				"examples": [
+					{
+						"id": 17,
+						"name": "Ada"
+					},
+					null
+				]
 			},
 			{
 				"name": "SqliteTableAdapter.findBy",
-				"type": "T[]"
+				"type": "T[]",
+				"description": "An array of database rows mapped through sqliteRow. It is empty when no rows match, and an empty fields map requests all rows.",
+				"examples": [
+					[
+						{
+							"id": 17,
+							"name": "Ada"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "SqliteTableAdapter.insert",
-				"type": "T"
+				"type": "T",
+				"description": "The inserted row mapped through sqliteRow from the result of INSERT ... RETURNING *. The declared result is T and the method has no null fallback.",
+				"examples": [
+					{
+						"id": 17,
+						"name": "Ada"
+					}
+				]
 			},
 			{
 				"name": "SqliteTableAdapter.update",
-				"type": "T | null"
+				"type": "T | null",
+				"description": "The updated row mapped through sqliteRow, or null when no row is returned. An empty input map instead returns the current result of find(id).",
+				"examples": [
+					{
+						"id": 17,
+						"name": "Ada"
+					},
+					null
+				]
 			},
 			{
 				"name": "SqliteTableAdapter.delete",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "A boolean computed from whether DELETE reports a positive changes count. It is false when the database reports no rows removed.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "update throws this Error when the input has its own property matching the configured primary key. Its message is A SQLite primary key cannot be updated."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SqliteTableAdapter.find",
@@ -99,17 +177,27 @@
 					{
 						"name": "SqliteTableAdapter.find.id",
 						"type": "number | string",
-						"required": true
+						"required": true,
+						"description": "The number or string compared with the configured primary-key column, which defaults to id. The method does not impose a narrower identifier format.",
+						"examples": [17, "task-17"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteTableAdapter.find",
-						"type": "T | null"
+						"type": "T | null",
+						"description": "The first matching row mapped through sqliteRow, or null when no row matches. It finds that row using the model's primary-key field.",
+						"examples": [
+							{
+								"id": 17,
+								"name": "Ada"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteTableAdapter.findBy",
@@ -117,17 +205,35 @@
 					{
 						"name": "SqliteTableAdapter.findBy.fields",
 						"type": "Record<string, unknown>",
-						"required": true
+						"required": true,
+						"description": "A field-to-value map converted by sqliteInput to build the WHERE clause. Null values become IS NULL checks, non-null values are bound, and an empty map selects without a WHERE clause.",
+						"examples": [
+							{
+								"status": "active",
+								"archived": null
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteTableAdapter.findBy",
-						"type": "T[]"
+						"type": "T[]",
+						"description": "An array of database rows mapped through sqliteRow. It is empty when no rows match, and an empty fields map requests all rows.",
+						"examples": [
+							[
+								{
+									"id": 17,
+									"name": "Ada"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteTableAdapter.insert",
@@ -135,17 +241,32 @@
 					{
 						"name": "SqliteTableAdapter.insert.input",
 						"type": "Record<string, unknown>",
-						"required": true
+						"required": true,
+						"description": "A field-to-value map converted by sqliteInput before the INSERT statement is prepared. Values are bound through placeholders, while an empty map uses DEFAULT VALUES.",
+						"examples": [
+							{
+								"name": "Ada",
+								"status": "active"
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteTableAdapter.insert",
-						"type": "T"
+						"type": "T",
+						"description": "The inserted row mapped through sqliteRow from the result of INSERT ... RETURNING *. The declared result is T and the method has no null fallback.",
+						"examples": [
+							{
+								"id": 17,
+								"name": "Ada"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteTableAdapter.update",
@@ -153,27 +274,49 @@
 					{
 						"name": "SqliteTableAdapter.update.id",
 						"type": "number | string",
-						"required": true
+						"required": true,
+						"description": "The number or string compared with the configured primary-key column when selecting the row to update. When the input map is empty, this identifier is passed to find instead.",
+						"examples": [17, "task-17"]
 					},
 					{
 						"name": "SqliteTableAdapter.update.input",
 						"type": "Record<string, unknown>",
-						"required": true
+						"required": true,
+						"description": "A field-to-value map converted by sqliteInput for the UPDATE statement; an own property matching the primary key throws Error. An empty map returns find(id), and updatedAt is refreshed when its model default is timestamp.",
+						"examples": [
+							{
+								"name": "Ada"
+							},
+							{
+								"name": "Ada",
+								"updatedAt": "2026-11-14T09:00:00.000Z"
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteTableAdapter.update",
-						"type": "T | null"
+						"type": "T | null",
+						"description": "The updated row mapped through sqliteRow, or null when no row is returned. An empty input map instead returns the current result of find(id).",
+						"examples": [
+							{
+								"id": 17,
+								"name": "Ada"
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "update throws this Error when the input has its own property matching the configured primary key. Its message is A SQLite primary key cannot be updated."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteTableAdapter.delete",
@@ -181,17 +324,21 @@
 					{
 						"name": "SqliteTableAdapter.delete.id",
 						"type": "number | string",
-						"required": true
+						"required": true,
+						"description": "The number or string compared with the configured primary-key column in the DELETE statement. The method reports whether any row was removed rather than returning the row.",
+						"examples": [17, "task-17"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteTableAdapter.delete",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "A boolean computed from whether DELETE reports a positive changes count. It is false when the database reports no rows removed.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -201,22 +348,32 @@
 					{
 						"name": "SqliteTableAdapter.constructor.db",
 						"type": "SqliteDatabase",
-						"required": true
+						"required": true,
+						"description": "A synchronous SQLite database handle used by the adapter's prepared statements. It must provide the prepare, all, get, and run calls used by the methods; the adapter does not open the database."
 					},
 					{
 						"name": "SqliteTableAdapter.constructor.model",
 						"type": "SqliteModel",
-						"required": true
+						"required": true,
+						"description": "Model metadata supplying the table, declared fields, and optional primary-key name used by the adapter. When primaryKey is absent the adapter uses id; an updatedAt field with default timestamp is refreshed during updates.",
+						"examples": [
+							{
+								"table": "tasks",
+								"primaryKey": "id",
+								"fields": {}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteTableAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructor creates an adapter instance holding the supplied database and model. It caches the table identifier returned by sqliteIdentifier and uses model.primaryKey or id."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
