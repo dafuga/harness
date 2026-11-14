@@ -37,16 +37,98 @@
 			{
 				"name": "Result",
 				"type": "Regression result",
-				"description": "Validated commit identities, test inputs and observed results"
+				"description": "A committed regression record validated by regressionRecordSchema: source commit, tree and parent SHAs, the tests, fixtures, runner configuration and lockfiles frozen at the failing commit, and the focused run's status, exit code and output log. It matters when a red, green or capture phase result is kept for history, and it never grants full verification or a budget baseline.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "c41e9a073bd6f25e8a0c17d9f4e3b58c2d07a96eb13f84c57e9a2d106c5b08f4",
+						"loop": "loop-regression-types-07",
+						"phase": "red",
+						"status": "failed",
+						"source": {
+							"commit": "3f9a1c07d2b64e58a19c0d7e46b2f83a5c1e9d06",
+							"tree": "9e02d4b7a13c85f60e7d2b9a4c18f3e0d6a57b21",
+							"parent": "5d8b2e61f0a94c7d3e26b15f8a0c9d4e72b13f6a"
+						},
+						"units": ["function.regression-types"],
+						"tests": ["regressionRecordSchema rejects unknown record fields"],
+						"inputs": [
+							{
+								"path": "src/core/verification-evidence/regressionTypes.test.ts",
+								"hash": "b7e2d05a913c4f68e10d2a7c5f9b3e84d61a0c27"
+							},
+							{
+								"path": "package-lock.json",
+								"hash": "0f4a9c3e7b21d58a6e0c94f2b7d13a8e5c60b9d4"
+							}
+						],
+						"command": "npm test -- src/core/verification-evidence/regressionTypes.test.ts",
+						"assertion": "expected unknown record field 'extra' to be rejected",
+						"profile": "focused",
+						"startedAt": "2026-11-10T14:22:05.000Z",
+						"finishedAt": "2026-11-10T14:22:41.000Z",
+						"exitCode": 1,
+						"log": {
+							"path": "output.log",
+							"sha256": "7a1f3c9e0b5d28467c04e9af1d36b8520e9c7f4a2d18b6355e0af93c7d10b2e8",
+							"bytes": 18432
+						}
+					},
+					{
+						"schemaVersion": 1,
+						"id": "0a6d3f91e7b25c049d18fa63c05e2b7a4f8d91e6a3c7506bd29e4f1855b0a3c9",
+						"loop": "loop-regression-types-07",
+						"phase": "green",
+						"status": "passed",
+						"source": {
+							"commit": "e1c7a04f92d36b58e0a1f7c49d2b6e83a50c17f4",
+							"tree": "6a2f0d9c4e18b73a5d06f2e9c81b4a7d3e5f0c29",
+							"parent": "3f9a1c07d2b64e58a19c0d7e46b2f83a5c1e9d06"
+						},
+						"units": ["function.regression-types"],
+						"tests": ["regressionRecordSchema rejects unknown record fields"],
+						"inputs": [
+							{
+								"path": "src/core/verification-evidence/regressionTypes.test.ts",
+								"hash": "b7e2d05a913c4f68e10d2a7c5f9b3e84d61a0c27"
+							},
+							{
+								"path": "package-lock.json",
+								"hash": "0f4a9c3e7b21d58a6e0c94f2b7d13a8e5c60b9d4"
+							}
+						],
+						"command": "npm test -- src/core/verification-evidence/regressionTypes.test.ts",
+						"assertion": "expected unknown record field 'extra' to be rejected",
+						"profile": "focused",
+						"startedAt": "2026-11-10T15:48:12.000Z",
+						"finishedAt": "2026-11-10T15:48:37.000Z",
+						"exitCode": 0,
+						"log": {
+							"path": "output.log",
+							"sha256": "f08c2a719b4e63d05ac17e28d94f0b6c31e8a75dc6029f4b8e1d37a0b5f42c9e",
+							"bytes": 6144
+						},
+						"red": {
+							"commit": "3f9a1c07d2b64e58a19c0d7e46b2f83a5c1e9d06",
+							"record": "c41e9a073bd6f25e8a0c17d9f4e3b58c2d07a96eb13f84c57e9a2d106c5b08f4"
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Invalid proof",
 				"type": "Explicit rejection or gap",
-				"description": "Rejects missing fields, malformed hashes and unknown record fields."
+				"description": "A value that regressionRecordSchema, regressionViewSchema or regressionPhaseSchema rejects, such as a missing required field, a commit or input hash that is not 40 lowercase hex characters, a record id or log hash that is not 64 lowercase hex characters, or a key the strict object does not declare. It matters because strict objects refuse unknown keys instead of stripping them, and nothing in these files catches or repairs the rejection."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "The ZodError thrown by `.parse()` on regressionRecordSchema, regressionViewSchema or regressionPhaseSchema when a value fails validation. These files never catch it, so it reaches the caller unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
