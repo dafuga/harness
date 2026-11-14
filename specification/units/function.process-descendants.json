@@ -42,46 +42,73 @@
 				"name": "processDescendants.root",
 				"type": "number",
 				"required": true,
-				"description": "PID of the command to track before it is reaped."
+				"description": "PID of the command whose descendants are tracked. It is established as the root only when a table records this PID and its start time while the tracker is open; PID alone does not establish identity.",
+				"examples": [4242]
 			},
 			{
 				"name": "processDescendants.read",
 				"type": "ProcessTable",
 				"required": false,
-				"description": "Optional process-table reader; defaults to the bounded system ps reader."
+				"description": "Process-table callback used by tracking reads; it may return null when the table is unreadable. Defaults to processTable, which runs bounded ps with a five-second timeout."
 			},
 			{
 				"name": "signalProcesses.known",
 				"type": "TrackedProcess[]",
 				"required": true,
-				"description": "Tracked PID/start-time identities to verify against a fresh process table."
+				"description": "PID/start-time pairs supplied for an identity check against a fresh process table before signaling. Entries absent from the table, including reused PIDs with a different start time, are left untouched.",
+				"examples": [
+					[
+						{
+							"pid": 4242,
+							"started": "Fri Nov 13 09:32:10 2026"
+						}
+					]
+				]
 			},
 			{
 				"name": "signalProcesses.signal",
 				"type": "'SIGTERM' | 'SIGKILL'",
 				"required": true,
-				"description": "Signal to send only to identities still matching the fresh process table."
+				"description": "Signal to attempt for each supplied identity that still matches. The accepted values are SIGTERM and SIGKILL.",
+				"examples": ["SIGTERM", "SIGKILL"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "processTable",
 				"type": "Promise<Row[] | null>",
-				"description": "Rows with PID, parent PID, process group and start time, or null when the bounded ps read fails or omits this process."
+				"description": "Resolves with parsed rows containing only PID, parent PID, process group, and ps start-time text when the bounded ps read completes within 5000 ms and includes this process. Resolves null if the command fails, times out, or its output does not contain this process.",
+				"examples": [
+					[
+						{
+							"pid": 4242,
+							"parent": 1,
+							"group": 4242,
+							"started": "Fri Nov 13 09:32:10 2026"
+						},
+						{
+							"pid": 4243,
+							"parent": 4242,
+							"group": 4242,
+							"started": "Fri Nov 13 09:32:11 2026"
+						}
+					],
+					null
+				]
 			},
 			{
 				"name": "processDescendants",
 				"type": "Descendants",
-				"description": "Tracker with look, survivors, alive and closed operations; parent-linked descendants are proven, group-only strangers are unproven."
+				"description": "Returns a tracker whose look skips overlaps, whose survivors lists still-existing parent-linked descendants, and whose closed marks the root reaped and performs one more look. alive returns existing owned processes plus group-only strangers marked unproven, or null when the table is unreadable; survivors excludes the root and strangers."
 			},
 			{
 				"name": "signalProcesses",
 				"type": "Promise<void>",
-				"description": "Resolves after signaling only supplied identities that still match; unreadable tables cause no signal and kill errors are ignored."
+				"description": "Resolves after checking a fresh process table when known is nonempty, and attempts the requested signal only for PID/start-time pairs still present. It resolves without signaling when the table is unreadable and ignores process.kill errors."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "processTable",
@@ -90,7 +117,24 @@
 					{
 						"name": "processTable",
 						"type": "Promise<Row[] | null>",
-						"description": "Rows with PID, parent PID, process group and start time, or null when the bounded ps read fails or omits this process."
+						"description": "Resolves with parsed rows containing only PID, parent PID, process group, and ps start-time text when the bounded ps read completes within 5000 ms and includes this process. Resolves null if the command fails, times out, or its output does not contain this process.",
+						"examples": [
+							[
+								{
+									"pid": 4242,
+									"parent": 1,
+									"group": 4242,
+									"started": "Fri Nov 13 09:32:10 2026"
+								},
+								{
+									"pid": 4243,
+									"parent": 4242,
+									"group": 4242,
+									"started": "Fri Nov 13 09:32:11 2026"
+								}
+							],
+							null
+						]
 					}
 				],
 				"errors": [],
@@ -103,20 +147,21 @@
 						"name": "processDescendants.root",
 						"type": "number",
 						"required": true,
-						"description": "PID of the command to track before it is reaped."
+						"description": "PID of the command whose descendants are tracked. It is established as the root only when a table records this PID and its start time while the tracker is open; PID alone does not establish identity.",
+						"examples": [4242]
 					},
 					{
 						"name": "processDescendants.read",
 						"type": "ProcessTable",
 						"required": false,
-						"description": "Optional process-table reader; defaults to the bounded system ps reader."
+						"description": "Process-table callback used by tracking reads; it may return null when the table is unreadable. Defaults to processTable, which runs bounded ps with a five-second timeout."
 					}
 				],
 				"outputs": [
 					{
 						"name": "processDescendants",
 						"type": "Descendants",
-						"description": "Tracker with look, survivors, alive and closed operations; parent-linked descendants are proven, group-only strangers are unproven."
+						"description": "Returns a tracker whose look skips overlaps, whose survivors lists still-existing parent-linked descendants, and whose closed marks the root reaped and performs one more look. alive returns existing owned processes plus group-only strangers marked unproven, or null when the table is unreadable; survivors excludes the root and strangers."
 					}
 				],
 				"errors": [],
@@ -129,20 +174,29 @@
 						"name": "signalProcesses.known",
 						"type": "TrackedProcess[]",
 						"required": true,
-						"description": "Tracked PID/start-time identities to verify against a fresh process table."
+						"description": "PID/start-time pairs supplied for an identity check against a fresh process table before signaling. Entries absent from the table, including reused PIDs with a different start time, are left untouched.",
+						"examples": [
+							[
+								{
+									"pid": 4242,
+									"started": "Fri Nov 13 09:32:10 2026"
+								}
+							]
+						]
 					},
 					{
 						"name": "signalProcesses.signal",
 						"type": "'SIGTERM' | 'SIGKILL'",
 						"required": true,
-						"description": "Signal to send only to identities still matching the fresh process table."
+						"description": "Signal to attempt for each supplied identity that still matches. The accepted values are SIGTERM and SIGKILL.",
+						"examples": ["SIGTERM", "SIGKILL"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "signalProcesses",
 						"type": "Promise<void>",
-						"description": "Resolves after signaling only supplied identities that still match; unreadable tables cause no signal and kill errors are ignored."
+						"description": "Resolves after checking a fresh process table when known is nonempty, and attempts the requested signal only for PID/start-time pairs still present. It resolves without signaling when the table is unreadable and ignores process.kill errors."
 					}
 				],
 				"errors": [],
