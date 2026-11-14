@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { rm } from 'node:fs/promises';
+import { afterEach, expect, test } from 'vitest';
 import type { ScenarioManifest } from '../src/core/development-tooling/unitTypes';
 import type { ExplorerCapture } from '../packages/reports/src/models/explorer-ui/ExplorerEvidence.types';
 import type {
@@ -13,11 +14,22 @@ import {
 	scenarioStatesFor
 } from '../src/workflows/development-tooling/guide-units/guidanceContext';
 import {
+	guideUnits,
 	recordedDone,
 	renderUnitsGuide
 } from '../src/workflows/development-tooling/guide-units/guideUnits';
+import {
+	commitGuidance,
+	entity,
+	guidanceProject,
+	writeGuidanceFile
+} from './support/unitsGuidanceProject';
 
 const unitId = 'component.alpha';
+const roots: string[] = [];
+afterEach(async () => {
+	for (const root of roots.splice(0)) await rm(root, { recursive: true, force: true });
+});
 
 function scenario(overrides: Partial<ScenarioManifest> = {}): ScenarioManifest {
 	return {
@@ -170,4 +182,65 @@ test('recordedDone accepts usable passed assertions or trace captures for the na
 		)
 	).toBe(false);
 	expect(recordedDone([capture()], unitId, 'loading')).toBe(false);
+});
+
+test('a unit with UI and headless states classifies each state on its own', async () => {
+	const root = await guidanceProject(['default', 'loading']);
+	roots.push(root);
+	await writeGuidanceFile(
+		root,
+		'specification/scenarios/widget-recorded.json',
+		JSON.stringify({
+			schemaVersion: 1,
+			id: 'widget-recorded',
+			title: 'Widget recorded assertions',
+			kind: 'headless',
+			units: [entity],
+			states: [
+				{
+					id: 'component-widget-recorded',
+					title: 'Recorded',
+					coverage: 'required',
+					units: [entity]
+				}
+			],
+			viewports: [],
+			tests: [{ id: 'recorded', kind: 'unit', runner: 'vitest', target: 'tests/recorded.test.ts' }],
+			evidence: [
+				{
+					id: 'assertions',
+					kind: 'assertions',
+					states: ['component-widget-recorded'],
+					viewports: [],
+					required: true
+				}
+			]
+		})
+	);
+	await writeGuidanceFile(
+		root,
+		'tests/recorded.test.ts',
+		"test('recorded', () => expect(true).toBe(true));"
+	);
+	await commitGuidance(root);
+
+	const report = await guideUnits(entity, { root });
+	const state = (name: string) => report.states.find((item) => item.name === name);
+	expect(report.states.map((item) => item.name)).toEqual(['default', 'loading', 'recorded']);
+	// A UI state keeps the device matrix and has no evidence.
+	expect(state('loading')).toMatchObject({
+		status: 'MISSING',
+		viewports: { desktop: 'MISSING', tablet: 'MISSING', mobile: 'MISSING' }
+	});
+	expect(state('loading')).not.toHaveProperty('evidence');
+	// The headless state has an evidence column (nothing recorded yet) and no devices.
+	expect(state('recorded')).toMatchObject({
+		status: 'MISSING',
+		evidence: 'MISSING',
+		tests: [{ file: 'tests/recorded.test.ts', viewports: [] }]
+	});
+	expect(state('recorded')?.viewports).toEqual({});
+	expect(renderUnitsGuide(report)).toContain(
+		'MISSING recorded [REQUIRED] test:tests/recorded.test.ts evidence:MISSING'
+	);
 });

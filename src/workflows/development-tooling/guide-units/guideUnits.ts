@@ -8,6 +8,7 @@ import {
 	guidanceContext,
 	guidanceUnit,
 	headlessOnly,
+	headlessStateNames,
 	namedUnitStates
 } from './guidanceContext';
 import { unitStateName } from './contractStates';
@@ -37,16 +38,19 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 	const shots = await unitShots(context.loaded.root, id, context.tree.revision);
 	const states: GuideState[] = [];
 	const derived = await allUnitStates(context, unit);
-	const headless = headlessOnly(context.loaded.scenarios, id, context.registries);
+	const headlessUnit = headlessOnly(context.loaded.scenarios, id, context.registries);
+	const headlessNames = headlessStateNames(context.loaded.scenarios, id, context.registries);
 	const namedDefault = namedUnitStates(context, unit).find((state) => state.name === 'default');
 	const explicitDefault = namedDefault?.reasons.some((reason) => reason !== 'Default presentation.') ?? false;
 	for (const state of derived.filter(
 		(item) =>
 			item.origin === 'REQUIRED' &&
-			(!headless || item.name !== 'default' || explicitDefault)
+			(!headlessUnit || item.name !== 'default' || explicitDefault)
 	)) {
-		const tests = await stateTests(context, unit, state.name, { headless });
-		if (headless) {
+		// Each state is classified on its own: a mixed unit has both headless and UI states.
+		const isHeadless = headlessNames.includes(state.name);
+		const tests = await stateTests(context, unit, state.name, { headless: isHeadless });
+		if (isHeadless) {
 			const evidence = recordedDone(shots.captures, id, state.name) ? 'DONE' : 'MISSING';
 			states.push({
 				...state,
