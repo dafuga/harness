@@ -12,12 +12,14 @@
 		"symbols": ["ssr"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "ssr",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The `ssr` export of the `/` layout module (`packages/desktop/src/routes/+layout.ts`), declared as `export const ssr = false;`. It matters to any code that reads this export, which always gets `false` because the module binds it with `const` to a fixed literal with no branch, input or other assignment.",
+				"examples": [false]
 			}
 		],
 		"errors": [],
