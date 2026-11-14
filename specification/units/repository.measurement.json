@@ -18,55 +18,292 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "MeasurementRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Root directory used to resolve explicit file paths and build profile paths beneath the measurements directory. The constructor stores this string without checking or creating the directory.",
+				"examples": ["/workspace/kernel-repo"]
 			},
 			{
 				"name": "MeasurementRepository.write.benchmark",
 				"type": "KernelBenchmark",
-				"required": true
+				"required": true,
+				"description": "Kernel benchmark value serialized with stableJson. Its profile.id selects the default profile filename when no explicit file is provided, and write does not schema-validate the value.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"contract": "kernel-benchmark-contract-v1",
+						"recordedAt": "2026-11-14T12:00:00.000Z",
+						"profile": {
+							"id": "linux-x64-node22",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "generic x86_64",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "Node.js 22"
+						},
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"dirty": false
+						},
+						"provenance": {
+							"kind": "calibration",
+							"verified": false,
+							"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+						},
+						"workloads": [
+							{
+								"id": "graph-1k",
+								"nodes": 1000,
+								"edges": 3000,
+								"changed": 1,
+								"requestBytes": 128,
+								"responseBytes": 256
+							}
+						],
+						"measurements": [
+							{
+								"unit": "repository.measurement",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 12.4,
+								"method": "isolated kernel benchmark",
+								"workload": "graph-1k",
+								"profile": "linux-x64-node22",
+								"target": "module",
+								"samples": 5,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": [
+									{
+										"path": "specification/measurements/impact-kernel/linux-x64-node22.json",
+										"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+										"bytes": 512
+									}
+								]
+							}
+						],
+						"default": {
+							"runtime": "module",
+							"basis": "measured",
+							"workload": "graph-1k",
+							"profile": "linux-x64-node22",
+							"rule": "lowest measured cold latency",
+							"candidates": [
+								{
+									"runtime": "module",
+									"coldMs": 12.4
+								}
+							],
+							"excluded": []
+						}
+					}
+				]
 			},
 			{
 				"name": "MeasurementRepository.write.file",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional output path passed with the repository root to resolve. If omitted or empty, the destination is derived from benchmark.profile.id; parent directories are created recursively.",
+				"examples": ["specification/measurements/impact-kernel/custom-run.json"]
 			},
 			{
 				"name": "MeasurementRepository.read.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filename resolved against the repository root before reading. The resulting file must exist and contain JSON accepted by kernelBenchmarkSchema, or read fails.",
+				"examples": ["specification/measurements/impact-kernel/linux-x64-node22.json"]
 			},
 			{
 				"name": "MeasurementRepository.forProfile.profile",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Profile string interpolated into this repository's default filename and, when available, the shipped measurements filename. It is not validated or sanitized before path construction.",
+				"examples": ["linux-x64-node22"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "MeasurementRepository.write",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Promise resolving to the path written: a truthy explicit file resolved against the root, or otherwise the profile path derived from benchmark.profile.id. It rejects if directory creation or file writing fails.",
+				"examples": [
+					"/workspace/kernel-repo/specification/measurements/impact-kernel/linux-x64-node22.json"
+				]
 			},
 			{
 				"name": "MeasurementRepository.read",
-				"type": "KernelBenchmark"
+				"type": "KernelBenchmark",
+				"description": "Schema-validated KernelBenchmark parsed from the resolved file. Missing files and schema-invalid parsed values go through fail; invalid JSON throws during JSON.parse.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"contract": "kernel-benchmark-contract-v1",
+						"recordedAt": "2026-11-14T12:00:00.000Z",
+						"profile": {
+							"id": "linux-x64-node22",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "generic x86_64",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "Node.js 22"
+						},
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"dirty": false
+						},
+						"provenance": {
+							"kind": "calibration",
+							"verified": false,
+							"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+						},
+						"workloads": [
+							{
+								"id": "graph-1k",
+								"nodes": 1000,
+								"edges": 3000,
+								"changed": 1,
+								"requestBytes": 128,
+								"responseBytes": 256
+							}
+						],
+						"measurements": [
+							{
+								"unit": "repository.measurement",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 12.4,
+								"method": "isolated kernel benchmark",
+								"workload": "graph-1k",
+								"profile": "linux-x64-node22",
+								"target": "module",
+								"samples": 5,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": [
+									{
+										"path": "specification/measurements/impact-kernel/linux-x64-node22.json",
+										"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+										"bytes": 512
+									}
+								]
+							}
+						],
+						"default": {
+							"runtime": "module",
+							"basis": "measured",
+							"workload": "graph-1k",
+							"profile": "linux-x64-node22",
+							"rule": "lowest measured cold latency",
+							"candidates": [
+								{
+									"runtime": "module",
+									"coldMs": 12.4
+								}
+							],
+							"excluded": []
+						}
+					}
+				]
 			},
 			{
 				"name": "MeasurementRepository.forProfile",
-				"type": "KernelBenchmark | undefined"
+				"type": "KernelBenchmark | undefined",
+				"description": "Schema-validated benchmark from the first existing candidate, checking the repository profile file before the shipped measurement file. It returns undefined only when neither candidate exists; malformed selected files fail through read.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"contract": "kernel-benchmark-contract-v1",
+						"recordedAt": "2026-11-14T12:00:00.000Z",
+						"profile": {
+							"id": "linux-x64-node22",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "generic x86_64",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "Node.js 22"
+						},
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"dirty": false
+						},
+						"provenance": {
+							"kind": "calibration",
+							"verified": false,
+							"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+						},
+						"workloads": [
+							{
+								"id": "graph-1k",
+								"nodes": 1000,
+								"edges": 3000,
+								"changed": 1,
+								"requestBytes": 128,
+								"responseBytes": 256
+							}
+						],
+						"measurements": [
+							{
+								"unit": "repository.measurement",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 12.4,
+								"method": "isolated kernel benchmark",
+								"workload": "graph-1k",
+								"profile": "linux-x64-node22",
+								"target": "module",
+								"samples": 5,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": [
+									{
+										"path": "specification/measurements/impact-kernel/linux-x64-node22.json",
+										"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+										"bytes": 512
+									}
+								]
+							}
+						],
+						"default": {
+							"runtime": "module",
+							"basis": "measured",
+							"workload": "graph-1k",
+							"profile": "linux-x64-node22",
+							"rule": "lowest measured cold latency",
+							"candidates": [
+								{
+									"runtime": "module",
+									"coldMs": 12.4
+								}
+							],
+							"excluded": []
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "read uses fail when the file is absent or when parsed JSON fails kernelBenchmarkSchema validation. forProfile propagates this when its first existing candidate is invalid."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse throws SyntaxError when file contents are not valid JSON. read does not catch it, and forProfile propagates it through read."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Node filesystem operations can throw or reject with Error when creating the destination directory or reading or writing a file fails."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "MeasurementRepository.write",
@@ -74,22 +311,106 @@
 					{
 						"name": "MeasurementRepository.write.benchmark",
 						"type": "KernelBenchmark",
-						"required": true
+						"required": true,
+						"description": "Kernel benchmark value serialized with stableJson. Its profile.id selects the default profile filename when no explicit file is provided, and write does not schema-validate the value.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"contract": "kernel-benchmark-contract-v1",
+								"recordedAt": "2026-11-14T12:00:00.000Z",
+								"profile": {
+									"id": "linux-x64-node22",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "generic x86_64",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "Node.js 22"
+								},
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"dirty": false
+								},
+								"provenance": {
+									"kind": "calibration",
+									"verified": false,
+									"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+								},
+								"workloads": [
+									{
+										"id": "graph-1k",
+										"nodes": 1000,
+										"edges": 3000,
+										"changed": 1,
+										"requestBytes": 128,
+										"responseBytes": 256
+									}
+								],
+								"measurements": [
+									{
+										"unit": "repository.measurement",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 12.4,
+										"method": "isolated kernel benchmark",
+										"workload": "graph-1k",
+										"profile": "linux-x64-node22",
+										"target": "module",
+										"samples": 5,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": [
+											{
+												"path": "specification/measurements/impact-kernel/linux-x64-node22.json",
+												"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+												"bytes": 512
+											}
+										]
+									}
+								],
+								"default": {
+									"runtime": "module",
+									"basis": "measured",
+									"workload": "graph-1k",
+									"profile": "linux-x64-node22",
+									"rule": "lowest measured cold latency",
+									"candidates": [
+										{
+											"runtime": "module",
+											"coldMs": 12.4
+										}
+									],
+									"excluded": []
+								}
+							}
+						]
 					},
 					{
 						"name": "MeasurementRepository.write.file",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional output path passed with the repository root to resolve. If omitted or empty, the destination is derived from benchmark.profile.id; parent directories are created recursively.",
+						"examples": ["specification/measurements/impact-kernel/custom-run.json"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "MeasurementRepository.write",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Promise resolving to the path written: a truthy explicit file resolved against the root, or otherwise the profile path derived from benchmark.profile.id. It rejects if directory creation or file writing fails.",
+						"examples": [
+							"/workspace/kernel-repo/specification/measurements/impact-kernel/linux-x64-node22.json"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Node filesystem operations can throw or reject with Error when creating the destination directory or reading or writing a file fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "MeasurementRepository.read",
@@ -97,22 +418,106 @@
 					{
 						"name": "MeasurementRepository.read.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filename resolved against the repository root before reading. The resulting file must exist and contain JSON accepted by kernelBenchmarkSchema, or read fails.",
+						"examples": ["specification/measurements/impact-kernel/linux-x64-node22.json"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "MeasurementRepository.read",
-						"type": "KernelBenchmark"
+						"type": "KernelBenchmark",
+						"description": "Schema-validated KernelBenchmark parsed from the resolved file. Missing files and schema-invalid parsed values go through fail; invalid JSON throws during JSON.parse.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"contract": "kernel-benchmark-contract-v1",
+								"recordedAt": "2026-11-14T12:00:00.000Z",
+								"profile": {
+									"id": "linux-x64-node22",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "generic x86_64",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "Node.js 22"
+								},
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"dirty": false
+								},
+								"provenance": {
+									"kind": "calibration",
+									"verified": false,
+									"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+								},
+								"workloads": [
+									{
+										"id": "graph-1k",
+										"nodes": 1000,
+										"edges": 3000,
+										"changed": 1,
+										"requestBytes": 128,
+										"responseBytes": 256
+									}
+								],
+								"measurements": [
+									{
+										"unit": "repository.measurement",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 12.4,
+										"method": "isolated kernel benchmark",
+										"workload": "graph-1k",
+										"profile": "linux-x64-node22",
+										"target": "module",
+										"samples": 5,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": [
+											{
+												"path": "specification/measurements/impact-kernel/linux-x64-node22.json",
+												"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+												"bytes": 512
+											}
+										]
+									}
+								],
+								"default": {
+									"runtime": "module",
+									"basis": "measured",
+									"workload": "graph-1k",
+									"profile": "linux-x64-node22",
+									"rule": "lowest measured cold latency",
+									"candidates": [
+										{
+											"runtime": "module",
+											"coldMs": 12.4
+										}
+									],
+									"excluded": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "read uses fail when the file is absent or when parsed JSON fails kernelBenchmarkSchema validation. forProfile propagates this when its first existing candidate is invalid."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws SyntaxError when file contents are not valid JSON. read does not catch it, and forProfile propagates it through read."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "readFileSync can throw Error when the resolved file cannot be read."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "MeasurementRepository.forProfile",
@@ -120,17 +525,106 @@
 					{
 						"name": "MeasurementRepository.forProfile.profile",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Profile string interpolated into this repository's default filename and, when available, the shipped measurements filename. It is not validated or sanitized before path construction.",
+						"examples": ["linux-x64-node22"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "MeasurementRepository.forProfile",
-						"type": "KernelBenchmark | undefined"
+						"type": "KernelBenchmark | undefined",
+						"description": "Schema-validated benchmark from the first existing candidate, checking the repository profile file before the shipped measurement file. It returns undefined only when neither candidate exists; malformed selected files fail through read.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"contract": "kernel-benchmark-contract-v1",
+								"recordedAt": "2026-11-14T12:00:00.000Z",
+								"profile": {
+									"id": "linux-x64-node22",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "generic x86_64",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "Node.js 22"
+								},
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"dirty": false
+								},
+								"provenance": {
+									"kind": "calibration",
+									"verified": false,
+									"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+								},
+								"workloads": [
+									{
+										"id": "graph-1k",
+										"nodes": 1000,
+										"edges": 3000,
+										"changed": 1,
+										"requestBytes": 128,
+										"responseBytes": 256
+									}
+								],
+								"measurements": [
+									{
+										"unit": "repository.measurement",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 12.4,
+										"method": "isolated kernel benchmark",
+										"workload": "graph-1k",
+										"profile": "linux-x64-node22",
+										"target": "module",
+										"samples": 5,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": [
+											{
+												"path": "specification/measurements/impact-kernel/linux-x64-node22.json",
+												"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+												"bytes": 512
+											}
+										]
+									}
+								],
+								"default": {
+									"runtime": "module",
+									"basis": "measured",
+									"workload": "graph-1k",
+									"profile": "linux-x64-node22",
+									"rule": "lowest measured cold latency",
+									"candidates": [
+										{
+											"runtime": "module",
+											"coldMs": 12.4
+										}
+									],
+									"excluded": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "read uses fail when the file is absent or when parsed JSON fails kernelBenchmarkSchema validation. forProfile propagates this when its first existing candidate is invalid."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws SyntaxError when file contents are not valid JSON. read does not catch it, and forProfile propagates it through read."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "forProfile propagates filesystem Error failures from reading the first existing candidate."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -140,17 +634,20 @@
 					{
 						"name": "MeasurementRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Root directory used to resolve explicit file paths and build profile paths beneath the measurements directory. The constructor stores this string without checking or creating the directory.",
+						"examples": ["/workspace/kernel-repo"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "MeasurementRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A MeasurementRepository instance retaining the root for subsequent operations. The repository instance is a class instance and cannot be represented as JSON."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
