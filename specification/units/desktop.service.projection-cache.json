@@ -24,111 +24,236 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectionCacheService.constructor.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem directory used as the base for projection and lookup cache files. The constructor stores it without validating or creating it; writes create it recursively when needed.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop/.cache/projection-cache"
+				]
 			},
 			{
 				"name": "ProjectionCacheService.get.identity",
 				"type": "CacheIdentity",
-				"required": true
+				"required": true,
+				"description": "Identifies the principal, project, repository, source revision, optional notes and evidence revisions, artifact hash, and profile bound to cached bytes. Its sorted enumerable fields form the cache key, and a cache hit does not authorize a read.",
+				"examples": [
+					{
+						"collaborationRevision": null,
+						"principalId": "principal-7",
+						"projectId": "project-42",
+						"repositoryId": 731,
+						"requestedRef": "refs/heads/main",
+						"sourceCommit": "7f3a1c9d5e2b4a6081c3d7e9f0a2b4c6d8e1f350",
+						"sourceTree": "1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+						"notesRef": "refs/heads/notes",
+						"notesRevision": "9c8b7a6d5e4f32100123456789abcdef01234567",
+						"evidenceRef": null,
+						"evidenceRevision": null,
+						"historyIndexRevision": null,
+						"artifactHash": null,
+						"profile": "preview-v1"
+					}
+				]
 			},
 			{
 				"name": "ProjectionCacheService.get.expectedHash",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Expected SHA-256 digest of the cached bytes, written as lowercase hexadecimal. The lookup resolves to null unless the stored hash and a fresh digest of the bytes both match it.",
+				"examples": ["ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"]
 			},
 			{
 				"name": "ProjectionCacheService.put.identity",
 				"type": "CacheIdentity",
-				"required": true
+				"required": true,
+				"description": "Identifies the principal, project, repository, source revision, optional notes and evidence revisions, artifact hash, and profile bound to cached bytes. Its sorted enumerable fields form the cache key, and a cache hit does not authorize a read.",
+				"examples": [
+					{
+						"collaborationRevision": null,
+						"principalId": "principal-7",
+						"projectId": "project-42",
+						"repositoryId": 731,
+						"requestedRef": "refs/heads/main",
+						"sourceCommit": "7f3a1c9d5e2b4a6081c3d7e9f0a2b4c6d8e1f350",
+						"sourceTree": "1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+						"notesRef": "refs/heads/notes",
+						"notesRevision": "9c8b7a6d5e4f32100123456789abcdef01234567",
+						"evidenceRef": null,
+						"evidenceRevision": null,
+						"historyIndexRevision": null,
+						"artifactHash": null,
+						"profile": "preview-v1"
+					}
+				]
 			},
 			{
 				"name": "ProjectionCacheService.put.bytes",
 				"type": "Uint8Array",
-				"required": true
+				"required": true,
+				"description": "Bytes to cache under the supplied identity. The service persists them as base64 and accepts them only when their SHA-256 digest matches expectedHash."
 			},
 			{
 				"name": "ProjectionCacheService.put.expectedHash",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Expected SHA-256 digest of bytes, written as 64 lowercase hexadecimal characters. The service rejects the write unless this digest matches the bytes.",
+				"examples": ["ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"]
 			},
 			{
 				"name": "ProjectionCacheService.remember.scope",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String scope used to select a lookup record and bind the remembered value to the identity profile. The service hashes the scope for its filename and does not validate a scope format.",
+				"examples": ["project-42:refs/heads/main"]
 			},
 			{
 				"name": "ProjectionCacheService.remember.identity",
 				"type": "CacheIdentity",
-				"required": true
+				"required": true,
+				"description": "Identity whose context is bound to the remembered value. The service combines its profile with scope and replaces artifactHash with the serialized value's digest.",
+				"examples": [
+					{
+						"collaborationRevision": null,
+						"principalId": "principal-7",
+						"projectId": "project-42",
+						"repositoryId": 731,
+						"requestedRef": "refs/heads/main",
+						"sourceCommit": "7f3a1c9d5e2b4a6081c3d7e9f0a2b4c6d8e1f350",
+						"sourceTree": "1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+						"notesRef": "refs/heads/notes",
+						"notesRevision": "9c8b7a6d5e4f32100123456789abcdef01234567",
+						"evidenceRef": null,
+						"evidenceRevision": null,
+						"historyIndexRevision": null,
+						"artifactHash": null,
+						"profile": "preview-v1"
+					}
+				]
 			},
 			{
 				"name": "ProjectionCacheService.remember.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Value JSON-serialized into the scoped cache and parsed back by lookup. It must serialize to a defined JSON string, and JSON serialization may not preserve every JavaScript value's original type.",
+				"examples": [
+					{
+						"status": "ready",
+						"count": 3
+					}
+				]
 			},
 			{
 				"name": "ProjectionCacheService.lookup.scope",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String scope used to select the lookup record created by remember. A missing, malformed, identity-mismatched, or integrity-failing record resolves to null.",
+				"examples": ["project-42:refs/heads/main"]
 			},
 			{
 				"name": "ProjectionCacheService.discard.scope",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "String scope selecting the lookup record and associated projection entry to discard. The helper hashes the scope to locate the lookup filename and ignores read or unlink failures.",
+				"examples": ["project-42:refs/heads/main"]
 			},
 			{
 				"name": "ProjectionCacheService.purge.principalId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Principal identifier used to select cache entries for removal. Only entries whose identity has this principalId are selected.",
+				"examples": ["principal-7"]
 			},
 			{
 				"name": "ProjectionCacheService.purge.projectId",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional project identifier used to narrow the purge. Omitting it removes entries for the principal across projects; supplying it also removes that project's entries and entries marked for $projects.",
+				"examples": ["project-42"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectionCacheService.get",
-				"type": "Promise<Uint8Array | null>"
+				"type": "Promise<Uint8Array | null>",
+				"description": "Resolves to cached bytes only when the stored identity and hash match and the bytes recompute to expectedHash; otherwise it resolves to null. Returned bytes do not grant access without caller-side authority revalidation.",
+				"examples": [null]
 			},
 			{
 				"name": "ProjectionCacheService.put",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after writing the bytes and identity/hash metadata while the cache generation remains unchanged. Hash mismatches, filesystem failures, or a concurrent generation change reject the promise."
 			},
 			{
 				"name": "ProjectionCacheService.remember",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves to the ISO timestamp recorded as cachedAt after the value and lookup metadata are written. The service does not apply an expiration policy to this timestamp.",
+				"examples": ["2026-11-14T11:00:00.000Z"]
 			},
 			{
 				"name": "ProjectionCacheService.lookup",
-				"type": "Promise<{ value: unknown; identity: CacheIdentity; cachedAt: string; } | null>"
+				"type": "Promise<{ value: unknown; identity: CacheIdentity; cachedAt: string; } | null>",
+				"description": "Resolves to null unless the scoped record has a valid timestamp, matching identity binding, and intact cached bytes; otherwise it returns the parsed value, original identity, and cachedAt. Read, parse, and integrity failures are caught and represented as null.",
+				"examples": [
+					null,
+					{
+						"value": {
+							"status": "ready",
+							"count": 3
+						},
+						"identity": {
+							"collaborationRevision": null,
+							"principalId": "principal-7",
+							"projectId": "project-42",
+							"repositoryId": 731,
+							"requestedRef": "refs/heads/main",
+							"sourceCommit": "7f3a1c9d5e2b4a6081c3d7e9f0a2b4c6d8e1f350",
+							"sourceTree": "1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+							"notesRef": "refs/heads/notes",
+							"notesRevision": "9c8b7a6d5e4f32100123456789abcdef01234567",
+							"evidenceRef": null,
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"artifactHash": null,
+							"profile": "preview-v1"
+						},
+						"cachedAt": "2026-11-14T11:00:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "ProjectionCacheService.discard",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after attempting to remove the lookup record for scope and its associated projection entry. The helper ignores read and unlink failures."
 			},
 			{
 				"name": "ProjectionCacheService.purge",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after scanning cache files and removing entries for principalId, restricted to projectId when supplied while also removing $projects entries. It increments the generation first so earlier in-flight writes are rejected and cleaned up."
 			},
 			{
 				"name": "ProjectionCacheService.clear",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after incrementing the cache generation and deleting files matching the projection and lookup filename patterns. A missing directory is treated as empty; other enumeration or unlink failures reject."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A filesystem Error can reject writes or removals; put also throws Error when expectedHash is invalid or mismatched, or when the cache generation changes during a write."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "remember can reject with TypeError when JSON serialization or Buffer conversion cannot produce defined bytes, such as for a BigInt, cyclic value, or top-level undefined value."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectionCacheService.get",
@@ -136,22 +261,45 @@
 					{
 						"name": "ProjectionCacheService.get.identity",
 						"type": "CacheIdentity",
-						"required": true
+						"required": true,
+						"description": "Identifies the principal, project, repository, source revision, optional notes and evidence revisions, artifact hash, and profile bound to cached bytes. Its sorted enumerable fields form the cache key, and a cache hit does not authorize a read.",
+						"examples": [
+							{
+								"collaborationRevision": null,
+								"principalId": "principal-7",
+								"projectId": "project-42",
+								"repositoryId": 731,
+								"requestedRef": "refs/heads/main",
+								"sourceCommit": "7f3a1c9d5e2b4a6081c3d7e9f0a2b4c6d8e1f350",
+								"sourceTree": "1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+								"notesRef": "refs/heads/notes",
+								"notesRevision": "9c8b7a6d5e4f32100123456789abcdef01234567",
+								"evidenceRef": null,
+								"evidenceRevision": null,
+								"historyIndexRevision": null,
+								"artifactHash": null,
+								"profile": "preview-v1"
+							}
+						]
 					},
 					{
 						"name": "ProjectionCacheService.get.expectedHash",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Expected SHA-256 digest of the cached bytes, written as lowercase hexadecimal. The lookup resolves to null unless the stored hash and a fresh digest of the bytes both match it.",
+						"examples": ["ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectionCacheService.get",
-						"type": "Promise<Uint8Array | null>"
+						"type": "Promise<Uint8Array | null>",
+						"description": "Resolves to cached bytes only when the stored identity and hash match and the bytes recompute to expectedHash; otherwise it resolves to null. Returned bytes do not grant access without caller-side authority revalidation.",
+						"examples": [null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectionCacheService.put",
@@ -159,32 +307,56 @@
 					{
 						"name": "ProjectionCacheService.put.identity",
 						"type": "CacheIdentity",
-						"required": true
+						"required": true,
+						"description": "Identifies the principal, project, repository, source revision, optional notes and evidence revisions, artifact hash, and profile bound to cached bytes. Its sorted enumerable fields form the cache key, and a cache hit does not authorize a read.",
+						"examples": [
+							{
+								"collaborationRevision": null,
+								"principalId": "principal-7",
+								"projectId": "project-42",
+								"repositoryId": 731,
+								"requestedRef": "refs/heads/main",
+								"sourceCommit": "7f3a1c9d5e2b4a6081c3d7e9f0a2b4c6d8e1f350",
+								"sourceTree": "1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+								"notesRef": "refs/heads/notes",
+								"notesRevision": "9c8b7a6d5e4f32100123456789abcdef01234567",
+								"evidenceRef": null,
+								"evidenceRevision": null,
+								"historyIndexRevision": null,
+								"artifactHash": null,
+								"profile": "preview-v1"
+							}
+						]
 					},
 					{
 						"name": "ProjectionCacheService.put.bytes",
 						"type": "Uint8Array",
-						"required": true
+						"required": true,
+						"description": "Bytes to cache under the supplied identity. The service persists them as base64 and accepts them only when their SHA-256 digest matches expectedHash."
 					},
 					{
 						"name": "ProjectionCacheService.put.expectedHash",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Expected SHA-256 digest of bytes, written as 64 lowercase hexadecimal characters. The service rejects the write unless this digest matches the bytes.",
+						"examples": ["ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectionCacheService.put",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after writing the bytes and identity/hash metadata while the cache generation remains unchanged. Hash mismatches, filesystem failures, or a concurrent generation change reject the promise."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with Error if expectedHash is not a 64-character lowercase SHA-256 digest, does not match the bytes, the cache generation changes during the write, or a filesystem write fails."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectionCacheService.remember",
@@ -192,27 +364,68 @@
 					{
 						"name": "ProjectionCacheService.remember.scope",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String scope used to select a lookup record and bind the remembered value to the identity profile. The service hashes the scope for its filename and does not validate a scope format.",
+						"examples": ["project-42:refs/heads/main"]
 					},
 					{
 						"name": "ProjectionCacheService.remember.identity",
 						"type": "CacheIdentity",
-						"required": true
+						"required": true,
+						"description": "Identity whose context is bound to the remembered value. The service combines its profile with scope and replaces artifactHash with the serialized value's digest.",
+						"examples": [
+							{
+								"collaborationRevision": null,
+								"principalId": "principal-7",
+								"projectId": "project-42",
+								"repositoryId": 731,
+								"requestedRef": "refs/heads/main",
+								"sourceCommit": "7f3a1c9d5e2b4a6081c3d7e9f0a2b4c6d8e1f350",
+								"sourceTree": "1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+								"notesRef": "refs/heads/notes",
+								"notesRevision": "9c8b7a6d5e4f32100123456789abcdef01234567",
+								"evidenceRef": null,
+								"evidenceRevision": null,
+								"historyIndexRevision": null,
+								"artifactHash": null,
+								"profile": "preview-v1"
+							}
+						]
 					},
 					{
 						"name": "ProjectionCacheService.remember.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Value JSON-serialized into the scoped cache and parsed back by lookup. It must serialize to a defined JSON string, and JSON serialization may not preserve every JavaScript value's original type.",
+						"examples": [
+							{
+								"status": "ready",
+								"count": 3
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectionCacheService.remember",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves to the ISO timestamp recorded as cachedAt after the value and lookup metadata are written. The service does not apply an expiration policy to this timestamp.",
+						"examples": ["2026-11-14T11:00:00.000Z"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagates Error from put for hash or generation failures and may reject with Error when cache files cannot be written."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects with TypeError when JSON serialization or Buffer conversion cannot produce defined bytes, such as for a BigInt, cyclic value, or top-level undefined value."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectionCacheService.lookup",
@@ -220,17 +433,46 @@
 					{
 						"name": "ProjectionCacheService.lookup.scope",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String scope used to select the lookup record created by remember. A missing, malformed, identity-mismatched, or integrity-failing record resolves to null.",
+						"examples": ["project-42:refs/heads/main"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectionCacheService.lookup",
-						"type": "Promise<{ value: unknown; identity: CacheIdentity; cachedAt: string; } | null>"
+						"type": "Promise<{ value: unknown; identity: CacheIdentity; cachedAt: string; } | null>",
+						"description": "Resolves to null unless the scoped record has a valid timestamp, matching identity binding, and intact cached bytes; otherwise it returns the parsed value, original identity, and cachedAt. Read, parse, and integrity failures are caught and represented as null.",
+						"examples": [
+							null,
+							{
+								"value": {
+									"status": "ready",
+									"count": 3
+								},
+								"identity": {
+									"collaborationRevision": null,
+									"principalId": "principal-7",
+									"projectId": "project-42",
+									"repositoryId": 731,
+									"requestedRef": "refs/heads/main",
+									"sourceCommit": "7f3a1c9d5e2b4a6081c3d7e9f0a2b4c6d8e1f350",
+									"sourceTree": "1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+									"notesRef": "refs/heads/notes",
+									"notesRevision": "9c8b7a6d5e4f32100123456789abcdef01234567",
+									"evidenceRef": null,
+									"evidenceRevision": null,
+									"historyIndexRevision": null,
+									"artifactHash": null,
+									"profile": "preview-v1"
+								},
+								"cachedAt": "2026-11-14T11:00:00.000Z"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectionCacheService.discard",
@@ -238,17 +480,20 @@
 					{
 						"name": "ProjectionCacheService.discard.scope",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "String scope selecting the lookup record and associated projection entry to discard. The helper hashes the scope to locate the lookup filename and ignores read or unlink failures.",
+						"examples": ["project-42:refs/heads/main"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectionCacheService.discard",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after attempting to remove the lookup record for scope and its associated projection entry. The helper ignores read and unlink failures."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectionCacheService.purge",
@@ -256,22 +501,34 @@
 					{
 						"name": "ProjectionCacheService.purge.principalId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Principal identifier used to select cache entries for removal. Only entries whose identity has this principalId are selected.",
+						"examples": ["principal-7"]
 					},
 					{
 						"name": "ProjectionCacheService.purge.projectId",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional project identifier used to narrow the purge. Omitting it removes entries for the principal across projects; supplying it also removes that project's entries and entries marked for $projects.",
+						"examples": ["project-42"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectionCacheService.purge",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after scanning cache files and removing entries for principalId, restricted to projectId when supplied while also removing $projects entries. It increments the generation first so earlier in-flight writes are rejected and cleaned up."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with a filesystem Error if an invalid or matching cache file cannot be unlinked; directory enumeration and file-read errors are caught."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectionCacheService.clear",
@@ -279,11 +536,18 @@
 				"outputs": [
 					{
 						"name": "ProjectionCacheService.clear",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after incrementing the cache generation and deleting files matching the projection and lookup filename patterns. A missing directory is treated as empty; other enumeration or unlink failures reject."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with a filesystem Error if directory enumeration fails for anything other than ENOENT or a matching cache file cannot be unlinked."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -293,17 +557,22 @@
 					{
 						"name": "ProjectionCacheService.constructor.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem directory used as the base for projection and lookup cache files. The constructor stores it without validating or creating it; writes create it recursively when needed.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop/.cache/projection-cache"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectionCacheService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructs a ProjectionCacheService instance with the supplied cache directory and initializes its generation counter to zero."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
