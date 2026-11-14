@@ -10,6 +10,7 @@ export type {
 	EvaluateLoopInput
 } from './loopEvaluate.types';
 import { BoundedCommandAdapter } from '../../adapters/execution-runtimes/BoundedCommandAdapter';
+import { BoundedCommandFailure } from '../../adapters/execution-runtimes/bounded-command-adapter/commandFailure';
 import { commandDeadlines } from '../../adapters/execution-runtimes/bounded-command-adapter/commandDeadlines';
 import { resourceEnvironment } from '../../utils/execution-runtimes/resourceEnvironment';
 import { resourceWork } from '../../utils/execution-runtimes/resourceWork';
@@ -105,11 +106,17 @@ function runEvaluator(
 				durationMs: Date.now() - startedAt
 			};
 		} catch (error) {
+			const failure = error instanceof BoundedCommandFailure ? error : undefined;
 			return {
 				...summary,
 				exitCode: 1,
-				stdout: '',
-				stderr: error instanceof Error ? error.message : 'Evaluator could not start',
+				stdout: failure?.stdout.toString('utf8') ?? '',
+				stderr: [
+					error instanceof Error ? error.message : 'Evaluator could not start',
+					failure?.stderr
+				]
+					.filter(Boolean)
+					.join('\n'),
 				durationMs: Date.now() - startedAt
 			};
 		}

@@ -3,7 +3,12 @@ import { spawn, spawnSync, type ChildProcessWithoutNullStreams } from 'node:chil
 import { basename } from 'node:path';
 import type { BoundedCommandOptions, BoundedCommandResult } from './BoundedCommandAdapter.types';
 import { commandDeadlines } from './bounded-command-adapter/commandDeadlines';
-import { timeoutFailure, commandLabel } from './bounded-command-adapter/commandFailure';
+import {
+	BoundedCommandFailure,
+	commandLabel,
+	timeoutFailure
+} from './bounded-command-adapter/commandFailure';
+import { commandOutput } from './bounded-command-adapter/commandOutput';
 
 const owned = new Set<ChildProcessWithoutNullStreams>();
 const signalHandlers = new Map<NodeJS.Signals, () => void>();
@@ -93,8 +98,7 @@ function collect(
 ): Promise<BoundedCommandResult> {
 	const { timeout, maxBuffer } = limits(options);
 	return new Promise((resolve, reject) => {
-		const output = { stdout: [] as Buffer[], stderr: [] as Buffer[] };
-		let bytes = 0;
+		const output = commandOutput(maxBuffer);
 		let failure: unknown;
 		const stop = (reason: unknown) => {
 			failure ??= reason;
@@ -108,9 +112,7 @@ function collect(
 		options.signal?.addEventListener('abort', abort, { once: true });
 		for (const stream of ['stdout', 'stderr'] as const) {
 			child[stream].on('data', (chunk: Buffer) => {
-				bytes += chunk.length;
-				if (bytes > maxBuffer) stop(new Error('Command output limit exceeded.'));
-				else output[stream].push(chunk);
+				if (!output.append(stream, chunk)) stop(new Error('Command output limit exceeded.'));
 			});
 		}
 		child.once('error', (error) => {
@@ -121,13 +123,16 @@ function collect(
 			clearTimeout(timer);
 			unregister();
 			options.signal?.removeEventListener('abort', abort);
-			if (failure) reject(failure);
-			else
-				resolve({
-					code: code ?? 1,
-					stdout: Buffer.concat(output.stdout),
-					stderr: Buffer.concat(output.stderr).toString('utf8')
-				});
+			const captured = output.read();
+			if (failure)
+				reject(
+					new BoundedCommandFailure(
+						failure instanceof Error ? failure.message : 'Command failed.',
+						captured.stdout,
+						captured.stderr
+					)
+				);
+			else resolve({ code: code ?? 1, ...captured });
 		});
 		child.stdin.on('error', () => undefined);
 		const unregister = registerForSignals(child);
@@ -135,7 +140,6 @@ function collect(
 		if (options.signal?.aborted) abort();
 	});
 }
-
 function isDirectProbe(command: string, args: string[]): boolean {
 	const executable = basename(command);
 	if (executable === 'ps') return true;
@@ -156,7 +160,12 @@ export class BoundedCommandAdapter {
 		options: BoundedCommandOptions = {}
 	): Promise<Buffer> {
 		const result = await this.run(command, args, options);
-		if (result.code !== 0) throw new Error(`Command failed with exit code ${result.code}.`);
+		if (result.code !== 0)
+			throw new BoundedCommandFailure(
+				`Command failed with exit code ${result.code}.`,
+				result.stdout,
+				result.stderr
+			);
 		return result.stdout;
 	}
 

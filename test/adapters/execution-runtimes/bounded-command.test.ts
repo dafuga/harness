@@ -14,7 +14,16 @@ test('async commands preserve input, binary bytes and nonzero exit results', asy
 	expect(await adapter.checked('bun', ['-e', "process.stdout.write('ready')"])).toEqual(
 		Buffer.from('ready')
 	);
-	await expect(adapter.checked('bun', ['-e', 'process.exit(2)'])).rejects.toThrow('exit code 2');
+	await expect(
+		adapter.checked('bun', [
+			'-e',
+			"process.stdout.write('command-prefix'); process.stderr.write('diagnostic'); process.exit(2)"
+		])
+	).rejects.toMatchObject({
+		message: 'Command failed with exit code 2.',
+		stdout: Buffer.from('command-prefix'),
+		stderr: 'diagnostic'
+	});
 	const result = await measureWorkload(
 		'adapter.execution-runtimes-bounded-command',
 		'binary-command',
@@ -38,12 +47,41 @@ test('sync commands preserve exit information and enforce their limits', () => {
 });
 test('async commands stop on deadline, output overflow, cancellation or failed launch', async () => {
 	const adapter = new BoundedCommandAdapter();
-	await expect(
-		adapter.run('bun', ['-e', 'setInterval(()=>{},100)'], { timeoutMs: 50 })
-	).rejects.toThrow(/timed out/);
-	await expect(
-		adapter.run('bun', ['-e', "process.stderr.write('abcd')"], { maxBuffer: 2 })
-	).rejects.toThrow(/output limit/);
+	const timedOut = await adapter
+		.run('bun', ['-e', "process.stdout.write('timeout-prefix'); setInterval(()=>{},100)"], {
+			timeoutMs: 50
+		})
+		.then(
+			() => {
+				throw new Error('Expected command timeout.');
+			},
+			(error) => error
+		);
+	expect(timedOut).toMatchObject({
+		message: expect.stringMatching(/timed out/),
+		stdout: Buffer.from('timeout-prefix'),
+		stderr: ''
+	});
+	const overflow = await adapter
+		.run(
+			'bun',
+			[
+				'-e',
+				"process.stdout.write('prefix-'); setTimeout(()=>process.stderr.write('overflow'),20)"
+			],
+			{ maxBuffer: 10 }
+		)
+		.then(
+			() => {
+				throw new Error('Expected output overflow.');
+			},
+			(error) => error
+		);
+	expect(overflow).toMatchObject({
+		message: expect.stringMatching(/output limit/),
+		stdout: Buffer.from('prefix-'),
+		stderr: 'ove'
+	});
 	await expect(
 		adapter.run('bun', ['-e', 'setInterval(()=>{},100)'], { signal: AbortSignal.timeout(50) })
 	).rejects.toThrow();

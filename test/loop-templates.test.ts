@@ -131,7 +131,10 @@ test('loop evaluators report passing and failing commands', async () => {
 		await writeTemplate(
 			root,
 			'overflow',
-			evaluatorTemplate('overflow', `bun -e 'process.stdout.write("x".repeat(9000000))'`)
+			evaluatorTemplate(
+				'overflow',
+				`bun -e 'process.stdout.write("prefix"); setTimeout(()=>process.stdout.write("x".repeat(9000000)),20)'`
+			)
 		);
 		await createLoop({ root, name: 'overflow-loop', goal: 'Bounds output', from: 'overflow' });
 		await createLoop({ root, name: 'pass-loop', goal: 'Passes', from: 'pass' });
@@ -150,6 +153,8 @@ test('loop evaluators report passing and failing commands', async () => {
 		const overflow = await evaluateLoop({ root, loop: 'overflow-loop' });
 		expect(overflow.passed).toBe(false);
 		expect(overflow.results[0].stderr).toContain('output limit');
+		expect(overflow.results[0].stdout).toContain('prefix');
+		expect(Buffer.byteLength(overflow.results[0].stdout)).toBe(8 * 1024 * 1024);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
