@@ -12,12 +12,16 @@
 		"symbols": ["pagePrelude"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "pagePrelude",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The JavaScript source of the test-only page prelude, kept as one string of helper declarations (text, panel, footer, field, fill, named, press and pressLink) that expressions the native acceptance run evaluates in the app page may use. This module never runs the string, and the helpers need the page's DOM (document, HTMLInputElement and Event), so the value matters only when that page evaluates it.",
+				"examples": [
+					"\nconst text = (selector) => document.querySelector(selector)?.innerText ?? '';\nconst panel = () => text('[aria-label=\"Computer connection\"]');\nconst footer = () => text('footer.status-bar').replace(/\\n/g, ' | ');\nconst field = (label) => [...document.querySelectorAll('label')].find((item) => item.textContent.trim().startsWith(label))?.querySelector('input');\nconst fill = (label, value) => { const input = field(label); if (!input) return false; Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, value); input.dispatchEvent(new Event('input', { bubbles: true })); return true; };\nconst named = (name) => [...document.querySelectorAll('button, a')].find((item) => (item.getAttribute('aria-label') || item.textContent).trim() === name);\nconst press = (name) => { const control = named(name); if (!control) return false; control.click(); return true; };\nconst pressLink = (words) => { const link = [...document.querySelectorAll('a')].find((item) => item.textContent.includes(words)); if (!link) return false; link.click(); return true; };\n"
+				]
 			}
 		],
 		"errors": [],
