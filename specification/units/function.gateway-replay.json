@@ -18,17 +18,38 @@
 				"name": "gatewayReplay.request",
 				"type": "GatewayRequest",
 				"required": true,
-				"description": "Complete gateway request to serialize in its existing property order."
+				"description": "Carries `model`, literal `stream: true`, `input`, `tools`, and optional `instructions` for serialization. It is hashed without normalization, so JSON.stringify output, including property order and nested values, determines the identity.",
+				"examples": [
+					{
+						"model": "gpt-4.1",
+						"stream": true,
+						"input": [
+							{
+								"role": "user",
+								"content": "Summarize this document."
+							}
+						],
+						"tools": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayReplay",
 				"type": "string",
-				"description": "Lowercase SHA-256 digest of JSON.stringify(request). No session or replay store is modified."
+				"description": "The lowercase 64-character hexadecimal SHA-256 digest of the JSON.stringify(request) string. It changes when that serialized string changes; the function does not normalize the request or mutate replay state.",
+				"examples": ["77fb6ebd9e1743bf05bf35587e8f03e937a2fb8ec0e3b7966ea6e5aa15183675"]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "JSON.stringify throws for cyclic request data or a BigInt nested in the request, and gatewayReplay does not catch the error."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "gatewayReplay",
@@ -37,18 +58,38 @@
 						"name": "gatewayReplay.request",
 						"type": "GatewayRequest",
 						"required": true,
-						"description": "Complete gateway request to serialize in its existing property order."
+						"description": "Carries `model`, literal `stream: true`, `input`, `tools`, and optional `instructions` for serialization. It is hashed without normalization, so JSON.stringify output, including property order and nested values, determines the identity.",
+						"examples": [
+							{
+								"model": "gpt-4.1",
+								"stream": true,
+								"input": [
+									{
+										"role": "user",
+										"content": "Summarize this document."
+									}
+								],
+								"tools": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gatewayReplay",
 						"type": "string",
-						"description": "Lowercase SHA-256 digest of JSON.stringify(request). No session or replay store is modified."
+						"description": "The lowercase 64-character hexadecimal SHA-256 digest of the JSON.stringify(request) string. It changes when that serialized string changes; the function does not normalize the request or mutate replay state.",
+						"examples": ["77fb6ebd9e1743bf05bf35587e8f03e937a2fb8ec0e3b7966ea6e5aa15183675"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "JSON.stringify throws for cyclic request data or a BigInt nested in the request, and gatewayReplay does not catch the error."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
