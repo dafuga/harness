@@ -28,28 +28,43 @@
 				"name": "EnvironmentPicker.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
+				"description": "Workspace store the picker reads for its deployments store (deployments.environment, deployments.load() and deployments.choose()) and for projectId, whose changes re-run deployments.load(). It is required and read without a guard, so a null or undefined workspace throws a TypeError."
 			},
 			{
 				"name": "EnvironmentPicker.children",
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional action rendered beside the environment choice, such as production promotion. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional snippet, supplied by the caller, rendered right after the environment select in the same choice row. When omitted (undefined) nothing extra renders, and an error thrown while it renders propagates out of this component."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EnvironmentPicker",
 				"type": "markup",
-				"description": "Selects the environment scope for changes and switches the shared header summary to that environment. States: stage: The selector shows the stage deployment and its availability. preprod: The selector shows the preprod deployment and its availability. prod: The selector shows the production deployment and its availability. with-action: Caller child content adds a deployment-review action beside the environment control."
+				"description": "Renders an hx-div.environment-picker root holding an environment Select labelled 'Environment' that shows deployments.environment and offers one hx-option per deploymentEnvironments value, followed by the optional children snippet. The root gets the gated class only while deployments.environment is 'prod', and a change reaches deployments.choose() only when the selected value is in deploymentEnvironments."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
 				"type": "propagated",
-				"description": "Errors from supplied children callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"description": "Errors thrown while the children snippet renders propagate out of this component, which has no error boundary."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when workspace or workspace.deployments is null or undefined, because the component reads their properties in its derived values and effect without a guard."
+			},
+			{
+				"name": "deployments.load() failure",
+				"type": "thrown",
+				"description": "The effect that re-runs when workspace.projectId changes calls deployments.load() with void and no catch, so an error it throws, or any rejection of a promise it returns, is left unhandled by this component."
+			},
+			{
+				"name": "deployments.choose() failure",
+				"type": "thrown",
+				"description": "When the selected value is in deploymentEnvironments, the change handler calls deployments.choose() with no catch, so an error it throws propagates out of the change event, and any rejection of a promise it returns is left unhandled."
 			}
 		],
 		"errorStatus": "declared",
