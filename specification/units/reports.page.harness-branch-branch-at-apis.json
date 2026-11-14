@@ -19,12 +19,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The route renders HarnessScreen with title `APIs` and ExplorerCatalogScreen as its content. This markup is the page output whenever the route is rendered."
 			}
 		],
 		"errors": [],
