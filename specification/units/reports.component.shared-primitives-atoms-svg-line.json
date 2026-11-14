@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native line element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet, rendered inside the native SVG <line> element when it is truthy. The component calls it with no arguments and does not otherwise validate or transform its output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgLine",
 				"type": "markup",
-				"description": "The actual native line element, with forwarded attributes and content and no additional wrapper."
+				"description": "The rendered output is a native SVG <line> element. It receives every prop except children as a spread attribute, and renders children inside the element when truthy."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
