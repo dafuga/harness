@@ -17,16 +17,17 @@
 		"symbols": ["initializePreload", "initializePreload", "Input", "initializePreload"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "initializePreload",
-				"type": "void"
+				"type": "void",
+				"description": "This is the synchronous void result of calling the initializer, with no return payload. It matters while the preload starts because the call exposes frozen harness and harnessRemote bridges in the main world."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "initializePreload",
@@ -34,11 +35,12 @@
 				"outputs": [
 					{
 						"name": "initializePreload",
-						"type": "void"
+						"type": "void",
+						"description": "This is the synchronous void result of calling the initializer, with no return payload. It matters while the preload starts because the call exposes frozen harness and harnessRemote bridges in the main world."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
