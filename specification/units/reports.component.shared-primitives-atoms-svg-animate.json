@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native animate element; native HTML content rules still apply."
+				"description": "Optional Svelte snippet rendered inside the animate element; it matters only when supplied, because the `{#if children}` guard renders nothing when it is omitted. The component performs no runtime check on the snippet, so only the Snippet type annotation constrains it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgAnimate",
 				"type": "markup",
-				"description": "The actual native animate element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native SVG `animate` element: its tag is fixed to `animate`, its namespace is svg via `svelte:options`, every prop other than `children` is spread onto it, and the optional children render inside it. No wrapper element is added around it, so attributes and children apply to the animate element directly."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
