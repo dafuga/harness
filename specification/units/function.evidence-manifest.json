@@ -22,34 +22,419 @@
 				"name": "evidenceManifest.record",
 				"type": "VerificationRecord",
 				"required": true,
-				"description": "Verification record supplying id, source commit and tree, status, captures and logs for the evidence manifest."
+				"description": "The verification record whose id, source commit and tree, and status go into the manifest, and whose captures and test logs are listed through recordFiles. Captures of scenarios with status referenced are left out because they belong to the record they came from.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"componentSchemaVersion": 2,
+						"id": "5e7a1c9d3b8f2046a1d4e9c7b2f8035d6a4e1c9b7f2d8036a5e4c1b9d7f2a803",
+						"repository": "/home/ci/work/harness",
+						"source": {
+							"commit": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+							"tree": "b8d2e6a13c9f0b54de7a1c825f3e9d07ab62c4f9",
+							"base": "2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72",
+							"baseRecord": "c3e9b1f70a6d2e849f1b7c3ed5a8024fe6b1c9d37a2f8e10b4c6d9a23e8f1d05"
+						},
+						"profile": {
+							"id": "4c1e9a0b7d2f3e58",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "AMD EPYC 7763 64-Core Processor",
+							"cores": 4,
+							"memoryBytes": 17179869184,
+							"runtime": "node 22.12.0"
+						},
+						"startedAt": "2026-11-13T18:02:11.482Z",
+						"finishedAt": "2026-11-13T18:04:37.915Z",
+						"status": "passed",
+						"components": [
+							{
+								"unit": "function.evidence-manifest",
+								"change": "modified",
+								"target": "module",
+								"manifest": "7c1e5a90b3d8f24ce6094a1d2f9b7c58d1a3e06f84c2b9e75a0f6d31c9e7b2a4",
+								"source": "18f5d0a36ec4b92e0d7a3f15a9e2c6b84f1d8e70c35b9a2de8706f143a2c9d5b",
+								"contract": "d62a8f1c09b3e7d45c1f0a6eb7e49d28f0a1c63b2d8e5b977e4c0f1aa63d9b52",
+								"runtime": "0fb47c2e81a9d53fc6e2b07a4d9f1e38e7a05c6b29d8f4a1b13c7e905e6a2d4c",
+								"files": [
+									{
+										"path": "src/utils/verification-evidence/evidenceManifest.ts",
+										"hash": "d3f81a6c7b0e4c29a58d1f73e0c6b94a16f2a8d5"
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"impact": {
+							"runtime": "module",
+							"expanded": false,
+							"changed": [
+								{
+									"path": "src/utils/verification-evidence/evidenceManifest.ts",
+									"status": "modified",
+									"classification": "source"
+								}
+							],
+							"units": {
+								"direct": ["function.evidence-manifest"],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [
+							{
+								"id": "src/utils/verification-evidence/evidenceManifest.test.ts",
+								"kind": "unit",
+								"runner": "vitest",
+								"target": "src/utils/verification-evidence/evidenceManifest.test.ts",
+								"status": "passed",
+								"durationMs": 412,
+								"log": {
+									"path": "logs/src-utils-verification-evidence-evidenceManifest.test.ts.log",
+									"sha256": "e27d5a104b9c83f6d1f0e7a26c3b58d9a09e2f745dc1b86ef8430a3d29e6c7b1",
+									"bytes": 1893
+								}
+							},
+							{
+								"id": "desktop-recorded-evidence:record-evidence-grid",
+								"kind": "e2e",
+								"runner": "playwright",
+								"target": "tests/e2e/record-evidence-grid.spec.ts",
+								"status": "passed",
+								"durationMs": 18342,
+								"log": {
+									"path": "logs/desktop-recorded-evidence-record-evidence-grid.log",
+									"sha256": "9b4e27c013fa8d6e5d0c2b9fe8a713640c95f2d8a3b6e41c7f28d0a9c5e10b3e",
+									"bytes": 5124
+								}
+							}
+						],
+						"scenarios": [
+							{
+								"id": "desktop-recorded-evidence",
+								"status": "passed",
+								"testedRevision": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+								"states": [
+									{
+										"id": "grid-loaded",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "evidence-grid",
+												"kind": "screenshot",
+												"state": "grid-loaded",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5/desktop-recorded-evidence/record-evidence-grid/grid-loaded.png",
+												"sha256": "2a9c7e41f05b3d8a6e1c9a72b4d0f6e38c27a1d95e3f0b6cd9a4e81270b5c3f6",
+												"bytes": 84213,
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-13T18:03:52.107Z",
+												"provenance": "actual-capture"
+											}
+										]
+									}
+								]
+							},
+							{
+								"id": "hub-recorded-evidence",
+								"status": "referenced",
+								"testedRevision": "2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72",
+								"referencedRecord": "c3e9b1f70a6d2e849f1b7c3ed5a8024fe6b1c9d37a2f8e10b4c6d9a23e8f1d05",
+								"states": [
+									{
+										"id": "grid-loaded",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "evidence-grid",
+												"kind": "screenshot",
+												"state": "grid-loaded",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72/hub-recorded-evidence/record-hub-grid/grid-loaded.png",
+												"sha256": "3d8b06f5c71e4a920f5d9e3ba6c2b781e94f0d2618a7c5e0b2d3f96a4c0e8b17",
+												"bytes": 83907,
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-10T16:21:05.334Z",
+												"provenance": "actual-capture"
+											}
+										]
+									}
+								]
+							}
+						],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"ledger": "passed",
+							"tests": "passed",
+							"scenarios": "passed",
+							"reasons": "passed",
+							"budgets": "passed"
+						},
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "evidenceManifest.recordJson",
 				"type": "Buffer",
 				"required": true,
-				"description": "Exact serialized record.json bytes to hash and count; they are not regenerated from the supplied object."
+				"description": "The exact serialized record.json bytes; the manifest hashes them with SHA-256 and records their length as the bytes of its record.json entry. The function never serializes the record, so nothing checks these bytes against the record object."
 			},
 			{
 				"name": "recordFiles.record",
 				"type": "VerificationRecord",
 				"required": true,
-				"description": "Verification record whose scenario captures and test logs should be listed. Captures from referenced scenarios belong to their original record and are excluded."
+				"description": "The verification record whose captures and test logs are listed. Scenarios with status referenced are skipped, so their captures stay with the record they came from, while every entry of tests contributes its log.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"componentSchemaVersion": 2,
+						"id": "5e7a1c9d3b8f2046a1d4e9c7b2f8035d6a4e1c9b7f2d8036a5e4c1b9d7f2a803",
+						"repository": "/home/ci/work/harness",
+						"source": {
+							"commit": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+							"tree": "b8d2e6a13c9f0b54de7a1c825f3e9d07ab62c4f9",
+							"base": "2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72",
+							"baseRecord": "c3e9b1f70a6d2e849f1b7c3ed5a8024fe6b1c9d37a2f8e10b4c6d9a23e8f1d05"
+						},
+						"profile": {
+							"id": "4c1e9a0b7d2f3e58",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "AMD EPYC 7763 64-Core Processor",
+							"cores": 4,
+							"memoryBytes": 17179869184,
+							"runtime": "node 22.12.0"
+						},
+						"startedAt": "2026-11-13T18:02:11.482Z",
+						"finishedAt": "2026-11-13T18:04:37.915Z",
+						"status": "passed",
+						"components": [
+							{
+								"unit": "function.evidence-manifest",
+								"change": "modified",
+								"target": "module",
+								"manifest": "7c1e5a90b3d8f24ce6094a1d2f9b7c58d1a3e06f84c2b9e75a0f6d31c9e7b2a4",
+								"source": "18f5d0a36ec4b92e0d7a3f15a9e2c6b84f1d8e70c35b9a2de8706f143a2c9d5b",
+								"contract": "d62a8f1c09b3e7d45c1f0a6eb7e49d28f0a1c63b2d8e5b977e4c0f1aa63d9b52",
+								"runtime": "0fb47c2e81a9d53fc6e2b07a4d9f1e38e7a05c6b29d8f4a1b13c7e905e6a2d4c",
+								"files": [
+									{
+										"path": "src/utils/verification-evidence/evidenceManifest.ts",
+										"hash": "d3f81a6c7b0e4c29a58d1f73e0c6b94a16f2a8d5"
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"impact": {
+							"runtime": "module",
+							"expanded": false,
+							"changed": [
+								{
+									"path": "src/utils/verification-evidence/evidenceManifest.ts",
+									"status": "modified",
+									"classification": "source"
+								}
+							],
+							"units": {
+								"direct": ["function.evidence-manifest"],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [
+							{
+								"id": "src/utils/verification-evidence/evidenceManifest.test.ts",
+								"kind": "unit",
+								"runner": "vitest",
+								"target": "src/utils/verification-evidence/evidenceManifest.test.ts",
+								"status": "passed",
+								"durationMs": 412,
+								"log": {
+									"path": "logs/src-utils-verification-evidence-evidenceManifest.test.ts.log",
+									"sha256": "e27d5a104b9c83f6d1f0e7a26c3b58d9a09e2f745dc1b86ef8430a3d29e6c7b1",
+									"bytes": 1893
+								}
+							},
+							{
+								"id": "desktop-recorded-evidence:record-evidence-grid",
+								"kind": "e2e",
+								"runner": "playwright",
+								"target": "tests/e2e/record-evidence-grid.spec.ts",
+								"status": "passed",
+								"durationMs": 18342,
+								"log": {
+									"path": "logs/desktop-recorded-evidence-record-evidence-grid.log",
+									"sha256": "9b4e27c013fa8d6e5d0c2b9fe8a713640c95f2d8a3b6e41c7f28d0a9c5e10b3e",
+									"bytes": 5124
+								}
+							}
+						],
+						"scenarios": [
+							{
+								"id": "desktop-recorded-evidence",
+								"status": "passed",
+								"testedRevision": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+								"states": [
+									{
+										"id": "grid-loaded",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "evidence-grid",
+												"kind": "screenshot",
+												"state": "grid-loaded",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5/desktop-recorded-evidence/record-evidence-grid/grid-loaded.png",
+												"sha256": "2a9c7e41f05b3d8a6e1c9a72b4d0f6e38c27a1d95e3f0b6cd9a4e81270b5c3f6",
+												"bytes": 84213,
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-13T18:03:52.107Z",
+												"provenance": "actual-capture"
+											}
+										]
+									}
+								]
+							},
+							{
+								"id": "hub-recorded-evidence",
+								"status": "referenced",
+								"testedRevision": "2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72",
+								"referencedRecord": "c3e9b1f70a6d2e849f1b7c3ed5a8024fe6b1c9d37a2f8e10b4c6d9a23e8f1d05",
+								"states": [
+									{
+										"id": "grid-loaded",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "evidence-grid",
+												"kind": "screenshot",
+												"state": "grid-loaded",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72/hub-recorded-evidence/record-hub-grid/grid-loaded.png",
+												"sha256": "3d8b06f5c71e4a920f5d9e3ba6c2b781e94f0d2618a7c5e0b2d3f96a4c0e8b17",
+												"bytes": 83907,
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-10T16:21:05.334Z",
+												"provenance": "actual-capture"
+											}
+										]
+									}
+								]
+							}
+						],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"ledger": "passed",
+							"tests": "passed",
+							"scenarios": "passed",
+							"reasons": "passed",
+							"budgets": "passed"
+						},
+						"failures": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordFiles",
 				"type": "RecordFile[]",
-				"description": "Unique file entries in capture-then-log order, retaining the first entry for each path and carrying hashes, byte sizes and capture media types."
+				"description": "The unique files of the record in capture-then-log order: captures of scenarios that are not referenced, then the log of each test. Each entry has path, sha256 and bytes, with mediaType present only on captures, and when two entries share a path only the first is kept.",
+				"examples": [
+					[
+						{
+							"path": "evidence/4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5/desktop-recorded-evidence/record-evidence-grid/grid-loaded.png",
+							"sha256": "2a9c7e41f05b3d8a6e1c9a72b4d0f6e38c27a1d95e3f0b6cd9a4e81270b5c3f6",
+							"bytes": 84213,
+							"mediaType": "image/png"
+						},
+						{
+							"path": "logs/src-utils-verification-evidence-evidenceManifest.test.ts.log",
+							"sha256": "e27d5a104b9c83f6d1f0e7a26c3b58d9a09e2f745dc1b86ef8430a3d29e6c7b1",
+							"bytes": 1893
+						},
+						{
+							"path": "logs/desktop-recorded-evidence-record-evidence-grid.log",
+							"sha256": "9b4e27c013fa8d6e5d0c2b9fe8a713640c95f2d8a3b6e41c7f28d0a9c5e10b3e",
+							"bytes": 5124
+						}
+					]
+				]
 			},
 			{
 				"name": "evidenceManifest",
 				"type": "EvidenceManifest",
-				"description": "Version 1 evidence manifest with record identity, source and status, followed by record.json and the run’s own files. Hash and size for record.json come from the supplied bytes; media extensions select LFS and other files use Git."
+				"description": "The version 1 manifest with the record id, source commit and tree, and status, followed by record.json and then the record's own files. A file has storage lfs when its path ends in a media extension (png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, webm, mp4) and git otherwise.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"record": "5e7a1c9d3b8f2046a1d4e9c7b2f8035d6a4e1c9b7f2d8036a5e4c1b9d7f2a803",
+						"source": {
+							"commit": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+							"tree": "b8d2e6a13c9f0b54de7a1c825f3e9d07ab62c4f9"
+						},
+						"status": "passed",
+						"files": [
+							{
+								"path": "record.json",
+								"sha256": "f6a03d9c2e81b5c79d4f6e10b3c8a25e07e9d1f4c2b56a8d4a7e0c93d18f2b6a",
+								"bytes": 11842,
+								"storage": "git"
+							},
+							{
+								"path": "evidence/4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5/desktop-recorded-evidence/record-evidence-grid/grid-loaded.png",
+								"sha256": "2a9c7e41f05b3d8a6e1c9a72b4d0f6e38c27a1d95e3f0b6cd9a4e81270b5c3f6",
+								"bytes": 84213,
+								"mediaType": "image/png",
+								"storage": "lfs"
+							},
+							{
+								"path": "logs/src-utils-verification-evidence-evidenceManifest.test.ts.log",
+								"sha256": "e27d5a104b9c83f6d1f0e7a26c3b58d9a09e2f745dc1b86ef8430a3d29e6c7b1",
+								"bytes": 1893,
+								"storage": "git"
+							},
+							{
+								"path": "logs/desktop-recorded-evidence-record-evidence-grid.log",
+								"sha256": "9b4e27c013fa8d6e5d0c2b9fe8a713640c95f2d8a3b6e41c7f28d0a9c5e10b3e",
+								"bytes": 5124,
+								"storage": "git"
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "evidenceManifest",
@@ -58,24 +443,225 @@
 						"name": "evidenceManifest.record",
 						"type": "VerificationRecord",
 						"required": true,
-						"description": "Verification record supplying id, source commit and tree, status, captures and logs for the evidence manifest."
+						"description": "The verification record whose id, source commit and tree, and status go into the manifest, and whose captures and test logs are listed through recordFiles. Captures of scenarios with status referenced are left out because they belong to the record they came from.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"componentSchemaVersion": 2,
+								"id": "5e7a1c9d3b8f2046a1d4e9c7b2f8035d6a4e1c9b7f2d8036a5e4c1b9d7f2a803",
+								"repository": "/home/ci/work/harness",
+								"source": {
+									"commit": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+									"tree": "b8d2e6a13c9f0b54de7a1c825f3e9d07ab62c4f9",
+									"base": "2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72",
+									"baseRecord": "c3e9b1f70a6d2e849f1b7c3ed5a8024fe6b1c9d37a2f8e10b4c6d9a23e8f1d05"
+								},
+								"profile": {
+									"id": "4c1e9a0b7d2f3e58",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "AMD EPYC 7763 64-Core Processor",
+									"cores": 4,
+									"memoryBytes": 17179869184,
+									"runtime": "node 22.12.0"
+								},
+								"startedAt": "2026-11-13T18:02:11.482Z",
+								"finishedAt": "2026-11-13T18:04:37.915Z",
+								"status": "passed",
+								"components": [
+									{
+										"unit": "function.evidence-manifest",
+										"change": "modified",
+										"target": "module",
+										"manifest": "7c1e5a90b3d8f24ce6094a1d2f9b7c58d1a3e06f84c2b9e75a0f6d31c9e7b2a4",
+										"source": "18f5d0a36ec4b92e0d7a3f15a9e2c6b84f1d8e70c35b9a2de8706f143a2c9d5b",
+										"contract": "d62a8f1c09b3e7d45c1f0a6eb7e49d28f0a1c63b2d8e5b977e4c0f1aa63d9b52",
+										"runtime": "0fb47c2e81a9d53fc6e2b07a4d9f1e38e7a05c6b29d8f4a1b13c7e905e6a2d4c",
+										"files": [
+											{
+												"path": "src/utils/verification-evidence/evidenceManifest.ts",
+												"hash": "d3f81a6c7b0e4c29a58d1f73e0c6b94a16f2a8d5"
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [
+										{
+											"path": "src/utils/verification-evidence/evidenceManifest.ts",
+											"status": "modified",
+											"classification": "source"
+										}
+									],
+									"units": {
+										"direct": ["function.evidence-manifest"],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [
+									{
+										"id": "src/utils/verification-evidence/evidenceManifest.test.ts",
+										"kind": "unit",
+										"runner": "vitest",
+										"target": "src/utils/verification-evidence/evidenceManifest.test.ts",
+										"status": "passed",
+										"durationMs": 412,
+										"log": {
+											"path": "logs/src-utils-verification-evidence-evidenceManifest.test.ts.log",
+											"sha256": "e27d5a104b9c83f6d1f0e7a26c3b58d9a09e2f745dc1b86ef8430a3d29e6c7b1",
+											"bytes": 1893
+										}
+									},
+									{
+										"id": "desktop-recorded-evidence:record-evidence-grid",
+										"kind": "e2e",
+										"runner": "playwright",
+										"target": "tests/e2e/record-evidence-grid.spec.ts",
+										"status": "passed",
+										"durationMs": 18342,
+										"log": {
+											"path": "logs/desktop-recorded-evidence-record-evidence-grid.log",
+											"sha256": "9b4e27c013fa8d6e5d0c2b9fe8a713640c95f2d8a3b6e41c7f28d0a9c5e10b3e",
+											"bytes": 5124
+										}
+									}
+								],
+								"scenarios": [
+									{
+										"id": "desktop-recorded-evidence",
+										"status": "passed",
+										"testedRevision": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+										"states": [
+											{
+												"id": "grid-loaded",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "evidence-grid",
+														"kind": "screenshot",
+														"state": "grid-loaded",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5/desktop-recorded-evidence/record-evidence-grid/grid-loaded.png",
+														"sha256": "2a9c7e41f05b3d8a6e1c9a72b4d0f6e38c27a1d95e3f0b6cd9a4e81270b5c3f6",
+														"bytes": 84213,
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-13T18:03:52.107Z",
+														"provenance": "actual-capture"
+													}
+												]
+											}
+										]
+									},
+									{
+										"id": "hub-recorded-evidence",
+										"status": "referenced",
+										"testedRevision": "2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72",
+										"referencedRecord": "c3e9b1f70a6d2e849f1b7c3ed5a8024fe6b1c9d37a2f8e10b4c6d9a23e8f1d05",
+										"states": [
+											{
+												"id": "grid-loaded",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "evidence-grid",
+														"kind": "screenshot",
+														"state": "grid-loaded",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72/hub-recorded-evidence/record-hub-grid/grid-loaded.png",
+														"sha256": "3d8b06f5c71e4a920f5d9e3ba6c2b781e94f0d2618a7c5e0b2d3f96a4c0e8b17",
+														"bytes": 83907,
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-10T16:21:05.334Z",
+														"provenance": "actual-capture"
+													}
+												]
+											}
+										]
+									}
+								],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "passed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": []
+							}
+						]
 					},
 					{
 						"name": "evidenceManifest.recordJson",
 						"type": "Buffer",
 						"required": true,
-						"description": "Exact serialized record.json bytes to hash and count; they are not regenerated from the supplied object."
+						"description": "The exact serialized record.json bytes; the manifest hashes them with SHA-256 and records their length as the bytes of its record.json entry. The function never serializes the record, so nothing checks these bytes against the record object."
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidenceManifest",
 						"type": "EvidenceManifest",
-						"description": "Version 1 evidence manifest with record identity, source and status, followed by record.json and the run’s own files. Hash and size for record.json come from the supplied bytes; media extensions select LFS and other files use Git."
+						"description": "The version 1 manifest with the record id, source commit and tree, and status, followed by record.json and then the record's own files. A file has storage lfs when its path ends in a media extension (png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, webm, mp4) and git otherwise.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"record": "5e7a1c9d3b8f2046a1d4e9c7b2f8035d6a4e1c9b7f2d8036a5e4c1b9d7f2a803",
+								"source": {
+									"commit": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+									"tree": "b8d2e6a13c9f0b54de7a1c825f3e9d07ab62c4f9"
+								},
+								"status": "passed",
+								"files": [
+									{
+										"path": "record.json",
+										"sha256": "f6a03d9c2e81b5c79d4f6e10b3c8a25e07e9d1f4c2b56a8d4a7e0c93d18f2b6a",
+										"bytes": 11842,
+										"storage": "git"
+									},
+									{
+										"path": "evidence/4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5/desktop-recorded-evidence/record-evidence-grid/grid-loaded.png",
+										"sha256": "2a9c7e41f05b3d8a6e1c9a72b4d0f6e38c27a1d95e3f0b6cd9a4e81270b5c3f6",
+										"bytes": 84213,
+										"mediaType": "image/png",
+										"storage": "lfs"
+									},
+									{
+										"path": "logs/src-utils-verification-evidence-evidenceManifest.test.ts.log",
+										"sha256": "e27d5a104b9c83f6d1f0e7a26c3b58d9a09e2f745dc1b86ef8430a3d29e6c7b1",
+										"bytes": 1893,
+										"storage": "git"
+									},
+									{
+										"path": "logs/desktop-recorded-evidence-record-evidence-grid.log",
+										"sha256": "9b4e27c013fa8d6e5d0c2b9fe8a713640c95f2d8a3b6e41c7f28d0a9c5e10b3e",
+										"bytes": 5124,
+										"storage": "git"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordFiles",
@@ -84,18 +670,201 @@
 						"name": "recordFiles.record",
 						"type": "VerificationRecord",
 						"required": true,
-						"description": "Verification record whose scenario captures and test logs should be listed. Captures from referenced scenarios belong to their original record and are excluded."
+						"description": "The verification record whose captures and test logs are listed. Scenarios with status referenced are skipped, so their captures stay with the record they came from, while every entry of tests contributes its log.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"componentSchemaVersion": 2,
+								"id": "5e7a1c9d3b8f2046a1d4e9c7b2f8035d6a4e1c9b7f2d8036a5e4c1b9d7f2a803",
+								"repository": "/home/ci/work/harness",
+								"source": {
+									"commit": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+									"tree": "b8d2e6a13c9f0b54de7a1c825f3e9d07ab62c4f9",
+									"base": "2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72",
+									"baseRecord": "c3e9b1f70a6d2e849f1b7c3ed5a8024fe6b1c9d37a2f8e10b4c6d9a23e8f1d05"
+								},
+								"profile": {
+									"id": "4c1e9a0b7d2f3e58",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "AMD EPYC 7763 64-Core Processor",
+									"cores": 4,
+									"memoryBytes": 17179869184,
+									"runtime": "node 22.12.0"
+								},
+								"startedAt": "2026-11-13T18:02:11.482Z",
+								"finishedAt": "2026-11-13T18:04:37.915Z",
+								"status": "passed",
+								"components": [
+									{
+										"unit": "function.evidence-manifest",
+										"change": "modified",
+										"target": "module",
+										"manifest": "7c1e5a90b3d8f24ce6094a1d2f9b7c58d1a3e06f84c2b9e75a0f6d31c9e7b2a4",
+										"source": "18f5d0a36ec4b92e0d7a3f15a9e2c6b84f1d8e70c35b9a2de8706f143a2c9d5b",
+										"contract": "d62a8f1c09b3e7d45c1f0a6eb7e49d28f0a1c63b2d8e5b977e4c0f1aa63d9b52",
+										"runtime": "0fb47c2e81a9d53fc6e2b07a4d9f1e38e7a05c6b29d8f4a1b13c7e905e6a2d4c",
+										"files": [
+											{
+												"path": "src/utils/verification-evidence/evidenceManifest.ts",
+												"hash": "d3f81a6c7b0e4c29a58d1f73e0c6b94a16f2a8d5"
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [
+										{
+											"path": "src/utils/verification-evidence/evidenceManifest.ts",
+											"status": "modified",
+											"classification": "source"
+										}
+									],
+									"units": {
+										"direct": ["function.evidence-manifest"],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [
+									{
+										"id": "src/utils/verification-evidence/evidenceManifest.test.ts",
+										"kind": "unit",
+										"runner": "vitest",
+										"target": "src/utils/verification-evidence/evidenceManifest.test.ts",
+										"status": "passed",
+										"durationMs": 412,
+										"log": {
+											"path": "logs/src-utils-verification-evidence-evidenceManifest.test.ts.log",
+											"sha256": "e27d5a104b9c83f6d1f0e7a26c3b58d9a09e2f745dc1b86ef8430a3d29e6c7b1",
+											"bytes": 1893
+										}
+									},
+									{
+										"id": "desktop-recorded-evidence:record-evidence-grid",
+										"kind": "e2e",
+										"runner": "playwright",
+										"target": "tests/e2e/record-evidence-grid.spec.ts",
+										"status": "passed",
+										"durationMs": 18342,
+										"log": {
+											"path": "logs/desktop-recorded-evidence-record-evidence-grid.log",
+											"sha256": "9b4e27c013fa8d6e5d0c2b9fe8a713640c95f2d8a3b6e41c7f28d0a9c5e10b3e",
+											"bytes": 5124
+										}
+									}
+								],
+								"scenarios": [
+									{
+										"id": "desktop-recorded-evidence",
+										"status": "passed",
+										"testedRevision": "4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5",
+										"states": [
+											{
+												"id": "grid-loaded",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "evidence-grid",
+														"kind": "screenshot",
+														"state": "grid-loaded",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5/desktop-recorded-evidence/record-evidence-grid/grid-loaded.png",
+														"sha256": "2a9c7e41f05b3d8a6e1c9a72b4d0f6e38c27a1d95e3f0b6cd9a4e81270b5c3f6",
+														"bytes": 84213,
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-13T18:03:52.107Z",
+														"provenance": "actual-capture"
+													}
+												]
+											}
+										]
+									},
+									{
+										"id": "hub-recorded-evidence",
+										"status": "referenced",
+										"testedRevision": "2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72",
+										"referencedRecord": "c3e9b1f70a6d2e849f1b7c3ed5a8024fe6b1c9d37a2f8e10b4c6d9a23e8f1d05",
+										"states": [
+											{
+												"id": "grid-loaded",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "evidence-grid",
+														"kind": "screenshot",
+														"state": "grid-loaded",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/2e7b4d90c1a6f38e07d5e2b9f4c8a1e63b9d0f72/hub-recorded-evidence/record-hub-grid/grid-loaded.png",
+														"sha256": "3d8b06f5c71e4a920f5d9e3ba6c2b781e94f0d2618a7c5e0b2d3f96a4c0e8b17",
+														"bytes": 83907,
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-10T16:21:05.334Z",
+														"provenance": "actual-capture"
+													}
+												]
+											}
+										]
+									}
+								],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "passed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordFiles",
 						"type": "RecordFile[]",
-						"description": "Unique file entries in capture-then-log order, retaining the first entry for each path and carrying hashes, byte sizes and capture media types."
+						"description": "The unique files of the record in capture-then-log order: captures of scenarios that are not referenced, then the log of each test. Each entry has path, sha256 and bytes, with mediaType present only on captures, and when two entries share a path only the first is kept.",
+						"examples": [
+							[
+								{
+									"path": "evidence/4f0c7a2e9d3b6e18a72c5f04e1b9d8a360f2c7e5/desktop-recorded-evidence/record-evidence-grid/grid-loaded.png",
+									"sha256": "2a9c7e41f05b3d8a6e1c9a72b4d0f6e38c27a1d95e3f0b6cd9a4e81270b5c3f6",
+									"bytes": 84213,
+									"mediaType": "image/png"
+								},
+								{
+									"path": "logs/src-utils-verification-evidence-evidenceManifest.test.ts.log",
+									"sha256": "e27d5a104b9c83f6d1f0e7a26c3b58d9a09e2f745dc1b86ef8430a3d29e6c7b1",
+									"bytes": 1893
+								},
+								{
+									"path": "logs/desktop-recorded-evidence-record-evidence-grid.log",
+									"sha256": "9b4e27c013fa8d6e5d0c2b9fe8a713640c95f2d8a3b6e41c7f28d0a9c5e10b3e",
+									"bytes": 5124
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
