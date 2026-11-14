@@ -25,51 +25,116 @@
 				"type": "string",
 				"required": false,
 				"default": "claude",
-				"description": "Provider CLI executable name or path; defaults to the adapter provider."
+				"description": "Executable passed as the first argument to each Claude CLI command. It defaults to \"claude\"; the adapter does not validate the value.",
+				"examples": ["claude"]
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.preflight._candidate",
 				"type": "BenchmarkCandidate",
 				"required": true,
-				"description": "Candidate configuration retained by the shared runner preflight interface."
+				"description": "Preflight accepts the complete benchmark candidate but does not inspect its fields; it only checks whether the configured executable succeeds with --version. The candidate requires id, runner, model, effort, instructions, and tools.",
+				"examples": [
+					{
+						"id": "claude-sonnet-4-5-high-files",
+						"runner": "claude",
+						"model": "claude-sonnet-4-5",
+						"effort": "high",
+						"instructions": "Inspect the repository and implement the requested change.",
+						"tools": "files"
+					}
+				]
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.run.input",
 				"type": "BenchmarkRunnerInput",
 				"required": true,
-				"description": "Candidate, isolated workspace, prompt, optional session and shared abort signal."
+				"description": "Carries the candidate, working directory, prompt, required AbortSignal, and optional session for a Claude benchmark run; run passes cwd, prompt, and signal to benchmarkProcess. The required signal is a class instance that cannot be represented in JSON, and command appends --resume only for a truthy session."
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.command.input",
 				"type": "BenchmarkRunnerInput",
 				"required": true,
-				"description": "Candidate, isolated workspace, prompt, optional session and shared abort signal."
+				"description": "Carries the candidate and optional session used to construct the Claude argument vector; candidate.model, effort, and tools determine the matching flags. command ignores cwd, prompt, and signal, and includes --resume plus the session only when session is truthy."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ClaudeBenchmarkAdapter.preflight",
 				"type": "Promise<string>",
-				"description": "Installed provider CLI version after checking supported configuration."
+				"description": "Resolves to trimmed stdout from the configured executable invoked with --version, provided the process exits with code 0. The output is not otherwise validated.",
+				"examples": ["2.1.14"]
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.run",
 				"type": "Promise<BenchmarkTurn>",
-				"description": "Completed provider turn with a valid session and matching reported model."
+				"description": "Resolves to a turn parsed from Claude stream-json result events, with a session id and usage counters; reportedModel is optional and comes from the init event. A nonzero exit code, incomplete or failed result, or a reportedModel different from candidate.model rejects the promise.",
+				"examples": [
+					{
+						"session": "session-abc123",
+						"reportedModel": "claude-sonnet-4-5",
+						"usage": {
+							"inputTokens": 327,
+							"outputTokens": 94,
+							"cacheReadTokens": 12,
+							"reportedCostUsd": 0.0012
+						}
+					}
+				]
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.command",
 				"type": "string[]",
-				"description": "Explicit native CLI argument vector without launching a provider."
+				"description": "Returns the Claude print-mode argument vector with stream-json, verbose mode, candidate model and effort, fixed permission and MCP settings, and selected tools. It appends --resume and the session only when the session is truthy, and does not launch the process.",
+				"examples": [
+					[
+						"claude",
+						"-p",
+						"--output-format",
+						"stream-json",
+						"--verbose",
+						"--model",
+						"claude-sonnet-4-5",
+						"--effort",
+						"high",
+						"--permission-mode",
+						"bypassPermissions",
+						"--safe-mode",
+						"--setting-sources",
+						"",
+						"--strict-mcp-config",
+						"--mcp-config",
+						"{\"mcpServers\":{}}",
+						"--tools",
+						"Read,Edit,Write,Glob,Grep",
+						"--resume",
+						"session-abc123"
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unavailable provider execution, unsupported settings or a missing or mismatched completed turn."
+				"description": "Preflight throws \"Claude runner is unavailable.\" when the --version process returns a nonzero exit code."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Run throws \"Claude runner failed; inspect authentication, model access, and local runner availability.\" when the benchmark process returns a nonzero exit code."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Run rejects with \"Claude did not complete a benchmark submission.\" when no result has a session_id, the result is marked is_error, or its subtype is not \"success\"."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Run throws \"Claude reported a different model.\" when the parsed turn has a reportedModel that differs from input.candidate.model."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ClaudeBenchmarkAdapter.preflight",
@@ -78,23 +143,35 @@
 						"name": "ClaudeBenchmarkAdapter.preflight._candidate",
 						"type": "BenchmarkCandidate",
 						"required": true,
-						"description": "Candidate configuration retained by the shared runner preflight interface."
+						"description": "Preflight accepts the complete benchmark candidate but does not inspect its fields; it only checks whether the configured executable succeeds with --version. The candidate requires id, runner, model, effort, instructions, and tools.",
+						"examples": [
+							{
+								"id": "claude-sonnet-4-5-high-files",
+								"runner": "claude",
+								"model": "claude-sonnet-4-5",
+								"effort": "high",
+								"instructions": "Inspect the repository and implement the requested change.",
+								"tools": "files"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeBenchmarkAdapter.preflight",
 						"type": "Promise<string>",
-						"description": "Installed provider CLI version after checking supported configuration."
+						"description": "Resolves to trimmed stdout from the configured executable invoked with --version, provided the process exits with code 0. The output is not otherwise validated.",
+						"examples": ["2.1.14"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the --version process returns a nonzero exit code: \"Claude runner is unavailable.\""
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.run",
@@ -103,23 +180,46 @@
 						"name": "ClaudeBenchmarkAdapter.run.input",
 						"type": "BenchmarkRunnerInput",
 						"required": true,
-						"description": "Candidate, isolated workspace, prompt, optional session and shared abort signal."
+						"description": "Provides the candidate, working directory, prompt, abort signal and optional session for the Claude process. The signal is passed through to the process runner, and a truthy session adds --resume."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeBenchmarkAdapter.run",
 						"type": "Promise<BenchmarkTurn>",
-						"description": "Completed provider turn with a valid session and matching reported model."
+						"description": "Resolves to a turn parsed from Claude stream-json result events, with a session id and usage counters; reportedModel is optional and comes from the init event. A nonzero exit code, incomplete or failed result, or a reportedModel different from candidate.model rejects the promise.",
+						"examples": [
+							{
+								"session": "session-abc123",
+								"reportedModel": "claude-sonnet-4-5",
+								"usage": {
+									"inputTokens": 327,
+									"outputTokens": 94,
+									"cacheReadTokens": 12,
+									"reportedCostUsd": 0.0012
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the benchmark process returns a nonzero exit code: \"Claude runner failed; inspect authentication, model access, and local runner availability.\""
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when Claude does not complete a successful result with a session_id: \"Claude did not complete a benchmark submission.\""
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the parsed turn reports a model different from input.candidate.model: \"Claude reported a different model.\""
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ClaudeBenchmarkAdapter.command",
@@ -128,18 +228,43 @@
 						"name": "ClaudeBenchmarkAdapter.command.input",
 						"type": "BenchmarkRunnerInput",
 						"required": true,
-						"description": "Candidate, isolated workspace, prompt, optional session and shared abort signal."
+						"description": "Provides candidate model, effort and tool selection plus an optional session for argument construction. This method does not read cwd, prompt or signal; a truthy session adds --resume."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeBenchmarkAdapter.command",
 						"type": "string[]",
-						"description": "Explicit native CLI argument vector without launching a provider."
+						"description": "Returns the Claude print-mode argument vector with stream-json, verbose mode, candidate model and effort, fixed permission and MCP settings, and selected tools. It appends --resume and the session only when the session is truthy, and does not launch the process.",
+						"examples": [
+							[
+								"claude",
+								"-p",
+								"--output-format",
+								"stream-json",
+								"--verbose",
+								"--model",
+								"claude-sonnet-4-5",
+								"--effort",
+								"high",
+								"--permission-mode",
+								"bypassPermissions",
+								"--safe-mode",
+								"--setting-sources",
+								"",
+								"--strict-mcp-config",
+								"--mcp-config",
+								"{\"mcpServers\":{}}",
+								"--tools",
+								"Read,Edit,Write,Glob,Grep",
+								"--resume",
+								"session-abc123"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -151,17 +276,19 @@
 						"type": "string",
 						"required": false,
 						"default": "claude",
-						"description": "Provider CLI executable name or path; defaults to the adapter provider."
+						"description": "Executable passed as the first argument to each Claude CLI command. It defaults to \"claude\"; the adapter does not validate the value.",
+						"examples": ["claude"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeBenchmarkAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the newly constructed ClaudeBenchmarkAdapter instance, retaining the supplied executable or its default value."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
