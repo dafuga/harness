@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feTile element; native HTML content rules still apply."
+				"description": "Optional Svelte snippet rendered as the content of the feTile element; when it is omitted or falsy, nothing is rendered inside the element. The component takes it out of the props before the other props are spread onto the element, and it does not check at runtime that the value is a snippet."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeTile",
 				"type": "markup",
-				"description": "The actual native feTile element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native feTile element, created in the SVG namespace, with every prop except children spread onto it as attributes and the children snippet rendered inside it. The component adds no wrapper element and does not check the parent element it is placed in."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
