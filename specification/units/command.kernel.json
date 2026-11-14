@@ -12,27 +12,30 @@
 		"symbols": ["registerKernelCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerKernelCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The parent Commander Command instance on which the kernel command tree is registered. It must support the command, option, description, and action methods used here; this function applies no additional validation or explicit limits."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerKernelCommand",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned; the supplied Command is extended with the kernel command and its parity, bench, default, serve, and sample subcommands. The implementation defines no additional result or output limit."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised through fail when the parity report contains one or more problems, after the parity result has been printed. This error path applies to the registered parity action."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerKernelCommand",
@@ -40,17 +43,19 @@
 					{
 						"name": "registerKernelCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The parent Commander Command instance on which the kernel command tree is registered. It must support the command, option, description, and action methods used here; this function applies no additional validation or explicit limits."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerKernelCommand",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned; the supplied Command is extended with the kernel command and its parity, bench, default, serve, and sample subcommands. The implementation defines no additional result or output limit."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
