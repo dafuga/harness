@@ -20,27 +20,30 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubApiController.constructor.runtime",
 				"type": "HubApiRuntime",
-				"required": true
+				"required": true,
+				"description": "The runtime bundle that the controller keeps as its private field and reads while handling requests: auth.handle(request), whose truthy result is returned as the response; auth.actor(request), whose falsy result produces a 401; connect(), whose api and projection services are used on /api/projects routes; and the remote and agent members, which are passed to HubRemoteController and used as the executor on project routes. The constructor performs no checks, so a missing or wrong member can only fail later, inside handle, where the error is caught and returned through hubHttpFailure."
 			},
 			{
 				"name": "HubApiController.handle.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The incoming Fetch Request, passed unchanged to runtime.auth.handle, runtime.auth.actor and the route code that reads its URL pathname and method. The pathname is split on '/' and each segment goes through decodeURIComponent, so a malformed percent-escape is caught inside handle and passed to hubHttpFailure; a second segment of 'remote' goes to HubRemoteController, other paths whose first two segments are not 'api' and 'projects' get a 404, and GET selects the read branch while any other method selects the mutation branch."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubApiController.handle",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "The Response that handle resolves with: the result of runtime.auth.handle when that result is truthy, a 401 hubHttp({ error: 'session-required' }) when runtime.auth.actor returns a falsy value, and otherwise the Response of the matched route, such as a 404 hubHttp({ error: 'not-found' }) or a 405 hubHttp({ error: 'method-denied' }). Errors raised while routing are caught and returned through hubHttpFailure rather than thrown out of handle."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "HubApiController.handle",
@@ -48,17 +51,19 @@
 					{
 						"name": "HubApiController.handle.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The incoming Fetch Request, passed unchanged to runtime.auth.handle, runtime.auth.actor and the route code that reads its URL pathname and method. The pathname is split on '/' and each segment goes through decodeURIComponent, so a malformed percent-escape is caught inside handle and passed to hubHttpFailure; a second segment of 'remote' goes to HubRemoteController, other paths whose first two segments are not 'api' and 'projects' get a 404, and GET selects the read branch while any other method selects the mutation branch."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubApiController.handle",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "The Response that handle resolves with: the result of runtime.auth.handle when that result is truthy, a 401 hubHttp({ error: 'session-required' }) when runtime.auth.actor returns a falsy value, and otherwise the Response of the matched route, such as a 404 hubHttp({ error: 'not-found' }) or a 405 hubHttp({ error: 'method-denied' }). Errors raised while routing are caught and returned through hubHttpFailure rather than thrown out of handle."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -68,17 +73,19 @@
 					{
 						"name": "HubApiController.constructor.runtime",
 						"type": "HubApiRuntime",
-						"required": true
+						"required": true,
+						"description": "The runtime bundle that the controller keeps as its private field and reads while handling requests: auth.handle(request), whose truthy result is returned as the response; auth.actor(request), whose falsy result produces a 401; connect(), whose api and projection services are used on /api/projects routes; and the remote and agent members, which are passed to HubRemoteController and used as the executor on project routes. The constructor performs no checks, so a missing or wrong member can only fail later, inside handle, where the error is caught and returned through hubHttpFailure."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubApiController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The HubApiController instance that new HubApiController(runtime) produces, holding only the private runtime field. The constructor body is empty, so it does no validation or setup beyond storing that field."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
