@@ -29,58 +29,149 @@
 				"name": "createProject.deps",
 				"type": "CollaborationDependencies",
 				"required": true,
-				"description": "Persistence, repository authorization and optional clock."
+				"description": "Supplies the record repository used by transaction (read and compareAndSwap), the authorizeRepository callback that authorizes the source repository, and an optional now clock. createProject uses now for createdAt, falling back to new Date() when now is absent, and neither function reads deps.source or deps.cache."
 			},
 			{
 				"name": "createProject.actor",
 				"type": "Actor",
 				"required": true,
-				"description": "Verified actor who becomes the new project owner."
+				"description": "The verified Actor who becomes the owner of the new project, validated by actorSchema before any read or authorization call: id and name, each 1 to 200 characters after trimming, a valid email of at most 320 characters, emailVerified exactly true, and no other fields. Its id becomes ownerId and the owner member's actorId, and its lowercased email and trimmed name are stored on that owner member.",
+				"examples": [
+					{
+						"id": "google-107342918560473829164",
+						"email": "maya.chen@example.com",
+						"name": "Maya Chen",
+						"emailVerified": true
+					},
+					{
+						"id": "google-112905671843029517384",
+						"email": "jordan.lee@example.net",
+						"name": "Jordan Lee",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "createProject.input",
 				"type": "Parameters<CollaborationApi['createProject']>[1]",
 				"required": true,
-				"description": "Trimmed project name of 1–200 characters and a positive repository ID."
+				"description": "A strict object with name, the project name trimmed to 1 to 200 characters, and repositoryId, a positive integer identifying the source repository. The repository that authorizeRepository returns must have that same id, and any extra key or invalid value fails with invalid-input before any read or authorization call.",
+				"examples": [
+					{
+						"name": "Checkout redesign",
+						"repositoryId": 918274
+					},
+					{
+						"name": "Mobile onboarding",
+						"repositoryId": 1047365
+					}
+				]
 			},
 			{
 				"name": "removeMember.deps",
 				"type": "CollaborationDependencies",
 				"required": true,
-				"description": "Persistence used for the membership transaction."
+				"description": "Supplies the record repository used by the membership transaction (read and compareAndSwap); removeMember does not use authorizeRepository, now, source or cache."
 			},
 			{
 				"name": "removeMember.actor",
 				"type": "Actor",
 				"required": true,
-				"description": "Verified project owner requesting removal."
+				"description": "The verified Actor requesting the removal, who must be a member of the project with role owner. It is validated by actorSchema inside the transaction after the records are read, and membership is matched by its id alone.",
+				"examples": [
+					{
+						"id": "google-107342918560473829164",
+						"email": "maya.chen@example.com",
+						"name": "Maya Chen",
+						"emailVerified": true
+					},
+					{
+						"id": "google-112905671843029517384",
+						"email": "jordan.lee@example.net",
+						"name": "Jordan Lee",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "removeMember.input",
 				"type": "Parameters<CollaborationApi['removeMember']>[1]",
 				"required": true,
-				"description": "Project UUID and member actor ID."
+				"description": "A strict object with projectId, the project UUID, and memberId, the actor ID of the member to remove, trimmed to 1 to 200 characters. A missing or malformed field fails with invalid-input before any records are read.",
+				"examples": [
+					{
+						"projectId": "5b1e0f6a-3c2d-4e8f-9a7b-1c2d3e4f5a6b",
+						"memberId": "google-112905671843029517384"
+					},
+					{
+						"projectId": "c3a9f1e2-7d64-4a85-b0c2-6e8f1d3a5b7c",
+						"memberId": "google-107342918560473829164"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "createProject",
 				"type": "unknown",
-				"description": "Promise of the created project with owner role and committed collaboration revision."
+				"description": "The Promise resolves to the created project with id, name, sourceRepository, createdAt, ownerId and role set to owner, plus collaborationCommit, the revision that compareAndSwap returned for the write.",
+				"examples": [
+					{
+						"id": "5b1e0f6a-3c2d-4e8f-9a7b-1c2d3e4f5a6b",
+						"name": "Checkout redesign",
+						"sourceRepository": {
+							"id": 918274,
+							"owner": "acme-labs",
+							"name": "checkout-web",
+							"private": true,
+							"installationId": 51840213
+						},
+						"createdAt": "2026-11-14T09:30:00.000Z",
+						"ownerId": "google-107342918560473829164",
+						"role": "owner",
+						"collaborationCommit": "3f9a1c2b7d4e5f60718293a4b5c6d7e8f9012345"
+					},
+					{
+						"id": "c3a9f1e2-7d64-4a85-b0c2-6e8f1d3a5b7c",
+						"name": "Mobile onboarding",
+						"sourceRepository": {
+							"id": 1047365,
+							"owner": "acme-labs",
+							"name": "mobile-app",
+							"private": true,
+							"installationId": 51840213
+						},
+						"createdAt": "2026-11-13T18:05:42.517Z",
+						"ownerId": "google-112905671843029517384",
+						"role": "owner",
+						"collaborationCommit": "e41d0a7c95b2f83106d4ae9b7c5f208d13e6a9b7"
+					}
+				]
 			},
 			{
 				"name": "removeMember",
 				"type": "unknown",
-				"description": "Removes the member and project invitations for that email; resolves without a value."
+				"description": "The Promise resolves with no value once the member and the project's invitations for that member's email are removed in the committed transaction. The revision that the transaction commits is not returned to the caller."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid input, repository authorization failures, denied membership, missing members, removal of the last owner or exhausted write retries."
+				"description": "The implementation rejects with a plain Error whose name is Error, not ExpectedCliError, and whose code is one of invalid-input, forbidden, not-found, sole-owner or conflict."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown by the toISOString call in createProject when deps.now returns an Invalid Date, before any project is added."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Passes through unchanged any rejection from deps.repository.read or deps.repository.compareAndSwap, because transaction does not catch it; this unit sets neither its name nor its code."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createProject",
@@ -89,30 +180,112 @@
 						"name": "createProject.deps",
 						"type": "CollaborationDependencies",
 						"required": true,
-						"description": "Persistence, repository authorization and optional clock."
+						"description": "Supplies the record repository used by transaction (read and compareAndSwap), the authorizeRepository callback that authorizes the source repository, and an optional now clock. createProject uses now for createdAt, falling back to new Date() when now is absent, and neither function reads deps.source or deps.cache."
 					},
 					{
 						"name": "createProject.actor",
 						"type": "Actor",
 						"required": true,
-						"description": "Verified actor who becomes the new project owner."
+						"description": "The verified Actor who becomes the owner of the new project, validated by actorSchema before any read or authorization call: id and name, each 1 to 200 characters after trimming, a valid email of at most 320 characters, emailVerified exactly true, and no other fields. Its id becomes ownerId and the owner member's actorId, and its lowercased email and trimmed name are stored on that owner member.",
+						"examples": [
+							{
+								"id": "google-107342918560473829164",
+								"email": "maya.chen@example.com",
+								"name": "Maya Chen",
+								"emailVerified": true
+							},
+							{
+								"id": "google-112905671843029517384",
+								"email": "jordan.lee@example.net",
+								"name": "Jordan Lee",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "createProject.input",
 						"type": "Parameters<CollaborationApi['createProject']>[1]",
 						"required": true,
-						"description": "Trimmed project name of 1–200 characters and a positive repository ID."
+						"description": "A strict object with name, the project name trimmed to 1 to 200 characters, and repositoryId, a positive integer identifying the source repository. The repository that authorizeRepository returns must have that same id, and any extra key or invalid value fails with invalid-input before any read or authorization call.",
+						"examples": [
+							{
+								"name": "Checkout redesign",
+								"repositoryId": 918274
+							},
+							{
+								"name": "Mobile onboarding",
+								"repositoryId": 1047365
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createProject",
 						"type": "unknown",
-						"description": "Promise of the created project with owner role and committed collaboration revision."
+						"description": "The Promise resolves to the created project with id, name, sourceRepository, createdAt, ownerId and role set to owner, plus collaborationCommit, the revision that compareAndSwap returned for the write.",
+						"examples": [
+							{
+								"id": "5b1e0f6a-3c2d-4e8f-9a7b-1c2d3e4f5a6b",
+								"name": "Checkout redesign",
+								"sourceRepository": {
+									"id": 918274,
+									"owner": "acme-labs",
+									"name": "checkout-web",
+									"private": true,
+									"installationId": 51840213
+								},
+								"createdAt": "2026-11-14T09:30:00.000Z",
+								"ownerId": "google-107342918560473829164",
+								"role": "owner",
+								"collaborationCommit": "3f9a1c2b7d4e5f60718293a4b5c6d7e8f9012345"
+							},
+							{
+								"id": "c3a9f1e2-7d64-4a85-b0c2-6e8f1d3a5b7c",
+								"name": "Mobile onboarding",
+								"sourceRepository": {
+									"id": 1047365,
+									"owner": "acme-labs",
+									"name": "mobile-app",
+									"private": true,
+									"installationId": 51840213
+								},
+								"createdAt": "2026-11-13T18:05:42.517Z",
+								"ownerId": "google-112905671843029517384",
+								"role": "owner",
+								"collaborationCommit": "e41d0a7c95b2f83106d4ae9b7c5f208d13e6a9b7"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code invalid-input when the actor fails actorSchema, when the input is not a strict object with a 1 to 200 character trimmed name and a positive integer repositoryId, or when the stored or resulting collaboration records fail recordsSchema; nothing is written in that case."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code forbidden when deps.authorizeRepository rejects, when it returns a value that fails repositorySchema, or when the returned repository id differs from the input's repositoryId; no project is added in that case."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown by the toISOString call when deps.now returns an Invalid Date; no project is added in that case."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code conflict when compareAndSwap returns null on all five attempts; no project is added in that case."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Passes through unchanged any rejection from deps.repository.read or deps.repository.compareAndSwap, because transaction does not catch it; this unit sets neither its name nor its code."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "removeMember",
@@ -121,30 +294,85 @@
 						"name": "removeMember.deps",
 						"type": "CollaborationDependencies",
 						"required": true,
-						"description": "Persistence used for the membership transaction."
+						"description": "Supplies the record repository used by the membership transaction (read and compareAndSwap); removeMember does not use authorizeRepository, now, source or cache."
 					},
 					{
 						"name": "removeMember.actor",
 						"type": "Actor",
 						"required": true,
-						"description": "Verified project owner requesting removal."
+						"description": "The verified Actor requesting the removal, who must be a member of the project with role owner. It is validated by actorSchema inside the transaction after the records are read, and membership is matched by its id alone.",
+						"examples": [
+							{
+								"id": "google-107342918560473829164",
+								"email": "maya.chen@example.com",
+								"name": "Maya Chen",
+								"emailVerified": true
+							},
+							{
+								"id": "google-112905671843029517384",
+								"email": "jordan.lee@example.net",
+								"name": "Jordan Lee",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "removeMember.input",
 						"type": "Parameters<CollaborationApi['removeMember']>[1]",
 						"required": true,
-						"description": "Project UUID and member actor ID."
+						"description": "A strict object with projectId, the project UUID, and memberId, the actor ID of the member to remove, trimmed to 1 to 200 characters. A missing or malformed field fails with invalid-input before any records are read.",
+						"examples": [
+							{
+								"projectId": "5b1e0f6a-3c2d-4e8f-9a7b-1c2d3e4f5a6b",
+								"memberId": "google-112905671843029517384"
+							},
+							{
+								"projectId": "c3a9f1e2-7d64-4a85-b0c2-6e8f1d3a5b7c",
+								"memberId": "google-107342918560473829164"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "removeMember",
 						"type": "unknown",
-						"description": "Removes the member and project invitations for that email; resolves without a value."
+						"description": "The Promise resolves with no value once the member and the project's invitations for that member's email are removed in the committed transaction. The revision that the transaction commits is not returned to the caller."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code invalid-input when the input is not a strict object with a UUID projectId and a memberId of 1 to 200 characters after trimming, when the actor fails actorSchema inside the transaction, or when the stored or resulting records fail recordsSchema."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code forbidden when no project matches projectId, when the actor has no membership in that project, or when the actor's role there is not owner."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code not-found when the project has no member whose actorId equals memberId."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code sole-owner when the target member is an owner and is the only owner of the project."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code conflict when compareAndSwap returns null on all five attempts; the member is not removed in that case."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Passes through unchanged any rejection from deps.repository.read or deps.repository.compareAndSwap, because transaction does not catch it; this unit sets neither its name nor its code."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
