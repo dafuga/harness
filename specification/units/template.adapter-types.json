@@ -12,12 +12,21 @@
 		"symbols": ["adapterTypeFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "adapterTypeFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The planned files produced when this template is expanded to scaffold the adapter type; the list always contains one file at src/models/adapters/types.ts defining PersistenceAdapter.",
+				"examples": [
+					[
+						{
+							"path": "src/models/adapters/types.ts",
+							"contents": "export interface PersistenceAdapter {\n\tfind<T>(table: string, id: number): Promise<T | null>;\n\tfindBy<T>(table: string, fields: Record<string, unknown>): Promise<T[]>;\n\tcreate<T>(table: string, input: Record<string, unknown>): Promise<T>;\n\tupdate<T>(table: string, id: number, input: Record<string, unknown>): Promise<T | null>;\n\tdelete(table: string, id: number): Promise<boolean>;\n}\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
@@ -29,11 +38,20 @@
 				"outputs": [
 					{
 						"name": "adapterTypeFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The planned files produced when this template is expanded to scaffold the adapter type; the list always contains one file at src/models/adapters/types.ts defining PersistenceAdapter.",
+						"examples": [
+							[
+								{
+									"path": "src/models/adapters/types.ts",
+									"contents": "export interface PersistenceAdapter {\n\tfind<T>(table: string, id: number): Promise<T | null>;\n\tfindBy<T>(table: string, fields: Record<string, unknown>): Promise<T[]>;\n\tcreate<T>(table: string, input: Record<string, unknown>): Promise<T>;\n\tupdate<T>(table: string, id: number, input: Record<string, unknown>): Promise<T | null>;\n\tdelete(table: string, id: number): Promise<boolean>;\n}\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
