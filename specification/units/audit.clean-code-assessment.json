@@ -22,45 +22,447 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "assessCleanCode.result",
 				"type": "JevEvaluation",
-				"required": true
+				"required": true,
+				"description": "The JEV evaluation whose answers map must hold a JevChoice for every rubric principle id, because assessCleanCode reads answers[principle.id] for each one. Only answers is read, so model and usage do not change the output, and a missing entry makes the call throw a TypeError.",
+				"examples": [
+					{
+						"model": "jev-1.13.0",
+						"answers": {
+							"meaningful-names": {
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.93,
+								"probabilities": {
+									"meets": 0.93,
+									"violates": 0.03,
+									"not_applicable": 0.01,
+									"insufficient_context": 0.03
+								}
+							},
+							"single-responsibility": {
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.88,
+								"probabilities": {
+									"meets": 0.88,
+									"violates": 0.07,
+									"not_applicable": 0.02,
+									"insufficient_context": 0.03
+								}
+							},
+							"focused-functions": {
+								"type": "choice",
+								"choice": "violates",
+								"confidence": 0.91,
+								"probabilities": {
+									"meets": 0.05,
+									"violates": 0.91,
+									"not_applicable": 0.01,
+									"insufficient_context": 0.03
+								}
+							},
+							"abstraction-level": {
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.74,
+								"probabilities": {
+									"meets": 0.74,
+									"violates": 0.18,
+									"not_applicable": 0.03,
+									"insufficient_context": 0.05
+								}
+							},
+							"duplication": {
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.9,
+								"probabilities": {
+									"meets": 0.9,
+									"violates": 0.04,
+									"not_applicable": 0.02,
+									"insufficient_context": 0.04
+								}
+							},
+							"side-effects": {
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.95,
+								"probabilities": {
+									"meets": 0.95,
+									"violates": 0.02,
+									"not_applicable": 0.01,
+									"insufficient_context": 0.02
+								}
+							},
+							"error-handling": {
+								"type": "choice",
+								"choice": "violates",
+								"confidence": 0.62,
+								"probabilities": {
+									"meets": 0.3,
+									"violates": 0.62,
+									"not_applicable": 0.03,
+									"insufficient_context": 0.05
+								}
+							},
+							"comments": {
+								"type": "choice",
+								"choice": "insufficient_context",
+								"confidence": 0.85,
+								"probabilities": {
+									"meets": 0.08,
+									"violates": 0.04,
+									"not_applicable": 0.03,
+									"insufficient_context": 0.85
+								}
+							},
+							"boundaries": {
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.89,
+								"probabilities": {
+									"meets": 0.89,
+									"violates": 0.05,
+									"not_applicable": 0.03,
+									"insufficient_context": 0.03
+								}
+							},
+							"testability": {
+								"type": "choice",
+								"choice": "insufficient_context",
+								"confidence": 0.81,
+								"probabilities": {
+									"meets": 0.1,
+									"violates": 0.05,
+									"not_applicable": 0.04,
+									"insufficient_context": 0.81
+								}
+							},
+							"async-boundaries": {
+								"type": "choice",
+								"choice": "not_applicable",
+								"confidence": 0.96,
+								"probabilities": {
+									"meets": 0.02,
+									"violates": 0.01,
+									"not_applicable": 0.96,
+									"insufficient_context": 0.01
+								}
+							}
+						},
+						"usage": {
+							"input_tokens": 18432,
+							"output_tokens": 612
+						}
+					}
+				]
 			},
 			{
 				"name": "assessCleanCode.minConfidence",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The confidence threshold that an answer's confidence must reach for its choice to be kept; a confidence below it, or an insufficient_context choice, makes the status needs-review. assessCleanCode compares it directly with >= without validating it, while harness.audit.json cleanCode.minConfidence accepts only finite values above 0 and at most 1, defaulting to 0.85.",
+				"examples": [0.85, 0.8, 0.9]
 			},
 			{
 				"name": "fileReviewStatus.assessments",
 				"type": "PrincipleAssessment[]",
-				"required": true
+				"required": true,
+				"description": "The principle assessments whose statuses roll up into one file status. fileReviewStatus reads only each item's status: any status 'violates' gives violations, otherwise any 'needs-review' gives needs-review, and 'meets', 'not-applicable' or an empty array give clean.",
+				"examples": [
+					[
+						{
+							"type": "choice",
+							"choice": "violates",
+							"confidence": 0.91,
+							"probabilities": {
+								"meets": 0.05,
+								"violates": 0.91,
+								"not_applicable": 0.01,
+								"insufficient_context": 0.03
+							},
+							"principle": "focused-functions",
+							"title": "Focused functions",
+							"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+							"status": "violates"
+						},
+						{
+							"type": "choice",
+							"choice": "meets",
+							"confidence": 0.93,
+							"probabilities": {
+								"meets": 0.93,
+								"violates": 0.03,
+								"not_applicable": 0.01,
+								"insufficient_context": 0.03
+							},
+							"principle": "meaningful-names",
+							"title": "Meaningful names",
+							"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+							"status": "meets"
+						}
+					],
+					[
+						{
+							"type": "choice",
+							"choice": "meets",
+							"confidence": 0.93,
+							"probabilities": {
+								"meets": 0.93,
+								"violates": 0.03,
+								"not_applicable": 0.01,
+								"insufficient_context": 0.03
+							},
+							"principle": "meaningful-names",
+							"title": "Meaningful names",
+							"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+							"status": "meets"
+						},
+						{
+							"type": "choice",
+							"choice": "not_applicable",
+							"confidence": 0.96,
+							"probabilities": {
+								"meets": 0.02,
+								"violates": 0.01,
+								"not_applicable": 0.96,
+								"insufficient_context": 0.01
+							},
+							"principle": "async-boundaries",
+							"title": "Clear asynchronous behavior",
+							"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+							"status": "not-applicable"
+						}
+					],
+					[
+						{
+							"type": "choice",
+							"choice": "violates",
+							"confidence": 0.62,
+							"probabilities": {
+								"meets": 0.3,
+								"violates": 0.62,
+								"not_applicable": 0.03,
+								"insufficient_context": 0.05
+							},
+							"principle": "error-handling",
+							"title": "Useful error handling",
+							"guidance": "Handle or propagate failures intentionally with useful context; use the language and project error conventions.",
+							"status": "needs-review"
+						},
+						{
+							"type": "choice",
+							"choice": "meets",
+							"confidence": 0.89,
+							"probabilities": {
+								"meets": 0.89,
+								"violates": 0.05,
+								"not_applicable": 0.03,
+								"insufficient_context": 0.03
+							},
+							"principle": "boundaries",
+							"title": "Clear dependency boundaries",
+							"guidance": "Keep dependencies explicit and avoid exposing or depending on unrelated internals; do not require classes.",
+							"status": "meets"
+						}
+					]
+				]
 			},
 			{
 				"name": "reportReviewStatus.files",
 				"type": "FileReview[]",
-				"required": true
+				"required": true,
+				"description": "The per-file reviews whose statuses roll up into one report status; reportReviewStatus reads only each item's status. An empty array gives not-applicable, and otherwise incomplete wins over violations, violations over needs-review, and needs-review over clean.",
+				"examples": [
+					[],
+					[
+						{
+							"path": "src/audit/development-tooling/cleanCodeRubric.ts",
+							"contentHash": "0c8e3a5f9d1b72e4a6c0f8d3b9e51a7c2d4f6e8b0a3c9d5e1f7b2a6c4d8e0f13",
+							"contextHash": "e7b41d9c0a6f3825b1e4d7c9a0f63e2b8d5c1a7f4e9b06d3c2a8f5e1b7d4c960",
+							"status": "clean",
+							"assessments": [
+								{
+									"type": "choice",
+									"choice": "meets",
+									"confidence": 0.93,
+									"probabilities": {
+										"meets": 0.93,
+										"violates": 0.03,
+										"not_applicable": 0.01,
+										"insufficient_context": 0.03
+									},
+									"principle": "meaningful-names",
+									"title": "Meaningful names",
+									"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+									"status": "meets"
+								},
+								{
+									"type": "choice",
+									"choice": "not_applicable",
+									"confidence": 0.96,
+									"probabilities": {
+										"meets": 0.02,
+										"violates": 0.01,
+										"not_applicable": 0.96,
+										"insufficient_context": 0.01
+									},
+									"principle": "async-boundaries",
+									"title": "Clear asynchronous behavior",
+									"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+									"status": "not-applicable"
+								}
+							],
+							"contextPaths": [
+								"src/audit/development-tooling/cleanCodeRubric.types.ts",
+								"src/audit/development-tooling/cleanCodeTypes.ts",
+								"AGENTS.md"
+							],
+							"omittedContext": [],
+							"model": "jev-1.13.0",
+							"usage": {
+								"input_tokens": 9120,
+								"output_tokens": 388
+							},
+							"cached": false
+						}
+					],
+					[
+						{
+							"path": "src/audit/development-tooling/cleanCodeAssessment.ts",
+							"contentHash": "5e1b9d4a2c7f80e36b1d4a9c2f7e5083d6a1b9c4e2f7085a3d6b1e9c4f2a7085",
+							"contextHash": "a04c7e19d2b8f35a61e0c9b7d4a2f8e15c3b9d6a7e0f42c8b5d1a9e6f3c70b24",
+							"status": "violations",
+							"assessments": [
+								{
+									"type": "choice",
+									"choice": "violates",
+									"confidence": 0.91,
+									"probabilities": {
+										"meets": 0.05,
+										"violates": 0.91,
+										"not_applicable": 0.01,
+										"insufficient_context": 0.03
+									},
+									"principle": "focused-functions",
+									"title": "Focused functions",
+									"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+									"status": "violates"
+								}
+							],
+							"contextPaths": [
+								"src/audit/development-tooling/cleanCodeRubric.ts",
+								"src/audit/development-tooling/cleanCodeTypes.ts",
+								"AGENTS.md"
+							],
+							"omittedContext": [],
+							"model": "jev-1.13.0",
+							"usage": {
+								"input_tokens": 18432,
+								"output_tokens": 612
+							},
+							"cached": false
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "assessCleanCode",
-				"type": "PrincipleAssessment[]"
+				"type": "PrincipleAssessment[]",
+				"description": "One assessment per rubric principle, in rubric order, made from that principle's JEV answer (type, choice, confidence and probabilities) plus its principle id, title and guidance. Its status is needs-review when confidence is below minConfidence or the choice is insufficient_context, not-applicable for a kept not_applicable choice, and otherwise the kept choice.",
+				"examples": [
+					[
+						{
+							"type": "choice",
+							"choice": "meets",
+							"confidence": 0.93,
+							"probabilities": {
+								"meets": 0.93,
+								"violates": 0.03,
+								"not_applicable": 0.01,
+								"insufficient_context": 0.03
+							},
+							"principle": "meaningful-names",
+							"title": "Meaningful names",
+							"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+							"status": "meets"
+						},
+						{
+							"type": "choice",
+							"choice": "violates",
+							"confidence": 0.91,
+							"probabilities": {
+								"meets": 0.05,
+								"violates": 0.91,
+								"not_applicable": 0.01,
+								"insufficient_context": 0.03
+							},
+							"principle": "focused-functions",
+							"title": "Focused functions",
+							"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+							"status": "violates"
+						},
+						{
+							"type": "choice",
+							"choice": "violates",
+							"confidence": 0.62,
+							"probabilities": {
+								"meets": 0.3,
+								"violates": 0.62,
+								"not_applicable": 0.03,
+								"insufficient_context": 0.05
+							},
+							"principle": "error-handling",
+							"title": "Useful error handling",
+							"guidance": "Handle or propagate failures intentionally with useful context; use the language and project error conventions.",
+							"status": "needs-review"
+						},
+						{
+							"type": "choice",
+							"choice": "not_applicable",
+							"confidence": 0.96,
+							"probabilities": {
+								"meets": 0.02,
+								"violates": 0.01,
+								"not_applicable": 0.96,
+								"insufficient_context": 0.01
+							},
+							"principle": "async-boundaries",
+							"title": "Clear asynchronous behavior",
+							"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+							"status": "not-applicable"
+						}
+					]
+				]
 			},
 			{
 				"name": "fileReviewStatus",
-				"type": "ReviewStatus"
+				"type": "ReviewStatus",
+				"description": "The file-level status: violations when any assessment status is 'violates', otherwise needs-review when any is 'needs-review', otherwise clean. It never returns incomplete or not-applicable, and an empty assessments array gives clean.",
+				"examples": ["violations", "needs-review", "clean"]
 			},
 			{
 				"name": "reportReviewStatus",
-				"type": "ReviewStatus | 'not-applicable'"
+				"type": "ReviewStatus | 'not-applicable'",
+				"description": "The report-level status: not-applicable for an empty files array, otherwise incomplete if any file is incomplete, then violations, then needs-review, and clean when no file is incomplete, has violations, or needs review. A single incomplete file therefore makes the whole report incomplete, even when other files violate.",
+				"examples": ["not-applicable", "clean", "violations"]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by assessCleanCode when result, result.answers, or the entry for a rubric principle id is null or undefined, because the code then reads a property from it. Nothing in this unit catches it, so the TypeError reaches the caller unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "assessCleanCode",
@@ -68,22 +470,228 @@
 					{
 						"name": "assessCleanCode.result",
 						"type": "JevEvaluation",
-						"required": true
+						"required": true,
+						"description": "The JEV evaluation whose answers map must hold a JevChoice for every rubric principle id, because assessCleanCode reads answers[principle.id] for each one. Only answers is read, so model and usage do not change the output, and a missing entry makes the call throw a TypeError.",
+						"examples": [
+							{
+								"model": "jev-1.13.0",
+								"answers": {
+									"meaningful-names": {
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.93,
+										"probabilities": {
+											"meets": 0.93,
+											"violates": 0.03,
+											"not_applicable": 0.01,
+											"insufficient_context": 0.03
+										}
+									},
+									"single-responsibility": {
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.88,
+										"probabilities": {
+											"meets": 0.88,
+											"violates": 0.07,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.03
+										}
+									},
+									"focused-functions": {
+										"type": "choice",
+										"choice": "violates",
+										"confidence": 0.91,
+										"probabilities": {
+											"meets": 0.05,
+											"violates": 0.91,
+											"not_applicable": 0.01,
+											"insufficient_context": 0.03
+										}
+									},
+									"abstraction-level": {
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.74,
+										"probabilities": {
+											"meets": 0.74,
+											"violates": 0.18,
+											"not_applicable": 0.03,
+											"insufficient_context": 0.05
+										}
+									},
+									"duplication": {
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.9,
+										"probabilities": {
+											"meets": 0.9,
+											"violates": 0.04,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.04
+										}
+									},
+									"side-effects": {
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.95,
+										"probabilities": {
+											"meets": 0.95,
+											"violates": 0.02,
+											"not_applicable": 0.01,
+											"insufficient_context": 0.02
+										}
+									},
+									"error-handling": {
+										"type": "choice",
+										"choice": "violates",
+										"confidence": 0.62,
+										"probabilities": {
+											"meets": 0.3,
+											"violates": 0.62,
+											"not_applicable": 0.03,
+											"insufficient_context": 0.05
+										}
+									},
+									"comments": {
+										"type": "choice",
+										"choice": "insufficient_context",
+										"confidence": 0.85,
+										"probabilities": {
+											"meets": 0.08,
+											"violates": 0.04,
+											"not_applicable": 0.03,
+											"insufficient_context": 0.85
+										}
+									},
+									"boundaries": {
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.89,
+										"probabilities": {
+											"meets": 0.89,
+											"violates": 0.05,
+											"not_applicable": 0.03,
+											"insufficient_context": 0.03
+										}
+									},
+									"testability": {
+										"type": "choice",
+										"choice": "insufficient_context",
+										"confidence": 0.81,
+										"probabilities": {
+											"meets": 0.1,
+											"violates": 0.05,
+											"not_applicable": 0.04,
+											"insufficient_context": 0.81
+										}
+									},
+									"async-boundaries": {
+										"type": "choice",
+										"choice": "not_applicable",
+										"confidence": 0.96,
+										"probabilities": {
+											"meets": 0.02,
+											"violates": 0.01,
+											"not_applicable": 0.96,
+											"insufficient_context": 0.01
+										}
+									}
+								},
+								"usage": {
+									"input_tokens": 18432,
+									"output_tokens": 612
+								}
+							}
+						]
 					},
 					{
 						"name": "assessCleanCode.minConfidence",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The confidence threshold that an answer's confidence must reach for its choice to be kept; a confidence below it, or an insufficient_context choice, makes the status needs-review. assessCleanCode compares it directly with >= without validating it, while harness.audit.json cleanCode.minConfidence accepts only finite values above 0 and at most 1, defaulting to 0.85.",
+						"examples": [0.85, 0.8, 0.9]
 					}
 				],
 				"outputs": [
 					{
 						"name": "assessCleanCode",
-						"type": "PrincipleAssessment[]"
+						"type": "PrincipleAssessment[]",
+						"description": "One assessment per rubric principle, in rubric order, made from that principle's JEV answer (type, choice, confidence and probabilities) plus its principle id, title and guidance. Its status is needs-review when confidence is below minConfidence or the choice is insufficient_context, not-applicable for a kept not_applicable choice, and otherwise the kept choice.",
+						"examples": [
+							[
+								{
+									"type": "choice",
+									"choice": "meets",
+									"confidence": 0.93,
+									"probabilities": {
+										"meets": 0.93,
+										"violates": 0.03,
+										"not_applicable": 0.01,
+										"insufficient_context": 0.03
+									},
+									"principle": "meaningful-names",
+									"title": "Meaningful names",
+									"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+									"status": "meets"
+								},
+								{
+									"type": "choice",
+									"choice": "violates",
+									"confidence": 0.91,
+									"probabilities": {
+										"meets": 0.05,
+										"violates": 0.91,
+										"not_applicable": 0.01,
+										"insufficient_context": 0.03
+									},
+									"principle": "focused-functions",
+									"title": "Focused functions",
+									"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+									"status": "violates"
+								},
+								{
+									"type": "choice",
+									"choice": "violates",
+									"confidence": 0.62,
+									"probabilities": {
+										"meets": 0.3,
+										"violates": 0.62,
+										"not_applicable": 0.03,
+										"insufficient_context": 0.05
+									},
+									"principle": "error-handling",
+									"title": "Useful error handling",
+									"guidance": "Handle or propagate failures intentionally with useful context; use the language and project error conventions.",
+									"status": "needs-review"
+								},
+								{
+									"type": "choice",
+									"choice": "not_applicable",
+									"confidence": 0.96,
+									"probabilities": {
+										"meets": 0.02,
+										"violates": 0.01,
+										"not_applicable": 0.96,
+										"insufficient_context": 0.01
+									},
+									"principle": "async-boundaries",
+									"title": "Clear asynchronous behavior",
+									"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+									"status": "not-applicable"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by assessCleanCode when result, result.answers, or the entry for a rubric principle id is null or undefined, because the code then reads a property from it. Nothing in this unit catches it, so the TypeError reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fileReviewStatus",
@@ -91,17 +699,118 @@
 					{
 						"name": "fileReviewStatus.assessments",
 						"type": "PrincipleAssessment[]",
-						"required": true
+						"required": true,
+						"description": "The principle assessments whose statuses roll up into one file status. fileReviewStatus reads only each item's status: any status 'violates' gives violations, otherwise any 'needs-review' gives needs-review, and 'meets', 'not-applicable' or an empty array give clean.",
+						"examples": [
+							[
+								{
+									"type": "choice",
+									"choice": "violates",
+									"confidence": 0.91,
+									"probabilities": {
+										"meets": 0.05,
+										"violates": 0.91,
+										"not_applicable": 0.01,
+										"insufficient_context": 0.03
+									},
+									"principle": "focused-functions",
+									"title": "Focused functions",
+									"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+									"status": "violates"
+								},
+								{
+									"type": "choice",
+									"choice": "meets",
+									"confidence": 0.93,
+									"probabilities": {
+										"meets": 0.93,
+										"violates": 0.03,
+										"not_applicable": 0.01,
+										"insufficient_context": 0.03
+									},
+									"principle": "meaningful-names",
+									"title": "Meaningful names",
+									"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+									"status": "meets"
+								}
+							],
+							[
+								{
+									"type": "choice",
+									"choice": "meets",
+									"confidence": 0.93,
+									"probabilities": {
+										"meets": 0.93,
+										"violates": 0.03,
+										"not_applicable": 0.01,
+										"insufficient_context": 0.03
+									},
+									"principle": "meaningful-names",
+									"title": "Meaningful names",
+									"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+									"status": "meets"
+								},
+								{
+									"type": "choice",
+									"choice": "not_applicable",
+									"confidence": 0.96,
+									"probabilities": {
+										"meets": 0.02,
+										"violates": 0.01,
+										"not_applicable": 0.96,
+										"insufficient_context": 0.01
+									},
+									"principle": "async-boundaries",
+									"title": "Clear asynchronous behavior",
+									"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+									"status": "not-applicable"
+								}
+							],
+							[
+								{
+									"type": "choice",
+									"choice": "violates",
+									"confidence": 0.62,
+									"probabilities": {
+										"meets": 0.3,
+										"violates": 0.62,
+										"not_applicable": 0.03,
+										"insufficient_context": 0.05
+									},
+									"principle": "error-handling",
+									"title": "Useful error handling",
+									"guidance": "Handle or propagate failures intentionally with useful context; use the language and project error conventions.",
+									"status": "needs-review"
+								},
+								{
+									"type": "choice",
+									"choice": "meets",
+									"confidence": 0.89,
+									"probabilities": {
+										"meets": 0.89,
+										"violates": 0.05,
+										"not_applicable": 0.03,
+										"insufficient_context": 0.03
+									},
+									"principle": "boundaries",
+									"title": "Clear dependency boundaries",
+									"guidance": "Keep dependencies explicit and avoid exposing or depending on unrelated internals; do not require classes.",
+									"status": "meets"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fileReviewStatus",
-						"type": "ReviewStatus"
+						"type": "ReviewStatus",
+						"description": "The file-level status: violations when any assessment status is 'violates', otherwise needs-review when any is 'needs-review', otherwise clean. It never returns incomplete or not-applicable, and an empty assessments array gives clean.",
+						"examples": ["violations", "needs-review", "clean"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reportReviewStatus",
@@ -109,17 +818,112 @@
 					{
 						"name": "reportReviewStatus.files",
 						"type": "FileReview[]",
-						"required": true
+						"required": true,
+						"description": "The per-file reviews whose statuses roll up into one report status; reportReviewStatus reads only each item's status. An empty array gives not-applicable, and otherwise incomplete wins over violations, violations over needs-review, and needs-review over clean.",
+						"examples": [
+							[],
+							[
+								{
+									"path": "src/audit/development-tooling/cleanCodeRubric.ts",
+									"contentHash": "0c8e3a5f9d1b72e4a6c0f8d3b9e51a7c2d4f6e8b0a3c9d5e1f7b2a6c4d8e0f13",
+									"contextHash": "e7b41d9c0a6f3825b1e4d7c9a0f63e2b8d5c1a7f4e9b06d3c2a8f5e1b7d4c960",
+									"status": "clean",
+									"assessments": [
+										{
+											"type": "choice",
+											"choice": "meets",
+											"confidence": 0.93,
+											"probabilities": {
+												"meets": 0.93,
+												"violates": 0.03,
+												"not_applicable": 0.01,
+												"insufficient_context": 0.03
+											},
+											"principle": "meaningful-names",
+											"title": "Meaningful names",
+											"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+											"status": "meets"
+										},
+										{
+											"type": "choice",
+											"choice": "not_applicable",
+											"confidence": 0.96,
+											"probabilities": {
+												"meets": 0.02,
+												"violates": 0.01,
+												"not_applicable": 0.96,
+												"insufficient_context": 0.01
+											},
+											"principle": "async-boundaries",
+											"title": "Clear asynchronous behavior",
+											"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+											"status": "not-applicable"
+										}
+									],
+									"contextPaths": [
+										"src/audit/development-tooling/cleanCodeRubric.types.ts",
+										"src/audit/development-tooling/cleanCodeTypes.ts",
+										"AGENTS.md"
+									],
+									"omittedContext": [],
+									"model": "jev-1.13.0",
+									"usage": {
+										"input_tokens": 9120,
+										"output_tokens": 388
+									},
+									"cached": false
+								}
+							],
+							[
+								{
+									"path": "src/audit/development-tooling/cleanCodeAssessment.ts",
+									"contentHash": "5e1b9d4a2c7f80e36b1d4a9c2f7e5083d6a1b9c4e2f7085a3d6b1e9c4f2a7085",
+									"contextHash": "a04c7e19d2b8f35a61e0c9b7d4a2f8e15c3b9d6a7e0f42c8b5d1a9e6f3c70b24",
+									"status": "violations",
+									"assessments": [
+										{
+											"type": "choice",
+											"choice": "violates",
+											"confidence": 0.91,
+											"probabilities": {
+												"meets": 0.05,
+												"violates": 0.91,
+												"not_applicable": 0.01,
+												"insufficient_context": 0.03
+											},
+											"principle": "focused-functions",
+											"title": "Focused functions",
+											"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+											"status": "violates"
+										}
+									],
+									"contextPaths": [
+										"src/audit/development-tooling/cleanCodeRubric.ts",
+										"src/audit/development-tooling/cleanCodeTypes.ts",
+										"AGENTS.md"
+									],
+									"omittedContext": [],
+									"model": "jev-1.13.0",
+									"usage": {
+										"input_tokens": 18432,
+										"output_tokens": 612
+									},
+									"cached": false
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportReviewStatus",
-						"type": "ReviewStatus | 'not-applicable'"
+						"type": "ReviewStatus | 'not-applicable'",
+						"description": "The report-level status: not-applicable for an empty files array, otherwise incomplete if any file is incomplete, then violations, then needs-review, and clean when no file is incomplete, has violations, or needs review. A single incomplete file therefore makes the whole report incomplete, even when other files violate.",
+						"examples": ["not-applicable", "clean", "violations"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
