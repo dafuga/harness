@@ -16,22 +16,65 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProviderCatalogAdapter.constructor.paths",
 				"type": "{ openai: string; claude: string }",
-				"required": true
+				"required": true,
+				"description": "Object that maps each provider to its catalog file: the openai path is read as provider openai and the claude path as provider harness-claude. The files are re-read on every list() call, a missing, unreadable or invalid file contributes no models instead of an error, and the constructor does not check that the paths exist.",
+				"examples": [
+					{
+						"openai": "/Users/example/.codex/models_cache.json",
+						"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+					},
+					{
+						"openai": "/opt/codex-home/models_cache.json",
+						"claude": "/opt/codex-home/harness-gateway/claude-models.json"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderCatalogAdapter.list",
-				"type": "Promise<PickerModel[]>"
+				"type": "Promise<PickerModel[]>",
+				"description": "Resolves to the openai catalog models followed by the harness-claude catalog models, each as a PickerModel whose model is the catalog slug, label is its display_name, efforts lists the effort of each supported reasoning level in file order, defaultEffort is its default_reasoning_level and source is 'local-catalog'. Only models whose visibility is exactly 'hide' are omitted, and a catalog that is missing, not valid JSON or fails schema validation contributes no models at all (one invalid entry drops the whole file), so the result can be an empty array.",
+				"examples": [
+					[
+						{
+							"provider": "openai",
+							"model": "gpt-6.1",
+							"label": "GPT 6.1",
+							"efforts": ["high"],
+							"defaultEffort": "high",
+							"source": "local-catalog"
+						},
+						{
+							"provider": "harness-claude",
+							"model": "claude-opus-5-5",
+							"label": "Claude Opus 5.5",
+							"efforts": ["xhigh"],
+							"defaultEffort": "xhigh",
+							"source": "local-catalog"
+						}
+					],
+					[],
+					[
+						{
+							"provider": "harness-claude",
+							"model": "claude-opus-5-5",
+							"label": "Claude Opus 5.5",
+							"efforts": ["xhigh"],
+							"defaultEffort": "xhigh",
+							"source": "local-catalog"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ProviderCatalogAdapter.list",
@@ -39,11 +82,43 @@
 				"outputs": [
 					{
 						"name": "ProviderCatalogAdapter.list",
-						"type": "Promise<PickerModel[]>"
+						"type": "Promise<PickerModel[]>",
+						"description": "Resolves to the openai catalog models followed by the harness-claude catalog models, each as a PickerModel whose model is the catalog slug, label is its display_name, efforts lists the effort of each supported reasoning level in file order, defaultEffort is its default_reasoning_level and source is 'local-catalog'. Only models whose visibility is exactly 'hide' are omitted, and a catalog that is missing, not valid JSON or fails schema validation contributes no models at all (one invalid entry drops the whole file), so the result can be an empty array.",
+						"examples": [
+							[
+								{
+									"provider": "openai",
+									"model": "gpt-6.1",
+									"label": "GPT 6.1",
+									"efforts": ["high"],
+									"defaultEffort": "high",
+									"source": "local-catalog"
+								},
+								{
+									"provider": "harness-claude",
+									"model": "claude-opus-5-5",
+									"label": "Claude Opus 5.5",
+									"efforts": ["xhigh"],
+									"defaultEffort": "xhigh",
+									"source": "local-catalog"
+								}
+							],
+							[],
+							[
+								{
+									"provider": "harness-claude",
+									"model": "claude-opus-5-5",
+									"label": "Claude Opus 5.5",
+									"efforts": ["xhigh"],
+									"defaultEffort": "xhigh",
+									"source": "local-catalog"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -53,17 +128,29 @@
 					{
 						"name": "ProviderCatalogAdapter.constructor.paths",
 						"type": "{ openai: string; claude: string }",
-						"required": true
+						"required": true,
+						"description": "Object that maps each provider to its catalog file: the openai path is read as provider openai and the claude path as provider harness-claude. The files are re-read on every list() call, a missing, unreadable or invalid file contributes no models instead of an error, and the constructor does not check that the paths exist.",
+						"examples": [
+							{
+								"openai": "/Users/example/.codex/models_cache.json",
+								"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+							},
+							{
+								"openai": "/opt/codex-home/models_cache.json",
+								"claude": "/opt/codex-home/harness-gateway/claude-models.json"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderCatalogAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ProviderCatalogAdapter instance, which keeps the paths object in its private readonly paths field and performs no file access until list() is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
