@@ -140,9 +140,12 @@ function stampProblem(
 	return problem ? `capture ${file} ${problem}` : undefined;
 }
 
-/** What ties a capture to compiled files: the declared build its evidence names. */
+/**
+ * What ties a capture to compiled files: the declared build its evidence names. A build a scoped
+ * run skipped on purpose is named apart from one that setup did not produce.
+ */
 function buildProblem(
-	builds: CoverageInput['builds'],
+	builds: (NonNullable<CoverageInput['builds']> & { skipped?: ReadonlySet<string> }) | undefined,
 	served: string,
 	named?: string
 ): string | undefined {
@@ -156,6 +159,9 @@ function buildProblem(
 		return `names build ${named}, which ${verifyConfigFile} does not declare`;
 	}
 	const compiled = builds?.compiled.get(named);
+	if (!compiled && builds?.skipped?.has(named)) {
+		return `names build ${named}, which this scoped run skipped`;
+	}
 	if (!compiled) return `names build ${named}, which setup did not produce`;
 	if (served === compiled) return undefined;
 	return `was served by build ${served.slice(0, 12)}, not the ${named} build ${compiled.slice(0, 12)} compiled from this revision`;

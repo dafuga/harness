@@ -14,6 +14,7 @@ import {
 import { machineProfile } from '../../../../utils/development-tooling/machineProfile';
 import { emittedTargets } from '../../../../utils/development-tooling/unitMeasurements';
 
+import { neededBuilds } from './buildScope';
 import { RecordAssemblyService } from './record-assembly-service/RecordAssemblyService';
 import { scenarioCoverage } from './scenarioCoverage';
 import { scopedCheck, scopedScenarios, scopeFailure } from './entityScope';
@@ -35,7 +36,8 @@ export class VerificationService {
 		const startedAt = new Date().toISOString();
 		const directory = this.store.directoryFor(context.commit, startedAt);
 		const { plan, referenced, rerun } = this.selection();
-		const executed = await this.snapshotRun(directory).execute(plan, this.artifactPaths());
+		const needed = context.entity ? neededBuilds(rerun) : undefined;
+		const executed = await this.snapshotRun(directory, needed).execute(plan, this.artifactPaths());
 		const scenarios = rerun.map((scenario) => this.judge(scenario, executed));
 		const assembly = new RecordAssemblyService({
 			...context,
@@ -80,10 +82,11 @@ export class VerificationService {
 		return [...new Set(built.map((target) => target.entry))];
 	}
 
-	private snapshotRun(directory: string): SnapshotRunService {
+	/** A scoped run passes the builds its scenarios need; a full run passes none. */
+	private snapshotRun(directory: string, needed?: ReadonlySet<string> | 'all'): SnapshotRunService {
 		const { root, config, commit, tree, env } = this.context;
 		const context = { directory, commit, tree, profile: this.profile.id, env };
-		return new SnapshotRunService({ root, config, context });
+		return new SnapshotRunService({ root, config, context, needed });
 	}
 
 	/**
@@ -106,15 +109,17 @@ export class VerificationService {
 	): { result: ScenarioResult; failures: string[] } {
 		const own = executed.outcomes.filter((outcome) => outcome.check.scenario === scenario.id);
 		const compiled = (executed.builds ?? []).map((build) => [build.id, build.buildId] as const);
+		const builds = {
+			declared: this.context.config.builds.map((build) => build.id),
+			compiled: new Map(compiled),
+			skipped: new Set(executed.skippedBuilds ?? [])
+		};
 		const coverage = scenarioCoverage({
 			scenario,
 			commit: this.context.commit,
 			gathered: own.flatMap((outcome) => outcome.gathered),
 			checkFailed: own.some((outcome) => !outcome.passed),
-			builds: {
-				declared: this.context.config.builds.map((build) => build.id),
-				compiled: new Map(compiled)
-			}
+			builds
 		});
 		const ran = own.length === scenario.tests.length;
 		const failures = [
