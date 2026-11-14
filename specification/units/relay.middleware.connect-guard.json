@@ -21,36 +21,48 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ConnectGuardMiddleware.constructor.env",
 				"type": "Partial<RelayEnv>",
-				"required": true
+				"required": true,
+				"description": "The partial relay environment retained by the guard. HARNESS_ENVIRONMENT selects whether the TLS gate applies, and HARNESS_RELAY_ALLOWED_ORIGINS supplies the comma- or whitespace-separated origin allow-list; omitted values are treated as empty strings.",
+				"examples": [
+					{},
+					{
+						"HARNESS_ENVIRONMENT": "production",
+						"HARNESS_RELAY_ALLOWED_ORIGINS": "https://app.example.test"
+					}
+				]
 			},
 			{
 				"name": "ConnectGuardMiddleware.transport.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The Fetch Request passed to the transport gate. Its URL protocol is checked only when HARNESS_ENVIRONMENT appears in relayConfig.tlsEnvironments."
 			},
 			{
 				"name": "ConnectGuardMiddleware.handle.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The Fetch Request passed to the connect gate. It passes only with an Upgrade value of websocket, an absent or allowed Origin, and claims accepted by connectClaims."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ConnectGuardMiddleware.transport",
-				"type": "Response | undefined"
+				"type": "Response | undefined",
+				"description": "The TLS gate response, or undefined when the request may continue. In a configured TLS environment it returns relayError(400, tls-required) for non-HTTPS URLs."
 			},
 			{
 				"name": "ConnectGuardMiddleware.handle",
-				"type": "Response | undefined"
+				"type": "Response | undefined",
+				"description": "The first connect-gate rejection response, or undefined when all checks pass. Rejections cover a missing websocket upgrade, a disallowed present Origin, or claims rejected by connectClaims."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ConnectGuardMiddleware.transport",
@@ -58,17 +70,19 @@
 					{
 						"name": "ConnectGuardMiddleware.transport.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The Fetch Request passed to the transport gate. Its URL protocol is checked only when HARNESS_ENVIRONMENT appears in relayConfig.tlsEnvironments."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConnectGuardMiddleware.transport",
-						"type": "Response | undefined"
+						"type": "Response | undefined",
+						"description": "The TLS gate response, or undefined when the request may continue. In a configured TLS environment it returns relayError(400, tls-required) for non-HTTPS URLs."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ConnectGuardMiddleware.handle",
@@ -76,17 +90,19 @@
 					{
 						"name": "ConnectGuardMiddleware.handle.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The Fetch Request passed to the connect gate. It passes only with an Upgrade value of websocket, an absent or allowed Origin, and claims accepted by connectClaims."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConnectGuardMiddleware.handle",
-						"type": "Response | undefined"
+						"type": "Response | undefined",
+						"description": "The first connect-gate rejection response, or undefined when all checks pass. Rejections cover a missing websocket upgrade, a disallowed present Origin, or claims rejected by connectClaims."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -96,17 +112,26 @@
 					{
 						"name": "ConnectGuardMiddleware.constructor.env",
 						"type": "Partial<RelayEnv>",
-						"required": true
+						"required": true,
+						"description": "The partial relay environment retained by the guard. HARNESS_ENVIRONMENT selects whether the TLS gate applies, and HARNESS_RELAY_ALLOWED_ORIGINS supplies the comma- or whitespace-separated origin allow-list; omitted values are treated as empty strings.",
+						"examples": [
+							{},
+							{
+								"HARNESS_ENVIRONMENT": "production",
+								"HARNESS_RELAY_ALLOWED_ORIGINS": "https://app.example.test"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConnectGuardMiddleware.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The newly constructed ConnectGuardMiddleware instance. The constructor stores the supplied environment reference without filling in defaults."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
