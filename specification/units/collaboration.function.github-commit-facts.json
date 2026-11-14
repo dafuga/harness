@@ -20,29 +20,57 @@
 				"name": "githubCommitFacts.client",
 				"type": "GitHubTransport",
 				"required": true,
-				"description": "Repository transport used for access checks and the commit request."
+				"description": "The GitHubTransport for the target repository: check() compares the repository id GitHub returns with the configured one, and request() performs the GET of /git/commits/<commit>. Any error either call raises propagates unchanged to the caller."
 			},
 			{
 				"name": "githubCommitFacts.commit",
 				"type": "string",
 				"required": true,
-				"description": "Exact 40-character lowercase hex commit SHA."
+				"description": "The commit SHA to read, which must match ^[a-f0-9]{40}$ (40 lowercase hex characters) before any request is made, so abbreviated, uppercase or non-hex values fail with invalid-input. The GitHub response must report this exact sha, otherwise the call fails with commit-mismatch.",
+				"examples": [
+					"9f2c4e7a1b3d586e0c9a2f47d1e8b5a03c6d9e21",
+					"0a4b8c2d6e1f7a3b9c5d0e2f8a1b4c7d6e9f0a23",
+					"d41e7b92c05f8a36e1d4b7c9a02f5e8d3c6b1a47"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubCommitFacts",
 				"type": "Promise<SourceCommitFacts | null>",
-				"description": "Verified commit facts, or null when GitHub returns 404; the subject is the first paragraph with line breaks collapsed."
+				"description": "The verified SourceCommitFacts for the commit (commit and tree SHAs, parent SHAs in the order GitHub lists them, subject, author name, and the committer date as committedAt), or null when GitHub answers 404 for it. The subject is the first blank-line-separated paragraph of the trimmed message with each line break and its surrounding whitespace replaced by one space, and it is an empty string when the message is blank.",
+				"examples": [
+					{
+						"commit": "9f2c4e7a1b3d586e0c9a2f47d1e8b5a03c6d9e21",
+						"tree": "5b8e1f0c4a7d2e9b6f3c1a8d0e5b7f2c9a4d6e13",
+						"parents": ["0a4b8c2d6e1f7a3b9c5d0e2f8a1b4c7d6e9f0a23"],
+						"subject": "Add commit facts reader",
+						"author": "Mira Chen",
+						"committedAt": "2026-11-12T09:30:00Z"
+					},
+					{
+						"commit": "d41e7b92c05f8a36e1d4b7c9a02f5e8d3c6b1a47",
+						"tree": "e72a0c9d4b18f63e5a0d7c2b9f41e8a6d3c05b92",
+						"parents": [
+							"9f2c4e7a1b3d586e0c9a2f47d1e8b5a03c6d9e21",
+							"6c3e0a8f2d91b47e5c0a9d3f16b8e2d4a7c51f09"
+						],
+						"subject": "Merge branch 'review-links' into main",
+						"author": "Sam Okafor",
+						"committedAt": "2026-11-13T17:05:42Z"
+					},
+					null
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid input, denied repository access, a mismatched returned SHA or unavailable GitHub data."
+				"description": "Thrown by the package's fail(code) helper as a plain Error with a code property: invalid-input (malformed commit SHA or GitHub response), repository-denied (the access check returned a different repository id), github-unavailable (token, transport, non-404 HTTP or unreadable response), or commit-mismatch (the returned sha differs from the requested commit). It is not an ExpectedCliError instance."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "githubCommitFacts",
@@ -51,29 +79,57 @@
 						"name": "githubCommitFacts.client",
 						"type": "GitHubTransport",
 						"required": true,
-						"description": "Repository transport used for access checks and the commit request."
+						"description": "The GitHubTransport for the target repository: check() compares the repository id GitHub returns with the configured one, and request() performs the GET of /git/commits/<commit>. Any error either call raises propagates unchanged to the caller."
 					},
 					{
 						"name": "githubCommitFacts.commit",
 						"type": "string",
 						"required": true,
-						"description": "Exact 40-character lowercase hex commit SHA."
+						"description": "The commit SHA to read, which must match ^[a-f0-9]{40}$ (40 lowercase hex characters) before any request is made, so abbreviated, uppercase or non-hex values fail with invalid-input. The GitHub response must report this exact sha, otherwise the call fails with commit-mismatch.",
+						"examples": [
+							"9f2c4e7a1b3d586e0c9a2f47d1e8b5a03c6d9e21",
+							"0a4b8c2d6e1f7a3b9c5d0e2f8a1b4c7d6e9f0a23",
+							"d41e7b92c05f8a36e1d4b7c9a02f5e8d3c6b1a47"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "githubCommitFacts",
 						"type": "Promise<SourceCommitFacts | null>",
-						"description": "Verified commit facts, or null when GitHub returns 404; the subject is the first paragraph with line breaks collapsed."
+						"description": "The verified SourceCommitFacts for the commit (commit and tree SHAs, parent SHAs in the order GitHub lists them, subject, author name, and the committer date as committedAt), or null when GitHub answers 404 for it. The subject is the first blank-line-separated paragraph of the trimmed message with each line break and its surrounding whitespace replaced by one space, and it is an empty string when the message is blank.",
+						"examples": [
+							{
+								"commit": "9f2c4e7a1b3d586e0c9a2f47d1e8b5a03c6d9e21",
+								"tree": "5b8e1f0c4a7d2e9b6f3c1a8d0e5b7f2c9a4d6e13",
+								"parents": ["0a4b8c2d6e1f7a3b9c5d0e2f8a1b4c7d6e9f0a23"],
+								"subject": "Add commit facts reader",
+								"author": "Mira Chen",
+								"committedAt": "2026-11-12T09:30:00Z"
+							},
+							{
+								"commit": "d41e7b92c05f8a36e1d4b7c9a02f5e8d3c6b1a47",
+								"tree": "e72a0c9d4b18f63e5a0d7c2b9f41e8a6d3c05b92",
+								"parents": [
+									"9f2c4e7a1b3d586e0c9a2f47d1e8b5a03c6d9e21",
+									"6c3e0a8f2d91b47e5c0a9d3f16b8e2d4a7c51f09"
+								],
+								"subject": "Merge branch 'review-links' into main",
+								"author": "Sam Okafor",
+								"committedAt": "2026-11-13T17:05:42Z"
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by the package's fail(code) helper as a plain Error with a code property: invalid-input (malformed commit SHA or GitHub response), repository-denied (the access check returned a different repository id), github-unavailable (token, transport, non-404 HTTP or unreadable response), or commit-mismatch (the returned sha differs from the requested commit). It is not an ExpectedCliError instance."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
