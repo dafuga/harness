@@ -34,53 +34,216 @@
 				"name": "AnalyticsEvent.id",
 				"type": "string",
 				"required": true,
-				"description": "Stored row identity; the model passes it to the adapter without generating a key."
+				"description": "The primary key of one events row (the definition's primaryKey is id), supplied to find, update and delete to choose the row and included in the input object for create. The model never generates, checks or changes it, and passes it to the adapter unchanged.",
+				"examples": [
+					"5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+					"b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+					"0e9d4c71-2a5b-4f38-b6c1-7d8e9f0a1b2c"
+				]
 			},
 			{
 				"name": "AnalyticsEvent.timestamp",
 				"type": "string",
 				"required": true,
-				"description": "Timestamp attached to the stored analytics event."
+				"description": "The timestamp string stored in the timestamp field of an events row, supplied through create and update or used as a findBy filter. The model does not parse, format or validate it, so its format is whatever the caller supplies, and it is passed on unchanged.",
+				"examples": [
+					"2026-11-14T09:30:00.000Z",
+					"2026-11-14T09:35:12.418Z",
+					"2026-11-13T18:02:47.905Z"
+				]
 			},
 			{
 				"name": "AnalyticsEvent.data",
 				"type": "json",
 				"required": true,
-				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
+				"description": "The payload stored in the data field of an events row, supplied through create and update; it is typed in the source as the AnalyticsEvent interface from core/analyticsTypes (required: id, timestamp, project, kind and action). The model neither inspects nor validates it and passes the same object reference through, since only the outer object is copied.",
+				"examples": [
+					{
+						"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+						"timestamp": "2026-11-14T09:30:00.000Z",
+						"project": "example-project",
+						"kind": "step",
+						"action": "run",
+						"status": "succeeded",
+						"durationMs": 1842
+					},
+					{
+						"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+						"timestamp": "2026-11-14T09:35:12.418Z",
+						"project": "example-project",
+						"kind": "evaluation",
+						"action": "evaluate",
+						"checkType": "response",
+						"status": "failed",
+						"exitCode": 1,
+						"durationMs": 912,
+						"cached": false
+					},
+					{
+						"id": "0e9d4c71-2a5b-4f38-b6c1-7d8e9f0a1b2c",
+						"timestamp": "2026-11-13T18:02:47.905Z",
+						"project": "example-project",
+						"kind": "command",
+						"action": "run",
+						"exitCode": 0,
+						"durationMs": 215
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnalyticsEvent.find",
 				"type": "Promise<AnalyticsEventAttributes | null>",
-				"description": "Promise of the matching events row, or null according to the adapter lookup result."
+				"description": "The promise from the adapter's find for the events table and the requested id, returned without change. It resolves to the adapter's events row or null, as PersistenceAdapter.find declares.",
+				"examples": [
+					{
+						"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+						"timestamp": "2026-11-14T09:30:00.000Z",
+						"data": {
+							"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+							"timestamp": "2026-11-14T09:30:00.000Z",
+							"project": "example-project",
+							"kind": "step",
+							"action": "run",
+							"status": "succeeded",
+							"durationMs": 1842
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "AnalyticsEvent.findBy",
 				"type": "Promise<AnalyticsEventAttributes[]>",
-				"description": "Promise of events rows matching the supplied attribute filters."
+				"description": "The promise from the adapter's findBy for the events table, returned without change. It resolves to the array of events rows the adapter returns, and the model does not filter, sort or reshape that array.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+							"timestamp": "2026-11-14T09:30:00.000Z",
+							"data": {
+								"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+								"timestamp": "2026-11-14T09:30:00.000Z",
+								"project": "example-project",
+								"kind": "step",
+								"action": "run",
+								"status": "succeeded",
+								"durationMs": 1842
+							}
+						}
+					],
+					[
+						{
+							"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+							"timestamp": "2026-11-14T09:30:00.000Z",
+							"data": {
+								"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+								"timestamp": "2026-11-14T09:30:00.000Z",
+								"project": "example-project",
+								"kind": "step",
+								"action": "run",
+								"status": "succeeded",
+								"durationMs": 1842
+							}
+						},
+						{
+							"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+							"timestamp": "2026-11-14T09:35:12.418Z",
+							"data": {
+								"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+								"timestamp": "2026-11-14T09:35:12.418Z",
+								"project": "example-project",
+								"kind": "evaluation",
+								"action": "evaluate",
+								"checkType": "response",
+								"status": "failed",
+								"exitCode": 1,
+								"durationMs": 912,
+								"cached": false
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "AnalyticsEvent.create",
 				"type": "Promise<AnalyticsEventAttributes>",
-				"description": "Promise of the events row returned by the adapter after creation."
+				"description": "The promise from the adapter's create for the events table, returned without change. It resolves to the row the adapter returns from create, typed as AnalyticsEventAttributes.",
+				"examples": [
+					{
+						"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+						"timestamp": "2026-11-14T09:30:00.000Z",
+						"data": {
+							"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+							"timestamp": "2026-11-14T09:30:00.000Z",
+							"project": "example-project",
+							"kind": "step",
+							"action": "run",
+							"status": "succeeded",
+							"durationMs": 1842
+						}
+					},
+					{
+						"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+						"timestamp": "2026-11-14T09:35:12.418Z",
+						"data": {
+							"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+							"timestamp": "2026-11-14T09:35:12.418Z",
+							"project": "example-project",
+							"kind": "evaluation",
+							"action": "evaluate",
+							"checkType": "response",
+							"status": "failed",
+							"exitCode": 1,
+							"durationMs": 912,
+							"cached": false
+						}
+					}
+				]
 			},
 			{
 				"name": "AnalyticsEvent.update",
 				"type": "Promise<AnalyticsEventAttributes | null>",
-				"description": "Promise of the updated events row, or null according to the adapter update result."
+				"description": "The promise from the adapter's update for the events table and the requested id, returned without change. It resolves to the row the adapter returns or to null, as PersistenceAdapter.update declares.",
+				"examples": [
+					{
+						"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+						"timestamp": "2026-11-14T09:35:12.418Z",
+						"data": {
+							"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+							"timestamp": "2026-11-14T09:35:12.418Z",
+							"project": "example-project",
+							"kind": "evaluation",
+							"action": "evaluate",
+							"checkType": "response",
+							"status": "failed",
+							"exitCode": 1,
+							"durationMs": 912,
+							"cached": false
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "AnalyticsEvent.delete",
 				"type": "Promise<boolean>",
-				"description": "Promise of the adapter deletion result for the requested events row."
+				"description": "The promise from the adapter's delete for the events table and the requested id, returned without change. It resolves to the boolean the adapter returns, which the model does not interpret.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Persistence operation failure",
 				"type": "propagated",
-				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+				"description": "Exceptions the adapter throws synchronously and promise rejections it returns pass through unchanged, because the model has no try/catch. In findBy, create and update, a getter on the caller's object can also throw during the object-spread copy, before the adapter is called."
+			},
+			{
+				"name": "TypeError from missing receiver or adapter",
+				"type": "thrown",
+				"description": "Thrown synchronously when a static method is called without AnalyticsEvent as its receiver (each method reads this.definition.table), or when the adapter argument is null, undefined, or lacks the method being called; the model checks neither the receiver nor the adapter first."
 			}
 		],
 		"errorStatus": "declared",
@@ -92,27 +255,53 @@
 						"name": "AnalyticsEvent.find.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
+						"description": "The adapter instance whose find method receives the events table name and the id. The model owns no connection lifecycle and never opens or closes one."
 					},
 					{
 						"name": "AnalyticsEvent.find.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "The events row id to look up, passed to adapter.find unchanged; the model does not generate or validate it.",
+						"examples": [
+							"5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+							"b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+							"0e9d4c71-2a5b-4f38-b6c1-7d8e9f0a1b2c"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.find",
 						"type": "Promise<AnalyticsEventAttributes | null>",
-						"description": "Promise of the matching events row, or null according to the adapter lookup result."
+						"description": "The promise from the adapter's find for the events table and the requested id, returned without change. It resolves to the adapter's events row or null, as PersistenceAdapter.find declares.",
+						"examples": [
+							{
+								"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+								"timestamp": "2026-11-14T09:30:00.000Z",
+								"data": {
+									"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+									"timestamp": "2026-11-14T09:30:00.000Z",
+									"project": "example-project",
+									"kind": "step",
+									"action": "run",
+									"status": "succeeded",
+									"durationMs": 1842
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Exceptions the adapter throws synchronously and promise rejections it returns pass through unchanged, because the model has no try/catch. The model copies no caller object in find, so no caller getter runs."
+					},
+					{
+						"name": "TypeError from missing receiver or adapter",
+						"type": "thrown",
+						"description": "Thrown synchronously when a static method is called without AnalyticsEvent as its receiver (each method reads this.definition.table), or when the adapter argument is null, undefined, or lacks the method being called; the model checks neither the receiver nor the adapter first."
 					}
 				],
 				"errorStatus": "declared"
@@ -124,27 +313,93 @@
 						"name": "AnalyticsEvent.findBy.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
+						"description": "The adapter instance whose findBy method receives the events table name and a shallow copy of fields. The model owns no connection lifecycle and never opens or closes one."
 					},
 					{
 						"name": "AnalyticsEvent.findBy.fields",
 						"type": "Partial<AnalyticsEventAttributes>",
 						"required": true,
-						"description": "Partial stored attributes used as equality filters for events."
+						"description": "A partial events row (any subset of id, timestamp and data), shallow-copied with object spread and passed to adapter.findBy. The model does not check which fields are present or how the adapter matches them, and null or undefined reaches the adapter as an empty object.",
+						"examples": [
+							{
+								"timestamp": "2026-11-14T09:30:00.000Z"
+							},
+							{
+								"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80"
+							},
+							{
+								"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+								"timestamp": "2026-11-14T09:35:12.418Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.findBy",
 						"type": "Promise<AnalyticsEventAttributes[]>",
-						"description": "Promise of events rows matching the supplied attribute filters."
+						"description": "The promise from the adapter's findBy for the events table, returned without change. It resolves to the array of events rows the adapter returns, and the model does not filter, sort or reshape that array.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+									"timestamp": "2026-11-14T09:30:00.000Z",
+									"data": {
+										"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+										"timestamp": "2026-11-14T09:30:00.000Z",
+										"project": "example-project",
+										"kind": "step",
+										"action": "run",
+										"status": "succeeded",
+										"durationMs": 1842
+									}
+								}
+							],
+							[
+								{
+									"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+									"timestamp": "2026-11-14T09:30:00.000Z",
+									"data": {
+										"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+										"timestamp": "2026-11-14T09:30:00.000Z",
+										"project": "example-project",
+										"kind": "step",
+										"action": "run",
+										"status": "succeeded",
+										"durationMs": 1842
+									}
+								},
+								{
+									"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+									"timestamp": "2026-11-14T09:35:12.418Z",
+									"data": {
+										"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+										"timestamp": "2026-11-14T09:35:12.418Z",
+										"project": "example-project",
+										"kind": "evaluation",
+										"action": "evaluate",
+										"checkType": "response",
+										"status": "failed",
+										"exitCode": 1,
+										"durationMs": 912,
+										"cached": false
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Exceptions the adapter throws synchronously and promise rejections it returns pass through unchanged, because the model has no try/catch. A getter on the caller's fields object can also throw during the object-spread copy, before the adapter is called."
+					},
+					{
+						"name": "TypeError from missing receiver or adapter",
+						"type": "thrown",
+						"description": "Thrown synchronously when a static method is called without AnalyticsEvent as its receiver (each method reads this.definition.table), or when the adapter argument is null, undefined, or lacks the method being called; the model checks neither the receiver nor the adapter first."
 					}
 				],
 				"errorStatus": "declared"
@@ -156,27 +411,94 @@
 						"name": "AnalyticsEvent.create.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
+						"description": "The adapter instance whose create method receives the events table name and a shallow copy of input. The model owns no connection lifecycle and never opens or closes one."
 					},
 					{
 						"name": "AnalyticsEvent.create.input",
 						"type": "AnalyticsEventCreateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to events; omitted update fields remain the adapter's responsibility."
+						"description": "A complete events row (id, timestamp and data are all required by the type), shallow-copied with object spread and passed to adapter.create. The model does not check the values, and null or undefined reaches the adapter as an empty object.",
+						"examples": [
+							{
+								"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+								"timestamp": "2026-11-14T09:30:00.000Z",
+								"data": {
+									"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+									"timestamp": "2026-11-14T09:30:00.000Z",
+									"project": "example-project",
+									"kind": "step",
+									"action": "run",
+									"status": "succeeded",
+									"durationMs": 1842
+								}
+							},
+							{
+								"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+								"timestamp": "2026-11-14T09:35:12.418Z",
+								"data": {
+									"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+									"timestamp": "2026-11-14T09:35:12.418Z",
+									"project": "example-project",
+									"kind": "evaluation",
+									"action": "evaluate",
+									"checkType": "response",
+									"status": "failed",
+									"exitCode": 1,
+									"durationMs": 912,
+									"cached": false
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.create",
 						"type": "Promise<AnalyticsEventAttributes>",
-						"description": "Promise of the events row returned by the adapter after creation."
+						"description": "The promise from the adapter's create for the events table, returned without change. It resolves to the row the adapter returns from create, typed as AnalyticsEventAttributes.",
+						"examples": [
+							{
+								"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+								"timestamp": "2026-11-14T09:30:00.000Z",
+								"data": {
+									"id": "5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+									"timestamp": "2026-11-14T09:30:00.000Z",
+									"project": "example-project",
+									"kind": "step",
+									"action": "run",
+									"status": "succeeded",
+									"durationMs": 1842
+								}
+							},
+							{
+								"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+								"timestamp": "2026-11-14T09:35:12.418Z",
+								"data": {
+									"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+									"timestamp": "2026-11-14T09:35:12.418Z",
+									"project": "example-project",
+									"kind": "evaluation",
+									"action": "evaluate",
+									"checkType": "response",
+									"status": "failed",
+									"exitCode": 1,
+									"durationMs": 912,
+									"cached": false
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Exceptions the adapter throws synchronously and promise rejections it returns pass through unchanged, because the model has no try/catch. A getter on the caller's input object can also throw during the object-spread copy, before the adapter is called."
+					},
+					{
+						"name": "TypeError from missing receiver or adapter",
+						"type": "thrown",
+						"description": "Thrown synchronously when a static method is called without AnalyticsEvent as its receiver (each method reads this.definition.table), or when the adapter argument is null, undefined, or lacks the method being called; the model checks neither the receiver nor the adapter first."
 					}
 				],
 				"errorStatus": "declared"
@@ -188,33 +510,96 @@
 						"name": "AnalyticsEvent.update.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
+						"description": "The adapter instance whose update method receives the events table name, the id and a shallow copy of input. The model owns no connection lifecycle and never opens or closes one."
 					},
 					{
 						"name": "AnalyticsEvent.update.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "The events row id to update, passed to adapter.update unchanged; the model does not generate or validate it.",
+						"examples": [
+							"5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+							"b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+							"0e9d4c71-2a5b-4f38-b6c1-7d8e9f0a1b2c"
+						]
 					},
 					{
 						"name": "AnalyticsEvent.update.input",
 						"type": "AnalyticsEventUpdateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to events; omitted update fields remain the adapter's responsibility."
+						"description": "A partial patch limited by the type to the optional timestamp and data fields, shallow-copied with object spread and passed to adapter.update. The model does not check the values or merge them into a stored row, and null or undefined reaches the adapter as an empty object.",
+						"examples": [
+							{
+								"timestamp": "2026-11-14T09:35:12.418Z"
+							},
+							{
+								"data": {
+									"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+									"timestamp": "2026-11-14T09:35:12.418Z",
+									"project": "example-project",
+									"kind": "evaluation",
+									"action": "evaluate",
+									"checkType": "response",
+									"status": "failed",
+									"exitCode": 1,
+									"durationMs": 912,
+									"cached": false
+								}
+							},
+							{
+								"timestamp": "2026-11-14T09:35:12.418Z",
+								"data": {
+									"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+									"timestamp": "2026-11-14T09:35:12.418Z",
+									"project": "example-project",
+									"kind": "evaluation",
+									"action": "evaluate",
+									"checkType": "response",
+									"status": "failed",
+									"exitCode": 1,
+									"durationMs": 912,
+									"cached": false
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.update",
 						"type": "Promise<AnalyticsEventAttributes | null>",
-						"description": "Promise of the updated events row, or null according to the adapter update result."
+						"description": "The promise from the adapter's update for the events table and the requested id, returned without change. It resolves to the row the adapter returns or to null, as PersistenceAdapter.update declares.",
+						"examples": [
+							{
+								"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+								"timestamp": "2026-11-14T09:35:12.418Z",
+								"data": {
+									"id": "b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+									"timestamp": "2026-11-14T09:35:12.418Z",
+									"project": "example-project",
+									"kind": "evaluation",
+									"action": "evaluate",
+									"checkType": "response",
+									"status": "failed",
+									"exitCode": 1,
+									"durationMs": 912,
+									"cached": false
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Exceptions the adapter throws synchronously and promise rejections it returns pass through unchanged, because the model has no try/catch. A getter on the caller's input object can also throw during the object-spread copy, before the adapter is called."
+					},
+					{
+						"name": "TypeError from missing receiver or adapter",
+						"type": "thrown",
+						"description": "Thrown synchronously when a static method is called without AnalyticsEvent as its receiver (each method reads this.definition.table), or when the adapter argument is null, undefined, or lacks the method being called; the model checks neither the receiver nor the adapter first."
 					}
 				],
 				"errorStatus": "declared"
@@ -226,27 +611,38 @@
 						"name": "AnalyticsEvent.delete.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
+						"description": "The adapter instance whose delete method receives the events table name and the id. The model owns no connection lifecycle and never opens or closes one."
 					},
 					{
 						"name": "AnalyticsEvent.delete.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "The events row id to delete, passed to adapter.delete unchanged; the model does not generate or validate it.",
+						"examples": [
+							"5f0c9a1e-7b2d-4e63-8a19-3c4d5e6f7a80",
+							"b7a3d2c4-61e8-4f0b-9d25-8e1c7a3f6b04",
+							"0e9d4c71-2a5b-4f38-b6c1-7d8e9f0a1b2c"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.delete",
 						"type": "Promise<boolean>",
-						"description": "Promise of the adapter deletion result for the requested events row."
+						"description": "The promise from the adapter's delete for the events table and the requested id, returned without change. It resolves to the boolean the adapter returns, which the model does not interpret.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Exceptions the adapter throws synchronously and promise rejections it returns pass through unchanged, because the model has no try/catch. The model copies no caller object in delete, so no caller getter runs."
+					},
+					{
+						"name": "TypeError from missing receiver or adapter",
+						"type": "thrown",
+						"description": "Thrown synchronously when a static method is called without AnalyticsEvent as its receiver (each method reads this.definition.table), or when the adapter argument is null, undefined, or lacks the method being called; the model checks neither the receiver nor the adapter first."
 					}
 				],
 				"errorStatus": "declared"
