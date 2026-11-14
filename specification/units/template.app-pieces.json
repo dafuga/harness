@@ -29,85 +29,201 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "componentFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The scaffold name that componentFiles converts to PascalCase for the component file name and label default, and to kebab-case for the test file name and the data-harness-component attribute. The function does no validation or escaping of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+				"examples": ["evidence-grid", "profile-card", "audit-log"]
 			},
 			{
 				"name": "viewFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The scaffold name that viewFiles converts to a kebab-case route segment for src/routes/<route>/+page.svelte and the data-harness-view attribute, and to a spaced title for the page heading and document title. The function does no validation of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+				"examples": ["reports", "settings", "audit-log"]
 			},
 			{
 				"name": "layoutFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The scaffold name that layoutFiles converts to a kebab-case route segment for src/routes/<route>/+layout.svelte and the data-harness-layout attribute. The function does no validation of its own, so any string, including an empty one, is passed unchecked to that conversion.",
+				"examples": ["reports", "admin", "settings"]
 			},
 			{
 				"name": "apiFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The scaffold name that apiFiles converts to a kebab-case segment for the src/routes/api/<route>/+server.ts path and the resource value that GET returns. The function does no validation of its own, so any string, including an empty one, is passed unchecked to that conversion.",
+				"examples": ["audit-log", "evidence-grid", "reports"]
 			},
 			{
 				"name": "storeFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The scaffold name that storeFiles converts to camelCase for the store file name, to PascalCase for the create<Name>Store function, and to kebab-case for the test file name. The function does no validation of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+				"examples": ["filter-state", "selected-row", "search-query"]
 			},
 			{
 				"name": "hookFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The scaffold name that hookFiles converts to camelCase for the exported <name>Hook handle and its src/hooks file name, and to kebab-case for the test file name. The function does no validation of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+				"examples": ["session", "request-context", "feature-flags"]
 			},
 			{
 				"name": "e2eFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The scaffold name that e2eFiles converts to a kebab-case route for the tests/e2e spec file name, the page.goto path, and the data-harness-view selector. The function does no validation of its own, so any string, including an empty one, is passed unchecked to that conversion.",
+				"examples": ["evidence-grid", "reports", "audit-log"]
 			},
 			{
 				"name": "partialFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The scaffold name that partialFiles converts to PascalCase for the <Name>Partial.svelte file name and label, and to kebab-case for the test file name and the data-harness-partial attribute. The function does no validation of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+				"examples": ["evidence-row", "status-badge", "audit-entry"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "componentFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The two planned files for one component, in order: the Svelte component at src/components/<PascalName>.svelte and its test at test/components/<kebab-name>.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+				"examples": [
+					[
+						{
+							"path": "src/components/EvidenceGrid.svelte",
+							"contents": "<script lang=\"ts\">\n\tlet { label = 'EvidenceGrid' }: { label?: string } = $props();\n</script>\n\n<section data-harness-component=\"evidence-grid\">\n\t<h2>{label}</h2>\n</section>\n"
+						},
+						{
+							"path": "test/components/evidence-grid.test.ts",
+							"contents": "import { expect, test } from 'vitest';\n\ntest('EvidenceGrid.svelte is generated', () => {\n\texpect('EvidenceGrid.svelte').toContain('.svelte');\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "viewFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The two planned files for one route page, in order: src/routes/<route>/+page.svelte and test/routes/<route>-view.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+				"examples": [
+					[
+						{
+							"path": "src/routes/reports/+page.svelte",
+							"contents": "<script lang=\"ts\">\n\tconst title = 'Reports';\n</script>\n\n<svelte:head>\n\t<title>{title}</title>\n</svelte:head>\n\n<section data-harness-view=\"reports\">\n\t<h1>{title}</h1>\n</section>\n"
+						},
+						{
+							"path": "test/routes/reports-view.test.ts",
+							"contents": "import { expect, test } from 'vitest';\n\ntest('reports view route is generated', () => {\n\texpect('src/routes/reports/+page.svelte').toContain('reports');\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "layoutFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The two planned files for one route layout, in order: src/routes/<route>/+layout.svelte and test/routes/<route>-layout.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+				"examples": [
+					[
+						{
+							"path": "src/routes/reports/+layout.svelte",
+							"contents": "<script lang=\"ts\">\n\timport type { Snippet } from 'svelte';\n\n\tlet { children }: { children?: Snippet } = $props();\n</script>\n\n<section data-harness-layout=\"reports\">\n\t{#if children}\n\t\t{@render children()}\n\t{/if}\n</section>\n"
+						},
+						{
+							"path": "test/routes/reports-layout.test.ts",
+							"contents": "import { expect, test } from 'vitest';\n\ntest('reports layout route is generated', () => {\n\texpect('src/routes/reports/+layout.svelte').toContain('reports');\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "apiFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The two planned files for one API route, in order: src/routes/api/<route>/+server.ts and test/routes/<route>-api.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+				"examples": [
+					[
+						{
+							"path": "src/routes/api/audit-log/+server.ts",
+							"contents": "import { json } from '@sveltejs/kit';\n\nexport function GET(): Response {\n\treturn json({ ok: true, resource: 'audit-log' });\n}\n"
+						},
+						{
+							"path": "test/routes/audit-log-api.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { GET } from '../../src/routes/api/audit-log/+server';\n\ntest('audit-log API returns ok', async () => {\n\tconst response = GET();\n\texpect(await response.json()).toEqual({ ok: true, resource: 'audit-log' });\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "storeFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The two planned files for one store, in order: src/lib/stores/<camelName>.svelte.ts and test/stores/<kebab-name>.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+				"examples": [
+					[
+						{
+							"path": "src/lib/stores/filterState.svelte.ts",
+							"contents": "export function createFilterStateStore(initialValue = '') {\n\tlet value = $state(initialValue);\n\n\treturn {\n\t\tget value(): string {\n\t\t\treturn value;\n\t\t},\n\t\tset value(nextValue: string) {\n\t\t\tvalue = nextValue;\n\t\t}\n\t};\n}\n"
+						},
+						{
+							"path": "test/stores/filter-state.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { createFilterStateStore } from '../../src/lib/stores/filterState.svelte';\n\ntest('createFilterStateStore stores values', () => {\n\tconst store = createFilterStateStore('first');\n\tstore.value = 'next';\n\texpect(store.value).toBe('next');\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "hookFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The two planned files for one hook, in order: src/hooks/<camelName>Hook.server.ts and test/hooks/<kebab-name>.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+				"examples": [
+					[
+						{
+							"path": "src/hooks/sessionHook.server.ts",
+							"contents": "import type { Handle } from '@sveltejs/kit';\n\nexport const sessionHook: Handle = async ({ event, resolve }) => {\n\treturn resolve(event);\n};\n"
+						},
+						{
+							"path": "test/hooks/session.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { sessionHook } from '../../src/hooks/sessionHook.server';\n\ntest('sessionHook is a SvelteKit handle', () => {\n\texpect(sessionHook).toBeTypeOf('function');\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "e2eFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The single planned browser spec at tests/e2e/<kebab-name>.spec.ts, which imports from ./support/browserTest but does not plan that support file. The function only returns this PlannedFile and does not write it to disk.",
+				"examples": [
+					[
+						{
+							"path": "tests/e2e/evidence-grid.spec.ts",
+							"contents": "import { expect, test } from './support/browserTest';\n\ntest('evidence-grid page loads', async ({ page }) => {\n\tawait page.goto('/evidence-grid');\n\tawait expect(page.locator('[data-harness-view=\"evidence-grid\"]')).toBeVisible();\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "partialFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The two planned files for one partial, in order: src/components/partials/<PascalName>Partial.svelte and test/components/<kebab-name>-partial.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+				"examples": [
+					[
+						{
+							"path": "src/components/partials/EvidenceRowPartial.svelte",
+							"contents": "<script lang=\"ts\">\n\tlet { label = 'EvidenceRow' }: { label?: string } = $props();\n</script>\n\n<div data-harness-partial=\"evidence-row\">{label}</div>\n"
+						},
+						{
+							"path": "test/components/evidence-row-partial.test.ts",
+							"contents": "import { expect, test } from 'vitest';\n\ntest('EvidenceRowPartial.svelte is generated', () => {\n\texpect('EvidenceRowPartial.svelte').toContain('Partial.svelte');\n});\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "componentFiles",
@@ -115,17 +231,32 @@
 					{
 						"name": "componentFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The scaffold name that componentFiles converts to PascalCase for the component file name and label default, and to kebab-case for the test file name and the data-harness-component attribute. The function does no validation or escaping of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+						"examples": ["evidence-grid", "profile-card", "audit-log"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "componentFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The two planned files for one component, in order: the Svelte component at src/components/<PascalName>.svelte and its test at test/components/<kebab-name>.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+						"examples": [
+							[
+								{
+									"path": "src/components/EvidenceGrid.svelte",
+									"contents": "<script lang=\"ts\">\n\tlet { label = 'EvidenceGrid' }: { label?: string } = $props();\n</script>\n\n<section data-harness-component=\"evidence-grid\">\n\t<h2>{label}</h2>\n</section>\n"
+								},
+								{
+									"path": "test/components/evidence-grid.test.ts",
+									"contents": "import { expect, test } from 'vitest';\n\ntest('EvidenceGrid.svelte is generated', () => {\n\texpect('EvidenceGrid.svelte').toContain('.svelte');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "viewFiles",
@@ -133,17 +264,32 @@
 					{
 						"name": "viewFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The scaffold name that viewFiles converts to a kebab-case route segment for src/routes/<route>/+page.svelte and the data-harness-view attribute, and to a spaced title for the page heading and document title. The function does no validation of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+						"examples": ["reports", "settings", "audit-log"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "viewFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The two planned files for one route page, in order: src/routes/<route>/+page.svelte and test/routes/<route>-view.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+						"examples": [
+							[
+								{
+									"path": "src/routes/reports/+page.svelte",
+									"contents": "<script lang=\"ts\">\n\tconst title = 'Reports';\n</script>\n\n<svelte:head>\n\t<title>{title}</title>\n</svelte:head>\n\n<section data-harness-view=\"reports\">\n\t<h1>{title}</h1>\n</section>\n"
+								},
+								{
+									"path": "test/routes/reports-view.test.ts",
+									"contents": "import { expect, test } from 'vitest';\n\ntest('reports view route is generated', () => {\n\texpect('src/routes/reports/+page.svelte').toContain('reports');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "layoutFiles",
@@ -151,17 +297,32 @@
 					{
 						"name": "layoutFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The scaffold name that layoutFiles converts to a kebab-case route segment for src/routes/<route>/+layout.svelte and the data-harness-layout attribute. The function does no validation of its own, so any string, including an empty one, is passed unchecked to that conversion.",
+						"examples": ["reports", "admin", "settings"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "layoutFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The two planned files for one route layout, in order: src/routes/<route>/+layout.svelte and test/routes/<route>-layout.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+						"examples": [
+							[
+								{
+									"path": "src/routes/reports/+layout.svelte",
+									"contents": "<script lang=\"ts\">\n\timport type { Snippet } from 'svelte';\n\n\tlet { children }: { children?: Snippet } = $props();\n</script>\n\n<section data-harness-layout=\"reports\">\n\t{#if children}\n\t\t{@render children()}\n\t{/if}\n</section>\n"
+								},
+								{
+									"path": "test/routes/reports-layout.test.ts",
+									"contents": "import { expect, test } from 'vitest';\n\ntest('reports layout route is generated', () => {\n\texpect('src/routes/reports/+layout.svelte').toContain('reports');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "apiFiles",
@@ -169,17 +330,32 @@
 					{
 						"name": "apiFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The scaffold name that apiFiles converts to a kebab-case segment for the src/routes/api/<route>/+server.ts path and the resource value that GET returns. The function does no validation of its own, so any string, including an empty one, is passed unchecked to that conversion.",
+						"examples": ["audit-log", "evidence-grid", "reports"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The two planned files for one API route, in order: src/routes/api/<route>/+server.ts and test/routes/<route>-api.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+						"examples": [
+							[
+								{
+									"path": "src/routes/api/audit-log/+server.ts",
+									"contents": "import { json } from '@sveltejs/kit';\n\nexport function GET(): Response {\n\treturn json({ ok: true, resource: 'audit-log' });\n}\n"
+								},
+								{
+									"path": "test/routes/audit-log-api.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { GET } from '../../src/routes/api/audit-log/+server';\n\ntest('audit-log API returns ok', async () => {\n\tconst response = GET();\n\texpect(await response.json()).toEqual({ ok: true, resource: 'audit-log' });\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "storeFiles",
@@ -187,17 +363,32 @@
 					{
 						"name": "storeFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The scaffold name that storeFiles converts to camelCase for the store file name, to PascalCase for the create<Name>Store function, and to kebab-case for the test file name. The function does no validation of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+						"examples": ["filter-state", "selected-row", "search-query"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "storeFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The two planned files for one store, in order: src/lib/stores/<camelName>.svelte.ts and test/stores/<kebab-name>.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+						"examples": [
+							[
+								{
+									"path": "src/lib/stores/filterState.svelte.ts",
+									"contents": "export function createFilterStateStore(initialValue = '') {\n\tlet value = $state(initialValue);\n\n\treturn {\n\t\tget value(): string {\n\t\t\treturn value;\n\t\t},\n\t\tset value(nextValue: string) {\n\t\t\tvalue = nextValue;\n\t\t}\n\t};\n}\n"
+								},
+								{
+									"path": "test/stores/filter-state.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { createFilterStateStore } from '../../src/lib/stores/filterState.svelte';\n\ntest('createFilterStateStore stores values', () => {\n\tconst store = createFilterStateStore('first');\n\tstore.value = 'next';\n\texpect(store.value).toBe('next');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hookFiles",
@@ -205,17 +396,32 @@
 					{
 						"name": "hookFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The scaffold name that hookFiles converts to camelCase for the exported <name>Hook handle and its src/hooks file name, and to kebab-case for the test file name. The function does no validation of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+						"examples": ["session", "request-context", "feature-flags"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hookFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The two planned files for one hook, in order: src/hooks/<camelName>Hook.server.ts and test/hooks/<kebab-name>.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+						"examples": [
+							[
+								{
+									"path": "src/hooks/sessionHook.server.ts",
+									"contents": "import type { Handle } from '@sveltejs/kit';\n\nexport const sessionHook: Handle = async ({ event, resolve }) => {\n\treturn resolve(event);\n};\n"
+								},
+								{
+									"path": "test/hooks/session.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { sessionHook } from '../../src/hooks/sessionHook.server';\n\ntest('sessionHook is a SvelteKit handle', () => {\n\texpect(sessionHook).toBeTypeOf('function');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "e2eFiles",
@@ -223,17 +429,28 @@
 					{
 						"name": "e2eFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The scaffold name that e2eFiles converts to a kebab-case route for the tests/e2e spec file name, the page.goto path, and the data-harness-view selector. The function does no validation of its own, so any string, including an empty one, is passed unchecked to that conversion.",
+						"examples": ["evidence-grid", "reports", "audit-log"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "e2eFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The single planned browser spec at tests/e2e/<kebab-name>.spec.ts, which imports from ./support/browserTest but does not plan that support file. The function only returns this PlannedFile and does not write it to disk.",
+						"examples": [
+							[
+								{
+									"path": "tests/e2e/evidence-grid.spec.ts",
+									"contents": "import { expect, test } from './support/browserTest';\n\ntest('evidence-grid page loads', async ({ page }) => {\n\tawait page.goto('/evidence-grid');\n\tawait expect(page.locator('[data-harness-view=\"evidence-grid\"]')).toBeVisible();\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "partialFiles",
@@ -241,17 +458,32 @@
 					{
 						"name": "partialFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The scaffold name that partialFiles converts to PascalCase for the <Name>Partial.svelte file name and label, and to kebab-case for the test file name and the data-harness-partial attribute. The function does no validation of its own, so any string, including an empty one, is passed unchecked to those conversions.",
+						"examples": ["evidence-row", "status-badge", "audit-entry"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "partialFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The two planned files for one partial, in order: src/components/partials/<PascalName>Partial.svelte and test/components/<kebab-name>-partial.test.ts. The function only returns these PlannedFile objects and does not write them to disk.",
+						"examples": [
+							[
+								{
+									"path": "src/components/partials/EvidenceRowPartial.svelte",
+									"contents": "<script lang=\"ts\">\n\tlet { label = 'EvidenceRow' }: { label?: string } = $props();\n</script>\n\n<div data-harness-partial=\"evidence-row\">{label}</div>\n"
+								},
+								{
+									"path": "test/components/evidence-row-partial.test.ts",
+									"contents": "import { expect, test } from 'vitest';\n\ntest('EvidenceRowPartial.svelte is generated', () => {\n\texpect('EvidenceRowPartial.svelte').toContain('Partial.svelte');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
