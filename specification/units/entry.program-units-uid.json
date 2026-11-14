@@ -12,31 +12,46 @@
 		"symbols": ["registerUnitsUid", "registerUnitsRename"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerUnitsUid.units",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander Command that the uid-backfill subcommand is attached to; the value is read only when registerUnitsUid is called. The function calls units.command('uid-backfill') on it without validating it, so it must be a commander Command that accepts subcommands."
 			},
 			{
 				"name": "registerUnitsRename.units",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander Command that the rename subcommand is attached to; the value is read only when registerUnitsRename is called. The function calls units.command('rename <id> <newId>') on it without validating it, so it must be a commander Command that accepts subcommands."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerUnitsUid",
-				"type": "void"
+				"type": "void",
+				"description": "The function returns nothing (undefined); its effect is the uid-backfill subcommand registered on the units Command. The call returns before the registered action runs, so the backfillUids call and any rejection from it happen only when commander runs the subcommand."
 			},
 			{
 				"name": "registerUnitsRename",
-				"type": "void"
+				"type": "void",
+				"description": "The function returns nothing (undefined); its effect is the rename subcommand registered on the units Command. The call returns before the registered action runs, so the renameUnit call and any rejection from it happen only when commander runs the subcommand."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "backfillUids",
+				"type": "thrown",
+				"description": "The uid-backfill action awaits backfillUids({ write: flags.write }) and does not catch the rejection, so the action's promise rejects with the same value when commander runs the subcommand. The rejection value is whatever backfillUids rejects with, which this file does not define."
+			},
+			{
+				"name": "renameUnit",
+				"type": "thrown",
+				"description": "The rename action awaits renameUnit(id, newId) and does not catch the rejection, so the action's promise rejects with the same value when commander runs the subcommand. The rejection value is whatever renameUnit rejects with, which this file does not define."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerUnitsUid",
@@ -44,17 +59,25 @@
 					{
 						"name": "registerUnitsUid.units",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander Command that the uid-backfill subcommand is attached to; the value is read only when registerUnitsUid is called. The function calls units.command('uid-backfill') on it without validating it, so it must be a commander Command that accepts subcommands."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerUnitsUid",
-						"type": "void"
+						"type": "void",
+						"description": "The function returns nothing (undefined); its effect is the uid-backfill subcommand registered on the units Command. The call returns before the registered action runs, so the backfillUids call and any rejection from it happen only when commander runs the subcommand."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "backfillUids",
+						"type": "thrown",
+						"description": "The uid-backfill action awaits backfillUids({ write: flags.write }) and does not catch the rejection, so the action's promise rejects with the same value when commander runs the subcommand. The rejection value is whatever backfillUids rejects with, which this file does not define."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "registerUnitsRename",
@@ -62,17 +85,25 @@
 					{
 						"name": "registerUnitsRename.units",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander Command that the rename subcommand is attached to; the value is read only when registerUnitsRename is called. The function calls units.command('rename <id> <newId>') on it without validating it, so it must be a commander Command that accepts subcommands."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerUnitsRename",
-						"type": "void"
+						"type": "void",
+						"description": "The function returns nothing (undefined); its effect is the rename subcommand registered on the units Command. The call returns before the registered action runs, so the renameUnit call and any rejection from it happen only when commander runs the subcommand."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "renameUnit",
+						"type": "thrown",
+						"description": "The rename action awaits renameUnit(id, newId) and does not catch the rejection, so the action's promise rejects with the same value when commander runs the subcommand. The rejection value is whatever renameUnit rejects with, which this file does not define."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
