@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native defs element; native HTML content rules still apply."
+				"description": "Optional Snippet rendered with no arguments inside the defs element through `{#if children}{@render children()}{/if}`, so it matters only when the caller needs child content inside the element. It is destructured out of the props, so it is never spread onto the element as an attribute, and when omitted (undefined) the element renders no child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgDefs",
 				"type": "markup",
-				"description": "The actual native defs element, with forwarded attributes and content and no additional wrapper."
+				"description": "The root defs element, created through svelte:element in the SVG namespace, with every prop other than children spread onto it as attributes and the children snippet rendered inside it when provided. The component adds no wrapper element, so this defs element is the entire rendered output."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
