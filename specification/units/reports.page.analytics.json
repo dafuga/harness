@@ -18,16 +18,17 @@
 			{
 				"name": "load",
 				"type": "never",
-				"description": "Does not return; throws the permanent redirect to the explorer."
+				"description": "The load operation never returns; each request throws a 308 redirect to /harness."
 			}
 		],
 		"errors": [
 			{
 				"name": "Redirect",
-				"type": "SvelteKit redirect",
-				"description": "Throws HTTP 308 to /harness."
+				"type": "thrown",
+				"description": "SvelteKit's redirect helper throws a 308 redirect to /harness whenever the load operation runs."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "load",
@@ -36,16 +37,17 @@
 					{
 						"name": "load",
 						"type": "never",
-						"description": "Does not return; throws the permanent redirect to the explorer."
+						"description": "The load operation never returns; each request throws a 308 redirect to /harness."
 					}
 				],
 				"errors": [
 					{
 						"name": "Redirect 308",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The load operation throws SvelteKit's 308 redirect to /harness on every invocation."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
