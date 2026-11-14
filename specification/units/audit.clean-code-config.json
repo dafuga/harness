@@ -12,37 +12,80 @@
 		"symbols": ["cleanCodeDefaults", "resolveCleanCodeSettings"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "resolveCleanCodeSettings.raw",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Raw value supplied to resolveCleanCodeSettings for the cleanCode setting; it is parsed on every call, and undefined becomes {}, while null, arrays, and primitives throw ExpectedCliError. The resolver reads mode (off, advisory, or gate; null defaults to off), minConfidence (finite number in (0, 1]; null defaults to 0.85), apiKeyEnv (^[A-Z][A-Z0-9_]*$; null defaults to HARNESS_JEV_API_KEY), model (jev-[a-zA-Z0-9.-]+, with undefined defaulting to jev-1.13.0), and exclude (array of nonblank strings, with undefined defaulting to []); other keys are ignored.",
+				"examples": [
+					{},
+					{
+						"mode": "advisory",
+						"minConfidence": 0.9,
+						"apiKeyEnv": "CI_JEV_API_KEY",
+						"model": "jev-1.13.0",
+						"exclude": ["src/generated"]
+					}
+				]
 			},
 			{
 				"name": "resolveCleanCodeSettings.options",
 				"type": "CleanCodeOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional CLI options passed to resolveCleanCodeSettings; gate forces gate mode, enabled upgrades off to advisory, and dryRun or refresh with off throws ExpectedCliError. All four flags used here are optional booleans, the default is {}, and the type's optional signal field is not inspected by this resolver.",
+				"examples": [
+					{},
+					{
+						"enabled": true
+					},
+					{
+						"gate": true,
+						"dryRun": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "cleanCodeDefaults",
-				"type": "CleanCodeSettings"
+				"type": "CleanCodeSettings",
+				"description": "Exported default CleanCodeSettings object with mode off, model jev-1.13.0, minConfidence 0.85, apiKeyEnv HARNESS_JEV_API_KEY, and exclude []. It supplies the resolver's fallback for model, minConfidence, apiKeyEnv, and exclude; mode's equivalent off fallback is written directly in the resolver.",
+				"examples": [
+					{
+						"mode": "off",
+						"model": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"apiKeyEnv": "HARNESS_JEV_API_KEY",
+						"exclude": []
+					}
+				]
 			},
 			{
 				"name": "resolveCleanCodeSettings",
-				"type": "CleanCodeSettings"
+				"type": "CleanCodeSettings",
+				"description": "Returned by the resolver after applying defaults and CLI mode overrides; it always contains all five required CleanCodeSettings fields. Mode is off, advisory, or gate, minConfidence is finite and in (0, 1], apiKeyEnv matches ^[A-Z][A-Z0-9_]*$, model matches jev-[a-zA-Z0-9.-]+, and exclude is an array of nonblank strings.",
+				"examples": [
+					{
+						"mode": "advisory",
+						"model": "jev-1.13.0",
+						"minConfidence": 0.9,
+						"apiKeyEnv": "HARNESS_JEV_API_KEY",
+						"exclude": ["src/generated"]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by fail when the top-level configuration is not an object or a validated field fails. Its message is Invalid harness.audit.json cleanCode.<field>., with mode: enable review with --clean-code used for the dry-run or refresh case."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resolveCleanCodeSettings",
@@ -50,23 +93,61 @@
 					{
 						"name": "resolveCleanCodeSettings.raw",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Raw value supplied to resolveCleanCodeSettings for the cleanCode setting; it is parsed on every call, and undefined becomes {}, while null, arrays, and primitives throw ExpectedCliError. The resolver reads mode (off, advisory, or gate; null defaults to off), minConfidence (finite number in (0, 1]; null defaults to 0.85), apiKeyEnv (^[A-Z][A-Z0-9_]*$; null defaults to HARNESS_JEV_API_KEY), model (jev-[a-zA-Z0-9.-]+, with undefined defaulting to jev-1.13.0), and exclude (array of nonblank strings, with undefined defaulting to []); other keys are ignored.",
+						"examples": [
+							{},
+							{
+								"mode": "advisory",
+								"minConfidence": 0.9,
+								"apiKeyEnv": "CI_JEV_API_KEY",
+								"model": "jev-1.13.0",
+								"exclude": ["src/generated"]
+							}
+						]
 					},
 					{
 						"name": "resolveCleanCodeSettings.options",
 						"type": "CleanCodeOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional CLI options passed to resolveCleanCodeSettings; gate forces gate mode, enabled upgrades off to advisory, and dryRun or refresh with off throws ExpectedCliError. All four flags used here are optional booleans, the default is {}, and the type's optional signal field is not inspected by this resolver.",
+						"examples": [
+							{},
+							{
+								"enabled": true
+							},
+							{
+								"gate": true,
+								"dryRun": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resolveCleanCodeSettings",
-						"type": "CleanCodeSettings"
+						"type": "CleanCodeSettings",
+						"description": "Returned by the resolver after applying defaults and CLI mode overrides; it always contains all five required CleanCodeSettings fields. Mode is off, advisory, or gate, minConfidence is finite and in (0, 1], apiKeyEnv matches ^[A-Z][A-Z0-9_]*$, model matches jev-[a-zA-Z0-9.-]+, and exclude is an array of nonblank strings.",
+						"examples": [
+							{
+								"mode": "advisory",
+								"model": "jev-1.13.0",
+								"minConfidence": 0.9,
+								"apiKeyEnv": "HARNESS_JEV_API_KEY",
+								"exclude": ["src/generated"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown by fail when the top-level configuration is not an object or a validated field fails. Its message is Invalid harness.audit.json cleanCode.<field>., with mode: enable review with --clean-code used for the dry-run or refresh case."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
