@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feComposite element; native HTML content rules still apply."
+				"description": "Optional Svelte snippet content rendered inside the native feComposite element when truthy. The implementation does not validate or transform the snippet; when omitted or falsy, it renders no child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeComposite",
 				"type": "markup",
-				"description": "The actual native feComposite element, with forwarded attributes and content and no additional wrapper."
+				"description": "The rendered native SVG feComposite element, with every property other than children spread onto it and the children snippet rendered when truthy. The component adds no wrapper or additional feature behavior."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
