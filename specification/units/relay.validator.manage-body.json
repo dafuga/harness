@@ -17,40 +17,146 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ManageBodyValidator.owner.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The unvalidated body of a `/manage/*` call; `register` and `device` both run this same check first. It must be a JSON object whose `owner` is a JSON object holding a text `id` of 1 to 200 characters, and whose `hostId` is 40 lowercase hex characters; otherwise `owner` returns undefined.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104729583016472915386"
+						},
+						"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10"
+					},
+					{
+						"owner": {
+							"id": "google-112385930472918364057"
+						},
+						"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c"
+					}
+				]
 			},
 			{
 				"name": "ManageBodyValidator.register.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The unvalidated body of a host registration call, which must pass every `owner` check and also have a `hostKey` of 87 base64url characters, a `credentialHash` of 64 lowercase hex characters and a `name` of 1 to 200 characters. The `hostKey` is checked by its shape only and is not decoded as a P-256 point, and any failing check makes `register` return undefined.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104729583016472915386"
+						},
+						"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10",
+						"hostKey": "BNq3vX7kL0pZ2Hc9Rt5YwUe8Ma4Jd1Fg6Sb0Qo3Ny7Ti2Vx5Ew9Ch4Kz1Lu8Pr6Ga3Dm0Os5Wf2Ib7Xj4Ae9Tn1",
+						"credentialHash": "a7f3c9e1d5b28046f1e9c3a7b5d2f8e04c6a9b1d3e7f2c5a8b0d4e6f1a3c9b72",
+						"name": "Studio Mac mini"
+					},
+					{
+						"owner": {
+							"id": "google-112385930472918364057"
+						},
+						"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
+						"hostKey": "BMx4Pq8Zt1Ld7Wn0Rb6YeH3sKa9Vc2Tj5Fq8Mo1XuG0Nw4Zi7Dp6Rl2Sy9EcAh8Tb3Jk5Qw1Xf7Ud0GmNz4Ip6V",
+						"credentialHash": "0f6d2b9e4a1c8375d0e6f2a9b4c1d7e3805a6f2b1c9e4d7a3f0b8e5c2d6a1f94",
+						"name": "Lab workstation"
+					}
+				]
 			},
 			{
 				"name": "ManageBodyValidator.device.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The unvalidated body of a device call, which must pass every `owner` check and also have a `deviceId` of 40 lowercase hex characters. Any failing check makes `device` return undefined.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104729583016472915386"
+						},
+						"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10",
+						"deviceId": "9a4f0c3e61d7b25e8f0a7c4d19e6b3a2f5c8d01e"
+					},
+					{
+						"owner": {
+							"id": "google-112385930472918364057"
+						},
+						"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
+						"deviceId": "2d8b6e1f0c9a47d35e2b8f10a6c7d94e1b3f5a08"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ManageBodyValidator.owner",
-				"type": "RelayManageOwner | undefined"
+				"type": "RelayManageOwner | undefined",
+				"description": "The validated owner body, holding exactly `owner.id` and `hostId`, copied from the input, or undefined when any check fails. No other field of the input is copied, so a caller's extra fields never reach the result.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104729583016472915386"
+						},
+						"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10"
+					},
+					{
+						"owner": {
+							"id": "google-112385930472918364057"
+						},
+						"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c"
+					}
+				]
 			},
 			{
 				"name": "ManageBodyValidator.register",
-				"type": "RelayManageRegister | undefined"
+				"type": "RelayManageRegister | undefined",
+				"description": "The validated registration body, holding exactly `owner.id`, `hostId`, `hostKey`, `credentialHash` and `name`, copied from the input, or undefined when any check fails. No other field of the input is copied, so a caller's extra fields never reach the result.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104729583016472915386"
+						},
+						"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10",
+						"hostKey": "BNq3vX7kL0pZ2Hc9Rt5YwUe8Ma4Jd1Fg6Sb0Qo3Ny7Ti2Vx5Ew9Ch4Kz1Lu8Pr6Ga3Dm0Os5Wf2Ib7Xj4Ae9Tn1",
+						"credentialHash": "a7f3c9e1d5b28046f1e9c3a7b5d2f8e04c6a9b1d3e7f2c5a8b0d4e6f1a3c9b72",
+						"name": "Studio Mac mini"
+					},
+					{
+						"owner": {
+							"id": "google-112385930472918364057"
+						},
+						"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
+						"hostKey": "BMx4Pq8Zt1Ld7Wn0Rb6YeH3sKa9Vc2Tj5Fq8Mo1XuG0Nw4Zi7Dp6Rl2Sy9EcAh8Tb3Jk5Qw1Xf7Ud0GmNz4Ip6V",
+						"credentialHash": "0f6d2b9e4a1c8375d0e6f2a9b4c1d7e3805a6f2b1c9e4d7a3f0b8e5c2d6a1f94",
+						"name": "Lab workstation"
+					}
+				]
 			},
 			{
 				"name": "ManageBodyValidator.device",
-				"type": "RelayManageDevice | undefined"
+				"type": "RelayManageDevice | undefined",
+				"description": "The validated device body, holding exactly `owner.id`, `hostId` and `deviceId`, copied from the input, or undefined when any check fails. No other field of the input is copied, so a caller's extra fields never reach the result.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104729583016472915386"
+						},
+						"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10",
+						"deviceId": "9a4f0c3e61d7b25e8f0a7c4d19e6b3a2f5c8d01e"
+					},
+					{
+						"owner": {
+							"id": "google-112385930472918364057"
+						},
+						"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
+						"deviceId": "2d8b6e1f0c9a47d35e2b8f10a6c7d94e1b3f5a08"
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ManageBodyValidator.owner",
@@ -58,17 +164,47 @@
 					{
 						"name": "ManageBodyValidator.owner.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The unvalidated body of a `/manage/*` call; `register` and `device` both run this same check first. It must be a JSON object whose `owner` is a JSON object holding a text `id` of 1 to 200 characters, and whose `hostId` is 40 lowercase hex characters; otherwise `owner` returns undefined.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104729583016472915386"
+								},
+								"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10"
+							},
+							{
+								"owner": {
+									"id": "google-112385930472918364057"
+								},
+								"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ManageBodyValidator.owner",
-						"type": "RelayManageOwner | undefined"
+						"type": "RelayManageOwner | undefined",
+						"description": "The validated owner body, holding exactly `owner.id` and `hostId`, copied from the input, or undefined when any check fails. No other field of the input is copied, so a caller's extra fields never reach the result.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104729583016472915386"
+								},
+								"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10"
+							},
+							{
+								"owner": {
+									"id": "google-112385930472918364057"
+								},
+								"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ManageBodyValidator.register",
@@ -76,17 +212,59 @@
 					{
 						"name": "ManageBodyValidator.register.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The unvalidated body of a host registration call, which must pass every `owner` check and also have a `hostKey` of 87 base64url characters, a `credentialHash` of 64 lowercase hex characters and a `name` of 1 to 200 characters. The `hostKey` is checked by its shape only and is not decoded as a P-256 point, and any failing check makes `register` return undefined.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104729583016472915386"
+								},
+								"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10",
+								"hostKey": "BNq3vX7kL0pZ2Hc9Rt5YwUe8Ma4Jd1Fg6Sb0Qo3Ny7Ti2Vx5Ew9Ch4Kz1Lu8Pr6Ga3Dm0Os5Wf2Ib7Xj4Ae9Tn1",
+								"credentialHash": "a7f3c9e1d5b28046f1e9c3a7b5d2f8e04c6a9b1d3e7f2c5a8b0d4e6f1a3c9b72",
+								"name": "Studio Mac mini"
+							},
+							{
+								"owner": {
+									"id": "google-112385930472918364057"
+								},
+								"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
+								"hostKey": "BMx4Pq8Zt1Ld7Wn0Rb6YeH3sKa9Vc2Tj5Fq8Mo1XuG0Nw4Zi7Dp6Rl2Sy9EcAh8Tb3Jk5Qw1Xf7Ud0GmNz4Ip6V",
+								"credentialHash": "0f6d2b9e4a1c8375d0e6f2a9b4c1d7e3805a6f2b1c9e4d7a3f0b8e5c2d6a1f94",
+								"name": "Lab workstation"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ManageBodyValidator.register",
-						"type": "RelayManageRegister | undefined"
+						"type": "RelayManageRegister | undefined",
+						"description": "The validated registration body, holding exactly `owner.id`, `hostId`, `hostKey`, `credentialHash` and `name`, copied from the input, or undefined when any check fails. No other field of the input is copied, so a caller's extra fields never reach the result.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104729583016472915386"
+								},
+								"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10",
+								"hostKey": "BNq3vX7kL0pZ2Hc9Rt5YwUe8Ma4Jd1Fg6Sb0Qo3Ny7Ti2Vx5Ew9Ch4Kz1Lu8Pr6Ga3Dm0Os5Wf2Ib7Xj4Ae9Tn1",
+								"credentialHash": "a7f3c9e1d5b28046f1e9c3a7b5d2f8e04c6a9b1d3e7f2c5a8b0d4e6f1a3c9b72",
+								"name": "Studio Mac mini"
+							},
+							{
+								"owner": {
+									"id": "google-112385930472918364057"
+								},
+								"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
+								"hostKey": "BMx4Pq8Zt1Ld7Wn0Rb6YeH3sKa9Vc2Tj5Fq8Mo1XuG0Nw4Zi7Dp6Rl2Sy9EcAh8Tb3Jk5Qw1Xf7Ud0GmNz4Ip6V",
+								"credentialHash": "0f6d2b9e4a1c8375d0e6f2a9b4c1d7e3805a6f2b1c9e4d7a3f0b8e5c2d6a1f94",
+								"name": "Lab workstation"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ManageBodyValidator.device",
@@ -94,17 +272,51 @@
 					{
 						"name": "ManageBodyValidator.device.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The unvalidated body of a device call, which must pass every `owner` check and also have a `deviceId` of 40 lowercase hex characters. Any failing check makes `device` return undefined.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104729583016472915386"
+								},
+								"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10",
+								"deviceId": "9a4f0c3e61d7b25e8f0a7c4d19e6b3a2f5c8d01e"
+							},
+							{
+								"owner": {
+									"id": "google-112385930472918364057"
+								},
+								"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
+								"deviceId": "2d8b6e1f0c9a47d35e2b8f10a6c7d94e1b3f5a08"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ManageBodyValidator.device",
-						"type": "RelayManageDevice | undefined"
+						"type": "RelayManageDevice | undefined",
+						"description": "The validated device body, holding exactly `owner.id`, `hostId` and `deviceId`, copied from the input, or undefined when any check fails. No other field of the input is copied, so a caller's extra fields never reach the result.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104729583016472915386"
+								},
+								"hostId": "5c1e9a0b7d3f2a6e84b1c09d7f5a2e3b6d8c4f10",
+								"deviceId": "9a4f0c3e61d7b25e8f0a7c4d19e6b3a2f5c8d01e"
+							},
+							{
+								"owner": {
+									"id": "google-112385930472918364057"
+								},
+								"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
+								"deviceId": "2d8b6e1f0c9a47d35e2b8f10a6c7d94e1b3f5a08"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
