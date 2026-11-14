@@ -24,28 +24,174 @@
 				"name": "BenchmarkDefinitionValidator.validate.input",
 				"type": "unknown",
 				"required": true,
-				"description": "Untrusted definition before strict field, budget and duplicate checks."
+				"description": "The raw, untrusted value passed to validate(), typed unknown because it has no static shape guarantee. It must parse under benchmarkDefinitionSchema (version 1, no unknown keys, at least one allowedFiles path, check and candidate), and only a value that parses reaches the duplicate checks.",
+				"examples": [
+					{
+						"version": 1,
+						"name": "csv-quoted-newlines",
+						"task": "Make the CSV parser accept quoted fields that contain newlines.",
+						"contract": "Existing parser tests still pass and the new quoted-newline fixture parses into the expected rows.",
+						"allowedFiles": ["src/csv/parser.ts", "test/csv/parser.test.ts"],
+						"checks": [
+							{
+								"id": "unit-tests",
+								"command": "pnpm vitest run test/csv"
+							}
+						],
+						"candidates": [
+							{
+								"id": "claude-sonnet-high",
+								"runner": "claude",
+								"model": "claude-sonnet-5-5",
+								"effort": "high"
+							}
+						]
+					},
+					{
+						"version": 1,
+						"name": "importer-null-handling",
+						"project": "packages/importer",
+						"revision": "4b8e1f0a9c27d365e1b0f4a8c93d7e2051b6f7ac",
+						"task": "Treat empty CSV cells as null instead of empty strings in the typed importer.",
+						"contract": "Null cells survive a parse-and-serialize round trip and the migration fixtures show no unexpected diffs.",
+						"allowedFiles": ["src/typed-importer.ts", "src/cell.ts", "test/typed-importer.spec.ts"],
+						"checks": [
+							{
+								"id": "unit-tests",
+								"command": "npm test -- typed-importer"
+							},
+							{
+								"id": "typecheck",
+								"command": "npx tsc --noEmit"
+							}
+						],
+						"setup": ["npm ci"],
+						"candidates": [
+							{
+								"id": "codex-high",
+								"runner": "codex",
+								"model": "gpt-5-codex",
+								"effort": "high",
+								"instructions": "Do not change exported type names."
+							},
+							{
+								"id": "claude-opus-max",
+								"runner": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "max",
+								"tools": "files"
+							}
+						],
+						"budget": {
+							"repetitions": 5,
+							"timeoutMs": 1200000,
+							"repairs": 1
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "benchmarkDefinitionSchema",
 				"type": "unknown",
-				"description": "Strict versioned schema including explicit candidates and bounded trial defaults."
+				"description": "The exported zod schema (z.strictObject) that validate() parses its input with, so code outside validate() can apply the same rules. It is strict at every object level, requires version 1, and fills defaults for project ('.'), revision ('HEAD'), setup ([]), candidate instructions (''), candidate tools ('default') and an omitted budget (repetitions 3, timeoutMs 900000, repairs 2)."
 			},
 			{
 				"name": "BenchmarkDefinitionValidator.validate",
 				"type": "BenchmarkDefinition",
-				"description": "Normalized benchmark definition with unique paths, check IDs and candidate IDs."
+				"description": "The normalized definition that validate() returns, which is the exact value benchmarkDefinitionSchema.parse produced, with defaults applied. It is returned only when allowedFiles, the check ids and the candidate ids each have no repeated value, and a value may still repeat across those lists.",
+				"examples": [
+					{
+						"version": 1,
+						"name": "csv-quoted-newlines",
+						"project": ".",
+						"revision": "HEAD",
+						"task": "Make the CSV parser accept quoted fields that contain newlines.",
+						"contract": "Existing parser tests still pass and the new quoted-newline fixture parses into the expected rows.",
+						"allowedFiles": ["src/csv/parser.ts", "test/csv/parser.test.ts"],
+						"checks": [
+							{
+								"id": "unit-tests",
+								"command": "pnpm vitest run test/csv"
+							}
+						],
+						"setup": [],
+						"candidates": [
+							{
+								"id": "claude-sonnet-high",
+								"runner": "claude",
+								"model": "claude-sonnet-5-5",
+								"effort": "high",
+								"instructions": "",
+								"tools": "default"
+							}
+						],
+						"budget": {
+							"repetitions": 3,
+							"timeoutMs": 900000,
+							"repairs": 2
+						}
+					},
+					{
+						"version": 1,
+						"name": "importer-null-handling",
+						"project": "packages/importer",
+						"revision": "4b8e1f0a9c27d365e1b0f4a8c93d7e2051b6f7ac",
+						"task": "Treat empty CSV cells as null instead of empty strings in the typed importer.",
+						"contract": "Null cells survive a parse-and-serialize round trip and the migration fixtures show no unexpected diffs.",
+						"allowedFiles": ["src/typed-importer.ts", "src/cell.ts", "test/typed-importer.spec.ts"],
+						"checks": [
+							{
+								"id": "unit-tests",
+								"command": "npm test -- typed-importer"
+							},
+							{
+								"id": "typecheck",
+								"command": "npx tsc --noEmit"
+							}
+						],
+						"setup": ["npm ci"],
+						"candidates": [
+							{
+								"id": "codex-high",
+								"runner": "codex",
+								"model": "gpt-5-codex",
+								"effort": "high",
+								"instructions": "Do not change exported type names.",
+								"tools": "default"
+							},
+							{
+								"id": "claude-opus-max",
+								"runner": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "max",
+								"instructions": "",
+								"tools": "files"
+							}
+						],
+						"budget": {
+							"repetitions": 5,
+							"timeoutMs": 1200000,
+							"repairs": 1
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects invalid schema fields, unsupported candidate settings or duplicate identifiers."
+				"description": "Thrown by validate() as new Error('Duplicate benchmark identifiers or paths.') when allowedFiles, the check ids or the candidate ids repeat a value within their own list, after the schema has accepted the input. Each list is checked only against itself, so the same value can appear in two different lists without error."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by the zod parse() call inside validate() when the input fails benchmarkDefinitionSchema, for example a non-object, an unknown key, a missing required field, an id or file path that breaks its rule, a budget value out of range, or a codex candidate with tools 'files' or effort 'max'. It is thrown before the duplicate check runs, so a definition that fails the schema never reaches that check."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "BenchmarkDefinitionValidator.validate",
@@ -54,23 +200,177 @@
 						"name": "BenchmarkDefinitionValidator.validate.input",
 						"type": "unknown",
 						"required": true,
-						"description": "Untrusted definition before strict field, budget and duplicate checks."
+						"description": "The raw, untrusted value passed to validate(), typed unknown because it has no static shape guarantee. It must parse under benchmarkDefinitionSchema (version 1, no unknown keys, at least one allowedFiles path, check and candidate), and only a value that parses reaches the duplicate checks.",
+						"examples": [
+							{
+								"version": 1,
+								"name": "csv-quoted-newlines",
+								"task": "Make the CSV parser accept quoted fields that contain newlines.",
+								"contract": "Existing parser tests still pass and the new quoted-newline fixture parses into the expected rows.",
+								"allowedFiles": ["src/csv/parser.ts", "test/csv/parser.test.ts"],
+								"checks": [
+									{
+										"id": "unit-tests",
+										"command": "pnpm vitest run test/csv"
+									}
+								],
+								"candidates": [
+									{
+										"id": "claude-sonnet-high",
+										"runner": "claude",
+										"model": "claude-sonnet-5-5",
+										"effort": "high"
+									}
+								]
+							},
+							{
+								"version": 1,
+								"name": "importer-null-handling",
+								"project": "packages/importer",
+								"revision": "4b8e1f0a9c27d365e1b0f4a8c93d7e2051b6f7ac",
+								"task": "Treat empty CSV cells as null instead of empty strings in the typed importer.",
+								"contract": "Null cells survive a parse-and-serialize round trip and the migration fixtures show no unexpected diffs.",
+								"allowedFiles": [
+									"src/typed-importer.ts",
+									"src/cell.ts",
+									"test/typed-importer.spec.ts"
+								],
+								"checks": [
+									{
+										"id": "unit-tests",
+										"command": "npm test -- typed-importer"
+									},
+									{
+										"id": "typecheck",
+										"command": "npx tsc --noEmit"
+									}
+								],
+								"setup": ["npm ci"],
+								"candidates": [
+									{
+										"id": "codex-high",
+										"runner": "codex",
+										"model": "gpt-5-codex",
+										"effort": "high",
+										"instructions": "Do not change exported type names."
+									},
+									{
+										"id": "claude-opus-max",
+										"runner": "claude",
+										"model": "claude-opus-5-5",
+										"effort": "max",
+										"tools": "files"
+									}
+								],
+								"budget": {
+									"repetitions": 5,
+									"timeoutMs": 1200000,
+									"repairs": 1
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BenchmarkDefinitionValidator.validate",
 						"type": "BenchmarkDefinition",
-						"description": "Normalized benchmark definition with unique paths, check IDs and candidate IDs."
+						"description": "The normalized definition that validate() returns, which is the exact value benchmarkDefinitionSchema.parse produced, with defaults applied. It is returned only when allowedFiles, the check ids and the candidate ids each have no repeated value, and a value may still repeat across those lists.",
+						"examples": [
+							{
+								"version": 1,
+								"name": "csv-quoted-newlines",
+								"project": ".",
+								"revision": "HEAD",
+								"task": "Make the CSV parser accept quoted fields that contain newlines.",
+								"contract": "Existing parser tests still pass and the new quoted-newline fixture parses into the expected rows.",
+								"allowedFiles": ["src/csv/parser.ts", "test/csv/parser.test.ts"],
+								"checks": [
+									{
+										"id": "unit-tests",
+										"command": "pnpm vitest run test/csv"
+									}
+								],
+								"setup": [],
+								"candidates": [
+									{
+										"id": "claude-sonnet-high",
+										"runner": "claude",
+										"model": "claude-sonnet-5-5",
+										"effort": "high",
+										"instructions": "",
+										"tools": "default"
+									}
+								],
+								"budget": {
+									"repetitions": 3,
+									"timeoutMs": 900000,
+									"repairs": 2
+								}
+							},
+							{
+								"version": 1,
+								"name": "importer-null-handling",
+								"project": "packages/importer",
+								"revision": "4b8e1f0a9c27d365e1b0f4a8c93d7e2051b6f7ac",
+								"task": "Treat empty CSV cells as null instead of empty strings in the typed importer.",
+								"contract": "Null cells survive a parse-and-serialize round trip and the migration fixtures show no unexpected diffs.",
+								"allowedFiles": [
+									"src/typed-importer.ts",
+									"src/cell.ts",
+									"test/typed-importer.spec.ts"
+								],
+								"checks": [
+									{
+										"id": "unit-tests",
+										"command": "npm test -- typed-importer"
+									},
+									{
+										"id": "typecheck",
+										"command": "npx tsc --noEmit"
+									}
+								],
+								"setup": ["npm ci"],
+								"candidates": [
+									{
+										"id": "codex-high",
+										"runner": "codex",
+										"model": "gpt-5-codex",
+										"effort": "high",
+										"instructions": "Do not change exported type names.",
+										"tools": "default"
+									},
+									{
+										"id": "claude-opus-max",
+										"runner": "claude",
+										"model": "claude-opus-5-5",
+										"effort": "max",
+										"instructions": "",
+										"tools": "files"
+									}
+								],
+								"budget": {
+									"repetitions": 5,
+									"timeoutMs": 1200000,
+									"repairs": 1
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by validate() as new Error('Duplicate benchmark identifiers or paths.') when allowedFiles, the check ids or the candidate ids repeat a value within their own list, after the schema has accepted the input. Each list is checked only against itself, so the same value can appear in two different lists without error."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by the zod parse() call inside validate() when the input fails benchmarkDefinitionSchema, for example a non-object, an unknown key, a missing required field, an id or file path that breaks its rule, a budget value out of range, or a codex candidate with tools 'files' or effort 'max'. It is thrown before the duplicate check runs, so a definition that fails the schema never reaches that check."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
