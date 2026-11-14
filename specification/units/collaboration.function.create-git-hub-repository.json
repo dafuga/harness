@@ -21,23 +21,24 @@
 				"name": "createGitHubRepository.options",
 				"type": "GitHubRepositoryOptions",
 				"required": true,
-				"description": "Private repository identity, scoped token callback, optional fetch, refs/heads branch and safe records-file path."
+				"description": "Configuration consumed by githubTransport and this adapter to select a repository, records ref, and path. It is used for reads and compare-and-swap writes; creation requires repository.private and a ref starting with refs/heads/, while the ref and path must pass validation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createGitHubRepository",
 				"type": "CollaborationRepository",
-				"description": "Read and compareAndSwap methods; missing branch uses the zero revision, stale writes return null, and successful writes return the confirmed commit SHA."
+				"description": "A CollaborationRepository with read and compareAndSwap methods for this GitHub ref. read returns an all-zero SHA and empty records if the ref is absent, or the ref SHA and empty records if the file is absent; compare-and-swap returns null for a changed ref and the confirmed commit SHA after a successful write."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects nonprivate storage, invalid paths or refs, denied repository access, invalid records, unavailable GitHub or unconfirmed writes."
+				"description": "Raised for invalid configuration or failed GitHub operations, including a non-private repository, an invalid ref or path, invalid records, unavailable GitHub, or an unconfirmed ref update. A stale compare-and-swap returns null instead of throwing."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createGitHubRepository",
@@ -46,23 +47,24 @@
 						"name": "createGitHubRepository.options",
 						"type": "GitHubRepositoryOptions",
 						"required": true,
-						"description": "Private repository identity, scoped token callback, optional fetch, refs/heads branch and safe records-file path."
+						"description": "Configuration consumed by githubTransport and this adapter to select a repository, records ref, and path. It is used for reads and compare-and-swap writes; creation requires repository.private and a ref starting with refs/heads/, while the ref and path must pass validation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createGitHubRepository",
 						"type": "CollaborationRepository",
-						"description": "Read and compareAndSwap methods; missing branch uses the zero revision, stale writes return null, and successful writes return the confirmed commit SHA."
+						"description": "A CollaborationRepository with read and compareAndSwap methods for this GitHub ref. read returns an all-zero SHA and empty records if the ref is absent, or the ref SHA and empty records if the file is absent; compare-and-swap returns null for a changed ref and the confirmed commit SHA after a successful write."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised for invalid configuration or failed GitHub operations, including a non-private repository, an invalid ref or path, invalid records, unavailable GitHub, or an unconfirmed ref update. A stale compare-and-swap returns null instead of throwing."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
