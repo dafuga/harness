@@ -18,45 +18,129 @@
 				"name": "resourceHome.env",
 				"type": "Record<string, string | undefined>",
 				"required": false,
-				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+				"description": "Environment record that resourceHome reads only for HARNESS_RESOURCES_HOME: when that key is undefined or null, the user-scoped default under os.homedir() is used (os.homedir() does not read this record), and an empty string is kept and resolves to the current working directory. Defaults to process.env: the environment of the running process.",
+				"examples": [
+					{
+						"HARNESS_RESOURCES_HOME": "/srv/harness/resources",
+						"PATH": "/usr/local/bin:/usr/bin:/bin"
+					},
+					{
+						"HARNESS_RESOURCES_HOME": "/Users/example/shared/harness"
+					},
+					{
+						"PATH": "/usr/local/bin:/usr/bin:/bin"
+					}
+				]
 			},
 			{
 				"name": "resourceConfig.home",
 				"type": "string",
 				"required": false,
-				"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+				"description": "Directory whose config.json resourceConfig reads: when that file is absent, including when the directory does not exist, the schema defaults are returned and nothing is created. Defaults to resourceHome(): the shared resource directory from HARNESS_RESOURCES_HOME or the user-scoped Harness default.",
+				"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
 			},
 			{
 				"name": "saveResourceConfig.config",
 				"type": "ResourceConfig",
 				"required": true,
-				"description": "Validated reserve floors and telemetry timing limits; lower safety thresholds are rejected."
+				"description": "Reserve and telemetry settings to persist, validated by resourceConfigSchema before any filesystem call: cpuReservePercent 10 to 95, memoryReservePercent 10 to 90, minMemoryReserveMiB an integer of at least 2048, pollMs an integer from 250 to 10000, and staleSampleMs an integer from 1000 to 30000; unknown keys and out-of-range values are rejected with no file written. Missing keys take their schema defaults: schemaVersion 1, cpuReservePercent 10, memoryReservePercent 10, minMemoryReserveMiB 2048, pollMs 1000 and staleSampleMs 5000.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"cpuReservePercent": 10,
+						"memoryReservePercent": 10,
+						"minMemoryReserveMiB": 2048,
+						"pollMs": 1000,
+						"staleSampleMs": 5000
+					},
+					{
+						"schemaVersion": 1,
+						"cpuReservePercent": 25,
+						"memoryReservePercent": 20,
+						"minMemoryReserveMiB": 4096,
+						"pollMs": 500,
+						"staleSampleMs": 10000
+					},
+					{
+						"schemaVersion": 1,
+						"cpuReservePercent": 30,
+						"memoryReservePercent": 15,
+						"minMemoryReserveMiB": 8192,
+						"pollMs": 250,
+						"staleSampleMs": 2000
+					}
+				]
 			},
 			{
 				"name": "saveResourceConfig.home",
 				"type": "string",
 				"required": false,
-				"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+				"description": "Directory that receives config.json: when it is missing it is created recursively with mode 0o700, and the JSON is written to a temporary config.<uuid>.partial file with mode 0o600 before being renamed to config.json. Defaults to resourceHome(): the shared resource directory from HARNESS_RESOURCES_HOME or the user-scoped Harness default.",
+				"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceHome",
 				"type": "string",
-				"description": "Absolute shared resource directory from the override or the user-scoped Harness default."
+				"description": "Absolute shared resource directory: path.resolve applied to HARNESS_RESOURCES_HOME, or to the user-scoped default under os.homedir() (.codex/harness/resources) when that variable is undefined or null. The directory is not checked for existence and nothing is created.",
+				"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
 			},
 			{
 				"name": "resourceConfig",
 				"type": "ResourceConfig",
-				"description": "Validated persisted configuration, or validated defaults when no file exists."
+				"description": "Configuration parsed from config.json in the home directory and validated by resourceConfigSchema, or the schema defaults when that file does not exist. Invalid JSON or values that fail resourceConfigSchema throw instead of being returned.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"cpuReservePercent": 10,
+						"memoryReservePercent": 10,
+						"minMemoryReserveMiB": 2048,
+						"pollMs": 1000,
+						"staleSampleMs": 5000
+					},
+					{
+						"schemaVersion": 1,
+						"cpuReservePercent": 25,
+						"memoryReservePercent": 20,
+						"minMemoryReserveMiB": 4096,
+						"pollMs": 500,
+						"staleSampleMs": 10000
+					},
+					{
+						"schemaVersion": 1,
+						"cpuReservePercent": 30,
+						"memoryReservePercent": 15,
+						"minMemoryReserveMiB": 8192,
+						"pollMs": 250,
+						"staleSampleMs": 2000
+					}
+				]
 			},
 			{
 				"name": "saveResourceConfig",
 				"type": "void",
-				"description": "Atomically replaces private configuration after validation."
+				"description": "Writes the validated config as two-space JSON with a trailing newline to a temporary config.<uuid>.partial file in the home directory, then renames it over config.json in that same directory; it returns nothing."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse in resourceConfig when config.json exists but its contents are not valid JSON; the implementation does not catch it."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by resourceConfigSchema.parse in resourceConfig when the persisted config.json fails the schema (unknown keys or a value outside its range), and in saveResourceConfig when the config fails the schema before any filesystem call."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Node.js filesystem Error with a system code such as EACCES or EISDIR, thrown by readFileSync in resourceConfig or by mkdirSync, writeFileSync or renameSync in saveResourceConfig; the implementation does not catch it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resourceHome",
@@ -65,18 +149,31 @@
 						"name": "resourceHome.env",
 						"type": "Record<string, string | undefined>",
 						"required": false,
-						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+						"description": "Environment record that resourceHome reads only for HARNESS_RESOURCES_HOME: when that key is undefined or null, the user-scoped default under os.homedir() is used (os.homedir() does not read this record), and an empty string is kept and resolves to the current working directory. Defaults to process.env: the environment of the running process.",
+						"examples": [
+							{
+								"HARNESS_RESOURCES_HOME": "/srv/harness/resources",
+								"PATH": "/usr/local/bin:/usr/bin:/bin"
+							},
+							{
+								"HARNESS_RESOURCES_HOME": "/Users/example/shared/harness"
+							},
+							{
+								"PATH": "/usr/local/bin:/usr/bin:/bin"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceHome",
 						"type": "string",
-						"description": "Absolute shared resource directory from the override or the user-scoped Harness default."
+						"description": "Absolute shared resource directory: path.resolve applied to HARNESS_RESOURCES_HOME, or to the user-scoped default under os.homedir() (.codex/harness/resources) when that variable is undefined or null. The directory is not checked for existence and nothing is created.",
+						"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resourceConfig",
@@ -85,18 +182,61 @@
 						"name": "resourceConfig.home",
 						"type": "string",
 						"required": false,
-						"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+						"description": "Directory whose config.json resourceConfig reads: when that file is absent, including when the directory does not exist, the schema defaults are returned and nothing is created. Defaults to resourceHome(): the shared resource directory from HARNESS_RESOURCES_HOME or the user-scoped Harness default.",
+						"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceConfig",
 						"type": "ResourceConfig",
-						"description": "Validated persisted configuration, or validated defaults when no file exists."
+						"description": "Configuration parsed from config.json in the home directory and validated by resourceConfigSchema, or the schema defaults when that file does not exist. Invalid JSON or values that fail resourceConfigSchema throw instead of being returned.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"cpuReservePercent": 10,
+								"memoryReservePercent": 10,
+								"minMemoryReserveMiB": 2048,
+								"pollMs": 1000,
+								"staleSampleMs": 5000
+							},
+							{
+								"schemaVersion": 1,
+								"cpuReservePercent": 25,
+								"memoryReservePercent": 20,
+								"minMemoryReserveMiB": 4096,
+								"pollMs": 500,
+								"staleSampleMs": 10000
+							},
+							{
+								"schemaVersion": 1,
+								"cpuReservePercent": 30,
+								"memoryReservePercent": 15,
+								"minMemoryReserveMiB": 8192,
+								"pollMs": 250,
+								"staleSampleMs": 2000
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when config.json exists but its contents are not valid JSON; the implementation does not catch it."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by resourceConfigSchema.parse when the parsed config.json fails the schema (unknown keys, schemaVersion other than 1, or a value outside its range); an absent file is parsed as an empty object, which the defaults satisfy, so it does not throw."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Node.js filesystem Error with a system code such as EACCES or EISDIR, thrown by readFileSync when config.json exists but cannot be read; the implementation does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "saveResourceConfig",
@@ -105,24 +245,62 @@
 						"name": "saveResourceConfig.config",
 						"type": "ResourceConfig",
 						"required": true,
-						"description": "Validated reserve floors and telemetry timing limits; lower safety thresholds are rejected."
+						"description": "Reserve and telemetry settings to persist, validated by resourceConfigSchema before any filesystem call: cpuReservePercent 10 to 95, memoryReservePercent 10 to 90, minMemoryReserveMiB an integer of at least 2048, pollMs an integer from 250 to 10000, and staleSampleMs an integer from 1000 to 30000; unknown keys and out-of-range values are rejected with no file written. Missing keys take their schema defaults: schemaVersion 1, cpuReservePercent 10, memoryReservePercent 10, minMemoryReserveMiB 2048, pollMs 1000 and staleSampleMs 5000.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"cpuReservePercent": 10,
+								"memoryReservePercent": 10,
+								"minMemoryReserveMiB": 2048,
+								"pollMs": 1000,
+								"staleSampleMs": 5000
+							},
+							{
+								"schemaVersion": 1,
+								"cpuReservePercent": 25,
+								"memoryReservePercent": 20,
+								"minMemoryReserveMiB": 4096,
+								"pollMs": 500,
+								"staleSampleMs": 10000
+							},
+							{
+								"schemaVersion": 1,
+								"cpuReservePercent": 30,
+								"memoryReservePercent": 15,
+								"minMemoryReserveMiB": 8192,
+								"pollMs": 250,
+								"staleSampleMs": 2000
+							}
+						]
 					},
 					{
 						"name": "saveResourceConfig.home",
 						"type": "string",
 						"required": false,
-						"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+						"description": "Directory that receives config.json: when it is missing it is created recursively with mode 0o700, and the JSON is written to a temporary config.<uuid>.partial file with mode 0o600 before being renamed to config.json. Defaults to resourceHome(): the shared resource directory from HARNESS_RESOURCES_HOME or the user-scoped Harness default.",
+						"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "saveResourceConfig",
 						"type": "void",
-						"description": "Atomically replaces private configuration after validation."
+						"description": "Writes the validated config as two-space JSON with a trailing newline to a temporary config.<uuid>.partial file in the home directory, then renames it over config.json in that same directory; it returns nothing."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by resourceConfigSchema.parse before any filesystem call when the config has unknown keys or a value outside its range, so no file is written."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Node.js filesystem Error with a system code such as EACCES, ENOTDIR or EISDIR, thrown by mkdirSync, writeFileSync or renameSync; if writeFileSync or renameSync fails after the temporary file exists, nothing removes config.<uuid>.partial."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
