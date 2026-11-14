@@ -14,27 +14,30 @@
 		"symbols": ["ConsoleAgentController", "ConsoleAgentController.handle"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ConsoleAgentController.handle.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The incoming Fetch Request for the local chat route; handle checks it before reading the body, requiring a host of 127.0.0.1, localhost or [::1], the POST method, an Origin header equal to the request URL origin, a Sec-Fetch-Site header that is not cross-site, and a content-type starting with application/json. The body must be a JSON object of at most 128000 bytes, and a Bearer Authorization header is copied into that object as token, replacing any token field it already has."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ConsoleAgentController.handle",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "The promise of the Response the route answers with, which resolves for refusals (403 host-denied or origin-denied, 405, 413, 415) and for requests that fail parsing, the consoleAgent call or reply building (400 with an error message). A successful consoleAgent result is sent as 200 image/png when it is a Uint8Array, as 200 bytes served with its mediaType and nosniff when it has a Uint8Array bytes field and a string mediaType field, and otherwise as 200 JSON."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A rejection from request.arrayBuffer() while the request body is read, which is awaited outside the handler's try block and is not caught, so handle rejects with it. Failures from JSON parsing, the JSON object check, consoleAgent or reply building are caught and returned as 400 responses, so they never reach the caller."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ConsoleAgentController.handle",
@@ -42,22 +45,25 @@
 					{
 						"name": "ConsoleAgentController.handle.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The incoming Fetch Request for the local chat route; handle checks it before reading the body, requiring a host of 127.0.0.1, localhost or [::1], the POST method, an Origin header equal to the request URL origin, a Sec-Fetch-Site header that is not cross-site, and a content-type starting with application/json. The body must be a JSON object of at most 128000 bytes, and a Bearer Authorization header is copied into that object as token, replacing any token field it already has."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleAgentController.handle",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "The promise of the Response the route answers with, which resolves for refusals (403 host-denied or origin-denied, 405, 413, 415) and for requests that fail parsing, the consoleAgent call or reply building (400 with an error message). A successful consoleAgent result is sent as 200 image/png when it is a Uint8Array, as 200 bytes served with its mediaType and nosniff when it has a Uint8Array bytes field and a string mediaType field, and otherwise as 200 JSON."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A rejection from request.arrayBuffer() while the request body is read, which is awaited outside the handler's try block and is not caught, so handle rejects with it. Failures from JSON parsing, the JSON object check, consoleAgent or reply building are caught and returned as 400 responses, so they never reach the caller."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
