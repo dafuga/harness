@@ -21,29 +21,62 @@
 				"name": "runtimeReply.runtime",
 				"type": "UnitRuntime",
 				"required": true,
-				"description": "Runtime to invoke after HTTP admission."
+				"description": "The UnitRuntime whose invoke receives the parsed body, and only for a POST whose body parses as JSON and is portable. runtimeReply passes the parsed value as a RuntimeRequest without checking its fields, and never calls close on it."
 			},
 			{
 				"name": "runtimeReply.method",
 				"type": "string",
 				"required": true,
-				"description": "HTTP method, accepted only when exactly POST."
+				"description": "The HTTP method, accepted only when it is exactly 'POST' (case-sensitive); any other value, including 'post', gets a 405 invalid-request reply before the body is read.",
+				"examples": ["POST", "GET", "PUT"]
 			},
 			{
 				"name": "runtimeReply.read",
 				"type": "() => Promise<string>",
 				"required": true,
-				"description": "Async body-text reader, called only for POST requests."
+				"description": "Async reader that returns the request body text, called once and only for POST requests. A rejection or synchronous throw from it is caught and answered as a 400 invalid-json reply rather than rejecting runtimeReply."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runtimeReply",
 				"type": "Promise<RuntimeReply>",
-				"description": "405 invalid-request for other methods, 400 invalid-json for unreadable/malformed/nonportable input, otherwise 200 with the runtime’s own response, including application failure envelopes."
+				"description": "Resolves to a RuntimeReply: status 405 with an invalid-request failure for any method other than POST; status 400 with an invalid-json failure when the body cannot be read, is not valid JSON, or is not portable (a non-finite number, a lone surrogate, or nesting deeper than 64 levels); otherwise status 200 with the runtime's RuntimeResponse unchanged, success or failure. It rejects only when the call to runtime.invoke itself throws or rejects, which runtimeReply does not catch although RuntimeResponse states that transports never throw.",
+				"examples": [
+					{
+						"status": 405,
+						"value": {
+							"ok": false,
+							"error": {
+								"code": "invalid-request",
+								"message": "send one JSON request per POST"
+							}
+						}
+					},
+					{
+						"status": 400,
+						"value": {
+							"ok": false,
+							"error": {
+								"code": "invalid-json",
+								"message": "request is not valid JSON"
+							}
+						}
+					},
+					{
+						"status": 200,
+						"value": {
+							"ok": true,
+							"output": {
+								"accepted": true
+							}
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "runtimeReply",
@@ -52,30 +85,62 @@
 						"name": "runtimeReply.runtime",
 						"type": "UnitRuntime",
 						"required": true,
-						"description": "Runtime to invoke after HTTP admission."
+						"description": "The UnitRuntime whose invoke receives the parsed body, and only for a POST whose body parses as JSON and is portable. runtimeReply passes the parsed value as a RuntimeRequest without checking its fields, and never calls close on it."
 					},
 					{
 						"name": "runtimeReply.method",
 						"type": "string",
 						"required": true,
-						"description": "HTTP method, accepted only when exactly POST."
+						"description": "The HTTP method, accepted only when it is exactly 'POST' (case-sensitive); any other value, including 'post', gets a 405 invalid-request reply before the body is read.",
+						"examples": ["POST", "GET", "PUT"]
 					},
 					{
 						"name": "runtimeReply.read",
 						"type": "() => Promise<string>",
 						"required": true,
-						"description": "Async body-text reader, called only for POST requests."
+						"description": "Async reader that returns the request body text, called once and only for POST requests. A rejection or synchronous throw from it is caught and answered as a 400 invalid-json reply rather than rejecting runtimeReply."
 					}
 				],
 				"outputs": [
 					{
 						"name": "runtimeReply",
 						"type": "Promise<RuntimeReply>",
-						"description": "405 invalid-request for other methods, 400 invalid-json for unreadable/malformed/nonportable input, otherwise 200 with the runtime’s own response, including application failure envelopes."
+						"description": "Resolves to a RuntimeReply: status 405 with an invalid-request failure for any method other than POST; status 400 with an invalid-json failure when the body cannot be read, is not valid JSON, or is not portable (a non-finite number, a lone surrogate, or nesting deeper than 64 levels); otherwise status 200 with the runtime's RuntimeResponse unchanged, success or failure. It rejects only when the call to runtime.invoke itself throws or rejects, which runtimeReply does not catch although RuntimeResponse states that transports never throw.",
+						"examples": [
+							{
+								"status": 405,
+								"value": {
+									"ok": false,
+									"error": {
+										"code": "invalid-request",
+										"message": "send one JSON request per POST"
+									}
+								}
+							},
+							{
+								"status": 400,
+								"value": {
+									"ok": false,
+									"error": {
+										"code": "invalid-json",
+										"message": "request is not valid JSON"
+									}
+								}
+							},
+							{
+								"status": 200,
+								"value": {
+									"ok": true,
+									"output": {
+										"accepted": true
+									}
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
