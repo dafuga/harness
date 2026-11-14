@@ -27,34 +27,47 @@
 				"name": "PerformanceEvidenceValidator.required.units",
 				"type": "ComponentManifest[]",
 				"required": true,
-				"description": "Registered active candidate units at the selected source revision."
+				"description": "The array contains component manifests considered by required or validate. Only active manifests are retained; non-module runtimes are always executable, while a module runtime is executable if any owned file is unread or missing, no owned paths are listed, or a readable non-CSS owned file is not declarative.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "PerformanceEvidenceValidator.required.files",
 				"type": "Map<string, SourceFile>",
 				"required": true,
-				"description": "Inspected source files with execution classification; unread or unknown source never earns an exemption."
+				"description": "The map associates repository paths with source-file records used to classify module manifests. Missing or unread owned records and empty owned-path lists keep a module executable; otherwise readable CSS-only or declarative code is exempt."
 			},
 			{
 				"name": "PerformanceEvidenceValidator.validate.input",
 				"type": "PerformanceEvidenceInput",
 				"required": true,
-				"description": "Selected units, inspected source, observations, exact commit and runtime profile that must agree."
+				"description": "Provides the manifests, path-to-source-file map, measurements, commit, and profile used by validate. A measurement can satisfy a requirement only when its unit, callable, target, tested revision, profile, and observed-value checks match the corresponding filters."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PerformanceEvidenceValidator.required",
 				"type": "ComponentManifest[]",
-				"description": "Executable active units requiring observations; declarative inspected source and CSS alone are exempt."
+				"description": "Returns the active manifests that need profiling according to their runtime and inspected owned files. Non-module runtimes always qualify; module runtimes qualify when an owned file is unread or missing, no owned paths are listed, or any readable non-CSS owned file is not declarative.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "PerformanceEvidenceValidator.validate",
 				"type": "string[]",
-				"description": "Missing or incompatible latency/memory requirements by unit, callable and runtime target."
+				"description": "Returns diagnostic strings for required unit/callable/target combinations that lack paired observations, or an empty array when every such combination is covered. Coverage needs observed latency (latency-* or browser-navigation-ms) in ms and a positive byte metric (memory-bytes, process-peak-rss-bytes, or browser-js-heap-bytes) for the same nonblank workload, with exact current commit and profile matches; observed values must be finite and nonnegative, methods nonblank, comparison boundaries non-fixture, and sample counts positive.",
+				"examples": [
+					[],
+					[
+						"reports.component.evidence-grid (module): profiling requires current latency and memory observations for the same representative workload; run its Harness profile check."
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "PerformanceEvidenceValidator.required",
@@ -63,24 +76,30 @@
 						"name": "PerformanceEvidenceValidator.required.units",
 						"type": "ComponentManifest[]",
 						"required": true,
-						"description": "Registered active candidate units at the selected source revision."
+						"description": "The array contains component manifests considered by required or validate. Only active manifests are retained; non-module runtimes are always executable, while a module runtime is executable if any owned file is unread or missing, no owned paths are listed, or a readable non-CSS owned file is not declarative.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "PerformanceEvidenceValidator.required.files",
 						"type": "Map<string, SourceFile>",
 						"required": true,
-						"description": "Inspected source files with execution classification; unread or unknown source never earns an exemption."
+						"description": "The map associates repository paths with source-file records used to classify module manifests. Missing or unread owned records and empty owned-path lists keep a module executable; otherwise readable CSS-only or declarative code is exempt."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PerformanceEvidenceValidator.required",
 						"type": "ComponentManifest[]",
-						"description": "Executable active units requiring observations; declarative inspected source and CSS alone are exempt."
+						"description": "Returns the active manifests that need profiling according to their runtime and inspected owned files. Non-module runtimes always qualify; module runtimes qualify when an owned file is unread or missing, no owned paths are listed, or any readable non-CSS owned file is not declarative.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PerformanceEvidenceValidator.validate",
@@ -89,18 +108,24 @@
 						"name": "PerformanceEvidenceValidator.validate.input",
 						"type": "PerformanceEvidenceInput",
 						"required": true,
-						"description": "Selected units, inspected source, observations, exact commit and runtime profile that must agree."
+						"description": "Provides the manifests, path-to-source-file map, measurements, commit, and profile used by validate. A measurement can satisfy a requirement only when its unit, callable, target, tested revision, profile, and observed-value checks match the corresponding filters."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PerformanceEvidenceValidator.validate",
 						"type": "string[]",
-						"description": "Missing or incompatible latency/memory requirements by unit, callable and runtime target."
+						"description": "Returns diagnostic strings for required unit/callable/target combinations that lack paired observations, or an empty array when every such combination is covered. Coverage needs observed latency (latency-* or browser-navigation-ms) in ms and a positive byte metric (memory-bytes, process-peak-rss-bytes, or browser-js-heap-bytes) for the same nonblank workload, with exact current commit and profile matches; observed values must be finite and nonnegative, methods nonblank, comparison boundaries non-fixture, and sample counts positive.",
+						"examples": [
+							[],
+							[
+								"reports.component.evidence-grid (module): profiling requires current latency and memory observations for the same representative workload; run its Harness profile check."
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
