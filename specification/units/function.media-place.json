@@ -30,34 +30,51 @@
 				"name": "mediaPlace.bytes",
 				"type": "Buffer | undefined",
 				"required": true,
-				"description": "Original capture bytes, or undefined when unavailable."
+				"description": "The capture bytes whose SHA-256 digest is checked. If they are undefined, the supplied gap is returned."
 			},
 			{
 				"name": "mediaPlace.file",
 				"type": "MediaFile",
 				"required": true,
-				"description": "Recorded path and expected SHA-256 digest; the path supplies the extension."
+				"description": "The record's media path and expected SHA-256 digest. A trailing alphanumeric extension is lowercased for the returned name; when none matches, the extension is bin.",
+				"examples": [
+					{
+						"path": "src/fixtures/history/capture-001.png",
+						"sha256": "a97753dced43bad8ed2091c379ac9818cb5d18443bb741322595e11be385a54b"
+					}
+				]
 			},
 			{
 				"name": "mediaPlace.gap",
 				"type": "string",
 				"required": true,
-				"description": "Explanation to return when bytes are missing or fail the digest check."
+				"description": "The reason returned unchanged when bytes are missing or their computed SHA-256 digest differs from the recorded digest.",
+				"examples": ["Expected digest did not match the capture bytes."]
 			}
 		],
 		"outputs": [
 			{
 				"name": "mediaPlace",
 				"type": "ResolvedMedia",
-				"description": "media/hash.extension when bytes match, using a lowercase extension or bin fallback; otherwise media null and the supplied gap. No file is read or written."
+				"description": "Returns media/<sha256>.<extension> when the supplied bytes hash to the recorded digest; otherwise returns media null with the supplied gap. It lowercases a trailing alphanumeric extension, falls back to bin, and performs no file reads or writes.",
+				"examples": [
+					{
+						"media": "media/a97753dced43bad8ed2091c379ac9818cb5d18443bb741322595e11be385a54b.png"
+					},
+					{
+						"media": null,
+						"gap": "Original capture bytes are unavailable."
+					}
+				]
 			},
 			{
 				"name": "checkedMedia",
 				"type": "MediaPlacer",
-				"description": "Async MediaPlacer wrapper around the same check; it reports placement without writing bytes."
+				"description": "An asynchronous MediaPlacer whose place method runs the same digest check for each capture and reports a location or gap without writing bytes."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "mediaPlace",
@@ -66,30 +83,46 @@
 						"name": "mediaPlace.bytes",
 						"type": "Buffer | undefined",
 						"required": true,
-						"description": "Original capture bytes, or undefined when unavailable."
+						"description": "The capture bytes whose SHA-256 digest is checked. If they are undefined, the supplied gap is returned."
 					},
 					{
 						"name": "mediaPlace.file",
 						"type": "MediaFile",
 						"required": true,
-						"description": "Recorded path and expected SHA-256 digest; the path supplies the extension."
+						"description": "The record's media path and expected SHA-256 digest. A trailing alphanumeric extension is lowercased for the returned name; when none matches, the extension is bin.",
+						"examples": [
+							{
+								"path": "src/fixtures/history/capture-001.png",
+								"sha256": "a97753dced43bad8ed2091c379ac9818cb5d18443bb741322595e11be385a54b"
+							}
+						]
 					},
 					{
 						"name": "mediaPlace.gap",
 						"type": "string",
 						"required": true,
-						"description": "Explanation to return when bytes are missing or fail the digest check."
+						"description": "The reason returned unchanged when bytes are missing or their computed SHA-256 digest differs from the recorded digest.",
+						"examples": ["Expected digest did not match the capture bytes."]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mediaPlace",
 						"type": "ResolvedMedia",
-						"description": "media/hash.extension when bytes match, using a lowercase extension or bin fallback; otherwise media null and the supplied gap. No file is read or written."
+						"description": "Returns media/<sha256>.<extension> when the supplied bytes hash to the recorded digest; otherwise returns media null with the supplied gap. It lowercases a trailing alphanumeric extension, falls back to bin, and performs no file reads or writes.",
+						"examples": [
+							{
+								"media": "media/a97753dced43bad8ed2091c379ac9818cb5d18443bb741322595e11be385a54b.png"
+							},
+							{
+								"media": null,
+								"gap": "Original capture bytes are unavailable."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
