@@ -36,28 +36,28 @@
 				"type": "DesktopBridge",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Local desktop host operations for project creation, persistence and explicit image generation. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, uses window.harness after mount; without gameCreate creation stays disabled."
+				"description": "An optional `DesktopBridge` whose `gameCreate` method enables project submission and takes precedence over the window host. When omitted, the component reads `window.harness` on mount; without a `gameCreate` function, the form remains disabled."
 			},
 			{
 				"name": "GameCreate.created",
 				"type": "(snapshot: ProjectSnapshot) => void",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional callback receiving the created project snapshot instead of full-page navigation. Defaults to JavaScript undefined (omitted), not the literal string. When omitted, successful creation navigates to /harness for an app or /game?projectId=... for a game."
+				"description": "An optional callback invoked with the returned project snapshot after `gameCreate` succeeds. If omitted, the component performs a full-page navigation to `/harness` for apps or `/game?projectId=...` for games; callback exceptions are caught and shown in the form alert."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCreate",
 				"type": "markup",
-				"description": "Create an app or dimensional game through the local host and open its resulting workspace. Renders reactive UI and publishes edits through its callbacks. Creation, callback and navigation failures are caught and displayed in the form alert. Catalog states: default (empty form), filled (name entered), game-2d and game-3d (dimension chosen), unavailable (no host to create through), busy (creation in progress) and error (a failed creation shown in the alert). Creation, callback and navigation failures are caught here and displayed; none propagate."
+				"description": "Renders a form that trims the project name, offers app/game selection, and offers 2D/3D selection only for games; submission is disabled while busy, when the name is empty, or until the active bridge has `gameCreate`. On success it calls `created(snapshot)` when provided or navigates to the app/game destination; errors from creation, the callback, or destination handling are caught and shown in the alert."
 			}
 		],
 		"errors": [
 			{
-				"name": "The new game came back without a project id",
-				"type": "Error",
-				"description": "Thrown when a created game has no project id, so no workspace can open. Caught by submit and shown in the form alert."
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message `The new game came back without a project id.` when opening a newly created game without a `created` callback and `snapshot.project.id` is missing or empty. `submit` catches it and displays `errorMessage(cause)` in the form alert."
 			}
 		],
 		"errorStatus": "declared",
