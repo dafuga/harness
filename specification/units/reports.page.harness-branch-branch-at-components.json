@@ -27,31 +27,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The components of the shown revision in a table, each with its verdict and what the commit changed, to search, order and open."
+				"description": "The page markup consists of HarnessScreen with title Components and ExplorerCatalogScreen passed as its content. This module supplies no other markup."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Components · Harness"
+				"description": "The title passed to HarnessScreen is the literal string Components. It is fixed in this module.",
+				"examples": ["Components"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
