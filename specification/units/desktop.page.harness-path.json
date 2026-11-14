@@ -16,12 +16,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The markup the `/harness/[...path]` route renders: a single `<Workspace />` element with no props, where `Workspace` is the component imported from `../../+page.svelte`. This file does not read the `[...path]` route parameter itself."
 			}
 		],
 		"errors": [],
