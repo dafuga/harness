@@ -28,7 +28,9 @@
 			"TreeFile",
 			"TreeCommit",
 			"TreeFile",
-			"TreeCommit"
+			"TreeCommit",
+			"batchBufferBytes",
+			"batchGroups"
 		]
 	},
 	"contract": {
@@ -360,7 +362,9 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence"],
+	"scenarios": [
+		"desktop-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

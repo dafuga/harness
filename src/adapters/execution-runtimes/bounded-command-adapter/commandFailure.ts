@@ -3,13 +3,15 @@ import { basename } from 'node:path';
 
 /** A rejected command carrying only the already-buffered, bounded output prefix. */
 export class BoundedCommandFailure extends Error {
-	constructor(
-		message: string,
-		readonly stdout: Buffer,
-		readonly stderr: string
-	) {
+	declare readonly stdout: Buffer;
+	declare readonly stderr: string;
+	constructor(message: string, stdout: Buffer, stderr: string) {
 		super(message);
 		this.name = 'BoundedCommandFailure';
+		// Not enumerable: an uncaught failure prints its message, not up to maxBuffer bytes of
+		// captured output (a 480 MB evidence read once dumped 156 MB into the terminal).
+		Object.defineProperty(this, 'stdout', { value: stdout, enumerable: false });
+		Object.defineProperty(this, 'stderr', { value: stderr, enumerable: false });
 	}
 }
 

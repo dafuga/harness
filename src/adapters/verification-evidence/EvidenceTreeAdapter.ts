@@ -35,7 +35,11 @@ export class EvidenceTreeAdapter {
 
 	/** Bytes of one file at a commit, or undefined when the commit or the path is absent. */
 	async read(commit: string, path: string): Promise<Buffer | undefined> {
-		const result = await this.git.exec(['cat-file', 'blob', `${commit}:${path}`]);
+		const size = Number(await this.git.attempt(['cat-file', '-s', `${commit}:${path}`]));
+		if (!Number.isSafeInteger(size)) return undefined;
+		const result = await this.git.exec(['cat-file', 'blob', `${commit}:${path}`], {
+			maxBuffer: batchBufferBytes([size])
+		});
 		return result.code === 0 ? result.stdout : undefined;
 	}
 
@@ -49,11 +53,30 @@ export class EvidenceTreeAdapter {
 		});
 		const hashes = [...new Set(requested.map(([, hash]) => hash))];
 		if (hashes.length === 0) return new Map();
-		const bytes = await this.git.bytes(['cat-file', '--batch'], {
+		// Attached records reach hundreds of MB, beyond the adapter's default output cap: size each
+		// batch from git's own object sizes, in groups under the adapter's ceiling.
+		const sizes = await this.sizes(hashes);
+		const blobs = new Map<string, Buffer>();
+		for (const group of batchGroups(hashes, sizes, batchCeiling)) {
+			const bytes = await this.git.bytes(['cat-file', '--batch'], {
+				input: group.join('\n') + '\n',
+				maxBuffer: batchBufferBytes(group.map((hash) => sizes.get(hash) ?? 0))
+			});
+			for (const [hash, blob] of batchBlobs(bytes, group)) blobs.set(hash, blob);
+		}
+		return new Map(requested.map(([path, hash]) => [path, Buffer.from(blobs.get(hash)!)]));
+	}
+
+	private async sizes(hashes: string[]): Promise<Map<string, number>> {
+		const listed = await this.git.run(['cat-file', '--batch-check'], {
 			input: hashes.join('\n') + '\n'
 		});
-		const blobs = batchBlobs(bytes, hashes);
-		return new Map(requested.map(([path, hash]) => [path, Buffer.from(blobs.get(hash)!)]));
+		const sizes = new Map<string, number>();
+		for (const line of listed.split('\n')) {
+			const match = /^([a-f0-9]+) blob ([0-9]+)$/.exec(line.trim());
+			if (match) sizes.set(match[1], Number(match[2]));
+		}
+		return sizes;
 	}
 
 	/** Every file path at a commit with its blob id. */
@@ -110,6 +133,36 @@ export class EvidenceTreeAdapter {
 }
 
 /** Byte lengths delimit binary content; a malformed protocol response never becomes evidence. */
+/** The bounded adapter accepts output buffers up to 2^31 - 1 bytes. */
+const batchCeiling = 2_000_000_000;
+
+/** Room for git's batch output of these blobs: each body, its header line and newline. */
+export function batchBufferBytes(sizes: number[]): number {
+	return Math.max(
+		1,
+		sizes.reduce((total, size) => total + size + 128, 0)
+	);
+}
+
+/** Hashes in request order, grouped so each group's batch output stays under the ceiling. */
+export function batchGroups(
+	hashes: string[],
+	sizes: Map<string, number>,
+	ceiling: number
+): string[][] {
+	const groups: string[][] = [];
+	let current: string[] = [];
+	for (const hash of hashes) {
+		const next = [...current, hash];
+		if (current.length && batchBufferBytes(next.map((item) => sizes.get(item) ?? 0)) > ceiling) {
+			groups.push(current);
+			current = [hash];
+		} else current = next;
+	}
+	if (current.length) groups.push(current);
+	return groups;
+}
+
 function batchBlobs(bytes: Buffer, hashes: string[]): Map<string, Buffer> {
 	const blobs = new Map<string, Buffer>();
 	let offset = 0;
