@@ -25,17 +25,18 @@
 				"name": "+layout.children",
 				"type": "import('svelte').Snippet",
 				"required": true,
-				"description": "Page content rendered through the layout children snippet."
+				"description": "The page content snippet passed in as the children prop, which the layout renders first with {@render children()} on every page it wraps. It is a required Svelte Snippet rendered with no arguments, so JSON cannot express it, and the layout does not check it or supply a fallback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "+layout",
 				"type": "markup",
-				"description": "Rendered child page with the shared styles and session context."
+				"description": "The markup this layout renders: the children content, followed by ConsoleChat only when page.url.pathname starts with /harness/branch/ or /harness/commit/. It is markup rather than a JSON value, and the five stylesheets imported by this module apply to the page it renders."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
