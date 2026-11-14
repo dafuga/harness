@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native foreignObject element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet that supplies the element's child content. It is invoked without arguments when present; when omitted, no child content is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgForeignObject",
 				"type": "markup",
-				"description": "The actual native foreignObject element, with forwarded attributes and content and no additional wrapper."
+				"description": "The component renders a native SVG foreignObject element and spreads every remaining prop onto it. When children is present, its snippet is rendered inside the element; no wrapper element is added."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
