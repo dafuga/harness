@@ -18,14 +18,35 @@
 				"name": "scanCacheTree.path",
 				"type": "string",
 				"required": true,
-				"description": "Filesystem path to the cache file or directory to inventory."
+				"description": "Path passed to lstat and readdir for inventory; it may identify a file or directory and may be relative or absolute. Symlinks are reported without traversal, and discovered file paths are relative to this root.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a/slot-10/src/cli/program/history-prune",
+					"src/cli/program/history-prune",
+					"/tmp/history-prune-cache"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanCacheTree",
 				"type": "Promise<WalkResult>",
-				"description": "WalkResult containing relative regular-file paths, total observed bytes when available, and protection or inspection reasons."
+				"description": "Resolved WalkResult lists relative paths for regular files and reasons for entries the walk could not inspect safely. The root result omits bytes for missing, uninspectable, symlink, or non-regular entries, while directory-list failures return zero bytes.",
+				"examples": [
+					{
+						"bytes": 184,
+						"files": ["manifest.json"],
+						"reasons": []
+					},
+					{
+						"bytes": 4096,
+						"files": ["runs/run-001/record.json"],
+						"reasons": ["latest: symlink is not traversed"]
+					},
+					{
+						"files": [],
+						"reasons": ["symlink is not traversed"]
+					}
+				]
 			}
 		],
 		"errors": [],
@@ -38,14 +59,35 @@
 						"name": "scanCacheTree.path",
 						"type": "string",
 						"required": true,
-						"description": "Filesystem path to the cache file or directory to inventory."
+						"description": "Path passed to lstat and readdir for inventory; it may identify a file or directory and may be relative or absolute. Symlinks are reported without traversal, and discovered file paths are relative to this root.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a/slot-10/src/cli/program/history-prune",
+							"src/cli/program/history-prune",
+							"/tmp/history-prune-cache"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanCacheTree",
 						"type": "Promise<WalkResult>",
-						"description": "WalkResult containing relative regular-file paths, total observed bytes when available, and protection or inspection reasons."
+						"description": "Resolved WalkResult lists relative paths for regular files and reasons for entries the walk could not inspect safely. The root result omits bytes for missing, uninspectable, symlink, or non-regular entries, while directory-list failures return zero bytes.",
+						"examples": [
+							{
+								"bytes": 184,
+								"files": ["manifest.json"],
+								"reasons": []
+							},
+							{
+								"bytes": 4096,
+								"files": ["runs/run-001/record.json"],
+								"reasons": ["latest: symlink is not traversed"]
+							},
+							{
+								"files": [],
+								"reasons": ["symlink is not traversed"]
+							}
+						]
 					}
 				],
 				"errors": [],
