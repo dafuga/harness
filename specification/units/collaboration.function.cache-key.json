@@ -18,68 +18,125 @@
 				"name": "cacheKey.identity",
 				"type": "CacheIdentity",
 				"required": true,
-				"description": "Principal, project, repository and source revisions with nullable evidence, notes, artifact and profile selectors."
+				"description": "Strict identity parsed before calculating the key and comparing cached entries. It requires a UUID projectId, positive integer repositoryId, 40-character lowercase-hex source commit/tree and non-null revisions, a nullable 64-character lowercase-hex artifactHash, 1–1024-character references, and 1–200-character trimmed labels; other selector fields are nullable, unknown properties are rejected, and omitted collaborationRevision defaults to null.",
+				"examples": [
+					{
+						"collaborationRevision": "d76e816e5239ed66a3e37721acae8d2fb52b45b2",
+						"principalId": "github:user:12345",
+						"projectId": "8c3079d1-960b-4ed2-a65c-52a0b0a79c68",
+						"repositoryId": 123456789,
+						"requestedRef": "main",
+						"sourceCommit": "3e272f9105c1d517920ce6d9ec1f96d66b743671",
+						"sourceTree": "8b1c116370acf9e873a211693bbc29d282ba8c69",
+						"notesRef": "refs/heads/docs",
+						"notesRevision": "488235447b971fc859dc925b09defbb0db8b6155",
+						"evidenceRef": "refs/heads/evidence",
+						"evidenceRevision": "0d6c32c577e8d671d4dc29dd54a6edc4f74ab0c5",
+						"historyIndexRevision": "844e3567efe28a040e704b746b46374aa0beec8a",
+						"artifactHash": "4659fc0570122b0e0aa14f4ff7c261b1fe51795a01ba79963f462ebf40d7520d",
+						"profile": "release"
+					}
+				]
 			},
 			{
 				"name": "readCache.cache",
 				"type": "CollaborationCache",
 				"required": true,
-				"description": "Cache adapter from which to read or delete an entry."
+				"description": "Asynchronous CollaborationCache adapter with get, put, and delete methods. readCache fetches by the derived key and deletes an entry only after a lookup or integrity error."
 			},
 			{
 				"name": "readCache.identity",
 				"type": "CacheIdentity",
 				"required": true,
-				"description": "Expected identity for the cached bytes."
+				"description": "Expected strict identity for key lookup and verification. It has the same UUID, positive integer, reference, lowercase-hex, label, nullability, and unknown-property limits as cacheKey.identity; omitted collaborationRevision defaults to null.",
+				"examples": [
+					{
+						"collaborationRevision": "d76e816e5239ed66a3e37721acae8d2fb52b45b2",
+						"principalId": "github:user:12345",
+						"projectId": "8c3079d1-960b-4ed2-a65c-52a0b0a79c68",
+						"repositoryId": 123456789,
+						"requestedRef": "main",
+						"sourceCommit": "3e272f9105c1d517920ce6d9ec1f96d66b743671",
+						"sourceTree": "8b1c116370acf9e873a211693bbc29d282ba8c69",
+						"notesRef": "refs/heads/docs",
+						"notesRevision": "488235447b971fc859dc925b09defbb0db8b6155",
+						"evidenceRef": "refs/heads/evidence",
+						"evidenceRevision": "0d6c32c577e8d671d4dc29dd54a6edc4f74ab0c5",
+						"historyIndexRevision": "844e3567efe28a040e704b746b46374aa0beec8a",
+						"artifactHash": "4659fc0570122b0e0aa14f4ff7c261b1fe51795a01ba79963f462ebf40d7520d",
+						"profile": "release"
+					}
+				]
 			},
 			{
 				"name": "writeCache.cache",
 				"type": "CollaborationCache",
 				"required": true,
-				"description": "Cache adapter into which to store the entry."
+				"description": "Asynchronous CollaborationCache adapter with get, put, and delete methods. writeCache stores the parsed identity, its digest, and a copy of the bytes under the derived key after the optional artifactHash check passes."
 			},
 			{
 				"name": "writeCache.identity",
 				"type": "CacheIdentity",
 				"required": true,
-				"description": "Validated identity to bind to the stored bytes."
+				"description": "Identity bound to the stored bytes and used to derive their key. It has the same UUID, positive integer, reference, lowercase-hex, label, nullability, and unknown-property limits as cacheKey.identity; omitted collaborationRevision defaults to null.",
+				"examples": [
+					{
+						"collaborationRevision": "d76e816e5239ed66a3e37721acae8d2fb52b45b2",
+						"principalId": "github:user:12345",
+						"projectId": "8c3079d1-960b-4ed2-a65c-52a0b0a79c68",
+						"repositoryId": 123456789,
+						"requestedRef": "main",
+						"sourceCommit": "3e272f9105c1d517920ce6d9ec1f96d66b743671",
+						"sourceTree": "8b1c116370acf9e873a211693bbc29d282ba8c69",
+						"notesRef": "refs/heads/docs",
+						"notesRevision": "488235447b971fc859dc925b09defbb0db8b6155",
+						"evidenceRef": "refs/heads/evidence",
+						"evidenceRevision": "0d6c32c577e8d671d4dc29dd54a6edc4f74ab0c5",
+						"historyIndexRevision": "844e3567efe28a040e704b746b46374aa0beec8a",
+						"artifactHash": "4659fc0570122b0e0aa14f4ff7c261b1fe51795a01ba79963f462ebf40d7520d",
+						"profile": "release"
+					}
+				]
 			},
 			{
 				"name": "writeCache.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Bytes to hash and copy into the cache; must match artifactHash when supplied."
+				"description": "Uint8Array hashed for the cache entry and copied before storage. If identity.artifactHash is non-null, its SHA-256 must match or the write fails before put."
 			}
 		],
 		"outputs": [
 			{
 				"name": "cacheKey",
 				"type": "Promise<string>",
-				"description": "SHA-256 hex digest of the normalized identity JSON."
+				"description": "Lowercase 64-character hexadecimal SHA-256 of UTF-8 JSON.stringify applied to the strict-schema parsed identity. An omitted collaborationRevision is normalized to null before serialization.",
+				"examples": ["3f77aaa26a355c92980741fdfc99c8d29ea5e11ab1948d352c093fd2f40fef1c"]
 			},
 			{
 				"name": "readCache",
 				"type": "Promise<Uint8Array | null>",
-				"description": "A copy of verified bytes, or null for a miss or a corrupt entry that was deleted."
+				"description": "A copied Uint8Array resolves only when the stored identity derives the requested key and its bytes match the stored SHA-256 and any requested artifactHash; a miss or removed invalid entry resolves to null. An invalid requested identity or a cleanup rejection rejects the promise.",
+				"examples": [null]
 			},
 			{
 				"name": "writeCache",
 				"type": "Promise<void>",
-				"description": "Stores normalized identity, SHA-256 and copied bytes; resolves without a value."
+				"description": "Resolves with undefined after storing the parsed identity, SHA-256, and a copy of the bytes. A non-null artifactHash mismatch fails before the cache entry is written."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "The internal corrupt-cache error is caught and turns into deletion and a null result; adapter failures may still propagate."
-			},
-			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid identities or an artifact hash mismatch on write."
+				"description": "Strict identity validation and a non-null artifactHash mismatch reject with this expected error; writeCache stops before put when the hash differs from SHA-256(bytes)."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "readCache catches its internal corruption Error; Web Crypto or cache adapter failures may reject operations, including when readCache deletes an invalid entry."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "cacheKey",
@@ -88,18 +145,48 @@
 						"name": "cacheKey.identity",
 						"type": "CacheIdentity",
 						"required": true,
-						"description": "Principal, project, repository and source revisions with nullable evidence, notes, artifact and profile selectors."
+						"description": "Strict identity parsed and serialized to derive the cache key. It has a UUID projectId, positive integer repositoryId, 40-character lowercase-hex source commit/tree and non-null revisions, nullable 64-character lowercase-hex artifactHash, 1–1024-character references, and 1–200-character trimmed labels; unknown fields are rejected and omitted collaborationRevision defaults to null.",
+						"examples": [
+							{
+								"collaborationRevision": "d76e816e5239ed66a3e37721acae8d2fb52b45b2",
+								"principalId": "github:user:12345",
+								"projectId": "8c3079d1-960b-4ed2-a65c-52a0b0a79c68",
+								"repositoryId": 123456789,
+								"requestedRef": "main",
+								"sourceCommit": "3e272f9105c1d517920ce6d9ec1f96d66b743671",
+								"sourceTree": "8b1c116370acf9e873a211693bbc29d282ba8c69",
+								"notesRef": "refs/heads/docs",
+								"notesRevision": "488235447b971fc859dc925b09defbb0db8b6155",
+								"evidenceRef": "refs/heads/evidence",
+								"evidenceRevision": "0d6c32c577e8d671d4dc29dd54a6edc4f74ab0c5",
+								"historyIndexRevision": "844e3567efe28a040e704b746b46374aa0beec8a",
+								"artifactHash": "4659fc0570122b0e0aa14f4ff7c261b1fe51795a01ba79963f462ebf40d7520d",
+								"profile": "release"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cacheKey",
 						"type": "Promise<string>",
-						"description": "SHA-256 hex digest of the normalized identity JSON."
+						"description": "Lowercase 64-character hexadecimal SHA-256 of UTF-8 JSON.stringify applied to the strict-schema parsed identity. An omitted collaborationRevision is normalized to null before serialization.",
+						"examples": ["3f77aaa26a355c92980741fdfc99c8d29ea5e11ab1948d352c093fd2f40fef1c"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid identity rejects with this expected validation error before a key is returned."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Web Crypto digest failure rejects the promise."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readCache",
@@ -108,29 +195,54 @@
 						"name": "readCache.cache",
 						"type": "CollaborationCache",
 						"required": true,
-						"description": "Cache adapter from which to read or delete an entry."
+						"description": "Asynchronous CollaborationCache adapter with get, put, and delete methods. readCache fetches by the derived key and deletes an entry only after a lookup or integrity error."
 					},
 					{
 						"name": "readCache.identity",
 						"type": "CacheIdentity",
 						"required": true,
-						"description": "Expected identity for the cached bytes."
+						"description": "Expected strict identity for lookup and verification. It has a UUID projectId, positive integer repositoryId, 40-character lowercase-hex source commit/tree and non-null revisions, nullable 64-character lowercase-hex artifactHash, 1–1024-character references, and 1–200-character trimmed labels; unknown fields are rejected and omitted collaborationRevision defaults to null.",
+						"examples": [
+							{
+								"collaborationRevision": "d76e816e5239ed66a3e37721acae8d2fb52b45b2",
+								"principalId": "github:user:12345",
+								"projectId": "8c3079d1-960b-4ed2-a65c-52a0b0a79c68",
+								"repositoryId": 123456789,
+								"requestedRef": "main",
+								"sourceCommit": "3e272f9105c1d517920ce6d9ec1f96d66b743671",
+								"sourceTree": "8b1c116370acf9e873a211693bbc29d282ba8c69",
+								"notesRef": "refs/heads/docs",
+								"notesRevision": "488235447b971fc859dc925b09defbb0db8b6155",
+								"evidenceRef": "refs/heads/evidence",
+								"evidenceRevision": "0d6c32c577e8d671d4dc29dd54a6edc4f74ab0c5",
+								"historyIndexRevision": "844e3567efe28a040e704b746b46374aa0beec8a",
+								"artifactHash": "4659fc0570122b0e0aa14f4ff7c261b1fe51795a01ba79963f462ebf40d7520d",
+								"profile": "release"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readCache",
 						"type": "Promise<Uint8Array | null>",
-						"description": "A copy of verified bytes, or null for a miss or a corrupt entry that was deleted."
+						"description": "A copied Uint8Array resolves only when the stored identity derives the requested key and its bytes match the stored SHA-256 and any requested artifactHash; a miss or removed invalid entry resolves to null. An invalid requested identity or a cleanup rejection rejects the promise.",
+						"examples": [null]
 					}
 				],
 				"errors": [
 					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "An invalid requested identity rejects with this expected validation error before lookup; invalid cached identities are caught and the entry is deleted."
+					},
+					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A digest failure while deriving the requested key or a cache deletion rejection may reject the promise; lookup and integrity failures resolve as null when deletion succeeds."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writeCache",
@@ -139,35 +251,59 @@
 						"name": "writeCache.cache",
 						"type": "CollaborationCache",
 						"required": true,
-						"description": "Cache adapter into which to store the entry."
+						"description": "Asynchronous CollaborationCache adapter with get, put, and delete methods. writeCache stores the parsed identity, its digest, and a copy of the bytes under the derived key after the optional artifactHash check passes."
 					},
 					{
 						"name": "writeCache.identity",
 						"type": "CacheIdentity",
 						"required": true,
-						"description": "Validated identity to bind to the stored bytes."
+						"description": "Identity bound to the stored bytes and used to derive their key. It has a UUID projectId, positive integer repositoryId, 40-character lowercase-hex source commit/tree and non-null revisions, nullable 64-character lowercase-hex artifactHash, 1–1024-character references, and 1–200-character trimmed labels; unknown fields are rejected and omitted collaborationRevision defaults to null.",
+						"examples": [
+							{
+								"collaborationRevision": "d76e816e5239ed66a3e37721acae8d2fb52b45b2",
+								"principalId": "github:user:12345",
+								"projectId": "8c3079d1-960b-4ed2-a65c-52a0b0a79c68",
+								"repositoryId": 123456789,
+								"requestedRef": "main",
+								"sourceCommit": "3e272f9105c1d517920ce6d9ec1f96d66b743671",
+								"sourceTree": "8b1c116370acf9e873a211693bbc29d282ba8c69",
+								"notesRef": "refs/heads/docs",
+								"notesRevision": "488235447b971fc859dc925b09defbb0db8b6155",
+								"evidenceRef": "refs/heads/evidence",
+								"evidenceRevision": "0d6c32c577e8d671d4dc29dd54a6edc4f74ab0c5",
+								"historyIndexRevision": "844e3567efe28a040e704b746b46374aa0beec8a",
+								"artifactHash": "4659fc0570122b0e0aa14f4ff7c261b1fe51795a01ba79963f462ebf40d7520d",
+								"profile": "release"
+							}
+						]
 					},
 					{
 						"name": "writeCache.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Bytes to hash and copy into the cache; must match artifactHash when supplied."
+						"description": "Uint8Array hashed for the cache entry and copied before storage. If identity.artifactHash is non-null, its SHA-256 must match or the write fails before put."
 					}
 				],
 				"outputs": [
 					{
 						"name": "writeCache",
 						"type": "Promise<void>",
-						"description": "Stores normalized identity, SHA-256 and copied bytes; resolves without a value."
+						"description": "Resolves with undefined after storing the parsed identity, SHA-256, and a copy of the bytes. A non-null artifactHash mismatch fails before the cache entry is written."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Invalid identity and a non-null artifactHash mismatch reject with this expected error; the mismatch is detected before cache.put."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Web Crypto digest failure or cache.put rejection may reject the promise."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
