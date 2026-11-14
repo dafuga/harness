@@ -33,17 +33,134 @@
 				"name": "kernelArtifacts.env",
 				"type": "Environment",
 				"required": false,
-				"description": "Environment map, defaulting to process.env. HARNESS_KERNEL_DIR restricts lookup to its resolved directory; otherwise known bundle/checkout locations are tried."
+				"description": "Environment map, defaulting to process.env; only HARNESS_KERNEL_DIR is read. A non-empty HARNESS_KERNEL_DIR, resolved to an absolute path, is the only directory searched, with no fallback; otherwise ../kernel/, ../../kernel/ and ../../../target/kernel/ relative to the module's import.meta.url are searched in that order.",
+				"examples": [
+					{
+						"HARNESS_KERNEL_DIR": "/opt/harness-kernel"
+					},
+					{
+						"HARNESS_KERNEL_DIR": "target/kernel"
+					},
+					{
+						"HOME": "/home/ci",
+						"PATH": "/usr/local/bin:/usr/bin:/bin"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "kernelArtifacts",
 				"type": "KernelArtifacts",
-				"description": "Build directory, parsed build record and paths of existing Wasm/native artifacts, or all undefined when no build.json is found."
+				"description": "Holds the first candidate directory that contains build.json, the record parsed from that file (cast to KernelBuild without validation), and the paths of impact-kernel.wasm (core Wasm module) and impact-kernel (native JSON process) inside that directory, each undefined when no entry exists there. All four fields are undefined when no candidate contains build.json, and nothing is built or executed.",
+				"examples": [
+					{
+						"directory": "/home/ci/harness/target/kernel",
+						"wasm": "/home/ci/harness/target/kernel/impact-kernel.wasm",
+						"native": "/home/ci/harness/target/kernel/impact-kernel",
+						"build": {
+							"contract": "impact-kernel/1",
+							"rustc": "rustc 1.97.0",
+							"host": "x86_64-unknown-linux-gnu",
+							"wasmOpt": "wasm-opt version 130",
+							"wasm": {
+								"path": "target/kernel/impact-kernel.wasm",
+								"bytes": 1184213,
+								"sha256": "9c1e4a7b2d6f08e3a5c19b7d4f2e6a80c3d5b9e1f7a2c4d6e8b0f1a3c5d7e9b2"
+							},
+							"native": {
+								"path": "target/kernel/impact-kernel",
+								"bytes": 4917832,
+								"sha256": "5e0b7d19c4a6f283e1d5b0c9a7f64e2d8b3c1a95f0e7d62c4b8a3f1e9d05c7b6"
+							},
+							"sources": {
+								"crate": {
+									"bytes": 58214,
+									"files": [
+										{
+											"path": "kernel/src/lib.rs",
+											"bytes": 58214,
+											"sha256": "d4a81f6e0c39b25d7e1a6f4c8b0d3e9a57c2f1b8e6d0a4c93f7b5e2d1a8c6f04"
+										}
+									]
+								},
+								"reference": {
+									"bytes": 9120,
+									"files": [
+										{
+											"path": "kernel/reference/cases.json",
+											"bytes": 9120,
+											"sha256": "1b6e3d0a9f5c72e48d1a0b6c3f9e27d5a4c8b1e0f6d3a92c7e5b4f8d1a0c3e61"
+										}
+									]
+								}
+							}
+						}
+					},
+					{
+						"directory": "/opt/harness-kernel",
+						"wasm": "/opt/harness-kernel/impact-kernel.wasm",
+						"native": "/opt/harness-kernel/impact-kernel",
+						"build": {
+							"contract": "impact-kernel/1",
+							"rustc": "rustc 1.98.0",
+							"host": "aarch64-apple-darwin",
+							"wasmOpt": null,
+							"wasm": {
+								"path": "target/kernel/impact-kernel.wasm",
+								"bytes": 1192406,
+								"sha256": "7a3d0c9e1f8b6d24c5e0a7b93d2f6184e0b5c7a19d4e2f638b1a0c7d5f2e9a46"
+							},
+							"native": {
+								"path": "target/kernel/impact-kernel",
+								"bytes": 3761024,
+								"sha256": "0f4e8a2c9b7d1e35a6c0f4d82e9b3a71d5f8c0e26a1b9d47c3e7f5a08d2b6c19"
+							},
+							"sources": {
+								"crate": {
+									"bytes": 61877,
+									"files": [
+										{
+											"path": "kernel/src/lib.rs",
+											"bytes": 61877,
+											"sha256": "e2c9b5f10a7d3e864f1c2b9de7a0c5f368d4b1a2c9f0e7d53b8a2c6e1d5f4907"
+										}
+									]
+								},
+								"reference": {
+									"bytes": 9120,
+									"files": [
+										{
+											"path": "kernel/reference/cases.json",
+											"bytes": 9120,
+											"sha256": "c6a1e9f32d8b0c74f5e3a9d14b7c2e08a9d6f1b35e0c8a27d2b4f9e60c7a3d18"
+										}
+									]
+								}
+							}
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by new URL or fileURLToPath (ERR_INVALID_URL or ERR_INVALID_URL_SCHEME) when import.meta.url is missing or is not a file: URL. The beside candidates are built before HARNESS_KERNEL_DIR is checked, so this can throw even when the override is set."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by readFileSync when the selected build.json exists but cannot be read, for example when a directory is named build.json (EISDIR), permission is denied (EACCES), or the file is removed after the existence check (ENOENT). The Node error code is on the error's code property."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when the selected build.json is not valid JSON, for example an empty or truncated file. The error is not caught, and no other candidate directory is tried."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "kernelArtifacts",
@@ -52,18 +169,134 @@
 						"name": "kernelArtifacts.env",
 						"type": "Environment",
 						"required": false,
-						"description": "Environment map, defaulting to process.env. HARNESS_KERNEL_DIR restricts lookup to its resolved directory; otherwise known bundle/checkout locations are tried."
+						"description": "Environment map, defaulting to process.env; only HARNESS_KERNEL_DIR is read. A non-empty HARNESS_KERNEL_DIR, resolved to an absolute path, is the only directory searched, with no fallback; otherwise ../kernel/, ../../kernel/ and ../../../target/kernel/ relative to the module's import.meta.url are searched in that order.",
+						"examples": [
+							{
+								"HARNESS_KERNEL_DIR": "/opt/harness-kernel"
+							},
+							{
+								"HARNESS_KERNEL_DIR": "target/kernel"
+							},
+							{
+								"HOME": "/home/ci",
+								"PATH": "/usr/local/bin:/usr/bin:/bin"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "kernelArtifacts",
 						"type": "KernelArtifacts",
-						"description": "Build directory, parsed build record and paths of existing Wasm/native artifacts, or all undefined when no build.json is found."
+						"description": "Holds the first candidate directory that contains build.json, the record parsed from that file (cast to KernelBuild without validation), and the paths of impact-kernel.wasm (core Wasm module) and impact-kernel (native JSON process) inside that directory, each undefined when no entry exists there. All four fields are undefined when no candidate contains build.json, and nothing is built or executed.",
+						"examples": [
+							{
+								"directory": "/home/ci/harness/target/kernel",
+								"wasm": "/home/ci/harness/target/kernel/impact-kernel.wasm",
+								"native": "/home/ci/harness/target/kernel/impact-kernel",
+								"build": {
+									"contract": "impact-kernel/1",
+									"rustc": "rustc 1.97.0",
+									"host": "x86_64-unknown-linux-gnu",
+									"wasmOpt": "wasm-opt version 130",
+									"wasm": {
+										"path": "target/kernel/impact-kernel.wasm",
+										"bytes": 1184213,
+										"sha256": "9c1e4a7b2d6f08e3a5c19b7d4f2e6a80c3d5b9e1f7a2c4d6e8b0f1a3c5d7e9b2"
+									},
+									"native": {
+										"path": "target/kernel/impact-kernel",
+										"bytes": 4917832,
+										"sha256": "5e0b7d19c4a6f283e1d5b0c9a7f64e2d8b3c1a95f0e7d62c4b8a3f1e9d05c7b6"
+									},
+									"sources": {
+										"crate": {
+											"bytes": 58214,
+											"files": [
+												{
+													"path": "kernel/src/lib.rs",
+													"bytes": 58214,
+													"sha256": "d4a81f6e0c39b25d7e1a6f4c8b0d3e9a57c2f1b8e6d0a4c93f7b5e2d1a8c6f04"
+												}
+											]
+										},
+										"reference": {
+											"bytes": 9120,
+											"files": [
+												{
+													"path": "kernel/reference/cases.json",
+													"bytes": 9120,
+													"sha256": "1b6e3d0a9f5c72e48d1a0b6c3f9e27d5a4c8b1e0f6d3a92c7e5b4f8d1a0c3e61"
+												}
+											]
+										}
+									}
+								}
+							},
+							{
+								"directory": "/opt/harness-kernel",
+								"wasm": "/opt/harness-kernel/impact-kernel.wasm",
+								"native": "/opt/harness-kernel/impact-kernel",
+								"build": {
+									"contract": "impact-kernel/1",
+									"rustc": "rustc 1.98.0",
+									"host": "aarch64-apple-darwin",
+									"wasmOpt": null,
+									"wasm": {
+										"path": "target/kernel/impact-kernel.wasm",
+										"bytes": 1192406,
+										"sha256": "7a3d0c9e1f8b6d24c5e0a7b93d2f6184e0b5c7a19d4e2f638b1a0c7d5f2e9a46"
+									},
+									"native": {
+										"path": "target/kernel/impact-kernel",
+										"bytes": 3761024,
+										"sha256": "0f4e8a2c9b7d1e35a6c0f4d82e9b3a71d5f8c0e26a1b9d47c3e7f5a08d2b6c19"
+									},
+									"sources": {
+										"crate": {
+											"bytes": 61877,
+											"files": [
+												{
+													"path": "kernel/src/lib.rs",
+													"bytes": 61877,
+													"sha256": "e2c9b5f10a7d3e864f1c2b9de7a0c5f368d4b1a2c9f0e7d53b8a2c6e1d5f4907"
+												}
+											]
+										},
+										"reference": {
+											"bytes": 9120,
+											"files": [
+												{
+													"path": "kernel/reference/cases.json",
+													"bytes": 9120,
+													"sha256": "c6a1e9f32d8b0c74f5e3a9d14b7c2e08a9d6f1b35e0c8a27d2b4f9e60c7a3d18"
+												}
+											]
+										}
+									}
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by new URL or fileURLToPath (ERR_INVALID_URL or ERR_INVALID_URL_SCHEME) when import.meta.url is missing or is not a file: URL. The beside candidates are built before HARNESS_KERNEL_DIR is checked, so this can throw even when the override is set."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by readFileSync when the selected build.json exists but cannot be read, for example when a directory is named build.json (EISDIR), permission is denied (EACCES), or the file is removed after the existence check (ENOENT). The Node error code is on the error's code property."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the selected build.json is not valid JSON, for example an empty or truncated file. The error is not caught, and no other candidate directory is tried."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
