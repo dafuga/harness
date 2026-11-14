@@ -392,6 +392,17 @@ any `setup` command. Here, `node_modules` is linked when present; the first setu
 runs `bun install --frozen-lockfile --backend=copyfile` with that link already in place. The
 `node_modules/` output permits files created or changed during setup. The link and install have
 separate configured roles; no measured comparison has established either one as redundant.
+The symlink still points into the checkout: an install can write through it and change the
+checkout's dependencies. `--backend=copyfile` controls Bun's package copying, not symlink
+isolation. Use an unlinked dependency directory when setup must not modify the checkout.
+
+`profiles` names shared check commands and `timeoutMs` defaults. A check selects one with
+`profile`; its own command or timeout overrides that default. Use `{target}` in shared
+commands so each inherited command runs its selected file. A command without `{target}`
+is allowed for one inherited check, but rejected when multiple checks would repeat it.
+For example, `"profiles": { "unit": { "command": "bun x vitest run {target}",
+"timeoutMs": 600000 } }` pairs with a check such as
+`{ "path": "test/example.test.ts", "profile": "unit" }`.
 
 The snapshot has to remain the exact commit while checks run and capture. It is compared with
 the commit after setup and after every check: a tracked file that changes or disappears fails,
@@ -1168,3 +1179,16 @@ Run `harness module add notes` and `harness module generate notes note Meeting`.
 `bun run dev` and the packaged `harness` executable use `src/cli/index.ts`, with command families loaded on demand. Root help uses lightweight metadata checked against the complete command registrations in the unit suite. CLI builds include the generated dynamic chunks; copy the complete `dist` tree when installing a build.
 
 The historical `src/index.ts` retains source exports and direct execution for compatibility. Importing it does not execute the CLI. New library consumers should use the documented package API (`src/lib` / `dist/api`) rather than a CLI entry. Importing the compatibility barrel still loads its exported dependency graph.
+
+### Browser error assertions
+
+Browser suites import `test` and `expect` from [test/support/browserTest.ts](test/support/browserTest.ts),
+which automatically watches the default context and fails unexpected `console.error` and
+`pageerror` events. Generated projects receive the same fixture at
+`tests/e2e/support/browserTest.ts`. Use `browserErrors.watch(otherContext)` before navigating
+any additional context, including Electron contexts. For a deliberate diagnostic, declare
+`browserErrors.expectError({ type: 'console', message: 'exact message', reason: 'why expected' })`
+before the action; use `type: 'pageerror'` for an exception. Missing expected diagnostics also
+fail. Direct consumers can call `browserErrorCollector()`, then `watch(context)` and
+`await finish(testInfo)` in teardown. The collector retains diagnostics as the
+`browser-errors` test attachment and, during evidence runs, `browser-errors.ndjson`.
