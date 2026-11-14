@@ -26,42 +26,144 @@
 				"name": "ApprovalButton.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "Entity providing category, identifier, latest version and contract hash. Approval requires a hash; pages, shells and components also require selected images. Functions use Plan wording."
+				"description": "The entity supplies its category, identifier, latest version, and contract hash for the button label, disabled state, and approval payload. A truthy contract hash is required; pages, layouts, and components are also blocked when the selected design has no images, while functions use Plan wording.",
+				"examples": [
+					{
+						"id": "desktop.component.approval-button",
+						"category": "components",
+						"kind": "component",
+						"title": "Approval button",
+						"summary": "Saves approval of the latest displayed plan or design with its exact contract and selected images.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": "active",
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": "v1",
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+						},
+						"relationships": [],
+						"versions": [
+							{
+								"version": "v1",
+								"createdAt": "2026-11-14T00:00:00.000Z",
+								"commit": null,
+								"generator": "codex",
+								"prompt": "Approval button preview",
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"images": [
+									{
+										"state": "generated",
+										"viewport": "desktop",
+										"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+										"bytes": 42816,
+										"option": "o1"
+									}
+								],
+								"approval": null,
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Minimal approval button preview",
+										"prompt": null,
+										"revisedPrompt": null,
+										"generator": "codex",
+										"imageHashes": [
+											"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+										]
+									}
+								]
+							}
+						],
+						"threads": [],
+						"history": [],
+						"sources": ["packages/desktop/src/components/shared-primitives/ApprovalButton.svelte"],
+						"size": {
+							"available": false,
+							"text": ""
+						},
+						"performance": {
+							"available": false,
+							"text": ""
+						}
+					}
+				]
 			},
 			{
 				"name": "ApprovalButton.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace providing writability, approval bridge and project context. Missing or nonwritable snapshot blocks approval. Refreshes the workspace after saving the decision."
+				"description": "The workspace store supplies the snapshot writability check, bridge approval method, project context, and refresh method. A missing or nonwritable snapshot blocks approval; failures from the attempted approval or refresh are caught and shown as an alert."
 			},
 			{
 				"name": "ApprovalButton.design",
 				"type": "DesignVersion",
 				"required": true,
-				"description": "Version to approve; must equal the entity’s latest version. Its selected image hashes are sent with the approval. Versions with options also send the selected option identifier."
+				"description": "The displayed design version must match entity.latestVersion for approval to be enabled. The selected images’ SHA-256 values are sent with the approval, and the selected option is included only when design.options is nonempty.",
+				"examples": [
+					{
+						"version": "v1",
+						"createdAt": "2026-11-14T00:00:00.000Z",
+						"commit": null,
+						"generator": "codex",
+						"prompt": "Approval button preview",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"images": [
+							{
+								"state": "generated",
+								"viewport": "desktop",
+								"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"bytes": 42816,
+								"option": "o1"
+							}
+						],
+						"approval": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Minimal approval button preview",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "codex",
+								"imageHashes": ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "ApprovalButton.approved",
 				"type": "boolean",
 				"required": true,
-				"description": "True disables approval and shows the approved-version label."
+				"description": "True disables the button and changes its label to the approved plan or design version; false leaves the regular Approve <version> label.",
+				"examples": [false, true]
 			},
 			{
 				"name": "ApprovalButton.option",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional selected option identifier, empty by default. Determines the images whose hashes are approved and is included when the design has options."
+				"description": "The optional string selects images through optionImages and defaults to the empty string. It is sent with the approval only when design.options is nonempty.",
+				"examples": ["", "o1"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ApprovalButton",
 				"type": "markup",
-				"description": "Approval button disabled for existing approval, an older version, missing contract hash or required images, a nonwritable workspace or an in-progress approval. Catches save/refresh failures as alerts and clears busy state afterward. Explains that approval saves a decision and only a Change request starts code work."
+				"description": "Renders an approval button and a note that approval saves the exact plan or design while code starts with a Change request; a caught approval or refresh failure appears as an alert. The button is disabled for a missing or nonwritable snapshot, absent contract hash, image-less page/layout/component, existing approval, in-progress approval, or a version different from latestVersion, and function entities use Plan wording while all other categories use Design wording."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
