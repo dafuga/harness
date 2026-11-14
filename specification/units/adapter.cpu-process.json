@@ -20,30 +20,43 @@
 			{
 				"name": "CpuProcessAdapter.sample",
 				"type": "Promise<CpuReading>",
-				"description": "CPU reading with monotonic sample time, aggregate CPU counters and classified process rows."
+				"description": "Resolves to a CPU reading with a monotonic timestamp from performance.now(), summed per-processor idle and total counters, the processor count, and process rows parsed from UTF-8 ps output. Sampling is available only on darwin and linux; ps collection has a 3-second timeout and 4 MiB output cap, and the promise rejects if ps fails or cpus() returns no processors.",
+				"examples": [
+					{
+						"at": 12345.6,
+						"cpu": {
+							"idle": 176000,
+							"total": 240000,
+							"cores": 4
+						},
+						"processes": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Unsupported CPU process platform",
 				"type": "thrown",
-				"description": "sample rejects platforms other than macOS and Linux",
-				"examples": ["Unsupported CPU process platform."]
+				"description": "sample throws Error('Unsupported CPU process platform.') before running ps when platform() is neither darwin nor linux."
 			},
 			{
 				"name": "CPU counters unavailable",
 				"type": "thrown",
-				"description": "sample rejects when the OS returns no CPU counters",
-				"examples": ["CPU counters unavailable."]
+				"description": "sample throws Error('CPU counters unavailable.') after the ps call when cpus() returns an empty list."
 			},
 			{
 				"name": "Bounded process-table command failure",
-				"type": "propagated",
-				"description": "the ps process-table command can fail to launch, exceed its deadline or output cap, or be aborted",
-				"examples": ["Command timed out.", "Command output limit exceeded."]
+				"type": "thrown",
+				"description": "sample propagates a rejection from the awaited BoundedCommandAdapter.checked call, which runs ps with a 3-second timeout, a 4 MiB output cap, and LC_ALL=C."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "sample throws Error('Unsupported CPU process platform.') when platform() is neither darwin nor linux, before running ps. It throws Error('CPU counters unavailable.') when cpus() returns an empty list, after ps completes."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CpuProcessAdapter.sample",
@@ -52,27 +65,40 @@
 					{
 						"name": "CpuProcessAdapter.sample",
 						"type": "Promise<CpuReading>",
-						"description": "CPU reading with monotonic sample time, aggregate CPU counters and classified process rows."
+						"description": "Resolves to a CPU reading with a monotonic timestamp from performance.now(), summed per-processor idle and total counters, the processor count, and process rows parsed from UTF-8 ps output. Sampling is available only on darwin and linux; ps collection has a 3-second timeout and 4 MiB output cap, and the promise rejects if ps fails or cpus() returns no processors.",
+						"examples": [
+							{
+								"at": 12345.6,
+								"cpu": {
+									"idle": 176000,
+									"total": 240000,
+									"cores": 4
+								},
+								"processes": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Unsupported CPU process platform",
 						"type": "thrown",
-						"description": "sample rejects platforms other than macOS and Linux",
-						"examples": ["Unsupported CPU process platform."]
+						"description": "sample throws Error('Unsupported CPU process platform.') before running ps when platform() is neither darwin nor linux."
 					},
 					{
 						"name": "CPU counters unavailable",
 						"type": "thrown",
-						"description": "sample rejects when the OS returns no CPU counters",
-						"examples": ["CPU counters unavailable."]
+						"description": "sample throws Error('CPU counters unavailable.') after the ps call when cpus() returns an empty list."
 					},
 					{
 						"name": "Bounded process-table command failure",
-						"type": "propagated",
-						"description": "the ps process-table command can fail to launch, exceed its deadline or output cap, or be aborted",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"type": "thrown",
+						"description": "sample propagates a rejection from the awaited BoundedCommandAdapter.checked call, which runs ps with a 3-second timeout, a 4 MiB output cap, and LC_ALL=C."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "sample throws Error('Unsupported CPU process platform.') when platform() is neither darwin nor linux, before running ps. It throws Error('CPU counters unavailable.') when cpus() returns an empty list, after ps completes."
 					}
 				],
 				"errorStatus": "declared"
