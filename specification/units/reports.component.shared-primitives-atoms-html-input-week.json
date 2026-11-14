@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "An optional Svelte snippet supplied as children and separated from the other props before they are spread onto the element. The input is empty, so this snippet is not rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputWeek",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "A native input element receives the remaining props through the attribute spread, followed by the fixed type=\"week\" attribute. The element has no wrapper and renders no child content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
