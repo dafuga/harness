@@ -18,42 +18,66 @@
 				"name": "resourceCommand.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Executable followed by its arguments; the command must be nonempty."
+				"description": "The command and its arguments: element 0 is the executable, run in the current working directory (process.cwd()), and the rest are passed to it as its arguments. An empty array rejects with 'A managed command is required after --' before anything starts.",
+				"examples": [
+					["npm", "test"],
+					["node", "scripts/verify.mjs", "--strict"],
+					["pnpm", "exec", "tsc", "--noEmit"]
+				]
 			},
 			{
 				"name": "resourceCommand.context",
 				"type": "ResourceContext",
 				"required": true,
-				"description": "Admitted lease, bounded environment and process-tracking callback passed to the owned command."
+				"description": "The admitted resource context: `env` is the environment the command runs with and also selects the resources home through HARNESS_RESOURCES_HOME; `id` names the log file `<id>.log` in that home's logs directory; `track(pid)` is called with the process id once the command has spawned. If `track` throws, the command is halted and the call resolves to 1 instead of rejecting with that error."
 			},
 			{
 				"name": "resourceCommand.signal",
 				"type": "AbortSignal",
 				"required": false,
-				"description": "Optional cancellation signal; cancellation preserves cleanup and rejects the operation."
+				"default": "undefined",
+				"description": "Optional cancellation signal: if it is aborted while the command runs, the command is halted and cleaned up, and the call then rejects with the signal's abort reason; a signal that is already aborted rejects before the command starts. Without it, the command runs until it exits or reaches timeoutMs."
 			},
 			{
 				"name": "resourceCommand.timeoutMs",
 				"type": "number",
 				"required": false,
 				"default": 21600000,
-				"description": "Positive command execution limit in milliseconds, bounded by the native timer range."
+				"description": "Time limit for the command in milliseconds, defaulting to 21600000 (six hours); when it elapses, the command and what it started are stopped and the call resolves to a nonzero status. It must be a finite number above 0 and at most 2147483647 (the native timer limit), otherwise the call rejects with 'Invalid managed command timeout' before anything starts.",
+				"examples": [21600000, 600000, 30000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceCommand",
 				"type": "Promise<number>",
-				"description": "Command exit status; failed cleanup or timeout never becomes a successful zero."
+				"description": "Resolves to 0 only when the command exits with 0, does not time out, and its cleanup leaves no surviving process and no unknown state; otherwise it resolves to the command's nonzero exit code, or to 1 when that code is 0 or null.",
+				"examples": [0, 1, 2]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid timeout or command, cancellation and owned-runner failures reject or preserve a nonzero result."
+				"description": "Rejects with an Error whose message is 'Invalid managed command timeout', before anything starts, when timeoutMs is not a finite number, is 0 or less, or is above 2147483647."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with an Error whose message is 'A managed command is required after --', before anything starts, when args is empty."
+			},
+			{
+				"name": "signal.reason",
+				"type": "thrown",
+				"description": "Rejects with the signal's abort reason, unchanged, when the signal is aborted: before anything starts if it was already aborted, otherwise after cleanup has run and the log is written."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with a non-abort error from runIsolated: a synchronous error from spawning the `sh` wrapper, such as an invalid argument, before the command starts, or a file-system error from creating or writing the log after the command has ended. In both cases no exit status is returned."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resourceCommand",
@@ -62,42 +86,66 @@
 						"name": "resourceCommand.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Executable followed by its arguments; the command must be nonempty."
+						"description": "The command and its arguments: element 0 is the executable, run in the current working directory (process.cwd()), and the rest are passed to it as its arguments. An empty array rejects with 'A managed command is required after --' before anything starts.",
+						"examples": [
+							["npm", "test"],
+							["node", "scripts/verify.mjs", "--strict"],
+							["pnpm", "exec", "tsc", "--noEmit"]
+						]
 					},
 					{
 						"name": "resourceCommand.context",
 						"type": "ResourceContext",
 						"required": true,
-						"description": "Admitted lease, bounded environment and process-tracking callback passed to the owned command."
+						"description": "The admitted resource context: `env` is the environment the command runs with and also selects the resources home through HARNESS_RESOURCES_HOME; `id` names the log file `<id>.log` in that home's logs directory; `track(pid)` is called with the process id once the command has spawned. If `track` throws, the command is halted and the call resolves to 1 instead of rejecting with that error."
 					},
 					{
 						"name": "resourceCommand.signal",
 						"type": "AbortSignal",
 						"required": false,
-						"description": "Optional cancellation signal; cancellation preserves cleanup and rejects the operation."
+						"default": "undefined",
+						"description": "Optional cancellation signal: if it is aborted while the command runs, the command is halted and cleaned up, and the call then rejects with the signal's abort reason; a signal that is already aborted rejects before the command starts. Without it, the command runs until it exits or reaches timeoutMs."
 					},
 					{
 						"name": "resourceCommand.timeoutMs",
 						"type": "number",
 						"required": false,
 						"default": 21600000,
-						"description": "Positive command execution limit in milliseconds, bounded by the native timer range."
+						"description": "Time limit for the command in milliseconds, defaulting to 21600000 (six hours); when it elapses, the command and what it started are stopped and the call resolves to a nonzero status. It must be a finite number above 0 and at most 2147483647 (the native timer limit), otherwise the call rejects with 'Invalid managed command timeout' before anything starts.",
+						"examples": [21600000, 600000, 30000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceCommand",
 						"type": "Promise<number>",
-						"description": "Command exit status; failed cleanup or timeout never becomes a successful zero."
+						"description": "Resolves to 0 only when the command exits with 0, does not time out, and its cleanup leaves no surviving process and no unknown state; otherwise it resolves to the command's nonzero exit code, or to 1 when that code is 0 or null.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with an Error whose message is 'Invalid managed command timeout', before anything starts, when timeoutMs is not a finite number, is 0 or less, or is above 2147483647."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with an Error whose message is 'A managed command is required after --', before anything starts, when args is empty."
+					},
+					{
+						"name": "signal.reason",
+						"type": "thrown",
+						"description": "Rejects with the signal's abort reason, unchanged, when the signal is aborted: before anything starts if it was already aborted, otherwise after cleanup has run and the log is written."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with a non-abort error from runIsolated: a synchronous error from spawning the `sh` wrapper, such as an invalid argument, before the command starts, or a file-system error from creating or writing the log after the command has ended. In both cases no exit status is returned."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
