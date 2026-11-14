@@ -18,23 +18,44 @@
 				"name": "planningArtifactPaths.root",
 				"type": "string | undefined",
 				"required": true,
-				"description": "Repository root used to read plan and optional unit manifests; undefined returns an empty set."
+				"description": "Repository root directory from which each listed plan.json under src/<category directory>/ is read, and from which the listed specification/units manifest of any plan whose unitId is not category.slug is read. Undefined or an empty string returns an empty set before any file is read.",
+				"examples": ["/workspace/checkout-service", "/home/dev/src/platform-web"]
 			},
 			{
 				"name": "planningArtifactPaths.files",
 				"type": "string[]",
 				"required": true,
-				"description": "Repository-relative paths to examine for supported plan, design, approval and thread artifacts."
+				"description": "Repository-relative, forward-slash paths that are the only candidates examined: each entry matching src/<pages|shells|layouts|components|functions|configs|services>/<directory>/plan.json is validated, and an artifact is accepted only if it is an entry here under a validated plan directory. Artifacts not listed here are never accepted, even when they exist on disk.",
+				"examples": [
+					[
+						"src/functions/planning-artifact-paths/plan.json",
+						"src/functions/planning-artifact-paths/designs/v001/design.json",
+						"src/functions/planning-artifact-paths/designs/v001/prompt.md",
+						"src/functions/planning-artifact-paths/designs/v001/notes.md"
+					],
+					[
+						"src/components/evidence-grid/plan.json",
+						"specification/units/reports.component.evidence-grid.json",
+						"src/components/evidence-grid/threads/3f1c9a2e-6b7d-4e8f-9a0b-1c2d3e4f5a6b/messages.ndjson",
+						"src/components/evidence-grid/designs/v002/hero-desktop.png"
+					],
+					[
+						"src/functions/planning-artifact-paths/plan.json",
+						"src/functions/planning-artifact-paths/designs/approvals/0b9e4c1a-2d3f-4a5b-8c6d-7e8f9a0b1c2d.json",
+						"src/services/billing-ledger/README.md"
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planningArtifactPaths",
 				"type": "Set<string>",
-				"description": "Set of accepted artifact paths and ancestor directory paths ending in slash. Invalid plans, mismatched locations/hashes and unrelated files contribute nothing; no files are changed."
+				"description": "Set of accepted artifact paths, exactly as they appear in files, plus each ancestor directory of an accepted path ending in '/' (such as 'src/' and 'src/components/evidence-grid/' for 'src/components/evidence-grid/plan.json'). Plans that fail schema, location, contract-hash or unit-manifest checks and entries that are not supported artifacts under a validated plan directory contribute nothing; the function only reads files and changes none of them."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "planningArtifactPaths",
@@ -43,24 +64,44 @@
 						"name": "planningArtifactPaths.root",
 						"type": "string | undefined",
 						"required": true,
-						"description": "Repository root used to read plan and optional unit manifests; undefined returns an empty set."
+						"description": "Repository root directory from which each listed plan.json under src/<category directory>/ is read, and from which the listed specification/units manifest of any plan whose unitId is not category.slug is read. Undefined or an empty string returns an empty set before any file is read.",
+						"examples": ["/workspace/checkout-service", "/home/dev/src/platform-web"]
 					},
 					{
 						"name": "planningArtifactPaths.files",
 						"type": "string[]",
 						"required": true,
-						"description": "Repository-relative paths to examine for supported plan, design, approval and thread artifacts."
+						"description": "Repository-relative, forward-slash paths that are the only candidates examined: each entry matching src/<pages|shells|layouts|components|functions|configs|services>/<directory>/plan.json is validated, and an artifact is accepted only if it is an entry here under a validated plan directory. Artifacts not listed here are never accepted, even when they exist on disk.",
+						"examples": [
+							[
+								"src/functions/planning-artifact-paths/plan.json",
+								"src/functions/planning-artifact-paths/designs/v001/design.json",
+								"src/functions/planning-artifact-paths/designs/v001/prompt.md",
+								"src/functions/planning-artifact-paths/designs/v001/notes.md"
+							],
+							[
+								"src/components/evidence-grid/plan.json",
+								"specification/units/reports.component.evidence-grid.json",
+								"src/components/evidence-grid/threads/3f1c9a2e-6b7d-4e8f-9a0b-1c2d3e4f5a6b/messages.ndjson",
+								"src/components/evidence-grid/designs/v002/hero-desktop.png"
+							],
+							[
+								"src/functions/planning-artifact-paths/plan.json",
+								"src/functions/planning-artifact-paths/designs/approvals/0b9e4c1a-2d3f-4a5b-8c6d-7e8f9a0b1c2d.json",
+								"src/services/billing-ledger/README.md"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planningArtifactPaths",
 						"type": "Set<string>",
-						"description": "Set of accepted artifact paths and ancestor directory paths ending in slash. Invalid plans, mismatched locations/hashes and unrelated files contribute nothing; no files are changed."
+						"description": "Set of accepted artifact paths, exactly as they appear in files, plus each ancestor directory of an accepted path ending in '/' (such as 'src/' and 'src/components/evidence-grid/' for 'src/components/evidence-grid/plan.json'). Plans that fail schema, location, contract-hash or unit-manifest checks and entries that are not supported artifacts under a validated plan directory contribute nothing; the function only reads files and changes none of them."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
