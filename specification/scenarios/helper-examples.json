@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "helper-examples",
+	"title": "Recorded calls of each casing helper: what it was given and what it returned",
+	"kind": "headless",
+	"units": ["function.case"],
+	"states": [
+		{
+			"id": "function-case-to-kebab-case",
+			"title": "toKebabCase called for separated words, a case boundary and input with no words",
+			"coverage": "required"
+		},
+		{
+			"id": "function-case-to-pascal-case",
+			"title": "toPascalCase called for separated words, a case boundary and input with no words",
+			"coverage": "required"
+		},
+		{
+			"id": "function-case-to-camel-case",
+			"title": "toCamelCase called for separated words, a case boundary and input with no words",
+			"coverage": "required"
+		},
+		{
+			"id": "function-case-to-snake-case",
+			"title": "toSnakeCase called for separated words, a case boundary and input with no words",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "helper-examples",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/helper-examples.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "helper-examples-output",
+			"kind": "output",
+			"states": [
+				"function-case-to-kebab-case",
+				"function-case-to-pascal-case",
+				"function-case-to-camel-case",
+				"function-case-to-snake-case"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "helper-examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"function-case-to-kebab-case",
+				"function-case-to-pascal-case",
+				"function-case-to-camel-case",
+				"function-case-to-snake-case"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "helper-examples-cases",
+			"kind": "trace",
+			"states": [
+				"function-case-to-kebab-case",
+				"function-case-to-pascal-case",
+				"function-case-to-camel-case",
+				"function-case-to-snake-case"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

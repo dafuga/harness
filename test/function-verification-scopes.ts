@@ -10,5 +10,17 @@ export const functionVerificationScopes: Record<string, VerificationScope> = {
 			}
 		},
 		playwright: {}
+	},
+	'helper-examples': {
+		package: 'root',
+		vitest: {
+			'test/helper-examples.test.ts': {
+				'toKebabCase returns each declared example': 'function-case-to-kebab-case',
+				'toPascalCase returns each declared example': 'function-case-to-pascal-case',
+				'toCamelCase returns each declared example': 'function-case-to-camel-case',
+				'toSnakeCase returns each declared example': 'function-case-to-snake-case'
+			}
+		},
+		playwright: {}
 	}
 };
