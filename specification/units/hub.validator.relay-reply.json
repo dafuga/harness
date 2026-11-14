@@ -22,50 +22,168 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RelayReplyValidator.registered.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The raw relay reply to a host registration, not yet trusted. It must be a non-array object whose `hostId` equals the `hostId` argument, with a safe non-negative integer `generation` and a non-empty string `registeredAt`; any other shape throws, and every field other than those three is dropped.",
+				"examples": [
+					{
+						"hostId": "3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+						"generation": 2,
+						"registeredAt": "2026-11-10T08:15:00.000Z"
+					},
+					{
+						"hostId": "b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9",
+						"generation": 1,
+						"registeredAt": "2026-11-02T17:42:09.518Z"
+					}
+				]
 			},
 			{
 				"name": "RelayReplyValidator.registered.hostId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The host id the registration was made for, which the reply's `hostId` must equal exactly, with no trimming or case folding. The validator does not check its format; the relay's own host ids are 40 lowercase hex characters.",
+				"examples": [
+					"3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+					"b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9"
+				]
 			},
 			{
 				"name": "RelayReplyValidator.summary.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The raw relay reply describing one remote host, before it is trusted. It must be a non-array object whose `hostId` equals the `hostId` argument, whose `devices` is an array, and whose `name` and `registeredAt` are non-empty strings, `online` is a boolean and `generation` is a safe non-negative integer, with each device entry an object carrying a non-empty `deviceId` and `createdAt`, a boolean `online` and a `lastSeenAt` that is null or a non-empty string; any other shape throws, and fields not listed here are dropped.",
+				"examples": [
+					{
+						"hostId": "3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+						"name": "Studio Mac",
+						"online": true,
+						"generation": 2,
+						"registeredAt": "2026-11-10T08:15:00.000Z",
+						"devices": [
+							{
+								"deviceId": "5d0c8e2f71a94b36c0e8d52f19a7b4c3e6f10d28",
+								"online": true,
+								"createdAt": "2026-11-10T09:02:31.744Z",
+								"lastSeenAt": "2026-11-13T21:06:44.207Z"
+							},
+							{
+								"deviceId": "e18a6c03d7f2b94e5a0c83d16f7b29e4a05c1d6b",
+								"online": false,
+								"createdAt": "2026-11-11T12:30:05.090Z",
+								"lastSeenAt": null
+							}
+						]
+					},
+					{
+						"hostId": "b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9",
+						"name": "Build Server",
+						"online": false,
+						"generation": 1,
+						"registeredAt": "2026-11-02T17:42:09.518Z",
+						"devices": []
+					}
+				]
 			},
 			{
 				"name": "RelayReplyValidator.summary.hostId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The host id being summarized, which the reply's `hostId` must equal exactly, with no trimming or case folding. It is copied unchanged into the result, and the validator does not check its format; the relay's own host ids are 40 lowercase hex characters.",
+				"examples": [
+					"3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+					"b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9"
+				]
 			},
 			{
 				"name": "RelayReplyValidator.done.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The raw relay reply to a host unregister or device revoke, before it is trusted. It must be a non-array object whose `ok` is exactly `true`; any other value throws, and every field other than `ok` is dropped.",
+				"examples": [
+					{
+						"ok": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RelayReplyValidator.registered",
-				"type": "RelayRegistered"
+				"type": "RelayRegistered",
+				"description": "The validated registration result for one host, rebuilt from only `hostId`, `generation` and `registeredAt`. `hostId` is the id the caller asked for, `generation` is a safe non-negative integer, and `registeredAt` is a non-empty string that the relay writes as an ISO 8601 timestamp.",
+				"examples": [
+					{
+						"hostId": "3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+						"generation": 2,
+						"registeredAt": "2026-11-10T08:15:00.000Z"
+					},
+					{
+						"hostId": "b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9",
+						"generation": 1,
+						"registeredAt": "2026-11-02T17:42:09.518Z"
+					}
+				]
 			},
 			{
 				"name": "RelayReplyValidator.summary",
-				"type": "RemoteHostSummary"
+				"type": "RemoteHostSummary",
+				"description": "The validated summary of one remote host, rebuilt field by field, with each device reduced to `deviceId`, `online`, `createdAt` and `lastSeenAt`. `devices` may be empty, and `lastSeenAt` is null for a device the relay has not yet recorded as seen, and otherwise a non-empty string that the relay writes as an ISO 8601 timestamp.",
+				"examples": [
+					{
+						"hostId": "3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+						"name": "Studio Mac",
+						"online": true,
+						"generation": 2,
+						"registeredAt": "2026-11-10T08:15:00.000Z",
+						"devices": [
+							{
+								"deviceId": "5d0c8e2f71a94b36c0e8d52f19a7b4c3e6f10d28",
+								"online": true,
+								"createdAt": "2026-11-10T09:02:31.744Z",
+								"lastSeenAt": "2026-11-13T21:06:44.207Z"
+							},
+							{
+								"deviceId": "e18a6c03d7f2b94e5a0c83d16f7b29e4a05c1d6b",
+								"online": false,
+								"createdAt": "2026-11-11T12:30:05.090Z",
+								"lastSeenAt": null
+							}
+						]
+					},
+					{
+						"hostId": "b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9",
+						"name": "Build Server",
+						"online": false,
+						"generation": 1,
+						"registeredAt": "2026-11-02T17:42:09.518Z",
+						"devices": []
+					}
+				]
 			},
 			{
 				"name": "RelayReplyValidator.done",
-				"type": "{ ok: true }"
+				"type": "{ ok: true }",
+				"description": "The acknowledgement returned once the relay reply has passed the `ok` check, always exactly `{ ok: true }` with no field copied from the reply.",
+				"examples": [
+					{
+						"ok": true
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by `hubFail('unavailable')` whenever a check in any of the three operations fails, as an `Error` with the message 'Harness artifact unavailable' and `code` set to 'unavailable'. The error does not say which field failed."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RelayReplyValidator.registered",
@@ -73,22 +191,59 @@
 					{
 						"name": "RelayReplyValidator.registered.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The raw relay reply to a host registration, not yet trusted. It must be a non-array object whose `hostId` equals the `hostId` argument, with a safe non-negative integer `generation` and a non-empty string `registeredAt`; any other shape throws, and every field other than those three is dropped.",
+						"examples": [
+							{
+								"hostId": "3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+								"generation": 2,
+								"registeredAt": "2026-11-10T08:15:00.000Z"
+							},
+							{
+								"hostId": "b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9",
+								"generation": 1,
+								"registeredAt": "2026-11-02T17:42:09.518Z"
+							}
+						]
 					},
 					{
 						"name": "RelayReplyValidator.registered.hostId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The host id the registration was made for, which the reply's `hostId` must equal exactly, with no trimming or case folding. The validator does not check its format; the relay's own host ids are 40 lowercase hex characters.",
+						"examples": [
+							"3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+							"b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayReplyValidator.registered",
-						"type": "RelayRegistered"
+						"type": "RelayRegistered",
+						"description": "The validated registration result for one host, rebuilt from only `hostId`, `generation` and `registeredAt`. `hostId` is the id the caller asked for, `generation` is a safe non-negative integer, and `registeredAt` is a non-empty string that the relay writes as an ISO 8601 timestamp.",
+						"examples": [
+							{
+								"hostId": "3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+								"generation": 2,
+								"registeredAt": "2026-11-10T08:15:00.000Z"
+							},
+							{
+								"hostId": "b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9",
+								"generation": 1,
+								"registeredAt": "2026-11-02T17:42:09.518Z"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with `code` 'unavailable' when the value is not a non-array object, when its `hostId` differs from the `hostId` argument, when `generation` is not a safe non-negative integer, or when `registeredAt` is not a non-empty string."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RelayReplyValidator.summary",
@@ -96,22 +251,97 @@
 					{
 						"name": "RelayReplyValidator.summary.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The raw relay reply describing one remote host, before it is trusted. It must be a non-array object whose `hostId` equals the `hostId` argument, whose `devices` is an array, and whose `name` and `registeredAt` are non-empty strings, `online` is a boolean and `generation` is a safe non-negative integer, with each device entry an object carrying a non-empty `deviceId` and `createdAt`, a boolean `online` and a `lastSeenAt` that is null or a non-empty string; any other shape throws, and fields not listed here are dropped.",
+						"examples": [
+							{
+								"hostId": "3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+								"name": "Studio Mac",
+								"online": true,
+								"generation": 2,
+								"registeredAt": "2026-11-10T08:15:00.000Z",
+								"devices": [
+									{
+										"deviceId": "5d0c8e2f71a94b36c0e8d52f19a7b4c3e6f10d28",
+										"online": true,
+										"createdAt": "2026-11-10T09:02:31.744Z",
+										"lastSeenAt": "2026-11-13T21:06:44.207Z"
+									},
+									{
+										"deviceId": "e18a6c03d7f2b94e5a0c83d16f7b29e4a05c1d6b",
+										"online": false,
+										"createdAt": "2026-11-11T12:30:05.090Z",
+										"lastSeenAt": null
+									}
+								]
+							},
+							{
+								"hostId": "b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9",
+								"name": "Build Server",
+								"online": false,
+								"generation": 1,
+								"registeredAt": "2026-11-02T17:42:09.518Z",
+								"devices": []
+							}
+						]
 					},
 					{
 						"name": "RelayReplyValidator.summary.hostId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The host id being summarized, which the reply's `hostId` must equal exactly, with no trimming or case folding. It is copied unchanged into the result, and the validator does not check its format; the relay's own host ids are 40 lowercase hex characters.",
+						"examples": [
+							"3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+							"b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayReplyValidator.summary",
-						"type": "RemoteHostSummary"
+						"type": "RemoteHostSummary",
+						"description": "The validated summary of one remote host, rebuilt field by field, with each device reduced to `deviceId`, `online`, `createdAt` and `lastSeenAt`. `devices` may be empty, and `lastSeenAt` is null for a device the relay has not yet recorded as seen, and otherwise a non-empty string that the relay writes as an ISO 8601 timestamp.",
+						"examples": [
+							{
+								"hostId": "3e9a71c04d2b58f6a1c7e90d4b3f20a8c5d61e7f",
+								"name": "Studio Mac",
+								"online": true,
+								"generation": 2,
+								"registeredAt": "2026-11-10T08:15:00.000Z",
+								"devices": [
+									{
+										"deviceId": "5d0c8e2f71a94b36c0e8d52f19a7b4c3e6f10d28",
+										"online": true,
+										"createdAt": "2026-11-10T09:02:31.744Z",
+										"lastSeenAt": "2026-11-13T21:06:44.207Z"
+									},
+									{
+										"deviceId": "e18a6c03d7f2b94e5a0c83d16f7b29e4a05c1d6b",
+										"online": false,
+										"createdAt": "2026-11-11T12:30:05.090Z",
+										"lastSeenAt": null
+									}
+								]
+							},
+							{
+								"hostId": "b72f0d9e4a1c86f35e20d7b9a4c1f08e6d3a52b9",
+								"name": "Build Server",
+								"online": false,
+								"generation": 1,
+								"registeredAt": "2026-11-02T17:42:09.518Z",
+								"devices": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with `code` 'unavailable' when the value is not a non-array object, when its `hostId` differs from the `hostId` argument, when `devices` is not an array, or when `name`, `online`, `generation`, `registeredAt` or any device entry fails its check."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RelayReplyValidator.done",
@@ -119,17 +349,35 @@
 					{
 						"name": "RelayReplyValidator.done.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The raw relay reply to a host unregister or device revoke, before it is trusted. It must be a non-array object whose `ok` is exactly `true`; any other value throws, and every field other than `ok` is dropped.",
+						"examples": [
+							{
+								"ok": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayReplyValidator.done",
-						"type": "{ ok: true }"
+						"type": "{ ok: true }",
+						"description": "The acknowledgement returned once the relay reply has passed the `ok` check, always exactly `{ ok: true }` with no field copied from the reply.",
+						"examples": [
+							{
+								"ok": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with `code` 'unavailable' when the value is not a non-array object or when its `ok` is not exactly `true`."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
