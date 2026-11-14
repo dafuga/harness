@@ -36,72 +36,242 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GithubResponseValidator.userToken.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An unknown GitHub user-token response payload. It matters when extracting OAuth token fields; parsing returns null unless the value is a non-array object without an error key, access_token matches the 1–4096-character token pattern, and token_type lowercases to bearer.",
+				"examples": [
+					{
+						"access_token": "ghu_example1234567890",
+						"token_type": "bearer",
+						"expires_in": 28800,
+						"refresh_token": "ghr_example1234567890",
+						"refresh_token_expires_in": 518400
+					}
+				]
 			},
 			{
 				"name": "GithubResponseValidator.user.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An unknown GitHub user response payload. It matters when resolving the authenticated user; the validator accepts only a non-array object with a positive safe-integer id and a login matching the 1–100-character ASCII letters, digits, underscore, or hyphen pattern with an optional [bot] suffix, otherwise it returns null.",
+				"examples": [
+					{
+						"id": 583231,
+						"login": "octocat"
+					}
+				]
 			},
 			{
 				"name": "GithubResponseValidator.repository.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An unknown GitHub repository payload. It matters when extracting repository identity and access; it requires a positive safe-integer id, boolean private, owner.login and name within their patterns, and rejects names made only of dots. The returned admin flag is true only when permissions.admin is exactly true.",
+				"examples": [
+					{
+						"id": 1296269,
+						"private": false,
+						"owner": {
+							"login": "octocat"
+						},
+						"name": "hello-world",
+						"permissions": {
+							"admin": true
+						}
+					}
+				]
 			},
 			{
 				"name": "GithubResponseValidator.installations.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An unknown GitHub App installations response. It matters when listing matching active installations; the validator requires an installations array, keeps object rows whose app_id strictly equals the supplied appId and whose suspended_at is null or absent, collects only positive safe-integer IDs, and uses positive safe-integer total_count or the input array length as total.",
+				"examples": [
+					{
+						"total_count": 1,
+						"installations": [
+							{
+								"app_id": 7654321,
+								"suspended_at": null,
+								"id": 12345678
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "GithubResponseValidator.installations.appId",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The GitHub App numeric ID used to select installation rows. It matters only in the strict row.app_id === appId comparison; the method does not validate that the value is positive or integral.",
+				"examples": [7654321]
 			},
 			{
 				"name": "GithubResponseValidator.repositories.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An unknown GitHub repositories response payload. It matters when converting a repository page; the validator requires a repositories array, drops entries that fail repository validation, and sets total from a positive safe-integer total_count or the original array length.",
+				"examples": [
+					{
+						"total_count": 1,
+						"repositories": [
+							{
+								"id": 1296269,
+								"private": false,
+								"owner": {
+									"login": "octocat"
+								},
+								"name": "hello-world",
+								"permissions": {
+									"admin": true
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "GithubResponseValidator.installationGrant.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An unknown GitHub App installation-token response payload. It matters when parsing an installation grant; it requires a valid token, an object whose permission values are strings, a parseable expires_at, and a repositories array where every entry passes repository validation, otherwise it returns null.",
+				"examples": [
+					{
+						"token": "ghs_example1234567890",
+						"expires_at": "2026-12-01T12:00:00Z",
+						"permissions": {
+							"contents": "read",
+							"metadata": "read"
+						},
+						"repositories": [
+							{
+								"id": 1296269,
+								"private": false,
+								"owner": {
+									"login": "octocat"
+								},
+								"name": "hello-world",
+								"permissions": {
+									"admin": true
+								}
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GithubResponseValidator.userToken",
-				"type": "GithubUserToken | null"
+				"type": "GithubUserToken | null",
+				"description": "The normalized access and refresh token fields returned from a valid user-token payload. Expiration values are positive safe integers or null, and refreshToken is a valid token or null; invalid required token fields make the result null.",
+				"examples": [
+					{
+						"accessToken": "ghu_example1234567890",
+						"expiresIn": 28800,
+						"refreshToken": "ghr_example1234567890",
+						"refreshExpiresIn": 518400
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubResponseValidator.user",
-				"type": "GithubUser | null"
+				"type": "GithubUser | null",
+				"description": "The validated GitHub user ID and login. The ID is a positive safe integer and the login follows the validator's ASCII login pattern; the result is null when either required field is invalid.",
+				"examples": [
+					{
+						"id": 583231,
+						"login": "octocat"
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubResponseValidator.repository",
-				"type": "GithubRepository | null"
+				"type": "GithubRepository | null",
+				"description": "The validated repository ID, owner login, name, privacy flag, and derived admin flag. The ID must be a positive safe integer, owner and name must match their patterns, and admin is true only for a literal permissions.admin value of true; invalid required fields yield null.",
+				"examples": [
+					{
+						"id": 1296269,
+						"owner": "octocat",
+						"name": "hello-world",
+						"private": false,
+						"admin": true
+					},
+					{
+						"id": 1296269,
+						"owner": "octocat",
+						"name": "hello-world",
+						"private": false,
+						"admin": false
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubResponseValidator.installations",
-				"type": "InstallationList | null"
+				"type": "InstallationList | null",
+				"description": "The IDs of matching, unsuspended installation rows and the reported total. IDs include only positive safe integers, while total uses a positive safe-integer total_count or falls back to the input installations array length; invalid top-level payloads yield null.",
+				"examples": [
+					{
+						"ids": [12345678],
+						"total": 1
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubResponseValidator.repositories",
-				"type": "RepositoryPage | null"
+				"type": "RepositoryPage | null",
+				"description": "The validated repositories and reported total from a GitHub repositories response. Invalid repository entries are omitted and total uses a positive safe-integer total_count or falls back to the original array length; an invalid top-level payload yields null.",
+				"examples": [
+					{
+						"repositories": [
+							{
+								"id": 1296269,
+								"owner": "octocat",
+								"name": "hello-world",
+								"private": false,
+								"admin": true
+							}
+						],
+						"total": 1
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubResponseValidator.installationGrant",
-				"type": "InstallationGrant | null"
+				"type": "InstallationGrant | null",
+				"description": "The parsed installation token, its expiration time in milliseconds since the Unix epoch, string-valued permissions, and validated repositories. The token and date must be valid and every repository entry must validate, otherwise the result is null.",
+				"examples": [
+					{
+						"token": "ghs_example1234567890",
+						"expiresAt": 1796083200000,
+						"permissions": {
+							"contents": "read",
+							"metadata": "read"
+						},
+						"repositories": [
+							{
+								"id": 1296269,
+								"owner": "octocat",
+								"name": "hello-world",
+								"private": false,
+								"admin": true
+							}
+						]
+					},
+					null
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "GithubResponseValidator.userToken",
@@ -109,17 +279,37 @@
 					{
 						"name": "GithubResponseValidator.userToken.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An unknown GitHub user-token response payload. It matters when extracting OAuth token fields; parsing returns null unless the value is a non-array object without an error key, access_token matches the 1–4096-character token pattern, and token_type lowercases to bearer.",
+						"examples": [
+							{
+								"access_token": "ghu_example1234567890",
+								"token_type": "bearer",
+								"expires_in": 28800,
+								"refresh_token": "ghr_example1234567890",
+								"refresh_token_expires_in": 518400
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubResponseValidator.userToken",
-						"type": "GithubUserToken | null"
+						"type": "GithubUserToken | null",
+						"description": "The normalized access and refresh token fields returned from a valid user-token payload. Expiration values are positive safe integers or null, and refreshToken is a valid token or null; invalid required token fields make the result null.",
+						"examples": [
+							{
+								"accessToken": "ghu_example1234567890",
+								"expiresIn": 28800,
+								"refreshToken": "ghr_example1234567890",
+								"refreshExpiresIn": 518400
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubResponseValidator.user",
@@ -127,17 +317,32 @@
 					{
 						"name": "GithubResponseValidator.user.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An unknown GitHub user response payload. It matters when resolving the authenticated user; the validator accepts only a non-array object with a positive safe-integer id and a login matching the 1–100-character ASCII letters, digits, underscore, or hyphen pattern with an optional [bot] suffix, otherwise it returns null.",
+						"examples": [
+							{
+								"id": 583231,
+								"login": "octocat"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubResponseValidator.user",
-						"type": "GithubUser | null"
+						"type": "GithubUser | null",
+						"description": "The validated GitHub user ID and login. The ID is a positive safe integer and the login follows the validator's ASCII login pattern; the result is null when either required field is invalid.",
+						"examples": [
+							{
+								"id": 583231,
+								"login": "octocat"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubResponseValidator.repository",
@@ -145,17 +350,49 @@
 					{
 						"name": "GithubResponseValidator.repository.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An unknown GitHub repository payload. It matters when extracting repository identity and access; it requires a positive safe-integer id, boolean private, owner.login and name within their patterns, and rejects names made only of dots. The returned admin flag is true only when permissions.admin is exactly true.",
+						"examples": [
+							{
+								"id": 1296269,
+								"private": false,
+								"owner": {
+									"login": "octocat"
+								},
+								"name": "hello-world",
+								"permissions": {
+									"admin": true
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubResponseValidator.repository",
-						"type": "GithubRepository | null"
+						"type": "GithubRepository | null",
+						"description": "The validated repository ID, owner login, name, privacy flag, and derived admin flag. The ID must be a positive safe integer, owner and name must match their patterns, and admin is true only for a literal permissions.admin value of true; invalid required fields yield null.",
+						"examples": [
+							{
+								"id": 1296269,
+								"owner": "octocat",
+								"name": "hello-world",
+								"private": false,
+								"admin": true
+							},
+							{
+								"id": 1296269,
+								"owner": "octocat",
+								"name": "hello-world",
+								"private": false,
+								"admin": false
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubResponseValidator.installations",
@@ -163,22 +400,45 @@
 					{
 						"name": "GithubResponseValidator.installations.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An unknown GitHub App installations response. It matters when listing matching active installations; the validator requires an installations array, keeps object rows whose app_id strictly equals the supplied appId and whose suspended_at is null or absent, collects only positive safe-integer IDs, and uses positive safe-integer total_count or the input array length as total.",
+						"examples": [
+							{
+								"total_count": 1,
+								"installations": [
+									{
+										"app_id": 7654321,
+										"suspended_at": null,
+										"id": 12345678
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "GithubResponseValidator.installations.appId",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The GitHub App numeric ID used to select installation rows. It matters only in the strict row.app_id === appId comparison; the method does not validate that the value is positive or integral.",
+						"examples": [7654321]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubResponseValidator.installations",
-						"type": "InstallationList | null"
+						"type": "InstallationList | null",
+						"description": "The IDs of matching, unsuspended installation rows and the reported total. IDs include only positive safe integers, while total uses a positive safe-integer total_count or falls back to the input installations array length; invalid top-level payloads yield null.",
+						"examples": [
+							{
+								"ids": [12345678],
+								"total": 1
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubResponseValidator.repositories",
@@ -186,17 +446,52 @@
 					{
 						"name": "GithubResponseValidator.repositories.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An unknown GitHub repositories response payload. It matters when converting a repository page; the validator requires a repositories array, drops entries that fail repository validation, and sets total from a positive safe-integer total_count or the original array length.",
+						"examples": [
+							{
+								"total_count": 1,
+								"repositories": [
+									{
+										"id": 1296269,
+										"private": false,
+										"owner": {
+											"login": "octocat"
+										},
+										"name": "hello-world",
+										"permissions": {
+											"admin": true
+										}
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubResponseValidator.repositories",
-						"type": "RepositoryPage | null"
+						"type": "RepositoryPage | null",
+						"description": "The validated repositories and reported total from a GitHub repositories response. Invalid repository entries are omitted and total uses a positive safe-integer total_count or falls back to the original array length; an invalid top-level payload yields null.",
+						"examples": [
+							{
+								"repositories": [
+									{
+										"id": 1296269,
+										"owner": "octocat",
+										"name": "hello-world",
+										"private": false,
+										"admin": true
+									}
+								],
+								"total": 1
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubResponseValidator.installationGrant",
@@ -204,17 +499,62 @@
 					{
 						"name": "GithubResponseValidator.installationGrant.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An unknown GitHub App installation-token response payload. It matters when parsing an installation grant; it requires a valid token, an object whose permission values are strings, a parseable expires_at, and a repositories array where every entry passes repository validation, otherwise it returns null.",
+						"examples": [
+							{
+								"token": "ghs_example1234567890",
+								"expires_at": "2026-12-01T12:00:00Z",
+								"permissions": {
+									"contents": "read",
+									"metadata": "read"
+								},
+								"repositories": [
+									{
+										"id": 1296269,
+										"private": false,
+										"owner": {
+											"login": "octocat"
+										},
+										"name": "hello-world",
+										"permissions": {
+											"admin": true
+										}
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubResponseValidator.installationGrant",
-						"type": "InstallationGrant | null"
+						"type": "InstallationGrant | null",
+						"description": "The parsed installation token, its expiration time in milliseconds since the Unix epoch, string-valued permissions, and validated repositories. The token and date must be valid and every repository entry must validate, otherwise the result is null.",
+						"examples": [
+							{
+								"token": "ghs_example1234567890",
+								"expiresAt": 1796083200000,
+								"permissions": {
+									"contents": "read",
+									"metadata": "read"
+								},
+								"repositories": [
+									{
+										"id": 1296269,
+										"owner": "octocat",
+										"name": "hello-world",
+										"private": false,
+										"admin": true
+									}
+								]
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
