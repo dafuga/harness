@@ -17,51 +17,240 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ClaudeGatewayAdapter.constructor.repository",
 				"type": "CodexSessionRepository",
-				"required": true
+				"required": true,
+				"description": "The CodexSessionRepository the constructor stores as a private readonly field; start calls its deliver method for a running session and passes it to ClaudeQueryService for a new query. The constructor stores it without checking its methods."
 			},
 			{
 				"name": "ClaudeGatewayAdapter.validate.request",
 				"type": "GatewayRequest",
-				"required": true
+				"required": true,
+				"description": "The GatewayRequest whose input array validate checks: every item goes through GatewayContentSerializer.history, and the type of the last item decides the idle-session check. validate reads only request.input, so model, stream, tools and instructions have no effect on it.",
+				"examples": [
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"instructions": "Keep answers short and name the file path you used.",
+						"input": [
+							{
+								"type": "message",
+								"role": "user",
+								"content": [
+									{
+										"type": "input_text",
+										"text": "List the TypeScript files under src/adapters."
+									}
+								]
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "exec_command",
+								"description": "Runs a shell command in the Codex workspace.",
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"cmd": {
+											"type": "string"
+										}
+									},
+									"required": ["cmd"]
+								}
+							}
+						]
+					},
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"input": [
+							{
+								"type": "message",
+								"role": "user",
+								"content": [
+									{
+										"type": "input_text",
+										"text": "List the TypeScript files under src/adapters."
+									}
+								]
+							},
+							{
+								"type": "function_call",
+								"call_id": "call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+								"name": "exec_command",
+								"arguments": "{\"cmd\":\"ls src/adapters\"}"
+							},
+							{
+								"type": "function_call_output",
+								"call_id": "call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+								"output": "ClaudeGatewayAdapter.ts"
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "exec_command",
+								"description": "Runs a shell command in the Codex workspace.",
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"cmd": {
+											"type": "string"
+										}
+									},
+									"required": ["cmd"]
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "ClaudeGatewayAdapter.validate.session",
 				"type": "GatewaySession",
-				"required": true
+				"required": true,
+				"description": "The GatewaySession whose running flag and pending map choose the continuation rule: when running is false, only a last item that is a tool output is rejected, and when it is true, the tool outputs for pending calls must match session.pending in count and contain no repeated call_id. validate reads the session and never changes it."
 			},
 			{
 				"name": "ClaudeGatewayAdapter.start.request",
 				"type": "GatewayRequest",
-				"required": true
+				"required": true,
+				"description": "The GatewayRequest that start validates first: an idle session passes it to ClaudeQueryService.run, which reads its tools, instructions and input, while a running session delivers its matching function_call_output and custom_tool_call_output items to pending calls. model and stream are not read on this path, since the query always uses the model fixed in gatewayOptions.",
+				"examples": [
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"instructions": "Keep answers short and name the file path you used.",
+						"input": [
+							{
+								"type": "message",
+								"role": "user",
+								"content": [
+									{
+										"type": "input_text",
+										"text": "List the TypeScript files under src/adapters."
+									}
+								]
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "exec_command",
+								"description": "Runs a shell command in the Codex workspace.",
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"cmd": {
+											"type": "string"
+										}
+									},
+									"required": ["cmd"]
+								}
+							}
+						]
+					},
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"input": [
+							{
+								"type": "message",
+								"role": "user",
+								"content": [
+									{
+										"type": "input_text",
+										"text": "List the TypeScript files under src/adapters."
+									}
+								]
+							},
+							{
+								"type": "function_call",
+								"call_id": "call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+								"name": "exec_command",
+								"arguments": "{\"cmd\":\"ls src/adapters\"}"
+							},
+							{
+								"type": "function_call_output",
+								"call_id": "call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+								"output": "ClaudeGatewayAdapter.ts"
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "exec_command",
+								"description": "Runs a shell command in the Codex workspace.",
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"cmd": {
+											"type": "string"
+										}
+									},
+									"required": ["cmd"]
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "ClaudeGatewayAdapter.start.session",
 				"type": "GatewaySession",
-				"required": true
+				"required": true,
+				"description": "A running session receives the matching outputs through repository.deliver, which resolves and removes each pending call and records it as delivered. An idle session is handed to ClaudeQueryService.run, which sets running to true and resets it to false in its finally block."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ClaudeGatewayAdapter.validate",
-				"type": "void"
+				"type": "void",
+				"description": "validate returns nothing; a rejected request is reported only by throwing one of the errors listed for it."
 			},
 			{
 				"name": "ClaudeGatewayAdapter.start",
-				"type": "void"
+				"type": "void",
+				"description": "start returns nothing and does not wait for the background query it starts; that query's own failures are sent as an error event on session.emit and cancel the session instead of being thrown from start."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by validate, and by start through validate, with the message 'No active query owns this continuation' when the session is not running and the last input item has type function_call_output or custom_tool_call_output."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by validate, and by start through validate, with the message 'Duplicate tool outputs' when the session is running and two outputs for pending calls share the same raw call_id."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by validate, and by start through validate, with the message 'All pending tool results are required' when the session is running and the outputs for pending calls are empty or their count differs from session.pending.size."
+			},
+			{
+				"name": "GatewayContentError",
+				"type": "thrown",
+				"description": "Thrown as a GatewayContentError by GatewayContentSerializer.history, which validate runs first, when content nests more than 32 levels deep, contains an audio, video or file attachment type such as input_audio or input_file, or contains a resource item whose resource has a string blob."
+			},
+			{
+				"name": "GatewayContentError",
+				"type": "thrown",
+				"description": "Thrown as a GatewayContentError by GatewayContentSerializer.history when an image item is not inline base64 PNG, JPEG, GIF or WebP data (for example an image URL, local path or provider file ID), when its data is invalid or over the 5 MiB limit, or when its bytes do not match its media type. It is also thrown when a request holds more than 20 images or more than 20 MiB of image bytes."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by repository.deliver, which start calls for a running session, when two outputs have call_id values that differ as raw values but become the same string after String conversion, such as the number 7 and the string '7'."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ClaudeGatewayAdapter.validate",
@@ -69,27 +258,129 @@
 					{
 						"name": "ClaudeGatewayAdapter.validate.request",
 						"type": "GatewayRequest",
-						"required": true
+						"required": true,
+						"description": "The GatewayRequest whose input array validate checks: every item goes through GatewayContentSerializer.history, and the type of the last item decides the idle-session check. validate reads only request.input, so model, stream, tools and instructions have no effect on it.",
+						"examples": [
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"instructions": "Keep answers short and name the file path you used.",
+								"input": [
+									{
+										"type": "message",
+										"role": "user",
+										"content": [
+											{
+												"type": "input_text",
+												"text": "List the TypeScript files under src/adapters."
+											}
+										]
+									}
+								],
+								"tools": [
+									{
+										"type": "function",
+										"name": "exec_command",
+										"description": "Runs a shell command in the Codex workspace.",
+										"parameters": {
+											"type": "object",
+											"properties": {
+												"cmd": {
+													"type": "string"
+												}
+											},
+											"required": ["cmd"]
+										}
+									}
+								]
+							},
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"input": [
+									{
+										"type": "message",
+										"role": "user",
+										"content": [
+											{
+												"type": "input_text",
+												"text": "List the TypeScript files under src/adapters."
+											}
+										]
+									},
+									{
+										"type": "function_call",
+										"call_id": "call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+										"name": "exec_command",
+										"arguments": "{\"cmd\":\"ls src/adapters\"}"
+									},
+									{
+										"type": "function_call_output",
+										"call_id": "call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+										"output": "ClaudeGatewayAdapter.ts"
+									}
+								],
+								"tools": [
+									{
+										"type": "function",
+										"name": "exec_command",
+										"description": "Runs a shell command in the Codex workspace.",
+										"parameters": {
+											"type": "object",
+											"properties": {
+												"cmd": {
+													"type": "string"
+												}
+											},
+											"required": ["cmd"]
+										}
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "ClaudeGatewayAdapter.validate.session",
 						"type": "GatewaySession",
-						"required": true
+						"required": true,
+						"description": "The GatewaySession whose running flag and pending map choose the continuation rule: when running is false, only a last item that is a tool output is rejected, and when it is true, the tool outputs for pending calls must match session.pending in count and contain no repeated call_id. validate reads the session and never changes it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeGatewayAdapter.validate",
-						"type": "void"
+						"type": "void",
+						"description": "validate returns nothing; a rejected request is reported only by throwing one of the errors listed for it."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by validate, and by start through validate, with the message 'No active query owns this continuation' when the session is not running and the last input item has type function_call_output or custom_tool_call_output."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by validate, and by start through validate, with the message 'Duplicate tool outputs' when the session is running and two outputs for pending calls share the same raw call_id."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by validate, and by start through validate, with the message 'All pending tool results are required' when the session is running and the outputs for pending calls are empty or their count differs from session.pending.size."
+					},
+					{
+						"name": "GatewayContentError",
+						"type": "thrown",
+						"description": "Thrown as a GatewayContentError by GatewayContentSerializer.history, which validate runs first, when content nests more than 32 levels deep, contains an audio, video or file attachment type such as input_audio or input_file, or contains a resource item whose resource has a string blob."
+					},
+					{
+						"name": "GatewayContentError",
+						"type": "thrown",
+						"description": "Thrown as a GatewayContentError by GatewayContentSerializer.history when an image item is not inline base64 PNG, JPEG, GIF or WebP data (for example an image URL, local path or provider file ID), when its data is invalid or over the 5 MiB limit, or when its bytes do not match its media type. It is also thrown when a request holds more than 20 images or more than 20 MiB of image bytes."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ClaudeGatewayAdapter.start",
@@ -97,22 +388,134 @@
 					{
 						"name": "ClaudeGatewayAdapter.start.request",
 						"type": "GatewayRequest",
-						"required": true
+						"required": true,
+						"description": "The GatewayRequest that start validates first: an idle session passes it to ClaudeQueryService.run, which reads its tools, instructions and input, while a running session delivers its matching function_call_output and custom_tool_call_output items to pending calls. model and stream are not read on this path, since the query always uses the model fixed in gatewayOptions.",
+						"examples": [
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"instructions": "Keep answers short and name the file path you used.",
+								"input": [
+									{
+										"type": "message",
+										"role": "user",
+										"content": [
+											{
+												"type": "input_text",
+												"text": "List the TypeScript files under src/adapters."
+											}
+										]
+									}
+								],
+								"tools": [
+									{
+										"type": "function",
+										"name": "exec_command",
+										"description": "Runs a shell command in the Codex workspace.",
+										"parameters": {
+											"type": "object",
+											"properties": {
+												"cmd": {
+													"type": "string"
+												}
+											},
+											"required": ["cmd"]
+										}
+									}
+								]
+							},
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"input": [
+									{
+										"type": "message",
+										"role": "user",
+										"content": [
+											{
+												"type": "input_text",
+												"text": "List the TypeScript files under src/adapters."
+											}
+										]
+									},
+									{
+										"type": "function_call",
+										"call_id": "call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+										"name": "exec_command",
+										"arguments": "{\"cmd\":\"ls src/adapters\"}"
+									},
+									{
+										"type": "function_call_output",
+										"call_id": "call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+										"output": "ClaudeGatewayAdapter.ts"
+									}
+								],
+								"tools": [
+									{
+										"type": "function",
+										"name": "exec_command",
+										"description": "Runs a shell command in the Codex workspace.",
+										"parameters": {
+											"type": "object",
+											"properties": {
+												"cmd": {
+													"type": "string"
+												}
+											},
+											"required": ["cmd"]
+										}
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "ClaudeGatewayAdapter.start.session",
 						"type": "GatewaySession",
-						"required": true
+						"required": true,
+						"description": "A running session receives the matching outputs through repository.deliver, which resolves and removes each pending call and records it as delivered. An idle session is handed to ClaudeQueryService.run, which sets running to true and resets it to false in its finally block."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeGatewayAdapter.start",
-						"type": "void"
+						"type": "void",
+						"description": "start returns nothing and does not wait for the background query it starts; that query's own failures are sent as an error event on session.emit and cancel the session instead of being thrown from start."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by validate, and by start through validate, with the message 'No active query owns this continuation' when the session is not running and the last input item has type function_call_output or custom_tool_call_output."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by validate, and by start through validate, with the message 'Duplicate tool outputs' when the session is running and two outputs for pending calls share the same raw call_id."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by validate, and by start through validate, with the message 'All pending tool results are required' when the session is running and the outputs for pending calls are empty or their count differs from session.pending.size."
+					},
+					{
+						"name": "GatewayContentError",
+						"type": "thrown",
+						"description": "Thrown as a GatewayContentError by GatewayContentSerializer.history, which validate runs first, when content nests more than 32 levels deep, contains an audio, video or file attachment type such as input_audio or input_file, or contains a resource item whose resource has a string blob."
+					},
+					{
+						"name": "GatewayContentError",
+						"type": "thrown",
+						"description": "Thrown as a GatewayContentError by GatewayContentSerializer.history when an image item is not inline base64 PNG, JPEG, GIF or WebP data (for example an image URL, local path or provider file ID), when its data is invalid or over the 5 MiB limit, or when its bytes do not match its media type. It is also thrown when a request holds more than 20 images or more than 20 MiB of image bytes."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by repository.deliver, which start calls for a running session, when two outputs have call_id values that differ as raw values but become the same string after String conversion, such as the number 7 and the string '7'."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -122,17 +525,19 @@
 					{
 						"name": "ClaudeGatewayAdapter.constructor.repository",
 						"type": "CodexSessionRepository",
-						"required": true
+						"required": true,
+						"description": "The CodexSessionRepository the constructor stores as a private readonly field; start calls its deliver method for a running session and passes it to ClaudeQueryService for a new query. The constructor stores it without checking its methods."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeGatewayAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ClaudeGatewayAdapter instance, which keeps the repository for later validate and start calls; the constructor does nothing else."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
