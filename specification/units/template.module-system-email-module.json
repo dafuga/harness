@@ -21,10 +21,109 @@
 			{
 				"name": "emailModule",
 				"type": "unknown",
-				"description": "Declarative capability definitions, source templates, tests and setup instructions."
+				"description": "Defines the email module (version 1.0.0) with server-only Resend delivery setup and a reusable mailer resource that renders content without sending it. EmailService.send returns { status: \"disabled\" } only when DISABLE_EMAILS is \"true\" and otherwise enforces a 100-send, one-hour limit per service instance.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "email",
+						"version": "1.0.0",
+						"title": "Email",
+						"description": "Transactional email through Resend, with reusable email resources.",
+						"instructions": [
+							"Reference: BuildFlexity separates reusable email content from one Resend delivery boundary.",
+							"Configure RESEND_API_KEY and RESEND_EMAIL_FROM in project-specific server secrets; never expose them in browser code.",
+							"Set DISABLE_EMAILS=true during development. Installation and generation never send emails.",
+							"Generate email resources, localize their content, and call EmailService.send with an authorized recipient.",
+							"The local rate limit protects one service instance. Use a persistent shared limiter for multi-instance deployments."
+						],
+						"setup": [
+							{
+								"path": "src/services/email/EmailService.types.ts",
+								"contents": "export interface EmailEnvironment { RESEND_API_KEY?: string; RESEND_EMAIL_FROM?: string; DISABLE_EMAILS?: string; }"
+							},
+							{
+								"path": "src/services/email/EmailService.ts",
+								"contents": "import type { EmailEnvironment, EmailMessage, EmailDelivery } from './EmailService.types';"
+							},
+							{
+								"path": "test/services/email/email.test.ts",
+								"contents": "import { expect, test, vi } from 'vitest';"
+							},
+							{
+								"path": "src/services/email/email.server.ts",
+								"contents": "// Import this server-only boundary from application handlers.\nexport { EmailService } from './EmailService';\n"
+							}
+						],
+						"dependencies": {},
+						"resources": [
+							{
+								"id": "email",
+								"title": "Emails",
+								"singular": "Email",
+								"kind": "mailer",
+								"instructions": [
+									"Keep rendering separate from delivery and localization in the application.",
+									"Pass { recipient, ...new WelcomeMailer().render({ name }) } to the server-only EmailService.",
+									"Run the generated rendering tests before wiring delivery."
+								],
+								"files": [
+									{
+										"path": "src/mailers/email/{{PascalName}}Mailer.types.ts",
+										"contents": "export interface {{PascalName}}MailerInput {\n\tname: string;\n}\nexport interface {{PascalName}}MailerMessage {"
+									},
+									{
+										"path": "src/mailers/email/{{PascalName}}Mailer.ts",
+										"contents": "import type { {{PascalName}}MailerInput, {{PascalName}}MailerMessage } from './{{PascalName}}Mailer.types';"
+									},
+									{
+										"path": "test/mailers/email/{{kebabName}}.test.ts",
+										"contents": "import { expect, test } from 'vitest';"
+									}
+								]
+							}
+						]
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The thrown Error has message 'Configure the email provider and sender.' when either provider setting is missing; both are required for enabled sends."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The thrown Error has message 'Invalid email message.' when the recipient fails the email-address check, the trimmed subject is empty, or the subject contains a carriage return or newline."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The thrown Error has message 'Email sending rate limit reached.' when an instance has already admitted 100 send attempts in its current one-hour window."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The thrown Error has message 'Email provider usage limit reached.' when Resend responds with HTTP 429."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The thrown Error has message 'Email delivery failed.' when Resend responds with a non-success status other than HTTP 429."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The thrown Error has message 'Email service is unavailable.' when the provider transport promise rejects."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The thrown Error has message 'Email provider did not acknowledge delivery.' when a successful provider response has no non-empty string id."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
