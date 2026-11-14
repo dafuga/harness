@@ -12,11 +12,17 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "ALTER TABLE ADD COLUMN rejected",
+				"type": "thrown",
+				"description": "The database rejects an ADD COLUMN statement (generation, revoked_at and refreshing_until on auth_github_grants; grant_generation on auth_github_states) when its table is missing or the column already exists. The statements have no IF NOT EXISTS guard, so running the file again after a successful run fails on the first statement."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
