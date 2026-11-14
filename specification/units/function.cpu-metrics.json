@@ -21,23 +21,232 @@
 				"name": "cpuMetrics.before",
 				"type": "CpuReading",
 				"required": true,
-				"description": "Earlier timestamp, cumulative machine counters and process CPU totals in milliseconds."
+				"description": "Earlier CpuReading that starts every delta: `at` is a performance.now() value in milliseconds rather than an epoch time, and `cpu.idle` and `cpu.total` are cumulative counters summed across all logical CPUs. Its `cpu.cores` and every process field other than `pid` and `cpuMs` are ignored, a process absent from this list contributes zero elapsed CPU, and a process whose `cpuMs` is higher here than in `after` also contributes zero.",
+				"examples": [
+					{
+						"at": 52817.349,
+						"cpu": {
+							"idle": 91234567,
+							"total": 118765432,
+							"cores": 8
+						},
+						"processes": [
+							{
+								"pid": 4312,
+								"parentPid": 1,
+								"cpuMs": 184230,
+								"role": "harness",
+								"label": "Harness"
+							},
+							{
+								"pid": 9120,
+								"parentPid": 4312,
+								"cpuMs": 61840,
+								"role": "agent",
+								"label": "Claude"
+							},
+							{
+								"pid": 9164,
+								"parentPid": 9120,
+								"cpuMs": 22410
+							},
+							{
+								"pid": 881,
+								"parentPid": 1,
+								"cpuMs": 912340,
+								"role": "codex",
+								"label": "Codex app"
+							}
+						]
+					},
+					{
+						"at": 9120.25,
+						"cpu": {
+							"idle": 3920110,
+							"total": 4700440,
+							"cores": 4
+						},
+						"processes": [
+							{
+								"pid": 1,
+								"parentPid": 0,
+								"cpuMs": 21340
+							},
+							{
+								"pid": 2214,
+								"parentPid": 1,
+								"cpuMs": 1234560,
+								"role": "codex",
+								"label": "Codex app"
+							},
+							{
+								"pid": 3307,
+								"parentPid": 2214,
+								"cpuMs": 40120,
+								"role": "agent",
+								"label": "Codex CLI"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "cpuMetrics.after",
 				"type": "CpuReading",
 				"required": true,
-				"description": "Later timestamp, machine counters, logical core count and current process list used to attribute interval CPU."
+				"description": "Later CpuReading that ends the interval: `at` sets the end of `intervalMs`, `cpu.cores` sets `logicalCores` and is the divisor for group and agent `machinePercent`, and its `cpu.idle` and `cpu.total` are differenced against `before` to give the snapshot `machinePercent`. Only the processes in this list are reported: each is attributed to its nearest ancestor-or-self with a `role`, found by following `parentPid` through this list, agent labels come from that owner's `label` (defaulting to 'Local agent'), processes with no owner are skipped, and a process absent from `before` contributes zero CPU.",
+				"examples": [
+					{
+						"at": 53818.112,
+						"cpu": {
+							"idle": 91239767,
+							"total": 118773432,
+							"cores": 8
+						},
+						"processes": [
+							{
+								"pid": 4312,
+								"parentPid": 1,
+								"cpuMs": 184290,
+								"role": "harness",
+								"label": "Harness"
+							},
+							{
+								"pid": 9120,
+								"parentPid": 4312,
+								"cpuMs": 62840,
+								"role": "agent",
+								"label": "Claude"
+							},
+							{
+								"pid": 9164,
+								"parentPid": 9120,
+								"cpuMs": 22910
+							},
+							{
+								"pid": 881,
+								"parentPid": 1,
+								"cpuMs": 912890,
+								"role": "codex",
+								"label": "Codex app"
+							}
+						]
+					},
+					{
+						"at": 10121.4,
+						"cpu": {
+							"idle": 3921630,
+							"total": 4704440,
+							"cores": 4
+						},
+						"processes": [
+							{
+								"pid": 1,
+								"parentPid": 0,
+								"cpuMs": 21340
+							},
+							{
+								"pid": 2214,
+								"parentPid": 1,
+								"cpuMs": 1236310,
+								"role": "codex",
+								"label": "Codex app"
+							},
+							{
+								"pid": 3307,
+								"parentPid": 2214,
+								"cpuMs": 41380,
+								"role": "agent",
+								"label": "Codex CLI"
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "cpuMetrics",
 				"type": "CpuSnapshot",
-				"description": "Available snapshot with current sampling time, elapsed interval, machine utilization or null when counters do not advance, Codex/Harness/agent group totals and agents sorted by core utilization. New processes and counter decreases contribute zero elapsed CPU."
+				"description": "Snapshot whose `status` is always 'available' and whose `sampledAt` is the current time rather than `after.at`; `intervalMs` is `after.at` minus `before.at`, not clamped, so it can be zero or negative, and `machinePercent` is clamped to 0 to 100 or is null when `cpu.total` did not increase between `before` and `after`. The codex, harness and agents groups are always present, with `trackedPercent` as the sum of their `machinePercent` values (never null from this function), and `agents` has one entry per owning agent `pid`, sorted by descending `corePercent`, which can exceed 100 for multi-core use.",
+				"examples": [
+					{
+						"status": "available",
+						"sampledAt": "2026-11-14T09:30:02.415Z",
+						"intervalMs": 1000.763,
+						"logicalCores": 8,
+						"machinePercent": 35,
+						"trackedPercent": 26.3549,
+						"groups": [
+							{
+								"id": "codex",
+								"label": "Codex app",
+								"corePercent": 54.9581,
+								"machinePercent": 6.8698,
+								"processes": 1
+							},
+							{
+								"id": "harness",
+								"label": "Harness",
+								"corePercent": 5.9954,
+								"machinePercent": 0.7494,
+								"processes": 1
+							},
+							{
+								"id": "agents",
+								"label": "Local agents",
+								"corePercent": 149.8856,
+								"machinePercent": 18.7357,
+								"processes": 2
+							}
+						],
+						"agents": [
+							{
+								"pid": 9120,
+								"label": "Claude",
+								"corePercent": 149.8856,
+								"machinePercent": 18.7357,
+								"processes": 2
+							}
+						]
+					},
+					{
+						"status": "available",
+						"sampledAt": "2026-11-14T09:31:10.002Z",
+						"intervalMs": 1000.5,
+						"logicalCores": 8,
+						"machinePercent": null,
+						"trackedPercent": 0,
+						"groups": [
+							{
+								"id": "codex",
+								"label": "Codex app",
+								"corePercent": 0,
+								"machinePercent": 0,
+								"processes": 0
+							},
+							{
+								"id": "harness",
+								"label": "Harness",
+								"corePercent": 0,
+								"machinePercent": 0,
+								"processes": 0
+							},
+							{
+								"id": "agents",
+								"label": "Local agents",
+								"corePercent": 0,
+								"machinePercent": 0,
+								"processes": 0
+							}
+						],
+						"agents": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "cpuMetrics",
@@ -46,24 +255,232 @@
 						"name": "cpuMetrics.before",
 						"type": "CpuReading",
 						"required": true,
-						"description": "Earlier timestamp, cumulative machine counters and process CPU totals in milliseconds."
+						"description": "Earlier CpuReading that starts every delta: `at` is a performance.now() value in milliseconds rather than an epoch time, and `cpu.idle` and `cpu.total` are cumulative counters summed across all logical CPUs. Its `cpu.cores` and every process field other than `pid` and `cpuMs` are ignored, a process absent from this list contributes zero elapsed CPU, and a process whose `cpuMs` is higher here than in `after` also contributes zero.",
+						"examples": [
+							{
+								"at": 52817.349,
+								"cpu": {
+									"idle": 91234567,
+									"total": 118765432,
+									"cores": 8
+								},
+								"processes": [
+									{
+										"pid": 4312,
+										"parentPid": 1,
+										"cpuMs": 184230,
+										"role": "harness",
+										"label": "Harness"
+									},
+									{
+										"pid": 9120,
+										"parentPid": 4312,
+										"cpuMs": 61840,
+										"role": "agent",
+										"label": "Claude"
+									},
+									{
+										"pid": 9164,
+										"parentPid": 9120,
+										"cpuMs": 22410
+									},
+									{
+										"pid": 881,
+										"parentPid": 1,
+										"cpuMs": 912340,
+										"role": "codex",
+										"label": "Codex app"
+									}
+								]
+							},
+							{
+								"at": 9120.25,
+								"cpu": {
+									"idle": 3920110,
+									"total": 4700440,
+									"cores": 4
+								},
+								"processes": [
+									{
+										"pid": 1,
+										"parentPid": 0,
+										"cpuMs": 21340
+									},
+									{
+										"pid": 2214,
+										"parentPid": 1,
+										"cpuMs": 1234560,
+										"role": "codex",
+										"label": "Codex app"
+									},
+									{
+										"pid": 3307,
+										"parentPid": 2214,
+										"cpuMs": 40120,
+										"role": "agent",
+										"label": "Codex CLI"
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "cpuMetrics.after",
 						"type": "CpuReading",
 						"required": true,
-						"description": "Later timestamp, machine counters, logical core count and current process list used to attribute interval CPU."
+						"description": "Later CpuReading that ends the interval: `at` sets the end of `intervalMs`, `cpu.cores` sets `logicalCores` and is the divisor for group and agent `machinePercent`, and its `cpu.idle` and `cpu.total` are differenced against `before` to give the snapshot `machinePercent`. Only the processes in this list are reported: each is attributed to its nearest ancestor-or-self with a `role`, found by following `parentPid` through this list, agent labels come from that owner's `label` (defaulting to 'Local agent'), processes with no owner are skipped, and a process absent from `before` contributes zero CPU.",
+						"examples": [
+							{
+								"at": 53818.112,
+								"cpu": {
+									"idle": 91239767,
+									"total": 118773432,
+									"cores": 8
+								},
+								"processes": [
+									{
+										"pid": 4312,
+										"parentPid": 1,
+										"cpuMs": 184290,
+										"role": "harness",
+										"label": "Harness"
+									},
+									{
+										"pid": 9120,
+										"parentPid": 4312,
+										"cpuMs": 62840,
+										"role": "agent",
+										"label": "Claude"
+									},
+									{
+										"pid": 9164,
+										"parentPid": 9120,
+										"cpuMs": 22910
+									},
+									{
+										"pid": 881,
+										"parentPid": 1,
+										"cpuMs": 912890,
+										"role": "codex",
+										"label": "Codex app"
+									}
+								]
+							},
+							{
+								"at": 10121.4,
+								"cpu": {
+									"idle": 3921630,
+									"total": 4704440,
+									"cores": 4
+								},
+								"processes": [
+									{
+										"pid": 1,
+										"parentPid": 0,
+										"cpuMs": 21340
+									},
+									{
+										"pid": 2214,
+										"parentPid": 1,
+										"cpuMs": 1236310,
+										"role": "codex",
+										"label": "Codex app"
+									},
+									{
+										"pid": 3307,
+										"parentPid": 2214,
+										"cpuMs": 41380,
+										"role": "agent",
+										"label": "Codex CLI"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cpuMetrics",
 						"type": "CpuSnapshot",
-						"description": "Available snapshot with current sampling time, elapsed interval, machine utilization or null when counters do not advance, Codex/Harness/agent group totals and agents sorted by core utilization. New processes and counter decreases contribute zero elapsed CPU."
+						"description": "Snapshot whose `status` is always 'available' and whose `sampledAt` is the current time rather than `after.at`; `intervalMs` is `after.at` minus `before.at`, not clamped, so it can be zero or negative, and `machinePercent` is clamped to 0 to 100 or is null when `cpu.total` did not increase between `before` and `after`. The codex, harness and agents groups are always present, with `trackedPercent` as the sum of their `machinePercent` values (never null from this function), and `agents` has one entry per owning agent `pid`, sorted by descending `corePercent`, which can exceed 100 for multi-core use.",
+						"examples": [
+							{
+								"status": "available",
+								"sampledAt": "2026-11-14T09:30:02.415Z",
+								"intervalMs": 1000.763,
+								"logicalCores": 8,
+								"machinePercent": 35,
+								"trackedPercent": 26.3549,
+								"groups": [
+									{
+										"id": "codex",
+										"label": "Codex app",
+										"corePercent": 54.9581,
+										"machinePercent": 6.8698,
+										"processes": 1
+									},
+									{
+										"id": "harness",
+										"label": "Harness",
+										"corePercent": 5.9954,
+										"machinePercent": 0.7494,
+										"processes": 1
+									},
+									{
+										"id": "agents",
+										"label": "Local agents",
+										"corePercent": 149.8856,
+										"machinePercent": 18.7357,
+										"processes": 2
+									}
+								],
+								"agents": [
+									{
+										"pid": 9120,
+										"label": "Claude",
+										"corePercent": 149.8856,
+										"machinePercent": 18.7357,
+										"processes": 2
+									}
+								]
+							},
+							{
+								"status": "available",
+								"sampledAt": "2026-11-14T09:31:10.002Z",
+								"intervalMs": 1000.5,
+								"logicalCores": 8,
+								"machinePercent": null,
+								"trackedPercent": 0,
+								"groups": [
+									{
+										"id": "codex",
+										"label": "Codex app",
+										"corePercent": 0,
+										"machinePercent": 0,
+										"processes": 0
+									},
+									{
+										"id": "harness",
+										"label": "Harness",
+										"corePercent": 0,
+										"machinePercent": 0,
+										"processes": 0
+									},
+									{
+										"id": "agents",
+										"label": "Local agents",
+										"corePercent": 0,
+										"machinePercent": 0,
+										"processes": 0
+									}
+								],
+								"agents": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
