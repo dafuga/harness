@@ -33,43 +33,136 @@
 				"name": "translationCatalog.tree",
 				"type": "SourceTree",
 				"required": true,
-				"description": "Selected-revision source tree from which translation declarations and dictionaries are read."
+				"description": "Snapshot of the selected revision's files, used only through list() and read(). Only files under a src/ directory with a JavaScript, TypeScript or .svelte extension are read as source, and a rejected list() or source read rejects the whole catalog."
 			},
 			{
 				"name": "translationCatalog.units",
 				"type": "RevisionRegistry['units']",
 				"required": false,
 				"default": [],
-				"description": "Optional registered units used to identify translation sources; defaults to an empty list."
+				"description": "Registered units whose owns.source paths are matched against the same-scope files that call each $t or $_ key; each matching unit id is listed in that row's usedBy. Defaults to []: with no units, every usedBy is an empty list.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "reports.component.evidence-grid",
+							"kind": "component",
+							"status": "active",
+							"title": "Evidence grid",
+							"responsibility": "Show the evidence rows of one report revision.",
+							"dependencies": [],
+							"scenarios": [],
+							"owns": {
+								"source": ["src/components/reports/EvidenceGrid.svelte"],
+								"symbols": ["EvidenceGrid"]
+							},
+							"contract": {
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/components/reports/EvidenceGrid.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5c1e0f9a2b7d4e83"
+						}
+					]
+				]
 			},
 			{
 				"name": "flattenMessages.input",
 				"type": "unknown",
 				"required": true,
-				"description": "Dictionary object containing string messages or nested dictionaries; invalid shapes are rejected."
+				"description": "Dictionary object whose values are strings or nested dictionaries. A null, non-object or array input, or any nested value that is neither a string nor a non-null, non-array object, makes flattenMessages throw 'Dictionary must be an object.'",
+				"examples": [
+					{
+						"revision": {
+							"title": "Revision",
+							"empty": ""
+						},
+						"status": "Ready"
+					},
+					{
+						"changes": {
+							"count": "{count, plural, one {# change} other {# changes}}"
+						}
+					}
+				]
 			},
 			{
 				"name": "flattenMessages.prefix",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional dotted path prepended to flattened message keys; defaults to an empty string."
+				"description": "Optional dotted path placed before every flattened key, so 'title' under prefix 'explorer.revision' becomes 'explorer.revision.title'. Defaults to an empty string, which adds no prefix.",
+				"examples": ["", "explorer.revision"]
 			},
 			{
 				"name": "translationMessages.text",
 				"type": "string",
 				"required": true,
-				"description": "TypeScript source containing static translation imports, registrations and dictionary declarations."
+				"description": "TypeScript source text of one module, parsed but never evaluated. Only addMessages calls imported from svelte-i18n are inspected, and a locale or dictionary that is not static is recorded as a gap instead of an error.",
+				"examples": [
+					"import { addMessages } from 'svelte-i18n';\nimport en from './en.json';\n\naddMessages('en', en);\n",
+					"import { addMessages } from 'svelte-i18n';\n\nconst fr = { revision: { title: 'Révision' } };\naddMessages('fr', fr);\n",
+					"import { addMessages } from 'svelte-i18n';\nimport { locale } from './state';\n\naddMessages(locale, { revision: { title: 'Révision' } });\n"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "catalog",
 				"type": "Promise<TranslationCatalog>",
-				"description": "Static language values, literal caller links and unreadable source gaps from that revision."
+				"description": "Locales, dictionary rows and gaps read only from the selected revision; locales and rows are sorted, and gaps are de-duplicated. When two registrations give different text for the same locale and key, the first value read is kept and a gap is recorded.",
+				"examples": [
+					{
+						"locales": ["en", "fr"],
+						"rows": [
+							{
+								"scope": ".",
+								"key": "revision.title",
+								"values": {
+									"en": "Revision",
+									"fr": "Révision"
+								},
+								"sources": ["src/i18n/en.json", "src/i18n/fr.json"],
+								"usedBy": ["reports.component.evidence-grid"]
+							}
+						],
+						"gaps": ["src/i18n/setup.ts: Dictionary has a computed property or spread."]
+					},
+					{
+						"locales": [],
+						"rows": [],
+						"gaps": []
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SourceTree list() or read() error",
+				"type": "thrown",
+				"description": "Rejects with the unchanged error from tree.list(), or from tree.read() on a matching source file; these reads are not caught, so one failure rejects the whole catalog. Failures reading JSON dictionaries are caught and recorded as gaps instead."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by flattenMessages with 'Dictionary must be an object.' when its input is null, not an object or an array, or when a nested value is neither a string nor a non-null, non-array object. translationCatalog never rejects with it, because each source file's failures are caught and recorded as gaps."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "translationCatalog",
@@ -78,24 +171,92 @@
 						"name": "translationCatalog.tree",
 						"type": "SourceTree",
 						"required": true,
-						"description": "Selected-revision source tree from which translation declarations and dictionaries are read."
+						"description": "Snapshot of the selected revision's files, used only through list() and read(). Only files under a src/ directory with a JavaScript, TypeScript or .svelte extension are read as source, and a rejected list() or source read rejects the whole catalog."
 					},
 					{
 						"name": "translationCatalog.units",
 						"type": "RevisionRegistry['units']",
 						"required": false,
 						"default": [],
-						"description": "Optional registered units used to identify translation sources; defaults to an empty list."
+						"description": "Registered units whose owns.source paths are matched against the same-scope files that call each $t or $_ key; each matching unit id is listed in that row's usedBy. Defaults to []: with no units, every usedBy is an empty list.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "reports.component.evidence-grid",
+									"kind": "component",
+									"status": "active",
+									"title": "Evidence grid",
+									"responsibility": "Show the evidence rows of one report revision.",
+									"dependencies": [],
+									"scenarios": [],
+									"owns": {
+										"source": ["src/components/reports/EvidenceGrid.svelte"],
+										"symbols": ["EvidenceGrid"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/components/reports/EvidenceGrid.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5c1e0f9a2b7d4e83"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "translationCatalog",
-						"type": "Promise<TranslationCatalog>"
+						"type": "Promise<TranslationCatalog>",
+						"description": "Locales, dictionary rows and gaps read only from the selected revision; locales and rows are sorted, and gaps are de-duplicated. When two registrations give different text for the same locale and key, the first value read is kept and a gap is recorded.",
+						"examples": [
+							{
+								"locales": ["en", "fr"],
+								"rows": [
+									{
+										"scope": ".",
+										"key": "revision.title",
+										"values": {
+											"en": "Revision",
+											"fr": "Révision"
+										},
+										"sources": ["src/i18n/en.json", "src/i18n/fr.json"],
+										"usedBy": ["reports.component.evidence-grid"]
+									}
+								],
+								"gaps": ["src/i18n/setup.ts: Dictionary has a computed property or spread."]
+							},
+							{
+								"locales": [],
+								"rows": [],
+								"gaps": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SourceTree list() or read() error",
+						"type": "thrown",
+						"description": "Rejects with the unchanged error from tree.list(), or from tree.read() on a matching source file; these reads are not caught, so one failure rejects the whole catalog. Failures reading JSON dictionaries are caught and recorded as gaps instead."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "flattenMessages",
@@ -104,29 +265,56 @@
 						"name": "flattenMessages.input",
 						"type": "unknown",
 						"required": true,
-						"description": "Dictionary object containing string messages or nested dictionaries; invalid shapes are rejected."
+						"description": "Dictionary object whose values are strings or nested dictionaries. A null, non-object or array input, or any nested value that is neither a string nor a non-null, non-array object, makes flattenMessages throw 'Dictionary must be an object.'",
+						"examples": [
+							{
+								"revision": {
+									"title": "Revision",
+									"empty": ""
+								},
+								"status": "Ready"
+							},
+							{
+								"changes": {
+									"count": "{count, plural, one {# change} other {# changes}}"
+								}
+							}
+						]
 					},
 					{
 						"name": "flattenMessages.prefix",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Optional dotted path prepended to flattened message keys; defaults to an empty string."
+						"description": "Optional dotted path placed before every flattened key, so 'title' under prefix 'explorer.revision' becomes 'explorer.revision.title'. Defaults to an empty string, which adds no prefix.",
+						"examples": ["", "explorer.revision"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "flattenMessages",
-						"type": "Record<string, string>"
+						"type": "Record<string, string>",
+						"description": "Flat map from dotted message keys, including any prefix, to string values. Empty strings and ICU expressions are kept verbatim, and the result is created without a prototype.",
+						"examples": [
+							{
+								"revision.title": "Revision",
+								"revision.empty": "",
+								"status": "Ready"
+							},
+							{
+								"changes.count": "{count, plural, one {# change} other {# changes}}"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'Dictionary must be an object.' when the input is null, not an object or an array, or when a nested value is neither a string nor a non-null, non-array object."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "translationMessages",
@@ -135,17 +323,52 @@
 						"name": "translationMessages.text",
 						"type": "string",
 						"required": true,
-						"description": "TypeScript source containing static translation imports, registrations and dictionary declarations."
+						"description": "TypeScript source text of one module, parsed but never evaluated. Only addMessages calls imported from svelte-i18n are inspected, and a locale or dictionary that is not static is recorded as a gap instead of an error.",
+						"examples": [
+							"import { addMessages } from 'svelte-i18n';\nimport en from './en.json';\n\naddMessages('en', en);\n",
+							"import { addMessages } from 'svelte-i18n';\n\nconst fr = { revision: { title: 'Révision' } };\naddMessages('fr', fr);\n",
+							"import { addMessages } from 'svelte-i18n';\nimport { locale } from './state';\n\naddMessages(locale, { revision: { title: 'Révision' } });\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "translationMessages",
-						"type": "TranslationSource"
+						"type": "TranslationSource",
+						"description": "Static svelte-i18n registrations for each addMessages call (a literal messages map, or the specifier of the JSON module it imports), the unique literal $t or $_ keys, and gaps for calls that cannot be read statically.",
+						"examples": [
+							{
+								"registrations": [
+									{
+										"locale": "en",
+										"resource": "./en.json"
+									}
+								],
+								"keys": [],
+								"gaps": []
+							},
+							{
+								"registrations": [
+									{
+										"locale": "fr",
+										"messages": {
+											"revision.title": "Révision"
+										}
+									}
+								],
+								"keys": [],
+								"gaps": []
+							},
+							{
+								"registrations": [],
+								"keys": [],
+								"gaps": ["Dynamic locale or dictionary cannot be inspected statically."]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
