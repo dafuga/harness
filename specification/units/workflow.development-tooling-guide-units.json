@@ -50,39 +50,207 @@
 				"name": "guideUnits.id",
 				"type": "string",
 				"required": true,
-				"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+				"description": "Active unit ID in the loaded unit catalog. It selects the active entity whose named states, authored tests, and retained captures are checked.",
+				"examples": ["workflow.development-tooling-guide-units"]
 			},
 			{
 				"name": "guideUnits.options",
 				"type": "GuidanceOptions",
 				"required": false,
 				"default": {},
-				"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+				"description": "Optional project root and extra required-state file paths forwarded to guidanceContext. If omitted, guideUnits passes its default empty object; the root otherwise resolves to process.cwd().",
+				"examples": [
+					{},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+					}
+				]
 			},
 			{
 				"name": "renderUnitsGuide.report",
 				"type": "GuideReport",
 				"required": true,
-				"description": "Completed structured report to render without recomputing source or upgrading proof."
+				"description": "Structured report already produced by guideUnits. The renderer formats it without loading repository state or changing its proof fields.",
+				"examples": [
+					{
+						"entity": "workflow.development-tooling-guide-units",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"states": [
+							{
+								"name": "default",
+								"origin": "REQUIRED",
+								"reasons": ["Default presentation."],
+								"tests": [],
+								"viewports": {
+									"desktop": "MISSING",
+									"tablet": "MISSING",
+									"mobile": "MISSING"
+								},
+								"status": "MISSING"
+							}
+						],
+						"guesses": [
+							{
+								"name": "empty-id",
+								"origin": "GUESS",
+								"reasons": ["Prop guideUnits.id (string)."]
+							},
+							{
+								"name": "without-options",
+								"origin": "GUESS",
+								"reasons": ["Prop guideUnits.options (GuidanceOptions)."]
+							},
+							{
+								"name": "with-options",
+								"origin": "GUESS",
+								"reasons": ["Prop guideUnits.options (GuidanceOptions)."]
+							},
+							{
+								"name": "failed",
+								"origin": "GUESS",
+								"reasons": ["Contract mentions failed."]
+							},
+							{
+								"name": "passed",
+								"origin": "GUESS",
+								"reasons": [
+									"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.ts."
+								]
+							},
+							{
+								"name": "DONE",
+								"origin": "GUESS",
+								"reasons": [
+									"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+								]
+							},
+							{
+								"name": "MISSING",
+								"origin": "GUESS",
+								"reasons": [
+									"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+								]
+							}
+						],
+						"summary": {
+							"done": 0,
+							"missing": 1
+						},
+						"next": {
+							"state": "default",
+							"commands": [
+								"${EDITOR:-vi} 'tests/e2e/component-catalog.spec.ts' # Write/extend \"default\" for workflow.development-tooling-guide-units, then commit the test.",
+								"harness verify run --priority agent-test --entity workflow.development-tooling-guide-units",
+								"harness units guide workflow.development-tooling-guide-units"
+							]
+						},
+						"proof": {
+							"store": "git",
+							"gap": "No attached Harness verification evidence at this revision."
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "guideUnits",
 				"type": "Promise<GuideReport>",
-				"description": "Selected HEAD, required named unit states with tests and per-device proof, separate advisory guesses, required-state totals and NEXT. Guesses never block DONE until declared as unit states."
+				"description": "Resolved report for the selected active unit at HEAD, containing required states, authored tests, per-device capture status, advisory guesses, summary counts, proof gap, and any next commands. A required state is DONE only if an authored test is found and usable passed screenshots exist for desktop, tablet, and mobile; inferred guesses do not block completion.",
+				"examples": [
+					{
+						"entity": "workflow.development-tooling-guide-units",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"states": [
+							{
+								"name": "default",
+								"origin": "REQUIRED",
+								"reasons": ["Default presentation."],
+								"tests": [],
+								"viewports": {
+									"desktop": "MISSING",
+									"tablet": "MISSING",
+									"mobile": "MISSING"
+								},
+								"status": "MISSING"
+							}
+						],
+						"guesses": [
+							{
+								"name": "empty-id",
+								"origin": "GUESS",
+								"reasons": ["Prop guideUnits.id (string)."]
+							},
+							{
+								"name": "without-options",
+								"origin": "GUESS",
+								"reasons": ["Prop guideUnits.options (GuidanceOptions)."]
+							},
+							{
+								"name": "with-options",
+								"origin": "GUESS",
+								"reasons": ["Prop guideUnits.options (GuidanceOptions)."]
+							},
+							{
+								"name": "failed",
+								"origin": "GUESS",
+								"reasons": ["Contract mentions failed."]
+							},
+							{
+								"name": "passed",
+								"origin": "GUESS",
+								"reasons": [
+									"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.ts."
+								]
+							},
+							{
+								"name": "DONE",
+								"origin": "GUESS",
+								"reasons": [
+									"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+								]
+							},
+							{
+								"name": "MISSING",
+								"origin": "GUESS",
+								"reasons": [
+									"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+								]
+							}
+						],
+						"summary": {
+							"done": 0,
+							"missing": 1
+						},
+						"next": {
+							"state": "default",
+							"commands": [
+								"${EDITOR:-vi} 'tests/e2e/component-catalog.spec.ts' # Write/extend \"default\" for workflow.development-tooling-guide-units, then commit the test.",
+								"harness verify run --priority agent-test --entity workflow.development-tooling-guide-units",
+								"harness units guide workflow.development-tooling-guide-units"
+							]
+						},
+						"proof": {
+							"store": "git",
+							"gap": "No attached Harness verification evidence at this revision."
+						}
+					}
+				]
 			},
 			{
 				"name": "renderUnitsGuide",
 				"type": "string",
-				"description": "Human required-state checklist, proof gaps, required-state totals and NEXT, followed by a separate advisory guesses section."
+				"description": "Human-readable string built from the report entity and commit, required-state rows, completion counts, proof gap when present, next-step commands or all-done note, and advisory guesses when present. It formats supplied data without recomputing guide results.",
+				"examples": [
+					"workflow.development-tooling-guide-units @ 0123456789abcdef0123456789abcdef01234567\nREQUIRED = named unit states; guesses are advisory and do not block DONE.\nMISSING default [REQUIRED] test:MISSING desktop:MISSING tablet:MISSING mobile:MISSING\n  Default presentation.\n0/1 DONE.\nProof: No attached Harness verification evidence at this revision.\nNEXT: default\n${EDITOR:-vi} 'tests/e2e/component-catalog.spec.ts' # Write/extend \"default\" for workflow.development-tooling-guide-units, then commit the test.\nharness verify run --priority agent-test --entity workflow.development-tooling-guide-units\nharness units guide workflow.development-tooling-guide-units\nGUESSES (advisory; declare a catalog state if justified):\n  ? empty-id: Prop guideUnits.id (string).\n  ? without-options: Prop guideUnits.options (GuidanceOptions).\n  ? with-options: Prop guideUnits.options (GuidanceOptions).\n  ? failed: Contract mentions failed.\n  ? passed: Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.ts.\n  ? DONE: Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts.\n  ? MISSING: Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Dependency failure",
 				"type": "thrown",
-				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+				"description": "The async operation can reject while opening HEAD, loading unit data or required-state registries, resolving the active unit, reading source or test files, deriving test attribution, or validating retained captures; an unknown or inactive ID also fails lookup."
 			}
 		],
 		"errorStatus": "declared",
@@ -122,28 +290,114 @@
 						"name": "guideUnits.id",
 						"type": "string",
 						"required": true,
-						"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+						"description": "Active unit ID in the loaded unit catalog. It selects the active entity whose named states, authored tests, and retained captures are checked.",
+						"examples": ["workflow.development-tooling-guide-units"]
 					},
 					{
 						"name": "guideUnits.options",
 						"type": "GuidanceOptions",
 						"required": false,
 						"default": {},
-						"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+						"description": "Optional project root and extra required-state file paths forwarded to guidanceContext. If omitted, guideUnits passes its default empty object; the root otherwise resolves to process.cwd().",
+						"examples": [
+							{},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "guideUnits",
 						"type": "Promise<GuideReport>",
-						"description": "Selected HEAD, required named unit states with tests and per-device proof, separate advisory guesses, required-state totals and NEXT. Guesses never block DONE until declared as unit states."
+						"description": "Resolved report for the selected active unit at HEAD, containing required states, authored tests, per-device capture status, advisory guesses, summary counts, proof gap, and any next commands. A required state is DONE only if an authored test is found and usable passed screenshots exist for desktop, tablet, and mobile; inferred guesses do not block completion.",
+						"examples": [
+							{
+								"entity": "workflow.development-tooling-guide-units",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"states": [
+									{
+										"name": "default",
+										"origin": "REQUIRED",
+										"reasons": ["Default presentation."],
+										"tests": [],
+										"viewports": {
+											"desktop": "MISSING",
+											"tablet": "MISSING",
+											"mobile": "MISSING"
+										},
+										"status": "MISSING"
+									}
+								],
+								"guesses": [
+									{
+										"name": "empty-id",
+										"origin": "GUESS",
+										"reasons": ["Prop guideUnits.id (string)."]
+									},
+									{
+										"name": "without-options",
+										"origin": "GUESS",
+										"reasons": ["Prop guideUnits.options (GuidanceOptions)."]
+									},
+									{
+										"name": "with-options",
+										"origin": "GUESS",
+										"reasons": ["Prop guideUnits.options (GuidanceOptions)."]
+									},
+									{
+										"name": "failed",
+										"origin": "GUESS",
+										"reasons": ["Contract mentions failed."]
+									},
+									{
+										"name": "passed",
+										"origin": "GUESS",
+										"reasons": [
+											"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.ts."
+										]
+									},
+									{
+										"name": "DONE",
+										"origin": "GUESS",
+										"reasons": [
+											"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+										]
+									},
+									{
+										"name": "MISSING",
+										"origin": "GUESS",
+										"reasons": [
+											"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+										]
+									}
+								],
+								"summary": {
+									"done": 0,
+									"missing": 1
+								},
+								"next": {
+									"state": "default",
+									"commands": [
+										"${EDITOR:-vi} 'tests/e2e/component-catalog.spec.ts' # Write/extend \"default\" for workflow.development-tooling-guide-units, then commit the test.",
+										"harness verify run --priority agent-test --entity workflow.development-tooling-guide-units",
+										"harness units guide workflow.development-tooling-guide-units"
+									]
+								},
+								"proof": {
+									"store": "git",
+									"gap": "No attached Harness verification evidence at this revision."
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "The async operation can reject while opening HEAD, loading unit data or required-state registries, resolving the active unit, reading source or test files, deriving test attribution, or validating retained captures; an unknown or inactive ID also fails lookup."
 					}
 				],
 				"errorStatus": "declared"
@@ -155,14 +409,96 @@
 						"name": "renderUnitsGuide.report",
 						"type": "GuideReport",
 						"required": true,
-						"description": "Completed structured report to render without recomputing source or upgrading proof."
+						"description": "Structured report already produced by guideUnits. The renderer formats it without loading repository state or changing its proof fields.",
+						"examples": [
+							{
+								"entity": "workflow.development-tooling-guide-units",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"states": [
+									{
+										"name": "default",
+										"origin": "REQUIRED",
+										"reasons": ["Default presentation."],
+										"tests": [],
+										"viewports": {
+											"desktop": "MISSING",
+											"tablet": "MISSING",
+											"mobile": "MISSING"
+										},
+										"status": "MISSING"
+									}
+								],
+								"guesses": [
+									{
+										"name": "empty-id",
+										"origin": "GUESS",
+										"reasons": ["Prop guideUnits.id (string)."]
+									},
+									{
+										"name": "without-options",
+										"origin": "GUESS",
+										"reasons": ["Prop guideUnits.options (GuidanceOptions)."]
+									},
+									{
+										"name": "with-options",
+										"origin": "GUESS",
+										"reasons": ["Prop guideUnits.options (GuidanceOptions)."]
+									},
+									{
+										"name": "failed",
+										"origin": "GUESS",
+										"reasons": ["Contract mentions failed."]
+									},
+									{
+										"name": "passed",
+										"origin": "GUESS",
+										"reasons": [
+											"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.ts."
+										]
+									},
+									{
+										"name": "DONE",
+										"origin": "GUESS",
+										"reasons": [
+											"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+										]
+									},
+									{
+										"name": "MISSING",
+										"origin": "GUESS",
+										"reasons": [
+											"Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+										]
+									}
+								],
+								"summary": {
+									"done": 0,
+									"missing": 1
+								},
+								"next": {
+									"state": "default",
+									"commands": [
+										"${EDITOR:-vi} 'tests/e2e/component-catalog.spec.ts' # Write/extend \"default\" for workflow.development-tooling-guide-units, then commit the test.",
+										"harness verify run --priority agent-test --entity workflow.development-tooling-guide-units",
+										"harness units guide workflow.development-tooling-guide-units"
+									]
+								},
+								"proof": {
+									"store": "git",
+									"gap": "No attached Harness verification evidence at this revision."
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderUnitsGuide",
 						"type": "string",
-						"description": "Human required-state checklist, proof gaps, required-state totals and NEXT, followed by a separate advisory guesses section."
+						"description": "Human-readable string built from the report entity and commit, required-state rows, completion counts, proof gap when present, next-step commands or all-done note, and advisory guesses when present. It formats supplied data without recomputing guide results.",
+						"examples": [
+							"workflow.development-tooling-guide-units @ 0123456789abcdef0123456789abcdef01234567\nREQUIRED = named unit states; guesses are advisory and do not block DONE.\nMISSING default [REQUIRED] test:MISSING desktop:MISSING tablet:MISSING mobile:MISSING\n  Default presentation.\n0/1 DONE.\nProof: No attached Harness verification evidence at this revision.\nNEXT: default\n${EDITOR:-vi} 'tests/e2e/component-catalog.spec.ts' # Write/extend \"default\" for workflow.development-tooling-guide-units, then commit the test.\nharness verify run --priority agent-test --entity workflow.development-tooling-guide-units\nharness units guide workflow.development-tooling-guide-units\nGUESSES (advisory; declare a catalog state if justified):\n  ? empty-id: Prop guideUnits.id (string).\n  ? without-options: Prop guideUnits.options (GuidanceOptions).\n  ? with-options: Prop guideUnits.options (GuidanceOptions).\n  ? failed: Contract mentions failed.\n  ? passed: Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.ts.\n  ? DONE: Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts.\n  ? MISSING: Source branch/type in src/workflows/development-tooling/guide-units/guideUnits.types.ts."
+						]
 					}
 				],
 				"errors": [],
