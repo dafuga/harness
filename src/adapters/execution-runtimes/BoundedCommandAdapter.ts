@@ -2,6 +2,33 @@
 import { spawn, spawnSync, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { basename } from 'node:path';
 import type { BoundedCommandOptions, BoundedCommandResult } from './BoundedCommandAdapter.types';
+import { commandDeadlines } from './bounded-command-adapter/commandDeadlines';
+import { timeoutFailure, commandLabel } from './bounded-command-adapter/commandFailure';
+
+const owned = new Set<ChildProcessWithoutNullStreams>();
+const signalHandlers = new Map<NodeJS.Signals, () => void>();
+
+function registerForSignals(child: ChildProcessWithoutNullStreams): () => void {
+	if (process.platform === 'win32') return () => undefined;
+	owned.add(child);
+	for (const signal of ['SIGINT', 'SIGTERM'] as const) {
+		if (signalHandlers.has(signal)) continue;
+		const handler = () => {
+			for (const running of owned) killGroup(running);
+			process.removeListener(signal, handler);
+			signalHandlers.delete(signal);
+			process.kill(process.pid, signal);
+		};
+		signalHandlers.set(signal, handler);
+		process.on(signal, handler);
+	}
+	return () => {
+		owned.delete(child);
+		if (owned.size) return;
+		for (const [signal, handler] of signalHandlers) process.removeListener(signal, handler);
+		signalHandlers.clear();
+	};
+}
 
 /** Explicit child environment; callers may supply task-specific keys deliberately. */
 export function commandEnvironment(
@@ -93,6 +120,7 @@ function collect(
 		child.once('exit', () => killGroup(child));
 		child.once('close', (code) => {
 			clearTimeout(timer);
+			unregister();
 			options.signal?.removeEventListener('abort', abort);
 			if (failure) reject(failure);
 			else

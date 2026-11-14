@@ -1,9 +1,13 @@
 import { expect, test, vi } from 'vitest';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { spawn } from 'node:child_process';
 import {
 	BoundedCommandAdapter,
 	commandEnvironment
 } from '../../../src/adapters/execution-runtimes/BoundedCommandAdapter';
 import { measureWorkload } from '../../support/measureWorkload';
+import { withTempDir } from '../../support/temporary';
 // Initial public method matrix: async/sync normal, failed, invalid and bounded commands.
 test('async commands preserve input, binary bytes and nonzero exit results', async () => {
 	const adapter = new BoundedCommandAdapter();
@@ -46,13 +50,86 @@ test('async commands stop on deadline, output overflow, cancellation or failed l
 	await expect(adapter.run('harness-nonexistent-fixture-command')).rejects.toThrow();
 	expect(() => adapter.run('bun', [], { timeoutMs: Infinity })).toThrow(/positive finite/);
 });
-test('inherited environment includes only explicitly allowed operating-system keys', () => {
+test('timeout kills a nested child as well as its command wrapper', async () => {
+	await withTempDir('bounded-nested-', async (dir) => {
+		const pidPath = join(dir, 'child.pid');
+		const nested = `import {spawn} from 'node:child_process'; import {writeFileSync} from 'node:fs'; const c=spawn(process.execPath,['-e','setInterval(()=>{},100)'],{stdio:'ignore'}); writeFileSync(${JSON.stringify(pidPath)},String(c.pid)); setInterval(()=>{},100);`;
+		await expect(
+			new BoundedCommandAdapter().run('bun', ['-e', nested], { timeoutMs: 150 })
+		).rejects.toThrow(/timed out/);
+		const pid = Number(await readFile(pidPath, 'utf8'));
+		await expect.poll(() => isAlive(pid), { timeout: 500 }).toBe(false);
+	});
+});
+test.each(['SIGINT', 'SIGTERM'] as const)(
+	'parent %s stops detached command process groups',
+	async (signal) => {
+		await withTempDir('bounded-signal-', async (dir) => {
+			const pidPath = join(dir, 'child.pid');
+			const modulePath = new URL(
+				'../../../src/adapters/execution-runtimes/BoundedCommandAdapter.ts',
+				import.meta.url
+			).pathname;
+			const nested = `import {spawn} from 'node:child_process'; import {writeFileSync} from 'node:fs'; const c=spawn(process.execPath,['-e','setInterval(()=>{},100)'],{stdio:'ignore'}); writeFileSync(${JSON.stringify(pidPath)},String(c.pid)); setInterval(()=>{},100);`;
+			const parent = spawn(
+				'bun',
+				[
+					'-e',
+					`import {BoundedCommandAdapter} from ${JSON.stringify(modulePath)}; new BoundedCommandAdapter().run('bun',['-e',${JSON.stringify(nested)}]).catch(()=>{});`
+				],
+				{ stdio: 'ignore' }
+			);
+			try {
+				await expect.poll(() => fileExists(pidPath), { timeout: 3000 }).toBe(true);
+				const childPid = Number(await readFile(pidPath, 'utf8'));
+				parent.kill(signal);
+				await expect.poll(() => isAlive(childPid), { timeout: 800 }).toBe(false);
+			} finally {
+				if (parent.exitCode === null && parent.signalCode === null) parent.kill('SIGKILL');
+			}
+		});
+	}
+);
+test('real children receive required synthetic config but not unrelated credentials', async () => {
 	vi.stubEnv('HARNESS_BOUNDED_SECRET_FIXTURE', 'synthetic');
 	vi.stubEnv('SSH_AUTH_SOCK', '/fixture/ssh-agent.sock');
+	vi.stubEnv('HTTPS_PROXY', 'http://fixture.invalid:8000');
+	vi.stubEnv('NODE_OPTIONS', '--no-warnings');
+	vi.stubEnv('GH_TOKEN', 'synthetic-github-token');
 	try {
 		expect(Object.hasOwn(commandEnvironment(), 'HARNESS_BOUNDED_SECRET_FIXTURE')).toBe(false);
 		expect(Object.hasOwn(commandEnvironment(), 'SSH_AUTH_SOCK')).toBe(false);
+		const result = await new BoundedCommandAdapter().run(
+			'bun',
+			[
+				'-e',
+				'process.stdout.write(JSON.stringify({proxy:process.env.HTTPS_PROXY,node:process.env.NODE_OPTIONS,token:process.env.GH_TOKEN,secret:process.env.HARNESS_BOUNDED_SECRET_FIXTURE}))'
+			],
+			{ env: commandEnvironment() }
+		);
+		expect(JSON.parse(result.stdout.toString())).toEqual({
+			proxy: 'http://fixture.invalid:8000',
+			node: '--no-warnings',
+			token: 'synthetic-github-token'
+		});
 	} finally {
 		vi.unstubAllEnvs();
 	}
 });
+
+async function fileExists(path: string): Promise<boolean> {
+	try {
+		await readFile(path);
+		return true;
+	} catch {
+		return false;
+	}
+}
+function isAlive(pid: number): boolean {
+	try {
+		process.kill(pid, 0);
+		return true;
+	} catch {
+		return false;
+	}
+}
