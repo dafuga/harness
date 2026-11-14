@@ -22,29 +22,47 @@
 				"name": "scanExports.code",
 				"type": "string",
 				"required": true,
-				"description": "JavaScript/TypeScript source text to scan after masking comments and literal contents."
+				"description": "JavaScript/TypeScript source text; comments and literal contents are masked before export and thrown-error pattern scans. Only top-level syntactic export declarations are matched, with visible class methods included.",
+				"examples": [
+					"export function format(value: string): string { return value.trim(); }",
+					"export const square = (n: number): number => n * n;"
+				]
 			},
 			{
 				"name": "scanSymbolErrors.code",
 				"type": "string",
 				"required": true,
-				"description": "TypeScript source to inspect for direct throws, SvelteKit errors and indirect calls."
+				"description": "TypeScript source parsed using the latest target; top-level function declarations, function-valued variables, and class methods are mapped by name. Only mapped declaration bodies are inspected, and nested function-like bodies are skipped.",
+				"examples": [
+					"export function read(): string { throw new TypeError('missing'); }",
+					"export const load = (): void => { fail('missing'); };"
+				]
 			},
 			{
 				"name": "scanSymbolErrors.symbols",
 				"type": "ExportedSymbol[]",
 				"required": true,
-				"description": "Scanned exported declarations whose error names and certainty are enriched."
+				"description": "Previously discovered symbols matched to declaration bodies by name; matching entries are copied with syntactically identified errors and an errorStatus. Entries without a matching declaration remain unchanged.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanExports",
 				"type": "ExportScan",
-				"description": "Source-ordered symbols with inputs and explicit return/type text where readable, otherwise unknown; sorted unique thrown-error, fail-call and HTTP-error names. Type declarations remain type symbols rather than runtime calls."
+				"description": "Returns source-ordered symbols for matched top-level export declarations and visible class methods, with signature inputs and a readable output type when found (unknown otherwise); matching declaration bodies may carry errors and errorStatus from scanSymbolErrors. The separate errors array is sorted and deduplicated and includes names from textual throw new, ExpectedCliError from fail(...), and HttpError N from numeric error(N) calls.",
+				"examples": [
+					{
+						"symbols": [],
+						"errors": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "scanExports",
@@ -53,18 +71,28 @@
 						"name": "scanExports.code",
 						"type": "string",
 						"required": true,
-						"description": "JavaScript/TypeScript source text to scan after masking comments and literal contents."
+						"description": "JavaScript/TypeScript source text; comments and literal contents are masked before export and thrown-error pattern scans. Only top-level syntactic export declarations are matched, with visible class methods included.",
+						"examples": [
+							"export function format(value: string): string { return value.trim(); }",
+							"export const square = (n: number): number => n * n;"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanExports",
 						"type": "ExportScan",
-						"description": "Source-ordered symbols with inputs and explicit return/type text where readable, otherwise unknown; sorted unique thrown-error, fail-call and HTTP-error names. Type declarations remain type symbols rather than runtime calls."
+						"description": "Returns source-ordered symbols for matched top-level export declarations and visible class methods, with signature inputs and a readable output type when found (unknown otherwise); matching declaration bodies may carry errors and errorStatus from scanSymbolErrors. The separate errors array is sorted and deduplicated and includes names from textual throw new, ExpectedCliError from fail(...), and HttpError N from numeric error(N) calls.",
+						"examples": [
+							{
+								"symbols": [],
+								"errors": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scanSymbolErrors",
@@ -73,23 +101,34 @@
 						"name": "scanSymbolErrors.code",
 						"type": "string",
 						"required": true,
-						"description": "TypeScript source to inspect for direct throws, SvelteKit errors and indirect calls."
+						"description": "TypeScript source parsed using the latest target; top-level function declarations, function-valued variables, and class methods are mapped by name. Only mapped declaration bodies are inspected, and nested function-like bodies are skipped.",
+						"examples": [
+							"export function read(): string { throw new TypeError('missing'); }",
+							"export const load = (): void => { fail('missing'); };"
+						]
 					},
 					{
 						"name": "scanSymbolErrors.symbols",
 						"type": "ExportedSymbol[]",
 						"required": true,
-						"description": "Scanned exported declarations whose error names and certainty are enriched."
+						"description": "Previously discovered symbols matched to declaration bodies by name; matching entries are copied with syntactically identified errors and an errorStatus. Entries without a matching declaration remain unchanged.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanSymbolErrors",
-						"type": "ExportedSymbol[]"
+						"type": "ExportedSymbol[]",
+						"description": "Returns the supplied symbols in order, adding sorted error names and an errorStatus only when a symbol name matches a top-level function, function-valued variable, or class method body. Unclassified calls make that symbol's errorStatus unknown; nested function-like bodies are skipped.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
