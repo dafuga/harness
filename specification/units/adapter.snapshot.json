@@ -25,67 +25,119 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SnapshotAdapter.create.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root passed to the Git archive and commit-tree adapters. It matters when exporting the selected commit and loading its tracked tree.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+				]
 			},
 			{
 				"name": "SnapshotAdapter.create.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The revision passed to git archive and CommitTreeAdapter.open so the exported files and tracked tree refer to the same commit. The adapter passes the string through without rewriting it.",
+				"examples": ["a6b90d3c5f71284e90ab1234567890abcdef1234"]
 			},
 			{
 				"name": "SnapshotAdapter.create.outputs",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Path patterns checked against tracked files and used to exclude covered additions from drift results. Each pattern is passed to pathMatches.",
+				"examples": [
+					["dist/**"],
+					["coverage/**", "reports/**"]
+				]
 			},
 			{
 				"name": "SnapshotAdapter.link.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The checkout root used to locate the source path for a shared link. The source must exist under this root for a link to be created.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+				]
 			},
 			{
 				"name": "SnapshotAdapter.link.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path joined under the checkout and snapshot directories for the shared symlink. The operation returns false if the source is absent, the snapshot target exists, or its parent directory is absent.",
+				"examples": ["node_modules", "vendor/cache"]
 			},
 			{
 				"name": "SnapshotAdapter.artifact.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path resolved against the snapshot directory before reading an artifact's byte count and SHA-256. The result is undefined when the resolved path is outside the snapshot or cannot be read.",
+				"examples": ["package.json", "dist/manifest.json"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SnapshotAdapter.create",
-				"type": "Promise<SnapshotAdapter>"
+				"type": "Promise<SnapshotAdapter>",
+				"description": "A newly exported SnapshotAdapter instance for the requested commit. It is available after archive extraction, tracked-tree loading, and the initial hash comparison complete."
 			},
 			{
 				"name": "SnapshotAdapter.link",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Whether a symlink was created in the snapshot. It is false when the source is missing, the target already exists, or the target parent is absent.",
+				"examples": [true, false]
 			},
 			{
 				"name": "SnapshotAdapter.misdeclared",
-				"type": "Array<{ output: string; file: string }>"
+				"type": "Array<{ output: string; file: string }>",
+				"description": "Each result identifies one declared output pattern and the first tracked file that pattern covers. Patterns with no tracked match are omitted.",
+				"examples": [
+					[
+						{
+							"output": "src/adapters/verification-evidence/**",
+							"file": "src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"
+						}
+					]
+				]
 			},
 			{
 				"name": "SnapshotAdapter.drift",
-				"type": "Promise<SnapshotDrift>"
+				"type": "Promise<SnapshotDrift>",
+				"description": "The result lists tracked paths or shared links that changed or disappeared, plus uncovered files added to the snapshot. Mutated paths include tracked files whose contents changed and shared links replaced from their original targets.",
+				"examples": [
+					{
+						"mutated": ["src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"],
+						"added": ["tmp/check.log"]
+					}
+				]
 			},
 			{
 				"name": "SnapshotAdapter.artifact",
-				"type": "Promise<{ bytes: number; sha256: string } | undefined>"
+				"type": "Promise<{ bytes: number; sha256: string } | undefined>",
+				"description": "The result contains the readable file's byte count and SHA-256, or undefined. It is undefined for paths outside the snapshot and for files that cannot be read.",
+				"examples": [
+					{
+						"bytes": 0,
+						"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+					}
+				]
 			},
 			{
 				"name": "SnapshotAdapter.remove",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The operation resolves after recursively removing the snapshot directory with force enabled."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The adapter propagates failures from awaited filesystem, Git, and snapshot-scanning operations. Tar process errors are forwarded, and a nonzero tar exit is converted to an Error containing captured stderr."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SnapshotAdapter.create",
@@ -93,27 +145,45 @@
 					{
 						"name": "SnapshotAdapter.create.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root passed to the Git archive and commit-tree adapters. It matters when exporting the selected commit and loading its tracked tree.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+						]
 					},
 					{
 						"name": "SnapshotAdapter.create.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The revision passed to git archive and CommitTreeAdapter.open so the exported files and tracked tree refer to the same commit. The adapter passes the string through without rewriting it.",
+						"examples": ["a6b90d3c5f71284e90ab1234567890abcdef1234"]
 					},
 					{
 						"name": "SnapshotAdapter.create.outputs",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Path patterns checked against tracked files and used to exclude covered additions from drift results. Each pattern is passed to pathMatches.",
+						"examples": [
+							["dist/**"],
+							["coverage/**", "reports/**"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SnapshotAdapter.create",
-						"type": "Promise<SnapshotAdapter>"
+						"type": "Promise<SnapshotAdapter>",
+						"description": "A newly exported SnapshotAdapter instance for the requested commit. It is available after archive extraction, tracked-tree loading, and the initial hash comparison complete."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The operation rejects when its awaited temporary-directory, Git archive or commit-tree work fails. Tar process errors are forwarded, and a nonzero tar exit is converted to an Error containing captured stderr."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SnapshotAdapter.link",
@@ -121,22 +191,36 @@
 					{
 						"name": "SnapshotAdapter.link.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The checkout root used to locate the source path for a shared link. The source must exist under this root for a link to be created.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+						]
 					},
 					{
 						"name": "SnapshotAdapter.link.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path joined under the checkout and snapshot directories for the shared symlink. The operation returns false if the source is absent, the snapshot target exists, or its parent directory is absent.",
+						"examples": ["node_modules", "vendor/cache"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SnapshotAdapter.link",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Whether a symlink was created in the snapshot. It is false when the source is missing, the target already exists, or the target parent is absent.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The operation rejects if creating the symlink fails. That filesystem rejection is not caught by link."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SnapshotAdapter.misdeclared",
@@ -144,11 +228,20 @@
 				"outputs": [
 					{
 						"name": "SnapshotAdapter.misdeclared",
-						"type": "Array<{ output: string; file: string }>"
+						"type": "Array<{ output: string; file: string }>",
+						"description": "Each result identifies one declared output pattern and the first tracked file that pattern covers. Patterns with no tracked match are omitted.",
+						"examples": [
+							[
+								{
+									"output": "src/adapters/verification-evidence/**",
+									"file": "src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SnapshotAdapter.drift",
@@ -156,11 +249,26 @@
 				"outputs": [
 					{
 						"name": "SnapshotAdapter.drift",
-						"type": "Promise<SnapshotDrift>"
+						"type": "Promise<SnapshotDrift>",
+						"description": "The result lists tracked paths or shared links that changed or disappeared, plus uncovered files added to the snapshot. Mutated paths include tracked files whose contents changed and shared links replaced from their original targets.",
+						"examples": [
+							{
+								"mutated": [
+									"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"
+								],
+								"added": ["tmp/check.log"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The operation rejects if snapshot-addition scanning fails. Individual file-hash and readlink failures are handled as missing values."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SnapshotAdapter.artifact",
@@ -168,17 +276,26 @@
 					{
 						"name": "SnapshotAdapter.artifact.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path resolved against the snapshot directory before reading an artifact's byte count and SHA-256. The result is undefined when the resolved path is outside the snapshot or cannot be read.",
+						"examples": ["package.json", "dist/manifest.json"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SnapshotAdapter.artifact",
-						"type": "Promise<{ bytes: number; sha256: string } | undefined>"
+						"type": "Promise<{ bytes: number; sha256: string } | undefined>",
+						"description": "The result contains the readable file's byte count and SHA-256, or undefined. It is undefined for paths outside the snapshot and for files that cannot be read.",
+						"examples": [
+							{
+								"bytes": 0,
+								"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SnapshotAdapter.remove",
@@ -186,11 +303,18 @@
 				"outputs": [
 					{
 						"name": "SnapshotAdapter.remove",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The operation resolves after recursively removing the snapshot directory with force enabled."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The operation rejects if recursive removal fails."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
