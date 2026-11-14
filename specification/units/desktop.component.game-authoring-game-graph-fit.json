@@ -25,10 +25,11 @@
 			{
 				"name": "GameGraphFit",
 				"type": "markup",
-				"description": "Fit the checkpoint graph so every checkpoint is fully visible, landing on a whole-pixel pan and a 1/64 zoom step. Renders the Fit View control inside the graph controls and fits once when the graph opens."
+				"description": "Renders an @xyflow/svelte ControlButton titled and labeled Fit View; clicking it runs the fit routine. The routine also runs on mount, requests fitView zoom limits of 0.1–1, stops if fitView returns false, and otherwise sets a viewport with whole-pixel x/y coordinates and zoom in 1/64 steps with a minimum of 7/64."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
