@@ -18,23 +18,25 @@
 				"name": "resourceDatabase.home",
 				"type": "string",
 				"required": true,
-				"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+				"description": "Directory used for the queue database; if it does not exist, it is created recursively with mode 0700. The function opens or creates queue.sqlite inside this directory.",
+				"examples": ["/var/lib/resource-worker"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceDatabase",
 				"type": "ResourceDatabase",
-				"description": "Open database implementing the common transaction and statement protocol."
+				"description": "Open queue database handle with exec, query, and close methods, backed by Bun SQLite directly or a Node DatabaseSync adapter. It creates the resource_jobs and resource_state tables and sets user_version to 1 after accepting only versions 0 or 1."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Unsupported database versions and filesystem or SQLite errors reject without resetting the existing queue."
+				"description": "For a user_version other than 0 or 1, the function closes the database and throws Error('Unsupported resource queue schema'); filesystem, module-loading, and SQLite calls can also throw their underlying errors."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resourceDatabase",
@@ -43,23 +45,25 @@
 						"name": "resourceDatabase.home",
 						"type": "string",
 						"required": true,
-						"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+						"description": "Directory used for the queue database; if it does not exist, it is created recursively with mode 0700. The function opens or creates queue.sqlite inside this directory.",
+						"examples": ["/var/lib/resource-worker"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceDatabase",
 						"type": "ResourceDatabase",
-						"description": "Open database implementing the common transaction and statement protocol."
+						"description": "Open queue database handle with exec, query, and close methods, backed by Bun SQLite directly or a Node DatabaseSync adapter. It creates the resource_jobs and resource_state tables and sets user_version to 1 after accepting only versions 0 or 1."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "For a user_version other than 0 or 1, the function closes the database and throws Error('Unsupported resource queue schema'); filesystem, module-loading, and SQLite calls can also throw their underlying errors."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
