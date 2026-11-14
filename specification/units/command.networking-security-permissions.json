@@ -29,34 +29,35 @@
 				"name": "PermissionsCommand.register.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander root receiving the permissions list/show namespace."
+				"description": "Commander command that receives the `permissions` namespace with its `list` and `show <profile>` actions. It is needed when registering those profile queries; registration does not produce a query result."
 			},
 			{
 				"name": "PermissionsCommand.registerApi.api",
 				"type": "Command",
 				"required": true,
-				"description": "Commander API namespace receiving endpoint permission queries."
+				"description": "Commander command under which `permissions [endpoint]` is registered. The optional endpoint argument filters returned grants by exact resource id, and this command exposes only the `--root` option."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PermissionsCommand.register",
 				"type": "void",
-				"description": "Registers read-only JSON commands using the selected project source and optional Git revision."
+				"description": "Returns no value and registers `permissions list` and `permissions show <profile>` with `--root`, `--commit`, `--branch`, and `--json` options. When invoked, the actions print JSON; `show` throws an Error if the profile id is absent."
 			},
 			{
 				"name": "PermissionsCommand.registerApi",
 				"type": "void",
-				"description": "Registers read-only JSON commands using the selected project source and optional Git revision."
+				"description": "Returns no value and registers `permissions [endpoint]` with a `--root` option. When invoked, it prints JSON containing the endpoint filter, profiles with matching API grants, and catalog gaps."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Registered read actions reject unknown profiles and unreadable selected Git revisions."
+				"description": "The `show <profile>` action throws this Error with message `Unknown permission profile: <id>` when no catalog profile has the requested id."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PermissionsCommand.register",
@@ -65,18 +66,18 @@
 						"name": "PermissionsCommand.register.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander root receiving the permissions list/show namespace."
+						"description": "Commander command that receives the `permissions` namespace with its `list` and `show <profile>` actions. It is needed when registering those profile queries; registration does not produce a query result."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PermissionsCommand.register",
 						"type": "void",
-						"description": "Registers read-only JSON commands using the selected project source and optional Git revision."
+						"description": "Returns no value and registers `permissions list` and `permissions show <profile>` with `--root`, `--commit`, `--branch`, and `--json` options. When invoked, the actions print JSON; `show` throws an Error if the profile id is absent."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PermissionsCommand.registerApi",
@@ -85,18 +86,18 @@
 						"name": "PermissionsCommand.registerApi.api",
 						"type": "Command",
 						"required": true,
-						"description": "Commander API namespace receiving endpoint permission queries."
+						"description": "Commander command under which `permissions [endpoint]` is registered. The optional endpoint argument filters returned grants by exact resource id, and this command exposes only the `--root` option."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PermissionsCommand.registerApi",
 						"type": "void",
-						"description": "Registers read-only JSON commands using the selected project source and optional Git revision."
+						"description": "Returns no value and registers `permissions [endpoint]` with a `--root` option. When invoked, it prints JSON containing the endpoint filter, profiles with matching API grants, and catalog gaps."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
