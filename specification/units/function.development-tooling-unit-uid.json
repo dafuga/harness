@@ -18,54 +18,83 @@
 				"name": "readUid.code",
 				"type": "string",
 				"required": true,
-				"description": "The text of a source file."
+				"description": "Source text to scan for a Harness UID annotation. Only its first 1000 characters are searched, and a match must contain @harness-uid, whitespace, u_ plus 10 lowercase base32 characters, and no lowercase base32 character immediately after the UID.",
+				"examples": ["// @harness-uid u_e6w2kdpv7l\nexport const enabled = true;\n"]
 			},
 			{
 				"name": "uidComment.path",
 				"type": "string",
 				"required": true,
-				"description": "The repository path, whose extension decides the comment style."
+				"description": "Repository path used to choose the comment syntax or suppress a comment. Exact paths in the embedded-file set and paths ending in /atoms/Html<alphanumerics>.svelte or /atoms/Svg<alphanumerics>.svelte suppress comments; other .svelte, .js/.jsx/.ts/.tsx and .m/.c variants, or .css paths select HTML, line, or block comments.",
+				"examples": [
+					"src/utils/development-tooling/unitUid.ts",
+					"src/templates/development-tooling/atomicPreprocess.js",
+					"packages/game/src/atoms/HtmlButton.svelte"
+				]
 			},
 			{
 				"name": "uidComment.uid",
 				"type": "string",
 				"required": true,
-				"description": "The uid to announce."
+				"description": "UID text placed verbatim after @harness-uid in the selected comment. This function does not validate its format or escape it for the comment syntax.",
+				"examples": ["u_e6w2kdpv7l"]
 			},
 			{
 				"name": "withUid.path",
 				"type": "string",
 				"required": true,
-				"description": "The repository path of the file."
+				"description": "Repository path used to select a comment syntax and insertion point. Canonical native atoms and the listed embedded paths have no inserted UID comment; unsupported extensions are unchanged.",
+				"examples": [
+					"src/utils/development-tooling/unitUid.ts",
+					"src/templates/development-tooling/atomicPreprocess.js",
+					"packages/game/src/atoms/HtmlButton.svelte"
+				]
 			},
 			{
 				"name": "withUid.code",
 				"type": "string",
 				"required": true,
-				"description": "The current text of the file."
+				"description": "Current file text to update when the path has a comment style and no UID annotation matches within its first 1000 characters. Insertion uses LF-separated lines, after an initial shebang and, for Svelte files, after leading Harness comment lines.",
+				"examples": [
+					"export const enabled = true;\n",
+					"#!/usr/bin/env node\nconsole.log(\"ready\");\n",
+					"<!-- @harness-note keep -->\n<script>export const enabled = true;</script>\n"
+				]
 			},
 			{
 				"name": "withUid.uid",
 				"type": "string",
 				"required": true,
-				"description": "The uid to add."
+				"description": "UID text placed verbatim after @harness-uid in the selected comment. This function does not validate its format or escape it for the comment syntax.",
+				"examples": ["u_e6w2kdpv7l"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "readUid",
 				"type": "string | undefined",
-				"description": "The uid announced in the first 1000 characters, or undefined when there is none or it is malformed."
+				"description": "The UID token captured from the first matching annotation within the first 1000 characters, or undefined when no annotation matches. A match has u_ followed by 10 lowercase base32 characters, with no lowercase base32 character immediately after them.",
+				"examples": ["u_e6w2kdpv7l"]
 			},
 			{
 				"name": "uidComment",
 				"type": "string | undefined",
-				"description": "The one comment line in the file kind's own syntax, or undefined for a kind that takes no comment."
+				"description": "One Harness UID comment in HTML syntax for non-canonical Svelte paths, line-comment syntax for JS/TS-family paths, or block-comment syntax for CSS paths. Returns undefined for canonical native atoms, listed embedded files, and paths without a recognized extension.",
+				"examples": [
+					"<!-- @harness-uid u_e6w2kdpv7l -->",
+					"// @harness-uid u_e6w2kdpv7l",
+					"/* @harness-uid u_e6w2kdpv7l */"
+				]
 			},
 			{
 				"name": "withUid",
 				"type": "string",
-				"description": "The text with the line added after a shebang or leading harness comments; unchanged when it already announces a uid or takes no comment."
+				"description": "The file text with the selected UID comment inserted as one line after an initial shebang, or after leading Harness comment lines for Svelte files. If no comment applies or a UID is already found in the first 1000 characters, the input text is returned unchanged.",
+				"examples": [
+					"// @harness-uid u_e6w2kdpv7l\nexport const enabled = true;\n",
+					"#!/usr/bin/env node\n// @harness-uid u_e6w2kdpv7l\nconsole.log(\"ready\");\n",
+					"<!-- @harness-note keep -->\n<!-- @harness-uid u_e6w2kdpv7l -->\n<script>export const enabled = true;</script>\n"
+				]
 			}
 		],
 		"errors": [],
@@ -78,14 +107,16 @@
 						"name": "readUid.code",
 						"type": "string",
 						"required": true,
-						"description": "The text of a source file."
+						"description": "Source text to scan for a Harness UID annotation. Only its first 1000 characters are searched, and a match must contain @harness-uid, whitespace, u_ plus 10 lowercase base32 characters, and no lowercase base32 character immediately after the UID.",
+						"examples": ["// @harness-uid u_e6w2kdpv7l\nexport const enabled = true;\n"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readUid",
 						"type": "string | undefined",
-						"description": "The uid announced in the first 1000 characters, or undefined when there is none or it is malformed."
+						"description": "The UID token captured from the first matching annotation within the first 1000 characters, or undefined when no annotation matches. A match has u_ followed by 10 lowercase base32 characters, with no lowercase base32 character immediately after them.",
+						"examples": ["u_e6w2kdpv7l"]
 					}
 				],
 				"errors": [],
@@ -98,20 +129,31 @@
 						"name": "uidComment.path",
 						"type": "string",
 						"required": true,
-						"description": "The repository path, whose extension decides the comment style."
+						"description": "Repository path used to choose the comment syntax or suppress a comment. Exact paths in the embedded-file set and paths ending in /atoms/Html<alphanumerics>.svelte or /atoms/Svg<alphanumerics>.svelte suppress comments; other .svelte, .js/.jsx/.ts/.tsx and .m/.c variants, or .css paths select HTML, line, or block comments.",
+						"examples": [
+							"src/utils/development-tooling/unitUid.ts",
+							"src/templates/development-tooling/atomicPreprocess.js",
+							"packages/game/src/atoms/HtmlButton.svelte"
+						]
 					},
 					{
 						"name": "uidComment.uid",
 						"type": "string",
 						"required": true,
-						"description": "The uid to announce."
+						"description": "UID text placed verbatim after @harness-uid in the selected comment. This function does not validate its format or escape it for the comment syntax.",
+						"examples": ["u_e6w2kdpv7l"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "uidComment",
 						"type": "string | undefined",
-						"description": "The one comment line in the file kind's own syntax, or undefined for a kind that takes no comment."
+						"description": "One Harness UID comment in HTML syntax for non-canonical Svelte paths, line-comment syntax for JS/TS-family paths, or block-comment syntax for CSS paths. Returns undefined for canonical native atoms, listed embedded files, and paths without a recognized extension.",
+						"examples": [
+							"<!-- @harness-uid u_e6w2kdpv7l -->",
+							"// @harness-uid u_e6w2kdpv7l",
+							"/* @harness-uid u_e6w2kdpv7l */"
+						]
 					}
 				],
 				"errors": [],
@@ -124,26 +166,42 @@
 						"name": "withUid.path",
 						"type": "string",
 						"required": true,
-						"description": "The repository path of the file."
+						"description": "Repository path used to select a comment syntax and insertion point. Canonical native atoms and the listed embedded paths have no inserted UID comment; unsupported extensions are unchanged.",
+						"examples": [
+							"src/utils/development-tooling/unitUid.ts",
+							"src/templates/development-tooling/atomicPreprocess.js",
+							"packages/game/src/atoms/HtmlButton.svelte"
+						]
 					},
 					{
 						"name": "withUid.code",
 						"type": "string",
 						"required": true,
-						"description": "The current text of the file."
+						"description": "Current file text to update when the path has a comment style and no UID annotation matches within its first 1000 characters. Insertion uses LF-separated lines, after an initial shebang and, for Svelte files, after leading Harness comment lines.",
+						"examples": [
+							"export const enabled = true;\n",
+							"#!/usr/bin/env node\nconsole.log(\"ready\");\n",
+							"<!-- @harness-note keep -->\n<script>export const enabled = true;</script>\n"
+						]
 					},
 					{
 						"name": "withUid.uid",
 						"type": "string",
 						"required": true,
-						"description": "The uid to add."
+						"description": "UID text placed verbatim after @harness-uid in the selected comment. This function does not validate its format or escape it for the comment syntax.",
+						"examples": ["u_e6w2kdpv7l"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "withUid",
 						"type": "string",
-						"description": "The text with the line added after a shebang or leading harness comments; unchanged when it already announces a uid or takes no comment."
+						"description": "The file text with the selected UID comment inserted as one line after an initial shebang, or after leading Harness comment lines for Svelte files. If no comment applies or a UID is already found in the first 1000 characters, the input text is returned unchanged.",
+						"examples": [
+							"// @harness-uid u_e6w2kdpv7l\nexport const enabled = true;\n",
+							"#!/usr/bin/env node\n// @harness-uid u_e6w2kdpv7l\nconsole.log(\"ready\");\n",
+							"<!-- @harness-note keep -->\n<!-- @harness-uid u_e6w2kdpv7l -->\n<script>export const enabled = true;</script>\n"
+						]
 					}
 				],
 				"errors": [],
