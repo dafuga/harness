@@ -21,21 +21,23 @@
 				"name": "errorMessage.cause",
 				"type": "ThrownValue",
 				"required": true,
-				"description": "Any thrown JavaScript value, including null and undefined."
+				"description": "The JavaScript value whose readable message is returned. It may be any value, including null or undefined.",
+				"examples": ["Request failed", null, 503]
 			}
 		],
 		"outputs": [
 			{
 				"name": "errorMessage",
 				"type": "string",
-				"description": "Error.message for Error instances; String(cause) otherwise. String conversion errors propagate."
+				"description": "The returned message is Error.message for Error instances and String(cause) otherwise. Errors during message access or string conversion propagate unchanged.",
+				"examples": ["Request failed", "503", "null"]
 			}
 		],
 		"errors": [
 			{
-				"name": "Message conversion error",
-				"type": "propagated",
-				"description": "Errors from an Error.message accessor or String(cause) conversion propagate unchanged."
+				"name": "Message access or conversion error",
+				"type": "thrown",
+				"description": "An arbitrary value thrown while reading Error.message or converting a non-Error cause with String(cause). The helper does not catch or change it."
 			}
 		],
 		"errorStatus": "declared",
@@ -47,21 +49,23 @@
 						"name": "errorMessage.cause",
 						"type": "ThrownValue",
 						"required": true,
-						"description": "Any thrown JavaScript value, including null and undefined."
+						"description": "The JavaScript value whose readable message is returned. It may be any value, including null or undefined.",
+						"examples": ["Request failed", null, 503]
 					}
 				],
 				"outputs": [
 					{
 						"name": "errorMessage",
 						"type": "string",
-						"description": "Error.message for Error instances; String(cause) otherwise. String conversion errors propagate."
+						"description": "The returned message is Error.message for Error instances and String(cause) otherwise. Errors during message access or string conversion propagate unchanged.",
+						"examples": ["Request failed", "503", "null"]
 					}
 				],
 				"errors": [
 					{
-						"name": "Message conversion error",
-						"type": "propagated",
-						"description": "Errors from an Error.message accessor or String(cause) conversion propagate unchanged."
+						"name": "Message access or conversion error",
+						"type": "thrown",
+						"description": "An arbitrary value thrown while reading Error.message or converting a non-Error cause with String(cause). The helper does not catch or change it."
 					}
 				],
 				"errorStatus": "declared"
