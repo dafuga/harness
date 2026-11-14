@@ -21,34 +21,62 @@
 				"name": "comparisonPanes.before",
 				"type": "ComparisonSide<T> | null",
 				"required": true,
-				"description": "Parent revision content, source identity and gap; null means no parent evidence."
+				"description": "Contains the parent-side value and metadata used only when paired is true; null is replaced with an empty side before building the pane. The side is not read when paired is false.",
+				"examples": [
+					{
+						"value": {
+							"checks": 12,
+							"passed": true
+						},
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"key": "before-0123456789abcdef0123456789abcdef01234567",
+						"gap": "Parent revision has no additional evidence notes.",
+						"currentLabel": "Current snapshot",
+						"currentRole": "Branch tip"
+					},
+					null
+				]
 			},
 			{
 				"name": "comparisonPanes.after",
 				"type": "ComparisonSide<T>",
 				"required": true,
-				"description": "Selected revision content, source identity and gap; never substituted from the parent."
+				"description": "Contains the after-side value and metadata used in both paired and current comparisons. A missing commit becomes an empty string, an undefined value gets the default evidence gap unless gap is supplied, and currentLabel/currentRole affect only unpaired output.",
+				"examples": [
+					{
+						"value": {
+							"checks": 14,
+							"passed": true
+						},
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"key": "after-89abcdef0123456789abcdef0123456789abcdef",
+						"gap": "One check has no attached output.",
+						"currentLabel": "Current snapshot",
+						"currentRole": "Branch tip"
+					}
+				]
 			},
 			{
 				"name": "comparisonPanes.paired",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "True by default for an ordered Before/After pair; false for one current snapshot."
+				"description": "Selects two panes or one current pane. The source default is true, so only false selects the unpaired form.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "comparisonPanes",
 				"type": "ComparisonPane<T>[]",
-				"description": "Ordered parent and selected panes, or one current pane, each retaining its own value, commit, role, heading and gap."
+				"description": "Returns two panes in before/after order when paired is true, or one after pane with phase current when false. Each pane's fields are copied or derived from that side; a missing commit becomes empty, labels and roles use paired/current defaults, and an undefined value gets the default gap unless gap is supplied."
 			}
 		],
 		"errors": [
 			{
 				"name": "Side access error",
-				"type": "propagated",
-				"description": "Errors from side property getters propagate; values are not cloned or serialized."
+				"type": "thrown",
+				"description": "If reading a side property invokes a getter that throws, the exception propagates while the pane is built. The helper does not catch or wrap it."
 			}
 		],
 		"errorStatus": "declared",
@@ -60,34 +88,62 @@
 						"name": "comparisonPanes.before",
 						"type": "ComparisonSide<T> | null",
 						"required": true,
-						"description": "Parent revision content, source identity and gap; null means no parent evidence."
+						"description": "Contains the parent-side value and metadata used only when paired is true; null is replaced with an empty side before building the pane. The side is not read when paired is false.",
+						"examples": [
+							{
+								"value": {
+									"checks": 12,
+									"passed": true
+								},
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"key": "before-0123456789abcdef0123456789abcdef01234567",
+								"gap": "Parent revision has no additional evidence notes.",
+								"currentLabel": "Current snapshot",
+								"currentRole": "Branch tip"
+							},
+							null
+						]
 					},
 					{
 						"name": "comparisonPanes.after",
 						"type": "ComparisonSide<T>",
 						"required": true,
-						"description": "Selected revision content, source identity and gap; never substituted from the parent."
+						"description": "Contains the after-side value and metadata used in both paired and current comparisons. A missing commit becomes an empty string, an undefined value gets the default evidence gap unless gap is supplied, and currentLabel/currentRole affect only unpaired output.",
+						"examples": [
+							{
+								"value": {
+									"checks": 14,
+									"passed": true
+								},
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"key": "after-89abcdef0123456789abcdef0123456789abcdef",
+								"gap": "One check has no attached output.",
+								"currentLabel": "Current snapshot",
+								"currentRole": "Branch tip"
+							}
+						]
 					},
 					{
 						"name": "comparisonPanes.paired",
 						"type": "boolean",
 						"required": false,
 						"default": true,
-						"description": "True by default for an ordered Before/After pair; false for one current snapshot."
+						"description": "Selects two panes or one current pane. The source default is true, so only false selects the unpaired form.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "comparisonPanes",
 						"type": "ComparisonPane<T>[]",
-						"description": "Ordered parent and selected panes, or one current pane, each retaining its own value, commit, role, heading and gap."
+						"description": "Returns two panes in before/after order when paired is true, or one after pane with phase current when false. Each pane's fields are copied or derived from that side; a missing commit becomes empty, labels and roles use paired/current defaults, and an undefined value gets the default gap unless gap is supplied."
 					}
 				],
 				"errors": [
 					{
 						"name": "Side access error",
-						"type": "propagated",
-						"description": "Errors from side property getters propagate; values are not cloned or serialized."
+						"type": "thrown",
+						"description": "If reading a side property invokes a getter that throws, the exception propagates while the pane is built. The helper does not catch or wrap it."
 					}
 				],
 				"errorStatus": "declared"
