@@ -12,45 +12,72 @@
 		"symbols": ["recordValue", "probabilityValue", "tokenCount"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "recordValue.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Candidate Jev response value passed to recordValue. It is accepted only when it is a non-null object that is not an array.",
+				"examples": [
+					{
+						"response": {
+							"findings": []
+						}
+					},
+					null,
+					[]
+				]
 			},
 			{
 				"name": "probabilityValue.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Candidate Jev probability passed to probabilityValue. It must be a finite number from 0 through 1, inclusive.",
+				"examples": [0.25, 1, -0.1]
 			},
 			{
 				"name": "tokenCount.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Candidate Jev usage count passed to tokenCount. It must be a nonnegative safe integer.",
+				"examples": [0, 37, -1]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordValue",
-				"type": "Record<string, unknown>"
+				"type": "Record<string, unknown>",
+				"description": "The accepted response object returned unchanged as a string-keyed record. Its value must be a non-null, non-array object.",
+				"examples": [
+					{
+						"response": {
+							"findings": []
+						}
+					}
+				]
 			},
 			{
 				"name": "probabilityValue",
-				"type": "number"
+				"type": "number",
+				"description": "The validated probability returned unchanged as a number. It is finite and within the inclusive range 0 through 1.",
+				"examples": [0, 0.75, 1]
 			},
 			{
 				"name": "tokenCount",
-				"type": "number"
+				"type": "number",
+				"description": "The validated usage count returned unchanged as a number. It is a nonnegative safe integer.",
+				"examples": [0, 37, 4096]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "recordValue throws this Error for null, non-object, or array inputs; probabilityValue throws it for non-numbers, non-finite numbers, or values outside 0 through 1; tokenCount throws it for non-numbers, non-safe integers, or negative values. The respective messages are \"Invalid Jev response\", \"Invalid Jev probability\", and \"Invalid Jev usage\"."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "recordValue",
@@ -58,22 +85,41 @@
 					{
 						"name": "recordValue.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Candidate Jev response value passed to recordValue. It is accepted only when it is a non-null object that is not an array.",
+						"examples": [
+							{
+								"response": {
+									"findings": []
+								}
+							},
+							null,
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordValue",
-						"type": "Record<string, unknown>"
+						"type": "Record<string, unknown>",
+						"description": "The accepted response object returned unchanged as a string-keyed record. Its value must be a non-null, non-array object.",
+						"examples": [
+							{
+								"response": {
+									"findings": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when value is null, is not an object, or is an array; the message is \"Invalid Jev response\"."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "probabilityValue",
@@ -81,22 +127,27 @@
 					{
 						"name": "probabilityValue.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Candidate Jev probability passed to probabilityValue. It must be a finite number from 0 through 1, inclusive.",
+						"examples": [0.25, 1, -0.1]
 					}
 				],
 				"outputs": [
 					{
 						"name": "probabilityValue",
-						"type": "number"
+						"type": "number",
+						"description": "The validated probability returned unchanged as a number. It is finite and within the inclusive range 0 through 1.",
+						"examples": [0, 0.75, 1]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when value is not a number, is not finite, or is outside the inclusive range 0 through 1; the message is \"Invalid Jev probability\"."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "tokenCount",
@@ -104,22 +155,27 @@
 					{
 						"name": "tokenCount.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Candidate Jev usage count passed to tokenCount. It must be a nonnegative safe integer.",
+						"examples": [0, 37, -1]
 					}
 				],
 				"outputs": [
 					{
 						"name": "tokenCount",
-						"type": "number"
+						"type": "number",
+						"description": "The validated usage count returned unchanged as a number. It is a nonnegative safe integer.",
+						"examples": [0, 37, 4096]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when value is not a number, is not a safe integer, or is negative; the message is \"Invalid Jev usage\"."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
