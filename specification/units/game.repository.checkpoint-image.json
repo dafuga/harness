@@ -17,46 +17,70 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CheckpointImageRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root directory that holds static/game/checkpoints: save writes there and read reads from there, and the root is also the git working directory for commit reads. The constructor does not validate it, and the root must already exist because only static, game and checkpoints are created.",
+				"examples": ["/srv/luna-pyramid", "/workspaces/game-authoring"]
 			},
 			{
 				"name": "CheckpointImageRepository.save.bytes",
 				"type": "Buffer",
-				"required": true
+				"required": true,
+				"description": "This value holds the image bytes to store: save hashes them with SHA-256, writes them unchanged to static/game/checkpoints/<hash>.png, and verifies an existing file of that name with read instead of overwriting it. save does not check the content before writing, but read rejects bytes that do not start with the PNG signature or that are over 12,000,000 bytes."
 			},
 			{
 				"name": "CheckpointImageRepository.read.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository-relative checkpoint path; it must match static/game/checkpoints/<64 lowercase hex characters>.png, or read throws 'Invalid checkpoint image path.'. The file name must also equal the SHA-256 hex digest of the bytes read, or read throws 'Checkpoint image integrity failed.'",
+				"examples": [
+					"static/game/checkpoints/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08.png",
+					"static/game/checkpoints/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png"
+				]
 			},
 			{
 				"name": "CheckpointImageRepository.read.commit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "This optional value is a full commit SHA; when it is not an empty string it must be 40 lowercase hex characters, or read throws 'A full commit is required.', and the image is then read with git show <commit>:<path> instead of from the working tree. An empty string behaves like no commit, and git failures, such as an unknown commit or a path missing from that commit, are thrown by execFileSync.",
+				"examples": [
+					"7c1e4b9d02a85f3e6b71d8c4f09a2e5d3b6c1a70",
+					"a3f1c9e2d4b8706f5e1c2a9b3d7f4e8c6a0b5d21"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CheckpointImageRepository.save",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The save promise resolves to the repository-relative path of the stored image: 'static/game/checkpoints/' followed by the SHA-256 hex digest of the bytes and '.png'. It resolves only after the file is written, or after an existing file with that name has passed the checks in read.",
+				"examples": [
+					"static/game/checkpoints/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08.png",
+					"static/game/checkpoints/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png"
+				]
 			},
 			{
 				"name": "CheckpointImageRepository.read",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The read promise resolves to a 'data:image/png;base64,' data URL of the image bytes, read from the working tree or from the given commit. It resolves only after the bytes pass the PNG signature check and the SHA-256 file-name check; otherwise read rejects.",
+				"examples": [
+					"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Errors thrown inside save and read, which reject their returned promises: 'Invalid checkpoint image path.' and 'A full commit is required.' (both from read), 'Checkpoint image integrity failed.', 'Invalid checkpoint image file.' (not a regular file or over 12,000,000 bytes), and 'Unsafe checkpoint image directory.' (a static, game or checkpoints entry is a symlink or not a directory). Filesystem errors, such as a missing file or denied permission, and git failures from execFileSync propagate unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CheckpointImageRepository.save",
@@ -64,17 +88,29 @@
 					{
 						"name": "CheckpointImageRepository.save.bytes",
 						"type": "Buffer",
-						"required": true
+						"required": true,
+						"description": "This value holds the image bytes to store: save hashes them with SHA-256, writes them unchanged to static/game/checkpoints/<hash>.png, and verifies an existing file of that name with read instead of overwriting it. save does not check the content before writing, but read rejects bytes that do not start with the PNG signature or that are over 12,000,000 bytes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CheckpointImageRepository.save",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The save promise resolves to the repository-relative path of the stored image: 'static/game/checkpoints/' followed by the SHA-256 hex digest of the bytes and '.png'. It resolves only after the file is written, or after an existing file with that name has passed the checks in read.",
+						"examples": [
+							"static/game/checkpoints/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08.png",
+							"static/game/checkpoints/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "save rejects with 'Unsafe checkpoint image directory.' when a static, game or checkpoints entry is a symlink or not a directory, and it propagates other mkdir, lstat or writeFile errors, such as denied permission or no space left. When a file with the same name already exists, save also rejects with any error that read throws for it, such as 'Checkpoint image integrity failed.'"
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CheckpointImageRepository.read",
@@ -82,27 +118,43 @@
 					{
 						"name": "CheckpointImageRepository.read.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository-relative checkpoint path; it must match static/game/checkpoints/<64 lowercase hex characters>.png, or read throws 'Invalid checkpoint image path.'. The file name must also equal the SHA-256 hex digest of the bytes read, or read throws 'Checkpoint image integrity failed.'",
+						"examples": [
+							"static/game/checkpoints/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08.png",
+							"static/game/checkpoints/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png"
+						]
 					},
 					{
 						"name": "CheckpointImageRepository.read.commit",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "This optional value is a full commit SHA; when it is not an empty string it must be 40 lowercase hex characters, or read throws 'A full commit is required.', and the image is then read with git show <commit>:<path> instead of from the working tree. An empty string behaves like no commit, and git failures, such as an unknown commit or a path missing from that commit, are thrown by execFileSync.",
+						"examples": [
+							"7c1e4b9d02a85f3e6b71d8c4f09a2e5d3b6c1a70",
+							"a3f1c9e2d4b8706f5e1c2a9b3d7f4e8c6a0b5d21"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CheckpointImageRepository.read",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The read promise resolves to a 'data:image/png;base64,' data URL of the image bytes, read from the working tree or from the given commit. It resolves only after the bytes pass the PNG signature check and the SHA-256 file-name check; otherwise read rejects.",
+						"examples": [
+							"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "read rejects with 'Invalid checkpoint image path.' for a path that does not match the checkpoint pattern, with 'A full commit is required.' for a non-empty commit that is not 40 lowercase hex characters, and with 'Unsafe checkpoint image directory.' for a working-tree read when a static, game or checkpoints entry is a symlink or not a directory. It also rejects with 'Invalid checkpoint image file.' for a working-tree file that is not a regular file or is over 12,000,000 bytes, with 'Checkpoint image integrity failed.', with git failures from execFileSync, and with filesystem errors such as a missing working-tree file."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -112,17 +164,20 @@
 					{
 						"name": "CheckpointImageRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root directory that holds static/game/checkpoints: save writes there and read reads from there, and the root is also the git working directory for commit reads. The constructor does not validate it, and the root must already exist because only static, game and checkpoints are created.",
+						"examples": ["/srv/luna-pyramid", "/workspaces/game-authoring"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CheckpointImageRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructor creates the new CheckpointImageRepository instance, which holds root as its private root property. The constructor performs no I/O and no validation."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
