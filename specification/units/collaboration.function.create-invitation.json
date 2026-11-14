@@ -29,58 +29,123 @@
 				"name": "createInvitation.deps",
 				"type": "CollaborationDependencies",
 				"required": true,
-				"description": "Persistence and optional clock used to store the invitation."
+				"description": "This dependency bundle supplies the repository used for transaction reads and compare-and-swap writes, plus an optional clock used to timestamp the invitation. Its source adapter, cache, and repository authorization callback are required by the type but are not called by these two functions."
 			},
 			{
 				"name": "createInvitation.actor",
 				"type": "Actor",
 				"required": true,
-				"description": "Verified project owner issuing the invitation."
+				"description": "This strictly parsed actor has an ID and name trimmed to 1–200 characters, an email of at most 320 characters normalized to lowercase, and emailVerified set to true. Creation requires this actor to be a project owner.",
+				"examples": [
+					{
+						"id": "actor_alex_01",
+						"email": "alex@example.com",
+						"name": "Alex Rivera",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "createInvitation.input",
 				"type": "Parameters<CollaborationApi['createInvitation']>[1]",
 				"required": true,
-				"description": "Project UUID, invited email and commenter or viewer role."
+				"description": "This strict object contains a project UUID, a valid email of at most 320 characters, and a writer, commenter, or viewer role; the email is lowercased before storage. Extra fields and the owner role are rejected.",
+				"examples": [
+					{
+						"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+						"email": "sam@example.com",
+						"role": "writer"
+					},
+					{
+						"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+						"email": "jules@example.net",
+						"role": "commenter"
+					},
+					{
+						"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+						"email": "lee@example.org",
+						"role": "viewer"
+					}
+				]
 			},
 			{
 				"name": "acceptInvitation.deps",
 				"type": "CollaborationDependencies",
 				"required": true,
-				"description": "Persistence and optional clock used to validate and accept the invitation."
+				"description": "This dependency bundle supplies the repository used for transaction reads and compare-and-swap writes, plus an optional clock used to check expiry. Its source adapter, cache, and repository authorization callback are required by the type but are not called by these two functions."
 			},
 			{
 				"name": "acceptInvitation.actor",
 				"type": "Actor",
 				"required": true,
-				"description": "Verified actor whose normalized email must match the invitation."
+				"description": "This strictly parsed actor has an ID and name trimmed to 1–200 characters, an email of at most 320 characters normalized to lowercase, and emailVerified set to true. Acceptance requires its normalized email to match the invitation email.",
+				"examples": [
+					{
+						"id": "actor_sam_02",
+						"email": "sam@example.com",
+						"name": "Sam Chen",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "acceptInvitation.input",
 				"type": "Parameters<CollaborationApi['acceptInvitation']>[1]",
 				"required": true,
-				"description": "Project UUID, invitation UUID and 64-character lowercase hex invitation code."
+				"description": "This strict object contains project and invitation UUIDs plus a 64-character lowercase hexadecimal code. Extra fields, uppercase hex, or any other code length are rejected.",
+				"examples": [
+					{
+						"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+						"invitationId": "7f08394f-65b9-4b87-94c6-1df28a6ce413",
+						"code": "4f8a2c1d9e7b3a605c4d8f2a1b6e9c073a5d1f8b2e4c6a901d3f5b7e8a2c4d6f"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "createInvitation",
 				"type": "unknown",
-				"description": "Promise of invitation ID, project ID, expiry and plaintext code; only its hash is stored."
+				"description": "Resolves to an object with a random UUID invitation ID, the project UUID, an ISO expiry exactly 24 hours after the configured or system clock, and the 64-character lowercase hexadecimal plaintext code. The repository stores the code's SHA-256 digest with acceptedBy set to null, so the returned code is needed to accept the invitation.",
+				"examples": [
+					{
+						"id": "7f08394f-65b9-4b87-94c6-1df28a6ce413",
+						"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+						"expiresAt": "2026-11-15T12:00:00.000Z",
+						"code": "4f8a2c1d9e7b3a605c4d8f2a1b6e9c073a5d1f8b2e4c6a901d3f5b7e8a2c4d6f"
+					}
+				]
 			},
 			{
 				"name": "acceptInvitation",
 				"type": "unknown",
-				"description": "Promise of the joined project and current role; existing membership is retained and the invitation is marked accepted."
+				"description": "Resolves to the project summary with the actor's role after acceptance. It creates a member only when none exists, retains an existing member's role, and marks the invitation accepted.",
+				"examples": [
+					{
+						"id": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+						"name": "Launch planning",
+						"sourceRepository": {
+							"id": 84235671,
+							"owner": "acme-build",
+							"name": "launch-planning",
+							"private": true,
+							"installationId": 5720001
+						},
+						"createdAt": "2026-10-20T09:30:00.000Z",
+						"ownerId": "actor_owner_01",
+						"role": "writer"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid input, nonowners, invalid or expired or already accepted invitations, email or code mismatches and exhausted write retries."
+				"description": "The implementation throws plain Error objects with codes invalid-input, forbidden, invalid-invitation, or conflict; conflict follows five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate, and creation can throw a RangeError if the configured clock produces an invalid date."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createInvitation",
@@ -89,30 +154,69 @@
 						"name": "createInvitation.deps",
 						"type": "CollaborationDependencies",
 						"required": true,
-						"description": "Persistence and optional clock used to store the invitation."
+						"description": "This dependency bundle supplies the repository used for transaction reads and compare-and-swap writes, plus an optional clock used to timestamp the invitation. Its source adapter, cache, and repository authorization callback are required by the type but are not called by these two functions."
 					},
 					{
 						"name": "createInvitation.actor",
 						"type": "Actor",
 						"required": true,
-						"description": "Verified project owner issuing the invitation."
+						"description": "This strictly parsed actor has an ID and name trimmed to 1–200 characters, an email of at most 320 characters normalized to lowercase, and emailVerified set to true. Creation requires this actor to be a project owner.",
+						"examples": [
+							{
+								"id": "actor_alex_01",
+								"email": "alex@example.com",
+								"name": "Alex Rivera",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "createInvitation.input",
 						"type": "Parameters<CollaborationApi['createInvitation']>[1]",
 						"required": true,
-						"description": "Project UUID, invited email and commenter or viewer role."
+						"description": "This strict object contains a project UUID, a valid email of at most 320 characters, and a writer, commenter, or viewer role; the email is lowercased before storage. Extra fields and the owner role are rejected.",
+						"examples": [
+							{
+								"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+								"email": "sam@example.com",
+								"role": "writer"
+							},
+							{
+								"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+								"email": "jules@example.net",
+								"role": "commenter"
+							},
+							{
+								"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+								"email": "lee@example.org",
+								"role": "viewer"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createInvitation",
 						"type": "unknown",
-						"description": "Promise of invitation ID, project ID, expiry and plaintext code; only its hash is stored."
+						"description": "Resolves to an object with a random UUID invitation ID, the project UUID, an ISO expiry exactly 24 hours after the configured or system clock, and the 64-character lowercase hexadecimal plaintext code. The repository stores the code's SHA-256 digest with acceptedBy set to null, so the returned code is needed to accept the invitation.",
+						"examples": [
+							{
+								"id": "7f08394f-65b9-4b87-94c6-1df28a6ce413",
+								"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+								"expiresAt": "2026-11-15T12:00:00.000Z",
+								"code": "4f8a2c1d9e7b3a605c4d8f2a1b6e9c073a5d1f8b2e4c6a901d3f5b7e8a2c4d6f"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Throws a plain Error with code invalid-input for invalid actor, invitation input, or stored records, forbidden when the actor is not an owner of the project, and conflict after five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate, and an invalid clock date can make ISO expiry formatting throw a RangeError."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "acceptInvitation",
@@ -121,30 +225,67 @@
 						"name": "acceptInvitation.deps",
 						"type": "CollaborationDependencies",
 						"required": true,
-						"description": "Persistence and optional clock used to validate and accept the invitation."
+						"description": "This dependency bundle supplies the repository used for transaction reads and compare-and-swap writes, plus an optional clock used to check expiry. Its source adapter, cache, and repository authorization callback are required by the type but are not called by these two functions."
 					},
 					{
 						"name": "acceptInvitation.actor",
 						"type": "Actor",
 						"required": true,
-						"description": "Verified actor whose normalized email must match the invitation."
+						"description": "This strictly parsed actor has an ID and name trimmed to 1–200 characters, an email of at most 320 characters normalized to lowercase, and emailVerified set to true. Acceptance requires its normalized email to match the invitation email.",
+						"examples": [
+							{
+								"id": "actor_sam_02",
+								"email": "sam@example.com",
+								"name": "Sam Chen",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "acceptInvitation.input",
 						"type": "Parameters<CollaborationApi['acceptInvitation']>[1]",
 						"required": true,
-						"description": "Project UUID, invitation UUID and 64-character lowercase hex invitation code."
+						"description": "This strict object contains project and invitation UUIDs plus a 64-character lowercase hexadecimal code. Extra fields, uppercase hex, or any other code length are rejected.",
+						"examples": [
+							{
+								"projectId": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+								"invitationId": "7f08394f-65b9-4b87-94c6-1df28a6ce413",
+								"code": "4f8a2c1d9e7b3a605c4d8f2a1b6e9c073a5d1f8b2e4c6a901d3f5b7e8a2c4d6f"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "acceptInvitation",
 						"type": "unknown",
-						"description": "Promise of the joined project and current role; existing membership is retained and the invitation is marked accepted."
+						"description": "Resolves to the project summary with the actor's role after acceptance. It creates a member only when none exists, retains an existing member's role, and marks the invitation accepted.",
+						"examples": [
+							{
+								"id": "90a2c6c7-238d-4f87-9f62-1ec17a7d0012",
+								"name": "Launch planning",
+								"sourceRepository": {
+									"id": 84235671,
+									"owner": "acme-build",
+									"name": "launch-planning",
+									"private": true,
+									"installationId": 5720001
+								},
+								"createdAt": "2026-10-20T09:30:00.000Z",
+								"ownerId": "actor_owner_01",
+								"role": "writer"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Throws a plain Error with code invalid-input for invalid actor, acceptance input, or stored records, invalid-invitation when no matching usable invitation exists or its code, normalized email, expiry, or project check fails, and conflict after five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
