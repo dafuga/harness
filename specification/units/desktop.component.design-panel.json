@@ -46,59 +46,274 @@
 				"name": "DesignPanel.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "Entity supplying design versions, options, images, notes, image-linked threads and measures. Functions display written planned behavior instead of images, even when old versions recorded pictures. Pages also display size and performance text."
+				"description": "The entity whose design versions, options, images, notes and threads the panel shows; only threads on the shown version and image are passed to the annotated image, and only those with a region get a pin. A function entity shows its plan notes and never an image, and a page entity also shows its size and performance text.",
+				"examples": [
+					{
+						"id": "desktop.component.design-panel",
+						"category": "components",
+						"kind": "component",
+						"title": "Design panel",
+						"summary": "Displays a selected design version and option, or a function’s written plan, and connects image annotations to conversation callbacks.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": true,
+						"lifecycle": "approved",
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": "v001",
+						"approvedVersion": "v001",
+						"threadCount": 1,
+						"thumbnail": {
+							"version": "v001",
+							"sha256": "3f9a1c7eb2d4086f5e1a9c3d7b0f2e64a8c5d1f90e3b7a2cd6f48e19c0a7b35d",
+							"state": "default",
+							"viewport": "desktop"
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "DesignPanel.annotatable",
+									"type": "boolean"
+								}
+							],
+							"outputs": [
+								{
+									"name": "DesignPanel",
+									"type": "markup"
+								}
+							],
+							"errors": [],
+							"hash": "51ac0e8d2f6b9c34d07e18a5c9b4f2637e1a0d9bb84c6f523d9e7a106fc25e8b"
+						},
+						"relationships": [],
+						"versions": [
+							{
+								"version": "v001",
+								"createdAt": "2026-11-02T16:40:12.318Z",
+								"commit": "4c8e1f2a9b03d7e5a6f21c9d0e47b8f3d52a9c61",
+								"generator": "codex · gpt-5-codex",
+								"prompt": "A design panel that shows the selected design version and option, with the annotated image and its before image.",
+								"baseRevision": "e15b7d0c63af2e98b4c01d7a58e9f3c20d6a84bf",
+								"images": [
+									{
+										"state": "default",
+										"viewport": "desktop",
+										"sha256": "3f9a1c7eb2d4086f5e1a9c3d7b0f2e64a8c5d1f90e3b7a2cd6f48e19c0a7b35d",
+										"bytes": 218604,
+										"option": "o1"
+									},
+									{
+										"state": "default",
+										"viewport": "desktop",
+										"sha256": "9d2e6b04f7a13c58e0b9d61724c8a3fe6b5d0e921a7f4c3b8e62d0a5f3c19b78",
+										"bytes": 231190,
+										"option": "o2"
+									}
+								],
+								"approval": {
+									"id": "b0e4c7a1-5d92-4f3e-8a6c-1e9b07d43f25",
+									"version": "v001",
+									"imageHashes": [
+										"3f9a1c7eb2d4086f5e1a9c3d7b0f2e64a8c5d1f90e3b7a2cd6f48e19c0a7b35d"
+									],
+									"contractHash": "51ac0e8d2f6b9c34d07e18a5c9b4f2637e1a0d9bb84c6f523d9e7a106fc25e8b",
+									"approvedAt": "2026-11-03T09:14:55.902Z",
+									"current": true,
+									"option": "o1"
+								},
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Table on the left with filters in a rail above it.",
+										"prompt": "Desktop design panel with the table on the left and filters in a rail above it.",
+										"revisedPrompt": null,
+										"generator": "codex · gpt-5-codex",
+										"imageHashes": [
+											"3f9a1c7eb2d4086f5e1a9c3d7b0f2e64a8c5d1f90e3b7a2cd6f48e19c0a7b35d"
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Full-width table with filters in a toolbar.",
+										"prompt": null,
+										"revisedPrompt": "Desktop design panel with a full-width table and a filter toolbar.",
+										"generator": "codex · gpt-5-codex",
+										"imageHashes": [
+											"9d2e6b04f7a13c58e0b9d61724c8a3fe6b5d0e921a7f4c3b8e62d0a5f3c19b78"
+										]
+									}
+								]
+							}
+						],
+						"threads": [
+							{
+								"id": "7d3f2a9e-14c6-4b8a-9e05-c2d7f16a3b84",
+								"pin": 1,
+								"version": "v001",
+								"imageSha256": "3f9a1c7eb2d4086f5e1a9c3d7b0f2e64a8c5d1f90e3b7a2cd6f48e19c0a7b35d",
+								"state": "default",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.318204,
+									"y": 0.042617,
+									"width": 0.236511,
+									"height": 0.118043
+								},
+								"option": "o1",
+								"messageCount": 2
+							}
+						],
+						"history": [
+							{
+								"id": "4c8e1f2a9b03d7e5a6f21c9d0e47b8f3d52a9c61",
+								"at": "2026-11-02T16:40:13.000Z",
+								"kind": "commit",
+								"title": "feat: add desktop.component.design-panel design v001",
+								"detail": "design-added",
+								"commit": "4c8e1f2a9b03d7e5a6f21c9d0e47b8f3d52a9c61",
+								"version": null
+							}
+						],
+						"sources": [
+							"packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte"
+						],
+						"size": {
+							"available": true,
+							"text": "9.4 KB"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						}
+					},
+					{
+						"id": "desktop.function.design-option-choice",
+						"category": "functions",
+						"kind": "function",
+						"title": "Design option choice",
+						"summary": "Chooses the design option a version shows: the one asked for when the version holds it, else the approved option, else the first.",
+						"changed": false,
+						"planned": true,
+						"hasPlan": true,
+						"lifecycle": "review",
+						"verification": "unverified",
+						"verificationNote": "This is a plan. Approval does not verify running behavior.",
+						"latestVersion": "v001",
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [
+								{
+									"name": "designOptionChoice.design",
+									"type": "DesignVersion"
+								},
+								{
+									"name": "designOptionChoice.wanted",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "designOptionChoice",
+									"type": "string"
+								}
+							],
+							"errors": [],
+							"hash": "e83b5f0a4d2c91b7f6a0e35d27c9d8b10a4e6f3c9b15d72ec8f0a46d3e7b1d90"
+						},
+						"relationships": [],
+						"versions": [
+							{
+								"version": "v001",
+								"createdAt": "2026-11-09T11:02:37.156Z",
+								"commit": "7a0c3e9d51f8b26ac4d19e0f8b3a57c2e6f0d4a9",
+								"generator": "claude · claude-sonnet-5-5",
+								"prompt": "Choose the design option of a version: the wanted one when the version holds it, else the approved option, else the first.",
+								"notes": "Choose the design option of a version: the wanted one when the version holds it, else the approved option, else the first.",
+								"baseRevision": "2f9e6d13a80b4c7e5d1f3a92cb07e8f419d6a0b5",
+								"images": [],
+								"approval": null
+							}
+						],
+						"threads": [],
+						"history": [
+							{
+								"id": "7a0c3e9d51f8b26ac4d19e0f8b3a57c2e6f0d4a9",
+								"at": "2026-11-09T11:02:38.000Z",
+								"kind": "commit",
+								"title": "feat: add desktop.function.design-option-choice design v001",
+								"detail": "design-added",
+								"commit": "7a0c3e9d51f8b26ac4d19e0f8b3a57c2e6f0d4a9",
+								"version": null
+							}
+						],
+						"sources": [],
+						"size": {
+							"available": false,
+							"text": "Not measured: design only"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						}
+					}
+				]
 			},
 			{
 				"name": "DesignPanel.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace used to retrieve images and determine the viewed revision and planning availability. Only a pinned view supplies a commit for selecting a before image. Planning capability controls the guidance shown when no version exists."
+				"description": "The workspace whose bridge and shown commit read the images, and whose planning capability chooses the guidance shown for an entity without a version. Only a pinned view passes a commit to the prior-image selection, so a before image can appear only in a pinned view."
 			},
 			{
 				"name": "DesignPanel.annotatable",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether the displayed image or one of its regions may start a conversation. Passed to the image as its writable flag; false also prevents the annotation callback from being called."
+				"description": "Whether the shown image and its regions may start a conversation; it is passed to the annotated image as its writable flag, which disables region drawing and the image's comment buttons. When false, the annotation callback is never called, but existing thread pins stay selectable.",
+				"examples": [true, false]
 			},
 			{
 				"name": "DesignPanel.version",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Bindable version identifier, empty by default. If it does not identify one of the entity’s versions, it is replaced with the last version in the supplied list, or empty when there are none. Selecting a version updates this binding. The parent chooses which version is bound; the catalog covers the default unbound and bound presentations through its states rather than one state per version value."
+				"description": "Bindable identifier of the design version shown, empty by default and updated when a user selects another version. A value that no version of the entity has, including the empty default, is replaced with the last version's identifier, or with an empty string when the entity has no versions.",
+				"examples": ["", "v001", "v002"]
 			},
 			{
 				"name": "DesignPanel.option",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Bindable design-option identifier, empty by default. Determines which option’s images and direction are shown. Selecting an option updates this value; the parent is responsible for providing the intended selection when a version contains alternatives. The parent chooses which option is bound; a single option is shown without a selector, and the catalog covers the default presentation rather than one state per option value."
+				"description": "Bindable identifier of the design option shown, empty by default; the panel never chooses one on its own, so a version with options shows no image until the parent binds an option that the version holds. A version without options ignores this value, and choosing an option in the panel writes its identifier back here.",
+				"examples": ["", "o1", "o2"]
 			},
 			{
 				"name": "DesignPanel.onthread",
 				"type": "(thread: ThreadInfo) => void",
 				"required": true,
-				"description": "Required callback passed to the annotated image for selecting an existing thread. Receives the selected thread record so the parent can open its conversation."
+				"description": "Required callback that receives the thread record of a region pin clicked on the shown image, so the parent can open its conversation. Only threads of the shown version and image that have a region get a pin, and an error thrown by this callback is not caught by the panel."
 			},
 			{
 				"name": "DesignPanel.onannotate",
 				"type": "(target: ThreadTarget) => Promise<void>",
 				"required": true,
-				"description": "Required asynchronous callback for a whole-image or region annotation. Called only when an image is selected and annotations are enabled; receives a target anchored to the version and image, with the region or null. Rejections are caught and displayed as text."
+				"description": "Required asynchronous callback for a comment on the loaded image, given a target with its version, image hash, state, viewport, option (when the image has one) and region, or a null region for the whole image. It is called only while annotatable is true, and a rejection is caught and shown as the panel's error text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DesignPanel",
 				"type": "markup",
-				"description": "Version and option selectors, available viewport and image-state selectors, and the selected annotated image, with a prior image when available. Viewport and state selections fall back to available images. Displays loading or image errors explicitly. A version without a displayed image shows its behavior notes or a missing-notes message; no version shows planning guidance or a no-committed-plan/design message. Function plans distinguish proposals from observed test results. Catalog states: default (committed image), empty (no version; use Plan), headless (no plan yet), headless-plan (a plan with no behavior notes), loading (image being read), error (image could not be read), readonly (annotation controls disabled) and long (a long option description that wraps)."
+				"description": "Markup of the panel: a heading, the version and option selectors, the viewport and image-state selectors (which fall back to the images that exist), and the annotated image with a prior image when one applies. Without a displayable image it shows the version's planned behavior notes, or planning or no-design guidance when no version exists; a function's notes are marked as proposed, and a page also shows a size and performance row."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
 				"type": "propagated",
-				"description": "Errors from the supplied onthread callback propagate when selecting a thread. Annotation callback failures are caught and displayed in the panel."
+				"description": "An error thrown by the onthread callback propagates out of the panel when a region pin is selected, because the panel does not catch it. Failures from onannotate and from reading an image are caught and shown as the panel's error text instead."
 			}
 		],
 		"errorStatus": "declared",
