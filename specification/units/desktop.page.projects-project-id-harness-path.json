@@ -16,12 +16,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The rendered markup contains the imported Workspace component when this route is rendered. The page source declares no route-specific props."
 			}
 		],
 		"errors": [],
