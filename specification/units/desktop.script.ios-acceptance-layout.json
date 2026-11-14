@@ -15,31 +15,51 @@
 		"symbols": ["topLayout", "scrolledLayout", "Measured"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "topLayout.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The Acceptance run that topLayout uses: it scrolls run.page to the top (scrollTo(0, 0)), measures that page, records one check through run.record, and calls shot(run, 'connected-top'). Every call reads the run first and nothing validates it, so a null or undefined run, run.page or run.record makes topLayout reject."
 			},
 			{
 				"name": "scrolledLayout.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The Acceptance run that scrolledLayout uses: it scrolls footer.status-bar into view with block 'end' on run.page, measures that page, records four checks through run.record, and calls shot(run, 'cached-scrolled'). Every call reads the run first and nothing validates it, so a null or undefined run, run.page or run.record, or a page with no footer.status-bar element, makes scrolledLayout reject."
 			}
 		],
 		"outputs": [
 			{
 				"name": "topLayout",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise that topLayout returns: it resolves with no value after one run.record.check call and an awaited shot(run, 'connected-top') call. It rejects when any awaited step fails, and it never returns the check outcome, so a resolved promise reports no pass or fail result."
 			},
 			{
 				"name": "scrolledLayout",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise that scrolledLayout returns: it resolves with no value after four run.record.check calls and an awaited shot(run, 'cached-scrolled') call. It rejects when any awaited step fails, and it never returns the check outcomes, so a resolved promise reports no pass or fail result."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Raised when a value the code reads is null or undefined: run, run.page or run.record in either operation, document.body in the measure script, or the footer.status-bar element that the scroll script calls scrollIntoView on. Nothing catches it, so topLayout or scrolledLayout rejects with it."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse in measured() when the value returned by run.page.evaluate is not valid JSON text. The measure script returns JSON.stringify output, so this happens only for an unexpected page result."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Any error that run.page.evaluate or the awaited shot call throws or rejects with, and any synchronous throw from run.record.check, passed on unchanged because neither operation catches errors. The exact class comes from run.page and from ios-acceptance-run, which this file does not define."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "topLayout",
@@ -47,17 +67,35 @@
 					{
 						"name": "topLayout.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The Acceptance run that topLayout uses: it scrolls run.page to the top (scrollTo(0, 0)), measures that page, records one check through run.record, and calls shot(run, 'connected-top'). Every call reads the run first and nothing validates it, so a null or undefined run, run.page or run.record makes topLayout reject."
 					}
 				],
 				"outputs": [
 					{
 						"name": "topLayout",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise that topLayout returns: it resolves with no value after one run.record.check call and an awaited shot(run, 'connected-top') call. It rejects when any awaited step fails, and it never returns the check outcome, so a resolved promise reports no pass or fail result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Raised when run, run.page or run.record is null or undefined, or when the page has no document.body, which the measure script reads. Nothing in topLayout catches it, so the promise rejects with it."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse in measured() when the value returned by run.page.evaluate is not valid JSON text. The measure script returns JSON.stringify output, so this happens only for an unexpected page result."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Any error that run.page.evaluate or the awaited shot call throws or rejects with, and any synchronous throw from run.record.check, passed on unchanged because topLayout does not catch errors. The exact class comes from run.page and from ios-acceptance-run, which this file does not define."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scrolledLayout",
@@ -65,17 +103,35 @@
 					{
 						"name": "scrolledLayout.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The Acceptance run that scrolledLayout uses: it scrolls footer.status-bar into view with block 'end' on run.page, measures that page, records four checks through run.record, and calls shot(run, 'cached-scrolled'). Every call reads the run first and nothing validates it, so a null or undefined run, run.page or run.record, or a page with no footer.status-bar element, makes scrolledLayout reject."
 					}
 				],
 				"outputs": [
 					{
 						"name": "scrolledLayout",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise that scrolledLayout returns: it resolves with no value after four run.record.check calls and an awaited shot(run, 'cached-scrolled') call. It rejects when any awaited step fails, and it never returns the check outcomes, so a resolved promise reports no pass or fail result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Raised when run, run.page or run.record is null or undefined, when the page has no document.body, which the measure script reads, or when the page has no footer.status-bar element, which the scroll script calls scrollIntoView on. Nothing in scrolledLayout catches it, so the promise rejects with it."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse in measured() when the value returned by run.page.evaluate is not valid JSON text. The measure script returns JSON.stringify output, so this happens only for an unexpected page result."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Any error that run.page.evaluate or the awaited shot call throws or rejects with, and any synchronous throw from run.record.check, passed on unchanged because scrolledLayout does not catch errors. The exact class comes from run.page and from ios-acceptance-run, which this file does not define."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
