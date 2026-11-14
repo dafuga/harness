@@ -12,22 +12,24 @@
 		"symbols": ["registerBudgetCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerBudgetCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The Commander Command instance on which the budget CLI is registered. It matters during setup because the implementation attaches the budget command and its child commands to it; a plain options object is not accepted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerBudgetCommand",
-				"type": "void"
+				"type": "void",
+				"description": "Registration returns no value after attaching the budget command tree to the supplied program. Callers observe the setup through that mutated Commander instance, not through a returned result."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerBudgetCommand",
@@ -35,17 +37,19 @@
 					{
 						"name": "registerBudgetCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The Commander Command instance on which the budget CLI is registered. It matters during setup because the implementation attaches the budget command and its child commands to it; a plain options object is not accepted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerBudgetCommand",
-						"type": "void"
+						"type": "void",
+						"description": "Registration returns no value after attaching the budget command tree to the supplied program. Callers observe the setup through that mutated Commander instance, not through a returned result."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
