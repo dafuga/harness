@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feFuncA element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the native feFuncA element when present; when omitted, no child snippet is rendered. It is used only as element content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeFuncA",
 				"type": "markup",
-				"description": "The actual native feFuncA element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native SVG feFuncA markup produced by this component, with supplied attributes spread onto it and the optional snippet rendered as its content; no wrapper element is added."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
