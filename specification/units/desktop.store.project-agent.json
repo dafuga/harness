@@ -15,22 +15,40 @@
 		"symbols": ["createProjectAgentStore", "ProjectAgent", "ProjectAgentState", "ProjectAgent"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createProjectAgentStore.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "The Workspace that the factory stores by reference as the store's readonly workspace field; the store's getters and methods read its capabilities, snapshot, pinned, projectId, busy, error, bridge and context at call time. The factory does not validate it, and the store's allowed getter is true only when the workspace is not busy, has no error, has agent capability, a writable snapshot, no pin and a projectId."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createProjectAgentStore",
-				"type": "ProjectAgentState"
+				"type": "ProjectAgentState",
+				"description": "A new ProjectAgentState for every call of the factory, with runId, status, error, asked, said, saved, providers, messages and starting at their initial values. Creating it makes no bridge call, and listen(), loadProviders(), send(), comment() and cancel() do work only when they are called."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously by loadProviders() when allowed is true and workspace.bridge is undefined, because the bridge! assertion is not guarded by a check. The error is not stored in the error field, and discovered is already true, so later calls return without retrying."
+			},
+			{
+				"name": "projectAgentActions or projectAgentComment rejection",
+				"type": "thrown",
+				"description": "ProjectAgentState.send(draft) and ProjectAgentState.comment(text) return the results of projectAgentActions and projectAgentComment without a catch, so any rejection or throw from either one reaches the caller. The error value is whatever those functions reject with, which this unit does not define."
+			},
+			{
+				"name": "projectAgentEvents rejection via listen",
+				"type": "thrown",
+				"description": "listen() passes each run event to event() and discards the returned promise with void, so a rejection from projectAgentEvents is never handled by this unit. event() returns a resolved promise only while starting is true and runId is empty, and otherwise returns the result of projectAgentEvents."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createProjectAgentStore",
@@ -38,17 +56,19 @@
 					{
 						"name": "createProjectAgentStore.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "The Workspace that the factory stores by reference as the store's readonly workspace field; the store's getters and methods read its capabilities, snapshot, pinned, projectId, busy, error, bridge and context at call time. The factory does not validate it, and the store's allowed getter is true only when the workspace is not busy, has no error, has agent capability, a writable snapshot, no pin and a projectId."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createProjectAgentStore",
-						"type": "ProjectAgentState"
+						"type": "ProjectAgentState",
+						"description": "A new ProjectAgentState for every call of the factory, with runId, status, error, asked, said, saved, providers, messages and starting at their initial values. Creating it makes no bridge call, and listen(), loadProviders(), send(), comment() and cancel() do work only when they are called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
