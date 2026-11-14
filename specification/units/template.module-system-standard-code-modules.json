@@ -21,16 +21,432 @@
 			{
 				"name": "standardCodeModules",
 				"type": "ModuleDefinition[]",
-				"description": "Declarative module source files, generators, package scripts and developer instructions."
+				"description": "This array contains the twelve version 1.0.0 internal module definitions, each included by default with one resource. It supplies the standard Code catalog before project installation; definitions have empty setup and dependency declarations and use per-kind generation rules.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "apis",
+							"version": "1.0.0",
+							"title": "APIs",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 0,
+							"description": "APIs used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse APIs through Code; existing addresses and source identities are preserved.",
+								"Generate a api endpoint through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "api",
+									"title": "APIs",
+									"singular": "API endpoint",
+									"kind": "api",
+									"catalog": "apis",
+									"primary": false,
+									"instructions": [
+										"Define endpoint grants in specification/permissions/<profile>.json, then inspect them with harness api permissions <endpoint-id>. Application handlers own runtime authorization."
+									],
+									"files": [],
+									"generator": {
+										"kind": "scaffold",
+										"scaffold": "api"
+									}
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "layouts",
+							"version": "1.0.0",
+							"title": "Layouts",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 1,
+							"description": "Layouts used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Layouts through Code; existing addresses and source identities are preserved.",
+								"Generate a layout through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "layout",
+									"title": "Layouts",
+									"singular": "Layout",
+									"kind": "layout",
+									"catalog": "layouts",
+									"primary": false,
+									"instructions": [
+										"Use the existing Harness scaffold rules, implement the declared responsibility and run the generated tests."
+									],
+									"files": [],
+									"generator": {
+										"kind": "scaffold",
+										"scaffold": "layout"
+									}
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "components",
+							"version": "1.0.0",
+							"title": "Components",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 2,
+							"description": "Components used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Components through Code; existing addresses and source identities are preserved.",
+								"Generate a component through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "component",
+									"title": "Components",
+									"singular": "Component",
+									"kind": "component",
+									"catalog": "components",
+									"primary": true,
+									"instructions": [
+										"Use the existing Harness scaffold rules, implement the declared responsibility and run the generated tests."
+									],
+									"files": [],
+									"generator": {
+										"kind": "scaffold",
+										"scaffold": "component"
+									}
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "models",
+							"version": "1.0.0",
+							"title": "Models",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 3,
+							"description": "Models used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Models through Code; existing addresses and source identities are preserved.",
+								"Generate a model through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "model",
+									"title": "Models",
+									"singular": "Model",
+									"kind": "model",
+									"catalog": "models",
+									"primary": false,
+									"instructions": [
+										"Use the existing Harness scaffold rules, implement the declared responsibility and run the generated tests."
+									],
+									"files": [],
+									"generator": {
+										"kind": "scaffold",
+										"scaffold": "model"
+									}
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "services",
+							"version": "1.0.0",
+							"title": "Services",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 4,
+							"description": "Services used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Services through Code; existing addresses and source identities are preserved.",
+								"Generate a service through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "service",
+									"title": "Services",
+									"singular": "Service",
+									"kind": "service",
+									"catalog": "services",
+									"primary": false,
+									"instructions": [
+										"Keep one responsibility per service. Shared Services requires multiple public instance methods and two distinct runtime owners."
+									],
+									"files": [],
+									"generator": {
+										"kind": "scaffold",
+										"scaffold": "service"
+									}
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "helpers",
+							"version": "1.0.0",
+							"title": "Helpers",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 5,
+							"description": "Helpers used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Helpers through Code; existing addresses and source identities are preserved.",
+								"Generate a helper through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "helper",
+									"title": "Helpers",
+									"singular": "Helper",
+									"kind": "helper",
+									"catalog": "functions",
+									"primary": false,
+									"instructions": [
+										"Keep helpers pure and synchronous. The public Helpers catalog requires reviewed contracts and two distinct runtime consumers."
+									],
+									"files": [],
+									"generator": {
+										"kind": "scaffold",
+										"scaffold": "helper"
+									}
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "types",
+							"version": "1.0.0",
+							"title": "Types",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 6,
+							"description": "Types used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Types through Code; existing addresses and source identities are preserved.",
+								"Generate a type through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "type",
+									"title": "Types",
+									"singular": "Type",
+									"kind": "type",
+									"catalog": "types",
+									"primary": false,
+									"instructions": [
+										"Use the existing Harness scaffold rules, implement the declared responsibility and run the generated tests."
+									],
+									"files": [
+										{
+											"path": "src/types/{{group}}/{{PascalName}}.types.ts",
+											"contents": "export interface {{PascalName}} {\n\tid: string;\n}\n"
+										}
+									]
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "configs",
+							"version": "1.0.0",
+							"title": "Configs",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 7,
+							"description": "Configs used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Configs through Code; existing addresses and source identities are preserved.",
+								"Generate a config through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "config",
+									"title": "Configs",
+									"singular": "Config",
+									"kind": "config",
+									"catalog": "configs",
+									"primary": false,
+									"instructions": [
+										"Declare only meaningful controls, their audience and purpose; generated configs start internal."
+									],
+									"files": [],
+									"generator": {
+										"kind": "scaffold",
+										"scaffold": "config"
+									}
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "styles",
+							"version": "1.0.0",
+							"title": "Styles",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 8,
+							"description": "Styles used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Styles through Code; existing addresses and source identities are preserved.",
+								"Generate a style through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "style",
+									"title": "Styles",
+									"singular": "Style",
+									"kind": "style",
+									"catalog": "styles",
+									"primary": false,
+									"instructions": [
+										"Use the existing Harness scaffold rules, implement the declared responsibility and run the generated tests."
+									],
+									"files": [
+										{
+											"path": "src/styles/{{group}}/{{kebabName}}.css",
+											"contents": "/* {{PascalName}} styles. Reuse application design tokens. */\n"
+										}
+									]
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "dependencies",
+							"version": "1.0.0",
+							"title": "Dependencies",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 9,
+							"description": "Dependencies used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Dependencies through Code; existing addresses and source identities are preserved.",
+								"Declare an exact package@version, review it, then run bun install."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "dependency",
+									"title": "Dependencies",
+									"singular": "Dependency",
+									"kind": "dependency",
+									"catalog": "dependencies",
+									"primary": false,
+									"instructions": [
+										"Use a registry package name and exact version, such as lit@3.3.1; generation edits package.json without installing or running scripts."
+									],
+									"files": [],
+									"generator": {
+										"kind": "dependency"
+									}
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "permissions",
+							"version": "1.0.0",
+							"title": "Users & Permissions",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 10,
+							"description": "Users & Permissions used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Users & Permissions through Code; existing addresses and source identities are preserved.",
+								"Generate a user profile through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "profile",
+									"title": "Users & Permissions",
+									"singular": "User profile",
+									"kind": "profile",
+									"catalog": "permissions",
+									"primary": false,
+									"instructions": [
+										"Declare each API method, page grant and data action, field and row scope explicitly. Empty grants never establish public access. Query with harness permissions list or harness permissions show <profile>."
+									],
+									"files": [
+										{
+											"path": "specification/permissions/{{kebabName}}.json",
+											"contents": "{\n\t\"schemaVersion\": 1,\n\t\"id\": \"{{kebabName}}\",\n\t\"title\": \"{{PascalName}}\",\n\t\"description\": \"Describe this user profile.\",\n\t\"grants\": []\n}\n"
+										}
+									]
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "modules",
+							"version": "1.0.0",
+							"title": "Plugins",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 11,
+							"description": "Plugins used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Plugins through Code; existing addresses and source identities are preserved.",
+								"Generate a plugin through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "module",
+									"title": "Plugins",
+									"singular": "Plugin",
+									"kind": "module",
+									"catalog": "module-library",
+									"primary": false,
+									"instructions": [
+										"Edit the generated module definition, then install it with harness module add <id>. Its declared resources use the same generation and instructions contract."
+									],
+									"files": [
+										{
+											"path": "specification/modules/{{kebabName}}/module.json",
+											"contents": "{\n \"schemaVersion\":1,\"id\":\"{{kebabName}}\",\"version\":\"1.0.0\",\"title\":\"{{PascalName}}\",\n \"description\":\"Describe this capability.\",\"instructions\":[\"Review generated code and define its contract.\"],\"setup\":[],\"dependencies\":{},\n \"resources\":[{\"id\":\"service\",\"title\":\"{{PascalName}} services\",\"singular\":\"{{PascalName}} service\",\"kind\":\"service\",\"instructions\":[\"Implement this resource.\"],\"files\":[{\"path\":\"src/services/\\u007b\\u007bgroup\\u007d\\u007d/\\u007b\\u007bPascalName\\u007d\\u007dService.ts\",\"contents\":\"export class \\u007b\\u007bPascalName\\u007d\\u007dService {}\\n\"}]}]\n}\n"
+										}
+									]
+								}
+							]
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "An unknown standard scaffold cannot form a default module declaration."
+				"description": "Thrown when a kind routed through the scaffold branch has no matching entry in scaffoldKinds, aborting module-array construction."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
