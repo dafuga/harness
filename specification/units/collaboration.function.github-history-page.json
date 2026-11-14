@@ -20,29 +20,121 @@
 				"name": "githubHistoryPage.context",
 				"type": "{ adapter: SourceAdapter; client: GitHubTransport }",
 				"required": true,
-				"description": "Source adapter for resolving the commit and transport for GitHub history requests."
+				"description": "The source adapter, whose resolve call is awaited once before any history request and whose result is discarded, and the GitHub transport, whose request call is made once per distinct path in sequential batches of up to four concurrent calls. Nothing checks that the transport is bound to the same repository as the repository argument."
 			},
 			{
 				"name": "githubHistoryPage.repository",
 				"type": "RepositoryIdentity",
 				"required": true,
-				"description": "Repository whose history is being read."
+				"description": "The repository whose commit is resolved; it is used only as the first argument of context.adapter.resolve, because the history requests take no repository argument and the transport builds each request URL from the repository it was created with.",
+				"examples": [
+					{
+						"id": 418260917,
+						"owner": "acme-labs",
+						"name": "design-system",
+						"private": true,
+						"installationId": 52714309
+					},
+					{
+						"id": 703948125,
+						"owner": "acme-labs",
+						"name": "marketing-site",
+						"private": false,
+						"installationId": 61837204
+					}
+				]
 			},
 			{
 				"name": "githubHistoryPage.input",
 				"type": "SourceHistoryPageInput",
 				"required": true,
-				"description": "Exact commit SHA, at most 64 safe paths, page starting at 1 and page size 1–100; defaults are 1 and 30."
+				"description": "A commit SHA of exactly 40 lowercase hex characters, up to 64 path entries (an empty list is allowed and repeated entries are merged), a page that is an integer of at least 1 (default 1), and a perPage that is an integer from 1 to 100 (default 30). Unknown keys, more than 64 path entries, a non-string path entry, or a bad commit, page or perPage value are rejected with invalid-input, and an unsafe path is rejected with invalid-path.",
+				"examples": [
+					{
+						"commit": "9f1c4e7a2b8d30c6e5f4a1b9d7c2e8f0a3b6d5c4",
+						"paths": ["packages/collaboration/src/utils/githubHistoryPage.ts"]
+					},
+					{
+						"commit": "5a0e8c3d7b1f6947e2c0a8d5b3f19e4c7d6a2b08",
+						"paths": [
+							"packages/collaboration/src/models/git-source-history/SourceHistory.types.ts",
+							"packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.ts"
+						],
+						"page": 2,
+						"perPage": 50
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubHistoryPage",
 				"type": "Promise<SourceHistoryPage>",
-				"description": "Distinct commits in response insertion order, completion flag and next page number or null; an empty path list returns an empty complete page."
+				"description": "The page the promise resolves to, with commits as the distinct commits from every path response in first-seen order (paths in deduplicated input order, then each response's order), each with its 40-character hash, the first line of its message as subject, and its author date (its committer date when there is no author). complete is false and nextPage is the requested page plus one when any response has a Link header with a next relation; otherwise complete is true and nextPage is null, so an empty path list returns an empty complete page once resolve succeeds.",
+				"examples": [
+					{
+						"commits": [
+							{
+								"hash": "9f1c4e7a2b8d30c6e5f4a1b9d7c2e8f0a3b6d5c4",
+								"subject": "Merge duplicate commits across path requests",
+								"authoredAt": "2026-11-10T09:14:02Z"
+							},
+							{
+								"hash": "5a0e8c3d7b1f6947e2c0a8d5b3f19e4c7d6a2b08",
+								"subject": "Validate history page size",
+								"authoredAt": "2026-11-07T16:48:51Z"
+							}
+						],
+						"complete": true,
+						"nextPage": null
+					},
+					{
+						"commits": [
+							{
+								"hash": "c8e2f5a0d94b71e63f0a2c9d5e8b1f7a4c6d3e90",
+								"subject": "Add evidence grid fixtures",
+								"authoredAt": "2026-10-29T11:02:37Z"
+							}
+						],
+						"complete": false,
+						"nextPage": 2
+					},
+					{
+						"commits": [],
+						"complete": true,
+						"nextPage": null
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "invalid-input",
+				"type": "thrown",
+				"description": "Error with code invalid-input (message 'Collaboration invalid-input') thrown before any request when the input fails the strict schema: commit is not 40 lowercase hex characters, paths is not a list of at most 64 strings, page is not an integer of at least 1, perPage is outside 1 to 100, or an unknown key is present. The same code is thrown after the requests when a GitHub response body is not a list of commit records with a 40-character sha, commit.message, commit.author (an object with date, or null) and commit.committer.date."
+			},
+			{
+				"name": "invalid-path",
+				"type": "thrown",
+				"description": "Error with code invalid-path (message 'Collaboration invalid-path') thrown by safePath before the adapter is called when a path is empty, starts with '/', contains a backslash, has an empty, '.' or '..' segment, or contains a control character (code below 32). A lone UTF-16 surrogate passes this check and reaches the URIError entry instead."
+			},
+			{
+				"name": "context.adapter.resolve rejection",
+				"type": "thrown",
+				"description": "Whatever context.adapter.resolve(repository, commit) rejects with, passed through unchanged because nothing here catches it; it is raised after the input and path checks and before any history request is sent."
+			},
+			{
+				"name": "github-unavailable",
+				"type": "thrown",
+				"description": "Error with code github-unavailable (message 'Collaboration github-unavailable') that context.client.request rejects with, passed through unchanged because nothing here catches it; the GitHubTransport in githubTransport.ts raises it for a 3xx redirect, any non-2xx status, a failed token or fetch call, or a body that is not JSON."
+			},
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "URIError thrown synchronously by encodeURIComponent when a path contains an unpaired UTF-16 surrogate, which safePath does not reject; the function rejects with it and sends no request for that path."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "githubHistoryPage",
@@ -51,30 +143,121 @@
 						"name": "githubHistoryPage.context",
 						"type": "{ adapter: SourceAdapter; client: GitHubTransport }",
 						"required": true,
-						"description": "Source adapter for resolving the commit and transport for GitHub history requests."
+						"description": "The source adapter, whose resolve call is awaited once before any history request and whose result is discarded, and the GitHub transport, whose request call is made once per distinct path in sequential batches of up to four concurrent calls. Nothing checks that the transport is bound to the same repository as the repository argument."
 					},
 					{
 						"name": "githubHistoryPage.repository",
 						"type": "RepositoryIdentity",
 						"required": true,
-						"description": "Repository whose history is being read."
+						"description": "The repository whose commit is resolved; it is used only as the first argument of context.adapter.resolve, because the history requests take no repository argument and the transport builds each request URL from the repository it was created with.",
+						"examples": [
+							{
+								"id": 418260917,
+								"owner": "acme-labs",
+								"name": "design-system",
+								"private": true,
+								"installationId": 52714309
+							},
+							{
+								"id": 703948125,
+								"owner": "acme-labs",
+								"name": "marketing-site",
+								"private": false,
+								"installationId": 61837204
+							}
+						]
 					},
 					{
 						"name": "githubHistoryPage.input",
 						"type": "SourceHistoryPageInput",
 						"required": true,
-						"description": "Exact commit SHA, at most 64 safe paths, page starting at 1 and page size 1–100; defaults are 1 and 30."
+						"description": "A commit SHA of exactly 40 lowercase hex characters, up to 64 path entries (an empty list is allowed and repeated entries are merged), a page that is an integer of at least 1 (default 1), and a perPage that is an integer from 1 to 100 (default 30). Unknown keys, more than 64 path entries, a non-string path entry, or a bad commit, page or perPage value are rejected with invalid-input, and an unsafe path is rejected with invalid-path.",
+						"examples": [
+							{
+								"commit": "9f1c4e7a2b8d30c6e5f4a1b9d7c2e8f0a3b6d5c4",
+								"paths": ["packages/collaboration/src/utils/githubHistoryPage.ts"]
+							},
+							{
+								"commit": "5a0e8c3d7b1f6947e2c0a8d5b3f19e4c7d6a2b08",
+								"paths": [
+									"packages/collaboration/src/models/git-source-history/SourceHistory.types.ts",
+									"packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.ts"
+								],
+								"page": 2,
+								"perPage": 50
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "githubHistoryPage",
 						"type": "Promise<SourceHistoryPage>",
-						"description": "Distinct commits in response insertion order, completion flag and next page number or null; an empty path list returns an empty complete page."
+						"description": "The page the promise resolves to, with commits as the distinct commits from every path response in first-seen order (paths in deduplicated input order, then each response's order), each with its 40-character hash, the first line of its message as subject, and its author date (its committer date when there is no author). complete is false and nextPage is the requested page plus one when any response has a Link header with a next relation; otherwise complete is true and nextPage is null, so an empty path list returns an empty complete page once resolve succeeds.",
+						"examples": [
+							{
+								"commits": [
+									{
+										"hash": "9f1c4e7a2b8d30c6e5f4a1b9d7c2e8f0a3b6d5c4",
+										"subject": "Merge duplicate commits across path requests",
+										"authoredAt": "2026-11-10T09:14:02Z"
+									},
+									{
+										"hash": "5a0e8c3d7b1f6947e2c0a8d5b3f19e4c7d6a2b08",
+										"subject": "Validate history page size",
+										"authoredAt": "2026-11-07T16:48:51Z"
+									}
+								],
+								"complete": true,
+								"nextPage": null
+							},
+							{
+								"commits": [
+									{
+										"hash": "c8e2f5a0d94b71e63f0a2c9d5e8b1f7a4c6d3e90",
+										"subject": "Add evidence grid fixtures",
+										"authoredAt": "2026-10-29T11:02:37Z"
+									}
+								],
+								"complete": false,
+								"nextPage": 2
+							},
+							{
+								"commits": [],
+								"complete": true,
+								"nextPage": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "Error with code invalid-input (message 'Collaboration invalid-input') thrown before any request when the input fails the strict schema: commit is not 40 lowercase hex characters, paths is not a list of at most 64 strings, page is not an integer of at least 1, perPage is outside 1 to 100, or an unknown key is present. The same code is thrown after the requests when a GitHub response body is not a list of commit records with a 40-character sha, commit.message, commit.author (an object with date, or null) and commit.committer.date."
+					},
+					{
+						"name": "invalid-path",
+						"type": "thrown",
+						"description": "Error with code invalid-path (message 'Collaboration invalid-path') thrown by safePath before the adapter is called when a path is empty, starts with '/', contains a backslash, has an empty, '.' or '..' segment, or contains a control character (code below 32). A lone UTF-16 surrogate passes this check and reaches the URIError entry instead."
+					},
+					{
+						"name": "context.adapter.resolve rejection",
+						"type": "thrown",
+						"description": "Whatever context.adapter.resolve(repository, commit) rejects with, passed through unchanged because nothing here catches it; it is raised after the input and path checks and before any history request is sent."
+					},
+					{
+						"name": "github-unavailable",
+						"type": "thrown",
+						"description": "Error with code github-unavailable (message 'Collaboration github-unavailable') that context.client.request rejects with, passed through unchanged because nothing here catches it; the GitHubTransport in githubTransport.ts raises it for a 3xx redirect, any non-2xx status, a failed token or fetch call, or a body that is not JSON."
+					},
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "URIError thrown synchronously by encodeURIComponent when a path contains an unpaired UTF-16 surrogate, which safePath does not reject; the function rejects with it and sends no request for that path."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
