@@ -65,7 +65,7 @@ harness api agents events RUN_ID --after 0
 harness api agents cancel RUN_ID
 ```
 
-Screenshot downloads select recorded images using `--viewport desktop|tablet|mobile`.
+Screenshot downloads select recorded images using `--viewport desktop|tablet|mobile`. Scenario viewports use three canonical presets: `desktop` 1440x900, `tablet` 920x800 and `mobile` 390x844. The older ids `phone`, `nav-phone` and `agent-phone` are aliases of `mobile`, and `nav-tablet` and `agents-tablet` of `tablet`. `harness scenarios check` warns about other ids and other sizes; for one release this is a warning only.
 Use `--scenario focused` explicitly for a passed, usable focused capture; its metadata
 retains the focused record and does not claim a full verification pass. Omitting
 `--scenario` keeps the standard recording selection.

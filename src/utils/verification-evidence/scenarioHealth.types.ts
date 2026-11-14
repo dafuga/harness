@@ -26,9 +26,18 @@ export interface ScenarioHealth {
 	viewports: {
 		/** The ids the documentation promises; anything else is reported as unknown. */
 		known: string[];
-		unknown: Array<{ id: string; scenarios: string[] }>;
+		/** `canonical` names the preset a documented alias stands for, or null. */
+		unknown: Array<{ id: string; scenarios: string[]; canonical: string | null }>;
 		/** Ids used at more than one size across scenarios, each size with its scenarios. */
 		conflicts: Array<{ id: string; sizes: ViewportSize[] }>;
+		/** Scenario viewports whose size differs from the canonical preset (warn-only). */
+		offPreset: Array<{
+			scenario: string;
+			id: string;
+			canonical: string;
+			size: string;
+			preset: string;
+		}>;
 	};
 	/** How many states of all scenarios are required, missing or inapplicable. */
 	coverage: Record<ScenarioManifest['states'][number]['coverage'], number>;

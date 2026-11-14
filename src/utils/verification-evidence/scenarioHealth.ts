@@ -10,6 +10,25 @@ import type { ScenarioManifest } from '../../core/development-tooling/unitTypes'
 /** The viewport ids the documentation promises. */
 export const documentedViewports = ['desktop', 'tablet', 'mobile'];
 
+/**
+ * Canonical viewport presets (V-04 decision: canonical presets, warn-only for one release).
+ * Sizes are the most used size of each id across the scenario set.
+ */
+export const canonicalViewports: Record<string, { width: number; height: number }> = {
+	desktop: { width: 1440, height: 900 },
+	tablet: { width: 920, height: 800 },
+	mobile: { width: 390, height: 844 }
+};
+
+/** Documented aliases: older ids that mean a canonical preset. */
+export const viewportAliases: Record<string, string> = {
+	phone: 'mobile',
+	'nav-phone': 'mobile',
+	'agent-phone': 'mobile',
+	'nav-tablet': 'tablet',
+	'agents-tablet': 'tablet'
+};
+
 const byText = (left: string, right: string) => {
 	if (left === right) return 0;
 	return left < right ? -1 : 1;
@@ -54,11 +73,35 @@ function viewportReport(scenarios: ScenarioManifest[]): ScenarioHealth['viewport
 		known: documentedViewports,
 		unknown: ids
 			.filter((id) => !documentedViewports.includes(id))
-			.map((id) => ({ id, scenarios: scenariosOf(id) })),
+			.map((id) => ({ id, scenarios: scenariosOf(id), canonical: viewportAliases[id] ?? null })),
 		conflicts: ids
 			.filter((id) => sizes.get(id)!.size > 1)
-			.map((id) => ({ id, sizes: orderedSizes([...sizes.get(id)!.values()]) }))
+			.map((id) => ({ id, sizes: orderedSizes([...sizes.get(id)!.values()]) })),
+		offPreset: offPresetReport(scenarios)
 	};
+}
+
+/** Every scenario viewport whose size differs from its canonical preset (after aliases). */
+function offPresetReport(scenarios: ScenarioManifest[]): ScenarioHealth['viewports']['offPreset'] {
+	const rows: ScenarioHealth['viewports']['offPreset'] = [];
+	for (const scenario of scenarios) {
+		for (const viewport of scenario.viewports) {
+			const canonical = documentedViewports.includes(viewport.id)
+				? viewport.id
+				: viewportAliases[viewport.id];
+			const preset = canonical ? canonicalViewports[canonical] : undefined;
+			if (!preset || (preset.width === viewport.width && preset.height === viewport.height))
+				continue;
+			rows.push({
+				scenario: scenario.id,
+				id: viewport.id,
+				canonical,
+				size: `${viewport.width}x${viewport.height}`,
+				preset: `${preset.width}x${preset.height}`
+			});
+		}
+	}
+	return rows.sort((a, b) => byText(a.scenario, b.scenario) || byText(a.id, b.id));
 }
 
 function orderedSizes(sizes: ViewportSize[]): ViewportSize[] {
@@ -106,6 +149,12 @@ function noScenarioReport(
 	};
 }
 
+function presetText(): string {
+	return Object.entries(canonicalViewports)
+		.map(([id, size]) => `${id} ${size.width}x${size.height}`)
+		.join(', ');
+}
+
 /** `reports.component` for `reports.component.select`: the package and the kind of the unit. */
 function prefixOf(unit: HealthUnit): string {
 	const [first, second] = unit.id.split('.');
@@ -120,7 +169,11 @@ export function renderScenarioHealth(health: ScenarioHealth): string[] {
 	return [
 		`Report only, nothing here changes the result of this check:`,
 		`Viewport ids outside ${viewports.known.join('|')}: ${viewports.unknown.length}`,
-		...viewports.unknown.map((item) => `  ${item.id}: ${item.scenarios.join(', ')}`),
+		...viewports.unknown.map(
+			(item) =>
+				`  ${item.id}${item.canonical ? ` (alias of ${item.canonical})` : ''}: ${item.scenarios.join(', ')}`
+		),
+		`Warning (canonical presets ${presetText()}): ${viewports.offPreset.length} scenario viewports use another size.`,
 		`Viewport ids used at more than one size: ${viewports.conflicts.length}`,
 		...viewports.conflicts.map((item) => `  ${item.id}: ${item.sizes.map(sized).join('; ')}`),
 		`State coverage: ${coverage.required} required, ${coverage.missing} missing, ${coverage.inapplicable} inapplicable (field \`coverage\` of each state).`,
