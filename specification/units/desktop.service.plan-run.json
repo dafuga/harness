@@ -14,27 +14,36 @@
 		"symbols": ["PlanRunService", "PlanRunService.run"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PlanRunService.run.context",
 				"type": "RunContext",
-				"required": true
+				"required": true,
+				"description": "The RunContext the caller passes in: the run id, the RunRequest, the project root path, the entity and its revision, the planning port, the agent runner, the image generator, the image model, the project session service, an AbortSignal and an emit callback for run events. run reads id, request, root, runner, signal and emit itself and passes the whole object on to runContext and planDesign; run does not validate it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PlanRunService.run",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The string run resolves to: the result of planDesign after it has saved the design and appended the agent's message, 'Saved <version> for review.', where <version> is 'v' followed by the plan's existing design count plus one, zero-padded to at least three digits. The design is saved for review only and is not approved, and DesktopRunService reports this string as the summary of the finished run.",
+				"examples": ["Saved v001 for review.", "Saved v002 for review.", "Saved v013 for review."]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by run itself when the Plan agent changed project files: sourceChanges finds an added, deleted or changed path between the sourceSnapshot taken before runner.run and the one taken after it, where snapshots cover tracked files and untracked files that git does not ignore, although the turn is started with access 'read-only'. Its message says the changes remain recoverable and no design was approved; errors from the calls it makes (sourceSnapshot, runContext, runner.run and planDesign) are not caught and reject run unchanged."
+			},
+			{
+				"name": "RunCancelled",
+				"type": "thrown",
+				"description": "Thrown by planDesign, which run returns without catching, when context.signal is aborted at its check after each image generation or its check before the design is saved, so no design is saved. DesktopRunService emits a 'cancelled' run event for it instead of a 'failed' one."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PlanRunService.run",
@@ -42,22 +51,35 @@
 					{
 						"name": "PlanRunService.run.context",
 						"type": "RunContext",
-						"required": true
+						"required": true,
+						"description": "The RunContext the caller passes in: the run id, the RunRequest, the project root path, the entity and its revision, the planning port, the agent runner, the image generator, the image model, the project session service, an AbortSignal and an emit callback for run events. run reads id, request, root, runner, signal and emit itself and passes the whole object on to runContext and planDesign; run does not validate it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanRunService.run",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The string run resolves to: the result of planDesign after it has saved the design and appended the agent's message, 'Saved <version> for review.', where <version> is 'v' followed by the plan's existing design count plus one, zero-padded to at least three digits. The design is saved for review only and is not approved, and DesktopRunService reports this string as the summary of the finished run.",
+						"examples": [
+							"Saved v001 for review.",
+							"Saved v002 for review.",
+							"Saved v013 for review."
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by run itself when the Plan agent changed project files: sourceChanges finds an added, deleted or changed path between the sourceSnapshot taken before runner.run and the one taken after it, where snapshots cover tracked files and untracked files that git does not ignore, although the turn is started with access 'read-only'. Its message says the changes remain recoverable and no design was approved; errors from the calls it makes (sourceSnapshot, runContext, runner.run and planDesign) are not caught and reject run unchanged."
+					},
+					{
+						"name": "RunCancelled",
+						"type": "thrown",
+						"description": "Thrown by planDesign, which run returns without catching, when context.signal is aborted at its check after each image generation or its check before the design is saved, so no design is saved. DesktopRunService emits a 'cancelled' run event for it instead of a 'failed' one."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
