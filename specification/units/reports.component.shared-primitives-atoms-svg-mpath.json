@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native mpath element; native HTML content rules still apply."
+				"description": "An optional Svelte Snippet used as child content inside the native mpath element. It is rendered only when children is truthy; otherwise no child content is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgMpath",
 				"type": "markup",
-				"description": "The actual native mpath element, with forwarded attributes and content and no additional wrapper."
+				"description": "Renders the native SVG mpath element with all remaining props spread onto it; truthy children are rendered inside it. The component adds no wrapper element."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
