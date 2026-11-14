@@ -40,18 +40,29 @@
 				"name": "CatalogView.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplying the current category, optional project snapshot and entity-card context. A missing snapshot contributes an empty entity list. The category must be nonempty because it is used to build the heading."
+				"description": "The workspace the view reads: its category selects the entities and sets the heading, its optional snapshot supplies the breadcrumb project name and the entity list, and the same workspace is passed to each entity card. A missing snapshot gives an empty list, but an empty or missing category makes the heading throw, so it must be nonempty."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogView",
 				"type": "markup",
-				"description": "Local search and one filter icon above the catalog. The shared modal holds filters and ordering. States: search-empty: The entered search has no matches and the catalog displays its empty result. filters-open: The filter dialog exposes the catalog filtering controls. long: The catalog retains a long component name within its row or card."
+				"description": "The rendered catalog for the current category: a search input and a FilterDialog above the card grid, with the dialog holding the Changed only checkbox and the Verification, Planning and Order selects. When no entities match, the grid shows an EmptyState with a 'Show all {category}' button that clears the search and the changed, verification and planning filters but not the order."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown while rendering when workspace is missing or workspace.category is empty or missing, because the heading reads workspace.category and then its first character."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown while rendering when workspace.snapshot is set but workspace.snapshot.project is missing, because the breadcrumb reads project.name without optional chaining."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
