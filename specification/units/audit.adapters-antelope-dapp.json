@@ -12,12 +12,13 @@
 		"symbols": ["antelopeDappAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "antelopeDappAdapter",
-				"type": "AuditAdapter"
+				"type": "AuditAdapter",
+				"description": "The `antelopeDappAdapter` object is the `antelope-dapp` audit adapter (label 'Antelope and Harbor dApps'); it declares the `dapp` profile, no file extensions, and the optional tools `antelope-cli` and `cdt-cpp`. Its `auditStructure` reads only file and folder paths, never file contents, and reports missing build tooling (no Makefile or CMakeLists.txt) when contract directories exist, missing `.cpp` source or `.hpp` header files per contract directory, and `.clauses.md` or `.contracts.md` files outside a `src/` or `ricardian/` folder; `audit()` always returns no findings."
 			}
 		],
 		"errors": [],
