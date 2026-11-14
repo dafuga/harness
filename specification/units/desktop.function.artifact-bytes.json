@@ -21,39 +21,77 @@
 				"name": "artifactBytes.bridge",
 				"type": "Pick<DesktopBridge, 'artifact'>",
 				"required": true,
-				"description": "A connection with an optional artifact reader. A connection without that operation is refused."
+				"description": "The connection the capture is read through; only its optional `artifact` reader is used, and it is called with the query as its only argument. A connection without `artifact` is refused before anything is read, with the `unreadArtifact` message.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "artifactBytes.query",
 				"type": "EvidenceArtifactQuery",
 				"required": true,
-				"description": "The exact capture request, including its binding and expected SHA-256 hash. Passed unchanged to the artifact reader."
+				"description": "The exact capture request, including its binding and expected SHA-256 hash, passed to the reader unchanged. Its `sha256` is the only value the returned bytes are checked against, so they must hash to it whatever the answer claims.",
+				"examples": [
+					{
+						"entityId": "reports.component.evidence-grid",
+						"commit": "4c1e8a7f2b9d03e6a5c8f1d7b2e9043a6d5c8f17",
+						"branch": "main",
+						"mode": "current",
+						"side": "after",
+						"recordId": "3f1c9a0e7b5d24c8a6e1f90b2d47c835e6a1b9d0f4c27e83a5b6d1c9f0e2a7b4",
+						"scenarioId": "feed-run",
+						"state": "default",
+						"evidenceId": "run",
+						"viewport": null,
+						"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+						"notesRevision": "9b2f47d1c0e8a35f6b74d2e19c0a8f3e5d6b7c48",
+						"evidenceRevision": "e7d1a4c90b3f68a2d5e0c7b19f4a6d823c5e0b71"
+					},
+					{
+						"entityId": "desktop.component.recorded-preview",
+						"commit": "0f6a3c8e21d5b94a7e0c63f1d8b2a95e4c7d10f3",
+						"branch": "feat/alpha",
+						"mode": "commit",
+						"side": "before",
+						"recordId": "5a0d3e7fc19b46e28f0a53d7b2c6e9147d03fa58e1c4b92d60f8a3c5d9e27b10",
+						"scenarioId": "home-page",
+						"state": "filled",
+						"evidenceId": "screens",
+						"viewport": "mobile",
+						"sha256": "0c3f8e2a9d61b47f5e08c2d3a9b1f6e4d7c25a0b8e9f13d6a4c72b5e8f09d1a3",
+						"notesRevision": null,
+						"evidenceRevision": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unreadArtifact",
 				"type": "unknown",
-				"description": "The message used when the connection cannot read recorded bytes."
+				"description": "The fixed text of the Error thrown when the bridge has no `artifact` reader; it is the same string on every call and is exported from the utils module next to `damagedArtifact`.",
+				"examples": ["Recorded bytes cannot be read on this connection."]
 			},
 			{
 				"name": "damagedArtifact",
 				"type": "unknown",
-				"description": "The message used when returned bytes do not match the requested recorded hash."
+				"description": "The fixed text of the Error thrown when the bytes the reader returned do not hash to `query.sha256`, the same string on every call. When it is thrown, no bytes are returned, so a caller never receives bytes that were not checked.",
+				"examples": ["The bytes that were read do not have the recorded SHA-256."]
 			},
 			{
 				"name": "artifactBytes",
 				"type": "Promise<EvidenceArtifactResult>",
-				"description": "A promise for copied bytes, the reader’s media type and the independently calculated SHA-256 hash. The bytes must match the requested hash, regardless of the hash claimed by the answer."
+				"description": "A promise that resolves to a copy of the reader's bytes, the reader's media type as given, and the SHA-256 computed here from those bytes, which on success equals `query.sha256`. It rejects when the bytes do not hash to `query.sha256`, and any hash the answer claims is ignored."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects if artifact reading is unavailable or the bytes have a different hash. Backend and hashing failures propagate."
+				"description": "An Error the async function throws, so the promise rejects: with the `unreadArtifact` message when the bridge has no `artifact` reader, or with the `damagedArtifact` message when the bytes do not hash to `query.sha256`. Errors from the reader, from reading the answer's bytes, and from the SHA-256 digest are not caught and reject the promise unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "artifactBytes",
@@ -62,29 +100,65 @@
 						"name": "artifactBytes.bridge",
 						"type": "Pick<DesktopBridge, 'artifact'>",
 						"required": true,
-						"description": "A connection with an optional artifact reader. A connection without that operation is refused."
+						"description": "The connection the capture is read through; only its optional `artifact` reader is used, and it is called with the query as its only argument. A connection without `artifact` is refused before anything is read, with the `unreadArtifact` message.",
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "artifactBytes.query",
 						"type": "EvidenceArtifactQuery",
 						"required": true,
-						"description": "The exact capture request, including its binding and expected SHA-256 hash. Passed unchanged to the artifact reader."
+						"description": "The exact capture request, including its binding and expected SHA-256 hash, passed to the reader unchanged. Its `sha256` is the only value the returned bytes are checked against, so they must hash to it whatever the answer claims.",
+						"examples": [
+							{
+								"entityId": "reports.component.evidence-grid",
+								"commit": "4c1e8a7f2b9d03e6a5c8f1d7b2e9043a6d5c8f17",
+								"branch": "main",
+								"mode": "current",
+								"side": "after",
+								"recordId": "3f1c9a0e7b5d24c8a6e1f90b2d47c835e6a1b9d0f4c27e83a5b6d1c9f0e2a7b4",
+								"scenarioId": "feed-run",
+								"state": "default",
+								"evidenceId": "run",
+								"viewport": null,
+								"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"notesRevision": "9b2f47d1c0e8a35f6b74d2e19c0a8f3e5d6b7c48",
+								"evidenceRevision": "e7d1a4c90b3f68a2d5e0c7b19f4a6d823c5e0b71"
+							},
+							{
+								"entityId": "desktop.component.recorded-preview",
+								"commit": "0f6a3c8e21d5b94a7e0c63f1d8b2a95e4c7d10f3",
+								"branch": "feat/alpha",
+								"mode": "commit",
+								"side": "before",
+								"recordId": "5a0d3e7fc19b46e28f0a53d7b2c6e9147d03fa58e1c4b92d60f8a3c5d9e27b10",
+								"scenarioId": "home-page",
+								"state": "filled",
+								"evidenceId": "screens",
+								"viewport": "mobile",
+								"sha256": "0c3f8e2a9d61b47f5e08c2d3a9b1f6e4d7c25a0b8e9f13d6a4c72b5e8f09d1a3",
+								"notesRevision": null,
+								"evidenceRevision": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "artifactBytes",
 						"type": "Promise<EvidenceArtifactResult>",
-						"description": "A promise for copied bytes, the reader’s media type and the independently calculated SHA-256 hash. The bytes must match the requested hash, regardless of the hash claimed by the answer."
+						"description": "A promise that resolves to a copy of the reader's bytes, the reader's media type as given, and the SHA-256 computed here from those bytes, which on success equals `query.sha256`. It rejects when the bytes do not hash to `query.sha256`, and any hash the answer claims is ignored."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "An Error the async function throws, so the promise rejects: with the `unreadArtifact` message when the bridge has no `artifact` reader, or with the `damagedArtifact` message when the bytes do not hash to `query.sha256`. Errors from the reader, from reading the answer's bytes, and from the SHA-256 digest are not caught and reject the promise unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
