@@ -27,86 +27,216 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AgentRegistryRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Checkout path used to place this repository’s agent state. The repository stores its records beneath <root>/.cache/harness/agents.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+				]
 			},
 			{
 				"name": "AgentRegistryRepository.register.registration",
 				"type": "AgentRegistration",
-				"required": true
+				"required": true,
+				"description": "Agent identity and launch metadata stored when an agent registers, with registration.id selecting its directory. The strict schema requires version 1, nonempty id, label, and registeredAt strings, nullable provider, model, processStartedAt, and PID values, and a positive integer TTL.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "agent-frontend-a",
+						"label": "Frontend implementation agent",
+						"provider": "openai",
+						"model": "gpt-6-luna",
+						"pid": 48217,
+						"processStartedAt": "2026-11-14T10:15:00.000Z",
+						"registeredAt": "2026-11-14T10:16:00.000Z",
+						"ttlSeconds": 120
+					}
+				]
 			},
 			{
 				"name": "AgentRegistryRepository.register.beat",
 				"type": "AgentBeat",
-				"required": true
+				"required": true,
+				"description": "The latest heartbeat stored during registration, including what the agent says it is working on. Its strict schema requires a nonempty timestamp, nullable branch, task, and loop strings, and an array of nonempty unit strings.",
+				"examples": [
+					{
+						"at": "2026-11-14T10:18:00.000Z",
+						"branch": "feature/agent-registry",
+						"task": "Update the agent registry contract",
+						"loop": "implementation",
+						"units": ["repository.agent-registry", "function.activity-types"]
+					}
+				]
 			},
 			{
 				"name": "AgentRegistryRepository.beat.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The registered agent identifier used to select heartbeat.json under this checkout’s agent state directory. It is joined into a filesystem path without checking whether the agent is registered.",
+				"examples": ["agent-frontend-a"]
 			},
 			{
 				"name": "AgentRegistryRepository.beat.beat",
 				"type": "AgentBeat",
-				"required": true
+				"required": true,
+				"description": "The replacement heartbeat written for the selected agent during a heartbeat update. Its strict schema requires a nonempty timestamp, nullable branch, task, and loop strings, and an array of nonempty unit strings.",
+				"examples": [
+					{
+						"at": "2026-11-14T10:18:00.000Z",
+						"branch": "feature/agent-registry",
+						"task": "Update the agent registry contract",
+						"loop": "implementation",
+						"units": ["repository.agent-registry", "function.activity-types"]
+					}
+				]
 			},
 			{
 				"name": "AgentRegistryRepository.finish.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The agent identifier used to select finished.json under this checkout’s agent state directory. The method does not check for a registration, and an existing end record remains unchanged.",
+				"examples": ["agent-frontend-a"]
 			},
 			{
 				"name": "AgentRegistryRepository.finish.end",
 				"type": "AgentEnd",
-				"required": true
+				"required": true,
+				"description": "The terminal record written when the selected agent finishes. Its strict schema requires a nonempty timestamp, status completed or failed, and a nullable outcome string.",
+				"examples": [
+					{
+						"at": "2026-11-14T10:45:00.000Z",
+						"status": "completed",
+						"outcome": "Contract updated"
+					}
+				]
 			},
 			{
 				"name": "AgentRegistryRepository.read.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The agent identifier used to select the directory whose registration, heartbeat, and optional end are read. The method returns undefined when no registration file exists and rejects when present records cannot be parsed or validated.",
+				"examples": ["agent-frontend-a"]
 			},
 			{
 				"name": "AgentRegistryRepository.remove.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The agent identifier used to select the directory to remove recursively. Removal is forced, so it also resolves when that directory is absent.",
+				"examples": ["agent-frontend-a"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AgentRegistryRepository.used",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Reports whether .cache/harness/agents exists under the checkout root. Registration creates that directory before writing its records, so this may become true while registration is still in progress.",
+				"examples": [true, false]
 			},
 			{
 				"name": "AgentRegistryRepository.register",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after creating the agent directory, removing any earlier end record, and writing the heartbeat and registration as complete files. The registration is written last so the agent is listed only after its records are present."
 			},
 			{
 				"name": "AgentRegistryRepository.beat",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after replacing the selected agent’s complete heartbeat file. It does not create the agent directory, so that directory must already exist."
 			},
 			{
 				"name": "AgentRegistryRepository.finish",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Returns true when it writes the end record and false when an end record already exists. The first end record is preserved until a later registration removes it.",
+				"examples": [true, false]
 			},
 			{
 				"name": "AgentRegistryRepository.read",
-				"type": "Promise<StoredAgent | undefined>"
+				"type": "Promise<StoredAgent | undefined>",
+				"description": "Resolves to undefined when the agent has no registration file, or to its parsed registration, heartbeat, and optional end when registered. A missing or damaged required file rejects the promise.",
+				"examples": [
+					{
+						"registration": {
+							"schemaVersion": 1,
+							"id": "agent-frontend-a",
+							"label": "Frontend implementation agent",
+							"provider": "openai",
+							"model": "gpt-6-luna",
+							"pid": 48217,
+							"processStartedAt": "2026-11-14T10:15:00.000Z",
+							"registeredAt": "2026-11-14T10:16:00.000Z",
+							"ttlSeconds": 120
+						},
+						"beat": {
+							"at": "2026-11-14T10:18:00.000Z",
+							"branch": "feature/agent-registry",
+							"task": "Update the agent registry contract",
+							"loop": "implementation",
+							"units": ["repository.agent-registry", "function.activity-types"]
+						},
+						"end": null
+					}
+				]
 			},
 			{
 				"name": "AgentRegistryRepository.all",
-				"type": "Promise<{ agents: StoredAgent[]; unreadable: number }>"
+				"type": "Promise<{ agents: StoredAgent[]; unreadable: number }>",
+				"description": "Returns registered agents in sorted directory order and a count of entries whose records could not be read. Entries without a registration file are skipped, while caught read, JSON, and schema errors increase unreadable.",
+				"examples": [
+					{
+						"agents": [
+							{
+								"registration": {
+									"schemaVersion": 1,
+									"id": "agent-frontend-a",
+									"label": "Frontend implementation agent",
+									"provider": "openai",
+									"model": "gpt-6-luna",
+									"pid": 48217,
+									"processStartedAt": "2026-11-14T10:15:00.000Z",
+									"registeredAt": "2026-11-14T10:16:00.000Z",
+									"ttlSeconds": 120
+								},
+								"beat": {
+									"at": "2026-11-14T10:18:00.000Z",
+									"branch": "feature/agent-registry",
+									"task": "Update the agent registry contract",
+									"loop": "implementation",
+									"units": ["repository.agent-registry", "function.activity-types"]
+								},
+								"end": null
+							}
+						],
+						"unreadable": 0
+					}
+				]
 			},
 			{
 				"name": "AgentRegistryRepository.remove",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after recursively removing the selected agent directory. Forced removal also resolves when the directory is absent."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Reading a present state file throws when its contents are not valid JSON."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Reading a present registration, heartbeat, or end file throws when its JSON does not satisfy the corresponding strict schema."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AgentRegistryRepository.used",
@@ -114,11 +244,13 @@
 				"outputs": [
 					{
 						"name": "AgentRegistryRepository.used",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Reports whether .cache/harness/agents exists under the checkout root. Registration creates that directory before writing its records, so this may become true while registration is still in progress.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentRegistryRepository.register",
@@ -126,22 +258,53 @@
 					{
 						"name": "AgentRegistryRepository.register.registration",
 						"type": "AgentRegistration",
-						"required": true
+						"required": true,
+						"description": "Agent identity and launch metadata stored when an agent registers, with registration.id selecting its directory. The strict schema requires version 1, nonempty id, label, and registeredAt strings, nullable provider, model, processStartedAt, and PID values, and a positive integer TTL.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "agent-frontend-a",
+								"label": "Frontend implementation agent",
+								"provider": "openai",
+								"model": "gpt-6-luna",
+								"pid": 48217,
+								"processStartedAt": "2026-11-14T10:15:00.000Z",
+								"registeredAt": "2026-11-14T10:16:00.000Z",
+								"ttlSeconds": 120
+							}
+						]
 					},
 					{
 						"name": "AgentRegistryRepository.register.beat",
 						"type": "AgentBeat",
-						"required": true
+						"required": true,
+						"description": "The latest heartbeat stored during registration, including what the agent says it is working on. Its strict schema requires a nonempty timestamp, nullable branch, task, and loop strings, and an array of nonempty unit strings.",
+						"examples": [
+							{
+								"at": "2026-11-14T10:18:00.000Z",
+								"branch": "feature/agent-registry",
+								"task": "Update the agent registry contract",
+								"loop": "implementation",
+								"units": ["repository.agent-registry", "function.activity-types"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentRegistryRepository.register",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after creating the agent directory, removing any earlier end record, and writing the heartbeat and registration as complete files. The registration is written last so the agent is listed only after its records are present."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentRegistryRepository.beat",
@@ -149,22 +312,41 @@
 					{
 						"name": "AgentRegistryRepository.beat.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The registered agent identifier used to select heartbeat.json under this checkout’s agent state directory. It is joined into a filesystem path without checking whether the agent is registered.",
+						"examples": ["agent-frontend-a"]
 					},
 					{
 						"name": "AgentRegistryRepository.beat.beat",
 						"type": "AgentBeat",
-						"required": true
+						"required": true,
+						"description": "The replacement heartbeat written for the selected agent during a heartbeat update. Its strict schema requires a nonempty timestamp, nullable branch, task, and loop strings, and an array of nonempty unit strings.",
+						"examples": [
+							{
+								"at": "2026-11-14T10:18:00.000Z",
+								"branch": "feature/agent-registry",
+								"task": "Update the agent registry contract",
+								"loop": "implementation",
+								"units": ["repository.agent-registry", "function.activity-types"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentRegistryRepository.beat",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after replacing the selected agent’s complete heartbeat file. It does not create the agent directory, so that directory must already exist."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentRegistryRepository.finish",
@@ -172,22 +354,40 @@
 					{
 						"name": "AgentRegistryRepository.finish.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The agent identifier used to select finished.json under this checkout’s agent state directory. The method does not check for a registration, and an existing end record remains unchanged.",
+						"examples": ["agent-frontend-a"]
 					},
 					{
 						"name": "AgentRegistryRepository.finish.end",
 						"type": "AgentEnd",
-						"required": true
+						"required": true,
+						"description": "The terminal record written when the selected agent finishes. Its strict schema requires a nonempty timestamp, status completed or failed, and a nullable outcome string.",
+						"examples": [
+							{
+								"at": "2026-11-14T10:45:00.000Z",
+								"status": "completed",
+								"outcome": "Contract updated"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentRegistryRepository.finish",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Returns true when it writes the end record and false when an end record already exists. The first end record is preserved until a later registration removes it.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentRegistryRepository.read",
@@ -195,17 +395,59 @@
 					{
 						"name": "AgentRegistryRepository.read.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The agent identifier used to select the directory whose registration, heartbeat, and optional end are read. The method returns undefined when no registration file exists and rejects when present records cannot be parsed or validated.",
+						"examples": ["agent-frontend-a"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentRegistryRepository.read",
-						"type": "Promise<StoredAgent | undefined>"
+						"type": "Promise<StoredAgent | undefined>",
+						"description": "Resolves to undefined when the agent has no registration file, or to its parsed registration, heartbeat, and optional end when registered. A missing or damaged required file rejects the promise.",
+						"examples": [
+							{
+								"registration": {
+									"schemaVersion": 1,
+									"id": "agent-frontend-a",
+									"label": "Frontend implementation agent",
+									"provider": "openai",
+									"model": "gpt-6-luna",
+									"pid": 48217,
+									"processStartedAt": "2026-11-14T10:15:00.000Z",
+									"registeredAt": "2026-11-14T10:16:00.000Z",
+									"ttlSeconds": 120
+								},
+								"beat": {
+									"at": "2026-11-14T10:18:00.000Z",
+									"branch": "feature/agent-registry",
+									"task": "Update the agent registry contract",
+									"loop": "implementation",
+									"units": ["repository.agent-registry", "function.activity-types"]
+								},
+								"end": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Reading a present state file throws when its contents are not valid JSON."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Reading a present registration, heartbeat, or end file throws when its JSON does not satisfy the corresponding strict schema."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentRegistryRepository.all",
@@ -213,11 +455,46 @@
 				"outputs": [
 					{
 						"name": "AgentRegistryRepository.all",
-						"type": "Promise<{ agents: StoredAgent[]; unreadable: number }>"
+						"type": "Promise<{ agents: StoredAgent[]; unreadable: number }>",
+						"description": "Returns registered agents in sorted directory order and a count of entries whose records could not be read. Entries without a registration file are skipped, while caught read, JSON, and schema errors increase unreadable.",
+						"examples": [
+							{
+								"agents": [
+									{
+										"registration": {
+											"schemaVersion": 1,
+											"id": "agent-frontend-a",
+											"label": "Frontend implementation agent",
+											"provider": "openai",
+											"model": "gpt-6-luna",
+											"pid": 48217,
+											"processStartedAt": "2026-11-14T10:15:00.000Z",
+											"registeredAt": "2026-11-14T10:16:00.000Z",
+											"ttlSeconds": 120
+										},
+										"beat": {
+											"at": "2026-11-14T10:18:00.000Z",
+											"branch": "feature/agent-registry",
+											"task": "Update the agent registry contract",
+											"loop": "implementation",
+											"units": ["repository.agent-registry", "function.activity-types"]
+										},
+										"end": null
+									}
+								],
+								"unreadable": 0
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AgentRegistryRepository.remove",
@@ -225,17 +502,26 @@
 					{
 						"name": "AgentRegistryRepository.remove.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The agent identifier used to select the directory to remove recursively. Removal is forced, so it also resolves when that directory is absent.",
+						"examples": ["agent-frontend-a"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentRegistryRepository.remove",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after recursively removing the selected agent directory. Forced removal also resolves when the directory is absent."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -245,17 +531,28 @@
 					{
 						"name": "AgentRegistryRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Checkout path used to place this repository’s agent state. The repository stores its records beneath <root>/.cache/harness/agents.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AgentRegistryRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed repository instance, with its storage directory set beneath the supplied checkout root. Consumers use it to register, update, finish, read, list, and remove agent records."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Path construction throws when the supplied root is not a string, so the repository instance is not constructed."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
