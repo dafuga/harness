@@ -33,44 +33,82 @@
 				"name": "parseLfsPointer.text",
 				"type": "string",
 				"required": true,
-				"description": "Text to match against a three-line version, SHA-256 object id and decimal size pointer."
+				"description": "The candidate pointer text: exactly three lines separated by LF, a `version` line with one non-space token, an `oid sha256:` line with 64 lowercase hex digits, and a `size` line with decimal digits, where the final LF is optional. Anything else, including real media bytes, CRLF line endings or extra lines, does not match, and parseLfsPointer then returns undefined instead of throwing.",
+				"examples": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9\nsize 11\n",
+					"version https://git-lfs.github.com/spec/v1\noid sha256:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad\nsize 3\n"
+				]
 			},
 			{
 				"name": "lfsPointer.file",
 				"type": "LfsObject",
 				"required": true,
-				"description": "Original SHA-256 digest and byte count to place in the pointer text."
+				"description": "The `sha256` digest and `bytes` count of the original bytes, copied without validation into the `oid sha256:` and `size` lines of the pointer. Only a 64-character lowercase hex digest and a non-negative integer below 1e21 produce a pointer that parseLfsPointer accepts.",
+				"examples": [
+					{
+						"sha256": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+						"bytes": 11
+					},
+					{
+						"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+						"bytes": 3
+					}
+				]
 			},
 			{
 				"name": "lfsStored.path",
 				"type": "string",
 				"required": true,
-				"description": "File path whose final extension determines LFS storage, case-insensitively."
+				"description": "Only the text after the last dot of this repository path or file name is examined, case-insensitively, against the media list, so `archive.png.json` is not LFS-stored. A name with no dot, or with any character other than an ASCII letter or digit after its last dot, returns false.",
+				"examples": [
+					"evidence/checkout-flow/step-2.PNG",
+					"evidence/checkout-flow/step-3.webm",
+					"evidence/checkout-flow/record.json"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "lfsPointer",
 				"type": "string",
-				"description": "Three-line Git LFS pointer with the standard version URL, supplied digest and size, and a final newline."
+				"description": "The exact three-line Git LFS pointer text: the fixed `version https://git-lfs.github.com/spec/v1` line, the supplied digest on the `oid sha256:` line and the supplied byte count on the `size` line, each ending in LF. Git LFS reads this text in place of the original bytes, and the function does not validate the values it writes.",
+				"examples": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9\nsize 11\n",
+					"version https://git-lfs.github.com/spec/v1\noid sha256:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad\nsize 3\n"
+				]
 			},
 			{
 				"name": "parseLfsPointer",
 				"type": "LfsObject | undefined",
-				"description": "Parsed digest and numeric byte size, or undefined when the pointer shape does not match."
+				"description": "The `sha256` digest from the `oid sha256:` line, exactly as written (64 lowercase hex characters), and `bytes` as the Number value of the `size` digits, or undefined when the text does not match the pointer pattern. Because bytes is a JavaScript number, integers above 2^53 - 1 may be rounded and very long digit runs become Infinity.",
+				"examples": [
+					{
+						"sha256": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+						"bytes": 11
+					},
+					{
+						"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+						"bytes": 3
+					}
+				]
 			},
 			{
 				"name": "lfsStored",
 				"type": "boolean",
-				"description": "True for png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, webm and mp4 extensions."
+				"description": "True when the lowercased final extension is one of the eleven media extensions (png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, webm, mp4), the same list that lfsAttributes writes. False for every other path, including paths with no extension.",
+				"examples": [true, false]
 			},
 			{
 				"name": "lfsAttributes",
 				"type": "string",
-				"description": "Git attributes lines applying LFS filtering to lowercase and uppercase forms of each supported media extension."
+				"description": "The `.gitattributes` text built from mediaExtensions: for each of the eleven media extensions, a lowercase line and an uppercase line of the form `*.<ext> filter=lfs diff=lfs merge=lfs -text`, each ending in LF. Mixed-case extensions such as `.Png` get no line, even though lfsStored still selects them.",
+				"examples": [
+					"*.png filter=lfs diff=lfs merge=lfs -text\n*.PNG filter=lfs diff=lfs merge=lfs -text\n*.jpg filter=lfs diff=lfs merge=lfs -text\n*.JPG filter=lfs diff=lfs merge=lfs -text\n*.jpeg filter=lfs diff=lfs merge=lfs -text\n*.JPEG filter=lfs diff=lfs merge=lfs -text\n*.webp filter=lfs diff=lfs merge=lfs -text\n*.WEBP filter=lfs diff=lfs merge=lfs -text\n*.gif filter=lfs diff=lfs merge=lfs -text\n*.GIF filter=lfs diff=lfs merge=lfs -text\n*.wav filter=lfs diff=lfs merge=lfs -text\n*.WAV filter=lfs diff=lfs merge=lfs -text\n*.mp3 filter=lfs diff=lfs merge=lfs -text\n*.MP3 filter=lfs diff=lfs merge=lfs -text\n*.m4a filter=lfs diff=lfs merge=lfs -text\n*.M4A filter=lfs diff=lfs merge=lfs -text\n*.ogg filter=lfs diff=lfs merge=lfs -text\n*.OGG filter=lfs diff=lfs merge=lfs -text\n*.webm filter=lfs diff=lfs merge=lfs -text\n*.WEBM filter=lfs diff=lfs merge=lfs -text\n*.mp4 filter=lfs diff=lfs merge=lfs -text\n*.MP4 filter=lfs diff=lfs merge=lfs -text\n"
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "lfsAttributes",
@@ -79,11 +117,14 @@
 					{
 						"name": "lfsAttributes",
 						"type": "string",
-						"description": "Git attributes lines applying LFS filtering to lowercase and uppercase forms of each supported media extension."
+						"description": "The `.gitattributes` text built from mediaExtensions: for each of the eleven media extensions, a lowercase line and an uppercase line of the form `*.<ext> filter=lfs diff=lfs merge=lfs -text`, each ending in LF. Mixed-case extensions such as `.Png` get no line, even though lfsStored still selects them.",
+						"examples": [
+							"*.png filter=lfs diff=lfs merge=lfs -text\n*.PNG filter=lfs diff=lfs merge=lfs -text\n*.jpg filter=lfs diff=lfs merge=lfs -text\n*.JPG filter=lfs diff=lfs merge=lfs -text\n*.jpeg filter=lfs diff=lfs merge=lfs -text\n*.JPEG filter=lfs diff=lfs merge=lfs -text\n*.webp filter=lfs diff=lfs merge=lfs -text\n*.WEBP filter=lfs diff=lfs merge=lfs -text\n*.gif filter=lfs diff=lfs merge=lfs -text\n*.GIF filter=lfs diff=lfs merge=lfs -text\n*.wav filter=lfs diff=lfs merge=lfs -text\n*.WAV filter=lfs diff=lfs merge=lfs -text\n*.mp3 filter=lfs diff=lfs merge=lfs -text\n*.MP3 filter=lfs diff=lfs merge=lfs -text\n*.m4a filter=lfs diff=lfs merge=lfs -text\n*.M4A filter=lfs diff=lfs merge=lfs -text\n*.ogg filter=lfs diff=lfs merge=lfs -text\n*.OGG filter=lfs diff=lfs merge=lfs -text\n*.webm filter=lfs diff=lfs merge=lfs -text\n*.WEBM filter=lfs diff=lfs merge=lfs -text\n*.mp4 filter=lfs diff=lfs merge=lfs -text\n*.MP4 filter=lfs diff=lfs merge=lfs -text\n"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "parseLfsPointer",
@@ -92,18 +133,32 @@
 						"name": "parseLfsPointer.text",
 						"type": "string",
 						"required": true,
-						"description": "Text to match against a three-line version, SHA-256 object id and decimal size pointer."
+						"description": "The candidate pointer text: exactly three lines separated by LF, a `version` line with one non-space token, an `oid sha256:` line with 64 lowercase hex digits, and a `size` line with decimal digits, where the final LF is optional. Anything else, including real media bytes, CRLF line endings or extra lines, does not match, and parseLfsPointer then returns undefined instead of throwing.",
+						"examples": [
+							"version https://git-lfs.github.com/spec/v1\noid sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9\nsize 11\n",
+							"version https://git-lfs.github.com/spec/v1\noid sha256:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad\nsize 3\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "parseLfsPointer",
 						"type": "LfsObject | undefined",
-						"description": "Parsed digest and numeric byte size, or undefined when the pointer shape does not match."
+						"description": "The `sha256` digest from the `oid sha256:` line, exactly as written (64 lowercase hex characters), and `bytes` as the Number value of the `size` digits, or undefined when the text does not match the pointer pattern. Because bytes is a JavaScript number, integers above 2^53 - 1 may be rounded and very long digit runs become Infinity.",
+						"examples": [
+							{
+								"sha256": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+								"bytes": 11
+							},
+							{
+								"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"bytes": 3
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "lfsPointer",
@@ -112,18 +167,32 @@
 						"name": "lfsPointer.file",
 						"type": "LfsObject",
 						"required": true,
-						"description": "Original SHA-256 digest and byte count to place in the pointer text."
+						"description": "The `sha256` digest and `bytes` count of the original bytes, copied without validation into the `oid sha256:` and `size` lines of the pointer. Only a 64-character lowercase hex digest and a non-negative integer below 1e21 produce a pointer that parseLfsPointer accepts.",
+						"examples": [
+							{
+								"sha256": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+								"bytes": 11
+							},
+							{
+								"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"bytes": 3
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "lfsPointer",
 						"type": "string",
-						"description": "Three-line Git LFS pointer with the standard version URL, supplied digest and size, and a final newline."
+						"description": "The exact three-line Git LFS pointer text: the fixed `version https://git-lfs.github.com/spec/v1` line, the supplied digest on the `oid sha256:` line and the supplied byte count on the `size` line, each ending in LF. Git LFS reads this text in place of the original bytes, and the function does not validate the values it writes.",
+						"examples": [
+							"version https://git-lfs.github.com/spec/v1\noid sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9\nsize 11\n",
+							"version https://git-lfs.github.com/spec/v1\noid sha256:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad\nsize 3\n"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "lfsStored",
@@ -132,18 +201,24 @@
 						"name": "lfsStored.path",
 						"type": "string",
 						"required": true,
-						"description": "File path whose final extension determines LFS storage, case-insensitively."
+						"description": "Only the text after the last dot of this repository path or file name is examined, case-insensitively, against the media list, so `archive.png.json` is not LFS-stored. A name with no dot, or with any character other than an ASCII letter or digit after its last dot, returns false.",
+						"examples": [
+							"evidence/checkout-flow/step-2.PNG",
+							"evidence/checkout-flow/step-3.webm",
+							"evidence/checkout-flow/record.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "lfsStored",
 						"type": "boolean",
-						"description": "True for png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, webm and mp4 extensions."
+						"description": "True when the lowercased final extension is one of the eleven media extensions (png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, webm, mp4), the same list that lfsAttributes writes. False for every other path, including paths with no extension.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
