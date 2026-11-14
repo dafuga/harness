@@ -19,46 +19,121 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogService.constructor.source",
 				"type": "GitSourceAdapter",
-				"required": true
+				"required": true,
+				"description": "A GitSourceAdapter bound to a repository; this service uses it to load manifests and changed paths, and entity details also use its documentation, source, size, and contract-hash methods. The service receives the adapter rather than constructing or reconfiguring it."
 			},
 			{
 				"name": "CatalogService.constructor.planning",
 				"type": "PlanningPort",
-				"required": true
+				"required": true,
+				"description": "A PlanningPort implementation; this service reads plans for each revision and may read history when opening a planned entity. It does not call the port’s create, design, thread, approval, image, or message methods."
 			},
 			{
 				"name": "CatalogService.list.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository revision string used for the manifest, plan, and changed-path reads. The method passes it to its dependencies unchanged and does not validate it itself.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "CatalogService.entity.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Catalog entity identifier matched against the assembled catalog rows for the requested revision. If no row has this exact id, detail loading throws Error.",
+				"examples": ["desktop.service.catalog"]
 			},
 			{
 				"name": "CatalogService.entity.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository revision string used to assemble the catalog and load detail data. The method passes it to its dependencies unchanged and does not validate it itself.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogService.list",
-				"type": "Promise<CatalogEntity[]>"
+				"type": "Promise<CatalogEntity[]>",
+				"description": "Resolves to catalog summary rows sorted by title, combining eligible active units with plan records for the revision. Route-loader-only pages and non-planned function rows without a valid helper contract are omitted; details require the entity operation.",
+				"examples": [
+					[
+						{
+							"id": "desktop.service.catalog",
+							"category": "services",
+							"kind": "service",
+							"title": "CatalogService",
+							"summary": "Owns the CatalogService service workflow.",
+							"changed": false,
+							"planned": false,
+							"hasPlan": false,
+							"lifecycle": null,
+							"verification": "unknown",
+							"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+							"latestVersion": null,
+							"approvedVersion": null,
+							"threadCount": 0,
+							"thumbnail": null
+						}
+					]
+				]
 			},
 			{
 				"name": "CatalogService.entity",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the detail record for the matching catalog id and revision, including its contract, relationships, versions, threads, history, source information, and measurements. It throws Error when no assembled catalog row has the requested id.",
+				"examples": [
+					{
+						"id": "reports.component.evidence-grid",
+						"category": "components",
+						"kind": "component",
+						"title": "Evidence Grid",
+						"summary": "Collects review evidence.",
+						"changed": false,
+						"planned": true,
+						"hasPlan": true,
+						"lifecycle": "draft",
+						"verification": "unverified",
+						"verificationNote": "This is a plan. Approval does not verify running behavior.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"sources": [],
+						"size": {
+							"available": false,
+							"text": "Not measured: design only"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by catalogDetail when the requested id has no matching catalog row at the revision; CatalogService.entity propagates this error unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CatalogService.list",
@@ -66,17 +141,41 @@
 					{
 						"name": "CatalogService.list.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository revision string used for the manifest, plan, and changed-path reads. The method passes it to its dependencies unchanged and does not validate it itself.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogService.list",
-						"type": "Promise<CatalogEntity[]>"
+						"type": "Promise<CatalogEntity[]>",
+						"description": "Resolves to catalog summary rows sorted by title, combining eligible active units with plan records for the revision. Route-loader-only pages and non-planned function rows without a valid helper contract are omitted; details require the entity operation.",
+						"examples": [
+							[
+								{
+									"id": "desktop.service.catalog",
+									"category": "services",
+									"kind": "service",
+									"title": "CatalogService",
+									"summary": "Owns the CatalogService service workflow.",
+									"changed": false,
+									"planned": false,
+									"hasPlan": false,
+									"lifecycle": null,
+									"verification": "unknown",
+									"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+									"latestVersion": null,
+									"approvedVersion": null,
+									"threadCount": 0,
+									"thumbnail": null
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogService.entity",
@@ -84,22 +183,71 @@
 					{
 						"name": "CatalogService.entity.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Catalog entity identifier matched against the assembled catalog rows for the requested revision. If no row has this exact id, detail loading throws Error.",
+						"examples": ["desktop.service.catalog"]
 					},
 					{
 						"name": "CatalogService.entity.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository revision string used to assemble the catalog and load detail data. The method passes it to its dependencies unchanged and does not validate it itself.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogService.entity",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the detail record for the matching catalog id and revision, including its contract, relationships, versions, threads, history, source information, and measurements. It throws Error when no assembled catalog row has the requested id.",
+						"examples": [
+							{
+								"id": "reports.component.evidence-grid",
+								"category": "components",
+								"kind": "component",
+								"title": "Evidence Grid",
+								"summary": "Collects review evidence.",
+								"changed": false,
+								"planned": true,
+								"hasPlan": true,
+								"lifecycle": "draft",
+								"verification": "unverified",
+								"verificationNote": "This is a plan. Approval does not verify running behavior.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null,
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": null
+								},
+								"relationships": [],
+								"versions": [],
+								"threads": [],
+								"history": [],
+								"sources": [],
+								"size": {
+									"available": false,
+									"text": "Not measured: design only"
+								},
+								"performance": {
+									"available": false,
+									"text": "Not measured"
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by catalogDetail when the requested id has no matching catalog row at the revision; CatalogService.entity propagates this error unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -109,22 +257,25 @@
 					{
 						"name": "CatalogService.constructor.source",
 						"type": "GitSourceAdapter",
-						"required": true
+						"required": true,
+						"description": "A GitSourceAdapter bound to a repository; this service uses it to load manifests and changed paths, and entity details also use its documentation, source, size, and contract-hash methods. The service receives the adapter rather than constructing or reconfiguring it."
 					},
 					{
 						"name": "CatalogService.constructor.planning",
 						"type": "PlanningPort",
-						"required": true
+						"required": true,
+						"description": "A PlanningPort implementation; this service reads plans for each revision and may read history when opening a planned entity. It does not call the port’s create, design, thread, approval, image, or message methods."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructs a CatalogService instance and stores the supplied source and planning dependencies as private fields. The constructor does no asynchronous work."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
